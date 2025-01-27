@@ -68,18 +68,20 @@ export const TokenIncentivesData = ({
           </Typography>
         </Box>
       ))}
-      <Tooltip
-        title={<TooltipIncentives market={market} />}
-        placement={'top'}
-        enterTouchDelay={0}
-        arrow
-      >
-        <Chip
-          label={`+${market.external_incentives.length} rewards`}
-          variant="outlined"
-          sx={{ backgroundColor: '#313131', height: 24, fontSize: '0.75rem' }}
-        />
-      </Tooltip>
+      {market?.external_incentives.length > 0 && (
+        <Tooltip
+          title={<TooltipIncentives market={market} />}
+          placement={'top'}
+          enterTouchDelay={0}
+          arrow
+        >
+          <Chip
+            label={`+${market.external_incentives.length} rewards`}
+            variant="outlined"
+            sx={{ backgroundColor: '#313131', height: 24, fontSize: '0.75rem' }}
+          />
+        </Tooltip>
+      )}
     </Box>
   );
 };

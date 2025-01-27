@@ -358,7 +358,7 @@ export const WithdrawWidgetInputTokenTab = ({
                       tooltipText={INCENTIVES_TO_EARN_TOOLTIP}
                       digit={
                         <TokenIncentivesData
-                          tokens={market?.incentive_tokens_data}
+                          market={market}
                           perInput={true}
                           amount={position?.input_token_data?.token_amount}
                         />

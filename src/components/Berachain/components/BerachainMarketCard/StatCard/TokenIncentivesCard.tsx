@@ -66,7 +66,7 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
                 />
               </Tooltip>
             </BeraChainProgressCardHeader>
-            <TokenIncentivesData tokens={tokens} />
+            <TokenIncentivesData market={marketData} />
           </BeraChainProgressCardContent>
         </BeraChainProgressCardComponent>
       </div>
