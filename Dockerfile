@@ -5,7 +5,7 @@ ENV ENV_NAME=$ENV_NAME
 ARG NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_PUBLIC_LATEST_COMMIT_SHA=$NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_TELEMETRY_DISABLED=1 PNPM_VERSION=9.15.4
-RUN corepack enable && corepack install -g pnpm@${PNPM_VERSION}
+RUN corepack enable && corepack use pnpm@latest-9
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 ARG NEXT_PUBLIC_SENTRY_DSN
 ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 ENV NODE_ENV=production
-RUN corepack enable && corepack install -g pnpm@${PNPM_VERSION}
+RUN corepack enable && corepack use pnpm@latest-9
 
 COPY ./$ENV_FILE ./.env
 RUN pnpm build
@@ -32,7 +32,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
-RUN corepack enable && corepack install -g pnpm@${PNPM_VERSION}
+RUN corepack enable && corepack use pnpm@latest-9
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
