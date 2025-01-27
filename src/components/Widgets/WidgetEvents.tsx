@@ -25,7 +25,6 @@ import type {
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
-import { useSpindlFetch } from 'src/hooks/spindl/useSpindlFetch';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
@@ -35,7 +34,6 @@ export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
   const { account } = useAccount();
-  const fetchSpindl = useSpindlFetch();
   const {
     sourceChainToken,
     destinationChainToken,
@@ -106,11 +104,6 @@ export function WidgetEvents() {
           data,
           enableAddressable: true,
           isConversion: true,
-        });
-        fetchSpindl({
-          address: account?.address,
-          chainId: route.toToken.chainId,
-          tokenAddress: route.toToken.address,
         });
       }
     };
@@ -388,7 +381,6 @@ export function WidgetEvents() {
     activeTab,
     destinationChainToken.chainId,
     destinationChainToken.tokenAddress,
-    fetchSpindl,
     setDestinationChain,
     setDestinationChainToken,
     setSourceChainToken,
