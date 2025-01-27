@@ -91,7 +91,7 @@ export const TokenIncentivesData = ({
                   useGrouping: true,
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 1,
-                }).format(divideBy(incentiveTokenData.token_amount))}
+                }).format(incentiveTokenData.per_input_token)}
           </Typography>
         </Box>
       ))}

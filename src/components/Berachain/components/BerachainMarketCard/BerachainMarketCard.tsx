@@ -176,6 +176,7 @@ export const BerachainMarketCard = ({
             >
               <DigitTokenSymbolCard
                 sx={(theme) => ({
+                  flexGrow: 1,
                   '.tooltip-icon': {
                     color: theme.palette.alphaLight500.main,
                   },
@@ -192,12 +193,13 @@ export const BerachainMarketCard = ({
                     ? t('format.decimal', {
                         value: dataRecipe?.input_token_data_ap?.token_amount,
                       })
-                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 14)
+                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 11)
                 }
                 hasDeposited={deposited ? true : false}
               />
               <DigitCard
                 sx={(theme) => ({
+                  width: 'auto',
                   '.tooltip-icon': {
                     color: theme.palette.alphaLight500.main,
                   },
@@ -208,6 +210,8 @@ export const BerachainMarketCard = ({
                   },
                   '.content': {
                     marginTop: 1,
+                    display: 'flex',
+                    alignItems: 'center',
                   },
                 })}
                 title={'TVL'}

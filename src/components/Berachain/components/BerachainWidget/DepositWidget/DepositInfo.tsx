@@ -95,6 +95,9 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
                 },
+                '.header-title': {
+                  justifyContent: 'flex-end',
+                },
                 '.content-wrapper': {
                   alignItems: 'flex-end',
                   justifyContent: 'flex-end',
