@@ -2,6 +2,7 @@ import { Box, Chip, Tooltip, Typography } from '@mui/material';
 import type { BerachainIncentiveToken } from 'src/components/Berachain/BerachainType';
 import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
 import type { EnrichedMarketDataType } from 'royco/queries';
+import { divideBy } from '@/components/Berachain/utils';
 
 interface DigitCardProps {
   market: EnrichedMarketDataType;
@@ -64,7 +65,7 @@ export const TokenIncentivesData = ({
                   useGrouping: true,
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 1,
-                }).format(incentiveTokenData.token_amount)}
+                }).format(divideBy(incentiveTokenData.token_amount))}
           </Typography>
         </Box>
       ))}
