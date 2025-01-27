@@ -12,15 +12,18 @@ import {
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
   const isVerified = searchParam.get('is_verified') === 'true';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
 
+  const berachainFilters = useBerachainFilters();
   const { data: roycoData, isSuccess } = useEnrichedMarkets({
     is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
+    ...berachainFilters,
   });
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there

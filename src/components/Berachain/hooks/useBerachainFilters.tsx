@@ -8,7 +8,7 @@ function useBerachainFilters() {
     value: 'boyco',
   });
 
-  if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'production') {
+  if (process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
     filters.push({
       id: 'chain_id',
       value: sepolia.id,

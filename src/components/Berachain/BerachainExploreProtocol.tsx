@@ -7,6 +7,7 @@ import { useEnrichedMarkets } from 'royco/hooks';
 import { notFound, useSearchParams } from 'next/navigation';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 import { BerachainProtocolInformation } from './components/BerachainProtocolInformation/BerachainProtocolInformation';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 interface BerachainExploreProtocolProps {
   marketId: string;
@@ -17,11 +18,13 @@ export const BerachainExploreProtocol = ({
 }: BerachainExploreProtocolProps) => {
   const searchParam = useSearchParams();
   const isVerified = searchParam.get('is_verified') === 'true';
+  const berachainFilters = useBerachainFilters();
   const {
     data: roycoData,
     isSuccess,
     ...props
   } = useEnrichedMarkets({
+    ...berachainFilters,
     is_verified: isVerified,
     market_id: marketId,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],

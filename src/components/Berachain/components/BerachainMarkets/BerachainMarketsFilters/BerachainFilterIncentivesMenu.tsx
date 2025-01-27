@@ -13,6 +13,7 @@ import {
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 export const BerachainFilterIncentivesMenu = () => {
   const { incentiveFilter, setIncentiveFilter } =
@@ -37,9 +38,11 @@ export const BerachainFilterIncentivesMenu = () => {
   const assetsFilterId = 'token-filter-button';
   const assetsMenuId = 'token-filter-menu';
 
+  const berachainFilters = useBerachainFilters();
   const { data } = useEnrichedMarkets({
     is_verified: isVerified,
     sorting: [{ id: 'locked_quantity_usd', desc: true }],
+    ...berachainFilters
   });
 
   const tokens = useMemo(() => {
