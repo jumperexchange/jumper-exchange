@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { AccordionFAQ, AccordionHeader } from 'src/components/AccordionFAQ';
-import { ZapActionProtocolCard } from './ZapInfo.style';
 import type { CustomInformation } from 'src/types/loyaltyPass';
+import { ZapActionProtocolCard } from './ZapInfo.style';
 
 interface ZapActionFaqProps {
   detailInformation?: CustomInformation;
@@ -17,33 +17,35 @@ const ZapActionFaqAccordionHeader = () => {
 
 export const ZapActionFaq = ({ detailInformation }: ZapActionFaqProps) => {
   return (
-    <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
-      <AccordionFAQ
-        showIndex={true}
-        showDivider={true}
-        showAnswerDivider={true}
-        sx={{
-          padding: 0,
-          '& .faq-item': {
-            padding: '0px 8px',
-            backgroundColor: 'transparent',
-            '.MuiAccordionSummary-root': {
-              padding: 0,
+    detailInformation?.faqItems && (
+      <ZapActionProtocolCard sx={{ padding: '20px 12px' }}>
+        <AccordionFAQ
+          showIndex={true}
+          showDivider={true}
+          showAnswerDivider={true}
+          sx={{
+            padding: 0,
+            '& .faq-item': {
+              padding: '0px 8px',
+              backgroundColor: 'transparent',
+              '.MuiAccordionSummary-root': {
+                padding: 0,
+              },
+              '.accordion-items': {
+                gap: '4px',
+              },
+              '.MuiAccordionDetails-root': {
+                padding: '20px 16px 16px',
+              },
             },
-            '.accordion-items': {
-              gap: '4px',
-            },
-            '.MuiAccordionDetails-root': {
-              padding: '20px 16px 16px',
-            },
-          },
-        }}
-        content={detailInformation?.faqItems}
-        accordionHeader={<ZapActionFaqAccordionHeader />}
-        questionTextTypography="bodyLarge"
-        answerTextTypography="bodyMedium"
-        arrowSize={12}
-      />
-    </ZapActionProtocolCard>
+          }}
+          content={detailInformation?.faqItems}
+          accordionHeader={<ZapActionFaqAccordionHeader />}
+          questionTextTypography="bodyLarge"
+          answerTextTypography="bodyMedium"
+          arrowSize={12}
+        />
+      </ZapActionProtocolCard>
+    )
   );
 };
