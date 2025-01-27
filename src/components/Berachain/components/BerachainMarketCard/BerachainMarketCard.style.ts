@@ -9,6 +9,7 @@ export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   position: 'relative',
   flexDirection: 'column',
   padding: theme.spacing(2),
+  margin: 'auto',
   alignItems: 'flex-start',
   gap: theme.spacing(2),
   borderRadius: '16px',

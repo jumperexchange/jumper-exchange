@@ -26,6 +26,7 @@ function Recipe({
     '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b',
   );
 
+  //todo: use mui v6 grid2
   return (
     <Grid
       container
