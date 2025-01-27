@@ -42,7 +42,7 @@ export const BackButton = ({ path, title }: BackButtonProps) => {
           }}
         >
           {String(
-            title || 'Loyalty Pass' || t('navbar.navbarMenu.profile'),
+            title || 'Profile' || t('navbar.navbarMenu.profile'),
           ).toUpperCase()}
         </Typography>
       </Button>
