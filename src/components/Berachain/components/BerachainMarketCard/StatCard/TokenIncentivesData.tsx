@@ -3,6 +3,9 @@ import type { BerachainIncentiveToken } from 'src/components/Berachain/Berachain
 import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { divideBy } from '@/components/Berachain/utils';
+import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
+import { useMemo } from 'react';
+import { RoycoMarketType } from 'royco/market';
 
 interface DigitCardProps {
   market: EnrichedMarketDataType;
@@ -15,13 +18,49 @@ export const TokenIncentivesData = ({
   perInput,
   amount,
 }: DigitCardProps) => {
+  const { currentHighestOffers, marketMetadata, currentMarketData } =
+    useActiveMarket({
+      chain_id: market.chain_id,
+      market_id: market.id,
+      market_type: market.market_type,
+    });
+
+  const highestIncentives = useMemo(() => {
+    if (marketMetadata.market_type === RoycoMarketType.recipe.id) {
+      if (
+        !currentHighestOffers ||
+        currentHighestOffers.ip_offers.length === 0 ||
+        currentHighestOffers.ip_offers[0].tokens_data.length === 0
+      ) {
+        return [];
+      }
+
+      return currentHighestOffers.ip_offers[0].tokens_data;
+    }
+  }, [currentMarketData, currentHighestOffers, marketMetadata]);
+
+  console.log(
+    'highestincentives',
+    highestIncentives,
+    {
+      chain_id: market.chain_id,
+      market_id: market.id,
+      type: market.market_type,
+    },
+    currentHighestOffers,
+    marketMetadata,
+    currentMarketData,
+  );
+
   const tokens = market?.incentive_tokens_data;
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'flex-end',
+        justifyContent: 'space-between',
         gap: 2,
+        width: '100%',
       }}
     >
       {tokens?.map((incentiveTokenData: BerachainIncentiveToken) => (
@@ -77,7 +116,7 @@ export const TokenIncentivesData = ({
           arrow
         >
           <Chip
-            label={`+${market.external_incentives.length} rewards`}
+            label={`+${market.external_incentives.length} more`}
             variant="outlined"
             sx={{ backgroundColor: '#313131', height: 24, fontSize: '0.75rem' }}
           />

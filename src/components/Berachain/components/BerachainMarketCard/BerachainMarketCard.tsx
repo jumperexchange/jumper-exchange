@@ -34,7 +34,7 @@ import {
   DEPOSITED_TOOLTIP,
   TVL_TOOLTIP,
 } from '../../const/title';
-import { calculateTVLGoal } from '@/components/Berachain/utils';
+import { calculateTVLGoal, titleSlicer } from '@/components/Berachain/utils';
 import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
 import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
@@ -192,7 +192,7 @@ export const BerachainMarketCard = ({
                     ? t('format.decimal', {
                         value: dataRecipe?.input_token_data_ap?.token_amount,
                       })
-                    : roycoData?.input_token_data?.symbol
+                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 14)
                 }
                 hasDeposited={deposited ? true : false}
               />

@@ -42,11 +42,6 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
             marginLeft={'4px'}
             gap={'4px'}
           >
-            {/*The below /100 is a test about the token value because it seems that the decimals are included, make sure it works correctly or remove it */}
-            {t('format.decimal', {
-              value: divideBy(incentiveTokenData.token_amount),
-            })}{' '}
-            {incentiveTokenData.symbol}{' '}
             <img
               key={`berachain-market-card-token-${incentiveTokenData?.name}-${incentiveTokenData?.id}`}
               src={incentiveTokenData?.image}
@@ -58,6 +53,11 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
                 marginLeft: '4px',
               }}
             />
+            {/*The below /100 is a test about the token value because it seems that the decimals are included, make sure it works correctly or remove it */}
+            {t('format.decimal', {
+              value: divideBy(incentiveTokenData.token_amount),
+            })}{' '}
+            {incentiveTokenData.symbol}{' '}
           </Box>
         ))}
         {market?.external_incentives?.map((incentiveTokenData) => (
@@ -68,9 +68,6 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
             marginLeft={'4px'}
             gap={'4px'}
           >
-            {incentiveTokenData.label}
-            {' - '}
-            {incentiveTokenData.value}
             <img
               key={`berachain-market-card-token-${incentiveTokenData?.name}-${incentiveTokenData?.id}`}
               src={incentiveTokenData?.image}
@@ -82,6 +79,9 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
                 marginLeft: '4px',
               }}
             />
+            {incentiveTokenData.value}
+            {' on '}
+            {incentiveTokenData.label}
           </Box>
         ))}
       </Box>

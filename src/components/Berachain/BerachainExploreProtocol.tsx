@@ -24,10 +24,7 @@ export const BerachainExploreProtocol = ({
     isSuccess,
     ...props
   } = useEnrichedMarkets({
-    ...berachainFilters,
-    is_verified: isVerified,
     market_id: marketId,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
   });
 
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();

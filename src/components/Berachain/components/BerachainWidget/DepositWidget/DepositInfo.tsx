@@ -25,6 +25,7 @@ import TooltipIncentives from '@/components/Berachain/components/BerachainWidget
 import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenSymbolCard';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
+import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
