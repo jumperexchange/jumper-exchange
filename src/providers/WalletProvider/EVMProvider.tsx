@@ -13,9 +13,7 @@ import { WagmiProvider } from 'wagmi';
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
 
 const { config, connectors } = createDefaultWagmiConfig({
-  connectors: [
-    // abstractWalletConnector()
-  ],
+  connectors: [abstractWalletConnector()],
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,
