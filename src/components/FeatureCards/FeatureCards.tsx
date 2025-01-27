@@ -1,30 +1,37 @@
 'use client';
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
+import { usePersonalizedFeatureCards } from '@/hooks/usePersonalizedFeatureCards';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
+import type { RouteExecutionUpdate } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
+import { useSpindlFetch } from 'src/hooks/spindl/useSpindlFetch';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
+import { useSpindlStore } from 'src/stores/spindl';
 import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
-import { usePersonalizedFeatureCards } from '@/hooks/usePersonalizedFeatureCards';
 
 export const FeatureCards = () => {
   const { account } = useAccount();
+  const fetchSpindl = useSpindlFetch();
+
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
+
   const { points } = useLoyaltyPass(account?.address);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
+  const [showSpindleAds, setShowSpindleAds] = useState(false);
   const widgetEvents = useWidgetEvents();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-
+  const [spindl] = useSpindlStore((state) => [state.spindl]);
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
@@ -41,11 +48,22 @@ export const FeatureCards = () => {
     const handleWidgetExpanded = async (expanded: boolean) => {
       setWidgetExpanded(expanded);
     };
+    const handleRouteUpdated = async (route: RouteExecutionUpdate) => {
+      fetchSpindl({
+        address: account?.address,
+        chainId: route.route.toToken.chainId,
+        tokenAddress: route.route.toToken.address,
+      });
+      setShowSpindleAds(true);
+    };
     widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
+    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
 
-    return () =>
+    return () => {
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
-  }, [widgetEvents, widgetExpanded]);
+      widgetEvents.off(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
+    };
+  }, [account?.address, fetchSpindl, widgetEvents, widgetExpanded]);
 
   function excludedFeatureCardsFilter(el: FeatureCardData) {
     if (
@@ -101,21 +119,17 @@ export const FeatureCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [featureCardsToDisplay, featureCardsLevel]);
 
+  const featureCards = [
+    ...(showSpindleAds ? (spindl ?? []) : []),
+    ...(!widgetExpanded ? (slicedPersonalizedFeatureCards ?? []) : []),
+    ...(!widgetExpanded ? (slicedFeatureCards ?? []) : []),
+  ].filter((_, index) => index < 3);
+
   return (
     isDesktop &&
-    welcomeScreenClosed &&
-    !widgetExpanded && (
+    welcomeScreenClosed && (
       <FeatureCardsContainer>
-        {slicedPersonalizedFeatureCards?.map((cardData, index) => {
-          return (
-            <FeatureCard
-              isSuccess={isSuccess}
-              data={cardData}
-              key={`feature-card-p-${index}`}
-            />
-          );
-        })}
-        {slicedFeatureCards?.map((cardData, index) => {
+        {featureCards?.map((cardData, index) => {
           return (
             <FeatureCard
               isSuccess={isSuccess}

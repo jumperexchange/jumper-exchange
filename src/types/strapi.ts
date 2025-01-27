@@ -1,5 +1,6 @@
 import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { SpindlTrackData } from './spindl';
 
 /* Strapi */
 interface MediaFormat {
@@ -20,28 +21,28 @@ export interface MediaData {
 }
 
 export interface MediaAttributes {
-  name: string;
+  name?: string;
   alternativeText: string | undefined;
   caption?: string;
   width: number;
   height: number;
-  formats: {
+  formats?: {
     small: MediaFormat;
     medium: MediaFormat;
     large: MediaFormat;
     thumbnail: MediaFormat;
     [key: string]: MediaFormat; // Allow additional formats
   };
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
   url: string;
   previewUrl?: string;
-  provider: string;
-  provider_metadata: any;
-  createdAt: string;
-  updatedAt: string;
+  provider?: string;
+  provider_metadata?: any;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface StrapiMeta {
@@ -68,7 +69,7 @@ export interface StrapiImageData {
 
 /* Feature-Cards */
 export interface FeatureCardData {
-  id: number;
+  id: number | string;
   attributes: FeatureCardAttributes;
 }
 
@@ -83,7 +84,6 @@ interface FeatureCardExclusions {
     attributes: Pick<FeatureCardAttributes, 'uid'>;
   }[];
 }
-
 interface FeatureCardAttributes {
   Title: string;
   Subtitle: string;
@@ -96,13 +96,13 @@ interface FeatureCardAttributes {
   updatedAt: string;
   PersonalizedFeatureCard?: boolean;
   publishedAt?: string;
-  locale: string;
+  locale?: string;
   uid: string;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
   featureCardsExclusions?: FeatureCardExclusions;
-
-  localizations: {
+  spindleData?: SpindlTrackData;
+  localizations?: {
     data: any[];
   };
 }
