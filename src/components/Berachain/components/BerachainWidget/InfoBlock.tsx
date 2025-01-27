@@ -99,6 +99,7 @@ function InfoBlock({ market, recipe, sx = {} }: InfoBlockProps) {
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
               sx={(theme) => ({
+                alignItems: 'flex-end',
                 '.header-container': {
                   justifyContent: 'flex-end',
                 },

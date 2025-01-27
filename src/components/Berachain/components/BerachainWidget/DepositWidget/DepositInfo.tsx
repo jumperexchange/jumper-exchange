@@ -194,6 +194,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
             <DigitCard
               sx={(theme) => ({
                 alignItems: 'flex-end',
+                justifyContent: 'space-between',
+                flexDirection: 'column',
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
                 },
