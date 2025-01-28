@@ -170,7 +170,13 @@ export const TokenIncentivesData = ({
                   fontSize: '1rem!important',
                 })}
               >
-                ~%
+                {!apr
+                  ? '~%'
+                  : t('format.percent', {
+                      value: apr,
+                      useGrouping: true,
+                      maximumFractionDigits: 2,
+                    })}
               </Typography>
               {/*          <Typography
             variant="titleXSmall"

@@ -40,14 +40,15 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {(!isSuccess || !roycoData || !data) &&
+        {false &&
+          (!isSuccess || !roycoData || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
               key={idx}
             />
           ))}
-{/*        {true && (
+        {true && (
           <Grid
             item
             xs={12}
@@ -70,8 +71,9 @@ export const BerachainMarkets = () => {
               it.
             </Typography>
           </Grid>
-        )*/}
-        {isSuccess &&
+        )}
+        {false &&
+          isSuccess &&
           Array.isArray(roycoData) &&
           roycoData
             .filter(
@@ -124,7 +126,8 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-        {(isError || roycoData?.length === 0) &&
+        {false &&
+          (isError || roycoData?.length === 0) &&
           Array.isArray(roycoEnrichedDataCached) &&
           roycoEnrichedDataCached
             .filter(
