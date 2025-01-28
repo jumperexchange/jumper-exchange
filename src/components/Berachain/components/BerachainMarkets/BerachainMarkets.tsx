@@ -8,10 +8,7 @@ import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMa
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
-import {
-  getFullTitle,
-  includesCaseInsensitive,
-} from '@/components/Berachain/utils';
+import { getFullTitle, includesCaseInsensitive } from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 import roycoEnrichedDataCached from '@/components/Berachain/components/BerachainMarkets/roycoEnrichedDataCached';
 
@@ -47,13 +44,13 @@ export const BerachainMarkets = () => {
               key={idx}
             />
           ))}
-        {/*        {isError && (
+        {(isError || roycoData?.length === 0) && (
           <Grid
             item
             xs={12}
             md={12}
             sx={{
-              border: '1px solid white',
+              border: '1px solid #383433',
               width: '100%',
               textAlign: 'center',
               gridColumn: '1 / -1',
@@ -66,11 +63,10 @@ export const BerachainMarkets = () => {
                 color: theme.palette.text.primary,
               })}
             >
-              Boyco is having issues returning the markets. Please refresh the
-              page or try again later.
+              Bera with us. Boyco markets are seeing high demand. Bears are on it.
             </Typography>
           </Grid>
-        )}*/}
+        )}
         {isSuccess &&
           Array.isArray(roycoData) &&
           roycoData
@@ -124,7 +120,7 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-        {(isError || roycoData?.length === 0) &&
+        {false && (isError || roycoData?.length === 0) &&
           Array.isArray(roycoEnrichedDataCached) &&
           roycoEnrichedDataCached
             .filter(

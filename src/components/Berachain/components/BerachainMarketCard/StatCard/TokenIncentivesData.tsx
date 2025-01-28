@@ -57,6 +57,14 @@ export const TokenIncentivesData = ({
     return market.input_token_data;
   }, [market?.input_token_data]);
 
+  const apr = useMemo(() => {
+    if (!market?.locked_quantity_usd || !roycoStats?.total_tvl) {
+      return;
+    }
+
+    return aprCalculation(market.locked_quantity_usd, roycoStats.total_tvl);
+  }, [market?.locked_quantity_usd, roycoStats?.total_tvl])
+
   const tokens = market?.incentive_tokens_data;
   return (
     <Box
@@ -162,11 +170,10 @@ export const TokenIncentivesData = ({
                   fontSize: '1rem!important',
                 })}
               >
-                {t('format.percent', {
-                  value: aprCalculation(
-                    market?.locked_quantity_usd,
-                    roycoStats?.total_tvl,
-                  ),
+                {!apr ? '~%' : t('format.percent', {
+                  value: apr,
+                  useGrouping: true,
+                  maximumFractionDigits: 2
                 })}
               </Typography>
               {/*          <Typography
