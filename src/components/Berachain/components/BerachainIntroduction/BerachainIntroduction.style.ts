@@ -35,7 +35,6 @@ export const BerachainIntroductionSteps = styled(Grid)(({ theme }) => ({
 }));
 
 export const BerachainIntroductionStep = styled(Grid)(({ theme }) => ({
-  // display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(4, 0, 4, 3),
   width: '100%',
