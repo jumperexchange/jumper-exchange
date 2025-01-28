@@ -56,7 +56,7 @@ export const useSpindlFetch = () => {
                 data: {
                   id: 1,
                   attributes: {
-                    alternativeText: `${firstItem.advertiser.name} image`, // @spindl: can we supply an alternative text or use advertiser.name?
+                    alternativeText: `${firstItem.imageAltText || firstItem.advertiser?.name || ''} image`, // @spindl: can we supply an alternative text or use advertiser.name?
                     width: 384, // @spindl: bg img must have this width
                     height: 160, // @spindl: bg img must have this height
                     url: firstItem.imageUrl, // !!!! @spindl: problem: Images have texts baked in! We need to remove this and apply texts via Title, Subtitle and CTACall
