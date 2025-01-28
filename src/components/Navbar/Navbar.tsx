@@ -6,12 +6,11 @@ import {
   JUMPER_SCAN_PATH,
   JUMPER_TX_PATH,
   JUMPER_WALLET_PATH,
-  JUMPER_WASH_PATH,
 } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from 'src/stores/theme';
-import { Logo, LogoLink, NavbarButtons, NavbarContainer, NavbarTabs } from '.';
+import { Logo, LogoLink, NavbarButtons, NavbarContainer } from '.';
 
 export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
@@ -20,7 +19,6 @@ export const Navbar = ({ disableNavbar = false }) => {
     pathname?.includes(JUMPER_SCAN_PATH) ||
     pathname?.includes(JUMPER_TX_PATH) ||
     pathname?.includes(JUMPER_WALLET_PATH);
-  const isWashPage = pathname?.includes(JUMPER_WASH_PATH);
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const configTheme = useThemeStore((state) => state.configTheme);
 
@@ -46,7 +44,6 @@ export const Navbar = ({ disableNavbar = false }) => {
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLink>
-      {isWashPage && <NavbarTabs />}
       <NavbarButtons />
     </NavbarContainer>
   );
