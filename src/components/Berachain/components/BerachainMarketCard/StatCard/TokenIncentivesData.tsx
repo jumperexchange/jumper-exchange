@@ -4,14 +4,17 @@ import TooltipIncentives from '@/components/Berachain/components/BerachainWidget
 import type { EnrichedMarketDataType } from 'royco/queries';
 import {
   aprCalculation,
+  calculateBeraYield,
   divideBy,
   titleSlicer,
 } from '@/components/Berachain/utils';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { useMemo } from 'react';
 import { RoycoMarketType } from 'royco/market';
-import { useEnrichedRoycoStats, useTokenQuotes } from 'royco/hooks';
+import { useEnrichedMarkets, useTokenQuotes } from 'royco/hooks';
 import { useTranslation } from 'react-i18next';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 interface DigitCardProps {
   market: EnrichedMarketDataType;
@@ -31,12 +34,21 @@ export const TokenIncentivesData = ({
       market_id: market.market_id,
       market_type: market.market_type,
     });
-  const { data: roycoStats } = useEnrichedRoycoStats();
+  const { beraTokenQuote, roycoMarkets } = useBerachainMarketsFilterStore(
+    (state) => state,
+  );
 
-  const BERA_TOKEN_ID = '1-0xbe9abe9abe9abe9abe9abe9abe9abe9abe9abe9a';
-  const beraTokenQuotes = useTokenQuotes({
-    token_ids: [BERA_TOKEN_ID],
-  });
+  const apr = useMemo(() => {
+    if (!market || !roycoMarkets) {
+      return;
+    }
+
+    return calculateBeraYield({
+      enrichedMarket: market,
+      customTokenData: [beraTokenQuote],
+      markets: roycoMarkets,
+    });
+  }, [roycoMarkets, market, beraTokenQuote]);
 
   // @ts-expect-error
   const [highestIncentives] = useMemo(() => {
@@ -56,14 +68,6 @@ export const TokenIncentivesData = ({
   const token = useMemo(() => {
     return market.input_token_data;
   }, [market?.input_token_data]);
-
-  const apr = useMemo(() => {
-    if (!market?.locked_quantity_usd || !roycoStats?.total_tvl) {
-      return;
-    }
-
-    return aprCalculation(market.locked_quantity_usd, roycoStats.total_tvl);
-  }, [market?.locked_quantity_usd, roycoStats?.total_tvl]);
 
   const tokens = market?.incentive_tokens_data;
   return (
@@ -139,7 +143,7 @@ export const TokenIncentivesData = ({
           </Typography>*/}
           </Box>
         ))}
-        {beraTokenQuotes.data?.map(
+        {[beraTokenQuote]?.map(
           (incentiveTokenData: BerachainIncentiveToken & any) => (
             <Box
               sx={{
@@ -170,7 +174,12 @@ export const TokenIncentivesData = ({
                   fontSize: '1rem!important',
                 })}
               >
-                ~%
+                {apr
+                  ? t('format.percent', {
+                      notation: 'compact',
+                      value: apr,
+                    })
+                  : '~%'}
               </Typography>
               {/*          <Typography
             variant="titleXSmall"
