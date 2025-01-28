@@ -1,13 +1,15 @@
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { titleSlicer } from '@/components/Berachain/utils';
+import { aprCalculation, titleSlicer } from '@/components/Berachain/utils';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { useMemo } from 'react';
-import { useTokenQuotes } from 'royco/hooks';
+import { useEnrichedRoycoStats, useTokenQuotes } from 'royco/hooks';
+import { secondsToDuration } from '@/components/Berachain/lockupTimeMap';
 
 function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
+  const { data: roycoStats } = useEnrichedRoycoStats();
   const { currentHighestOffers, marketMetadata, currentMarketData } =
     useActiveMarket({
       chain_id: market.chain_id,
@@ -84,7 +86,12 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
               value: incentiveTokenData.per_input_token,
             })}{' '}
             {incentiveTokenData.symbol}{' '}*/}
-            ~%
+            {t('format.percent', {
+              value: aprCalculation(
+                market?.locked_quantity_usd,
+                roycoStats?.total_tvl,
+              ),
+            })}
           </Box>
         ))}
         {highestIncentives?.map((incentiveTokenData) => (

@@ -124,7 +124,7 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-        {isError &&
+        {(isError || roycoData?.length === 0) &&
           Array.isArray(roycoEnrichedDataCached) &&
           roycoEnrichedDataCached
             .filter(
