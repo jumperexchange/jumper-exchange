@@ -1,10 +1,10 @@
 'use client';
 import generateKey from '@/app/lib/generateKey';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import { getChainById } from '@/utils/tokenAndChain';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Link as MuiLink, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 
 interface PopularBridgeProps {
   sourceChain: ExtendedChain;
@@ -53,7 +53,7 @@ const PopularBridgeSection = ({
     );
 
   return (
-    <BridgePageContainer width="100%">
+    <DynamicPagesContainer width="100%">
       <Typography variant="h3" marginY={2}>
         Popular bridges
       </Typography>
@@ -74,7 +74,7 @@ const PopularBridgeSection = ({
           </MuiLink>
         ))}
       </Stack>
-    </BridgePageContainer>
+    </DynamicPagesContainer>
   );
 };
 

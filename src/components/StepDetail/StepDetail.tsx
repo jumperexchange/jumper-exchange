@@ -25,21 +25,23 @@ const StepDetail = ({ title, description, img, content }: StepDetailProps) => {
         <Typography variant="h4" marginY={2} sx={{ fontSize: '24px' }}>
           {title}
         </Typography>
-        <Typography>{description}</Typography>
+        {description && <Typography>{description}</Typography>}
         {content}
       </Box>
-      <img
-        src={img.imgUrl}
-        alt={img.alt}
-        width={img.width}
-        height={img.height}
-        style={{
-          margin: 'auto',
-          maxWidth: '100%',
-          height: 'auto',
-          borderRadius: '12px',
-        }}
-      />
+      {img && (
+        <img
+          src={img.imgUrl}
+          alt={img.alt}
+          width={img.width}
+          height={img.height}
+          style={{
+            margin: 'auto',
+            maxWidth: '100%',
+            height: 'auto',
+            borderRadius: '12px',
+          }}
+        />
+      )}
     </StepDetailContainer>
   );
 };

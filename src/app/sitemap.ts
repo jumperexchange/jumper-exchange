@@ -1,19 +1,21 @@
-import { getSiteUrl, JUMPER_LEARN_PATH, pages } from '@/const/urls';
+import {
+  getSiteUrl,
+  JUMPER_LEARN_PATH,
+  JUMPER_SWAP_PATH,
+  pages,
+} from '@/const/urls';
 import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
+import { getChainsQuery } from 'src/hooks/useChains';
+import { removeTrailingSlash } from 'src/utils/removeTrailingSlash';
 import { getArticles } from './lib/getArticles';
-import { locales } from 'src/i18n';
-
-function withoutTrailingSlash(url: string) {
-  return url.endsWith('/') ? url.slice(0, -1) : url;
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // paths
   const routes = pages.flatMap((route: SitemapPage) => {
     return {
-      url: withoutTrailingSlash(`${getSiteUrl()}${route.path}`),
+      url: removeTrailingSlash(`${getSiteUrl()}${route.path}`),
       lastModified: new Date().toISOString().split('T')[0],
       changeFrequency: 'weekly' as ChangeFrequency,
       priority: route.priority,
@@ -25,8 +27,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (article: StrapiResponse<BlogArticleData>) => {
       return article.data.map((el) => {
         return {
-          url: withoutTrailingSlash(
-            `${getSiteUrl()}${JUMPER_LEARN_PATH}/${el.attributes?.Slug}`,
+          url: removeTrailingSlash(
+            `${getSiteUrl()}${JUMPER_LEARN_PATH}/${el.attributes.Slug}`,
           ),
           lastModified: new Date(
             el.attributes?.updatedAt ||
@@ -42,5 +44,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   );
 
-  return [...routes, ...articles];
+  // swap pages
+  const { chains } = await getChainsQuery();
+  const swapPages = chains.map((chain) => {
+    return {
+      url: removeTrailingSlash(
+        `${getSiteUrl()}${JUMPER_SWAP_PATH}/${chain.name}`
+          .replace(' ', '-')
+          .toLowerCase(),
+      ),
+      lastModified: new Date().toISOString().split('T')[0],
+      priority: 0.4,
+    };
+  });
+
+  return [...routes, ...articles, ...swapPages];
 }

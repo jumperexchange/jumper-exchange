@@ -1,12 +1,12 @@
 'use client';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Typography, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
+import StepDetail from 'src/components/StepDetail/StepDetail';
 import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';
-import StepDetail from './StepDetail';
 
 interface StepsExplainerProps {
   sourceChain: ExtendedChain;
@@ -157,7 +157,7 @@ const StepsExplainerSection = ({
   ];
 
   return (
-    <BridgePageContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
+    <DynamicPagesContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
         marginY={2}
@@ -188,7 +188,7 @@ const StepsExplainerSection = ({
           />
         </Fragment>
       ))}
-    </BridgePageContainer>
+    </DynamicPagesContainer>
   );
 };
 
