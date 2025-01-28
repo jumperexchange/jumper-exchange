@@ -107,7 +107,7 @@ export const BerachainWelcome = () => {
                 })}
               />
             )}
-{/*            {isMounted && (
+            {/*            {isMounted && (
               <BerachainProgressCard
                 title={'Incentives'}
                 value={t('format.currency', {
