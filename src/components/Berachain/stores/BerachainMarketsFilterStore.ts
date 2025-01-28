@@ -1,6 +1,6 @@
 'use client';
 import type { ChainId } from '@lifi/sdk';
-import { EnrichedMarketDataType } from 'royco/queries';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface BerachainMarketsFilterStoreProps {

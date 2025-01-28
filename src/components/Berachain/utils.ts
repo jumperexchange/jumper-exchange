@@ -29,11 +29,8 @@ export function divideBy(num: number, by: number = 100) {
   return num / by;
 }
 
-export function aprCalculation(
-  lockedQuantityUsd: number,
-  totalTVL: number,
-) {
-  if (!lockedQuantityUsd || !totalTVL ) {
+export function aprCalculation(lockedQuantityUsd: number, totalTVL: number) {
+  if (!lockedQuantityUsd || !totalTVL) {
     return;
   }
 

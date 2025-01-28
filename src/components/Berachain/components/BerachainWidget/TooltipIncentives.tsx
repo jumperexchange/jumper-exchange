@@ -29,7 +29,6 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
     return currentHighestOffers.ip_offers[0].tokens_data ?? [];
   }, [market, currentHighestOffers, marketMetadata]);
 
-  console.log('BERATOKENQUOTE', beraTokenQuote)
   const BERA_TOKEN_ID = '1-0xbe9abe9abe9abe9abe9abe9abe9abe9abe9abe9a';
   const beraTokenQuotes = useTokenQuotes({
     token_ids: [BERA_TOKEN_ID],
@@ -41,7 +40,7 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
     }
 
     return aprCalculation(market.locked_quantity_usd, roycoStats.total_tvl);
-  }, [market?.locked_quantity_usd, roycoStats?.total_tvl])
+  }, [market?.locked_quantity_usd, roycoStats?.total_tvl]);
 
   return (
     <Box>
@@ -95,11 +94,13 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
               value: incentiveTokenData.per_input_token,
             })}{' '}
             {incentiveTokenData.symbol}{' '}*/}
-            {!apr ? '~%' : t('format.percent', {
-              value: apr,
-              useGrouping: true,
-              maximumFractionDigits: 2
-            })}
+            {!apr
+              ? '~%'
+              : t('format.percent', {
+                  value: apr,
+                  useGrouping: true,
+                  maximumFractionDigits: 2,
+                })}
           </Box>
         ))}
         {highestIncentives?.map((incentiveTokenData) => (

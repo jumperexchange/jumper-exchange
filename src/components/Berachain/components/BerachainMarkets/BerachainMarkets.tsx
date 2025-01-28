@@ -8,7 +8,10 @@ import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMa
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
-import { getFullTitle, includesCaseInsensitive } from '@/components/Berachain/utils';
+import {
+  getFullTitle,
+  includesCaseInsensitive,
+} from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 import roycoEnrichedDataCached from '@/components/Berachain/components/BerachainMarkets/roycoEnrichedDataCached';
 
@@ -63,7 +66,8 @@ export const BerachainMarkets = () => {
                 color: theme.palette.text.primary,
               })}
             >
-              Bera with us. Boyco markets are seeing high demand. Bears are on it.
+              Bera with us. Boyco markets are seeing high demand. Bears are on
+              it.
             </Typography>
           </Grid>
         )}
@@ -120,7 +124,8 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-        {false && (isError || roycoData?.length === 0) &&
+        {false &&
+          (isError || roycoData?.length === 0) &&
           Array.isArray(roycoEnrichedDataCached) &&
           roycoEnrichedDataCached
             .filter(
