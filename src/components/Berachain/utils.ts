@@ -28,3 +28,18 @@ export function titleSlicer(str: string, maxLength: number = 7) {
 export function divideBy(num: number, by: number = 100) {
   return num / by;
 }
+
+export function aprCalculation(lockedQuantityUsd: number, totalTVL: number) {
+  if (!lockedQuantityUsd || !totalTVL) {
+    return;
+  }
+
+  const BOYCO_TOTAL = 0.02 * 2000000000;
+  const TVL_MARKET_SHARE = (lockedQuantityUsd ?? 0) / (totalTVL ?? 1);
+  const TOTAL_REWARDS = TVL_MARKET_SHARE * BOYCO_TOTAL;
+  const LOCKUP_IN_DAYS = 70;
+  const APR =
+    ((TOTAL_REWARDS * (365 / LOCKUP_IN_DAYS)) / (lockedQuantityUsd ?? 0)) * 100;
+
+  return APR;
+}

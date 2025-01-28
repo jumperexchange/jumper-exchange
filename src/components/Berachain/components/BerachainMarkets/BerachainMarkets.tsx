@@ -40,20 +40,21 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {(!isSuccess || !roycoData || !data) &&
+        {false &&
+          (!isSuccess || !roycoData || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
               key={idx}
             />
           ))}
-        {/*        {isError && (
+        {true && (
           <Grid
             item
             xs={12}
             md={12}
             sx={{
-              border: '1px solid white',
+              border: '1px solid #383433',
               width: '100%',
               textAlign: 'center',
               gridColumn: '1 / -1',
@@ -66,12 +67,13 @@ export const BerachainMarkets = () => {
                 color: theme.palette.text.primary,
               })}
             >
-              Boyco is having issues returning the markets. Please refresh the
-              page or try again later.
+              Bera with us. Boyco markets are seeing high demand. Bears are on
+              it.
             </Typography>
           </Grid>
-        )}*/}
-        {isSuccess &&
+        )}
+        {false &&
+          isSuccess &&
           Array.isArray(roycoData) &&
           roycoData
             .filter(
@@ -124,7 +126,8 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-        {isError &&
+        {false &&
+          (isError || roycoData?.length === 0) &&
           Array.isArray(roycoEnrichedDataCached) &&
           roycoEnrichedDataCached
             .filter(
