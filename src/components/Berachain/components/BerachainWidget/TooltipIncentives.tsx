@@ -1,10 +1,36 @@
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { Avatar, Box, List, ListItem, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { divideBy, titleSlicer } from '@/components/Berachain/utils';
+import { titleSlicer } from '@/components/Berachain/utils';
+import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
+import { useMemo } from 'react';
+import { useTokenQuotes } from 'royco/hooks';
 
 function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
+  const { currentHighestOffers, marketMetadata, currentMarketData } =
+    useActiveMarket({
+      chain_id: market.chain_id,
+      market_id: market.market_id,
+      market_type: market.market_type,
+    });
+
+  const highestIncentives = useMemo(() => {
+    if (
+      !currentHighestOffers ||
+      currentHighestOffers.ip_offers.length === 0 ||
+      currentHighestOffers.ip_offers[0].tokens_data.length === 0
+    ) {
+      return [];
+    }
+
+    return currentHighestOffers.ip_offers[0].tokens_data ?? [];
+  }, [market, currentHighestOffers, marketMetadata]);
+
+  const BERA_TOKEN_ID = '1-0xbe9abe9abe9abe9abe9abe9abe9abe9abe9abe9a';
+  const beraTokenQuotes = useTokenQuotes({
+    token_ids: [BERA_TOKEN_ID],
+  });
 
   return (
     <Box>
@@ -34,7 +60,34 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
         gap={'8px'}
         marginTop={'8px'}
       >
-        {market?.incentive_tokens_data?.map((incentiveTokenData) => (
+        {beraTokenQuotes.data?.map((incentiveTokenData) => (
+          <Box
+            key={incentiveTokenData.id}
+            display={'flex'}
+            flexDirection={'row'}
+            marginLeft={'4px'}
+            gap={'4px'}
+          >
+            <img
+              key={`berachain-market-card-token-${incentiveTokenData?.name}-${incentiveTokenData?.id}`}
+              src={incentiveTokenData?.image}
+              alt={`${incentiveTokenData?.name}-logo`}
+              width={16}
+              height={16}
+              style={{
+                borderRadius: '10px',
+                marginLeft: '4px',
+              }}
+            />
+            {/*The below /100 is a test about the token value because it seems that the decimals are included, make sure it works correctly or remove it */}
+            {/*{t('format.decimal', {
+              value: incentiveTokenData.per_input_token,
+            })}{' '}
+            {incentiveTokenData.symbol}{' '}*/}
+            ~%
+          </Box>
+        ))}
+        {highestIncentives?.map((incentiveTokenData) => (
           <Box
             key={incentiveTokenData.id}
             display={'flex'}
@@ -55,7 +108,7 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
             />
             {/*The below /100 is a test about the token value because it seems that the decimals are included, make sure it works correctly or remove it */}
             {t('format.decimal', {
-              value: divideBy(incentiveTokenData.token_amount),
+              value: incentiveTokenData.per_input_token,
             })}{' '}
             {incentiveTokenData.symbol}{' '}
           </Box>

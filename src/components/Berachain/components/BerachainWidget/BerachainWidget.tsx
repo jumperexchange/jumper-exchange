@@ -76,7 +76,7 @@ export const BerachainWidget = ({
         setTab(1);
       },
     },
- /*   {
+    /*   {
       label: 'Withdraw',
       value: 1,
       onClick: () => {

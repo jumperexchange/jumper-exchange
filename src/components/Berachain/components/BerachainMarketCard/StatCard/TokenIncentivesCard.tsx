@@ -45,7 +45,7 @@ const TokenIncentivesCard = ({ marketData, tokens }: DigitCardProps) => {
                 fontSize: '0.75rem!important',
               })}
             >
-              {'Total Incentives'}
+              {'Rewards'}
             </Typography>
             <Tooltip
               title={<TooltipIncentives market={marketData} />}

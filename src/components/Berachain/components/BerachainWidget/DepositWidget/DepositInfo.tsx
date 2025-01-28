@@ -152,7 +152,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
         <Stack direction="row" justifyContent="space-between">
           {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
-              title={'Total rewards'}
+              title={'Rewards'}
               sx={(theme) => ({
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
