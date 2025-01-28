@@ -2,11 +2,16 @@ import { Box, Chip, Tooltip, Typography } from '@mui/material';
 import type { BerachainIncentiveToken } from 'src/components/Berachain/BerachainType';
 import TooltipIncentives from '@/components/Berachain/components/BerachainWidget/TooltipIncentives';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { divideBy, titleSlicer } from '@/components/Berachain/utils';
+import {
+  aprCalculation,
+  divideBy,
+  titleSlicer,
+} from '@/components/Berachain/utils';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { useMemo } from 'react';
 import { RoycoMarketType } from 'royco/market';
-import { useTokenQuotes } from 'royco/hooks';
+import { useEnrichedRoycoStats, useTokenQuotes } from 'royco/hooks';
+import { useTranslation } from 'react-i18next';
 
 interface DigitCardProps {
   market: EnrichedMarketDataType;
@@ -19,12 +24,14 @@ export const TokenIncentivesData = ({
   perInput,
   amount,
 }: DigitCardProps) => {
+  const { t } = useTranslation();
   const { currentHighestOffers, marketMetadata, currentMarketData } =
     useActiveMarket({
       chain_id: market.chain_id,
       market_id: market.market_id,
       market_type: market.market_type,
     });
+  const { data: roycoStats } = useEnrichedRoycoStats();
 
   const BERA_TOKEN_ID = '1-0xbe9abe9abe9abe9abe9abe9abe9abe9abe9abe9a';
   const beraTokenQuotes = useTokenQuotes({
@@ -49,6 +56,14 @@ export const TokenIncentivesData = ({
   const token = useMemo(() => {
     return market.input_token_data;
   }, [market?.input_token_data]);
+
+  const apr = useMemo(() => {
+    if (!market?.locked_quantity_usd || !roycoStats?.total_tvl) {
+      return;
+    }
+
+    return aprCalculation(market.locked_quantity_usd, roycoStats.total_tvl);
+  }, [market?.locked_quantity_usd, roycoStats?.total_tvl]);
 
   const tokens = market?.incentive_tokens_data;
   return (
@@ -155,7 +170,13 @@ export const TokenIncentivesData = ({
                   fontSize: '1rem!important',
                 })}
               >
-                ~%
+                {!apr
+                  ? '~%'
+                  : t('format.percent', {
+                      value: apr,
+                      useGrouping: true,
+                      maximumFractionDigits: 2,
+                    })}
               </Typography>
               {/*          <Typography
             variant="titleXSmall"
