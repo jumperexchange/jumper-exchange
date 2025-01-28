@@ -6,17 +6,26 @@ import {
   TextField,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useBerachainMarkets } from 'src/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainSearchAutocomplete } from './BerachainSearch.style';
+import { useRouter, useSearchParams } from 'next/navigation';
 export const BerachainSearch = () => {
   const theme = useTheme();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isInputEmpty, setIsInputEmpty] = useState(true);
 
   const { search, setSearch } = useBerachainMarketsFilterStore(
     (state) => state,
   );
+
+  useEffect(() => {
+    if (searchParams.has('q')) {
+      setSearch(searchParams.get('q')!);
+    }
+  }, []);
 
   return (
     <BerachainSearchAutocomplete
@@ -34,6 +43,7 @@ export const BerachainSearch = () => {
           setSearch(undefined);
         } else {
           setSearch(value);
+          router.push('?q=' + value);
         }
       }}
       slotProps={{
@@ -105,7 +115,7 @@ export const BerachainSearch = () => {
             },
           }}
           {...params}
-          placeholder="Search for markets or tokens"
+          placeholder="Search for markets"
           InputLabelProps={{
             ...params.InputLabelProps,
             shrink: false,

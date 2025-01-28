@@ -20,3 +20,11 @@ export function getFullTitle(
 export function includesCaseInsensitive(str: string, searchString: string) {
   return new RegExp(searchString, 'i').test(str);
 }
+
+export function titleSlicer(str: string, maxLength: number = 7) {
+  return str.length > maxLength ? `${str.slice(0, maxLength)}...` : str;
+}
+
+export function divideBy(num: number, by: number = 100) {
+  return num / by;
+}

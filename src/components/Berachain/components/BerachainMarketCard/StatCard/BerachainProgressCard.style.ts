@@ -17,6 +17,7 @@ export const BeraChainProgressCardComponent = styled(Card)(({ theme }) => ({
 export const BeraChainProgressCardContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
+  width: '100%',
 }));
 
 export const BeraChainProgressCardHeader = styled(Box)(({ theme }) => ({
