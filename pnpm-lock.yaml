@@ -183,8 +183,8 @@ importers:
         specifier: ^15.1.4
         version: 15.4.0(i18next@24.2.1(typescript@5.7.3))(react-dom@18.3.1(react@18.3.1))(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)
       royco:
-        specifier: 0.9.320
-        version: 0.9.320(@react-native-async-storage/async-storage@1.24.0(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10)))(babel-plugin-macros@3.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(jiti@1.21.7)(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(rollup@3.29.5)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@5.0.10)(yaml@2.7.0)
+        specifier: 0.9.324
+        version: 0.9.324(@react-native-async-storage/async-storage@1.24.0(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10)))(babel-plugin-macros@3.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(jiti@1.21.7)(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(rollup@3.29.5)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@5.0.10)(yaml@2.7.0)
       shallow-equal:
         specifier: ^3.1.0
         version: 3.1.0
@@ -7699,8 +7699,8 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  royco@0.9.320:
-    resolution: {integrity: sha512-lyU+v7jDzjIQYyCsl9yZIKkCY1U+r1i02BSXD01pirdSQKB2HMPkNHmfpg2US+4FGtVWLOyH9KPra4thWiNiXA==}
+  royco@0.9.324:
+    resolution: {integrity: sha512-YXIAd57lzAMs+7NbqVOw+ZEkAkjSuSlNJuPZW+bpydAqjnwbYHjPoyzXqrS11sB8+NyKdaf1EBSL4FVc9F0Emg==}
 
   rpc-websockets@9.0.4:
     resolution: {integrity: sha512-yWZWN0M+bivtoNLnaDbtny4XchdAIF5Q4g/ZsC5UC61Ckbp0QczwO8fg44rV3uYmY4WHd+EZQbn90W1d8ojzqQ==}
@@ -18169,7 +18169,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.30.1
       fsevents: 2.3.3
 
-  royco@0.9.320(@react-native-async-storage/async-storage@1.24.0(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10)))(babel-plugin-macros@3.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(jiti@1.21.7)(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(rollup@3.29.5)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@5.0.10)(yaml@2.7.0):
+  royco@0.9.324(@react-native-async-storage/async-storage@1.24.0(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10)))(babel-plugin-macros@3.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(jiti@1.21.7)(react-native@0.76.6(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(rollup@3.29.5)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@5.0.10)(yaml@2.7.0):
     dependencies:
       '@changesets/cli': 2.27.11
       '@radix-ui/react-icons': 1.3.2(react@18.3.1)
