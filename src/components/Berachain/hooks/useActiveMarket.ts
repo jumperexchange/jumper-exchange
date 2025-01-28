@@ -13,11 +13,15 @@ import { produce } from 'immer';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { RoycoMarketType } from 'royco/market';
 
-export const useActiveMarket = (
-  chain_id: number | null,
-  market_type: number | null,
-  market_id: string | null,
-) => {
+export const useActiveMarket = ({
+  chain_id,
+  market_type,
+  market_id,
+}: {
+  chain_id: number | null;
+  market_type: number | null;
+  market_id: string | null;
+}) => {
   /**
    * @notice Enriched Market
    */
@@ -65,7 +69,7 @@ export const useActiveMarket = (
     // @ts-ignore
     chain_id: parseInt(chain_id),
     // @ts-ignore
-    market_type: parseInt(market_type) === 0 ? 'recipe' : 'vault',
+    market_type: 'recipe',
     // @ts-ignore
     market_id: market_id,
   });
@@ -157,12 +161,7 @@ export const useActiveMarket = (
       chain_id: parseInt(chain_id) as number,
       // @ts-ignore
       // market_type: parseInt(market_type) as 0 | 1,
-      market_type:
-        // @ts-ignore
-        parseInt(market_type) === 0
-          ? RoycoMarketType.recipe.id
-          : // @ts-ignore
-            RoycoMarketType.vault.id,
+      market_type: RoycoMarketType.recipe.id,
       // @ts-ignore
       market_id: market_id as string,
     },

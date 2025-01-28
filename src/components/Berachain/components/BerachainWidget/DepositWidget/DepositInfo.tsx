@@ -25,6 +25,7 @@ import TooltipIncentives from '@/components/Berachain/components/BerachainWidget
 import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenSymbolCard';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
+import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
@@ -34,6 +35,7 @@ interface DepositInfoProps {
 function DepositInfo({ market, balance }: DepositInfoProps) {
   const { t } = useTranslation();
   const { account } = useAccount();
+
   const maxInputValue = useMemo(() => {
     return parseRawAmountToTokenAmount(
       market?.quantity_ip ?? '0', // @note: AP fills IP quantity
@@ -93,6 +95,9 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
                 },
+                '.header-title': {
+                  justifyContent: 'flex-end',
+                },
                 '.content-wrapper': {
                   alignItems: 'flex-end',
                   justifyContent: 'flex-end',
@@ -147,7 +152,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
         <Stack direction="row" justifyContent="space-between">
           {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
-              title={'Total rewards'}
+              title={'Rewards'}
               sx={(theme) => ({
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
@@ -161,9 +166,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 },
               })}
               tooltipText={<TooltipIncentives market={market} />}
-              digit={
-                <TokenIncentivesData tokens={market?.incentive_tokens_data} />
-              }
+              digit={<TokenIncentivesData market={market} />}
             />
           ) : (
             <DigitCard
@@ -194,6 +197,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
             <DigitCard
               sx={(theme) => ({
                 alignItems: 'flex-end',
+                justifyContent: 'space-between',
+                flexDirection: 'column',
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
                 },

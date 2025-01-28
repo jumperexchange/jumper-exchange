@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
+import { titleSlicer } from '@/components/Berachain/utils';
 
 export const BerachainWidget = ({
   market,
@@ -16,7 +17,7 @@ export const BerachainWidget = ({
   fullAppName,
 }: {
   market: EnrichedMarketDataType;
-  appLink?: string;
+  appLink: string;
   appName?: string;
   fullAppName?: string;
 }) => {
@@ -62,7 +63,7 @@ export const BerachainWidget = ({
 
   const tabs: TabProps[] = [
     {
-      label: isMobile ? 'Swap' : `Get ${token.symbol}`,
+      label: isMobile ? 'Swap' : `Get ${titleSlicer(token.symbol)}`,
       value: 0,
       onClick: () => {
         setTab(0);
@@ -75,13 +76,13 @@ export const BerachainWidget = ({
         setTab(1);
       },
     },
-    {
+    /*   {
       label: 'Withdraw',
       value: 1,
       onClick: () => {
         setTab(2);
       },
-    },
+    },*/
   ];
 
   return (
@@ -114,6 +115,9 @@ export const BerachainWidget = ({
               marginTop: theme.spacing(1.5),
               '.widget-wrapper > div > div': {
                 maxWidth: '100%!important',
+              },
+              '.widget-wrapper .MuiContainer-root': {
+                padding: 0,
               },
             }}
           >
