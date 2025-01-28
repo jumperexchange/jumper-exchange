@@ -199,7 +199,7 @@ function DepositWidget({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 5,
+    confirmations: 2,
     pollingInterval: 1_000,
   });
 
