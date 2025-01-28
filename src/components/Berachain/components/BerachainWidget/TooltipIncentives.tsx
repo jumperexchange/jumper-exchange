@@ -1,15 +1,20 @@
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { aprCalculation, titleSlicer } from '@/components/Berachain/utils';
+import {
+  aprCalculation,
+  calculateBeraYield,
+  titleSlicer,
+} from '@/components/Berachain/utils';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { useMemo } from 'react';
-import { useEnrichedRoycoStats, useTokenQuotes } from 'royco/hooks';
-import { secondsToDuration } from '@/components/Berachain/lockupTimeMap';
+import { useTokenQuotes } from 'royco/hooks';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 
 function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
-  const { data: roycoStats } = useEnrichedRoycoStats();
+  const { roycoStats, beraTokenQuote, roycoMarkets } =
+    useBerachainMarketsFilterStore((state) => state);
   const { currentHighestOffers, marketMetadata, currentMarketData } =
     useActiveMarket({
       chain_id: market.chain_id,
@@ -29,18 +34,17 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
     return currentHighestOffers.ip_offers[0].tokens_data ?? [];
   }, [market, currentHighestOffers, marketMetadata]);
 
-  const BERA_TOKEN_ID = '1-0xbe9abe9abe9abe9abe9abe9abe9abe9abe9abe9a';
-  const beraTokenQuotes = useTokenQuotes({
-    token_ids: [BERA_TOKEN_ID],
-  });
-
   const apr = useMemo(() => {
-    if (!market?.locked_quantity_usd || !roycoStats?.total_tvl) {
+    if (!market || !roycoMarkets) {
       return;
     }
 
-    return aprCalculation(market.locked_quantity_usd, roycoStats.total_tvl);
-  }, [market?.locked_quantity_usd, roycoStats?.total_tvl]);
+    return calculateBeraYield({
+      enrichedMarket: market,
+      customTokenData: [beraTokenQuote],
+      markets: roycoMarkets,
+    });
+  }, [roycoMarkets, market, beraTokenQuote]);
 
   return (
     <Box>
@@ -70,7 +74,7 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
         gap={'8px'}
         marginTop={'8px'}
       >
-        {beraTokenQuotes.data?.map((incentiveTokenData) => (
+        {[beraTokenQuote]?.map((incentiveTokenData) => (
           <Box
             key={incentiveTokenData.id}
             display={'flex'}
@@ -94,7 +98,12 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
               value: incentiveTokenData.per_input_token,
             })}{' '}
             {incentiveTokenData.symbol}{' '}*/}
-            ~%
+            {apr
+              ? t('format.percent', {
+                  notation: 'compact',
+                  value: apr,
+                })
+              : '~%'}
           </Box>
         ))}
         {highestIncentives?.map((incentiveTokenData) => (

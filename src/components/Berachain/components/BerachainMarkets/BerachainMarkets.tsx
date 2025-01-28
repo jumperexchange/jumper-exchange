@@ -9,6 +9,7 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
 import {
+  calculateBeraYield,
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
@@ -20,16 +21,9 @@ export const BerachainMarkets = () => {
   const isVerified = searchParam.get('is_verified') !== 'false';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
   const berachainFilters = useBerachainFilters();
-
-  const {
-    data: roycoData,
-    isSuccess,
-    isError,
-  } = useEnrichedMarkets({
-    is_verified: isVerified,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
-    ...berachainFilters,
-  });
+  const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
+    (state) => state,
+  );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
   const { tokenFilter, incentiveFilter, search } =
@@ -40,7 +34,7 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {(!isSuccess || !roycoData || !data) &&
+        {(!roycoData || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
@@ -71,8 +65,8 @@ export const BerachainMarkets = () => {
             </Typography>
           </Grid>
         )*/}
-        {isSuccess &&
-          Array.isArray(roycoData) &&
+        {Array.isArray(roycoData) &&
+          roycoData?.length > 0 &&
           roycoData
             .filter(
               (data) => !tokenFilter.includes(data.input_token_data?.symbol),
@@ -124,7 +118,7 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-        {(isError || roycoData?.length === 0) &&
+        {roycoData?.length === 0 &&
           Array.isArray(roycoEnrichedDataCached) &&
           roycoEnrichedDataCached
             .filter(
