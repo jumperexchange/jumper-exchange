@@ -1,3 +1,4 @@
+import { alpha } from '@mui/material';
 import {
   AccordionFAQ,
   AccordionHeader,
@@ -11,6 +12,9 @@ export const BerachainFAQ = () => {
     <AccordionFAQ
       itemSx={(theme) => ({
         padding: theme.spacing(1.5),
+        '&:hover': {
+          background: alpha(theme.palette.text.primary, 0.12),
+        },
         [theme.breakpoints.up('sm')]: {
           padding: theme.spacing(2, 3),
         },
