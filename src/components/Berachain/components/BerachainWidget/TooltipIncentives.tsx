@@ -94,7 +94,13 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
               value: incentiveTokenData.per_input_token,
             })}{' '}
             {incentiveTokenData.symbol}{' '}*/}
-            ~%
+            {!apr
+              ? '~%'
+              : t('format.percent', {
+                  value: apr,
+                  useGrouping: true,
+                  maximumFractionDigits: 2,
+                })}
           </Box>
         ))}
         {highestIncentives?.map((incentiveTokenData) => (
