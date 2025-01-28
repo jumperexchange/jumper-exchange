@@ -153,6 +153,12 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
     };
+    traits: {
+      title: 'Traits';
+      description: 'Each trait represents a specific aspect of your crypto trading profile on Jumper.';
+      label: 'What traits do you have?';
+      descriptionTooltip: 'Traits and XP are updated daily to reflect ad-hoc campaigns and associated activities.';
+    };
     leaderboard: {
       title: 'Leaderboard';
       description: 'The leaderboard is updated on a daily basis.';
@@ -167,7 +173,7 @@ interface Resources {
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
-      percent: '{{value, decimalExt()}}';
+      percent: '{{value, percentExt()}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';

@@ -1,7 +1,7 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
+import { SectionTitle } from 'src/components/styles';
 import { ButtonPrimary } from '../../Button';
-import { SectionTitle } from '../ProfilePage.style';
 
 export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   display: 'grid',

@@ -5,7 +5,7 @@ import { Box, useTheme, type CSSObject } from '@mui/material';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
-import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
+import { SectionTitle } from 'src/components/styles';
 import useClient from 'src/hooks/useClient';
 import {
   CarouselCenteredBox,
