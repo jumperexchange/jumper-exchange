@@ -20,7 +20,7 @@ export const BerachainFilterIncentivesMenu = () => {
     useBerachainMarketsFilterStore((state) => state);
 
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const [anchorTokenEl, setAnchorTokenEl] = useState<null | HTMLElement>(null);
   const [openTokensFilterMenu, setOpenTokensFilterMenu] = useState(false);
 

@@ -17,7 +17,7 @@ import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilter
 
 export const BerachainFilterTokensMenu = () => {
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const { tokenFilter, setTokenFilter } = useBerachainMarketsFilterStore(
     (state) => state,
   );

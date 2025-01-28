@@ -16,7 +16,7 @@ import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilter
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
   const berachainFilters = useBerachainFilters();
 

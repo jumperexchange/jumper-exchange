@@ -17,8 +17,6 @@ export const BerachainExploreProtocol = ({
   marketId,
 }: BerachainExploreProtocolProps) => {
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
-  const berachainFilters = useBerachainFilters();
   const {
     data: roycoData,
     isSuccess,
