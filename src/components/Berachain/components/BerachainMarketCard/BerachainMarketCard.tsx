@@ -34,10 +34,15 @@ import {
   DEPOSITED_TOOLTIP,
   TVL_TOOLTIP,
 } from '../../const/title';
-import { calculateTVLGoal, titleSlicer } from '@/components/Berachain/utils';
+import {
+  calculateBeraYield,
+  calculateTVLGoal,
+  titleSlicer,
+} from '@/components/Berachain/utils';
 import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
 import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 
 interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
