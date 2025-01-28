@@ -1,7 +1,6 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, useTheme, type CSSObject } from '@mui/material';
-
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
@@ -81,6 +80,13 @@ export const CarouselContainer = ({
                 <IconHeader
                   tooltipKey={updateTooltip || ''}
                   title={updateTitle}
+                  sx={(theme) => ({
+                    [theme.breakpoints.down('sm')]: {
+                      '.icon-header-title': {
+                        display: 'none',
+                      },
+                    },
+                  })}
                 />
               )}
             </Box>
@@ -91,14 +97,14 @@ export const CarouselContainer = ({
             aria-label="previous"
             onClick={() => handleChange('prev')}
           >
-            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
+            <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
           </CarouselNavigationButton>
           <CarouselNavigationButton
             aria-label="next"
             sx={{ marginLeft: theme.spacing(1) }}
             onClick={() => handleChange('next')}
           >
-            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+            <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
           </CarouselNavigationButton>
         </CarouselNavigationContainer>
       </CarouselHeader>

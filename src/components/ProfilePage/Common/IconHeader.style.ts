@@ -9,6 +9,7 @@ export const IconHeaderContainer = styled(Box)(({ theme }) => ({
   paddingRight: '6px',
   paddingLeft: '6px',
   borderRadius: '32px',
+  width: 'fit-content',
 }));
 
 export const IconHeaderTitle = styled(Typography)(({ theme }) => ({

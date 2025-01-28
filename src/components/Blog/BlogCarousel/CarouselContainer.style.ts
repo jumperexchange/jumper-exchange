@@ -1,4 +1,4 @@
-import { IconButtonTertiary } from '@/components/IconButton.style';
+import { IconButtonSecondary } from '@/components/IconButton.style';
 import type {
   BoxProps,
   Breakpoint,
@@ -11,22 +11,24 @@ export interface CarouselContainerBoxProps extends Omit<BoxProps, 'variant'> {
   styles?: CSSObject;
 }
 
-export const CarouselContainerBox = styled(Box)<CarouselContainerBoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-    gap: theme.spacing(4),
-    marginTop: theme.spacing(3),
-    overflow: 'auto',
-    width: '100%',
-    overflowY: 'hidden',
-    scrollSnapType: 'x mandatory',
-    '& > *': {
-      flexShrink: 0,
-      scrollSnapAlign: 'center',
-    },
-    '::-webkit-scrollbar': { display: 'none' },
-  }),
-);
+export const CarouselContainerBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'styles',
+})<CarouselContainerBoxProps>(({ theme, styles }) => ({
+  display: 'flex',
+  gap: theme.spacing(4),
+  marginTop: theme.spacing(3),
+  overflow: 'auto',
+  width: '100%',
+  overflowY: 'hidden',
+  scrollSnapType: 'x mandatory',
+  paddingBottom: theme.spacing(0.75),
+  '& > *': {
+    flexShrink: 0,
+    scrollSnapAlign: 'center',
+  },
+  '::-webkit-scrollbar': { display: 'none' },
+  ...styles,
+}));
 
 export const CarouselHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'styles',
@@ -63,7 +65,7 @@ export const CarouselNavigationContainer = styled(Box, {
   ],
 }));
 
-export const CarouselNavigationButton = styled(IconButtonTertiary, {
+export const CarouselNavigationButton = styled(IconButtonSecondary, {
   shouldForwardProp: (prop) => prop !== 'styles',
 })<IconButtonProps>(({ theme }) => ({
   width: 40,

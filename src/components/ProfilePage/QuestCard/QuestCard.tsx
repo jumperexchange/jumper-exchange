@@ -174,6 +174,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                             style={{
                               marginLeft: i === 0 ? '' : '-8px',
                               zIndex: 100 - i,
+                              borderRadius: '50%',
                             }}
                             alt={elem.name}
                             width="32"
