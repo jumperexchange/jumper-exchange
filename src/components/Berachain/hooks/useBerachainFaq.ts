@@ -25,7 +25,7 @@ Boyco will allow applications to onboard liquidity directly into their smart con
     {
       Question: 'Are my funds locked?',
       Answer:
-        'Yes, each Boyco market will be subject to a lock period once the funds are moved to Berachain mainnet. The lock period will be specified during the deposit process and users will be able to determine which market has the most optimal style for them (lock period, asset exposure, APR, etc). But during the pre-deposit period, users are able to withdraw their funds from the deposited market at any time up until 48h after the dApp calls the funds to be sent to Berachain mainnet. Once the 48h timer ends, the deposited funds can no longer be withdrawn and will remain locked until the pre-determined lock period ends.',
+        'Yes, each Boyco market will be subject to a lock period once the funds are moved to Berachain mainnet. The lock period will be specified during the deposit process and users will be able to determine which market has the most optimal style for them (lock period, asset exposure, APR, etc). Once a deposit is made, funds will be locked until the end of the lock period. Please ensure you are happy to deposit into the market as your funds will be locked once the deposit is complete.',
     },
     {
       Question: 'What will be the rewards?',
