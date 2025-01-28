@@ -76,13 +76,13 @@ export const BerachainWidget = ({
         setTab(1);
       },
     },
-    /*   {
-      label: 'Withdraw',
+    {
+      label: 'Positions',
       value: 1,
       onClick: () => {
         setTab(2);
       },
-    },*/
+    },
   ];
 
   return (
