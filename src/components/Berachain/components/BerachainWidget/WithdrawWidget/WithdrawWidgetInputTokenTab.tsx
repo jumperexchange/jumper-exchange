@@ -208,11 +208,11 @@ export const WithdrawWidgetInputTokenTab = ({
             fontSize: '1.5rem',
           }}
         >
-          Nothing to Withdraw yet
+          No Positions yet
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        {/* <Typography variant="body2" color="textSecondary">
           Deposits and rewards can be withdrawn here.
-        </Typography>
+        </Typography> */}
       </Box>
     );
   }
@@ -388,7 +388,7 @@ export const WithdrawWidgetInputTokenTab = ({
                   )}
                 </Stack>
               </Stack>
-              <Box
+              {/* <Box
                 sx={{
                   display: 'flex',
                   width: '100%',
@@ -437,7 +437,7 @@ export const WithdrawWidgetInputTokenTab = ({
                 >
                   <Typography variant="bodyMediumStrong">Withdraw</Typography>
                 </CustomLoadingButton>
-              </Box>
+              </Box> */}
             </BerachainDepositInputBackground>
           </Stack>
         );
