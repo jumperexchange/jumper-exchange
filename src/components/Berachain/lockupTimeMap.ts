@@ -72,7 +72,7 @@ export function formatWithCustomLabels(duration: Record<string, number>) {
     .filter(([_, value]) => value > 0) // Filter out zero values
     .slice(0, 2) // Take the first two non-zero units
     .map(([unit, value]) => {
-      const notation = `${LockupTimeMap[unit]?.notation || unit}${value > 1 && 's'}`; // Get notation or fallback to original unit
+      const notation = `${LockupTimeMap[unit]?.notation || unit}${value > 1 ? 's' : ''}`; // Get notation or fallback to original unit
       return `${value} ${notation}`; // Format as "X mins", "Y hrs", etc.
     })
     .join(' '); // Combine into a single string

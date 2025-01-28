@@ -199,7 +199,7 @@ function DepositWidget({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 10,
+    confirmations: 2,
     pollingInterval: 1_000,
   });
 
@@ -210,6 +210,9 @@ function DepositWidget({
     ) {
       return;
     }
+
+    setContractCallIndex(0);
+    setInputValue('');
 
     trackEvent({
       category: TrackingCategory.WidgetEvent,
@@ -285,7 +288,11 @@ function DepositWidget({
   useEffect(() => {
     if (isTxConfirmed) {
       refetch();
-      setContractCallIndex(contractCallIndex + 1);
+
+      const newIndex = contractCallIndex + 1;
+      if (writeContractOptions[newIndex]) {
+        setContractCallIndex(newIndex);
+      }
     }
   }, [isTxConfirmed]);
 
