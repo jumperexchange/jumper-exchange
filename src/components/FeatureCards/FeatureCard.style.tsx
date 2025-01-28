@@ -16,7 +16,7 @@ import {
 import { styled } from '@mui/material/styles';
 import type { FeatureCardData } from 'src/types/strapi';
 
-export interface CardProps extends Omit<MuiCardProps, 'component'> {
+export interface CardProps extends MuiCardProps {
   backgroundImageUrl?: string;
   isDarkCard?: boolean;
 }
@@ -55,8 +55,7 @@ export const FeatureCardCloseButton = styled(IconButton)(() => ({
   top: 1,
 }));
 
-export interface FeatureCardTitleProps
-  extends Omit<TypographyProps, 'component'> {
+export interface FeatureCardTitleProps extends TypographyProps {
   data?: FeatureCardData;
   typographyColor?: string;
 }
@@ -73,8 +72,7 @@ export const FeatureCardTitle = styled(Typography, {
   textOverflow: 'ellipsis',
 }));
 
-export interface FeatureCardSubtitleProps
-  extends Omit<TypographyProps, 'component'> {
+export interface FeatureCardSubtitleProps extends TypographyProps {
   typographyColor?: string;
 }
 
@@ -95,7 +93,7 @@ export const FeatureCardActions = styled(CardActions)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-export interface FeatureCardCtaLinkProps extends Omit<LinkProps, 'component'> {
+export interface FeatureCardCtaLinkProps extends LinkProps {
   data: FeatureCardData;
 }
 
@@ -110,15 +108,14 @@ export const FeatureCardCtaLink = styled(Link, {
       : theme.palette.accent1Alt.main,
 }));
 
-export interface FeatureCardCtaLabelProps
-  extends Omit<TypographyProps, 'component'> {
+export interface FeatureCardCtaLabelProps extends TypographyProps {
   data: FeatureCardData;
   typographyColor?: string;
 }
 
 export const FeatureCardCtaLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
-})<FeatureCardCtaLabelProps>(({ data, typographyColor }) => ({
+  shouldForwardProp: (prop) => prop !== 'data',
+})<FeatureCardCtaLabelProps>(({ data }) => ({
   maxWidth: 224,
   maxHeight: 20,
   overflow: 'hidden',

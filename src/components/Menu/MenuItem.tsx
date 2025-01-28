@@ -45,7 +45,6 @@ export const MenuItem = ({
   return open ? (
     <MenuItemContainer
       disableRipple={disableRipple || showButton}
-      showButton={showButton || false}
       sx={styles}
       autoFocus={autoFocus}
       onClick={(event: MouseEvent<HTMLLIElement>) => {

@@ -72,8 +72,7 @@ export const ProgressionChart = styled(Box, {
   ],
 }));
 
-export interface ProgressionChartScoreProps
-  extends Omit<BoxProps, 'component'> {
+export interface ProgressionChartScoreProps extends BoxProps {
   ongoingValue?: number;
   levelData?: LevelData;
   calcWidth?: number;

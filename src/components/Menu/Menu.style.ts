@@ -1,8 +1,6 @@
 'use client';
 import type {
   AppBarProps,
-  CSSObject,
-  LinkProps,
   ListItemProps,
   MenuListProps as MuiMenuListProps,
   PaperProps,
@@ -33,7 +31,6 @@ export const MenuPopper = styled(Popper)<PopperProps>(({ theme }) => ({
 export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
   component?: string;
   isOpenSubMenu?: boolean;
-  styles?: CSSObject;
   cardsLayout?: boolean;
   hasLabel?: boolean;
 }
@@ -139,19 +136,17 @@ export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export interface MenuPaperProps
-  extends Omit<PaperProps, 'isDarkMode' | 'isWide' | 'component'> {
+export interface MenuPaperProps extends PaperProps {
   isMobile?: boolean;
   show: boolean;
   width?: string;
-  component?: string;
 }
 
 export const MenuPaper = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'isMobile' && prop !== 'isWide' && prop !== 'show',
-})<MenuPaperProps>(({ theme, isMobile, width }) => ({
-  display: 'block',
+    prop !== 'isMobile' && prop !== 'width' && prop !== 'show',
+})<MenuPaperProps>(({ theme, isMobile, show, width }) => ({
+  display: !show ? 'none' : 'block',
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
@@ -199,17 +194,11 @@ export const MenuPaper = styled(Paper, {
   ],
 }));
 
-export const MobileDrawer = styled(Drawer)<MenuItemLinkProps>(({ theme }) => ({
+export const MobileDrawer = styled(Drawer)(() => ({
   zIndex: 1400,
 }));
 
-export interface MenuItemLinkProps extends Omit<LinkProps, 'component'> {
-  component?: string;
-}
-
-export const MenuItemLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'component',
-})<MenuItemLinkProps>(({ theme }) => ({
+export const MenuItemLink = styled(Link)(() => ({
   display: 'flex',
   alignItems: 'center',
   height: 48,
@@ -240,6 +229,7 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     },
   }),
 );
+
 export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
   component?: string;
 }

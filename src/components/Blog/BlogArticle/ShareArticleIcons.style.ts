@@ -1,9 +1,6 @@
-import type { BoxProps, SkeletonProps } from '@mui/material';
 import { Box, Skeleton, styled } from '@mui/material';
 
-export const ShareIconsContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'expanded',
-})<BoxProps>(() => ({
+export const ShareIconsContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
 
@@ -12,9 +9,7 @@ export const ShareIconsContainer = styled(Box, {
   },
 }));
 
-export const ShareIconsSkeletons = styled(Skeleton, {
-  shouldForwardProp: (prop) => prop !== 'expanded',
-})<SkeletonProps>(() => ({
+export const ShareIconsSkeletons = styled(Skeleton)(() => ({
   width: 176,
   height: 40,
   borderRadius: '20px',

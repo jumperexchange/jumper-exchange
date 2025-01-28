@@ -7,7 +7,7 @@ import type {
 } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
-export interface CarouselContainerBoxProps extends Omit<BoxProps, 'variant'> {
+export interface CarouselContainerBoxProps extends BoxProps {
   styles?: CSSObject;
 }
 
@@ -28,9 +28,7 @@ export const CarouselContainerBox = styled(Box)<CarouselContainerBoxProps>(
   }),
 );
 
-export const CarouselHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const CarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   marginTop: theme.spacing(1.5),
@@ -41,8 +39,7 @@ export const CarouselHeader = styled(Box, {
   },
 }));
 
-export interface CarouselNavigationContainerProps
-  extends Omit<BoxProps, 'variant'> {
+export interface CarouselNavigationContainerProps extends BoxProps {
   hide?: boolean;
 }
 
@@ -63,9 +60,9 @@ export const CarouselNavigationContainer = styled(Box, {
   ],
 }));
 
-export const CarouselNavigationButton = styled(IconButtonTertiary, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+export const CarouselNavigationButton = styled(
+  IconButtonTertiary,
+)<IconButtonProps>(() => ({
   width: 40,
   height: 40,
   fontSize: 22,

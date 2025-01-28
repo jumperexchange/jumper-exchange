@@ -1,11 +1,11 @@
 import { urbanist } from '@/fonts/fonts';
-import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
+import type { Breakpoint, TypographyProps } from '@mui/material';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
+export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
   backgroundColor: theme.palette.bgSecondary.main,
@@ -45,25 +45,39 @@ export const FeaturedArticleLink = styled(Link)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const FeaturedArticleMetaContainer = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-    fontSize: '16px',
-    alignItems: 'center',
-    color: theme.palette.text.primary,
-    marginTop: theme.spacing(2),
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      marginTop: 0,
-      marginLeft: theme.spacing(3),
-    },
-    [theme.breakpoints.up('lg' as Breakpoint)]: {
-      marginTop: 0,
-    },
-  }),
-);
+export const FeaturedArticleCard = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  backgroundColor: alpha(theme.palette.primary.main, 0.25),
+  top: theme.spacing(-4),
+  margin: theme.spacing(4, 2.5),
+  padding: theme.spacing(4),
+  borderRadius: '36px',
+  width: 'auto',
+  alignItems: 'center',
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    margin: theme.spacing(4, 2.5),
+    padding: theme.spacing(4),
+    height: 576,
+  },
+}));
+
+export const FeaturedArticleMetaContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  fontSize: '16px',
+  alignItems: 'center',
+  color: theme.palette.text.primary,
+  marginTop: theme.spacing(2),
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: 0,
+    marginLeft: theme.spacing(3),
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    marginTop: 0,
+  },
+}));
 
 export const FeaturedArticleMetaDate = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
+  () => ({
     fontSize: 'inherit',
     '&:after': {
       content: '"•"',
@@ -178,32 +192,31 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const FeaturedArticleTitle = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    userSelect: 'none',
-    color: theme.palette.text.primary,
-    marginBottom: theme.spacing(3),
-    marginTop: theme.spacing(3),
-    overflow: 'hidden',
-    fontFamily: urbanist.style.fontFamily,
-    lineHeight: '40px',
-    fontSize: '40px',
-    fontWeight: 700,
-    maxHeight: 168,
-    textOverflow: 'ellipsis',
-    display: '-webkit-box',
-    WebkitLineClamp: 4,
-    WebkitBoxOrient: 'vertical',
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      fontSize: '48px',
-      lineHeight: '56px',
-      marginTop: theme.spacing(2),
-    },
-    [theme.breakpoints.up('md' as Breakpoint)]: {
-      marginTop: theme.spacing(4),
-    },
-  }),
-);
+export const FeaturedArticleTitle = styled(Typography)(({ theme }) => ({
+  userSelect: 'none',
+  color: theme.palette.text.primary,
+  marginBottom: theme.spacing(3),
+  marginTop: theme.spacing(3),
+  overflow: 'hidden',
+  fontFamily: urbanist.style.fontFamily,
+  lineHeight: '40px',
+  fontSize: '40px',
+  fontWeight: 700,
+  maxHeight: 168,
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 4,
+  WebkitBoxOrient: 'vertical',
+
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    fontSize: '48px',
+    lineHeight: '56px',
+    marginTop: theme.spacing(2),
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    marginTop: theme.spacing(4),
+  },
+}));
 
 export const FeaturedArticleSubtitle = styled(Typography)<TypographyProps>(
   ({ theme }) => ({

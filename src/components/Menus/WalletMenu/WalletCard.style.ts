@@ -3,7 +3,6 @@
 import { ButtonTransparent } from '@/components/Button';
 import type { Breakpoint } from '@mui/material';
 import { Avatar, Badge, Container } from '@mui/material';
-import type { ButtonProps as MuiButtonProps } from '@mui/material/Button/Button';
 import { styled } from '@mui/material/styles';
 
 export const WalletAvatar = styled(Avatar)(() => ({
@@ -51,15 +50,13 @@ export const WalletCardBadge = styled(Badge)(() => ({
   },
 }));
 
-export const Button = styled(ButtonTransparent)<MuiButtonProps>(
-  ({ theme }) => ({
-    minWidth: 'auto',
-    backgroundColor: theme.palette.bgQuaternary.main,
-    '&:hover': {
-      backgroundColor: theme.palette.bgQuaternary.hover,
-    },
-  }),
-);
+export const Button = styled(ButtonTransparent)(({ theme }) => ({
+  minWidth: 'auto',
+  backgroundColor: theme.palette.bgQuaternary.main,
+  '&:hover': {
+    backgroundColor: theme.palette.bgQuaternary.hover,
+  },
+}));
 
 export const WalletChainAvatar = styled(Avatar)(({ theme }) => ({
   borderRadius: '50%',

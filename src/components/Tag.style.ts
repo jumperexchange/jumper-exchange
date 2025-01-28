@@ -1,7 +1,7 @@
 import type { TypographyProps } from '@mui/material';
 import { Typography, alpha, styled } from '@mui/material';
 
-export interface TagProps extends Omit<TypographyProps, 'component'> {
+export interface TagProps extends TypographyProps {
   component?: keyof JSX.IntrinsicElements;
   backgroundColor?: string;
   color?: string;
