@@ -27,6 +27,7 @@ import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { Typography } from '@mui/material';
+import { titleSlicer } from '@/components/Berachain/utils';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
@@ -134,7 +135,18 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 notation: 'compact',
                 maximumFractionDigits: maxInputValue > 1 ? 1 : 5,
               })}
-              endAdornment={<Typography>{'tokens'}</Typography>}
+              endAdornment={
+                <Typography
+                  className="title"
+                  variant="bodySmall"
+                  sx={(theme) => ({
+                    typography: {
+                      xs: theme.typography.bodyXSmall,
+                      sm: theme.typography.bodySmall,
+                    },
+                  })}
+                >{` ${titleSlicer(market?.input_token_data?.symbol)}`}</Typography>
+              }
             />
           )}
         </Stack>
