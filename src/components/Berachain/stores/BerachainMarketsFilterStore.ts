@@ -16,6 +16,8 @@ interface BerachainMarketsFilterStoreProps {
   setSort: (sort: string) => void;
   search: string | undefined;
   setSearch: (search: string | undefined) => void;
+  baffleOnly: boolean;
+  setBaffleOnly: (baffleOnly: boolean) => void;
   roycoStats:
     | {
         total_volume: number;
@@ -38,6 +40,7 @@ export const useBerachainMarketsFilterStore =
       incentiveFilter: [],
       protocolFilter: [],
       roycoMarkets: [],
+      baffleOnly: false,
       roycoStats: undefined,
       sort: undefined,
       search: undefined,
@@ -119,6 +122,11 @@ export const useBerachainMarketsFilterStore =
       setBeraTokenQuote: (value: any) => {
         set(() => {
           return { beraTokenQuote: value };
+        });
+      },
+      setBaffleOnly: (value: boolean) => {
+        set(() => {
+          return { baffleOnly: value };
         });
       },
     }),

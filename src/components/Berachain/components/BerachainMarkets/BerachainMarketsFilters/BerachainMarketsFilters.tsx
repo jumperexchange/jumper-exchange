@@ -5,6 +5,9 @@ import {
 } from './BerachainMarketsFilters.style';
 import { BerachainSearch } from './BerachainSearch';
 import { BerachainFilterIncentivesMenu } from '@/components/Berachain/components/BerachainMarkets/BerachainMarketsFilters/BerachainFilterIncentivesMenu';
+import {
+  BerachainFilterBaffleOnly
+} from '@/components/Berachain/components/BerachainMarkets/BerachainMarketsFilters/BerachainFilterBaffleOnly';
 
 export const BerachainMarketsFilters = () => {
   return (
@@ -13,6 +16,7 @@ export const BerachainMarketsFilters = () => {
         {/*TODO: refactorize tokens and incentives menu*/}
         <BerachainFilterTokensMenu />
         <BerachainFilterIncentivesMenu />
+        <BerachainFilterBaffleOnly />
         {/*<BerachainFilterChainsMenu />*/}
         {/* <BerachainFilterProtocolsMenu /> */}
       </BerachainMarketsFiltersInnerContainer>

@@ -1,46 +1,27 @@
-import {
-  Avatar as MuiAvatar,
-  Box,
-  FormHelperText,
-  Input,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Avatar as MuiAvatar, Box, FormHelperText, Input, Typography, useTheme } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import {
-  WalletAvatar,
-  WalletCardBadge,
-} from '@/components/Menus/WalletMenu/WalletCard.style';
+import { WalletAvatar, WalletCardBadge } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import {
-  useConfig,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
+import { useConfig, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useMemo, useState } from 'react';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
-import { useAccountBalance, usePrepareMarketAction } from 'royco/hooks';
-import {
-  parseRawAmountToTokenAmount,
-  parseTokenAmountToRawAmount,
-} from 'royco/utils';
+import { usePrepareMarketAction } from 'royco/hooks';
+import { parseRawAmountToTokenAmount, parseTokenAmountToRawAmount } from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
-import type { ExtendedChain } from '@lifi/sdk';
+import { ExtendedChain, Token } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
 import { TxConfirmation } from '../TxConfirmation';
-import {
-  BerachainDepositInputBackground,
-  BoxForm,
-} from './WidgetDeposit.style';
+import { BerachainDepositInputBackground, BoxForm } from './WidgetDeposit.style';
 import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
 import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from '@/const/trackingKeys';
+import { useGetTokenBalance } from '@/hooks/useGetTokenBalance';
 
 interface Image {
   url?: string;

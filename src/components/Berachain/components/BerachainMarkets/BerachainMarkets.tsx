@@ -104,6 +104,10 @@ export const BerachainMarkets = () => {
             .filter((data) => {
               return !!findFromStrapiByUid(data.market_id!);
             })
+            .filter((data) => {
+              const card = findFromStrapiByUid(data.market_id!);
+              return baffleOnly ? card?.attributes.CustomInformation?.extraRewards : true;
+            })
             .map((roycoData, index) => {
               if (!roycoData?.id) {
                 return;
