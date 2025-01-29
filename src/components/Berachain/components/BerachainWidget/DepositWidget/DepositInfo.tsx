@@ -128,7 +128,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               })}
               title={'Deposit Cap'}
               tooltipText={AVAILABLE_TOOLTIP}
-              digit={t('format.currency', {
+              digit={t('format.decimal', {
                 value: maxInputValue,
                 notation: 'compact',
                 maximumFractionDigits: maxInputValue > 1 ? 1 : 5,
