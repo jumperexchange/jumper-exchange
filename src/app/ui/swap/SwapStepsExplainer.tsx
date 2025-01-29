@@ -80,7 +80,7 @@ const SwapStepsExplainerSection = ({
             Verify the details of the quote (i.e., amount of tokens received,
             price impact, slippage, number of steps, gas cost, bridging time)
           </li>
-          <li>Click on "Start" execution</li>
+          <li>Click on "Review swap"</li>
         </ul>
       ),
       img: getWidgetImageProps({

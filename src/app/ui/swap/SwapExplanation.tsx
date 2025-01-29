@@ -7,11 +7,11 @@ const SwapExplanationSection = () => {
   const faqData = [
     {
       Question: 'What are cryptocurrencies swaps?',
-      Answer: `a swap is the exchange of one cryptocurrency for another, typically through a decentralized exchange (DEX) or automated market maker (AMM). Swaps bypass intermediaries, allowing users to trade tokens directly from their wallets. They're fast, cost-efficient, and key to DeFi.`,
+      Answer: `A swap is the exchange of one cryptocurrency for another, typically through a decentralized exchange (DEX) or automated market maker (AMM). Swaps bypass intermediaries, allowing users to trade tokens directly from their wallets. They're fast, cost-efficient and key to DeFi.`,
     },
     {
       Question: 'What is a swap aggregator?',
-      Answer: `A swap aggregator in crypto connects to multiple decentralized exchanges (DEXs) to find the best rates for token swaps. It compares prices, fees, liquidity, and slippage across platforms in real-time, often splitting trades for optimal results. This ensures users get the most value by saving time, reducing costs, and maximizing tokens received in a single transaction.`,
+      Answer: `A swap aggregator in crypto connects to multiple decentralized exchanges (DEXs) to find the best rates for token swaps. It compares prices, fees, liquidity and slippage across platforms in real-time, often splitting trades for optimal results. This ensures users get the most value by saving time, reducing costs and maximizing tokens received in a single transaction.`,
     },
     {
       Question: 'Why use an aggregrator to do swaps in crypto?',
