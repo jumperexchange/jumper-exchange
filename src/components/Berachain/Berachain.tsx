@@ -4,9 +4,11 @@ import { BerachainIntroduction } from './components/BerachainIntroduction/Berach
 import { BerachainStars } from './components/BerachainStars/BerachainStars';
 import { BerachainWelcome } from './components/BerachainWelcome/BerachainWelcome';
 import BerachainHeroAnimation from './components/BerchainHeroAnimation/BerachainHeroAnimation';
+import BeraStoreSetup from '@/components/Berachain/components/BeraStoreSetup';
 export const Berachain = () => {
   return (
     <BerachainFrame>
+      <BeraStoreSetup />
       {/* <BerachainStarsBackground /> */}
       <BerachainStars />
       <BerachainHeroAnimation />
