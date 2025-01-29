@@ -66,7 +66,6 @@ export function Widget({
   });
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -153,7 +152,12 @@ export function Widget({
         onConnect: openWalletMenu,
       },
       chains: {
-        ...{ to: account.chainId === 2741 ? { allow: [2741] } : undefined },
+        ...{
+          to:
+            account.connector?.name === 'Abstract' || account.chainId === 2741
+              ? { allow: [2741] }
+              : undefined,
+        },
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
