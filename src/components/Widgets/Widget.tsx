@@ -152,13 +152,11 @@ export function Widget({
         onConnect: openWalletMenu,
       },
       chains: {
-        ...{
-          to:
-            account.connector?.name === 'Abstract' || account.chainId === 2741
-              ? { allow: [2741] }
-              : undefined,
-        },
-        allow: allowChains || allowedChainsByVariant,
+        allow:
+          // allow only Abstract chain if AGW is connected
+          account.connector?.name === 'Abstract' || account.chainId === 2741
+            ? [2741]
+            : allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
