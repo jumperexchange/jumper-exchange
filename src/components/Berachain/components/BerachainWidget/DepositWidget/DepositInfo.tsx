@@ -26,6 +26,8 @@ import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenS
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
+import { Typography } from '@mui/material';
+import { titleSlicer } from '@/components/Berachain/utils';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
@@ -124,15 +126,31 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 alignItems: 'flex-end',
                 '.content': {
                   fontSize: '1.5rem',
+                  alignItems: 'flex-end',
                 },
               })}
               title={'Deposit Cap'}
               tooltipText={AVAILABLE_TOOLTIP}
-              digit={t('format.currency', {
+              digit={t('format.decimal', {
                 value: maxInputValue,
                 notation: 'compact',
                 maximumFractionDigits: maxInputValue > 1 ? 1 : 5,
               })}
+              endAdornment={
+                <Typography
+                  className="title"
+                  variant="titleXSmall"
+                  sx={(theme) => ({
+                    fontSize: '16px',
+                    fontWeight: 700,
+                    marginLeft: '4px',
+                    typography: {
+                      xs: theme.typography.bodyXSmall,
+                      sm: theme.typography.bodySmall,
+                    },
+                  })}
+                >{` ${titleSlicer(market?.input_token_data?.symbol, 12)}`}</Typography>
+              }
             />
           )}
         </Stack>
