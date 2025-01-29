@@ -26,6 +26,7 @@ import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenS
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
+import { Typography } from '@mui/material';
 
 interface DepositInfoProps {
   market: EnrichedMarketDataType;
@@ -133,6 +134,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 notation: 'compact',
                 maximumFractionDigits: maxInputValue > 1 ? 1 : 5,
               })}
+              endAdornment={<Typography>{'tokens'}</Typography>}
             />
           )}
         </Stack>
