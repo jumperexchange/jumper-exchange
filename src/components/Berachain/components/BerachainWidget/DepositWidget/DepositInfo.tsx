@@ -147,7 +147,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                       sm: theme.typography.bodySmall,
                     },
                   })}
-                >{` ${titleSlicer(market?.input_token_data?.symbol)}`}</Typography>
+                >{` ${titleSlicer(market?.input_token_data?.symbol, 12)}`}</Typography>
               }
             />
           )}
