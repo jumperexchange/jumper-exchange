@@ -154,7 +154,7 @@ export function Widget({
       chains: {
         allow:
           // allow only Abstract chain if AGW is connected
-          account.connector?.name === 'Abstract' || account.chainId === 2741
+          account?.connector?.name === 'Abstract' || account.chainId === 2741
             ? [2741]
             : allowChains || allowedChainsByVariant,
       },
