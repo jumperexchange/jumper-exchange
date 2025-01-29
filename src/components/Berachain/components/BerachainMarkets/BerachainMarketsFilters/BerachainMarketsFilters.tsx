@@ -5,9 +5,7 @@ import {
 } from './BerachainMarketsFilters.style';
 import { BerachainSearch } from './BerachainSearch';
 import { BerachainFilterIncentivesMenu } from '@/components/Berachain/components/BerachainMarkets/BerachainMarketsFilters/BerachainFilterIncentivesMenu';
-import {
-  BerachainFilterBaffleOnly
-} from '@/components/Berachain/components/BerachainMarkets/BerachainMarketsFilters/BerachainFilterBaffleOnly';
+import { BerachainFilterBaffleOnly } from '@/components/Berachain/components/BerachainMarkets/BerachainMarketsFilters/BerachainFilterBaffleOnly';
 
 export const BerachainMarketsFilters = () => {
   return (

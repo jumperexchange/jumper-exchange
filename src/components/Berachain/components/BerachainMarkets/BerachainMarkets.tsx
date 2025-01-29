@@ -7,7 +7,10 @@ import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMa
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
-import { getFullTitle, includesCaseInsensitive } from '@/components/Berachain/utils';
+import {
+  getFullTitle,
+  includesCaseInsensitive,
+} from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 export const BerachainMarkets = () => {
@@ -106,7 +109,9 @@ export const BerachainMarkets = () => {
             })
             .filter((data) => {
               const card = findFromStrapiByUid(data.market_id!);
-              return baffleOnly ? card?.attributes.CustomInformation?.extraRewards : true;
+              return baffleOnly
+                ? card?.attributes.CustomInformation?.extraRewards
+                : true;
             })
             .map((roycoData, index) => {
               if (!roycoData?.id) {

@@ -1,23 +1,43 @@
-import { Avatar as MuiAvatar, Box, FormHelperText, Input, Typography, useTheme } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Box,
+  FormHelperText,
+  Input,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import { WalletAvatar, WalletCardBadge } from '@/components/Menus/WalletMenu/WalletCard.style';
+import {
+  WalletAvatar,
+  WalletCardBadge,
+} from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
-import { useConfig, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import {
+  useConfig,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useMemo, useState } from 'react';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
 import { usePrepareMarketAction } from 'royco/hooks';
-import { parseRawAmountToTokenAmount, parseTokenAmountToRawAmount } from 'royco/utils';
+import {
+  parseRawAmountToTokenAmount,
+  parseTokenAmountToRawAmount,
+} from 'royco/utils';
 import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
-import { ExtendedChain, Token } from '@lifi/sdk';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
 import { TxConfirmation } from '../TxConfirmation';
-import { BerachainDepositInputBackground, BoxForm } from './WidgetDeposit.style';
+import {
+  BerachainDepositInputBackground,
+  BoxForm,
+} from './WidgetDeposit.style';
 import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
 import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from '@/const/trackingKeys';
@@ -82,19 +102,28 @@ function DepositWidget({
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const { account } = useAccount();
+
   const {
     isLoading: isLoadingWallet,
+    isSuccess,
     data: dataWallet,
     refetch,
-  } = useAccountBalance({
-    chain_id: market.chain_id!,
-    account: account?.address || '',
-    tokens: market ? [market.input_token_data.contract_address] : [],
-  });
+  } = useGetTokenBalance(account?.address, {
+    chainId: market.chain_id!,
+    address: market.input_token_data.contract_address,
+    decimals: market.input_token_data.decimals,
+  } as Token);
+
+  // Not optimised, needs to find a better way to do it
+  useEffect(() => {
+    if (isSuccess) {
+      refetch();
+    }
+  }, []);
 
   const balance = parseRawAmountToTokenAmount(
-    dataWallet?.[0]?.raw_amount?.toString() ?? '0',
-    market?.input_token_data.decimals ?? 0,
+    dataWallet?.amount?.toString() ?? '0',
+    dataWallet?.decimals ?? 0,
   );
   const theme = useTheme();
   const [inputValue, setInputValue] = useState<string>('');
