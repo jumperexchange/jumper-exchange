@@ -6,7 +6,7 @@ import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
 import { EVM } from '@lifi/sdk';
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import type { FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
@@ -55,6 +55,7 @@ export function Widget({
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { account } = useAccount();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
@@ -152,7 +153,11 @@ export function Widget({
         onConnect: openWalletMenu,
       },
       chains: {
-        allow: allowChains || allowedChainsByVariant,
+        allow:
+          // allow only Abstract chain if AGW is connected
+          account.connector?.name === 'Abstract' || account.chainId === 2741
+            ? [2741]
+            : allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
