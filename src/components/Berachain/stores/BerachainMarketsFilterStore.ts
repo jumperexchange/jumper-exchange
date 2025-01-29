@@ -1,6 +1,9 @@
 'use client';
 import type { ChainId } from '@lifi/sdk';
-import type { EnrichedMarketDataType } from 'royco/queries';
+import type {
+  EnrichedMarketDataType,
+  EnrichedPositionsRecipeDataType,
+} from 'royco/queries';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface BerachainMarketsFilterStoreProps {
@@ -30,6 +33,8 @@ interface BerachainMarketsFilterStoreProps {
   setRoycoMarkets: (roycoMarkets: EnrichedMarketDataType[]) => void;
   beraTokenQuote: any;
   setBeraTokenQuote: (value: any) => void;
+  positionsData: EnrichedPositionsRecipeDataType[];
+  setPositionsData: (value: EnrichedPositionsRecipeDataType[]) => void;
 }
 
 export const useBerachainMarketsFilterStore =
@@ -40,6 +45,7 @@ export const useBerachainMarketsFilterStore =
       incentiveFilter: [],
       protocolFilter: [],
       roycoMarkets: [],
+      positionsData: [],
       baffleOnly: false,
       roycoStats: undefined,
       sort: undefined,
@@ -119,14 +125,19 @@ export const useBerachainMarketsFilterStore =
           return { roycoMarkets: value };
         });
       },
-      setBeraTokenQuote: (value: any) => {
+      setBeraTokenQuote: (value) => {
         set(() => {
           return { beraTokenQuote: value };
         });
       },
-      setBaffleOnly: (value: boolean) => {
+      setBaffleOnly: (value) => {
         set(() => {
           return { baffleOnly: value };
+        });
+      },
+      setPositionsData: (value) => {
+        set(() => {
+          return { positionsData: value };
         });
       },
     }),

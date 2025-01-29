@@ -71,24 +71,18 @@ export const BerachainMarketCard = ({
   const { t } = useTranslation();
   const { chains } = useChains();
 
+  const { positionsData } = useBerachainMarketsFilterStore((state) => state);
+
+  const position = useMemo(() => {
+    return positionsData.find(
+      (positionsData) => positionsData.market_id === roycoData.market_id,
+    );
+  }, [positionsData, roycoData?.market_id]);
+
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
 
-  const {
-    isLoading: isLoadingRecipe,
-    isRefetching: isRefetchingRecipe,
-    data: dataRecipe,
-  } = useEnrichedAccountBalancesRecipeInMarket({
-    chain_id: roycoData?.chain_id!,
-    market_id: roycoData?.market_id!,
-    account_address: account?.address?.toLowerCase() ?? '',
-    custom_token_data: undefined,
-    enabled: false, // Disable to avoid spamming infra
-  });
-
-  const deposited =
-    dataRecipe?.input_token_data_ap?.token_amount &&
-    dataRecipe?.input_token_data_ap?.token_amount > 0;
+  const deposited = (position?.input_token_data?.token_amount ?? 0) > 0;
 
   const tvlGoal = useMemo(() => {
     return calculateTVLGoal(roycoData);
@@ -192,15 +186,15 @@ export const BerachainMarketCard = ({
                 })}
                 title={deposited ? 'Deposited' : 'Deposit'}
                 tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
-                tokenImage={roycoData?.input_token_data?.image}
+                tokenImage={position?.input_token_data?.image}
                 digit={
                   deposited
                     ? t('format.decimal', {
-                        value: dataRecipe?.input_token_data_ap?.token_amount,
+                        value: position?.input_token_data?.token_amount,
                       })
-                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 11)
+                    : titleSlicer(position?.input_token_data?.symbol ?? '', 11)
                 }
-                hasDeposited={deposited ? true : false}
+                hasDeposited={deposited}
               />
               <DigitCard
                 sx={(theme) => ({

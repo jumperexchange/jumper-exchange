@@ -28,18 +28,15 @@ export const BerachainMarkets = () => {
 
   return (
     <Box>
-      <Grid
-        item
-        xs={12}
-        md={12}
+      <Box
         sx={{
           border: '1px solid #383433',
-          width: '100%',
           textAlign: 'center',
-          gridColumn: '1 / -1',
           padding: 1,
           borderRadius: 2,
           marginBottom: 1,
+          marginX: 'auto',
+          width: '350px',
         }}
       >
         <Typography
@@ -47,9 +44,9 @@ export const BerachainMarkets = () => {
             color: theme.palette.text.primary,
           })}
         >
-          Boyco ends on Feb 3rtd 12AM UTC.
+          Boyco ends on Feb 3rd 12AM UTC.
         </Typography>
-      </Grid>
+      </Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>

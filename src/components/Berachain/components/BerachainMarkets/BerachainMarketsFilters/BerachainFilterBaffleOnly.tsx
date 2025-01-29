@@ -1,6 +1,6 @@
-import { FormControlLabel, useTheme } from '@mui/material';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import Checkbox from '@mui/material/Checkbox';
+import { BerachainMarketBaffleFormControlLabel } from '@/components/Berachain/components/BerachainMarkets/BerachainMarkets.style';
 export const BerachainFilterBaffleOnly = () => {
   const { baffleOnly, setBaffleOnly } = useBerachainMarketsFilterStore(
     (state) => state,
@@ -11,11 +11,7 @@ export const BerachainFilterBaffleOnly = () => {
   };
 
   return (
-    <FormControlLabel
-      sx={(theme) => ({
-        color: theme.palette.text.primary,
-        marginTop: '-4px',
-      })}
+    <BerachainMarketBaffleFormControlLabel
       control={<Checkbox onChange={handleChange} checked={baffleOnly} />}
       label="Baffle Only"
     />
