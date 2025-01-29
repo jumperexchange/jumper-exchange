@@ -3,18 +3,12 @@ import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard'
 import { BerachainMarketCards } from './BerachainMarkets.style';
 import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
-import { useEnrichedMarkets } from 'royco/hooks';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
-import {
-  calculateBeraYield,
-  getFullTitle,
-  includesCaseInsensitive,
-} from '@/components/Berachain/utils';
+import { getFullTitle, includesCaseInsensitive } from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
-import roycoEnrichedDataCached from '@/components/Berachain/components/BerachainMarkets/roycoEnrichedDataCached';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
@@ -26,11 +20,33 @@ export const BerachainMarkets = () => {
   );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
-  const { tokenFilter, incentiveFilter, search } =
+  const { tokenFilter, baffleOnly, incentiveFilter, search } =
     useBerachainMarketsFilterStore((state) => state);
 
   return (
     <Box>
+      <Grid
+        item
+        xs={12}
+        md={12}
+        sx={{
+          border: '1px solid #383433',
+          width: '100%',
+          textAlign: 'center',
+          gridColumn: '1 / -1',
+          padding: 1,
+          borderRadius: 2,
+          marginBottom: 1,
+        }}
+      >
+        <Typography
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+          })}
+        >
+          Boyco ends on Feb 3rtd 12AM UTC.
+        </Typography>
+      </Grid>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
