@@ -14,6 +14,7 @@ export const BerachainFilterBaffleOnly = () => {
     <FormControlLabel
       sx={(theme) => ({
         color: theme.palette.text.primary,
+        marginTop: '-4px',
       })}
       control={<Checkbox onChange={handleChange} checked={baffleOnly} />}
       label="Baffle Only"

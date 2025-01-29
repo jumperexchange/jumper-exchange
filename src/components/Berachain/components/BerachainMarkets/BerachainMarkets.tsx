@@ -87,13 +87,19 @@ export const BerachainMarkets = () => {
         {Array.isArray(roycoData) &&
           roycoData?.length > 0 &&
           roycoData
-            .filter(
-              (data) => !tokenFilter.includes(data.input_token_data?.symbol),
-            )
             .filter((data) => {
+              if (tokenFilter.length === 0) {
+                return true;
+              }
+              return tokenFilter.includes(data.input_token_data?.symbol);
+            })
+            .filter((data) => {
+              if (incentiveFilter.length === 0) {
+                return true;
+              }
               const dataIncentives =
                 data.incentive_tokens_data?.map((s) => s.symbol) ?? [];
-              return !dataIncentives.some((symbol) =>
+              return dataIncentives.some((symbol) =>
                 incentiveFilter.includes(symbol),
               );
             })
