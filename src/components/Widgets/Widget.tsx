@@ -153,10 +153,8 @@ export function Widget({
         onConnect: openWalletMenu,
       },
       chains: {
-        allow:
-          account.chainId === 2741
-            ? [2741]
-            : allowChains || allowedChainsByVariant,
+        ...{ to: account.chainId === 2741 ? { allow: [2741] } : undefined },
+        allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
