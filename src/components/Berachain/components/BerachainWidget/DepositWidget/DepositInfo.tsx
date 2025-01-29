@@ -140,7 +140,8 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                   className="title"
                   variant="titleXSmall"
                   sx={(theme) => ({
-                    fontSize: '1.5rem',
+                    fontSize: '16px',
+                    fontWeight: 700,
                     marginLeft: '4px',
                     typography: {
                       xs: theme.typography.bodyXSmall,
