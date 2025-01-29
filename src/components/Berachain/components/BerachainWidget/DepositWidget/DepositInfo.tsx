@@ -126,6 +126,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
                 alignItems: 'flex-end',
                 '.content': {
                   fontSize: '1.5rem',
+                  alignItems: 'flex-end',
                 },
               })}
               title={'Deposit Cap'}
