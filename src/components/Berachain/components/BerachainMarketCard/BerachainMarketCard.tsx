@@ -77,7 +77,7 @@ export const BerachainMarketCard = ({
     return positionsData.find(
       (positionsData) => positionsData.market_id === roycoData.market_id,
     );
-  }, [positionsData, roycoData?.market_id]);
+  }, [positionsData, roycoData?.market_id, account]);
 
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';

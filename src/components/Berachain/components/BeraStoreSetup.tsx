@@ -55,7 +55,7 @@ function BeraStoreSetup() {
     setRoycoMarkets(roycoDataMarkets);
   }, [roycoDataMarkets]);
 
-  const { data: positionsRecipe } = useEnrichedPositionsRecipe({
+  const { data: positionsRecipe, refetch } = useEnrichedPositionsRecipe({
     account_address: account?.address?.toLowerCase() as string,
     page_index: 0,
     page_size: 500,
@@ -63,6 +63,11 @@ function BeraStoreSetup() {
   });
 
   useEffect(() => {
+    if (!account?.address) {
+      refetch();
+      setPositionsData([]);
+    }
+
     if (
       !Array.isArray(positionsRecipe?.data) ||
       positionsRecipe.data.length === 0
@@ -71,7 +76,7 @@ function BeraStoreSetup() {
     }
 
     setPositionsData(positionsRecipe.data);
-  }, [positionsRecipe]);
+  }, [positionsRecipe, account]);
 
   return <></>;
 }
