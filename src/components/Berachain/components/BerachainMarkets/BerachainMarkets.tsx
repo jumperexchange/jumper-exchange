@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
 import { BerachainMarketCards } from './BerachainMarkets.style';
 import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
@@ -9,19 +9,21 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
 import {
+  calculateBeraYield,
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
+import roycoEnrichedDataCached from '@/components/Berachain/components/BerachainMarkets/roycoEnrichedDataCached';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-
-  const { data: roycoData, isSuccess } = useEnrichedMarkets({
-    is_verified: isVerified,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
-  });
+  const berachainFilters = useBerachainFilters();
+  const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
+    (state) => state,
+  );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
   const { tokenFilter, incentiveFilter, search } =
@@ -32,15 +34,39 @@ export const BerachainMarkets = () => {
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
-        {(!isSuccess || !roycoData || !data) &&
+        {(!Array.isArray(roycoData) || roycoData.length === 0 || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
               key={idx}
             />
           ))}
+        {/*        {true && (
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{
+              border: '1px solid #383433',
+              width: '100%',
+              textAlign: 'center',
+              gridColumn: '1 / -1',
+              padding: 8,
+              borderRadius: 2,
+            }}
+          >
+            <Typography
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+              })}
+            >
+              Bera with us. Boyco markets are seeing high demand. Bears are on
+              it.
+            </Typography>
+          </Grid>
+        )*/}
         {Array.isArray(roycoData) &&
-          isSuccess &&
+          roycoData?.length > 0 &&
           roycoData
             .filter(
               (data) => !tokenFilter.includes(data.input_token_data?.symbol),
@@ -54,6 +80,7 @@ export const BerachainMarkets = () => {
             })
             .filter((data) => {
               const card = findFromStrapiByUid(data.market_id!);
+
               const fullTitle = getFullTitle(data, card);
 
               return search ? includesCaseInsensitive(fullTitle, search) : true;
