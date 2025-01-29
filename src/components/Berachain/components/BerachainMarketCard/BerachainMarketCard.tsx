@@ -186,13 +186,13 @@ export const BerachainMarketCard = ({
                 })}
                 title={deposited ? 'Deposited' : 'Deposit'}
                 tooltipText={deposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
-                tokenImage={position?.input_token_data?.image}
+                tokenImage={roycoData?.input_token_data?.image}
                 digit={
                   deposited
                     ? t('format.decimal', {
                         value: position?.input_token_data?.token_amount,
                       })
-                    : titleSlicer(position?.input_token_data?.symbol ?? '', 11)
+                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 11)
                 }
                 hasDeposited={deposited}
               />
