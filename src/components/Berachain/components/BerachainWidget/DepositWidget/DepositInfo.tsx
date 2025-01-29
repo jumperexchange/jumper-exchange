@@ -138,8 +138,10 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
               endAdornment={
                 <Typography
                   className="title"
-                  variant="bodySmall"
+                  variant="titleXSmall"
                   sx={(theme) => ({
+                    fontSize: '1.5rem',
+                    marginLeft: '4px',
                     typography: {
                       xs: theme.typography.bodyXSmall,
                       sm: theme.typography.bodySmall,
