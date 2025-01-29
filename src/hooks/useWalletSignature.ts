@@ -118,7 +118,7 @@ export const useSignSolana = () => {
     }
     try {
       const resp = await (window as any).solana.connect();
-      const solanaAddress = resp.publicKey.toString();
+      const solanaAddress = resp.publicKey.toBase58();
       setSolanaPublicKey(solanaAddress);
       const message = 'Sign in with Solana to the Jumper app.';
       const encodedMessage = new TextEncoder().encode(message);

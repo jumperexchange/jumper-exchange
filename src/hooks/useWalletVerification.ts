@@ -32,7 +32,7 @@ export const useWalletVerification = ({
             signature: evmSignature,
           },
           solana: {
-            message: 'Sign in with Solana to the app.',
+            message: 'Sign in with Solana to the Jumper app.',
             signature: solanaSignature,
             publicKey: solanaPublicKey,
           },
