@@ -3,18 +3,15 @@ import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard'
 import { BerachainMarketCards } from './BerachainMarkets.style';
 import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
-import { useEnrichedMarkets } from 'royco/hooks';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
 import {
-  calculateBeraYield,
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
-import roycoEnrichedDataCached from '@/components/Berachain/components/BerachainMarkets/roycoEnrichedDataCached';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
@@ -26,11 +23,30 @@ export const BerachainMarkets = () => {
   );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
-  const { tokenFilter, incentiveFilter, search } =
+  const { tokenFilter, baffleOnly, incentiveFilter, search } =
     useBerachainMarketsFilterStore((state) => state);
 
   return (
     <Box>
+      <Box
+        sx={{
+          border: '1px solid #383433',
+          textAlign: 'center',
+          padding: 1,
+          borderRadius: 2,
+          marginBottom: 1,
+          marginX: 'auto',
+          width: '350px',
+        }}
+      >
+        <Typography
+          sx={(theme) => ({
+            color: theme.palette.text.primary,
+          })}
+        >
+          Boyco ends on Feb 3rd 12AM UTC.
+        </Typography>
+      </Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards>
@@ -68,13 +84,19 @@ export const BerachainMarkets = () => {
         {Array.isArray(roycoData) &&
           roycoData?.length > 0 &&
           roycoData
-            .filter(
-              (data) => !tokenFilter.includes(data.input_token_data?.symbol),
-            )
             .filter((data) => {
+              if (tokenFilter.length === 0) {
+                return true;
+              }
+              return tokenFilter.includes(data.input_token_data?.symbol);
+            })
+            .filter((data) => {
+              if (incentiveFilter.length === 0) {
+                return true;
+              }
               const dataIncentives =
                 data.incentive_tokens_data?.map((s) => s.symbol) ?? [];
-              return !dataIncentives.some((symbol) =>
+              return dataIncentives.some((symbol) =>
                 incentiveFilter.includes(symbol),
               );
             })
@@ -87,6 +109,12 @@ export const BerachainMarkets = () => {
             })
             .filter((data) => {
               return !!findFromStrapiByUid(data.market_id!);
+            })
+            .filter((data) => {
+              const card = findFromStrapiByUid(data.market_id!);
+              return baffleOnly
+                ? card?.attributes.CustomInformation?.extraRewards
+                : true;
             })
             .map((roycoData, index) => {
               if (!roycoData?.id) {

@@ -41,6 +41,9 @@ export const BerachainSearch = () => {
         borderRadius: '16px',
         border: '1px solid #383433',
         background: '#1E1D1C',
+        '.MuiInputBase-input': {
+          height: '0.8em',
+        },
       }}
       slotProps={{
         input: {

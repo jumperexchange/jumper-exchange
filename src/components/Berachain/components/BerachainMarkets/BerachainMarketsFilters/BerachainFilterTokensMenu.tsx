@@ -64,9 +64,6 @@ export const BerachainFilterTokensMenu = () => {
     return mappedTokens;
   }, [data]);
 
-  const tokensNumber = Array.isArray(tokens) ? tokens.length : tokens.size;
-  const tokensFiltered = tokensNumber - tokenFilter.length;
-
   return (
     <BerachainMarketsFilterBox>
       <BerachainMarketFiltersButton
@@ -77,9 +74,9 @@ export const BerachainFilterTokensMenu = () => {
         onClick={handleTokensFilterClick}
       >
         <Typography variant="bodyMedium">
-          {tokensNumber !== tokensFiltered
-            ? `${tokensFiltered} Token${tokensFiltered === 1 ? '' : 's'}`
-            : 'All Tokens'}
+          {tokenFilter.length === 0
+            ? 'All Tokens'
+            : `${tokenFilter.length} Token${tokenFilter.length === 1 ? '' : 's'}`}
         </Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
@@ -102,7 +99,7 @@ export const BerachainFilterTokensMenu = () => {
                 setTokenFilter(token.symbol);
               }}
             >
-              {tokenFilter.includes(token.symbol) ? (
+              {!tokenFilter.includes(token.symbol) ? (
                 <RadioButtonUncheckedIcon
                   sx={{ color: '#FF8425', width: '24px', height: '24px' }}
                 />
