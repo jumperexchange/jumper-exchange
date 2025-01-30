@@ -63,6 +63,7 @@ export const TokenIncentivesData = ({
   }, [market?.input_token_data]);
 
   const tokens = market?.incentive_tokens_data;
+
   return (
     <Box
       sx={{
