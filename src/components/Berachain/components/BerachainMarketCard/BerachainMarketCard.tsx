@@ -277,12 +277,14 @@ export const BerachainMarketCard = ({
             ) : (
               <DigitTooltipCard
                 title={'Rewards'}
-                digit={tvlGoal === 100 ? "Deposit cap reached." :
-                  roycoData?.annual_change_ratio
-                    ? t('format.percent', {
-                        value: roycoData?.annual_change_ratio,
-                      })
-                    : 'N/A'
+                digit={
+                  tvlGoal === 100
+                    ? 'Deposit cap reached.'
+                    : roycoData?.annual_change_ratio
+                      ? t('format.percent', {
+                          value: roycoData?.annual_change_ratio,
+                        })
+                      : 'N/A'
                 }
                 tooltipText={APY_TOOLTIP}
               />
