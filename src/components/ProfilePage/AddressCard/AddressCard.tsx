@@ -11,6 +11,7 @@ import { getAddressLabel } from 'src/utils/getAddressLabel';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
+import { AddressMenu } from '../AddressMenu/AddressMenu';
 import {
   AddressBlockiesImage,
   AddressBox,
@@ -42,7 +43,6 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
-
   const handleCopyButton = (textToCopy?: string) => {
     if (!textToCopy) {
       return;
@@ -114,6 +114,11 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
               <KeyboardArrowDownIcon />
             </ProfileIconButton>
             <WalletLinking anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+            <AddressMenu
+              open={openAddressMenu}
+              setOpen={setOpenAddressMenu}
+              anchorEl={anchorEl}
+            />
           </>
         )}
       </AddressBox>
