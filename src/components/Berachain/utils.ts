@@ -18,7 +18,7 @@ export function getFullTitle(
   roycoData: EnrichedMarketDataType,
   strapiData?: Quest,
 ) {
-  return `${strapiData?.attributes.Title} ${roycoData?.input_token_data?.symbol} Market`;
+  return `${roycoData?.input_token_data?.symbol} ${strapiData?.attributes.Title} Market`;
 }
 
 export function includesCaseInsensitive(str: string, searchString: string) {
