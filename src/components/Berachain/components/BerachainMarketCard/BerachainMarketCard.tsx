@@ -128,11 +128,11 @@ export const BerachainMarketCard = ({
               )}
               {roycoData?.name ? (
                 <Typography
-                  variant="bodySmallStrong"
+                  variant="bodyMediumStrong"
                   sx={(theme) => ({
                     typography: {
                       xs: theme.typography.bodySmallStrong,
-                      sm: theme.typography.bodySmallStrong,
+                      sm: theme.typography.bodyMediumStrong,
                     },
                   })}
                 >
