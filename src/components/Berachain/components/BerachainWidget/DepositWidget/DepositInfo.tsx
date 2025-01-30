@@ -25,7 +25,6 @@ import TooltipIncentives from '@/components/Berachain/components/BerachainWidget
 import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenSymbolCard';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
-import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { Typography } from '@mui/material';
 import { titleSlicer } from '@/components/Berachain/utils';
 

@@ -3,7 +3,6 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';

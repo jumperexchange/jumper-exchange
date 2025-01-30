@@ -43,6 +43,7 @@ import TooltipProgressbar from '@/components/Berachain/components/TooltipProgres
 import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import { sum } from 'lodash';
 
 interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
@@ -73,8 +74,8 @@ export const BerachainMarketCard = ({
 
   const { positionsData } = useBerachainMarketsFilterStore((state) => state);
 
-  const position = useMemo(() => {
-    return positionsData.find(
+  const positions = useMemo(() => {
+    return positionsData.filter(
       (positionsData) => positionsData.market_id === roycoData.market_id,
     );
   }, [positionsData, roycoData?.market_id, account]);
@@ -82,7 +83,7 @@ export const BerachainMarketCard = ({
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
 
-  const deposited = (position?.input_token_data?.token_amount ?? 0) > 0;
+  const deposited = positions.length > 0;
 
   const tvlGoal = useMemo(() => {
     return calculateTVLGoal(roycoData);
@@ -190,7 +191,11 @@ export const BerachainMarketCard = ({
                 digit={
                   deposited
                     ? t('format.decimal', {
-                        value: position?.input_token_data?.token_amount,
+                        value: positions.reduce((sum, item) => {
+                          return (
+                            sum + (item.input_token_data?.token_amount ?? 0)
+                          );
+                        }, 0),
                       })
                     : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 11)
                 }

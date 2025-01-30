@@ -3,7 +3,6 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
@@ -39,12 +38,9 @@ export const BerachainFilterTokensMenu = () => {
   const assetsFilterId = 'token-filter-button';
   const assetsMenuId = 'token-filter-menu';
 
-  const berachainFilters = useBerachainFilters();
-  const { data } = useEnrichedMarkets({
-    is_verified: isVerified,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
-    ...berachainFilters,
-  });
+  const { roycoMarkets: data } = useBerachainMarketsFilterStore(
+    (state) => state,
+  );
 
   const tokens = useMemo(() => {
     if (!data) {
