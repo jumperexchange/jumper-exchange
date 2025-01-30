@@ -64,8 +64,9 @@ function BeraStoreSetup() {
 
   useEffect(() => {
     if (!account?.address) {
-      refetch();
       setPositionsData([]);
+    } else {
+      refetch();
     }
 
     if (
