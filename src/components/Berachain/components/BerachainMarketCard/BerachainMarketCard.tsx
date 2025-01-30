@@ -34,10 +34,15 @@ import {
   DEPOSITED_TOOLTIP,
   TVL_TOOLTIP,
 } from '../../const/title';
-import { calculateTVLGoal } from '@/components/Berachain/utils';
+import {
+  calculateBeraYield,
+  calculateTVLGoal,
+  titleSlicer,
+} from '@/components/Berachain/utils';
 import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
 import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 
 interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
@@ -78,6 +83,7 @@ export const BerachainMarketCard = ({
     market_id: roycoData?.market_id!,
     account_address: account?.address?.toLowerCase() ?? '',
     custom_token_data: undefined,
+    enabled: false, // Disable to avoid spamming infra
   });
 
   const deposited =
@@ -175,6 +181,7 @@ export const BerachainMarketCard = ({
             >
               <DigitTokenSymbolCard
                 sx={(theme) => ({
+                  flexGrow: 1,
                   '.tooltip-icon': {
                     color: theme.palette.alphaLight500.main,
                   },
@@ -191,12 +198,13 @@ export const BerachainMarketCard = ({
                     ? t('format.decimal', {
                         value: dataRecipe?.input_token_data_ap?.token_amount,
                       })
-                    : roycoData?.input_token_data?.symbol
+                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 11)
                 }
                 hasDeposited={deposited ? true : false}
               />
               <DigitCard
                 sx={(theme) => ({
+                  width: 'auto',
                   '.tooltip-icon': {
                     color: theme.palette.alphaLight500.main,
                   },
@@ -207,6 +215,8 @@ export const BerachainMarketCard = ({
                   },
                   '.content': {
                     marginTop: 1,
+                    display: 'flex',
+                    alignItems: 'center',
                   },
                 })}
                 title={'TVL'}
@@ -267,7 +277,7 @@ export const BerachainMarketCard = ({
               />
             ) : (
               <DigitTooltipCard
-                title={'APY'}
+                title={'Rewards'}
                 digit={
                   roycoData?.annual_change_ratio
                     ? t('format.percent', {
