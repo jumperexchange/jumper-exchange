@@ -269,7 +269,7 @@ export const BerachainMarketCard = ({
             </BeraChainProgressCardComponent>
           </BerchainMarketCardInfos>
           <BerchainMarketCardInfos display={'flex'}>
-            {roycoData?.incentive_tokens_data?.length > 0 ? (
+            {tvlGoal !== 100 && roycoData?.incentive_tokens_data?.length > 0 ? (
               <TokenIncentivesCard
                 tokens={roycoData?.incentive_tokens_data}
                 marketData={roycoData}
@@ -277,7 +277,7 @@ export const BerachainMarketCard = ({
             ) : (
               <DigitTooltipCard
                 title={'Rewards'}
-                digit={
+                digit={tvlGoal === 100 ? "Deposit cap reached." :
                   roycoData?.annual_change_ratio
                     ? t('format.percent', {
                         value: roycoData?.annual_change_ratio,
