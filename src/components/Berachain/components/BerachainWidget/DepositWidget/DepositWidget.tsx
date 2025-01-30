@@ -39,9 +39,8 @@ import {
   BoxForm,
 } from './WidgetDeposit.style';
 import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
-import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import { useUserTracking } from '@/hooks/userTracking';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { TrackingCategory } from '@/const/trackingKeys';
 
 interface Image {
   url?: string;
@@ -199,7 +198,7 @@ function DepositWidget({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 10,
+    confirmations: 1,
     pollingInterval: 1_000,
   });
 
@@ -210,6 +209,9 @@ function DepositWidget({
     ) {
       return;
     }
+
+    setContractCallIndex(0);
+    setInputValue('');
 
     trackEvent({
       category: TrackingCategory.WidgetEvent,
@@ -285,7 +287,11 @@ function DepositWidget({
   useEffect(() => {
     if (isTxConfirmed) {
       refetch();
-      setContractCallIndex(contractCallIndex + 1);
+
+      const newIndex = contractCallIndex + 1;
+      if (writeContractOptions[newIndex]) {
+        setContractCallIndex(newIndex);
+      }
     }
   }, [isTxConfirmed]);
 
@@ -568,20 +574,19 @@ function DepositWidget({
         )}
 
         {contractCallIndex !== 0 &&
-        contractCallIndex > writeContractOptions.length - 1 &&
-        txHash ? (
-          <TxConfirmation
-            s={'Deposit successful'}
-            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
-            success={true}
-          />
-        ) : (
+          contractCallIndex > writeContractOptions.length - 1 &&
           txHash && (
             <TxConfirmation
-              s={'Transaction link'}
-              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+              s={'Deposit successful'}
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+              success={true}
             />
-          )
+          )}
+        {txHash && (
+          <TxConfirmation
+            s={'Transaction link'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+          />
         )}
       </BoxForm>
     </>

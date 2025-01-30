@@ -13,13 +13,17 @@ import {
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 export const BerachainFilterIncentivesMenu = () => {
-  const { incentiveFilter, setIncentiveFilter } =
-    useBerachainMarketsFilterStore((state) => state);
+  const {
+    incentiveFilter,
+    setIncentiveFilter,
+    roycoMarkets: data,
+  } = useBerachainMarketsFilterStore((state) => state);
 
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const [anchorTokenEl, setAnchorTokenEl] = useState<null | HTMLElement>(null);
   const [openTokensFilterMenu, setOpenTokensFilterMenu] = useState(false);
 
@@ -36,11 +40,6 @@ export const BerachainFilterIncentivesMenu = () => {
   };
   const assetsFilterId = 'token-filter-button';
   const assetsMenuId = 'token-filter-menu';
-
-  const { data } = useEnrichedMarkets({
-    is_verified: isVerified,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
-  });
 
   const tokens = useMemo(() => {
     if (!data) {

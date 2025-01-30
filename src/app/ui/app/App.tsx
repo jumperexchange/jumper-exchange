@@ -58,7 +58,7 @@ const App = ({ activeTheme, children }: PropsWithChildren<AppProps>) => {
       >
         <Box
           style={{
-            zIndex: 1000,
+            zIndex: 999,
             position: 'absolute',
             bottom: 0,
             left: 0,
