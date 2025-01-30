@@ -10,11 +10,8 @@ import {
 } from '@/components/Berachain/utils';
 import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { useMemo } from 'react';
-import { RoycoMarketType } from 'royco/market';
-import { useEnrichedMarkets, useTokenQuotes } from 'royco/hooks';
 import { useTranslation } from 'react-i18next';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
-import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 interface DigitCardProps {
   market: EnrichedMarketDataType;
@@ -28,12 +25,11 @@ export const TokenIncentivesData = ({
   amount,
 }: DigitCardProps) => {
   const { t } = useTranslation();
-  const { currentHighestOffers, marketMetadata, currentMarketData } =
-    useActiveMarket({
-      chain_id: market.chain_id,
-      market_id: market.market_id,
-      market_type: market.market_type,
-    });
+  const { currentHighestOffers } = useActiveMarket({
+    chain_id: market.chain_id,
+    market_id: market.market_id,
+    market_type: market.market_type,
+  });
   const { beraTokenQuote, roycoMarkets } = useBerachainMarketsFilterStore(
     (state) => state,
   );
@@ -50,20 +46,17 @@ export const TokenIncentivesData = ({
     });
   }, [roycoMarkets, market, beraTokenQuote]);
 
-  // @ts-expect-error
   const [highestIncentives] = useMemo(() => {
-    if (marketMetadata.market_type === RoycoMarketType.recipe.id) {
-      if (
-        !currentHighestOffers ||
-        currentHighestOffers.ip_offers.length === 0 ||
-        currentHighestOffers.ip_offers[0].tokens_data.length === 0
-      ) {
-        return [];
-      }
-
-      return currentHighestOffers.ip_offers[0].tokens_data ?? [];
+    if (
+      !currentHighestOffers ||
+      currentHighestOffers.ip_offers.length === 0 ||
+      currentHighestOffers.ip_offers[0].tokens_data.length === 0
+    ) {
+      return [];
     }
-  }, [currentMarketData, currentHighestOffers, marketMetadata]);
+
+    return currentHighestOffers.ip_offers[0].tokens_data ?? [];
+  }, [market, currentHighestOffers]);
 
   const token = useMemo(() => {
     return market.input_token_data;

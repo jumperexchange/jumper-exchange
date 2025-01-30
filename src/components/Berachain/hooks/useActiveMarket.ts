@@ -22,17 +22,19 @@ export const useActiveMarket = ({
   market_type: number | null;
   market_id: string | null;
 }) => {
-  /**
+  /*
+  /!**
    * @notice Enriched Market
-   */
+   *!/
   const propsEnrichedMarket = useEnrichedMarkets({
-    /*    // @ts-ignore
-    chain_id: parseInt(chain_id),*/
+    /!*    // @ts-ignore
+    chain_id: parseInt(chain_id),*!/
     // @ts-ignore
     market_type: parseInt(market_type),
     // @ts-ignore
     market_id: market_id,
   });
+*/
 
   /**
    * @notice Enriched Market Placeholder Data
@@ -61,10 +63,10 @@ export const useActiveMarket = ({
   const [placeholderDatasHighestOffers, setPlaceholderDatasHighestOffers] =
     // @ts-ignore
     useImmer<Array<typeof propsHighestOffers.data>>([undefined, undefined]);
-
-  /**
+  /*
+  /!**
    * @notice Read Recipe Market
-   */
+   *!/
   const propsReadMarket = useReadMarket({
     // @ts-ignore
     chain_id: parseInt(chain_id),
@@ -74,23 +76,23 @@ export const useActiveMarket = ({
     market_id: market_id,
   });
 
-  /**
+  /!**
    * @notice Actions Decoder Enter Market
-   */
+   *!/
   const propsActionsDecoderEnterMarket = useActionsDecoder({
     // @ts-ignore
     chain_id: parseInt(chain_id),
     script: propsReadMarket.data?.enter_market_script ?? null,
   });
 
-  /**
+  /!**
    * @notice Actions Decoder Exit Market
-   */
+   *!/
   const propsActionsDecoderExitMarket = useActionsDecoder({
     // @ts-ignore
     chain_id: parseInt(chain_id),
     script: propsReadMarket.data?.exit_market_script ?? null,
-  });
+  });*/
 
   /**
    * @notice Update Top Offers Recipe Data
@@ -117,10 +119,10 @@ export const useActiveMarket = ({
     propsHighestOffers.isRefetching,
     propsHighestOffers.data,
   ]);
-
-  /**
+  /*
+  /!**
    * @notice Update Enriched Market Data
-   */
+   *!/
   useEffect(() => {
     if (
       propsEnrichedMarket.isLoading === false &&
@@ -145,14 +147,14 @@ export const useActiveMarket = ({
     propsEnrichedMarket.isLoading,
     propsEnrichedMarket.isRefetching,
     propsEnrichedMarket.data,
-  ]);
+  ]);*/
 
   const isLoading =
-    propsEnrichedMarket.isLoading ||
-    propsHighestOffers.isLoading ||
-    // propsReadMarket.isLoading ||
-    propsActionsDecoderEnterMarket.isLoading ||
-    propsActionsDecoderExitMarket.isLoading;
+    // propsEnrichedMarket.isLoading ||
+    propsHighestOffers.isLoading;
+  // propsReadMarket.isLoading ||
+  // propsActionsDecoderEnterMarket.isLoading ||
+  // propsActionsDecoderExitMarket.isLoading;
 
   return {
     isLoading,
@@ -165,7 +167,7 @@ export const useActiveMarket = ({
       // @ts-ignore
       market_id: market_id as string,
     },
-    propsEnrichedMarket,
+    // propsEnrichedMarket,
     previousMarketData:
       !!placeholderDatasEnrichedMarket[0] &&
       // @ts-ignore
@@ -173,7 +175,7 @@ export const useActiveMarket = ({
         ? // @ts-ignore
           (placeholderDatasEnrichedMarket[0][0] as EnrichedMarketDataType)
         : undefined,
-    currentMarketData: propsEnrichedMarket.data?.[0] as EnrichedMarketDataType,
+    // currentMarketData: propsEnrichedMarket.data?.[0] as EnrichedMarketDataType,
     // currentMarketData:
     //   !!placeholderDatasEnrichedMarket[1] &&
     //   // @ts-ignore
@@ -184,8 +186,8 @@ export const useActiveMarket = ({
     propsHighestOffers,
     previousHighestOffers: placeholderDatasHighestOffers[0],
     currentHighestOffers: placeholderDatasHighestOffers[1],
-    propsActionsDecoderEnterMarket,
-    propsActionsDecoderExitMarket,
-    propsReadMarket,
+    // propsActionsDecoderEnterMarket,
+    // propsActionsDecoderExitMarket,
+    // propsReadMarket,
   };
 };

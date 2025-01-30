@@ -15,12 +15,11 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
   const { t } = useTranslation();
   const { roycoStats, beraTokenQuote, roycoMarkets } =
     useBerachainMarketsFilterStore((state) => state);
-  const { currentHighestOffers, marketMetadata, currentMarketData } =
-    useActiveMarket({
-      chain_id: market.chain_id,
-      market_id: market.market_id,
-      market_type: market.market_type,
-    });
+  const { currentHighestOffers, marketMetadata } = useActiveMarket({
+    chain_id: market.chain_id,
+    market_id: market.market_id,
+    market_type: market.market_type,
+  });
 
   const highestIncentives = useMemo(() => {
     if (
@@ -32,7 +31,7 @@ function TooltipIncentives({ market }: { market: EnrichedMarketDataType }) {
     }
 
     return currentHighestOffers.ip_offers[0].tokens_data ?? [];
-  }, [market, currentHighestOffers, marketMetadata]);
+  }, [market, currentHighestOffers]);
 
   const apr = useMemo(() => {
     if (!market || !roycoMarkets) {
