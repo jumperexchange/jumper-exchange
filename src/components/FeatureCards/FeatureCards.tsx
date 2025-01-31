@@ -9,7 +9,7 @@ import type { RouteExecutionUpdate } from '@lifi/widget';
 import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSpindlFetch } from 'src/hooks/spindl/useSpindlFetch';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { usePersonalizedFeatureOnLevel } from 'src/hooks/usePersonalizedFeatureOnLevel';
@@ -19,8 +19,7 @@ import { FeatureCard, FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
   const { account } = useAccount();
-  const fetchSpindl = useSpindlFetch();
-
+  const fetchSpindlData = useSpindlFetch();
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
@@ -44,18 +43,24 @@ export const FeatureCards = () => {
     enabled: !!points,
   });
 
-  useEffect(() => {
-    const handleWidgetExpanded = async (expanded: boolean) => {
-      setWidgetExpanded(expanded);
-    };
-    const handleRouteUpdated = async (route: RouteExecutionUpdate) => {
-      fetchSpindl({
+  const handleRouteUpdated = useCallback(
+    async (route: RouteExecutionUpdate) => {
+      await fetchSpindlData({
         address: account?.address,
         chainId: route.route.toToken.chainId,
         tokenAddress: route.route.toToken.address,
+        // country: 'US', // Add the appropriate country value here
       });
       setShowSpindleAds(true);
+    },
+    [account?.address, fetchSpindlData],
+  );
+
+  useEffect(() => {
+    const handleWidgetExpanded = (expanded: boolean) => {
+      setWidgetExpanded(expanded);
     };
+
     widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
 
@@ -63,7 +68,7 @@ export const FeatureCards = () => {
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
       widgetEvents.off(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
     };
-  }, [account?.address, fetchSpindl, widgetEvents, widgetExpanded]);
+  }, [widgetEvents, handleRouteUpdated]);
 
   function excludedFeatureCardsFilter(el: FeatureCardData) {
     if (
@@ -79,6 +84,22 @@ export const FeatureCards = () => {
 
     return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
   }
+
+  // const spindlFeatureCards = useMemo(() => {
+  //   console.log('MEMO PRE:', spindl);
+  //   // if (Array.isArray(spindl) && !!spindl.length) {
+  //   // console.log('USE MEMO', spindl);
+  //   return spindl
+  //     ?.filter(
+  //       (el) =>
+  //         el.attributes?.DisplayConditions &&
+  //         !disabledFeatureCards.includes(el.attributes?.uid),
+  //     )
+  //     .slice(0, 1);
+  //   // } else {
+  //   //   return [];
+  //   // }
+  // }, [disabledFeatureCards, spindl]);
 
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards) && !!cards.length) {
