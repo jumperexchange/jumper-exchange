@@ -2,6 +2,8 @@ import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { ExtendedQuest } from 'src/types/questDetails';
 
+// The getExtQuestBySlug function fetches a quest or extended quest from the Strapi API based on the provided slug.
+// It uses environment variables for API URLs and tokens to ensure secure and environment-specific configurations.
 export async function getExtQuestBySlug(
   slug: string,
   type?: 'Quest' | 'ExtendedQuest',

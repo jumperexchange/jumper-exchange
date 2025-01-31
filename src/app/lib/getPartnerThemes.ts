@@ -1,11 +1,8 @@
 import type { PartnerThemesData, StrapiResponse } from '@/types/strapi';
 import { PartnerThemeStrapiApi } from '@/utils/strapi/StrapiApi';
 
-export interface GetPartnerThemeResponse
-  extends StrapiResponse<PartnerThemesData> {
-  url: string;
-}
-
+// The getPartnerThemes function fetches a list of partner themes from the Strapi API.
+// It uses environment variables for API URLs and tokens to ensure secure and environment-specific configurations.
 export async function getPartnerThemes(): Promise<GetPartnerThemeResponse> {
   const urlParams = new PartnerThemeStrapiApi();
   const apiBaseUrl = urlParams.getApiBaseUrl();

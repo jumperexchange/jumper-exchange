@@ -1,6 +1,8 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
+// The getArticles function fetches a list of articles from the Strapi API.
+// It uses environment variables for API URLs and tokens to ensure secure and environment-specific configurations.
 export interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
   url: string; // Define the shape of the URL
 }

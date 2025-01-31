@@ -46,6 +46,8 @@ const sortBlogArticlesByPublishedDate = (tags: TagAttributes[]) => {
   });
 };
 
+// The getTags function fetches a list of tags from the Strapi API.
+// It uses environment variables for API URLs and tokens to ensure secure and environment-specific configurations.
 export async function getTags(): Promise<GetTagsResponse> {
   const urlParams = new TagStrapiApi().addPaginationParams({
     page: 1,

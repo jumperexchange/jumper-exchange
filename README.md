@@ -65,3 +65,19 @@ Your contributions will help make our project accessible to a wider audience aro
 
 Thank you for your support!
 
+## Environment Configuration
+
+### Purpose of `.env` Files
+
+The purpose of the `.env` files in this repository is to store environment-specific configuration variables. These files allow the application to be configured differently depending on the environment it is running in, such as development, staging, production, or localhost.
+
+### Environment-Specific `.env` Files
+
+* `.env.development`: Contains configuration variables for the development environment, such as API URLs, Google Analytics tracking ID, and other environment-specific settings.
+* `.env.localhost`: Contains configuration variables for running the application on localhost, including local API URLs and other settings specific to the local environment.
+* `.env.production`: Contains configuration variables for the production environment, including production API URLs, Google Analytics tracking ID, and other settings specific to the production environment.
+* `.env.staging`: Contains configuration variables for the staging environment, which is used for testing before deploying to production. This file includes staging API URLs and other environment-specific settings.
+
+### Importance of Keeping Sensitive Information Out of Source Code
+
+These `.env` files help manage different configurations for various environments, ensuring that the application behaves correctly and securely in each environment. They also help keep sensitive information, such as API keys and tokens, out of the source code.

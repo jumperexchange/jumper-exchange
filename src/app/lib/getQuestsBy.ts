@@ -2,6 +2,8 @@ import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
 
+// The getQuestsBy function fetches a list of quests from the Strapi API based on the provided key and value.
+// It uses environment variables for API URLs and tokens to ensure secure and environment-specific configurations.
 export async function getQuestsBy(key: string, value: string) {
   const urlParams = new QuestStrapiApi().filterBy(key, value);
   const apiBaseUrl = urlParams.getApiBaseUrl();

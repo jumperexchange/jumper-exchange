@@ -1,5 +1,7 @@
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
+// The getArticleBySlug function fetches an article from the Strapi API based on the provided slug.
+// It uses environment variables for API URLs and tokens to ensure secure and environment-specific configurations.
 export async function getArticleBySlug(slug: string) {
   const urlParams = new ArticleStrapiApi().filterBySlug(slug);
   const apiBaseUrl = urlParams.getApiBaseUrl();

@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+// The useDexsAndBridges hook fetches a list of DEXs and bridges from the LiFi API.
+// It uses environment variables for API URLs to ensure secure and environment-specific configurations.
 export const useDexsAndBridges = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['tools'],
