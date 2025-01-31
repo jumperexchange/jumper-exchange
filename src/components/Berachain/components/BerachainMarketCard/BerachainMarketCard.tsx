@@ -276,7 +276,7 @@ export const BerachainMarketCard = ({
               />
             ) : (
               <DigitTooltipCard
-                title={'Rewards'}
+                title={'Rewards per token'}
                 digit={
                   tvlGoal === 100
                     ? 'Deposit cap reached.'
