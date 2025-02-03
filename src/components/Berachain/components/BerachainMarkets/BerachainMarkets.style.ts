@@ -1,5 +1,5 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, FormControlLabel, Grid } from '@mui/material';
 import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, styled } from '@mui/material/styles';
 export const BerachainMarketFilters = styled(Box)(({ theme }) => ({
@@ -23,6 +23,25 @@ export const BerachainMarketFiltersButton = styled(Button)(({ theme }) => ({
     backgroundColor: darken('#313131', 0.16),
   },
 }));
+
+export const BerachainMarketBaffleFormControlLabel = styled(FormControlLabel)(
+  ({ theme }) => ({
+    display: 'flex',
+    height: 48,
+    color: theme.palette.text.primary,
+    padding: theme.spacing(1.5),
+    alignItems: 'center',
+    gap: theme.spacing(1.5),
+    borderRadius: '12px',
+    border: '1px solid #554F4E',
+    background: '#313131',
+    transition: 'background-color 0.3s ease-in-out',
+    margin: 0,
+    '&:hover': {
+      backgroundColor: darken('#313131', 0.16),
+    },
+  }),
+);
 
 export const BerachainMarketCards = styled(Grid)(({ theme }) => ({
   display: 'grid',

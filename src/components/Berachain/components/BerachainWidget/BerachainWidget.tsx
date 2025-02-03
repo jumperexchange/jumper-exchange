@@ -9,6 +9,8 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
 import { titleSlicer } from '@/components/Berachain/utils';
+import { ClaimingInformation } from '@/components/Berachain/components/BerachainWidget/ClaimingInformation';
+import { Univ2Information } from '@/components/Berachain/components/BerachainWidget/Univ2Information';
 
 export const BerachainWidget = ({
   market,
@@ -121,12 +123,19 @@ export const BerachainWidget = ({
               },
             }}
           >
-            <Widget
-              // @ts-expect-error
-              starterVariant="compact"
-              toChain={token?.chain_id}
-              toToken={token?.contract_address}
-            />
+            {token.type === 'lp' ? (
+              <Univ2Information
+                link={`https://app.uniswap.org/explore/pools/ethereum/${token.contract_address}`}
+                appName={appName}
+              />
+            ) : (
+              <Widget
+                // @ts-expect-error
+                starterVariant="compact"
+                toChain={token?.chain_id}
+                toToken={token?.contract_address}
+              />
+            )}
           </Box>
         )}
         {tab === 1 && (

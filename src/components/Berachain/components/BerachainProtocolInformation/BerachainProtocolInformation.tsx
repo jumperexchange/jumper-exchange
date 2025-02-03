@@ -43,6 +43,8 @@ export const BerachainProtocolInformation = ({
   );
   const detailInformation = card?.attributes?.CustomInformation;
 
+  const fullTitle = getFullTitle(market!, card);
+
   return (
     <BerachainProtocolActionBox>
       {isMobile &&
@@ -50,7 +52,7 @@ export const BerachainProtocolInformation = ({
           <BerachainWidget
             market={market}
             appName={card?.attributes.Title}
-            fullAppName={getFullTitle(market!, card)}
+            fullAppName={fullTitle}
             appLink={
               detailInformation?.socials?.website ?? 'https://jumper.exchange/'
             }
@@ -89,9 +91,7 @@ export const BerachainProtocolInformation = ({
                 ))}
               <Stack spacing={2} direction="column">
                 {card?.attributes?.Title ? (
-                  <Typography variant="titleSmall">
-                    What is {card?.attributes.Title}?
-                  </Typography>
+                  <Typography variant="titleSmall">{fullTitle}</Typography>
                 ) : (
                   <Skeleton
                     variant="rectangular"
@@ -100,7 +100,7 @@ export const BerachainProtocolInformation = ({
                 )}
                 {card?.attributes?.Description ? (
                   <Typography variant="bodyMedium" color="textSecondary">
-                    {card?.attributes.Description}
+                    {market?.description}
                   </Typography>
                 ) : (
                   <Skeleton
@@ -200,7 +200,7 @@ export const BerachainProtocolInformation = ({
       {!isMobile &&
         (market ? (
           <BerachainWidget
-            fullAppName={getFullTitle(market!, card)}
+            fullAppName={fullTitle}
             market={market}
             appName={card?.attributes.Title}
             appLink={

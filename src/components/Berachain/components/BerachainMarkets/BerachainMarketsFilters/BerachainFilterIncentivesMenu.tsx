@@ -3,7 +3,6 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
@@ -23,7 +22,6 @@ export const BerachainFilterIncentivesMenu = () => {
   } = useBerachainMarketsFilterStore((state) => state);
 
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') !== 'false';
   const [anchorTokenEl, setAnchorTokenEl] = useState<null | HTMLElement>(null);
   const [openTokensFilterMenu, setOpenTokensFilterMenu] = useState(false);
 
@@ -60,13 +58,6 @@ export const BerachainFilterIncentivesMenu = () => {
     return mappedTokens;
   }, [data]);
 
-  const incentivesNumber = Array.from(tokens.values()).filter(
-    (incentive) => incentive !== undefined,
-  ).length;
-  const incentivesFiltered = incentivesNumber
-    ? incentivesNumber - incentiveFilter.length
-    : undefined;
-
   return (
     <BerachainMarketsFilterBox>
       <BerachainMarketFiltersButton
@@ -77,9 +68,9 @@ export const BerachainFilterIncentivesMenu = () => {
         onClick={handleTokensFilterClick}
       >
         <Typography variant="bodyMedium">
-          {incentivesNumber !== incentivesFiltered
-            ? `${incentivesFiltered ? incentivesFiltered : 'All '} Incentive${incentivesFiltered === 1 ? '' : 's'}`
-            : 'All Incentives'}
+          {incentiveFilter.length === 0
+            ? 'All Incentives'
+            : `${incentiveFilter.length} Incentive${incentiveFilter.length === 1 ? '' : 's'}`}
         </Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
@@ -102,7 +93,7 @@ export const BerachainFilterIncentivesMenu = () => {
                 setIncentiveFilter(token.symbol);
               }}
             >
-              {incentiveFilter.includes(token.symbol) ? (
+              {!incentiveFilter.includes(token.symbol) ? (
                 <RadioButtonUncheckedIcon
                   sx={{ color: '#FF8425', width: '24px', height: '24px' }}
                 />

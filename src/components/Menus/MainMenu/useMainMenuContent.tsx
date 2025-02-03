@@ -161,7 +161,7 @@ export const useMainMenuContent = () => {
       },
     },
     {
-      label: 'Jumper Loyalty Pass',
+      label: 'Jumper Profile',
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
       link: { url: JUMPER_LOYALTY_PATH },
