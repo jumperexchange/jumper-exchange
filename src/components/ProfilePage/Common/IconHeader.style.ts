@@ -10,6 +10,14 @@ export const IconHeaderContainer = styled(Box)(({ theme }) => ({
   paddingLeft: '6px',
   borderRadius: '32px',
   width: 'fit-content',
+
+  '&.hide-icon-header-title-on-mobile': {
+    [theme.breakpoints.down('sm')]: {
+      '.icon-header-title': {
+        display: 'none',
+      },
+    },
+  },
 }));
 
 export const IconHeaderTitle = styled(Typography)(({ theme }) => ({

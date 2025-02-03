@@ -40,7 +40,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
             href={`/leaderboard?page=${userPage}`}
           >
             <LeaderboardUserTitle variant="titleLarge">
-              {leaderboardUserData?.position
+              {position
                 ? t('format.decimal2Digit', { value: position })
                 : 'N/A'}
             </LeaderboardUserTitle>

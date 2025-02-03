@@ -1,5 +1,4 @@
 'use client';
-import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -71,11 +70,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                 <IconHeader
                   tooltipKey={t('leaderboard.description')}
                   title={`Updated: ${t('format.date', { value: new Date() })}`}
-                  sx={{
-                    [theme.breakpoints.down('sm' as Breakpoint)]: {
-                      display: 'none',
-                    },
-                  }}
+                  className="hide-icon-header-title-on-mobile"
                 />
               )}
             </LeaderboardUpdateDateBox>

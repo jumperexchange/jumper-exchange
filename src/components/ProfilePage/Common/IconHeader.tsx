@@ -8,17 +8,24 @@ import { IconHeaderContainer, IconHeaderTitle } from './IconHeader.style';
 
 export interface IconHeaderProps {
   tooltipKey: string;
+  className?: string;
   title: string;
   icon?: React.ReactNode;
   sx?: SxProps<Theme>;
 }
 
-const IconHeader = ({ tooltipKey, title, icon, sx }: IconHeaderProps) => {
+const IconHeader = ({
+  tooltipKey,
+  className,
+  title,
+  icon,
+  sx,
+}: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
   return (
-    <IconHeaderContainer sx={sx}>
+    <IconHeaderContainer className={className || ''}>
       {icon}
       <IconHeaderTitle className="icon-header-title" variant="title2XSmall">
         {title}

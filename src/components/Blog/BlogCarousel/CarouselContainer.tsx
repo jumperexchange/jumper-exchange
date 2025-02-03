@@ -78,15 +78,9 @@ export const CarouselContainer = ({
             <Box>
               {isClient && (
                 <IconHeader
+                  className="hide-icon-header-title-on-mobile"
                   tooltipKey={updateTooltip || ''}
                   title={updateTitle}
-                  sx={(theme) => ({
-                    [theme.breakpoints.down('sm')]: {
-                      '.icon-header-title': {
-                        display: 'none',
-                      },
-                    },
-                  })}
                 />
               )}
             </Box>
