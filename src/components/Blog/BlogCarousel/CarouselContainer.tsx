@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box, useTheme, type CSSObject } from '@mui/material';
+import { Box, useMediaQuery, useTheme, type CSSObject } from '@mui/material';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
@@ -34,7 +34,7 @@ export const CarouselContainer = ({
 }: CarouselContainerProps) => {
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
-
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const isClient = useClient();
 
   const handleChange = useCallback((direction: 'next' | 'prev') => {
@@ -78,9 +78,8 @@ export const CarouselContainer = ({
             <Box>
               {isClient && (
                 <IconHeader
-                  hideTitleOnMobile={true}
                   tooltipKey={updateTooltip || ''}
-                  title={updateTitle}
+                  title={!isMobile ? updateTitle : ''}
                 />
               )}
             </Box>

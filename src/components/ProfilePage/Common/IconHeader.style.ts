@@ -1,4 +1,3 @@
-import type { TypographyProps } from '@mui/material';
 import { Box, Typography, styled } from '@mui/material';
 
 export const IconHeaderContainer = styled(Box)(({ theme }) => ({
@@ -13,22 +12,8 @@ export const IconHeaderContainer = styled(Box)(({ theme }) => ({
   width: 'fit-content',
 }));
 
-interface IconHeaderTitleProps extends TypographyProps {
-  hideTitleOnMobile?: boolean;
-}
-
-export const IconHeaderTitle = styled(Typography)<IconHeaderTitleProps>(
-  ({ theme, hideTitleOnMobile }) => ({
-    marginLeft: '8px',
-    userSelect: 'none',
-    color: theme.palette.text.primary,
-
-    ...(hideTitleOnMobile && {
-      [theme.breakpoints.down('sm')]: {
-        '.icon-header-title': {
-          display: 'none',
-        },
-      },
-    }),
-  }),
-);
+export const IconHeaderTitle = styled(Typography)(({ theme }) => ({
+  marginLeft: '8px',
+  userSelect: 'none',
+  color: theme.palette.text.primary,
+}));

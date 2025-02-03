@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useClient from 'src/hooks/useClient';
@@ -14,15 +14,19 @@ interface PointsBoxProps {
 export const PointsBox = ({ points }: PointsBoxProps) => {
   const { t } = useTranslation();
   const isClient = useClient();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   return (
     <Box>
       {isClient && (
         <IconHeader
           tooltipKey="profile_page.pointsInfo"
-          title={`Updated: ${t('format.date', { value: new Date() })}`}
+          title={
+            !isMobile
+              ? `Updated: ${t('format.date', { value: new Date() })}`
+              : ''
+          }
           icon={<XPIcon />}
-          hideTitleOnMobile={true}
         />
       )}
       <Box display="flex" alignItems="center">
