@@ -31,7 +31,7 @@ export const FeatureCards = () => {
   const [showSpindleAds, setShowSpindleAds] = useState(false);
   const widgetEvents = useWidgetEvents();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-  const [spindl] = useSpindlStore((state) => [state.spindl]);
+  const spindl = useSpindlStore((state) => state.spindl);
   const { data: cards, isSuccess } = useStrapi<FeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
