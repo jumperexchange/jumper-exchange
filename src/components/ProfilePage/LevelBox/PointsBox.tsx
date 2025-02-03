@@ -25,7 +25,6 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
           icon={<XPIcon />}
           sx={{
             [theme.breakpoints.down('sm')]: {
-              // display: 'none',
               '.icon-header-title': {
                 display: 'none',
               },
