@@ -22,7 +22,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
           tooltipKey="profile_page.pointsInfo"
           title={`Updated: ${t('format.date', { value: new Date() })}`}
           icon={<XPIcon />}
-          className="hide-icon-header-title-on-mobile"
+          hideTitleOnMobile={true}
         />
       )}
       <Box display="flex" alignItems="center">

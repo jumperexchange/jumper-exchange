@@ -78,7 +78,7 @@ export const CarouselContainer = ({
             <Box>
               {isClient && (
                 <IconHeader
-                  className="hide-icon-header-title-on-mobile"
+                  hideTitleOnMobile={true}
                   tooltipKey={updateTooltip || ''}
                   title={updateTitle}
                 />

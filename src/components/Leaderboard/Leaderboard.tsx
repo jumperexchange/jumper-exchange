@@ -70,7 +70,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                 <IconHeader
                   tooltipKey={t('leaderboard.description')}
                   title={`Updated: ${t('format.date', { value: new Date() })}`}
-                  className="hide-icon-header-title-on-mobile"
+                  hideTitleOnMobile={true}
                 />
               )}
             </LeaderboardUpdateDateBox>
