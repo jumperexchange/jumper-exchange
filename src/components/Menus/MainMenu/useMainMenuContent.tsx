@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  JUMPER_BOYCO_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
@@ -142,22 +141,6 @@ export const useMainMenuContent = () => {
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
         });
-      },
-    },
-    {
-      label: 'Jump into Boyco',
-      prefixIcon: <BoycoIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_BOYCO_PATH },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-pass-berachain',
-          action: TrackingAction.ClickJumperCampaignLink,
-          data: { [TrackingEventParameter.Menu]: 'berachain' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_BOYCO_PATH);
       },
     },
     {

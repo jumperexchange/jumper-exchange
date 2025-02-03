@@ -41,10 +41,10 @@ export const BerachainMarkets = () => {
       >
         <Typography
           sx={(theme) => ({
-            color: theme.palette.text.primary,
+            color: '#FF8425',
           })}
         >
-          Boyco ends on Feb 3rd 12AM UTC.
+          Boyco ended on Feb 2nd at 11:59 pm UTC.
         </Typography>
       </Box>
       <BerachainMarketsHeader />
