@@ -21,7 +21,6 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { JUMPER_WASH_PATH } from '../../const/urls';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
   ImageWalletMenuButton,
@@ -80,36 +79,31 @@ export const WalletButtons = () => {
         <ConnectButton />
       ) : (
         <Stack direction="row" spacing={2}>
-          {isDesktop &&
-            !pathname.includes(JUMPER_SCAN_PATH) &&
-            !pathname?.includes(JUMPER_WASH_PATH) && (
-              <WalletMenuButton
-                id="wallet-digest-button"
-                onClick={handleXPClick}
-              >
-                <ImageWalletMenuButton
-                  src={imgLink}
-                  alt={`${account?.address} wallet Icon`}
-                  width={32}
-                  height={32}
-                  priority={false}
-                  unoptimized={true}
-                />
-                {isLoading ? (
-                  <SkeletonWalletMenuButton variant="circular" />
-                ) : (
-                  <Typography
-                    variant={'bodyMediumStrong'}
-                    width={'auto'}
-                    marginRight={1.1}
-                    marginLeft={1}
-                  >
-                    {points ? t('format.decimal2Digit', { value: points }) : 0}
-                  </Typography>
-                )}
-                <XPIcon style={{ width: 32, height: 32 }} />
-              </WalletMenuButton>
-            )}
+          {isDesktop && !pathname.includes(JUMPER_SCAN_PATH) && (
+            <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
+              <ImageWalletMenuButton
+                src={imgLink}
+                alt={`${account?.address} wallet Icon`}
+                width={32}
+                height={32}
+                priority={false}
+                unoptimized={true}
+              />
+              {isLoading ? (
+                <SkeletonWalletMenuButton variant="circular" />
+              ) : (
+                <Typography
+                  variant={'bodyMediumStrong'}
+                  width={'auto'}
+                  marginRight={1.1}
+                  marginLeft={1}
+                >
+                  {points ? t('format.decimal2Digit', { value: points }) : 0}
+                </Typography>
+              )}
+              <XPIcon style={{ width: 32, height: 32 }} />
+            </WalletMenuButton>
+          )}
           <WalletMenuButton
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
