@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import useClient from 'src/hooks/useClient';
@@ -13,7 +13,6 @@ interface PointsBoxProps {
 
 export const PointsBox = ({ points }: PointsBoxProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const isClient = useClient();
 
   return (
