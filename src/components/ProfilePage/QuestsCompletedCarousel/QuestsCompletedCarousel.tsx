@@ -32,7 +32,7 @@ export const QuestsCompletedCarousel = ({
   //   today.getMonth() - 1,
   //   today.getDate(),
   // );
-  const updateDay = new Date(today.getFullYear(), today.getMonth(), 7);
+  const updateDay = new Date(today.getFullYear(), today.getMonth(), 2);
 
   return (
     <QuestsOverviewContainer>
