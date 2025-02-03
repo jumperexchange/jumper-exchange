@@ -185,7 +185,8 @@ export function Widget({
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
+          allowSwitchChain:
+            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig or smart account wallets
         },
         providers:
           isMultisigSigner && isIframeEnvironment()
