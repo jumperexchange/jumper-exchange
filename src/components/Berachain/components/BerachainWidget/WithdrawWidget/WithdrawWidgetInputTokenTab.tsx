@@ -208,7 +208,7 @@ export const WithdrawWidgetInputTokenTab = ({
             fontSize: '1.5rem',
           }}
         >
-          No Positions yet
+          No positions yet
         </Typography>
         {/* <Typography variant="body2" color="textSecondary">
           Deposits and rewards can be withdrawn here.

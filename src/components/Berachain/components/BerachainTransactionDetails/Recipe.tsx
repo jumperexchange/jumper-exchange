@@ -14,11 +14,11 @@ function Recipe({
   const {
     isLoading,
     marketMetadata,
-    currentMarketData,
+    // currentMarketData,
     previousMarketData,
-    propsReadMarket,
-    propsActionsDecoderEnterMarket,
-    propsActionsDecoderExitMarket,
+    // propsReadMarket,
+    // propsActionsDecoderEnterMarket,
+    // propsActionsDecoderExitMarket,
     // } = useActiveMarket(market.chain_id, market.market_type, market.market_id);
   } = useActiveMarket({
     chain_id: 1,
@@ -54,11 +54,11 @@ function Recipe({
             //   "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
             // )}
           >
-            <ActionFlow
+            {/*            <ActionFlow
               size="xs"
               actions={propsActionsDecoderEnterMarket.data ?? []}
               showAlertIcon={false}
-            />
+            />*/}
           </Box>
         </Grid>
       )}
@@ -83,11 +83,11 @@ function Recipe({
             //   "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
             // )}
           >
-            <ActionFlow
+            {/*            <ActionFlow
               size="xs"
               actions={propsActionsDecoderExitMarket.data ?? []}
               showAlertIcon={false}
-            />
+            />*/}
           </Box>
         </Grid>
       )}

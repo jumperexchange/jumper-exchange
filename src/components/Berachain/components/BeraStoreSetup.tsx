@@ -2,14 +2,16 @@ import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/Be
 import { useEffect } from 'react';
 import {
   useEnrichedMarkets,
+  useEnrichedPositionsRecipe,
   useEnrichedRoycoStats,
   useTokenQuotes,
 } from 'royco/hooks';
 import { BERA_TOKEN_ID } from '../utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
-import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
+import { useAccount } from '@lifi/wallet-management';
 
 function BeraStoreSetup() {
+  const { account } = useAccount();
   const { data: roycoStatsData } = useEnrichedRoycoStats();
   const {
     roycoStats,
@@ -17,6 +19,7 @@ function BeraStoreSetup() {
     setRoycoStats,
     setBeraTokenQuote,
     setRoycoMarkets,
+    setPositionsData,
   } = useBerachainMarketsFilterStore((state) => state);
 
   const { data: beraTokenQuotes } = useTokenQuotes({
@@ -53,6 +56,30 @@ function BeraStoreSetup() {
 
     setRoycoMarkets(roycoDataMarkets);
   }, [roycoDataMarkets]);
+
+  const { data: positionsRecipe, refetch } = useEnrichedPositionsRecipe({
+    account_address: account?.address?.toLowerCase() as string,
+    page_index: 0,
+    page_size: 500,
+    enabled: !!account?.address,
+  });
+
+  useEffect(() => {
+    if (!account?.address) {
+      setPositionsData([]);
+    } else {
+      refetch();
+    }
+
+    if (
+      !Array.isArray(positionsRecipe?.data) ||
+      positionsRecipe.data.length === 0
+    ) {
+      return;
+    }
+
+    setPositionsData(positionsRecipe.data);
+  }, [positionsRecipe, account]);
 
   return <></>;
 }

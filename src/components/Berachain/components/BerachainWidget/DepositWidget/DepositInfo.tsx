@@ -25,7 +25,6 @@ import TooltipIncentives from '@/components/Berachain/components/BerachainWidget
 import DigitTokenSymbolCard from '../../BerachainMarketCard/StatCard/DigitTokenSymbolCard';
 import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
 import { useAccount } from '@lifi/wallet-management';
-import { useActiveMarket } from '@/components/Berachain/hooks/useActiveMarket';
 import { Typography } from '@mui/material';
 import { titleSlicer } from '@/components/Berachain/utils';
 
@@ -170,7 +169,7 @@ function DepositInfo({ market, balance }: DepositInfoProps) {
         <Stack direction="row" justifyContent="space-between">
           {market?.incentive_tokens_data?.length > 0 ? (
             <DigitCard
-              title={'Rewards'}
+              title={'Rewards per token'}
               sx={(theme) => ({
                 '.tooltip-icon': {
                   color: theme.palette.alphaLight500.main,
