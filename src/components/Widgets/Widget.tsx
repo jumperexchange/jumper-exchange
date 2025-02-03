@@ -186,7 +186,7 @@ export function Widget({
         routeOptions: {
           maxPriceImpact: 0.4,
           allowSwitchChain:
-            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig wallets
+            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig or smart account wallets
         },
         providers:
           isMultisigSigner && isIframeEnvironment()
