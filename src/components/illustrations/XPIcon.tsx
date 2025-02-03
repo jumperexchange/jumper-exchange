@@ -1,11 +1,11 @@
-import type { SVGProps } from 'react';
+import type { CSSProperties } from 'react';
 
 export const XPIcon = ({
   colorFill,
-  props,
+  style,
 }: {
   colorFill?: string;
-  props?: SVGProps<SVGSVGElement>;
+  style?: CSSProperties;
 }) => {
   const color = colorFill ?? '#31007A';
 
@@ -16,7 +16,7 @@ export const XPIcon = ({
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
+      style={style}
     >
       <circle cx="10" cy="10" r="10" fill={color} />
       <path
