@@ -22,9 +22,12 @@ const IconHeader = ({
   const theme = useTheme();
 
   return (
-    <IconHeaderContainer hideTitleOnMobile={hideTitleOnMobile}>
+    <IconHeaderContainer>
       {icon}
-      <IconHeaderTitle className="icon-header-title" variant="title2XSmall">
+      <IconHeaderTitle
+        hideTitleOnMobile={hideTitleOnMobile}
+        variant="title2XSmall"
+      >
         {title}
       </IconHeaderTitle>
       <Tooltip
