@@ -28,7 +28,6 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import { BoycoIcon } from '@/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
