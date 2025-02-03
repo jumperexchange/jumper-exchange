@@ -21,7 +21,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useMemo, useState } from 'react';
 import { MaxButton } from '@/components/WidgetLikeField/WidgetLikeField.style';
 import type { TransactionOptionsType } from 'royco/types';
-import { useAccountBalance, usePrepareMarketAction } from 'royco/hooks';
+import { usePrepareMarketAction } from 'royco/hooks';
 import {
   parseRawAmountToTokenAmount,
   parseTokenAmountToRawAmount,
@@ -30,7 +30,7 @@ import { DEFAULT_WALLET_ADDRESS } from '@/const/urls';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { switchChain } from '@wagmi/core';
 import { CustomLoadingButton } from '../LoadingButton.style';
-import type { ExtendedChain } from '@lifi/sdk';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import ConnectButton from '@/components/Navbar/ConnectButton';
 import { TxConfirmation } from '../TxConfirmation';
@@ -39,9 +39,9 @@ import {
   BoxForm,
 } from './WidgetDeposit.style';
 import DepositInfo from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositInfo';
-import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
 import { useUserTracking } from '@/hooks/userTracking';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { TrackingCategory } from '@/const/trackingKeys';
+import { useGetTokenBalance } from '@/hooks/useGetTokenBalance';
 
 interface Image {
   url?: string;
@@ -102,19 +102,28 @@ function DepositWidget({
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const { account } = useAccount();
+
   const {
     isLoading: isLoadingWallet,
+    isSuccess,
     data: dataWallet,
     refetch,
-  } = useAccountBalance({
-    chain_id: market.chain_id!,
-    account: account?.address || '',
-    tokens: market ? [market.input_token_data.contract_address] : [],
-  });
+  } = useGetTokenBalance(account?.address, {
+    chainId: market.chain_id!,
+    address: market.input_token_data.contract_address,
+    decimals: market.input_token_data.decimals,
+  } as Token);
+
+  // Not optimised, needs to find a better way to do it
+  useEffect(() => {
+    if (isSuccess) {
+      refetch();
+    }
+  }, []);
 
   const balance = parseRawAmountToTokenAmount(
-    dataWallet?.[0]?.raw_amount?.toString() ?? '0',
-    market?.input_token_data.decimals ?? 0,
+    dataWallet?.amount?.toString() ?? '0',
+    dataWallet?.decimals ?? 0,
   );
   const theme = useTheme();
   const [inputValue, setInputValue] = useState<string>('');
@@ -199,7 +208,7 @@ function DepositWidget({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 10,
+    confirmations: 3,
     pollingInterval: 1_000,
   });
 
@@ -210,6 +219,9 @@ function DepositWidget({
     ) {
       return;
     }
+
+    setContractCallIndex(0);
+    setInputValue('');
 
     trackEvent({
       category: TrackingCategory.WidgetEvent,
@@ -285,7 +297,11 @@ function DepositWidget({
   useEffect(() => {
     if (isTxConfirmed) {
       refetch();
-      setContractCallIndex(contractCallIndex + 1);
+
+      const newIndex = contractCallIndex + 1;
+      if (writeContractOptions[newIndex]) {
+        setContractCallIndex(newIndex);
+      }
     }
   }, [isTxConfirmed]);
 
@@ -568,20 +584,19 @@ function DepositWidget({
         )}
 
         {contractCallIndex !== 0 &&
-        contractCallIndex > writeContractOptions.length - 1 &&
-        txHash ? (
-          <TxConfirmation
-            s={'Deposit successful'}
-            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
-            success={true}
-          />
-        ) : (
+          contractCallIndex > writeContractOptions.length - 1 &&
           txHash && (
             <TxConfirmation
-              s={'Transaction link'}
-              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+              s={'Deposit successful'}
+              link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io'}/tx/${txHash}`}
+              success={true}
             />
-          )
+          )}
+        {txHash && (
+          <TxConfirmation
+            s={'Transaction link'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+          />
         )}
       </BoxForm>
     </>

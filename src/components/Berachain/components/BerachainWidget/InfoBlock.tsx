@@ -27,6 +27,7 @@ import {
 import TokenIncentivesCard from '../BerachainMarketCard/StatCard/TokenIncentivesCard';
 import DigitTooltipCard from '../BerachainMarketCard/StatCard/DigitTooltipCard';
 import DigitTokenSymbolCard from '../BerachainMarketCard/StatCard/DigitTokenSymbolCard';
+import { titleSlicer } from '@/components/Berachain/utils';
 
 interface InfoBlockProps {
   market: EnrichedMarketDataType;
@@ -90,7 +91,7 @@ function InfoBlock({ market, recipe, sx = {} }: InfoBlockProps) {
                     value: recipe?.input_token_data_ap?.token_amount,
                     maximumFractionDigits: 5,
                   })
-                : market?.input_token_data?.symbol
+                : titleSlicer(market?.input_token_data?.symbol)
             }
             hasDeposited={deposited ? true : false}
           />
@@ -98,6 +99,7 @@ function InfoBlock({ market, recipe, sx = {} }: InfoBlockProps) {
           {market.lockup_time === '0' ? undefined : (
             <DigitCard
               sx={(theme) => ({
+                alignItems: 'flex-end',
                 '.header-container': {
                   justifyContent: 'flex-end',
                 },

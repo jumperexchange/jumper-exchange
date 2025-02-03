@@ -26,7 +26,7 @@ function TooltipProgressbar({
             value: fillable,
             notation: 'compact',
           })}{' '}
-          tokens to be invested in this market.
+          tokens to be invested.
         </>
       }
       placement="top"

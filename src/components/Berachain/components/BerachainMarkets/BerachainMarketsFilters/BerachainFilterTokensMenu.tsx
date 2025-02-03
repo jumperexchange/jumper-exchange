@@ -3,7 +3,6 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from 'src/components/Berachain/stores/BerachainMarketsFilterStore';
 import { BerachainMarketFilter } from '../BerachainMarketFilter/BerachainMarketFilter';
@@ -13,10 +12,11 @@ import {
   BerachainMarketFiltersButton,
 } from '../BerachainMarkets.style';
 import { BerachainMarketsFilterBox } from './BerachainMarketsFilters.style';
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 
 export const BerachainFilterTokensMenu = () => {
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const { tokenFilter, setTokenFilter } = useBerachainMarketsFilterStore(
     (state) => state,
   );
@@ -38,10 +38,9 @@ export const BerachainFilterTokensMenu = () => {
   const assetsFilterId = 'token-filter-button';
   const assetsMenuId = 'token-filter-menu';
 
-  const { data } = useEnrichedMarkets({
-    is_verified: isVerified,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
-  });
+  const { roycoMarkets: data } = useBerachainMarketsFilterStore(
+    (state) => state,
+  );
 
   const tokens = useMemo(() => {
     if (!data) {
@@ -61,9 +60,6 @@ export const BerachainFilterTokensMenu = () => {
     return mappedTokens;
   }, [data]);
 
-  const tokensNumber = Array.isArray(tokens) ? tokens.length : tokens.size;
-  const tokensFiltered = tokensNumber - tokenFilter.length;
-
   return (
     <BerachainMarketsFilterBox>
       <BerachainMarketFiltersButton
@@ -74,9 +70,9 @@ export const BerachainFilterTokensMenu = () => {
         onClick={handleTokensFilterClick}
       >
         <Typography variant="bodyMedium">
-          {tokensNumber !== tokensFiltered
-            ? `${tokensFiltered} Token${tokensFiltered === 1 ? '' : 's'}`
-            : 'All Tokens'}
+          {tokenFilter.length === 0
+            ? 'All Tokens'
+            : `${tokenFilter.length} Token${tokenFilter.length === 1 ? '' : 's'}`}
         </Typography>
         <BerachainMarketFilterArrow active={openTokensFilterMenu} />
       </BerachainMarketFiltersButton>
@@ -99,7 +95,7 @@ export const BerachainFilterTokensMenu = () => {
                 setTokenFilter(token.symbol);
               }}
             >
-              {tokenFilter.includes(token.symbol) ? (
+              {!tokenFilter.includes(token.symbol) ? (
                 <RadioButtonUncheckedIcon
                   sx={{ color: '#FF8425', width: '24px', height: '24px' }}
                 />
