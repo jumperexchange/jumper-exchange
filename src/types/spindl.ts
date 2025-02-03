@@ -29,6 +29,7 @@ export interface SpindlItem {
   advertiser: Advertiser;
   placementSlug: string;
   title: string;
+  mode?: 'light' | 'dark';
   context: string | null;
   description: string;
   imageUrl: string;

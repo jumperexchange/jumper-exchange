@@ -19,7 +19,7 @@ import { FeatureCard, FeatureCardsContainer } from '.';
 
 export const FeatureCards = () => {
   const { account } = useAccount();
-  const fetchSpindl = useSpindlFetch();
+  const { fetchSpindlData } = useSpindlFetch();
 
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
@@ -49,7 +49,7 @@ export const FeatureCards = () => {
       setWidgetExpanded(expanded);
     };
     const handleRouteUpdated = async (route: RouteExecutionUpdate) => {
-      fetchSpindl({
+      await fetchSpindlData({
         address: account?.address,
         chainId: route.route.toToken.chainId,
         tokenAddress: route.route.toToken.address,
@@ -63,7 +63,7 @@ export const FeatureCards = () => {
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
       widgetEvents.off(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
     };
-  }, [account?.address, fetchSpindl, widgetEvents, widgetExpanded]);
+  }, [account?.address, fetchSpindlData, widgetEvents, widgetExpanded]);
 
   function excludedFeatureCardsFilter(el: FeatureCardData) {
     if (
