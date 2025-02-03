@@ -25,7 +25,7 @@ Boyco will allow applications to onboard liquidity directly into their smart con
     {
       Question: 'Are my funds locked?',
       Answer:
-        'Yes, each Boyco market will be subject to a lock period once the funds are moved to Berachain mainnet. The lock period will be specified during the deposit process and users will be able to determine which market has the most optimal style for them (lock period, asset exposure, APR, etc). But during the pre-deposit period, users are able to withdraw their funds from the deposited market at any time up until 48h after the dApp calls the funds to be sent to Berachain mainnet. Once the 48h timer ends, the deposited funds can no longer be withdrawn and will remain locked until the pre-determined lock period ends.',
+        'Yes, each Boyco market will be subject to a lock period once the funds are moved to Berachain mainnet. The lock period will be specified during the deposit process and users will be able to determine which market has the most optimal style for them (lock period, asset exposure, APR, etc). Once a deposit is made, funds will be locked until the end of the lock period. Please ensure you are happy to deposit into the market as your funds will be locked once the deposit is complete.',
     },
     {
       Question: 'What will be the rewards?',
@@ -40,7 +40,7 @@ Boyco will allow applications to onboard liquidity directly into their smart con
     },
     {
       Question: 'What are "Baffle" rewards?',
-      Answer: `Baffle rewards are additional rewards offered by participating applications exclusively to Jumper UI users. This rewards are NFTs that are distributed through raffle mechanisms to every qualifying wallets (i.e. deposit more than >$69 on a curated list of pools). All of those pools are recognisable by the 'Reward' tag on the UI. List of rewards: 25 HJ1 NFTs, 5 Big Fat Beras NFTs, 5 Beary Benslers NFTs, min 1 Bearet Yellens NFT, etc.`,
+      Answer: `Baffle rewards are additional raffle rewards on top of the Boyco rewards offered by participating protocols exclusively to users who deposit into Boyco via Jumper. The rewards will be distributed through a raffle mechanism at the end of Boyco. To qualify for a protocols baffle you need to deposit and lock the minimum amount into any of their markets. More details about how to qualify can be found in the market’s description. All of those markets are recognisable by the 'Baffle' tag on the UI. List of all Baffle rewards: 25 HJ1 NFTs from The Honey Jar, 5 Big Fat Beras NFTs from Beraborrow, 5 Beary Benslers NFTs & 1 Bearet Yellens NFT from BurrBear, 6.9k USDC from Origami.`,
     },
   ];
 

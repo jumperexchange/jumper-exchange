@@ -29,7 +29,7 @@ const DigitTokenSymbolCard = ({
 
   return (
     <BeraChainProgressCardContent sx={sx}>
-      <BeraChainProgressCardHeader display={'flex'}>
+      <BeraChainProgressCardHeader display={'flex'} className="header-title">
         <Typography
           className="title"
           variant="bodySmall"
