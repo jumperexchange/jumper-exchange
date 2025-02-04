@@ -24,7 +24,7 @@ export const getSpindlConfig = () => {
       }
       if (country || locale.length) {
         // country code (IN, US, etc.)
-        url.searchParams.set('country', country || locale[1]); // todo: @tche where to get country code? --> Is this one required?
+        url.searchParams.set('country', country || locale[1]);
       }
       if (chainId) {
         // (Optional): The chain id (numeric, from https://chainlist.org)
