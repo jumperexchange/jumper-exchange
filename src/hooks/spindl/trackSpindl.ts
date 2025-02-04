@@ -1,3 +1,5 @@
+import { getSpindlConfig } from './spindlConfig';
+
 interface ImpressionPayload {
   type: string;
   placement_id: string;
@@ -15,32 +17,23 @@ export async function trackSpindl(
     impression_id: impressionId, // @spindl: Please verify
     ad_creative_id: adCreativeId, // @spindl: Please verify
   };
+  const { postUrl } = getSpindlConfig();
+  if (postUrl && process.env.NEXT_PUBLIC_SPINDL_API_KEY) {
+    const response = await fetch(postUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-ACCESS-KEY': process.env.NEXT_PUBLIC_SPINDL_API_KEY,
+      },
+      body: JSON.stringify(payload),
+    });
 
-  const apiUrl = 'https://e.spindlembed.com/v1/external/track';
-
-  try {
-    if (process.env.NEXT_PUBLIC_SPINDL_API_KEY) {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-ACCESS-KEY': process.env.NEXT_PUBLIC_SPINDL_API_KEY,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response) {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        } else {
-          await response.json();
-          // console.log('Impression tracked successfully:', data);
-        }
+    if (response) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    } else {
-      console.error('Provide Spindl API key');
     }
-  } catch (error) {
-    console.error('Error tracking impression:', error);
+  } else {
+    console.error('Provide Spindl API key and URL for tracking');
   }
 }

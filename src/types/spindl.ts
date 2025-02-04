@@ -91,6 +91,4 @@ export interface SpindlFetchParams {
 
 export interface SpindlFetchResult {
   data?: any;
-  isSuccess: boolean;
-  isLoading: boolean;
 }
