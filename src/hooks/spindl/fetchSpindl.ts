@@ -58,6 +58,6 @@ export const fetchSpindl = async ({
   const jsonResponse: SpindlData = await response.json();
 
   return {
-    data: jsonResponse?.items, // Return only items if needed
+    data: jsonResponse?.items,
   };
 };
