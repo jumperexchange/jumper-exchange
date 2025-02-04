@@ -38,7 +38,7 @@ interface Resources {
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
-        profile: 'Loyalty Pass';
+        profile: 'Profile';
         fest: 'Superfest Festival';
       };
       walletMenu: {
