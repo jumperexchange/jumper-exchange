@@ -53,9 +53,9 @@ export const useWalletLinking = ({
     evmAddress: evmWallet?.address,
     evmMessage,
     evmSignature,
-    solanaPublicKey, // or: svmWallet?.address ?
+    solanaPublicKey,
     solanaSignature: solanaSignature,
-    queryKey: `${evmWallet?.address}-${solanaPublicKey}`,
+    queryKey: `${evmWallet?.address}-${solanaPublicKey}-${startWalletsVerification}`,
     enabled: startWalletsVerification && !!evmSignature && !!solanaSignature,
   });
 
@@ -114,7 +114,9 @@ export const useWalletLinking = ({
         ),
         text: 'In order to link wallets you’ll be asked to sign with each wallet. By continuing you agree that wallet information may be found on-chain.',
         onClick: () => {
-          setMenuIndex((state) => state + 1);
+          verificationData?.data.evm && verificationData?.data.solana
+            ? setMenuIndex(4)
+            : setMenuIndex((state) => state + 1);
         },
       },
       {
@@ -125,8 +127,8 @@ export const useWalletLinking = ({
           <WalletLinkingStepper
             step={1}
             maxSteps={3}
-            evmCompleted={!!evmSignature} //{evmSignature !== ''}
-            solanaCompleted={!!solanaSignature}
+            evmSigned={!!evmSignature} //{evmSignature !== ''}
+            svmSigned={!!solanaSignature}
             onClick={evmHandler}
           />
         ),
@@ -142,9 +144,10 @@ export const useWalletLinking = ({
           <WalletLinkingStepper
             step={2}
             maxSteps={3}
-            evmCompleted={!!evmSignature}
-            solanaCompleted={!!solanaSignature}
-            evmAndSvmCompleted={true}
+            evmSigned={!!evmSignature}
+            svmSigned={!!solanaSignature}
+            evmVerified={verificationData?.data.evm}
+            svmVerified={verificationData?.data.solana}
             onClick={solanaHandler}
           />
         ),
@@ -167,10 +170,12 @@ export const useWalletLinking = ({
             step={3}
             maxSteps={3}
             startWalletsVerification={startWalletsVerification}
-            evmCompleted={verificationData?.data.evm}
-            solanaCompleted={verificationData?.data.svm}
+            evmSigned={!!evmSignature}
+            svmSigned={!!solanaSignature}
+            evmVerified={verificationData?.data.evm}
+            svmVerified={verificationData?.data.solana}
             evmAndSvmCompleted={
-              verificationData?.data.evm && verificationData?.data.svm
+              verificationData?.data.evm && verificationData?.data.solana
             }
             onClick={verifyEvmAndSolHandler}
           />
@@ -185,7 +190,7 @@ export const useWalletLinking = ({
         buttonLabel: 'Done',
         text:
           verificationData?.data.evm &&
-          verificationData?.data.svm &&
+          verificationData?.data.solana &&
           evmPoints &&
           !!svmPoints
             ? `You now have a combined ${combinedPoints} XP. You can unlink wallets anytime to separate XP.`
@@ -203,7 +208,7 @@ export const useWalletLinking = ({
             <Box
               sx={(theme) => ({
                 backgroundColor:
-                  verificationData?.data.evm && verificationData?.data.svm
+                  verificationData?.data.evm && verificationData?.data.solana
                     ? '#D6FFE7'
                     : lighten(theme.palette.error.main, 0.8),
                 width: '96px',
@@ -214,7 +219,7 @@ export const useWalletLinking = ({
                 alignItems: 'center',
               })}
             >
-              {verificationData?.data.evm && verificationData?.data.svm ? (
+              {verificationData?.data.evm && verificationData?.data.solana ? (
                 <CheckIcon
                   sx={{ width: '48px', height: '48px', color: '#00B849' }}
                 />
@@ -229,7 +234,7 @@ export const useWalletLinking = ({
               )}
             </Box>
             <Typography variant="titleXSmall" sx={{ textAlign: 'center' }}>
-              {verificationData?.data.evm && verificationData?.data.svm
+              {verificationData?.data.evm && verificationData?.data.solana
                 ? 'Wallets linked successfully'
                 : 'Error verifying wallets'}
             </Typography>

@@ -14,17 +14,22 @@ interface WalletLinkingStepperProps {
   step: number;
   maxSteps: number;
   onClick?: () => void;
-  evmCompleted?: boolean;
-  solanaCompleted?: boolean;
+  evmSigned?: boolean;
+  svmSigned?: boolean;
+  evmVerified?: boolean;
+  svmVerified?: boolean;
   evmAndSvmCompleted?: boolean;
   startWalletsVerification?: boolean;
 }
 
 export default function WalletLinkingStepper({
   step,
+  maxSteps,
   onClick,
-  evmCompleted,
-  solanaCompleted,
+  evmSigned,
+  svmSigned,
+  evmVerified,
+  svmVerified,
   evmAndSvmCompleted,
   startWalletsVerification,
 }: WalletLinkingStepperProps) {
@@ -35,18 +40,21 @@ export default function WalletLinkingStepper({
         activeStep={step}
         connector={<StepConnector />}
         sx={(theme) => ({
-          ...(step !== 3 && {
+          ...(((step !== maxSteps && (evmSigned || svmSigned)) ||
+            (step === maxSteps && (!evmVerified || !svmVerified))) && {
             '& .MuiStepLabel-iconContainer.Mui-completed': {
               backgroundColor: theme.palette.white.main,
               svg: {
                 color: theme.palette.grey[400],
               },
             },
+          }),
+          ...(step !== maxSteps && {
             '& .MuiStepLabel-iconContainer:not(.Mui-completed)': {
               display: 'none',
             },
           }),
-          ...(step === 3 && {
+          ...(step === maxSteps && {
             '& .MuiStepLabel-iconContainer:not(.Mui-completed)': {
               ...(!startWalletsVerification && { display: 'none' }),
               backgroundColor: theme.palette.white.main,
@@ -57,15 +65,15 @@ export default function WalletLinkingStepper({
           }),
         })}
       >
-        <Step completed={evmCompleted}>
+        <Step completed={evmVerified || evmSigned}>
           <StepButton
             disableRipple={true}
             color="inherit"
-            disabled={evmCompleted}
+            disabled={evmSigned}
             className="step-button"
             icon={
-              step === 3 &&
-              !evmCompleted && <ErrorIcon sx={{ width: 32, height: 32 }} />
+              step === maxSteps &&
+              !evmSigned && <ErrorIcon sx={{ width: 32, height: 32 }} />
             }
 
             // icon={
@@ -73,7 +81,7 @@ export default function WalletLinkingStepper({
             //     width={24}
             //     height={24}
             //     sx={(theme) => ({ color: theme.palette.white.main })}
-            //     color={evmCompleted ? 'primary' : 'disabled'}
+            //     color={evmSigned ? 'primary' : 'disabled'}
             //   />
             // }
             // onClick={onClick}
@@ -91,15 +99,15 @@ export default function WalletLinkingStepper({
             </WalletLinkingStepBox>
           </StepButton>
         </Step>
-        <Step completed={solanaCompleted}>
+        <Step completed={svmVerified || svmSigned}>
           <StepButton
             disableRipple={true}
             color="inherit"
-            disabled={solanaCompleted}
+            disabled={svmSigned}
             className="step-button"
             icon={
-              step === 3 &&
-              !solanaCompleted && <ErrorIcon sx={{ width: 32, height: 32 }} />
+              step === maxSteps &&
+              !svmSigned && <ErrorIcon sx={{ width: 32, height: 32 }} />
             }
             // onClick={onClick}
           >
@@ -116,15 +124,14 @@ export default function WalletLinkingStepper({
             </WalletLinkingStepBox>
           </StepButton>
         </Step>
-        <Step completed={evmAndSvmCompleted}>
+        <Step completed={evmVerified && svmVerified}>
           <StepButton
             disableRipple={true}
             color="inherit"
             icon={
-              step === 3 &&
-              !evmAndSvmCompleted && (
-                <ErrorIcon sx={{ width: 32, height: 32 }} />
-              )
+              step === maxSteps &&
+              !evmVerified &&
+              !svmVerified && <ErrorIcon sx={{ width: 32, height: 32 }} />
             }
             disabled={evmAndSvmCompleted}
             className="step-button"
