@@ -1,10 +1,10 @@
 'use client';
-import type { FeatureCardData } from 'src/types/strapi';
+import type { SpindlCardData } from 'src/types/spindl';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface SpindlState {
-  spindl: FeatureCardData[];
-  setSpindl: (items: FeatureCardData[]) => void;
+  spindl: SpindlCardData[];
+  setSpindl: (items: SpindlCardData[]) => void;
 }
 
 export const useSpindlStore = createWithEqualityFn<SpindlState>(

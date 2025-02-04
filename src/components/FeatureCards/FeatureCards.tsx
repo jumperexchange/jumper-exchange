@@ -20,12 +20,10 @@ import { FeatureCard, FeatureCardsContainer } from '.';
 export const FeatureCards = () => {
   const { account } = useAccount();
   const { fetchSpindlData } = useSpindlFetch();
-
   const [disabledFeatureCards, welcomeScreenClosed] = useSettingsStore(
     (state) => [state.disabledFeatureCards, state.welcomeScreenClosed],
     shallow,
   );
-
   const { points } = useLoyaltyPass(account?.address);
   const [widgetExpanded, setWidgetExpanded] = useState(false);
   const [showSpindleAds, setShowSpindleAds] = useState(false);
@@ -36,18 +34,15 @@ export const FeatureCards = () => {
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
   });
-
   const { data: featureCardsToDisplay } = usePersonalizedFeatureCards();
-
   const { featureCards: featureCardsLevel } = usePersonalizedFeatureOnLevel({
     points: points,
     enabled: !!points,
   });
 
   useEffect(() => {
-    const handleWidgetExpanded = async (expanded: boolean) => {
+    const handleWidgetExpanded = (expanded: boolean) =>
       setWidgetExpanded(expanded);
-    };
     const handleRouteUpdated = async (route: RouteExecutionUpdate) => {
       await fetchSpindlData({
         address: account?.address,
@@ -56,6 +51,7 @@ export const FeatureCards = () => {
       });
       setShowSpindleAds(true);
     };
+
     widgetEvents.on(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
 
@@ -63,82 +59,73 @@ export const FeatureCards = () => {
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
       widgetEvents.off(WidgetEvent.RouteExecutionUpdated, handleRouteUpdated);
     };
-  }, [account?.address, fetchSpindlData, widgetEvents, widgetExpanded]);
+  }, [account?.address, fetchSpindlData, widgetEvents]);
 
-  function excludedFeatureCardsFilter(el: FeatureCardData) {
-    if (
-      !el.attributes?.featureCardsExclusions ||
-      !Array.isArray(el.attributes?.featureCardsExclusions?.data)
-    ) {
-      return true;
-    }
+  const featureCards = useMemo(() => {
+    const excludedFeatureCardsFilter = (el: FeatureCardData) => {
+      const exclusions =
+        el.attributes?.featureCardsExclusions?.data?.map(
+          (item) => item.attributes?.uid,
+        ) || [];
+      return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
+    };
 
-    const exclusions = el.attributes?.featureCardsExclusions.data.map(
-      (item) => item.attributes?.uid,
-    );
-
-    return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
-  }
-
-  const slicedFeatureCards = useMemo(() => {
-    if (Array.isArray(cards) && !!cards.length) {
-      return cards
-        ?.filter(excludedFeatureCardsFilter)
-        ?.filter(
-          (el, index) =>
-            isSuccess &&
+    const filterAndSliceCards = (cards: FeatureCardData[]) =>
+      cards
+        .filter(excludedFeatureCardsFilter)
+        .filter(
+          (el) =>
             el.attributes?.DisplayConditions &&
             !disabledFeatureCards.includes(el.attributes?.uid),
         )
         .slice(0, 2);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cards, isSuccess]);
 
-  const slicedPersonalizedFeatureCards = useMemo(() => {
+    const slicedFeatureCards =
+      Array.isArray(cards) && cards.length > 0
+        ? filterAndSliceCards(cards)
+        : [];
+
     const personalizedFeatureCards =
-      featureCardsToDisplay && featureCardsToDisplay.length > 0
+      featureCardsToDisplay?.length > 0
         ? featureCardsToDisplay
-        : featureCardsLevel && featureCardsLevel.length > 0
+        : featureCardsLevel && featureCardsLevel?.length > 0
           ? [featureCardsLevel[0]]
-          : undefined;
+          : [];
 
-    if (
-      Array.isArray(personalizedFeatureCards) &&
-      !!personalizedFeatureCards.length
-    ) {
-      return personalizedFeatureCards
-        ?.filter(excludedFeatureCardsFilter)
-        ?.filter(
-          (el, index) =>
-            el.attributes?.DisplayConditions &&
-            !disabledFeatureCards.includes(el.attributes?.uid),
-        )
-        .slice(0, 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [featureCardsToDisplay, featureCardsLevel]);
+    const filteredPersonalizedCards = filterAndSliceCards(
+      personalizedFeatureCards,
+    ).slice(0, 1);
 
-  const featureCards = [
-    ...(showSpindleAds ? (spindl ?? []) : []),
-    ...(!widgetExpanded ? (slicedPersonalizedFeatureCards ?? []) : []),
-    ...(!widgetExpanded ? (slicedFeatureCards ?? []) : []),
-  ].filter((_, index) => index < 3);
+    const result = [
+      ...(showSpindleAds ? spindl : []),
+      ...(!widgetExpanded ? filteredPersonalizedCards : []),
+      ...(!widgetExpanded ? slicedFeatureCards : []),
+    ].slice(0, 3);
+
+    return result;
+  }, [
+    cards,
+    disabledFeatureCards,
+    featureCardsLevel,
+    featureCardsToDisplay,
+    showSpindleAds,
+    spindl,
+    widgetExpanded,
+  ]);
+
+  if (!isDesktop || !welcomeScreenClosed || featureCards.length === 0) {
+    return null;
+  }
 
   return (
-    isDesktop &&
-    welcomeScreenClosed && (
-      <FeatureCardsContainer>
-        {featureCards?.map((cardData, index) => {
-          return (
-            <FeatureCard
-              isSuccess={isSuccess}
-              data={cardData}
-              key={`feature-card-${index}`}
-            />
-          );
-        })}
-      </FeatureCardsContainer>
-    )
+    <FeatureCardsContainer>
+      {featureCards.map((cardData, index) => (
+        <FeatureCard
+          isSuccess={isSuccess}
+          data={cardData}
+          key={`feature-card-${index}`}
+        />
+      ))}
+    </FeatureCardsContainer>
   );
 };

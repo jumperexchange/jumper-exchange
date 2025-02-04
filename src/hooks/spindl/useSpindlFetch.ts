@@ -1,7 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useSettingsStore } from 'src/stores/settings';
 import { useSpindlStore } from 'src/stores/spindl';
-import type { SpindlFetchParams, SpindlItem } from 'src/types/spindl';
+import type {
+  SpindlFetchParams,
+  SpindlItem,
+  SpindlMediaAttributes,
+} from 'src/types/spindl';
 import { shallow } from 'zustand/shallow';
 import { fetchSpindl } from './fetchSpindl';
 
@@ -28,15 +32,15 @@ export const useSpindlFetch = () => {
             .filter((item: SpindlItem) => {
               return !disabledFeatureCards.includes(item.id);
             })
-            .map((item: SpindlItem) => {
+            .map((item: SpindlItem, index: number) => {
               return {
                 id: item.id,
                 attributes: {
                   Title: item.title,
                   Subtitle: item.description,
-                  CTACall: item.ctas[0]?.title || '',
+                  CTACall: item.ctas[0]?.title || 'Learn more',
                   URL: item.ctas[0]?.href || '',
-                  DisplayConditions: { mode: item.mode || 'light' },
+                  DisplayConditions: { mode: item.mode || 'dark' },
                   createdAt: Date.now().toString(),
                   updatedAt: Date.now().toString(),
                   PersonalizedFeatureCard: true,
@@ -44,13 +48,13 @@ export const useSpindlFetch = () => {
                   uid: item.id,
                   BackgroundImageLight: {
                     data: {
-                      id: 0,
+                      id: `spindl-img-${index}`,
                       attributes: {
                         alternativeText: 'Spindl ad img',
                         width: 384,
                         height: 160,
                         url: item.imageUrl,
-                      },
+                      } as SpindlMediaAttributes,
                     },
                   },
                   BackgroundImageDark: {
@@ -61,7 +65,7 @@ export const useSpindlFetch = () => {
                         width: 384,
                         height: 160,
                         url: item.imageUrl,
-                      },
+                      } as SpindlMediaAttributes,
                     },
                   },
                   spindleData: {

@@ -1,4 +1,20 @@
 import type { ChainId } from '@lifi/sdk';
+import type { FeatureCardAttributes } from './strapi';
+
+export interface SpindlCardAttributes extends FeatureCardAttributes {
+  spindleData?: SpindlTrackData;
+}
+
+export interface SpindlCardData {
+  id: number | string;
+  attributes: SpindlCardAttributes;
+}
+export interface SpindlMediaAttributes {
+  alternativeText?: string;
+  width: number;
+  height: number;
+  url: string;
+}
 
 interface ImageVariant {
   url: string;

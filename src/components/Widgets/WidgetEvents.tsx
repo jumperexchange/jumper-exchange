@@ -33,7 +33,6 @@ import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
   const { activeTab } = useActiveTabStore();
-  const { account } = useAccount();
   const {
     sourceChainToken,
     destinationChainToken,
@@ -49,6 +48,8 @@ export function WidgetEvents() {
   const [setDestinationChain] = useMultisigStore((state) => [
     state.setDestinationChain,
   ]);
+
+  const { account } = useAccount();
 
   const [isMultiSigConfirmationModalOpen, setIsMultiSigConfirmationModalOpen] =
     useState(false);
@@ -377,7 +378,6 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
     };
   }, [
-    account?.address,
     activeTab,
     destinationChainToken.chainId,
     destinationChainToken.tokenAddress,
