@@ -79,7 +79,7 @@ export const CarouselContainer = ({
               {isClient && (
                 <IconHeader
                   tooltipKey={updateTooltip || ''}
-                  title={!isMobile ? updateTitle : ''}
+                  title={!isMobile ? updateTitle : undefined}
                 />
               )}
             </Box>

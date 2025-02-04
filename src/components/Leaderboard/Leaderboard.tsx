@@ -73,7 +73,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                   title={
                     !isMobile
                       ? `Updated: ${t('format.date', { value: new Date() })}`
-                      : ''
+                      : undefined
                   }
                 />
               )}

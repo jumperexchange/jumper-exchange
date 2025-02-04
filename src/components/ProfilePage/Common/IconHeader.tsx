@@ -7,7 +7,7 @@ import { IconHeaderContainer, IconHeaderTitle } from './IconHeader.style';
 
 export interface IconHeaderProps {
   tooltipKey: string;
-  title: string;
+  title?: string;
   icon?: React.ReactNode;
 }
 

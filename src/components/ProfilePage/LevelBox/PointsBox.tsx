@@ -24,7 +24,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
           title={
             !isMobile
               ? `Updated: ${t('format.date', { value: new Date() })}`
-              : ''
+              : undefined
           }
           icon={<XPIcon />}
         />
