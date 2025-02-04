@@ -65,7 +65,6 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
               backgroundColor: alpha(theme.palette.text.primary, 0.04),
             },
           }}
-          color="primary"
         >
           <CloseIcon />
         </IconButton>

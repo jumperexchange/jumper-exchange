@@ -43,14 +43,19 @@ export const BerachainProtocolInformation = ({
   );
   const detailInformation = card?.attributes?.CustomInformation;
 
+  const fullTitle = getFullTitle(market!, card);
+
   return (
     <BerachainProtocolActionBox>
       {isMobile &&
         (market ? (
           <BerachainWidget
             market={market}
-            appName={getFullTitle(market!, card)}
-            appLink={detailInformation?.socials?.website}
+            appName={card?.attributes.Title}
+            fullAppName={fullTitle}
+            appLink={
+              detailInformation?.socials?.website ?? 'https://jumper.exchange/'
+            }
           />
         ) : (
           <BerachainWidgetLoader />
@@ -86,9 +91,7 @@ export const BerachainProtocolInformation = ({
                 ))}
               <Stack spacing={2} direction="column">
                 {card?.attributes?.Title ? (
-                  <Typography variant="titleSmall">
-                    What is {card?.attributes.Title}?
-                  </Typography>
+                  <Typography variant="titleSmall">{fullTitle}</Typography>
                 ) : (
                   <Skeleton
                     variant="rectangular"
@@ -97,7 +100,7 @@ export const BerachainProtocolInformation = ({
                 )}
                 {card?.attributes?.Description ? (
                   <Typography variant="bodyMedium" color="textSecondary">
-                    {card?.attributes.Description}
+                    {market?.description}
                   </Typography>
                 ) : (
                   <Skeleton
@@ -197,8 +200,12 @@ export const BerachainProtocolInformation = ({
       {!isMobile &&
         (market ? (
           <BerachainWidget
+            fullAppName={fullTitle}
             market={market}
-            appName={getFullTitle(market!, card)}
+            appName={card?.attributes.Title}
+            appLink={
+              detailInformation?.socials?.website ?? 'https://jumper.exchange/'
+            }
           />
         ) : (
           <BerachainWidgetLoader />

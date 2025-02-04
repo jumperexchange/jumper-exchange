@@ -1,7 +1,6 @@
 import type { cookies } from 'next/headers';
 import type { PartnerThemesData, StrapiResponseData } from '../../types/strapi';
 import type { ThemeMode } from '../../types/theme';
-import { getWashThemeMode } from '../../wash/utils/getWashThemeMode';
 import { getPartnerThemes } from './getPartnerThemes';
 
 export type ActiveThemeResult = {
@@ -27,7 +26,7 @@ export async function getActiveTheme(
   }
 
   const partnerThemeUids = new Set(
-    partnerThemes.data.map((d) => d.attributes.uid),
+    partnerThemes.data.map((d) => d.attributes?.uid),
   );
 
   const pathPartnerTheme = segments.find((themeId) =>

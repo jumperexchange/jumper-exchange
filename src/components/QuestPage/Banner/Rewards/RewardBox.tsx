@@ -15,9 +15,8 @@ export const RewardBox = ({ title, logos, value }: RewardBoxProps) => {
     <RewardTopBox>
       <RewardSubtitleBox>
         <Typography
-          fontSize={'14px'}
-          fontWeight={700}
-          color={theme.palette.text.secondary}
+          variant="bodySmallStrong"
+          sx={(theme) => ({ color: theme.palette.text.secondary })}
         >
           {title}
         </Typography>

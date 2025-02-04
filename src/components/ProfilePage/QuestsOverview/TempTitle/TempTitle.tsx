@@ -1,6 +1,5 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import Image from 'next/image';
-import { EarnedTypography } from '../../Rewards/RewardsCarousel.style';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
   PROFILE_CAMPAIGN_DARK_CHAIN,
@@ -8,14 +7,15 @@ import {
   PROFILE_CAMPAIGN_LIGHT_CHAIN,
   PROFILE_CAMPAIGN_LIGHT_COLOR,
 } from 'src/const/partnerRewardsTheme';
+import { EarnedTypography } from '../../Rewards/RewardsCarousel.style';
 
 export const TempTitle = () => {
   const theme = useTheme();
 
   const IMAGE_LOGO =
-    theme.palette.mode === 'dark'
-      ? PROFILE_CAMPAIGN_DARK_CHAIN
-      : PROFILE_CAMPAIGN_LIGHT_CHAIN;
+    theme.palette.mode === 'light'
+      ? PROFILE_CAMPAIGN_LIGHT_CHAIN
+      : PROFILE_CAMPAIGN_DARK_CHAIN;
 
   return (
     <FlexCenterRowBox marginBottom={'16px'}>
@@ -40,11 +40,12 @@ export const TempTitle = () => {
       </Box>
       <Box>
         <EarnedTypography
-          color={
-            theme.palette.mode === 'dark'
-              ? PROFILE_CAMPAIGN_DARK_COLOR
-              : PROFILE_CAMPAIGN_LIGHT_COLOR
-          }
+          sx={(theme) => ({
+            color:
+              theme.palette.mode === 'light'
+                ? PROFILE_CAMPAIGN_LIGHT_COLOR
+                : PROFILE_CAMPAIGN_DARK_COLOR,
+          })}
         >
           {/*Title*/}
         </EarnedTypography>
@@ -54,9 +55,9 @@ export const TempTitle = () => {
           lineHeight={'18px'}
           fontWeight={500}
           color={
-            theme.palette.mode === 'dark'
-              ? PROFILE_CAMPAIGN_DARK_COLOR
-              : PROFILE_CAMPAIGN_LIGHT_COLOR
+            theme.palette.mode === 'light'
+              ? PROFILE_CAMPAIGN_LIGHT_COLOR
+              : PROFILE_CAMPAIGN_DARK_COLOR
           }
         >
           $300,000 SEI rewards to win

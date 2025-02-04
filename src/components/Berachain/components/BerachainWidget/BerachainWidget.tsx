@@ -1,24 +1,27 @@
+import DepositWidget from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositWidget';
+import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidget';
+import { useChains } from '@/hooks/useChains';
 import type { Breakpoint, Theme } from '@mui/material';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import type { EnrichedMarketDataType } from 'royco/queries';
 import { type TabProps, Tabs } from 'src/components/Tabs/Tabs';
 import { Widget } from 'src/components/Widgets/Widget';
-import type { EnrichedMarketDataType } from 'royco/queries';
-import { useTranslation } from 'react-i18next';
-import BerachainTransactionDetails from '@/components/Berachain/components/BerachainTransactionDetails/BerachainTransactionDetails';
-import InfoBlock from '@/components/Berachain/components/BerachainWidget/InfoBlock';
-import { WithdrawWidget } from '@/components/Berachain/components/BerachainWidget/WithdrawWidget/WithdrawWidget';
-import DepositWidget from '@/components/Berachain/components/BerachainWidget/DepositWidget/DepositWidget';
-import { useChains } from '@/hooks/useChains';
+import { titleSlicer } from '@/components/Berachain/utils';
+import { ClaimingInformation } from '@/components/Berachain/components/BerachainWidget/ClaimingInformation';
+import { Univ2Information } from '@/components/Berachain/components/BerachainWidget/Univ2Information';
 
 export const BerachainWidget = ({
   market,
   appLink,
   appName,
+  fullAppName,
 }: {
   market: EnrichedMarketDataType;
-  appLink?: string;
+  appLink: string;
   appName?: string;
+  fullAppName?: string;
 }) => {
   const [tab, setTab] = useState(1);
   const { t } = useTranslation();
@@ -62,7 +65,7 @@ export const BerachainWidget = ({
 
   const tabs: TabProps[] = [
     {
-      label: isMobile ? 'Swap' : `Get ${token.symbol}`,
+      label: isMobile ? 'Swap' : `Get ${titleSlicer(token.symbol)}`,
       value: 0,
       onClick: () => {
         setTab(0);
@@ -76,7 +79,7 @@ export const BerachainWidget = ({
       },
     },
     {
-      label: 'Withdraw',
+      label: 'Positions',
       value: 1,
       onClick: () => {
         setTab(2);
@@ -91,10 +94,7 @@ export const BerachainWidget = ({
         width: '480px',
         borderRadius: '24px',
         backgroundColor: '#121214',
-        boxShadow:
-          theme.palette.mode === 'light'
-            ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-            : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        boxShadow: theme.shadows[1],
         [theme.breakpoints.up('md' as Breakpoint)]: {
           padding: theme.spacing(3),
         },
@@ -118,21 +118,31 @@ export const BerachainWidget = ({
               '.widget-wrapper > div > div': {
                 maxWidth: '100%!important',
               },
+              '.widget-wrapper .MuiContainer-root': {
+                padding: 0,
+              },
             }}
           >
-            <Widget
-              // @ts-expect-error
-              starterVariant="compact"
-              toChain={token?.chain_id}
-              toToken={token?.contract_address}
-            />
+            {token.type === 'lp' ? (
+              <Univ2Information
+                link={`https://app.uniswap.org/explore/pools/ethereum/${token.contract_address}`}
+                appName={appName}
+              />
+            ) : (
+              <Widget
+                // @ts-expect-error
+                starterVariant="compact"
+                toChain={token?.chain_id}
+                toToken={token?.contract_address}
+              />
+            )}
           </Box>
         )}
         {tab === 1 && (
           <Box sx={{ marginTop: theme.spacing(1.5) }}>
             {/*<InfoBlock market={market} type="deposit" />*/}
             <DepositWidget
-              appName={appName}
+              appName={fullAppName}
               market={market}
               chain={chain}
               contractCalls={[]}
@@ -165,6 +175,7 @@ export const BerachainWidget = ({
             overrideStyle={{ mainColor: '#FF8425' }}
             appLink={appLink}
             appName={appName}
+            fullAppName={fullAppName}
           />
         )}
       </Box>

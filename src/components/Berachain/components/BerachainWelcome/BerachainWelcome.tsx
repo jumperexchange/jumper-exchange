@@ -12,15 +12,17 @@ import {
   BerachainWelcomeSubtitle,
   BerachainWelcomeTitle,
 } from './BerachainWelcome.style';
-import { useEnrichedRoycoStats } from 'royco/hooks';
 import { useTranslation } from 'react-i18next';
 import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
 import { useEffect, useState } from 'react';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 
 export const BerachainWelcome = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { data } = useEnrichedRoycoStats();
+
+  const { roycoStats } = useBerachainMarketsFilterStore((state) => state);
+
   // Prevent hydratation errors on values
   const [isMounted, setIsMounted] = useState(false);
 
@@ -81,7 +83,7 @@ export const BerachainWelcome = () => {
               <BerachainProgressCard
                 title={isDesktop ? 'Total Value Locked' : 'TVL'}
                 value={t('format.currency', {
-                  value: data?.total_tvl,
+                  value: roycoStats?.total_tvl,
                   notation: 'compact',
                 })}
                 icon={
@@ -107,7 +109,7 @@ export const BerachainWelcome = () => {
                 })}
               />
             )}
-            {isMounted && (
+            {/*            {isMounted && (
               <BerachainProgressCard
                 title={'Incentives'}
                 value={t('format.currency', {
@@ -136,7 +138,7 @@ export const BerachainWelcome = () => {
                   },
                 })}
               />
-            )}
+            )}*/}
           </BerachainWelcomeBoxContent>
         </motion.div>
       </Box>

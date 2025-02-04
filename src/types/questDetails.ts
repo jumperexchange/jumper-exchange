@@ -25,9 +25,10 @@ export interface QuestDetails {
   traits: string[];
   CTA: CTALinkInt[];
   partner: { logo: string; name: string }[];
+  marketIds?: string[];
 }
 
-export interface ExtendedQuest extends Quest<never> {
+export interface ExtendedQuest extends Quest {
   protocolInfos?: ProtocolInfo;
 }
 

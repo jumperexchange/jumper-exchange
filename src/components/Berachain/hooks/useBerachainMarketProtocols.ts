@@ -10,7 +10,7 @@ export const useBerachainMarketProtocols = (
     }
 
     const filteredTokens = data.flatMap(
-      (market) => (market.attributes.CustomInformation as QuestDetails).type,
+      (market) => (market?.attributes?.CustomInformation as QuestDetails).type,
     );
 
     // Remove duplicates based on tokenAddress

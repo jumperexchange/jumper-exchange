@@ -85,8 +85,6 @@ declare module '@mui/material/styles' {
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
     bgQuaternary?: PaletteOptions['primary'];
-    shadow?: PaletteOptions['primary'];
-    shadowLight?: PaletteOptions['primary'];
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -272,7 +270,6 @@ const themeCustomized = createTheme({
           pointerEvents: 'none',
           backgroundColor: theme.palette.bg.main,
           // typed-safe access to the `variant` prop
-
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
@@ -987,7 +984,6 @@ export const darkTheme = createTheme(
             pointerEvents: 'none',
             backgroundColor: theme.palette.surface1.main,
             // typed-safe access to the `variant` prop
-
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'cover',

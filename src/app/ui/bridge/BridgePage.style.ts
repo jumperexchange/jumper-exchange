@@ -1,9 +1,8 @@
 'use client';
 
-import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
-export const BridgePageContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const BridgePageContainer = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
   maxWidth: '100%',
   flexGrow: 1,

@@ -21,7 +21,6 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
-import PetsIcon from '@mui/icons-material/Pets';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
@@ -30,8 +29,7 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
-import { BoycoIcon } from 'src/components/illustrations/BoycoIcon';
+import { BoycoIcon } from '@/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -146,24 +144,24 @@ export const useMainMenuContent = () => {
         });
       },
     },
-    // {
-    //   label: 'Jump into Boyco',
-    //   prefixIcon: <BoycoIcon />,
-    //   showMoreIcon: false,
-    //   link: { url: JUMPER_BOYCO_PATH },
-    //   onClick: () => {
-    //     trackEvent({
-    //       category: TrackingCategory.Menu,
-    //       label: 'click-jumper-pass-berachain',
-    //       action: TrackingAction.ClickJumperCampaignLink,
-    //       data: { [TrackingEventParameter.Menu]: 'berachain' },
-    //     });
-    //     closeAllMenus();
-    //     router.push(JUMPER_BOYCO_PATH);
-    //   },
-    // },
     {
-      label: t('navbar.navbarMenu.profile'),
+      label: 'Jump into Boyco',
+      prefixIcon: <BoycoIcon />,
+      showMoreIcon: false,
+      link: { url: JUMPER_BOYCO_PATH },
+      onClick: () => {
+        trackEvent({
+          category: TrackingCategory.Menu,
+          label: 'click-jumper-pass-berachain',
+          action: TrackingAction.ClickJumperCampaignLink,
+          data: { [TrackingEventParameter.Menu]: 'berachain' },
+        });
+        closeAllMenus();
+        router.push(JUMPER_BOYCO_PATH);
+      },
+    },
+    {
+      label: 'Jumper Profile',
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
       link: { url: JUMPER_LOYALTY_PATH },
@@ -235,15 +233,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Discord',
-      prefixIcon: (
-        <Discord
-          color={
-            theme.palette.mode === 'dark'
-              ? theme.palette.white.main
-              : theme.palette.black.main
-          }
-        />
-      ),
+      prefixIcon: <Discord color={theme.palette.text.primary} />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({

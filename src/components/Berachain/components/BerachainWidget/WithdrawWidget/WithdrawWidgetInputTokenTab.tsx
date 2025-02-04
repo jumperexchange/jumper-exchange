@@ -1,49 +1,41 @@
-import {
-  Avatar as MuiAvatar,
-  Box,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import { formatDistanceToNow, isBefore } from 'date-fns';
-import type { EnrichedMarketDataType } from 'royco/queries';
-import {
-  getRecipeInputTokenWithdrawalTransactionOptions,
-  useEnrichedPositionsRecipe,
-  useEnrichedPositionsVault,
-} from 'royco/hooks';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
-import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
-import type { ChangeEvent } from 'react';
-import { useEffect, useState } from 'react';
-import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
-import type { ExtendedChain } from '@lifi/sdk';
-import { TxConfirmation } from '../TxConfirmation';
-import { BerachainDepositInputBackground } from '@/components/Berachain/components/BerachainWidget/DepositWidget/WidgetDeposit.style';
 import DigitCard from '@/components/Berachain/components/BerachainMarketCard/StatCard/DigitCard';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import { TokenIncentivesData } from '@/components/Berachain/components/BerachainMarketCard/StatCard/TokenIncentivesData';
+import { BerachainDepositInputBackground } from '@/components/Berachain/components/BerachainWidget/DepositWidget/WidgetDeposit.style';
+import { CustomLoadingButton } from '@/components/Berachain/components/BerachainWidget/LoadingButton.style';
 import {
   APY_TOOLTIP,
   INCENTIVES_TO_EARN_TOOLTIP,
-  INCENTIVES_TOOLTIP,
-  LOCKUP_TOOLTIP,
 } from '@/components/Berachain/const/title';
-import { TokenIncentivesData } from '@/components/Berachain/components/BerachainMarketCard/StatCard/TokenIncentivesData';
-import {
-  formatWithCustomLabels,
-  secondsToDuration,
-} from '@/components/Berachain/lockupTimeMap';
-import { useTranslation } from 'react-i18next';
 import {
   WalletAvatar,
   WalletCardBadge,
 } from '@/components/Menus/WalletMenu/WalletCard.style';
 import TokenImage from '@/components/Portfolio/TokenImage';
 import { TrackingCategory } from '@/const/trackingKeys';
-import { parseTokenAmountToRawAmount } from 'royco/utils';
 import { useUserTracking } from '@/hooks/userTracking';
+import type { ExtendedChain } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import {
+  Box,
+  IconButton,
+  Avatar as MuiAvatar,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { formatDistanceToNow, isBefore } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  getRecipeInputTokenWithdrawalTransactionOptions,
+  useEnrichedPositionsRecipe,
+  useEnrichedPositionsVault,
+} from 'royco/hooks';
+import { RoycoMarketType, RoycoMarketUserType } from 'royco/market';
+import type { EnrichedMarketDataType } from 'royco/queries';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { TxConfirmation } from '../TxConfirmation';
 
 // TODO: refactorize, should have a common component TokenImage (without badge) and possibility to add an adornment to it
 interface Image {
@@ -96,7 +88,7 @@ export const WithdrawWidgetInputTokenTab = ({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 2,
+    confirmations: 5,
     pollingInterval: 1_000,
   });
 
@@ -152,6 +144,7 @@ export const WithdrawWidgetInputTokenTab = ({
     if (!isTxConfirmed) {
       return;
     }
+
     refetch();
     positionsRecipeRefetch();
 
@@ -215,11 +208,11 @@ export const WithdrawWidgetInputTokenTab = ({
             fontSize: '1.5rem',
           }}
         >
-          Nothing to Withdraw yet
+          No positions yet
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        {/* <Typography variant="body2" color="textSecondary">
           Deposits and rewards can be withdrawn here.
-        </Typography>
+        </Typography> */}
       </Box>
     );
   }
@@ -349,9 +342,9 @@ export const WithdrawWidgetInputTokenTab = ({
                     sx={{
                       whiteSpace: 'nowrap',
                       wordBreak: 'normal',
+                      color: theme.palette.text.primary,
                     }}
                     variant="bodySmallStrong"
-                    color={theme.palette.text.primary}
                   >
                     Locked
                   </Typography>
@@ -361,11 +354,11 @@ export const WithdrawWidgetInputTokenTab = ({
                 <Stack direction="row" justifyContent="space-between">
                   {market?.incentive_tokens_data?.length > 0 ? (
                     <DigitCard
-                      title={'Rewards to earn'}
+                      title={'Pending rewards'}
                       tooltipText={INCENTIVES_TO_EARN_TOOLTIP}
                       digit={
                         <TokenIncentivesData
-                          tokens={market?.incentive_tokens_data}
+                          market={market}
                           perInput={true}
                           amount={position?.input_token_data?.token_amount}
                         />
@@ -382,7 +375,7 @@ export const WithdrawWidgetInputTokenTab = ({
                     />
                   ) : (
                     <DigitCard
-                      title={'APY rewards'}
+                      title={'APRrewards'}
                       tooltipText={APY_TOOLTIP}
                       digit={
                         market?.annual_change_ratio
@@ -395,7 +388,7 @@ export const WithdrawWidgetInputTokenTab = ({
                   )}
                 </Stack>
               </Stack>
-              <Box
+              {/* <Box
                 sx={{
                   display: 'flex',
                   width: '100%',
@@ -444,7 +437,7 @@ export const WithdrawWidgetInputTokenTab = ({
                 >
                   <Typography variant="bodyMediumStrong">Withdraw</Typography>
                 </CustomLoadingButton>
-              </Box>
+              </Box> */}
             </BerachainDepositInputBackground>
           </Stack>
         );
