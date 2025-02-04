@@ -5,8 +5,8 @@
   "private": true,
   "repository": "https://github.com/jumperexchange/jumper-exchange",
   "dependencies": {
-    "@abstract-foundation/agw-client": "^1.3.1",
-    "@abstract-foundation/agw-react": "^1.4.4",
+    "@abstract-foundation/agw-client": "^1.4.0",
+    "@abstract-foundation/agw-react": "^1.5.0",
     "@bigmi/react": "^0.1.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
