@@ -1,3 +1,4 @@
+import { callRequest } from 'src/utils/callRequest';
 import { getSpindlConfig } from './spindlConfig';
 
 interface ImpressionPayload {
@@ -13,30 +14,32 @@ export async function trackSpindl(
   impressionId: string,
   adCreativeId: string,
 ): Promise<void> {
-  const payload: ImpressionPayload = {
-    type: 'impression',
-    placement_id: 'notify_message',
-    impression_id: impressionId,
-    ad_creative_id: adCreativeId,
-  };
   const spindlConfig = getSpindlConfig();
 
   if (!spindlConfig?.apiUrl || !spindlConfig.headers) {
     return;
   }
 
-  const response = await fetch(
-    `${spindlConfig.apiUrl}${SPINDLE_TRACKING_PATH}`,
-    {
-      method: 'POST',
-      headers: spindlConfig.headers,
-      body: JSON.stringify(payload),
-    },
-  );
+  const payload: ImpressionPayload = {
+    type: 'impression',
+    placement_id: 'notify_message',
+    impression_id: impressionId,
+    ad_creative_id: adCreativeId,
+  };
 
-  if (response) {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+  try {
+    await callRequest({
+      method: 'POST',
+      path: SPINDLE_TRACKING_PATH,
+      apiUrl: spindlConfig.apiUrl,
+      body: payload,
+      headers: spindlConfig.headers,
+      errors: {
+        missingParams: 'Spindl configuration is missing',
+        error: 'HTTP error while tracking Spindl impression',
+      },
+    });
+  } catch (error) {
+    console.error('Error tracking Spindl impression:', error);
   }
 }
