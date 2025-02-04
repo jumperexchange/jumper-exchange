@@ -3,6 +3,7 @@ import type {
   SpindlFetchParams,
   SpindlFetchResult,
 } from 'src/types/spindl';
+import { getLocale } from 'src/utils/getLocale';
 
 export const fetchSpindl = async ({
   country,
@@ -13,14 +14,15 @@ export const fetchSpindl = async ({
   const apiUrl = new URL(`https://e.spindlembed.com/v1/render/jumper`);
   apiUrl.searchParams.set('placement_id', 'notify_message');
   apiUrl.searchParams.set('limit', '2');
+  const locale = getLocale().split('-');
 
   if (address) {
     // wallet address, in the form of 0x... (required)
     apiUrl.searchParams.set('address', address);
   }
-  if (country) {
+  if (country || locale.length) {
     // country code (IN, US, etc.)
-    apiUrl.searchParams.set('country', country); // todo: @tche where to get country code? --> Is this one required?
+    apiUrl.searchParams.set('country', country || locale[1]); // todo: @tche where to get country code? --> Is this one required?
   }
   if (chainId) {
     // (Optional): The chain id (numeric, from https://chainlist.org)
