@@ -88,7 +88,7 @@ export const WithdrawWidgetInputTokenTab = ({
   } = useWaitForTransactionReceipt({
     chainId: market.chain_id ?? undefined,
     hash: txHash,
-    confirmations: 20,
+    confirmations: 5,
     pollingInterval: 1_000,
   });
 
@@ -208,11 +208,11 @@ export const WithdrawWidgetInputTokenTab = ({
             fontSize: '1.5rem',
           }}
         >
-          Nothing to Withdraw yet
+          No positions yet
         </Typography>
-        <Typography variant="body2" color="textSecondary">
+        {/* <Typography variant="body2" color="textSecondary">
           Deposits and rewards can be withdrawn here.
-        </Typography>
+        </Typography> */}
       </Box>
     );
   }
@@ -354,11 +354,11 @@ export const WithdrawWidgetInputTokenTab = ({
                 <Stack direction="row" justifyContent="space-between">
                   {market?.incentive_tokens_data?.length > 0 ? (
                     <DigitCard
-                      title={'Rewards to earn'}
+                      title={'Pending rewards'}
                       tooltipText={INCENTIVES_TO_EARN_TOOLTIP}
                       digit={
                         <TokenIncentivesData
-                          tokens={market?.incentive_tokens_data}
+                          market={market}
                           perInput={true}
                           amount={position?.input_token_data?.token_amount}
                         />
@@ -375,7 +375,7 @@ export const WithdrawWidgetInputTokenTab = ({
                     />
                   ) : (
                     <DigitCard
-                      title={'APY rewards'}
+                      title={'APRrewards'}
                       tooltipText={APY_TOOLTIP}
                       digit={
                         market?.annual_change_ratio
@@ -388,7 +388,7 @@ export const WithdrawWidgetInputTokenTab = ({
                   )}
                 </Stack>
               </Stack>
-              <Box
+              {/* <Box
                 sx={{
                   display: 'flex',
                   width: '100%',
@@ -437,7 +437,7 @@ export const WithdrawWidgetInputTokenTab = ({
                 >
                   <Typography variant="bodyMediumStrong">Withdraw</Typography>
                 </CustomLoadingButton>
-              </Box>
+              </Box> */}
             </BerachainDepositInputBackground>
           </Stack>
         );

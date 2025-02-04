@@ -34,10 +34,16 @@ import {
   DEPOSITED_TOOLTIP,
   TVL_TOOLTIP,
 } from '../../const/title';
-import { calculateTVLGoal } from '@/components/Berachain/utils';
+import {
+  calculateBeraYield,
+  calculateTVLGoal,
+  titleSlicer,
+} from '@/components/Berachain/utils';
 import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
 import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import { sum } from 'lodash';
 
 interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
@@ -66,23 +72,18 @@ export const BerachainMarketCard = ({
   const { t } = useTranslation();
   const { chains } = useChains();
 
+  const { positionsData } = useBerachainMarketsFilterStore((state) => state);
+
+  const positions = useMemo(() => {
+    return positionsData.filter(
+      (positionsData) => positionsData.market_id === roycoData.market_id,
+    );
+  }, [positionsData, roycoData?.market_id, account]);
+
   const tokensTooltipId = 'tokens-tooltip-button';
   const tokensTooltipMenuId = 'tokens-tooltip-menu';
 
-  const {
-    isLoading: isLoadingRecipe,
-    isRefetching: isRefetchingRecipe,
-    data: dataRecipe,
-  } = useEnrichedAccountBalancesRecipeInMarket({
-    chain_id: roycoData?.chain_id!,
-    market_id: roycoData?.market_id!,
-    account_address: account?.address?.toLowerCase() ?? '',
-    custom_token_data: undefined,
-  });
-
-  const deposited =
-    dataRecipe?.input_token_data_ap?.token_amount &&
-    dataRecipe?.input_token_data_ap?.token_amount > 0;
+  const deposited = positions.length > 0;
 
   const tvlGoal = useMemo(() => {
     return calculateTVLGoal(roycoData);
@@ -175,6 +176,7 @@ export const BerachainMarketCard = ({
             >
               <DigitTokenSymbolCard
                 sx={(theme) => ({
+                  flexGrow: 1,
                   '.tooltip-icon': {
                     color: theme.palette.alphaLight500.main,
                   },
@@ -189,14 +191,19 @@ export const BerachainMarketCard = ({
                 digit={
                   deposited
                     ? t('format.decimal', {
-                        value: dataRecipe?.input_token_data_ap?.token_amount,
+                        value: positions.reduce((sum, item) => {
+                          return (
+                            sum + (item.input_token_data?.token_amount ?? 0)
+                          );
+                        }, 0),
                       })
-                    : roycoData?.input_token_data?.symbol
+                    : titleSlicer(roycoData?.input_token_data?.symbol ?? '', 11)
                 }
-                hasDeposited={deposited ? true : false}
+                hasDeposited={deposited}
               />
               <DigitCard
                 sx={(theme) => ({
+                  width: 'auto',
                   '.tooltip-icon': {
                     color: theme.palette.alphaLight500.main,
                   },
@@ -207,6 +214,8 @@ export const BerachainMarketCard = ({
                   },
                   '.content': {
                     marginTop: 1,
+                    display: 'flex',
+                    alignItems: 'center',
                   },
                 })}
                 title={'TVL'}
@@ -260,20 +269,22 @@ export const BerachainMarketCard = ({
             </BeraChainProgressCardComponent>
           </BerchainMarketCardInfos>
           <BerchainMarketCardInfos display={'flex'}>
-            {roycoData?.incentive_tokens_data?.length > 0 ? (
+            {tvlGoal !== 100 && roycoData?.incentive_tokens_data?.length > 0 ? (
               <TokenIncentivesCard
                 tokens={roycoData?.incentive_tokens_data}
                 marketData={roycoData}
               />
             ) : (
               <DigitTooltipCard
-                title={'APY'}
+                title={'Rewards per token'}
                 digit={
-                  roycoData?.annual_change_ratio
-                    ? t('format.percent', {
-                        value: roycoData?.annual_change_ratio,
-                      })
-                    : 'N/A'
+                  tvlGoal === 100
+                    ? 'Deposit cap reached.'
+                    : roycoData?.annual_change_ratio
+                      ? t('format.percent', {
+                          value: roycoData?.annual_change_ratio,
+                        })
+                      : 'N/A'
                 }
                 tooltipText={APY_TOOLTIP}
               />
