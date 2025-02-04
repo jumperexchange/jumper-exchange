@@ -12,14 +12,15 @@ import {
   BerachainMarketInfos,
 } from './BerachainMarketsHeader.style';
 import { useTranslation } from 'react-i18next';
-import { useEnrichedRoycoStats } from 'royco/hooks';
 import { BerachainProgressCard } from '../BerachainMarketCard/StatCard/BerachainProgressCard';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 
 export const BerachainMarketsHeader = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const { t } = useTranslation();
-  const { data } = useEnrichedRoycoStats();
+
+  const { roycoStats } = useBerachainMarketsFilterStore((state) => state);
 
   return (
     <BerachainMarketHeaderBox>
@@ -51,9 +52,9 @@ export const BerachainMarketsHeader = () => {
         <BerachainProgressCard
           title={'Total Value Locked'}
           value={
-            data?.total_tvl
+            roycoStats?.total_tvl
               ? t('format.currency', {
-                  value: data?.total_tvl,
+                  value: roycoStats?.total_tvl,
                   notation: 'compact',
                 })
               : 'N/A'

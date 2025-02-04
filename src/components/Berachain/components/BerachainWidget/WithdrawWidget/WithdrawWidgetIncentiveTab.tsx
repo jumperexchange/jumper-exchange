@@ -119,19 +119,15 @@ export const WithdrawWidgetIncentiveTab = ({
     (EnrichedPositionsRecipeDataType['tokens_data'][0] & {
       position?: EnrichedPositionsRecipeDataType;
     })[]
-  >(
-    // @ts-expect-error
-    () => {
-      const tokens = [];
-      for (const position of positions) {
-        for (const token_data of position?.tokens_data ?? []) {
-          tokens.push({ ...token_data, position });
-        }
+  >(() => {
+    const tokens = [];
+    for (const position of positions) {
+      for (const token_data of position?.tokens_data ?? []) {
+        tokens.push({ ...token_data, position });
       }
-      return tokens;
-    },
-    [positions],
-  );
+    }
+    return tokens;
+  }, [positions]);
 
   useEffect(() => {
     refetch();
