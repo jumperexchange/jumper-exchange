@@ -90,6 +90,7 @@ export interface FeatureCardAttributes {
   URL: string;
   TitleColor?: string;
   CTAColor?: string;
+  SubtitleColor?: string;
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;

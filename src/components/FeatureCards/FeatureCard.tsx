@@ -213,7 +213,9 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
           {!!data?.attributes?.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
-              typographyColor={typographyColor}
+              typographyColor={
+                data.attributes?.SubtitleColor || typographyColor
+              }
             >
               {data?.attributes?.Subtitle}
             </FeatureCardSubtitle>
