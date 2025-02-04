@@ -7,6 +7,8 @@ interface ImpressionPayload {
   ad_creative_id: string;
 }
 
+const SPINDLE_TRACKING_PATH = '/external/track';
+
 export async function trackSpindl(
   impressionId: string,
   adCreativeId: string,
@@ -17,23 +19,24 @@ export async function trackSpindl(
     impression_id: impressionId, // @spindl: Please verify
     ad_creative_id: adCreativeId, // @spindl: Please verify
   };
-  const { postUrl } = getSpindlConfig();
-  if (postUrl && process.env.NEXT_PUBLIC_SPINDL_API_KEY) {
-    const response = await fetch(postUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-ACCESS-KEY': process.env.NEXT_PUBLIC_SPINDL_API_KEY,
-      },
-      body: JSON.stringify(payload),
-    });
+  const spindlConfig = getSpindlConfig();
 
-    if (response) {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  if (!spindlConfig?.apiUrl || !spindlConfig.headers) {
+    return;
+  }
+
+  const response = await fetch(
+    `${spindlConfig.apiUrl}${SPINDLE_TRACKING_PATH}`,
+    {
+      method: 'POST',
+      headers: spindlConfig.headers,
+      body: JSON.stringify(payload),
+    },
+  );
+
+  if (response) {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  } else {
-    console.error('Provide Spindl API key and URL for tracking');
   }
 }

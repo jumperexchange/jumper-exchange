@@ -26,9 +26,9 @@ export const useSpindlFetch = () => {
           return null;
         }
 
-        const { data } = await fetchSpindl(params);
-        if (data && data.length) {
-          const items = data
+        const response = await fetchSpindl(params);
+        if (response?.data && response?.data.length) {
+          const items = response.data
             .filter((item: SpindlItem) => {
               return !disabledFeatureCards.includes(item.id);
             })
