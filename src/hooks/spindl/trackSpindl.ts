@@ -14,10 +14,10 @@ export async function trackSpindl(
   adCreativeId: string,
 ): Promise<void> {
   const payload: ImpressionPayload = {
-    type: 'impression', // @spindl: Please verify this string is okay to be hard-coded? Or will it change?
-    placement_id: 'notify_message', // @spindl: Please verify this string is okay to be hard-coded? Or will it change?
-    impression_id: impressionId, // @spindl: Please verify
-    ad_creative_id: adCreativeId, // @spindl: Please verify
+    type: 'impression',
+    placement_id: 'notify_message',
+    impression_id: impressionId,
+    ad_creative_id: adCreativeId,
   };
   const spindlConfig = getSpindlConfig();
 
