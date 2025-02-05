@@ -14,9 +14,9 @@ interface MediaFormat {
   url: string;
 }
 
-export interface MediaData {
+export interface MediaData extends MediaAttributes {
   id: number;
-  attributes: MediaAttributes;
+  // attributes: MediaAttributes;
 }
 
 export interface MediaAttributes {
@@ -67,9 +67,9 @@ export interface StrapiImageData {
 }
 
 /* Feature-Cards */
-export interface FeatureCardData {
+export interface FeatureCardData extends FeatureCardAttributes {
   id: number;
-  attributes: FeatureCardAttributes;
+  // attributes: FeatureCardAttributes;
 }
 
 interface FeatureCardDisplayConditions {
@@ -77,11 +77,9 @@ interface FeatureCardDisplayConditions {
   showOnce?: boolean;
 }
 
-interface FeatureCardExclusions {
-  data: {
-    id: number;
-    attributes: Pick<FeatureCardAttributes, 'uid'>;
-  }[];
+interface FeatureCardExclusion extends Pick<FeatureCardAttributes, 'uid'> {
+  id: number;
+  // attributes: Pick<FeatureCardAttributes, 'uid'>;
 }
 
 interface FeatureCardAttributes {
@@ -98,9 +96,9 @@ interface FeatureCardAttributes {
   publishedAt?: string;
   locale: string;
   uid: string;
-  BackgroundImageLight: StrapiImageData;
-  BackgroundImageDark: StrapiImageData;
-  featureCardsExclusions?: FeatureCardExclusions;
+  BackgroundImageLight: MediaData;
+  BackgroundImageDark: MediaData;
+  featureCardsExclusions?: FeatureCardExclusion[];
 
   localizations: {
     data: any[];
@@ -108,9 +106,9 @@ interface FeatureCardAttributes {
 }
 
 /* Jumper User */
-export interface JumperUserData {
+export interface JumperUserData extends JumperUserAttributes {
   id: number;
-  attributes: JumperUserAttributes;
+  // attributes: JumperUserAttributes;
 }
 
 interface JumperUserAttributes {
@@ -128,19 +126,17 @@ export interface TagData {
   data: TagAttributes[];
 }
 export interface TagAttributes {
-  attributes: {
-    Title: string;
-    TextColor?: string;
-    Key: string;
-    BackgroundColor?: string;
-    blog_articles: {
-      data: BlogArticleData[];
-    };
-    createdAt: string;
-    locale: string;
-    publishedAt?: string;
-    updatedAt: string;
-  };
+  // attributes: {
+  Title: string;
+  TextColor?: string;
+  Key: string;
+  BackgroundColor?: string;
+  blog_articles: BlogArticleData[];
+  createdAt: string;
+  locale: string;
+  publishedAt?: string;
+  updatedAt: string;
+  // };
   id: number;
 }
 
@@ -154,7 +150,7 @@ interface FaqItemAttributes {
   displayOnBlogPage: boolean;
 }
 
-export interface FaqMeta {
+export interface FaqMeta extends FaqItemAttributes {
   id: number;
   attributes: FaqItemAttributes;
 }
@@ -164,48 +160,48 @@ export interface FaqData {
 }
 
 /* Author */
-export interface AuthorData {
-  attributes: any;
-  data: AuthorAttributes;
+export interface AuthorData extends AuthorAttributes {
+  // attributes: any;
+  // data: AuthorAttributes;
 }
 interface AuthorAttributes {
-  attributes: {
-    Name: string;
-    createdAt: string;
-    publishedAt?: string;
-    updatedAt: string;
-    Avatar: AvatarItem;
-    Role?: string;
-    Bio?: string;
-    Twitter?: string;
-    LinkedIn?: string;
-  };
+  // attributes: {
+  Name: string;
+  createdAt: string;
+  publishedAt?: string;
+  updatedAt: string;
+  Avatar: AvatarItem;
+  Role?: string;
+  Bio?: string;
+  Twitter?: string;
+  LinkedIn?: string;
+  // };
   id: number;
 }
 
-export interface AvatarItem {
-  data: AvatarData;
+export interface AvatarItem extends AvatarData {
+  // data: AvatarData;
 }
 
-export interface AvatarData {
+export interface AvatarData extends MediaAttributes {
   id: number;
-  attributes: MediaAttributes;
+  // attributes: MediaAttributes;
 }
 
 /* Blog */
-export interface BlogArticleData {
+export interface BlogArticleData extends BlogArticleAttributes {
   id: number;
-  attributes: BlogArticleAttributes;
+  // attributes: BlogArticleAttributes;
 }
 export interface BlogArticleAttributes {
   Title: string;
   Subtitle: string;
   Content: RootNode[];
-  Image: StrapiImageData;
+  Image: MediaData;
   Slug: string;
   createdAt: string;
   updatedAt: string;
-  tags: TagData;
+  tags: TagAttributes[];
   author: AuthorData;
   faq_items: FaqData;
   publishedAt?: string;
@@ -216,9 +212,9 @@ export interface BlogArticleAttributes {
   };
 }
 
-export interface PartnerThemesData {
+export interface PartnerThemesData extends PartnerThemesAttributes {
   id: number;
-  attributes: PartnerThemesAttributes;
+  // attributes: PartnerThemesAttributes;
 }
 
 export interface Customization {
@@ -254,12 +250,12 @@ export interface PartnerThemesAttributes {
   uid: string;
   SelectableInMenu?: boolean;
   PartnerURL?: URL;
-  BackgroundImageLight: StrapiImageData;
-  BackgroundImageDark: StrapiImageData;
-  FooterImageLight: StrapiImageData;
-  FooterImageDark: StrapiImageData;
-  LogoLight: StrapiImageData;
-  LogoDark: StrapiImageData;
+  BackgroundImageLight: MediaData;
+  BackgroundImageDark: MediaData;
+  FooterImageLight: MediaData;
+  FooterImageDark: MediaData;
+  LogoLight: MediaData;
+  LogoDark: MediaData;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
   Bridges: RepeatableComponent[];

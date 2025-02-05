@@ -186,8 +186,8 @@ test.describe('Jumper full e2e flow', () => {
         Authorization: bearerToken,
       },
       params: {
-        'populate[BackgroundImageLight]': '*',
-        'populate[BackgroundImageDark]': '*',
+        'populate[0]': 'BackgroundImageLight',
+        'populate[1]': 'BackgroundImageDark',
         'populate[featureCardsExclusions][fields][0]': 'uid',
         'filters[PersonalizedFeatureCard][%24nei]': 'false',
         'filters[minlevel][%24lte]': '4',

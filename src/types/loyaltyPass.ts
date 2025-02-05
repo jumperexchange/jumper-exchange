@@ -1,5 +1,5 @@
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { StrapiImageData } from './strapi';
+import type { MediaData } from './strapi';
 import type { QuestDetails } from '@/types/questDetails';
 
 // PDA Type
@@ -48,34 +48,11 @@ type ImageFormatThumbnail = {
   height: number;
 };
 
-type ImageAttributes = {
-  name: string;
-  alternativeText?: string;
-  caption?: string;
-  width: number;
-  height: number;
-  formats: {
-    thumbnail: ImageFormatThumbnail;
-  };
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  previewUrl?: string;
-  provider: string;
-  createdAt: string;
-  updatedAt: string;
-};
+type ImageAttributes = MediaData;
 
 type BannerImageData = {
-  data: [
-    {
-      id: number;
-      attributes: ImageAttributes;
-    },
-  ];
-};
+  id: number;
+} & ImageAttributes;
 
 type QuestsPlatformAttributes = {
   Name: string;
@@ -84,12 +61,10 @@ type QuestsPlatformAttributes = {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
-  Logo: StrapiImageData;
+  Logo: MediaData;
 };
 
-type QuestsPlatformData = {
-  data: { id: number; attributes: QuestsPlatformAttributes };
-};
+type QuestsPlatformData = { id: number } & QuestsPlatformAttributes;
 
 export interface QuestChains {
   name: string;
@@ -98,6 +73,7 @@ export interface QuestChains {
 
 export interface CustomInformation {
   chains: QuestChains[];
+
   [key: string]: any;
 }
 
@@ -120,14 +96,14 @@ export type QuestAttributes = {
   Subtitle?: string;
   Steps?: RootNode[];
   CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
-  Image: StrapiImageData;
-  BannerImage: BannerImageData;
+  Image: ImageAttributes;
+  BannerImage: BannerImageData[];
   quests_platform: QuestsPlatformData;
 };
 
-export interface Quest {
+export interface Quest extends QuestAttributes {
   id: number;
-  attributes: QuestAttributes;
+  // attributes: QuestAttributes;
 }
 
 export interface LoyaltyPassProps {

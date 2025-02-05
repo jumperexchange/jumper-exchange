@@ -11,7 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { useChains } from 'src/hooks/useChains';
-import type { StrapiImageData } from 'src/types/strapi';
+import type { MediaData } from 'src/types/strapi';
 import type { BerachainProtocolType } from '../../berachain.types';
 import {
   BerachainMarketCardBadge,
@@ -49,7 +49,7 @@ interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
   roycoData: EnrichedMarketDataType;
   title?: string;
-  image?: StrapiImageData;
+  image?: MediaData;
   type?: BerachainProtocolType;
   apys?: number[];
   tokens?: string[];
@@ -108,11 +108,11 @@ export const BerachainMarketCard = ({
             >
               {image ? (
                 <Image
-                  key={`berachain-market-card-token-${image.data.id}`}
-                  src={`${url}${image.data.attributes?.url}`}
-                  alt={`${image.data.attributes?.alternativeText || 'protocol'} logo`}
-                  width={image.data.attributes?.width}
-                  height={image.data.attributes?.height}
+                  key={`berachain-market-card-token-${image.id}`}
+                  src={`${url}${image?.url}`}
+                  alt={`${image?.alternativeText || 'protocol'} logo`}
+                  width={image?.width}
+                  height={image?.height}
                   style={{
                     width: '72px',
                     height: 'auto',

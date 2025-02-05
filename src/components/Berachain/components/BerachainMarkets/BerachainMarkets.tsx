@@ -113,9 +113,7 @@ export const BerachainMarkets = () => {
             })
             .filter((data) => {
               const card = findFromStrapiByUid(data.market_id!);
-              return baffleOnly
-                ? card?.attributes.CustomInformation?.extraRewards
-                : true;
+              return baffleOnly ? card?.CustomInformation?.extraRewards : true;
             })
             .map((roycoData, index) => {
               if (!roycoData?.id) {
@@ -127,13 +125,11 @@ export const BerachainMarkets = () => {
 
               return (
                 <BerachainMarketCard
-                  extraRewards={
-                    card?.attributes.CustomInformation?.extraRewards
-                  }
+                  extraRewards={card?.CustomInformation?.extraRewards}
                   key={`berachain-market-card-${roycoData.id || 'protocol'}-${index}`}
                   roycoData={roycoData}
                   // chainId={roycoData.chain_id}
-                  image={card?.attributes?.Image}
+                  image={card?.Image}
                   title={fullTitle}
                   // slug={roycoData.id}
                   // slug={card.attributes?.Slug}
@@ -142,7 +138,7 @@ export const BerachainMarkets = () => {
                   // @ts-ignore
                   // apys={roycoData.native_annual_change_ratios} // existing but not typed :(
                   // tvl={roycoData.locked_quantity_usd}
-                  type={card.attributes?.CustomInformation?.type}
+                  type={card?.CustomInformation?.type}
                   url={url}
                 />
               );
