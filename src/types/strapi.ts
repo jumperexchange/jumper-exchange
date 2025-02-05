@@ -20,30 +20,28 @@ export interface MediaData {
   attributes: MediaAttributes;
 }
 export interface MediaAttributes {
-  name: string;
-  alternativeText: string | undefined;
-  caption?: string;
+  alternativeText?: string | undefined;
   width: number;
   height: number;
-  formats: {
+  url: string;
+  name?: string;
+  formats?: {
     small: MediaFormat;
     medium: MediaFormat;
     large: MediaFormat;
     thumbnail: MediaFormat;
-    [key: string]: MediaFormat; // Allow additional formats
+    [key: string]: MediaFormat;
   };
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
+  hash?: string;
+  ext?: string;
+  mime?: string;
+  size?: number;
   previewUrl?: string;
-  provider: string;
-  provider_metadata: any;
-  createdAt: string;
-  updatedAt: string;
+  provider?: string;
+  provider_metadata?: any;
+  createdAt?: string;
+  updatedAt?: string;
 }
-
 export interface StrapiMeta {
   pagination: StrapiMetaPagination;
 }

@@ -3,11 +3,11 @@ interface ErrorResponse {
   error?: string;
 }
 
-interface CallRequestOptions {
+export interface CallRequestOptions {
   method: 'GET' | 'POST';
   path: string;
-  apiUrl: string;
-  queryParams?: Record<string, string>;
+  apiUrl?: string;
+  queryParams?: Record<string, string | undefined>;
   body?: any;
   errors?: ErrorResponse;
   headers?: Record<string, string>;
@@ -55,5 +55,5 @@ export async function callRequest<T>({
     );
   }
 
-  return method === 'GET' ? response.json() : undefined;
+  return response.json();
 }

@@ -64,7 +64,7 @@ interface DebugInfo {
   ms: number;
 }
 
-export interface SpindlData {
+export interface SpindlFetchData {
   items: SpindlItem[];
   debug: DebugInfo;
 }
@@ -90,8 +90,4 @@ export interface SpindlFetchParams {
   chainId?: ChainId;
   tokenAddress?: string;
   address?: string;
-}
-
-export interface SpindlFetchResult {
-  data?: any;
 }

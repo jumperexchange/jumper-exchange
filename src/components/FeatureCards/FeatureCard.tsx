@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { trackSpindl } from 'src/hooks/spindl/trackSpindl';
+import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
 import type { SpindlTrackData } from 'src/types/spindl';
 import {
   FCard as Card,
@@ -27,10 +27,9 @@ import {
 
 interface FeatureCardProps {
   data: FeatureCardData;
-  isSuccess: boolean;
 }
 
-export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
+export const FeatureCard = ({ data }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const eventFired = useRef(false);
 
