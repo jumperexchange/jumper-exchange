@@ -35,6 +35,7 @@ interface CTA {
   title: string;
   href: string;
   hrefDisplay: string;
+  color?: string;
 }
 
 export interface SpindlItem {
@@ -45,9 +46,11 @@ export interface SpindlItem {
   advertiser: Advertiser;
   placementSlug: string;
   title: string;
+  titleColor?: string;
   mode?: 'light' | 'dark';
   context: string | null;
   description: string;
+  descriptionColor?: string;
   imageUrl: string;
   imageVariants: ImageVariants;
   category: string;
