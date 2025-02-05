@@ -6,9 +6,8 @@ import type { FeatureCardData } from '@/types/strapi';
 import { useMemo } from 'react';
 import { useFeatureCardsFilter } from 'src/hooks/feature-cards/useFeatureCardsFilter';
 import { shallow } from 'zustand/shallow';
-import { FeatureCard } from '../FeatureCard';
 
-export const GeneralCards = () => {
+export const useFeatureCards = () => {
   const disabledFeatureCards = useSettingsStore(
     (state) => state.disabledFeatureCards,
     shallow,
@@ -39,7 +38,5 @@ export const GeneralCards = () => {
     return null;
   }
 
-  return slicedFeatureCards?.map((cardData, index) => {
-    return <FeatureCard data={cardData} key={`feature-card-${index}`} />;
-  });
+  return slicedFeatureCards;
 };

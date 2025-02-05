@@ -16,7 +16,7 @@ export async function trackSpindl(
 ): Promise<void> {
   const spindlConfig = getSpindlConfig();
 
-  if (!spindlConfig?.apiUrl || !spindlConfig.headers) {
+  if (!spindlConfig) {
     return;
   }
 

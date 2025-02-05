@@ -9,7 +9,7 @@ interface SpindlState {
 
 export const useSpindlStore = createWithEqualityFn<SpindlState>(
   (set) => ({
-    spindl: [], //TabsMap.Exchange.index,
+    spindl: [],
     setSpindl: (items) => set({ spindl: items }),
   }),
   Object.is,
