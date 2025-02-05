@@ -52,6 +52,7 @@ type ImageAttributes = MediaData;
 
 type BannerImageData = {
   id: number;
+  documentId: string;
 } & ImageAttributes;
 
 type QuestsPlatformAttributes = {
@@ -99,10 +100,18 @@ export type QuestAttributes = {
   Image: ImageAttributes;
   BannerImage: BannerImageData[];
   quests_platform: QuestsPlatformData;
+  tasks_verification: TaskVerification[];
 };
+
+interface TaskVerification {
+  id: number;
+  name: string;
+  uuid: string;
+}
 
 export interface Quest extends QuestAttributes {
   id: number;
+  documentId: string;
   // attributes: QuestAttributes;
 }
 

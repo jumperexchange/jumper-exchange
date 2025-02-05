@@ -16,6 +16,7 @@ interface MediaFormat {
 
 export interface MediaData extends MediaAttributes {
   id: number;
+  documentId: string;
   // attributes: MediaAttributes;
 }
 
@@ -69,6 +70,7 @@ export interface StrapiImageData {
 /* Feature-Cards */
 export interface FeatureCardData extends FeatureCardAttributes {
   id: number;
+  documentId: string;
   // attributes: FeatureCardAttributes;
 }
 
@@ -79,6 +81,7 @@ interface FeatureCardDisplayConditions {
 
 interface FeatureCardExclusion extends Pick<FeatureCardAttributes, 'uid'> {
   id: number;
+  documentId: string;
   // attributes: Pick<FeatureCardAttributes, 'uid'>;
 }
 
@@ -138,6 +141,7 @@ export interface TagAttributes {
   updatedAt: string;
   // };
   id: number;
+  documentId: string;
 }
 
 /* FAQ-Items */
@@ -152,6 +156,7 @@ interface FaqItemAttributes {
 
 export interface FaqMeta extends FaqItemAttributes {
   id: number;
+  documentId: string;
   attributes: FaqItemAttributes;
 }
 
@@ -177,6 +182,7 @@ interface AuthorAttributes {
   LinkedIn?: string;
   // };
   id: number;
+  documentId: string;
 }
 
 export interface AvatarItem extends AvatarData {
@@ -185,12 +191,14 @@ export interface AvatarItem extends AvatarData {
 
 export interface AvatarData extends MediaAttributes {
   id: number;
+  documentId: string;
   // attributes: MediaAttributes;
 }
 
 /* Blog */
 export interface BlogArticleData extends BlogArticleAttributes {
   id: number;
+  documentId: string;
   // attributes: BlogArticleAttributes;
 }
 export interface BlogArticleAttributes {
@@ -214,6 +222,7 @@ export interface BlogArticleAttributes {
 
 export interface PartnerThemesData extends PartnerThemesAttributes {
   id: number;
+  documentId: string;
   // attributes: PartnerThemesAttributes;
 }
 
