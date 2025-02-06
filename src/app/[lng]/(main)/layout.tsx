@@ -1,5 +1,5 @@
 import { getCookies } from '@/app/lib/getCookies';
-import { FeatureCardsWrapper } from '@/components/FeatureCards';
+import { FeatureCards } from '@/components/FeatureCards';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
@@ -18,7 +18,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
       <Layout>
         <App activeTheme={activeTheme}>{children}</App>
       </Layout>
-      <FeatureCardsWrapper />
+      <FeatureCards />
     </>
   );
 }

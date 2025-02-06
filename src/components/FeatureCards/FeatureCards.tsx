@@ -10,7 +10,7 @@ import { shallow } from 'zustand/shallow';
 import { FeatureCard, FeatureCardsContainer } from '.';
 import { usePersonalizedFeatureCards } from '../../hooks/feature-cards/usePersonalizedFeatureCards';
 
-export const FeatureCardsWrapper = () => {
+export const FeatureCards = () => {
   const welcomeScreenClosed = useSettingsStore(
     (state) => state.welcomeScreenClosed,
     shallow,

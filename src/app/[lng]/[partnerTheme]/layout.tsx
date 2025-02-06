@@ -1,5 +1,5 @@
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import { FeatureCardsWrapper } from '@/components/FeatureCards';
+import { FeatureCards } from '@/components/FeatureCards';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import React from 'react';
@@ -44,7 +44,7 @@ export default async function PartnerThemeLayout({
   return (
     <>
       <Layout disableNavbar={true}>{children}</Layout>
-      <FeatureCardsWrapper />
+      <FeatureCards />
     </>
   );
 }
