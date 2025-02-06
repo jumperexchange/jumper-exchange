@@ -1,28 +1,26 @@
-name: Build docker
+name: Build Docker (Test)
 
 on:
   push:
     branches:
-      - develop
-      - staging
-      - main
+      - feat/config-secret-integration-develop
 
 env:
   IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
+  SECRET_NAME: jumper-backend-env
+  DRY_RUN: "true"
 
 jobs:
   build-docker:
     runs-on: ubuntu-latest
 
-    # id token
     permissions:
       contents: "read"
       id-token: "write"
 
     steps:
-      - # check out the repository
-        name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -41,11 +39,29 @@ jobs:
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
 
-      - # login to gcp
-        name: login
-        run: |-
-          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
-          gcloud auth configure-docker europe-docker.pkg.dev
+      - name: Fetch Secrets from GCP Secret Manager (Test)
+        id: fetch-secrets
+        run: |
+          # Fetch the test secret value
+          JUMPER_BACKEND_ENV=$(gcloud secrets versions access latest --secret=${{ env.SECRET_NAME }})
+          
+          # Check if the command was successful
+          if [ $? -ne 0 ]; then
+            echo "Error: Failed to fetch JUMPER_BACKEND_ENV."
+            exit 1
+          fi
+          
+          # Set the secret as an environment variable
+          echo "JUMPER_BACKEND_ENV=$JUMPER_BACKEND_ENV" >> $GITHUB_ENV
+
+      - name: Check if test secrets are fetched
+        run: |
+          if [ -z "${{ env.JUMPER_BACKEND_ENV }}" ]; then
+            echo "Error: JUMPER_BACKEND_ENV is empty."
+            exit 1
+          else
+            echo " Test secret retrieved successfully."
+          fi
 
       - name: Extract Docker metadata
         id: meta
@@ -54,16 +70,23 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+            type=ref,event=branch,prefix=test-${{ env.UNIQ_ID }}-
 
-      - name: Build and push Docker image
+      - name: Build Docker image (Test)
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: false  # Do NOT push to production
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            ENV_FILE=${{ github.ref_name == 'main' && '.env.production' || github.ref_name == 'develop' && '.env.development' || format('.env.{0}', github.ref_name) }}
-            ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
-            NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
+            JUMPER_BACKEND_ENV=${{ env.JUMPER_BACKEND_ENV }}
+            NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
+          no-cache: true  # Ensures fresh secrets
+
+      - name: Dry Run Deployment Check
+        run: |
+          if [ "$DRY_RUN" == "true" ]; then
+            echo "Skipping deployment: Dry run mode enabled."
+            exit 0
+          fi
