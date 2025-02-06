@@ -39,7 +39,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('publicationState', 'preview');
+  apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
@@ -50,6 +50,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
+          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });

@@ -36,7 +36,7 @@ class StrapiApi {
 
     // Show drafts ONLY on development env
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
-      this.apiUrl.searchParams.set('publicationState', 'preview');
+      this.apiUrl.searchParams.set('status', 'draft');
     }
   }
 
@@ -195,7 +195,7 @@ class QuestStrapiApi extends StrapiApi {
     const questParams = new QuestParams(this.apiUrl);
     this.apiUrl = questParams.addParams();
     process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-      this.apiUrl.searchParams.set('publicationState', 'preview');
+    this.apiUrl.searchParams.set('status', 'draft');
   }
 
   sort(order: 'asc' | 'desc'): this {

@@ -42,11 +42,11 @@ export const usePersonalizedFeatureCards =
         : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
     const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
 
-    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
-    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
+    apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
+    apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
     apiUrl.searchParams.set(
-      'populate[featureCardsExclusions][fields][0]',
-      'uid',
+      'populate[2]',
+      'featureCardsExclusions',
     );
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard]', 'true');
     fcCardData?.map((id: number) =>
@@ -54,7 +54,7 @@ export const usePersonalizedFeatureCards =
     );
 
     process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-      apiUrl.searchParams.set('publicationState', 'preview');
+    apiUrl.searchParams.set('status', 'draft');
     const apiAccesToken =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
         ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
@@ -66,6 +66,7 @@ export const usePersonalizedFeatureCards =
       queryFn: async () => {
         const response = await fetch(decodeURIComponent(apiUrl.href), {
           headers: {
+            'Strapi-Response-Format': 'v4',
             Authorization: `Bearer ${apiAccesToken}`,
           },
         });

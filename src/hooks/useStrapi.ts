@@ -147,11 +147,11 @@ export const useStrapi = <T>({
   // feature cards -->
   if (contentType === STRAPI_FEATURE_CARDS) {
     // populate images on feature card query
-    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
-    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
+    apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
+    apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
     apiUrl.searchParams.set(
-      'populate[featureCardsExclusions][fields][0]',
-      'uid',
+      'populate[2]',
+      'featureCardsExclusions',
     );
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
     //filter url
@@ -167,12 +167,12 @@ export const useStrapi = <T>({
 
   // partner-themes -->
   if (contentType === STRAPI_PARTNER_THEMES) {
-    apiUrl.searchParams.set('populate[BackgroundImageLight]', '*');
-    apiUrl.searchParams.set('populate[BackgroundImageDark]', '*');
-    apiUrl.searchParams.set('populate[FooterImageLight]', '*');
-    apiUrl.searchParams.set('populate[FooterImageDark]', '*');
-    apiUrl.searchParams.set('populate[LogoLight]', '*');
-    apiUrl.searchParams.set('populate[LogoDark]', '*');
+    apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
+    apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
+    apiUrl.searchParams.set('populate[2]', 'FooterImageLight');
+    apiUrl.searchParams.set('populate[3]', 'FooterImageDark');
+    apiUrl.searchParams.set('populate[4]', 'LogoLight');
+    apiUrl.searchParams.set('populate[5]', 'LogoDark');
 
     // filter partner-themes by "uid"
     if (filterUid) {
@@ -181,7 +181,7 @@ export const useStrapi = <T>({
   }
   // show drafts ONLY on development env
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
-    apiUrl.searchParams.set('publicationState', 'preview');
+  apiUrl.searchParams.set('status', 'draft');
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('pagination[pageSize]', '50');
 
@@ -196,6 +196,7 @@ export const useStrapi = <T>({
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
+          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });
