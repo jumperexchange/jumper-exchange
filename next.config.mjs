@@ -27,12 +27,12 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'raw.githubusercontent.com',
-        port: '',
+      (process.env.NODE_ENV === 'development' && {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '1337',
         pathname: '/**',
-      },
+      }),
       {
         protocol: 'https',
         hostname: 'assets.coingecko.com',

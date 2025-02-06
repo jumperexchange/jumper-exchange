@@ -31,7 +31,7 @@ export const usePersonalizedFeatureOnLevel = ({
 
   apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
   apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
-  apiUrl.searchParams.set('populate[featureCardsExclusions][fields][0]', 'uid');
+  apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
   apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'false');
   // filter to get only the personalized feature cards that have the correct levels setup
   apiUrl.searchParams.set('filters[minlevel][$lte]', String(level));

@@ -188,7 +188,7 @@ test.describe('Jumper full e2e flow', () => {
       params: {
         'populate[0]': 'BackgroundImageLight',
         'populate[1]': 'BackgroundImageDark',
-        'populate[featureCardsExclusions][fields][0]': 'uid',
+        'populate[2]': 'featureCardsExclusions',
         'filters[PersonalizedFeatureCard][%24nei]': 'false',
         'filters[minlevel][%24lte]': '4',
         'filters[maxLevel][%24gte]': '4',
