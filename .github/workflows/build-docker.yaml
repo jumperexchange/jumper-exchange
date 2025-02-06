@@ -1,26 +1,28 @@
-name: Build Docker (Test)
+name: Build Docker
 
 on:
   push:
     branches:
       - feat/config-secret-integration-develop
+      # - develop
+      # - staging
+      # - main
 
 env:
   IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
-  SECRET_NAME: jumper-backend-env
-  DRY_RUN: "true"
 
 jobs:
   build-docker:
     runs-on: ubuntu-latest
 
+    # ID token permissions
     permissions:
       contents: "read"
       id-token: "write"
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -39,29 +41,10 @@ jobs:
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Fetch Secrets from GCP Secret Manager (Test)
-        id: fetch-secrets
-        run: |
-          # Fetch the test secret value
-          JUMPER_BACKEND_ENV=$(gcloud secrets versions access latest --secret=${{ env.SECRET_NAME }})
-          
-          # Check if the command was successful
-          if [ $? -ne 0 ]; then
-            echo "Error: Failed to fetch JUMPER_BACKEND_ENV."
-            exit 1
-          fi
-          
-          # Set the secret as an environment variable
-          echo "JUMPER_BACKEND_ENV=$JUMPER_BACKEND_ENV" >> $GITHUB_ENV
-
-      - name: Check if test secrets are fetched
-        run: |
-          if [ -z "${{ env.JUMPER_BACKEND_ENV }}" ]; then
-            echo "Error: JUMPER_BACKEND_ENV is empty."
-            exit 1
-          else
-            echo " Test secret retrieved successfully."
-          fi
+      - name: Login to GCP
+        run: |-
+          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
+          gcloud auth configure-docker europe-docker.pkg.dev
 
       - name: Extract Docker metadata
         id: meta
@@ -70,23 +53,43 @@ jobs:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=branch,prefix=test-${{ env.UNIQ_ID }}-
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
 
-      - name: Build Docker image (Test)
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: false  # Do NOT push to production
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            JUMPER_BACKEND_ENV=${{ env.JUMPER_BACKEND_ENV }}
-            NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
-          no-cache: true  # Ensures fresh secrets
-
-      - name: Dry Run Deployment Check
+      - name: Access GCP Secrets Manager
+        id: access-secrets
         run: |
-          if [ "$DRY_RUN" == "true" ]; then
-            echo "Skipping deployment: Dry run mode enabled."
-            exit 0
+          # Set the service account based on the environment
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            SERVICE_ACCOUNT="secret-accessor-prod@jumper-g-management.iam.gserviceaccount.com"
+          elif [[ "${GITHUB_REF_NAME}" == "staging" ]]; then
+            SERVICE_ACCOUNT="secret-accessor-staging@jumper-g-management.iam.gserviceaccount.com"
+          else
+            SERVICE_ACCOUNT="secret-accessor-develop@jumper-g-management.iam.gserviceaccount.com"
           fi
+
+          # Authenticate with the appropriate service account
+          gcloud auth activate-service-account "${SERVICE_ACCOUNT}" --key-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
+
+          # Access secrets from GCP Secrets Manager
+          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-backend-env")
+          echo "SECRET_VALUE=${SECRET_VALUE}" >> $GITHUB_ENV
+    
+      - name: Debug Secret Retrieval
+        run: |
+          if [ -z "${{ env.SECRET_VALUE }}" ]; then
+            echo "Debug: SECRET_VALUE is not set."
+          else
+            echo "Debug: SECRET_VALUE is set."
+            echo "Debug: Masked SECRET_VALUE: ${SECRET_VALUE_MASKED}"
+          fi
+
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     push: ${{ github.event_name != 'pull_request' }}
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     build-args: |
+      #       NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
+      #       SECRET_VALUE=${{ env.SECRET_VALUE }}  # Pass the secret value as a build argument
