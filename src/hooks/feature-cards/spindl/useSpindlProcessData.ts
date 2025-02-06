@@ -56,7 +56,7 @@ export const useSpindlProcessData = () => {
                 } as SpindlMediaAttributes,
               },
             },
-            spindleData: {
+            spindlData: {
               impression_id: item.impressionId,
               ad_creative_id: item.advertiserId,
             },

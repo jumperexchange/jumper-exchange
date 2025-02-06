@@ -2,7 +2,7 @@ import type { ChainId } from '@lifi/sdk';
 import type { FeatureCardAttributes } from './strapi';
 
 export interface SpindlCardAttributes extends FeatureCardAttributes {
-  spindleData?: SpindlTrackData;
+  spindlData?: SpindlTrackData;
 }
 
 export interface SpindlCardData {

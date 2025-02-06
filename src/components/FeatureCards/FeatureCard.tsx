@@ -141,8 +141,8 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
         url: data.attributes?.URL,
       },
     });
-    if ('spindleData' in data.attributes && data.attributes.spindleData) {
-      handleSpindl(data.attributes.spindleData);
+    if ('spindlData' in data.attributes && data.attributes.spindlData) {
+      handleSpindl(data.attributes.spindlData);
     }
   };
 
@@ -161,8 +161,8 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
         url: data.attributes?.URL,
       },
     });
-    if ('spindleData' in data.attributes && data.attributes.spindleData) {
-      handleSpindl(data.attributes.spindleData);
+    if ('spindlData' in data.attributes && data.attributes.spindlData) {
+      handleSpindl(data.attributes.spindlData);
     }
   };
 
