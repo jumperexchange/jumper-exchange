@@ -18,14 +18,14 @@ interface CarouselContainerProps {
   title?: string;
   updateTitle?: string;
   updateTooltip?: string;
-  styles?: CSSObject;
+  sx?: CSSObject;
   children: ReactNode | ReactNode[];
   trackingCategory?: string;
 }
 const swipeDistance = 420;
 
 export const CarouselContainer = ({
-  styles,
+  sx,
   title,
   updateTitle,
   updateTooltip,
@@ -101,7 +101,7 @@ export const CarouselContainer = ({
           </CarouselNavigationButton>
         </CarouselNavigationContainer>
       </CarouselHeader>
-      <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
+      <CarouselContainerBox ref={carouselContainerRef} sx={sx}>
         {children}
       </CarouselContainerBox>
     </Box>

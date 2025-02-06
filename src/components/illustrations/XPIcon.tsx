@@ -1,5 +1,5 @@
-import type { CSSProperties } from 'react';
 import SvgIcon from '@mui/material/SvgIcon/SvgIcon';
+import type { CSSProperties } from 'react';
 
 export const XPIcon = ({
   color = '#31007A',
@@ -9,12 +9,14 @@ export const XPIcon = ({
   sx?: CSSProperties;
 }) => {
   return (
-    <SvgIcon sx={{
-      width: 20,
-      height: 20,
-      color,
-      ...sx,
-    }}>
+    <SvgIcon
+      sx={{
+        width: 20,
+        height: 20,
+        color,
+        ...sx,
+      }}
+    >
       <svg
         width="20"
         height="20"
@@ -48,10 +50,12 @@ interface SuperfestXPIconProps {
 
 export const SuperfestXPIcon = ({ size }: SuperfestXPIconProps) => {
   return (
-    <SvgIcon sx={{
-      width: size ?? 32,
-      height: size ?? 32,
-    }}>
+    <SvgIcon
+      sx={{
+        width: size ?? 32,
+        height: size ?? 32,
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
