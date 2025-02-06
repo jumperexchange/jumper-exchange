@@ -39,7 +39,7 @@ jobs:
         with:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
+          service_account: 'secret-accessor-develop@jumper-g-management.iam.gserviceaccount.com'
 
       - name: Login to GCP
         run: |-
