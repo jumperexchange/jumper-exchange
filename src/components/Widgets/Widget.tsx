@@ -203,6 +203,15 @@ export function Widget({
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      languageResources: {
+        en: {
+          warning: {
+            message: {
+              lowAddressActivity: 'This address has low activity on this blockchain. Please verify above you\'re sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.',
+            },
+          },
+        },
+      },
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         rpcUrls,
