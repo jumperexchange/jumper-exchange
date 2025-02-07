@@ -1,11 +1,12 @@
 import { Portfolio } from '@/components/Portfolio/Portfolio';
 import { useMenuStore } from '@/stores/menu';
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@lifi/wallet-management';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAccountByLatestActivity } from 'src/hooks/useAccountByLatestActivity';
 import { CustomDrawer } from '.';
 import { WalletCard } from './WalletCard';
 import { WalletButton } from './WalletMenu.style';
@@ -17,7 +18,7 @@ interface WalletMenuProps {
 export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { accounts } = useAccount();
+  const { accounts } = useAccountByLatestActivity();
   const { openWalletMenu } = useWalletMenu();
   const {
     openWalletMenu: _openWalletMenu,

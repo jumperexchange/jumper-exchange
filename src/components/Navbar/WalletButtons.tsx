@@ -6,17 +6,14 @@ import { useMenuStore } from '@/stores/menu';
 import { getAddressLabel } from '@/utils/getAddressLabel';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
-import {
-  getConnectorIcon,
-  useAccount,
-  useWalletMenu,
-} from '@lifi/wallet-management';
+import { getConnectorIcon } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import { useAccountByLatestActivity } from 'src/hooks/useAccountByLatestActivity';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
@@ -34,10 +31,9 @@ import {
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { account } = useAccount();
+  const { account } = useAccountByLatestActivity();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
-  const { openWalletMenu } = useWalletMenu();
   const { points, isLoading } = useLoyaltyPass(account?.address);
   const router = useRouter();
   const imgLink = useWalletAddressImg({
