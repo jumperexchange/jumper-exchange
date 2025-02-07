@@ -207,7 +207,8 @@ export function Widget({
         en: {
           warning: {
             message: {
-              lowAddressActivity: 'This address has low activity on this blockchain. Please verify above you\'re sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.',
+              lowAddressActivity:
+                "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
             },
           },
         },
