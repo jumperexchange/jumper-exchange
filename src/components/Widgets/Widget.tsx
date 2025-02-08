@@ -44,6 +44,7 @@ export function Widget({
   toToken,
   fromAmount,
   allowChains,
+  allowToChains,
   widgetIntegrator,
   activeTheme,
   autoHeight,
@@ -76,7 +77,7 @@ export function Widget({
   }, [router]);
 
   useEffect(() => {
-    if (!wrapperRef.current) {
+    if (!wrapperRef.current || allowToChains?.includes(2741)) {
       return;
     }
     // Clear toAddress URL parameter once the widget is mounted
@@ -176,11 +177,10 @@ export function Widget({
         onConnect: openWalletMenu,
       },
       chains: {
+        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
         allow:
           // allow only Abstract chain if AGW is connected
-          account?.connector?.name === 'Abstract'
-            ? [2741]
-            : allowChains || allowedChainsByVariant,
+          account?.connector?.name === 'Abstract' ? [2741] : allowChains,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
