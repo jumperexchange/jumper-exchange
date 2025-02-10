@@ -142,7 +142,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
 
     // Mark feature card as disabled if needed
     if (
-      !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !('showOnce' in data?.attributes?.DisplayConditions) &&
       !!data?.attributes?.uid
     ) {
       setDisabledFeatureCard(data?.attributes?.uid);

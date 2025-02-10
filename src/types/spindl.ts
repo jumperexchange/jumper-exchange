@@ -101,7 +101,7 @@ export interface SpindlFetchParams {
 export function isSpindlFetchResponse(data: unknown): data is SpindlFetchData {
   return (
     typeof data === 'object' &&
-    data !== null &&
+    !!data &&
     'items' in data &&
     Array.isArray((data as SpindlFetchData).items)
   );
