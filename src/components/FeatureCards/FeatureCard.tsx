@@ -112,6 +112,28 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     );
   };
 
+  const handleClose = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    setOpen(false);
+    if (
+      !data.attributes?.DisplayConditions.showOnce &&
+      !!data.attributes?.uid
+    ) {
+      setDisabledFeatureCard(data.attributes?.uid);
+    }
+    trackEvent({
+      category: TrackingCategory.FeatureCard,
+      action: TrackingAction.CloseFeatureCard,
+      label: `click_close`,
+      data: {
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
+      },
+    });
+  };
+
   const handleClick = (
     event: React.MouseEvent<
       HTMLDivElement | HTMLAnchorElement | HTMLButtonElement,
@@ -123,7 +145,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
 
     // Mark feature card as disabled if needed
     if (
-      !data.attributes?.DisplayConditions.showOnce &&
+      !('showOnce' in data.attributes?.DisplayConditions) &&
       !!data.attributes?.uid
     ) {
       setDisabledFeatureCard(data.attributes?.uid);
@@ -166,7 +188,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               right: 1,
               top: 1,
             }}
-            onClick={(e) => handleClick(e, 'click_close')}
+            onClick={(e) => handleClose(e)}
           >
             <CloseIcon
               sx={{
