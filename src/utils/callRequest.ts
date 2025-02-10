@@ -21,7 +21,7 @@ export const callRequest = async <T>({
     throw new Error('Request configuration is missing');
   }
 
-  const url = buildURL(`${apiUrl}${path || ''}`, queryParams);
+  const url = buildURL(`${apiUrl}${path ?? ''}`, queryParams);
 
   const response = await fetch(url.toString(), {
     method,
