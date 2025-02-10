@@ -100,28 +100,6 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
 
-  const handleClose = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.stopPropagation();
-    setOpen(false);
-    if (
-      !data.attributes?.DisplayConditions.showOnce &&
-      !!data.attributes?.uid
-    ) {
-      setDisabledFeatureCard(data.attributes?.uid);
-    }
-    trackEvent({
-      category: TrackingCategory.FeatureCard,
-      action: TrackingAction.CloseFeatureCard,
-      label: `click_close`,
-      data: {
-        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
-        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
-      },
-    });
-  };
-
   const handleSpindl = (
     attributes: SpindlCardAttributes | FeatureCardAttributes,
   ) => {
@@ -135,7 +113,10 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   };
 
   const handleClick = (
-    event: React.MouseEvent<HTMLDivElement | HTMLAnchorElement, MouseEvent>,
+    event: React.MouseEvent<
+      HTMLDivElement | HTMLAnchorElement | HTMLButtonElement,
+      MouseEvent
+    >,
     label: string,
   ) => {
     event.stopPropagation();
@@ -185,7 +166,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               right: 1,
               top: 1,
             }}
-            onClick={(e) => handleClose(e)}
+            onClick={(e) => handleClick(e, 'click_close')}
           >
             <CloseIcon
               sx={{
