@@ -76,7 +76,7 @@ export const FeaturedArticle = ({
           height={0}
           sizes="100vw"
           priority
-          src={`${url}${('formats' in featuredArticle?.attributes?.Image.data.attributes && featuredArticle?.attributes?.Image.data.attributes?.formats?.medium.url) || featuredArticle?.attributes?.Image.data.attributes?.url}`}
+          src={`${url}${featuredArticle?.attributes?.Image.data.attributes?.formats?.medium.url || featuredArticle?.attributes?.Image.data.attributes?.url}`}
           alt={
             featuredArticle.attributes?.Image.data.attributes
               ?.alternativeText ?? featuredArticle.attributes?.Title
