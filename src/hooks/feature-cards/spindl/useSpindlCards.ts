@@ -30,7 +30,7 @@ export const useSpindlCards = () => {
       const locale = getLocale().split('-');
       const queryParams: Record<string, string | undefined> = {
         placement_id: 'notify_message',
-        limit: '2',
+        limit: '1',
         address,
         country: country || locale[1],
         chain_id: chainId?.toString(),
