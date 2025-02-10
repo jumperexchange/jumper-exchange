@@ -6,14 +6,13 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings';
-import type { FeatureCardData } from '@/types/strapi';
-import { openInNewTab } from '@/utils/openInNewTab';
+import type { FeatureCardAttributes, FeatureCardData } from '@/types/strapi';
 import CloseIcon from '@mui/icons-material/Close';
 import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
-import type { SpindlCardData, SpindlTrackData } from 'src/types/spindl';
+import { isSpindlTrackData, type SpindlCardAttributes } from 'src/types/spindl';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -26,7 +25,7 @@ import {
 } from '.';
 
 interface FeatureCardProps {
-  data: FeatureCardData | SpindlCardData;
+  data: FeatureCardData;
 }
 
 export const FeatureCard = ({ data }: FeatureCardProps) => {
@@ -106,9 +105,12 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   ) => {
     event.stopPropagation();
     setOpen(false);
-    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes?.uid &&
+    if (
+      !('showOnce' in data?.attributes?.DisplayConditions) &&
+      !!data?.attributes?.uid
+    ) {
       setDisabledFeatureCard(data?.attributes?.uid);
+    }
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
@@ -120,22 +122,21 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     });
   };
 
-  // Type guard for SpindlTrackData
-  const isSpindlTrackData = (data: unknown): data is SpindlTrackData => {
-    return (
-      typeof data === 'object' &&
-      data !== null &&
-      'impression_id' in data &&
-      'ad_creative_id' in data
+  const handleSpindl = (
+    attributes: SpindlCardAttributes | FeatureCardAttributes,
+  ) => {
+    if (!isSpindlTrackData(attributes)) {
+      return;
+    }
+    trackSpindl(
+      attributes.spindlData.impression_id,
+      attributes.spindlData.ad_creative_id,
     );
   };
 
-  const handleSpindl = (spindlData: SpindlTrackData) => {
-    trackSpindl(spindlData.impression_id, spindlData.ad_creative_id);
-  };
-
-  const handleCTA = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  const handleClick = (
+    event: React.MouseEvent<HTMLDivElement | HTMLAnchorElement, MouseEvent>,
+    label: string,
   ) => {
     event.stopPropagation();
 
@@ -147,11 +148,10 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
       setDisabledFeatureCard(data?.attributes?.uid);
     }
 
-    // Track the CTA click event
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
-      label: `click_cta`,
+      label: label,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
         [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
@@ -159,36 +159,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
       },
     });
 
-    // Check if spindlData exists and is valid
-    if (
-      'spindlData' in data.attributes &&
-      isSpindlTrackData(data.attributes.spindlData)
-    ) {
-      handleSpindl(data.attributes.spindlData);
-    }
-  };
-
-  const handleCardClick = () => {
-    data?.attributes?.URL && openInNewTab(data?.attributes?.URL);
-    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes?.uid &&
-      setDisabledFeatureCard(data?.attributes?.uid);
-    trackEvent({
-      category: TrackingCategory.FeatureCard,
-      action: TrackingAction.ClickFeatureCard,
-      label: 'click_card_bg',
-      data: {
-        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
-        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
-        url: data.attributes?.URL,
-      },
-    });
-    if (
-      'spindlData' in data.attributes &&
-      isSpindlTrackData(data.attributes.spindlData)
-    ) {
-      handleSpindl(data.attributes.spindlData);
-    }
+    handleSpindl(data.attributes);
   };
 
   return (
@@ -202,7 +173,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     >
       <Card
         backgroundImageUrl={imageUrl?.href}
-        onClick={handleCardClick}
+        onClick={(e) => handleClick(e, 'click_cta')}
         isDarkCard={data.attributes?.DisplayConditions.mode === 'dark'}
       >
         <FeatureCardContent>
@@ -249,7 +220,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               target="_blank"
               rel="noopener"
               href={data?.attributes?.URL}
-              onClick={(e) => handleCTA(e)}
+              onClick={(e) => handleClick(e, 'click_cta')}
               data={data}
             >
               <FeatureCardCtaLabel

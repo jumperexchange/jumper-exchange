@@ -2,7 +2,7 @@
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useSettingsStore } from '@/stores/settings';
-import type { FeatureCardData } from '@/types/strapi';
+import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useMemo } from 'react';
 import { useFeatureCardsFilter } from 'src/hooks/feature-cards/useFeatureCardsFilter';
 import { shallow } from 'zustand/shallow';
@@ -16,7 +16,7 @@ export const useFeatureCards = () => {
   const widgetExpanded = useWidgetExpanded();
   const { excludedFeatureCardsFilter } = useFeatureCardsFilter();
 
-  const { data: cards } = useStrapi<FeatureCardData>({
+  const { data: cards } = useStrapi<StrapiFeatureCardData>({
     contentType: STRAPI_FEATURE_CARDS,
     queryKey: ['feature-cards'],
   });
@@ -24,8 +24,8 @@ export const useFeatureCards = () => {
   const slicedFeatureCards = useMemo(() => {
     if (Array.isArray(cards)) {
       return cards
-        ?.filter(excludedFeatureCardsFilter)
-        ?.filter(
+        .filter(excludedFeatureCardsFilter)
+        .filter(
           (el) =>
             el.attributes?.DisplayConditions &&
             !disabledFeatureCards.includes(el.attributes?.uid),

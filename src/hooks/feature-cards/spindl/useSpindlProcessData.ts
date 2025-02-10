@@ -15,7 +15,7 @@ export const useSpindlProcessData = () => {
   );
 
   const processSpindlData = (data?: SpindlFetchData) => {
-    if (data && 'items' in data && data.items.length > 0) {
+    if (Array.isArray(data?.items) && data.items.length > 0) {
       const items = data.items
         .filter((item: SpindlItem) => !disabledFeatureCards.includes(item.id))
         .map((item: SpindlItem, index: number) => ({

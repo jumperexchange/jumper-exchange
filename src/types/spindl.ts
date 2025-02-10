@@ -3,12 +3,17 @@ import type { FeatureCardAttributes } from './strapi';
 
 export interface SpindlCardAttributes
   extends Omit<FeatureCardAttributes, 'locale' | 'localizations'> {
-  spindlData?: SpindlTrackData;
+  spindlData: SpindlTrackData;
 }
 
 export interface SpindlCardData {
   id: string;
   attributes: SpindlCardAttributes;
+}
+
+export interface SpindlMediaData {
+  id: number;
+  attributes: SpindlMediaAttributes;
 }
 export interface SpindlMediaAttributes {
   alternativeText?: string;
@@ -92,3 +97,24 @@ export interface SpindlFetchParams {
   tokenAddress?: string;
   address?: string;
 }
+
+export function isSpindlFetchResponse(data: unknown): data is SpindlFetchData {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'items' in data &&
+    Array.isArray((data as SpindlFetchData).items)
+  );
+}
+
+export const isSpindlTrackData = (
+  data: SpindlCardAttributes | FeatureCardAttributes,
+): data is SpindlCardAttributes => {
+  return (
+    ('spindlData' in data &&
+      data.spindlData &&
+      'impression_id' in data.spindlData &&
+      'ad_creative_id' in data.spindlData) ??
+    false
+  );
+};

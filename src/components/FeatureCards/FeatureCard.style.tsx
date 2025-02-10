@@ -15,7 +15,6 @@ import {
 
 import { styled } from '@mui/material/styles';
 import { inter } from 'src/fonts/fonts';
-import type { SpindlCardData } from 'src/types/spindl';
 import type { FeatureCardData } from 'src/types/strapi';
 
 export interface CardProps extends Omit<MuiCardProps, 'component'> {
@@ -60,7 +59,7 @@ export const FeatureCardCloseButton = styled(IconButton)(() => ({
 
 export interface FeatureCardTitleProps
   extends Omit<TypographyProps, 'component'> {
-  data?: FeatureCardData | SpindlCardData;
+  data?: FeatureCardData;
   typographyColor?: string;
 }
 
@@ -99,7 +98,7 @@ export const FeatureCardActions = styled(CardActions)(({ theme }) => ({
 }));
 
 export interface FeatureCardCtaLinkProps extends Omit<LinkProps, 'component'> {
-  data: FeatureCardData | SpindlCardData;
+  data: FeatureCardData;
 }
 
 export const FeatureCardCtaLink = styled(Link, {
@@ -115,7 +114,7 @@ export const FeatureCardCtaLink = styled(Link, {
 
 export interface FeatureCardCtaLabelProps
   extends Omit<TypographyProps, 'component'> {
-  data: FeatureCardData | SpindlCardData;
+  data: FeatureCardData;
   typographyColor?: string;
 }
 

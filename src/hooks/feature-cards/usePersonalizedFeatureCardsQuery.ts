@@ -1,9 +1,9 @@
-import type { FeatureCardData } from '@/types/strapi';
+import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 
 export interface UsePersonalizedFeatureCardsProps {
-  data: FeatureCardData[];
+  data: StrapiFeatureCardData[];
   isSuccess: boolean;
   isConnected: boolean;
 }

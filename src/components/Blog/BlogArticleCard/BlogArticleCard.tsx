@@ -9,6 +9,7 @@ import { Skeleton } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import useClient from 'src/hooks/useClient';
+import { isSpindlFetchResponse } from 'src/types/spindl';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -66,7 +67,7 @@ export const BlogArticleCard = ({
       >
         {article.attributes?.Image.data ? (
           <BlogArticleCardImage
-            src={`${baseUrl}${('formats' in article.attributes?.Image.data?.attributes && article.attributes?.Image.data?.attributes?.formats?.small.url) || article.attributes?.Image.data?.attributes?.url}`}
+            src={`${baseUrl}${!isSpindlFetchResponse(article) && (article.attributes.Image.data.attributes?.formats?.small.url || article.attributes.Image.data.attributes?.url)}`}
             alt={
               article.attributes?.Image.data?.attributes?.alternativeText ??
               article.attributes?.Title

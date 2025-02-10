@@ -23,19 +23,19 @@ export const usePersonalizedFeatureCards = () => {
 
   const slicedPersonalizedFeatureCards = useMemo(() => {
     const personalizedFeatureCards =
-      featureCardsToDisplay && featureCardsToDisplay.length > 0
+      Array.isArray(featureCardsToDisplay) && featureCardsToDisplay.length > 0
         ? featureCardsToDisplay
-        : featureCardsLevel && featureCardsLevel.length > 0
+        : Array.isArray(featureCardsLevel) && featureCardsLevel.length > 0
           ? [featureCardsLevel[0]]
           : undefined;
 
     if (
       Array.isArray(personalizedFeatureCards) &&
-      !!personalizedFeatureCards.length
+      personalizedFeatureCards.length > 0
     ) {
       return personalizedFeatureCards
-        ?.filter(excludedFeatureCardsFilter)
-        ?.filter(
+        .filter(excludedFeatureCardsFilter)
+        .filter(
           (el) =>
             el.attributes?.DisplayConditions &&
             !disabledFeatureCards.includes(el.attributes?.uid),

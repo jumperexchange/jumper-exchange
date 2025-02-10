@@ -1,5 +1,5 @@
 import { useSettingsStore } from 'src/stores/settings';
-import type { FeatureCardData } from 'src/types/strapi';
+import type { StrapiFeatureCardData } from 'src/types/strapi';
 import { shallow } from 'zustand/shallow';
 
 export const useFeatureCardsFilter = () => {
@@ -8,11 +8,8 @@ export const useFeatureCardsFilter = () => {
     shallow,
   );
 
-  const excludedFeatureCardsFilter = (el: FeatureCardData) => {
-    if (
-      !el.attributes?.featureCardsExclusions ||
-      !Array.isArray(el.attributes?.featureCardsExclusions?.data)
-    ) {
+  const excludedFeatureCardsFilter = (el: StrapiFeatureCardData) => {
+    if (!Array.isArray(el.attributes?.featureCardsExclusions?.data)) {
       return true;
     }
 
@@ -23,7 +20,7 @@ export const useFeatureCardsFilter = () => {
     return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
   };
 
-  const filterAndSliceCards = (cards: FeatureCardData[]) =>
+  const filterAndSliceCards = (cards: StrapiFeatureCardData[]) =>
     cards
       .filter(excludedFeatureCardsFilter)
       .filter(

@@ -1,4 +1,4 @@
-import type { MediaAttributes } from '@/types/strapi';
+import type { StrapiMediaAttributes } from '@/types/strapi';
 import CloseIcon from '@mui/icons-material/Close';
 import type { Breakpoint } from '@mui/material';
 import { Fade, useTheme } from '@mui/material';
@@ -11,7 +11,7 @@ import {
 } from '.';
 interface LightboxProps {
   baseUrl: string;
-  imageData: MediaAttributes;
+  imageData: StrapiMediaAttributes;
 }
 
 export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {

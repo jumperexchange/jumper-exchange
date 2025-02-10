@@ -16,10 +16,6 @@ export async function trackSpindl(
 ): Promise<void> {
   const spindlConfig = getSpindlConfig();
 
-  if (!spindlConfig) {
-    return;
-  }
-
   const payload: ImpressionPayload = {
     type: 'impression',
     placement_id: 'notify_message',

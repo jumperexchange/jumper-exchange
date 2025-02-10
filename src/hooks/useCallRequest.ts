@@ -5,7 +5,10 @@ import type { SpindlFetchParams } from 'src/types/spindl';
 export const useCallRequest = () => {
   const queryClient = useQueryClient();
 
-  const fetch = async (queryFn: QueryFunction, params: SpindlFetchParams) => {
+  const fetchData = async (
+    queryFn: QueryFunction,
+    params: SpindlFetchParams,
+  ) => {
     try {
       const data = await queryClient.fetchQuery({
         queryKey: Object.values(params), // Use params as the query key
@@ -19,5 +22,5 @@ export const useCallRequest = () => {
     }
   };
 
-  return { fetch };
+  return { fetchData };
 };

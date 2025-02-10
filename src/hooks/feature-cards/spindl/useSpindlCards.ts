@@ -6,7 +6,11 @@ import {
 } from '@lifi/widget';
 import { useCallback, useEffect } from 'react';
 import { useCallRequest } from 'src/hooks/useCallRequest';
-import type { SpindlFetchData, SpindlFetchParams } from 'src/types/spindl';
+import {
+  isSpindlFetchResponse,
+  type SpindlFetchData,
+  type SpindlFetchParams,
+} from 'src/types/spindl';
 import { callRequest } from 'src/utils/callRequest';
 import { getLocale } from 'src/utils/getLocale';
 import { getSpindlConfig } from './spindlConfig';
@@ -14,21 +18,12 @@ import { useSpindlProcessData } from './useSpindlProcessData';
 
 const FETCH_SPINDL_PATH = '/render/jumper';
 
-function isSpindlFetchData(data: unknown): data is SpindlFetchData {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'items' in data &&
-    Array.isArray((data as SpindlFetchData).items)
-  );
-}
-
 export const useSpindlCards = () => {
   const { account } = useAccount();
   const widgetEvents = useWidgetEvents();
   const processSpindlData = useSpindlProcessData();
   const spindlConfig = getSpindlConfig();
-  const { fetch } = useCallRequest();
+  const { fetchData } = useCallRequest();
 
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
@@ -52,17 +47,17 @@ export const useSpindlCards = () => {
         });
 
       try {
-        const data = await fetch(queryFn, queryParams);
-        if (isSpindlFetchData(data)) {
-          processSpindlData(data);
+        const response = await fetchData(queryFn, queryParams);
+        if (isSpindlFetchResponse(response)) {
+          processSpindlData(response);
         } else {
-          console.error('Invalid Spindl data received:', data);
+          console.error('Invalid Spindl API response:', response);
         }
       } catch (error) {
         console.error('Error fetching Spindl data:', error);
       }
     },
-    [fetch, processSpindlData, spindlConfig.apiUrl, spindlConfig.headers],
+    [fetchData, processSpindlData, spindlConfig.apiUrl, spindlConfig.headers],
   );
 
   useEffect(() => {
