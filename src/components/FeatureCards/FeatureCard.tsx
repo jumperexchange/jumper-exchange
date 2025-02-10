@@ -39,12 +39,12 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   ]);
   const theme = useTheme();
   useEffect(() => {
-    if (data?.attributes?.DisplayConditions?.showOnce) {
-      setDisabledFeatureCard(data?.attributes?.uid);
+    if (data.attributes?.DisplayConditions?.showOnce) {
+      setDisabledFeatureCard(data.attributes?.uid);
     }
   }, [
-    data?.attributes?.DisplayConditions,
-    data?.attributes?.uid,
+    data.attributes?.DisplayConditions,
+    data.attributes?.uid,
     setDisabledFeatureCard,
   ]);
 
@@ -92,11 +92,11 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const imageUrl =
     mode === 'dark'
       ? new URL(
-          data.attributes?.BackgroundImageDark.data?.attributes?.url,
+          data.attributes?.BackgroundImageDark.data.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
-          data.attributes?.BackgroundImageLight.data?.attributes?.url,
+          data.attributes?.BackgroundImageLight.data.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
 
@@ -106,18 +106,18 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     event.stopPropagation();
     setOpen(false);
     if (
-      !('showOnce' in data?.attributes?.DisplayConditions) &&
-      !!data?.attributes?.uid
+      !data.attributes?.DisplayConditions?.showOnce &&
+      !!data.attributes?.uid
     ) {
-      setDisabledFeatureCard(data?.attributes?.uid);
+      setDisabledFeatureCard(data.attributes?.uid);
     }
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
       label: `click_close`,
       data: {
-        [TrackingEventParameter.FeatureCardTitle]: data?.attributes?.Title,
-        [TrackingEventParameter.FeatureCardId]: data?.attributes?.uid,
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
       },
     });
   };
@@ -142,10 +142,10 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
 
     // Mark feature card as disabled if needed
     if (
-      !('showOnce' in data?.attributes?.DisplayConditions) &&
-      !!data?.attributes?.uid
+      !data.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data.attributes?.uid
     ) {
-      setDisabledFeatureCard(data?.attributes?.uid);
+      setDisabledFeatureCard(data.attributes?.uid);
     }
 
     trackEvent({
@@ -173,7 +173,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     >
       <Card
         backgroundImageUrl={imageUrl?.href}
-        onClick={(e) => handleClick(e, 'click_cta')}
+        onClick={(e) => handleClick(e, 'click_card')}
         isDarkCard={data.attributes?.DisplayConditions.mode === 'dark'}
       >
         <FeatureCardContent>
@@ -195,31 +195,31 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               }}
             />
           </FeatureCardCloseButton>
-          {!!data?.attributes?.Title && (
+          {!!data.attributes?.Title && (
             <FeatureCardTitle
               variant="headerSmall"
               data={data}
               typographyColor={data.attributes?.TitleColor || typographyColor}
               gutterBottom
             >
-              {data?.attributes?.Title}
+              {data.attributes?.Title}
             </FeatureCardTitle>
           )}
-          {!!data?.attributes?.Subtitle && (
+          {!!data.attributes?.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
               typographyColor={
                 data.attributes?.SubtitleColor || typographyColor
               }
             >
-              {data?.attributes?.Subtitle}
+              {data.attributes?.Subtitle}
             </FeatureCardSubtitle>
           )}
           <FeatureCardActions>
             <FeatureCardCtaLink
               target="_blank"
               rel="noopener"
-              href={data?.attributes?.URL}
+              href={data.attributes?.URL}
               onClick={(e) => handleClick(e, 'click_cta')}
               data={data}
             >
