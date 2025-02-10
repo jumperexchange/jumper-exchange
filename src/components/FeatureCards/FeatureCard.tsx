@@ -106,7 +106,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     event.stopPropagation();
     setOpen(false);
     if (
-      !data.attributes?.DisplayConditions?.showOnce &&
+      !data.attributes?.DisplayConditions.showOnce &&
       !!data.attributes?.uid
     ) {
       setDisabledFeatureCard(data.attributes?.uid);
@@ -142,7 +142,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
 
     // Mark feature card as disabled if needed
     if (
-      !data.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !data.attributes?.DisplayConditions.showOnce &&
       !!data.attributes?.uid
     ) {
       setDisabledFeatureCard(data.attributes?.uid);

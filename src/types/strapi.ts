@@ -81,7 +81,7 @@ export interface StrapiFeatureCardData {
 }
 
 interface FeatureCardDisplayConditions {
-  mode: string;
+  mode?: string;
   showOnce?: boolean;
 }
 
