@@ -4,37 +4,34 @@ import {
   WidgetEvent,
   type RouteExecutionUpdate,
 } from '@lifi/widget';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useCallRequest } from 'src/hooks/useCallRequest';
 import type { SpindlFetchData, SpindlFetchParams } from 'src/types/spindl';
+import { callRequest } from 'src/utils/fetch';
 import { getLocale } from 'src/utils/getLocale';
-import { useCallRequest } from '../../useCallRequest';
 import { getSpindlConfig } from './spindlConfig';
 import { useSpindlProcessData } from './useSpindlProcessData';
 
 const FETCH_SPINDL_PATH = '/render/jumper';
 
+function isSpindlFetchData(data: unknown): data is SpindlFetchData {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'items' in data &&
+    Array.isArray((data as SpindlFetchData).items)
+  );
+}
+
 export const useSpindlCards = () => {
   const { account } = useAccount();
   const widgetEvents = useWidgetEvents();
-  const [params, setParams] = useState<Record<string, string | undefined>>();
   const processSpindlData = useSpindlProcessData();
   const spindlConfig = getSpindlConfig();
-
-  const { data, error, refetch } = useCallRequest<SpindlFetchData>({
-    method: 'GET',
-    path: FETCH_SPINDL_PATH,
-    apiUrl: spindlConfig?.apiUrl,
-    headers: spindlConfig?.headers,
-    queryParams: params,
-    errors: {
-      missingParams: 'Spindl configuration is missing',
-      error: 'HTTP error while fetching Spindl cards!',
-    },
-    enabled: false, // Start with the query disabled and trigger on refetch
-  });
+  const { fetch } = useCallRequest();
 
   const fetchSpindlData = useCallback(
-    ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
+    async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
       const locale = getLocale().split('-');
       const queryParams: Record<string, string | undefined> = {
         placement_id: 'notify_message',
@@ -44,14 +41,31 @@ export const useSpindlCards = () => {
         chain_id: chainId?.toString(),
         token_address: tokenAddress,
       };
-      setParams(queryParams);
-      refetch();
-      processSpindlData(data);
+
+      const queryFn = async () =>
+        callRequest<SpindlFetchData>({
+          method: 'GET',
+          path: FETCH_SPINDL_PATH,
+          apiUrl: spindlConfig.apiUrl,
+          headers: spindlConfig.headers,
+          queryParams,
+        });
+
+      try {
+        const data = await fetch(queryFn, queryParams);
+        if (isSpindlFetchData(data)) {
+          processSpindlData(data);
+        } else {
+          console.error('Invalid Spindl data received:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching Spindl data:', error);
+      }
     },
-    [data, processSpindlData, refetch],
+    [fetch, processSpindlData, spindlConfig.apiUrl, spindlConfig.headers],
   );
 
-  const spindlCards = useMemo(() => {
+  useEffect(() => {
     const handleRouteUpdated = async (route: RouteExecutionUpdate) => {
       await fetchSpindlData({
         address: account?.address,
@@ -67,10 +81,5 @@ export const useSpindlCards = () => {
     };
   }, [account?.address, fetchSpindlData, widgetEvents]);
 
-  if (error) {
-    console.error('Error fetching Spindl data:', error);
-    return null;
-  }
-
-  return spindlCards;
+  return { fetchSpindlData };
 };

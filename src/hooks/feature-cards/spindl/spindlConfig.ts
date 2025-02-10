@@ -3,7 +3,9 @@ export const getSpindlConfig = () => {
     !process.env.NEXT_PUBLIC_SPINDL_API_KEY ||
     !process.env.NEXT_PUBLIC_SPINDL_API_URL
   ) {
-    return;
+    throw new Error(
+      'Error fetching Spindl configuration! Please check your environment variables.',
+    );
   }
   return {
     apiUrl: process.env.NEXT_PUBLIC_SPINDL_API_URL,

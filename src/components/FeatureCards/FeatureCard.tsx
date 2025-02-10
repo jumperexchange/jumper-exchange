@@ -13,7 +13,7 @@ import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
-import type { SpindlTrackData } from 'src/types/spindl';
+import type { SpindlCardData, SpindlTrackData } from 'src/types/spindl';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -26,7 +26,7 @@ import {
 } from '.';
 
 interface FeatureCardProps {
-  data: FeatureCardData;
+  data: FeatureCardData | SpindlCardData;
 }
 
 export const FeatureCard = ({ data }: FeatureCardProps) => {
@@ -120,6 +120,16 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     });
   };
 
+  // Type guard for SpindlTrackData
+  const isSpindlTrackData = (data: unknown): data is SpindlTrackData => {
+    return (
+      typeof data === 'object' &&
+      data !== null &&
+      'impression_id' in data &&
+      'ad_creative_id' in data
+    );
+  };
+
   const handleSpindl = (spindlData: SpindlTrackData) => {
     trackSpindl(spindlData.impression_id, spindlData.ad_creative_id);
   };
@@ -128,9 +138,16 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
   ) => {
     event.stopPropagation();
-    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes?.uid &&
+
+    // Mark feature card as disabled if needed
+    if (
+      !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
+      !!data?.attributes?.uid
+    ) {
       setDisabledFeatureCard(data?.attributes?.uid);
+    }
+
+    // Track the CTA click event
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
@@ -141,7 +158,12 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
         url: data.attributes?.URL,
       },
     });
-    if ('spindlData' in data.attributes && data.attributes.spindlData) {
+
+    // Check if spindlData exists and is valid
+    if (
+      'spindlData' in data.attributes &&
+      isSpindlTrackData(data.attributes.spindlData)
+    ) {
       handleSpindl(data.attributes.spindlData);
     }
   };
@@ -161,7 +183,10 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
         url: data.attributes?.URL,
       },
     });
-    if ('spindlData' in data.attributes && data.attributes.spindlData) {
+    if (
+      'spindlData' in data.attributes &&
+      isSpindlTrackData(data.attributes.spindlData)
+    ) {
       handleSpindl(data.attributes.spindlData);
     }
   };

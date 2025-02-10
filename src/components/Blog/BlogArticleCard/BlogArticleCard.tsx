@@ -66,7 +66,7 @@ export const BlogArticleCard = ({
       >
         {article.attributes?.Image.data ? (
           <BlogArticleCardImage
-            src={`${baseUrl}${article.attributes?.Image.data?.attributes?.formats?.small.url || article.attributes?.Image.data?.attributes?.url}`}
+            src={`${baseUrl}${('formats' in article.attributes?.Image.data?.attributes && article.attributes?.Image.data?.attributes?.formats?.small.url) || article.attributes?.Image.data?.attributes?.url}`}
             alt={
               article.attributes?.Image.data?.attributes?.alternativeText ??
               article.attributes?.Title

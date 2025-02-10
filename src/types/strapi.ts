@@ -1,6 +1,6 @@
 import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { SpindlCardAttributes } from './spindl';
+import type { SpindlMediaAttributes } from './spindl';
 
 /* Strapi */
 interface MediaFormat {
@@ -17,31 +17,34 @@ interface MediaFormat {
 
 export interface MediaData {
   id: number;
-  attributes: MediaAttributes;
+  attributes: MediaAttributes | SpindlMediaAttributes;
 }
+
 export interface MediaAttributes {
-  alternativeText?: string | undefined;
+  name: string;
+  alternativeText: string | undefined;
+  caption?: string;
   width: number;
   height: number;
-  url: string;
-  name?: string;
-  formats?: {
+  formats: {
     small: MediaFormat;
     medium: MediaFormat;
     large: MediaFormat;
     thumbnail: MediaFormat;
-    [key: string]: MediaFormat;
+    [key: string]: MediaFormat; // Allow additional formats
   };
-  hash?: string;
-  ext?: string;
-  mime?: string;
-  size?: number;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
   previewUrl?: string;
-  provider?: string;
-  provider_metadata?: any;
-  createdAt?: string;
-  updatedAt?: string;
+  provider: string;
+  provider_metadata: any;
+  createdAt: string;
+  updatedAt: string;
 }
+
 export interface StrapiMeta {
   pagination: StrapiMetaPagination;
 }
@@ -66,8 +69,8 @@ export interface StrapiImageData {
 
 /* Feature-Cards */
 export interface FeatureCardData {
-  id: number | string;
-  attributes: FeatureCardAttributes | SpindlCardAttributes;
+  id: number;
+  attributes: FeatureCardAttributes;
 }
 
 interface FeatureCardDisplayConditions {
@@ -94,12 +97,13 @@ export interface FeatureCardAttributes {
   updatedAt: string;
   PersonalizedFeatureCard?: boolean;
   publishedAt?: string;
-  locale?: string;
+  locale: string;
   uid: string;
   BackgroundImageLight: StrapiImageData;
   BackgroundImageDark: StrapiImageData;
   featureCardsExclusions?: FeatureCardExclusions;
-  localizations?: {
+
+  localizations: {
     data: any[];
   };
 }

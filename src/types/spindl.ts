@@ -1,12 +1,13 @@
 import type { ChainId } from '@lifi/sdk';
 import type { FeatureCardAttributes } from './strapi';
 
-export interface SpindlCardAttributes extends FeatureCardAttributes {
+export interface SpindlCardAttributes
+  extends Omit<FeatureCardAttributes, 'locale' | 'localizations'> {
   spindlData?: SpindlTrackData;
 }
 
 export interface SpindlCardData {
-  id: number | string;
+  id: string;
   attributes: SpindlCardAttributes;
 }
 export interface SpindlMediaAttributes {
