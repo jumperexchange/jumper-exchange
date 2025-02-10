@@ -34,10 +34,6 @@ export async function trackSpindl(
       apiUrl: spindlConfig.apiUrl,
       body: payload,
       headers: spindlConfig.headers,
-      errors: {
-        missingParams: 'Spindl configuration is missing',
-        error: 'HTTP error while tracking Spindl impression',
-      },
     });
   } catch (error) {
     console.error('Error tracking Spindl impression:', error);

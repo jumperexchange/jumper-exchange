@@ -1,59 +1,37 @@
-interface ErrorResponse {
-  missingParams?: string;
-  error?: string;
-}
+import { buildURL } from './buildUrl';
 
-export interface CallRequestOptions {
+export interface CallRequestProps {
   method: 'GET' | 'POST';
   path: string;
   apiUrl?: string;
-  queryParams?: Record<string, string | undefined>;
+  queryParams?: Record<string, any>;
   body?: any;
-  errors?: ErrorResponse;
   headers?: Record<string, string>;
 }
 
-export async function callRequest<T>({
+export const callRequest = async <T>({
   method,
-  path,
   apiUrl,
+  path,
   queryParams,
   body,
-  errors,
-  headers,
-}: CallRequestOptions): Promise<T> {
-  if (!apiUrl || !headers) {
-    throw new Error(
-      errors?.missingParams || 'Request configuration is missing',
-    );
+  headers = {},
+}: CallRequestProps): Promise<T> => {
+  if (!apiUrl) {
+    throw new Error('Request configuration is missing');
   }
 
-  const url = new URL(`${apiUrl}${path}`);
+  const url = buildURL(`${apiUrl}${path || ''}`, queryParams);
 
-  if (queryParams) {
-    Object.entries(queryParams).forEach(([key, value]) => {
-      if (value) {
-        url.searchParams.set(key, value);
-      }
-    });
-  }
-
-  const options: RequestInit = {
+  const response = await fetch(url.toString(), {
     method,
     headers,
-  };
-
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
-
-  const response = await fetch(url.toString(), options);
+    body: body ? JSON.stringify(body) : undefined,
+  });
 
   if (!response.ok) {
-    throw new Error(
-      `${errors?.error || 'HTTP error! Status'}: ${response.status}`,
-    );
+    throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
   return response.json();
-}
+};

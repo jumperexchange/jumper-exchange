@@ -7,7 +7,7 @@ import {
 import { useCallback, useEffect } from 'react';
 import { useCallRequest } from 'src/hooks/useCallRequest';
 import type { SpindlFetchData, SpindlFetchParams } from 'src/types/spindl';
-import { callRequest } from 'src/utils/fetch';
+import { callRequest } from 'src/utils/callRequest';
 import { getLocale } from 'src/utils/getLocale';
 import { getSpindlConfig } from './spindlConfig';
 import { useSpindlProcessData } from './useSpindlProcessData';
