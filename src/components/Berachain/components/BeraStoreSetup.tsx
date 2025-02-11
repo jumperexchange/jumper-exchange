@@ -14,6 +14,8 @@ function BeraStoreSetup() {
   const { account } = useAccount();
   const { data: roycoStatsData } = useEnrichedRoycoStats();
   const {
+    roycoStats,
+    beraTokenQuote,
     setRoycoStats,
     setBeraTokenQuote,
     setRoycoMarkets,
