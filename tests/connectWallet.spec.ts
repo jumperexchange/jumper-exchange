@@ -37,7 +37,6 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
     await metaMaskWalletOption.click();
-    await ethereumOption.click();
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);
