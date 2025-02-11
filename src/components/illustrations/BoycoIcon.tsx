@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material';
 
-export function BoycoIcon() {
+export function BerachainIcon() {
   const theme = useTheme();
 
   if (theme.palette.mode === 'light') {

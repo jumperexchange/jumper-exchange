@@ -26,6 +26,7 @@ export enum TrackingAction {
   OnWidgetExpanded = 'action_on_widget_expanded',
   OnAvailableRoutes = 'action_available_routes',
   OnTokenSearch = 'action_token_search',
+  OnLowAddressActivityConfirmed = 'action_on_low_address_activity_confirmed',
 
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
