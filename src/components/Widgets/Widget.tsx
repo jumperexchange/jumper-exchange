@@ -26,6 +26,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useABTest } from 'src/hooks/useABTest';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
@@ -69,6 +70,11 @@ export function Widget({
 
   const router = useRouter();
 
+  const { isEnabled: isABTestEnabled } = useABTest({
+    feature: 'test_widget_subvariants',
+    user: account?.address || '',
+  });
+
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
@@ -102,6 +108,18 @@ export function Widget({
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [widgetIntegrator, isGasVariant]) as string;
+
+  const subvariant = useMemo(() => {
+    if (isABTestEnabled) {
+      return 'split';
+    } else if (
+      starterVariant === 'buy' ||
+      partnerName === ThemesMap.Memecoins
+    ) {
+      return 'default';
+    }
+    return starterVariant;
+  }, [isABTestEnabled, partnerName, starterVariant]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -144,11 +162,7 @@ export function Widget({
           : starterVariant === 'refuel'
             ? 'compact'
             : 'wide',
-      subvariant:
-        (starterVariant !== 'buy' &&
-          !(partnerName === ThemesMap.Memecoins) &&
-          starterVariant) ||
-        'default',
+      subvariant,
       walletConfig: {
         onConnect: openWalletMenu,
       },
