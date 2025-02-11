@@ -68,6 +68,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   const handleExploreButton = () => {
     const blockchainExplorerUrl = activeChain?.metamask?.blockExplorerUrls?.[0];
+    const url = `${blockchainExplorerUrl}/address/${account.address}`;
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
@@ -82,11 +83,11 @@ export const WalletCard = ({ account }: WalletCardProps) => {
         data: {
           [TrackingEventParameter.PageloadSource]: TrackingCategory.Wallet,
           [TrackingEventParameter.PageloadDestination]: 'blokchain-explorer',
-          [TrackingEventParameter.PageloadURL]: blockchainExplorerUrl || '',
+          [TrackingEventParameter.PageloadURL]: url || '',
           [TrackingEventParameter.PageloadExternal]: true,
         },
       });
-      openInNewTab(blockchainExplorerUrl);
+      openInNewTab(url);
     }
   };
 

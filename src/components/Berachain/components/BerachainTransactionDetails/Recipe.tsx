@@ -14,17 +14,18 @@ function Recipe({
   const {
     isLoading,
     marketMetadata,
-    currentMarketData,
+    // currentMarketData,
     previousMarketData,
-    propsReadMarket,
-    propsActionsDecoderEnterMarket,
-    propsActionsDecoderExitMarket,
+    // propsReadMarket,
+    // propsActionsDecoderEnterMarket,
+    // propsActionsDecoderExitMarket,
     // } = useActiveMarket(market.chain_id, market.market_type, market.market_id);
-  } = useActiveMarket(
-    1,
-    market.market_type,
-    '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b',
-  );
+  } = useActiveMarket({
+    chain_id: 1,
+    market_type: market.market_type,
+    market_id:
+      '0x83c459782b2ff36629401b1a592354fc085f29ae00cf97b803f73cac464d389b',
+  });
 
   //todo: use mui v6 grid2
   return (
@@ -54,11 +55,11 @@ function Recipe({
             //   "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
             // )}
           >
-            <ActionFlow
+            {/*            <ActionFlow
               size="xs"
               actions={propsActionsDecoderEnterMarket.data ?? []}
               showAlertIcon={false}
-            />
+            />*/}
           </Box>
         </Grid>
       )}
@@ -83,11 +84,11 @@ function Recipe({
             //   "max-h-[200px] overflow-x-hidden overflow-y-scroll rounded-lg border p-1"
             // )}
           >
-            <ActionFlow
+            {/*            <ActionFlow
               size="xs"
               actions={propsActionsDecoderExitMarket.data ?? []}
               showAlertIcon={false}
-            />
+            />*/}
           </Box>
         </Grid>
       )}

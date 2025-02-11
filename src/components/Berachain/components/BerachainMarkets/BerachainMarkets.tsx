@@ -1,12 +1,12 @@
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import {
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
-import { useEnrichedMarkets } from 'royco/hooks';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
 import { BerachainMarketCards } from './BerachainMarkets.style';
@@ -15,51 +15,106 @@ import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') === 'true';
+  const isVerified = searchParam.get('is_verified') !== 'false';
   const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-
-  const { data: roycoData, isSuccess } = useEnrichedMarkets({
-    is_verified: isVerified,
-    sorting: [{ id: 'locked_quantity_usd', desc: true }],
-  });
+  const berachainFilters = useBerachainFilters();
+  const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
+    (state) => state,
+  );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
-  const { tokenFilter, incentiveFilter, search } =
+  const { tokenFilter, baffleOnly, incentiveFilter, search } =
     useBerachainMarketsFilterStore((state) => state);
 
   return (
     <Box>
+      <Box
+        sx={{
+          border: '1px solid #383433',
+          textAlign: 'center',
+          padding: 1,
+          borderRadius: 2,
+          marginBottom: 1,
+          marginX: 'auto',
+          width: '350px',
+        }}
+      >
+        <Typography
+          sx={(theme) => ({
+            color: '#FF8425',
+          })}
+        >
+          Boyco ended on Feb 2nd at 11:59 pm UTC.
+        </Typography>
+      </Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
       <BerachainMarketCards container rowGap={{ xs: 3, md: 4 }}>
-        {(!isSuccess || !roycoData || !data) &&
+        {(!Array.isArray(roycoData) || roycoData.length === 0 || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
               key={idx}
             />
           ))}
+        {/*        {true && (
+          <Grid
+            item
+            xs={12}
+            md={12}
+            sx={{
+              border: '1px solid #383433',
+              width: '100%',
+              textAlign: 'center',
+              gridColumn: '1 / -1',
+              padding: 8,
+              borderRadius: 2,
+            }}
+          >
+            <Typography
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+              })}
+            >
+              Bera with us. Boyco markets are seeing high demand. Bears are on
+              it.
+            </Typography>
+          </Grid>
+        )*/}
         {Array.isArray(roycoData) &&
-          isSuccess &&
+          roycoData?.length > 0 &&
           roycoData
-            .filter(
-              (data) => !tokenFilter.includes(data.input_token_data?.symbol),
-            )
             .filter((data) => {
+              if (tokenFilter.length === 0) {
+                return true;
+              }
+              return tokenFilter.includes(data.input_token_data?.symbol);
+            })
+            .filter((data) => {
+              if (incentiveFilter.length === 0) {
+                return true;
+              }
               const dataIncentives =
                 data.incentive_tokens_data?.map((s) => s.symbol) ?? [];
-              return !dataIncentives.some((symbol) =>
+              return dataIncentives.some((symbol) =>
                 incentiveFilter.includes(symbol),
               );
             })
             .filter((data) => {
               const card = findFromStrapiByUid(data.market_id!);
+
               const fullTitle = getFullTitle(data, card);
 
               return search ? includesCaseInsensitive(fullTitle, search) : true;
             })
             .filter((data) => {
               return !!findFromStrapiByUid(data.market_id!);
+            })
+            .filter((data) => {
+              const card = findFromStrapiByUid(data.market_id!);
+              return baffleOnly
+                ? card?.attributes.CustomInformation?.extraRewards
+                : true;
             })
             .map((roycoData, index) => {
               if (!roycoData?.id) {
