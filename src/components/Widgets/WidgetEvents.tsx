@@ -13,7 +13,7 @@ import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import { usePortfolioStore } from '@/stores/portfolio';
-import type { RouteExtended, TokenAmount } from '@lifi/sdk';
+import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
@@ -22,21 +22,13 @@ import type {
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
-import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
+import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
-import type {
-  RouteSelectedProps,
-  TokenSearchProps,
-} from 'src/types/userTracking';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
-import { isValidEvmOrSvmAddress } from 'src/utils/isValidEvmOrSvmAddress';
-import {
-  handleRouteEventDetails,
-  handleTransactionDetails,
-} from 'src/utils/routesInterpreterUtils';
+import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -214,6 +206,22 @@ export function WidgetEvents() {
       setDestinationChainToken(toChainData);
     };
 
+    const onLowAddressActivityConfirmed = async (props: {
+      address: string;
+      chainId: number;
+    }) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnLowAddressActivityConfirmed,
+        label: `confirm_low_address_activity_confirmed`,
+        data: {
+          [TrackingEventParameter.WalletAddress]: props.address,
+          [TrackingEventParameter.ChainId]: props.chainId,
+        },
+        enableAddressable: true,
+      });
+    };
+
     const onAvailableRoutes = async (availableRoutes: Route[]) => {
       // current available routes
       const newObj: JumperEventData = {
@@ -325,6 +333,10 @@ export function WidgetEvents() {
     // };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
+    widgetEvents.on(
+      WidgetEvent.LowAddressActivityConfirmed,
+      onLowAddressActivityConfirmed,
+    );
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -380,6 +392,10 @@ export function WidgetEvents() {
       );
       widgetEvents.off(
         WidgetEvent.DestinationChainTokenSelected,
+        onDestinationChainTokenSelection,
+      );
+      widgetEvents.off(
+        WidgetEvent.LowAddressActivityConfirmed,
         onDestinationChainTokenSelection,
       );
       // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
