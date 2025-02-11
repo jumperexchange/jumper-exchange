@@ -22,7 +22,7 @@ import type {
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
 } from '@lifi/widget';
-import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
+import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
@@ -206,6 +206,22 @@ export function WidgetEvents() {
       setDestinationChainToken(toChainData);
     };
 
+    const onLowAddressActivityConfirmed = async (props: {
+      address: string;
+      chainId: number;
+    }) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnLowAddressActivityConfirmed,
+        label: `confirm_low_address_activity_confirmed`,
+        data: {
+          [TrackingEventParameter.WalletAddress]: props.address,
+          [TrackingEventParameter.ChainId]: props.chainId,
+        },
+        enableAddressable: true,
+      });
+    };
+
     const onAvailableRoutes = async (availableRoutes: Route[]) => {
       // current available routes
       const newObj: JumperEventData = {
@@ -317,6 +333,10 @@ export function WidgetEvents() {
     // };
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
+    widgetEvents.on(
+      WidgetEvent.LowAddressActivityConfirmed,
+      onLowAddressActivityConfirmed,
+    );
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -372,6 +392,10 @@ export function WidgetEvents() {
       );
       widgetEvents.off(
         WidgetEvent.DestinationChainTokenSelected,
+        onDestinationChainTokenSelection,
+      );
+      widgetEvents.off(
+        WidgetEvent.LowAddressActivityConfirmed,
         onDestinationChainTokenSelection,
       );
       // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
