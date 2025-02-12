@@ -6,10 +6,13 @@ import { usePersonalizedFeatureOnLevel } from 'src/hooks/feature-cards/usePerson
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useSettingsStore } from 'src/stores/settings';
 import { shallow } from 'zustand/shallow';
+import { useWidgetExpanded } from '../useWidgetExpanded';
 
 export const usePersonalizedFeatureCards = () => {
   const { account } = useAccount();
   const { points } = useLoyaltyPass(account?.address);
+  const widgetExpanded = useWidgetExpanded();
+
   const { excludedFeatureCardsFilter } = useFeatureCardsFilter();
   const disabledFeatureCards = useSettingsStore(
     (state) => state.disabledFeatureCards,
@@ -45,7 +48,7 @@ export const usePersonalizedFeatureCards = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [featureCardsToDisplay, featureCardsLevel]);
 
-  if (slicedPersonalizedFeatureCards?.length === 0) {
+  if (slicedPersonalizedFeatureCards?.length === 0 || widgetExpanded) {
     return null;
   }
 
