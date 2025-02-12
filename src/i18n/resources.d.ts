@@ -38,7 +38,7 @@ interface Resources {
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
-        profile: 'Loyalty Pass';
+        profile: 'Profile';
         fest: 'Superfest Festival';
       };
       walletMenu: {
@@ -167,7 +167,7 @@ interface Resources {
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
-      percent: '{{value, decimalExt()}}';
+      percent: '{{value, percentExt()}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
