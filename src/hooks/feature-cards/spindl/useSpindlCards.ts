@@ -25,12 +25,21 @@ export const useSpindlCards = () => {
   const spindlConfig = getSpindlConfig();
   const { fetchData } = useCallRequest();
 
+  // A/B test logic: Generate a random number and determine if Spindl should be shown
+  const randomNumber = Math.floor(Math.random() * 101); // Random number between 0 and 100
+  const showSpindle = randomNumber < 25; // Show Spindl for ~25% of users
+
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
+      if (!showSpindle) {
+        // console.log('User is not part of the Spindl A/B test group.');
+        return; // Exit early if the user is not in the A/B test group
+      }
+
       const locale = getLocale().split('-');
       const queryParams: Record<string, string | undefined> = {
         placement_id: 'notify_message',
-        limit: '1',
+        limit: '3',
         address,
         country: country || locale[1],
         chain_id: chainId?.toString(),
@@ -57,7 +66,13 @@ export const useSpindlCards = () => {
         console.error('Error fetching Spindl data:', error);
       }
     },
-    [fetchData, processSpindlData, spindlConfig.apiUrl, spindlConfig.headers],
+    [
+      fetchData,
+      processSpindlData,
+      spindlConfig.apiUrl,
+      spindlConfig.headers,
+      showSpindle,
+    ],
   );
 
   useEffect(() => {
