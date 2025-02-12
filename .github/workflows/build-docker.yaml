@@ -62,18 +62,17 @@ jobs:
       - name: Access and Verify GCP Secrets
         id: secrets
         run: |
-          # Get the secret
-          echo "Fetching secret..."
-          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev"))
+          echo "Fetching secret from jumper-d-dev project..."
+          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev")
           
-          # Print first few characters (safely)
-          echo "First 5 characters of secret: ${SECRET_VALUE:0:5}..."
-          
-          # Print total length
-          echo "Total length of secret: ${#SECRET_VALUE}"
-          
-          # Store it for later use
-          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
+          if [ $? -eq 0 ]; then
+            echo "Secret retrieved successfully!"
+            echo "Length of secret: ${#SECRET_VALUE}"
+            echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
+          else
+            echo "Failed to retrieve secret"
+            exit 1
+          fi
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
 
