@@ -39,7 +39,7 @@ jobs:
         with:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
+          service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
       - name: Login to GCP
         run: |-
@@ -58,20 +58,11 @@ jobs:
       - name: Access GCP Secrets Manager
         id: access-secrets
         run: |
-          # Set the service account based on the environment
-          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
-            SERVICE_ACCOUNT="secret-accessor-prod@jumper-g-management.iam.gserviceaccount.com"
-          elif [[ "${GITHUB_REF_NAME}" == "staging" ]]; then
-            SERVICE_ACCOUNT="secret-accessor-staging@jumper-g-management.iam.gserviceaccount.com"
-          else
-            SERVICE_ACCOUNT="secret-accessor-develop@jumper-g-management.iam.gserviceaccount.com"
-          fi
-
-          # Authenticate with the appropriate service account
-          gcloud auth activate-service-account "${SERVICE_ACCOUNT}" --key-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
+          # Authenticate with the service account
+          gcloud auth activate-service-account "artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com" --key-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
 
           # Access secrets from GCP Secrets Manager
-          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-backend-env")
+          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env")
           echo "SECRET_VALUE=${SECRET_VALUE}" >> $GITHUB_ENV
     
       - name: Debug Secret Retrieval
@@ -80,7 +71,6 @@ jobs:
             echo "Debug: SECRET_VALUE is not set."
           else
             echo "Debug: SECRET_VALUE is set."
-            echo "Debug: Masked SECRET_VALUE: ${SECRET_VALUE_MASKED}"
           fi
 
       # - name: Build and push Docker image
