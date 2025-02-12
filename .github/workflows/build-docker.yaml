@@ -10,19 +10,20 @@ on:
 
 env:
   IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
+  PROJECT_ID: jumper-g-management
+  GCP_REGION: europe-west1
 
 jobs:
   build-docker:
     runs-on: ubuntu-latest
 
-    # ID token permissions
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: 'read'
+      id-token: 'write'
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # Updated to latest version
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -37,49 +38,52 @@ jobs:
         id: gcpauth
         uses: google-github-actions/auth@v2
         with:
-          create_credentials_file: 'true'
+          token_format: 'access_token'
+          create_credentials_file: true
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Login to GCP
-        run: |-
-          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
-          gcloud auth configure-docker europe-docker.pkg.dev
+      - name: Login to Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: europe-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.gcpauth.outputs.access_token }}
 
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5  # Updated to latest version
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
 
-      - name: Access GCP Secrets Manager
-        id: access-secrets
+      - name: Access and Verify GCP Secrets
+        id: secrets
         run: |
-          # Authenticate with the service account
-          gcloud auth activate-service-account "artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com" --key-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
-
-          # Access secrets from GCP Secrets Manager
+          # Get the secret
+          echo "Fetching secret..."
           SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env")
-          echo "SECRET_VALUE=${SECRET_VALUE}" >> $GITHUB_ENV
-    
-      - name: Debug Secret Retrieval
-        run: |
-          if [ -z "${{ env.SECRET_VALUE }}" ]; then
-            echo "Debug: SECRET_VALUE is not set."
-          else
-            echo "Debug: SECRET_VALUE is set."
-          fi
+          
+          # Print first few characters (safely)
+          echo "First 5 characters of secret: ${SECRET_VALUE:0:5}..."
+          
+          # Print total length
+          echo "Total length of secret: ${#SECRET_VALUE}"
+          
+          # Store it for later use
+          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
 
       # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v3
+      #   uses: docker/build-push-action@v5  # Updated to latest version
       #   with:
       #     context: .
-      #     push: ${{ github.event_name != 'pull_request' }}
+      #     push: true
       #     tags: ${{ steps.meta.outputs.tags }}
       #     labels: ${{ steps.meta.outputs.labels }}
       #     build-args: |
-      #       NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
-      #       SECRET_VALUE=${{ env.SECRET_VALUE }}  # Pass the secret value as a build argument
+      #       NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
+      #       SECRET_VALUE=${{ env.SECRET_VALUE }}
