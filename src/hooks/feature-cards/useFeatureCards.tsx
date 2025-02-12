@@ -32,7 +32,9 @@ export const useFeatureCards = () => {
         )
         .slice(0, 1);
     }
-  }, [cards, disabledFeatureCards, excludedFeatureCardsFilter]);
+    // prevent re-loading on card-click
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards]);
 
   if (slicedFeatureCards?.length === 0 || widgetExpanded) {
     return null;
