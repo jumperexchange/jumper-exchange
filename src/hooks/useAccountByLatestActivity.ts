@@ -9,13 +9,16 @@ export const useAccountByLatestActivity = () => {
   const { getChainById } = useChains();
 
   const sortedAccounts = useMemo(() => {
-    if (!sourceChainToken?.chainId) {
-      return accounts;
+    if (
+      !sourceChainToken?.chainId ||
+      (Array.isArray(accounts) && !(accounts.length > 1))
+    ) {
+      return null;
     }
 
     const sourceChain = getChainById(sourceChainToken.chainId);
     if (!sourceChain) {
-      return accounts;
+      return null;
     }
 
     const sourceChainType = sourceChain.chainType;
@@ -32,7 +35,7 @@ export const useAccountByLatestActivity = () => {
   }, [accounts, sourceChainToken, getChainById]);
 
   return {
-    accounts: sortedAccounts || [],
-    account: sortedAccounts[0] || account,
+    accounts: Array.isArray(sortedAccounts) ? sortedAccounts : accounts,
+    account: Array.isArray(sortedAccounts) ? sortedAccounts[0] : account,
   };
 };
