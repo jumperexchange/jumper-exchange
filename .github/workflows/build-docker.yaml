@@ -1,17 +1,14 @@
-name: Build Docker
+name: Build and Deploy Docker
 
 on:
   push:
     branches:
-      - feat/config-secret-integration-develop
-      # - develop
-      # - staging
-      # - main
+      - develop
+      - staging
+      - main
 
 env:
   IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
-  PROJECT_ID: jumper-g-management
-  GCP_REGION: europe-west1
 
 jobs:
   build-docker:
@@ -22,11 +19,21 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4  # Updated to latest version
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Set current date as env variable
-        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - name: Set Environment Variables
+        id: set-env
+        run: |
+          echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+          
+          if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
+            echo "GCP_PROJECT=jumper-d-dev" >> $GITHUB_ENV
+          elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
+            echo "GCP_PROJECT=jumper-s-staging" >> $GITHUB_ENV
+          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            echo "GCP_PROJECT=jumper-p-prod" >> $GITHUB_ENV
+          fi
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -50,39 +57,31 @@ jobs:
           username: oauth2accesstoken
           password: ${{ steps.gcpauth.outputs.access_token }}
 
-      - name: Extract Docker metadata
+      - name: Extract Docker Metadata
         id: meta
-        uses: docker/metadata-action@v5  # Updated to latest version
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
 
-      - name: Access and Verify GCP Secrets
+      - name: Access Environment Secrets
         id: secrets
         run: |
-          echo "Fetching secret from jumper-d-dev project..."
-          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev")
-          
-          if [ $? -eq 0 ]; then
-            echo "Secret retrieved successfully!"
-            echo "Length of secret: ${#SECRET_VALUE}"
-            echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
-          else
-            echo "Failed to retrieve secret"
-            exit 1
-          fi
+          echo "Fetching secrets from project: ${{ env.GCP_PROJECT }}"
+          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="${{ env.GCP_PROJECT }}")
+          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
 
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v5  # Updated to latest version
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      #     build-args: |
-      #       NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
-      #       SECRET_VALUE=${{ env.SECRET_VALUE }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
+            SECRET_VALUE=${{ env.SECRET_VALUE }}
