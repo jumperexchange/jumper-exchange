@@ -25,8 +25,8 @@ export const useSpindlCards = () => {
   const spindlConfig = getSpindlConfig();
   const { fetchData } = useCallRequest();
 
-  // A/B test logic: Generate a random number and determine if Spindl should be shown
-  const showSpindle = Math.random() < 0.25; // Show Spindl for ~25% of users
+  // Feature Flag logic: Show Spindl for ~25% of users
+  const showSpindle = Math.random() < 0.25;
 
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
