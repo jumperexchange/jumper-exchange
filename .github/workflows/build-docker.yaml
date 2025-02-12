@@ -64,7 +64,7 @@ jobs:
         run: |
           # Get the secret
           echo "Fetching secret..."
-          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env")
+          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev"))
           
           # Print first few characters (safely)
           echo "First 5 characters of secret: ${SECRET_VALUE:0:5}..."
