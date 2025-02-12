@@ -10,7 +10,7 @@ export async function getQuestBySlug(slug: string) {
   }
 
   return {
-    data: quests.data.data.find((quest) => quest.attributes.Slug === slug),
+    data: quests.data.data.find((quest) => quest.Slug === slug),
     url: quests.url,
   };
 }

@@ -101,17 +101,11 @@ export const AvailableMissionsList = ({
       >
         {!loading && quests
           ? quests?.map((quest: Quest, index: number) => {
-              const imgURL = new URL(
-                quest.attributes?.Image?.data?.attributes?.url,
-                url.origin,
-              );
-              const rewardType =
-                quest.attributes?.CustomInformation?.['rewardType'];
-              const missionType =
-                quest?.attributes?.CustomInformation?.['missionType'];
-              const chains = quest.attributes?.CustomInformation?.['chains'];
-              const rewardsIds =
-                quest.attributes?.CustomInformation?.['rewardsIds'];
+              const imgURL = new URL(quest?.Image?.url, url.origin);
+              const rewardType = quest?.CustomInformation?.['rewardType'];
+              const missionType = quest?.CustomInformation?.['missionType'];
+              const chains = quest?.CustomInformation?.['chains'];
+              const rewardsIds = quest?.CustomInformation?.['rewardsIds'];
               //todo: exclude in a dedicated helper function
               if (chains && chainsFilter && chainsFilter.length > 0) {
                 let included = false;
@@ -132,9 +126,9 @@ export const AvailableMissionsList = ({
               if (
                 categoryFilter &&
                 categoryFilter.length > 0 &&
-                (!quest.attributes?.Category ||
-                  (quest.attributes?.Category &&
-                    !categoryFilter.includes(quest.attributes?.Category)))
+                (!quest?.Category ||
+                  (quest?.Category &&
+                    !categoryFilter.includes(quest?.Category)))
               ) {
                 return undefined;
               }
@@ -154,30 +148,24 @@ export const AvailableMissionsList = ({
                 <QuestCard
                   key={`available-mission-${index}`}
                   active={true}
-                  title={quest?.attributes?.Title}
+                  title={quest?.Title}
                   image={String(imgURL)}
                   id={quest.id}
-                  label={quest?.attributes?.Label}
-                  points={quest?.attributes?.Points}
-                  link={quest?.attributes?.Link}
-                  startDate={quest?.attributes?.StartDate}
-                  endDate={quest?.attributes?.EndDate}
-                  platformName={
-                    quest?.attributes?.quests_platform?.data?.attributes?.Name
-                  }
-                  slug={quest?.attributes?.Slug}
+                  label={quest?.Label}
+                  points={quest?.Points}
+                  link={quest?.Link}
+                  startDate={quest?.StartDate}
+                  endDate={quest?.EndDate}
+                  platformName={quest?.quests_platform?.Name}
+                  slug={quest?.Slug}
                   chains={chains}
-                  rewards={quest.attributes?.CustomInformation?.['rewards']}
+                  rewards={quest?.CustomInformation?.['rewards']}
                   completed={completed}
-                  claimingIds={
-                    quest.attributes?.CustomInformation?.['claimingIds']
-                  }
+                  claimingIds={quest?.CustomInformation?.['claimingIds']}
                   variableWeeklyAPY={
-                    quest?.attributes?.Points > 0 && rewardType === 'weekly'
+                    quest?.Points > 0 && rewardType === 'weekly'
                   }
-                  rewardRange={
-                    quest.attributes?.CustomInformation?.['rewardRange']
-                  }
+                  rewardRange={quest?.CustomInformation?.['rewardRange']}
                 />
               );
             })

@@ -25,7 +25,7 @@ export const ZapInfo = ({ market, detailInformation }: ZapPageProps) => {
       )}
 
       {/* Disclaimer about the pool */}
-      {market?.attributes?.Information && <ZapDisclaimerInfo market={market} />}
+      {market?.Information && <ZapDisclaimerInfo market={market} />}
     </ZapProtocolActionInfoBox>
   );
 };

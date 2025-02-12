@@ -28,12 +28,12 @@ export const ZapProtocolIntro = ({
       <ZapActionProtocolCard>
         <Stack spacing={2} direction="row">
           {!isMobile &&
-            (market?.attributes?.Image.data.attributes?.url ? (
+            (market?.Image?.url ? (
               <Image
-                src={`${baseUrl}${market.attributes?.Image.data.attributes?.url}`}
+                src={`${baseUrl}${market.Image.url}`}
                 alt="Protocol image"
-                width={market.attributes?.Image.data.attributes?.width}
-                height={market.attributes?.Image.data.attributes?.height}
+                width={market.Image.width}
+                height={market.Image.height}
                 style={{
                   width: 192,
                   height: 'auto',
@@ -48,20 +48,16 @@ export const ZapProtocolIntro = ({
               />
             ))}
           <Stack spacing={2} direction="column">
-            {market?.attributes?.Title ? (
-              <Typography variant="titleSmall">
-                {market.attributes?.Title}
-              </Typography>
+            {market?.Title ? (
+              <Typography variant="titleSmall">{market.Title}</Typography>
             ) : (
               <Skeleton
                 variant="rectangular"
                 sx={{ height: '32px', width: '160px' }}
               />
             )}
-            {market?.attributes?.Description && (
-              <Typography variant="bodyMedium">
-                {market.attributes?.Description}
-              </Typography>
+            {market?.Description && (
+              <Typography variant="bodyMedium">{market.Description}</Typography>
             )}
             <SocialInfosBox detailInformation={detailInformation} />
           </Stack>
