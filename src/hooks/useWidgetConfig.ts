@@ -107,10 +107,11 @@ export const useWidgetConfig = ({
     }
 
     const formParameters: Record<string, number | string | undefined> = {
-      fromChain: fromChain || widgetCache.fromChainId,
-      fromToken: fromToken || widgetCache.fromToken,
-      toChain: toChain,
-      toToken: toToken,
+      fromChain:
+        configTheme.fromChain ?? (fromChain || widgetCache.fromChainId),
+      fromToken: configTheme.fromToken ?? (fromToken || widgetCache.fromToken),
+      toChain: configTheme.toChain ?? toChain,
+      toToken: configTheme.toToken ?? toToken,
       fromAmount: fromAmount,
     };
 
@@ -131,7 +132,9 @@ export const useWidgetConfig = ({
 
     return {
       ...formParameters,
-      variant: starterVariant === 'refuel' ? 'compact' : 'wide',
+      variant:
+        configTheme.variant ??
+        (starterVariant === 'refuel' ? 'compact' : 'wide'),
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&
@@ -140,7 +143,11 @@ export const useWidgetConfig = ({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: {
+      toToken: configTheme.toToken ?? (toToken || undefined),
+      fromToken: configTheme.fromToken ?? (fromToken || undefined),
+      fromChain: configTheme.fromChain ?? (fromChain || undefined),
+      toChain: configTheme.toChain ?? (toChain || undefined),
+      chains: configTheme.chains ?? {
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
@@ -200,6 +207,14 @@ export const useWidgetConfig = ({
       tokens: tokens,
     };
   }, [
+    configTheme.fromChain,
+    configTheme.fromToken,
+    configTheme.toChain,
+    configTheme.toToken,
+    configTheme.variant,
+    configTheme.chains,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
@@ -208,17 +223,16 @@ export const useWidgetConfig = ({
     toToken,
     fromAmount,
     memeListTokens,
+    widgetTheme.config.theme,
+    widgetTheme.config.appearance,
+    customWidgetTheme,
     starterVariant,
     partnerName,
     openWalletMenu,
     allowChains,
     allowedChainsByVariant,
-    configTheme?.allowedBridges,
-    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
-    widgetTheme.config.appearance,
-    widgetTheme.config.theme,
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,

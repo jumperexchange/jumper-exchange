@@ -32,9 +32,8 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { WidgetWrapper } from '.';
+import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
-import { refuelAllowChains, themeAllowChains } from './Widget.types';
 
 export function Widget({
   starterVariant,
@@ -70,7 +69,6 @@ export function Widget({
 
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
@@ -97,7 +95,7 @@ export function Widget({
       subtree: true,
     });
     return () => observer.disconnect();
-  }, []);
+  }, [allowToChains]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -143,10 +141,11 @@ export function Widget({
     }
 
     const formParameters: Record<string, number | string | undefined> = {
-      fromChain: fromChain || widgetCache.fromChainId,
-      fromToken: fromToken || widgetCache.fromToken,
-      toChain: toChain,
-      toToken: toToken,
+      fromChain:
+        configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
+      fromToken: configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
+      toChain: configTheme?.toChain ?? toChain,
+      toToken: configTheme?.toToken ?? toToken,
       fromAmount: fromAmount,
     };
 
@@ -163,12 +162,11 @@ export function Widget({
     return {
       ...formParameters,
       variant:
+        configTheme.variant ??
         // @ts-expect-error
-        starterVariant === 'compact'
+        (starterVariant === 'compact' || starterVariant === 'refuel'
           ? 'compact'
-          : starterVariant === 'refuel'
-            ? 'compact'
-            : 'wide',
+          : 'wide'),
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&
@@ -177,11 +175,13 @@ export function Widget({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: {
+      chains: configTheme?.chains ?? {
         ...{ to: allowToChains ? { allow: allowToChains } : undefined },
         allow:
           // allow only Abstract chain if AGW is connected
-          account?.connector?.name === 'Abstract' ? [2741] : allowChains,
+          account?.connector?.name === 'Abstract'
+            ? [2741]
+            : allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -249,6 +249,14 @@ export function Widget({
       tokens: tokens,
     };
   }, [
+    configTheme?.fromChain,
+    configTheme?.fromToken,
+    configTheme?.toChain,
+    configTheme?.toToken,
+    configTheme.variant,
+    configTheme?.chains,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
@@ -260,12 +268,10 @@ export function Widget({
     starterVariant,
     partnerName,
     openWalletMenu,
+    allowToChains,
     account?.connector?.name,
-    account.chainId,
     allowChains,
     allowedChainsByVariant,
-    configTheme?.allowedBridges,
-    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
     widgetTheme.config.appearance,
