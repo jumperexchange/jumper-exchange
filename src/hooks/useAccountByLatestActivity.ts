@@ -20,7 +20,7 @@ export const useAccountByLatestActivity = () => {
 
     const sourceChainType = sourceChain.chainType;
 
-    return [...accounts].sort((a, b) => {
+    return accounts.sort((a, b) => {
       if (a.chainType === sourceChainType && b.chainType !== sourceChainType) {
         return -1;
       }
