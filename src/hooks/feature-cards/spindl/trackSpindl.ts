@@ -11,13 +11,14 @@ interface ImpressionPayload {
 const SPINDLE_TRACKING_PATH = '/external/track';
 
 export async function trackSpindl(
+  type: string,
   impressionId: string,
   adCreativeId: string,
 ): Promise<void> {
   const spindlConfig = getSpindlConfig();
 
   const payload: ImpressionPayload = {
-    type: 'impression',
+    type,
     placement_id: 'notify_message',
     impression_id: impressionId,
     ad_creative_id: adCreativeId,
