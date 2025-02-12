@@ -9,7 +9,7 @@ export const useAccountByLatestActivity = () => {
   const { getChainById } = useChains();
 
   const sortedAccounts = useMemo(() => {
-    if (!sourceChainToken || !sourceChainToken.chainId || !accounts.length) {
+    if (!sourceChainToken?.chainId || !accounts.length) {
       return accounts;
     }
 
