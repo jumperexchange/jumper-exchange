@@ -3,6 +3,7 @@ import { Widget } from '@/components/Widgets/Widget';
 import { Container, Stack, Typography } from '@mui/material';
 
 export default function Page() {
+  const variant = 'default'; // exchange
   return (
     <Container>
       <Stack display="flex" alignItems="center" direction="column">
@@ -18,7 +19,12 @@ export default function Page() {
           Bridge tokens to your Abstract Wallet
         </Typography>
 
-        <Widget starterVariant="default" />
+        <Widget
+          starterVariant="default"
+          toChain={2741}
+          toToken={'0x0000000000000000000000000000000000000000'}
+          allowToChains={[2741]}
+        />
       </Stack>
     </Container>
   );

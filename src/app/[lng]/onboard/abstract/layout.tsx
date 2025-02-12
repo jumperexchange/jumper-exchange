@@ -4,7 +4,7 @@ import { Layout } from 'src/Layout';
 
 export const metadata: Metadata = {
   other: {
-    'partner-theme': 'abstract',
+    'partner-theme': 'default',
   },
 };
 
