@@ -93,11 +93,11 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const imageUrl =
     mode === 'dark'
       ? new URL(
-          data.attributes?.BackgroundImageDark.data.attributes?.url,
+          data.attributes?.BackgroundImageDark?.data?.attributes?.url || '',
           process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
-          data.attributes?.BackgroundImageLight.data.attributes?.url,
+          data.attributes?.BackgroundImageLight?.data?.attributes?.url || '',
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
 

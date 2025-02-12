@@ -106,8 +106,8 @@ export interface FeatureCardAttributes {
   publishedAt?: string;
   locale: string;
   uid: string;
-  BackgroundImageLight: ImageData<MediaData>;
-  BackgroundImageDark: ImageData<MediaData>;
+  BackgroundImageLight?: ImageData<MediaData>;
+  BackgroundImageDark?: ImageData<MediaData>;
   featureCardsExclusions?: FeatureCardExclusions;
 
   localizations: {
