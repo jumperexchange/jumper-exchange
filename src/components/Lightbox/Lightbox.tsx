@@ -1,4 +1,4 @@
-import type { MediaAttributes } from '@/types/strapi';
+import type { StrapiMediaAttributes } from '@/types/strapi';
 import CloseIcon from '@mui/icons-material/Close';
 import type { Breakpoint } from '@mui/material';
 import { Fade, useTheme } from '@mui/material';
@@ -11,7 +11,7 @@ import {
 } from '.';
 interface LightboxProps {
   baseUrl: string;
-  imageData: MediaAttributes;
+  imageData: StrapiMediaAttributes;
 }
 
 export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
@@ -28,14 +28,14 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
   return (
     <>
       <PreviewImage
-        src={imageData?.url}
+        src={imageData.url}
         // read the following to udnerstand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
         width={0}
         height={0}
         sizes="100vw"
         // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         // fill
-        alt={imageData.caption ?? 'article-image'}
+        alt={imageData.alternativeText ?? 'article-image'}
         onClick={handleImage}
       />
       <LightboxModal open={open} onClose={handleClose} closeAfterTransition>
@@ -58,8 +58,8 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
               }}
             />
             <LightboxImage
-              src={imageData?.url}
-              alt={imageData.caption ?? 'article-image'}
+              src={imageData.url}
+              alt={imageData.alternativeText ?? 'article-image'}
             />
           </LightboxContainer>
         </Fade>

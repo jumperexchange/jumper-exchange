@@ -16,7 +16,7 @@
     "@lifi/explorer": "^0.1.0",
     "@lifi/sdk": "3.5.2",
     "@lifi/wallet-management": "^3.6.1",
-    "@lifi/widget": "^3.16.0",
+    "@lifi/widget": "3.16.1",
     "@metaplex-foundation/mpl-core": "^1.1.1",
     "@metaplex-foundation/umi": "^0.9.2",
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",
