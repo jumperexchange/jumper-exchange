@@ -63,11 +63,11 @@ export const CampaignHeader = ({
                 >
                   <ColoredProtocolShareButton>
                     <XIcon
-                      sx={{
+                      sx={(theme) => ({
                         width: '16px',
                         height: '16px',
                         color: theme.palette.white.main,
-                      }}
+                      })}
                     />
                   </ColoredProtocolShareButton>
                 </InformationShareLink>
@@ -87,11 +87,11 @@ export const CampaignHeader = ({
                 >
                   <ColoredProtocolShareButton>
                     <LanguageIcon
-                      sx={{
+                      sx={(theme) => ({
                         width: '16px',
                         height: '16px',
                         color: theme.palette.white.main,
-                      }}
+                      })}
                     />
                   </ColoredProtocolShareButton>
                 </a>

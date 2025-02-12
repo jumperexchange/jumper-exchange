@@ -13,11 +13,11 @@ export const BerachainMarketCardWrapper = styled(Card)(({ theme }) => ({
   gap: theme.spacing(2),
   borderRadius: '16px',
   border: '1px solid #383433',
-  background: '#1E1D1C',
+  background: '#121213',
   transition:
     'background ease-in-out 300ms, border ease-in-out 300ms, box-shadow ease-in-out 300ms',
   '&:hover': {
-    background: lighten('#1E1D1C', 0.02),
+    background: lighten('#121213', 0.02),
     boxShadow: `0px 0px 28px 2px ${alpha('#F47226', 0.14)}`,
     border: `1px solid ${lighten('#383433', 0.2)}`,
   },

@@ -8,6 +8,7 @@ import type { EnrichedMarketDataType } from 'royco/queries';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { useSearchParams } from 'next/navigation';
 import {
+  calculateBeraYield,
   getFullTitle,
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
