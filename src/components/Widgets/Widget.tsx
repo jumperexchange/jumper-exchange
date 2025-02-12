@@ -76,7 +76,11 @@ export function Widget({
 
   useEffect(() => {
     // Our partners that want to onboard on pre-filled address can still do it
-    if (!wrapperRef.current || allowToChains?.includes(2741)) {
+    if (
+      !wrapperRef.current ||
+      configTheme?.chains?.to?.allow?.includes(2741) ||
+      allowToChains?.includes(2741)
+    ) {
       return;
     }
     // Clear toAddress URL parameter once the widget is mounted

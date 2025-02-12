@@ -1,6 +1,7 @@
 'use client';
 import { Widget } from '@/components/Widgets/Widget';
 import { Container, Stack, Typography } from '@mui/material';
+import { WidgetContainer, Widgets } from 'src/components/Widgets';
 
 export default function Page() {
   return (
@@ -18,7 +19,10 @@ export default function Page() {
           Bridge tokens to your Abstract Wallet
         </Typography>
 
-        <Widget starterVariant="default" />
+        <WidgetContainer welcomeScreenClosed={true}>
+          <Widget starterVariant="default" />
+          <Widgets widgetVariant={'default'} />
+        </WidgetContainer>
       </Stack>
     </Container>
   );
