@@ -4,7 +4,6 @@ import { Container, Stack, Typography } from '@mui/material';
 import { WidgetContainer, Widgets } from 'src/components/Widgets';
 
 export default function Page() {
-  const variant = 'default'; // exchange
   return (
     <Container>
       <Stack display="flex" alignItems="center" direction="column">
