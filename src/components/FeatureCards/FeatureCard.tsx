@@ -13,6 +13,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
 import { isSpindlTrackData, type SpindlCardAttributes } from 'src/types/spindl';
+import { openInNewTab } from 'src/utils/openInNewTab';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -48,18 +49,20 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     setDisabledFeatureCard,
   ]);
 
+  const mode = data.attributes?.DisplayConditions.mode;
+
   const typographyColor = useMemo(() => {
-    if (data.attributes?.DisplayConditions.mode) {
-      if (data.attributes?.DisplayConditions.mode === 'dark') {
+    if (mode) {
+      if (mode === 'dark') {
         return theme.palette.white.main;
-      } else if (data.attributes?.DisplayConditions.mode === 'light') {
+      } else if (mode === 'light') {
         return theme.palette.black.main;
       }
     } else {
       return theme.palette.text.primary;
     }
   }, [
-    data.attributes?.DisplayConditions.mode,
+    mode,
     theme.palette.black.main,
     theme.palette.text.primary,
     theme.palette.white.main,
@@ -87,18 +90,29 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     trackEvent,
   ]);
 
-  const mode = data.attributes?.DisplayConditions.mode || theme.palette.mode;
-
-  const imageUrl =
-    mode === 'dark'
+  const imageUrl = useMemo(() => {
+    const imageMode = mode || theme.palette.mode;
+    if (
+      !data.attributes?.BackgroundImageDark?.data?.attributes?.url ||
+      !data.attributes?.BackgroundImageLight?.data?.attributes?.url
+    ) {
+      return null;
+    }
+    return imageMode === 'dark'
       ? new URL(
-          data.attributes?.BackgroundImageDark.data.attributes?.url,
+          data.attributes?.BackgroundImageDark?.data?.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
-          data.attributes?.BackgroundImageLight.data.attributes?.url,
+          data.attributes?.BackgroundImageLight?.data?.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
+  }, [
+    data.attributes?.BackgroundImageDark?.data?.attributes?.url,
+    data.attributes?.BackgroundImageLight?.data?.attributes?.url,
+    mode,
+    theme.palette.mode,
+  ]);
 
   const handleSpindl = (
     attributes: SpindlCardAttributes | FeatureCardAttributes,
@@ -142,6 +156,9 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     label: string,
   ) => {
     event.stopPropagation();
+    if (data?.attributes?.URL) {
+      openInNewTab(data?.attributes?.URL);
+    }
 
     // Mark feature card as disabled if needed
     if (
@@ -177,7 +194,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
       <Card
         backgroundImageUrl={imageUrl?.href}
         onClick={(e) => handleClick(e, 'click_card')}
-        isDarkCard={data.attributes?.DisplayConditions.mode === 'dark'}
+        isDarkCard={mode === 'dark'}
       >
         <FeatureCardContent>
           <FeatureCardCloseButton
