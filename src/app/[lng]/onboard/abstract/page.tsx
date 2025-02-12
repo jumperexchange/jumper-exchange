@@ -26,7 +26,7 @@ export default function Page() {
             toChain={2741}
             toToken={'0x0000000000000000000000000000000000000000'}
             allowToChains={[2741]}
-          />{' '}
+          />
           <Widgets widgetVariant={'default'} />
         </WidgetContainer>
       </Stack>
