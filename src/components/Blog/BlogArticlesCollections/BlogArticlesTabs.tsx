@@ -23,7 +23,6 @@ import { ArticlesGrid } from './BlogArticlesTabs.style';
 interface BlogArticlesTabsProps {
   index: number;
   tag: TagAttributes;
-  tags: GetTagsResponse;
   pagination: StrapiMetaPagination;
   data: BlogArticleData[];
 }
@@ -31,7 +30,6 @@ interface BlogArticlesTabsProps {
 export function BlogArticlesTabs({
   index,
   tag,
-  tags,
   data,
   pagination,
 }: BlogArticlesTabsProps) {
@@ -44,7 +42,7 @@ export function BlogArticlesTabs({
   }
 
   return (
-    <BlogArticlesCollectionsContainer id={tag.attributes?.Title}>
+    <BlogArticlesCollectionsContainer id={tag?.Title}>
       <Box
         sx={{
           width: '100%',
@@ -55,7 +53,7 @@ export function BlogArticlesTabs({
       >
         <CarouselHeader>
           <BlogArticlesCollectionsTitle variant="headerMedium">
-            {tag.attributes?.Title}
+            {tag?.Title}
           </BlogArticlesCollectionsTitle>
         </CarouselHeader>
         {chunkedPages.map(
@@ -71,7 +69,7 @@ export function BlogArticlesTabs({
                       },
                     }}
                     article={article}
-                    baseUrl={tags.url}
+                    baseUrl={process.env.NEXT_PUBLIC_STRAPI_URL}
                     key={`blog-articles-collection-${index}-${articleIndex}`}
                     trackingCategory={TrackingCategory.BlogArticlesCollection}
                   />
@@ -84,7 +82,7 @@ export function BlogArticlesTabs({
         /* todo: enable pagination*/
         pagination.pageCount > 1 && (
           <Pagination
-            id={tag.attributes?.Title}
+            id={tag?.Title}
             page={pageTab}
             setPage={setPageTab}
             pagination={pagination}

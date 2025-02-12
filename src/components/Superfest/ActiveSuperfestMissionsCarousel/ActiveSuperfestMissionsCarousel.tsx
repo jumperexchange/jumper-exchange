@@ -43,14 +43,10 @@ export const ActiveSuperfestMissionsCarousel = ({
           >
             {!loading ? (
               quests?.map((quest, index: number) => {
-                const claimingIds =
-                  quest.attributes?.CustomInformation?.['claimingIds'];
-                const rewardsIds =
-                  quest.attributes?.CustomInformation?.['rewardsIds'];
-                const rewardType =
-                  quest.attributes?.CustomInformation?.['rewardType'];
-                const rewardRange =
-                  quest.attributes?.CustomInformation?.['rewardRange'];
+                const claimingIds = quest?.CustomInformation?.['claimingIds'];
+                const rewardsIds = quest?.CustomInformation?.['rewardsIds'];
+                const rewardType = quest?.CustomInformation?.['rewardType'];
+                const rewardRange = quest?.CustomInformation?.['rewardRange'];
                 let included = false;
                 let completed = false;
                 if (claimingIds && activeCampaigns) {
@@ -59,30 +55,27 @@ export const ActiveSuperfestMissionsCarousel = ({
                 if (rewardsIds && pastCampaigns) {
                   completed = checkInclusion(pastCampaigns, rewardsIds);
                 }
-                const baseURL = quest.attributes?.Image?.data?.attributes?.url;
+                const baseURL = quest?.Image?.url;
                 const imgURL = new URL(baseURL, url.origin);
                 if (included) {
                   return (
                     <QuestCard
                       key={`active-superfest-mission-${index}`}
                       active={true}
-                      title={quest?.attributes?.Title}
+                      title={quest?.Title}
                       image={String(imgURL)}
                       id={quest?.id}
-                      label={quest.attributes?.Label}
-                      points={quest?.attributes?.Points}
-                      link={quest?.attributes?.Link}
-                      startDate={quest?.attributes?.StartDate}
-                      endDate={quest?.attributes?.EndDate}
-                      platformName={
-                        quest?.attributes?.quests_platform?.data?.attributes
-                          ?.Name
-                      }
-                      slug={quest?.attributes?.Slug}
-                      chains={quest.attributes?.CustomInformation?.['chains']}
+                      label={quest?.Label}
+                      points={quest?.Points}
+                      link={quest?.Link}
+                      startDate={quest?.StartDate}
+                      endDate={quest?.EndDate}
+                      platformName={quest?.quests_platform?.Name}
+                      slug={quest?.Slug}
+                      chains={quest?.CustomInformation?.['chains']}
                       completed={completed}
                       variableWeeklyAPY={
-                        quest?.attributes?.Points > 0 && rewardType === 'weekly'
+                        quest?.Points > 0 && rewardType === 'weekly'
                       }
                       rewardRange={rewardRange}
                     />

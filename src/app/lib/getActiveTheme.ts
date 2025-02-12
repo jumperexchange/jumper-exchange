@@ -25,9 +25,7 @@ export async function getActiveTheme(
     segments.push('op');
   }
 
-  const partnerThemeUids = new Set(
-    partnerThemes.data.map((d) => d.attributes?.uid),
-  );
+  const partnerThemeUids = new Set(partnerThemes.data.map((d) => d?.uid));
 
   const pathPartnerTheme = segments.find((themeId) =>
     partnerThemeUids.has(themeId),

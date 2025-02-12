@@ -22,8 +22,7 @@ export async function generateMetadata({
       throw new Error();
     }
 
-    const articleData = article.data.data?.[0]
-      .attributes as BlogArticleAttributes;
+    const articleData: BlogArticleAttributes = article.data.data?.[0];
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
@@ -32,7 +31,7 @@ export async function generateMetadata({
       url: `${getSiteUrl()}/learn/${params.slug}`,
       images: [
         {
-          url: `${article.url}${articleData.Image.data.attributes?.url}`,
+          url: `${article.url}${articleData.Image?.url}`,
           width: 900,
           height: 450,
           alt: 'banner image',
@@ -68,11 +67,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return notFound();
   }
 
-  if (articleData.attributes?.RedirectURL) {
-    return permanentRedirect(articleData.attributes?.RedirectURL);
+  if (articleData?.RedirectURL) {
+    return permanentRedirect(articleData?.RedirectURL);
   }
 
-  const currentTags = articleData?.attributes?.tags.data.map((el) => el?.id);
+  const currentTags = articleData?.tags.map((el) => el?.id);
   const relatedArticles = await getArticlesByTag(articleData.id, currentTags);
   return (
     <LearnArticlePage
@@ -88,7 +87,7 @@ export async function generateStaticParams() {
   const articles = await getArticles();
 
   const data = articles.data.map((article) => ({
-    slug: article.attributes?.Slug,
+    slug: article?.Slug,
   }));
 
   return data;

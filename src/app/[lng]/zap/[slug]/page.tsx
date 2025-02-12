@@ -4,7 +4,6 @@ import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
 import { getSiteUrl } from 'src/const/urls';
-import type { QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 export async function generateMetadata({
@@ -14,12 +13,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const quest = await getQuestBySlug(params.slug);
+    const questData = quest?.data;
 
-    if (!quest) {
+    if (!quest || !questData) {
       throw new Error();
     }
-
-    const questData = quest.data?.attributes as QuestAttributes;
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
@@ -28,7 +26,7 @@ export async function generateMetadata({
       url: `${getSiteUrl()}/zap/${params.slug}`,
       images: [
         {
-          url: `${quest.url}${questData.Image.data.attributes?.url}`,
+          url: `${quest.url}${questData.Image?.url}`,
           width: 900,
           height: 450,
           alt: 'banner image',

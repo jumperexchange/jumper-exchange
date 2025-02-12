@@ -39,9 +39,8 @@ export const BlogAuthorSocials = ({
       action: action,
       label: `click_author-socials-links-${label}`,
       data: {
-        [TrackingEventParameter.AuthorName]:
-          author?.data.attributes?.Name || '',
-        [TrackingEventParameter.AuthorId]: author?.data.id || '',
+        [TrackingEventParameter.AuthorName]: author?.Name || '',
+        [TrackingEventParameter.AuthorId]: author?.id || '',
         [TrackingEventParameter.PageloadURL]: url,
         [TrackingEventParameter.PageloadDestination]: label,
         [TrackingEventParameter.PageloadSource]: source,
@@ -50,18 +49,17 @@ export const BlogAuthorSocials = ({
     });
   };
 
-  return (author?.data && author.data.attributes?.Twitter) ||
-    (author?.data && author.data.attributes?.LinkedIn) ? (
+  return author?.Twitter || author?.LinkedIn ? (
     <BlogAuthorSocialsContainer className="blog-author-socials">
-      {author.data.attributes?.LinkedIn && (
-        <Link href={author.data.attributes?.LinkedIn} target="_blank">
+      {author?.LinkedIn && (
+        <Link href={author?.LinkedIn} target="_blank">
           <IconButtonTertiary
             aria-label="linkedin"
             onClick={() =>
               handleClickLink({
                 action: TrackingAction.ClickAuthorsLinkedIn,
                 label: 'linkedin',
-                url: author.data.attributes?.LinkedIn || '',
+                url: author?.LinkedIn || '',
               })
             }
             sx={{ width: '24px', height: '24px' }}
@@ -70,12 +68,12 @@ export const BlogAuthorSocials = ({
           </IconButtonTertiary>
         </Link>
       )}
-      {author.data.attributes?.Twitter && (
+      {author?.Twitter && (
         <Link
-          href={author.data.attributes?.Twitter}
+          href={author?.Twitter}
           target="_blank"
           style={{
-            ...(author.data.attributes?.LinkedIn && { marginLeft: 4 }),
+            ...(author?.LinkedIn && { marginLeft: 4 }),
           }}
         >
           <IconButtonTertiary
@@ -84,7 +82,7 @@ export const BlogAuthorSocials = ({
               handleClickLink({
                 action: TrackingAction.ClickAuthorsX,
                 label: 'x',
-                url: author.data.attributes?.Twitter || '',
+                url: author?.Twitter || '',
               })
             }
             sx={{
