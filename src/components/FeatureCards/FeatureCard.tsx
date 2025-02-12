@@ -13,6 +13,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
 import { isSpindlTrackData, type SpindlCardAttributes } from 'src/types/spindl';
+import { openInNewTab } from 'src/utils/openInNewTab';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -142,6 +143,9 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     label: string,
   ) => {
     event.stopPropagation();
+    if (data?.attributes?.URL) {
+      openInNewTab(data?.attributes?.URL);
+    }
 
     // Mark feature card as disabled if needed
     if (
