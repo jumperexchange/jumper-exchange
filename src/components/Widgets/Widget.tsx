@@ -170,11 +170,12 @@ export function Widget({
     return {
       ...formParameters,
       variant:
-        configTheme.variant ??
         // @ts-expect-error
-        (starterVariant === 'compact' || starterVariant === 'refuel'
+        starterVariant === 'compact'
           ? 'compact'
-          : 'wide'),
+          : starterVariant === 'refuel'
+            ? 'compact'
+            : 'wide',
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&
