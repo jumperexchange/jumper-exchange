@@ -50,47 +50,11 @@ jobs:
           username: oauth2accesstoken
           password: ${{ steps.gcpauth.outputs.access_token }}
 
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5  # Updated to latest version
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
-
       - name: Access and Verify GCP Secrets
         id: secrets
         run: |
           echo "Fetching secret from jumper-d-dev project..."
           SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev")
-          
-          if [ $? -eq 0 ]; then
-            echo "Secret retrieved successfully!"
-            echo "Length of secret: ${#SECRET_VALUE}"
-            
-            # Validate secret format without exposing content
-            if [[ "$SECRET_VALUE" == *"EXPECTED_KEY="* ]]; then
-              echo "Secret contains expected configuration"
-            else
-              echo "Secret may be missing expected configuration"
-            fi
-            
-            echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
-          else
-            echo "Failed to retrieve secret"
-            exit 1
-          fi
+          echo SECRET_VALUE
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
-
-# - name: Build and push Docker image
-      #   uses: docker/build-push-action@v5  # Updated to latest version
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      #     build-args: |
-      #       NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
-      #       SECRET_VALUE=${{ env.SECRET_VALUE }}
