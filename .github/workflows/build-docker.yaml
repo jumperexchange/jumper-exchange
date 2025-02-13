@@ -109,14 +109,19 @@ jobs:
         run: |
           echo "${{ needs.retrieve-secrets.outputs.secret_value }}" > .env
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            ENV_FILE=.env
-            ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
-            NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
+      - name: Debug - Print .env contents
+        run: |
+          echo "Contents of .env file:"
+          cat .env
+
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     push: ${{ github.event_name != 'pull_request' }}
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     build-args: |
+      #       ENV_FILE=.env
+      #       ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+      #       NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
