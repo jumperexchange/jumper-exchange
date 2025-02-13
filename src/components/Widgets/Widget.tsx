@@ -69,6 +69,7 @@ export function Widget({
 
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
