@@ -46,28 +46,21 @@ jobs:
 
       - name: Get and Save Secret
         run: |
-          # Create directory for env file
-          mkdir -p ./env-files
-          
-          # Fetch secret from GCP
+          # Fetch secret from GCP and save directly to .env
           gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_ENV_PROJECT }}" > ./env-files/.env
+            --project="${{ env.GCP_ENV_PROJECT }}" > .env
           
-          # Verify contents
-          if [ -s ./env-files/.env ]; then
-            echo "✅ .env file created with $(wc -l < ./env-files/.env) lines"
-            ls -la ./env-files/
-          else
-            echo "❌ Error: .env file is empty!"
-            exit 1
-          fi
+          # Debug: Show file exists and its size
+          ls -la .env
+          echo "File size: $(wc -c < .env) bytes"
+          echo "Line count: $(wc -l < .env) lines"
 
       - name: Upload .env as an artifact
         uses: actions/upload-artifact@v4
         with:
           name: env-file
-          path: ./env-files/.env
+          path: .env
           retention-days: 1
 
   build-docker:
@@ -101,18 +94,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: env-file
-          path: ./
+          path: .
 
       - name: Verify .env file
         run: |
-          if [ -f .env ]; then
+          pwd
+          ls -la
+          if [ -f ".env" ]; then
             echo "✅ .env file exists"
-            ls -la .env
-            echo "File contents (first line):"
-            head -n 1 .env
+            echo "File size: $(wc -c < .env) bytes"
+            echo "Line count: $(wc -l < .env) lines"
           else
             echo "❌ Error: .env file not found!"
-            ls -la
             exit 1
           fi
 
