@@ -106,7 +106,7 @@ jobs:
       # Optional: Add artifact upload for debugging
       - name: Upload .env file for debugging
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: env-file
           path: .env
