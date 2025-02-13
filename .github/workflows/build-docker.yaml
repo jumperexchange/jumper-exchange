@@ -16,7 +16,9 @@ env:
 jobs:
   retrieve-secrets:
     runs-on: ubuntu-latest
-
+    outputs:
+      env_content: ${{ steps.save-secret.outputs.env_content }}
+      
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -38,11 +40,6 @@ jobs:
             echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
           fi
 
-      - name: Debug Environment
-        run: |
-          echo "Current branch: $GITHUB_REF"
-          echo "Selected project: ${{ env.GCP_ENV_PROJECT }}"
-
       - name: Authenticate to Google Cloud
         id: gcpauth
         uses: google-github-actions/auth@v2
@@ -55,25 +52,24 @@ jobs:
       - name: Get and Save Secret
         id: save-secret
         run: |
-          # Get the secret
           SECRET_CONTENT=$(gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
             --project="${{ env.GCP_ENV_PROJECT }}")
           
-          # Save to temporary file
+          # Save to temp file
           echo "$SECRET_CONTENT" > temp_env
           
-          # Create base64 encoded content
+          # Encode it
           ENCODED_CONTENT=$(base64 -w 0 < temp_env)
           
-          # Set output
+          # Set as output
+          echo "env_content=$ENCODED_CONTENT" >> "$GITHUB_ENV"
           echo "env_content=$ENCODED_CONTENT" >> "$GITHUB_OUTPUT"
           
-          # Cleanup
-          rm temp_env
+          # Debugging
+          echo "Secret retrieved and encoded. Length: ${#ENCODED_CONTENT}"
           
-          # Debug (don't show content)
-          echo "Secret retrieved and encoded. Length: ${SECRET_CONTENT}"
+          rm temp_env
 
   build-docker:
     needs: retrieve-secrets
@@ -83,30 +79,29 @@ jobs:
       id-token: "write"
 
     steps:
-      # ... other steps ...
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Create .env file
         run: |
-          # Debug the received content length
+          ENCODED_CONTENT="${{ needs.retrieve-secrets.outputs.env_content }}"
+          
+          # Debug received content
           echo "Received encoded content length: ${#ENCODED_CONTENT}"
           
-          # Decode and create .env file
-          echo "${{ needs.retrieve-secrets.outputs.env_content }}" | base64 -d > .env
+          if [[ -z "$ENCODED_CONTENT" ]]; then
+            echo "Error: No secret content received!"
+            exit 1
+          fi
           
+          # Decode and write to .env
+          echo "$ENCODED_CONTENT" | base64 -d > .env
+
           # Verify file
           if [ -s .env ]; then
             echo "Successfully created .env file with $(wc -l < .env) lines"
             echo "File size: $(stat -f%z .env || stat -c%s .env) bytes"
           else
-            echo "Error: .env file is empty or was not created properly"
-            ls -la .env
+            echo "Error: .env file is empty!"
             exit 1
           fi
-
-      # Optional: Add artifact upload for debugging
-      - name: Upload .env file for debugging
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: env-file
-          path: .env
