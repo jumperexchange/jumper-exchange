@@ -55,65 +55,50 @@ jobs:
       - name: Access and Verify GCP Secrets
         id: getsecrets
         run: |
-          echo "Using project: ${{ env.GCP_ENV_PROJECT }}"
-          SECRET_VALUE=$(gcloud secrets versions access latest \
+          # Fetch the secret and store it in a variable
+          SECRET_CONTENT=$(gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
             --project="${{ env.GCP_ENV_PROJECT }}")
-          # Properly escape the secret value and set it as output
-          echo "secret_value<<EOF" >> $GITHUB_OUTPUT
-          echo "$SECRET_VALUE" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # Create a base64 encoded version of the secret to safely pass between jobs
+          ENCODED_SECRET=$(echo "$SECRET_CONTENT" | base64 -w 0)
+          echo "env_file_content=$ENCODED_SECRET" >> $GITHUB_OUTPUT
+          
+          # Debug output (length only, not content)
+          echo "Secret length: ${#SECRET_CONTENT}"
 
   build-docker:
-    needs: retrieve-secrets  # Make this job wait for retrieve-secrets
+    needs: retrieve-secrets
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set current date as env variable
-        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Authenticate to Google Cloud
-        id: gcpauth
-        uses: google-github-actions/auth@v2
-        with:
-          create_credentials_file: 'true'
-          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
-
-      - name: login
-        run: |-
-          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
-          gcloud auth configure-docker europe-docker.pkg.dev
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
 
       - name: Create .env file
         run: |
-          echo "${{ needs.retrieve-secrets.outputs.secret_value }}" > .env
+          # Decode the base64 encoded secret and write to .env file
+          echo "${{ needs.retrieve-secrets.outputs.env_file_content }}" | base64 -d > .env
+          
+          # Verify file exists and has content (without showing content)
+          if [ -s .env ]; then
+            echo "Successfully created .env file with $(wc -l < .env) lines"
+          else
+            echo "Error: .env file is empty or was not created properly"
+            exit 1
+          fi
 
-      - name: Debug - Print .env contents
+      - name: Verify .env file (debug)
         run: |
-          echo "Contents of .env file:"
-          cat .env
+          if [ -f .env ]; then
+            echo "✓ .env file exists"
+            echo "✓ File size: $(stat -f%z .env) bytes"
+            echo "✓ Number of lines: $(wc -l < .env)"
+          else
+            echo "✗ .env file not found"
+            exit 1
+          fi
 
       # - name: Build and push Docker image
       #   uses: docker/build-push-action@v3
