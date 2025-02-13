@@ -53,7 +53,7 @@ jobs:
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
       - name: Access and Verify GCP Secrets
-        id: secrets
+        id: getsecrets
         run: |
           echo "Using project: ${{ env.GCP_PROJECT }}"
           SECRET_VALUE=$(gcloud secrets versions access latest \
