@@ -34,6 +34,8 @@ jobs:
             echo "GCP_PROJECT=jumper-s-staging" >> $GITHUB_ENV
           elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
             echo "GCP_PROJECT=jumper-p-prod" >> $GITHUB_ENV
+          else
+            echo "GCP_PROJECT=jumper-d-dev" >> $GITHUB_ENV
           fi
 
       - name: Authenticate to Google Cloud
@@ -50,7 +52,7 @@ jobs:
         id: secrets
         run: |
           echo "Fetching secret from jumper-d-dev project..."
-          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev")
-          echo $SECRET_VALUE
+          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="${{ env.GCP_PROJECT }}")
+          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
