@@ -99,7 +99,7 @@ export function Widget({
       subtree: true,
     });
     return () => observer.disconnect();
-  }, [allowToChains]);
+  }, [allowToChains, configTheme?.chains?.to?.allow]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -115,6 +115,9 @@ export function Widget({
   );
 
   const integratorStringByType = useMemo(() => {
+    if (configTheme?.integrator) {
+      return configTheme.integrator;
+    }
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
@@ -128,7 +131,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {

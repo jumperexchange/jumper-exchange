@@ -17,6 +17,7 @@ export interface PartnerThemeConfig {
   selectableInMenu: boolean;
   createdAt: string;
   uid: string;
+  integrator?: string;
   fromChain?: ChainId;
   fromToken?: string;
   toToken?: string;

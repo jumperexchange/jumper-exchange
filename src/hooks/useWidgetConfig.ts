@@ -61,6 +61,9 @@ export const useWidgetConfig = ({
   const { i18n } = useTranslation();
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const integratorStringByType = useMemo(() => {
+    if (configTheme?.integrator) {
+      return configTheme.integrator;
+    }
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
@@ -74,7 +77,7 @@ export const useWidgetConfig = ({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
   const { openWalletMenu } = useWalletMenu();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
