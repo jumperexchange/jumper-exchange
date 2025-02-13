@@ -1,28 +1,53 @@
-name: Build docker
+name: Build Docker
 
 on:
   push:
     branches:
-      - develop
-      - staging
-      - main
+      - feat/gsm-update-secret
+      # - develop
+      # - staging
+      # - main
 
 env:
   IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
+  PROJECT_ID: jumper-g-management
+  GCP_REGION: europe-west1
 
 jobs:
   build-docker:
     runs-on: ubuntu-latest
-
-    # id token
     permissions:
       contents: "read"
       id-token: "write"
 
     steps:
-      - # check out the repository
-        name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Environment Variables
+        run: |         
+          if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
+            echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
+          elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
+            echo "GCP_ENV_PROJECT=jumper-s-staging" >> "$GITHUB_ENV"
+          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            echo "GCP_ENV_PROJECT=jumper-p-prod" >> "$GITHUB_ENV"
+          else
+            echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
+          fi
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          create_credentials_file: true
+          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
+
+      - name: Get Secret and Save to .env
+        run: |
+          gcloud secrets versions access latest \
+            --secret="jumper-exchange-env" \
+            --project="${{ env.GCP_ENV_PROJECT }}" > .env
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -33,19 +58,28 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Authenticate to Google Cloud
-        id: gcpauth
+      - name: Authenticate to Google Cloud Aretifact
         uses: google-github-actions/auth@v2
         with:
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
-
-      - # login to gcp
-        name: login
+      
+      - name: login to GCP
         run: |-
           gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
           gcloud auth configure-docker europe-docker.pkg.dev
+
+      - name: Verify .env file
+        run: |
+          if [ -f ".env" ]; then
+            echo "✅ .env file exists"
+            echo "File size: $(wc -c < .env) bytes"
+            echo "Line count: $(wc -l < .env) lines"
+          else
+            echo "❌ Error: .env file not found!"
+            exit 1
+          fi
 
       - name: Extract Docker metadata
         id: meta
@@ -64,6 +98,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            ENV_FILE=${{ github.ref_name == 'main' && '.env.production' || github.ref_name == 'develop' && '.env.development' || format('.env.{0}', github.ref_name) }}
+            ENV_FILE=.env
             ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
             NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
+
+      - name: Clean up .env file
+        run: rm -f .env
