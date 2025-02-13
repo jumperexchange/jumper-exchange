@@ -59,10 +59,11 @@ jobs:
           SECRET_VALUE=$(gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
             --project="${{ env.GCP_ENV_PROJECT }}")
-          echo "secret_value=$SECRET_VALUE" >> "$GITHUB_OUTPUT"  # Modified this line
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
-  
+          # Properly escape the secret value and set it as output
+          echo "secret_value<<EOF" >> $GITHUB_OUTPUT
+          echo "$SECRET_VALUE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
   build-docker:
     needs: retrieve-secrets  # Make this job wait for retrieve-secrets
     runs-on: ubuntu-latest
