@@ -52,20 +52,28 @@ jobs:
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Access and Verify GCP Secrets
-        id: getsecrets
+      - name: Get and Save Secret
+        id: save-secret
         run: |
-          # Fetch the secret and store it in a variable
+          # Get the secret
           SECRET_CONTENT=$(gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
             --project="${{ env.GCP_ENV_PROJECT }}")
           
-          # Create a base64 encoded version of the secret to safely pass between jobs
-          ENCODED_SECRET=$(echo "$SECRET_CONTENT" | base64 -w 0)
-          echo "env_file_content=$ENCODED_SECRET" >> $GITHUB_OUTPUT
+          # Save to temporary file
+          echo "$SECRET_CONTENT" > temp_env
           
-          # Debug output (length only, not content)
-          echo "Secret length: ${#SECRET_CONTENT}"
+          # Create base64 encoded content
+          ENCODED_CONTENT=$(base64 -w 0 < temp_env)
+          
+          # Set output
+          echo "env_content=$ENCODED_CONTENT" >> "$GITHUB_OUTPUT"
+          
+          # Cleanup
+          rm temp_env
+          
+          # Debug (don't show content)
+          echo "Secret retrieved and encoded. Length: ${SECRET_CONTENT}"
 
   build-docker:
     needs: retrieve-secrets
@@ -75,39 +83,30 @@ jobs:
       id-token: "write"
 
     steps:
+      # ... other steps ...
 
       - name: Create .env file
         run: |
-          # Decode the base64 encoded secret and write to .env file
-          echo "${{ needs.retrieve-secrets.outputs.env_file_content }}" | base64 -d > .env
+          # Debug the received content length
+          echo "Received encoded content length: ${#ENCODED_CONTENT}"
           
-          # Verify file exists and has content (without showing content)
+          # Decode and create .env file
+          echo "${{ needs.retrieve-secrets.outputs.env_content }}" | base64 -d > .env
+          
+          # Verify file
           if [ -s .env ]; then
             echo "Successfully created .env file with $(wc -l < .env) lines"
+            echo "File size: $(stat -f%z .env || stat -c%s .env) bytes"
           else
             echo "Error: .env file is empty or was not created properly"
+            ls -la .env
             exit 1
           fi
 
-      - name: Verify .env file (debug)
-        run: |
-          if [ -f .env ]; then
-            echo "✓ .env file exists"
-            echo "✓ File size: $(stat -f%z .env) bytes"
-            echo "✓ Number of lines: $(wc -l < .env)"
-          else
-            echo "✗ .env file not found"
-            exit 1
-          fi
-
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: .
-      #     push: ${{ github.event_name != 'pull_request' }}
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      #     build-args: |
-      #       ENV_FILE=.env
-      #       ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
-      #       NEXT_PUBLIC_LATEST_COMMIT_SHA=${{ github.sha }}
+      # Optional: Add artifact upload for debugging
+      - name: Upload .env file for debugging
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: env-file
+          path: .env
