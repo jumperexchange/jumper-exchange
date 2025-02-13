@@ -56,9 +56,3 @@ jobs:
         id: getsecrets
         run: |
           echo "Using project: ${{ env.GCP_PROJECT }}"
-          SECRET_VALUE=$(gcloud secrets versions access latest \
-            --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_PROJECT }}")
-          echo "SECRET_VALUE=$SECRET_VALUE" >> "$GITHUB_ENV"
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
