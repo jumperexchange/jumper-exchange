@@ -69,6 +69,17 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   ]);
 
   useEffect(() => {
+    if (isSpindlTrackData(data.attributes)) {
+      trackSpindl(
+        'impression',
+        data.attributes.spindlData.impression_id,
+        data.attributes.spindlData.ad_creative_id,
+      );
+    }
+    // allow spindl data to be tracked once
+  }, [data.attributes]);
+
+  useEffect(() => {
     if (!eventFired.current && open) {
       trackEvent({
         category: TrackingCategory.FeatureCard,
@@ -121,6 +132,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
       return;
     }
     trackSpindl(
+      'click',
       attributes.spindlData.impression_id,
       attributes.spindlData.ad_creative_id,
     );
