@@ -32,8 +32,9 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
+import { WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
+import { refuelAllowChains, themeAllowChains } from './Widget.types';
 
 export function Widget({
   starterVariant,
