@@ -49,7 +49,7 @@ jobs:
           # Fetch secret from GCP and save directly to .env
           gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_ENV_PROJECT }}" > .env
+            --project="${{ env.GCP_ENV_PROJECT }}" > "$GITHUB_WORKSPACE/.env"
           
           # Debug: Show file exists and its size
           ls -la .env
@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: env-file
-          path: .env
+          path: $GITHUB_WORKSPACE/.env
           retention-days: 1
 
   build-docker:
