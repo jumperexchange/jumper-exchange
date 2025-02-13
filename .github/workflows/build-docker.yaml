@@ -55,6 +55,6 @@ jobs:
         run: |
           echo "Fetching secret from jumper-d-dev project..."
           SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="jumper-d-dev")
-          echo SECRET_VALUE
+          echo $SECRET_VALUE
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
