@@ -23,21 +23,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4  # Updated to latest version
+        uses: actions/checkout@v4
 
       - name: Set Environment Variables
         id: set-env
-        run: |
-          GCP_PROJECT="jumper-d-dev"  # default value
+        run: |         
           if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
-            GCP_PROJECT="jumper-d-dev"
+            echo "GCP_PROJECT=jumper-d-dev" >> $GITHUB_ENV
           elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
-            GCP_PROJECT="jumper-s-staging"
+            echo "GCP_PROJECT=jumper-s-staging" >> $GITHUB_ENV
           elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-            GCP_PROJECT="jumper-p-prod"
+            echo "GCP_PROJECT=jumper-p-prod" >> $GITHUB_ENV
+          else
+            echo "GCP_PROJECT=jumper-d-dev" >> $GITHUB_ENV
           fi
-          echo "GCP_PROJECT=${GCP_PROJECT}" >> $GITHUB_ENV
-          echo "gcp_project=${GCP_PROJECT}" >> $GITHUB_OUTPUT
+          # Debug output
+          echo "Selected GCP_PROJECT: ${{ env.GCP_PROJECT }}"
 
       - name: Authenticate to Google Cloud
         id: gcpauth
@@ -48,12 +49,15 @@ jobs:
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
-
       - name: Access and Verify GCP Secrets
         id: secrets
         run: |
-          echo "Fetching secret from jumper-d-dev project..."
-          SECRET_VALUE=$(gcloud secrets versions access latest --secret="jumper-exchange-env" --project="${{ env.GCP_PROJECT }}")
+          echo "Using project: ${{ env.GCP_PROJECT }}"
+          # Make sure the service account has access to the secrets in the target project
+          SECRET_VALUE=$(gcloud secrets versions access latest \
+            --secret="jumper-exchange-env" \
+            --project="${{ env.GCP_PROJECT }}" \
+            --impersonate-service-account="artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com")
           echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
