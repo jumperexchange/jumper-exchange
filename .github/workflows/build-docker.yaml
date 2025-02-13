@@ -14,11 +14,11 @@ env:
   GCP_REGION: europe-west1
 
 jobs:
-  retrieve-secrets:
+  build-docker:
     runs-on: ubuntu-latest
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: "read"
+      id-token: "write"
 
     steps:
       - name: Checkout
@@ -39,40 +39,15 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          token_format: 'access_token'
           create_credentials_file: true
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Get and Save Secret
+      - name: Get Secret and Save to .env
         run: |
-          # Fetch secret from GCP and save directly to .env
           gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_ENV_PROJECT }}" > "$GITHUB_WORKSPACE/.env"
-          
-          # Debug: Show file exists and its size
-          ls -la .env
-          echo "File size: $(wc -c < .env) bytes"
-          echo "Line count: $(wc -l < .env) lines"
-
-      - name: Upload .env as an artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: env-file
-          path: $GITHUB_WORKSPACE/.env
-          retention-days: 1
-
-  build-docker:
-    needs: retrieve-secrets
-    runs-on: ubuntu-latest
-    permissions:
-      contents: "read"
-      id-token: "write"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+            --project="${{ env.GCP_ENV_PROJECT }}" > .env
 
       - name: Set current date as env variable
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -90,16 +65,8 @@ jobs:
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Download .env file
-        uses: actions/download-artifact@v4
-        with:
-          name: env-file
-          path: .
-
       - name: Verify .env file
         run: |
-          pwd
-          ls -la
           if [ -f ".env" ]; then
             echo "✅ .env file exists"
             echo "File size: $(wc -c < .env) bytes"
@@ -129,3 +96,6 @@ jobs:
             ENV_FILE=.env
             ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
             NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
+
+      - name: Clean up .env file
+        run: rm -f .env
