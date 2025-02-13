@@ -32,9 +32,8 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { WidgetWrapper } from '.';
+import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
-import { refuelAllowChains, themeAllowChains } from './Widget.types';
 
 export function Widget({
   starterVariant,
@@ -44,6 +43,7 @@ export function Widget({
   toToken,
   fromAmount,
   allowChains,
+  allowToChains,
   widgetIntegrator,
   activeTheme,
   autoHeight,
@@ -76,7 +76,12 @@ export function Widget({
   }, [router]);
 
   useEffect(() => {
-    if (!wrapperRef.current) {
+    // Our partners that want to onboard on pre-filled address can still do it
+    if (
+      !wrapperRef.current ||
+      configTheme?.chains?.to?.allow?.includes(2741) ||
+      allowToChains?.includes(2741)
+    ) {
       return;
     }
     // Clear toAddress URL parameter once the widget is mounted
@@ -95,7 +100,7 @@ export function Widget({
       subtree: true,
     });
     return () => observer.disconnect();
-  }, []);
+  }, [allowToChains, configTheme?.chains?.to?.allow]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -111,6 +116,9 @@ export function Widget({
   );
 
   const integratorStringByType = useMemo(() => {
+    if (configTheme?.integrator) {
+      return configTheme.integrator;
+    }
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
@@ -124,7 +132,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -141,10 +149,11 @@ export function Widget({
     }
 
     const formParameters: Record<string, number | string | undefined> = {
-      fromChain: fromChain || widgetCache.fromChainId,
-      fromToken: fromToken || widgetCache.fromToken,
-      toChain: toChain,
-      toToken: toToken,
+      fromChain:
+        configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
+      fromToken: configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
+      toChain: configTheme?.toChain ?? toChain,
+      toToken: configTheme?.toToken ?? toToken,
       fromAmount: fromAmount,
     };
 
@@ -161,12 +170,11 @@ export function Widget({
     return {
       ...formParameters,
       variant:
+        configTheme.variant ??
         // @ts-expect-error
-        starterVariant === 'compact'
+        (starterVariant === 'compact' || starterVariant === 'refuel'
           ? 'compact'
-          : starterVariant === 'refuel'
-            ? 'compact'
-            : 'wide',
+          : 'wide'),
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&
@@ -175,7 +183,8 @@ export function Widget({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: {
+      chains: configTheme?.chains ?? {
+        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
         allow:
           // allow only Abstract chain if AGW is connected
           account?.connector?.name === 'Abstract'
@@ -248,6 +257,14 @@ export function Widget({
       tokens: tokens,
     };
   }, [
+    configTheme?.fromChain,
+    configTheme?.fromToken,
+    configTheme?.toChain,
+    configTheme?.toToken,
+    configTheme.variant,
+    configTheme?.chains,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
@@ -259,12 +276,10 @@ export function Widget({
     starterVariant,
     partnerName,
     openWalletMenu,
+    allowToChains,
     account?.connector?.name,
-    account.chainId,
     allowChains,
     allowedChainsByVariant,
-    configTheme?.allowedBridges,
-    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
     widgetTheme.config.appearance,

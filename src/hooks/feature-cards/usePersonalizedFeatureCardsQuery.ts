@@ -1,9 +1,9 @@
+import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import type { FeatureCardData } from '@/types/strapi';
 
 export interface UsePersonalizedFeatureCardsProps {
-  data: FeatureCardData[];
+  data: StrapiFeatureCardData[];
   isSuccess: boolean;
   isConnected: boolean;
 }
@@ -13,7 +13,7 @@ function getFeatureCardsEndpoint(walletAddress: string): string {
 }
 
 const STRAPI_CONTENT_TYPE = 'feature-cards';
-export const usePersonalizedFeatureCards =
+export const usePersonalizedFeatureCardsQuery =
   (): UsePersonalizedFeatureCardsProps => {
     const { account } = useAccount();
 
