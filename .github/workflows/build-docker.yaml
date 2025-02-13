@@ -60,7 +60,7 @@ jobs:
           fi
 
       - name: Upload .env as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: env-file
           path: .env
@@ -93,7 +93,7 @@ jobs:
           service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
 
       - name: Download .env file
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: env-file
           path: .
