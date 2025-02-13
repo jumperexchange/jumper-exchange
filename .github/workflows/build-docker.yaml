@@ -29,16 +29,19 @@ jobs:
         id: set-env
         run: |         
           if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
-            echo "GCP_PROJECT=jumper-d-dev" >> $GITHUB_ENV
+            echo "GCP_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
           elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
-            echo "GCP_PROJECT=jumper-s-staging" >> $GITHUB_ENV
+            echo "GCP_PROJECT=jumper-s-staging" >> "$GITHUB_ENV"
           elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-            echo "GCP_PROJECT=jumper-p-prod" >> $GITHUB_ENV
+            echo "GCP_PROJECT=jumper-p-prod" >> "$GITHUB_ENV"
           else
-            echo "GCP_PROJECT=jumper-d-dev" >> $GITHUB_ENV
+            echo "GCP_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
           fi
-          # Debug output
-          echo "Selected GCP_PROJECT: ${{ env.GCP_PROJECT }}"
+
+      - name: Debug Environment
+        run: |
+          echo "Current branch: $GITHUB_REF"
+          echo "Selected project: ${{ env.GCP_PROJECT }}"
 
       - name: Authenticate to Google Cloud
         id: gcpauth
@@ -53,11 +56,9 @@ jobs:
         id: secrets
         run: |
           echo "Using project: ${{ env.GCP_PROJECT }}"
-          # Make sure the service account has access to the secrets in the target project
           SECRET_VALUE=$(gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_PROJECT }}" \
-            --impersonate-service-account="artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com")
-          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
+            --project="${{ env.GCP_PROJECT }}")
+          echo "SECRET_VALUE=$SECRET_VALUE" >> "$GITHUB_ENV"
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
