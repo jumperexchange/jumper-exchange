@@ -59,6 +59,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Authenticate to Google Cloud Aretifact
+        id: gcpauth
         uses: google-github-actions/auth@v2
         with:
           create_credentials_file: 'true'
