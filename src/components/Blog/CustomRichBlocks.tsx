@@ -5,7 +5,7 @@ import {
   type InstructionItemProps,
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
-import type { MediaAttributes } from '@/types/strapi';
+import type { StrapiMediaAttributes } from '@/types/strapi';
 import type { ThemeMode } from '@/types/theme';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
@@ -34,7 +34,7 @@ interface CustomRichBlocksProps {
 }
 
 interface ImageData {
-  image: MediaAttributes;
+  image: StrapiMediaAttributes;
 }
 
 // TODO: Fix dynamic typing line 102
