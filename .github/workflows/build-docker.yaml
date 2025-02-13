@@ -16,9 +16,6 @@ env:
 jobs:
   retrieve-secrets:
     runs-on: ubuntu-latest
-    outputs:
-      env_content: ${{ steps.save-secret.outputs.env_content }}
-      
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -28,7 +25,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set Environment Variables
-        id: set-env
         run: |         
           if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
             echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
@@ -41,7 +37,6 @@ jobs:
           fi
 
       - name: Authenticate to Google Cloud
-        id: gcpauth
         uses: google-github-actions/auth@v2
         with:
           token_format: 'access_token'
@@ -50,29 +45,28 @@ jobs:
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
       - name: Get and Save Secret
-        id: save-secret
         run: |
-          SECRET_CONTENT=$(gcloud secrets versions access latest \
+          # Fetch secret from GCP
+          gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_ENV_PROJECT }}")
+            --project="${{ env.GCP_ENV_PROJECT }}" > .env
           
-          # Save to temp file
-          echo "$SECRET_CONTENT" > temp_env
-          
-          # Encode it
-          ENCODED_CONTENT=$(base64 -w 0 < temp_env)
-          
-          # Set as output
-          echo "env_content=$ENCODED_CONTENT" >> "$GITHUB_ENV"
-          echo "env_content=$ENCODED_CONTENT" >> "$GITHUB_OUTPUT"
-          
-          # Debugging
-          echo "Secret retrieved and encoded. Length: ${#ENCODED_CONTENT}"
-          
-          rm temp_env
+          # Verify contents
+          if [ -s .env ]; then
+            echo "✅ .env file created with $(wc -l < .env) lines"
+          else
+            echo "❌ Error: .env file is empty!"
+            exit 1
+          fi
+
+      - name: Upload .env as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: env-file
+          path: .env
 
   build-docker:
-    needs: retrieve-secrets
+    needs: retrieve-secrets  # Wait for retrieve-secrets job to complete
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
@@ -82,26 +76,54 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: |
-          ENCODED_CONTENT="${{ needs.retrieve-secrets.outputs.env_content }}"
-          
-          # Debug received content
-          echo "Received encoded content length: ${#ENCODED_CONTENT}"
-          
-          if [[ -z "$ENCODED_CONTENT" ]]; then
-            echo "Error: No secret content received!"
-            exit 1
-          fi
-          
-          # Decode and write to .env
-          echo "$ENCODED_CONTENT" | base64 -d > .env
+      - name: Set current date as env variable
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
 
-          # Verify file
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          create_credentials_file: 'true'
+          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
+
+      - name: Download .env file
+        uses: actions/download-artifact@v3
+        with:
+          name: env-file
+          path: .
+
+      - name: Verify .env file
+        run: |
           if [ -s .env ]; then
-            echo "Successfully created .env file with $(wc -l < .env) lines"
-            echo "File size: $(stat -f%z .env || stat -c%s .env) bytes"
+            echo "✅ .env file is present and has $(wc -l < .env) lines"
           else
-            echo "Error: .env file is empty!"
+            echo "❌ Error: .env file is empty!"
             exit 1
           fi
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            ENV_FILE=.env
+            ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+            NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
