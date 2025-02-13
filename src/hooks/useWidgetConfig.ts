@@ -143,10 +143,6 @@ export const useWidgetConfig = ({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      toToken: configTheme.toToken ?? (toToken || undefined),
-      fromToken: configTheme.fromToken ?? (fromToken || undefined),
-      fromChain: configTheme.fromChain ?? (fromChain || undefined),
-      toChain: configTheme.toChain ?? (toChain || undefined),
       chains: configTheme.chains ?? {
         allow: allowChains || allowedChainsByVariant,
       },
