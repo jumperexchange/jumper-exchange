@@ -6,12 +6,14 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings';
-import type { FeatureCardData } from '@/types/strapi';
-import { openInNewTab } from '@/utils/openInNewTab';
+import type { FeatureCardAttributes, FeatureCardData } from '@/types/strapi';
 import CloseIcon from '@mui/icons-material/Close';
 import { Slide, useTheme } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
+import { isSpindlTrackData, type SpindlCardAttributes } from 'src/types/spindl';
+import { openInNewTab } from 'src/utils/openInNewTab';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -25,10 +27,9 @@ import {
 
 interface FeatureCardProps {
   data: FeatureCardData;
-  isSuccess: boolean;
 }
 
-export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
+export const FeatureCard = ({ data }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const eventFired = useRef(false);
 
@@ -39,31 +40,44 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
   ]);
   const theme = useTheme();
   useEffect(() => {
-    if (data?.attributes?.DisplayConditions?.showOnce) {
-      setDisabledFeatureCard(data?.attributes?.uid);
+    if (data.attributes?.DisplayConditions?.showOnce) {
+      setDisabledFeatureCard(data.attributes?.uid);
     }
   }, [
-    data?.attributes?.DisplayConditions,
-    data?.attributes?.uid,
+    data.attributes?.DisplayConditions,
+    data.attributes?.uid,
     setDisabledFeatureCard,
   ]);
 
+  const mode = data.attributes?.DisplayConditions.mode;
+
   const typographyColor = useMemo(() => {
-    if (data.attributes?.DisplayConditions.mode) {
-      if (data.attributes?.DisplayConditions.mode === 'dark') {
+    if (mode) {
+      if (mode === 'dark') {
         return theme.palette.white.main;
-      } else if (data.attributes?.DisplayConditions.mode === 'light') {
+      } else if (mode === 'light') {
         return theme.palette.black.main;
       }
     } else {
       return theme.palette.text.primary;
     }
   }, [
-    data.attributes?.DisplayConditions.mode,
+    mode,
     theme.palette.black.main,
     theme.palette.text.primary,
     theme.palette.white.main,
   ]);
+
+  useEffect(() => {
+    if (isSpindlTrackData(data.attributes)) {
+      trackSpindl(
+        'impression',
+        data.attributes.spindlData.impression_id,
+        data.attributes.spindlData.ad_creative_id,
+      );
+    }
+    // allow spindl data to be tracked once
+  }, [data.attributes]);
 
   useEffect(() => {
     if (!eventFired.current && open) {
@@ -87,72 +101,97 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     trackEvent,
   ]);
 
-  const mode = data.attributes?.DisplayConditions.mode || theme.palette.mode;
-
-  const imageUrl =
-    mode === 'dark'
+  const imageUrl = useMemo(() => {
+    const imageMode = mode || theme.palette.mode;
+    if (
+      !data.attributes?.BackgroundImageDark?.data?.attributes?.url ||
+      !data.attributes?.BackgroundImageLight?.data?.attributes?.url
+    ) {
+      return null;
+    }
+    return imageMode === 'dark'
       ? new URL(
-          data.attributes?.BackgroundImageDark.data?.attributes?.url,
+          data.attributes?.BackgroundImageDark?.data?.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
-          data.attributes?.BackgroundImageLight.data?.attributes?.url,
+          data.attributes?.BackgroundImageLight?.data?.attributes?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
+  }, [
+    data.attributes?.BackgroundImageDark?.data?.attributes?.url,
+    data.attributes?.BackgroundImageLight?.data?.attributes?.url,
+    mode,
+    theme.palette.mode,
+  ]);
+
+  const handleSpindl = (
+    attributes: SpindlCardAttributes | FeatureCardAttributes,
+  ) => {
+    if (!isSpindlTrackData(attributes)) {
+      return;
+    }
+    trackSpindl(
+      'click',
+      attributes.spindlData.impression_id,
+      attributes.spindlData.ad_creative_id,
+    );
+  };
 
   const handleClose = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.stopPropagation();
     setOpen(false);
-    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes?.uid &&
-      setDisabledFeatureCard(data?.attributes?.uid);
+    if (
+      !data.attributes?.DisplayConditions.showOnce &&
+      !!data.attributes?.uid
+    ) {
+      setDisabledFeatureCard(data.attributes?.uid);
+    }
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.CloseFeatureCard,
       label: `click_close`,
       data: {
-        [TrackingEventParameter.FeatureCardTitle]: data?.attributes?.Title,
-        [TrackingEventParameter.FeatureCardId]: data?.attributes?.uid,
+        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
+        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
       },
     });
   };
 
-  const handleCTA = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  const handleClick = (
+    event: React.MouseEvent<
+      HTMLDivElement | HTMLAnchorElement | HTMLButtonElement,
+      MouseEvent
+    >,
+    label: string,
   ) => {
     event.stopPropagation();
-    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes?.uid &&
-      setDisabledFeatureCard(data?.attributes?.uid);
-    trackEvent({
-      category: TrackingCategory.FeatureCard,
-      action: TrackingAction.ClickFeatureCard,
-      label: `click_cta`,
-      data: {
-        [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
-        [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
-        url: data.attributes?.URL,
-      },
-    });
-  };
+    if (data?.attributes?.URL) {
+      openInNewTab(data?.attributes?.URL);
+    }
 
-  const handleCardClick = () => {
-    data?.attributes?.URL && openInNewTab(data?.attributes?.URL);
-    !data?.attributes?.DisplayConditions?.hasOwnProperty('showOnce') &&
-      !!data?.attributes?.uid &&
-      setDisabledFeatureCard(data?.attributes?.uid);
+    // Mark feature card as disabled if needed
+    if (
+      !('showOnce' in data.attributes?.DisplayConditions) &&
+      !!data.attributes?.uid
+    ) {
+      setDisabledFeatureCard(data.attributes?.uid);
+    }
+
     trackEvent({
       category: TrackingCategory.FeatureCard,
       action: TrackingAction.ClickFeatureCard,
-      label: 'click_card_bg',
+      label: label,
       data: {
         [TrackingEventParameter.FeatureCardTitle]: data.attributes?.Title,
         [TrackingEventParameter.FeatureCardId]: data.attributes?.uid,
         url: data.attributes?.URL,
       },
     });
+
+    handleSpindl(data.attributes);
   };
 
   return (
@@ -166,8 +205,8 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
     >
       <Card
         backgroundImageUrl={imageUrl?.href}
-        onClick={handleCardClick}
-        isDarkCard={data.attributes?.DisplayConditions.mode === 'dark'}
+        onClick={(e) => handleClick(e, 'click_card')}
+        isDarkCard={mode === 'dark'}
       >
         <FeatureCardContent>
           <FeatureCardCloseButton
@@ -188,30 +227,32 @@ export const FeatureCard = ({ data, isSuccess }: FeatureCardProps) => {
               }}
             />
           </FeatureCardCloseButton>
-          {!!data?.attributes?.Title && (
+          {!!data.attributes?.Title && (
             <FeatureCardTitle
               variant="headerSmall"
               data={data}
               typographyColor={data.attributes?.TitleColor || typographyColor}
               gutterBottom
             >
-              {data?.attributes?.Title}
+              {data.attributes?.Title}
             </FeatureCardTitle>
           )}
-          {!!data?.attributes?.Subtitle && (
+          {!!data.attributes?.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
-              typographyColor={typographyColor}
+              typographyColor={
+                data.attributes?.SubtitleColor || typographyColor
+              }
             >
-              {data?.attributes?.Subtitle}
+              {data.attributes?.Subtitle}
             </FeatureCardSubtitle>
           )}
           <FeatureCardActions>
             <FeatureCardCtaLink
               target="_blank"
               rel="noopener"
-              href={data?.attributes?.URL}
-              onClick={(e) => handleCTA(e)}
+              href={data.attributes?.URL}
+              onClick={(e) => handleClick(e, 'click_cta')}
               data={data}
             >
               <FeatureCardCtaLabel
