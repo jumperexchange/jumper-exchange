@@ -29,16 +29,19 @@ jobs:
         id: set-env
         run: |         
           if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
-            project="jumper-d-dev"
+            echo "GCP_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
           elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
-            project="jumper-s-staging"
+            echo "GCP_PROJECT=jumper-s-staging" >> "$GITHUB_ENV"
           elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-            project="jumper-p-prod"
+            echo "GCP_PROJECT=jumper-p-prod" >> "$GITHUB_ENV"
           else
-            project="jumper-d-dev"
+            echo "GCP_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
           fi
-          echo "GCP_PROJECT=$project" >> "$GITHUB_ENV"
-          echo "Selected project: $project"
+
+      - name: Debug Environment
+        run: |
+          echo "Current branch: $GITHUB_REF"
+          echo "Selected project: ${{ env.GCP_PROJECT }}"
 
       - name: Authenticate to Google Cloud
         id: gcpauth
@@ -49,13 +52,6 @@ jobs:
           workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
           service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
-      # Enable Secret Manager API if not already enabled
-      - name: Enable Secret Manager API
-        run: |
-          gcloud services enable secretmanager.googleapis.com --project=${{ env.GCP_PROJECT }}
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
-
       - name: Access and Verify GCP Secrets
         id: secrets
         run: |
@@ -64,14 +60,5 @@ jobs:
             --secret="jumper-exchange-env" \
             --project="${{ env.GCP_PROJECT }}")
           echo "SECRET_VALUE=$SECRET_VALUE" >> "$GITHUB_ENV"
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
-
-      # Debug step to verify environment
-      - name: Debug Environment
-        run: |
-          echo "Current project: ${{ env.GCP_PROJECT }}"
-          echo "Credentials file: $GOOGLE_APPLICATION_CREDENTIALS"
-          gcloud config list
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.gcpauth.outputs.credentials_file_path }}
