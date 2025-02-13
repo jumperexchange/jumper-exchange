@@ -1,4 +1,6 @@
+import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
 import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import { useAccount } from '@lifi/wallet-management';
 import { useEffect } from 'react';
 import {
   useEnrichedMarkets,
@@ -7,8 +9,6 @@ import {
   useTokenQuotes,
 } from 'royco/hooks';
 import { BERA_TOKEN_ID } from '../utils';
-import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
-import { useAccount } from '@lifi/wallet-management';
 
 function BeraStoreSetup() {
   const { account } = useAccount();
