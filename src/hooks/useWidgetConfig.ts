@@ -106,6 +106,7 @@ export const useWidgetConfig = ({
       }
     }
 
+    //todo: to clean this logic to explain better the split between parameters and Strapi pre-filled information
     const formParameters: Record<string, number | string | undefined> = {
       fromChain:
         configTheme.fromChain ?? (fromChain || widgetCache.fromChainId),
