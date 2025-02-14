@@ -2,57 +2,51 @@
 
 /**
  * Image Generation of Widget for SEO pages
- * Step 1 - Selecting Tokens
+ * Step 4 - Route execution
  *
  * Example:
  * ```
- * http://localhost:3000/api/widget-selection?fromToken=0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063&fromChainId=137&toToken=0xdAC17F958D2ee523a2206206994597C13D831ec7&toChainId=1&amount=3&theme=dark
+ * http://localhost:3000/api/widget-amounts?chainName=arbitrum&amount=1&theme=light
  * ```
  *
  * @typedef {Object} SearchParams
- * @property {string} fromToken - The token address to send from.
- * @property {number} fromChainId - The chain ID to send from.
- * @property {string} toToken - The token address to send to.
- * @property {number} toChainId - The chain ID to send to.
+ * @property {number} chainId - The chain ID to send from.
  * @property {number} amount - The amount of tokens.
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
- * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
  *
  */
 
-import type { ChainId } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import { imageFrameStyles } from 'src/components/ImageGeneration/style';
-import WidgetSelectionImage from 'src/components/ImageGeneration/WidgetSelectionImage';
+import WidgetAmountsImage from 'src/components/ImageGeneration/WidgetAmountImage';
 import { getSiteUrl } from 'src/const/urls';
-import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
-import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
+import { getChainsQuery } from 'src/hooks/useChains';
+import { getTokensQuery } from 'src/hooks/useTokens';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
 
 const WIDGET_IMAGE_WIDTH = 416;
-const WIDGET_IMAGE_HEIGHT = 496;
+const WIDGET_IMAGE_HEIGHT = 536;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const {
-    fromChainId,
-    toChainId,
-    fromToken,
-    toToken,
-    theme,
-    amount,
-    highlighted,
-  } = parseSearchParams(request.url);
+  const { chainName, theme, amount, highlighted } = parseSearchParams(
+    request.url,
+  );
+
+  if (!chainName) {
+    return;
+  }
 
   // Fetch data asynchronously before rendering
-  const fromTokenData = await fetchTokenData(fromChainId, fromToken);
-  const toTokenData = await fetchTokenData(toChainId, toToken);
-  const fromChain = await fetchChainData(fromChainId as unknown as ChainId);
-  const toChain = await fetchChainData(toChainId as unknown as ChainId);
-
+  const { chains } = await getChainsQuery();
+  const sortedChains = sortChainsBySpecificName(chains, chainName);
+  const { tokens } = await getTokensQuery();
+  const sortedTokensByChainId =
+    sortedChains[0]?.id && tokens[sortedChains[0]?.id].slice(0, 4);
   const options = await imageResponseOptions({
     width: WIDGET_IMAGE_WIDTH,
     height: WIDGET_IMAGE_HEIGHT,
@@ -75,21 +69,19 @@ export async function GET(request: Request) {
     (
       <div style={imageFrameStyle}>
         <img
-          alt="Widget Selection Example"
+          alt="Widget Amount Example"
           width={'100%'}
           height={'100%'}
           style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget-selection-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`${getSiteUrl()}/widget/widget-swap-amounts-${theme === 'dark' ? 'dark' : 'light'}.png`} //${theme === 'dark' ? 'dark' : 'light'}
         />
-        <WidgetSelectionImage
+        <WidgetAmountsImage
           height={WIDGET_IMAGE_WIDTH}
           width={WIDGET_IMAGE_HEIGHT}
-          fromToken={fromTokenData}
-          toToken={toTokenData}
-          fromChain={fromChain}
-          toChain={toChain}
-          amount={amount}
           theme={theme as 'light' | 'dark'}
+          chains={sortedChains}
+          amount={amount}
+          tokens={sortedTokensByChainId || undefined}
           highlighted={highlighted as HighlightedAreas}
         />
       </div>

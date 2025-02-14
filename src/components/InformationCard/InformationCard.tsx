@@ -3,11 +3,13 @@ import {
   Box,
   Table,
   TableBody,
-  TableCell,
   TableRow,
   Typography,
 } from '@mui/material';
-import { InformationCardContainer } from './InformationCard.style';
+import {
+  InformationCardCell,
+  InformationCardContainer,
+} from './InformationCard.style';
 
 interface Info {
   logoURI?: string;
@@ -23,13 +25,15 @@ function InformationCard({
   info,
   data = [],
   type,
+  fullWidth,
 }: {
   info: Info;
   data: Data[];
   type: 'Blockchain' | 'Token';
+  fullWidth?: boolean;
 }) {
   return (
-    <InformationCardContainer>
+    <InformationCardContainer fullWidth={fullWidth}>
       <Typography variant="h3" display="flex" alignItems="center">
         {info.logoURI && (
           <Box display="flex" marginRight={2}>
@@ -49,8 +53,8 @@ function InformationCard({
         <TableBody>
           {data.map(({ label, value }, index) => (
             <TableRow key={index}>
-              <TableCell style={{ width: '30%' }}>{label}</TableCell>
-              <TableCell>{value}</TableCell>
+              <InformationCardCell fullWidth>{label}</InformationCardCell>
+              <InformationCardCell fullWidth>{value}</InformationCardCell>
             </TableRow>
           ))}
         </TableBody>

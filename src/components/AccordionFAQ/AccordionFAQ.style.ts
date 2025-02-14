@@ -7,7 +7,6 @@ import {
   AccordionDetails as MuiAccordionDetails,
   AccordionSummary as MuiAccordionSummary,
   Typography,
-  type Breakpoint,
 } from '@mui/material';
 
 import { alpha, keyframes, styled } from '@mui/material/styles';
@@ -19,7 +18,7 @@ export const AccordionBox = styled(Box)(({ theme }) => ({
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
 
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     width: theme.breakpoints.values.md,
     maxWidth: theme.breakpoints.values.md,
   },
