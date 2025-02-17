@@ -20,87 +20,92 @@ jobs:
       id-token: "write"
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Set Environment Variables
-        run: |         
-          if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
-            echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
-          elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
-            echo "GCP_ENV_PROJECT=jumper-s-staging" >> "$GITHUB_ENV"
-          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-            echo "GCP_ENV_PROJECT=jumper-p-prod" >> "$GITHUB_ENV"
-          else
-            echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
-          fi
+    - name: Set Environment Variables
+      run: |
+        if [[ $GITHUB_REF == 'refs/heads/develop' ]]; then
+          echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
+        elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
+          echo "GCP_ENV_PROJECT=jumper-s-staging" >> "$GITHUB_ENV"
+        elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+          echo "GCP_ENV_PROJECT=jumper-p-prod" >> "$GITHUB_ENV"
+        else
+          echo "GCP_ENV_PROJECT=jumper-d-dev" >> "$GITHUB_ENV"
+        fi
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          create_credentials_file: true
-          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        create_credentials_file: true
+        workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+        service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Get Secret and Save to .env
-        run: |
-          gcloud secrets versions access latest \
-            --secret="jumper-exchange-env" \
-            --project="${{ env.GCP_ENV_PROJECT }}" > .env
+    - name: Get Secret and Save to .env
+      run: |
+        gcloud secrets versions access latest \
+          --secret="jumper-exchange-env" \
+          --project="${{ env.GCP_ENV_PROJECT }}" > .env.json
 
-      - name: Set current date as env variable
-        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+    - name: Set current date as env variable
+      run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
-      - name: Authenticate to Google Cloud Artifacts
-        id: gcpauth
-        uses: google-github-actions/auth@v2
-        with:
-          create_credentials_file: 'true'
-          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
-          service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
-      
-      - name: login to GCP
-        run: |-
-          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
-          gcloud auth configure-docker europe-docker.pkg.dev
+    - name: Authenticate to Google Cloud Artifacts
+      id: gcpauth
+      uses: google-github-actions/auth@v2
+      with:
+        create_credentials_file: 'true'
+        workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+        service_account: 'artifact-deployer@jumper-g-management.iam.gserviceaccount.com'
 
-      - name: Verify .env file
-        run: |
-          if [ -f ".env" ]; then
-            echo "✅ .env file exists"
-            echo "File size: $(wc -c < .env) bytes"
-            echo "Line count: $(wc -l < .env) lines"
-          else
-            echo "❌ Error: .env file not found!"
-            exit 1
-          fi
+    - name: login to GCP
+      run: |-
+        gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
+        gcloud auth configure-docker europe-docker.pkg.dev
 
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+    - name: Convert JSON .env to key-value format
+      run: |
+        if [ -f ".env.json" ]; then
+          echo "✅ .env.json file found! Converting to .env format..."
+          
+          # Convert JSON to key=value format
+          jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env.json > .env
+          
+          echo "✅ Conversion complete! Verifying .env file..."
+          echo "File size: $(wc -c < .env) bytes"
+          echo "Line count: $(wc -l < .env) lines"
+        else
+          echo "❌ Error: .env.json file not found!"
+          exit 1
+        fi
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            ENV_FILE=.env
-            ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
-            NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
 
-      - name: Clean up .env file
-        run: rm -f .env
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          ENV_FILE=.env
+          ENV_NAME=${{ github.ref_name == 'main' && 'prod' || github.ref_name }}
+          NEXT_PUBLIC_LATEST_COMMIT_SHA={{sha}}
+
+    - name: Clean up .env file
+      run: rm -f .env
