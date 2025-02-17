@@ -73,7 +73,7 @@ jobs:
 
     - name: Convert JSON .env to key-value format
       run: |
-        if [ -f ".env." ]; then
+        if [ -f ".env" ]; then
           echo "✅ .env file found! Converting to .env format..."
           
           # Convert JSON to key=value format
@@ -87,7 +87,7 @@ jobs:
           echo "File size: $(wc -c < .env) bytes"
           echo "Line count: $(wc -l < .env) lines"
         else
-          echo "❌ Error: .env.json file not found!"
+          echo "❌ Error: .env file not found!"
           exit 1
         fi
     # - name: Extract Docker metadata
