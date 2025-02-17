@@ -3,9 +3,9 @@ name: Build Docker
 on:
   push:
     branches:
-    - develop
-    - staging
-    - main
+      - develop
+      - staging
+      - main
 
 env:
   IMAGE_NAME: europe-docker.pkg.dev/jumper-g-artifacts/docker-jumper-exchange/jumpex
