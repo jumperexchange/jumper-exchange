@@ -1,7 +1,6 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Box, useTheme, type CSSObject } from '@mui/material';
-
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Box, useMediaQuery, useTheme, type CSSObject } from '@mui/material';
 import type { ReactNode } from 'react';
 import { useCallback, useRef } from 'react';
 import IconHeader from 'src/components/ProfilePage/Common/IconHeader';
@@ -19,14 +18,14 @@ interface CarouselContainerProps {
   title?: string;
   updateTitle?: string;
   updateTooltip?: string;
-  styles?: CSSObject;
+  sx?: CSSObject;
   children: ReactNode | ReactNode[];
   trackingCategory?: string;
 }
 const swipeDistance = 420;
 
 export const CarouselContainer = ({
-  styles,
+  sx,
   title,
   updateTitle,
   updateTooltip,
@@ -35,7 +34,7 @@ export const CarouselContainer = ({
 }: CarouselContainerProps) => {
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
-
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const isClient = useClient();
 
   const handleChange = useCallback((direction: 'next' | 'prev') => {
@@ -80,7 +79,7 @@ export const CarouselContainer = ({
               {isClient && (
                 <IconHeader
                   tooltipKey={updateTooltip || ''}
-                  title={updateTitle}
+                  title={!isMobile ? updateTitle : undefined}
                 />
               )}
             </Box>
@@ -91,18 +90,18 @@ export const CarouselContainer = ({
             aria-label="previous"
             onClick={() => handleChange('prev')}
           >
-            <ArrowBackIcon sx={{ width: '22px', height: '22px' }} />
+            <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
           </CarouselNavigationButton>
           <CarouselNavigationButton
             aria-label="next"
             sx={{ marginLeft: theme.spacing(1) }}
             onClick={() => handleChange('next')}
           >
-            <ArrowForwardIcon sx={{ width: '22px', height: '22px' }} />
+            <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
           </CarouselNavigationButton>
         </CarouselNavigationContainer>
       </CarouselHeader>
-      <CarouselContainerBox ref={carouselContainerRef} sx={styles}>
+      <CarouselContainerBox ref={carouselContainerRef} sx={sx}>
         {children}
       </CarouselContainerBox>
     </Box>

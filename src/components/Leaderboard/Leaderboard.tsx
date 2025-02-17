@@ -1,5 +1,5 @@
 'use client';
-import { Typography } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,9 +34,10 @@ const isValidPage = (pageNum: number, totalPages: number) => {
 
 export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { account } = useAccount();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const { t } = useTranslation();
-
+  const theme = useTheme();
   const isClient = useClient();
 
   const { data: leaderboardData, meta } = useLeaderboardList(
@@ -69,7 +70,11 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
               {isClient && (
                 <IconHeader
                   tooltipKey={t('leaderboard.description')}
-                  title={`Updated: ${t('format.date', { value: new Date() })}`}
+                  title={
+                    !isMobile
+                      ? `Updated: ${t('format.date', { value: new Date() })}`
+                      : undefined
+                  }
                 />
               )}
             </LeaderboardUpdateDateBox>
