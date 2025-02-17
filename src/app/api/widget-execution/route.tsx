@@ -29,6 +29,7 @@ import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGener
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
 import { imageFrameStyles } from 'src/components/ImageGeneration/style';
 import WidgetExecutionImage from 'src/components/ImageGeneration/WidgetExecutionImage';
+import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
@@ -81,7 +82,7 @@ export async function GET(request: Request) {
           width={'100%'}
           height={'100%'}
           style={imageStyle}
-          src={`${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}` : process.env.NEXT_PUBLIC_SITE_URL}/widget/widget-execution-${theme === 'dark' ? 'dark' : 'light'}.png`}
+          src={`${getSiteUrl()}/widget/widget-execution-${theme === 'dark' ? 'dark' : 'light'}.png`}
         />
         <WidgetExecutionImage
           height={WIDGET_IMAGE_WIDTH}
