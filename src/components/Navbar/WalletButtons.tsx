@@ -97,7 +97,7 @@ export const WalletButtons = () => {
                   {points ? t('format.decimal2Digit', { value: points }) : 0}
                 </Typography>
               )}
-              <XPIcon />
+              <XPIcon sx={{ width: 32, height: 32 }} />
             </WalletMenuButton>
           )}
           <WalletMenuButton

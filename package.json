@@ -111,7 +111,7 @@
     "dev:local": "dotenv -e .env.localhost next dev",
     "dev:staging": "dotenv -e .env.staging next dev",
     "dev:production": "dotenv -e .env.production next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=6144 next build",
     "start": "next start",
     "lint": "next lint",
     "lint_es": "eslint . --ext .ts,.tsx,.js,.jsx",
