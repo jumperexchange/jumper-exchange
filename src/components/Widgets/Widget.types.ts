@@ -31,6 +31,7 @@ export const themeAllowChains: ChainId[] = [
 
 export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
+  allowToChains?: number[];
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
   activeThemeMode?: ThemeMode;

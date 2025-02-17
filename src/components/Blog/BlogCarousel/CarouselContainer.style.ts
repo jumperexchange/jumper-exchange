@@ -1,32 +1,22 @@
-import { IconButtonTertiary } from '@/components/IconButton.style';
-import type {
-  BoxProps,
-  Breakpoint,
-  CSSObject,
-  IconButtonProps,
-} from '@mui/material';
+import { IconButtonSecondary } from '@/components/IconButton.style';
+import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
-export interface CarouselContainerBoxProps extends BoxProps {
-  styles?: CSSObject;
-}
-
-export const CarouselContainerBox = styled(Box)<CarouselContainerBoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-    gap: theme.spacing(4),
-    marginTop: theme.spacing(3),
-    overflow: 'auto',
-    width: '100%',
-    overflowY: 'hidden',
-    scrollSnapType: 'x mandatory',
-    '& > *': {
-      flexShrink: 0,
-      scrollSnapAlign: 'center',
-    },
-    '::-webkit-scrollbar': { display: 'none' },
-  }),
-);
+export const CarouselContainerBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(4),
+  marginTop: theme.spacing(3),
+  overflow: 'auto',
+  width: '100%',
+  overflowY: 'hidden',
+  scrollSnapType: 'x mandatory',
+  paddingBottom: theme.spacing(0.75),
+  '& > *': {
+    flexShrink: 0,
+    scrollSnapAlign: 'center',
+  },
+  '::-webkit-scrollbar': { display: 'none' },
+}));
 
 export const CarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -47,22 +37,20 @@ export const CarouselNavigationContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hide',
 })<CarouselNavigationContainerProps>(({ theme }) => ({
   display: 'flex',
-  [theme.breakpoints.up('md' as Breakpoint)]: {
+  [theme.breakpoints.up('md')]: {
     marginLeft: 3,
   },
   variants: [
     {
       props: ({ hide }) => hide,
       style: {
-        [theme.breakpoints.up('md' as Breakpoint)]: { display: 'none' },
+        [theme.breakpoints.up('md')]: { display: 'none' },
       },
     },
   ],
 }));
 
-export const CarouselNavigationButton = styled(
-  IconButtonTertiary,
-)<IconButtonProps>(() => ({
+export const CarouselNavigationButton = styled(IconButtonSecondary)(() => ({
   width: 40,
   height: 40,
   fontSize: 22,

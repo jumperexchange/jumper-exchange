@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { inter } from 'src/fonts/fonts';
 import type { FeatureCardData } from 'src/types/strapi';
 
 export interface CardProps extends MuiCardProps {
@@ -45,6 +46,7 @@ export const FCard = styled(MuiCard, {
 }));
 
 export const FeatureCardContent = styled(CardContent)(({ theme }) => ({
+  fontFamily: inter.style.fontFamily,
   padding: theme.spacing(3),
   position: 'relative',
 }));

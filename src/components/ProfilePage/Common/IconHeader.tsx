@@ -7,18 +7,19 @@ import { IconHeaderContainer, IconHeaderTitle } from './IconHeader.style';
 
 export interface IconHeaderProps {
   tooltipKey: string;
-  title: string;
+  title?: string;
   icon?: React.ReactNode;
 }
 
 const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-
   return (
     <IconHeaderContainer>
       {icon}
-      <IconHeaderTitle variant="title2XSmall">{title}</IconHeaderTitle>
+      {title && (
+        <IconHeaderTitle variant="title2XSmall">{title}</IconHeaderTitle>
+      )}
       <Tooltip
         title={t(tooltipKey as any)}
         sx={{ cursor: 'help', color: theme.palette.text.primary }}

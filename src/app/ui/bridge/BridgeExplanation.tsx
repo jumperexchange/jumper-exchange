@@ -1,10 +1,10 @@
 'use client';
-import { BridgePageContainer } from '@/app/ui/bridge/BridgePage.style';
 import { Typography } from '@mui/material';
+import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 
 const BridgeExplanationSection = () => {
   return (
-    <BridgePageContainer>
+    <DynamicPagesContainer>
       <Typography variant="h3" marginY={2} sx={{ fontSize: '32px' }}>
         What is a Blockchain / Crypto Bridge?
       </Typography>
@@ -130,7 +130,7 @@ const BridgeExplanationSection = () => {
         This convenience not only improves user satisfaction but also encourages
         broader adoption of blockchain technology.
       </Typography>
-    </BridgePageContainer>
+    </DynamicPagesContainer>
   );
 };
 

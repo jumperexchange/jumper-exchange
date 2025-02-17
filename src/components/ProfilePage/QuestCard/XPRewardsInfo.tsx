@@ -32,7 +32,7 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
         <XPDisplayBoxLabel variant="bodySmallStrong">
           {points}
         </XPDisplayBoxLabel>
-        {children ? children : <XPIcon colorFill={color} />}
+        {children ? children : <XPIcon color={color} />}
       </XPDisplayBox>
     </Tooltip>
   );
