@@ -3,27 +3,27 @@ import { useMemo } from 'react';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { useChains } from './useChains';
 
-export const useAccountByLatestActivity = () => {
-  const { accounts, account } = useAccount();
+export const useActiveAccount = () => {
+  const { accounts } = useAccount();
   const { sourceChainToken } = useChainTokenSelectionStore();
   const { getChainById } = useChains();
 
-  const sortedAccounts = useMemo(() => {
+  const activeAccount = useMemo(() => {
     if (
       !sourceChainToken?.chainId ||
       (Array.isArray(accounts) && !(accounts.length > 1))
     ) {
-      return null;
+      return accounts[0];
     }
 
     const sourceChain = getChainById(sourceChainToken.chainId);
     if (!sourceChain) {
-      return null;
+      return accounts[0];
     }
 
     const sourceChainType = sourceChain.chainType;
 
-    return accounts.sort((a, b) => {
+    const sortedAccounts = accounts.sort((a, b) => {
       if (a.chainType === sourceChainType && b.chainType !== sourceChainType) {
         return -1;
       }
@@ -32,10 +32,8 @@ export const useAccountByLatestActivity = () => {
       }
       return 0;
     });
-  }, [accounts, sourceChainToken, getChainById]);
+    return sortedAccounts[0];
+  }, [sourceChainToken.chainId, accounts, getChainById]);
 
-  return {
-    accounts: Array.isArray(sortedAccounts) ? sortedAccounts : accounts,
-    account: Array.isArray(sortedAccounts) ? sortedAccounts[0] : account,
-  };
+  return activeAccount;
 };
