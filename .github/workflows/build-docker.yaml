@@ -73,11 +73,11 @@ jobs:
 
     - name: Convert JSON .env to key-value format
       run: |
-        if [ -f ".env.json" ]; then
-          echo "✅ .env.json file found! Converting to .env format..."
+        if [ -f ".env." ]; then
+          echo "✅ .env file found! Converting to .env format..."
           
           # Convert JSON to key=value format
-          jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env.json > .env
+          jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env > .env
           
           echo "✅ Conversion complete! Verifying .env file..."
           
