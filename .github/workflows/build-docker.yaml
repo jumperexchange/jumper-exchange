@@ -47,7 +47,7 @@ jobs:
       run: |
         gcloud secrets versions access latest \
           --secret="jumper-exchange-env" \
-          --project="${{ env.GCP_ENV_PROJECT }}" > .env
+          --project="${{ env.GCP_ENV_PROJECT }}" > .env.json
 
     - name: Set current date as env variable
       run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
@@ -73,11 +73,11 @@ jobs:
 
     - name: Convert JSON .env to key-value format
       run: |
-        if [ -f ".env" ]; then
-          echo "✅ .env file found! Converting to .env format..."
+        if [ -f ".env.json" ]; then
+          echo "✅ .env.json file found! Converting to .env format..."
           
           # Convert JSON to key=value format
-          jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env > .env
+          jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env.json > .env
           
           echo "✅ Conversion complete! Verifying .env file..."
           
@@ -87,7 +87,7 @@ jobs:
           echo "File size: $(wc -c < .env) bytes"
           echo "Line count: $(wc -l < .env) lines"
         else
-          echo "❌ Error: .env file not found!"
+          echo "❌ Error: .env.json file not found!"
           exit 1
         fi
     # - name: Extract Docker metadata
