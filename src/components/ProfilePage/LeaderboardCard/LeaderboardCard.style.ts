@@ -54,12 +54,17 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   width: '100%',
   lineHeight: '18px',
   height: 40,
-  color: theme.palette.text.primary,
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.primary.main
+      : theme.palette.text.primary,
 }));
 
 export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
   ({ theme }) => ({
     padding: theme.spacing(0, 1),
+    textDecoration: 'none',
+    position: 'relative',
     marginTop: theme.spacing(0.5),
     height: 64,
     background: 'transparent',

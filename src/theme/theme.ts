@@ -123,6 +123,7 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -132,7 +133,6 @@ declare module '@mui/material/styles' {
     urbanistBodyLarge: React.CSSProperties;
     urbanistBodyXLarge: React.CSSProperties;
     urbanistBody2XLarge: React.CSSProperties;
-    titleLarge: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
@@ -157,6 +157,7 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -166,7 +167,6 @@ declare module '@mui/material/styles' {
     urbanistBodyLarge: React.CSSProperties;
     urbanistBodyXLarge: React.CSSProperties;
     urbanistBody2XLarge: React.CSSProperties;
-    titleLarge: React.CSSProperties;
   }
 }
 declare module '@mui/material/Button' {
@@ -229,6 +229,7 @@ declare module '@mui/material/Typography' {
     titleSmall: true;
     titleXSmall: true;
     title2XSmall: true;
+    titleLarge: true;
     urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
@@ -238,7 +239,6 @@ declare module '@mui/material/Typography' {
     urbanistBodyLarge: true;
     urbanistBodyXLarge: true;
     urbanistBody2XLarge: true;
-    titleLarge: true;
   }
 }
 
@@ -728,6 +728,13 @@ const themeCustomized = createTheme({
       lineHeight: '72px',
       letterSpacing: 0,
     },
+    titleSmall: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '24px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '32px',
+    },
     title2XSmall: {
       fontFamily: inter.style.fontFamily,
       fontSize: '14px',
@@ -735,19 +742,18 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '20px',
     },
+    titleLarge: {
+      fontSize: '48px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '64px',
+    },
     titleXSmall: {
       fontFamily: inter.style.fontFamily,
       fontSize: '18px',
       fontStyle: 'normal',
       fontWeight: 700,
       lineHeight: '24px',
-    },
-    titleSmall: {
-      fontFamily: inter.style.fontFamily,
-      fontSize: '24px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '32px',
     },
     urbanistTitleXSmall: {
       fontFamily: urbanist.style.fontFamily,
@@ -851,12 +857,6 @@ const themeCustomized = createTheme({
       fontSize: themeBase.typography.pxToRem(12),
       lineHeight: themeBase.typography.pxToRem(18),
       fontWeight: 700,
-    },
-    titleLarge: {
-      fontSize: '48px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '64px',
     },
   },
 });
