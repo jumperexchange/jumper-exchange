@@ -79,11 +79,6 @@ export const LeaderboardEntryWrapper = styled(Box, {
             right: -12,
           },
         },
-        ':last-of-type': {
-          borderBottomRightRadius: '16px',
-          borderBottomLeftRadius: '16px',
-          backgroundColor: 'red',
-        },
       },
     },
   ],
