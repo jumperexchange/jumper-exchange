@@ -18,7 +18,6 @@ export const LeaderboardHeader = styled(Box)(({ theme }) => ({
   flexDirection: 'column-reverse',
   gap: theme.spacing(1.5),
   alignItems: 'flex-start',
-  paddingLeft: theme.spacing(3),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: 0,
     justifyContent: 'space-between',

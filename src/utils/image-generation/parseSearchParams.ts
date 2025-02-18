@@ -10,5 +10,6 @@ export function parseSearchParams(url: string) {
     theme: searchParams.get('theme'),
     isSwap: searchParams.get('isSwap'),
     amountUSD: searchParams.get('amountUSD'),
+    chainName: searchParams.get('chainName'),
   };
 }
