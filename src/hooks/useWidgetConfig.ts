@@ -1,10 +1,11 @@
 import { EVM } from '@lifi/sdk';
-import { useWalletMenu } from '@lifi/wallet-management';
-import type { WidgetTheme } from '@lifi/widget';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import type { FormState } from '@lifi/widget';
 import { HiddenUI, type ChainId, type WidgetConfig } from '@lifi/widget';
-import { deepmerge } from '@mui/utils';
 import { getWalletClient, switchChain } from '@wagmi/core';
-import { useMemo } from 'react';
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { refuelAllowChains, themeAllowChains } from 'src/components/Widgets';
 import { tokens } from 'src/config/tokens';
@@ -28,38 +29,93 @@ import { useMultisig } from './useMultisig';
 import { useUserTracking } from './userTracking';
 
 interface UseWidgetConfigProps {
+  starterVariant?: StarterVariantType;
   fromChain?: ChainId;
   toChain?: ChainId;
   fromToken?: string;
   toToken?: string;
   fromAmount?: string;
-  starterVariant?: StarterVariantType;
   allowChains?: number[];
   widgetIntegrator?: string;
-  customWidgetTheme?: WidgetTheme;
+  allowToChains?: number[];
 }
 
 export const useWidgetConfig = ({
+  starterVariant,
   fromChain,
-  toChain,
   fromToken,
+  toChain,
   toToken,
   fromAmount,
-  starterVariant,
   allowChains,
+  allowToChains,
   widgetIntegrator,
-  customWidgetTheme,
 }: UseWidgetConfigProps) => {
-  const widgetCache = useWidgetCacheStore((state) => state);
   const [widgetTheme, configTheme] = useThemeStore((state) => [
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { activeTab } = useActiveTabStore();
-  const wagmiConfig = useConfig();
-  const { trackEvent } = useUserTracking();
+  const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
+  const { trackEvent } = useUserTracking();
+  const { account } = useAccount();
+  const wagmiConfig = useConfig();
+  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
+  const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
+  const { activeTab } = useActiveTabStore();
+  const partnerName = configTheme?.uid ?? 'default';
+  const { tokens: memeListTokens } = useMemelist({
+    enabled: partnerName === ThemesMap.Memecoins,
+  });
+  const { openWalletMenu } = useWalletMenu();
+  const widgetCache = useWidgetCacheStore((state) => state);
+
+  const router = useRouter();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    router.prefetch('/', { kind: PrefetchKind.FULL });
+    router.prefetch('/gas', { kind: PrefetchKind.FULL });
+  }, [router]);
+
+  useEffect(() => {
+    // Our partners that want to onboard on pre-filled address can still do it
+    if (
+      !wrapperRef.current ||
+      configTheme?.chains?.to?.allow?.includes(2741) ||
+      allowToChains?.includes(2741)
+    ) {
+      return;
+    }
+    // Clear toAddress URL parameter once the widget is mounted
+    // Uses MutationObserver to detect when the widget content is loaded
+    // since it's rendered dynamically inside WidgetWrapper
+    const observer = new MutationObserver(() => {
+      if (formRef.current) {
+        formRef.current.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+        observer.disconnect();
+      }
+    });
+    observer.observe(wrapperRef.current, {
+      childList: true,
+      subtree: true,
+    });
+    return () => observer.disconnect();
+  }, [allowToChains, configTheme?.chains?.to?.allow]);
+
   const isGasVariant = activeTab === TabsMap.Refuel.index;
+  const allowedChainsByVariant = useMemo(
+    () =>
+      starterVariant === TabsMap.Refuel.variant
+        ? refuelAllowChains
+        : partnerName === ThemesMap.Memecoins
+          ? themeAllowChains
+          : [],
+    [starterVariant, partnerName],
+  );
+
   const integratorStringByType = useMemo(() => {
     if (configTheme?.integrator) {
       return configTheme.integrator;
@@ -78,22 +134,6 @@ export const useWidgetConfig = ({
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
-  const { openWalletMenu } = useWalletMenu();
-  const partnerName = configTheme?.uid ?? 'default';
-  const { tokens: memeListTokens } = useMemelist({
-    enabled: partnerName === ThemesMap.Memecoins,
-  });
-  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
-  const allowedChainsByVariant = useMemo(
-    () =>
-      starterVariant === TabsMap.Refuel.variant
-        ? refuelAllowChains
-        : partnerName === ThemesMap.Memecoins
-          ? themeAllowChains
-          : [],
-    [starterVariant, partnerName],
-  );
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -109,13 +149,12 @@ export const useWidgetConfig = ({
       }
     }
 
-    //todo: to clean this logic to explain better the split between parameters and Strapi pre-filled information
     const formParameters: Record<string, number | string | undefined> = {
       fromChain:
-        configTheme.fromChain ?? (fromChain || widgetCache.fromChainId),
-      fromToken: configTheme.fromToken ?? (fromToken || widgetCache.fromToken),
-      toChain: configTheme.toChain ?? toChain,
-      toToken: configTheme.toToken ?? toToken,
+        configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
+      fromToken: configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
+      toChain: configTheme?.toChain ?? (toChain || widgetCache.toChainId),
+      toToken: configTheme?.toToken ?? (toToken || widgetCache.toToken),
       fromAmount: fromAmount,
     };
 
@@ -129,16 +168,9 @@ export const useWidgetConfig = ({
       tokens.allow.concat(memeListTokens);
     }
 
-    const mergedWidgetTheme = deepmerge(
-      widgetTheme.config.theme,
-      customWidgetTheme,
-    );
-
     return {
       ...formParameters,
-      variant:
-        configTheme.variant ??
-        (starterVariant === 'refuel' ? 'compact' : 'wide'),
+      variant: configTheme.variant ?? 'wide',
       subvariant:
         (starterVariant !== 'buy' &&
           !(partnerName === ThemesMap.Memecoins) &&
@@ -147,16 +179,19 @@ export const useWidgetConfig = ({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: configTheme.chains ?? {
-        allow: allowChains || allowedChainsByVariant,
+      chains: configTheme?.chains ?? {
+        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
+        allow:
+          // allow only Abstract chain if AGW is connected
+          account?.connector?.name === 'Abstract'
+            ? [2741]
+            : allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
-        deny: ['allbridge', 'hop', 'celerim', 'squid'],
       },
       exchanges: {
         allow: configTheme?.allowedExchanges,
-        deny: ['bepop', 'paraswap', '0x'],
       },
       languages: {
         default: i18n.language as LanguageKey,
@@ -169,16 +204,27 @@ export const useWidgetConfig = ({
         HiddenUI.WalletMenu,
       ],
       appearance: widgetTheme.config.appearance,
-      theme: mergedWidgetTheme,
+      theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      languageResources: {
+        en: {
+          warning: {
+            message: {
+              lowAddressActivity:
+                "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
+            },
+          },
+        },
+      },
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
+          allowSwitchChain:
+            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig or smart account wallets
         },
         providers:
           isMultisigSigner && isIframeEnvironment()
@@ -207,12 +253,12 @@ export const useWidgetConfig = ({
       tokens: tokens,
     };
   }, [
-    configTheme.fromChain,
-    configTheme.fromToken,
-    configTheme.toChain,
-    configTheme.toToken,
+    configTheme?.fromChain,
+    configTheme?.fromToken,
+    configTheme?.toChain,
+    configTheme?.toToken,
     configTheme.variant,
-    configTheme.chains,
+    configTheme?.chains,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
     fromChain,
@@ -223,16 +269,17 @@ export const useWidgetConfig = ({
     toToken,
     fromAmount,
     memeListTokens,
-    widgetTheme.config.theme,
-    widgetTheme.config.appearance,
-    customWidgetTheme,
     starterVariant,
     partnerName,
     openWalletMenu,
+    allowToChains,
+    account?.connector?.name,
     allowChains,
     allowedChainsByVariant,
     i18n.language,
     i18n.languages,
+    widgetTheme.config.appearance,
+    widgetTheme.config.theme,
     multisigWidget,
     isMultisigSigner,
     multisigSdkConfig,
