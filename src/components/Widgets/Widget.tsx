@@ -68,7 +68,7 @@ export function Widget({
   const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  // const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
@@ -295,7 +295,7 @@ export function Widget({
 
   return (
     <WidgetWrapper
-      ref={wrapperRef}
+      // ref={wrapperRef}
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
