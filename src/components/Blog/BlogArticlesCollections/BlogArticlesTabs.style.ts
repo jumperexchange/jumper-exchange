@@ -1,9 +1,8 @@
 import type { Breakpoint } from '@mui/material';
-import { Grid } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
-export const ArticlesGrid = styled(Grid)(({ theme }) => ({
+export const ArticlesGrid = styled('div')(({ theme }) => ({
   margin: theme.spacing(2, 'auto'),
   display: 'grid',
   paddingBottom: 0,

@@ -1,10 +1,9 @@
-import type { Breakpoint } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Box, type Breakpoint } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 
-export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
+export const BlogArticlesCollectionsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.text.primary,
   textDecoration: 'unset',
