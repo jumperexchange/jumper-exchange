@@ -27,6 +27,10 @@ export async function checkIfBestReturnLabelIsVisible(page) {
   );
   await expect(bestReturnLabel).toBeVisible();
 }
+export async function navigateToTab(page, tabKey, expectedText) {
+  await page.locator(`#tab-key-${tabKey}`).click();
+  await expect(page.locator(`xpath=//p[text()="${expectedText}"]`)).toBeVisible();
+}
 
 export function buildUlParams(data: {
   amount: string;

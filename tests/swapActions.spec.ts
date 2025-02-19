@@ -4,7 +4,7 @@ import {
   buildUlParams,
   checkIfBestReturnLabelIsVisible,
   closeWelcomeScreen,
-} from './testData/commonFunctions';
+} from './testData/landingPageFunctions';
 
 test.describe('On chain swaps', () => {
   test.beforeEach(async ({ page }) => {
