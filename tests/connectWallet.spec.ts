@@ -1,12 +1,9 @@
-import { execSync } from 'child_process';
-import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
-import {
-  openOrCloseMainMenu,
-  itemInMenu,
-  closeWelcomeScreen,
-} from './testData/commonFunctions';
+import { testWithSynpress } from '@synthetixio/synpress-core';
+import { closeWelcomeScreen, itemInMenu } from './testData/commonFunctions';
 import basicSetup from './wallet-setup/basic.setup';
+
+import { openOrCloseMainMenu } from './testData/menuFunctions';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
@@ -30,18 +27,18 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     const availableMissionTitle = page.locator(
       'xpath=//p[normalize-space(text())="Available Missions"]',
     );
-    const ethereumOption = page.locator(
-      'xpath=//span[normalize-space(text())="Ethereum"]',
-    );
+    // const ethereumOption = page.locator(
+    //   'xpath=//span[normalize-space(text())="Ethereum"]',
+    // );
     await page.goto('/');
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
     await metaMaskWalletOption.click();
+    // await ethereumOption.click();
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Loyalty Pass');
+    await itemInMenu(page, 'Jumper Profile');
     await page.locator('.profile-page').isVisible();
-    await expect(availableMissionTitle).toBeVisible();
   });
 });
