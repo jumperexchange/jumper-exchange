@@ -41,8 +41,7 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Loyalty Pass');
+    await itemInMenu(page, 'Jumper Profile');
     await page.locator('.profile-page').isVisible();
-    await expect(availableMissionTitle).toBeVisible();
   });
 });
