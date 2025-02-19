@@ -9,7 +9,7 @@ import { ButtonPrimary } from '../Button';
 
 export const DEFAULT_WELCOME_SCREEN_HEIGHT = '50vh';
 
-export interface ContentWrapperProps extends Omit<BoxProps, 'component'> {
+export interface ContentWrapperProps extends BoxProps {
   showWelcome?: boolean;
 }
 
@@ -35,7 +35,7 @@ export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
   },
 }));
 
-export const WelcomeContent = styled(Box)<BoxProps>(({ theme }) => ({
+export const WelcomeContent = styled(Box)(() => ({
   minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
 }));
 

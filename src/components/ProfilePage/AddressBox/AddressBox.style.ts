@@ -1,7 +1,7 @@
-import type { BoxProps, IconButtonProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import { Box, IconButton, alpha, styled } from '@mui/material';
 
-export interface AddressBoxContainerProps extends Omit<BoxProps, 'component'> {
+export interface AddressBoxContainerProps extends BoxProps {
   imgUrl?: string;
 }
 
@@ -72,21 +72,19 @@ export const AddressBoxContainer = styled(Box, {
   ],
 }));
 
-export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
-  ({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[200]
-        : alpha(theme.palette.grey[200], 0.08),
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.grey[100],
-    width: '32px',
-    height: '32px',
-    marginLeft: theme.spacing(1),
-  }),
-);
+export const ProfileIconButton = styled(IconButton)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.grey[200]
+      : alpha(theme.palette.grey[200], 0.08),
+  color:
+    theme.palette.mode === 'light'
+      ? theme.palette.black.main
+      : theme.palette.grey[100],
+  width: '32px',
+  height: '32px',
+  marginLeft: theme.spacing(1),
+}));
 
 export const AddressDisplayBox = styled(Box)(({ theme }) => ({
   display: 'flex',

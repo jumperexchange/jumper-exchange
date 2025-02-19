@@ -1,10 +1,5 @@
 'use client';
-import type {
-  AppBarProps,
-  BoxProps,
-  Breakpoint,
-  GridProps,
-} from '@mui/material';
+import type { Breakpoint, GridProps } from '@mui/material';
 import {
   AppBar,
   Avatar,
@@ -16,11 +11,7 @@ import {
 
 import { alpha, styled } from '@mui/material/styles';
 
-export interface ModalContainerProps extends Omit<BoxProps, 'component'> {
-  component?: string;
-}
-
-export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
+export const ModalContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -56,38 +47,32 @@ export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
   },
 }));
 
-export interface ModalHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
-  component?: string;
-}
-
-export const ModalHeaderAppBar = styled(AppBar)<ModalHeaderAppBarProps>(
-  ({ theme }) => ({
-    zIndex: 1500,
-    left: 'initial',
-    right: 'initial',
-    position: 'sticky',
-    color: theme.palette.text.primary,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    minHeight: 48,
-    top: 0,
-    padding: theme.spacing(1.5, 3),
+export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
+  zIndex: 1500,
+  left: 'initial',
+  right: 'initial',
+  position: 'sticky',
+  color: theme.palette.text.primary,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  minHeight: 48,
+  top: 0,
+  padding: theme.spacing(1.5, 3),
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? alpha(theme.palette.surface1.main, 0.84)
+      : alpha(theme.palette.surface2.main, 0.2),
+  backdropFilter: 'blur(12px)',
+  boxShadow: 'unset',
+  backgroundImage: 'unset',
+  '@supports ( -moz-appearance:none )': {
     backgroundColor:
       theme.palette.mode === 'light'
-        ? alpha(theme.palette.surface1.main, 0.84)
-        : alpha(theme.palette.surface2.main, 0.2),
-    backdropFilter: 'blur(12px)',
-    boxShadow: 'unset',
-    backgroundImage: 'unset',
-    '@supports ( -moz-appearance:none )': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? theme.palette.surface1.main
-          : theme.palette.surface2.main,
-    },
-  }),
-);
+        ? theme.palette.surface1.main
+        : theme.palette.surface2.main,
+  },
+}));
 
 export const ModalHeader = styled(Box)(() => ({
   display: 'flex',

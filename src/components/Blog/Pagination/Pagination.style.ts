@@ -21,8 +21,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-export interface PaginationIndexButtonProps
-  extends Omit<IconButtonProps, 'isDarkMode' | 'isWide' | 'component'> {
+export interface PaginationIndexButtonProps extends IconButtonProps {
   active: boolean;
 }
 

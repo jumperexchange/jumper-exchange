@@ -1,4 +1,4 @@
-import type { Breakpoint, SkeletonProps, TypographyProps } from '@mui/material';
+import type { Breakpoint, TypographyProps } from '@mui/material';
 import {
   Box,
   Container,
@@ -232,26 +232,22 @@ export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BlogArticleTitleSkeleton = styled(Skeleton)<SkeletonProps>(
-  ({ theme }) => ({
-    marginTop: theme.spacing(4),
-    transform: 'unset',
-    borderRadius: 16,
-    height: 320,
-    width: '100%',
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: '192px',
-      marginTop: theme.spacing(8),
-    },
-    [theme.breakpoints.up('md' as Breakpoint)]: {
-      height: 144,
-    },
-  }),
-);
+export const BlogArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  transform: 'unset',
+  borderRadius: 16,
+  height: 320,
+  width: '100%',
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    height: '192px',
+    marginTop: theme.spacing(8),
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    height: 144,
+  },
+}));
 
-export const BlogArticleSubtitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'variant',
-})<TypographyProps>(({ theme }) => ({
+export const BlogArticleSubtitle = styled(Typography)(({ theme }) => ({
   color: alpha(theme.palette.text.primary, 0.88),
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(6),
@@ -261,21 +257,19 @@ export const BlogArticleSubtitle = styled(Typography, {
   lineHeight: '40px',
 }));
 
-export const BlogArticleSubtitleSkeleton = styled(Skeleton)<SkeletonProps>(
-  ({ theme }) => ({
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(6),
-    transform: 'unset',
-    width: '100%',
-    height: 300,
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      height: 190,
-    },
-    [theme.breakpoints.up('lg' as Breakpoint)]: {
-      height: 114,
-    },
-  }),
-);
+export const BlogArticleSubtitleSkeleton = styled(Skeleton)(({ theme }) => ({
+  marginTop: theme.spacing(8),
+  marginBottom: theme.spacing(6),
+  transform: 'unset',
+  width: '100%',
+  height: 300,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    height: 190,
+  },
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
+    height: 114,
+  },
+}));
 
 export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
@@ -290,13 +284,11 @@ export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
   }),
 );
 
-export const BlogArticlAuthorNameSkeleton = styled(Skeleton)<SkeletonProps>(
-  ({ theme }) => ({
-    width: 142,
-    height: 28,
-    transform: 'unset',
-  }),
-);
+export const BlogArticlAuthorNameSkeleton = styled(Skeleton)(({ theme }) => ({
+  width: 142,
+  height: 28,
+  transform: 'unset',
+}));
 
 export const BlogArticlAuthorRole = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
@@ -307,14 +299,12 @@ export const BlogArticlAuthorRole = styled(Typography)<TypographyProps>(
   }),
 );
 
-export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)<SkeletonProps>(
-  ({ theme }) => ({
-    width: 220,
-    height: 20,
-    marginTop: theme.spacing(0.5),
-    transform: 'unset',
-  }),
-);
+export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)(({ theme }) => ({
+  width: 220,
+  height: 20,
+  marginTop: theme.spacing(0.5),
+  transform: 'unset',
+}));
 
 export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
   margin: theme.spacing(2, 0),
