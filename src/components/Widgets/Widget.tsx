@@ -47,6 +47,7 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
   autoHeight,
+  hiddenUI,
 }: WidgetProps) {
   const [widgetTheme, configTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -203,6 +204,7 @@ export function Widget({
         allow: i18n.languages as LanguageKey[],
       },
       hiddenUI: [
+        ...(configTheme?.hiddenUI || hiddenUI || []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
@@ -262,10 +264,10 @@ export function Widget({
     configTheme?.fromToken,
     configTheme?.toChain,
     configTheme?.toToken,
-    configTheme.variant,
     configTheme?.chains,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
+    configTheme?.hiddenUI,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
@@ -283,6 +285,7 @@ export function Widget({
     allowedChainsByVariant,
     i18n.language,
     i18n.languages,
+    hiddenUI,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     multisigWidget,
