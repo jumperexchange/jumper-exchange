@@ -3,8 +3,7 @@ import { Widget } from '@/components/Widgets/Widget';
 import { Container } from '@mui/material';
 import { WidgetContainer, Widgets } from 'src/components/Widgets';
 
-// additional widget-config setting via partner-theme
-// --> hiddenUI={[HiddenUI.ToAddress]}
+// custom widget-config setting via partner-theme
 
 export default function Page() {
   return (

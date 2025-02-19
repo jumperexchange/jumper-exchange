@@ -2,7 +2,6 @@
 import type { StarterVariantType } from '@/types/internal';
 import type { ThemeMode } from '@/types/theme';
 import { ChainId } from '@lifi/sdk';
-import type { HiddenUIType } from '@lifi/widget';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
 export const refuelAllowChains: ChainId[] = [
@@ -37,5 +36,4 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   activeThemeMode?: ThemeMode;
   activeTheme?: string;
   autoHeight?: boolean;
-  hiddenUI?: HiddenUIType[];
 }
