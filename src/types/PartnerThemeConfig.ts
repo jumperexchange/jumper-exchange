@@ -24,6 +24,7 @@ export interface PartnerThemeConfig {
   toChain?: ChainId;
   chains?: WidgetChains;
   variant?: WidgetVariant;
+  hiddentUI?: string[];
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;
