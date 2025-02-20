@@ -6,15 +6,16 @@ export async function itemInSettingsMenu(page, selector: string) {
     .click();
 }
 
-export async function itemInSettingsMenuToBeVisible(page, selector: string) {
-  const itemName = await page.locator(
-    `xpath=//button[normalize-space(text())="${selector}"]`,
-  );
-  expect(itemName).toBeVisible();
-}
-export async function itemInSettingsMenuToBeEnabled(page, selector: string) {
+export async function checkItemInSettingsMenu(page, selector: string, options: { visible?: boolean, enabled?: boolean } = {}) {
   const item = await page.locator(
     `xpath=//button[normalize-space(text())="${selector}"]`,
   );
-  expect(item).toBeEnabled();
+
+  if (options.visible) {
+    await expect(item).toBeVisible();
+  }
+
+  if (options.enabled) {
+    await expect(item).toBeEnabled();
+  }
 }

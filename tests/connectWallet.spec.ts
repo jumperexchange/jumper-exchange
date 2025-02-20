@@ -3,7 +3,7 @@ import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import {
   itemInMenu,
   closeWelcomeScreen,
-} from './testData/commonFunctions';
+} from './testData/landingPageFunctions';
 import basicSetup from './wallet-setup/basic.setup';
 
 import { openOrCloseMainMenu } from './testData/menuFunctions';

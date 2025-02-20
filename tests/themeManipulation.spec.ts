@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 import {
   closeWelcomeScreen,
-} from './testData/commonFunctions';
+} from './testData/landingPageFunctions';
 
 import { expectBackgroundColorToHaveCss } from './testData/menuFunctions'
 
