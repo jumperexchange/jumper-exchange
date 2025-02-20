@@ -4,13 +4,11 @@ import {
   navigateToTab,
 } from './testData/landingPageFunctions';
 
-
 test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await closeWelcomeScreen(page);
   });
-
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
     await navigateToTab(page, 1, 'Gas');

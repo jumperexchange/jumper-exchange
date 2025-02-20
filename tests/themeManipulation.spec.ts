@@ -1,9 +1,7 @@
 import { test } from '@playwright/test';
-import {
-  closeWelcomeScreen,
-} from './testData/landingPageFunctions';
+import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
-import { expectBackgroundColorToHaveCss } from './testData/menuFunctions'
+import { expectBackgroundColorToHaveCss } from './testData/menuFunctions';
 
 test.describe('Switch between dark and light theme and check the background color', () => {
   test.beforeEach(async ({ page }) => {

@@ -6,7 +6,11 @@ export async function itemInSettingsMenu(page, selector: string) {
     .click();
 }
 
-export async function checkItemInSettingsMenu(page, selector: string, options: { visible?: boolean, enabled?: boolean } = {}) {
+export async function checkItemInSettingsMenu(
+  page,
+  selector: string,
+  options: { visible?: boolean; enabled?: boolean } = {},
+) {
   const item = await page.locator(
     `xpath=//button[normalize-space(text())="${selector}"]`,
   );
