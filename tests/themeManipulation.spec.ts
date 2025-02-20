@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { closeWelcomeScreen } from './testData/commonFunctions';
+import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
 import { expectBackgroundColorToHaveCss } from './testData/menuFunctions';
 

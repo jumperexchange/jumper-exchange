@@ -1,6 +1,9 @@
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import { testWithSynpress } from '@synthetixio/synpress-core';
-import { closeWelcomeScreen, itemInMenu } from './testData/commonFunctions';
+import {
+  closeWelcomeScreen,
+  itemInMenu,
+} from './testData/landingPageFunctions';
 import basicSetup from './wallet-setup/basic.setup';
 
 import { openOrCloseMainMenu } from './testData/menuFunctions';

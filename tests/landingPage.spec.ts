@@ -1,17 +1,18 @@
 import { expect, test } from '@playwright/test';
-import { closeWelcomeScreen } from './testData/commonFunctions';
+import {
+  closeWelcomeScreen,
+  navigateToTab,
+} from './testData/landingPageFunctions';
 
-test.describe('Jumper full e2e flow', () => {
+test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await closeWelcomeScreen(page);
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
-    await page.locator('#tab-key-1').click();
-    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await page.locator('#tab-key-0').click();
-    await expect(page.locator('xpath=//p[text()="Exchange"]')).toBeVisible();
+    await navigateToTab(page, 1, 'Gas');
+    await navigateToTab(page, 0, 'Exchange');
   });
 
   test('Should show again welcome screen when clicking jumper logo', async ({
