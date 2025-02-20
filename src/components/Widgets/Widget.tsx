@@ -202,7 +202,7 @@ export function Widget({
         default: i18n.language as LanguageKey,
         allow: i18n.languages as LanguageKey[],
       },
-      hiddenUI: [
+      hiddenUI: configTheme?.hiddentUI ?? [
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,

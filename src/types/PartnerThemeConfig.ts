@@ -24,6 +24,18 @@ export interface PartnerThemeConfig {
   toChain?: ChainId;
   chains?: WidgetChains;
   variant?: WidgetVariant;
+  hiddentUI?: (
+    | 'appearance'
+    | 'toToken'
+    | 'toAddress'
+    | 'poweredBy'
+    | 'language'
+    | 'walletMenu'
+    | 'drawerCloseButton'
+    | 'history'
+    | 'integratorStepDetails'
+    | 'reverseTokensButton'
+  )[];
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;

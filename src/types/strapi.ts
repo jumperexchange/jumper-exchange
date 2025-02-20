@@ -238,8 +238,8 @@ export interface Customization {
   hasBlurredNavigation?: boolean;
 }
 
-type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
-  Partial<Pick<WidgetConfig, 'integrator'>>;
+type WidgetConfigProps = Omit<WidgetConfig, 'integrator' | 'hiddenUI'> &
+  Partial<Pick<WidgetConfig, 'integrator' | 'hiddenUI'>>;
 
 export interface PartnerTheme {
   config: WidgetConfigProps;
