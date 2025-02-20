@@ -141,7 +141,7 @@ export function Widget({
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const subvariant = useMemo(() => {
-    if (isABTestEnabled) {
+    if (isABTestEnabled && starterVariant !== TabsMap.Refuel.variant) {
       return 'split';
     } else if (
       starterVariant === 'buy' ||
