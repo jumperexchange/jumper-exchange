@@ -1,7 +1,7 @@
 'use client';
 
 import type { LevelData } from '@/types/loyaltyPass';
-import { CardContainer } from '../LeaderboardCard/LeaderboardCard.style';
+import { CardContainer } from '../ProfilePage.style';
 import { LevelBox } from './LevelBox';
 import { PointsBox } from './PointsBox';
 import { ProgressionBar } from './ProgressionBar';
