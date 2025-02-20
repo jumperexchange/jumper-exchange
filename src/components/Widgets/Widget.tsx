@@ -26,10 +26,10 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { useABTest } from 'src/hooks/useABTest';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
@@ -56,6 +56,7 @@ export function Widget({
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { abtests } = useABTestStore();
   const { account } = useAccount();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
@@ -70,11 +71,6 @@ export function Widget({
 
   const router = useRouter();
   // const wrapperRef = useRef<HTMLDivElement>(null);
-
-  const { isEnabled: isABTestEnabled } = useABTest({
-    feature: 'test_widget_subvariants',
-    user: account?.address || '',
-  });
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
@@ -141,7 +137,11 @@ export function Widget({
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const subvariant = useMemo(() => {
-    if (isABTestEnabled && starterVariant !== TabsMap.Refuel.variant) {
+    if (
+      'test_widget_subvariants' in abtests &&
+      abtests['test_widget_subvariants'] &&
+      starterVariant !== TabsMap.Refuel.variant
+    ) {
       return 'split';
     } else if (
       starterVariant === 'buy' ||
@@ -150,7 +150,7 @@ export function Widget({
       return 'default';
     }
     return starterVariant;
-  }, [isABTestEnabled, partnerName, starterVariant]);
+  }, [abtests, partnerName, starterVariant]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -290,7 +290,7 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
-    partnerName,
+    subvariant,
     openWalletMenu,
     allowToChains,
     account?.connector?.name,
