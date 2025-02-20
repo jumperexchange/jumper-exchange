@@ -26,6 +26,7 @@ interface JumperDataTrackEventProps {
   walletAddress?: string;
   walletProvider?: string;
   referrer?: string;
+  abtests?: { [key: string]: boolean }; // Add this line
 }
 
 const track = async (data: object, path: string) => {
@@ -48,6 +49,7 @@ const track = async (data: object, path: string) => {
     Sentry.captureException(error);
   }
 };
+
 export interface JumperDataTrackTransactionProps {
   action: string;
   browserFingerprint: string;
@@ -77,6 +79,7 @@ export interface JumperDataTrackTransactionProps {
   walletAddress?: string;
   walletProvider?: string;
   referrer?: string;
+  abtests?: { [key: string]: boolean };
 }
 
 export const useJumperTracking = () => {
@@ -96,6 +99,7 @@ export const useJumperTracking = () => {
         walletAddress: data.walletAddress,
         walletProvider: data.walletProvider,
         referrer: data.referrer,
+        abtests: data.abtests,
       },
       JUMPER_ANALYTICS_EVENT,
     );
@@ -131,6 +135,7 @@ export const useJumperTracking = () => {
       walletProvider: data.walletProvider,
       walletAddress: data.walletAddress,
       referrer: data.referrer,
+      abtests: data.abtests,
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };

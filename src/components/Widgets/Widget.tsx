@@ -29,6 +29,7 @@ import {
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
@@ -55,6 +56,7 @@ export function Widget({
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { abtests } = useABTestStore();
   const { account } = useAccount();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
@@ -134,6 +136,22 @@ export function Widget({
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
+  const subvariant = useMemo(() => {
+    if (
+      'test_widget_subvariants' in abtests &&
+      abtests['test_widget_subvariants'] &&
+      starterVariant !== TabsMap.Refuel.variant
+    ) {
+      return 'split';
+    } else if (
+      starterVariant === 'buy' ||
+      partnerName === ThemesMap.Memecoins
+    ) {
+      return 'default';
+    }
+    return starterVariant;
+  }, [abtests, partnerName, starterVariant]);
+
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
     let rpcUrls = {};
@@ -176,11 +194,7 @@ export function Widget({
           : starterVariant === 'refuel'
             ? 'compact'
             : 'wide',
-      subvariant:
-        (starterVariant !== 'buy' &&
-          !(partnerName === ThemesMap.Memecoins) &&
-          starterVariant) ||
-        'default',
+      subvariant,
       walletConfig: {
         onConnect: openWalletMenu,
       },
@@ -276,7 +290,7 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
-    partnerName,
+    subvariant,
     openWalletMenu,
     allowToChains,
     account?.connector?.name,
