@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { useChains } from './useChains';
 
-export const useActiveAccount = () => {
+export const useActiveAccountByChainType = () => {
   const { accounts } = useAccount();
   const { sourceChainToken } = useChainTokenSelectionStore();
   const { getChainById } = useChains();
