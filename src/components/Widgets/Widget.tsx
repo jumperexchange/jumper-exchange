@@ -34,6 +34,7 @@ import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
+import getApiUrl from '@/utils/getApiUrl';
 
 export function Widget({
   starterVariant,
@@ -203,6 +204,7 @@ export function Widget({
         allow: i18n.languages as LanguageKey[],
       },
       hiddenUI: [
+        ...(configTheme?.hiddenUI ?? []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
@@ -224,7 +226,7 @@ export function Widget({
         },
       },
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
@@ -262,10 +264,10 @@ export function Widget({
     configTheme?.fromToken,
     configTheme?.toChain,
     configTheme?.toToken,
-    configTheme.variant,
     configTheme?.chains,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
+    configTheme?.hiddenUI,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
