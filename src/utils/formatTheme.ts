@@ -99,6 +99,8 @@ export function formatConfig(
       (theme.lightConfig || theme.darkConfig)?.config?.toToken ?? undefined,
     fromToken:
       (theme.lightConfig || theme.darkConfig)?.config?.fromToken ?? undefined,
+    hiddenUI:
+      (theme.lightConfig || theme.darkConfig)?.config?.hiddenUI ?? undefined,
     variant:
       (theme.lightConfig || theme.darkConfig)?.config?.variant ?? undefined,
     chains:
