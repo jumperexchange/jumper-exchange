@@ -34,6 +34,7 @@ import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
+import getApiUrl from '@/utils/getApiUrl';
 
 export function Widget({
   starterVariant,
@@ -225,7 +226,7 @@ export function Widget({
         },
       },
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
