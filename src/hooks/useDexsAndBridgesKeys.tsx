@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import getApiUrl from '@/utils/getApiUrl';
 
 export const useDexsAndBridgesKeys = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['tools'],
     queryFn: async () => {
-      const apiUrl = process.env.NEXT_PUBLIC_LIFI_API_URL;
+      const apiUrl = getApiUrl();
       const response = await fetch(`${apiUrl}/tools`);
       const result = await response.json();
       return result;

@@ -26,6 +26,7 @@ import { useConfig } from 'wagmi';
 import { useMemelist } from './useMemelist';
 import { useMultisig } from './useMultisig';
 import { useUserTracking } from './userTracking';
+import getApiUrl from '@/utils/getApiUrl';
 
 interface UseWidgetConfigProps {
   fromChain?: ChainId;
@@ -174,7 +175,7 @@ export const useWidgetConfig = ({
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
