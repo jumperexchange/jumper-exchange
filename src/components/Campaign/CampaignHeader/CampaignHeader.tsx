@@ -54,7 +54,7 @@ export const CampaignHeader = ({
           />
           <VerticalCenterBox>
             <CampaignTitle>Explore Berachain</CampaignTitle>
-            <CampaignDescription>{`Jumper is teaming up with the top tier Berachain protocols to bring you an exciting competition with $100k in rewards.`}</CampaignDescription>
+            <CampaignDescription>{`Jumper is teaming up with the top tier Berachain protocols to bring you exciting rewards.`}</CampaignDescription>
             <Box display="flex" gap="8px">
               {Xlink && (
                 <InformationShareLink

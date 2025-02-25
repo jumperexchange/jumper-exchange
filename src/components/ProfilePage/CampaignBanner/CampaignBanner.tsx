@@ -23,7 +23,7 @@ export const CampaignBanner = () => {
     >
       <CampaignBox>
         <Image
-          src={`https://strapi.jumper.exchange/uploads/banner_602bc774b0.jpg`}
+          src={`https://strapi.jumper.exchange/uploads/Berachain_V1_a7ef8c5f9f.jpg`}
           alt={'top banner'}
           width={isMobile ? 320 : 640}
           height={isMobile ? 160 : 320}
@@ -31,6 +31,7 @@ export const CampaignBanner = () => {
         />
         <CampaignInformation
           tag={'Protocols'}
+          title={'Discover Protocols'}
           description={`Jumper is joining forces with elite Berachain protocols—The Honey Jar, Stakestone, Infrared, Beraborrow, and BurrBear—to find out which community reigns supreme and to give you a shot at winning $100k in rewards!`}
         />
       </CampaignBox>

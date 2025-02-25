@@ -20,9 +20,11 @@ import {
 
 export const CampaignInformation = ({
   tag,
+  title,
   description,
 }: {
   tag: string;
+  title: string;
   description: string;
 }) => {
   const { trackEvent } = useUserTracking();
@@ -47,7 +49,7 @@ export const CampaignInformation = ({
         </CampaignTagBox>
       )}
       <TextDescriptionBox>
-        <TitleTypography>Berachain Ecosystem</TitleTypography>
+        <TitleTypography>{title}</TitleTypography>
         <SubtitleTypography>{description}</SubtitleTypography>
       </TextDescriptionBox>
 
