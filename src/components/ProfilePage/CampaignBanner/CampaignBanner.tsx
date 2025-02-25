@@ -12,7 +12,7 @@ export const CampaignBanner = () => {
 
   return (
     <a
-      href={`${process.env.NEXT_PUBLIC_SITE_URL}/campaign/lisk`}
+      href={`${process.env.NEXT_PUBLIC_SITE_URL}/campaign/berachain`}
       style={{
         textDecoration: 'none',
         color: 'inherit',
@@ -30,10 +30,8 @@ export const CampaignBanner = () => {
           style={{ objectFit: 'contain', borderRadius: '16px' }}
         />
         <CampaignInformation
-          tag={'New Ecosystem'}
-          description={`Lisk was an OG Layer 1 since 2016, it became a prominent L2 in the Superchain Ecosystem recently.
-Jumper is giving you the perfect occasion to explore Lisk:
-$180,000 rewards will be distributed in the span of three weeks through 3 Lil Pudgies in raffles and double-digit yield boosts on major Lisk protocols (Velodrome, Beefy, Ionic).`}
+          tag={'Protocols'}
+          description={`Jumper is joining forces with elite Berachain protocols—The Honey Jar, Stakestone, Infrared, Beraborrow, and BurrBear—to find out which community reigns supreme and to give you a shot at winning $100k in rewards!`}
         />
       </CampaignBox>
     </a>

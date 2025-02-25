@@ -40,6 +40,7 @@ export const VerticalCenterBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  marginLeft: theme.spacing(2),
 }));
 
 export const CampaignTitle = styled(Typography)(({ theme }) => ({
@@ -54,6 +55,20 @@ export const CampaignTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
+export const CampaignDescription = styled(Typography)(({ theme }) => ({
+  color: alpha(theme.palette.text.primary, 0.48),
+  marginTop: theme.spacing(0.5),
+  fontWeight: 500,
+  fontSize: 24,
+
+  [theme.breakpoints.down('md' as Breakpoint)]: {
+    fontSize: 16,
+  },
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    fontSize: 24,
+  },
+}));
+
 export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
   color: theme.palette.white.main,
   fontWeight: 700,
@@ -61,7 +76,7 @@ export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
 
 export const CampaignDigitInfoBox = styled(Box)(({ theme }) => ({
   width: '216px',
-  backgroundColor: '#43CE8740',
+  backgroundColor: '#E86F20CC',
   boxShadow: '0 4px 6px #00000020',
   borderRadius: theme.spacing(2),
   paddingLeft: theme.spacing(3),

@@ -47,7 +47,7 @@ export const CampaignInformation = ({
         </CampaignTagBox>
       )}
       <TextDescriptionBox>
-        <TitleTypography>Explore Lisk</TitleTypography>
+        <TitleTypography>Berachain Ecosystem</TitleTypography>
         <SubtitleTypography>{description}</SubtitleTypography>
       </TextDescriptionBox>
 
@@ -58,10 +58,10 @@ export const CampaignInformation = ({
             action: TrackingAction.ClickCampaignBanner,
             label: 'click-campaign-banner',
             data: {
-              [TrackingEventParameter.ActiveCampaignBanner]: 'lisk',
+              [TrackingEventParameter.ActiveCampaignBanner]: 'berachain',
             },
           });
-          router.push(`${JUMPER_CAMPAIGN_PATH}/lisk`);
+          router.push(`${JUMPER_CAMPAIGN_PATH}/berachain`);
         }}
         fullWidth={true}
       >
