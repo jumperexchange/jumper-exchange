@@ -51,7 +51,9 @@ export const CampaignPage = ({
         tokenImage={
           'https://strapi.jumper.exchange/uploads/Np_M0_F_Gcg_EMJCIT_Nnh_M_Fnl5_Ul8_f69135f4bf.avif'
         }
-        websiteLink={'https://ecosystem.berachain.com/'}
+        websiteLink={
+          'https://lifi.notion.site/Jumper-x-Berachain-Campaign-rules-1a5f0ff14ac7806dbb93c58165d9252e'
+        }
         Xlink={''}
       />
       <QuestsOverview pastCampaigns={[]} label={label} />
