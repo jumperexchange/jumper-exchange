@@ -42,7 +42,9 @@ export const dynamic = 'force-dynamic';
 export async function generateStaticParams() {
   const { chains } = await getChainsQuery();
 
-  return chains.map((chain) => ({ segments: chain.name.replace(' ', '-').toLowerCase() }));
+  return chains.map((chain) => ({
+    segments: chain.name.replace(' ', '-').toLowerCase(),
+  }));
 }
 
 export default async function Page({

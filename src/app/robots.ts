@@ -15,6 +15,9 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       ...(isProduction && { allow: '/' }),
       ...(!isProduction && { disallow: '/' }),
     },
-    sitemap: [`${getSiteUrl()}/sitemap.xml`].concat(bridgeSitemaps, `${getSiteUrl()}/en/swap/sitemap.xml`),
+    sitemap: [`${getSiteUrl()}/sitemap.xml`].concat(
+      bridgeSitemaps,
+      `${getSiteUrl()}/en/swap/sitemap.xml`,
+    ),
   };
 }
