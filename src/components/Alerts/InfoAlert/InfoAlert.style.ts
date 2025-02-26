@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Box } from '@mui/material';
 
 import { darken, lighten, styled } from '@mui/material/styles';
@@ -7,7 +7,7 @@ import { IconButtonAlpha } from 'src/components/IconButton';
 import { getContrastAlphaColor } from 'src/utils/colors';
 import { InfoMessageCard } from '../../MessageCard';
 
-export const InfoAlertContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const InfoAlertContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   width: '100%',
   flexDirection: 'row',

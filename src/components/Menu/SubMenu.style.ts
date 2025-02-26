@@ -3,12 +3,10 @@ import type { Breakpoint, TypographyProps } from '@mui/material';
 import { Typography } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import type { ElementType } from 'react';
 
-export interface SubMenuLabelProps extends Omit<TypographyProps, 'component'> {
+export interface SubMenuLabelProps extends TypographyProps {
   isPrefixIcon?: boolean;
   isSuffixIcon?: boolean;
-  component?: ElementType;
 }
 
 export const SubMenuLabel = styled(Typography, {
