@@ -25,12 +25,15 @@ export async function trackSpindl(
   };
 
   try {
+    if (!(spindlConfig?.apiUrl && spindlConfig?.headers)) {
+      return;
+    }
     await callRequest({
       method: 'POST',
       path: SPINDLE_TRACKING_PATH,
-      apiUrl: spindlConfig.apiUrl,
+      apiUrl: spindlConfig?.apiUrl,
       body: payload,
-      headers: spindlConfig.headers,
+      headers: spindlConfig?.headers,
     });
   } catch (error) {
     console.error('Error tracking Spindl impression:', error);
