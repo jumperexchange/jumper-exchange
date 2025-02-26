@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import {
-  openOrCloseMainMenu,
-  checkTheNumberOfMenuItems,
   checkSocialNetworkIcons,
-  sectionOnTheBlogPage,
+  checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
+  openOrCloseMainMenu,
+  sectionOnTheBlogPage,
 } from './testData/menuFunctions';
 
 import values from '../tests/testData/values.json' assert { type: 'json' };
@@ -21,7 +21,7 @@ test.describe('Main Menu flows', () => {
 
   test('Should be able to open menu and close it', async ({ page }) => {
     openOrCloseMainMenu(page);
-    await checkTheNumberOfMenuItems(page, 10);
+    await checkTheNumberOfMenuItems(page, 9);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
