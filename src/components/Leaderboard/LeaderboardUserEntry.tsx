@@ -5,7 +5,13 @@ import { useLeaderboardUser } from '../../hooks/useLeaderboard';
 import { LeaderboardEntry } from './LeaderboardEntry';
 import { LeaderboardUserEntryBox } from './LeaderboardUserEntry.style';
 
-export const LeaderboardUserEntry = () => {
+export const LeaderboardUserEntry = ({
+  hideRank,
+  loadingLabel,
+}: {
+  hideRank?: boolean;
+  loadingLabel?: string;
+}) => {
   const { account } = useAccount();
   const { data: leaderboardUserData } = useLeaderboardUser(account?.address);
   const { points } = useLoyaltyPass(account?.address);
@@ -15,6 +21,8 @@ export const LeaderboardUserEntry = () => {
     return (
       <LeaderboardEntry
         isUserEntry={true}
+        loadingLabel={loadingLabel}
+        hideRank={hideRank}
         isUserConnected={!!account.address}
         position={parseInt(leaderboardUserData?.position)}
         points={points || 0}
@@ -27,6 +35,7 @@ export const LeaderboardUserEntry = () => {
       href={`/leaderboard?page=${leaderboardUserData.userPage}`}
     >
       <LeaderboardEntry
+        hideRank={hideRank}
         isUserEntry={true}
         isUserConnected={!!account.address}
         walletAddress={account?.address}

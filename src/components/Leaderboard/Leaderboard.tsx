@@ -13,7 +13,7 @@ import {
 } from '../../hooks/useLeaderboard';
 import IconHeader from '../ProfilePage/Common/IconHeader';
 import { Pagination } from '../ProfilePage/Common/Pagination';
-import { PageContainer } from '../ProfilePage/ProfilePage.style';
+import { PageContainer } from '../styles';
 import {
   LeaderboardContainer,
   LeaderboardEntryDivider,
