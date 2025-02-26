@@ -8,7 +8,6 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   const bridgeSitemaps = (await generateSitemaps()).map(
     (_, index) => `${getSiteUrl()}/en/bridge/sitemap/${index}.xml`,
   );
-
   return {
     rules: {
       userAgent: '*',
@@ -16,6 +15,6 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       ...(isProduction && { allow: '/' }),
       ...(!isProduction && { disallow: '/' }),
     },
-    sitemap: [`${getSiteUrl()}/sitemap.xml`].concat(bridgeSitemaps),
+    sitemap: [`${getSiteUrl()}/sitemap.xml`].concat(bridgeSitemaps, `${getSiteUrl()}/en/swap/sitemap.xml`),
   };
 }

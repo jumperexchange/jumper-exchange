@@ -40,7 +40,9 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  return [];
+  const { chains } = await getChainsQuery();
+
+  return chains.map((chain) => ({ segments: chain.name.replace(' ', '-').toLowerCase() }));
 }
 
 export default async function Page({
