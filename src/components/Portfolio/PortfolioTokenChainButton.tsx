@@ -11,10 +11,10 @@ import {
   Badge,
   ButtonBase,
   darken,
-  Grid,
   lighten,
   Avatar as MuiAvatar,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useMenuStore } from 'src/stores/menu';
@@ -61,8 +61,11 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         },
       })}
     >
-      <Grid container display="flex" alignItems="center">
-        <Grid item xs={2} textAlign="left">
+      <Grid
+        container
+        sx={{ display: 'flex', alignItems: 'center', width: '100%' }}
+      >
+        <Grid size={{ xs: 2 }} textAlign="left">
           <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -82,7 +85,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             </MuiAvatar>
           </Badge>
         </Grid>
-        <Grid item xs={5} textAlign="left">
+        <Grid size={{ xs: 5 }} textAlign="left">
           <TypographyPrimary
             sx={{ fontSize: '0.875rem', lineHeight: '1.125rem' }}
           >
@@ -94,7 +97,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             {token.chainName}
           </TypographySecondary>
         </Grid>
-        <Grid item xs={5} style={{ textAlign: 'right' }}>
+        <Grid size={{ xs: 5 }} style={{ textAlign: 'right' }}>
           <TypographyPrimary
             sx={{
               fontWeight: 600,
