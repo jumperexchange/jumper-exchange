@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { useABTestStore } from 'src/stores/abTests';
 
 export interface UseABTestProps {
@@ -40,17 +39,15 @@ export const useABTest = ({
         return { isEnabled: false };
       }
 
+      if (resFormatted && feature) {
+        setAbtest(feature, resFormatted.data);
+      }
+
       return {
         isEnabled: Boolean(resFormatted.data),
       };
     },
   });
-
-  useEffect(() => {
-    if (isSuccess && data && feature) {
-      setAbtest(feature, data.isEnabled);
-    }
-  }, [isSuccess, data, feature, setAbtest]);
 
   const isEnabled =
     feature in abtests ? abtests[feature] : (data?.isEnabled ?? false);
