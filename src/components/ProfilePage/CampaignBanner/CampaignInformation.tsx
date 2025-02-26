@@ -20,9 +20,11 @@ import {
 
 export const CampaignInformation = ({
   tag,
+  title,
   description,
 }: {
   tag: string;
+  title: string;
   description: string;
 }) => {
   const { trackEvent } = useUserTracking();
@@ -47,7 +49,7 @@ export const CampaignInformation = ({
         </CampaignTagBox>
       )}
       <TextDescriptionBox>
-        <TitleTypography>Explore Lisk</TitleTypography>
+        <TitleTypography>{title}</TitleTypography>
         <SubtitleTypography>{description}</SubtitleTypography>
       </TextDescriptionBox>
 
@@ -58,10 +60,10 @@ export const CampaignInformation = ({
             action: TrackingAction.ClickCampaignBanner,
             label: 'click-campaign-banner',
             data: {
-              [TrackingEventParameter.ActiveCampaignBanner]: 'lisk',
+              [TrackingEventParameter.ActiveCampaignBanner]: 'berachain',
             },
           });
-          router.push(`${JUMPER_CAMPAIGN_PATH}/lisk`);
+          router.push(`${JUMPER_CAMPAIGN_PATH}/berachain`);
         }}
         fullWidth={true}
       >

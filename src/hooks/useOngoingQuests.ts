@@ -35,7 +35,7 @@ export const useOngoingQuests = (label?: string): UseQuestsProps => {
   //filter url
   apiUrl.searchParams.set('pagination[pageSize]', '50');
   // todo: remove this line
-  apiUrl.searchParams.set('filters[Label][$ne]', 'berachain'); // not showing all the berachain markets during boyco
+  // apiUrl.searchParams.set('filters[Label][$ne]', 'berachain'); // not showing all the berachain markets during boyco
   if (label) {
     apiUrl.searchParams.set('filters[Label][$eq]', label);
   }
