@@ -109,12 +109,7 @@ export function Widget({
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
-    () =>
-      starterVariant === TabsMap.Refuel.variant
-        ? refuelAllowChains
-        : partnerName === ThemesMap.Memecoins
-          ? themeAllowChains
-          : [],
+    () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [starterVariant, partnerName],
   );
 
