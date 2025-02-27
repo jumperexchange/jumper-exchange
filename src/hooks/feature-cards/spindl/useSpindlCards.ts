@@ -30,9 +30,8 @@ export const useSpindlCards = () => {
 
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
-      if (!showSpindle) {
-        // console.log('User is not part of the Spindl A/B test group.');
-        return; // Exit early if the user is not in the A/B test group
+      if (!showSpindle || !(spindlConfig?.apiUrl && spindlConfig?.headers)) {
+        return; // Exit early if the user is not in the A/B test group or Spindl config is missing
       }
 
       const locale = getLocale().split('-');
@@ -68,8 +67,8 @@ export const useSpindlCards = () => {
     [
       fetchData,
       processSpindlData,
-      spindlConfig.apiUrl,
-      spindlConfig.headers,
+      spindlConfig?.apiUrl,
+      spindlConfig?.headers,
       showSpindle,
     ],
   );
