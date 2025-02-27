@@ -33,7 +33,7 @@ import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
+import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import getApiUrl from '@/utils/getApiUrl';
 

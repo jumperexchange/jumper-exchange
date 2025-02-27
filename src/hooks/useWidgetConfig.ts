@@ -6,7 +6,7 @@ import { deepmerge } from '@mui/utils';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { refuelAllowChains, themeAllowChains } from 'src/components/Widgets';
+import { themeAllowChains } from 'src/components/Widgets';
 import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { TabsMap } from 'src/const/tabsMap';
@@ -87,12 +87,7 @@ export const useWidgetConfig = ({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const allowedChainsByVariant = useMemo(
-    () =>
-      starterVariant === TabsMap.Refuel.variant
-        ? refuelAllowChains
-        : partnerName === ThemesMap.Memecoins
-          ? themeAllowChains
-          : [],
+    () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [starterVariant, partnerName],
   );
 
