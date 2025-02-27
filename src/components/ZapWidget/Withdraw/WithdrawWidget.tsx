@@ -1,16 +1,9 @@
-import {
-  type ContractCall,
-  type TokenAmount,
-  useFieldActions,
-} from '@lifi/widget';
-import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
-import { useEffect, useMemo } from 'react';
-import { formatUnits } from 'viem';
-import type { ProjectData } from '../ZapWidget';
-import { Breakpoint, useTheme } from '@mui/material';
-import { WithdrawWidgetBox } from './WithdrawWidget.style';
-import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
+import { type ContractCall, type TokenAmount } from '@lifi/widget';
+import { formatUnits } from 'viem';
+import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
+import type { ProjectData } from '../ZapWidget';
+import { WithdrawWidgetBox } from './WithdrawWidget.style';
 
 export interface WithdrawWidgetProps {
   token: TokenAmount;
@@ -28,8 +21,6 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   depositTokenData,
   refetchPosition,
 }) => {
-  const theme = useTheme();
-
   return (
     <WithdrawWidgetBox>
       <WidgetLikeField

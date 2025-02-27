@@ -1,18 +1,8 @@
 'use client';
-import type {
-  AppBarProps,
-  BoxProps,
-  Breakpoint,
-  GridProps,
-} from '@mui/material';
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import type { AppBarProps, BoxProps, Breakpoint } from '@mui/material';
+import { AppBar, Avatar, Box, IconButton, Typography } from '@mui/material';
+
+import Grid from '@mui/material/Grid2';
 
 import { alpha, styled } from '@mui/material/styles';
 
@@ -46,9 +36,8 @@ export const ModalContainer = styled(Box)<ModalContainerProps>(({ theme }) => ({
   },
 }));
 
-export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
+export const ModalContent = styled(Grid)(({ theme }) => ({
   alignItems: 'center',
-  gap: '26px',
   padding: theme.spacing(0, 3),
   justifyContent: 'space-between',
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -113,7 +102,7 @@ export const ToolModalIconButton = styled(IconButton)(({ theme }) => ({
 
 export const ToolModalGrid = styled(Grid)(() => ({
   width: 72,
-  textAlign: 'center',
+  justifyItems: 'center',
 }));
 
 export const ToolModalAvatar = styled(Avatar)(() => ({

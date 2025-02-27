@@ -29,8 +29,8 @@ export const BerachainIntroduction = () => {
       >
         How does it work?
       </BerachainIntroductionTitle>
-      <BerachainIntroductionSteps>
-        <BerachainIntroductionStep>
+      <BerachainIntroductionSteps container columnSpacing={{ xs: 3, lg: 4 }}>
+        <BerachainIntroductionStep size={{ xs: 12, lg: 4 }}>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
             <BerachainIntroductionStepTitle
@@ -58,7 +58,7 @@ export const BerachainIntroduction = () => {
           {/* </Link> */}
         </BerachainIntroductionStep>
 
-        <BerachainIntroductionStep>
+        <BerachainIntroductionStep size={{ xs: 12, lg: 4 }}>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
             <BerachainIntroductionStepTitle
@@ -86,7 +86,7 @@ export const BerachainIntroduction = () => {
           {/* </Link> */}
         </BerachainIntroductionStep>
 
-        <BerachainIntroductionStep>
+        <BerachainIntroductionStep size={{ xs: 12, lg: 4 }}>
           {/* <Link href="/berachain/explore" as="button"> */}
           <BerachainIntroductionStepContent>
             <BerachainIntroductionStepTitle
