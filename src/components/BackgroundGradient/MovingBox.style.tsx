@@ -1,7 +1,6 @@
-import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
-export const MovingBox = styled(Box)<BoxProps>(() => ({
+export const MovingBox = styled(Box)(() => ({
   position: 'absolute',
   bottom: '1vh',
   animation: 'slideEffect 45s linear infinite',
@@ -24,7 +23,7 @@ export const MovingBox = styled(Box)<BoxProps>(() => ({
   },
 }));
 
-export const FixBoxWithNoOverflow = styled(Box)<BoxProps>(() => ({
+export const FixBoxWithNoOverflow = styled(Box)(() => ({
   position: 'fixed',
   overflow: 'hidden',
   left: 0,

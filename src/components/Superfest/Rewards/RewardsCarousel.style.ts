@@ -1,5 +1,5 @@
 import { getContrastAlphaColor } from '@/utils/colors';
-import type { BoxProps, Breakpoint, IconButtonProps } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import {
   Box,
   IconButton as MuiIconButton,
@@ -18,17 +18,13 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export const RewardsCarouselHeader = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BoxProps>(({ theme }) => ({
+export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   color: theme.palette.text.primary,
 }));
 
-export const RewardsCarouselTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles' && prop !== 'show',
-})(({ theme }) => ({
+export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
@@ -90,9 +86,7 @@ export const EarnedTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const RewardsOpenIconButton = styled(MuiIconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+export const RewardsOpenIconButton = styled(MuiIconButton)(({ theme }) => ({
   color: getContrastAlphaColor(theme, '84%'),
   transition: 'background 0.3s',
   width: '48px',

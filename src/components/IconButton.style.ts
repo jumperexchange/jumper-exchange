@@ -1,10 +1,7 @@
 import { getContrastAlphaColor } from '@/utils/colors';
-import type { IconButtonProps } from '@mui/material';
 import { IconButton as MuiIconButtom, darken, styled } from '@mui/material';
 
-export const IconButton = styled(MuiIconButtom, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})(({ theme }) => ({
+export const IconButton = styled(MuiIconButtom)(({ theme }) => ({
   color: getContrastAlphaColor(theme, '84%'),
   transition: 'background 0.3s',
   width: '48px',
@@ -18,9 +15,7 @@ export const IconButton = styled(MuiIconButtom, {
   },
 }));
 
-export const IconButtonPrimary = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+export const IconButtonPrimary = styled(IconButton)(({ theme }) => ({
   color: theme.palette.white.main,
   backgroundColor:
     theme.palette.mode === 'light'
@@ -34,11 +29,8 @@ export const IconButtonPrimary = styled(IconButton, {
   },
 }));
 
-export const IconButtonSecondary = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
-  // todo add color to theme
-  color: theme.palette.mode === 'light' ? '#240752' : theme.palette.white.main,
+export const IconButtonSecondary = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.mode === 'light' ? '#240752' : theme.palette.white.main, // todo add color to theme
   backgroundColor:
     theme.palette.mode === 'light'
       ? theme.palette.white.main
@@ -48,9 +40,7 @@ export const IconButtonSecondary = styled(IconButton, {
   },
 }));
 
-export const IconButtonTertiary = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})(({ theme }) => ({
+export const IconButtonTertiary = styled(IconButton)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === 'light'
       ? theme.palette.alphaDark100.main
@@ -63,9 +53,7 @@ export const IconButtonTertiary = styled(IconButton, {
   },
 }));
 
-export const SuperfestIconButtonPrimary = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+export const SuperfestIconButtonPrimary = styled(IconButton)(({ theme }) => ({
   color: theme.palette.white.main,
   backgroundColor:
     theme.palette.mode === 'light'

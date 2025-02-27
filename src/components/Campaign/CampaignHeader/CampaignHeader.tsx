@@ -4,6 +4,7 @@ import type { Theme } from '@mui/material';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import {
+  CampaignDescription,
   CampaignDigitInfoBox,
   CampaignHeaderBoxBackground,
   CampaignTitle,
@@ -52,7 +53,8 @@ export const CampaignHeader = ({
             style={{ objectFit: 'contain', borderRadius: '50%' }}
           />
           <VerticalCenterBox>
-            <CampaignTitle>Explore Lisk</CampaignTitle>
+            <CampaignTitle>Explore Berachain</CampaignTitle>
+            <CampaignDescription>{`Jumper is teaming up with the top tier Berachain protocols to bring you exciting rewards.`}</CampaignDescription>
             <Box display="flex" gap="8px">
               {Xlink && (
                 <InformationShareLink
@@ -106,7 +108,7 @@ export const CampaignHeader = ({
               <CardInfoTypogragphy fontSize={14}>
                 Total Rewards
               </CardInfoTypogragphy>
-              <CardInfoTypogragphy fontSize={32}>{'$200k'}</CardInfoTypogragphy>
+              <CardInfoTypogragphy fontSize={32}>{'$100k'}</CardInfoTypogragphy>
             </CampaignDigitInfoBox>
           </VerticalCenterBox>
         )}
