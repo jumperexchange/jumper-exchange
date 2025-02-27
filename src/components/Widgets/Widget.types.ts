@@ -4,21 +4,6 @@ import type { ThemeMode } from '@/types/theme';
 import { ChainId } from '@lifi/sdk';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
-export const refuelAllowChains: ChainId[] = [
-  ChainId.ETH,
-  ChainId.POL,
-  ChainId.BSC,
-  ChainId.DAI,
-  ChainId.BLS,
-  ChainId.FTM,
-  ChainId.AVA,
-  ChainId.ARB,
-  ChainId.OPT,
-  ChainId.BAS,
-  ChainId.MAM,
-  ChainId.RSK,
-];
-
 export const themeAllowChains: ChainId[] = [
   ChainId.ETH,
   ChainId.BAS,

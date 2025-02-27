@@ -33,7 +33,7 @@ import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
+import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 import getApiUrl from '@/utils/getApiUrl';
 
@@ -109,12 +109,7 @@ export function Widget({
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
-    () =>
-      starterVariant === TabsMap.Refuel.variant
-        ? refuelAllowChains
-        : partnerName === ThemesMap.Memecoins
-          ? themeAllowChains
-          : [],
+    () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [starterVariant, partnerName],
   );
 
