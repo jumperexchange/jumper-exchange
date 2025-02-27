@@ -3,23 +3,7 @@ import { Box, styled } from '@mui/material';
 import Link from 'next/link';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
 import { TierboxInfoTitles } from '../LevelBox/TierBox.style';
-
-export const CardContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.bgSecondary.main,
-  borderRadius: '16px',
-  width: '100%',
-  padding: theme.spacing(2),
-  boxShadow: theme.shadows[2],
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(3),
-  },
-}));
+import { CardContainer } from '../ProfilePage.style';
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
   justifyContent: 'flex-start',
