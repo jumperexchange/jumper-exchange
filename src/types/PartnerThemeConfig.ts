@@ -1,3 +1,10 @@
+import type {
+  ChainId,
+  HiddenUIType,
+  WidgetChains,
+  WidgetVariant,
+} from '@lifi/widget';
+
 export interface PartnerThemeConfig {
   availableThemeModes: string[];
   backgroundColor: string | null;
@@ -15,6 +22,14 @@ export interface PartnerThemeConfig {
   selectableInMenu: boolean;
   createdAt: string;
   uid: string;
+  integrator?: string;
+  fromChain?: ChainId;
+  fromToken?: string;
+  toToken?: string;
+  toChain?: ChainId;
+  chains?: WidgetChains;
+  variant?: WidgetVariant;
+  hiddenUI?: HiddenUIType[];
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;

@@ -64,3 +64,4 @@ Register on Crowdin and you can start translating the project into your preferre
 Your contributions will help make our project accessible to a wider audience around the world.
 
 Thank you for your support!
+

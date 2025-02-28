@@ -89,6 +89,22 @@ export function formatConfig(
     hasBackgroundGradient:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.hasBackgroundGradient ?? false,
+    integrator:
+      (theme.lightConfig || theme.darkConfig)?.config?.integrator ?? undefined,
+    fromChain:
+      (theme.lightConfig || theme.darkConfig)?.config?.fromChain ?? undefined,
+    toChain:
+      (theme.lightConfig || theme.darkConfig)?.config?.toChain ?? undefined,
+    toToken:
+      (theme.lightConfig || theme.darkConfig)?.config?.toToken ?? undefined,
+    fromToken:
+      (theme.lightConfig || theme.darkConfig)?.config?.fromToken ?? undefined,
+    hiddenUI:
+      (theme.lightConfig || theme.darkConfig)?.config?.hiddenUI ?? undefined,
+    variant:
+      (theme.lightConfig || theme.darkConfig)?.config?.variant ?? undefined,
+    chains:
+      (theme.lightConfig || theme.darkConfig)?.config?.chains ?? undefined,
     allowedBridges: theme.Bridges?.map((i) => i.key),
     allowedExchanges: theme.Exchanges?.map((i) => i.key),
   };

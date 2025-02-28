@@ -1,80 +1,27 @@
 import { expect, test } from '@playwright/test';
+import {
+  openOrCloseMainMenu,
+  checkTheNumberOfMenuItems,
+  checkSocialNetworkIcons,
+  sectionOnTheBlogPage,
+  expectBackgroundColorToHaveCss,
+} from './testData/menuFunctions';
+
 import values from '../tests/testData/values.json' assert { type: 'json' };
 import {
   closeWelcomeScreen,
-  expectBackgroundColorToHaveCss,
   itemInMenu,
-  itemInSettingsMenu,
-  itemInSettingsMenuToBeVisible,
-  openOrCloseMainMenu,
-  sectionOnTheBlogPage,
-  checkSocialNetworkIcons,
-  itemInSettingsMenuToBeEnabled,
-  checkTheNumberOfMenuItems,
-} from './testData/commonFunctions';
+} from './testData/landingPageFunctions';
 
-test.describe('Jumper full e2e flow', () => {
+test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await closeWelcomeScreen(page);
   });
 
-  test('Should navigate to the homepage and change tabs', async ({ page }) => {
-    await page.locator('#tab-key-1').click();
-    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await page.locator('#tab-key-0').click();
-    await expect(page.locator('xpath=//p[text()="Exchange"]')).toBeVisible();
-  });
-
-  test('Should open Settings menu', async ({ page }) => {
-    const settingsTitle = page.locator(
-      'xpath=//p[normalize-space(text())="Settings"]',
-    );
-    const bestReturnButton = page.locator(
-      'xpath=//button[normalize-space(text())="Best Return"]',
-    );
-    const fastestButton = page.locator(
-      'xpath=//button[normalize-space(text())="Fastest"]',
-    );
-    const slowGasPrice = page.locator(
-      'xpath=//button[normalize-space(text())="Slow"]',
-    );
-    const fastGasPrice = page.locator(
-      'xpath=//button[normalize-space(text())="Fast"]',
-    );
-    const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
-    await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
-    await expect(settingsTitle).toBeVisible();
-    itemInSettingsMenu(page, 'Route priority');
-    itemInSettingsMenuToBeEnabled(page, 'Best Return');
-    await expect(bestReturnButton).toBeEnabled();
-    itemInSettingsMenuToBeVisible(page, 'Fastest');
-    await fastestButton.click();
-    itemInSettingsMenuToBeVisible(page, 'Reset settings');
-    itemInSettingsMenu(page, 'Gas price');
-    itemInSettingsMenuToBeEnabled(page, 'Slow');
-    itemInSettingsMenuToBeEnabled(page, 'Fast');
-    expect(slowGasPrice).toBeEnabled();
-    expect(fastGasPrice).toBeEnabled();
-    itemInSettingsMenu(page, 'Max. slippage');
-    itemInSettingsMenuToBeVisible(page, '0.5');
-    await expect(customSlippage).toBeVisible();
-  });
-
-  test('Should show again welcome screen when clicking jumper logo', async ({
-    page,
-  }) => {
-    const headerText = 'Find the best route';
-    await page.locator('#jumper-logo').click();
-    await page.locator('#get-started-button').click();
-    expect(headerText).toBe('Find the best route');
-  });
-
-  test('Should be able to open menu and click away to close it', async ({
-    page,
-  }) => {
-    await openOrCloseMainMenu(page);
-    await checkTheNumberOfMenuItems(page, 9);
+  test('Should be able to open menu and close it', async ({ page }) => {
+    openOrCloseMainMenu(page);
+    await checkTheNumberOfMenuItems(page, 10);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -82,12 +29,12 @@ test.describe('Jumper full e2e flow', () => {
   test.skip('Should be able to navigate to profile and open first Mission', async ({
     page,
   }) => {
-    let profileUrl = `${await page.url()}profile`;
+    const profileUrl = `${await page.url()}profile`;
     const missionTitle = page.locator(
       'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Loyalty Pass');
+    await itemInMenu(page, 'Jumper Profile');
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
@@ -111,7 +58,7 @@ test.describe('Jumper full e2e flow', () => {
     const articleTitle = await page.locator(
       'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
-    let learnUrl = `${await page.url()}learn`;
+    const learnUrl = `${await page.url()}learn`;
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Learn');
     expect(await page.url()).toBe(learnUrl);

@@ -6,17 +6,14 @@ import { useMenuStore } from '@/stores/menu';
 import { getAddressLabel } from '@/utils/getAddressLabel';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
-import {
-  getConnectorIcon,
-  useAccount,
-  useWalletMenu,
-} from '@lifi/wallet-management';
+import { getConnectorIcon } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
@@ -34,14 +31,13 @@ import {
 
 export const WalletButtons = () => {
   const { chains } = useChains();
-  const { account } = useAccount();
+  const activeAccount = useActiveAccountByChainType();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
-  const { openWalletMenu } = useWalletMenu();
-  const { points, isLoading } = useLoyaltyPass(account?.address);
+  const { points, isLoading } = useLoyaltyPass(activeAccount?.address);
   const router = useRouter();
   const imgLink = useWalletAddressImg({
-    userAddress: account?.address,
+    userAddress: activeAccount?.address,
   });
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
@@ -51,18 +47,19 @@ export const WalletButtons = () => {
   );
 
   const { data: ensName, isSuccess: isSuccessEnsName } = useEnsName({
-    address: account?.address as Address | undefined,
+    address: activeAccount?.address as Address | undefined,
     chainId: mainnet.id,
   });
   const addressLabel = getAddressLabel({
     isSuccess: isSuccessEnsName,
     ensName,
-    address: account?.address,
+    address: activeAccount?.address,
   });
 
   const activeChain = useMemo(
-    () => chains?.find((chainEl: Chain) => chainEl.id === account?.chainId),
-    [chains, account?.chainId],
+    () =>
+      chains?.find((chainEl: Chain) => chainEl.id === activeAccount?.chainId),
+    [chains, activeAccount?.chainId],
   );
 
   const handleXPClick = () => {
@@ -75,7 +72,7 @@ export const WalletButtons = () => {
 
   return (
     <>
-      {!account?.address ? (
+      {!activeAccount?.address ? (
         <ConnectButton />
       ) : (
         <Stack direction="row" spacing={2}>
@@ -83,7 +80,7 @@ export const WalletButtons = () => {
             <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
               <ImageWalletMenuButton
                 src={imgLink}
-                alt={`${account?.address} wallet Icon`}
+                alt={`${activeAccount?.address} wallet Icon`}
                 width={32}
                 height={32}
                 priority={false}
@@ -101,7 +98,7 @@ export const WalletButtons = () => {
                   {points ? t('format.decimal2Digit', { value: points }) : 0}
                 </Typography>
               )}
-              <XPIcon />
+              <XPIcon sx={{ width: 32, height: 32 }} />
             </WalletMenuButton>
           )}
           <WalletMenuButton
@@ -123,12 +120,12 @@ export const WalletButtons = () => {
                 }
               >
                 <WalletMgmtWalletAvatar
-                  src={getConnectorIcon(account.connector)}
+                  src={getConnectorIcon(activeAccount?.connector)}
                 />
               </WalletMgmtBadge>
             ) : null}
             <WalletLabel variant={'bodyMediumStrong'}>
-              {addressLabel ?? walletDigest(account?.address)}
+              {addressLabel ?? walletDigest(activeAccount?.address)}
             </WalletLabel>
           </WalletMenuButton>
         </Stack>

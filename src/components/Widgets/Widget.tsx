@@ -32,9 +32,9 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { WidgetWrapper } from '.';
+import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
-import { refuelAllowChains, themeAllowChains } from './Widget.types';
+import getApiUrl from '@/utils/getApiUrl';
 
 export function Widget({
   starterVariant,
@@ -44,6 +44,7 @@ export function Widget({
   toToken,
   fromAmount,
   allowChains,
+  allowToChains,
   widgetIntegrator,
   activeTheme,
   autoHeight,
@@ -68,11 +69,39 @@ export function Widget({
   const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
+  // const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
   }, [router]);
+
+  // useEffect(() => {
+  //   // Our partners that want to onboard on pre-filled address can still do it
+  //   if (
+  //     !wrapperRef.current ||
+  //     configTheme?.chains?.to?.allow?.includes(2741) ||
+  //     allowToChains?.includes(2741)
+  //   ) {
+  //     return;
+  //   }
+  //   // Clear toAddress URL parameter once the widget is mounted
+  //   // Uses MutationObserver to detect when the widget content is loaded
+  //   // since it's rendered dynamically inside WidgetWrapper
+  //   const observer = new MutationObserver(() => {
+  //     if (formRef.current) {
+  //       formRef.current.setFieldValue('toAddress', undefined, {
+  //         setUrlSearchParam: true,
+  //       });
+  //       observer.disconnect();
+  //     }
+  //   });
+  //   observer.observe(wrapperRef.current, {
+  //     childList: true,
+  //     subtree: true,
+  //   });
+  //   return () => observer.disconnect();
+  // }, [allowToChains, configTheme?.chains?.to?.allow]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -88,6 +117,9 @@ export function Widget({
   );
 
   const integratorStringByType = useMemo(() => {
+    if (configTheme?.integrator) {
+      return configTheme.integrator;
+    }
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
@@ -101,7 +133,7 @@ export function Widget({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -118,10 +150,11 @@ export function Widget({
     }
 
     const formParameters: Record<string, number | string | undefined> = {
-      fromChain: fromChain || widgetCache.fromChainId,
-      fromToken: fromToken || widgetCache.fromToken,
-      toChain: toChain,
-      toToken: toToken,
+      fromChain:
+        configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
+      fromToken: configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
+      toChain: configTheme?.toChain ?? toChain,
+      toToken: configTheme?.toToken ?? toToken,
       fromAmount: fromAmount,
     };
 
@@ -152,7 +185,8 @@ export function Widget({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: {
+      chains: configTheme?.chains ?? {
+        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
         allow:
           // allow only Abstract chain if AGW is connected
           account?.connector?.name === 'Abstract'
@@ -170,6 +204,7 @@ export function Widget({
         allow: i18n.languages as LanguageKey[],
       },
       hiddenUI: [
+        ...(configTheme?.hiddenUI ?? []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
@@ -180,12 +215,23 @@ export function Widget({
       keyPrefix: `jumper-${starterVariant}`,
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      languageResources: {
+        en: {
+          warning: {
+            message: {
+              lowAddressActivity:
+                "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
+            },
+          },
+        },
+      },
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
+          allowSwitchChain:
+            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig or smart account wallets
         },
         providers:
           isMultisigSigner && isIframeEnvironment()
@@ -214,6 +260,14 @@ export function Widget({
       tokens: tokens,
     };
   }, [
+    configTheme?.fromChain,
+    configTheme?.fromToken,
+    configTheme?.toChain,
+    configTheme?.toToken,
+    configTheme?.chains,
+    configTheme?.allowedBridges,
+    configTheme?.allowedExchanges,
+    configTheme?.hiddenUI,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
@@ -225,12 +279,10 @@ export function Widget({
     starterVariant,
     partnerName,
     openWalletMenu,
+    allowToChains,
     account?.connector?.name,
-    account.chainId,
     allowChains,
     allowedChainsByVariant,
-    configTheme?.allowedBridges,
-    configTheme?.allowedExchanges,
     i18n.language,
     i18n.languages,
     widgetTheme.config.appearance,
@@ -245,6 +297,7 @@ export function Widget({
 
   return (
     <WidgetWrapper
+      // ref={wrapperRef}
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
