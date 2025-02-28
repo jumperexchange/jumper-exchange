@@ -149,10 +149,7 @@ export const useStrapi = <T>({
     // populate images on feature card query
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
-    apiUrl.searchParams.set(
-      'populate[2]',
-      'featureCardsExclusions',
-    );
+    apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
     //filter url
     const currentDate = new Date(Date.now()).toISOString().split('T')[0];
@@ -181,7 +178,7 @@ export const useStrapi = <T>({
   }
   // show drafts ONLY on development env
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
-  apiUrl.searchParams.set('status', 'draft');
+    apiUrl.searchParams.set('status', 'draft');
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('pagination[pageSize]', '50');
 

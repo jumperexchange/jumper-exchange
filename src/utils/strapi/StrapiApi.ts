@@ -195,7 +195,7 @@ class QuestStrapiApi extends StrapiApi {
     const questParams = new QuestParams(this.apiUrl);
     this.apiUrl = questParams.addParams();
     process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    this.apiUrl.searchParams.set('status', 'draft');
+      this.apiUrl.searchParams.set('status', 'draft');
   }
 
   sort(order: 'asc' | 'desc'): this {

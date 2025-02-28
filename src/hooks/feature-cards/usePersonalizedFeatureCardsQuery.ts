@@ -44,17 +44,14 @@ export const usePersonalizedFeatureCardsQuery =
 
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
-    apiUrl.searchParams.set(
-      'populate[2]',
-      'featureCardsExclusions',
-    );
+    apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard]', 'true');
     fcCardData?.map((id: number) =>
       apiUrl.searchParams.set('filters[id][]', id.toString()),
     );
 
     process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('status', 'draft');
+      apiUrl.searchParams.set('status', 'draft');
     const apiAccesToken =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
         ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN

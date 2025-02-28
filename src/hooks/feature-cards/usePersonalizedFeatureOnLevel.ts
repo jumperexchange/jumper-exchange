@@ -38,7 +38,7 @@ export const usePersonalizedFeatureOnLevel = ({
   apiUrl.searchParams.set('filters[maxLevel][$gte]', String(level));
 
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-  apiUrl.searchParams.set('status', 'draft');
+    apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
