@@ -3,7 +3,7 @@ import { buildURL } from './buildUrl';
 export interface CallRequestProps {
   method: 'GET' | 'POST';
   path: string;
-  apiUrl?: string;
+  apiUrl: string;
   queryParams?: Record<string, any>;
   body?: any;
   headers?: Record<string, string>;
