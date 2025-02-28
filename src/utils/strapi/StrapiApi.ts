@@ -113,11 +113,11 @@ class TagParams {
   }
 
   addParams(): URL {
-    // this.apiUrl.searchParams.set('populate[0]', 'Title');
-    // this.apiUrl.searchParams.set('populate[1]', 'BackgroundColor');
-    // this.apiUrl.searchParams.set('populate[2]', 'TextColor');
-    this.apiUrl.searchParams.set('populate[0]', 'blog_articles');
-    this.apiUrl.searchParams.set('populate[1]', 'blog_articles.Image');
+    this.apiUrl.searchParams.set('populate[0]', 'Title');
+    this.apiUrl.searchParams.set('populate[1]', 'BackgroundColor');
+    this.apiUrl.searchParams.set('populate[2]', 'TextColor');
+    this.apiUrl.searchParams.set('populate[3]', 'blog_articles');
+    this.apiUrl.searchParams.set('populate[4]', 'blog_articles.Image');
     return this.apiUrl;
   }
 }
