@@ -1,33 +1,20 @@
 import type { Breakpoint } from '@mui/material';
-import { Box, Container, Typography, alpha, styled } from '@mui/material';
+import { Box, Typography, alpha, styled } from '@mui/material';
 
-export const PageContainer = styled(Container)(({ theme }) => ({
-  marginTop: 16,
-  fontFamily: 'var(--font-inter)',
-  background: 'transparent',
-  borderRadius: '8px',
-  position: 'relative',
-  width: '100% !important',
-  overflow: 'visible', //'hidden',
-  paddingBottom: 20,
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    paddingLeft: '8px',
-    paddingRight: '8px',
-  },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    paddingLeft: 0,
-    paddingRight: 0,
-  },
-}));
-
-export const SectionTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '32px',
-  margin: theme.spacing(0, 1.5, 0),
+export const CardContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  backgroundColor:
+    theme.palette.mode === 'light'
+      ? theme.palette.white.main
+      : theme.palette.bgSecondary.main,
+  borderRadius: '16px',
+  width: '100%',
+  padding: theme.spacing(2),
+  boxShadow: theme.shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
+    padding: theme.spacing(3),
   },
 }));
 
@@ -41,17 +28,24 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
 }));
 
 export const ProfileInfoBox = styled(Box)(({ theme }) => ({
-  gab: theme.spacing(2),
+  display: 'flex',
+  flexDirection: 'column',
+  flex: 2,
+  gap: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
-  flexDirection: 'column',
   boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
+}));
 
+export const ProfileInfoBoxCards = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
   },
