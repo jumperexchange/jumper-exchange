@@ -5,13 +5,16 @@ import { useMultisig } from '@/hooks/useMultisig';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
-import { EVM } from '@lifi/sdk';
+import getApiUrl from '@/utils/getApiUrl';
+import { ChainId, EVM } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormState, WidgetConfig } from '@lifi/widget';
+import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
+  useWidgetEvents,
+  WidgetEvent,
 } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -31,11 +34,11 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
-import getApiUrl from '@/utils/getApiUrl';
 
 export function Widget({
   starterVariant,
@@ -54,6 +57,8 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
+  const { destinationChainToken } = useChainTokenSelectionStore();
+  const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -73,6 +78,7 @@ export function Widget({
   const router = useRouter();
   // const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const isConnectedAGW = account?.connector?.name === 'Abstract';
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
@@ -104,6 +110,50 @@ export function Widget({
   //   });
   //   return () => observer.disconnect();
   // }, [allowToChains, configTheme?.chains?.to?.allow]);
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (formRef.current) {
+        formRef.current.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+        observer.disconnect();
+      }
+    });
+
+    if (account.chainId === ChainId.ABS) {
+      if (destinationChainToken.chainId !== ChainId.ABS) {
+        formRef.current?.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+      }
+    }
+
+    const handleAGW = async (fieldChange: FormFieldChanged) => {
+      if (
+        isConnectedAGW &&
+        destinationChainToken.chainId !== ChainId.ABS &&
+        fieldChange?.fieldName === 'toAddress' &&
+        fieldChange?.newValue === account.address
+      ) {
+        formRef.current?.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+      }
+    };
+
+    widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
+
+    return () => {
+      widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
+    };
+  }, [
+    account.address,
+    account.chainId,
+    destinationChainToken,
+    isConnectedAGW,
+    widgetEvents,
+  ]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -196,11 +246,12 @@ export function Widget({
       },
       chains: configTheme?.chains ?? {
         ...{ to: allowToChains ? { allow: allowToChains } : undefined },
-        allow:
-          // allow only Abstract chain if AGW is connected
-          account?.connector?.name === 'Abstract'
-            ? [2741]
-            : allowChains || allowedChainsByVariant,
+        ...{
+          from:
+            // allow only Abstract chain as sourceChain if AGW is connected
+            isConnectedAGW ? { allow: [2741] } : undefined,
+        },
+        allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -219,6 +270,11 @@ export function Widget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
+      requiredUI:
+        // if AGW connected and destinationChainToken is ABS, require toAddress
+        !isConnectedAGW && destinationChainToken.chainId === ChainId.ABS
+          ? ['toAddress']
+          : undefined,
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
@@ -239,8 +295,7 @@ export function Widget({
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain:
-            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig or smart account wallets
+          allowSwitchChain: !isMultisigSigner && !isConnectedAGW, // avoid routes requiring chain switch for multisig or smart account wallets
         },
         providers:
           isMultisigSigner && isIframeEnvironment()
@@ -289,11 +344,12 @@ export function Widget({
     subvariant,
     openWalletMenu,
     allowToChains,
-    account?.connector?.name,
+    isConnectedAGW,
     allowChains,
     allowedChainsByVariant,
     i18n.language,
     i18n.languages,
+    destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     multisigWidget,
