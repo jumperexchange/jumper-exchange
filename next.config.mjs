@@ -27,12 +27,6 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      (process.env.NODE_ENV === 'development' && {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '1337',
-        pathname: '/**',
-      }),
       {
         protocol: 'https',
         hostname: 'assets.coingecko.com',
