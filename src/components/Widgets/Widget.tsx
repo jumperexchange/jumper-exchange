@@ -71,39 +71,39 @@ export function Widget({
   const widgetCache = useWidgetCacheStore((state) => state);
 
   const router = useRouter();
-  // const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
   }, [router]);
 
-  // useEffect(() => {
-  //   // Our partners that want to onboard on pre-filled address can still do it
-  //   if (
-  //     !wrapperRef.current ||
-  //     configTheme?.chains?.to?.allow?.includes(2741) ||
-  //     allowToChains?.includes(2741)
-  //   ) {
-  //     return;
-  //   }
-  //   // Clear toAddress URL parameter once the widget is mounted
-  //   // Uses MutationObserver to detect when the widget content is loaded
-  //   // since it's rendered dynamically inside WidgetWrapper
-  //   const observer = new MutationObserver(() => {
-  //     if (formRef.current) {
-  //       formRef.current.setFieldValue('toAddress', undefined, {
-  //         setUrlSearchParam: true,
-  //       });
-  //       observer.disconnect();
-  //     }
-  //   });
-  //   observer.observe(wrapperRef.current, {
-  //     childList: true,
-  //     subtree: true,
-  //   });
-  //   return () => observer.disconnect();
-  // }, [allowToChains, configTheme?.chains?.to?.allow]);
+  useEffect(() => {
+    // Our partners that want to onboard on pre-filled address can still do it
+    if (
+      !wrapperRef.current ||
+      configTheme?.chains?.to?.allow?.includes(2741) ||
+      allowToChains?.includes(2741)
+    ) {
+      return;
+    }
+    // Clear toAddress URL parameter once the widget is mounted
+    // Uses MutationObserver to detect when the widget content is loaded
+    // since it's rendered dynamically inside WidgetWrapper
+    const observer = new MutationObserver(() => {
+      if (formRef.current) {
+        formRef.current.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+        observer.disconnect();
+      }
+    });
+    observer.observe(wrapperRef.current, {
+      childList: true,
+      subtree: true,
+    });
+    return () => observer.disconnect();
+  }, [allowToChains, configTheme?.chains?.to?.allow]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -306,7 +306,7 @@ export function Widget({
 
   return (
     <WidgetWrapper
-      // ref={wrapperRef}
+      ref={wrapperRef}
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
