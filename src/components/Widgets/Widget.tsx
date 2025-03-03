@@ -19,7 +19,7 @@ import {
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
@@ -38,6 +38,7 @@ import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
+import { AgwAlert } from '../Alerts/AgwAlert';
 import type { WidgetProps } from './Widget.types';
 
 export function Widget({
@@ -57,6 +58,7 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
+  const [agwAlert, setAgwAlert] = useState(false);
   const { destinationChainToken } = useChainTokenSelectionStore();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
@@ -136,14 +138,16 @@ export function Widget({
         fieldChange?.fieldName === 'toAddress' &&
         fieldChange?.newValue === account.address
       ) {
+        setAgwAlert(true);
         formRef.current?.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
+      } else {
+        setAgwAlert(false);
       }
     };
 
     widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
-
     return () => {
       widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
     };
@@ -367,6 +371,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
     >
+      <AgwAlert open={agwAlert} />
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}

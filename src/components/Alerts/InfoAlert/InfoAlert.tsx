@@ -11,9 +11,17 @@ export interface InfoAlertProps {
   title: string;
   subtitle: string;
   active: boolean;
+  bottemLeftPosition?: boolean;
+  autoHeight?: boolean;
 }
 
-export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
+export const InfoAlert = ({
+  title,
+  subtitle,
+  active,
+  bottemLeftPosition,
+  autoHeight,
+}: InfoAlertProps) => {
   const [closed, setClosed] = useState(false);
   const theme = useTheme();
   // const handleClose = (
@@ -36,7 +44,10 @@ export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
       timeout={500}
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
-      <InfoAlertContainer>
+      <InfoAlertContainer
+        className={bottemLeftPosition ? 'alert' : ''}
+        sx={{ ...(autoHeight && { height: 'auto !important' }) }}
+      >
         <InfoMessageCard mt={theme.spacing(4)} mb={theme.spacing(4)}>
           <InfoMessageCardTitle
             display="flex"
