@@ -7,9 +7,10 @@ export const AgwAlert = ({ open }: { open: boolean }) => {
   return (
     <InfoAlert
       active={open}
+      bottemLeftPosition={true}
       title={t('agwAlert.title')}
       subtitle={t('agwAlert.subtitle')}
-      autoHeight={true}
+      // autoHeight={true}
     />
   );
 };
