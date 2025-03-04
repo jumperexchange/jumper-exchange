@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import {
-  checkSocialNetworkIcons,
-  checkTheNumberOfMenuItems,
-  expectBackgroundColorToHaveCss,
   openOrCloseMainMenu,
+  checkTheNumberOfMenuItems,
+  checkSocialNetworkIcons,
   sectionOnTheBlogPage,
+  expectBackgroundColorToHaveCss,
 } from './testData/menuFunctions';
 
 import values from '../tests/testData/values.json' assert { type: 'json' };

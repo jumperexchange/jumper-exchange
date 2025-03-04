@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { closeWelcomeScreen } from './testData/landingPageFunctions';
 import {
-  checkItemInSettingsMenu,
   itemInSettingsMenu,
+  checkItemInSettingsMenu,
 } from './testData/settingsFunctions';
+import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
 test.describe('Settings menu', () => {
   test.beforeEach(async ({ page }) => {
