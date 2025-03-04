@@ -40,7 +40,7 @@ test.describe('Settings menu', () => {
     await expect(slowGasPrice).toBeEnabled();
     await expect(fastGasPrice).toBeEnabled();
     await itemInSettingsMenu(page, 'Max. slippage');
-    await checkItemInSettingsMenu(page, 'Auto', { visible: true });
+    await checkItemInSettingsMenu(page, '0.5', { visible: true });
     await expect(customSlippage).toBeVisible();
   });
 });
