@@ -29,8 +29,7 @@ export const BlogCarouselContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export interface SeeAllButtonContainerProps
-  extends Omit<BoxProps, 'component'> {
+export interface SeeAllButtonContainerProps extends BoxProps {
   show: boolean;
 }
 

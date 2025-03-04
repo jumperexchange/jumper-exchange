@@ -47,13 +47,13 @@ export const CampaignPage = ({
     <PageContainer className="profile-page">
       <BackButton path={path} title={activeCampaign} />
       <CampaignHeader
-        bannerImage={
-          'https://strapi.jumper.exchange/uploads/topbanner_a079924a00.jpg'
-        }
+        bannerImage={'https://strapi.jumper.exchange/uploads/BG_dbd731b976.png'}
         tokenImage={
-          'https://strapi.jumper.exchange/uploads/lisk_chain_a996787b58.png'
+          'https://strapi.jumper.exchange/uploads/Np_M0_F_Gcg_EMJCIT_Nnh_M_Fnl5_Ul8_f69135f4bf.avif'
         }
-        websiteLink={'https://lisk.com/'}
+        websiteLink={
+          'https://lifi.notion.site/Jumper-x-Berachain-Campaign-rules-1a5f0ff14ac7806dbb93c58165d9252e'
+        }
         Xlink={''}
       />
       <QuestsOverview pastCampaigns={[]} label={label} />
