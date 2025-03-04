@@ -1,8 +1,8 @@
-import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import { testWithSynpress } from '@synthetixio/synpress-core';
+import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import {
-  closeWelcomeScreen,
   itemInMenu,
+  closeWelcomeScreen,
 } from './testData/landingPageFunctions';
 import basicSetup from './wallet-setup/basic.setup';
 

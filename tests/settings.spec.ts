@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { closeWelcomeScreen } from './testData/landingPageFunctions';
 import {
-  checkItemInSettingsMenu,
   itemInSettingsMenu,
+  checkItemInSettingsMenu,
 } from './testData/settingsFunctions';
+import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
 test.describe('Settings menu', () => {
   test.beforeEach(async ({ page }) => {
@@ -40,7 +40,7 @@ test.describe('Settings menu', () => {
     await expect(slowGasPrice).toBeEnabled();
     await expect(fastGasPrice).toBeEnabled();
     await itemInSettingsMenu(page, 'Max. slippage');
-    await checkItemInSettingsMenu(page, 'Auto', { visible: true });
+    await checkItemInSettingsMenu(page, '0.5', { visible: true });
     await expect(customSlippage).toBeVisible();
   });
 });
