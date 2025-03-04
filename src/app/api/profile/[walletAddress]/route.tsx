@@ -1,13 +1,9 @@
-import { ImageResponse } from 'next/og';
-import { createConfig, EVM, getTokenBalances, Solana, UTXO } from '@lifi/sdk';
-import { publicRPCList } from '@/const/rpcList';
-import { getChainsQuery } from '@/hooks/useChains';
-import { walletDigest } from '@/utils/walletDigest';
-import { getLeaderboardUserQuery } from '@/hooks/useLeaderboard';
-import type { PDA } from '@/types/loyaltyPass';
 import { getSiteUrl } from '@/const/urls';
-import { getImageResponseOptions } from '@/utils/ImageGeneration/getImageResponseOptions';
 import useBlockieImg from '@/hooks/useBlockieImg';
+import type { PDA } from '@/types/loyaltyPass';
+import { getImageResponseOptions } from '@/utils/ImageGeneration/getImageResponseOptions';
+import { walletDigest } from '@/utils/walletDigest';
+import { ImageResponse } from 'next/og';
 
 const BASE_WIDTH = 800;
 const BASE_HEIGHT = BASE_WIDTH / 1.91;

@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
 
 import { PlaywrightTestConfig } from '@playwright/test';
 
@@ -9,6 +10,8 @@ import { PlaywrightTestConfig } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+
+dotenv.config({ path: './tests/.env.test' });
 
 // Use process.env.PORT by default and fallback to port 3000
 // const PORT = process.env.PORT || 3000;
