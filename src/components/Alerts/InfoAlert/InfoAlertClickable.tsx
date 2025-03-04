@@ -50,7 +50,7 @@ export const InfoAlertClickable = ({
     >
       <InfoAlertContainer>
         <a
-          href="https://app.sei.io/"
+          href="https://docs.abs.xyz/abstract-global-wallet/architecture"
           target="_blank"
           rel="noreferrer"
           style={{ textDecoration: 'none', color: 'inherit' }}

@@ -26,12 +26,12 @@ export const ChainAlert = () => {
     });
 
   useEffect(() => {
-    if (!isWalletLinked && isWalletCheckSuccess) {
+    if (account?.connector?.name === 'Abstract') {
       setIsClickable(true);
-      setChainId(ChainId.SEI);
-      setTitle(t('seiAlert.title'));
-      setSubtitle(t('seiAlert.subtitle'));
-      setButtontext(t('seiAlert.buttonText'));
+      setChainId(ChainId.ABS);
+      setTitle(t('abstractAlert.title'));
+      setSubtitle(t('abstractAlert.subtitle'));
+      setButtontext(t('abstractAlert.buttonText'));
     } else {
       setIsClickable(false);
       setChainId(0);
