@@ -39,7 +39,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
             aria-label="Open leaderboard with your position"
             href={`/leaderboard?page=${userPage}`}
           >
-            <LeaderboardUserTitle variant="titleLarge">
+            <LeaderboardUserTitle variant="titleMedium">
               {position
                 ? t('format.decimal2Digit', { value: position })
                 : 'N/A'}
