@@ -97,10 +97,6 @@ interface Resources {
       title: 'Limited Solana token support';
       subtitle: 'Currently only USDC and USDT can be bridged to and from Solana.';
     };
-    agwAlert: {
-      title: 'Do not use your AGW wallet for bridging';
-      subtitle: 'Destination address cannot be your Abstract wallet. Any bridged amounts to other chains than Abstract on your AGW wallet will be lost.';
-    };
     seiAlert: {
       title: 'Linking of SEI EVM wallet required';
       subtitle: 'To use SEI EVM, you need to link your wallet address to the SEI ecosystem.';
