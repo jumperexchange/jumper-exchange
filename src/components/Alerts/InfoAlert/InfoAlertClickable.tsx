@@ -17,6 +17,7 @@ export interface InfoAlertProps {
   subtitle: string;
   active: boolean;
   buttonText: string;
+  link: string;
 }
 
 export const InfoAlertClickable = ({
@@ -24,6 +25,7 @@ export const InfoAlertClickable = ({
   subtitle,
   active,
   buttonText,
+  link,
 }: InfoAlertProps) => {
   const [closed, setClosed] = useState(false);
   const theme = useTheme();
@@ -50,7 +52,7 @@ export const InfoAlertClickable = ({
     >
       <InfoAlertContainer>
         <a
-          href="https://docs.abs.xyz/abstract-global-wallet/architecture"
+          href={link}
           target="_blank"
           rel="noreferrer"
           style={{ textDecoration: 'none', color: 'inherit' }}
