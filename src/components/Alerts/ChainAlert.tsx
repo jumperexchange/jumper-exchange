@@ -14,6 +14,7 @@ export const ChainAlert = () => {
   const [isClickable, setIsClickable] = useState<boolean>(false);
   const [chainId, setChainId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
+  const [link, setLink] = useState<string>('');
   const [subtitle, setSubtitle] = useState<string>('');
   const [buttonText, setButtontext] = useState<string>('');
   const { account } = useAccount();
@@ -26,12 +27,20 @@ export const ChainAlert = () => {
     });
 
   useEffect(() => {
-    if (!isWalletLinked && isWalletCheckSuccess) {
+    if (account?.connector?.name === 'Abstract') {
+      setIsClickable(true);
+      setChainId(ChainId.ABS);
+      setTitle(t('abstractAlert.title'));
+      setSubtitle(t('abstractAlert.subtitle'));
+      setButtontext(t('abstractAlert.buttonText'));
+      setLink('https://docs.abs.xyz/abstract-global-wallet/architecture');
+    } else if (!isWalletLinked && isWalletCheckSuccess) {
       setIsClickable(true);
       setChainId(ChainId.SEI);
       setTitle(t('seiAlert.title'));
       setSubtitle(t('seiAlert.subtitle'));
       setButtontext(t('seiAlert.buttonText'));
+      setLink('https://app.sei.io/');
     } else {
       setIsClickable(false);
       setChainId(0);
@@ -52,6 +61,7 @@ export const ChainAlert = () => {
           title={title}
           subtitle={subtitle}
           buttonText={buttonText}
+          link={link}
         />
       ) : (
         <InfoAlert active={chainId > 0} title={title} subtitle={subtitle} />
