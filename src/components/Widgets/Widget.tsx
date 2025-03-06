@@ -6,15 +6,13 @@ import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
 import getApiUrl from '@/utils/getApiUrl';
-import { ChainId, EVM } from '@lifi/sdk';
+import { EVM } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
-  useWidgetEvents,
-  WidgetEvent,
 } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -34,7 +32,6 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
@@ -57,8 +54,8 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { destinationChainToken } = useChainTokenSelectionStore();
-  const widgetEvents = useWidgetEvents();
+  // const { destinationChainToken } = useChainTokenSelectionStore();
+  // const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -111,49 +108,49 @@ export function Widget({
     return () => observer.disconnect();
   }, [allowToChains, configTheme?.chains?.to?.allow]);
 
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (formRef.current) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
+  // useEffect(() => {
+  //   const observer = new MutationObserver(() => {
+  //     if (formRef.current) {
+  //       formRef.current.setFieldValue('toAddress', undefined, {
+  //         setUrlSearchParam: true,
+  //       });
+  //       observer.disconnect();
+  //     }
+  //   });
 
-    if (account.chainId === ChainId.ABS) {
-      if (destinationChainToken.chainId !== ChainId.ABS) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
-    }
+  //   if (account.chainId === ChainId.ABS) {
+  //     if (destinationChainToken.chainId !== ChainId.ABS) {
+  //       formRef.current?.setFieldValue('toAddress', undefined, {
+  //         setUrlSearchParam: true,
+  //       });
+  //     }
+  //   }
 
-    const handleAGW = async (fieldChange: FormFieldChanged) => {
-      if (
-        isConnectedAGW &&
-        destinationChainToken.chainId !== ChainId.ABS &&
-        fieldChange?.fieldName === 'toAddress' &&
-        fieldChange?.newValue === account.address
-      ) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      } else {
-      }
-    };
+  //   const handleAGW = async (fieldChange: FormFieldChanged) => {
+  //     if (
+  //       isConnectedAGW &&
+  //       destinationChainToken.chainId !== ChainId.ABS &&
+  //       fieldChange?.fieldName === 'toAddress' &&
+  //       fieldChange?.newValue === account.address
+  //     ) {
+  //       formRef.current?.setFieldValue('toAddress', undefined, {
+  //         setUrlSearchParam: true,
+  //       });
+  //     } else {
+  //     }
+  //   };
 
-    widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
-    return () => {
-      widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
-    };
-  }, [
-    account.address,
-    account.chainId,
-    destinationChainToken,
-    isConnectedAGW,
-    widgetEvents,
-  ]);
+  //   widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
+  //   return () => {
+  //     widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
+  //   };
+  // }, [
+  //   account.address,
+  //   account.chainId,
+  //   destinationChainToken,
+  //   isConnectedAGW,
+  //   widgetEvents,
+  // ]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -270,11 +267,11 @@ export function Widget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      requiredUI:
-        // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW && destinationChainToken.chainId === ChainId.ABS
-          ? ['toAddress']
-          : undefined,
+      // requiredUI:
+      //   // if AGW connected and destinationChainToken is ABS, require toAddress
+      //   !isConnectedAGW && destinationChainToken.chainId === ChainId.ABS
+      //     ? ['toAddress']
+      //     : undefined,
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
@@ -349,7 +346,7 @@ export function Widget({
     allowedChainsByVariant,
     i18n.language,
     i18n.languages,
-    destinationChainToken.chainId,
+    // destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     multisigWidget,
