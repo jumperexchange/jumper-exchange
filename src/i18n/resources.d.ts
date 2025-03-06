@@ -102,6 +102,11 @@ interface Resources {
       subtitle: 'To use SEI EVM, you need to link your wallet address to the SEI ecosystem.';
       buttonText: 'Link Wallet';
     };
+    abstractAlert: {
+      title: 'AGW Wallet only working on Abstract';
+      subtitle: "Be careful, the Abstract wallet only exist on Abstract. Don't use it anywhere else.";
+      buttonText: 'Check the docs';
+    };
     featureCard: {
       learnMore: 'Learn more';
     };
