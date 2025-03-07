@@ -139,7 +139,6 @@ export function Widget({
         formRef.current?.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
-      } else {
       }
     };
 
