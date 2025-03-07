@@ -8,13 +8,11 @@ import type { LanguageKey } from '@/types/i18n';
 import getApiUrl from '@/utils/getApiUrl';
 import { ChainId, EVM } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
-  useWidgetEvents,
-  WidgetEvent,
 } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -31,10 +29,10 @@ import {
 } from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
+import { useWidgetFormObserver } from 'src/hooks/useWidgetFormObserver';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
@@ -57,8 +55,6 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { destinationChainToken } = useChainTokenSelectionStore();
-  const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -77,83 +73,22 @@ export function Widget({
 
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const { chainTokenSelection, formRef: widgetFormRef } = useWidgetFormObserver(
+    {
+      formRef,
+      account,
+      wrapperRef,
+      configTheme,
+    },
+  );
+
+  const { destinationChainToken } = chainTokenSelection;
 
   const isConnectedAGW = account?.connector?.name === 'Abstract';
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
   }, [router]);
-
-  useEffect(() => {
-    // Our partners that want to onboard on pre-filled address can still do it
-    if (
-      !wrapperRef.current ||
-      configTheme?.chains?.to?.allow?.includes(2741) ||
-      allowToChains?.includes(2741)
-    ) {
-      return;
-    }
-    // Clear toAddress URL parameter once the widget is mounted
-    // Uses MutationObserver to detect when the widget content is loaded
-    // since it's rendered dynamically inside WidgetWrapper
-    const observer = new MutationObserver(() => {
-      if (formRef.current) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
-    observer.observe(wrapperRef.current, {
-      childList: true,
-      subtree: true,
-    });
-    return () => observer.disconnect();
-  }, [allowToChains, configTheme?.chains?.to?.allow]);
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (formRef.current) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
-
-    if (account.chainId === ChainId.ABS) {
-      if (destinationChainToken.chainId !== ChainId.ABS) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
-    }
-
-    const handleAGW = async (fieldChange: FormFieldChanged) => {
-      if (
-        isConnectedAGW &&
-        destinationChainToken.chainId !== ChainId.ABS &&
-        fieldChange?.fieldName === 'toAddress' &&
-        fieldChange?.newValue === account.address
-      ) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      } else {
-      }
-    };
-
-    widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
-    return () => {
-      widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
-    };
-  }, [
-    account.address,
-    account.chainId,
-    destinationChainToken,
-    isConnectedAGW,
-    widgetEvents,
-  ]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
@@ -240,7 +175,7 @@ export function Widget({
           : starterVariant === 'refuel'
             ? 'compact'
             : 'wide',
-      subvariant,
+      subvariant: 'split',
       walletConfig: {
         onConnect: openWalletMenu,
       },
@@ -272,7 +207,7 @@ export function Widget({
       ],
       requiredUI:
         // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW && destinationChainToken.chainId === ChainId.ABS
+        !isConnectedAGW && destinationChainToken.chainId === String(ChainId.ABS)
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
@@ -341,7 +276,6 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
-    subvariant,
     openWalletMenu,
     allowToChains,
     isConnectedAGW,
@@ -371,7 +305,7 @@ export function Widget({
         <LiFiWidget
           integrator={config.integrator}
           config={config}
-          formRef={formRef}
+          formRef={widgetFormRef}
         />
       </ClientOnly>
     </WidgetWrapper>
