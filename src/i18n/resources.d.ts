@@ -103,7 +103,7 @@ interface Resources {
       buttonText: 'Link Wallet';
     };
     abstractAlert: {
-      title: 'AGW Wallet only works on Abstract';
+      title: 'This wallet only works on Abstract!';
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       buttonText: 'Check the AGW docs';
     };
