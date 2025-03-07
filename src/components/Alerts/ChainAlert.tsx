@@ -46,6 +46,7 @@ export const ChainAlert = () => {
       setChainId(0);
     }
   }, [
+    account,
     destinationChainToken,
     sourceChainToken,
     t,
@@ -57,7 +58,7 @@ export const ChainAlert = () => {
     <>
       {isClickable ? (
         <InfoAlertClickable
-          active={chainId > 0}
+          active={true}
           title={title}
           subtitle={subtitle}
           buttonText={buttonText}
