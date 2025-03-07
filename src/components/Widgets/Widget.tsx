@@ -122,7 +122,10 @@ export function Widget({
     });
 
     if (account.chainId === ChainId.ABS) {
-      if (destinationChainToken.chainId !== String(ChainId.ABS)) {
+      if (
+        destinationChainToken.chainId &&
+        parseInt(destinationChainToken.chainId) !== ChainId.ABS
+      ) {
         formRef.current?.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
@@ -132,7 +135,8 @@ export function Widget({
     const handleAGW = async (fieldChange: FormFieldChanged) => {
       if (
         isConnectedAGW &&
-        destinationChainToken.chainId !== String(ChainId.ABS) &&
+        destinationChainToken.chainId &&
+        parseInt(destinationChainToken.chainId) !== ChainId.ABS &&
         fieldChange?.fieldName === 'toAddress' &&
         fieldChange?.newValue === account.address
       ) {
@@ -271,7 +275,9 @@ export function Widget({
       ],
       requiredUI:
         // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW && destinationChainToken.chainId === String(ChainId.ABS)
+        !isConnectedAGW &&
+        (destinationChainToken.chainId &&
+          parseInt(destinationChainToken.chainId)) === ChainId.ABS
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
@@ -340,7 +346,6 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
-    subvariant,
     openWalletMenu,
     allowToChains,
     isConnectedAGW,
