@@ -239,7 +239,7 @@ export function Widget({
           : starterVariant === 'refuel'
             ? 'compact'
             : 'wide',
-      subvariant,
+      subvariant: 'split',
       walletConfig: {
         onConnect: openWalletMenu,
       },
