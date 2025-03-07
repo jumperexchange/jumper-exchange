@@ -109,7 +109,6 @@ export const SubMenu = ({
                   event.stopPropagation();
                   typeof el.onClick === 'function' && el.onClick();
                 }}
-                as="li"
                 key={`${el.label}-${index}`}
               >
                 {el.prefixIcon}
