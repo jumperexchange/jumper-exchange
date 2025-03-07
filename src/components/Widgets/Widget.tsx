@@ -29,12 +29,12 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useChainTokenSelection } from 'src/hooks/useChainTokenSelection';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
@@ -57,7 +57,7 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { destinationChainToken } = useChainTokenSelectionStore();
+  const { destinationChainToken } = useChainTokenSelection();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
@@ -122,7 +122,7 @@ export function Widget({
     });
 
     if (account.chainId === ChainId.ABS) {
-      if (destinationChainToken.chainId !== ChainId.ABS) {
+      if (destinationChainToken.chainId !== String(ChainId.ABS)) {
         formRef.current?.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
@@ -132,7 +132,7 @@ export function Widget({
     const handleAGW = async (fieldChange: FormFieldChanged) => {
       if (
         isConnectedAGW &&
-        destinationChainToken.chainId !== ChainId.ABS &&
+        destinationChainToken.chainId !== String(ChainId.ABS) &&
         fieldChange?.fieldName === 'toAddress' &&
         fieldChange?.newValue === account.address
       ) {
@@ -272,7 +272,7 @@ export function Widget({
       ],
       requiredUI:
         // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW && destinationChainToken.chainId === ChainId.ABS
+        !isConnectedAGW && destinationChainToken.chainId === String(ChainId.ABS)
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
