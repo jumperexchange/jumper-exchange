@@ -13,6 +13,7 @@ import {
   includesCaseInsensitive,
 } from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
+import { BerachainRedirection } from './BerachainRedirection';
 
 export const BerachainMarkets = () => {
   const searchParam = useSearchParams();
@@ -50,6 +51,7 @@ export const BerachainMarkets = () => {
       </Box>
       <BerachainMarketsHeader />
       <BerachainMarketsFilters />
+      <BerachainRedirection />
       <BerachainMarketCards>
         {(!Array.isArray(roycoData) || roycoData.length === 0 || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
