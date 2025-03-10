@@ -276,9 +276,7 @@ export function Widget({
       ],
       requiredUI:
         // if AGW connected and destinationChainToken is NOT ABS, require toAddress
-        isConnectedAGW &&
-        (destinationChainToken.chainId &&
-          parseInt(destinationChainToken.chainId)) !== ChainId.ABS
+        isConnectedAGW && destinationChainToken.chainId !== ChainId.ABS
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,

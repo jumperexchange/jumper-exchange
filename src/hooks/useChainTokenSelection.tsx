@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 interface ChainToken {
-  chainId: string | null;
-  token: string | null;
+  chainId: number | undefined;
+  token: string | undefined;
 }
 
 interface ChainTokenSelection {
@@ -14,12 +14,12 @@ export const useChainTokenSelection = (): ChainTokenSelection => {
   const [chainTokenSelection, setChainTokenSelection] =
     useState<ChainTokenSelection>({
       sourceChainToken: {
-        chainId: null,
-        token: null,
+        chainId: undefined,
+        token: undefined,
       },
       destinationChainToken: {
-        chainId: null,
-        token: null,
+        chainId: undefined,
+        token: undefined,
       },
     });
 
@@ -30,14 +30,19 @@ export const useChainTokenSelection = (): ChainTokenSelection => {
       }
 
       const queryParameters = new URLSearchParams(window.location.search);
+      const fromChain = queryParameters.get('fromChain');
+      const toChain = queryParameters.get('toChain');
+      const fromToken = queryParameters.get('fromToken');
+      const toToken = queryParameters.get('toToken');
+
       setChainTokenSelection({
         sourceChainToken: {
-          chainId: queryParameters.get('fromChain'),
-          token: queryParameters.get('fromToken'),
+          chainId: !!fromChain ? parseInt(fromChain) : undefined,
+          token: fromToken ?? undefined,
         },
         destinationChainToken: {
-          chainId: queryParameters.get('toChain'),
-          token: queryParameters.get('toToken'),
+          chainId: !!toChain ? parseInt(toChain) : undefined,
+          token: toToken ?? undefined,
         },
       });
     };
