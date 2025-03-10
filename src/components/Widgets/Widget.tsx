@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
+import { AbTestCases } from 'src/const/abtests';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import {
@@ -29,12 +30,12 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useChainTokenSelection } from 'src/hooks/useChainTokenSelection';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
@@ -57,7 +58,7 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { destinationChainToken } = useChainTokenSelectionStore();
+  const { destinationChainToken, sourceChainToken } = useChainTokenSelection();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
@@ -97,7 +98,7 @@ export function Widget({
     // Uses MutationObserver to detect when the widget content is loaded
     // since it's rendered dynamically inside WidgetWrapper
     const observer = new MutationObserver(() => {
-      if (formRef.current) {
+      if (formRef.current && isConnectedAGW) {
         formRef.current.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
@@ -121,25 +122,25 @@ export function Widget({
       }
     });
 
-    if (account.chainId === ChainId.ABS) {
-      if (destinationChainToken.chainId !== ChainId.ABS) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
+    if (
+      isConnectedAGW &&
+      account.chainId === ChainId.ABS &&
+      configTheme?.integrator !== 'abs.jmp.exchange'
+    ) {
+      formRef.current?.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
     }
 
     const handleAGW = async (fieldChange: FormFieldChanged) => {
       if (
         isConnectedAGW &&
-        destinationChainToken.chainId !== ChainId.ABS &&
         fieldChange?.fieldName === 'toAddress' &&
         fieldChange?.newValue === account.address
       ) {
         formRef.current?.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
-      } else {
       }
     };
 
@@ -150,6 +151,7 @@ export function Widget({
   }, [
     account.address,
     account.chainId,
+    configTheme?.integrator,
     destinationChainToken,
     isConnectedAGW,
     widgetEvents,
@@ -184,8 +186,7 @@ export function Widget({
 
   const subvariant = useMemo(() => {
     if (
-      'test_widget_subvariants' in abtests &&
-      abtests['test_widget_subvariants'] &&
+      abtests[AbTestCases.TEST_WIDGET_SUBVARIANTS] &&
       starterVariant !== TabsMap.Refuel.variant
     ) {
       return 'split';
@@ -244,14 +245,17 @@ export function Widget({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: configTheme?.chains ?? {
-        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
-        ...{
-          from:
-            // allow only Abstract chain as sourceChain if AGW is connected
-            isConnectedAGW ? { allow: [2741] } : undefined,
-        },
-        allow: allowChains || allowedChainsByVariant,
+      chains: {
+        ...configTheme?.chains,
+        from: isConnectedAGW
+          ? { allow: [ChainId.ABS] }
+          : { allow: allowChains || allowedChainsByVariant },
+        to:
+          isConnectedAGW && configTheme?.integrator !== 'abs.jmp.exchange'
+            ? { allow: [ChainId.ABS] }
+            : allowToChains
+              ? { allow: allowToChains }
+              : undefined,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -271,8 +275,8 @@ export function Widget({
         HiddenUI.WalletMenu,
       ],
       requiredUI:
-        // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW && destinationChainToken.chainId === ChainId.ABS
+        // if AGW connected and destinationChainToken is NOT ABS, require toAddress
+        isConnectedAGW && destinationChainToken.chainId !== ChainId.ABS
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
@@ -341,12 +345,11 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
-    subvariant,
     openWalletMenu,
-    allowToChains,
     isConnectedAGW,
     allowChains,
     allowedChainsByVariant,
+    allowToChains,
     i18n.language,
     i18n.languages,
     destinationChainToken.chainId,
