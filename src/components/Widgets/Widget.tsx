@@ -57,7 +57,7 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { destinationChainToken } = useChainTokenSelection();
+  const { destinationChainToken, sourceChainToken } = useChainTokenSelection();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
@@ -97,7 +97,7 @@ export function Widget({
     // Uses MutationObserver to detect when the widget content is loaded
     // since it's rendered dynamically inside WidgetWrapper
     const observer = new MutationObserver(() => {
-      if (formRef.current) {
+      if (formRef.current && isConnectedAGW) {
         formRef.current.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
@@ -121,22 +121,19 @@ export function Widget({
       }
     });
 
-    if (account.chainId === ChainId.ABS) {
-      if (
-        destinationChainToken.chainId &&
-        parseInt(destinationChainToken.chainId) !== ChainId.ABS
-      ) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
+    if (
+      isConnectedAGW &&
+      account.chainId === ChainId.ABS &&
+      configTheme?.integrator !== 'abs.jmp.exchange'
+    ) {
+      formRef.current?.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
     }
 
     const handleAGW = async (fieldChange: FormFieldChanged) => {
       if (
         isConnectedAGW &&
-        destinationChainToken.chainId &&
-        parseInt(destinationChainToken.chainId) !== ChainId.ABS &&
         fieldChange?.fieldName === 'toAddress' &&
         fieldChange?.newValue === account.address
       ) {
@@ -153,6 +150,7 @@ export function Widget({
   }, [
     account.address,
     account.chainId,
+    configTheme?.integrator,
     destinationChainToken,
     isConnectedAGW,
     widgetEvents,
@@ -247,13 +245,17 @@ export function Widget({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: configTheme?.chains ?? {
-        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
-        ...// allow only Abstract chain if AGW is connected
-        (configTheme?.integrator !== 'abs.jmp.exchange' && isConnectedAGW
-          ? { from: { allow: [2741] } }
-          : {}),
-        allow: allowChains || allowedChainsByVariant,
+      chains: {
+        ...configTheme?.chains,
+        from: isConnectedAGW
+          ? { allow: [ChainId.ABS] }
+          : { allow: allowChains || allowedChainsByVariant },
+        to:
+          isConnectedAGW && configTheme?.integrator !== 'abs.jmp.exchange'
+            ? { allow: [ChainId.ABS] }
+            : allowToChains
+              ? { allow: allowToChains }
+              : undefined,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -346,12 +348,12 @@ export function Widget({
     memeListTokens,
     starterVariant,
     openWalletMenu,
-    allowToChains,
+    isConnectedAGW,
     allowChains,
     allowedChainsByVariant,
+    allowToChains,
     i18n.language,
     i18n.languages,
-    isConnectedAGW,
     destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
