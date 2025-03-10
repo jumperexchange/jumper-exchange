@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
+import { AbTestCases } from 'src/const/abtests';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import {
@@ -185,8 +186,7 @@ export function Widget({
 
   const subvariant = useMemo(() => {
     if (
-      'test_widget_subvariants' in abtests &&
-      abtests['test_widget_subvariants'] &&
+      abtests[AbTestCases.TEST_WIDGET_SUBVARIANTS] &&
       starterVariant !== TabsMap.Refuel.variant
     ) {
       return 'split';
@@ -241,7 +241,7 @@ export function Widget({
           : starterVariant === 'refuel'
             ? 'compact'
             : 'wide',
-      subvariant: 'split',
+      subvariant,
       walletConfig: {
         onConnect: openWalletMenu,
       },
