@@ -249,12 +249,12 @@ export function Widget({
       },
       chains: configTheme?.chains ?? {
         ...{ to: allowToChains ? { allow: allowToChains } : undefined },
-        ...{
-          from:
-            // allow only Abstract chain as sourceChain if AGW is connected
-            isConnectedAGW ? { allow: [2741] } : undefined,
-        },
-        allow: allowChains || allowedChainsByVariant,
+        allow:
+          // allow only Abstract chain if AGW is connected
+          configTheme?.integrator !== 'abs.jmp.exchange' &&
+          account?.connector?.name === 'Abstract'
+            ? [2741]
+            : allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
