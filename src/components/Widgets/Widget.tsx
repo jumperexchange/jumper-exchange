@@ -186,7 +186,6 @@ export function Widget({
 
   const subvariant = useMemo(() => {
     if (
-      AbTestCases.TEST_WIDGET_SUBVARIANTS in abtests &&
       abtests[AbTestCases.TEST_WIDGET_SUBVARIANTS] &&
       starterVariant !== TabsMap.Refuel.variant
     ) {
