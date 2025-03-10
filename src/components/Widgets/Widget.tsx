@@ -84,7 +84,10 @@ export function Widget({
 
   const { destinationChainToken } = chainTokenSelection;
 
-  const isConnectedAGW = account?.connector?.name === 'Abstract';
+  const isConnectedAGW = useMemo(() => {
+    return account?.connector?.name === 'Abstract';
+  }, [account?.connector?.name]);
+
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
@@ -207,7 +210,9 @@ export function Widget({
       ],
       requiredUI:
         // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW && destinationChainToken.chainId === String(ChainId.ABS)
+        !isConnectedAGW &&
+        destinationChainToken.chainId &&
+        parseInt(destinationChainToken.chainId) === ChainId.ABS
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
