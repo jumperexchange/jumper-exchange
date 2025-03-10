@@ -1,19 +1,25 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import Link from 'next/link';
+import { Box, Typography } from '@mui/material';
 import { BerachainRedirectionCTA } from './BerachainMarkets.style';
 
 export const BerachainRedirection = () => {
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 64,
-      }}
+        margin: theme.spacing(8, 0),
+        gap: theme.spacing(2),
+        maxWidth: '600px',
+        justifySelf: 'center',
+        textAlign: 'center',
+      })}
     >
-      <Typography variant="urbanistTitleMedium">
+      <Typography
+        variant="urbanistTitleMedium"
+        sx={(theme) => ({ color: theme.palette.primary.main })}
+      >
         To withdraw your deposits and claim your rewards head over to the Boyco
         website
       </Typography>
