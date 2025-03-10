@@ -249,12 +249,11 @@ export function Widget({
       },
       chains: configTheme?.chains ?? {
         ...{ to: allowToChains ? { allow: allowToChains } : undefined },
-        allow:
-          // allow only Abstract chain if AGW is connected
-          configTheme?.integrator !== 'abs.jmp.exchange' &&
-          account?.connector?.name === 'Abstract'
-            ? [2741]
-            : allowChains || allowedChainsByVariant,
+        ...// allow only Abstract chain if AGW is connected
+        (configTheme?.integrator !== 'abs.jmp.exchange' && isConnectedAGW
+          ? { from: { allow: [2741] } }
+          : {}),
+        allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -274,10 +273,10 @@ export function Widget({
         HiddenUI.WalletMenu,
       ],
       requiredUI:
-        // if AGW connected and destinationChainToken is ABS, require toAddress
-        !isConnectedAGW &&
+        // if AGW connected and destinationChainToken is NOT ABS, require toAddress
+        isConnectedAGW &&
         (destinationChainToken.chainId &&
-          parseInt(destinationChainToken.chainId)) === ChainId.ABS
+          parseInt(destinationChainToken.chainId)) !== ChainId.ABS
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
@@ -348,11 +347,11 @@ export function Widget({
     starterVariant,
     openWalletMenu,
     allowToChains,
-    isConnectedAGW,
     allowChains,
     allowedChainsByVariant,
     i18n.language,
     i18n.languages,
+    isConnectedAGW,
     destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
