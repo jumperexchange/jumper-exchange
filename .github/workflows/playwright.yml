@@ -30,7 +30,7 @@ jobs:
       run: npx playwright install --with-deps chromium
     - name: Run Playwright tests
       env:
-        PLAYWRIGHT_JSON_OUTPUT_NAME: report-${{ matrix.shard }}.html
+        PLAYWRIGHT_HTML_OUTPUT_NAME: report-${{ matrix.shard }}.html
       run: |
        pnpm build:cache:ci &
         pnpm run test:ci:e2e \
