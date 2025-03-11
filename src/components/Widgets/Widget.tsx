@@ -132,6 +132,12 @@ export function Widget({
       });
     }
 
+    if (configTheme?.integrator === 'abs.jmp.exchange') {
+      formRef.current?.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
+    }
+
     const handleAGW = async (fieldChange: FormFieldChanged) => {
       if (
         isConnectedAGW &&
