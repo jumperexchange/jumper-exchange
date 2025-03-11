@@ -17,8 +17,8 @@ export const BerachainRedirection = () => {
       })}
     >
       <Typography
-        variant="urbanistTitleMedium"
-        sx={(theme) => ({ color: theme.palette.primary.main })}
+        variant="urbanistBodyLarge"
+        sx={(theme) => ({ color: theme.palette.text.primary })}
       >
         To withdraw your deposits and claim your rewards head over to the Boyco
         website

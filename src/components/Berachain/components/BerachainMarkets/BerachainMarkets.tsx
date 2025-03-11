@@ -1,18 +1,9 @@
-import { Box, Grid, Typography } from '@mui/material';
-import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
-import { BerachainMarketCards } from './BerachainMarkets.style';
-import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
-import { BerachainMarketsHeader } from './BerachainMarketsHeader';
-import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
-import type { EnrichedMarketDataType } from 'royco/queries';
-import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
-import { useSearchParams } from 'next/navigation';
-import {
-  calculateBeraYield,
-  getFullTitle,
-  includesCaseInsensitive,
-} from '@/components/Berachain/utils';
 import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
+import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import { Box, Typography } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
+import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 import { BerachainRedirection } from './BerachainRedirection';
 
 export const BerachainMarkets = () => {
@@ -50,17 +41,17 @@ export const BerachainMarkets = () => {
         </Typography>
       </Box>
       <BerachainMarketsHeader />
-      <BerachainMarketsFilters />
       <BerachainRedirection />
-      <BerachainMarketCards>
+      {/* <BerachainMarketsFilters /> */}
+      {/* <BerachainMarketCards>
         {(!Array.isArray(roycoData) || roycoData.length === 0 || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
               key={idx}
             />
-          ))}
-        {/*        {true && (
+          ))} */}
+      {/*        {true && (
           <Grid
             item
             xs={12}
@@ -84,7 +75,7 @@ export const BerachainMarkets = () => {
             </Typography>
           </Grid>
         )*/}
-        {Array.isArray(roycoData) &&
+      {/* {Array.isArray(roycoData) &&
           roycoData?.length > 0 &&
           roycoData
             .filter((data) => {
@@ -149,7 +140,7 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-      </BerachainMarketCards>
+      </BerachainMarketCards> */}
     </Box>
   );
 };
