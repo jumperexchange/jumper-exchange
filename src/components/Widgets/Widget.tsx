@@ -333,6 +333,7 @@ export function Widget({
       buildUrl: true,
       integrator: integratorStringByType,
       tokens: tokens,
+      useRelayerRoutes: true,
     };
   }, [
     configTheme?.fromChain,
