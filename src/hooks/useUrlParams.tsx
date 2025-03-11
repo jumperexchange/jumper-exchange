@@ -8,20 +8,21 @@ interface ChainToken {
 interface ChainTokenSelection {
   sourceChainToken: ChainToken;
   destinationChainToken: ChainToken;
+  toAddress?: string;
 }
 
-export const useChainTokenSelection = (): ChainTokenSelection => {
-  const [chainTokenSelection, setChainTokenSelection] =
-    useState<ChainTokenSelection>({
-      sourceChainToken: {
-        chainId: undefined,
-        token: undefined,
-      },
-      destinationChainToken: {
-        chainId: undefined,
-        token: undefined,
-      },
-    });
+export const useUrlParams = (): ChainTokenSelection => {
+  const [urlParams, setUrlParams] = useState<ChainTokenSelection>({
+    sourceChainToken: {
+      chainId: undefined,
+      token: undefined,
+    },
+    destinationChainToken: {
+      chainId: undefined,
+      token: undefined,
+    },
+    toAddress: undefined,
+  });
 
   useEffect(() => {
     const updateSelection = () => {
@@ -34,8 +35,9 @@ export const useChainTokenSelection = (): ChainTokenSelection => {
       const toChain = queryParameters.get('toChain');
       const fromToken = queryParameters.get('fromToken');
       const toToken = queryParameters.get('toToken');
+      const toAddress = queryParameters.get('toAddress');
 
-      setChainTokenSelection({
+      setUrlParams({
         sourceChainToken: {
           chainId: !!fromChain ? parseInt(fromChain) : undefined,
           token: fromToken ?? undefined,
@@ -44,6 +46,7 @@ export const useChainTokenSelection = (): ChainTokenSelection => {
           chainId: !!toChain ? parseInt(toChain) : undefined,
           token: toToken ?? undefined,
         },
+        toAddress: toAddress ?? undefined,
       });
     };
 
@@ -59,5 +62,5 @@ export const useChainTokenSelection = (): ChainTokenSelection => {
     };
   }, []);
 
-  return chainTokenSelection;
+  return urlParams;
 };
