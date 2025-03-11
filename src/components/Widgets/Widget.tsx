@@ -122,11 +122,7 @@ export function Widget({
       }
     });
 
-    if (
-      isConnectedAGW &&
-      account.chainId === ChainId.ABS &&
-      configTheme?.integrator !== 'abs.jmp.exchange'
-    ) {
+    if (configTheme?.integrator !== 'abs.jmp.exchange') {
       formRef.current?.setFieldValue('toAddress', undefined, {
         setUrlSearchParam: true,
       });
@@ -164,6 +160,7 @@ export function Widget({
     configTheme?.integrator,
     destinationChainToken,
     isConnectedAGW,
+    toAddress,
     widgetEvents,
   ]);
 
