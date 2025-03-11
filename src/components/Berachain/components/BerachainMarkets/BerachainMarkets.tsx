@@ -1,23 +1,19 @@
-import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
-import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
-import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
 import { Box, Typography } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
 import { BerachainRedirection } from './BerachainRedirection';
 
 export const BerachainMarkets = () => {
-  const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') !== 'false';
-  const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-  const berachainFilters = useBerachainFilters();
-  const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
-    (state) => state,
-  );
+  // const searchParam = useSearchParams();
+  // const isVerified = searchParam.get('is_verified') !== 'false';
+  // const { data, url, findFromStrapiByUid } = useBerachainMarkets();
+  // const berachainFilters = useBerachainFilters();
+  // const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
+  //   (state) => state,
+  // );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
-  const { tokenFilter, baffleOnly, incentiveFilter, search } =
-    useBerachainMarketsFilterStore((state) => state);
+  // const { tokenFilter, baffleOnly, incentiveFilter, search } =
+  //   useBerachainMarketsFilterStore((state) => state);
 
   return (
     <Box>

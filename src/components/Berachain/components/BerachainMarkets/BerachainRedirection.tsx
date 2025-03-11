@@ -11,14 +11,16 @@ export const BerachainRedirection = () => {
         alignItems: 'center',
         margin: theme.spacing(8, 0),
         gap: theme.spacing(2),
-        maxWidth: '600px',
         justifySelf: 'center',
         textAlign: 'center',
       })}
     >
       <Typography
         variant="urbanistBodyLarge"
-        sx={(theme) => ({ color: theme.palette.text.primary })}
+        sx={(theme) => ({
+          color: theme.palette.text.primary,
+          fontSize: '24px',
+        })}
       >
         To withdraw your deposits and claim your rewards head over to the Boyco
         website
