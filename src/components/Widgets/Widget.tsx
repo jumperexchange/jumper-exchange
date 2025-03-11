@@ -30,8 +30,8 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { useChainTokenSelection } from 'src/hooks/useChainTokenSelection';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { useABTestStore } from 'src/stores/abTests';
@@ -58,7 +58,7 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
-  const { destinationChainToken, sourceChainToken } = useChainTokenSelection();
+  const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
@@ -132,7 +132,11 @@ export function Widget({
       });
     }
 
-    if (configTheme?.integrator === 'abs.jmp.exchange') {
+    if (
+      configTheme?.integrator === 'abs.jmp.exchange' &&
+      isConnectedAGW &&
+      toAddress === account.address
+    ) {
       formRef.current?.setFieldValue('toAddress', undefined, {
         setUrlSearchParam: true,
       });
