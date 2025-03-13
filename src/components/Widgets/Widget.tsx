@@ -20,13 +20,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
-import { AbTestCases } from 'src/const/abtests';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
-import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -52,7 +50,6 @@ export function Widget({
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
-  const { abtests } = useABTestStore();
   const { account } = useAccount();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
@@ -178,19 +175,11 @@ export function Widget({
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const subvariant = useMemo(() => {
-    if (
-      abtests[AbTestCases.TEST_WIDGET_SUBVARIANTS] &&
-      starterVariant !== TabsMap.Refuel.variant
-    ) {
-      return 'split';
-    } else if (
-      starterVariant === 'buy' ||
-      partnerName === ThemesMap.Memecoins
-    ) {
+    if (starterVariant === 'buy' || partnerName === ThemesMap.Memecoins) {
       return 'default';
     }
     return starterVariant;
-  }, [abtests, partnerName, starterVariant]);
+  }, [partnerName, starterVariant]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
