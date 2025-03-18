@@ -1,6 +1,5 @@
 import Background from '@/components/Background';
 import type { PropsWithChildren } from 'react';
-import { AbTests } from './components/AbTests';
 import { Navbar } from './components/Navbar/Navbar';
 import { PartnerThemeFooterImage } from './components/PartnerThemeFooterImage';
 import { Snackbar } from './components/Snackbar/Snackbar';
@@ -20,7 +19,7 @@ export const Layout: React.FC<PropsWithChildren<LayoutProps>> = ({
     <>
       <Background />
       <Navbar disableNavbar={disableNavbar} />
-      <AbTests />
+      {/* <AbTests /> */}
       {children}
       <SupportModal />
       <Snackbar />
