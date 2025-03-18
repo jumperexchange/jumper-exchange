@@ -27,6 +27,7 @@ const SwapStepsExplainerSection = ({
 
   const steps = [
     {
+      id: 'prepare-wallet',
       title: 'Step 1: Prepare Your Wallet',
       description: `To swap tokens on ${sourceChain?.name}, you will first need to connect your wallet.`,
       img: {
@@ -37,6 +38,7 @@ const SwapStepsExplainerSection = ({
       },
     },
     {
+      id: 'prepare-funds',
       title: `Step 2: Make sure to have Funds on ${sourceChain.name} in your wallet`,
       description: `Before you can swap your assets, you need to ensure you have the necessary funds and assets on the ${sourceChain?.name} network.`,
       img: getWidgetImageProps({
@@ -52,6 +54,7 @@ const SwapStepsExplainerSection = ({
       }),
     },
     {
+      id: 'select-tokens',
       title: `Step 3: Select Tokens to Swap`,
       description:
         'There are several options available to transfer your assets.',
@@ -71,16 +74,17 @@ const SwapStepsExplainerSection = ({
       }),
     },
     {
+      id: 'choose-swap-platform',
       title: `Step 4: Choose a Swap Platform`,
       description: 'To choose a route, follow these steps:',
       content: (
         <ul>
-          <li>Click on the quote you prefer</li>
-          <li>
+          <li key="quote-click">Click on the quote you prefer</li>
+          <li key="quote-verify">
             Verify the details of the quote (i.e., amount of tokens received,
             price impact, slippage, number of steps, gas cost, bridging time)
           </li>
-          <li>Click on "Review swap"</li>
+          <li key="quote-review">Click on "Review swap"</li>
         </ul>
       ),
       img: getWidgetImageProps({
@@ -99,16 +103,17 @@ const SwapStepsExplainerSection = ({
       }),
     },
     {
+      id: 'confirm-transaction',
       title: `Step 5: Confirm the Transaction`,
       description:
         'To execute the swap, you will be asked to confirm the transaction within your wallet.',
       content: (
         <ul>
-          <li>
+          <li key="approve-tokens">
             "Approve" your tokens inside your wallet and wait for the approval
             transaction to go through
           </li>
-          <li>
+          <li key="swap-tokens">
             "Swap" your tokens inside your wallet and wait for the approval
             transaction to go through
           </li>
@@ -130,12 +135,15 @@ const SwapStepsExplainerSection = ({
       }),
     },
     {
+      id: 'verify-transaction',
       title: `Step 6: Verify the Transaction`,
       description: `After swapping your assets, verify that they have been successfully transferred on the ${sourceChain.name} network. You can do this by either:`,
       content: (
         <ul>
-          <li>Clicking on the buttons to see each intermediate transaction</li>
-          <li>
+          <li key="verify-transaction">
+            Clicking on the buttons to see each intermediate transaction
+          </li>
+          <li key="verify-profile">
             Go to your{' '}
             <MuiLink
               color="text.primary"
@@ -172,6 +180,7 @@ const SwapStepsExplainerSection = ({
         color="text.primary"
         marginY={2}
         sx={{ fontSize: '36px!important' }}
+        suppressHydrationWarning
       >
         Steps to Swap tokens on {sourceChain.name}
       </Typography>
@@ -182,7 +191,7 @@ const SwapStepsExplainerSection = ({
       </Typography>
 
       {steps.map((step, index) => (
-        <Fragment key={index}>
+        <Fragment key={step.id}>
           <Divider />
           <StepDetail
             title={step.title}
