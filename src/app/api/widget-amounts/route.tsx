@@ -35,7 +35,7 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const rawParams = parseSearchParams(request.url);
+    const rawParams = parseSearchParams(request.url, 'widget-amounts');
 
     // Validate and sanitize parameters using Zod
     const result = widgetAmountsSchema.safeParse(rawParams);

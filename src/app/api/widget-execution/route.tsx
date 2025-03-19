@@ -33,7 +33,10 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
-import { widgetExecutionSchema } from 'src/utils/image-generation/widgetSchemas';
+import {
+  widgetExecutionSchema,
+  type WidgetExecutionParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 432;
@@ -41,10 +44,13 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const rawParams = parseSearchParams(request.url);
+    const params = parseSearchParams(
+      request.url,
+      'widget-execution',
+    ) as WidgetExecutionParams;
 
     // Validate and sanitize parameters using Zod
-    const result = widgetExecutionSchema.safeParse(rawParams);
+    const result = widgetExecutionSchema.safeParse(params);
 
     if (!result.success) {
       return new Response(
@@ -60,8 +66,6 @@ export async function GET(request: Request) {
         },
       );
     }
-
-    const params = result.data;
 
     // Fetch data asynchronously before rendering
     const fromTokenData = await fetchTokenData(

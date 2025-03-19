@@ -32,7 +32,7 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
-import { widgetQuotesSchema } from 'src/utils/image-generation/widgetSchemas';
+import { type WidgetQuotesParams } from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 856;
 const WIDGET_IMAGE_HEIGHT = 490;
@@ -40,27 +40,10 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const rawParams = parseSearchParams(request.url);
-
-    // Validate and sanitize parameters using Zod
-    const result = widgetQuotesSchema.safeParse(rawParams);
-
-    if (!result.success) {
-      return new Response(
-        JSON.stringify({
-          error: 'Invalid parameters',
-          details: result.error.errors,
-        }),
-        {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-    }
-
-    const params = result.data;
+    const params = parseSearchParams(
+      request.url,
+      'widget-quotes',
+    ) as WidgetQuotesParams;
 
     // Fetch data asynchronously before rendering
     const fromTokenData = await fetchTokenData(

@@ -28,59 +28,71 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { type WidgetSuccessParams } from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
-const WIDGET_IMAGE_HEIGHT = 432;
+const WIDGET_IMAGE_HEIGHT = 440;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const { toChainId, toToken, theme, amount, isSwap } = parseSearchParams(
-    request.url,
-  );
+  try {
+    const params = parseSearchParams(
+      request.url,
+      'widget-success',
+    ) as WidgetSuccessParams;
 
-  // Fetch data asynchronously before rendering
-  const toTokenData = await fetchTokenData(toChainId, toToken);
-  const toChain = await fetchChainData(toChainId as unknown as ChainId);
+    // Fetch data asynchronously before rendering
+    const toTokenData = await fetchTokenData(
+      params.toChainId.toString(),
+      params.toToken,
+    );
+    const toChain = await fetchChainData(
+      params.toChainId as unknown as ChainId,
+    );
 
-  const options = await imageResponseOptions({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  });
+    const options = await imageResponseOptions({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    });
 
-  const imageFrameStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    const imageFrameStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
 
-  const imageStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    const imageStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
 
-  return new ImageResponse(
-    (
-      <div style={imageFrameStyle}>
-        <img
-          alt="Widget Example"
-          width={'100%'}
-          height={'100%'}
-          style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget-success-${theme === 'dark' ? 'dark' : 'light'}.png`}
-        />
-        <WidgetSuccessImage
-          height={WIDGET_IMAGE_WIDTH}
-          isSwap={isSwap === 'true'}
-          width={WIDGET_IMAGE_HEIGHT}
-          toToken={toTokenData}
-          theme={theme as 'light' | 'dark'}
-          toChain={toChain}
-          amount={amount}
-        />
-      </div>
-    ),
-    options,
-  );
+    return new ImageResponse(
+      (
+        <div style={imageFrameStyle}>
+          <img
+            alt="Widget Success Example"
+            width={'100%'}
+            height={'100%'}
+            style={imageStyle}
+            src={`${getSiteUrl()}/widget/widget-success-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+          />
+          <WidgetSuccessImage
+            height={WIDGET_IMAGE_WIDTH}
+            isSwap={params.isSwap}
+            width={WIDGET_IMAGE_HEIGHT}
+            toToken={toTokenData}
+            theme={params.theme}
+            toChain={toChain}
+            amount={params.amount}
+          />
+        </div>
+      ),
+      options,
+    );
+  } catch (error) {
+    console.error('Error generating widget success image:', error);
+    return new Response('Internal server error', { status: 500 });
+  }
 }

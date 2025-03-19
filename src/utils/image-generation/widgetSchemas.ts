@@ -16,8 +16,8 @@ const sanitizeAddress = (address: string): string => {
     return '0x' + hexAddress;
   }
 
-  // If neither format matches, throw an error
-  throw new Error('Invalid address format');
+  // If neither format matches, return the original address
+  return address;
 };
 
 // Helper function to sanitize numeric values
@@ -78,6 +78,8 @@ export const widgetQuotesSchema = z.object({
   amount: amountSchema,
   amountUSD: z
     .string()
+    .nullable()
+    .transform((val) => val || '0')
     .transform((val) => sanitizeNumeric(val))
     .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
       message: 'AmountUSD must be a non-negative number',
@@ -86,9 +88,10 @@ export const widgetQuotesSchema = z.object({
   isSwap: z
     .string()
     .transform((val) => val.toLowerCase() === 'true')
-    .optional(),
+    .transform((val) => Boolean(val))
+    .default('false'),
   theme: themeSchema,
-  highlighted: highlightedSchema,
+  highlighted: highlightedSchema.optional(),
 });
 
 // Widget Selection Schema
@@ -139,41 +142,24 @@ export const widgetReviewSchema = z.object({
   fromToken: tokenAddressSchema,
   toToken: tokenAddressSchema,
   amount: amountSchema,
-  amountUSD: z
-    .string()
-    .transform((val) => sanitizeNumeric(val))
-    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-      message: 'AmountUSD must be a non-negative number',
-    })
-    .optional(),
   isSwap: z
     .string()
     .transform((val) => val.toLowerCase() === 'true')
-    .optional(),
+    .default('false'),
   theme: themeSchema,
   highlighted: highlightedSchema,
 });
 
 // Widget Success Schema
 export const widgetSuccessSchema = z.object({
-  fromChainId: chainIdSchema,
   toChainId: chainIdSchema,
-  fromToken: tokenAddressSchema,
   toToken: tokenAddressSchema,
   amount: amountSchema,
-  amountUSD: z
-    .string()
-    .transform((val) => sanitizeNumeric(val))
-    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-      message: 'AmountUSD must be a non-negative number',
-    })
-    .optional(),
   isSwap: z
     .string()
     .transform((val) => val.toLowerCase() === 'true')
     .optional(),
   theme: themeSchema,
-  highlighted: highlightedSchema,
 });
 
 // Export types

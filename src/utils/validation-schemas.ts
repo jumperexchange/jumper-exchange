@@ -27,14 +27,33 @@ export const amountSchema = z
 /**
  * Schema for token addresses (supports both EVM and Solana formats)
  */
-export const tokenAddressSchema = z.string().refine((value) => {
-  // Check for Ethereum address format (0x...)
-  if (value.startsWith('0x')) {
-    return /^0x[a-fA-F0-9]{40}$/.test(value);
-  }
-  // Check for Solana address format (base58)
-  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value);
-}, 'Invalid token address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
+export const tokenAddressSchema = z
+  .string()
+  .transform((val) => {
+    // Remove any whitespace and convert to lowercase
+    const cleanAddress = val.trim().toLowerCase();
+
+    // Check if it's a Solana address (base58 encoded, 32-44 characters)
+    if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(cleanAddress)) {
+      return cleanAddress;
+    }
+
+    // Handle Ethereum-style addresses (0x...)
+    const hexAddress = cleanAddress.replace(/[^a-f0-9]/g, '');
+    if (hexAddress.length === 40) {
+      return '0x' + hexAddress;
+    }
+
+    return val; // Return original value if no transformation needed
+  })
+  .refine((val) => {
+    // Check for Ethereum address format (0x...)
+    if (val.startsWith('0x')) {
+      return /^0x[a-fA-F0-9]{40}$/.test(val);
+    }
+    // Check for Solana address format (base58)
+    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
+  }, 'Invalid token address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
 
 /**
  * Schema for theme options
