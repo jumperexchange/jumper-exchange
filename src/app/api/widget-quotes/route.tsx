@@ -32,80 +32,106 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { widgetQuotesSchema } from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 856;
-const WIDGET_IMAGE_HEIGHT = 490; //376;
+const WIDGET_IMAGE_HEIGHT = 490;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const {
-    fromChainId,
-    toChainId,
-    fromToken,
-    toToken,
-    isSwap,
-    theme,
-    amount,
-    highlighted,
-    amountUSD,
-  } = parseSearchParams(request.url);
+  try {
+    const rawParams = parseSearchParams(request.url);
 
-  // Fetch data asynchronously before rendering
-  const fromTokenData = await fetchTokenData(fromChainId, fromToken);
-  const toTokenData = await fetchTokenData(toChainId, toToken);
-  const fromChain = await fetchChainData(fromChainId as unknown as ChainId);
-  const toChain = await fetchChainData(toChainId as unknown as ChainId);
+    // Validate and sanitize parameters using Zod
+    const result = widgetQuotesSchema.safeParse(rawParams);
 
-  const routeAmount =
-    (parseFloat(fromTokenData?.priceUSD || '0') * parseFloat(amount || '0')) /
-    parseFloat(toTokenData?.priceUSD || '0');
+    if (!result.success) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid parameters',
+          details: result.error.errors,
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+    }
 
-  const options = await imageResponseOptions({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  });
+    const params = result.data;
 
-  const imageFrameStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    // Fetch data asynchronously before rendering
+    const fromTokenData = await fetchTokenData(
+      String(params.fromChainId),
+      params.fromToken,
+    );
+    const toTokenData = await fetchTokenData(
+      String(params.toChainId),
+      params.toToken,
+    );
+    const fromChain = await fetchChainData(
+      params.fromChainId as unknown as ChainId,
+    );
+    const toChain = await fetchChainData(
+      params.toChainId as unknown as ChainId,
+    );
 
-  const imageStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    const routeAmount =
+      (parseFloat(fromTokenData?.priceUSD || '0') * Number(params.amount)) /
+      parseFloat(toTokenData?.priceUSD || '0');
 
-  const ImageResp = new ImageResponse(
-    (
-      <div style={imageFrameStyle}>
-        <img
-          alt="Widget Quotes Example"
-          width={'100%'}
-          height={'100%'}
-          style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget${isSwap ? '-swap' : ''}-quotes-${theme === 'dark' ? 'dark' : 'light'}.png`}
-        />
-        <WidgetQuoteImage
-          theme={theme as 'light' | 'dark'}
-          height={WIDGET_IMAGE_WIDTH}
-          width={WIDGET_IMAGE_HEIGHT}
-          isSwap={isSwap === 'true'}
-          fromToken={fromTokenData}
-          toToken={toTokenData}
-          fromChain={fromChain}
-          toChain={toChain}
-          amount={amount}
-          routeAmount={routeAmount}
-          amountUSD={amountUSD}
-          highlighted={highlighted as HighlightedAreas}
-        />
-      </div>
-    ),
-    options,
-  );
-  // console.timeEnd('start-time');
-  return ImageResp;
+    const options = await imageResponseOptions({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    });
+
+    const imageFrameStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
+
+    const imageStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
+
+    const ImageResp = new ImageResponse(
+      (
+        <div style={imageFrameStyle}>
+          <img
+            alt="Widget Quotes Example"
+            width={'100%'}
+            height={'100%'}
+            style={imageStyle}
+            src={`${getSiteUrl()}/widget/widget${params.isSwap ? '-swap' : ''}-quotes-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+          />
+          <WidgetQuoteImage
+            theme={params.theme}
+            height={WIDGET_IMAGE_WIDTH}
+            width={WIDGET_IMAGE_HEIGHT}
+            isSwap={params.isSwap}
+            fromToken={fromTokenData}
+            toToken={toTokenData}
+            fromChain={fromChain}
+            toChain={toChain}
+            amount={params.amount}
+            routeAmount={routeAmount}
+            amountUSD={params.amountUSD}
+            highlighted={params.highlighted as HighlightedAreas}
+          />
+        </div>
+      ),
+      options,
+    );
+
+    return ImageResp;
+  } catch (error) {
+    console.error('Error generating widget quote image:', error);
+    return new Response('Internal server error', { status: 500 });
+  }
 }

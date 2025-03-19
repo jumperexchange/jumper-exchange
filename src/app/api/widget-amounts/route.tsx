@@ -27,65 +27,86 @@ import { getChainsQuery } from 'src/hooks/useChains';
 import { getTokensQuery } from 'src/hooks/useTokens';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
+import { widgetAmountsSchema } from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 536;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const { chainName, theme, amount, highlighted } = parseSearchParams(
-    request.url,
-  );
+  try {
+    const rawParams = parseSearchParams(request.url);
 
-  if (!chainName) {
-    return;
+    // Validate and sanitize parameters using Zod
+    const result = widgetAmountsSchema.safeParse(rawParams);
+
+    if (!result.success) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid parameters',
+          details: result.error.errors,
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+    }
+
+    const params = result.data;
+
+    // Fetch data asynchronously before rendering
+    const { chains } = await getChainsQuery();
+    const sortedChains = sortChainsBySpecificName(chains, params.chainName);
+    const { tokens } = await getTokensQuery();
+    const sortedTokensByChainId =
+      sortedChains[0]?.id && tokens[sortedChains[0]?.id].slice(0, 4);
+
+    const options = await imageResponseOptions({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    });
+
+    const imageFrameStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
+
+    const imageStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
+
+    return new ImageResponse(
+      (
+        <div style={imageFrameStyle}>
+          <img
+            alt="Widget Amount Example"
+            width={'100%'}
+            height={'100%'}
+            style={imageStyle}
+            src={`${getSiteUrl()}/widget/widget-swap-amounts-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+          />
+          <WidgetAmountsImage
+            height={WIDGET_IMAGE_WIDTH}
+            width={WIDGET_IMAGE_HEIGHT}
+            theme={params.theme}
+            chains={sortedChains}
+            amount={params.amount}
+            tokens={sortedTokensByChainId || undefined}
+            highlighted={params.highlighted as HighlightedAreas}
+          />
+        </div>
+      ),
+      options,
+    );
+  } catch (error) {
+    console.error('Error generating widget amounts image:', error);
+    return new Response('Internal server error', { status: 500 });
   }
-
-  // Fetch data asynchronously before rendering
-  const { chains } = await getChainsQuery();
-  const sortedChains = sortChainsBySpecificName(chains, chainName);
-  const { tokens } = await getTokensQuery();
-  const sortedTokensByChainId =
-    sortedChains[0]?.id && tokens[sortedChains[0]?.id].slice(0, 4);
-  const options = await imageResponseOptions({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  });
-
-  const imageFrameStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
-
-  const imageStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
-
-  return new ImageResponse(
-    (
-      <div style={imageFrameStyle}>
-        <img
-          alt="Widget Amount Example"
-          width={'100%'}
-          height={'100%'}
-          style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget-swap-amounts-${theme === 'dark' ? 'dark' : 'light'}.png`} //${theme === 'dark' ? 'dark' : 'light'}
-        />
-        <WidgetAmountsImage
-          height={WIDGET_IMAGE_WIDTH}
-          width={WIDGET_IMAGE_HEIGHT}
-          theme={theme as 'light' | 'dark'}
-          chains={sortedChains}
-          amount={amount}
-          tokens={sortedTokensByChainId || undefined}
-          highlighted={highlighted as HighlightedAreas}
-        />
-      </div>
-    ),
-    options,
-  );
 }
