@@ -8,15 +8,13 @@ import { MenuItem as MUIMenuItem, Typography } from '@mui/material';
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import type { ElementType } from 'react';
 
-export interface MenuItemProps extends Omit<MUIMenuItemProps, 'showButton'> {
+export interface MenuItemProps extends MUIMenuItemProps {
   showButton?: boolean;
-  component?: ElementType;
 }
 
 export const MenuItemContainer = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton' && prop !== 'component',
+  shouldForwardProp: (prop) => prop !== 'showButton',
 })<MenuItemProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
@@ -74,7 +72,7 @@ export const MenuItemContainer = styled(MUIMenuItem, {
   ],
 }));
 
-export interface MenuLabelProps extends Omit<ListItemProps, 'variant'> {
+export interface MenuLabelProps extends ListItemProps {
   variant?: 'xs' | 'md' | 'lg';
 }
 
@@ -109,7 +107,7 @@ export const MenuLabel = styled('div', {
   ],
 }));
 
-export interface MenuItemLabelProps extends Omit<TypographyProps, 'variant'> {
+export interface MenuItemLabelProps extends TypographyProps {
   prefixIcon?: JSX.Element | string;
 }
 

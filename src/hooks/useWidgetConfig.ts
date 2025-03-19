@@ -6,7 +6,7 @@ import { deepmerge } from '@mui/utils';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { refuelAllowChains, themeAllowChains } from 'src/components/Widgets';
+import { themeAllowChains } from 'src/components/Widgets';
 import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { TabsMap } from 'src/const/tabsMap';
@@ -26,6 +26,7 @@ import { useConfig } from 'wagmi';
 import { useMemelist } from './useMemelist';
 import { useMultisig } from './useMultisig';
 import { useUserTracking } from './userTracking';
+import getApiUrl from '@/utils/getApiUrl';
 
 interface UseWidgetConfigProps {
   fromChain?: ChainId;
@@ -86,12 +87,7 @@ export const useWidgetConfig = ({
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
   const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const allowedChainsByVariant = useMemo(
-    () =>
-      starterVariant === TabsMap.Refuel.variant
-        ? refuelAllowChains
-        : partnerName === ThemesMap.Memecoins
-          ? themeAllowChains
-          : [],
+    () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [starterVariant, partnerName],
   );
 
@@ -174,7 +170,7 @@ export const useWidgetConfig = ({
       ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,

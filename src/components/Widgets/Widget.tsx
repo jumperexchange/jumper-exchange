@@ -5,13 +5,16 @@ import { useMultisig } from '@/hooks/useMultisig';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
-import { EVM } from '@lifi/sdk';
+import getApiUrl from '@/utils/getApiUrl';
+import { ChainId, EVM } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormState, WidgetConfig } from '@lifi/widget';
+import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
+  useWidgetEvents,
+  WidgetEvent,
 } from '@lifi/widget';
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
@@ -19,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
+import { AbTestCases } from 'src/const/abtests';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import {
@@ -27,12 +31,14 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
-import { refuelAllowChains, themeAllowChains, WidgetWrapper } from '.';
+import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 
 export function Widget({
@@ -52,9 +58,12 @@ export function Widget({
     state.widgetTheme,
     state.configTheme,
   ]);
+  const { destinationChainToken, toAddress } = useUrlParams();
+  const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { abtests } = useABTestStore();
   const { account } = useAccount();
   const wagmiConfig = useConfig();
   const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
@@ -70,6 +79,7 @@ export function Widget({
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const isConnectedAGW = account?.connector?.name === 'Abstract';
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
@@ -88,7 +98,7 @@ export function Widget({
     // Uses MutationObserver to detect when the widget content is loaded
     // since it's rendered dynamically inside WidgetWrapper
     const observer = new MutationObserver(() => {
-      if (formRef.current) {
+      if (formRef.current && isConnectedAGW) {
         formRef.current.setFieldValue('toAddress', undefined, {
           setUrlSearchParam: true,
         });
@@ -102,16 +112,63 @@ export function Widget({
     return () => observer.disconnect();
   }, [allowToChains, configTheme?.chains?.to?.allow]);
 
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (formRef.current) {
+        formRef.current.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+        observer.disconnect();
+      }
+    });
+
+    if (configTheme?.integrator !== 'abs.jmp.exchange') {
+      formRef.current?.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
+    }
+
+    if (
+      configTheme?.integrator === 'abs.jmp.exchange' &&
+      isConnectedAGW &&
+      toAddress === account.address
+    ) {
+      formRef.current?.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
+    }
+
+    const handleAGW = async (fieldChange: FormFieldChanged) => {
+      if (
+        isConnectedAGW &&
+        fieldChange?.fieldName === 'toAddress' &&
+        fieldChange?.newValue === account.address
+      ) {
+        formRef.current?.setFieldValue('toAddress', undefined, {
+          setUrlSearchParam: true,
+        });
+      }
+    };
+
+    widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
+    return () => {
+      widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
+    };
+  }, [
+    account.address,
+    account.chainId,
+    configTheme?.integrator,
+    destinationChainToken,
+    isConnectedAGW,
+    toAddress,
+    widgetEvents,
+  ]);
+
   const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
-    () =>
-      starterVariant === TabsMap.Refuel.variant
-        ? refuelAllowChains
-        : partnerName === ThemesMap.Memecoins
-          ? themeAllowChains
-          : [],
+    () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [starterVariant, partnerName],
   );
 
@@ -133,6 +190,21 @@ export function Widget({
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
+
+  const subvariant = useMemo(() => {
+    if (
+      abtests[AbTestCases.TEST_WIDGET_SUBVARIANTS] &&
+      starterVariant !== TabsMap.Refuel.variant
+    ) {
+      return 'split';
+    } else if (
+      starterVariant === 'buy' ||
+      partnerName === ThemesMap.Memecoins
+    ) {
+      return 'default';
+    }
+    return starterVariant;
+  }, [abtests, partnerName, starterVariant]);
 
   // load environment config
   const config: WidgetConfig = useMemo((): WidgetConfig => {
@@ -176,21 +248,21 @@ export function Widget({
           : starterVariant === 'refuel'
             ? 'compact'
             : 'wide',
-      subvariant:
-        (starterVariant !== 'buy' &&
-          !(partnerName === ThemesMap.Memecoins) &&
-          starterVariant) ||
-        'default',
+      subvariant,
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: configTheme?.chains ?? {
-        ...{ to: allowToChains ? { allow: allowToChains } : undefined },
-        allow:
-          // allow only Abstract chain if AGW is connected
-          account?.connector?.name === 'Abstract'
-            ? [2741]
-            : allowChains || allowedChainsByVariant,
+      chains: {
+        ...configTheme?.chains,
+        from: isConnectedAGW
+          ? { allow: [ChainId.ABS] }
+          : { allow: allowChains || allowedChainsByVariant },
+        to:
+          isConnectedAGW && configTheme?.integrator !== 'abs.jmp.exchange'
+            ? { allow: [ChainId.ABS] }
+            : allowToChains
+              ? { allow: allowToChains }
+              : undefined,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -203,11 +275,17 @@ export function Widget({
         allow: i18n.languages as LanguageKey[],
       },
       hiddenUI: [
+        ...(configTheme?.hiddenUI ?? []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
+      requiredUI:
+        // if AGW connected and destinationChainToken is NOT ABS, require toAddress
+        isConnectedAGW && destinationChainToken.chainId !== ChainId.ABS
+          ? ['toAddress']
+          : undefined,
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
@@ -224,12 +302,11 @@ export function Widget({
         },
       },
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain:
-            !isMultisigSigner && account?.connector?.name !== 'Abstract', // avoid routes requiring chain switch for multisig or smart account wallets
+          allowSwitchChain: !isMultisigSigner && !isConnectedAGW, // avoid routes requiring chain switch for multisig or smart account wallets
         },
         providers:
           isMultisigSigner && isIframeEnvironment()
@@ -262,10 +339,10 @@ export function Widget({
     configTheme?.fromToken,
     configTheme?.toChain,
     configTheme?.toToken,
-    configTheme.variant,
     configTheme?.chains,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
+    configTheme?.hiddenUI,
     fromChain,
     widgetCache.fromChainId,
     widgetCache.fromToken,
@@ -275,14 +352,14 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
-    partnerName,
     openWalletMenu,
-    allowToChains,
-    account?.connector?.name,
+    isConnectedAGW,
     allowChains,
     allowedChainsByVariant,
+    allowToChains,
     i18n.language,
     i18n.languages,
+    destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     multisigWidget,

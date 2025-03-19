@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Typography, alpha } from '@mui/material';
 
 import { urbanist } from '@/fonts/fonts';
@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { IconButtonPrimary } from '../IconButton.style';
 
-export const DiscordBannerLink = styled(Link)<BoxProps>(({ theme }) => ({
+export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   display: 'flex',
   color: theme.palette.text.primary,
   textDecoration: 'unset',
@@ -59,8 +59,6 @@ export const DiscordBannerLabel = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const DiscordBannerButton = styled(IconButtonPrimary)<BoxProps>(
-  ({ theme }) => ({
-    display: 'flex',
-  }),
-);
+export const DiscordBannerButton = styled(IconButtonPrimary)(() => ({
+  display: 'flex',
+}));
