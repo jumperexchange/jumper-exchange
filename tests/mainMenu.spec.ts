@@ -51,11 +51,13 @@ test.describe("Main Menu flows", () => {
 		const whereDoYouRank = await page.locator(
 			'xpath=//p[normalize-space(text())="Where do you rank?"]',
 		);
+    const connectWalletButtonOnLeaderboardPage = await page.locator('#leaderboard-entry-connect-button')
 		await openOrCloseMainMenu(page);
 		await itemInMenu(page, "Jumper Profile");
 		await page.locator(".profile-page").isVisible();
 		await leaderboardButton.click();
 		await expect(whereDoYouRank).toBeVisible();
+		await expect(connectWalletButtonOnLeaderboardPage).toBeVisible();
 	});
 
 	test("Should be able to navigate to the Jumper Learn", async ({ page }) => {
