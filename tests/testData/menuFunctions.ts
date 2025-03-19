@@ -32,3 +32,16 @@ export async function expectBackgroundColorToHaveCss(page, rgb: string) {
   const backgroundColor = await page.locator('xpath=/html/body/div[1]');
   expect(backgroundColor).toHaveCSS('background-color', rgb);
 }
+
+export enum Theme {
+  Light = 'Light',
+  Dark = 'Dark',
+}
+export async function switchTheme(page, theme: Theme) {
+  const themeSelector = {
+    [Theme.Light]: '#theme-switch-tabs-0',
+    [Theme.Dark]: '#theme-switch-tabs-1',
+  };
+  await page.locator(themeSelector[theme]).click();
+  await page.locator('#main-burger-menu-button').click();
+}
