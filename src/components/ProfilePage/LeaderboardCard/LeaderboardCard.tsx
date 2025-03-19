@@ -22,6 +22,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
     parseFloat(leaderboardUserData?.position) / LEADERBOARD_LENGTH,
   );
   const position = leaderboardUserData?.position;
+  const isGtMillion = parseInt(position) >= 1000000;
 
   return (
     <RankContainer>
@@ -35,15 +36,18 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
       <RankContentContainer>
         {position ? (
           <LeaderboardUserPositionButton
+            isGtMillion={isGtMillion}
             as={'a'}
             aria-label="Open leaderboard with your position"
             href={`/leaderboard?page=${userPage}`}
+            sx={(theme) => ({
+              typography: {
+                xs: theme.typography.titleLarge,
+              },
+              // ...(isGtMillion && { fontSize: '38px !important' }),
+            })}
           >
-            <LeaderboardUserTitle variant="titleMedium">
-              {position
-                ? t('format.decimal2Digit', { value: position })
-                : 'N/A'}
-            </LeaderboardUserTitle>
+            {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
           </LeaderboardUserPositionButton>
         ) : (
           <LeaderboardUserTitle variant="titleLarge">N/A</LeaderboardUserTitle>
