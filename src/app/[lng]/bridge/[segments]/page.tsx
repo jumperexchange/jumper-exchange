@@ -1,14 +1,14 @@
+import { siteName } from '@/app/lib/metadata';
 import BridgePage from '@/app/ui/bridge/BridgePage';
+import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getTokensQuery } from '@/hooks/useTokens';
-import { notFound } from 'next/navigation';
 import {
   getChainByName,
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
 import type { Metadata } from 'next';
-import { siteName } from '@/app/lib/metadata';
-import { getSiteUrl } from '@/const/urls';
+import { notFound } from 'next/navigation';
 
 function parseString(url: string): [string, string, string, string] {
   // First, split the string into the source part and the destination part using 'to'

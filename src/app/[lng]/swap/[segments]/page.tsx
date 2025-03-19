@@ -3,7 +3,7 @@ import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getTokensQuery } from '@/hooks/useTokens';
 import { getChainByName } from '@/utils/tokenAndChain';
-import { chainNameSchema, sanitizeChainName } from '@/utils/validation-schemas';
+import { chainNameSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import SwapPage from 'src/app/ui/swap/SwapPage';
@@ -16,10 +16,7 @@ export async function generateMetadata({
   const result = chainNameSchema.safeParse(params.segments);
 
   if (!result.success) {
-    return {
-      title: 'Invalid Swap Request - Jumper',
-      description: 'Invalid swap request parameters',
-    };
+    notFound();
   }
 
   const { chains } = await getChainsQuery();
@@ -30,7 +27,7 @@ export async function generateMetadata({
     title: title,
     description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
     siteName: siteName,
-    url: `${getSiteUrl()}/swap/${sanitizeChainName(result.data)}`,
+    url: `${getSiteUrl()}/swap/${params.segments.replace('-', ' ').toLowerCase()}`,
     type: 'article',
   };
 
@@ -40,7 +37,7 @@ export async function generateMetadata({
     twitter: openGraph,
     openGraph,
     alternates: {
-      canonical: `${getSiteUrl()}/swap/${sanitizeChainName(result.data)}`,
+      canonical: `${getSiteUrl()}/swap/${params.segments}`,
     },
   };
 }

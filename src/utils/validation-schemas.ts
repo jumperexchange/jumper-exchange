@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isValidEvmOrSvmAddress } from './isValidEvmOrSvmAddress';
 
 /**
  * Schema for path segments (alphanumeric, hyphens, and underscores)
@@ -25,11 +26,14 @@ export const amountSchema = z
   .regex(/^\d+(\.\d+)?$/, 'Amount must be a valid number');
 
 /**
- * Schema for token addresses (0x format)
+ * Schema for token addresses (supports both EVM and Solana formats)
  */
 export const tokenAddressSchema = z
   .string()
-  .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid token address format');
+  .refine(
+    (value) => isValidEvmOrSvmAddress(value).isValid,
+    'Invalid token address format (must be a valid EVM or Solana address)',
+  );
 
 /**
  * Schema for theme options
@@ -52,24 +56,18 @@ export const chainNameSchema = z
 /**
  * Schema for search parameters
  */
-export const searchParamsSchema = z
-  .object({
-    amount: amountSchema.nullable(),
-    fromToken: tokenAddressSchema.nullable(),
-    fromChainId: chainIdSchema.nullable(),
-    toToken: tokenAddressSchema.nullable(),
-    toChainId: chainIdSchema.nullable(),
-    highlighted: pathSegmentSchema.nullable(),
-    theme: themeSchema,
-    isSwap: z.enum(['true', 'false']).default('false'),
-    amountUSD: amountSchema.nullable(),
-    chainName: chainNameSchema.nullable(),
-  })
-  .transform((data) => ({
-    ...data,
-    // Add any transformations here if needed
-    // For example, converting chainIds to numbers, etc.
-  }));
+export const searchParamsSchema = z.object({
+  amount: amountSchema.nullable(),
+  fromToken: tokenAddressSchema.nullable(),
+  fromChainId: chainIdSchema.nullable(),
+  toToken: tokenAddressSchema.nullable(),
+  toChainId: chainIdSchema.nullable(),
+  highlighted: pathSegmentSchema.nullable(),
+  theme: themeSchema,
+  isSwap: z.enum(['true', 'false']).default('false'),
+  amountUSD: amountSchema.nullable(),
+  chainName: chainNameSchema.nullable(),
+});
 
 export type ValidatedSearchParams = z.infer<typeof searchParamsSchema>;
 

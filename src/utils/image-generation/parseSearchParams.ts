@@ -22,19 +22,7 @@ export function parseSearchParams(url: string): ValidatedSearchParams {
   const result = searchParamsSchema.safeParse(rawParams);
 
   if (!result.success) {
-    // If validation fails, return null for all fields except defaults
-    return {
-      amount: null,
-      fromToken: null,
-      fromChainId: null,
-      toToken: null,
-      toChainId: null,
-      highlighted: null,
-      theme: 'light', // Default theme
-      isSwap: 'false', // Default isSwap
-      amountUSD: null,
-      chainName: null,
-    };
+    throw new Error('Invalid swap request parameters');
   }
 
   return result.data;
