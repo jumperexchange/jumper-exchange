@@ -52,6 +52,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
           href="/leaderboard"
           passHref
           aria-label="Open leaderboard page"
+          id="leaderboard-button"
         >
           <CardButton>{t('leaderboard.title')}</CardButton>
         </CardButtonContainer>
