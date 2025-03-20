@@ -65,7 +65,10 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
-    color: theme.palette.primary.main,
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.text.primary,
     '&:hover': {
       backgroundColor: getContrastAlphaColor(theme, '4%'),
     },
