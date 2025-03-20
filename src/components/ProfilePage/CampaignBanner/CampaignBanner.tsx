@@ -30,8 +30,10 @@ export const CampaignBanner = () => {
         />
         <CampaignInformation
           tag={'Protocols'}
-          title={'Discover Protocols'}
-          description={`Jumper is joining forces with elite Berachain protocols—The Honey Jar, Stakestone, Infrared, Beraborrow, and BurrBear—to find out which community reigns supreme and to give you a shot at winning $100k in rewards!`}
+          title={'Discover Berachain'}
+          description={
+            'Jumper is joining forces with elite Berachain protocols—Beraborrow, Beratrax, Kodiak, Ramen—to find out which community reigns supreme and to give you a shot at winning +$30k in rewards!'
+          }
         />
       </CampaignBox>
     </Link>
