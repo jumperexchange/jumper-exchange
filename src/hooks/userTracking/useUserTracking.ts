@@ -14,7 +14,7 @@ import { useAccount } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback } from 'react';
-import { useABTestStore } from 'src/stores/abTests'; // Add this import
+import { useAbTestsStore } from 'src/stores/abTests';
 import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
 
@@ -80,7 +80,7 @@ export function useUserTracking() {
   );
   const sessionId = useSession();
   const fp = useFingerprint();
-  const { abtests } = useABTestStore();
+  const { activeTests } = useAbTestsStore();
 
   const {
     trackEvent: jumperTrackEvent,
@@ -125,7 +125,7 @@ export function useUserTracking() {
             sessionId: sessionId || 'unknown',
             referrer: document?.referrer,
             url: window?.location?.href || getSiteUrl(),
-            abtests,
+            abtests: activeTests,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -141,7 +141,7 @@ export function useUserTracking() {
       isDesktop,
       jumperTrackEvent,
       sessionId,
-      abtests,
+      activeTests,
     ],
   );
 
@@ -202,7 +202,7 @@ export function useUserTracking() {
           walletAddress: account.address || 'not_connected',
           walletProvider: account.connector?.name,
           referrer: document?.referrer,
-          abtests,
+          abtests: activeTests,
         };
         await jumperTrackTransaction(transactionData);
       }
@@ -222,7 +222,7 @@ export function useUserTracking() {
       fp,
       jumperTrackTransaction,
       sessionId,
-      abtests,
+      activeTests,
     ],
   );
 

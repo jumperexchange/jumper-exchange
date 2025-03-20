@@ -1,23 +1,27 @@
 'use client';
+import { AbTestConfig, type AbTestName } from 'src/const/abtests';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-interface ABTest {
-  [testId: string]: boolean;
+interface AbTestsState {
+  activeTests: Record<AbTestName, boolean>;
+  setActiveTest: (test: AbTestName, isActive: boolean) => void;
 }
 
-interface ABTestStoreState {
-  abtests: ABTest;
-  setAbtest: (testId: string, value: boolean) => void;
-}
-
-export const useABTestStore = createWithEqualityFn<ABTestStoreState>(
+export const useAbTestsStore = createWithEqualityFn<AbTestsState>(
   (set) => ({
-    abtests: {},
-    setAbtest: (testId, value) =>
+    activeTests: Object.keys(AbTestConfig.tests).reduce(
+      (acc, test) => ({
+        ...acc,
+        [test]:
+          AbTestConfig.tests[test as keyof typeof AbTestConfig.tests].enabled,
+      }),
+      {} as Record<AbTestName, boolean>,
+    ),
+    setActiveTest: (test, isActive) =>
       set((state) => ({
-        abtests: {
-          ...state.abtests,
-          [testId]: value,
+        activeTests: {
+          ...state.activeTests,
+          [test]: isActive,
         },
       })),
   }),
