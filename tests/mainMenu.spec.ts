@@ -41,7 +41,25 @@ test.describe('Main Menu flows', () => {
       .locator('xpath=(//div[@class="MuiBox-root mui-1t1c9pj"])[1]')
       .click();
 
-    await expect(missionTitle).toBeVisible({ timeout: 15000 });
+    await expect(missionTitle).toBeVisible();
+  });
+
+  test('Should open the Jumper Profile page and then open the leaderboard page', async ({
+    page,
+  }) => {
+    const leaderboardButton = await page.locator('#leaderboard-button');
+    const whereDoYouRank = await page.locator(
+      'xpath=//p[normalize-space(text())="Where do you rank?"]',
+    );
+    const connectWalletButtonOnLeaderboardPage = await page.locator(
+      '#leaderboard-entry-connect-button',
+    );
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Jumper Profile');
+    await page.locator('.profile-page').isVisible();
+    await leaderboardButton.click();
+    await expect(whereDoYouRank).toBeVisible();
+    await expect(connectWalletButtonOnLeaderboardPage).toBeVisible();
   });
 
   test('Should be able to navigate to the Jumper Learn', async ({ page }) => {
@@ -77,7 +95,6 @@ test.describe('Main Menu flows', () => {
     );
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Scan');
-    // const newPage = await page.waitForEvent('popup', { timeout: 15000 });
     await expect(page).toHaveURL(values.localJumperScanURL);
     await expect(searchBar).toBeVisible();
   });
