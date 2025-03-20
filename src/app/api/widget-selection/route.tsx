@@ -25,13 +25,19 @@ import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
-import { imageFrameStyles } from 'src/components/ImageGeneration/style';
+import {
+  imageFrameStyles,
+  imageStyles,
+} from 'src/components/ImageGeneration/style';
 import WidgetSelectionImage from 'src/components/ImageGeneration/WidgetSelectionImage';
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
-import { type WidgetSelectionParams } from 'src/utils/image-generation/widgetSchemas';
+import {
+  widgetSelectionSchema,
+  type WidgetSelectionParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 496;
@@ -39,26 +45,18 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const params = parseSearchParams(
+    const params = parseSearchParams<WidgetSelectionParams>(
       request.url,
-      'widget-selection',
-    ) as WidgetSelectionParams;
+      widgetSelectionSchema,
+    );
 
     // Fetch data asynchronously before rendering
-    const fromTokenData = await fetchTokenData(
-      String(params.fromChainId),
-      params.fromToken,
-    );
-    const toTokenData = await fetchTokenData(
-      String(params.toChainId),
-      params.toToken,
-    );
-    const fromChain = await fetchChainData(
-      params.fromChainId as unknown as ChainId,
-    );
-    const toChain = await fetchChainData(
-      params.toChainId as unknown as ChainId,
-    );
+    const [fromTokenData, toTokenData, fromChain, toChain] = await Promise.all([
+      fetchTokenData(params.fromChainId.toString(), params.fromToken),
+      fetchTokenData(params.toChainId.toString(), params.toToken),
+      fetchChainData(params.fromChainId as unknown as ChainId),
+      fetchChainData(params.toChainId as unknown as ChainId),
+    ]);
 
     const options = await imageResponseOptions({
       width: WIDGET_IMAGE_WIDTH,
@@ -66,13 +64,13 @@ export async function GET(request: Request) {
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     });
 
-    const imageFrameStyle = imageFrameStyles({
+    const frameStyles = imageFrameStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     }) as CSSProperties;
 
-    const imageStyle = imageFrameStyles({
+    const imgStyles = imageStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
@@ -80,12 +78,12 @@ export async function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div style={imageFrameStyle}>
+        <div style={frameStyles}>
           <img
             alt="Widget Selection Example"
             width={'100%'}
             height={'100%'}
-            style={imageStyle}
+            style={imgStyles}
             src={`${getSiteUrl()}/widget/widget-selection-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
           />
           <WidgetSelectionImage

@@ -1,9 +1,5 @@
+import type { z } from 'zod';
 import {
-  widgetAmountsSchema,
-  widgetQuotesSchema,
-  widgetReviewSchema,
-  widgetSelectionSchema,
-  widgetSuccessSchema,
   type WidgetAmountsParams,
   type WidgetQuotesParams,
   type WidgetReviewParams,
@@ -18,9 +14,25 @@ type RouteParams =
   | WidgetSelectionParams
   | WidgetSuccessParams;
 
-export function parseSearchParams(url: string, route: string): RouteParams {
+type RawParams = {
+  amount?: string | null;
+  fromToken?: string | null;
+  fromChainId?: string | null;
+  toToken?: string | null;
+  toChainId?: string | null;
+  highlighted?: string | null;
+  theme?: string | null;
+  isSwap?: string | null;
+  amountUSD?: string | null;
+  chainName?: string | null;
+};
+
+export function parseSearchParams<T extends RouteParams>(
+  url: string,
+  schema: z.ZodType<T, any, RawParams>,
+): T {
   const searchParams = new URL(url).searchParams;
-  const rawParams = {
+  const rawParams: RawParams = {
     amount: searchParams.get('amount'),
     fromToken: searchParams.get('fromToken'),
     fromChainId: searchParams.get('fromChainId'),
@@ -33,29 +45,7 @@ export function parseSearchParams(url: string, route: string): RouteParams {
     chainName: searchParams.get('chainName'),
   };
 
-  // Validate with the specific route schema
-  let routeSchema;
-  switch (route) {
-    case 'widget-quotes':
-      routeSchema = widgetQuotesSchema;
-      break;
-    case 'widget-amounts':
-      routeSchema = widgetAmountsSchema;
-      break;
-    case 'widget-review':
-      routeSchema = widgetReviewSchema;
-      break;
-    case 'widget-selection':
-      routeSchema = widgetSelectionSchema;
-      break;
-    case 'widget-success':
-      routeSchema = widgetSuccessSchema;
-      break;
-    default:
-      throw new Error('Invalid route');
-  }
-
-  const routeResult = routeSchema.safeParse(rawParams);
+  const routeResult = schema.safeParse(rawParams);
   if (!routeResult.success) {
     console.error('Validation error:', routeResult.error);
     throw new Error('Invalid parameters for this route');

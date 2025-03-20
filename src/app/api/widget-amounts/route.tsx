@@ -27,7 +27,10 @@ import { getChainsQuery } from 'src/hooks/useChains';
 import { getTokensQuery } from 'src/hooks/useTokens';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
-import { widgetAmountsSchema } from 'src/utils/image-generation/widgetSchemas';
+import {
+  widgetAmountsSchema,
+  type WidgetAmountsParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 536;
@@ -35,34 +38,17 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const rawParams = parseSearchParams(request.url, 'widget-amounts');
+    const params = parseSearchParams<WidgetAmountsParams>(
+      request.url,
+      widgetAmountsSchema,
+    );
 
-    // Validate and sanitize parameters using Zod
-    const result = widgetAmountsSchema.safeParse(rawParams);
-
-    if (!result.success) {
-      return new Response(
-        JSON.stringify({
-          error: 'Invalid parameters',
-          details: result.error.errors,
-        }),
-        {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-    }
-
-    const params = result.data;
-
-    // Fetch data asynchronously before rendering
+    // Get chains and tokens data
     const { chains } = await getChainsQuery();
     const sortedChains = sortChainsBySpecificName(chains, params.chainName);
     const { tokens } = await getTokensQuery();
     const sortedTokensByChainId =
-      sortedChains[0]?.id && tokens[sortedChains[0]?.id].slice(0, 4);
+      sortedChains[0]?.id && tokens[sortedChains[0]?.id]?.slice(0, 4);
 
     const options = await imageResponseOptions({
       width: WIDGET_IMAGE_WIDTH,

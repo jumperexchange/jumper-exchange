@@ -60,7 +60,9 @@ export default async function Page({
   params: { segments: string };
 }) {
   try {
-    const result = chainNameSchema.safeParse(decodeURIComponent(segments));
+    const result = chainNameSchema.safeParse(
+      decodeURIComponent(segments.replace('-', ' ').toLowerCase()),
+    );
 
     if (!result.success) {
       return notFound();

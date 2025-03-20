@@ -24,13 +24,19 @@ import type { ChainId } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
-import { imageFrameStyles } from 'src/components/ImageGeneration/style';
+import {
+  imageFrameStyles,
+  imageStyles,
+} from 'src/components/ImageGeneration/style';
 import WidgetReviewImage from 'src/components/ImageGeneration/WidgetReviewImage';
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
-import { type WidgetReviewParams } from 'src/utils/image-generation/widgetSchemas';
+import {
+  widgetReviewSchema,
+  type WidgetReviewParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 440;
@@ -38,26 +44,18 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const params = parseSearchParams(
+    const params = parseSearchParams<WidgetReviewParams>(
       request.url,
-      'widget-review',
-    ) as WidgetReviewParams;
+      widgetReviewSchema,
+    );
 
     // Fetch data asynchronously before rendering
-    const fromTokenData = await fetchTokenData(
-      params.fromChainId.toString(),
-      params.fromToken,
-    );
-    const toTokenData = await fetchTokenData(
-      params.toChainId.toString(),
-      params.toToken,
-    );
-    const fromChain = await fetchChainData(
-      params.fromChainId as unknown as ChainId,
-    );
-    const toChain = await fetchChainData(
-      params.toChainId as unknown as ChainId,
-    );
+    const [fromTokenData, toTokenData, fromChain, toChain] = await Promise.all([
+      fetchTokenData(params.fromChainId.toString(), params.fromToken),
+      fetchTokenData(params.toChainId.toString(), params.toToken),
+      fetchChainData(params.fromChainId as unknown as ChainId),
+      fetchChainData(params.toChainId as unknown as ChainId),
+    ]);
 
     const options = await imageResponseOptions({
       width: WIDGET_IMAGE_WIDTH,
@@ -65,13 +63,13 @@ export async function GET(request: Request) {
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     });
 
-    const imageFrameStyle = imageFrameStyles({
+    const frameStyles = imageFrameStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     }) as CSSProperties;
 
-    const imageStyle = imageFrameStyles({
+    const imgStyles = imageStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
@@ -79,24 +77,24 @@ export async function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div style={imageFrameStyle}>
+        <div style={frameStyles}>
           <img
             alt="Widget Review Example"
             width={'100%'}
             height={'100%'}
-            style={imageStyle}
+            style={imgStyles}
             src={`${getSiteUrl()}/widget/widget-review-bridge-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
           />
           <WidgetReviewImage
-            height={WIDGET_IMAGE_WIDTH}
-            isSwap={params.isSwap}
-            width={WIDGET_IMAGE_HEIGHT}
+            fromChain={fromChain}
+            toChain={toChain}
             fromToken={fromTokenData}
             toToken={toTokenData}
-            fromChain={fromChain}
             theme={params.theme}
-            toChain={toChain}
+            isSwap={params.isSwap}
             amount={params.amount}
+            width={WIDGET_IMAGE_WIDTH}
+            height={WIDGET_IMAGE_HEIGHT}
           />
         </div>
       ),

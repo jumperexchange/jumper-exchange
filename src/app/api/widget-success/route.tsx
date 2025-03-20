@@ -22,13 +22,19 @@ import type { ChainId } from '@lifi/sdk';
 import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
-import { imageFrameStyles } from 'src/components/ImageGeneration/style';
+import {
+  imageFrameStyles,
+  imageStyles,
+} from 'src/components/ImageGeneration/style';
 import WidgetSuccessImage from 'src/components/ImageGeneration/WidgetSuccessImage';
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
-import { type WidgetSuccessParams } from 'src/utils/image-generation/widgetSchemas';
+import {
+  widgetSuccessSchema,
+  type WidgetSuccessParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 440;
@@ -36,19 +42,16 @@ const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
   try {
-    const params = parseSearchParams(
+    const params = parseSearchParams<WidgetSuccessParams>(
       request.url,
-      'widget-success',
-    ) as WidgetSuccessParams;
+      widgetSuccessSchema,
+    );
 
     // Fetch data asynchronously before rendering
-    const toTokenData = await fetchTokenData(
-      params.toChainId.toString(),
-      params.toToken,
-    );
-    const toChain = await fetchChainData(
-      params.toChainId as unknown as ChainId,
-    );
+    const [toTokenData, toChain] = await Promise.all([
+      fetchTokenData(params.toChainId.toString(), params.toToken),
+      fetchChainData(params.toChainId as unknown as ChainId),
+    ]);
 
     const options = await imageResponseOptions({
       width: WIDGET_IMAGE_WIDTH,
@@ -56,13 +59,13 @@ export async function GET(request: Request) {
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     });
 
-    const imageFrameStyle = imageFrameStyles({
+    const frameStyles = imageFrameStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     }) as CSSProperties;
 
-    const imageStyle = imageFrameStyles({
+    const imgStyles = imageStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
@@ -70,12 +73,12 @@ export async function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div style={imageFrameStyle}>
+        <div style={frameStyles}>
           <img
             alt="Widget Success Example"
             width={'100%'}
             height={'100%'}
-            style={imageStyle}
+            style={imgStyles}
             src={`${getSiteUrl()}/widget/widget-success-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
           />
           <WidgetSuccessImage
