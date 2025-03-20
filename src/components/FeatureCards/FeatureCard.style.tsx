@@ -116,11 +116,11 @@ export interface FeatureCardCtaLabelProps extends TypographyProps {
 }
 
 export const FeatureCardCtaLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'data',
-})<FeatureCardCtaLabelProps>(({ data }) => ({
+  shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
+})<FeatureCardCtaLabelProps>(({ data, typographyColor }) => ({
   maxWidth: 224,
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: data.attributes?.CTAColor ?? 'inherit',
+  color: (data.attributes?.CTAColor || typographyColor) ?? 'inherit',
 }));

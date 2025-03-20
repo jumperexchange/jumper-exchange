@@ -1,5 +1,6 @@
 import type { Breakpoint, ButtonProps as MuiButtonProps } from '@mui/material';
 import { Box, styled, Typography } from '@mui/material';
+import Image from 'next/image';
 import { ButtonSecondary } from 'src/components/Button';
 import { getContrastAlphaColor } from 'src/utils/colors';
 
@@ -8,15 +9,12 @@ export const CampaignBox = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
-  flexDirection: 'row',
+  flexDirection: 'column',
   boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
   marginTop: theme.spacing(4),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    flexDirection: 'column',
-  },
 
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
+  [theme.breakpoints.up('md' as Breakpoint)]: {
     flexDirection: 'row',
   },
 }));
@@ -25,6 +23,7 @@ export const CampaignInfoVerticalBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  gap: theme.spacing(1),
 }));
 
 export const CampaignTagBox = styled(Box)(({ theme }) => ({
@@ -66,17 +65,27 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
+    color:
+      theme.palette.mode === 'light'
+        ? theme.palette.primary.main
+        : theme.palette.text.primary,
     '&:hover': {
       backgroundColor: getContrastAlphaColor(theme, '4%'),
-    },
-    '&:hover svg': {
-      fill:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[700]
-          : theme.palette.grey[300],
     },
     [theme.breakpoints.down('md' as Breakpoint)]: {
       marginTop: 16,
     },
   }),
 );
+
+export const BannerImage = styled(Image)(({ theme }) => ({
+  objectFit: 'cover',
+  borderRadius: '16px',
+  aspectRatio: '1280 / 640',
+  width: '100%',
+  height: 'auto',
+
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    maxWidth: '60%',
+  },
+}));

@@ -11,7 +11,7 @@ test.describe('On chain swaps', () => {
     await page.goto('/');
     await closeWelcomeScreen(page);
   });
-  test(`Check ${chainData.ETHtoETHswap.ETHtoUSDT.tokenSymbol} to ${chainData.ETHtoETHswap.ETHtoUSDT.toTokenSymbol}USDT swap pair on ETH chain`, async ({
+  test(`Check ${chainData.ETHtoETHswap.ETHtoUSDT.tokenSymbol} to ${chainData.ETHtoETHswap.ETHtoUSDT.toTokenSymbol} swap pair on ETH chain`, async ({
     page,
   }) => {
     const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoUSDT);
