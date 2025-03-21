@@ -13,14 +13,15 @@ import {
   RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
 
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
-import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
 import useBlockieImg from 'src/hooks/useBlockieImg';
+import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
 
 interface LeaderboardEntryProps {
   isUserPosition?: boolean;
   isUserConnected?: boolean;
   isUserEntry?: boolean;
+  hideRank?: boolean;
+  loadingLabel?: string;
   walletAddress?: string;
   position?: number | string;
   points: number | string;
@@ -30,6 +31,8 @@ export const LeaderboardEntry = ({
   isUserEntry,
   isUserConnected,
   isUserPosition,
+  hideRank,
+  loadingLabel,
   walletAddress,
   position,
   points,
@@ -45,13 +48,15 @@ export const LeaderboardEntry = ({
       isUserConnected={isUserConnected}
     >
       <LeaderboardEntryInfos>
-        <Box minWidth={74} textAlign={'center'}>
-          <RankLabel variant="bodyXSmallStrong">
-            {isUserEntry && !isUserConnected
-              ? '?'
-              : t('format.decimal2Digit', { value: position }) || 'N/A'}
-          </RankLabel>
-        </Box>
+        {!hideRank && (
+          <Box minWidth={74} textAlign={'center'}>
+            <RankLabel variant="bodyXSmallStrong">
+              {isUserEntry && !isUserConnected
+                ? '?'
+                : t('format.decimal2Digit', { value: position }) || 'N/A'}
+            </RankLabel>
+          </Box>
+        )}
         {walletAddress ? (
           <RankWalletImage
             src={imgLink}
@@ -71,7 +76,7 @@ export const LeaderboardEntry = ({
           hide={!isUserConnected && isUserEntry}
         >
           {isUserEntry && !isUserConnected
-            ? t('leaderboard.rankCtaConnect')
+            ? loadingLabel || t('leaderboard.rankCtaConnect')
             : walletDigest(walletAddress)}
         </RankWalletAddress>
       </LeaderboardEntryInfos>
