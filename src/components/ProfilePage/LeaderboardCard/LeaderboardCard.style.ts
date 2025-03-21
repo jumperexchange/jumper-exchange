@@ -74,7 +74,6 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent, {
   height: 64,
   background: 'transparent',
   borderRadius: '16px',
-  // ...(isGtMillion && { fontSize: '38px !important' }),
 
   [theme.breakpoints.up('xs')]: {
     ...(isGtMillion && { fontSize: '38px !important' }),

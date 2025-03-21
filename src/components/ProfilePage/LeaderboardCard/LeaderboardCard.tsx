@@ -44,7 +44,6 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
               typography: {
                 xs: theme.typography.titleLarge,
               },
-              // ...(isGtMillion && { fontSize: '38px !important' }),
             })}
           >
             {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
