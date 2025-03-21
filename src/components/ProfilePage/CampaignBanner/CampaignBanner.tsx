@@ -29,9 +29,11 @@ export const CampaignBanner = () => {
           height={isMobile ? 160 : 320}
         />
         <CampaignInformation
-          tag={'Protocols'}
-          title={'Discover Protocols'}
-          description={`Jumper is joining forces with elite Berachain protocols—The Honey Jar, Stakestone, Infrared, Beraborrow, and BurrBear—to find out which community reigns supreme and to give you a shot at winning $100k in rewards!`}
+          tag={'Ecosystem Campaign'}
+          title={'Discover Berachain'}
+          description={
+            'Jumper is joining forces with elite Berachain protocols—Beraborrow, Beratrax, Kodiak, Berabot, Ramen—to find out which community reigns supreme and to give you a shot at winning +$75k in rewards!'
+          }
         />
       </CampaignBox>
     </Link>
