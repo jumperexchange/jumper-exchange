@@ -25,10 +25,7 @@ import { ImageResponse } from 'next/og';
 import type { CSSProperties } from 'react';
 import type { HighlightedAreas } from 'src/components/ImageGeneration/ImageGeneration.types';
 import { imageResponseOptions } from 'src/components/ImageGeneration/imageResponseOptions';
-import {
-  imageFrameStyles,
-  imageStyles,
-} from 'src/components/ImageGeneration/style';
+import { imageFrameStyles } from 'src/components/ImageGeneration/style';
 import WidgetSelectionImage from 'src/components/ImageGeneration/WidgetSelectionImage';
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
@@ -64,13 +61,7 @@ export async function GET(request: Request) {
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     });
 
-    const frameStyles = imageFrameStyles({
-      width: WIDGET_IMAGE_WIDTH,
-      height: WIDGET_IMAGE_HEIGHT,
-      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-    }) as CSSProperties;
-
-    const imgStyles = imageStyles({
+    const imageStyle = imageFrameStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
@@ -78,12 +69,12 @@ export async function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div style={frameStyles}>
+        <div style={imageStyle}>
           <img
             alt="Widget Selection Example"
             width={'100%'}
             height={'100%'}
-            style={imgStyles}
+            style={imageStyle}
             src={`${getSiteUrl()}/widget/widget-selection-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
           />
           <WidgetSelectionImage

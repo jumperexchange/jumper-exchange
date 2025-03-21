@@ -3,7 +3,7 @@ import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getTokensQuery } from '@/hooks/useTokens';
 import { getChainByName } from '@/utils/tokenAndChain';
-import { chainNameSchema } from '@/utils/validation-schemas';
+import { chainNameSchema, slugify } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import SwapPage from 'src/app/ui/swap/SwapPage';
@@ -27,7 +27,7 @@ export async function generateMetadata({
     title: title,
     description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
     siteName: siteName,
-    url: `${getSiteUrl()}/swap/${params.segments.replace('-', ' ').toLowerCase()}`,
+    url: `${getSiteUrl()}/swap/${slugify(params.segments)}`,
     type: 'article',
   };
 
@@ -50,7 +50,7 @@ export async function generateStaticParams() {
   const { chains } = await getChainsQuery();
 
   return chains.map((chain) => ({
-    segments: chain.name.replace(' ', '-').toLowerCase(),
+    segments: slugify(chain.name),
   }));
 }
 
@@ -61,7 +61,7 @@ export default async function Page({
 }) {
   try {
     const result = chainNameSchema.safeParse(
-      decodeURIComponent(segments.replace('-', ' ').toLowerCase()),
+      decodeURIComponent(slugify(segments)),
     );
 
     if (!result.success) {

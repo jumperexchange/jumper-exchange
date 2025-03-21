@@ -89,12 +89,6 @@ export async function GET(request: Request) {
       scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
     });
 
-    const imageFrameStyle = imageFrameStyles({
-      width: WIDGET_IMAGE_WIDTH,
-      height: WIDGET_IMAGE_HEIGHT,
-      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-    }) as CSSProperties;
-
     const imageStyle = imageFrameStyles({
       width: WIDGET_IMAGE_WIDTH,
       height: WIDGET_IMAGE_HEIGHT,
@@ -103,7 +97,7 @@ export async function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div style={imageFrameStyle}>
+        <div style={imageStyle}>
           <img
             alt="Widget Example"
             width={'100%'}

@@ -26,6 +26,11 @@ export const amountSchema = z
 
 /**
  * Schema for token addresses (supports both EVM and Solana formats)
+ *
+ * Transformation:
+ * 1. For Solana: Returns base58 address if valid (32-44 chars)
+ * 2. For EVM: Returns original if valid hex format (0x + 40 hex chars)
+ *    - Returns original if no valid format matches
  */
 export const tokenAddressSchema = z
   .string()
@@ -39,9 +44,8 @@ export const tokenAddressSchema = z
     }
 
     // Handle Ethereum-style addresses (0x...)
-    const hexAddress = cleanAddress.replace(/[^a-f0-9]/g, '');
-    if (hexAddress.length === 40) {
-      return '0x' + hexAddress;
+    if (cleanAddress.length === 42) {
+      return cleanAddress;
     }
 
     return val; // Return original value if no transformation needed
@@ -69,7 +73,7 @@ export const themeSchema = z
 export const chainNameSchema = z
   .string()
   .regex(
-    /^[a-zA-Z0-9\s\-]+$/,
+    /^[a-zA-Z0-9\s-]+$/,
     'Chain name must contain only alphanumeric characters, spaces, and hyphens',
   );
 
@@ -92,8 +96,11 @@ export const searchParamsSchema = z.object({
 export type ValidatedSearchParams = z.infer<typeof searchParamsSchema>;
 
 /**
- * Helper function to sanitize chain names for URLs
+ * Converts text into a URL-friendly slug by:
+ * 1. Converting to lowercase
+ * 2. Replacing any sequence of whitespace characters (\s+) with a single hyphen
+ * Example: "Ethereum Mainnet" → "ethereum-mainnet"
  */
-export function sanitizeChainName(name: string): string {
-  return name.toLowerCase().replace(/\s+/g, '-');
+export function slugify(text: string): string {
+  return text.toLowerCase().replace(/\s+/g, '-');
 }

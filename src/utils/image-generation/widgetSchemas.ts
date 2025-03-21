@@ -162,6 +162,17 @@ export const widgetSuccessSchema = z.object({
   theme: themeSchema,
 });
 
+// Widget Route Schema
+export const widgetRouteSchema = z.object({
+  fromChainId: chainIdSchema,
+  toChainId: chainIdSchema,
+  fromToken: tokenAddressSchema,
+  toToken: tokenAddressSchema,
+  amount: amountSchema,
+  theme: themeSchema,
+  highlighted: highlightedSchema,
+});
+
 // Export types
 export type WidgetQuotesParams = z.infer<typeof widgetQuotesSchema>;
 export type WidgetSelectionParams = z.infer<typeof widgetSelectionSchema>;
@@ -169,3 +180,4 @@ export type WidgetExecutionParams = z.infer<typeof widgetExecutionSchema>;
 export type WidgetAmountsParams = z.infer<typeof widgetAmountsSchema>;
 export type WidgetReviewParams = z.infer<typeof widgetReviewSchema>;
 export type WidgetSuccessParams = z.infer<typeof widgetSuccessSchema>;
+export type WidgetRouteParams = z.infer<typeof widgetRouteSchema>;
