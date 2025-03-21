@@ -7,10 +7,8 @@ import {
   JUMPER_TX_PATH,
   JUMPER_WALLET_PATH,
 } from '@/const/urls';
-import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
-import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from 'src/stores/theme';
-import { Logo, LogoLink, NavbarButtons, NavbarContainer } from '.';
+import { Logo, NavbarButtons, NavbarContainer } from '.';
 
 export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
@@ -19,14 +17,7 @@ export const Navbar = ({ disableNavbar = false }) => {
     pathname?.includes(JUMPER_SCAN_PATH) ||
     pathname?.includes(JUMPER_TX_PATH) ||
     pathname?.includes(JUMPER_WALLET_PATH);
-  const { setWelcomeScreenClosed } = useWelcomeScreen();
   const configTheme = useThemeStore((state) => state.configTheme);
-
-  const { closeAllMenus } = useMenuStore((state) => state);
-  const handleClick = () => {
-    closeAllMenus();
-    setWelcomeScreenClosed(false);
-  };
 
   let logoHref;
   if (isLearnPage) {
@@ -39,11 +30,7 @@ export const Navbar = ({ disableNavbar = false }) => {
 
   return (
     <NavbarContainer hasBlurredNavigation={configTheme?.hasBlurredNavigation}>
-      <LogoLink href={logoHref} id="jumper-logo" onClick={handleClick}>
-        <Logo
-          variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
-        />
-      </LogoLink>
+      <Logo variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'} />
       <NavbarButtons />
     </NavbarContainer>
   );

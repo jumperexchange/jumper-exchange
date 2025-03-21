@@ -9,8 +9,8 @@ export const LogoWrapper = styled('div')(({ theme }) => {
   const subCol = theme.palette.accent2.main;
 
   return {
-    cursor: 'pointer',
     display: 'flex',
+    alignItems: 'center',
     fill: 'none',
     '.main-color': {
       fill: mainCol,

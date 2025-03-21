@@ -6,13 +6,22 @@ import ClearIcon from '@mui/icons-material/Clear';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import { JumperScanLogo } from 'src/components/illustrations/JumperScanLogo';
+import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
+import { useMenuStore } from 'src/stores/menu';
 
 type LogoProps = {
   variant: 'default' | 'learn' | 'scan' | 'superfest';
 };
 
 export const Logo = ({ variant }: LogoProps) => {
+  const { setWelcomeScreenClosed } = useWelcomeScreen();
+  const configTheme = useThemeStore((state) => state.configTheme);
+
+  const { closeAllMenus } = useMenuStore((state) => state);
+
   const logo =
     variant === 'scan' ? (
       <JumperScanLogo />
@@ -21,19 +30,22 @@ export const Logo = ({ variant }: LogoProps) => {
     ) : (
       <JumperLearnLogo />
     );
-  const configTheme = useThemeStore((state) => state.configTheme);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  // if (variant === 'superfest') {
-  //   return <JumperLogoBlack />;
-  // }
+
+  const handleClick = () => {
+    closeAllMenus();
+    setWelcomeScreenClosed(false);
+  };
 
   return (
     <LogoWrapper>
       {!isMobile && configTheme?.logo?.url ? (
         <>
-          {logo}
+          <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
+            {logo}
+          </Link>
           <ClearIcon
             width="32px"
             height="32px"
@@ -49,16 +61,20 @@ export const Logo = ({ variant }: LogoProps) => {
               alignSelf: 'center',
             })}
           />
-          <Image
-            alt="jumper-partner-logo"
-            src={configTheme.logo?.url.href}
-            width={configTheme.logo?.width}
-            height={configTheme.logo?.height}
-            style={{ width: 'auto', height: 'auto' }}
-          />
+          <OptionalLink disabled={!configTheme.uid} href={configTheme.uid}>
+            <Image
+              alt="jumper-partner-logo"
+              src={configTheme.logo?.url.href}
+              width={configTheme.logo?.width}
+              height={configTheme.logo?.height}
+              style={{ width: 'auto', height: 'auto' }}
+            />
+          </OptionalLink>
         </>
       ) : (
-        logo
+        <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
+          {logo}
+        </Link>
       )}
     </LogoWrapper>
   );
