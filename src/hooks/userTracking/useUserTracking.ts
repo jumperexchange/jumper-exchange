@@ -80,7 +80,7 @@ export function useUserTracking() {
   );
   const sessionId = useSession();
   const fp = useFingerprint();
-  const { activeTests } = useAbTestsStore();
+  const { activeAbTests } = useAbTestsStore();
 
   const {
     trackEvent: jumperTrackEvent,
@@ -125,7 +125,7 @@ export function useUserTracking() {
             sessionId: sessionId || 'unknown',
             referrer: document?.referrer,
             url: window?.location?.href || getSiteUrl(),
-            abtests: activeTests,
+            abtests: activeAbTests,
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -141,7 +141,7 @@ export function useUserTracking() {
       isDesktop,
       jumperTrackEvent,
       sessionId,
-      activeTests,
+      activeAbTests,
     ],
   );
 
@@ -202,7 +202,7 @@ export function useUserTracking() {
           walletAddress: account.address || 'not_connected',
           walletProvider: account.connector?.name,
           referrer: document?.referrer,
-          abtests: activeTests,
+          abtests: activeAbTests,
         };
         await jumperTrackTransaction(transactionData);
       }
@@ -222,7 +222,7 @@ export function useUserTracking() {
       fp,
       jumperTrackTransaction,
       sessionId,
-      activeTests,
+      activeAbTests,
     ],
   );
 

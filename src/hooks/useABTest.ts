@@ -9,33 +9,35 @@ export interface UseABTestProps {
 
 export const useABTest = ({
   feature,
-  user,
+  address,
 }: {
   feature: AbTestName;
-  user: string;
+  address: string;
 }): UseABTestProps => {
-  const { activeTests, setActiveTest } = useAbTestsStore();
+  const { activeAbTests, setActiveAbTest } = useAbTestsStore();
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const { data, isLoading } = useQuery({
-    queryKey: ['abtest', feature, user],
+    queryKey: ['abtest', feature, address],
     queryFn: async () => {
       const response = await fetch(
-        `${apiBaseUrl}/abtest?feature=${feature}&user=${user}`,
+        `${apiBaseUrl}/posthog/feature-flag?key=${feature}&distinctId=${address}`,
       );
       const resFormatted = await response.json();
 
       if (resFormatted && feature) {
-        setActiveTest(feature, resFormatted.data);
+        setActiveAbTest(feature, resFormatted.data);
       }
 
       return resFormatted;
     },
-    enabled: !!feature && !!user,
+    enabled: !!feature && !!address,
   });
 
   const isEnabled =
-    feature in activeTests ? activeTests[feature] : (data?.isEnabled ?? false);
+    feature in activeAbTests
+      ? activeAbTests[feature]
+      : (data?.isEnabled ?? false);
 
   return {
     isEnabled,

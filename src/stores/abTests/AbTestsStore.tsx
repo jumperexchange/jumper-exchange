@@ -3,13 +3,13 @@ import { AbTestConfig, type AbTestName } from 'src/const/abtests';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface AbTestsState {
-  activeTests: Record<AbTestName, boolean>;
-  setActiveTest: (test: AbTestName, isActive: boolean) => void;
+  activeAbTests: Record<AbTestName, boolean>;
+  setActiveAbTest: (test: AbTestName, isActive: boolean) => void;
 }
 
 export const useAbTestsStore = createWithEqualityFn<AbTestsState>(
   (set) => ({
-    activeTests: Object.keys(AbTestConfig.tests).reduce(
+    activeAbTests: Object.keys(AbTestConfig.tests).reduce(
       (acc, test) => ({
         ...acc,
         [test]:
@@ -17,10 +17,10 @@ export const useAbTestsStore = createWithEqualityFn<AbTestsState>(
       }),
       {} as Record<AbTestName, boolean>,
     ),
-    setActiveTest: (test, isActive) =>
+    setActiveAbTest: (test, isActive) =>
       set((state) => ({
-        activeTests: {
-          ...state.activeTests,
+        activeAbTests: {
+          ...state.activeAbTests,
           [test]: isActive,
         },
       })),
