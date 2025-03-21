@@ -4,10 +4,6 @@ export const AbTests = {
     name: 'test_widget_subvariants', // Name in posthog
     enabled: false,
   },
-  NEW_TEST: {
-    name: 'new_test',
-    enabled: false,
-  },
   // Add more tests here as needed
 } as const;
 
