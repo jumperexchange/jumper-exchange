@@ -36,9 +36,9 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
         <LeaderboardUserPositionButton
           isGtMillion={isGtMillion}
           disabled={!position}
-          as={'a'}
+          as={position ? 'a' : 'div'}
           aria-label="Open leaderboard with your position"
-          href={`/leaderboard?page=${userPage}`}
+          {...(position && { href: `/leaderboard?page=${userPage}` })}
           sx={(theme) => ({
             typography: {
               xs: theme.typography.titleLarge,
