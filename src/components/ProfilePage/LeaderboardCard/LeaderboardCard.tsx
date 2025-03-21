@@ -9,7 +9,6 @@ import {
   CardButton,
   CardButtonContainer,
   LeaderboardUserPositionButton,
-  LeaderboardUserTitle,
   RankContainer,
   RankContentContainer,
 } from './LeaderboardCard.style';
@@ -34,23 +33,20 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
         />
       </Box>
       <RankContentContainer>
-        {position ? (
-          <LeaderboardUserPositionButton
-            isGtMillion={isGtMillion}
-            as={'a'}
-            aria-label="Open leaderboard with your position"
-            href={`/leaderboard?page=${userPage}`}
-            sx={(theme) => ({
-              typography: {
-                xs: theme.typography.titleLarge,
-              },
-            })}
-          >
-            {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
-          </LeaderboardUserPositionButton>
-        ) : (
-          <LeaderboardUserTitle variant="titleLarge">N/A</LeaderboardUserTitle>
-        )}
+        <LeaderboardUserPositionButton
+          isGtMillion={isGtMillion}
+          disabled={!position}
+          as={'a'}
+          aria-label="Open leaderboard with your position"
+          href={`/leaderboard?page=${userPage}`}
+          sx={(theme) => ({
+            typography: {
+              xs: theme.typography.titleLarge,
+            },
+          })}
+        >
+          {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
+        </LeaderboardUserPositionButton>
         <CardButtonContainer
           href="/leaderboard"
           passHref

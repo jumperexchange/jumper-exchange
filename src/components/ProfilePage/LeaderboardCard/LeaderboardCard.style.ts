@@ -70,7 +70,7 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent, {
   padding: theme.spacing(0, 1),
   textDecoration: 'none',
   position: 'relative',
-  marginTop: theme.spacing(0.5),
+  marginTop: theme.spacing(1),
   height: 64,
   background: 'transparent',
   borderRadius: '16px',
