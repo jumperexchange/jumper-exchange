@@ -7,29 +7,30 @@ import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { JumperScanLogo } from 'src/components/illustrations/JumperScanLogo';
 import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
+import {
+  JUMPER_LEARN_PATH,
+  JUMPER_SCAN_PATH,
+  JUMPER_TX_PATH,
+  JUMPER_WALLET_PATH,
+} from 'src/const/urls';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useMenuStore } from 'src/stores/menu';
 
-type LogoProps = {
-  variant: 'default' | 'learn' | 'scan' | 'superfest';
-};
-
-export const Logo = ({ variant }: LogoProps) => {
+export const Logo = () => {
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const configTheme = useThemeStore((state) => state.configTheme);
-
   const { closeAllMenus } = useMenuStore((state) => state);
 
-  const logo =
-    variant === 'scan' ? (
-      <JumperScanLogo />
-    ) : variant === 'default' ? (
-      <JumperLogo />
-    ) : (
-      <JumperLearnLogo />
-    );
+  const pathname = usePathname();
+  const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
+  const isScanPage =
+    pathname?.includes(JUMPER_SCAN_PATH) ||
+    pathname?.includes(JUMPER_TX_PATH) ||
+    pathname?.includes(JUMPER_WALLET_PATH);
+
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -44,8 +45,11 @@ export const Logo = ({ variant }: LogoProps) => {
       {!isMobile && configTheme?.logo?.url ? (
         <>
           <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
-            {logo}
+            <JumperLogo />
           </Link>
+          {(isLearnPage || isScanPage) && (
+            <PathLogo variant={isLearnPage ? 'learn' : 'scan'} />
+          )}
           <ClearIcon
             width="32px"
             height="32px"
@@ -56,8 +60,8 @@ export const Logo = ({ variant }: LogoProps) => {
                   : theme.palette.grey[500],
               width: '16px',
               height: '16px',
-              marginLeft: theme.spacing(-2),
-              marginRight: theme.spacing(2),
+              marginLeft: '5px',
+              marginRight: '10px',
               alignSelf: 'center',
             })}
           />
@@ -72,10 +76,37 @@ export const Logo = ({ variant }: LogoProps) => {
           </OptionalLink>
         </>
       ) : (
-        <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
-          {logo}
-        </Link>
+        <>
+          <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
+            <JumperLogo />
+          </Link>
+          {(isLearnPage || isScanPage) && (
+            <PathLogo variant={isLearnPage ? 'learn' : 'scan'} />
+          )}
+        </>
       )}
     </LogoWrapper>
+  );
+};
+
+const PathLogo = ({ variant }: { variant: 'learn' | 'scan' }) => {
+  let logo, path;
+  switch (variant) {
+    case 'scan':
+      logo = <JumperScanLogo />;
+      path = JUMPER_SCAN_PATH;
+      break;
+    case 'learn':
+      logo = <JumperLearnLogo />;
+      path = JUMPER_LEARN_PATH;
+      break;
+    default:
+      return null;
+  }
+
+  return (
+    <OptionalLink href={path} disabled={false}>
+      {logo}
+    </OptionalLink>
   );
 };

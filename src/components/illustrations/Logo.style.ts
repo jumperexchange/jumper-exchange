@@ -11,6 +11,7 @@ export const LogoWrapper = styled('div')(({ theme }) => {
   return {
     display: 'flex',
     alignItems: 'center',
+    gap: theme.spacing(0.75),
     fill: 'none',
     '.main-color': {
       fill: mainCol,

@@ -49,7 +49,7 @@ export const JumperLogo = () => {
         <style type="text/css">
           {`
             .jumper-logo {
-              width: 175px;
+              width: 148px;
               height: 32px;
             }
           `}

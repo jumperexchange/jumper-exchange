@@ -2,78 +2,26 @@ export const JumperLearnLogo = () => {
   return (
     <svg
       className="jumper-learn-logo"
-      xmlns="http://www.w3.org/2000/svg"
-      width="100%"
-      height="100%"
+      height={32}
       fill="none"
+      viewBox="0 0 94 32"
+      width={94}
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <g clipPath="url(#a)">
-        <path
-          className="main-color"
-          d="M17.144 16 5.83 27.314l2.829 2.828c1.414 1.414 4.242 1.414 5.656 0L25.63 18.828c1.415-1.414 1.415-4.242 0-5.657l-5.656-5.657-5.657 5.657L17.144 16Z"
-        />
-        <path
-          className="sub-color"
-          d="m5.83 4.686 2.83-2.828c1.414-1.414 4.243-1.414 5.657 0l2.828 2.828-5.657 5.657-5.656-5.657Z"
-        />
-      </g>
-      <path
-        className="main-color jumper-learn-logo-desktop"
-        d="M132.002 18h4v-6h12v-2c0-1-1-2-2-2h-12c-1 0-2 1-2 2v8Z"
-      />
       <path
         className="sub-color jumper-learn-logo-desktop"
-        d="M136.002 24h-2c-1 0-2-1-2-2v-2h4v4Z"
-      />
-      <path
-        className="main-color jumper-learn-logo-desktop"
-        d="M117.002 20v-2.667h10v-2.666h-10V12h12v-2c0-1-1-2-2-2h-12c-1 0-2 1-2 2v12c0 1 1 2 2 2h12c1 0 2-1 2-2v-2h-12Zm-22 0h4v4h-2c-1 0-2-1-2-2v-2Z"
-      />
-      <path
-        className="main-color jumper-learn-logo-desktop"
-        fillRule="evenodd"
-        d="M97.002 8c-1 0-2 1-2 2v10h10c4 0 6-3 6-6s-2-6-6-6h-8Zm8 4h-6v4h6c1.5 0 2-1.264 2-2s-.5-2-2-2Z"
-        clipRule="evenodd"
-      />
-      <path
-        className="main-color jumper-learn-logo-desktop"
-        d="M92.002 10c0-1-1-2-2-2h-12c-1 0-2 1-2 2v12c0 1 1 2 2 2h2V12h2.5v12h3V12h2.5v12h2c1 0 2-1 2-2V10Zm-35 0c0-1 1-2 2-2h2v12h8V8h2c1 0 2 1 2 2v12c0 1-1 2-2 2h-12c-1 0-2-1-2-2V10Z"
-      />
-      <path
-        className="sub-color jumper-learn-logo-desktop"
-        d="M50.006 8h1.996c1 0 2 1 2 2l.004 2h-4V8Z"
-      />
-      <path
-        className="main-color jumper-learn-logo-desktop"
-        d="M54.006 14h-4v6h-12l-.004 2c0 1 1 2 2 2h12c1 0 2.004-1 2-2l.004-8Z"
-      />
-      <path
-        className="sub-color jumper-learn-logo-desktop"
-        d="M247.001 22c0 1-1 2-2 2h-2V12h-8v12h-2c-1 0-2-1-2-2V10c0-1 1-2 2-2h12c1 0 2 1 2 2v12Zm-32 2h2V12h12v-2c0-1-1-2-2-2h-12c-1 0-2 1-2 2v12c0 1 1 2 2 2Z"
+        d="m 92.5,22 c 0,1 -1,2 -2,2 h -2 V 12 h -8 v 12 h -2 c -1,0 -2,-1 -2,-2 V 10 c 0,-1 1,-2 2,-2 h 12 c 1,0 2,1 2,2 z m -32,2 h 2 V 12 h 12 v -2 c 0,-1 -1,-2 -2,-2 h -12 c -1,0 -2,1 -2,2 v 12 c 0,1 1,2 2,2 z"
       />
       <path
         className="sub-color jumper-learn-logo-desktop"
         fillRule="evenodd"
-        d="M208.668 24c.737 0 1.333-.597 1.333-1.333V9.334c0-.737-.596-1.334-1.333-1.334h-13.333c-.737 0-1.334.597-1.334 1.334v13.333c0 .736.597 1.333 1.334 1.333h2.666v-4h8v4h2.667Zm-2.667-8v-4h-8v4h8Z"
+        d="M 54.167,24 C 54.904,24 55.5,23.403 55.5,22.667 V 9.334 C 55.5,8.597 54.904,8 54.167,8 H 40.834 C 40.097,8 39.5,8.597 39.5,9.334 V 22.667 C 39.5,23.403 40.097,24 40.834,24 H 43.5 v -4 h 8 v 4 z M 51.5,16 v -4 h -8 v 4 z"
         clipRule="evenodd"
       />
       <path
         className="sub-color jumper-learn-logo-desktop"
-        d="M179.001 20v-2.666h10v-2.667h-10V12h12v-2c0-1-1-2-2-2h-12c-1 0-2 1-2 2v12c0 1 1 2 2 2h12c1 0 2-1 2-2v-2h-12Zm-21-12h2v12h12v2c0 1-1 2-2 2h-12c-1 0-2-1-2-2V10c0-1 1-2 2-2Z"
+        d="m 24.5,20 v -2.666 h 10 v -2.667 h -10 V 12 h 12 v -2 c 0,-1 -1,-2 -2,-2 h -12 c -1,0 -2,1 -2,2 v 12 c 0,1 1,2 2,2 h 12 c 1,0 2,-1 2,-2 V 20 Z M 3.5,8 h 2 v 12 h 12 v 2 c 0,1 -1,2 -2,2 h -12 c -1,0 -2,-1 -2,-2 V 10 c 0,-1 1,-2 2,-2 z"
       />
-      <defs>
-        <clipPath id="a">
-          <path fill="#fff" d="M.003 0h32v32h-32z" />
-        </clipPath>
-      </defs>
-      <style type="text/css">
-        {`
-            .jumper-learn-logo {
-              width: 248px;
-              height: 32px;
-            }
-          `}
-      </style>
     </svg>
   );
 };
