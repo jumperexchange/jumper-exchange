@@ -84,8 +84,6 @@ export const useWidgetConfig = ({
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
-  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const allowedChainsByVariant = useMemo(
     () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [starterVariant, partnerName],
@@ -167,36 +165,13 @@ export const useWidgetConfig = ({
       appearance: widgetTheme.config.appearance,
       theme: mergedWidgetTheme,
       keyPrefix: `jumper-${starterVariant}`,
-      ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: getApiUrl(),
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isMultisigSigner, // avoid routes requiring chain switch for multisig wallets
         },
-        providers:
-          isMultisigSigner && isIframeEnvironment()
-            ? [
-                EVM({
-                  getWalletClient: () => getWalletClient(wagmiConfig),
-                  switchChain: async (chainId) => {
-                    const chain = await switchChain(wagmiConfig, { chainId });
-                    trackEvent({
-                      category: TrackingCategory.Widget,
-                      action: TrackingAction.SwitchChain,
-                      label: 'switch-chain',
-                      data: {
-                        [TrackingEventParameter.ChainId]: chainId,
-                      },
-                    });
-                    return getWalletClient(wagmiConfig, { chainId: chain.id });
-                  },
-                  multisig: multisigSdkConfig,
-                }),
-              ]
-            : undefined,
       },
       buildUrl: true,
       integrator: integratorStringByType,
@@ -229,12 +204,7 @@ export const useWidgetConfig = ({
     allowedChainsByVariant,
     i18n.language,
     i18n.languages,
-    multisigWidget,
-    isMultisigSigner,
-    multisigSdkConfig,
     integratorStringByType,
-    wagmiConfig,
-    trackEvent,
   ]);
 
   return config;
