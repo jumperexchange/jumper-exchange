@@ -214,7 +214,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                       <XPRewardsInfo
                         active={false}
                         completed={false}
-                        bgColor={'#444449'}
                         points={`${Number(apy).toFixed(1)}%`}
                         tooltip={
                           rewardsProgress &&
