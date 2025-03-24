@@ -44,7 +44,7 @@ export const Logo = () => {
     <LogoWrapper>
       {!isMobile && configTheme?.logo?.url ? (
         <>
-          <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
+          <Link href="/" id="jumper-logo" onClick={handleClick} style={{ display: 'flex' }}>
             <JumperLogo />
           </Link>
           {(isLearnPage || isScanPage) && (
@@ -77,7 +77,7 @@ export const Logo = () => {
         </>
       ) : (
         <>
-          <Link href="/" onClick={handleClick} style={{ display: 'flex' }}>
+          <Link href="/" onClick={handleClick} id="jumper-logo" style={{ display: 'flex' }}>
             <JumperLogo />
           </Link>
           {(isLearnPage || isScanPage) && (
