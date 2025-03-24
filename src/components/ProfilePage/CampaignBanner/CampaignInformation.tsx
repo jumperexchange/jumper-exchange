@@ -13,9 +13,7 @@ import {
   BannerButton,
   CampaignInfoVerticalBox,
   CampaignTagBox,
-  SubtitleTypography,
   TextDescriptionBox,
-  TitleTypography,
 } from './CampaignBanner.style';
 
 export const CampaignInformation = ({
@@ -49,8 +47,25 @@ export const CampaignInformation = ({
         </CampaignTagBox>
       )}
       <TextDescriptionBox>
-        <TitleTypography>{title}</TitleTypography>
-        <SubtitleTypography>{description}</SubtitleTypography>
+        <Typography
+          variant="bodyXLargeStrong"
+          sx={(theme) => ({
+            typography: {
+              xs: theme.typography.bodyXLargeStrong,
+              md: theme.typography.titleLarge,
+            },
+          })}
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant="bodyMedium"
+          sx={(theme) => ({
+            color: theme.palette.text.secondary,
+          })}
+        >
+          {description}
+        </Typography>
       </TextDescriptionBox>
 
       <BannerButton
