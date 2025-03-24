@@ -29,19 +29,11 @@ export const CampaignPage = ({
   activeCampaign,
   path,
 }: CampaignPageProps) => {
-  //   const attributes = quest?.attributes;
-  //   const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
-  //   const missionType = quest?.attributes?.CustomInformation?.['missionType'];
-  //   const rewardType = attributes?.CustomInformation?.['rewardType'];
-  //   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  //   const rewards = quest.attributes?.CustomInformation?.['rewards'];
-  //   const points = quest?.attributes?.Points;
 
-  //   const { account } = useAccount();
-  //   const { pastCampaigns } = useMerklRewardsOnCampaigns({
-  //     userAddress: account?.address,
-  //   });
-  //   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
+    // const { account } = useAccount();
+    // const { pastCampaigns } = useMerklRewardsOnCampaigns({
+    //   userAddress: account?.address,
+    // });
 
   return (
     <PageContainer className="profile-page">
