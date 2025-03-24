@@ -1,29 +1,5 @@
 import { z } from 'zod';
-
-// Helper function to sanitize address
-const sanitizeAddress = (address: string): string => {
-  // Remove any whitespace and convert to lowercase
-  const cleanAddress = address.trim().toLowerCase();
-
-  // Check if it's a Solana address (base58 encoded, 32-44 characters)
-  if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(cleanAddress)) {
-    return cleanAddress;
-  }
-
-  // Handle Ethereum-style addresses (0x...)
-  const hexAddress = cleanAddress.replace(/[^a-f0-9]/g, '');
-  if (hexAddress.length === 40) {
-    return '0x' + hexAddress;
-  }
-
-  // If neither format matches, return the original address
-  return address;
-};
-
-// Helper function to sanitize numeric values
-const sanitizeNumeric = (value: string): string => {
-  return value.replace(/[^\d.]/g, '');
-};
+import { sanitizeAddress, sanitizeNumeric } from './sanitizeParams';
 
 // Common schemas
 const chainIdSchema = z
