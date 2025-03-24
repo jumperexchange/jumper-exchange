@@ -4,11 +4,8 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import {
-  RedirectAppButton,
-  RedirectAppIcon,
-  RedirectAppLabel,
-} from './RedirectToApp.style';
+import { ConnectButtonWrapper } from '../WalletButton.style';
+import { RedirectAppLabel } from './RedirectToApp.style';
 
 interface RedirectToAppProps {
   hideConnectButton: boolean;
@@ -28,16 +25,15 @@ export const RedirectToApp = ({ hideConnectButton }: RedirectToAppProps) => {
   };
 
   return (
-    <RedirectAppButton
+    <ConnectButtonWrapper
       component={Link}
       href={'/'}
       onClick={handleOpenApp}
       sx={[!hideConnectButton && { marginRight: theme.spacing(1) }]}
     >
-      <RedirectAppIcon />
       <RedirectAppLabel variant={'bodyMediumStrong'}>
         {t('blog.openApp')}
       </RedirectAppLabel>
-    </RedirectAppButton>
+    </ConnectButtonWrapper>
   );
 };
