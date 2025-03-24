@@ -208,7 +208,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     />
                   </XPRewardsInfo>
                 )}
-                {(points || apy > 0 || variableWeeklyAPY)  ? (
+                {points || apy > 0 || variableWeeklyAPY ? (
                   <>
                     {apy > 0 && !variableWeeklyAPY && (
                       <XPRewardsInfo

@@ -80,7 +80,7 @@ export const QuestsOverview = ({
               rewardRange: rewardRange,
               isTraitsGarded: questTraits && questTraits?.length > 0,
               isUnlocked: isUnlockedForUser,
-              hideXPProgressComponents: true
+              hideXPProgressComponents: true,
             };
 
             return <QuestCard key={`available-mission-${index}`} data={data} />;
