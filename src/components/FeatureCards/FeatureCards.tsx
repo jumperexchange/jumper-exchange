@@ -30,7 +30,7 @@ export const FeatureCards = () => {
     ];
   }, [spindl, featureCards, personalizedFeatureCards]);
 
-  if ((!isDesktop || !welcomeScreenClosed) && (!cards || cards.length === 0)) {
+  if (!isDesktop || !welcomeScreenClosed || !cards || cards.length === 0) {
     return null;
   }
 
