@@ -1,5 +1,4 @@
 import { NoSelectTypography } from '@/components/ProfilePage/ProfilePage.style';
-import { useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { LevelButton } from '../../Button';
 import { XPIcon } from '../../illustrations/XPIcon';
@@ -11,7 +10,6 @@ interface LevelButtonProps {
 
 export const LevelIndicator = ({ level, bound }: LevelButtonProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   return (
     <LevelButton aria-label="XP Level" size="medium">
