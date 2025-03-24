@@ -65,7 +65,7 @@ export default async function NotFound() {
                     <Background />
                     <NavbarContainer>
                       <Link component={RouterLink} href="/">
-                        <Logo variant="default" />
+                        <Logo />
                       </Link>
                       <NavbarButtons />
                     </NavbarContainer>
