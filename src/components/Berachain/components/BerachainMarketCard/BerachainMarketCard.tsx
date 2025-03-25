@@ -1,3 +1,9 @@
+import type { ExtraRewards } from '@/components/Berachain/BerachainType';
+import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
+import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
+import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
+import { calculateTVLGoal, titleSlicer } from '@/components/Berachain/utils';
+import { useAccount } from '@lifi/wallet-management';
 import type { Breakpoint } from '@mui/material';
 import {
   Box,
@@ -10,24 +16,11 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { useChains } from 'src/hooks/useChains';
-import type { MediaData } from 'src/types/strapi';
-import type { BerachainProtocolType } from '../../berachain.types';
-import {
-  BerachainMarketCardBadge,
-  BerachainMarketCardHeader,
-  BerachainMarketCardWrapper,
-  BerchainMarketCardInfos,
-} from './BerachainMarketCard.style';
 import { useTranslation } from 'react-i18next';
 import type { EnrichedMarketDataType } from 'royco/queries';
-import { useEnrichedAccountBalancesRecipeInMarket } from 'royco/hooks';
-import { useAccount } from '@lifi/wallet-management';
-import { BeraChainProgressCardComponent } from './StatCard/BerachainProgressCard.style';
-import DigitCard from './StatCard/DigitCard';
-import DigitTokenSymbolCard from './StatCard/DigitTokenSymbolCard';
-import TokenIncentivesCard from './StatCard/TokenIncentivesCard';
-import DigitTooltipCard from './StatCard/DigitTooltipCard';
+import { useChains } from 'src/hooks/useChains';
+import type { ImageData, StrapiMediaData } from 'src/types/strapi';
+import type { BerachainProtocolType } from '../../berachain.types';
 import {
   APY_TOOLTIP,
   DEPOSIT_TOOLTIP,
@@ -35,21 +28,21 @@ import {
   TVL_TOOLTIP,
 } from '../../const/title';
 import {
-  calculateBeraYield,
-  calculateTVLGoal,
-  titleSlicer,
-} from '@/components/Berachain/utils';
-import TooltipProgressbar from '@/components/Berachain/components/TooltipProgressbar';
-import { BerachainMarketCardWithBadge } from '@/components/Berachain/components/BerachainMarketCard/BerachainMarketCardWithBadge';
-import type { ExtraRewards } from '@/components/Berachain/BerachainType';
-import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
-import { sum } from 'lodash';
+  BerachainMarketCardHeader,
+  BerachainMarketCardWrapper,
+  BerchainMarketCardInfos,
+} from './BerachainMarketCard.style';
+import { BeraChainProgressCardComponent } from './StatCard/BerachainProgressCard.style';
+import DigitCard from './StatCard/DigitCard';
+import DigitTokenSymbolCard from './StatCard/DigitTokenSymbolCard';
+import DigitTooltipCard from './StatCard/DigitTooltipCard';
+import TokenIncentivesCard from './StatCard/TokenIncentivesCard';
 
 interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
   roycoData: EnrichedMarketDataType;
   title?: string;
-  image?: MediaData;
+  image?: ImageData<StrapiMediaData>;
   type?: BerachainProtocolType;
   apys?: number[];
   tokens?: string[];

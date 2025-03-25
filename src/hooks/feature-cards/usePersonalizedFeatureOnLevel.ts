@@ -1,10 +1,10 @@
-import type { FeatureCardData } from '@/types/strapi';
+import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
 
 export interface UsePersonalizedFeatureOnLevelProps {
-  featureCards: FeatureCardData[] | undefined;
+  featureCards: StrapiFeatureCardData[] | undefined;
   isSuccess: boolean;
   isConnected: boolean;
 }
@@ -49,6 +49,7 @@ export const usePersonalizedFeatureOnLevel = ({
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
+          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });

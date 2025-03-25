@@ -4,14 +4,14 @@ import {
   buildUlParams,
   checkIfBestReturnLabelIsVisible,
   closeWelcomeScreen,
-} from './testData/commonFunctions';
+} from './testData/landingPageFunctions';
 
 test.describe('On chain swaps', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await closeWelcomeScreen(page);
   });
-  test(`Check ${chainData.ETHtoETHswap.ETHtoUSDT.tokenSymbol} to ${chainData.ETHtoETHswap.ETHtoUSDT.toTokenSymbol}USDT swap pair on ETH chain`, async ({
+  test(`Check ${chainData.ETHtoETHswap.ETHtoUSDT.tokenSymbol} to ${chainData.ETHtoETHswap.ETHtoUSDT.toTokenSymbol} swap pair on ETH chain`, async ({
     page,
   }) => {
     const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoUSDT);

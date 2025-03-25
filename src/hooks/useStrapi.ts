@@ -149,10 +149,7 @@ export const useStrapi = <T>({
     // populate images on feature card query
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
-    apiUrl.searchParams.set(
-      'populate[2]',
-      'featureCardsExclusions',
-    );
+    apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
     //filter url
     const currentDate = new Date(Date.now()).toISOString().split('T')[0];
@@ -196,6 +193,7 @@ export const useStrapi = <T>({
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
+          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });

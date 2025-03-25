@@ -14,9 +14,10 @@ import {
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
+import { inter } from 'src/fonts/fonts';
 import type { FeatureCardData } from 'src/types/strapi';
 
-export interface CardProps extends Omit<MuiCardProps, 'component'> {
+export interface CardProps extends MuiCardProps {
   backgroundImageUrl?: string;
   isDarkCard?: boolean;
 }
@@ -45,6 +46,7 @@ export const FCard = styled(MuiCard, {
 }));
 
 export const FeatureCardContent = styled(CardContent)(({ theme }) => ({
+  fontFamily: inter.style.fontFamily,
   padding: theme.spacing(3),
   position: 'relative',
 }));
@@ -55,8 +57,7 @@ export const FeatureCardCloseButton = styled(IconButton)(() => ({
   top: 1,
 }));
 
-export interface FeatureCardTitleProps
-  extends Omit<TypographyProps, 'component'> {
+export interface FeatureCardTitleProps extends TypographyProps {
   data?: FeatureCardData;
   typographyColor?: string;
 }
@@ -73,8 +74,7 @@ export const FeatureCardTitle = styled(Typography, {
   textOverflow: 'ellipsis',
 }));
 
-export interface FeatureCardSubtitleProps
-  extends Omit<TypographyProps, 'component'> {
+export interface FeatureCardSubtitleProps extends TypographyProps {
   typographyColor?: string;
 }
 
@@ -95,7 +95,7 @@ export const FeatureCardActions = styled(CardActions)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-export interface FeatureCardCtaLinkProps extends Omit<LinkProps, 'component'> {
+export interface FeatureCardCtaLinkProps extends LinkProps {
   data: FeatureCardData;
 }
 
@@ -109,8 +109,7 @@ export const FeatureCardCtaLink = styled(Link, {
       : theme.palette.accent1Alt.main,
 }));
 
-export interface FeatureCardCtaLabelProps
-  extends Omit<TypographyProps, 'component'> {
+export interface FeatureCardCtaLabelProps extends TypographyProps {
   data: FeatureCardData;
   typographyColor?: string;
 }
@@ -122,5 +121,5 @@ export const FeatureCardCtaLabel = styled(Typography, {
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: data?.CTAColor ?? 'inherit',
+  color: (data?.CTAColor || typographyColor) ?? 'inherit',
 }));

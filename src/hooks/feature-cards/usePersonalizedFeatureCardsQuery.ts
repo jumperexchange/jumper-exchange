@@ -1,9 +1,9 @@
+import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import type { FeatureCardData } from '@/types/strapi';
 
 export interface UsePersonalizedFeatureCardsProps {
-  data: FeatureCardData[];
+  data: StrapiFeatureCardData[];
   isSuccess: boolean;
   isConnected: boolean;
 }
@@ -13,7 +13,7 @@ function getFeatureCardsEndpoint(walletAddress: string): string {
 }
 
 const STRAPI_CONTENT_TYPE = 'feature-cards';
-export const usePersonalizedFeatureCards =
+export const usePersonalizedFeatureCardsQuery =
   (): UsePersonalizedFeatureCardsProps => {
     const { account } = useAccount();
 
@@ -44,10 +44,7 @@ export const usePersonalizedFeatureCards =
 
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
-    apiUrl.searchParams.set(
-      'populate[2]',
-      'featureCardsExclusions',
-    );
+    apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard]', 'true');
     fcCardData?.map((id: number) =>
       apiUrl.searchParams.set('filters[id][]', id.toString()),
@@ -66,6 +63,7 @@ export const usePersonalizedFeatureCards =
       queryFn: async () => {
         const response = await fetch(decodeURIComponent(apiUrl.href), {
           headers: {
+            'Strapi-Response-Format': 'v4',
             Authorization: `Bearer ${apiAccesToken}`,
           },
         });

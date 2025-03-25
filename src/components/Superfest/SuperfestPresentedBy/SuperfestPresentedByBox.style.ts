@@ -2,7 +2,7 @@
 import type { Breakpoint } from '@mui/material';
 import { styled, type BoxProps } from '@mui/material';
 
-export interface ContainerProps extends Omit<BoxProps, 'variant'> {
+export interface ContainerProps extends BoxProps {
   variant?: 'xs' | 'md' | 'lg';
 }
 export const SuperFestPoweredContainer = styled('div', {
@@ -16,7 +16,6 @@ export const SuperFestPoweredContainer = styled('div', {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     marginLeft: theme.spacing(2),
-    [theme.breakpoints.up('sm' as Breakpoint)]: {},
     zIndex: 1,
     '.link-jumper': {
       fontWeight: '700',

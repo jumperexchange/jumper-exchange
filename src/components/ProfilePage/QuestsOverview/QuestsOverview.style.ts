@@ -10,25 +10,26 @@ export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   gridRowGap: theme.spacing(2),
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '32px',
-  paddingY: theme.spacing(2),
-  paddingX: theme.spacing(1),
+  padding: theme.spacing(2, 1),
+  paddingBottom: theme.spacing(1.25),
   boxShadow: theme.shadows[1],
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(4, 3, 3.25),
   },
 }));
 
 export const QuestsOverviewTitle = styled(SectionTitle)(({ theme }) => ({
   gridColumn: '1 / -1',
-  marginBottom: '8px',
+  marginBottom: theme.spacing(1),
+  marginTop: theme.spacing(1.5),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    marginTop: 0,
     marginBottom: '8px',
   },
 }));
 
-export interface SeeAllButtonContainerProps
-  extends Omit<BoxProps, 'component'> {
+export interface SeeAllButtonContainerProps extends BoxProps {
   show: boolean;
 }
 

@@ -1,7 +1,11 @@
 import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 
 /* Strapi */
+export interface ImageData<T> {
+  data: T;
+}
 interface MediaFormat {
   name: string;
   hash: string;
@@ -20,7 +24,14 @@ export interface MediaData extends MediaAttributes {
   // attributes: MediaAttributes;
 }
 
-export interface MediaAttributes {
+export interface StrapiMediaData {
+  id: number;
+  attributes: StrapiMediaAttributes;
+}
+
+type MediaAttributes = SpindlMediaAttributes | StrapiMediaAttributes;
+
+export interface StrapiMediaAttributes {
   name: string;
   alternativeText: string | undefined;
   caption?: string;
@@ -63,19 +74,17 @@ export interface StrapiResponse<T> {
   meta: StrapiMeta;
 }
 
-export interface StrapiImageData {
-  data: MediaData;
-}
+export type FeatureCardData = StrapiFeatureCardData | SpindlCardData;
 
 /* Feature-Cards */
-export interface FeatureCardData extends FeatureCardAttributes {
+export interface StrapiFeatureCardData extends FeatureCardAttributes {
   id: number;
   documentId: string;
   // attributes: FeatureCardAttributes;
 }
 
 interface FeatureCardDisplayConditions {
-  mode: string;
+  mode?: string;
   showOnce?: boolean;
 }
 
@@ -84,14 +93,14 @@ interface FeatureCardExclusion extends Pick<FeatureCardAttributes, 'uid'> {
   documentId: string;
   // attributes: Pick<FeatureCardAttributes, 'uid'>;
 }
-
-interface FeatureCardAttributes {
+export interface FeatureCardAttributes {
   Title: string;
   Subtitle: string;
   CTACall: string;
   URL: string;
   TitleColor?: string;
   CTAColor?: string;
+  SubtitleColor?: string;
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
@@ -99,8 +108,8 @@ interface FeatureCardAttributes {
   publishedAt?: string;
   locale: string;
   uid: string;
-  BackgroundImageLight: MediaData;
-  BackgroundImageDark: MediaData;
+  BackgroundImageLight?: MediaData;
+  BackgroundImageDark?: MediaData;
   featureCardsExclusions?: FeatureCardExclusion[];
 
   localizations: {
@@ -118,7 +127,7 @@ interface JumperUserAttributes {
   EvmWalletAddress?: string;
   SolWalletAddress?: string;
   PersonalizedContent?: object;
-  feature_cards: { data: FeatureCardData[] };
+  feature_cards: { data: StrapiFeatureCardData[] };
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
@@ -192,7 +201,7 @@ export interface AvatarItem extends AvatarData {
 export interface AvatarData extends MediaAttributes {
   id: number;
   documentId: string;
-  // attributes: MediaAttributes;
+  // attributes: StrapiMediaAttributes;
 }
 
 /* Blog */
@@ -205,7 +214,7 @@ export interface BlogArticleAttributes {
   Title: string;
   Subtitle: string;
   Content: RootNode[];
-  Image: MediaData;
+  Image: ImageData<StrapiMediaData>;
   Slug: string;
   createdAt: string;
   updatedAt: string;
@@ -235,7 +244,8 @@ export interface Customization {
   hasBlurredNavigation?: boolean;
 }
 
-type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;
+type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
+  Partial<Pick<WidgetConfig, 'integrator'>>;
 
 export interface PartnerTheme {
   config: WidgetConfigProps;
@@ -259,12 +269,12 @@ export interface PartnerThemesAttributes {
   uid: string;
   SelectableInMenu?: boolean;
   PartnerURL?: URL;
-  BackgroundImageLight: MediaData;
-  BackgroundImageDark: MediaData;
-  FooterImageLight: MediaData;
-  FooterImageDark: MediaData;
-  LogoLight: MediaData;
-  LogoDark: MediaData;
+  BackgroundImageLight: ImageData<StrapiMediaData>;
+  BackgroundImageDark: ImageData<StrapiMediaData>;
+  FooterImageLight: ImageData<StrapiMediaData>;
+  FooterImageDark: ImageData<StrapiMediaData>;
+  LogoLight: ImageData<StrapiMediaData>;
+  LogoDark: ImageData<StrapiMediaData>;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
   Bridges: RepeatableComponent[];

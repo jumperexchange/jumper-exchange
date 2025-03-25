@@ -1,10 +1,9 @@
 'use client';
-import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 
-export const FeatureCardsContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const FeatureCardsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   position: 'fixed',
