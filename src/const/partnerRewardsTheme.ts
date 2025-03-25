@@ -45,6 +45,18 @@ export const REWARDS_LIST = [
     lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
     darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
   },
+  {
+    chainId: '80094',
+    tokenChainId: 80094,
+    claimingAddress: '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae',
+    tokenAddress: '0x6969696969696969696969696969696969696969',
+    decimalsToShow: 2,
+    explorerLink: 'https://berascan.com/',
+    lightTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/bera_06b4ca2b18.webp`,
+    darkTokenLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/bera_06b4ca2b18.webp`,
+    lightChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/berachainlogo_516a0db33e.png`,
+    darkChainLogo: `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/berachainlogo_516a0db33e.png`,
+  },
 ];
 
 export const REWARDS_CHAIN_IDS = ['1135', '30', '8453', '80094'];
