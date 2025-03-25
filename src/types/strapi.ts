@@ -6,6 +6,7 @@ import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 export interface ImageData<T> {
   data: T;
 }
+
 interface MediaFormat {
   name: string;
   hash: string;
@@ -18,20 +19,17 @@ interface MediaFormat {
   url: string;
 }
 
-export interface MediaData extends MediaAttributes {
-  id: number;
+export interface StrapiMediaData extends StrapiMediaAttributes {
+  id: string;
   documentId: string;
-  // attributes: MediaAttributes;
-}
-
-export interface StrapiMediaData {
-  id: number;
-  attributes: StrapiMediaAttributes;
+  // attributes: StrapiMediaAttributes;
 }
 
 type MediaAttributes = SpindlMediaAttributes | StrapiMediaAttributes;
 
 export interface StrapiMediaAttributes {
+  id: string;
+  documentId: string;
   name: string;
   alternativeText: string | undefined;
   caption?: string;
@@ -93,6 +91,7 @@ interface FeatureCardExclusion extends Pick<FeatureCardAttributes, 'uid'> {
   documentId: string;
   // attributes: Pick<FeatureCardAttributes, 'uid'>;
 }
+
 export interface FeatureCardAttributes {
   Title: string;
   Subtitle: string;
@@ -108,8 +107,8 @@ export interface FeatureCardAttributes {
   publishedAt?: string;
   locale: string;
   uid: string;
-  BackgroundImageLight?: MediaData;
-  BackgroundImageDark?: MediaData;
+  BackgroundImageLight?: MediaAttributes;
+  BackgroundImageDark?: MediaAttributes;
   featureCardsExclusions?: FeatureCardExclusion[];
 
   localizations: {
@@ -137,6 +136,7 @@ interface JumperUserAttributes {
 export interface TagData {
   data: TagAttributes[];
 }
+
 export interface TagAttributes {
   // attributes: {
   Title: string;
@@ -178,6 +178,7 @@ export interface AuthorData extends AuthorAttributes {
   // attributes: any;
   // data: AuthorAttributes;
 }
+
 interface AuthorAttributes {
   // attributes: {
   Name: string;
@@ -198,8 +199,8 @@ export interface AvatarItem extends AvatarData {
   // data: AvatarData;
 }
 
-export interface AvatarData extends MediaAttributes {
-  id: number;
+export interface AvatarData extends StrapiMediaAttributes {
+  id: string;
   documentId: string;
   // attributes: StrapiMediaAttributes;
 }
@@ -210,11 +211,12 @@ export interface BlogArticleData extends BlogArticleAttributes {
   documentId: string;
   // attributes: BlogArticleAttributes;
 }
+
 export interface BlogArticleAttributes {
   Title: string;
   Subtitle: string;
   Content: RootNode[];
-  Image: ImageData<StrapiMediaData>;
+  Image: StrapiMediaData;
   Slug: string;
   createdAt: string;
   updatedAt: string;
@@ -269,12 +271,12 @@ export interface PartnerThemesAttributes {
   uid: string;
   SelectableInMenu?: boolean;
   PartnerURL?: URL;
-  BackgroundImageLight: ImageData<StrapiMediaData>;
-  BackgroundImageDark: ImageData<StrapiMediaData>;
-  FooterImageLight: ImageData<StrapiMediaData>;
-  FooterImageDark: ImageData<StrapiMediaData>;
-  LogoLight: ImageData<StrapiMediaData>;
-  LogoDark: ImageData<StrapiMediaData>;
+  BackgroundImageLight: StrapiMediaData;
+  BackgroundImageDark: StrapiMediaData;
+  FooterImageLight: StrapiMediaData;
+  FooterImageDark: StrapiMediaData;
+  LogoLight: StrapiMediaData;
+  LogoDark: StrapiMediaData;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
   Bridges: RepeatableComponent[];

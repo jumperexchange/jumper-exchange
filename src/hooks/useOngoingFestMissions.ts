@@ -50,7 +50,6 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
-          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });

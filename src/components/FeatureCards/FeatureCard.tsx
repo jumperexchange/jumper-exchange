@@ -69,15 +69,15 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   ]);
 
   useEffect(() => {
-    if (isSpindlTrackData(data.attributes)) {
+    if (isSpindlTrackData(data)) {
       trackSpindl(
         'impression',
-        data.attributes.spindlData.impression_id,
-        data.attributes.spindlData.ad_creative_id,
+        data.spindlData.impression_id,
+        data.spindlData.ad_creative_id,
       );
     }
     // allow spindl data to be tracked once
-  }, [data.attributes]);
+  }, [data]);
 
   useEffect(() => {
     if (!eventFired.current && open) {
@@ -98,23 +98,23 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const imageUrl = useMemo(() => {
     const imageMode = mode || theme.palette.mode;
     if (
-      !data?.BackgroundImageDark?.data?.url ||
-      !data?.BackgroundImageLight?.data?.url
+      !data?.BackgroundImageDark?.url ||
+      !data?.BackgroundImageLight?.url
     ) {
       return null;
     }
     return imageMode === 'dark'
       ? new URL(
-          data?.BackgroundImageDark?.data?.url,
+          data?.BackgroundImageDark?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         )
       : new URL(
-          data?.BackgroundImageLight?.data?.url,
+          data?.BackgroundImageLight?.url,
           process.env.NEXT_PUBLIC_STRAPI_URL,
         );
   }, [
-    data?.BackgroundImageDark?.data?.url,
-    data?.BackgroundImageLight?.data?.url,
+    data?.BackgroundImageDark?.url,
+    data?.BackgroundImageLight?.url,
     mode,
     theme.palette.mode,
   ]);
@@ -169,7 +169,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     // Mark feature card as disabled if needed
     if (
       !('showOnce' in data?.DisplayConditions) &&
-      !!data.attributes?.uid
+      !!data?.uid
     ) {
       setDisabledFeatureCard(data?.uid);
     }
@@ -235,7 +235,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
             <FeatureCardSubtitle
               variant="bodySmall"
               typographyColor={
-                data.attributes?.SubtitleColor || typographyColor
+                data?.SubtitleColor || typographyColor
               }
             >
               {data?.Subtitle}

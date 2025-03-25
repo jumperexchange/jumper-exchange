@@ -53,7 +53,6 @@ export async function getTags(): Promise<GetTagsResponse> {
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {
-      'Strapi-Response-Format': 'v4',
       Authorization: `Bearer ${accessToken}`,
     },
   });

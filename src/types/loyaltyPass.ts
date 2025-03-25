@@ -1,6 +1,6 @@
 import type { QuestDetails } from '@/types/questDetails';
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { ImageData, MediaData, StrapiMediaData } from './strapi';
+import type { StrapiMediaData } from './strapi';
 
 // PDA Type
 export interface Reward {
@@ -48,7 +48,7 @@ type ImageFormatThumbnail = {
   height: number;
 };
 
-type ImageAttributes = MediaData;
+type ImageAttributes = StrapiMediaData;
 
 type BannerImageData = {
   id: number;
@@ -97,7 +97,7 @@ export type QuestAttributes = {
   Subtitle?: string;
   Steps?: RootNode[];
   CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
-  Image: ImageData<StrapiMediaData>;
+  Image: StrapiMediaData;
   BannerImage: BannerImageData;
   quests_platform: QuestsPlatformData;
   tasks_verification: TaskVerification[];

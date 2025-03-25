@@ -16,7 +16,7 @@ export default async function InfosLayout({ children }: PropsWithChildren) {
   const partnerThemes = await getPartnerThemes();
 
   const partnerThemesData = partnerThemes.data?.find(
-    (d) => d.attributes?.uid === PARTNER_THEME,
+    (d) => d?.uid === PARTNER_THEME,
   );
 
   if (!partnerThemesData) {
