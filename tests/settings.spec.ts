@@ -14,9 +14,6 @@ test.describe('Settings menu', () => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
     );
-    const bestReturnButton = page.locator(
-      'xpath=//button[normalize-space(text())="Best Return"]',
-    );
     const fastestButton = page.locator(
       'xpath=//button[normalize-space(text())="Fastest"]',
     );
@@ -40,7 +37,7 @@ test.describe('Settings menu', () => {
     await expect(slowGasPrice).toBeEnabled();
     await expect(fastGasPrice).toBeEnabled();
     await itemInSettingsMenu(page, 'Max. slippage');
-    await checkItemInSettingsMenu(page, '0.5', { visible: true });
+    await checkItemInSettingsMenu(page, 'Auto', { visible: true });
     await expect(customSlippage).toBeVisible();
   });
 });

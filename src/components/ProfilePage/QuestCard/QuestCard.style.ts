@@ -91,21 +91,6 @@ export const QuestPlatformMainBox = styled(Box)<BoxProps>(() => ({
   alignItems: 'center',
 }));
 
-export const QuestDatesBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.black.main, 0.04)
-      : theme.palette.alphaLight300.main,
-  paddingTop: '4px',
-  paddingBottom: '4px',
-  paddingLeft: '8px',
-  paddingRight: '8px',
-  borderRadius: '128px',
-  justifyContent: 'center',
-}));
-
 export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
   completed?: boolean;
@@ -116,7 +101,7 @@ export const XPDisplayBox = styled(Box, {
 })<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
   color: theme.palette.primary.main,
-  backgroundColor: '#F0E5FF',
+  backgroundColor: theme.palette.background.default,
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',

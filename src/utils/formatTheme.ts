@@ -6,7 +6,7 @@ import type { PartnerThemesAttributes } from '@/types/strapi';
 function getImageUrl(
   theme: PartnerThemesAttributes,
   imageType: 'BackgroundImage' | 'FooterImage' | 'Logo',
-  defaultMode: 'light' | 'dark' = 'light',
+  defaultMode: 'light' | 'dark' = 'dark',
 ): URL | null {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
 
@@ -155,4 +155,4 @@ export function formatTheme(theme: PartnerThemesAttributes) {
 }
 
 export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) =>
-  theme.darkConfig ? 'dark' : 'light';
+  theme.lightConfig ? 'light' : 'dark';

@@ -27,9 +27,8 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     const metaMaskWalletOption = page.locator(
       'xpath=//span[normalize-space(text())="MetaMask"]',
     );
-    const availableMissionTitle = page.locator(
-      'xpath=//p[normalize-space(text())="Available Missions"]',
-    );
+    const noRecentTransactions = page.locator('xpath=//p[normalize-space(text())="No recent transactions"]');
+    const transactionHistoryButton = page.locator('xpath=//button[@aria-label="Transaction history"]');
     // const ethereumOption = page.locator(
     //   'xpath=//span[normalize-space(text())="Ethereum"]',
     // );
@@ -40,6 +39,8 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     // await ethereumOption.click();
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
+    await transactionHistoryButton.click();
+    await expect(noRecentTransactions).toBeVisible();
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Profile');
     await page.locator('.profile-page').isVisible();

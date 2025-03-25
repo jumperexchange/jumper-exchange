@@ -1,10 +1,10 @@
 import { sequel65, sora } from '@/fonts/fonts';
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from 'src/components/IconButton';
 
-export const MissionCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const MissionCtaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -30,39 +30,37 @@ export const MissionCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
-export const SeveralMissionCtaContainer = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-    mardingBottom: '16px',
-    gap: theme.spacing(1.5),
+export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(4),
+  paddingLeft: theme.spacing(4),
+  paddingRight: theme.spacing(4),
+  mardingBottom: '16px',
+  gap: theme.spacing(1.5),
+  cursor: 'pointer',
+  overflow: 'hidden',
+  textAlign: 'center',
+  transition: 'background-color 250ms',
+  borderRadius: '16px',
+  backgroundColor: theme.palette.bgTertiary.main, // backgroundColor: '#fff0ca',
+  '&:hover': {
     cursor: 'pointer',
-    overflow: 'hidden',
-    textAlign: 'center',
-    transition: 'background-color 250ms',
-    borderRadius: '16px',
-    backgroundColor: theme.palette.bgTertiary.main, // backgroundColor: '#fff0ca',
-    '&:hover': {
-      cursor: 'pointer',
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? darken(theme.palette.bgTertiary.main, 0.02)
-          : alpha(theme.palette.bgTertiary.main, 0.16),
-    },
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
-      gap: theme.spacing(4),
-      flexDirection: 'row',
-    },
-  }),
-);
-export const MissionCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? darken(theme.palette.bgTertiary.main, 0.02) //todo: add to theme
+        : alpha(theme.palette.bgTertiary.main, 0.16),
+  },
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    gap: theme.spacing(4),
+    flexDirection: 'row',
+  },
+}));
+export const MissionCtaTitle = styled(Box)(({ theme }) => ({
   fontFamily: sora.style.fontFamily,
   fontWeight: 700,
   color: theme.palette.black.main,

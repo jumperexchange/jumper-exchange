@@ -72,3 +72,13 @@ export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon, {
   transition: 'transform 0.3s ease',
   transform: `rotate(${active ? '180deg' : '0deg'})`,
 }));
+
+export const BerachainRedirectionCTA = styled(Button)(({ theme }) => ({
+  color: theme.palette.black.main,
+  background: '#FF8425',
+  marginTop: theme.spacing(1.5),
+  transition: ' background-color 300ms ease-in',
+  '&:hover': {
+    background: darken('#FF8425', 0.16),
+  },
+}));

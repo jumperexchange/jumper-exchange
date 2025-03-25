@@ -1,10 +1,7 @@
 import { getContrastAlphaColor } from '@/utils/colors';
-import type { IconButtonProps } from '@mui/material';
 import { IconButton as MuiIconButtom, styled } from '@mui/material';
 
-export const ProfileIconButton = styled(MuiIconButtom, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+export const ProfileIconButton = styled(MuiIconButtom)(({ theme }) => ({
   color: getContrastAlphaColor(theme, '84%'),
   transition: 'background 0.3s',
   width: '48px',

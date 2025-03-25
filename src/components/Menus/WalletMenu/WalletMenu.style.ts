@@ -68,15 +68,15 @@ export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
   }),
 );
 
-export const WalletButtonSecondary = styled(ButtonSecondary, {
-  shouldForwardProp: (prop) => prop !== 'colored',
-})<WalletButtonProps>(({ theme }) => ({
-  borderRadius: '24px',
-  padding: '10px 24px',
-  width: '100%',
-  gridColumn: '2/3',
-  gridRow: '2/3',
-}));
+export const WalletButtonSecondary = styled(ButtonSecondary)<WalletButtonProps>(
+  () => ({
+    borderRadius: '24px',
+    padding: '10px 24px',
+    width: '100%',
+    gridColumn: '2/3',
+    gridRow: '2/3',
+  }),
+);
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',

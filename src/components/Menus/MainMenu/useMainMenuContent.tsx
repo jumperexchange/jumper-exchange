@@ -29,7 +29,6 @@ import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
-import { BerachainIcon } from '@/components/illustrations/BoycoIcon';
 
 export const useMainMenuContent = () => {
   const { t, i18n } = useTranslation();
@@ -142,22 +141,6 @@ export const useMainMenuContent = () => {
           label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
           data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
         });
-      },
-    },
-    {
-      label: 'Jump into Boyco',
-      prefixIcon: <BerachainIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_BOYCO_PATH },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-pass-berachain',
-          action: TrackingAction.ClickJumperCampaignLink,
-          data: { [TrackingEventParameter.Menu]: 'berachain' },
-        });
-        closeAllMenus();
-        router.push(JUMPER_BOYCO_PATH);
       },
     },
     {

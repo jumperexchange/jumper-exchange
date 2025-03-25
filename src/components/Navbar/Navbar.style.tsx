@@ -42,5 +42,4 @@ export const LogoLink = styled(Link)(({ theme }) => ({
   display: 'flex',
   height: '32px',
   alignContent: 'center',
-  flex: 1,
 }));
