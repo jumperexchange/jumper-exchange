@@ -1,6 +1,10 @@
 import { useSettingsStore } from 'src/stores/settings';
 import { useSpindlStore } from 'src/stores/spindl';
-import type { SpindlFetchData, SpindlItem, SpindlMediaAttributes } from 'src/types/spindl';
+import type {
+  SpindlFetchData,
+  SpindlItem,
+  SpindlMediaAttributes,
+} from 'src/types/spindl';
 import { shallow } from 'zustand/shallow';
 
 export const useSpindlProcessData = () => {

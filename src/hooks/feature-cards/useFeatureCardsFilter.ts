@@ -13,9 +13,7 @@ export const useFeatureCardsFilter = () => {
       return true;
     }
 
-    const exclusions = el?.featureCardsExclusions.map(
-      (item) => item?.uid,
-    );
+    const exclusions = el?.featureCardsExclusions.map((item) => item?.uid);
 
     return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
   };
@@ -25,8 +23,7 @@ export const useFeatureCardsFilter = () => {
       .filter(excludedFeatureCardsFilter)
       .filter(
         (el) =>
-          el?.DisplayConditions &&
-          !disabledFeatureCards.includes(el?.uid),
+          el?.DisplayConditions && !disabledFeatureCards.includes(el?.uid),
       )
       .slice(0, 2);
 

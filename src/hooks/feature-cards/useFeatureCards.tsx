@@ -27,8 +27,7 @@ export const useFeatureCards = () => {
         .filter(excludedFeatureCardsFilter)
         .filter(
           (el) =>
-            el?.DisplayConditions &&
-            !disabledFeatureCards.includes(el?.uid),
+            el?.DisplayConditions && !disabledFeatureCards.includes(el?.uid),
         )
         .slice(0, 1);
     }

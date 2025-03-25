@@ -43,11 +43,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     if (data?.DisplayConditions?.showOnce) {
       setDisabledFeatureCard(data?.uid);
     }
-  }, [
-    data?.DisplayConditions,
-    data?.uid,
-    setDisabledFeatureCard,
-  ]);
+  }, [data?.DisplayConditions, data?.uid, setDisabledFeatureCard]);
 
   const mode = data?.DisplayConditions.mode;
 
@@ -97,10 +93,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
 
   const imageUrl = useMemo(() => {
     const imageMode = mode || theme.palette.mode;
-    if (
-      !data?.BackgroundImageDark?.url ||
-      !data?.BackgroundImageLight?.url
-    ) {
+    if (!data?.BackgroundImageDark?.url || !data?.BackgroundImageLight?.url) {
       return null;
     }
     return imageMode === 'dark'
@@ -137,10 +130,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   ) => {
     event.stopPropagation();
     setOpen(false);
-    if (
-      !data?.DisplayConditions.showOnce &&
-      !!data?.uid
-    ) {
+    if (!data?.DisplayConditions.showOnce && !!data?.uid) {
       setDisabledFeatureCard(data?.uid);
     }
     trackEvent({
@@ -167,10 +157,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     }
 
     // Mark feature card as disabled if needed
-    if (
-      !('showOnce' in data?.DisplayConditions) &&
-      !!data?.uid
-    ) {
+    if (!('showOnce' in data?.DisplayConditions) && !!data?.uid) {
       setDisabledFeatureCard(data?.uid);
     }
 
@@ -234,9 +221,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
           {!!data?.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
-              typographyColor={
-                data?.SubtitleColor || typographyColor
-              }
+              typographyColor={data?.SubtitleColor || typographyColor}
             >
               {data?.Subtitle}
             </FeatureCardSubtitle>
