@@ -20,8 +20,8 @@ test.describe('Landing page and navigation', () => {
   }) => {
     const headerText = 'Find the best route';
     await page.locator('#jumper-logo').click();
-    await page.locator('#get-started-button').click();
-    expect(headerText).toBe('Find the best route');
+    await closeWelcomeScreen(page);
+    await expect(headerText).toBe('Find the best route');
   });
 
   test('API test - Feature Cards', async ({ request }) => {
