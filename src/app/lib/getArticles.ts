@@ -20,6 +20,7 @@ export async function getArticles(
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {
+      'Strapi-Response-Format': 'v4',
       Authorization: `Bearer ${accessToken}`,
     },
   });
