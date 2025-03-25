@@ -47,5 +47,5 @@ export const REWARDS_LIST = [
   },
 ];
 
-export const REWARDS_CHAIN_IDS = ['1135', '30', '8453'];
+export const REWARDS_CHAIN_IDS = ['1135', '30', '8453', '80094'];
 export const MERKL_CREATOR_TAG = 'jumper-test';
