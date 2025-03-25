@@ -1,5 +1,6 @@
 'use client';
 
+import { MerklRewards } from '../ProfilePage/MerklRewards';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { QuestsOverview } from '../ProfilePage/QuestsOverview/QuestsOverview';
 import { BackButton } from '../QuestPage/BackButton/BackButton';
@@ -25,6 +26,7 @@ export const CampaignPage = ({
   return (
     <PageContainer className="profile-page">
       <BackButton path={path} title={activeCampaign} />
+      <MerklRewards />
       <CampaignHeader
         bannerImage={'https://strapi.jumper.exchange/uploads/BG_dbd731b976.png'}
         tokenImage={

@@ -94,7 +94,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
             disabled={
               isPending || isConfirming || (!!amount && amount === 0) || !amount
             }
-            variant="secondary"
+            variant="primary"
             aria-label="Claim"
             size="large"
             styles={{
