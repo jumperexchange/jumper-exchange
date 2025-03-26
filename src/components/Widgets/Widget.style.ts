@@ -10,7 +10,7 @@ const DEFAULT_WIDGET_HEIGHT = 686;
 const DEFAULT_WIDGET_TOP_HOVER_OFFSET = 24;
 // mid viewheight - ≈ 2/3 of widget height
 const DEFAULT_WIDGET_TOP_OFFSET_VAR = `${DEFAULT_WELCOME_SCREEN_HEIGHT} - ${DEFAULT_WIDGET_HEIGHT}px / 2.75`;
-export interface WidgetWrapperProps extends Omit<BoxProps, 'component'> {
+export interface WidgetWrapperProps extends BoxProps {
   welcomeScreenClosed?: boolean;
   autoHeight?: boolean;
 }

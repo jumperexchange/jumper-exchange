@@ -1,18 +1,27 @@
 import type { Theme } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
-import Image from 'next/image';
-import { CampaignBox } from './CampaignBanner.style';
+import { Skeleton, useMediaQuery } from '@mui/material';
+import Link from 'next/link';
+import { useState } from 'react';
+import {
+  BannerImage,
+  BannerImageBox,
+  CampaignBox,
+} from './CampaignBanner.style';
 import { CampaignInformation } from './CampaignInformation';
 
 export const CampaignBanner = () => {
   // const { quests, isLoading: isQuestsLoading, url } = useOngoingQuests();
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
 
+  const imageWidth = isMobile ? 320 : 640;
+  const imageHeight = isMobile ? 160 : 320;
+
   return (
-    <a
-      href={`${process.env.NEXT_PUBLIC_SITE_URL}/campaign/lisk`}
+    <Link
+      href={`${process.env.NEXT_PUBLIC_SITE_URL}/campaign/berachain`}
       style={{
         textDecoration: 'none',
         color: 'inherit',
@@ -22,20 +31,38 @@ export const CampaignBanner = () => {
       rel="noreferrer"
     >
       <CampaignBox>
-        <Image
-          src={`https://strapi.jumper.exchange/uploads/banner_602bc774b0.jpg`}
-          alt={'top banner'}
-          width={isMobile ? 320 : 640}
-          height={isMobile ? 160 : 320}
-          style={{ objectFit: 'contain', borderRadius: '16px' }}
-        />
+        <BannerImageBox>
+          {isImageLoading && (
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height="100%"
+              sx={{
+                borderRadius: '16px',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                zIndex: 1,
+              }}
+            />
+          )}
+          <BannerImage
+            src={`https://strapi.jumper.exchange/uploads/Berachain_V2_11ac1c04d0.png`}
+            alt={'top banner'}
+            width={imageWidth}
+            height={imageHeight}
+            isImageLoading={isImageLoading}
+            onLoadingComplete={() => setIsImageLoading(false)}
+          />
+        </BannerImageBox>
         <CampaignInformation
-          tag={'New Ecosystem'}
-          description={`Lisk was an OG Layer 1 since 2016, it became a prominent L2 in the Superchain Ecosystem recently.
-Jumper is giving you the perfect occasion to explore Lisk:
-$180,000 rewards will be distributed in the span of three weeks through 3 Lil Pudgies in raffles and double-digit yield boosts on major Lisk protocols (Velodrome, Beefy, Ionic).`}
+          tag={'Ecosystem Campaign'}
+          title={'Jump into Bera'}
+          description={
+            'Jumper is joining forces with elite Berachain protocols — Beraborrow, Beratrax, Kodiak, Berabot, Ramen, Beranames — to find out which community reigns supreme and to give you a shot at winning +$75k in rewards!'
+          }
         />
       </CampaignBox>
-    </a>
+    </Link>
   );
 };

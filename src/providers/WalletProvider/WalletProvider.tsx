@@ -24,11 +24,12 @@ import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { createConfig, EVM, Solana, UTXO } from '@lifi/sdk';
 import { publicRPCList } from '@/const/rpcList';
+import getApiUrl from '@/utils/getApiUrl';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
     apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
-    apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+    apiUrl: getApiUrl(),
     providers: [EVM(), Solana(), UTXO()],
     integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
     rpcUrls: {

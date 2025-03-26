@@ -44,19 +44,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   );
 
-  // swap pages
-  const { chains } = await getChainsQuery();
-  const swapPages = chains.map((chain) => {
-    return {
-      url: removeTrailingSlash(
-        `${getSiteUrl()}${JUMPER_SWAP_PATH}/${chain.name}`
-          .replace(' ', '-')
-          .toLowerCase(),
-      ),
-      lastModified: new Date().toISOString().split('T')[0],
-      priority: 0.4,
-    };
-  });
-
-  return [...routes, ...articles, ...swapPages];
+  return [...routes, ...articles];
 }

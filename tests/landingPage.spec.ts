@@ -1,20 +1,18 @@
 import { expect, test } from '@playwright/test';
-import values from '../tests/testData/values.json' assert { type: 'json' };
 import {
   closeWelcomeScreen,
-} from './testData/commonFunctions';
+  navigateToTab,
+} from './testData/landingPageFunctions';
 
-test.describe('Jumper full e2e flow', () => {
+test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await closeWelcomeScreen(page);
   });
 
   test('Should navigate to the homepage and change tabs', async ({ page }) => {
-    await page.locator('#tab-key-1').click();
-    await expect(page.locator('xpath=//p[text()="Gas"]')).toBeVisible();
-    await page.locator('#tab-key-0').click();
-    await expect(page.locator('xpath=//p[text()="Exchange"]')).toBeVisible();
+    await navigateToTab(page, 1, 'Gas');
+    await navigateToTab(page, 0, 'Exchange');
   });
 
   test('Should show again welcome screen when clicking jumper logo', async ({
@@ -22,8 +20,8 @@ test.describe('Jumper full e2e flow', () => {
   }) => {
     const headerText = 'Find the best route';
     await page.locator('#jumper-logo').click();
-    await page.locator('#get-started-button').click();
-    expect(headerText).toBe('Find the best route');
+    await closeWelcomeScreen(page);
+    await expect(headerText).toBe('Find the best route');
   });
 
   test('API test - Feature Cards', async ({ request }) => {

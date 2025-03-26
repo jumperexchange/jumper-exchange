@@ -21,7 +21,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
   //filter url
   apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('publicationState', 'preview');
+    apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
@@ -31,6 +31,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
+          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });

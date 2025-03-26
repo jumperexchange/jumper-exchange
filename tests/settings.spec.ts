@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { itemInSettingsMenu, itemInSettingsMenuToBeEnabled, itemInSettingsMenuToBeVisible } from './testData/settingsFunctions';
-import { closeWelcomeScreen } from './testData/commonFunctions';
+import {
+  itemInSettingsMenu,
+  checkItemInSettingsMenu,
+} from './testData/settingsFunctions';
+import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
 test.describe('Settings menu', () => {
   test.beforeEach(async ({ page }) => {
@@ -10,9 +13,6 @@ test.describe('Settings menu', () => {
   test('Should open Settings menu', async ({ page }) => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
-    );
-    const bestReturnButton = page.locator(
-      'xpath=//button[normalize-space(text())="Best Return"]',
     );
     const fastestButton = page.locator(
       'xpath=//button[normalize-space(text())="Fastest"]',
@@ -27,18 +27,17 @@ test.describe('Settings menu', () => {
     await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
     await expect(settingsTitle).toBeVisible();
     await itemInSettingsMenu(page, 'Route priority');
-    await itemInSettingsMenuToBeEnabled(page, 'Best Return');
-    await expect(bestReturnButton).toBeEnabled();
-    await itemInSettingsMenuToBeVisible(page, 'Fastest');
+    await checkItemInSettingsMenu(page, 'Best Return', { enabled: true });
+    await checkItemInSettingsMenu(page, 'Fastest', { visible: true });
     await fastestButton.click();
-    await itemInSettingsMenuToBeVisible(page, 'Reset settings');
+    await checkItemInSettingsMenu(page, 'Reset settings', { visible: true });
     await itemInSettingsMenu(page, 'Gas price');
-    await itemInSettingsMenuToBeEnabled(page, 'Slow');
-    await itemInSettingsMenuToBeEnabled(page, 'Fast');
+    await checkItemInSettingsMenu(page, 'Slow', { enabled: true });
+    await checkItemInSettingsMenu(page, 'Fast', { enabled: true });
     await expect(slowGasPrice).toBeEnabled();
     await expect(fastGasPrice).toBeEnabled();
     await itemInSettingsMenu(page, 'Max. slippage');
-    await itemInSettingsMenuToBeVisible(page, '0.5');
+    await checkItemInSettingsMenu(page, 'Auto', { visible: true });
     await expect(customSlippage).toBeVisible();
-  })
-})
+  });
+});
