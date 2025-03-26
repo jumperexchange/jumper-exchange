@@ -44,7 +44,6 @@ export const BannerBox = ({
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
   // const rewardType = attributes?.CustomInformation?.['rewardType'];
-  console.log('CHECK ME');
   const bannerImageURL = isMobile
     ? attributes.Image?.url
     : attributes?.BannerImage?.url;
