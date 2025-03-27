@@ -17,6 +17,7 @@ interface Info {
 }
 
 interface Data {
+  id: string;
   label: string;
   value: string | number | JSX.Element | JSX.Element[];
 }
@@ -51,8 +52,8 @@ function InformationCard({
         sx={(theme) => ({ tableLayout: 'fixed', marginTop: theme.spacing(1) })}
       >
         <TableBody>
-          {data.map(({ label, value }, index) => (
-            <TableRow key={index}>
+          {data.map(({ label, value, id }, index) => (
+            <TableRow key={`info-card-${id}-${index}`}>
               <InformationCardCell fullWidth>{label}</InformationCardCell>
               <InformationCardCell fullWidth>{value}</InformationCardCell>
             </TableRow>

@@ -172,6 +172,7 @@ const SwapStepsExplainerSection = ({
         color="text.primary"
         marginY={2}
         sx={{ fontSize: '36px!important' }}
+        suppressHydrationWarning
       >
         Steps to Swap tokens on {sourceChain.name}
       </Typography>
@@ -182,7 +183,7 @@ const SwapStepsExplainerSection = ({
       </Typography>
 
       {steps.map((step, index) => (
-        <Fragment key={index}>
+        <Fragment key={`swap-steps-${index}`}>
           <Divider />
           <StepDetail
             title={step.title}
