@@ -101,7 +101,7 @@ export const XPDisplayBox = styled(Box, {
 })<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
   color: theme.palette.primary.main,
-  backgroundColor: '#F0E5FF',
+  backgroundColor: theme.palette.background.default,
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',

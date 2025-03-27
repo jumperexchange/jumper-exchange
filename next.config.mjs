@@ -29,12 +29,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'raw.githubusercontent.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'assets.coingecko.com',
         port: '',
         pathname: '/**',
@@ -56,6 +50,12 @@ const nextConfig = {
         hostname: 'static.debank.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'strapi-staging.jumper.exchange',
+        port: '',
+        pathname: '/uploads/**',
       },
       {
         protocol: 'https',
