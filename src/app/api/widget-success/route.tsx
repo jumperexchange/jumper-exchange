@@ -28,6 +28,7 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { sanitizeTheme } from 'src/utils/image-generation/sanitizeParams';
 import {
   widgetSuccessSchema,
   type WidgetSuccessParams,
@@ -70,7 +71,7 @@ export async function GET(request: Request) {
             width={'100%'}
             height={'100%'}
             style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-success-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+            src={`${getSiteUrl()}/widget/widget-success-${sanitizeTheme(params.theme)}.png`}
           />
           <WidgetSuccessImage
             height={WIDGET_IMAGE_WIDTH}

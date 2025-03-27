@@ -26,6 +26,7 @@ import { getSiteUrl } from 'src/const/urls';
 import { getChainsQuery } from 'src/hooks/useChains';
 import { getTokensQuery } from 'src/hooks/useTokens';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { sanitizeTheme } from 'src/utils/image-generation/sanitizeParams';
 import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
 import {
   widgetAmountsSchema,
@@ -70,7 +71,7 @@ export async function GET(request: Request) {
             width={'100%'}
             height={'100%'}
             style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-swap-amounts-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+            src={`${getSiteUrl()}/widget/widget-swap-amounts-${sanitizeTheme(params.theme)}.png`}
           />
           <WidgetAmountsImage
             height={WIDGET_IMAGE_WIDTH}

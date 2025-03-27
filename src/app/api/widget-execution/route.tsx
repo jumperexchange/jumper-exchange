@@ -15,7 +15,6 @@
  * @property {string} toToken - The token address to send to.
  * @property {number} toChainId - The chain ID to send to.
  * @property {number} amount - The amount of tokens.
- * @property {number} [amountUSD] - The USD equivalent amount (optional).
  * @property {boolean} [isSwap] - True if transaction is a swap, default and false if transaction is a bridge (optional).
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
  * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
@@ -33,6 +32,7 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { sanitizeTheme } from 'src/utils/image-generation/sanitizeParams';
 import {
   widgetExecutionSchema,
   type WidgetExecutionParams,
@@ -48,24 +48,6 @@ export async function GET(request: Request) {
       request.url,
       widgetExecutionSchema,
     );
-
-    // Validate and sanitize parameters using Zod
-    const result = widgetExecutionSchema.safeParse(params);
-
-    if (!result.success) {
-      return new Response(
-        JSON.stringify({
-          error: 'Invalid parameters',
-          details: result.error.errors,
-        }),
-        {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-    }
 
     // Fetch data asynchronously before rendering
     const fromTokenData = await fetchTokenData(
@@ -103,7 +85,7 @@ export async function GET(request: Request) {
             width={'100%'}
             height={'100%'}
             style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-execution-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+            src={`${getSiteUrl()}/widget/widget-execution-${sanitizeTheme(params.theme)}.png`}
           />
           <WidgetExecutionImage
             height={WIDGET_IMAGE_WIDTH}

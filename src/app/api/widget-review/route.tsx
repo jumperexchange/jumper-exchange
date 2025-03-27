@@ -30,6 +30,7 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { sanitizeTheme } from 'src/utils/image-generation/sanitizeParams';
 import {
   widgetReviewSchema,
   type WidgetReviewParams,
@@ -74,7 +75,7 @@ export async function GET(request: Request) {
             width={'100%'}
             height={'100%'}
             style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-review-bridge-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+            src={`${getSiteUrl()}/widget/widget-review-bridge-${sanitizeTheme(params.theme)}.png`}
           />
           <WidgetReviewImage
             height={WIDGET_IMAGE_WIDTH}

@@ -172,7 +172,6 @@ const SwapStepsExplainerSection = ({
         color="text.primary"
         marginY={2}
         sx={{ fontSize: '36px!important' }}
-        suppressHydrationWarning
       >
         Steps to Swap tokens on {sourceChain.name}
       </Typography>

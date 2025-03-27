@@ -26,11 +26,6 @@ export const amountSchema = z
 
 /**
  * Schema for token addresses (supports both EVM and Solana formats)
- *
- * Transformation:
- * 1. For Solana: Returns base58 address if valid (32-44 chars)
- * 2. For EVM: Returns original if valid hex format (0x + 40 hex chars)
- *    - Returns original if no valid format matches
  */
 export const tokenAddressSchema = z
   .string()

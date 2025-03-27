@@ -32,6 +32,7 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import { sanitizeTheme } from 'src/utils/image-generation/sanitizeParams';
 import {
   widgetQuotesSchema,
   type WidgetQuotesParams,
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
             width={'100%'}
             height={'100%'}
             style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-quotes-${params.theme === 'dark' ? 'dark' : 'light'}.png`}
+            src={`${getSiteUrl()}/widget/widget-quotes-${sanitizeTheme(params.theme)}.png`}
           />
           <WidgetQuotesImage
             height={WIDGET_IMAGE_WIDTH}

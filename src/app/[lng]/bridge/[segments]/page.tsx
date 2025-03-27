@@ -13,7 +13,6 @@ import { notFound } from 'next/navigation';
 function parseString(url: string): [string, string, string, string] {
   // First, split the string into the source part and the destination part using 'to'
   const [sourcePart, destinationPart] = url.split('-to-');
-
   if (!sourcePart || !destinationPart) {
     throw new Error(
       'Invalid format. Expected format: sourceChain-sourceToken-to-destinationChain-destinationToken',
