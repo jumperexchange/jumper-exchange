@@ -7,16 +7,6 @@ export function sanitizeNumeric(value: string): string {
   return value.replace(/[^\d.]/g, '');
 }
 
-export function sanitizeTheme(theme: string): 'light' | 'dark' {
-  return theme === 'dark' ? 'dark' : 'light';
-}
-
-export function sanitizeHighlighted(value: string): string {
-  // Only allow valid highlighted values
-  const validValues = ['from', 'to', 'amount', '0', '1', '2'];
-  return validValues.includes(value) ? value : '0';
-}
-
 // Helper function to sanitize address
 export const sanitizeAddress = (address: string): string => {
   if (!address) {
