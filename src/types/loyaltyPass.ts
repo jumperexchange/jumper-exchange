@@ -1,6 +1,6 @@
 import type { QuestDetails } from '@/types/questDetails';
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { ImageData, StrapiMediaData } from './strapi';
+import type { StrapiMediaData } from './strapi';
 
 // PDA Type
 export interface Reward {
@@ -48,34 +48,12 @@ type ImageFormatThumbnail = {
   height: number;
 };
 
-type ImageAttributes = {
-  name: string;
-  alternativeText?: string;
-  caption?: string;
-  width: number;
-  height: number;
-  formats: {
-    thumbnail: ImageFormatThumbnail;
-  };
-  hash: string;
-  ext: string;
-  mime: string;
-  size: number;
-  url: string;
-  previewUrl?: string;
-  provider: string;
-  createdAt: string;
-  updatedAt: string;
-};
+type ImageAttributes = StrapiMediaData;
 
 type BannerImageData = {
-  data: [
-    {
-      id: number;
-      attributes: ImageAttributes;
-    },
-  ];
-};
+  id: number;
+  documentId: string;
+} & ImageAttributes;
 
 type QuestsPlatformAttributes = {
   Name: string;
@@ -87,9 +65,7 @@ type QuestsPlatformAttributes = {
   Logo: StrapiMediaData;
 };
 
-type QuestsPlatformData = {
-  data: { id: number; attributes: QuestsPlatformAttributes };
-};
+type QuestsPlatformData = { id: number } & QuestsPlatformAttributes;
 
 export interface QuestChains {
   name: string;
@@ -98,6 +74,7 @@ export interface QuestChains {
 
 export interface CustomInformation {
   chains: QuestChains[];
+
   [key: string]: any;
 }
 
@@ -120,14 +97,22 @@ export type QuestAttributes = {
   Subtitle?: string;
   Steps?: RootNode[];
   CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
-  Image: ImageData<StrapiMediaData>;
+  Image: StrapiMediaData;
   BannerImage: BannerImageData;
   quests_platform: QuestsPlatformData;
+  tasks_verification: TaskVerification[];
 };
 
-export interface Quest {
+interface TaskVerification {
   id: number;
-  attributes: QuestAttributes;
+  name: string;
+  uuid: string;
+}
+
+export interface Quest extends QuestAttributes {
+  id: number;
+  documentId: string;
+  // attributes: QuestAttributes;
 }
 
 export interface LoyaltyPassProps {

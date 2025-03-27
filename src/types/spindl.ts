@@ -6,14 +6,14 @@ export interface SpindlCardAttributes
   spindlData: SpindlTrackData;
 }
 
-export interface SpindlCardData {
+export interface SpindlCardData extends SpindlCardAttributes {
   id: string;
-  attributes: SpindlCardAttributes;
+  // attributes: SpindlCardAttributes;
 }
 
-export interface SpindlMediaData {
+export interface SpindlMediaData extends SpindlMediaAttributes {
   id: number;
-  attributes: SpindlMediaAttributes;
+  // attributes: SpindlMediaAttributes;
 }
 export interface SpindlMediaAttributes {
   alternativeText?: string;

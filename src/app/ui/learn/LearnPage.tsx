@@ -8,7 +8,7 @@ import { BlogArticlesCollections } from 'src/components/Blog/BlogArticlesCollect
 
 interface LearnPageProps {
   carouselArticles: GetArticlesResponse;
-  featuredArticle: StrapiResponse<BlogArticleData>;
+  featuredArticle: BlogArticleData;
   url: string;
   tags: GetTagsResponse;
 }
@@ -21,10 +21,10 @@ const LearnPage = ({
 }: LearnPageProps) => {
   return (
     <div className="learn-page">
-      {featuredArticle.data?.[0] && (
+      {featuredArticle && (
         <FeaturedArticle
           url={url}
-          featuredArticle={featuredArticle.data[0]}
+          featuredArticle={featuredArticle}
           // handleFeatureCardClick={() =>
           //   handleFeatureCardClick(featuredArticle.data)
           // }
@@ -32,7 +32,7 @@ const LearnPage = ({
       )}
       <BlogCarousel url={url} data={carouselArticles?.data} />
       <JoinDiscordBanner />
-      <BlogArticlesCollections tags={tags} data={carouselArticles?.data} />
+      <BlogArticlesCollections tags={tags.data} data={carouselArticles?.data} />
     </div>
   );
 };
