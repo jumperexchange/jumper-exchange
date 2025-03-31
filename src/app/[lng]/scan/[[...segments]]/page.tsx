@@ -10,7 +10,7 @@ export async function generateMetadata({
 }: {
   params: MetadataParams;
 }): Promise<Metadata> {
-  const { segments } = await params;
+  const { segments = [] } = await params;
 
   const slugToTitle: { [key: string]: string } = {
     tx: 'Transaction',
