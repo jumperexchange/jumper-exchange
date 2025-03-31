@@ -30,14 +30,10 @@ export function ThemeProviderBase({
   const metaTheme = useMetaTag('partner-theme');
 
   const partnerTheme = metaTheme || activeTheme || 'default';
-  const isPartnerTheme = themes?.find(
-    (d) => d.attributes?.uid === partnerTheme,
-  );
+  const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
 
   const effectiveThemeMode = getEffectiveThemeMode(
-    (isPartnerTheme?.attributes &&
-      isDarkOrLightThemeMode(isPartnerTheme?.attributes)) ||
-      themeMode,
+    (isPartnerTheme && isDarkOrLightThemeMode(isPartnerTheme)) || themeMode,
     resolvedTheme,
   );
 

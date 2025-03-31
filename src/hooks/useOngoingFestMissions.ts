@@ -31,7 +31,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('populate[1]', 'quests_platform');
   apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
   //sort url
-  apiUrl.searchParams.set('sort[0]', 'Title:asc');
+  apiUrl.searchParams.set('sort[]', 'Title:asc');
   //filter url
   apiUrl.searchParams.set('pagination[pageSize]', '50');
   apiUrl.searchParams.set('filters[Label][$eq]', 'superfest');
@@ -50,7 +50,6 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
-          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });

@@ -1,4 +1,4 @@
-import type { Quest, QuestAttributes } from '@/types/loyaltyPass';
+import type { Quest } from '@/types/loyaltyPass';
 import type { QuestDetails } from '@/types/questDetails';
 
 export interface BerachainIncentiveToken {
@@ -29,9 +29,7 @@ export interface ExtraRewards {
 }
 
 export interface QuestWithExtraRewards extends Quest {
-  attributes: QuestAttributes & {
-    CustomInformation?: QuestDetails & {
-      extraRewards?: ExtraRewards;
-    };
+  CustomInformation?: QuestDetails & {
+    extraRewards?: ExtraRewards;
   };
 }

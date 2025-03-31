@@ -24,13 +24,13 @@ export const QuestsMissionPage = ({
   activeCampaign,
   path,
 }: QuestsMissionPageVar) => {
-  const attributes = quest?.attributes;
-  const CTAs = quest?.attributes?.CustomInformation?.['CTA'];
-  const missionType = quest?.attributes?.CustomInformation?.['missionType'];
+  const attributes = quest;
+  const CTAs = quest?.CustomInformation?.['CTA'];
+  const missionType = quest?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
-  const rewards = quest.attributes?.CustomInformation?.['rewards'];
-  const points = quest?.attributes?.Points;
+  const rewards = quest?.CustomInformation?.['rewards'];
+  const points = quest?.Points;
 
   const { account } = useAccount();
   const { pastCampaigns } = useMerklRewardsOnCampaigns({

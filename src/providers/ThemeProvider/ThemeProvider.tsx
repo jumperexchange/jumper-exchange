@@ -31,13 +31,9 @@ export function ThemeProvider({
         : undefined;
     const metaTheme = metaElement?.getAttribute('content');
     const partnerTheme = metaTheme || activeTheme || 'default';
-    const isPartnerTheme = themes?.find(
-      (d) => d.attributes?.uid === partnerTheme,
-    );
+    const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
     const effectiveThemeMode = getEffectiveThemeMode(
-      isPartnerTheme
-        ? isDarkOrLightThemeMode(isPartnerTheme.attributes)
-        : themeMode,
+      isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme) : themeMode,
     );
 
     const widgetTheme = getWidgetTheme(
