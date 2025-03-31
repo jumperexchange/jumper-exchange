@@ -16,7 +16,7 @@ export default async function Page({
 }: {
   searchParams: SearchParams;
 }) {
-  const { page } = await searchParams
+  const { page } = await searchParams;
 
   return <LeaderboardPage page={page} />;
 }
