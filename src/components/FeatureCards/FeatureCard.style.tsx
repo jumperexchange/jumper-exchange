@@ -65,7 +65,7 @@ export interface FeatureCardTitleProps extends TypographyProps {
 export const FeatureCardTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
 })<FeatureCardTitleProps>(({ typographyColor, data }) => ({
-  color: data?.attributes?.TitleColor ?? typographyColor,
+  color: data?.TitleColor ?? typographyColor,
   fontSize: '24px',
   lineHeight: '32px',
   userSelect: 'none',
@@ -104,8 +104,7 @@ export const FeatureCardCtaLink = styled(Link, {
 })<FeatureCardCtaLinkProps>(({ theme, data }) => ({
   textDecoration: 'none',
   color:
-    data.attributes?.DisplayConditions.mode === 'dark' ||
-    theme.palette.mode === 'light'
+    data?.DisplayConditions.mode === 'dark' || theme.palette.mode === 'light'
       ? theme.palette.primary?.main
       : theme.palette.accent1Alt.main,
 }));
@@ -122,5 +121,5 @@ export const FeatureCardCtaLabel = styled(Typography, {
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: (data.attributes?.CTAColor || typographyColor) ?? 'inherit',
+  color: (data?.CTAColor || typographyColor) ?? 'inherit',
 }));

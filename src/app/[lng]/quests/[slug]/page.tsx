@@ -25,7 +25,7 @@ export async function generateMetadata({
       throw new Error();
     }
 
-    const questData = quest.data.attributes;
+    const questData = quest.data;
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
@@ -34,7 +34,7 @@ export async function generateMetadata({
       url: `${getSiteUrl()}/quests/${params.slug}`,
       images: [
         {
-          url: `${quest.url}${questData.Image.data.attributes?.url}`,
+          url: `${quest.url}${questData.Image?.url}`,
           width: 900,
           height: 450,
           alt: 'banner image',

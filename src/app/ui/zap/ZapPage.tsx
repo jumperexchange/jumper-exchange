@@ -10,7 +10,7 @@ const ZapPage = ({ market }: ZapPageProps) => {
   return (
     <ZapComponentPage
       market={market}
-      detailInformation={market?.attributes?.CustomInformation}
+      detailInformation={market?.CustomInformation}
     />
   );
 };
