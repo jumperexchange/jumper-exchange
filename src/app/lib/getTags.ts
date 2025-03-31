@@ -1,4 +1,5 @@
 import type { StrapiResponse, TagAttributes } from '@/types/strapi';
+import { TagData } from '@/types/strapi';
 import { TagStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export interface GetTagsResponse extends StrapiResponse<TagAttributes> {
@@ -10,8 +11,8 @@ const predefinedOrder = ['Announcement', 'Partner', 'Bridge'];
 // Helper function to sort tags based on predefined order
 const sortTagsByPredefinedOrder = (tags: TagAttributes[]) => {
   return tags.sort((a, b) => {
-    const titleA = a.attributes?.Title;
-    const titleB = b.attributes?.Title;
+    const titleA = a?.Title;
+    const titleB = b?.Title;
 
     const indexA = predefinedOrder.indexOf(titleA);
     const indexB = predefinedOrder.indexOf(titleB);
@@ -30,18 +31,12 @@ const sortTagsByPredefinedOrder = (tags: TagAttributes[]) => {
 // Helper function to sort blog articles by `publishedAt` date
 const sortBlogArticlesByPublishedDate = (tags: TagAttributes[]) => {
   return tags.map((tag) => {
-    tag.attributes.blog_articles.data = tag.attributes.blog_articles.data.sort(
-      (a, b) => {
-        const dateA = a.attributes?.publishedAt
-          ? Date.parse(a.attributes?.publishedAt)
-          : -Infinity; // Default to oldest if undefined
-        const dateB = b.attributes?.publishedAt
-          ? Date.parse(b.attributes?.publishedAt)
-          : -Infinity; // Default to oldest if undefined
+    tag.blog_articles = tag.blog_articles.sort((a, b) => {
+      const dateA = a?.publishedAt ? Date.parse(a?.publishedAt) : -Infinity; // Default to oldest if undefined
+      const dateB = b?.publishedAt ? Date.parse(b?.publishedAt) : -Infinity; // Default to oldest if undefined
 
-        return dateB - dateA;
-      },
-    );
+      return dateB - dateA;
+    });
     return tag;
   });
 };
@@ -61,6 +56,7 @@ export async function getTags(): Promise<GetTagsResponse> {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }

@@ -36,7 +36,7 @@ class StrapiApi {
 
     // Show drafts ONLY on development env
     if (process.env.NEXT_PUBLIC_ENVIRONMENT === 'development') {
-      this.apiUrl.searchParams.set('publicationState', 'preview');
+      this.apiUrl.searchParams.set('status', 'draft');
     }
   }
 
@@ -113,11 +113,11 @@ class TagParams {
   }
 
   addParams(): URL {
-    this.apiUrl.searchParams.set('populate[0]', 'Title');
-    this.apiUrl.searchParams.set('populate[1]', 'BackgroundColor');
-    this.apiUrl.searchParams.set('populate[2]', 'TextColor');
-    this.apiUrl.searchParams.set('populate[3]', 'blog_articles');
-    this.apiUrl.searchParams.set('populate[4]', 'blog_articles.Image');
+    // this.apiUrl.searchParams.set('populate[0]', 'Title');
+    // this.apiUrl.searchParams.set('populate[1]', 'BackgroundColor');
+    // this.apiUrl.searchParams.set('populate[2]', 'TextColor');
+    this.apiUrl.searchParams.set('populate[0]', 'blog_articles');
+    this.apiUrl.searchParams.set('populate[1]', 'blog_articles.Image');
     return this.apiUrl;
   }
 }
@@ -133,7 +133,7 @@ class QuestParams {
     this.apiUrl.searchParams.set('populate[0]', 'Image');
     this.apiUrl.searchParams.set('populate[1]', 'quests_platform');
     this.apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
-    this.apiUrl.searchParams.set('populate[3]]', 'BannerImage');
+    this.apiUrl.searchParams.set('populate[3]', 'BannerImage');
     return this.apiUrl;
   }
 }
@@ -195,7 +195,7 @@ class QuestStrapiApi extends StrapiApi {
     const questParams = new QuestParams(this.apiUrl);
     this.apiUrl = questParams.addParams();
     process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-      this.apiUrl.searchParams.set('publicationState', 'preview');
+      this.apiUrl.searchParams.set('status', 'draft');
   }
 
   sort(order: 'asc' | 'desc'): this {

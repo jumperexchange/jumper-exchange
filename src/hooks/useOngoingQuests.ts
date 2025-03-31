@@ -34,24 +34,23 @@ export const useOngoingQuests = (label?: string): UseQuestsProps => {
   apiUrl.searchParams.set('sort[0]', 'id:desc');
   //filter url
   apiUrl.searchParams.set('pagination[pageSize]', '50');
-  // todo: remove this line
-  // apiUrl.searchParams.set('filters[Label][$ne]', 'berachain'); // not showing all the berachain markets during boyco
   if (label) {
     apiUrl.searchParams.set('filters[Label][$eq]', label);
+  } else {
+    apiUrl.searchParams.set('filters[Label][$ne]', 'berachain'); // not showing all the berachain markets
   }
   // apiUrl.searchParams.set('filters[Points][$gte]', '0');
   const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('publicationState', 'preview');
+    apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
       : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['ongoingQuests'],
-
+    queryKey: ['ongoingQuests', label],
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {

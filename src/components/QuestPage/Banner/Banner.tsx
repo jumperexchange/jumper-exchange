@@ -38,15 +38,15 @@ export const BannerBox = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const attributes = quest?.attributes;
-  const rewardsIds = quest.attributes?.CustomInformation?.['rewardsIds'];
+  const attributes = quest;
+  const rewardsIds = quest?.CustomInformation?.['rewardsIds'];
   const rewards = attributes?.CustomInformation?.['rewards'];
   const chains = attributes?.CustomInformation?.['chains'];
   const partners = attributes?.CustomInformation?.['partner'];
   // const rewardType = attributes?.CustomInformation?.['rewardType'];
   const bannerImageURL = isMobile
-    ? attributes.Image?.data?.attributes?.url
-    : attributes?.BannerImage?.data[0]?.attributes?.url;
+    ? attributes.Image?.url
+    : attributes?.BannerImage?.url;
   const imgURL = new URL(bannerImageURL, baseUrl);
 
   let completed = false;
