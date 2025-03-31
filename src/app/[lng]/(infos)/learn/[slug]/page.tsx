@@ -10,13 +10,16 @@ import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 import { getCookies } from '../../../../lib/getCookies';
 
+type Params = Promise<{ slug: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { slug } = await params;
   try {
-    const article = await getArticleBySlug(params.slug);
+    const article = await getArticleBySlug(slug);
 
     if (!article.data || !article.data.data?.[0]) {
       throw new Error();
@@ -28,7 +31,7 @@ export async function generateMetadata({
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
       siteName: siteName,
-      url: `${getSiteUrl()}/learn/${params.slug}`,
+      url: `${getSiteUrl()}/learn/${slug}`,
       images: [
         {
           url: `${article.url}${articleData.Image?.url}`,
@@ -44,22 +47,24 @@ export async function generateMetadata({
       title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
       description: articleData.Subtitle,
       alternates: {
-        canonical: `${getSiteUrl()}/learn/${params.slug}`,
+        canonical: `${getSiteUrl()}/learn/${slug}`,
       },
       twitter: openGraph,
       openGraph,
     };
   } catch (err) {
     return {
-      title: `Jumper Learn | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the article "${params.slug.replaceAll('-', ' ')}".`,
+      title: `Jumper Learn | ${sliceStrToXChar(slug.replaceAll('-', ' '), 45)}`,
+      description: `This is the description for the article "${slug.replaceAll('-', ' ')}".`,
     };
   }
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const article = await getArticleBySlug(params.slug);
-  const { activeThemeMode } = getCookies();
+export default async function Page({ params }: { params: Params }) {
+  const { slug } = await params;
+
+  const article = await getArticleBySlug(slug);
+  const { activeThemeMode } = await getCookies();
 
   const articleData: BlogArticleData = article.data.data?.[0];
 
