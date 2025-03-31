@@ -5,25 +5,23 @@ import {
   chainIdSchema,
   tokenAddressSchema,
 } from '../validation-schemas';
-import { sanitizeAddress, sanitizeNumeric } from './sanitizeParams';
+import { sanitizeNumeric } from './sanitizeParams';
 
 // Widget-specific schemas with additional validation
 const widgetChainIdSchema = chainIdSchema
-  .transform((val) => sanitizeNumeric(val))
   .transform((val) => Number(val))
   .refine((val) => !isNaN(val) && val > 0, {
     message: 'ChainId must be a positive number',
   });
 
-const widgetTokenAddressSchema = tokenAddressSchema.transform((val) =>
-  sanitizeAddress(val),
-);
+const widgetTokenAddressSchema = tokenAddressSchema;
 
-const widgetAmountSchema = amountSchema
-  .transform((val) => sanitizeNumeric(val))
-  .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+const widgetAmountSchema = amountSchema.refine(
+  (val) => !isNaN(Number(val)) && Number(val) > 0,
+  {
     message: 'Amount must be a positive number',
-  });
+  },
+);
 
 const highlightedSchema = z
   .union([

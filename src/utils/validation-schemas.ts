@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import { sanitizeAddress } from './image-generation/sanitizeParams';
+import {
+  sanitizeAddress,
+  sanitizeNumeric,
+} from './image-generation/sanitizeParams';
 
 /**
  * Schema for path segments (alphanumeric, hyphens, and underscores)
@@ -16,19 +19,21 @@ export const pathSegmentSchema = z
  */
 export const chainIdSchema = z
   .string()
-  .regex(/^\d+$/, 'Chain ID must be numeric');
+  .transform((val) => sanitizeNumeric(val))
+  .refine((val) => /^\d+$/.test(val), 'Chain ID must be numeric');
 
 /**
  * Schema for amounts (numeric with decimals)
  */
 export const amountSchema = z
   .string()
-  .regex(/^\d+(\.\d+)?$/, 'Amount must be a valid number');
+  .transform((val) => sanitizeNumeric(val))
+  .refine((val) => /^\d+(\.\d+)?$/.test(val), 'Amount must be a valid number');
 
 /**
- * Schema for token addresses (supports both EVM and Solana formats)
+ * Base schema for blockchain addresses (supports both EVM and Solana formats)
  */
-export const tokenAddressSchema = z
+const baseAddressSchema = z
   .string()
   .transform((val) => sanitizeAddress(val))
   .refine((val) => {
@@ -38,7 +43,12 @@ export const tokenAddressSchema = z
     }
     // Check for Solana address format (base58)
     return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
-  }, 'Invalid token address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
+  }, 'Invalid address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
+
+/**
+ * Schema for token addresses
+ */
+export const tokenAddressSchema = baseAddressSchema;
 
 /**
  * Schema for theme options
@@ -87,19 +97,9 @@ export function slugify(text: string): string {
 }
 
 /**
- * Schema for wallet addresses (supports both EVM and Solana formats)
+ * Schema for wallet addresses
  */
-export const walletAddressSchema = z
-  .string()
-  .transform((val) => sanitizeAddress(val))
-  .refine((val) => {
-    // Check for Ethereum address format (0x...)
-    if (val.startsWith('0x')) {
-      return /^0x[a-fA-F0-9]{40}$/.test(val);
-    }
-    // Check for Solana address format (base58)
-    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
-  }, 'Invalid wallet address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
+export const walletAddressSchema = baseAddressSchema;
 
 /**
  * Schema for quest slugs (alphanumeric, hyphens, and underscores)
@@ -121,19 +121,9 @@ export const scanSegmentSchema = z
   .transform((val) => val.toLowerCase());
 
 /**
- * Schema for scan address segments (valid blockchain addresses)
+ * Schema for scan address segments
  */
-export const scanAddressSchema = z
-  .string()
-  .transform((val) => sanitizeAddress(val))
-  .refine((val) => {
-    // Check for Ethereum address format (0x...)
-    if (val.startsWith('0x')) {
-      return /^0x[a-fA-F0-9]{40}$/.test(val);
-    }
-    // Check for Solana address format (base58)
-    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
-  }, 'Invalid blockchain address format');
+export const scanAddressSchema = baseAddressSchema;
 
 /**
  * Schema for scan route params
