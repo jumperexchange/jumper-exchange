@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { sanitizeAddress } from './image-generation/sanitizeParams';
 
 /**
  * Schema for path segments (alphanumeric, hyphens, and underscores)
@@ -29,22 +30,7 @@ export const amountSchema = z
  */
 export const tokenAddressSchema = z
   .string()
-  .transform((val) => {
-    // Remove any whitespace and convert to lowercase
-    const cleanAddress = val.trim().toLowerCase();
-
-    // Check if it's a Solana address (base58 encoded, 32-44 characters)
-    if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(cleanAddress)) {
-      return cleanAddress;
-    }
-
-    // Handle Ethereum-style addresses (0x...)
-    if (cleanAddress.length === 42) {
-      return cleanAddress;
-    }
-
-    return val; // Return original value if no transformation needed
-  })
+  .transform((val) => sanitizeAddress(val))
   .refine((val) => {
     // Check for Ethereum address format (0x...)
     if (val.startsWith('0x')) {
@@ -99,3 +85,92 @@ export type ValidatedSearchParams = z.infer<typeof searchParamsSchema>;
 export function slugify(text: string): string {
   return text.toLowerCase().replace(/\s+/g, '-');
 }
+
+/**
+ * Schema for wallet addresses (supports both EVM and Solana formats)
+ */
+export const walletAddressSchema = z
+  .string()
+  .transform((val) => sanitizeAddress(val))
+  .refine((val) => {
+    // Check for Ethereum address format (0x...)
+    if (val.startsWith('0x')) {
+      return /^0x[a-fA-F0-9]{40}$/.test(val);
+    }
+    // Check for Solana address format (base58)
+    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
+  }, 'Invalid wallet address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
+
+/**
+ * Schema for quest slugs (alphanumeric, hyphens, and underscores)
+ */
+export const questSlugSchema = z
+  .string()
+  .regex(
+    /^[a-z0-9\-_]+$/,
+    'Quest slug must contain only lowercase alphanumeric characters, hyphens, and underscores',
+  )
+  .min(1, 'Quest slug cannot be empty')
+  .max(100, 'Quest slug is too long');
+
+/**
+ * Schema for scan segments (tx, block, wallet)
+ */
+export const scanSegmentSchema = z
+  .enum(['tx', 'block', 'wallet'])
+  .transform((val) => val.toLowerCase());
+
+/**
+ * Schema for scan address segments (valid blockchain addresses)
+ */
+export const scanAddressSchema = z
+  .string()
+  .transform((val) => sanitizeAddress(val))
+  .refine((val) => {
+    // Check for Ethereum address format (0x...)
+    if (val.startsWith('0x')) {
+      return /^0x[a-fA-F0-9]{40}$/.test(val);
+    }
+    // Check for Solana address format (base58)
+    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
+  }, 'Invalid blockchain address format');
+
+/**
+ * Schema for scan route params
+ */
+export const scanParamsSchema = z.object({
+  segments: z.array(z.union([scanSegmentSchema, scanAddressSchema])).optional(),
+});
+
+/**
+ * Schema for bridge segments (sourceChain-sourceToken-destinationChain-destinationToken)
+ */
+export const bridgeSegmentsSchema = z
+  .string()
+  .transform((val) => decodeURIComponent(val))
+  .refine((val) => {
+    const segments = val.split('-');
+    return segments.length === 4;
+  }, 'Bridge segments must be in format: sourceChain-sourceToken-destinationChain-destinationToken')
+  .transform((val) => {
+    const [sourceChain, sourceToken, destinationChain, destinationToken] =
+      val.split('-');
+    return {
+      sourceChain: slugify(sourceChain),
+      sourceToken: slugify(sourceToken),
+      destinationChain: slugify(destinationChain),
+      destinationToken: slugify(destinationToken),
+    };
+  });
+
+/**
+ * Schema for partner theme slugs
+ */
+export const partnerThemeSchema = z
+  .string()
+  .regex(
+    /^[a-z0-9\-_]+$/,
+    'Partner theme must contain only lowercase alphanumeric characters, hyphens, and underscores',
+  )
+  .min(1, 'Partner theme cannot be empty')
+  .max(50, 'Partner theme is too long');

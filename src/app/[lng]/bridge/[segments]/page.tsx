@@ -7,6 +7,10 @@ import {
   getChainByName,
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
+import {
+  bridgeSegmentsSchema,
+  chainNameSchema,
+} from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -31,35 +35,61 @@ function parseString(url: string): [string, string, string, string] {
   const destinationChain = destinationSplit[0];
   const destinationToken = destinationSplit.slice(1).join('-'); // Join the rest back for destination token
 
+  // Validate chain names
+  const sourceChainResult = chainNameSchema.safeParse(sourceChain);
+  const destinationChainResult = chainNameSchema.safeParse(destinationChain);
+
+  if (!sourceChainResult.success || !destinationChainResult.success) {
+    throw new Error('Invalid chain name format');
+  }
+
   return [sourceChain, sourceToken, destinationChain, destinationToken];
 }
+
 export async function generateMetadata({
   params,
 }: {
   params: { segments: string };
 }): Promise<Metadata> {
-  const [sourceChain, sourceTokenName, destinationChain, destinationTokenName] =
-    parseString(params.segments);
+  try {
+    // Validate segments
+    const result = bridgeSegmentsSchema.safeParse(params.segments);
+    if (!result.success) {
+      throw new Error('Invalid bridge segments');
+    }
 
-  const title = `Jumper | Best way to bridge from ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain}`;
+    const { sourceChain, sourceToken, destinationChain, destinationToken } =
+      result.data;
 
-  const openGraph: Metadata['openGraph'] = {
-    title: title,
-    description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
-    siteName: siteName,
-    url: `${getSiteUrl()}/bridge/${params.segments}`,
-    type: 'article',
-  };
+    const title = `Jumper | Best way to bridge from ${sourceToken} on ${sourceChain} to ${destinationToken} on ${destinationChain}`;
 
-  return {
-    title,
-    description: title,
-    twitter: openGraph,
-    openGraph,
-    alternates: {
-      canonical: `${getSiteUrl()}/bridge/${params.segments}`,
-    },
-  };
+    const openGraph: Metadata['openGraph'] = {
+      title: title,
+      description: `Jumper offers the best way to do cross-chain bridging of ${sourceToken} on ${sourceChain} to ${destinationToken} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
+      siteName: siteName,
+      url: `${getSiteUrl()}/bridge/${params.segments}`,
+      type: 'article',
+    };
+
+    return {
+      title,
+      description: title,
+      twitter: openGraph,
+      openGraph,
+      alternates: {
+        canonical: `${getSiteUrl()}/bridge/${params.segments}`,
+      },
+    };
+  } catch (err) {
+    return {
+      title: 'Jumper | Cross-Chain Bridge',
+      description:
+        'Jumper offers the best way to bridge tokens across different blockchains with the fastest speeds, lowest costs, and most secure bridge providers.',
+      alternates: {
+        canonical: `${getSiteUrl()}/bridge`,
+      },
+    };
+  }
 }
 
 export const revalidate = 86400;
@@ -76,49 +106,51 @@ export default async function Page({
   params: { segments: string };
 }) {
   try {
-    const [
-      sourceChainNameParam,
-      sourceTokenSymbolParam,
-      destinationChainNameParam,
-      destinationTokenSymbolParam,
-    ] = parseString(decodeURIComponent(segments));
+    // Validate segments
+    const result = bridgeSegmentsSchema.safeParse(segments);
+    if (!result.success) {
+      return notFound();
+    }
+
+    const { sourceChain, sourceToken, destinationChain, destinationToken } =
+      result.data;
 
     const { chains } = await getChainsQuery();
     const { tokens } = await getTokensQuery();
 
-    const sourceChain = getChainByName(chains, sourceChainNameParam);
-    const sourceToken = getTokenBySymbolOnSpecificChain(
+    const sourceChainData = getChainByName(chains, sourceChain);
+    const sourceTokenData = getTokenBySymbolOnSpecificChain(
       tokens,
-      sourceChain?.id ?? 0,
-      sourceTokenSymbolParam,
+      sourceChainData?.id ?? 0,
+      sourceToken,
     );
-    const destinationChain = getChainByName(chains, destinationChainNameParam);
-    const destinationToken = getTokenBySymbolOnSpecificChain(
+    const destinationChainData = getChainByName(chains, destinationChain);
+    const destinationTokenData = getTokenBySymbolOnSpecificChain(
       tokens,
-      destinationChain?.id ?? 0,
-      destinationTokenSymbolParam,
+      destinationChainData?.id ?? 0,
+      destinationToken,
     );
 
     if (
-      !sourceChain ||
-      !sourceToken ||
-      !destinationChain ||
-      !destinationToken
+      !sourceChainData ||
+      !sourceTokenData ||
+      !destinationChainData ||
+      !destinationTokenData
     ) {
       return notFound();
     }
 
     return (
       <BridgePage
-        sourceChain={sourceChain}
-        sourceToken={sourceToken}
-        destinationChain={destinationChain}
-        destinationToken={destinationToken}
+        sourceChain={sourceChainData}
+        sourceToken={sourceTokenData}
+        destinationChain={destinationChainData}
+        destinationToken={destinationTokenData}
         chains={chains}
         tokens={tokens}
       />
     );
   } catch (e) {
-    notFound();
+    return notFound();
   }
 }
