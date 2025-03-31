@@ -149,12 +149,29 @@ export const bridgeSegmentsSchema = z
   .string()
   .transform((val) => decodeURIComponent(val))
   .refine((val) => {
-    const segments = val.split('-');
-    return segments.length === 4;
-  }, 'Bridge segments must be in format: sourceChain-sourceToken-destinationChain-destinationToken')
+    // First split by -to- to get source and destination parts
+    const [sourcePart, destinationPart] = val.split('-to-');
+    if (!sourcePart || !destinationPart) {
+      return false;
+    }
+    // Then split each part by - to get chain and token
+    const sourceSegments = sourcePart.split('-');
+    const destinationSegments = destinationPart.split('-');
+    return sourceSegments.length >= 2 && destinationSegments.length >= 2;
+  }, 'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken')
   .transform((val) => {
-    const [sourceChain, sourceToken, destinationChain, destinationToken] =
-      val.split('-');
+    const [sourcePart, destinationPart] = val.split('-to-');
+    const sourceSegments = sourcePart.split('-');
+    const destinationSegments = destinationPart.split('-');
+
+    // Get chain and token from source part
+    const sourceChain = sourceSegments[0];
+    const sourceToken = sourceSegments.slice(1).join('-');
+
+    // Get chain and token from destination part
+    const destinationChain = destinationSegments[0];
+    const destinationToken = destinationSegments.slice(1).join('-');
+
     return {
       sourceChain: slugify(sourceChain),
       sourceToken: slugify(sourceToken),
