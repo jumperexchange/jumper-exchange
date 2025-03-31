@@ -49,30 +49,26 @@ export default async function PartnerThemeLayout({
   children: React.ReactNode;
   params: { partnerTheme: string };
 }) {
-  try {
-    // Validate partner theme format
-    const result = partnerThemeSchema.safeParse(partnerTheme);
-    if (!result.success) {
-      return notFound();
-    }
-
-    // Check if partner theme exists in Strapi
-    const partnerThemes = await getPartnerThemes();
-    const partnerThemesData = partnerThemes.data?.find(
-      (d) => d.attributes?.uid === result.data,
-    );
-
-    if (!partnerThemesData) {
-      return notFound();
-    }
-
-    return (
-      <>
-        <BaseLayout disableNavbar={true}>{children}</BaseLayout>
-        <FeatureCards />
-      </>
-    );
-  } catch (error) {
+  // Validate partner theme format
+  const result = partnerThemeSchema.safeParse(partnerTheme);
+  if (!result.success) {
     return notFound();
   }
+
+  // Check if partner theme exists in Strapi
+  const partnerThemes = await getPartnerThemes();
+  const partnerThemesData = partnerThemes.data?.find(
+    (d) => d.attributes?.uid === result.data,
+  );
+
+  if (!partnerThemesData) {
+    return notFound();
+  }
+
+  return (
+    <>
+      <BaseLayout disableNavbar={true}>{children}</BaseLayout>
+      <FeatureCards />
+    </>
+  );
 }

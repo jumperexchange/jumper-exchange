@@ -61,19 +61,15 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  try {
-    // Validate slug
-    const slugResult = questSlugSchema.safeParse(params.slug);
-    if (!slugResult.success) {
-      return notFound();
-    }
-
-    const { data, url } = await getQuestBySlug(slugResult.data);
-    if (!data) {
-      return notFound();
-    }
-    return <QuestPage quest={data} url={url} />;
-  } catch (error) {
+  // Validate slug
+  const slugResult = questSlugSchema.safeParse(params.slug);
+  if (!slugResult.success) {
     return notFound();
   }
+
+  const { data, url } = await getQuestBySlug(slugResult.data);
+  if (!data) {
+    return notFound();
+  }
+  return <QuestPage quest={data} url={url} />;
 }

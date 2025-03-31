@@ -70,15 +70,11 @@ export default function Page({
   children: React.ReactNode;
   params: { lng: string; segments: string[] };
 }) {
-  try {
-    // Validate segments
-    const result = scanParamsSchema.safeParse({ segments: params.segments });
-    if (!result.success) {
-      return notFound();
-    }
-
-    return <ScanPage lng={params.lng} />;
-  } catch (error) {
+  // Validate segments
+  const result = scanParamsSchema.safeParse({ segments: params.segments });
+  if (!result.success) {
     return notFound();
   }
+
+  return <ScanPage lng={params.lng} />;
 }

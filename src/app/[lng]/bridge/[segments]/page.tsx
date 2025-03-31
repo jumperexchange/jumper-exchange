@@ -70,52 +70,48 @@ export default async function Page({
 }: {
   params: { segments: string };
 }) {
-  try {
-    // Validate segments
-    const result = bridgeSegmentsSchema.safeParse(segments);
-    if (!result.success) {
-      return notFound();
-    }
-
-    const { sourceChain, sourceToken, destinationChain, destinationToken } =
-      result.data;
-
-    const { chains } = await getChainsQuery();
-    const { tokens } = await getTokensQuery();
-
-    const sourceChainData = getChainByName(chains, sourceChain);
-    const sourceTokenData = getTokenBySymbolOnSpecificChain(
-      tokens,
-      sourceChainData?.id ?? 0,
-      sourceToken,
-    );
-    const destinationChainData = getChainByName(chains, destinationChain);
-    const destinationTokenData = getTokenBySymbolOnSpecificChain(
-      tokens,
-      destinationChainData?.id ?? 0,
-      destinationToken,
-    );
-
-    if (
-      !sourceChainData ||
-      !sourceTokenData ||
-      !destinationChainData ||
-      !destinationTokenData
-    ) {
-      return notFound();
-    }
-
-    return (
-      <BridgePage
-        sourceChain={sourceChainData}
-        sourceToken={sourceTokenData}
-        destinationChain={destinationChainData}
-        destinationToken={destinationTokenData}
-        chains={chains}
-        tokens={tokens}
-      />
-    );
-  } catch (e) {
+  // Validate segments
+  const result = bridgeSegmentsSchema.safeParse(segments);
+  if (!result.success) {
     return notFound();
   }
+
+  const { sourceChain, sourceToken, destinationChain, destinationToken } =
+    result.data;
+
+  const { chains } = await getChainsQuery();
+  const { tokens } = await getTokensQuery();
+
+  const sourceChainData = getChainByName(chains, sourceChain);
+  const sourceTokenData = getTokenBySymbolOnSpecificChain(
+    tokens,
+    sourceChainData?.id ?? 0,
+    sourceToken,
+  );
+  const destinationChainData = getChainByName(chains, destinationChain);
+  const destinationTokenData = getTokenBySymbolOnSpecificChain(
+    tokens,
+    destinationChainData?.id ?? 0,
+    destinationToken,
+  );
+
+  if (
+    !sourceChainData ||
+    !sourceTokenData ||
+    !destinationChainData ||
+    !destinationTokenData
+  ) {
+    return notFound();
+  }
+
+  return (
+    <BridgePage
+      sourceChain={sourceChainData}
+      sourceToken={sourceTokenData}
+      destinationChain={destinationChainData}
+      destinationToken={destinationTokenData}
+      chains={chains}
+      tokens={tokens}
+    />
+  );
 }
