@@ -182,6 +182,7 @@ export async function GET(
         </div>
       ),
       await getImageResponseOptions({
+        debug: false,
         width: BASE_WIDTH,
         height: BASE_HEIGHT,
       }),
