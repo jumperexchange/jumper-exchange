@@ -133,50 +133,24 @@ export const scanParamsSchema = z.object({
 });
 
 /**
- * Helper function to parse bridge URL into source and destination parts
- */
-function parseBridgeUrl(val: string) {
-  const [sourcePart, destinationPart] = val.split('-to-');
-  if (!sourcePart || !destinationPart) {
-    return null;
-  }
-
-  const sourceSegments = sourcePart.split('-');
-  const destinationSegments = destinationPart.split('-');
-
-  if (sourceSegments.length < 2 || destinationSegments.length < 2) {
-    return null;
-  }
-
-  return {
-    sourceSegments,
-    destinationSegments,
-  };
-}
-
-/**
- * Schema for bridge segments (sourceChain-sourceToken-destinationChain-destinationToken)
+ * Schema for bridge segments (sourceChain-sourceToken-to-destinationChain-destinationToken)
  */
 export const bridgeSegmentsSchema = z
   .string()
   .transform((val) => decodeURIComponent(val))
   .refine((val) => {
-    const parsed = parseBridgeUrl(val);
-    return parsed !== null;
+    const segments = val.split('-');
+    return segments.length === 5;
   }, 'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken')
   .transform((val) => {
-    const parsed = parseBridgeUrl(val);
-    if (!parsed) {
-      throw new Error('Invalid bridge segments format');
-    }
-
-    const { sourceSegments, destinationSegments } = parsed;
-
+    const segments = val.split('-');
+    const [sourceChain, sourceToken, _, destinationChain, destinationToken] =
+      segments;
     return {
-      sourceChain: slugify(sourceSegments[0]),
-      sourceToken: slugify(sourceSegments.slice(1).join('-')),
-      destinationChain: slugify(destinationSegments[0]),
-      destinationToken: slugify(destinationSegments.slice(1).join('-')),
+      sourceChain: slugify(sourceChain),
+      sourceToken: slugify(sourceToken),
+      destinationChain: slugify(destinationChain),
+      destinationToken: slugify(destinationToken),
     };
   });
 
