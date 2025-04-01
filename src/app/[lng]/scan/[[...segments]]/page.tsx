@@ -3,13 +3,15 @@ import type { Metadata } from 'next';
 import { siteName } from '@/app/lib/metadata';
 import { getSiteUrl } from '@/const/urls';
 
+type MetadataParams = Promise<{ segments: string[] }>;
+
 export async function generateMetadata({
-  params: { segments = [] },
+  params,
 }: {
-  params: {
-    segments: string[];
-  };
+  params: MetadataParams;
 }): Promise<Metadata> {
+  const { segments = [] } = await params;
+
   const slugToTitle: { [key: string]: string } = {
     tx: 'Transaction',
     block: 'Block',
@@ -45,11 +47,15 @@ export async function generateMetadata({
   };
 }
 
-export default function Page({
-  params: { lng },
+type Params = Promise<{ lng: string }>;
+
+export default async function Page({
+  params,
 }: {
   children: React.ReactNode;
-  params: { lng: string };
+  params: Params;
 }) {
+  const { lng } = await params;
+
   return <ScanPage lng={lng} />;
 }
