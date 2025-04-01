@@ -98,12 +98,12 @@ export type QuestAttributes = {
   Steps?: RootNode[];
   CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
   Image: StrapiMediaData;
-  BannerImage: BannerImageData;
+  BannerImage: BannerImageData[];
   quests_platform: QuestsPlatformData;
   tasks_verification: TaskVerification[];
 };
 
-interface TaskVerification {
+export interface TaskVerification {
   id: number;
   name: string;
   uuid: string;

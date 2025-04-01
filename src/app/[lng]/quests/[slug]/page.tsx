@@ -65,5 +65,6 @@ export default async function Page({ params }: { params: Params }) {
   if (!data) {
     return notFound();
   }
+
   return <QuestPage quest={data} url={url} />;
 }
