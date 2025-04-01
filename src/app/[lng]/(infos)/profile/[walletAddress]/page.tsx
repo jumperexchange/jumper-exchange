@@ -2,31 +2,33 @@ import ProfilePage from '@/app/ui/profile/ProfilePage';
 import type { Metadata } from 'next';
 import { getSiteUrl } from '@/const/urls';
 
-type Props = {
-  params: { walletAddress: string };
-};
+type Params = Promise<{ walletAddress: string }>;
 
 const baseUrl = getSiteUrl();
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { walletAddress } = await params;
+
   return {
     openGraph: {
-      title: `Profile of ${params.walletAddress}`,
-      description: `Profile of ${params.walletAddress}`,
+      title: `Profile of ${walletAddress}`,
+      description: `Profile of ${walletAddress}`,
       type: 'profile',
-      url: `${baseUrl}/profile/${params.walletAddress}`,
-      images: `${baseUrl}/api/profile/${params.walletAddress}`,
+      url: `${baseUrl}/profile/${walletAddress}`,
+      images: `${baseUrl}/api/profile/${walletAddress}`,
     },
     twitter: {
-      images: `${baseUrl}/api/profile/${params.walletAddress}`,
+      images: `${baseUrl}/api/profile/${walletAddress}`,
     },
   };
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { walletAddress: string };
-}) {
-  return <ProfilePage walletAddress={params.walletAddress} isPublic />;
+export default async function Page({ params }: { params: Params }) {
+  const { walletAddress } = await params;
+
+  return <ProfilePage walletAddress={walletAddress} isPublic />;
 }

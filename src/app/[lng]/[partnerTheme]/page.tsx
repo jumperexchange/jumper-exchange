@@ -15,9 +15,9 @@ export async function generateStaticParams() {
   return customPath;
 }
 
-export default function Page() {
+export default async function Page() {
   const variant = 'default'; // exchange
-  const { activeThemeMode } = getCookies();
+  const { activeThemeMode } = await getCookies();
   return (
     <App>
       <WidgetContainer welcomeScreenClosed={true}>

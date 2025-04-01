@@ -5,6 +5,8 @@ import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 import App from '../../ui/app/App';
 
+export const fetchCache = 'default-cache';
+
 export const metadata: Metadata = {
   other: {
     'partner-theme': 'default',
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MainLayout({ children }: PropsWithChildren) {
-  const { activeTheme } = getCookies();
+  const { activeTheme } = await getCookies();
   return (
     <>
       <Layout>

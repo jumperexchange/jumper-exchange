@@ -2,6 +2,7 @@ import type { cookies } from 'next/headers';
 import type { PartnerThemesData, StrapiResponseData } from '../../types/strapi';
 import type { ThemeMode } from '../../types/theme';
 import { getPartnerThemes } from './getPartnerThemes';
+import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export type ActiveThemeResult = {
   themes: StrapiResponseData<PartnerThemesData>;
@@ -13,9 +14,7 @@ export type ActiveThemeResult = {
 // Handle
 // /partner-theme
 // /en/partner-theme
-export async function getActiveTheme(
-  cookiesHandler: ReturnType<typeof cookies>,
-) {
+export async function getActiveTheme(cookiesHandler: ReadonlyRequestCookies) {
   const partnerThemes = await getPartnerThemes();
   const cookieTheme = cookiesHandler.get('theme')?.value;
   const pathname = cookiesHandler.get('pathname')?.value || '/';

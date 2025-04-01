@@ -3,12 +3,11 @@ import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
-  swcMinify: true,
   trailingSlash: false,
   productionBrowserSourceMaps: false,
   experimental: {
-    serverSourceMaps: false
+    serverSourceMaps: false,
+    turbo: {}
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {
@@ -197,5 +196,6 @@ export default withSentryConfig(
     // https://docs.sentry.io/product/crons/
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
+    bundlePagesRouterDependencies: true,
   },
 );

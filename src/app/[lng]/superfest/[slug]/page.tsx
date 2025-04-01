@@ -42,8 +42,12 @@ import SuperfestPage from 'src/app/ui/superfest/SuperfestMissionPage';
 //   }
 // }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const { data, url } = await getQuestBySlug(params.slug);
+type Params = Promise<{ slug: string }>;
+
+export default async function Page({ params }: { params: Params }) {
+  const { slug } = await params;
+
+  const { data, url } = await getQuestBySlug(slug);
 
   if (!data) {
     return notFound();
