@@ -56,7 +56,7 @@ function Task({
         <Typography>Task: {task.name}</Typography>
       </Stack>
       <Stack direction="column">
-        {isValid ? (
+        {isValid || isSuccess ? (
           <IconWrapper>
             <CheckIcon />
           </IconWrapper>
