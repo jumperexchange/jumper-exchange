@@ -2,7 +2,7 @@
 
 /**
  * Image Generation of Widget for SEO pages
- * Step 5 - Review transaction
+ * Step 3 - Review quote
  *
  * Example:
  * ```
