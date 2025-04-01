@@ -65,7 +65,7 @@ export const MenuMobile = ({
         >
           {!!label ? (
             <MenuHeaderAppWrapper>
-              <MenuHeaderAppBar component="div" elevation={0}>
+              <MenuHeaderAppBar as="div" elevation={0}>
                 <Typography
                   variant={'bodyMediumStrong'}
                   width={'100%'}

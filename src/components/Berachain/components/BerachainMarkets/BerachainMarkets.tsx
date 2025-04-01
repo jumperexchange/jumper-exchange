@@ -1,31 +1,19 @@
-import { Box, Grid, Typography } from '@mui/material';
-import { BerachainMarketCard } from '../BerachainMarketCard/BerachainMarketCard';
-import { BerachainMarketCards } from './BerachainMarkets.style';
-import { BerachainMarketsFilters } from './BerachainMarketsFilters/BerachainMarketsFilters';
+import { Box, Typography } from '@mui/material';
 import { BerachainMarketsHeader } from './BerachainMarketsHeader';
-import { useBerachainMarkets } from '@/components/Berachain/hooks/useBerachainMarkets';
-import type { EnrichedMarketDataType } from 'royco/queries';
-import { useBerachainMarketsFilterStore } from '@/components/Berachain/stores/BerachainMarketsFilterStore';
-import { useSearchParams } from 'next/navigation';
-import {
-  calculateBeraYield,
-  getFullTitle,
-  includesCaseInsensitive,
-} from '@/components/Berachain/utils';
-import useBerachainFilters from '@/components/Berachain/hooks/useBerachainFilters';
+import { BerachainRedirection } from './BerachainRedirection';
 
 export const BerachainMarkets = () => {
-  const searchParam = useSearchParams();
-  const isVerified = searchParam.get('is_verified') !== 'false';
-  const { data, url, findFromStrapiByUid } = useBerachainMarkets();
-  const berachainFilters = useBerachainFilters();
-  const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
-    (state) => state,
-  );
+  // const searchParam = useSearchParams();
+  // const isVerified = searchParam.get('is_verified') !== 'false';
+  // const { data, url, findFromStrapiByUid } = useBerachainMarkets();
+  // const berachainFilters = useBerachainFilters();
+  // const { roycoMarkets: roycoData } = useBerachainMarketsFilterStore(
+  //   (state) => state,
+  // );
 
   // TODO: move useEnrichedMarkets to a hook so we can filter it from there
-  const { tokenFilter, baffleOnly, incentiveFilter, search } =
-    useBerachainMarketsFilterStore((state) => state);
+  // const { tokenFilter, baffleOnly, incentiveFilter, search } =
+  //   useBerachainMarketsFilterStore((state) => state);
 
   return (
     <Box>
@@ -42,23 +30,24 @@ export const BerachainMarkets = () => {
       >
         <Typography
           sx={(theme) => ({
-            color: theme.palette.text.primary,
+            color: '#FF8425',
           })}
         >
-          Boyco ends on Feb 3rd 12AM UTC.
+          Boyco ended on Feb 2nd at 11:59 pm UTC.
         </Typography>
       </Box>
       <BerachainMarketsHeader />
-      <BerachainMarketsFilters />
-      <BerachainMarketCards>
+      <BerachainRedirection />
+      {/* <BerachainMarketsFilters /> */}
+      {/* <BerachainMarketCards>
         {(!Array.isArray(roycoData) || roycoData.length === 0 || !data) &&
           Array.from({ length: 9 }, () => 42).map((_, idx) => (
             <BerachainMarketCard
               roycoData={{} as EnrichedMarketDataType}
               key={idx}
             />
-          ))}
-        {/*        {true && (
+          ))} */}
+      {/*        {true && (
           <Grid
             item
             xs={12}
@@ -82,7 +71,7 @@ export const BerachainMarkets = () => {
             </Typography>
           </Grid>
         )*/}
-        {Array.isArray(roycoData) &&
+      {/* {Array.isArray(roycoData) &&
           roycoData?.length > 0 &&
           roycoData
             .filter((data) => {
@@ -143,7 +132,7 @@ export const BerachainMarkets = () => {
                 />
               );
             })}
-      </BerachainMarketCards>
+      </BerachainMarketCards> */}
     </Box>
   );
 };

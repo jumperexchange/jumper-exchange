@@ -1,12 +1,12 @@
-import { execSync } from 'child_process';
 import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import {
-  openOrCloseMainMenu,
   itemInMenu,
   closeWelcomeScreen,
-} from './testData/commonFunctions';
+} from './testData/landingPageFunctions';
 import basicSetup from './wallet-setup/basic.setup';
+
+import { openOrCloseMainMenu } from './testData/menuFunctions';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
@@ -27,22 +27,22 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     const metaMaskWalletOption = page.locator(
       'xpath=//span[normalize-space(text())="MetaMask"]',
     );
-    const availableMissionTitle = page.locator(
-      'xpath=//p[normalize-space(text())="Available Missions"]',
-    );
-    const ethereumOption = page.locator(
-      'xpath=//span[normalize-space(text())="Ethereum"]',
-    );
+    const noRecentTransactions = page.locator('xpath=//p[normalize-space(text())="No recent transactions"]');
+    const transactionHistoryButton = page.locator('xpath=//button[@aria-label="Transaction history"]');
+    // const ethereumOption = page.locator(
+    //   'xpath=//span[normalize-space(text())="Ethereum"]',
+    // );
     await page.goto('/');
     await expect(connectWalletButton).toBeEnabled();
     await connectWalletButton.click();
     await metaMaskWalletOption.click();
-    await ethereumOption.click();
+    // await ethereumOption.click();
     await metamask.connectToDapp(['Account 1']);
     await closeWelcomeScreen(page);
+    await transactionHistoryButton.click();
+    await expect(noRecentTransactions).toBeVisible();
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Loyalty Pass');
+    await itemInMenu(page, 'Jumper Profile');
     await page.locator('.profile-page').isVisible();
-    await expect(availableMissionTitle).toBeVisible();
   });
 });

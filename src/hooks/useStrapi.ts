@@ -149,10 +149,7 @@ export const useStrapi = <T>({
     // populate images on feature card query
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
-    apiUrl.searchParams.set(
-      'populate[featureCardsExclusions][fields][0]',
-      'uid',
-    );
+    apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
     //filter url
     const currentDate = new Date(Date.now()).toISOString().split('T')[0];

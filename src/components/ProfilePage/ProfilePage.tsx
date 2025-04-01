@@ -1,6 +1,5 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
 import { useContext } from 'react';
 import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
@@ -21,7 +20,6 @@ import { ProfileContext } from '@/providers/ProfileProvider';
 import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 export const ProfilePage = () => {
-  const { account } = useAccount();
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
@@ -45,7 +43,7 @@ export const ProfilePage = () => {
           <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
-      {/* <CampaignBanner /> */}
+      <CampaignBanner />
       <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />
       <QuestsCompletedCarousel pdas={pdas} loading={isLoading} />
     </PageContainer>

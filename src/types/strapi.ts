@@ -1,7 +1,12 @@
 import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 
 /* Strapi */
+export interface ImageData<T> {
+  data: T;
+}
+
 interface MediaFormat {
   name: string;
   hash: string;
@@ -14,13 +19,17 @@ interface MediaFormat {
   url: string;
 }
 
-export interface MediaData extends MediaAttributes {
-  id: number;
+export interface StrapiMediaData extends StrapiMediaAttributes {
+  id: string;
   documentId: string;
-  // attributes: MediaAttributes;
+  // attributes: StrapiMediaAttributes;
 }
 
-export interface MediaAttributes {
+type MediaAttributes = SpindlMediaAttributes | StrapiMediaAttributes;
+
+export interface StrapiMediaAttributes {
+  id: string;
+  documentId: string;
   name: string;
   alternativeText: string | undefined;
   caption?: string;
@@ -63,19 +72,17 @@ export interface StrapiResponse<T> {
   meta: StrapiMeta;
 }
 
-export interface StrapiImageData {
-  data: MediaData;
-}
+export type FeatureCardData = StrapiFeatureCardData | SpindlCardData;
 
 /* Feature-Cards */
-export interface FeatureCardData extends FeatureCardAttributes {
+export interface StrapiFeatureCardData extends FeatureCardAttributes {
   id: number;
   documentId: string;
   // attributes: FeatureCardAttributes;
 }
 
 interface FeatureCardDisplayConditions {
-  mode: string;
+  mode?: string;
   showOnce?: boolean;
 }
 
@@ -85,13 +92,14 @@ interface FeatureCardExclusion extends Pick<FeatureCardAttributes, 'uid'> {
   // attributes: Pick<FeatureCardAttributes, 'uid'>;
 }
 
-interface FeatureCardAttributes {
+export interface FeatureCardAttributes {
   Title: string;
   Subtitle: string;
   CTACall: string;
   URL: string;
   TitleColor?: string;
   CTAColor?: string;
+  SubtitleColor?: string;
   DisplayConditions: FeatureCardDisplayConditions;
   createdAt: string;
   updatedAt: string;
@@ -99,8 +107,8 @@ interface FeatureCardAttributes {
   publishedAt?: string;
   locale: string;
   uid: string;
-  BackgroundImageLight: MediaData;
-  BackgroundImageDark: MediaData;
+  BackgroundImageLight?: MediaAttributes;
+  BackgroundImageDark?: MediaAttributes;
   featureCardsExclusions?: FeatureCardExclusion[];
 
   localizations: {
@@ -118,7 +126,7 @@ interface JumperUserAttributes {
   EvmWalletAddress?: string;
   SolWalletAddress?: string;
   PersonalizedContent?: object;
-  feature_cards: { data: FeatureCardData[] };
+  feature_cards: { data: StrapiFeatureCardData[] };
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
@@ -128,6 +136,7 @@ interface JumperUserAttributes {
 export interface TagData {
   data: TagAttributes[];
 }
+
 export interface TagAttributes {
   // attributes: {
   Title: string;
@@ -169,6 +178,7 @@ export interface AuthorData extends AuthorAttributes {
   // attributes: any;
   // data: AuthorAttributes;
 }
+
 interface AuthorAttributes {
   // attributes: {
   Name: string;
@@ -189,10 +199,10 @@ export interface AvatarItem extends AvatarData {
   // data: AvatarData;
 }
 
-export interface AvatarData extends MediaAttributes {
-  id: number;
+export interface AvatarData extends StrapiMediaAttributes {
+  id: string;
   documentId: string;
-  // attributes: MediaAttributes;
+  // attributes: StrapiMediaAttributes;
 }
 
 /* Blog */
@@ -201,11 +211,12 @@ export interface BlogArticleData extends BlogArticleAttributes {
   documentId: string;
   // attributes: BlogArticleAttributes;
 }
+
 export interface BlogArticleAttributes {
   Title: string;
   Subtitle: string;
   Content: RootNode[];
-  Image: MediaData;
+  Image: StrapiMediaData;
   Slug: string;
   createdAt: string;
   updatedAt: string;
@@ -235,7 +246,8 @@ export interface Customization {
   hasBlurredNavigation?: boolean;
 }
 
-type WidgetConfigProps = Omit<WidgetConfig, 'integrator'>;
+type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
+  Partial<Pick<WidgetConfig, 'integrator'>>;
 
 export interface PartnerTheme {
   config: WidgetConfigProps;
@@ -259,12 +271,12 @@ export interface PartnerThemesAttributes {
   uid: string;
   SelectableInMenu?: boolean;
   PartnerURL?: URL;
-  BackgroundImageLight: MediaData;
-  BackgroundImageDark: MediaData;
-  FooterImageLight: MediaData;
-  FooterImageDark: MediaData;
-  LogoLight: MediaData;
-  LogoDark: MediaData;
+  BackgroundImageLight: StrapiMediaData;
+  BackgroundImageDark: StrapiMediaData;
+  FooterImageLight: StrapiMediaData;
+  FooterImageDark: StrapiMediaData;
+  LogoLight: StrapiMediaData;
+  LogoDark: StrapiMediaData;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
   Bridges: RepeatableComponent[];

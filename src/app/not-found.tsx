@@ -18,7 +18,7 @@ import { defaultNS, namespaces } from 'src/i18n';
 import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
 
 export default async function NotFound() {
-  const cookiesHandler = cookies();
+  const cookiesHandler = await cookies();
   const locale = cookiesHandler.get('NEXT_LOCALE')?.value ?? 'en';
 
   const { resources } = await initTranslations(locale, namespaces);

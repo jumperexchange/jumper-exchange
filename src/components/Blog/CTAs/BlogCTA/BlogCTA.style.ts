@@ -1,10 +1,10 @@
 import { urbanist } from '@/fonts/fonts';
-import type { BoxProps, Breakpoint } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
 import { Box, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconButtonPrimary } from 'src/components/IconButton';
 
-export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
+export const BlogCtaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -34,7 +34,7 @@ export const BlogCtaContainer = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const BlogCtaTitle = styled(Box)<BoxProps>(({ theme }) => ({
+export const BlogCtaTitle = styled(Box)(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   fontWeight: 700,
   color:

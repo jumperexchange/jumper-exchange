@@ -39,7 +39,7 @@ export const ActiveSuperfestMissionsCarousel = ({
         <SuperfestCarouselContainer>
           <CarouselContainer
             title={'Active Missions'}
-            styles={{ paddingLeft: '32px' }}
+            sx={{ paddingLeft: '32px' }}
           >
             {!loading ? (
               quests?.map((quest, index: number) => {

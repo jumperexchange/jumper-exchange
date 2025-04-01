@@ -1,8 +1,7 @@
 import { test } from '@playwright/test';
-import {
-  closeWelcomeScreen,
-  expectBackgroundColorToHaveCss,
-} from './testData/commonFunctions';
+import { closeWelcomeScreen } from './testData/landingPageFunctions';
+import { openOrCloseMainMenu , Theme, switchTheme} from './testData/menuFunctions';
+import { expectBackgroundColorToHaveCss } from './testData/menuFunctions';
 
 test.describe('Switch between dark and light theme and check the background color', () => {
   test.beforeEach(async ({ page }) => {
@@ -12,9 +11,8 @@ test.describe('Switch between dark and light theme and check the background colo
   test.use({ colorScheme: 'dark' });
   test('Should able to change the theme color to Dark', async ({ page }) => {
     await closeWelcomeScreen(page);
-    await page.locator('#main-burger-menu-button').click();
-    await page.locator('#theme-switch-tabs-1').click();
-    await page.locator('#main-burger-menu-button').click();
+    await openOrCloseMainMenu(page);
+    await switchTheme(page, Theme.Dark);
     await expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
   });
 

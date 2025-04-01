@@ -15,6 +15,7 @@ interface GetWidgetImageProps {
   sourceChain?: ExtendedChain;
   destinationToken?: Token;
   destinationChain?: ExtendedChain;
+  chainName?: string;
   theme?: Theme;
   amount?: number;
   widgetImageProps: WidgetImageProps;
@@ -26,6 +27,7 @@ export const getWidgetImageProps = ({
   sourceChain,
   destinationToken,
   destinationChain,
+  chainName,
   theme,
   amount = DEFAUL_WIDGET_AMOUNT, // Default to DEFAUL_WIDGET_AMOUNT if not provided
   widgetImageProps,
@@ -47,6 +49,9 @@ export const getWidgetImageProps = ({
   }
   if (theme) {
     params.set('theme', theme.palette.mode);
+  }
+  if (chainName) {
+    params.set('chainName', chainName);
   }
   params.set('amount', (amount ? amount : DEFAUL_WIDGET_AMOUNT).toString());
   params.set('isSwap', (isSwap ? true : false).toString());

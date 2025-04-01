@@ -34,13 +34,18 @@ function parseString(url: string): [string, string, string, string] {
 
   return [sourceChain, sourceToken, destinationChain, destinationToken];
 }
+
+type Params = Promise<{ segments: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { segments: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { segments } = await params;
+
   const [sourceChain, sourceTokenName, destinationChain, destinationTokenName] =
-    parseString(params.segments);
+    parseString(segments);
 
   const title = `Jumper | Best way to bridge from ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain}`;
 
@@ -48,7 +53,7 @@ export async function generateMetadata({
     title: title,
     description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenName} on ${sourceChain} to ${destinationTokenName} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
     siteName: siteName,
-    url: `${getSiteUrl()}/bridge/${params.segments}`,
+    url: `${getSiteUrl()}/bridge/${segments}`,
     type: 'article',
   };
 
@@ -58,7 +63,7 @@ export async function generateMetadata({
     twitter: openGraph,
     openGraph,
     alternates: {
-      canonical: `${getSiteUrl()}/bridge/${params.segments}`,
+      canonical: `${getSiteUrl()}/bridge/${segments}`,
     },
   };
 }
@@ -71,11 +76,9 @@ export async function generateStaticParams() {
   return [];
 }
 
-export default async function Page({
-  params: { segments },
-}: {
-  params: { segments: string };
-}) {
+export default async function Page({ params }: { params: Params }) {
+  const { segments } = await params;
+
   try {
     const [
       sourceChainNameParam,
