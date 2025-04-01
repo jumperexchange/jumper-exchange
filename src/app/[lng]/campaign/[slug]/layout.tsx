@@ -2,15 +2,19 @@ import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 
+type Params = Promise<{ slug: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { slug } = await params;
+
   return {
-    title: `Jumper Campaign - ${params.slug}`, // Example: Dynamic title
+    title: `Jumper Campaign - ${slug}`, // Example: Dynamic title
     other: {
-      'partner-theme': params.slug,
+      'partner-theme': slug,
     },
   };
 }
