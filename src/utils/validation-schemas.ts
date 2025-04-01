@@ -133,40 +133,50 @@ export const scanParamsSchema = z.object({
 });
 
 /**
+ * Helper function to parse bridge URL into source and destination parts
+ */
+function parseBridgeUrl(val: string) {
+  const [sourcePart, destinationPart] = val.split('-to-');
+  if (!sourcePart || !destinationPart) {
+    return null;
+  }
+
+  const sourceSegments = sourcePart.split('-');
+  const destinationSegments = destinationPart.split('-');
+
+  if (sourceSegments.length < 2 || destinationSegments.length < 2) {
+    return null;
+  }
+
+  return {
+    sourceSegments,
+    destinationSegments,
+  };
+}
+
+/**
  * Schema for bridge segments (sourceChain-sourceToken-destinationChain-destinationToken)
  */
 export const bridgeSegmentsSchema = z
   .string()
   .transform((val) => decodeURIComponent(val))
   .refine((val) => {
-    // First split by -to- to get source and destination parts
-    const [sourcePart, destinationPart] = val.split('-to-');
-    if (!sourcePart || !destinationPart) {
-      return false;
-    }
-    // Then split each part by - to get chain and token
-    const sourceSegments = sourcePart.split('-');
-    const destinationSegments = destinationPart.split('-');
-    return sourceSegments.length >= 2 && destinationSegments.length >= 2;
+    const parsed = parseBridgeUrl(val);
+    return parsed !== null;
   }, 'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken')
   .transform((val) => {
-    const [sourcePart, destinationPart] = val.split('-to-');
-    const sourceSegments = sourcePart.split('-');
-    const destinationSegments = destinationPart.split('-');
+    const parsed = parseBridgeUrl(val);
+    if (!parsed) {
+      throw new Error('Invalid bridge segments format');
+    }
 
-    // Get chain and token from source part
-    const sourceChain = sourceSegments[0];
-    const sourceToken = sourceSegments.slice(1).join('-');
-
-    // Get chain and token from destination part
-    const destinationChain = destinationSegments[0];
-    const destinationToken = destinationSegments.slice(1).join('-');
+    const { sourceSegments, destinationSegments } = parsed;
 
     return {
-      sourceChain: slugify(sourceChain),
-      sourceToken: slugify(sourceToken),
-      destinationChain: slugify(destinationChain),
-      destinationToken: slugify(destinationToken),
+      sourceChain: slugify(sourceSegments[0]),
+      sourceToken: slugify(sourceSegments.slice(1).join('-')),
+      destinationChain: slugify(destinationSegments[0]),
+      destinationToken: slugify(destinationSegments.slice(1).join('-')),
     };
   });
 
