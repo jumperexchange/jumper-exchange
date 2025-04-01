@@ -7,20 +7,24 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import SwapPage from 'src/app/ui/swap/SwapPage';
 
+type Params = Promise<{ segments: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { segments: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { segments } = await params;
+
   const { chains } = await getChainsQuery();
-  const sourceChain = getChainByName(chains, params.segments);
+  const sourceChain = getChainByName(chains, segments);
   const title = `Jumper | How To Swap on ${sourceChain?.name} | A Complete Guide`;
 
   const openGraph: Metadata['openGraph'] = {
     title: title,
     description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
     siteName: siteName,
-    url: `${getSiteUrl()}/swap/${params.segments.replace('-', ' ').toLowerCase()}`,
+    url: `${getSiteUrl()}/swap/${segments.replace('-', ' ').toLowerCase()}`,
     type: 'article',
   };
 
@@ -30,7 +34,7 @@ export async function generateMetadata({
     twitter: openGraph,
     openGraph,
     alternates: {
-      canonical: `${getSiteUrl()}/swap/${params.segments}`,
+      canonical: `${getSiteUrl()}/swap/${segments}`,
     },
   };
 }
@@ -47,11 +51,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Page({
-  params: { segments },
-}: {
-  params: { segments: string };
-}) {
+export default async function Page({ params }: { params: Params }) {
+  const { segments } = await params;
+
   try {
     const chainName = decodeURIComponent(
       segments.replace('-', ' ').toLowerCase(),

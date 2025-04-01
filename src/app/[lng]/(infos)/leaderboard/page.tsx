@@ -9,10 +9,14 @@ export const metadata: Metadata = {
   },
 };
 
+type SearchParams = { page: string | undefined };
+
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: SearchParams;
 }) {
-  return <LeaderboardPage page={searchParams.page} />;
+  const { page } = await searchParams;
+
+  return <LeaderboardPage page={page} />;
 }
