@@ -7,14 +7,18 @@ import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
 
+type Params = Promise<{ slug: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { slug } = await params;
+
   try {
     // Validate slug
-    const slugResult = questSlugSchema.safeParse(params.slug);
+    const slugResult = questSlugSchema.safeParse(slug);
     if (!slugResult.success) {
       throw new Error('Invalid quest slug');
     }
@@ -31,7 +35,7 @@ export async function generateMetadata({
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
       description: `${sliceStrToXChar(questData.Information || 'Quest description', 60)}`,
       siteName: siteName,
-      url: `${getSiteUrl()}/quests/${params.slug}`,
+      url: `${getSiteUrl()}/quests/${slug}`,
       images: [
         {
           url: `${quest.url}${questData.Image?.url}`,
@@ -47,22 +51,24 @@ export async function generateMetadata({
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
       description: questData.Subtitle,
       alternates: {
-        canonical: `${getSiteUrl()}/quests/${params.slug}`,
+        canonical: `${getSiteUrl()}/quests/${slug}`,
       },
       twitter: openGraph,
       openGraph,
     };
   } catch (err) {
     return {
-      title: `Jumper Quest | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the quest "${params.slug.replaceAll('-', ' ')}".`,
+      title: `Jumper Quest | ${sliceStrToXChar(slug.replaceAll('-', ' '), 45)}`,
+      description: `This is the description for the quest "${slug.replaceAll('-', ' ')}".`,
     };
   }
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: Params }) {
+  const { slug } = await params;
+
   // Validate slug
-  const slugResult = questSlugSchema.safeParse(params.slug);
+  const slugResult = questSlugSchema.safeParse(slug);
   if (!slugResult.success) {
     return notFound();
   }

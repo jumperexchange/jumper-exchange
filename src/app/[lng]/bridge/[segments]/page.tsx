@@ -11,14 +11,18 @@ import { bridgeSegmentsSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+type Params = Promise<{ segments: string }>;
+
 export async function generateMetadata({
   params,
 }: {
-  params: { segments: string };
+  params: Params;
 }): Promise<Metadata> {
   try {
+    const { segments } = await params;
+
     // Validate segments
-    const result = bridgeSegmentsSchema.safeParse(params.segments);
+    const result = bridgeSegmentsSchema.safeParse(segments);
     if (!result.success) {
       throw new Error('Invalid bridge segments');
     }
@@ -32,7 +36,7 @@ export async function generateMetadata({
       title: title,
       description: `Jumper offers the best way to do cross-chain bridging of ${sourceToken} on ${sourceChain} to ${destinationToken} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
       siteName: siteName,
-      url: `${getSiteUrl()}/bridge/${params.segments}`,
+      url: `${getSiteUrl()}/bridge/${segments}`,
       type: 'article',
     };
 
@@ -42,7 +46,7 @@ export async function generateMetadata({
       twitter: openGraph,
       openGraph,
       alternates: {
-        canonical: `${getSiteUrl()}/bridge/${params.segments}`,
+        canonical: `${getSiteUrl()}/bridge/${segments}`,
       },
     };
   } catch (err) {
@@ -65,53 +69,55 @@ export async function generateStaticParams() {
   return [];
 }
 
-export default async function Page({
-  params: { segments },
-}: {
-  params: { segments: string };
-}) {
-  // Validate segments
-  const result = bridgeSegmentsSchema.safeParse(segments);
-  if (!result.success) {
+export default async function Page({ params }: { params: Params }) {
+  try {
+    const { segments } = await params;
+
+    // Validate segments
+    const result = bridgeSegmentsSchema.safeParse(segments);
+    if (!result.success) {
+      return notFound();
+    }
+
+    const { sourceChain, sourceToken, destinationChain, destinationToken } =
+      result.data;
+
+    const { chains } = await getChainsQuery();
+    const { tokens } = await getTokensQuery();
+
+    const sourceChainData = getChainByName(chains, sourceChain);
+    const sourceTokenData = getTokenBySymbolOnSpecificChain(
+      tokens,
+      sourceChainData?.id ?? 0,
+      sourceToken,
+    );
+    const destinationChainData = getChainByName(chains, destinationChain);
+    const destinationTokenData = getTokenBySymbolOnSpecificChain(
+      tokens,
+      destinationChainData?.id ?? 0,
+      destinationToken,
+    );
+
+    if (
+      !sourceChainData ||
+      !sourceTokenData ||
+      !destinationChainData ||
+      !destinationTokenData
+    ) {
+      return notFound();
+    }
+
+    return (
+      <BridgePage
+        sourceChain={sourceChainData}
+        sourceToken={sourceTokenData}
+        destinationChain={destinationChainData}
+        destinationToken={destinationTokenData}
+        chains={chains}
+        tokens={tokens}
+      />
+    );
+  } catch (e) {
     return notFound();
   }
-
-  const { sourceChain, sourceToken, destinationChain, destinationToken } =
-    result.data;
-
-  const { chains } = await getChainsQuery();
-  const { tokens } = await getTokensQuery();
-
-  const sourceChainData = getChainByName(chains, sourceChain);
-  const sourceTokenData = getTokenBySymbolOnSpecificChain(
-    tokens,
-    sourceChainData?.id ?? 0,
-    sourceToken,
-  );
-  const destinationChainData = getChainByName(chains, destinationChain);
-  const destinationTokenData = getTokenBySymbolOnSpecificChain(
-    tokens,
-    destinationChainData?.id ?? 0,
-    destinationToken,
-  );
-
-  if (
-    !sourceChainData ||
-    !sourceTokenData ||
-    !destinationChainData ||
-    !destinationTokenData
-  ) {
-    return notFound();
-  }
-
-  return (
-    <BridgePage
-      sourceChain={sourceChainData}
-      sourceToken={sourceTokenData}
-      destinationChain={destinationChainData}
-      destinationToken={destinationTokenData}
-      chains={chains}
-      tokens={tokens}
-    />
-  );
 }

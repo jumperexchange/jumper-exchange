@@ -6,11 +6,16 @@ import { notFound } from 'next/navigation';
 import React from 'react';
 import { Layout as BaseLayout } from 'src/Layout';
 
+type Params = Promise<{ partnerTheme: string }>;
+export const fetchCache = 'default-cache';
+
 export async function generateMetadata({
-  params: { partnerTheme },
+  params,
 }: {
-  params: { partnerTheme: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { partnerTheme } = await params;
+
   const partnerThemes = await getPartnerThemes();
   const partnerThemesData = partnerThemes.data?.find(
     (d) => d?.uid === partnerTheme,
@@ -25,11 +30,13 @@ export async function generateMetadata({
 
 export default async function PartnerThemeLayout({
   children,
-  params: { partnerTheme },
+  params,
 }: {
   children: React.ReactNode;
-  params: { partnerTheme: string };
+  params: Params;
 }) {
+  const { partnerTheme } = await params;
+
   // Validate partner theme format
   const result = partnerThemeSchema.safeParse(partnerTheme);
   if (!result.success) {
