@@ -1,14 +1,21 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
-import { AbTestCases } from 'src/const/abtests';
-import { useABTest } from 'src/hooks/useABTest';
+
+import { AbTestConfig } from 'src/const/abtests';
+import { useAbTestsStore } from 'src/stores/abTests';
 
 export const AbTests = () => {
-  const { account } = useAccount();
+  // const { account } = useAccount();
+  const { activeAbTests } = useAbTestsStore();
 
-  useABTest({
-    feature: AbTestCases.TEST_WIDGET_SUBVARIANTS,
-    user: account?.address || '',
-  });
+  // Only run AB tests if the master flag is enabled
+  if (!AbTestConfig.enabled) {
+    return null;
+  }
+
+  // Example: Check if widget subvariants test is enabled
+  if (activeAbTests.TEST_WIDGET_SUBVARIANTS) {
+    // Add your AB test logic here
+  }
+
   return null;
 };
