@@ -73,14 +73,14 @@ export const QuestsMissionPage = ({
         )}
         {/* Steps */}
         {Array.isArray(attributes?.tasks_verification) &&
-          attributes?.tasks_verification?.length > 0 ? (
-            <TasksBox
-              tasks={attributes?.tasks_verification}
-              documentId={quest.documentId}
-            />
-          ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
-            <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
-          ) : undefined}
+        attributes?.tasks_verification?.length > 0 ? (
+          <TasksBox
+            tasks={attributes?.tasks_verification}
+            documentId={quest.documentId}
+          />
+        ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
+          <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
+        ) : undefined}
         {/* Additional Info */}
         {attributes?.Information && (
           <InformationAlertBox information={attributes?.Information} />

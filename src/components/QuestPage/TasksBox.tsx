@@ -16,9 +16,7 @@ interface StepsBoxProps {
 
 export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
   const { account } = useAccount();
-  const {
-    data: verified,
-  } = useGetVerifiedTasks(account?.address);
+  const { data: verified } = useGetVerifiedTasks(account?.address);
 
   return (
     <QuestsPageElementContainer>

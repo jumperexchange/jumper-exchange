@@ -1,10 +1,23 @@
 import { useAccount } from '@lifi/wallet-management';
 import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
-import { Box, Breakpoint, Button, CircularProgress, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import type { Breakpoint } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import type { TaskVerification } from '@/types/loyaltyPass';
 import { type MouseEventHandler, useEffect, useState } from 'react';
-import { TrackingAction, TrackingCategory, TrackingEventParameter } from '@/const/trackingKeys';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking';
 import {
   InstructionsAccordionButtonMainBox,
@@ -87,23 +100,32 @@ function Task({
   }, [isError]);
 
   return (
-    <InstructionsAccordionItemContainer sx={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start' }}>
+    <InstructionsAccordionItemContainer
+      sx={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start' }}
+    >
       <InstructionsAccordionItemIndex>
         {index + 1}
       </InstructionsAccordionItemIndex>
-      <Stack direction="column" justifyContent="space-between" sx={{ width: '100%' }}>
-        <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)} sx={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: 'auto',
-        }}>
+      <Stack
+        direction="column"
+        justifyContent="space-between"
+        sx={{ width: '100%' }}
+      >
+        <InstructionsAccordionItemMain
+          onClick={(e) => handleOpen(e)}
+          sx={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: 'auto',
+          }}
+        >
           <InstructionsAccordionItemHeader>
             <InstructionsAccordionItemLabel>
               {task.name}
             </InstructionsAccordionItemLabel>
           </InstructionsAccordionItemHeader>
-          {task && (
-            isTablet ? (
+          {task &&
+            (isTablet ? (
               <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
                 <ExpandMoreIcon
                   sx={{
@@ -118,19 +140,19 @@ function Task({
                   ...(open && { transform: 'rotate(180deg)' }),
                 }}
               />
-            )
-          )}
+            ))}
         </InstructionsAccordionItemMain>
         {open && (
           <Stack direction="column" justifyContent="space-between">
             <InstructionsAccordionItemMore
-            sx={{
-              margin: theme.spacing(2, 0, 0, 3),
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                alignSelf: 'flex-start',
+              sx={{
                 margin: theme.spacing(2, 0, 0, 3),
-              },
-            }}>
+                [theme.breakpoints.up('sm' as Breakpoint)]: {
+                  alignSelf: 'flex-start',
+                  margin: theme.spacing(2, 0, 0, 3),
+                },
+              }}
+            >
               <Typography>{task.description}</Typography>
               {task.CTALink && task.CTAText && (
                 <Box
@@ -174,19 +196,34 @@ function Task({
                         />
                       </InstructionsAccordionLinkBox>
                     </a>
-
                   </InstructionsAccordionButtonMainBox>
                 </Box>
               )}
             </InstructionsAccordionItemMore>
-              <Stack flexDirection="row" justifyContent="center">
-                {!account?.address ? 'Please connect your wallet to verify the task' :
+            <Stack flexDirection="row" justifyContent="center">
+              {!account?.address ? (
+                'Please connect your wallet to verify the task'
+              ) : (
                 <Button
                   variant="outlined"
-                  color={isVerified(isSuccess, isValid) ? 'success' : isError ? 'error' : 'white'}
+                  color={
+                    isVerified(isSuccess, isValid)
+                      ? 'success'
+                      : isError
+                        ? 'error'
+                        : 'white'
+                  }
                   loading={isPending}
                   disabled={isVerified(isSuccess, isValid) || isError}
-                  endIcon={isVerified(isSuccess, isValid) ? <CheckIcon /> : isError ? <CloseIcon /> : <RefreshIcon />}
+                  endIcon={
+                    isVerified(isSuccess, isValid) ? (
+                      <CheckIcon />
+                    ) : isError ? (
+                      <CloseIcon />
+                    ) : (
+                      <RefreshIcon />
+                    )
+                  }
                   loadingIndicator={
                     <CircularProgress
                       sx={(theme) => ({ color: theme.palette.text.primary })}
@@ -194,12 +231,12 @@ function Task({
                     />
                   }
                   onClick={() => {
-                    handleVerifyClick()
+                    handleVerifyClick();
                     mutate({
                       questId,
                       stepId: task.uuid,
                       address: account?.address,
-                    })
+                    });
                   }}
                   sx={{
                     borderRadius: 1,
@@ -214,11 +251,15 @@ function Task({
                     },
                     '&.MuiButton-loading': {
                       border: '1px solid white!important',
-                    }
-                  }}>
-                  {isVerified(isValid, isSuccess) ? 'Task already verified' : 'Verify the task'}
-                </Button>}
-              </Stack>
+                    },
+                  }}
+                >
+                  {isVerified(isValid, isSuccess)
+                    ? 'Task already verified'
+                    : 'Verify the task'}
+                </Button>
+              )}
+            </Stack>
           </Stack>
         )}
       </Stack>
