@@ -173,7 +173,21 @@ export const bridgeSegmentsSchema = z
       destinationChain,
       destinationToken,
     };
-  });
+  })
+  .refine(
+    (val) =>
+      isAlphanumeric(val.sourceToken) && isAlphanumeric(val.destinationToken),
+    {
+      message: 'Token names must contain only alphanumeric characters',
+    },
+  )
+  .refine(
+    (val) =>
+      isAlphanumeric(val.sourceChain) && isAlphanumeric(val.destinationChain),
+    {
+      message: 'Chain names must contain only alphanumeric characters',
+    },
+  );
 
 /**
  * Schema for partner theme slugs
