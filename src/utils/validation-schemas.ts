@@ -181,3 +181,17 @@ export const partnerThemeSchema = z
   )
   .min(1, 'Partner theme cannot be empty')
   .max(50, 'Partner theme is too long');
+
+/**
+ * Schema for pagination parameters
+ */
+export const paginationSchema = z
+  .string()
+  .optional()
+  .transform((val) => {
+    if (!val) {
+      return 1;
+    }
+    const num = parseInt(val, 10);
+    return isNaN(num) || num < 1 ? 1 : num;
+  });
