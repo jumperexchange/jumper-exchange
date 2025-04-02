@@ -5,6 +5,11 @@ import {
 } from './image-generation/sanitizeParams';
 
 /**
+ * Helper function to check if a string contains only alphanumeric characters
+ */
+export const isAlphanumeric = (str: string) => /^[a-zA-Z0-9]+$/.test(str);
+
+/**
  * Schema for path segments (alphanumeric, hyphens, and underscores)
  */
 export const pathSegmentSchema = z
@@ -163,9 +168,9 @@ export const bridgeSegmentsSchema = z
     const [destinationChain, destinationToken] = destination.split('-');
 
     return {
-      sourceChain: slugify(sourceChain),
+      sourceChain,
       sourceToken,
-      destinationChain: slugify(destinationChain),
+      destinationChain,
       destinationToken,
     };
   });

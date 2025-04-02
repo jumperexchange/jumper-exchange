@@ -2,6 +2,7 @@
 import generateKey from '@/app/lib/generateKey';
 import { getBridgeUrl } from '@/utils/getBridgeUrl';
 import { getChainById } from '@/utils/tokenAndChain';
+import { isAlphanumeric } from '@/utils/validation-schemas';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Link as MuiLink, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -31,7 +32,8 @@ const PopularBridgeSection = ({
     .filter(
       (token) =>
         token.symbol === sourceToken.symbol &&
-        token.chainId !== destinationChain.id,
+        token.chainId !== destinationChain.id &&
+        isAlphanumeric(token.symbol),
     );
 
   const otherTokens = Object.values(tokens)
@@ -39,12 +41,14 @@ const PopularBridgeSection = ({
     .filter(
       (token) =>
         token.chainId !== destinationChain.id &&
-        token.symbol !== sourceToken.symbol,
+        token.symbol !== sourceToken.symbol &&
+        isAlphanumeric(token.symbol),
     )
     .filter(
       (token, index, self) =>
         self.findIndex((t) => t.chainId === token.chainId) === index,
     );
+
   const popularBridges = [...sameSymbolTokens, ...otherTokens]
     .slice(0, NUMBER_OF_TOKENS)
     .filter(
