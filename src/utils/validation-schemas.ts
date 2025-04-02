@@ -89,11 +89,15 @@ export type ValidatedSearchParams = z.infer<typeof searchParamsSchema>;
 /**
  * Converts text into a URL-friendly slug by:
  * 1. Converting to lowercase
- * 2. Replacing any sequence of whitespace characters (\s+) with a single hyphen
- * Example: "Ethereum Mainnet" → "ethereum-mainnet"
+ * 2. Replacing any non-alphanumeric characters with hyphens
+ * 3. Replacing multiple hyphens with a single hyphen
+ * Example: "Ethereum Mainnet!" → "ethereum-mainnet"
  */
 export function slugify(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, '-');
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Replace any non-alphanumeric chars with hyphens
+    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
 }
 
 /**
@@ -133,24 +137,31 @@ export const scanParamsSchema = z.object({
 });
 
 /**
- * Schema for bridge segments (sourceChain-sourceToken-to-destinationChain-destinationToken)
+ * Schema for bridge segments (sourceChain-sourceToken-destinationChain-destinationToken)
  */
 export const bridgeSegmentsSchema = z
   .string()
   .transform((val) => decodeURIComponent(val))
-  .refine((val) => {
-    const segments = val.split('-');
-    return segments.length === 5;
-  }, 'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken')
+  .refine(
+    (val) => {
+      const parts = val.split('-to-');
+      return parts.length === 2;
+    },
+    {
+      message:
+        'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken',
+    },
+  )
   .transform((val) => {
-    const segments = val.split('-');
-    const [sourceChain, sourceToken, _, destinationChain, destinationToken] =
-      segments;
+    const [source, destination] = val.split('-to-');
+    const [sourceChain, sourceToken] = source.split('-');
+    const [destinationChain, destinationToken] = destination.split('-');
+
     return {
       sourceChain: slugify(sourceChain),
-      sourceToken: slugify(sourceToken),
+      sourceToken,
       destinationChain: slugify(destinationChain),
-      destinationToken: slugify(destinationToken),
+      destinationToken,
     };
   });
 
