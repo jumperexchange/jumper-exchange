@@ -32,8 +32,7 @@ const PopularBridgeSection = ({
     .filter(
       (token) =>
         token.symbol === sourceToken.symbol &&
-        token.chainId !== destinationChain.id &&
-        isAlphanumeric(token.symbol),
+        token.chainId !== destinationChain.id,
     );
 
   const otherTokens = Object.values(tokens)
@@ -41,8 +40,7 @@ const PopularBridgeSection = ({
     .filter(
       (token) =>
         token.chainId !== destinationChain.id &&
-        token.symbol !== sourceToken.symbol &&
-        isAlphanumeric(token.symbol),
+        token.symbol !== sourceToken.symbol,
     )
     .filter(
       (token, index, self) =>
@@ -53,8 +51,9 @@ const PopularBridgeSection = ({
     .slice(0, NUMBER_OF_TOKENS)
     .filter(
       (token) =>
-        token.symbol !== sourceToken.symbol ||
-        token.chainId !== sourceToken.chainId,
+        (token.symbol !== sourceToken.symbol ||
+          token.chainId !== sourceToken.chainId) &&
+        isAlphanumeric(token.symbol),
     );
 
   return (
