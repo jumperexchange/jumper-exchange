@@ -103,7 +103,12 @@ export function slugify(text: string): string {
 /**
  * Schema for wallet addresses
  */
-export const walletAddressSchema = baseAddressSchema;
+export const walletAddressSchema = z
+  .string()
+  .transform((val) => sanitizeAddress(val))
+  .refine((val) => val.length > 0, {
+    message: 'Wallet address cannot be empty',
+  });
 
 /**
  * Schema for quest slugs (alphanumeric, hyphens, and underscores)
