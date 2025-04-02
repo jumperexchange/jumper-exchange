@@ -63,18 +63,27 @@ const PopularBridgeSection = ({
         Popular bridges
       </Typography>
       <Stack direction="row" flexWrap="wrap">
-        {popularBridges.map((token) => {
-          const sourceChainData = getChainById(chains, token.chainId);
-          const bridgeUrl = getBridgeUrl(
-            sourceChainData,
-            token,
-            destinationChain,
-            destinationToken,
-          );
-          if (!bridgeUrl) {
-            return null;
-          }
-          return (
+        {popularBridges
+          .map((token) => {
+            const sourceChainData = getChainById(chains, token.chainId);
+            if (!sourceChainData) {
+              return null;
+            }
+
+            const bridgeUrl = getBridgeUrl(
+              sourceChainData,
+              token,
+              destinationChain,
+              destinationToken,
+            );
+            if (!bridgeUrl) {
+              return null;
+            }
+
+            return { token, sourceChainData, bridgeUrl };
+          })
+          .filter((item): item is NonNullable<typeof item> => item !== null)
+          .map(({ token, sourceChainData, bridgeUrl }) => (
             <MuiLink
               width="50%"
               key={generateKey(token.address)}
@@ -84,11 +93,10 @@ const PopularBridgeSection = ({
               component={Link}
               href={bridgeUrl}
             >
-              Bridge from {token.symbol} on {sourceChainData?.name} to{' '}
+              Bridge from {token.symbol} on {sourceChainData.name} to{' '}
               {destinationToken.symbol} on {destinationChain.name}
             </MuiLink>
-          );
-        })}
+          ))}
       </Stack>
     </DynamicPagesContainer>
   );

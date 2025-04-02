@@ -68,24 +68,21 @@ export default async function sitemap({
   const start = id * sitemapLinksLimit;
   const end = start + sitemapLinksLimit;
   const orderedChunks = ordered.slice(start, end);
-
   const routes = orderedChunks
-    .map(([a, b]) => {
+    .filter(([a, b]) => {
       const sourceChain = getChainById(chains, a.chainId);
       const destinationChain = getChainById(chains, b.chainId);
-
-      // Skip if either chain is not found
       if (!sourceChain || !destinationChain) {
-        return null;
+        return false;
       }
 
       const bridgeUrl = getBridgeUrl(sourceChain, a, destinationChain, b);
-
-      // Skip if getBridgeUrl returns null
-      if (!bridgeUrl) {
-        return null;
-      }
-
+      return bridgeUrl !== null;
+    })
+    .map(([a, b]) => {
+      const sourceChain = getChainById(chains, a.chainId);
+      const destinationChain = getChainById(chains, b.chainId);
+      const bridgeUrl = getBridgeUrl(sourceChain!, a, destinationChain!, b);
       const lastModified = new Date().toISOString().split('T')[0];
 
       return {
@@ -93,8 +90,7 @@ export default async function sitemap({
         lastModified,
         priority: 0.4,
       } satisfies MetadataRoute.Sitemap[number];
-    })
-    .filter((route): route is NonNullable<typeof route> => route !== null);
+    });
 
   return routes;
 }
