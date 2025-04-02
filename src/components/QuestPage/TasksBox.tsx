@@ -7,6 +7,7 @@ import type { Quest } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
 import Task from '@/components/QuestPage/Task';
+import { useEffect } from 'react';
 
 interface StepsBoxProps {
   tasks: Quest['tasks_verification'];
@@ -17,18 +18,16 @@ export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
   const { account } = useAccount();
   const {
     data: verified,
-    isSuccess,
-    refetch,
   } = useGetVerifiedTasks(account?.address);
 
   return (
     <QuestsPageElementContainer>
       <LeftTextBox>
         <DescriptionTitleTypography>
-          Tasks to complete the mission
+          Steps to complete the mission
         </DescriptionTitleTypography>
       </LeftTextBox>
-      {tasks.map((task) => (
+      {tasks.map((task, index) => (
         <Task
           task={task}
           isValid={
@@ -36,6 +35,7 @@ export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
               (verifiedTask) => verifiedTask.stepId === task.uuid,
             )
           }
+          index={index}
           questId={documentId}
           key={task.uuid}
         />

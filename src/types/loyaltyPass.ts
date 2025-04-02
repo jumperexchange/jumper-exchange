@@ -106,6 +106,9 @@ export type QuestAttributes = {
 export interface TaskVerification {
   id: number;
   name: string;
+  description: string;
+  CTALink?: string;
+  CTAText?: string;
   uuid: string;
 }
 
