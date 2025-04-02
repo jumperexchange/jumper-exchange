@@ -195,3 +195,15 @@ export const paginationSchema = z
     const num = parseInt(val, 10);
     return isNaN(num) || num < 1 ? 1 : num;
   });
+
+/**
+ * Schema for learn page slugs (alphanumeric, hyphens, and underscores)
+ */
+export const learnSlugSchema = z
+  .string()
+  .regex(
+    /^[a-z0-9\-_]+$/,
+    'Learn page slug must contain only lowercase alphanumeric characters, hyphens, and underscores',
+  )
+  .min(1, 'Learn page slug cannot be empty')
+  .max(100, 'Learn page slug is too long');
