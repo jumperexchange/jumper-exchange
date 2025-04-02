@@ -65,6 +65,15 @@ const PopularBridgeSection = ({
       <Stack direction="row" flexWrap="wrap">
         {popularBridges.map((token) => {
           const sourceChainData = getChainById(chains, token.chainId);
+          const bridgeUrl = getBridgeUrl(
+            sourceChainData,
+            token,
+            destinationChain,
+            destinationToken,
+          );
+          if (!bridgeUrl) {
+            return null;
+          }
           return (
             <MuiLink
               width="50%"
@@ -73,12 +82,7 @@ const PopularBridgeSection = ({
                 color: theme.palette.text.primary,
               })}
               component={Link}
-              href={getBridgeUrl(
-                sourceChainData,
-                token,
-                destinationChain,
-                destinationToken,
-              )}
+              href={bridgeUrl}
             >
               Bridge from {token.symbol} on {sourceChainData?.name} to{' '}
               {destinationToken.symbol} on {destinationChain.name}

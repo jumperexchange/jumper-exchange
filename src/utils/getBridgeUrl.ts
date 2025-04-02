@@ -7,8 +7,17 @@ export const getBridgeUrl = (
   destinationChain: ExtendedChain | undefined,
   destinationToken: Token,
 ) => {
-  const sourceChainName = slugify(sourceChain?.name ?? '');
-  const destinationChainName = slugify(destinationChain?.name ?? '');
+  if (
+    !sourceChain?.name ||
+    !destinationChain?.name ||
+    !sourceToken.symbol ||
+    !destinationToken.symbol
+  ) {
+    return null;
+  }
+
+  const sourceChainName = slugify(sourceChain?.name);
+  const destinationChainName = slugify(destinationChain?.name);
   const sourceTokenSymbol = slugify(sourceToken.symbol);
   const destinationTokenSymbol = slugify(destinationToken.symbol);
 

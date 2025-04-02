@@ -44,7 +44,6 @@ export async function generateSitemaps() {
 
   const numberOfChunks = Math.ceil(ordered.length / sitemapLinksLimit);
 
-  // Fetch the total number of products and calculate the number of sitemaps needed
   return Array.from({ length: numberOfChunks }).map((_, index) => ({
     id: index,
   }));
@@ -70,16 +69,32 @@ export default async function sitemap({
   const end = start + sitemapLinksLimit;
   const orderedChunks = ordered.slice(start, end);
 
-  const routes = orderedChunks.map(([a, b]) => ({
-    url: `${getSiteUrl()}${getBridgeUrl(
-      getChainById(chains, a.chainId),
-      a,
-      getChainById(chains, b.chainId),
-      b,
-    )}`,
-    lastModified: new Date().toISOString().split('T')[0],
-    priority: 0.4,
-  }));
+  const routes = orderedChunks
+    .map(([a, b]) => {
+      const sourceChain = getChainById(chains, a.chainId);
+      const destinationChain = getChainById(chains, b.chainId);
+
+      // Skip if either chain is not found
+      if (!sourceChain || !destinationChain) {
+        return null;
+      }
+
+      const bridgeUrl = getBridgeUrl(sourceChain, a, destinationChain, b);
+
+      // Skip if getBridgeUrl returns null
+      if (!bridgeUrl) {
+        return null;
+      }
+
+      const lastModified = new Date().toISOString().split('T')[0];
+
+      return {
+        url: `${getSiteUrl()}${bridgeUrl}`,
+        lastModified,
+        priority: 0.4,
+      } satisfies MetadataRoute.Sitemap[number];
+    })
+    .filter((route): route is NonNullable<typeof route> => route !== null);
 
   return routes;
 }
