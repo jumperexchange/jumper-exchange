@@ -25,15 +25,15 @@ export const useSpindlCards = () => {
   const spindlConfig = getSpindlConfig();
   const { fetchData } = useCallRequest();
 
-  // Feature Flag logic: Show Spindl for ~25% of users
-  const showSpindle = Math.random() < 0.1;
+  // Feature Flag logic: Show Spindl for ~100% of users
+  // const showSpindle = Math.random() < 1;
 
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
-      if (!showSpindle) {
-        // console.log('User is not part of the Spindl A/B test group.');
-        return; // Exit early if the user is not in the A/B test group
-      }
+      // if (!showSpindle) {
+      //   // console.log('User is not part of the Spindl A/B test group.');
+      //   return; // Exit early if the user is not in the A/B test group
+      // }
 
       const locale = getLocale().split('-');
       const queryParams: Record<string, string | undefined> = {
@@ -65,13 +65,7 @@ export const useSpindlCards = () => {
         console.error('Error fetching Spindl data:', error);
       }
     },
-    [
-      fetchData,
-      processSpindlData,
-      spindlConfig.apiUrl,
-      spindlConfig.headers,
-      showSpindle,
-    ],
+    [fetchData, processSpindlData, spindlConfig.apiUrl, spindlConfig.headers],
   );
 
   useEffect(() => {
