@@ -15,7 +15,6 @@
  * @property {string} toToken - The token address to send to.
  * @property {number} toChainId - The chain ID to send to.
  * @property {number} amount - The amount of tokens.
- * @property {number} [amountUSD] - The USD equivalent amount (optional).
  * @property {boolean} [isSwap] - True if transaction is a swap, default and false if transaction is a bridge (optional).
  * @property {'light'|'dark'} [theme] - The theme for the widget (optional).
  * @property {'from'|'to'|'amount'} [highlighted] - The highlighted element (optional).
@@ -33,71 +32,78 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import {
+  widgetExecutionSchema,
+  type WidgetExecutionParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 432;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const {
-    fromChainId,
-    toChainId,
-    fromToken,
-    toToken,
-    isSwap,
-    theme,
-    amount,
-    highlighted,
-  } = parseSearchParams(request.url);
+  try {
+    const params = parseSearchParams<WidgetExecutionParams>(
+      request.url,
+      widgetExecutionSchema,
+    );
 
-  // Fetch data asynchronously before rendering
-  const fromTokenData = await fetchTokenData(fromChainId, fromToken);
-  const toTokenData = await fetchTokenData(toChainId, toToken);
-  const fromChain = await fetchChainData(fromChainId as unknown as ChainId);
-  const toChain = await fetchChainData(toChainId as unknown as ChainId);
+    // Fetch data asynchronously before rendering
+    const fromTokenData = await fetchTokenData(
+      String(params.fromChainId),
+      params.fromToken,
+    );
+    const toTokenData = await fetchTokenData(
+      String(params.toChainId),
+      params.toToken,
+    );
+    const fromChain = await fetchChainData(
+      params.fromChainId as unknown as ChainId,
+    );
+    const toChain = await fetchChainData(
+      params.toChainId as unknown as ChainId,
+    );
 
-  const options = await imageResponseOptions({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  });
+    const options = await imageResponseOptions({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    });
 
-  const imageFrameStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    const imageStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
 
-  const imageStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
-
-  return new ImageResponse(
-    (
-      <div style={imageFrameStyle}>
-        <img
-          alt="Widget Example"
-          width={'100%'}
-          height={'100%'}
-          style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget-execution-${theme === 'dark' ? 'dark' : 'light'}.png`}
-        />
-        <WidgetExecutionImage
-          height={WIDGET_IMAGE_WIDTH}
-          isSwap={isSwap === 'true'}
-          width={WIDGET_IMAGE_HEIGHT}
-          fromToken={fromTokenData}
-          toToken={toTokenData}
-          fromChain={fromChain}
-          theme={theme as 'light' | 'dark'}
-          toChain={toChain}
-          amount={amount}
-          highlighted={highlighted as HighlightedAreas}
-        />
-      </div>
-    ),
-    options,
-  );
+    return new ImageResponse(
+      (
+        <div style={imageStyle}>
+          <img
+            alt="Widget Example"
+            width={'100%'}
+            height={'100%'}
+            style={imageStyle}
+            src={`${getSiteUrl()}/widget/widget-execution-${params.theme}.png`}
+          />
+          <WidgetExecutionImage
+            height={WIDGET_IMAGE_WIDTH}
+            isSwap={params.isSwap}
+            width={WIDGET_IMAGE_HEIGHT}
+            fromToken={fromTokenData}
+            toToken={toTokenData}
+            fromChain={fromChain}
+            theme={params.theme}
+            toChain={toChain}
+            amount={params.amount}
+            highlighted={params.highlighted as HighlightedAreas}
+          />
+        </div>
+      ),
+      options,
+    );
+  } catch (error) {
+    console.error('Error generating widget execution image:', error);
+    return new Response('Internal server error', { status: 500 });
+  }
 }

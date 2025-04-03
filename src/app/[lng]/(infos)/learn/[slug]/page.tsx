@@ -4,6 +4,7 @@ import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import { getSiteUrl } from '@/const/urls';
 import type { BlogArticleAttributes, BlogArticleData } from '@/types/strapi';
 import { sliceStrToXChar } from '@/utils/splitStringToXChar';
+import { learnSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
@@ -18,52 +19,72 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { slug } = await params;
-  try {
-    const article = await getArticleBySlug(slug);
 
-    if (!article.data || !article.data.data?.[0]) {
-      throw new Error();
-    }
-
-    const articleData: BlogArticleAttributes = article.data.data?.[0];
-
-    const openGraph: Metadata['openGraph'] = {
-      title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
-      description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
-      siteName: siteName,
-      url: `${getSiteUrl()}/learn/${slug}`,
-      images: [
-        {
-          url: `${article.url}${articleData.Image?.url}`,
-          width: 900,
-          height: 450,
-          alt: 'banner image',
-        },
-      ],
-      type: 'article',
-    };
-
+  // Validate learn page slug
+  const result = learnSlugSchema.safeParse(slug);
+  if (!result.success) {
     return {
-      title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
-      description: articleData.Subtitle,
+      title: 'Learn',
+      description: 'Learn about blockchain and crypto on Jumper Exchange.',
       alternates: {
-        canonical: `${getSiteUrl()}/learn/${slug}`,
+        canonical: `${getSiteUrl()}/learn`,
       },
-      twitter: openGraph,
-      openGraph,
-    };
-  } catch (err) {
-    return {
-      title: `Jumper Learn | ${sliceStrToXChar(slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the article "${slug.replaceAll('-', ' ')}".`,
     };
   }
+
+  const validatedSlug = result.data;
+  const article = await getArticleBySlug(validatedSlug);
+
+  if (!article.data || !article.data.data?.[0]) {
+    return {
+      title: 'Learn',
+      description: 'Learn about blockchain and crypto on Jumper Exchange.',
+      alternates: {
+        canonical: `${getSiteUrl()}/learn`,
+      },
+    };
+  }
+
+  const articleData: BlogArticleAttributes = article.data.data?.[0];
+
+  const openGraph: Metadata['openGraph'] = {
+    title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
+    description: `${sliceStrToXChar(articleData.Subtitle, 60)}`,
+    siteName: siteName,
+    url: `${getSiteUrl()}/learn/${validatedSlug}`,
+    images: [
+      {
+        url: `${article.url}${articleData.Image?.url}`,
+        width: 900,
+        height: 450,
+        alt: 'banner image',
+      },
+    ],
+    type: 'article',
+  };
+
+  return {
+    title: `Jumper Learn | ${sliceStrToXChar(articleData.Title, 45)}`,
+    description: articleData.Subtitle,
+    alternates: {
+      canonical: `${getSiteUrl()}/learn/${validatedSlug}`,
+    },
+    twitter: openGraph,
+    openGraph,
+  };
 }
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  const article = await getArticleBySlug(slug);
+  // Validate learn page slug
+  const result = learnSlugSchema.safeParse(slug);
+  if (!result.success) {
+    return notFound();
+  }
+
+  const validatedSlug = result.data;
+  const article = await getArticleBySlug(validatedSlug);
   const { activeThemeMode } = await getCookies();
 
   const articleData: BlogArticleData = article.data.data?.[0];

@@ -1,6 +1,8 @@
 import ProfilePage from '@/app/ui/profile/ProfilePage';
-import type { Metadata } from 'next';
 import { getSiteUrl } from '@/const/urls';
+import { walletAddressSchema } from '@/utils/validation-schemas';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 type Params = Promise<{ walletAddress: string }>;
 
@@ -11,24 +13,50 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const { walletAddress } = await params;
+  try {
+    const { walletAddress } = await params;
 
-  return {
-    openGraph: {
-      title: `Profile of ${walletAddress}`,
-      description: `Profile of ${walletAddress}`,
-      type: 'profile',
-      url: `${baseUrl}/profile/${walletAddress}`,
-      images: `${baseUrl}/api/profile/${walletAddress}`,
-    },
-    twitter: {
-      images: `${baseUrl}/api/profile/${walletAddress}`,
-    },
-  };
+    // Validate wallet address
+    const result = walletAddressSchema.safeParse(walletAddress);
+    if (!result.success) {
+      throw new Error('Invalid wallet address');
+    }
+
+    const sanitizedAddress = result.data;
+
+    return {
+      openGraph: {
+        title: `Profile of ${sanitizedAddress}`,
+        description: `Profile of ${sanitizedAddress}`,
+        type: 'profile',
+        url: `${baseUrl}/profile/${sanitizedAddress}`,
+        images: `${baseUrl}/api/profile/${sanitizedAddress}`,
+      },
+      twitter: {
+        images: `${baseUrl}/api/profile/${sanitizedAddress}`,
+      },
+    };
+  } catch (err) {
+    return {
+      title: 'Profile Not Found',
+      description: 'The requested profile could not be found.',
+      alternates: {
+        canonical: `${baseUrl}/profile`,
+      },
+    };
+  }
 }
 
 export default async function Page({ params }: { params: Params }) {
   const { walletAddress } = await params;
 
-  return <ProfilePage walletAddress={walletAddress} isPublic />;
+  // Validate wallet address
+  const result = walletAddressSchema.safeParse(walletAddress);
+  if (!result.success) {
+    return notFound();
+  }
+
+  const sanitizedAddress = result.data;
+
+  return <ProfilePage walletAddress={sanitizedAddress} isPublic />;
 }

@@ -182,7 +182,7 @@ const SwapStepsExplainerSection = ({
       </Typography>
 
       {steps.map((step, index) => (
-        <Fragment key={index}>
+        <Fragment key={`swap-steps-${index}`}>
           <Divider />
           <StepDetail
             title={step.title}
