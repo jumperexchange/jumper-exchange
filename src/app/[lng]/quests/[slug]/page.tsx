@@ -1,8 +1,8 @@
+import { questSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl } from 'src/const/urls';
-import type { Quest, QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
@@ -17,7 +17,13 @@ export async function generateMetadata({
   const { slug } = await params;
 
   try {
-    const quest = await getQuestBySlug(slug);
+    // Validate slug
+    const slugResult = questSlugSchema.safeParse(slug);
+    if (!slugResult.success) {
+      throw new Error('Invalid quest slug');
+    }
+
+    const quest = await getQuestBySlug(slugResult.data);
 
     if (!quest || !quest.data) {
       throw new Error();
@@ -61,7 +67,13 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  const { data, url } = await getQuestBySlug(slug);
+  // Validate slug
+  const slugResult = questSlugSchema.safeParse(slug);
+  if (!slugResult.success) {
+    return notFound();
+  }
+
+  const { data, url } = await getQuestBySlug(slugResult.data);
   if (!data) {
     return notFound();
   }
