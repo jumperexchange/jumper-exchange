@@ -46,7 +46,7 @@ export const BannerBox = ({
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const bannerImageURL = isMobile
     ? attributes.Image?.url
-    : attributes?.BannerImage?.url;
+    : attributes?.BannerImage?.[0]?.url;
   const imgURL = new URL(bannerImageURL, baseUrl);
   let completed = false;
   if (rewardsIds && pastCampaigns) {
