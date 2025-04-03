@@ -72,15 +72,18 @@ export const WalletButtons = () => {
 
   const handleWalletMenuClick = () => {
     setWalletMenuState(!_openWalletMenu);
-    trackEvent({
-      category: TrackingCategory.WalletMenu,
-      action: TrackingAction.OpenMenu,
-      label: 'open_portfolio_menu',
-      data: {
-        [TrackingEventParameter.Menu]: 'portfolio',
-        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-      },
-    });
+    if (!_openWalletMenu) {
+      // Only track the event if the menu is not already open
+      trackEvent({
+        category: TrackingCategory.WalletMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_portfolio_menu',
+        data: {
+          [TrackingEventParameter.Menu]: 'portfolio',
+          [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+        },
+      });
+    }
   };
 
   return (
