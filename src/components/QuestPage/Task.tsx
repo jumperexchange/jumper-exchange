@@ -206,12 +206,13 @@ function Task({
               ) : (
                 <Button
                   variant="outlined"
+                  // @ts-ignore
                   color={
                     isVerified(isSuccess, isValid)
                       ? 'success'
                       : isError
                         ? 'error'
-                        : 'white'
+                        : theme.palette.text.primary
                   }
                   loading={isPending}
                   disabled={isVerified(isSuccess, isValid) || isError}
@@ -238,7 +239,7 @@ function Task({
                       address: account?.address,
                     });
                   }}
-                  sx={{
+                  sx={(theme) => ({
                     borderRadius: 1,
                     textAlign: 'center',
                     '&.MuiButton-outlinedSuccess': {
@@ -250,9 +251,9 @@ function Task({
                       border: '1px solid #E5452F!important',
                     },
                     '&.MuiButton-loading': {
-                      border: '1px solid white!important',
+                      border: `1px solid ${theme.palette.text.primary}!important`,
                     },
-                  }}
+                  })}
                 >
                   {isVerified(isValid, isSuccess)
                     ? 'Task already verified'
