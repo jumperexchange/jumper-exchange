@@ -9,15 +9,15 @@ export async function generateStaticParams() {
 
   let customPath = [
     { partnerTheme: 'memecoins' },
-    ...partnerThemes.data.map((d) => ({ partnerTheme: d.attributes?.uid })),
+    ...partnerThemes.data.map((d) => ({ partnerTheme: d?.uid })),
   ];
 
   return customPath;
 }
 
-export default function Page() {
+export default async function Page() {
   const variant = 'default'; // exchange
-  const { activeThemeMode } = getCookies();
+  const { activeThemeMode } = await getCookies();
   return (
     <App>
       <WidgetContainer welcomeScreenClosed={true}>

@@ -1,12 +1,19 @@
-import { useAccount } from '@lifi/wallet-management';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { usePortfolioStore } from '@/stores/portfolio';
-import { useQueries } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import index from '@/utils/getTokens';
 import { arraysEqual } from '@/utils/getTokens/utils';
+import { useAccount } from '@lifi/wallet-management';
+import { useQueries } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 
 export function usePortfolioTokens() {
+  const { trackEvent } = useUserTracking();
   const { accounts } = useAccount();
   const {
     getFormattedCacheTokens,
@@ -15,6 +22,7 @@ export function usePortfolioTokens() {
     forceRefresh,
     setForceRefresh,
   } = usePortfolioStore((state) => state);
+  const hasTrackedSuccess = useRef(false);
 
   const handleProgress = (
     account: string,
@@ -68,6 +76,26 @@ export function usePortfolioTokens() {
     }
 
     refetch();
+  }, [accounts]);
+
+  useEffect(() => {
+    if (isSuccess && !hasTrackedSuccess.current) {
+      hasTrackedSuccess.current = true;
+      trackEvent({
+        category: TrackingCategory.Wallet,
+        action: TrackingAction.PortfolioLoaded,
+        label: 'portfolio_balance_loaded',
+        data: {
+          [TrackingEventParameter.Status]: 'success',
+          [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+        },
+      });
+    }
+  }, [isSuccess, trackEvent]);
+
+  // Reset the tracking flag when accounts change
+  useEffect(() => {
+    hasTrackedSuccess.current = false;
   }, [accounts]);
 
   return {

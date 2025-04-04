@@ -41,7 +41,7 @@ export const BerachainProtocolInformation = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const detailInformation = card?.attributes?.CustomInformation;
+  const detailInformation = card?.CustomInformation;
 
   const fullTitle = getFullTitle(market!, card);
 
@@ -51,7 +51,7 @@ export const BerachainProtocolInformation = ({
         (market ? (
           <BerachainWidget
             market={market}
-            appName={card?.attributes.Title}
+            appName={card?.Title}
             fullAppName={fullTitle}
             appLink={
               detailInformation?.socials?.website ?? 'https://jumper.exchange/'
@@ -66,12 +66,12 @@ export const BerachainProtocolInformation = ({
           <BerachainInformationProtocolCard>
             <Stack spacing={2} direction="row">
               {!isMobile &&
-                (card?.attributes?.Image.data.attributes.url ? (
+                (card?.Image?.url ? (
                   <Image
-                    src={`${baseUrl}${card?.attributes.Image.data.attributes.url}`}
+                    src={`${baseUrl}${card.Image.url}`}
                     alt="Protocol image"
-                    width={card?.attributes.Image.data.attributes.width}
-                    height={card?.attributes.Image.data.attributes.height}
+                    width={card.Image.width}
+                    height={card.Image.height}
                     style={{
                       width: 144,
                       height: 'auto',
@@ -90,7 +90,7 @@ export const BerachainProtocolInformation = ({
                   />
                 ))}
               <Stack spacing={2} direction="column">
-                {card?.attributes?.Title ? (
+                {card?.Title ? (
                   <Typography variant="titleSmall">{fullTitle}</Typography>
                 ) : (
                   <Skeleton
@@ -98,7 +98,7 @@ export const BerachainProtocolInformation = ({
                     sx={{ height: '32px', width: '380px' }}
                   />
                 )}
-                {card?.attributes?.Description ? (
+                {card?.Description ? (
                   <Typography variant="bodyMedium" color="textSecondary">
                     {market?.description}
                   </Typography>
@@ -151,7 +151,7 @@ export const BerachainProtocolInformation = ({
             </Stack>
           </BerachainInformationProtocolCard>
         </BerachainInformationProtocolIntro>
-        {card?.attributes?.CustomInformation ? (
+        {card?.CustomInformation ? (
           detailInformation?.faqItems && (
             <BerachainInformationProtocolCard sx={{ padding: '20px 12px' }}>
               <AccordionFAQ
@@ -186,14 +186,12 @@ export const BerachainProtocolInformation = ({
             sx={{ height: '312px', width: '100%', borderRadius: '8px' }}
           />
         )}
-        {card?.attributes?.Information && (
+        {card?.Information && (
           <BerachainInformationProtocolCard
             sx={{ flexDirection: 'row', alignItems: 'flex-start', gap: '12px' }}
           >
             <InfoIcon />
-            <Typography variant="bodySmall">
-              {card?.attributes?.Information}
-            </Typography>
+            <Typography variant="bodySmall">{card?.Information}</Typography>
           </BerachainInformationProtocolCard>
         )}
       </BerachainProtocolActionInfoBox>
@@ -202,7 +200,7 @@ export const BerachainProtocolInformation = ({
           <BerachainWidget
             fullAppName={fullTitle}
             market={market}
-            appName={card?.attributes.Title}
+            appName={card?.Title}
             appLink={
               detailInformation?.socials?.website ?? 'https://jumper.exchange/'
             }

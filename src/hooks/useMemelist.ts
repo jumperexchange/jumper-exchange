@@ -31,7 +31,6 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
-          'Strapi-Response-Format': 'v4',
           Authorization: `Bearer ${apiAccesToken}`,
         },
       });
@@ -42,7 +41,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
     enabled: enabled,
   });
 
-  const tokenList = data?.[0].attributes?.['DATA'] || {};
+  const tokenList = data?.[0]?.['DATA'] || {};
   return {
     tokens: tokenList,
     isSuccess,

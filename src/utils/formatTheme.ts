@@ -12,10 +12,7 @@ function getImageUrl(
 
   const imageLight = theme[`${imageType}Light`];
   const imageDark = theme[`${imageType}Dark`];
-  const imageUrl =
-    defaultMode === 'light'
-      ? imageLight?.data?.attributes?.url
-      : imageDark?.data?.attributes?.url;
+  const imageUrl = defaultMode === 'light' ? imageLight?.url : imageDark?.url;
 
   return imageUrl ? new URL(imageUrl, baseStrapiUrl) : null;
 }
@@ -44,11 +41,11 @@ function getLogoData(theme: PartnerThemesAttributes) {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
   const logo = theme.LogoDark || theme.LogoLight || null;
 
-  if (!logo || !logo.data) {
+  if (!logo) {
     return;
   }
 
-  const attr = logo.data.attributes;
+  const attr = logo;
 
   return {
     url: new URL(attr.url, baseStrapiUrl),

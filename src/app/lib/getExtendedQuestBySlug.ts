@@ -13,7 +13,6 @@ export async function getExtQuestBySlug(
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {
-      'Strapi-Response-Format': 'v4',
       Authorization: `Bearer ${accessToken}`,
     },
   });

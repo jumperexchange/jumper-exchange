@@ -9,13 +9,11 @@ export const useFeatureCardsFilter = () => {
   );
 
   const excludedFeatureCardsFilter = (el: StrapiFeatureCardData) => {
-    if (!Array.isArray(el.attributes?.featureCardsExclusions?.data)) {
+    if (!Array.isArray(el?.featureCardsExclusions)) {
       return true;
     }
 
-    const exclusions = el.attributes?.featureCardsExclusions.data.map(
-      (item) => item.attributes?.uid,
-    );
+    const exclusions = el?.featureCardsExclusions.map((item) => item?.uid);
 
     return !exclusions.some((uid) => disabledFeatureCards.includes(uid));
   };
@@ -25,8 +23,7 @@ export const useFeatureCardsFilter = () => {
       .filter(excludedFeatureCardsFilter)
       .filter(
         (el) =>
-          el.attributes?.DisplayConditions &&
-          !disabledFeatureCards.includes(el.attributes?.uid),
+          el?.DisplayConditions && !disabledFeatureCards.includes(el?.uid),
       )
       .slice(0, 2);
 
