@@ -13,6 +13,7 @@ export enum TrackingAction {
   OpenBlockchainExplorer = 'action_open_blockchain_explorer',
   OpenJumperScan = 'action_open_jumper_scan',
   SwitchChain = 'action_switch_chain',
+  PortfolioLoaded = 'action_portfolio_loaded',
 
   // Widget
   OnRouteSelected = 'action_on_route_selected',
