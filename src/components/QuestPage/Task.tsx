@@ -201,65 +201,66 @@ function Task({
               )}
             </InstructionsAccordionItemMore>
             <Stack flexDirection="row" justifyContent="center">
-              {!account?.address ? (
-                'Please connect your wallet to verify the task'
-              ) : (
-                <Button
-                  variant="outlined"
-                  // @ts-ignore
-                  color={
-                    isVerified(isSuccess, isValid)
-                      ? 'success'
-                      : isError
-                        ? 'error'
-                        : theme.palette.text.primary
-                  }
-                  loading={isPending}
-                  disabled={isVerified(isSuccess, isValid) || isError}
-                  endIcon={
-                    isVerified(isSuccess, isValid) ? (
-                      <CheckIcon />
-                    ) : isError ? (
-                      <CloseIcon />
-                    ) : (
-                      <RefreshIcon />
-                    )
-                  }
-                  loadingIndicator={
-                    <CircularProgress
-                      sx={(theme) => ({ color: theme.palette.text.primary })}
-                      size={16}
-                    />
-                  }
-                  onClick={() => {
-                    handleVerifyClick();
-                    mutate({
-                      questId,
-                      stepId: task.uuid,
-                      address: account?.address,
-                    });
-                  }}
-                  sx={(theme) => ({
-                    borderRadius: 1,
-                    textAlign: 'center',
-                    '&.MuiButton-outlinedSuccess': {
-                      color: '#0AA65B!important',
-                      border: '1px solid #0AA65B!important',
-                    },
-                    '&.MuiButton-outlinedError': {
-                      color: '#E5452F!important',
-                      border: '1px solid #E5452F!important',
-                    },
-                    '&.MuiButton-loading': {
-                      border: `1px solid ${theme.palette.text.primary}!important`,
-                    },
-                  })}
-                >
-                  {isVerified(isValid, isSuccess)
-                    ? 'Task already verified'
-                    : 'Verify the task'}
-                </Button>
-              )}
+              {task.hasTask &&
+                (!account?.address ? (
+                  'Please connect your wallet to verify the task'
+                ) : (
+                  <Button
+                    variant="outlined"
+                    // @ts-ignore
+                    color={
+                      isVerified(isSuccess, isValid)
+                        ? 'success'
+                        : isError
+                          ? 'error'
+                          : theme.palette.text.primary
+                    }
+                    loading={isPending}
+                    disabled={isVerified(isSuccess, isValid) || isError}
+                    endIcon={
+                      isVerified(isSuccess, isValid) ? (
+                        <CheckIcon />
+                      ) : isError ? (
+                        <CloseIcon />
+                      ) : (
+                        <RefreshIcon />
+                      )
+                    }
+                    loadingIndicator={
+                      <CircularProgress
+                        sx={(theme) => ({ color: theme.palette.text.primary })}
+                        size={16}
+                      />
+                    }
+                    onClick={() => {
+                      handleVerifyClick();
+                      mutate({
+                        questId,
+                        stepId: task.uuid,
+                        address: account?.address,
+                      });
+                    }}
+                    sx={(theme) => ({
+                      borderRadius: 1,
+                      textAlign: 'center',
+                      '&.MuiButton-outlinedSuccess': {
+                        color: '#0AA65B!important',
+                        border: '1px solid #0AA65B!important',
+                      },
+                      '&.MuiButton-outlinedError': {
+                        color: '#E5452F!important',
+                        border: '1px solid #E5452F!important',
+                      },
+                      '&.MuiButton-loading': {
+                        border: `1px solid ${theme.palette.text.primary}!important`,
+                      },
+                    })}
+                  >
+                    {isVerified(isValid, isSuccess)
+                      ? 'Task already verified'
+                      : 'Verify the task'}
+                  </Button>
+                ))}
             </Stack>
           </Stack>
         )}

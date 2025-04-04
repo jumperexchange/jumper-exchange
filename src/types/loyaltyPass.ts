@@ -110,6 +110,7 @@ export interface TaskVerification {
   CTALink?: string;
   CTAText?: string;
   uuid: string;
+  hasTask: boolean;
 }
 
 export interface Quest extends QuestAttributes {
