@@ -219,6 +219,7 @@ export enum TrackingEventParameter {
   MissionCtaCampaign = 'param_mission_cta_campaign',
   MissionCtaStepsTitle = 'param_mission_cta_steps_title',
   MissionCtaStepsLink = 'param_mission_cta_steps_link',
+  MissionCtaStepsTaskStepId = 'param_mission_cta_steps_task_step_id',
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
 

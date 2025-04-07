@@ -10,6 +10,7 @@ import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
 import { StepsBox } from './StepsBox/StepsBox';
+import { TasksBox } from '@/components/QuestPage/TasksBox';
 
 interface QuestsMissionPageVar {
   quest: Quest;
@@ -71,7 +72,13 @@ export const QuestsMissionPage = ({
           />
         )}
         {/* Steps */}
-        {attributes?.Steps && attributes?.Steps?.length > 0 ? (
+        {Array.isArray(attributes?.tasks_verification) &&
+        attributes?.tasks_verification?.length > 0 ? (
+          <TasksBox
+            tasks={attributes?.tasks_verification}
+            documentId={quest.documentId}
+          />
+        ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
         ) : undefined}
         {/* Additional Info */}

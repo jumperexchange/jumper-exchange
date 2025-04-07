@@ -134,6 +134,8 @@ class QuestParams {
     this.apiUrl.searchParams.set('populate[1]', 'quests_platform');
     this.apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
     this.apiUrl.searchParams.set('populate[3]', 'BannerImage');
+    this.apiUrl.searchParams.set('populate[4]', 'tasks_verification');
+
     return this.apiUrl;
   }
 }
