@@ -1,15 +1,12 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha, IconButton, Typography } from '@mui/material';
-import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { ButtonSecondary } from 'src/components/Button';
 import { getContrastAlphaColor } from 'src/utils/colors';
-import {
-  WalletLinkingContent,
-  WalletLinkingHeader,
-} from './WalletLinkingMenuPage.style';
+import { ModalMenuContent, ModalMenuHeader } from './ModalMenuPage.style';
 
-export const WalletLinkingMenuPage = ({
+export const ModalMenuPage = ({
   title,
   buttonLabel,
   setOpen,
@@ -20,22 +17,24 @@ export const WalletLinkingMenuPage = ({
   showPrevButton,
   menuIndex,
   setMenuIndex,
+  hideClose = false,
 }: {
   title?: string;
   buttonLabel: string;
   text?: string;
-  setOpen: any;
-  content: ReactElement;
-  onClick: () => void;
+  setOpen?: (value: boolean) => void;
+  content: JSX.Element;
+  onClick: (event: React.MouseEvent) => void;
   index: number;
   showPrevButton?: boolean;
   menuIndex: number;
   setMenuIndex: Dispatch<SetStateAction<number>>;
+  hideClose?: boolean;
 }) => {
   return (
     index === menuIndex && (
       <>
-        <WalletLinkingHeader>
+        <ModalMenuHeader>
           {showPrevButton ? (
             <IconButton
               size="medium"
@@ -59,20 +58,24 @@ export const WalletLinkingMenuPage = ({
             <span style={{ width: '40px' }} />
           )}
           <Typography variant="titleXSmall">{title}</Typography>
-          <IconButton
-            aria-label="close"
-            onClick={() => setOpen(false)}
-            sx={(theme) => ({
-              color: theme.palette.text.primary,
-              '&:hover': {
-                backgroundColor: alpha(theme.palette.text.primary, 0.04),
-              },
-            })}
-          >
-            <CloseIcon />
-          </IconButton>
-        </WalletLinkingHeader>
-        <WalletLinkingContent>{content}</WalletLinkingContent>
+          {!hideClose ? (
+            <IconButton
+              aria-label="close"
+              onClick={() => setOpen?.(false)}
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.text.primary, 0.04),
+                },
+              })}
+            >
+              <CloseIcon />
+            </IconButton>
+          ) : (
+            <span style={{ width: '40px' }} />
+          )}
+        </ModalMenuHeader>
+        <ModalMenuContent>{content}</ModalMenuContent>
         {text && <Typography variant="bodyMedium">{text}</Typography>}
         <ButtonSecondary sx={{ color: '#200052' }} onClick={onClick}>
           <Typography

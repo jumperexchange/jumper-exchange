@@ -3,12 +3,12 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
 import { useState } from 'react';
 import { MenuPopper } from 'src/components/Menu/Menu.style';
-import { WalletLinkingMenuPage } from '../WalletLinkingMenuPage/WalletLinkingMenuPage';
-import { useWalletLinking } from '../useWalletLinking';
 import {
-  WalletLinkingContainer,
-  WalletLinkingPaper,
-} from './WalletLinkingMenu.style';
+  ModalMenuContainer,
+  ModalMenuPaper,
+} from '../../../ModalMenu/ModalMenu.style';
+import { ModalMenuPage } from '../../../ModalMenu/ModalMenuPage/ModalMenuPage';
+import { useWalletLinking } from '../useWalletLinking';
 
 export const WalletLinkingMenu = ({
   open,
@@ -49,10 +49,10 @@ export const WalletLinkingMenu = ({
                 transformOrigin: 'top',
               }}
             >
-              <WalletLinkingPaper show={open}>
-                <WalletLinkingContainer>
+              <ModalMenuPaper show={open}>
+                <ModalMenuContainer>
                   {data.data.map((item, index) => (
-                    <WalletLinkingMenuPage
+                    <ModalMenuPage
                       key={`wallet-linking-menu-${index}`}
                       title={item.title}
                       text={item.text}
@@ -68,8 +68,8 @@ export const WalletLinkingMenu = ({
                       onClick={item.onClick}
                     />
                   ))}
-                </WalletLinkingContainer>
-              </WalletLinkingPaper>
+                </ModalMenuContainer>
+              </ModalMenuPaper>
             </Fade>
           )}
         </MenuPopper>

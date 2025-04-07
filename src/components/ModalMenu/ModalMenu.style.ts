@@ -1,7 +1,7 @@
 import { Box, styled } from '@mui/material';
 import { MenuPaper } from 'src/components/Menu';
 
-export const WalletLinkingPaper = styled(MenuPaper)(({ theme }) => ({
+export const ModalMenuPaper = styled(MenuPaper)(({ theme }) => ({
   position: 'fixed',
   left: '50%',
   top: '50%',
@@ -21,7 +21,7 @@ export const WalletLinkingPaper = styled(MenuPaper)(({ theme }) => ({
   },
 }));
 
-export const WalletLinkingContainer = styled(Box)(({ theme }) => ({
+export const ModalMenuContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   display: 'flex',
   flexDirection: 'column',
