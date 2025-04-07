@@ -103,10 +103,14 @@ export type QuestAttributes = {
   tasks_verification: TaskVerification[];
 };
 
-interface TaskVerification {
+export interface TaskVerification {
   id: number;
   name: string;
+  description: string;
+  CTALink?: string;
+  CTAText?: string;
   uuid: string;
+  hasTask: boolean;
 }
 
 export interface Quest extends QuestAttributes {
