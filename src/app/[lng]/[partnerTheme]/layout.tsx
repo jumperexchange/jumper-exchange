@@ -1,9 +1,10 @@
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { FeatureCards } from '@/components/FeatureCards';
+import { partnerThemeSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import React from 'react';
-import { Layout } from 'src/Layout';
+import { Layout as BaseLayout } from 'src/Layout';
 
 type Params = Promise<{ partnerTheme: string }>;
 export const fetchCache = 'default-cache';
@@ -35,8 +36,15 @@ export default async function PartnerThemeLayout({
   params: Params;
 }) {
   const { partnerTheme } = await params;
-  const partnerThemes = await getPartnerThemes();
 
+  // Validate partner theme format
+  const result = partnerThemeSchema.safeParse(partnerTheme);
+  if (!result.success) {
+    return notFound();
+  }
+
+  // Check if partner theme exists in Strapi
+  const partnerThemes = await getPartnerThemes();
   const partnerThemesData = partnerThemes.data?.find(
     (d) => d?.uid === partnerTheme,
   );
@@ -47,7 +55,7 @@ export default async function PartnerThemeLayout({
 
   return (
     <>
-      <Layout disableNavbar={true}>{children}</Layout>
+      <BaseLayout disableNavbar={true}>{children}</BaseLayout>
       <FeatureCards />
     </>
   );

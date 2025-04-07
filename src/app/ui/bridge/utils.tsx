@@ -36,10 +36,15 @@ export function buildExplorerLink(
 
 export function getChainInfoData(chainInfo: ExtendedChain) {
   return [
-    { label: 'Native token', value: chainInfo.nativeToken.symbol },
-    { label: 'Chain type', value: chainInfo.chainType },
-    { label: 'Chain id', value: chainInfo.id },
     {
+      id: 'native-token',
+      label: 'Native token',
+      value: chainInfo.nativeToken.symbol,
+    },
+    { id: 'chain-type', label: 'Chain type', value: chainInfo.chainType },
+    { id: 'chain-id', label: 'Chain id', value: chainInfo.id },
+    {
+      id: 'block-explorer-urls',
       label: 'Block explorer urls',
       value: chainInfo.metamask?.blockExplorerUrls?.map((blockExplorerUrl) => (
         <MuiLink
@@ -63,8 +68,9 @@ export function getChainInfoData(chainInfo: ExtendedChain) {
 export function getTokenInfoData(chains: ExtendedChain[], tokenInfo: Token) {
   const chain = getChainById(chains, tokenInfo.chainId);
   return [
-    { label: 'Symbol', value: tokenInfo.symbol },
+    { id: 'symbol', label: 'Symbol', value: tokenInfo.symbol },
     {
+      id: 'token-address',
       label: 'Token address',
       value: buildExplorerLink(
         chain?.metamask?.blockExplorerUrls,
@@ -72,8 +78,9 @@ export function getTokenInfoData(chains: ExtendedChain[], tokenInfo: Token) {
         tokenInfo.chainId,
       ),
     },
-    { label: 'Decimals', value: tokenInfo.decimals },
+    { id: 'decimals', label: 'Decimals', value: tokenInfo.decimals },
     {
+      id: 'current-usd-price',
       label: 'Current USD price',
       value: currencyFormatter('en', { currency: 'USD' })(tokenInfo.priceUSD),
     },
