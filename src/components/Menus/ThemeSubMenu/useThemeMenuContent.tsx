@@ -56,13 +56,13 @@ export const useThemeMenuContent = () => {
 
   partnerThemes?.map(
     (el) =>
-      el.attributes?.SelectableInMenu &&
+      el?.SelectableInMenu &&
       themes.push({
-        label: el.attributes?.PartnerName,
+        label: el?.PartnerName,
         onClick: () => {
-          handleThemeSwitch(el?.attributes?.uid);
+          handleThemeSwitch(el?.uid);
         },
-        checkIcon: resolvedTheme === el.attributes?.uid,
+        checkIcon: resolvedTheme === el?.uid,
       }),
   );
 

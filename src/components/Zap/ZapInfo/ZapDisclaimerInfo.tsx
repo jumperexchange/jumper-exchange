@@ -18,9 +18,7 @@ export const ZapDisclaimerInfo = ({ market }: ZapPageProps) => {
           color: alpha(theme.palette.text.primary, 0.48),
         })}
       />
-      <Typography variant="bodySmall">
-        {market?.attributes?.Information}
-      </Typography>
+      <Typography variant="bodySmall">{market?.Information}</Typography>
     </ZapActionProtocolDisclaimer>
   );
 };

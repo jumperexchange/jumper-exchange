@@ -96,14 +96,18 @@ export const viewport: Viewport = {
   width: 'device-width',
 };
 
+type Params = Promise<{ lng: string }>;
+
 export default async function RootLayout({
   children,
-  params: { lng },
+  params,
 }: {
   children: ReactNode;
-  params: { lng: string };
+  params: Params;
 }) {
-  const cookiesHandler = cookies();
+  const { lng } = await params;
+
+  const cookiesHandler = await cookies();
   const [resourcesPromise, activeThemePromise] = await Promise.allSettled([
     initTranslations(lng || fallbackLng, namespaces),
     getActiveTheme(cookiesHandler),

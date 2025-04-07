@@ -10,7 +10,7 @@ export function getPartnerTheme(
   themes?: PartnerThemesData[],
   activeTheme?: string,
 ) {
-  return themes?.find((d) => d.attributes?.uid === activeTheme)?.attributes;
+  return themes?.find((d) => d?.uid === activeTheme);
 }
 
 export function getMuiTheme(

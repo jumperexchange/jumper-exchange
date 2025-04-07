@@ -13,6 +13,7 @@ export enum TrackingAction {
   OpenBlockchainExplorer = 'action_open_blockchain_explorer',
   OpenJumperScan = 'action_open_jumper_scan',
   SwitchChain = 'action_switch_chain',
+  PortfolioLoaded = 'action_portfolio_loaded',
 
   // Widget
   OnRouteSelected = 'action_on_route_selected',
@@ -218,6 +219,7 @@ export enum TrackingEventParameter {
   MissionCtaCampaign = 'param_mission_cta_campaign',
   MissionCtaStepsTitle = 'param_mission_cta_steps_title',
   MissionCtaStepsLink = 'param_mission_cta_steps_link',
+  MissionCtaStepsTaskStepId = 'param_mission_cta_steps_task_step_id',
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
 

@@ -6,7 +6,7 @@ import { BlogArticlesTabs } from './BlogArticlesTabs';
 
 interface BlogArticlesCollectionsProps {
   data: BlogArticleData[];
-  tags: GetTagsResponse;
+  tags: GetTagsResponse['data'];
 }
 
 const pageSize = 6;
@@ -19,21 +19,16 @@ export const BlogArticlesCollections = ({
   // Apply sorting function
   return (
     data &&
-    tags.data?.length > 0 &&
-    tags.data?.map((tag, tagIndex: number) => {
+    tags?.length > 0 &&
+    tags?.map((tag, tagIndex: number) => {
       const pagination = {
         page: 0,
         pageSize: pageSize,
-        pageCount: Math.ceil(
-          tag.attributes?.blog_articles?.data.length / pageSize,
-        ),
-        total: tag.attributes?.blog_articles?.data.length,
+        pageCount: Math.ceil(tag?.blog_articles?.length / pageSize),
+        total: tag?.blog_articles?.length,
       };
 
-      if (
-        !tag.attributes?.blog_articles?.data ||
-        tag.attributes?.blog_articles?.data.length === 0
-      ) {
+      if (!tag?.blog_articles || tag?.blog_articles.length === 0) {
         return null;
       }
 
@@ -42,9 +37,8 @@ export const BlogArticlesCollections = ({
           index={tagIndex}
           key={`blog-article-collection-${tagIndex}`}
           tag={tag}
-          tags={tags}
           pagination={pagination}
-          data={tag.attributes?.blog_articles.data}
+          data={tag?.blog_articles}
         />
       );
     })

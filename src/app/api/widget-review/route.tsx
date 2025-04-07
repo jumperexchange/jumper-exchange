@@ -30,62 +30,69 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import {
+  widgetReviewSchema,
+  type WidgetReviewParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 440;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const { fromChainId, toChainId, fromToken, toToken, isSwap, theme, amount } =
-    parseSearchParams(request.url);
+  try {
+    const params = parseSearchParams<WidgetReviewParams>(
+      request.url,
+      widgetReviewSchema,
+    );
 
-  // Fetch data asynchronously before rendering
-  const fromTokenData = await fetchTokenData(fromChainId, fromToken);
-  const toTokenData = await fetchTokenData(toChainId, toToken);
-  const fromChain = await fetchChainData(fromChainId as unknown as ChainId);
-  const toChain = await fetchChainData(toChainId as unknown as ChainId);
+    // Fetch data asynchronously before rendering
+    const [fromTokenData, toTokenData, fromChain, toChain] = await Promise.all([
+      fetchTokenData(params.fromChainId.toString(), params.fromToken),
+      fetchTokenData(params.toChainId.toString(), params.toToken),
+      fetchChainData(params.fromChainId as unknown as ChainId),
+      fetchChainData(params.toChainId as unknown as ChainId),
+    ]);
 
-  const options = await imageResponseOptions({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  });
+    const options = await imageResponseOptions({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    });
 
-  const imageFrameStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    const imageStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
 
-  const imageStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
-
-  return new ImageResponse(
-    (
-      <div style={imageFrameStyle}>
-        <img
-          alt="Widget Review Example"
-          width={'100%'}
-          height={'100%'}
-          style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget-review-bridge-${theme === 'dark' ? 'dark' : 'light'}.png`}
-        />
-        <WidgetReviewImage
-          height={WIDGET_IMAGE_WIDTH}
-          isSwap={isSwap === 'true'}
-          width={WIDGET_IMAGE_HEIGHT}
-          fromToken={fromTokenData}
-          toToken={toTokenData}
-          fromChain={fromChain}
-          theme={theme as 'light' | 'dark'}
-          toChain={toChain}
-          amount={amount}
-        />
-      </div>
-    ),
-    options,
-  );
+    return new ImageResponse(
+      (
+        <div style={imageStyle}>
+          <img
+            alt="Widget Review Example"
+            width={'100%'}
+            height={'100%'}
+            style={imageStyle}
+            src={`${getSiteUrl()}/widget/widget-review-bridge-${params.theme}.png`}
+          />
+          <WidgetReviewImage
+            height={WIDGET_IMAGE_WIDTH}
+            width={WIDGET_IMAGE_HEIGHT}
+            fromToken={fromTokenData}
+            toToken={toTokenData}
+            fromChain={fromChain}
+            toChain={toChain}
+            amount={params.amount}
+            isSwap={params.isSwap}
+            theme={params.theme}
+          />
+        </div>
+      ),
+      options,
+    );
+  } catch (error) {
+    console.error('Error generating widget review image:', error);
+    return new Response('Internal server error', { status: 500 });
+  }
 }

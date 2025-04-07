@@ -29,6 +29,7 @@ export const RoycoClientProvider = ({
       originId={process.env.NEXT_PUBLIC_ROYCO_ID!}
       rpcApiKeys={rpcKeys}
     >
+      {/* @ts-ignore */}
       {children}
     </RoycoProvider>
   );

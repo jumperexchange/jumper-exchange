@@ -19,7 +19,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { EnrichedMarketDataType } from 'royco/queries';
 import { useChains } from 'src/hooks/useChains';
-import type { ImageData, StrapiMediaData } from 'src/types/strapi';
+import type { StrapiMediaData } from 'src/types/strapi';
 import type { BerachainProtocolType } from '../../berachain.types';
 import {
   APY_TOOLTIP,
@@ -42,7 +42,7 @@ interface BerachainMarketCardProps {
   extraRewards?: ExtraRewards;
   roycoData: EnrichedMarketDataType;
   title?: string;
-  image?: ImageData<StrapiMediaData>;
+  image?: StrapiMediaData;
   type?: BerachainProtocolType;
   apys?: number[];
   tokens?: string[];
@@ -101,11 +101,11 @@ export const BerachainMarketCard = ({
             >
               {image ? (
                 <Image
-                  key={`berachain-market-card-token-${image.data.id}`}
-                  src={`${url}${image.data.attributes?.url}`}
-                  alt={`${image.data.attributes?.alternativeText || 'protocol'} logo`}
-                  width={image.data.attributes?.width}
-                  height={image.data.attributes?.height}
+                  key={`berachain-market-card-token-${image.id}`}
+                  src={`${url}${image?.url}`}
+                  alt={`${image?.alternativeText || 'protocol'} logo`}
+                  width={image?.width}
+                  height={image?.height}
                   style={{
                     width: '72px',
                     height: 'auto',

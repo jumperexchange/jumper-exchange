@@ -46,6 +46,7 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
   return cleanText;
 };
 
+// TODO: Refactor this component to use Accordion component from mui
 export const InstructionsAccordionItem = ({
   title,
   step,
