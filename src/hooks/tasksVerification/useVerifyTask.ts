@@ -22,7 +22,8 @@ export async function verifyTaskQuery(props: VerifyTaskProps) {
     throw new Error(jsonResponse.message);
   }
 
-  if (jsonResponse.status !== 201) {
+  // TODO: Needs to be improved
+  if (jsonResponse.status !== 201 && jsonResponse.statusCode !== 201) {
     throw new Error(jsonResponse.message);
   }
 
