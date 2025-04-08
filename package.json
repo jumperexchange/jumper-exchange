@@ -37,7 +37,7 @@
     "@strapi/blocks-react-renderer": "^1.0.2",
     "@tanstack/react-query": "^5.72.0",
     "@wagmi/core": "^2.16.7",
-    "@walletconnect/solana-adapter": "^0.0.6",
+    "@walletconnect/solana-adapter": "^0.0.7",
     "@widgetbot/react-embed": "^1.9.0",
     "accept-language": "^3.0.20",
     "blo": "^1.2.0",
@@ -69,7 +69,7 @@
     "siwe": "^2.3.2",
     "use-immer": "^0.11.0",
     "uuid": "^11.1.0",
-    "viem": "^2.24.3",
+    "viem": "^2.26.2",
     "wagmi": "^2.14.16",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
