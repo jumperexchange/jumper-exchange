@@ -27,7 +27,6 @@ export async function verifyTaskQuery(props: VerifyTaskProps) {
     throw new Error(jsonResponse.message);
   }
 
-
   return jsonResponse;
 }
 
