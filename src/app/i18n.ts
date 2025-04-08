@@ -1,8 +1,7 @@
-import type { Resource, i18n } from 'i18next';
-import { createInstance } from 'i18next';
-import resourcesToBackend from 'i18next-resources-to-backend';
+import { Resource, i18n, createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
-import i18nConfig from '../../i18nconfig';
+import resourcesToBackend from 'i18next-resources-to-backend';
+import i18nConfig from '../../i18n-config';
 import {
   currencyFormatter,
   decimalFormatter,
@@ -10,7 +9,6 @@ import {
 } from '@/utils/formatNumbers';
 import { dateFormatter } from 'src/utils/formatDate';
 
-// TODO: use https://nextjs.org/docs/app/building-your-application/routing/internationalization#localization
 export default async function initTranslations(
   locale: string,
   namespaces: string[],
@@ -34,20 +32,15 @@ export default async function initTranslations(
     lng: locale,
     resources,
     fallbackLng: i18nConfig.defaultLocale,
-    react: { useSuspense: false },
+    // react: { useSuspense: false },
     supportedLngs: i18nConfig.locales,
-    returnEmptyString: false,
-    partialBundledLanguages: true,
+    // returnEmptyString: false,
+    // partialBundledLanguages: true,
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
     ns: namespaces,
     preload: resources ? [] : i18nConfig.locales,
   });
-
-  i18nInstance.services.formatter?.addCached('percentExt', percentFormatter);
-  i18nInstance.services.formatter?.addCached('decimalExt', decimalFormatter);
-  i18nInstance.services.formatter?.addCached('currencyExt', currencyFormatter);
-  i18nInstance.services.formatter?.addCached('dateExt', dateFormatter);
 
   return {
     i18n: i18nInstance,

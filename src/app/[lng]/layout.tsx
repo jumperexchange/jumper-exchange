@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import i18nConfig from 'i18nconfig';
+import i18nConfig from 'i18n-config';
 import type { Metadata } from 'next';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import { cookies } from 'next/headers';
@@ -18,7 +18,7 @@ import type { ActiveThemeResult } from '../lib/getActiveTheme';
 import { getActiveTheme } from '../lib/getActiveTheme';
 import { description, siteName, title } from '../lib/metadata';
 import { getSiteUrl } from '@/const/urls';
-import { Banner } from 'src/components/Banner/Banner';
+import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 
 export const metadata: Metadata = {
   title,
@@ -107,11 +107,14 @@ export default async function RootLayout({
 }) {
   const { lng } = await params;
 
-  const cookiesHandler = await cookies();
-  const [resourcesPromise, activeThemePromise] = await Promise.allSettled([
+  /** old
+/*
+   const cookiesHandler = await cookies();
+   const [resourcesPromise, activeThemePromise] = await Promise.allSettled([
     initTranslations(lng || fallbackLng, namespaces),
     getActiveTheme(cookiesHandler),
-  ]);
+  ]);*/
+/*
 
   const { activeTheme, themes, themeMode, isPartnerTheme } =
     activeThemePromise.status === 'fulfilled'
@@ -122,11 +125,13 @@ export default async function RootLayout({
     resourcesPromise.status === 'fulfilled'
       ? resourcesPromise.value.resources
       : undefined;
+*/
 
-  // Welcome Screen is always closed on partner themes
-  const welcomeScreenClosed =
-    isPartnerTheme ||
-    cookiesHandler.get('welcomeScreenClosed')?.value === 'true';
+  const partnerThemes = await getPartnerThemes();
+
+  /** new*/
+  const { resources } = await initTranslations(lng || fallbackLng, namespaces)
+  /** end new*/
 
   return (
     <html
@@ -169,7 +174,7 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <AppRouterCacheProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
             <TranslationsProvider
               namespaces={[defaultNS]}
@@ -178,14 +183,16 @@ export default async function RootLayout({
             >
               <NextThemeProvider enableSystem enableColorScheme>
                 <ThemeProvider
-                  themes={themes}
-                  activeTheme={activeTheme}
-                  themeMode={themeMode}
+                  themes={partnerThemes.data}
+                  activeTheme={'default'}
+                  themeMode={'system'}
                 >
                   <SettingsStoreProvider
-                    welcomeScreenClosed={welcomeScreenClosed}
+                    welcomeScreenClosed={true}
                   >
-                    <WalletProvider>{children}</WalletProvider>
+                    <WalletProvider>
+                      {children}
+                    </WalletProvider>
                   </SettingsStoreProvider>
                 </ThemeProvider>
               </NextThemeProvider>

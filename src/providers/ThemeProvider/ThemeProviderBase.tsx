@@ -20,7 +20,7 @@ export function ThemeProviderBase({
   themeMode,
 }: ThemeProviderProps) {
   const { resolvedTheme } = useNextTheme();
-  const [, setCookie] = useCookies(['theme', 'themeMode']);
+  // const [, setCookie] = useCookies(['theme', 'themeMode']);
   const [themes, setConfigTheme, setWidgetTheme] = useThemeStore((state) => [
     state.partnerThemes,
     state.setConfigTheme,
@@ -45,14 +45,14 @@ export function ThemeProviderBase({
   useEffect(() => {
     setWidgetTheme(getWidgetTheme(currentMuiTheme, partnerTheme, themes));
     setConfigTheme(formatConfig(getPartnerTheme(themes, partnerTheme)));
-    setCookie('theme', partnerTheme, { path: '/', sameSite: true });
-    setCookie('themeMode', effectiveThemeMode, { path: '/', sameSite: true });
+    // setCookie('theme', partnerTheme, { path: '/', sameSite: true });
+    // setCookie('themeMode', effectiveThemeMode, { path: '/', sameSite: true });
   }, [
     currentMuiTheme,
     effectiveThemeMode,
     partnerTheme,
     setConfigTheme,
-    setCookie,
+    // setCookie,
     setWidgetTheme,
     themes,
   ]);

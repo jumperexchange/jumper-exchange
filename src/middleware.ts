@@ -1,19 +1,19 @@
 // middleware.ts
-import acceptLanguage from 'accept-language';
+// import acceptLanguage from 'accept-language';
 import { i18nRouter } from 'next-i18n-router';
 import type { NextRequest } from 'next/server';
-import i18nConfig from '../i18nconfig';
-import { locales } from './i18n/i18next-locales';
+import i18nConfig from '../i18n-config';
+// import { locales } from './i18n/i18next-locales';
 
-acceptLanguage.languages(locales);
+// acceptLanguage.languages(locales);
 
 export function middleware(request: NextRequest) {
   const response = i18nRouter(request, i18nConfig);
 
   // Set a cookie with the pathname that was used on the first page load
-  const pathname = request.nextUrl.pathname;
-  response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
-
+  // const pathname = request.nextUrl.pathname;
+  // response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
+  //
   return response;
 }
 
