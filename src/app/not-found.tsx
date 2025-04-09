@@ -9,23 +9,19 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { Link } from '@mui/material';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
-import { cookies } from 'next/headers';
 import RouterLink from 'next/link';
 import Script from 'next/script';
-import { defaultNS, namespaces } from 'src/i18n';
 import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
+import { fallbackLng, namespaces, defaultNS } from 'src/i18n';
 
-export default async function NotFound() {
-  const cookiesHandler = await cookies();
-  const locale = cookiesHandler.get('NEXT_LOCALE')?.value ?? 'en';
-
-  const { resources } = await initTranslations(locale, namespaces);
+export default function NotFound() {
+  // const { resources } = await initTranslations(fallbackLng, namespaces);
 
   return (
     <html
-      lang={locale}
+      lang={fallbackLng}
       suppressHydrationWarning
       className={fonts.map((f) => f.variable).join(' ')}
     >
@@ -47,35 +43,36 @@ export default async function NotFound() {
       </head>
 
       <body suppressHydrationWarning>
-        <AppRouterCacheProvider>
-          <ReactQueryProvider>
-            <NextThemeProvider
-              themes={['dark', 'light']}
-              forcedTheme={'light'}
-              enableSystem
-              enableColorScheme
-            >
-              <ThemeProvider themes={[]}>
-                <TranslationsProvider
-                  namespaces={[defaultNS]}
-                  locale={locale}
-                  resources={resources}
-                >
-                  <WalletProvider>
-                    <Background />
-                    <NavbarContainer>
-                      <Link component={RouterLink} href="/">
-                        <Logo variant="default" />
-                      </Link>
-                      <NavbarButtons />
-                    </NavbarContainer>
-                    <NotFoundComponent />
-                  </WalletProvider>
-                </TranslationsProvider>
-              </ThemeProvider>
-            </NextThemeProvider>
-          </ReactQueryProvider>
-        </AppRouterCacheProvider>
+        {/*<AppRouterCacheProvider>*/}
+        {/*  <ReactQueryProvider>*/}
+        {/*<NextThemeProvider*/}
+        {/*  themes={['dark', 'light']}*/}
+        {/*  forcedTheme={'light'}*/}
+        {/*  enableSystem*/}
+        {/*  enableColorScheme*/}
+        {/*>*/}
+        {/*<ThemeProvider themes={[]}>*/}
+        {/*  <TranslationsProvider*/}
+        {/*    namespaces={[defaultNS]}*/}
+        {/*    locale={fallbackLng}*/}
+        {/*    resources={resources}*/}
+        {/*  >*/}
+        {/*<WalletProvider>*/}
+        {/*<Background />*/}
+        {/*<NavbarContainer>*/}
+        {/*  <Link component={RouterLink} href="/">*/}
+        {/*    <Logo variant="default" />*/}
+        {/*  </Link>*/}
+        {/*<NavbarButtons />*/}
+        {/*</NavbarContainer>*/}
+        <div>Not found</div>
+        {/*<NotFoundComponent />*/}
+        {/*</WalletProvider>*/}
+        {/*</TranslationsProvider>*/}
+        {/*</ThemeProvider>*/}
+        {/*</NextThemeProvider>*/}
+        {/*</ReactQueryProvider>*/}
+        {/*</AppRouterCacheProvider>*/}
       </body>
     </html>
   );

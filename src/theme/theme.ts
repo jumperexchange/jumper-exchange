@@ -247,7 +247,9 @@ const shape = {
   borderRadiusSecondary: 8,
 };
 
-const themeBase = createTheme();
+const themeBase = createTheme({
+  cssVariables: false,
+});
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
 const themeCustomized = createTheme({

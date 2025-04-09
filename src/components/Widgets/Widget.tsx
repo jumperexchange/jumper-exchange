@@ -17,7 +17,7 @@ import {
 } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
 import { AbTestCases } from 'src/const/abtests';
@@ -340,6 +340,13 @@ export function Widget({
           formRef={formRef}
         />
       </ClientOnly>
+{/*      <Suspense fallback={<LifiWidgetSkeleton config={config} />}>
+        <LiFiWidget
+          integrator={config.integrator}
+          config={config}
+          formRef={formRef}
+        />
+      </Suspense>*/}
     </WidgetWrapper>
   );
 }
