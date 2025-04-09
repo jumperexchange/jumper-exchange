@@ -30,6 +30,7 @@ yarn-error.log*
 /coverage
 .cache-synpress/**
 .tests/snapshots.spec.ts/**
+tests/.env.qase
 
 
 npm-debug.log*
