@@ -86,7 +86,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
           }}
         >
           <Grid container display="flex" alignItems="center">
-            <Grid item xs={2}>
+            <Grid size={2}>
               {hasMultipleChains ? (
                 <MuiAvatar>
                   <TokenImage token={token} />
@@ -124,7 +124,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                 </WalletCardBadge>
               )}
             </Grid>
-            <Grid item xs={5}>
+            <Grid size={5}>
               <TypographyPrimary>
                 {stringLenShortener(token.symbol, 8)}
               </TypographyPrimary>
@@ -155,7 +155,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
                 </CustomAvatarGroup>
               )}
             </Grid>
-            <Grid item xs={5} style={{ textAlign: 'right' }}>
+            <Grid style={{ textAlign: 'right' }} size={5}>
               <TypographyPrimary>
                 {t('format.decimal', { value: token.cumulatedBalance })}
               </TypographyPrimary>

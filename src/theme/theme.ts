@@ -102,74 +102,6 @@ declare module '@mui/material/styles' {
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
   }
-  interface TypographyVariants {
-    headerDisplay: React.CSSProperties;
-    headerXLarge: React.CSSProperties;
-    headerLarge: React.CSSProperties;
-    headerMedium: React.CSSProperties;
-    headerSmall: React.CSSProperties;
-    headerXSmall: React.CSSProperties;
-    bodyXLargeStrong: React.CSSProperties;
-    bodyXLarge: React.CSSProperties;
-    bodyLargeStrong: React.CSSProperties;
-    bodyLarge: React.CSSProperties;
-    bodyMediumStrong: React.CSSProperties;
-    bodyMedium: React.CSSProperties;
-    bodySmallStrong: React.CSSProperties;
-    bodySmall: React.CSSProperties;
-    bodyXSmallStrong: React.CSSProperties;
-    bodyXSmall: React.CSSProperties;
-    brandHeaderXLarge: React.CSSProperties;
-    titleSmall: React.CSSProperties;
-    titleXSmall: React.CSSProperties;
-    title2XSmall: React.CSSProperties;
-    titleLarge: React.CSSProperties;
-    urbanistTitleXSmall: React.CSSProperties;
-    urbanistTitleLarge: React.CSSProperties;
-    urbanistTitleXLarge: React.CSSProperties;
-    urbanistTitle2XLarge: React.CSSProperties;
-    urbanistTitle3XLarge: React.CSSProperties;
-    urbanistTitleMedium: React.CSSProperties;
-    urbanistBodyLarge: React.CSSProperties;
-    urbanistBodyXLarge: React.CSSProperties;
-    urbanistBody2XLarge: React.CSSProperties;
-  }
-
-  // allow configuration using `createTheme`
-  interface TypographyVariantsOptions {
-    headerDisplay?: React.CSSProperties;
-    headerXLarge?: React.CSSProperties;
-    headerLarge?: React.CSSProperties;
-    headerMedium?: React.CSSProperties;
-    headerSmall?: React.CSSProperties;
-    headerXSmall?: React.CSSProperties;
-    bodyXLargeStrong?: React.CSSProperties;
-    bodyXLarge: React.CSSProperties;
-    bodyLargeStrong: React.CSSProperties;
-    bodyLarge: React.CSSProperties;
-    bodyMediumStrong: React.CSSProperties;
-    bodyMedium: React.CSSProperties;
-    bodySmallStrong: React.CSSProperties;
-    bodySmall: React.CSSProperties;
-    bodyXSmallStrong: React.CSSProperties;
-    bodyXSmall: React.CSSProperties;
-    brandHeaderXLarge: React.CSSProperties;
-    titleSmall: React.CSSProperties;
-    titleXSmall: React.CSSProperties;
-    title2XSmall: React.CSSProperties;
-    titleLarge: React.CSSProperties;
-    urbanistTitleXSmall: React.CSSProperties;
-    urbanistTitleLarge: React.CSSProperties;
-    urbanistTitleXLarge: React.CSSProperties;
-    urbanistTitle2XLarge: React.CSSProperties;
-    urbanistTitle3XLarge: React.CSSProperties;
-    urbanistTitleMedium: React.CSSProperties;
-    urbanistBodyLarge: React.CSSProperties;
-    urbanistBodyXLarge: React.CSSProperties;
-    urbanistBody2XLarge: React.CSSProperties;
-  }
-}
-declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     tertiary: true;
     white: true;
@@ -205,11 +137,109 @@ declare module '@mui/material/Button' {
     alphaLight700: true;
     alphaLight800: true;
   }
+
+  interface TypographyVariants {
+    headerXLarge: React.CSSProperties;
+    headerLarge: React.CSSProperties;
+    headerMedium: React.CSSProperties;
+    headerSmall: React.CSSProperties;
+    headerXSmall: React.CSSProperties;
+    bodyXLargeStrong: React.CSSProperties;
+    bodyXLarge: React.CSSProperties;
+    bodyLargeStrong: React.CSSProperties;
+    bodyLarge: React.CSSProperties;
+    bodyMediumStrong: React.CSSProperties;
+    bodyMedium: React.CSSProperties;
+    bodySmallStrong: React.CSSProperties;
+    bodySmall: React.CSSProperties;
+    bodyXSmallStrong: React.CSSProperties;
+    bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    headerXLarge?: React.CSSProperties;
+    headerLarge?: React.CSSProperties;
+    headerMedium?: React.CSSProperties;
+    headerSmall?: React.CSSProperties;
+    headerXSmall?: React.CSSProperties;
+    bodyXLargeStrong?: React.CSSProperties;
+    bodyXLarge: React.CSSProperties;
+    bodyLargeStrong: React.CSSProperties;
+    bodyLarge: React.CSSProperties;
+    bodyMediumStrong: React.CSSProperties;
+    bodyMedium: React.CSSProperties;
+    bodySmallStrong: React.CSSProperties;
+    bodySmall: React.CSSProperties;
+    bodyXSmallStrong: React.CSSProperties;
+    bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
+  }
 }
+
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     '@supports (font-variation-settings: normal)': true;
-    headerDisplay: true;
+    headerXLarge: true;
+    headerLarge: true;
+    headerMedium: true;
+    headerSmall: true;
+    headerXSmall: true;
+    bodyXLargeStrong: true;
+    bodyXLarge: true;
+    bodyLargeStrong: true;
+    bodyLarge: true;
+    bodyMediumStrong: true;
+    bodyMedium: true;
+    bodySmallStrong: true;
+    bodySmall: true;
+    bodyXSmallStrong: true;
+    bodyXSmall: true;
+    brandHeaderXLarge: true;
+    titleSmall: true;
+    titleXSmall: true;
+    title2XSmall: true;
+    titleLarge: true;
+    urbanistTitleXSmall: true;
+    urbanistTitleLarge: true;
+    urbanistTitle2XLarge: true;
+    urbanistTitleXLarge: true;
+    urbanistTitle3XLarge: true;
+    urbanistTitleMedium: true;
+    urbanistBodyLarge: true;
+    urbanistBodyXLarge: true;
+    urbanistBody2XLarge: true;
+  }
+
+  interface TypographyPropsVariantOverrides {
+    '@supports (font-variation-settings: normal)': true;
     headerXLarge: true;
     headerLarge: true;
     headerMedium: true;
@@ -408,7 +438,6 @@ const themeCustomized = createTheme({
     MuiTypography: {
       defaultProps: {
         variantMapping: {
-          headerDisplay: 'p',
           headerXLarge: 'p',
           headerLarge: 'p',
           headerMedium: 'p',
@@ -535,12 +564,6 @@ const themeCustomized = createTheme({
       'Helvetica Neue',
       'sans-serif',
     ].join(','),
-    headerDisplay: {
-      fontStyle: 'normal',
-      fontSize: '96px',
-      lineHeight: '128px',
-      fontWeight: 700,
-    },
     headerXLarge: {
       fontStyle: 'normal',
       fontWeight: 700,

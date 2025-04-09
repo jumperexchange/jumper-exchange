@@ -62,7 +62,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
       })}
     >
       <Grid container display="flex" alignItems="center">
-        <Grid item xs={2} textAlign="left">
+        <Grid textAlign="left" size={2}>
           <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -82,7 +82,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             </MuiAvatar>
           </Badge>
         </Grid>
-        <Grid item xs={5} textAlign="left">
+        <Grid textAlign="left" size={5}>
           <TypographyPrimary
             sx={{ fontSize: '0.875rem', lineHeight: '1.125rem' }}
           >
@@ -94,7 +94,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             {token.chainName}
           </TypographySecondary>
         </Grid>
-        <Grid item xs={5} style={{ textAlign: 'right' }}>
+        <Grid style={{ textAlign: 'right' }} size={5}>
           <TypographyPrimary
             sx={{
               fontWeight: 600,

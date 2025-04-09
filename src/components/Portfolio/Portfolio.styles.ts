@@ -6,10 +6,10 @@ import {
   darken,
   Divider,
   styled,
+  SvgIcon,
   Typography,
 } from '@mui/material';
 import { lighten } from '@mui/material/styles';
-import SvgIcon from '@mui/material/SvgIcon/SvgIcon'; // Import AccordionProps
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
