@@ -36,8 +36,6 @@ export function ThemeProvider({
       isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme) : themeMode,
     );
 
-    console.log('---', activeTheme, themeMode, metaElement);
-
     const widgetTheme = getWidgetTheme(
       getMuiTheme(themes, partnerTheme, effectiveThemeMode),
       partnerTheme,

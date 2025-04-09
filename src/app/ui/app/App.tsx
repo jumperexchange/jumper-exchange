@@ -6,18 +6,18 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
 import { Box, Slide, Stack } from '@mui/material';
 import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
-import type { PropsWithChildren } from 'react';
 import { useEffect } from 'react';
 
 export interface AppProps {
-  activeTheme?: string;
+  children: React.ReactNode;
 }
 
-const App = ({ activeTheme, children }: PropsWithChildren<AppProps>) => {
+const App = ({ children }) => {
+
   const { trackEvent } = useUserTracking();
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
-    useWelcomeScreen(activeTheme);
+    useWelcomeScreen();
 
   const handleWelcomeScreenEnter = () => {
     if (enabled && !welcomeScreenClosed) {

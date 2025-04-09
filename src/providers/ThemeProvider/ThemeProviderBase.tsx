@@ -5,7 +5,6 @@ import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
 import { useEffect, useMemo } from 'react';
-import { useCookies } from 'react-cookie';
 import type { ThemeProviderProps } from './types';
 import {
   getEffectiveThemeMode,
@@ -20,7 +19,7 @@ export function ThemeProviderBase({
   themeMode,
 }: ThemeProviderProps) {
   const { resolvedTheme } = useNextTheme();
-  const [, setCookie] = useCookies(['theme', 'themeMode']);
+  const [setThemeMode, setActiveTheme] = useThemeStore((state) => [state.setThemeMode,state.setActiveTheme])
   const [themes, setConfigTheme, setWidgetTheme] = useThemeStore((state) => [
     state.partnerThemes,
     state.setConfigTheme,
@@ -45,14 +44,13 @@ export function ThemeProviderBase({
   useEffect(() => {
     setWidgetTheme(getWidgetTheme(currentMuiTheme, partnerTheme, themes));
     setConfigTheme(formatConfig(getPartnerTheme(themes, partnerTheme)));
-    setCookie('theme', partnerTheme, { path: '/', sameSite: true });
-    setCookie('themeMode', effectiveThemeMode, { path: '/', sameSite: true });
+    setActiveTheme(partnerTheme);
+    setThemeMode(effectiveThemeMode);
   }, [
     currentMuiTheme,
     effectiveThemeMode,
     partnerTheme,
     setConfigTheme,
-    setCookie,
     setWidgetTheme,
     themes,
   ]);

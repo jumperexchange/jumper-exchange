@@ -19,7 +19,6 @@ export const useThemeSwitchTabs = () => {
   const { t } = useTranslation();
   const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
-  const [, setCookie] = useCookies(['themeMode']);
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
   const [themeMode, configTheme, setThemeMode] = useThemeStore((state) => [
@@ -35,10 +34,6 @@ export const useThemeSwitchTabs = () => {
       data: {
         [TrackingEventParameter.SwitchedTheme]: mode,
       },
-    });
-    setCookie('themeMode', mode, {
-      path: '/',
-      sameSite: true,
     });
     setThemeMode(mode);
     setTheme(mode);

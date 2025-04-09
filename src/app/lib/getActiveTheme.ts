@@ -1,8 +1,8 @@
-import type { cookies } from 'next/headers';
 import type { PartnerThemesData, StrapiResponseData } from '../../types/strapi';
 import type { ThemeMode } from '../../types/theme';
 import { getPartnerThemes } from './getPartnerThemes';
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
+import { useThemeStore } from '@/stores/theme';
 
 export type ActiveThemeResult = {
   themes: StrapiResponseData<PartnerThemesData>;
@@ -14,9 +14,16 @@ export type ActiveThemeResult = {
 // Handle
 // /partner-theme
 // /en/partner-theme
+// TODO: Fix superfest
 export async function getActiveTheme(cookiesHandler: ReadonlyRequestCookies) {
   const partnerThemes = await getPartnerThemes();
-  const cookieTheme = cookiesHandler.get('theme')?.value;
+  const [themeMode, activeTheme, configTheme, setThemeMode] = useThemeStore((state) => [
+    state.themeMode,
+    state.activeTheme,
+    state.configTheme,
+    state.setThemeMode,
+  ]);
+  const cookieTheme = activeTheme;
   const pathname = cookiesHandler.get('pathname')?.value || '/';
   const segments = pathname.split('/').slice(0, 3);
 
@@ -40,7 +47,7 @@ export async function getActiveTheme(cookiesHandler: ReadonlyRequestCookies) {
   return {
     themes: partnerThemes.data,
     activeTheme: activeTheme,
-    themeMode: cookiesHandler.get('themeMode')?.value as ThemeMode,
+    themeMode: themeMode,
     isPartnerTheme: Boolean(pathPartnerTheme),
   };
 }

@@ -1,5 +1,4 @@
 import { type Metadata } from 'next';
-import Superfest from 'src/app/ui/superfest/Superfest';
 import { getSiteUrl } from '@/const/urls';
 import { Widget } from '@/components/Widgets/Widget';
 
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <div>
-      TOTO test
       <Widget starterVariant="default" />
     </div>
   );

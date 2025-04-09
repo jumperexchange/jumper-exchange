@@ -1,10 +1,9 @@
 import { useSettingsStore } from '@/stores/settings';
-import { useCallback, useMemo } from 'react';
-import { useCookies } from 'react-cookie';
-import { useMultisig } from './useMultisig';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useMainPaths } from '@/hooks/useMainPaths';
+import { useThemeStore } from '@/stores/theme';
 
-interface useWelcomeScreenProps {
+interface useWelcomeScreenResult {
   welcomeScreenClosed: boolean | undefined;
   setWelcomeScreenClosed: (closed: boolean) => void;
   enabled: boolean;
@@ -12,11 +11,9 @@ interface useWelcomeScreenProps {
 
 export const validThemes = ['default', 'light', 'dark', 'system'];
 
-export const useWelcomeScreen = (
-  activeTheme?: string,
-): useWelcomeScreenProps => {
+export const useWelcomeScreen = (): useWelcomeScreenResult => {
   const { isMainPaths } = useMainPaths();
-  const [cookie, setCookie] = useCookies(['welcomeScreenClosed', 'theme']);
+  const activeTheme = useThemeStore((state) => state.activeTheme);
 
   const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
     (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
@@ -25,14 +22,12 @@ export const useWelcomeScreen = (
   const enabled = useMemo(
     // check if theme is any of jumper-themes or undefined
     () => {
-      return (
+      return !!(
         isMainPaths &&
-        ((activeTheme && validThemes.includes(activeTheme)) ||
-          validThemes.includes(cookie.theme) ||
-          !cookie.theme)
+        activeTheme && validThemes.includes(activeTheme)
       );
     },
-    [activeTheme, cookie],
+    [activeTheme],
   );
 
   const updateState = useCallback(
@@ -41,13 +36,8 @@ export const useWelcomeScreen = (
         return;
       }
       setWelcomeScreenClosed(closed);
-      setCookie('welcomeScreenClosed', closed, {
-        path: '/', // Cookie available across the entire website
-        expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // Cookie expires in one month
-        sameSite: true,
-      });
     },
-    [enabled, setCookie, setWelcomeScreenClosed],
+    [enabled, setWelcomeScreenClosed],
   );
 
   return {

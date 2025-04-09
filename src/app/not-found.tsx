@@ -14,10 +14,11 @@ import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import RouterLink from 'next/link';
 import Script from 'next/script';
 import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
-import { fallbackLng, namespaces, defaultNS } from 'src/i18n';
+import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
+import { SettingsStoreProvider } from 'src/stores/settings/SettingsStore';
 
-export default function NotFound() {
-  // const { resources } = await initTranslations(fallbackLng, namespaces);
+export default async function NotFound() {
+  const { resources } = await initTranslations(fallbackLng, namespaces);
 
   return (
     <html
@@ -25,55 +26,57 @@ export default function NotFound() {
       suppressHydrationWarning
       className={fonts.map((f) => f.variable).join(' ')}
     >
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <Script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
-        />
-        <Script id="google-analytics">
-          {`
+    <head>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <Script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
+      />
+      <Script id="google-analytics">
+        {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
-        </Script>
-      </head>
+      </Script>
+    </head>
 
-      <body suppressHydrationWarning>
-        {/*<AppRouterCacheProvider>*/}
-        {/*  <ReactQueryProvider>*/}
-        {/*<NextThemeProvider*/}
-        {/*  themes={['dark', 'light']}*/}
-        {/*  forcedTheme={'light'}*/}
-        {/*  enableSystem*/}
-        {/*  enableColorScheme*/}
-        {/*>*/}
-        {/*<ThemeProvider themes={[]}>*/}
-        {/*  <TranslationsProvider*/}
-        {/*    namespaces={[defaultNS]}*/}
-        {/*    locale={fallbackLng}*/}
-        {/*    resources={resources}*/}
-        {/*  >*/}
-        {/*<WalletProvider>*/}
-        {/*<Background />*/}
-        {/*<NavbarContainer>*/}
-        {/*  <Link component={RouterLink} href="/">*/}
-        {/*    <Logo variant="default" />*/}
-        {/*  </Link>*/}
-        {/*<NavbarButtons />*/}
-        {/*</NavbarContainer>*/}
-        <div>Not found</div>
-        {/*<NotFoundComponent />*/}
-        {/*</WalletProvider>*/}
-        {/*</TranslationsProvider>*/}
-        {/*</ThemeProvider>*/}
-        {/*</NextThemeProvider>*/}
-        {/*</ReactQueryProvider>*/}
-        {/*</AppRouterCacheProvider>*/}
-      </body>
+    <body suppressHydrationWarning>
+    <AppRouterCacheProvider>
+      <ReactQueryProvider>
+        <NextThemeProvider
+          themes={['dark', 'light']}
+          forcedTheme={'light'}
+          enableSystem
+          enableColorScheme
+        >
+          <ThemeProvider themes={[]}>
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={fallbackLng}
+              resources={resources}
+            >
+              <SettingsStoreProvider welcomeScreenClosed={true}>
+                <WalletProvider>
+                  <Background />
+                  <NavbarContainer>
+                    <Link component={RouterLink} href="/">
+                      <Logo variant="default" />
+                    </Link>
+                    <NavbarButtons />
+                  </NavbarContainer>
+                  <div>Not found</div>
+                  <NotFoundComponent />
+                </WalletProvider>
+              </SettingsStoreProvider>
+            </TranslationsProvider>
+          </ThemeProvider>
+        </NextThemeProvider>
+      </ReactQueryProvider>
+    </AppRouterCacheProvider>
+    </body>
     </html>
   );
 }
