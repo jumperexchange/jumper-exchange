@@ -50,6 +50,31 @@ After running tests, view the HTML report:
 pnpm playwright show-report 
 ```
 
+## Using Qase Reporter
+
+The project uses [Qase](https://qase.io/) for test management and reporting. To use the Qase reporter:
+
+1. **Setup**:
+   - Retrieve your Qase API Token from 1Password
+   - The file `/tests/.env.qase` already exists with the required key
+   - Enter your API token value in the file (the file is gitignored for security)
+
+2. **Running Tests with Qase**:
+   - By default, tests run locally without uploading to Qase
+   - To enable Qase reporting, use:
+     ```sh
+     QASE_MODE=testops npx playwright test
+     ```
+
+3. **Viewing Results**:
+   - After test execution, results are automatically uploaded to Qase
+   - Access the Qase dashboard to view test results, trends, and reports
+
+4. **Configuration**:
+   - The Qase reporter is configured in `playwright.config.ts`
+   - Test results include screenshots and videos for failed tests
+   - Test cases are automatically created/updated in Qase based on test names
+
 ## Run tests over VS Code plugin : 
  - Install "Playwright Test for VSCode" extension 
  - Click on the "Test" icon from side bar 
