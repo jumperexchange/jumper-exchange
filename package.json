@@ -103,6 +103,7 @@
     "globals": "^15.13.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
+    "playwright-qase-reporter": "^2.0.17",
     "prettier": "^3.5.3",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "typescript": "^5.8.3",
