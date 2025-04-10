@@ -9,10 +9,7 @@ export interface SubMenuLabelProps extends TypographyProps {
   isSuffixIcon?: boolean;
 }
 
-export const SubMenuLabel = styled(Typography, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isPrefixIcon' && prop !== 'isSuffixIcon' && prop !== 'component',
-})<SubMenuLabelProps>(({ theme }) => ({
+export const SubMenuLabel = styled(Typography)<SubMenuLabelProps>(({ theme }) => ({
   maxWidth: 'inherit',
   overflow: 'hidden',
   textOverflow: 'ellipsis',

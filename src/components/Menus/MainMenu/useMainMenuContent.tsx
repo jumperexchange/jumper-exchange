@@ -24,7 +24,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
-import { Typography } from '@mui/material';
+import { alpha, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
@@ -98,7 +98,7 @@ export const useMainMenuContent = () => {
           fill:
             theme.palette.mode === 'light'
               ? theme.palette.grey[700]
-              : theme.palette.grey[300],
+              : alpha(theme.palette.text.primary, 0.88),
         },
       },
       showMoreIcon: false,

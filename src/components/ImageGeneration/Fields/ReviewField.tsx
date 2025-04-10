@@ -102,7 +102,11 @@ const ReviewField = ({
               <FieldSkeleton
                 width={32}
                 height={12}
-                sx={{ marginTop: showSkeletons ? 0 : undefined }}
+                sx={[showSkeletons ? {
+                  marginTop: 0
+                } : {
+                  marginTop: null
+                }]}
               />
             )}
           </div>

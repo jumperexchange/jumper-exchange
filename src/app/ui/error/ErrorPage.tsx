@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button/Button';
-import { useTheme } from '@mui/material';
+import { alpha, useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -60,7 +60,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             fill:
               theme.palette.mode === 'light'
                 ? theme.palette.grey[700]
-                : theme.palette.grey[300],
+                : alpha(theme.palette.text.primary, 0.88),
           },
         }}
         fullWidth={true}

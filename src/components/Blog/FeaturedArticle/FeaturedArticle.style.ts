@@ -20,9 +20,10 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   '&:hover': {
     cursor: 'pointer',
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 0.8)
-        : alpha(theme.palette.white.main, 0.2),
+      alpha(theme.palette.white.main, 0.2),
+    ...theme.applyStyles("light", {
+      backgroundColor: alpha(theme.palette.white.main, 0.8)
+    })
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(6, 8, 0),
@@ -207,7 +208,6 @@ export const FeaturedArticleTitle = styled(Typography)(({ theme }) => ({
   display: '-webkit-box',
   WebkitLineClamp: 4,
   WebkitBoxOrient: 'vertical',
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '48px',
     lineHeight: '56px',

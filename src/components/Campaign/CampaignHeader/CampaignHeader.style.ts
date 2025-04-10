@@ -60,7 +60,6 @@ export const CampaignDescription = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(0.5),
   fontWeight: 500,
   fontSize: 16,
-
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: 12,
   },

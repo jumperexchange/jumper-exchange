@@ -6,9 +6,7 @@ export interface ShareButtonProps extends IconButtonProps {
   expanded?: boolean;
 }
 
-export const ShareButton = styled(IconButtonTertiary, {
-  shouldForwardProp: (prop) => prop !== 'expanded',
-})<ShareButtonProps>(({ theme }) => ({
+export const ShareButton = styled(IconButtonTertiary)<ShareButtonProps>(({ theme }) => ({
   marginLeft: theme.spacing(1.5),
   width: '48px',
   variants: [

@@ -28,9 +28,7 @@ export const PaginationLink = styled(Link)(({ theme }) => ({
   pointerEvents: 'auto',
 }));
 
-export const PaginationButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'activePage',
-})<PaginationButtonProps>(({ theme }) => ({
+export const PaginationButton = styled(Button)<PaginationButtonProps>(({ theme }) => ({
   backgroundColor: 'transparent',
   color: theme.palette.text.primary,
   height: 34,

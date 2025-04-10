@@ -8,9 +8,7 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   borderRadius: 28,
   padding: 0,
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? getContrastAlphaColor(theme, '4%')
-      : getContrastAlphaColor(theme, '12%'),
+    getContrastAlphaColor(theme, '12%'),
   alignItems: 'center',
   '.MuiTabs-flexContainer': {
     alignItems: 'center',
@@ -24,10 +22,11 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
     borderRadius: '28px',
     transform: 'translateY(0) scaleY(0.98)',
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : theme.palette.alphaLight300.main,
+      theme.palette.alphaLight300.main,
     zIndex: '-1',
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.white.main
+    })
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
@@ -35,6 +34,9 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     display: 'flex',
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: getContrastAlphaColor(theme, '4%')
+  })
 }));
 
 export const VerticalTab = styled(MuiTab)(({ theme }) => ({
@@ -59,10 +61,11 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
   },
   '&.Mui-selected': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : alpha(theme.palette.white.main, 0.1),
+      alpha(theme.palette.white.main, 0.1),
     pointerEvents: 'none',
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.white.main
+    })
   },
   ':not(.Mui-selected) > svg': {
     opacity: 0.5,

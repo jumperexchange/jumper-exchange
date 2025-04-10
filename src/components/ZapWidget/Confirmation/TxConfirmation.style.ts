@@ -13,9 +13,10 @@ export const TxConfirmationMainBox = styled(Box)(({ theme }) => ({
   gap: '8px',
   backgroundColor: theme.palette.surface2.main,
   boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+    '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  ...theme.applyStyles("light", {
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+  })
 }));
 
 export const FlexRowCenterGapBox = styled(Box)(({ theme }) => ({

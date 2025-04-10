@@ -42,11 +42,15 @@ export const TempTitle = () => {
         <EarnedTypography
           sx={(theme) => ({
             color:
-              theme.palette.mode === 'light'
-                ? PROFILE_CAMPAIGN_LIGHT_COLOR
-                : PROFILE_CAMPAIGN_DARK_COLOR,
+              "var(--PROFILE_CAMPAIGN_DARK_COLOR)",
+            ...theme.applyStyles("light", {
+              color: "var(--PROFILE_CAMPAIGN_LIGHT_COLOR)"
+            })
           })}
-        >
+          style={{
+            "--PROFILE_CAMPAIGN_LIGHT_COLOR": PROFILE_CAMPAIGN_LIGHT_COLOR,
+            "--PROFILE_CAMPAIGN_DARK_COLOR": PROFILE_CAMPAIGN_DARK_COLOR
+          }}>
           {/*Title*/}
         </EarnedTypography>
         {/* <Typography

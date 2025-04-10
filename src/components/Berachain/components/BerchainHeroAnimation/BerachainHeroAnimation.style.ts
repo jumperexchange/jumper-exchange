@@ -93,31 +93,26 @@ export const BerachainAsteroidX2 = styled(Image)`
   top: 0;
   right: 0;
 `;
-
 export const BerachainAsteroidX3 = styled(Image)`
   position: absolute;
   top: 0;
   right: 0;
 `;
-
 export const BerachainAsteroidX4 = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
 `;
-
 export const BerachainAsteroidX5 = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
 `;
-
 export const BerachainAsteroidX6 = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
 `;
-
 export const BerachainAsteroidX7 = styled(Image)`
   position: absolute;
   top: 0;

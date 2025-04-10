@@ -52,9 +52,7 @@ export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
 
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -69,6 +67,9 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     minWidth: 300,
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.white.main
+  })
 }));
 
 export const ClaimButtonBox = styled(Box)(({ theme }) => ({
@@ -98,9 +99,7 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsOpenIconButton = styled(MuiIconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
+export const RewardsOpenIconButton = styled(MuiIconButton)<IconButtonProps>(({ theme }) => ({
   color: theme.palette.white.main,
   transition: 'background 0.3s',
   width: theme.spacing(6),

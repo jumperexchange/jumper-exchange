@@ -7,9 +7,7 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   overflow: 'hidden',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? getContrastAlphaColor(theme, '4%')
-      : getContrastAlphaColor(theme, '8%'),
+    getContrastAlphaColor(theme, '8%'),
   padding: theme.spacing(3),
   flexDirection: 'column',
   margin: theme.spacing(2, 0),
@@ -19,9 +17,10 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   a: {
     color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
+      theme.palette.accent1Alt.main,
+    ...theme.applyStyles("light", {
+      color: theme.palette.primary.main
+    })
   },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
@@ -30,6 +29,9 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
     alignSelf: 'flex-start',
     margin: theme.spacing(2, 0, 0, 0),
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: getContrastAlphaColor(theme, '4%')
+  })
 }));
 
 export const InstructionsAccordionItemMain = styled(Box)(() => ({

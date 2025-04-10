@@ -15,9 +15,10 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   color: theme.palette.text.primary,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.accent1.main
-        : theme.palette.primary.main,
+      theme.palette.primary.main,
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.accent1.main
+    })
   },
 }));
 
@@ -38,14 +39,13 @@ export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
 
 export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'dark'
-      ? alpha(theme.palette.white.main, 0.12)
-      : alpha(theme.palette.black.main, 0.08),
+    alpha(theme.palette.black.main, 0.08),
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.black.main, 0.08)
-        : alpha(theme.palette.white.main, 0.12),
+      alpha(theme.palette.white.main, 0.12),
+    ...theme.applyStyles("light", {
+      backgroundColor: alpha(theme.palette.black.main, 0.08)
+    })
   },
   '&:before': {
     content: '" "',
@@ -61,30 +61,36 @@ export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
   '&:hover:before': {
     background: getContrastAlphaColor(theme, '4%'),
   },
+  ...theme.applyStyles("dark", {
+    backgroundColor: alpha(theme.palette.white.main, 0.12)
+  })
 }));
 
 export const SuperfestButton = styled(ButtonBase)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
+    alpha(theme.palette.primary.main, 0.42),
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
+      alpha(theme.palette.primary.main, 0.56),
+    ...theme.applyStyles("light", {
+      backgroundColor: alpha(theme.palette.primary.main, 0.12)
+    })
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: alpha(theme.palette.primary.main, 0.08)
+  })
 }));
 
 export const LevelButton = styled(ButtonSecondary)(({ theme }) => ({
   display: 'flex',
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.white.main,
+    theme.palette.white.main,
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',
   paddingLeft: '12px',
   height: '32px',
+  ...theme.applyStyles("light", {
+    color: theme.palette.primary.main
+  })
 }));

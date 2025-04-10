@@ -10,31 +10,31 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   padding: theme.spacing(1),
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? getContrastAlphaColor(theme, '4%')
-      : getContrastAlphaColor(theme, '12%'),
+    getContrastAlphaColor(theme, '12%'),
   borderRadius: '24px',
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
+  ...theme.applyStyles("light", {
+    backgroundColor: getContrastAlphaColor(theme, '4%')
+  })
 }));
 
 export interface PaginationIndexButtonProps extends IconButtonProps {
   active: boolean;
 }
 
-export const PaginationIndexButton = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<PaginationIndexButtonProps>(({ theme }) => ({
+export const PaginationIndexButton = styled(IconButton)<PaginationIndexButtonProps>(({ theme }) => ({
   width: 40,
   height: 40,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? getContrastAlphaColor(theme, '4%')
-        : getContrastAlphaColor(theme, '32%'),
+      getContrastAlphaColor(theme, '32%'),
+    ...theme.applyStyles("light", {
+      backgroundColor: getContrastAlphaColor(theme, '4%')
+    })
   },
   variants: [
     {
@@ -87,8 +87,9 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   height: 40,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? getContrastAlphaColor(theme, '4%')
-        : getContrastAlphaColor(theme, '12%'),
+      getContrastAlphaColor(theme, '12%'),
+    ...theme.applyStyles("light", {
+      backgroundColor: getContrastAlphaColor(theme, '4%')
+    })
   },
 }));

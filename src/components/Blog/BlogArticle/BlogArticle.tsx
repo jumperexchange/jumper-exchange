@@ -75,11 +75,9 @@ export const BlogArticle = ({
           <BlogArticleTopHeader>
             {tags?.[0]?.Title ? (
               <Tag
-                sx={{
-                  ...(mainTag?.TextColor && {
-                    color: mainTag.TextColor,
-                  }),
-                }}
+                sx={[mainTag?.TextColor && {
+                  color: mainTag.TextColor,
+                }]}
                 backgroundColor={mainTag?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"

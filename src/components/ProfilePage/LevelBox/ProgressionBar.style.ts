@@ -12,9 +12,7 @@ interface ProgressionContainerProps extends BoxProps {
   hideLevelIndicator?: boolean;
 }
 
-export const ProgressionContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'hideLevelIndicator',
-})<ProgressionContainerProps>({
+export const ProgressionContainer = styled(Box)<ProgressionContainerProps>({
   position: 'relative',
   variants: [
     {
@@ -93,9 +91,7 @@ export const ProgressionChartScore = styled(Box, {
         ? `${calcWidth}%`
         : '0%',
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.accent1.main
-        : theme.palette.accent1Alt.main,
+      theme.palette.accent1Alt.main,
     variants: [
       {
         props: ({ ongoingValue, levelData }) =>
@@ -103,6 +99,9 @@ export const ProgressionChartScore = styled(Box, {
         style: { borderRadius: '12px' },
       },
     ],
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.accent1.main
+    })
   }),
 );
 

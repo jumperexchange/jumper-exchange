@@ -4,9 +4,7 @@ import { Typography, styled } from '@mui/material';
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
   background:
-    theme.palette.mode === 'light'
-      ? `linear-gradient(90deg, ${theme.palette.primary.main} 10%, #D35CFF 100%);`
-      : `linear-gradient(90deg, #FFF 25%, ${theme.palette.accent1Alt.main} 50%, #D35CFF 75%)`,
+    `linear-gradient(90deg, #FFF 25%, ${theme.palette.accent1Alt.main} 50%, #D35CFF 75%)`,
   backgroundClip: 'text',
   margin: 0,
   fontFamily: urbanist.style.fontFamily,
@@ -21,4 +19,7 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
     fontSize: '64px',
     lineHeight: '72px',
   },
+  ...theme.applyStyles("light", {
+    background: `linear-gradient(90deg, ${theme.palette.primary.main} 10%, #D35CFF 100%);`
+  })
 }));

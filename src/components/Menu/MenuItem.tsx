@@ -66,15 +66,16 @@ export const MenuItem = ({
               mr={!!prefixIcon ? '9.5px' : 'inherit'}
               sx={(theme) => ({
                 color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.primary.main
-                    : theme.palette.white.main,
+                  theme.palette.white.main,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 maxWidth: 208,
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
                   maxWidth: 168,
                 },
+                ...theme.applyStyles("light", {
+                  color: theme.palette.primary.main
+                })
               })}
             >
               {label}

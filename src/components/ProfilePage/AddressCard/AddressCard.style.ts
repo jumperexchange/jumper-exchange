@@ -19,9 +19,7 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   background:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.bgTertiary.main,
+    theme.palette.bgTertiary.main,
   alignItems: 'center',
   borderRadius: 24,
   overflow: 'hidden',
@@ -32,15 +30,16 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
   },
+  ...theme.applyStyles("light", {
+    background: theme.palette.white.main
+  })
 }));
 
 interface AddressBlockiesImageProps extends ImageProps {
   imageLink?: string;
 }
 
-export const AddressBlockiesImage = styled(Image, {
-  shouldForwardProp: (prop) => prop !== 'imageLink',
-})<AddressBlockiesImageProps>(({ theme }) => ({
+export const AddressBlockiesImage = styled(Image)<AddressBlockiesImageProps>(({ theme }) => ({
   backgroundColor: undefined,
   borderRadius: '100%',
   borderStyle: 'solid',
@@ -70,18 +69,20 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     backgroundColor: 'transparent',
     color:
-      theme.palette.mode === 'light'
-        ? theme.palette.black.main
-        : theme.palette.grey[100],
+      theme.palette.grey[100],
     width: 32,
     height: 32,
     marginLeft: theme.spacing(1),
     ':hover': {
       color:
-        theme.palette.mode === 'light'
-          ? theme.palette.black.main
-          : theme.palette.grey[100],
+        theme.palette.grey[100],
+      ...theme.applyStyles("light", {
+        color: theme.palette.black.main
+      })
     },
+    ...theme.applyStyles("light", {
+      color: theme.palette.black.main
+    })
   }),
 );
 
@@ -92,9 +93,10 @@ export const AddressButton = styled(ButtonTransparent)(({ theme }) => ({
   borderRadius: '16px',
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : theme.palette.alphaLight300.main,
+      theme.palette.alphaLight300.main,
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.white.main
+    })
   },
 }));
 
@@ -103,9 +105,10 @@ export const AddressConnectButton = styled(ButtonSecondary)(({ theme }) => ({
   height: 40,
   padding: theme.spacing(1, 2),
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.white.main,
+    theme.palette.white.main,
+  ...theme.applyStyles("light", {
+    color: theme.palette.primary.main
+  })
 }));
 
 export const AddressButtonLabel = styled(Typography)(({ theme }) => ({}));
@@ -139,9 +142,7 @@ export interface ImageBackgroundProps extends BoxProps {
   imgUrl?: string;
 }
 
-export const ImageBackground = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'imgUrl',
-})<ImageBackgroundProps>(({ theme, imgUrl }) => ({
+export const ImageBackground = styled(Box)<ImageBackgroundProps>(({ theme, imgUrl }) => ({
   position: 'absolute',
   left: 0,
   top: 0,

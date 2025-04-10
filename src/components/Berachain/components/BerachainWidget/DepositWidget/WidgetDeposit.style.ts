@@ -44,7 +44,9 @@ export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
 
 export const BerachainDetailsAccordion = styled(Accordion)<{
   isExpanded?: boolean;
-}>(({ theme, isExpanded }) => ({
+}>(({
+  theme
+}) => ({
   background: 'transparent',
   border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
   cursor: 'pointer',

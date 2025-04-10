@@ -55,15 +55,14 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   paddingRight: theme.spacing(1.5),
   gap: '0.5rem',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.alphaLight300.main,
+    theme.palette.alphaLight300.main,
   boxShadow: '0px 2px 8px 0px #00000014',
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : theme.palette.alphaLight300.main,
+      theme.palette.alphaLight300.main,
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.white.main
+    })
   },
   '&:hover:before': {
     content: '" "',
@@ -75,6 +74,9 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     transition: 'background-color 250ms',
     background: getContrastAlphaColor(theme, '4%'),
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.white.main
+  })
 }));
 
 export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
@@ -82,9 +84,10 @@ export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
   borderStyle: 'solid',
   borderWidth: '2px',
   borderColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
+  ...theme.applyStyles("light", {
+    borderColor: theme.palette.white.main
+  })
 }));
 
 export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({

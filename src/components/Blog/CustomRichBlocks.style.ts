@@ -13,19 +13,14 @@ interface BlogParagraphProps extends TypographyProps {
 
 export const BlogParagraph = styled(Typography, {
   shouldForwardProp: (prop) =>
-    prop !== 'bold' &&
     prop !== 'underline' &&
-    prop !== 'italic' &&
-    prop !== 'strikethrough' &&
-    prop !== 'quote',
+    prop !== 'strikethrough'
 })<BlogParagraphProps>(({
   theme,
-  bold,
   underline,
   strikethrough,
-  italic,
-  quote,
 }) => {
+  // TODO: Fix this
   const textDecoration = underline
     ? 'underline'
     : strikethrough
@@ -71,15 +66,17 @@ export const BlogHeadline = styled(Typography)(({ theme }) => ({
   a: {
     fontWeight: 600,
     textDecorationColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.04)
-        : alpha(theme.palette.accent1Alt.main, 0.4),
+      alpha(theme.palette.accent1Alt.main, 0.4),
+    ...theme.applyStyles("light", {
+      textDecorationColor: alpha(theme.palette.primary.main, 0.04)
+    })
   },
   'a:hover': {
     textDecorationColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.accent1Alt.main,
+      theme.palette.accent1Alt.main,
+    ...theme.applyStyles("light", {
+      textDecorationColor: theme.palette.primary.main
+    })
   },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
@@ -119,9 +116,7 @@ export const BlogH6 = styled(BlogHeadline)(({ theme }) => ({
 export const BlogLink = styled(Link)(({ theme }) => ({
   marginLeft: theme.spacing(0.75),
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.accent1Alt.main,
+    theme.palette.accent1Alt.main,
   fontWeight: 600,
   cursor: 'pointer',
   display: 'inline',
@@ -130,4 +125,7 @@ export const BlogLink = styled(Link)(({ theme }) => ({
   ':first-child': {
     marginLeft: 0,
   },
+  ...theme.applyStyles("light", {
+    color: theme.palette.primary.main
+  })
 }));

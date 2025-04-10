@@ -50,5 +50,4 @@ const SwapExplanationSection = () => {
     </DynamicPagesContainer>
   );
 };
-
 export default SwapExplanationSection;

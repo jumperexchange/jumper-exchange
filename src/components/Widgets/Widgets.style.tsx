@@ -44,9 +44,7 @@ export const WidgetContainer = styled(Box, {
       transitionDuration: '.4s',
       transitionTimingFunction: 'ease-in-out',
       background:
-        theme.palette.mode === 'light'
-          ? 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);'
-          : 'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);',
+        'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);',
       zIndex: -1,
       pointerEvents: 'none',
       width: 1080,
@@ -66,6 +64,9 @@ export const WidgetContainer = styled(Box, {
         maxWidth: '90vh',
         maxHeight: '90vh',
       },
+      ...theme.applyStyles("light", {
+        background: 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);'
+      })
     },
     // radial shadow glow -> hover
     '&:hover:after': {},

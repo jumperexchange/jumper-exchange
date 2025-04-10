@@ -31,9 +31,10 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   '&:hover': {
     cursor: 'pointer',
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken(theme.palette.white.main, 0.04)
-        : theme.palette.alphaLight300.main,
+      theme.palette.alphaLight300.main,
+    ...theme.applyStyles("light", {
+      backgroundColor: darken(theme.palette.white.main, 0.04)
+    })
   },
 }));
 
@@ -117,9 +118,7 @@ interface BlogArticleCardMetaContainerProps extends BoxProps {
   hasTags: boolean;
 }
 
-export const BlogArticleCardMetaContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'hasTags',
-})<BlogArticleCardMetaContainerProps>(({ theme }) => ({
+export const BlogArticleCardMetaContainer = styled(Box)<BlogArticleCardMetaContainerProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',

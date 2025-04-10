@@ -18,12 +18,7 @@ interface LeaderboardEntryWrapperProps extends BoxProps {
   isUserEntry?: boolean;
 }
 
-export const LeaderboardEntryWrapper = styled(Box, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isUserPosition' &&
-    prop !== 'isUserConnected' &&
-    prop !== 'isUserEntry',
-})<LeaderboardEntryWrapperProps>(({ theme }) => ({
+export const LeaderboardEntryWrapper = styled(Box)<LeaderboardEntryWrapperProps>(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(2, 0),
   justifyContent: 'space-between',
@@ -135,9 +130,7 @@ interface RankWalletProps extends ImageProps {
   isUserEntry?: boolean;
 }
 
-export const RankWalletImage = styled(Image, {
-  shouldForwardProp: (prop) => prop !== 'isUserEntry',
-})<RankWalletProps>(({ theme }) => ({
+export const RankWalletImage = styled(Image)<RankWalletProps>(({ theme }) => ({
   borderRadius: '100%',
   width: 24,
   height: 24,
@@ -173,9 +166,7 @@ interface RankWalletAddressProps extends TypographyProps {
   hide?: boolean;
 }
 
-export const RankWalletAddress = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'hide',
-})<RankWalletAddressProps>(({ theme }) => ({
+export const RankWalletAddress = styled(Typography)<RankWalletAddressProps>(({ theme }) => ({
   textOverflow: 'ellipsis',
   overflow: 'hidden',
   [theme.breakpoints.down('sm' as Breakpoint)]: {

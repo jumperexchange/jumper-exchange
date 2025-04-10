@@ -150,6 +150,7 @@ export const MenuPaper = styled(Paper, {
   background: theme.palette.surface1.main,
   padding: 0,
   marginTop: 0,
+  // TODO: Fix this
   boxShadow:
     theme.palette.mode === 'light'
       ? `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${

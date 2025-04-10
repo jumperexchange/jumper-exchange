@@ -62,15 +62,27 @@ interface BerachainMarketFilterArrowProps {
   active: boolean;
 }
 
-export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<BerachainMarketFilterArrowProps>(({ active, theme }) => ({
+export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon)<BerachainMarketFilterArrowProps>(({
+  theme
+}) => ({
   color: alpha(theme.palette.text.primary, 0.24),
   marginTop: theme.spacing(0.25),
   width: 24,
   height: 24,
   transition: 'transform 0.3s ease',
-  transform: `rotate(${active ? '180deg' : '0deg'})`,
+  transform: `rotate(${'0deg'})`,
+  variants: [{
+    props: (
+      {
+        active
+      }
+    ) => active,
+    style: {
+      transform: {
+        transform: '180deg'
+      }
+    }
+  }]
 }));
 
 export const BerachainRedirectionCTA = styled(Button)(({ theme }) => ({

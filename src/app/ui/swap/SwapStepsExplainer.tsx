@@ -180,7 +180,6 @@ const SwapStepsExplainerSection = ({
         steps. This guide will walk you through the process of transferring your
         assets.
       </Typography>
-
       {steps.map((step, index) => (
         <Fragment key={`swap-steps-${index}`}>
           <Divider />
@@ -195,5 +194,4 @@ const SwapStepsExplainerSection = ({
     </DynamicPagesContainer>
   );
 };
-
 export default SwapStepsExplainerSection;

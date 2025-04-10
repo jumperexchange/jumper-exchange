@@ -71,7 +71,7 @@ export const FeatureCardTitle = styled(Typography, {
   userSelect: 'none',
   maxHeight: 32,
   overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  textOverflow: 'ellipsis'
 }));
 
 export interface FeatureCardSubtitleProps extends TypographyProps {
@@ -87,7 +87,7 @@ export const FeatureCardSubtitle = styled(Typography, {
   userSelect: 'none',
   height: 48,
   overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  textOverflow: 'ellipsis'
 }));
 
 export const FeatureCardActions = styled(CardActions)(({ theme }) => ({
@@ -121,5 +121,5 @@ export const FeatureCardCtaLabel = styled(Typography, {
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: (data?.CTAColor || typographyColor) ?? 'inherit',
+  color: (data?.CTAColor || typographyColor) ?? 'inherit'
 }));

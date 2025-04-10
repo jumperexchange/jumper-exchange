@@ -49,7 +49,6 @@ export const BerachainIntroductionStep = styled(Box)(({ theme }) => ({
   border: '1px solid #383433',
   background: 'transparent',
   transition: 'background-color 300ms ease-in-out',
-
   '&:hover': {
     background: alpha(theme.palette.text.primary, 0.16),
   },

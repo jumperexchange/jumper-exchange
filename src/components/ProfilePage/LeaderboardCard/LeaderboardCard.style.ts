@@ -9,9 +9,7 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.bgSecondary.main,
+    theme.palette.bgSecondary.main,
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),
@@ -19,6 +17,9 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.white.main
+  })
 }));
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
@@ -55,9 +56,10 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   lineHeight: '18px',
   height: 40,
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.text.primary,
+    theme.palette.text.primary,
+  ...theme.applyStyles("light", {
+    color: theme.palette.primary.main
+  })
 }));
 
 export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
@@ -71,9 +73,10 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
     borderRadius: '16px',
     '&:hover': {
       backgroundColor:
-        theme.palette.mode === 'light'
-          ? theme.palette.white.main
-          : theme.palette.alphaLight300.main,
+        theme.palette.alphaLight300.main,
+      ...theme.applyStyles("light", {
+        backgroundColor: theme.palette.white.main
+      })
     },
   }),
 );

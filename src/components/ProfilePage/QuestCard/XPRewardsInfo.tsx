@@ -27,7 +27,7 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
         active={active}
         completed={completed}
         bgcolor={bgColor}
-        sx={{ ...(tooltip && { cursor: 'help' }) }}
+        sx={[tooltip && { cursor: 'help' }]}
       >
         <XPDisplayBoxLabel variant="bodySmallStrong">
           {points}

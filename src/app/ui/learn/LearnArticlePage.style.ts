@@ -21,7 +21,6 @@ export const BlogArticleWrapper = styled(Box)(({ theme }) => ({
 export const BlogArticleSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6, 2, 0.25),
   position: 'relative',
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(6, 2, 0.25),
     paddingTop: theme.spacing(12),

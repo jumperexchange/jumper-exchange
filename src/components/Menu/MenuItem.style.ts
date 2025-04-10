@@ -13,9 +13,7 @@ export interface MenuItemProps extends MUIMenuItemProps {
   showButton?: boolean;
 }
 
-export const MenuItemContainer = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton',
-})<MenuItemProps>(({ theme }) => ({
+export const MenuItemContainer = styled(MUIMenuItem)<MenuItemProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'inherit',
@@ -76,14 +74,14 @@ export interface MenuLabelProps extends ListItemProps {
   variant?: 'xs' | 'md' | 'lg';
 }
 
-export const MenuLabel = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'variant',
-})<MenuLabelProps>(({ variant, theme }) => ({
+export const MenuLabel = styled('div')<MenuLabelProps>(({
+  theme
+}) => ({
   display: 'flex',
   alignItems: 'center',
-  maxWidth: variant === 'md' ? 232 : 260,
+  maxWidth: 260,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: variant === 'md' ? 194 : 244,
+    maxWidth: 244,
   },
   variants: [
     {
@@ -105,21 +103,34 @@ export const MenuLabel = styled('div', {
       },
     },
   ],
+  variants: [{
+    props: {
+      variant: 'md'
+    },
+    style: {
+      maxWidth: 232
+    }
+  }, {
+    props: {
+      variant: 'md'
+    },
+    style: {
+      [theme.breakpoints.up('sm' as Breakpoint)]: {
+        maxWidth: 194
+      }
+    }
+  }]
 }));
 
 export interface MenuItemLabelProps extends TypographyProps {
   prefixIcon?: JSX.Element | string;
 }
 
-export const MenuItemButtonLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'prefixIcon',
-})<MenuItemLabelProps>(({ theme }) => ({
+export const MenuItemButtonLabel = styled(Typography)<MenuItemLabelProps>(({ theme }) => ({
   marginLeft: 'inherit',
   marginRight: 'inherit',
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.white.main,
+    theme.palette.white.main,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 208,
@@ -140,11 +151,12 @@ export const MenuItemButtonLabel = styled(Typography, {
       },
     },
   ],
+  ...theme.applyStyles("light", {
+    color: theme.palette.primary.main
+  })
 }));
 
-export const MenuItemLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'prefixIcon',
-})<MenuItemLabelProps>(({ theme }) => ({
+export const MenuItemLabel = styled(Typography)<MenuItemLabelProps>(({ theme }) => ({
   marginLeft: theme.spacing(1.5),
   overflow: 'hidden',
   textOverflow: 'ellipsis',

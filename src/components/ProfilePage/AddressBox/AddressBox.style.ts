@@ -43,9 +43,10 @@ export const AddressBoxContainer = styled(Box, {
     right: 0,
     bottom: 0,
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[100]
-        : alpha(theme.palette.grey[100], 0.08),
+      alpha(theme.palette.grey[100], 0.08),
+    ...theme.applyStyles("light", {
+      backgroundColor: theme.palette.grey[100]
+    })
   },
   variants: [
     {
@@ -74,16 +75,16 @@ export const AddressBoxContainer = styled(Box, {
 
 export const ProfileIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.grey[200]
-      : alpha(theme.palette.grey[200], 0.08),
+    alpha(theme.palette.grey[200], 0.08),
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.black.main
-      : theme.palette.grey[100],
+    theme.palette.grey[100],
   width: '32px',
   height: '32px',
   marginLeft: theme.spacing(1),
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.grey[200],
+    color: theme.palette.black.main
+  })
 }));
 
 export const AddressDisplayBox = styled(Box)(({ theme }) => ({

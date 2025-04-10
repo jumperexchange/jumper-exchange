@@ -15,15 +15,16 @@ export const ErrorMessage = styled(Typography)(({ theme }) => ({
   margin: theme.spacing(2.5),
   textAlign: 'center',
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.accent1Alt.main,
+    theme.palette.accent1Alt.main,
   fontWeight: 700,
   [theme.breakpoints.up('sm')]: {
     fontSize: '24px',
     fontWeight: 400,
     lineHeight: '32px',
   },
+  ...theme.applyStyles("light", {
+    color: theme.palette.primary.main
+  })
 }));
 
 export const SupportMessage = styled(Typography)<TypographyProps>(

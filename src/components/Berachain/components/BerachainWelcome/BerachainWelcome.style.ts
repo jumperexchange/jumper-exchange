@@ -34,7 +34,6 @@ export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
 //     marginTop: theme.spacing(3),
 //   },
 // }));
-
 export const BerachainWelcomeSubtitleLabel = styled(Typography)(
   ({ theme }) => ({
     display: 'flex',

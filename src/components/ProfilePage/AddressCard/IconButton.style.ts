@@ -7,10 +7,11 @@ export const ProfileIconButton = styled(MuiIconButtom)(({ theme }) => ({
   width: '48px',
   height: '48px',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.alphaLight300.main,
+    theme.palette.alphaLight300.main,
   '&:hover': {
     backgroundColor: getContrastAlphaColor(theme, '8%'),
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.white.main
+  })
 }));

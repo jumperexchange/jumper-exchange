@@ -65,7 +65,7 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
               backgroundColor: alpha(theme.palette.text.primary, 0.04),
             },
           }}
-        >
+        >TOTO
           <CloseIcon />
         </IconButton>
         <WalletButton sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>

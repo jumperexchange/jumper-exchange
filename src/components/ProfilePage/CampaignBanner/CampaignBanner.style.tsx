@@ -15,11 +15,9 @@ export const CampaignBox = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[1],
   padding: theme.spacing(2),
   marginTop: theme.spacing(4),
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
-
   [theme.breakpoints.up('md' as Breakpoint)]: {
     flexDirection: 'row',
   },
@@ -53,15 +51,16 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
     gap: '8px',
     borderRadius: '24px',
     color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.text.primary,
+      theme.palette.text.primary,
     '&:hover': {
       backgroundColor: getContrastAlphaColor(theme, '4%'),
     },
     [theme.breakpoints.down('md' as Breakpoint)]: {
       marginTop: 16,
     },
+    ...theme.applyStyles("light", {
+      color: theme.palette.primary.main
+    })
   }),
 );
 
@@ -84,9 +83,7 @@ interface BannerImageProps extends ImageProps {
   isImageLoading: boolean;
 }
 
-export const BannerImage = styled(Image, {
-  shouldForwardProp: (prop) => prop !== 'isImageLoading',
-})<BannerImageProps>(({ isImageLoading }) => ({
+export const BannerImage = styled(Image)<BannerImageProps>(({
   position: 'relative',
   objectFit: 'cover',
   borderRadius: '16px',
@@ -94,6 +91,16 @@ export const BannerImage = styled(Image, {
   width: '100%',
   height: 'auto',
   zIndex: 2,
-  opacity: isImageLoading ? 0 : 1,
+  opacity: 1,
   transition: 'opacity 0.2s ease-in-out',
+  variants: [{
+    props: (
+      {
+        isImageLoading
+      }
+    ) => isImageLoading,
+    style: {
+      opacity: 0
+    }
+  }]
 }));

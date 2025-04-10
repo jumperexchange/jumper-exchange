@@ -48,16 +48,18 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         display: 'flex',
         '&:hover': {
           backgroundColor:
-            theme.palette.mode === 'light'
-              ? darken(theme.palette.surface2.main, 0.04)
-              : lighten(theme.palette.surface2.main, 0.04),
+            lighten(theme.palette.surface2.main, 0.04),
+          ...theme.applyStyles("light", {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04)
+          })
         },
         '&:last-child:hover': {
           borderRadius: '0 0 16px 16px',
           backgroundColor:
-            theme.palette.mode === 'light'
-              ? darken(theme.palette.surface2.main, 0.04)
-              : darken(theme.palette.surface2.main, 0.04),
+            darken(theme.palette.surface2.main, 0.04),
+          ...theme.applyStyles("light", {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04)
+          })
         },
       })}
     >

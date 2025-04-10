@@ -12,9 +12,7 @@ import Image from 'next/image';
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   borderRadius: '24px',
   flexDirection: 'column',
   height: 'auto',
@@ -26,6 +24,9 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   transition: 'background-color 250ms',
   boxShadow: theme.shadows[2],
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.white.main
+  })
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({
@@ -96,9 +97,7 @@ export interface XPDisplayBoxProps extends BoxProps {
   completed?: boolean;
 }
 
-export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
-})<XPDisplayBoxProps>(({ theme }) => ({
+export const XPDisplayBox = styled(Box)<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
   color: theme.palette.primary.main,
   backgroundColor: theme.palette.background.default,

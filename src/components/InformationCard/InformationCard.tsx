@@ -63,5 +63,4 @@ function InformationCard({
     </InformationCardContainer>
   );
 }
-
 export default InformationCard;

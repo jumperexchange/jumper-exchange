@@ -5,13 +5,14 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   height: 450,
   width: 288,
   textAlign: 'center',
   borderRadius: '8px',
+  ...theme.applyStyles("light", {
+    backgroundColor: theme.palette.white.main
+  })
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
@@ -40,9 +41,7 @@ export interface QuestCardInfoBoxProps extends BoxProps {
   points?: number;
 }
 
-export const QuestCardInfoBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>({
+export const QuestCardInfoBox = styled(Box)<QuestCardInfoBoxProps>({
   display: 'flex',
   flexDirection: 'column',
 });
@@ -60,9 +59,7 @@ export interface QuestPlatformMainBoxProps extends BoxProps {
   platformName?: string;
 }
 
-export const QuestPlatformMainBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>({
+export const QuestPlatformMainBox = styled(Box)<QuestPlatformMainBoxProps>({
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
@@ -80,9 +77,7 @@ export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
 }
 
-export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<XPDisplayBoxProps>({
+export const XPDisplayBox = styled(Box)<XPDisplayBoxProps>({
   marginRight: undefined,
   display: 'flex',
   height: '28px',

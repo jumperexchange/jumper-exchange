@@ -5,9 +5,7 @@ import { styled, type BoxProps } from '@mui/material';
 export interface ContainerProps extends BoxProps {
   variant?: 'xs' | 'md' | 'lg';
 }
-export const SuperFestPoweredContainer = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isArticlePage',
-})<ContainerProps>(({ theme }) => ({
+export const SuperFestPoweredContainer = styled('div')<ContainerProps>(({ theme }) => ({
   display: 'none',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     position: 'static',
@@ -20,10 +18,11 @@ export const SuperFestPoweredContainer = styled('div', {
     '.link-jumper': {
       fontWeight: '700',
       color:
-        theme.palette.mode === 'light'
-          ? theme.palette.accent1.main
-          : theme.palette.accent1Alt.main,
+        theme.palette.accent1Alt.main,
       textDecoration: 'none',
+      ...theme.applyStyles("light", {
+        color: theme.palette.accent1.main
+      })
     },
   },
 }));

@@ -128,17 +128,14 @@ function Task({
             (isTablet ? (
               <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
                 <ExpandMoreIcon
-                  sx={{
-                    ...(open && { transform: 'rotate(180deg)' }),
-                  }}
+                  sx={[open && { transform: 'rotate(180deg)' }]}
                 />
               </InstructionsAccordionToggle>
             ) : (
               <ExpandMoreIcon
-                sx={{
-                  color: getContrastAlphaColor(theme, 0.32),
-                  ...(open && { transform: 'rotate(180deg)' }),
-                }}
+                sx={[{
+                  color: getContrastAlphaColor(theme, 0.32)
+                }, open && { transform: 'rotate(180deg)' }]}
               />
             ))}
         </InstructionsAccordionItemMain>

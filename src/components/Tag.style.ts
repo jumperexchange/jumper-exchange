@@ -15,9 +15,7 @@ export const Tag = styled(Typography, {
   textWrap: 'nowrap',
   width: 'fit-content',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.black.main, 0.04)
-      : theme.palette.alphaLight300.main,
+    theme.palette.alphaLight300.main,
   color: theme.palette.text.primary,
   userSelect: 'none',
   borderRadius: '24px',
@@ -31,7 +29,9 @@ export const Tag = styled(Typography, {
   alignItems: 'center',
   variants: [
     {
-      props: ({ backgroundColor }) => backgroundColor,
+      props: ({ backgroundColor }) => {
+        return backgroundColor
+      },
       style: {
         backgroundColor: backgroundColor,
       },
@@ -43,4 +43,7 @@ export const Tag = styled(Typography, {
       },
     },
   ],
+  ...theme.applyStyles("light", {
+    backgroundColor: alpha(theme.palette.black.main, 0.04)
+  })
 }));
