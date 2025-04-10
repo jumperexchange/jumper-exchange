@@ -282,3 +282,88 @@ export interface PartnerThemesAttributes {
   Bridges: RepeatableComponent[];
   Exchanges: RepeatableComponent[];
 }
+
+interface TaskVerification {
+  name: string;
+  task: any; // Custom field type
+  description: string;
+  CTALink: string;
+  CTAText: string;
+}
+
+/* Quest */
+export interface QuestData {
+  id: number;
+  documentId: string;
+  UID: string;
+  Title: string;
+  Description: string;
+  Link: string;
+  Image?: StrapiMediaData;
+  Category: string | null;
+  Points: number | null;
+  EndDate: string;
+  quests_platform?: any; // Relation with Quests Platforms
+  StartDate: string;
+  Slug: string;
+  Label: string;
+  Steps: RootNode[];
+  Information: string | null;
+  CustomInformation: any;
+  BannerImage?: StrapiMediaData;
+  ClaimingId: string | null;
+  Subtitle: string | null;
+  tasks_verification?: TaskVerification[];
+  campaign?: CampaignData; // Relation with Campaign
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+}
+
+export interface ClaimableRewards {
+  rewards_list: ClaimableTokens[];
+}
+
+export interface ClaimableTokens {
+  chainId: string;
+  tokenChainId: number;
+  claimingAddress: string;
+  tokenAddress: string;
+  decimalsToShow: number;
+  explorerLink: string;
+  lightTokenLogo: string;
+  darkTokenLogo: string;
+  lightChainLogo: string;
+  darkChainLogo: string;
+}
+
+/* Campaign */
+export interface CampaignData extends CampaignAttributes {
+  id: number;
+  documentId: string;
+}
+
+export interface CampaignAttributes {
+  Title: string;
+  Description: string;
+  BenefitLabel?: string;
+  BenefitValue?: string;
+  BenefitColor?: string;
+  InfoUrl: string;
+  XUrl: string;
+  Slug: string;
+  Background: StrapiMediaData;
+  Icon: StrapiMediaData;
+  quests: QuestData[];
+  LightMode?: boolean;
+  ProfileBannerTitle?: string;
+  ProfileBannerDescription?: string;
+  ProfileBannerBadge?: string;
+  ProfileBannerCTA?: string;
+  ProfileBannerImage?: StrapiMediaData;
+  ShowProfileBanner: boolean;
+  ClaimableTokens?: ClaimableRewards;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+}

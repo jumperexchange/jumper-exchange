@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
+import { getProfileBannerCampaigns } from '@/app/lib/getProfileBannerCampaigns';
 import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Jumper Loyalty Pass',
@@ -12,5 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <ProfilePage />;
+  const { data: campaigns } = await getProfileBannerCampaigns();
+  return <ProfilePage campaigns={campaigns} />;
 }

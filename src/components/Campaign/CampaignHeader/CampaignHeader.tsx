@@ -1,7 +1,10 @@
+'use client';
+
+import type { CampaignData } from '@/types/strapi';
 import LanguageIcon from '@mui/icons-material/Language';
 import XIcon from '@mui/icons-material/X';
 import type { Theme } from '@mui/material';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import {
   CampaignDescription,
@@ -14,26 +17,23 @@ import {
   VerticalCenterBox,
 } from './CampaignHeader.style';
 
-export const CampaignHeader = ({
-  bannerImage,
-  tokenImage,
-  websiteLink,
-  Xlink,
-}: {
-  bannerImage: string;
-  tokenImage: string;
-  websiteLink?: string;
-  Xlink?: string;
-}) => {
-  const theme = useTheme();
+interface CampaignHeaderProps {
+  campaign: CampaignData;
+}
+
+export const CampaignHeader = ({ campaign }: CampaignHeaderProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
+      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
+      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
 
   return (
     <CampaignHeaderBoxBackground
       sx={{
-        backgroundImage: `url(${bannerImage})`,
+        backgroundImage: `url(${apiBaseUrl}${campaign.Background.url})`,
       }}
     >
       <Box
@@ -46,69 +46,85 @@ export const CampaignHeader = ({
       >
         <Box display="flex" flexDirection="row">
           <Image
-            src={tokenImage}
-            alt={'top banner'}
+            src={`${apiBaseUrl}${campaign.Icon.url}`}
+            alt={'campaign icon'}
             width={132}
             height={132}
             style={{ objectFit: 'contain', borderRadius: '50%' }}
           />
           <VerticalCenterBox>
-            <CampaignTitle>Explore Berachain</CampaignTitle>
-            <CampaignDescription>{`Jumper is teaming up with the top tier Berachain protocols to bring you exciting rewards.`}</CampaignDescription>
-            <Box display="flex" gap="8px">
-              {Xlink && (
-                <InformationShareLink
-                  href={Xlink}
-                  style={{
-                    textDecoration: 'none',
-                  }}
-                >
-                  <ColoredProtocolShareButton>
-                    <XIcon
-                      sx={(theme) => ({
-                        width: '16px',
-                        height: '16px',
-                        color: theme.palette.white.main,
-                      })}
-                    />
-                  </ColoredProtocolShareButton>
-                </InformationShareLink>
-              )}
+            <CampaignTitle lightMode={campaign.LightMode}>
+              {campaign.Title}
+            </CampaignTitle>
+            <CampaignDescription lightMode={campaign.LightMode}>
+              {campaign.Description}
+            </CampaignDescription>
+            {(!!campaign.XUrl || !!campaign.InfoUrl) && (
+              <Box
+                sx={(theme) => ({
+                  display: 'flex',
+                  gap: theme.spacing(1),
+                  marginTop: theme.spacing(1),
+                })}
+              >
+                {campaign.XUrl && (
+                  <InformationShareLink
+                    href={campaign.XUrl}
+                    style={{
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <ColoredProtocolShareButton>
+                      <XIcon
+                        sx={(theme) => ({
+                          width: '16px',
+                          height: '16px',
+                          color: theme.palette.white.main,
+                        })}
+                      />
+                    </ColoredProtocolShareButton>
+                  </InformationShareLink>
+                )}
 
-              {websiteLink && (
-                <a
-                  href={websiteLink}
-                  target="_blank"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  rel="noreferrer"
-                >
-                  <ColoredProtocolShareButton>
-                    <LanguageIcon
-                      sx={(theme) => ({
-                        width: '16px',
-                        height: '16px',
-                        color: theme.palette.white.main,
-                      })}
-                    />
-                  </ColoredProtocolShareButton>
-                </a>
-              )}
-            </Box>
+                {campaign.InfoUrl && (
+                  <a
+                    href={campaign.InfoUrl}
+                    target="_blank"
+                    style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    rel="noreferrer"
+                  >
+                    <ColoredProtocolShareButton>
+                      <LanguageIcon
+                        sx={(theme) => ({
+                          width: '16px',
+                          height: '16px',
+                          color: theme.palette.white.main,
+                        })}
+                      />
+                    </ColoredProtocolShareButton>
+                  </a>
+                )}
+              </Box>
+            )}
           </VerticalCenterBox>
         </Box>
 
-        {!isMobile && (
+        {!isMobile && !!campaign.BenefitLabel && !!campaign.BenefitValue && (
           <VerticalCenterBox>
-            <CampaignDigitInfoBox>
+            <CampaignDigitInfoBox
+              sx={(theme) => ({ backgroundColor: campaign.BenefitColor })}
+            >
               <CardInfoTypogragphy fontSize={14}>
-                Total Rewards
+                {campaign.BenefitLabel}
               </CardInfoTypogragphy>
-              <CardInfoTypogragphy fontSize={32}>{'+$75k'}</CardInfoTypogragphy>
+              <CardInfoTypogragphy fontSize={32}>
+                {campaign.BenefitValue}
+              </CardInfoTypogragphy>
             </CampaignDigitInfoBox>
           </VerticalCenterBox>
         )}

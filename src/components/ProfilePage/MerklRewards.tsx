@@ -1,9 +1,10 @@
+import { RewardsCarousel } from '@/components/ProfilePage/Rewards/RewardsCarousel';
 import {
   type AvailableRewards,
   useMerklRewardsOnCampaigns,
 } from '@/hooks/useMerklRewardsOnCampaigns';
+import type { CampaignData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
-import { RewardsCarousel } from '@/components/ProfilePage/Rewards/RewardsCarousel';
 import { useMemo } from 'react';
 
 const shouldHideComponent = (
@@ -20,7 +21,11 @@ const shouldHideComponent = (
   );
 };
 
-export function MerklRewards() {
+interface MerklRewardsProps {
+  campaign?: CampaignData;
+}
+
+export function MerklRewards({ campaign }: MerklRewardsProps) {
   const { account } = useAccount();
 
   const {
@@ -29,6 +34,7 @@ export function MerklRewards() {
     isSuccess: isRewardSuccess,
   } = useMerklRewardsOnCampaigns({
     userAddress: account?.address,
+    claimableTokens: campaign?.ClaimableTokens,
   });
 
   const hideComponent = useMemo(

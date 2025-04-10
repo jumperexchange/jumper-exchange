@@ -1,13 +1,20 @@
 'use client';
 import { ProfilePage as ProfilePageComponent } from '@/components/ProfilePage/ProfilePage';
-import { useAccount } from '@lifi/wallet-management';
 import { ProfileProvider } from '@/providers/ProfileProvider';
+import type { CampaignData } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
 
 interface ProfilePageProps {
   walletAddress?: string;
   isPublic?: boolean;
+  campaigns?: CampaignData[];
 }
-const ProfilePage = ({ walletAddress, isPublic }: ProfilePageProps) => {
+
+const ProfilePage = ({
+  walletAddress,
+  isPublic,
+  campaigns,
+}: ProfilePageProps) => {
   const { account } = useAccount();
 
   return (
@@ -15,7 +22,7 @@ const ProfilePage = ({ walletAddress, isPublic }: ProfilePageProps) => {
       walletAddress={walletAddress || account?.address || ''}
       isPublic={isPublic}
     >
-      <ProfilePageComponent />
+      <ProfilePageComponent campaigns={campaigns} />
     </ProfileProvider>
   );
 };

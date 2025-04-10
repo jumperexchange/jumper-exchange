@@ -1,63 +1,63 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import { CampaignPage } from 'src/components/Campaign/CampaignPage';
 import { getSiteUrl, JUMPER_LOYALTY_PATH } from 'src/const/urls';
-import type { Quest, QuestAttributes } from 'src/types/loyaltyPass';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
-//Todo: put right metadata
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { slug: string };
-// }): Promise<Metadata> {
-//   try {
-//     // const quest = await getQuestBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
 
-//     if (!quest || !quest.data) {
-//       throw new Error();
-//     }
+  try {
+    const campaign = await getCampaignBySlug(slug);
 
-//     const questData = (quest.data as any as Quest)
-//       .attributes as QuestAttributes;
+    if (!campaign || !campaign.data || campaign.data.length === 0) {
+      throw new Error(`Campaign for ${slug} not found`);
+    }
 
-//     const openGraph: Metadata['openGraph'] = {
-//       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
-//       description: `${sliceStrToXChar(questData.Information || 'Quest description', 60)}`,
-//       siteName: siteName,
-//       url: `${getSiteUrl()}/quests/${params.slug}`,
-//       images: [
-//         {
-//           url: `${quest.url}${questData.Image.data.attributes?.url}`,
-//           width: 900,
-//           height: 450,
-//           alt: 'banner image',
-//         },
-//       ],
-//       type: 'article',
-//     };
+    const campaignData = campaign.data[0];
 
-//     return {
-//       title: `Jumper Campaign | ${sliceStrToXChar(questData.Title, 45)}`,
-//       description: questData.Subtitle,
-//       alternates: {
-//         canonical: `${getSiteUrl()}/quests/${params.slug}`,
-//       },
-//       twitter: openGraph,
-//       openGraph,
-//     };
-//   } catch (err) {
-//     return {
-//       title: `Jumper Campaign | ${sliceStrToXChar(params.slug.replaceAll('-', ' '), 45)}`,
-//       description: `This is the description for the quest "${params.slug.replaceAll('-', ' ')}".`,
-//     };
-//   }
-// }
+    const openGraph: Metadata['openGraph'] = {
+      title: `Jumper Campaign | ${sliceStrToXChar(campaignData.Title, 45)}`,
+      description: `${sliceStrToXChar(campaignData.Description, 60)}`,
+      siteName: siteName,
+      url: `${getSiteUrl()}/campaign/${slug}`,
+      type: 'article',
+    };
+
+    return {
+      title: `Jumper Campaign | ${sliceStrToXChar(campaignData.Title, 45)}`,
+      description: campaignData.Description,
+      alternates: {
+        canonical: `${getSiteUrl()}/campaign/${slug}`,
+      },
+      twitter: openGraph,
+      openGraph,
+    };
+  } catch (err) {
+    return {
+      title: `Jumper Campaign | ${sliceStrToXChar(slug.replaceAll('-', ' '), 45)}`,
+      description: `This is the description for the campaign "${slug.replaceAll('-', ' ')}".`,
+    };
+  }
+}
+
 type Params = Promise<{ slug: string }>;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
+  const campaign = await getCampaignBySlug(slug);
 
-  return <CampaignPage label={slug} path={JUMPER_LOYALTY_PATH} />;
+  if (!campaign || !campaign.data || campaign.data.length === 0) {
+    notFound();
+  }
+
+  return (
+    <CampaignPage campaign={campaign.data[0]} path={JUMPER_LOYALTY_PATH} />
+  );
 }

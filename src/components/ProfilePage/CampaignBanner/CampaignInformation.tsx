@@ -20,10 +20,12 @@ export const CampaignInformation = ({
   tag,
   title,
   description,
+  cta,
 }: {
-  tag: string;
+  tag?: string;
   title: string;
   description: string;
+  cta?: string;
 }) => {
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
@@ -34,7 +36,7 @@ export const CampaignInformation = ({
 
   return (
     <CampaignInfoVerticalBox>
-      {!isMobile && (
+      {!isMobile && tag && (
         <CampaignTagBox>
           <Typography
             variant="title2XSmall"
@@ -83,7 +85,7 @@ export const CampaignInformation = ({
         fullWidth={true}
       >
         <Typography fontSize={16} fontWeight={700}>
-          Explore
+          {cta || 'Explore'}
         </Typography>
         <ArrowForwardIcon />
       </BannerButton>

@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   MERKL_CREATOR_TAG,
   REWARDS_CHAIN_IDS,
-  REWARDS_LIST,
 } from 'src/const/partnerRewardsTheme';
+import type { ClaimableRewards } from 'src/types/strapi';
 
 interface TokenData {
   accumulated: string;
@@ -65,6 +65,7 @@ export interface UseMerklRes {
 export interface UseMerklRewardsProps {
   userAddress?: string;
   rewardToken?: string;
+  claimableTokens?: ClaimableRewards;
 }
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
@@ -77,12 +78,21 @@ const MERKL_API = 'https://api.merkl.xyz/v3';
 
 export const useMerklRewardsOnCampaigns = ({
   userAddress,
+  claimableTokens,
 }: UseMerklRewardsProps): UseMerklRes => {
   // state
   let userTVL = 0;
   let rewardsToClaim: AvailableRewards[] = [];
   const activeCampaigns = [] as string[];
   const pastCampaigns = [] as string[];
+  // Get unique chain IDs from claimableTokens
+  const chainIds = claimableTokens
+    ? [
+        ...new Set(
+          claimableTokens?.rewards_list?.map((token) => token.chainId) || [],
+        ),
+      ]
+    : REWARDS_CHAIN_IDS;
 
   // Call to get the active positions
   // To do -> use the label to get only
@@ -92,14 +102,14 @@ export const useMerklRewardsOnCampaigns = ({
     isSuccess: positionsIsSuccess,
     isLoading: positionsIsLoading,
   } = useQuery({
-    queryKey: ['MerklPositions'],
+    queryKey: ['MerklPositions', chainIds.join(',')],
 
     queryFn: async () => {
       const response = await fetch(MERKL_POSITIONS_API, {});
       const result = await response.json();
       return result as MerklPositionData;
     },
-    enabled: !!userAddress,
+    enabled: !!userAddress && !!claimableTokens && chainIds.length > 0,
     refetchInterval: 1000 * 60 * 60,
   });
 
@@ -128,14 +138,14 @@ export const useMerklRewardsOnCampaigns = ({
       const result = await response.json();
       return result;
     },
-    enabled: !!userAddress,
+    enabled: !!userAddress && !!claimableTokens && chainIds.length > 0,
     refetchInterval: 1000 * 60 * 60,
   });
 
   // transform to know what is not coming from Jumper campaigns
 
-  if (rewardsData) {
-    for (const rewardElem of REWARDS_LIST) {
+  if (rewardsData && claimableTokens) {
+    for (const rewardElem of claimableTokens.rewards_list) {
       const tokenData = rewardsData?.[rewardElem.chainId]?.tokenData;
       if (tokenData) {
         rewardsToClaim = rewardsToClaim.concat(
