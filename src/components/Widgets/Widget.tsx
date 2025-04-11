@@ -108,12 +108,6 @@ export function Widget({
       }
     });
 
-    if (configTheme?.integrator !== 'abs.jmp.exchange') {
-      formRef.current?.setFieldValue('toAddress', undefined, {
-        setUrlSearchParam: true,
-      });
-    }
-
     if (
       configTheme?.integrator === 'abs.jmp.exchange' &&
       isConnectedAGW &&
