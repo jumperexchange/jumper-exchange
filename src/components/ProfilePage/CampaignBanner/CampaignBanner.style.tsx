@@ -85,7 +85,9 @@ interface BannerImageProps extends ImageProps {
   isImageLoading: boolean;
 }
 
-export const BannerImage = styled(Image)<BannerImageProps>({
+export const BannerImage = styled(Image, {
+  shouldForwardProp: (prop) => prop !== 'isImageLoading',
+})<BannerImageProps>({
   position: 'relative',
   objectFit: 'cover',
   borderRadius: '16px',
