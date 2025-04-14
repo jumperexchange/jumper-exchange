@@ -2,6 +2,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
 import type { Breakpoint } from '@mui/material';
 import {
+  alpha,
   Box,
   Button,
   CircularProgress,
@@ -133,9 +134,15 @@ function Task({
               </InstructionsAccordionToggle>
             ) : (
               <ExpandMoreIcon
-                sx={[{
-                  color: getContrastAlphaColor(theme, 0.32)
-                }, open && { transform: 'rotate(180deg)' }]}
+                sx={[
+                  {
+                    color: alpha(theme.palette.white.main, 0.32),
+                    ...theme.applyStyles('light', {
+                      backgroundColor: alpha(theme.palette.black.main, 0.32),
+                    }),
+                  },
+                  open && { transform: 'rotate(180deg)' },
+                ]}
               />
             ))}
         </InstructionsAccordionItemMain>

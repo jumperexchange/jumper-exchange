@@ -222,7 +222,10 @@ export const BlogAuthorMetaWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export const Divider = styled(MuiDivider)(({ theme }) => ({
-  borderColor: getContrastAlphaColor(theme, 0.12),
+  borderColor: alpha(theme.palette.white.main, 0.12),
+  ...theme.applyStyles("light", {
+    borderColor: alpha(theme.palette.black.main, 0.12)
+  }),
   margin: theme.spacing(8, 0, 0),
 }));
 

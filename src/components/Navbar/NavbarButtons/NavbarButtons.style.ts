@@ -3,7 +3,7 @@
 import { ButtonSecondary } from '@/components/Button/Button.style';
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { ButtonProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',
@@ -13,7 +13,6 @@ export const NavbarButtonsContainer = styled('div')({
 });
 
 export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
-  console.log('sgrfds', theme)
   return ({
   justifyContent: 'center',
   backgroundColor: 'transparent',
@@ -25,8 +24,7 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
   minWidth: 'unset',
   height: 48,
   ':hover:before': {
-    backgroundColor:
-      getContrastAlphaColor(theme, '12%'),
+    backgroundColor: alpha(theme.palette.white.main, 0.12),
     ...theme.applyStyles("light", {
       backgroundColor: (theme.vars || theme).palette.alphaDark100.main
     })

@@ -40,9 +40,7 @@ export const useMainMenuContent = () => {
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
-  const [configTheme] = useThemeStore((state) => [
-    state.configTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -95,7 +93,10 @@ export const useMainMenuContent = () => {
         paddingTop: `${theme.spacing(0.5)} !important`,
         padding: theme.spacing(0.5),
         '> button:hover': {
-          backgroundColor: getContrastAlphaColor(theme, '4%'),
+          backgroundColor: alpha(theme.palette.white.main, 0.04),
+          ...theme.applyStyles('light', {
+            backgroundColor: alpha(theme.palette.black.main, 0.04),
+          }),
         },
         '> button:hover svg': {
           fill:
@@ -219,7 +220,9 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Discord',
-      prefixIcon: <Discord color={(theme.vars || theme).palette.text.primary} />,
+      prefixIcon: (
+        <Discord color={(theme.vars || theme).palette.text.primary} />
+      ),
       showMoreIcon: false,
       onClick: () => {
         trackEvent({

@@ -4,8 +4,7 @@ import { getContrastAlphaColor } from '@/utils/colors';
 import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
 export const TabsContainer = styled(Tabs)(({ theme }) => ({
-  backgroundColor:
-    getContrastAlphaColor(theme, '12%'),
+  backgroundColor: alpha(theme.palette.white.main, 0.12),
   padding: 1,
   alignItems: 'center',
   '.MuiTabs-flexContainer': {
@@ -15,19 +14,18 @@ export const TabsContainer = styled(Tabs)(({ theme }) => ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%) scaleY(0.98)',
-    backgroundColor:
-      (theme.vars || theme).palette.alphaLight300.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
     zIndex: '-1',
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.white.main
-    })
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: getContrastAlphaColor(theme, '4%')
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.black.main, 0.04),
+  }),
 }));
 
 export const Tab = styled(MuiTab)(({ theme }) => ({
@@ -50,13 +48,15 @@ export const Tab = styled(MuiTab)(({ theme }) => ({
   textDecoration: 'none',
   '&.Mui-selected': {
     color: (theme.vars || theme).palette.text.primary,
-    backgroundColor:
-      alpha(theme.palette.white.main, 0.1),
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.white.main
-    })
+    backgroundColor: alpha(theme.palette.white.main, 0.1),
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
   ':hover': {
-    backgroundColor: getContrastAlphaColor(theme, '4%'),
+    backgroundColor: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.04),
+    }),
   },
 }));

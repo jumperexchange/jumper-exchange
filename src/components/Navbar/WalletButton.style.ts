@@ -73,7 +73,7 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     bottom: 0,
     left: 0,
     transition: 'background-color 250ms',
-    background: getContrastAlphaColor(theme, '4%'),
+    background: alpha(theme.palette.white.main, 0.04)
   },
   ...theme.applyStyles("light", {
     backgroundColor: (theme.vars || theme).palette.white.main

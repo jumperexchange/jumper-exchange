@@ -6,8 +6,7 @@ import { IconButtonTertiary } from 'src/components/IconButton.style';
 export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   overflow: 'hidden',
-  backgroundColor:
-    getContrastAlphaColor(theme, '8%'),
+  backgroundColor: alpha(theme.palette.white.main, 0.08),
   padding: theme.spacing(3),
   flexDirection: 'column',
   margin: theme.spacing(2, 0),
@@ -16,11 +15,10 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   alignItems: 'flex-start',
   position: 'relative',
   a: {
-    color:
-      (theme.vars || theme).palette.accent1Alt.main,
-    ...theme.applyStyles("light", {
-      color: (theme.vars || theme).palette.primary.main
-    })
+    color: (theme.vars || theme).palette.accent1Alt.main,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.primary.main,
+    }),
   },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
@@ -29,9 +27,9 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
     alignSelf: 'flex-start',
     margin: theme.spacing(2, 0, 0, 0),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: getContrastAlphaColor(theme, '4%')
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.black.main, 0.04),
+  }),
 }));
 
 export const InstructionsAccordionItemMain = styled(Box)(() => ({
@@ -58,7 +56,10 @@ export const InstructionsAccordionItemIndex = styled(Typography)(
     fontSize: '18px',
     fontWeight: 600,
     lineHeight: '32px',
-    color: getContrastAlphaColor(theme, 0.32),
+    color: alpha(theme.palette.white.main, 0.32),
+    ...theme.applyStyles('light', {
+      color: alpha(theme.palette.black.main, 0.32),
+    }),
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       marginLeft: theme.spacing(2),
     },

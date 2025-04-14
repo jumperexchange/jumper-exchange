@@ -1,5 +1,5 @@
 import type { Breakpoint, ButtonProps as MuiButtonProps } from '@mui/material';
-import { Box, styled } from '@mui/material';
+import { alpha, Box, styled } from '@mui/material';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import { ButtonSecondary } from 'src/components/Button';
@@ -50,17 +50,19 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
-    color:
-      theme.palette.text.primary,
+    color: theme.palette.text.primary,
     '&:hover': {
-      backgroundColor: getContrastAlphaColor(theme, '4%'),
+      backgroundColor: alpha(theme.palette.white.main, 0.04),
+      ...theme.applyStyles('light', {
+        backgroundColor: alpha(theme.palette.black.main, 0.04),
+      }),
     },
     [theme.breakpoints.down('md' as Breakpoint)]: {
       marginTop: 16,
     },
-    ...theme.applyStyles("light", {
-      color: theme.palette.primary.main
-    })
+    ...theme.applyStyles('light', {
+      color: theme.palette.primary.main,
+    }),
   }),
 );
 
@@ -83,7 +85,7 @@ interface BannerImageProps extends ImageProps {
   isImageLoading: boolean;
 }
 
-export const BannerImage = styled(Image)<BannerImageProps>(({
+export const BannerImage = styled(Image)<BannerImageProps>({
   position: 'relative',
   objectFit: 'cover',
   borderRadius: '16px',
@@ -93,14 +95,12 @@ export const BannerImage = styled(Image)<BannerImageProps>(({
   zIndex: 2,
   opacity: 1,
   transition: 'opacity 0.2s ease-in-out',
-  variants: [{
-    props: (
-      {
-        isImageLoading
-      }
-    ) => isImageLoading,
-    style: {
-      opacity: 0
-    }
-  }]
-}));
+  variants: [
+    {
+      props: ({ isImageLoading }) => isImageLoading,
+      style: {
+        opacity: 0,
+      },
+    },
+  ],
+});

@@ -3,7 +3,7 @@ import type {
   MenuItemProps as MUIMenuItemProps,
   TypographyProps,
 } from '@mui/material';
-import { MenuItem as MUIMenuItem, Typography } from '@mui/material';
+import { alpha, MenuItem as MUIMenuItem, Typography } from '@mui/material';
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material/styles';
@@ -29,7 +29,10 @@ export const MenuItemContainer = styled(MUIMenuItem, {
   width: 'auto',
   placeContent: 'space-between',
   '&:hover': {
-    backgroundColor: getContrastAlphaColor(theme, '4%'),
+    backgroundColor: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.04),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     height: 48,
@@ -76,9 +79,7 @@ export interface MenuLabelProps extends ListItemProps {
   variant?: 'xs' | 'md' | 'lg';
 }
 
-export const MenuLabel = styled('div')<MenuLabelProps>(({
-  theme
-}) => ({
+export const MenuLabel = styled('div')<MenuLabelProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   maxWidth: 260,
@@ -105,22 +106,24 @@ export const MenuLabel = styled('div')<MenuLabelProps>(({
       },
     },
     {
-    props: {
-      variant: 'md'
+      props: {
+        variant: 'md',
+      },
+      style: {
+        maxWidth: 232,
+      },
     },
-    style: {
-      maxWidth: 232
-    }
-  }, {
-    props: {
-      variant: 'md'
+    {
+      props: {
+        variant: 'md',
+      },
+      style: {
+        [theme.breakpoints.up('sm' as Breakpoint)]: {
+          maxWidth: 194,
+        },
+      },
     },
-    style: {
-      [theme.breakpoints.up('sm' as Breakpoint)]: {
-        maxWidth: 194
-      }
-    }
-  }]
+  ],
 }));
 
 export interface MenuItemLabelProps extends TypographyProps {
@@ -132,8 +135,7 @@ export const MenuItemButtonLabel = styled(Typography, {
 })<MenuItemLabelProps>(({ theme }) => ({
   marginLeft: 'inherit',
   marginRight: 'inherit',
-  color:
-    (theme.vars || theme).palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 208,
@@ -154,26 +156,28 @@ export const MenuItemButtonLabel = styled(Typography, {
       },
     },
   ],
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.primary.main
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));
 
-export const MenuItemLabel = styled(Typography)<MenuItemLabelProps>(({ theme }) => ({
-  marginLeft: theme.spacing(1.5),
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: 'inherit',
-  },
-  variants: [
-    {
-      props: ({ prefixIcon }) => prefixIcon,
-      style: {
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          maxWidth: 188,
+export const MenuItemLabel = styled(Typography)<MenuItemLabelProps>(
+  ({ theme }) => ({
+    marginLeft: theme.spacing(1.5),
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      maxWidth: 'inherit',
+    },
+    variants: [
+      {
+        props: ({ prefixIcon }) => prefixIcon,
+        style: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            maxWidth: 188,
+          },
         },
       },
-    },
-  ],
-}));
+    ],
+  }),
+);

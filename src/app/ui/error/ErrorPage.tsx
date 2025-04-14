@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button/Button';
-import { alpha, useTheme } from '@mui/material';
+import { alpha, useColorScheme, useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -24,6 +24,7 @@ interface FallbackErrorProps {
 }
 
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
+  const { mode } = useColorScheme();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -54,11 +55,14 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           borderRadius: '24px',
           padding: theme.spacing(1),
           '> button:hover': {
-            backgroundColor: getContrastAlphaColor(theme, '4%'),
+            backgroundColor: alpha(theme.palette.white.main, 0.04),
+            ...theme.applyStyles("light", {
+              backgroundColor: alpha(theme.palette.black.main, 0.04)
+            })
           },
           '> button:hover svg': {
             fill:
-              theme.palette.mode === 'light'
+              mode === 'light'
                 ? theme.palette.grey[700]
                 : alpha(theme.palette.white.main, 0.88),
           },

@@ -14,11 +14,10 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   overflow: 'hidden',
   color: (theme.vars || theme).palette.text.primary,
   '&:hover': {
-    backgroundColor:
-      (theme.vars || theme).palette.primary.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.accent1.main
-    })
+    backgroundColor: (theme.vars || theme).palette.primary.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.accent1.main,
+    }),
   },
 }));
 
@@ -38,14 +37,12 @@ export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
 }));
 
 export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor:
-    alpha(theme.palette.black.main, 0.08),
+  backgroundColor: alpha(theme.palette.black.main, 0.08),
   '&:hover': {
-    backgroundColor:
-      alpha(theme.palette.white.main, 0.12),
-    ...theme.applyStyles("light", {
-      backgroundColor: alpha(theme.palette.black.main, 0.08)
-    })
+    backgroundColor: alpha(theme.palette.white.main, 0.12),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.08),
+    }),
   },
   '&:before': {
     content: '" "',
@@ -59,38 +56,38 @@ export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
     borderRadius: 'inherit',
   },
   '&:hover:before': {
-    background: getContrastAlphaColor(theme, '4%'),
+    background: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.04),
+    }),
   },
-  ...theme.applyStyles("dark", {
-    backgroundColor: alpha(theme.palette.white.main, 0.12)
-  })
+  ...theme.applyStyles('dark', {
+    backgroundColor: alpha(theme.palette.white.main, 0.12),
+  }),
 }));
 
 export const SuperfestButton = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor:
-    alpha(theme.palette.primary.main, 0.42),
+  backgroundColor: alpha(theme.palette.primary.main, 0.42),
   '&:hover': {
-    backgroundColor:
-      alpha(theme.palette.primary.main, 0.56),
-    ...theme.applyStyles("light", {
-      backgroundColor: alpha(theme.palette.primary.main, 0.12)
-    })
+    backgroundColor: alpha(theme.palette.primary.main, 0.56),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.primary.main, 0.12),
+    }),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.primary.main, 0.08)
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+  }),
 }));
 
 export const LevelButton = styled(ButtonSecondary)(({ theme }) => ({
   display: 'flex',
-  color:
-    (theme.vars || theme).palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',
   paddingLeft: '12px',
   height: '32px',
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.primary.main
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));

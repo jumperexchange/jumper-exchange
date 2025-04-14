@@ -92,15 +92,22 @@ export const InstructionsAccordionItem = ({
 
   return (
     <InstructionsAccordionItemContainer
-      sx={[isSuperfest ? {
-        typograpy: sora.style.fontFamily
-      } : {
-        typograpy: null
-      }, isSuperfest ? {
-        borderColor: theme.palette.black.main
-      } : {
-        borderColor: null
-      }]}
+      sx={[
+        isSuperfest
+          ? {
+              typograpy: sora.style.fontFamily,
+            }
+          : {
+              typograpy: null,
+            },
+        isSuperfest
+          ? {
+              borderColor: theme.palette.black.main,
+            }
+          : {
+              borderColor: null,
+            },
+      ]}
     >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
@@ -120,15 +127,19 @@ export const InstructionsAccordionItem = ({
         {step ? (
           isTablet ? (
             <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
-              <ExpandMoreIcon
-                sx={[open && { transform: 'rotate(180deg)' }]}
-              />
+              <ExpandMoreIcon sx={[open && { transform: 'rotate(180deg)' }]} />
             </InstructionsAccordionToggle>
           ) : (
             <ExpandMoreIcon
-              sx={[{
-                color: getContrastAlphaColor(theme, 0.32)
-              }, open && { transform: 'rotate(180deg)' }]}
+              sx={[
+                {
+                  color: alpha(theme.palette.white.main, 0.32),
+                  ...theme.applyStyles('light', {
+                    color: alpha(theme.palette.black.main, 0.32),
+                  }),
+                },
+                open && { transform: 'rotate(180deg)' },
+              ]}
             />
           )
         ) : null}
