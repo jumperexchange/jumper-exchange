@@ -63,7 +63,9 @@ export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
   fontSize: 48,
 }));
 
-export const NoSelectTypographyTitlePosition = styled(NoSelectTypographyTitle)<{
+export const NoSelectTypographyTitlePosition = styled(NoSelectTypographyTitle, {
+  shouldForwardProp: (prop) => prop !== 'hasPosition',
+})<{
   hasPosition: boolean;
 }>(({ theme }) => ({
   borderRadius: '12px',

@@ -58,7 +58,9 @@ export interface QuestPlatformMainBoxProps extends BoxProps {
   platformName?: string;
 }
 
-export const QuestPlatformMainBox = styled(Box)<QuestPlatformMainBoxProps>({
+export const QuestPlatformMainBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'platformName',
+})<QuestPlatformMainBoxProps>({
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
@@ -77,7 +79,9 @@ export interface XPDisplayBoxProps extends BoxProps {
   completed?: boolean;
 }
 
-export const XPDisplayBox = styled(Box)<XPDisplayBoxProps>({
+export const XPDisplayBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
+})<XPDisplayBoxProps>({
   marginRight: undefined,
   display: 'flex',
   height: '28px',

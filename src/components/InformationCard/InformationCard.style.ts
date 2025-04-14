@@ -8,7 +8,9 @@ interface InformationCardContainerProps extends BoxProps {
   fullWidth?: boolean;
 }
 
-export const InformationCardContainer = styled(DynamicPagesContainer)<InformationCardContainerProps>(({
+export const InformationCardContainer = styled(DynamicPagesContainer, {
+  shouldForwardProp: (prop) => prop !== 'fullWidth',
+})<InformationCardContainerProps>(({
   theme
 }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {},
@@ -28,7 +30,9 @@ interface InformationCardCellProps extends TableCellProps {
   fullWidth?: boolean;
 }
 
-export const InformationCardCell = styled(TableCell)<InformationCardCellProps>(({
+export const InformationCardCell = styled(TableCell, {
+  shouldForwardProp: (prop) => prop !== 'fullWidth',
+})<InformationCardCellProps>(({
   theme
 }) => ({
   borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`,

@@ -62,7 +62,9 @@ interface BerachainMarketFilterArrowProps {
   active: boolean;
 }
 
-export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon)<BerachainMarketFilterArrowProps>(({
+export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<BerachainMarketFilterArrowProps>(({
   theme
 }) => ({
   color: alpha(theme.palette.text.primary, 0.24),

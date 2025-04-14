@@ -26,7 +26,9 @@ export interface PaginationIndexButtonProps extends IconButtonProps {
   active: boolean;
 }
 
-export const PaginationIndexButton = styled(IconButton)<PaginationIndexButtonProps>(({ theme }) => ({
+export const PaginationIndexButton = styled(IconButton, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<PaginationIndexButtonProps>(({ theme }) => ({
   width: 40,
   height: 40,
   '&:hover': {

@@ -13,7 +13,9 @@ export interface MenuItemProps extends MUIMenuItemProps {
   showButton?: boolean;
 }
 
-export const MenuItemContainer = styled(MUIMenuItem)<MenuItemProps>(({ theme }) => ({
+export const MenuItemContainer = styled(MUIMenuItem, {
+  shouldForwardProp: (prop) => prop !== 'showButton',
+})<MenuItemProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'inherit',
@@ -102,8 +104,7 @@ export const MenuLabel = styled('div')<MenuLabelProps>(({
         },
       },
     },
-  ],
-  variants: [{
+    {
     props: {
       variant: 'md'
     },
@@ -126,7 +127,9 @@ export interface MenuItemLabelProps extends TypographyProps {
   prefixIcon?: JSX.Element | string;
 }
 
-export const MenuItemButtonLabel = styled(Typography)<MenuItemLabelProps>(({ theme }) => ({
+export const MenuItemButtonLabel = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'prefixIcon',
+})<MenuItemLabelProps>(({ theme }) => ({
   marginLeft: 'inherit',
   marginRight: 'inherit',
   color:

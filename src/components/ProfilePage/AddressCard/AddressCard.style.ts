@@ -39,7 +39,9 @@ interface AddressBlockiesImageProps extends ImageProps {
   imageLink?: string;
 }
 
-export const AddressBlockiesImage = styled(Image)<AddressBlockiesImageProps>(({ theme }) => ({
+export const AddressBlockiesImage = styled(Image, {
+  shouldForwardProp: (prop) => prop !== 'imageLink',
+})<AddressBlockiesImageProps>(({ theme }) => ({
   backgroundColor: undefined,
   borderRadius: '100%',
   borderStyle: 'solid',
@@ -142,7 +144,9 @@ export interface ImageBackgroundProps extends BoxProps {
   imgUrl?: string;
 }
 
-export const ImageBackground = styled(Box)<ImageBackgroundProps>(({ theme, imgUrl }) => ({
+export const ImageBackground = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'imgUrl',
+})<ImageBackgroundProps>(({ theme, imgUrl }) => ({
   position: 'absolute',
   left: 0,
   top: 0,

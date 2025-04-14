@@ -13,6 +13,9 @@ interface BlogParagraphProps extends TypographyProps {
 
 export const BlogParagraph = styled(Typography, {
   shouldForwardProp: (prop) =>
+    prop !== 'bold' &&
+    prop !== 'italic' &&
+    prop !== 'quote' &&
     prop !== 'underline' &&
     prop !== 'strikethrough'
 })<BlogParagraphProps>(({

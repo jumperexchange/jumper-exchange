@@ -33,7 +33,7 @@ export default async function initTranslations(
     lng: locale,
     resources,
     fallbackLng: i18nConfig.defaultLocale,
-    // react: { useSuspense: false },
+    react: { useSuspense: true },
     supportedLngs: i18nConfig.locales,
     // returnEmptyString: false,
     // partialBundledLanguages: true,
@@ -42,6 +42,11 @@ export default async function initTranslations(
     ns: namespaces,
     preload: resources ? [] : i18nConfig.locales,
   });
+
+  i18nInstance.services.formatter?.addCached('percentExt', percentFormatter);
+  i18nInstance.services.formatter?.addCached('decimalExt', decimalFormatter);
+  i18nInstance.services.formatter?.addCached('currencyExt', currencyFormatter);
+  i18nInstance.services.formatter?.addCached('dateExt', dateFormatter);
 
   return {
     i18n: i18nInstance,

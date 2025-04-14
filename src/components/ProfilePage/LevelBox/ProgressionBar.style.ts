@@ -12,7 +12,9 @@ interface ProgressionContainerProps extends BoxProps {
   hideLevelIndicator?: boolean;
 }
 
-export const ProgressionContainer = styled(Box)<ProgressionContainerProps>({
+export const ProgressionContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hideLevelIndicator',
+})<ProgressionContainerProps>({
   position: 'relative',
   variants: [
     {

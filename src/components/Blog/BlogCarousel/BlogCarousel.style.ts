@@ -33,7 +33,9 @@ export interface SeeAllButtonContainerProps extends BoxProps {
   show: boolean;
 }
 
-export const SeeAllButtonContainer = styled(Box)<SeeAllButtonContainerProps>(({ theme }) => ({
+export const SeeAllButtonContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'show',
+})<SeeAllButtonContainerProps>(({ theme }) => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',

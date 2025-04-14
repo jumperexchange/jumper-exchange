@@ -12,7 +12,9 @@ interface NavbarContainerProps extends AppBarProps {
   hasBlurredNavigation?: boolean;
 }
 
-export const NavbarContainer = styled(AppBar)<NavbarContainerProps>(({
+export const NavbarContainer = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== 'hasBlurredNavigation',
+})<NavbarContainerProps>(({
   theme
 }) => ({
   display: 'flex',

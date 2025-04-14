@@ -118,7 +118,9 @@ interface BlogArticleCardMetaContainerProps extends BoxProps {
   hasTags: boolean;
 }
 
-export const BlogArticleCardMetaContainer = styled(Box)<BlogArticleCardMetaContainerProps>(({ theme }) => ({
+export const BlogArticleCardMetaContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasTags',
+})<BlogArticleCardMetaContainerProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   fontSize: '14px',
