@@ -24,7 +24,6 @@ export const RewardsCarousel = ({
   isMerklSuccess,
 }: RewardsCarouselProps) => {
   const { t } = useTranslation();
-
   return (
     !hideComponent && (
       <RewardsCarouselContainer>

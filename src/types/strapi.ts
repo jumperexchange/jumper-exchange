@@ -356,6 +356,8 @@ export interface CampaignAttributes {
   Icon: StrapiMediaData;
   quests: QuestData[];
   LightMode?: boolean;
+  StartDate: string;
+  EndDate: string;
   ProfileBannerTitle?: string;
   ProfileBannerDescription?: string;
   ProfileBannerBadge?: string;

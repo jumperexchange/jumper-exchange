@@ -35,12 +35,7 @@ export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
   backgroundColor: alpha(theme.palette.primary.main, 0.24),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    justifyContent: 'center',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    justifyContent: 'flex-end',
-  },
+  justifyContent: 'center',
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({

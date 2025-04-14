@@ -215,6 +215,17 @@ class QuestStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set(`filters[${key}][$eq]`, value);
     return this;
   }
+
+  filterByDateRange(currentDate: string): this {
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
+    return this;
+  }
+
+  filterByShowProfileBanner(): this {
+    this.apiUrl.searchParams.set('filters[ShowProfileBanner][$eq]', 'true');
+    return this;
+  }
 }
 
 class FeatureCardStrapiApi extends StrapiApi {
@@ -286,6 +297,9 @@ class CampaignStrapiApi extends StrapiApi {
   }
 
   private addCampaignPageParams(): void {
+    const currentDate = new Date().toISOString();
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
     this.apiUrl.searchParams.set('populate[0]', 'quests');
     this.apiUrl.searchParams.set('populate[1]', 'Background');
     this.apiUrl.searchParams.set('populate[2]', 'Icon');
@@ -293,6 +307,9 @@ class CampaignStrapiApi extends StrapiApi {
   }
 
   private addProfileBannerParams(): void {
+    const currentDate = new Date().toISOString();
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
     this.apiUrl.searchParams.set('fields[0]', 'ProfileBannerTitle');
     this.apiUrl.searchParams.set('fields[1]', 'ProfileBannerDescription');
     this.apiUrl.searchParams.set('fields[2]', 'ProfileBannerBadge');
