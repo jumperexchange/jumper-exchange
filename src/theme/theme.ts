@@ -123,7 +123,6 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
-    titleMedium: React.CSSProperties;
     titleLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
@@ -158,7 +157,6 @@ declare module '@mui/material/styles' {
     titleSmall: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
-    titleMedium: React.CSSProperties;
     titleLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
@@ -231,7 +229,6 @@ declare module '@mui/material/Typography' {
     titleSmall: true;
     titleXSmall: true;
     title2XSmall: true;
-    titleMedium: true;
     titleLarge: true;
     urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
@@ -668,12 +665,7 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '20px',
     },
-    titleMedium: {
-      fontSize: '32px',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: '40px',
-    },
+
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',
