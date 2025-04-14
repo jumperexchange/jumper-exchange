@@ -2,7 +2,6 @@ import type { Breakpoint, ButtonProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import Link from 'next/link';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
-import { TierboxInfoTitles } from '../LevelBox/TierBox.style';
 
 export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -85,10 +84,4 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent, {
         ? theme.palette.white.main
         : theme.palette.alphaLight300.main,
   },
-}));
-
-export const LeaderboardUserTitle = styled(TierboxInfoTitles)(({ theme }) => ({
-  width: '100%',
-  alignSelf: 'flex-start',
-  marginTop: theme.spacing(1),
 }));
