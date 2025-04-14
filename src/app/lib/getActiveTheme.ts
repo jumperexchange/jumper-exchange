@@ -3,6 +3,7 @@ import type { ThemeMode } from '../../types/theme';
 import { getPartnerThemes } from './getPartnerThemes';
 import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import { useThemeStore } from '@/stores/theme';
+import { useColorScheme } from '@mui/material';
 
 export type ActiveThemeResult = {
   themes: StrapiResponseData<PartnerThemesData>;
@@ -16,6 +17,10 @@ export type ActiveThemeResult = {
 // /en/partner-theme
 // TODO: Fix superfest
 export async function getActiveTheme(cookiesHandler: ReadonlyRequestCookies) {
+  const { mode } = useColorScheme();
+  if (!mode) {
+    return null;
+  }
   const partnerThemes = await getPartnerThemes();
   const [themeMode, activeTheme, configTheme, setThemeMode] = useThemeStore((state) => [
     state.themeMode,
@@ -37,17 +42,10 @@ export async function getActiveTheme(cookiesHandler: ReadonlyRequestCookies) {
     partnerThemeUids.has(themeId),
   );
 
-  const cookieThemeIsPartnerTheme = cookieTheme
-    ? partnerThemeUids.has(cookieTheme)
-    : false;
-
-  const activeTheme =
-    pathPartnerTheme || (cookieThemeIsPartnerTheme ? 'default' : cookieTheme);
-
   return {
     themes: partnerThemes.data,
     activeTheme: activeTheme,
-    themeMode: themeMode,
+    themeMode: mode,
     isPartnerTheme: Boolean(pathPartnerTheme),
   };
 }

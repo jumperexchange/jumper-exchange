@@ -5,28 +5,31 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useThemeStore } from '@/stores/theme';
-import type { ThemeMode } from '@/types/theme';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import { useColorScheme } from '@mui/material';
 import { useTheme } from 'next-themes';
+import { Mode } from 'node_modules/@mui/system/esm/cssVars/useCurrentColorScheme';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 
 export const useThemeSwitchTabs = () => {
+  const { mode, setMode } = useColorScheme();
+  if (!mode) {
+    return null;
+  }
   const { t } = useTranslation();
-  const { setTheme } = useTheme();
+  // const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const [themeMode, configTheme, setThemeMode] = useThemeStore((state) => [
-    state.themeMode,
+  const [configTheme] = useThemeStore((state) => [
     state.configTheme,
-    state.setThemeMode,
   ]);
-  const handleSwitchMode = (mode: ThemeMode) => {
+  const handleSwitchMode = (mode: Mode) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
       action: TrackingAction.SwitchTheme,
@@ -35,8 +38,8 @@ export const useThemeSwitchTabs = () => {
         [TrackingEventParameter.SwitchedTheme]: mode,
       },
     });
-    setThemeMode(mode);
-    setTheme(mode);
+    setMode(mode ?? 'system');
+    // setTheme(mode);
   };
 
   // tooltips:
@@ -86,7 +89,7 @@ export const useThemeSwitchTabs = () => {
 
   const output = [
     {
-      tooltip: themeMode !== 'light' ? lightModeTooltip : undefined,
+      tooltip: mode !== 'light' ? lightModeTooltip : undefined,
       value: 0,
       blur: !lightModeEnabled,
       icon: (
@@ -101,7 +104,7 @@ export const useThemeSwitchTabs = () => {
       },
     },
     {
-      tooltip: themeMode !== 'dark' ? darkModeTooltip : undefined,
+      tooltip: mode !== 'dark' ? darkModeTooltip : undefined,
       value: 1,
       blur: !darkModeEnabled,
       icon: (
@@ -116,7 +119,7 @@ export const useThemeSwitchTabs = () => {
       },
     },
     {
-      tooltip: themeMode !== 'system' ? systemModeTooltip : undefined,
+      tooltip: mode !== 'system' ? systemModeTooltip : undefined,
       value: 2,
       blur: !systemModeEnabled,
       icon: (
@@ -127,7 +130,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode('system');
+        handleSwitchMode()
       },
     },
   ];

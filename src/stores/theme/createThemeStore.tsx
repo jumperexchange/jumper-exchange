@@ -1,5 +1,5 @@
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
-import type { ThemeMode, ThemeProps, ThemeState } from '@/types/theme';
+import type { ThemeProps, ThemeState } from '@/types/theme';
 import type { WidgetConfig } from '@lifi/widget';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -20,11 +20,6 @@ export const createThemeStore = (props: ThemeProps) =>
         setWidgetTheme: (widgetTheme: { config: Partial<WidgetConfig> }) => {
           set({
             widgetTheme,
-          });
-        },
-        setThemeMode: (mode: ThemeMode) => {
-          set({
-            themeMode: mode,
           });
         },
         setActiveTheme: (theme: string) => {
@@ -61,7 +56,6 @@ export const createThemeStore = (props: ThemeProps) =>
         },
         partialize: (state) => {
           return {
-            themeMode: state.themeMode,
             activeTheme: state.activeTheme,
             configTheme: state.configTheme,
             widgetTheme: state.widgetTheme,

@@ -12,7 +12,9 @@ export const NavbarButtonsContainer = styled('div')({
   justifyContent: 'flex-end',
 });
 
-export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
+export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
+  console.log('sgrfds', theme)
+  return ({
   justifyContent: 'center',
   backgroundColor: 'transparent',
   color:
@@ -35,4 +37,4 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => ({
   ...theme.applyStyles("light", {
     color: theme.palette.primary.main
   })
-}));
+})});

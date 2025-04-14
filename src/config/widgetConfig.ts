@@ -3,7 +3,9 @@ import type { Breakpoint, Theme } from '@mui/material';
 
 export const getDefaultWidgetTheme = (
   theme: Theme,
-): { config: Partial<WidgetConfig> } => ({
+): { config: Partial<WidgetConfig> } => {
+  console.log('themew', theme)
+  return ({
   config: {
     appearance: theme.palette.mode,
     theme: {
@@ -30,17 +32,18 @@ export const getDefaultWidgetTheme = (
       },
       palette: {
         background: {
-          paper: theme.palette.surface2.main,
-          default: theme.palette.surface1.main,
+          paper: theme.vars.palette.surface2.main,
+          default: theme.vars.palette.surface1.main,
         },
         primary: {
-          main: theme.palette.accent1.main,
+          main: theme.vars.palette.accent1.main,
         },
         secondary: {
-          main: theme.palette.accent2.main,
+          main: theme.vars.palette.accent2.main,
         },
-        grey: theme.palette.grey,
+        grey: theme.vars.palette.grey,
       },
     },
   },
-});
+})
+};

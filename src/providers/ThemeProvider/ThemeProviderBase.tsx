@@ -2,7 +2,7 @@
 import { useMetaTag } from '@/hooks/useMetaTag';
 import { useThemeStore } from '@/stores/theme';
 import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { ThemeProvider as MuiThemeProvider, useColorScheme } from '@mui/material/styles';
 import { useTheme as useNextTheme } from 'next-themes';
 import { useEffect, useMemo } from 'react';
 import type { ThemeProviderProps } from './types';
@@ -12,14 +12,14 @@ import {
   getPartnerTheme,
   getWidgetTheme,
 } from './utils';
+import { useMediaQuery } from '@mui/material';
 
 export function ThemeProviderBase({
   children,
-  activeTheme,
-  themeMode,
+  activeTheme
 }: ThemeProviderProps) {
-  const { resolvedTheme } = useNextTheme();
-  const [setThemeMode, setActiveTheme] = useThemeStore((state) => [state.setThemeMode,state.setActiveTheme])
+  const { mode, setMode } = useColorScheme();
+  const [setActiveTheme] = useThemeStore((state) => [state.setActiveTheme])
   const [themes, setConfigTheme, setWidgetTheme] = useThemeStore((state) => [
     state.partnerThemes,
     state.setConfigTheme,
@@ -32,8 +32,8 @@ export function ThemeProviderBase({
   const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
 
   const effectiveThemeMode = getEffectiveThemeMode(
-    (isPartnerTheme && isDarkOrLightThemeMode(isPartnerTheme)) || themeMode,
-    resolvedTheme,
+    (isPartnerTheme && isDarkOrLightThemeMode(isPartnerTheme)) || mode,
+    'default',
   );
 
   const currentMuiTheme = useMemo(
@@ -45,7 +45,7 @@ export function ThemeProviderBase({
     setWidgetTheme(getWidgetTheme(currentMuiTheme, partnerTheme, themes));
     setConfigTheme(formatConfig(getPartnerTheme(themes, partnerTheme)));
     setActiveTheme(partnerTheme);
-    setThemeMode(effectiveThemeMode);
+    setMode(effectiveThemeMode);
   }, [
     currentMuiTheme,
     effectiveThemeMode,
@@ -56,6 +56,8 @@ export function ThemeProviderBase({
   ]);
 
   return (
-    <MuiThemeProvider theme={currentMuiTheme}>{children}</MuiThemeProvider>
+    <MuiThemeProvider theme={currentMuiTheme}>
+      {children}
+      </MuiThemeProvider>
   );
 }

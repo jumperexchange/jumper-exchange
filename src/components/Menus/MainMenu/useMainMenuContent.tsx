@@ -24,20 +24,23 @@ import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
-import { alpha, Typography } from '@mui/material';
+import { alpha, Typography, useColorScheme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
+  const { mode, setMode } = useColorScheme();
+  if (!mode) {
+    return null;
+  }
   const { t, i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
-  const [themeMode, configTheme] = useThemeStore((state) => [
-    state.themeMode,
+  const [configTheme] = useThemeStore((state) => [
     state.configTheme,
   ]);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
@@ -74,7 +77,7 @@ export const useMainMenuContent = () => {
       children: (
         <Tabs
           data={themeSwitchTabs}
-          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
+          value={mode === 'light' ? 0 : mode === 'dark' ? 1 : 2}
           ariaLabel="theme-switch-tabs"
           containerStyles={containerStyles}
           tabStyles={tabStyles}

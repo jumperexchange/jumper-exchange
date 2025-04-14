@@ -40,14 +40,12 @@ import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 interface BlogArticleProps {
   article: BlogArticleData;
   baseUrl?: string;
-  activeThemeMode?: ThemeMode;
   id?: number;
 }
 
 export const BlogArticle = ({
   article,
   baseUrl,
-  activeThemeMode,
 }: BlogArticleProps) => {
   const theme = useTheme();
   const {

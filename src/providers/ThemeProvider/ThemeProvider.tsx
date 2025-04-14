@@ -2,8 +2,8 @@
 import { ThemeStoreProvider } from '@/stores/theme';
 import type { ThemeMode, ThemeProps } from '@/types/theme';
 import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import { CssBaseline } from '@mui/material';
-import { useMemo } from 'react';
+import { CssBaseline, useColorScheme, useMediaQuery } from '@mui/material';
+import { useEffect, useMemo } from 'react';
 import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
 import { ThemeProviderBase } from './ThemeProviderBase';
 import type { ThemeProviderProps } from './types';
@@ -22,8 +22,8 @@ export function ThemeProvider({
   children,
   activeTheme,
   themes,
-  themeMode,
 }: ThemeProviderProps) {
+  const mode = 'light';
   const themeStore = useMemo((): ThemeProps => {
     const metaElement =
       typeof window !== 'undefined'
@@ -33,7 +33,7 @@ export function ThemeProvider({
     const partnerTheme = metaTheme || activeTheme || 'default';
     const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
     const effectiveThemeMode = getEffectiveThemeMode(
-      isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme) : themeMode,
+      isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme) : mode,
     );
 
     const widgetTheme = getWidgetTheme(
@@ -50,12 +50,12 @@ export function ThemeProvider({
       partnerThemes: themes!,
       widgetTheme: widgetTheme,
     };
-  }, [activeTheme, themeMode, themes]);
+  }, [activeTheme, mode, themes]);
 
   return (
     <ThemeStoreProvider value={themeStore}>
       <CssBaseline />
-      <ThemeProviderBase activeTheme={activeTheme} themeMode={themeMode}>
+      <ThemeProviderBase activeTheme={activeTheme}>
         {children}
       </ThemeProviderBase>
     </ThemeStoreProvider>

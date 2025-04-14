@@ -29,7 +29,6 @@ interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
   id?: number;
-  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
@@ -39,7 +38,7 @@ interface ImageData {
 
 // TODO: Fix dynamic typing line 102
 interface WidgetRouteSettings
-  extends Omit<BlogWidgetProps, 'activeThemeMode' | 'fromChain' | 'toChain'> {
+  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
   fromChain?: string;
   toChain?: string;
 }
@@ -72,7 +71,6 @@ export const CustomRichBlocks = ({
   id,
   baseUrl,
   content,
-  activeThemeMode,
   variant,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
@@ -192,7 +190,6 @@ export const CustomRichBlocks = ({
               fromAmount={props.fromAmount}
               toToken={props.toToken}
               allowChains={props.allowChains}
-              activeThemeMode={activeThemeMode}
               key={generateKey('widget')}
             />
           );
@@ -215,7 +212,6 @@ export const CustomRichBlocks = ({
             <InstructionsAccordion
               data={instructions_array}
               key={generateKey('instructions')}
-              activeThemeMode={activeThemeMode}
               variant={variant}
             />
           );
