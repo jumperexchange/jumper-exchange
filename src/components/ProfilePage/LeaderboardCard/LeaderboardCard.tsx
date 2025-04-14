@@ -43,6 +43,9 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
             typography: {
               xs: theme.typography.titleLarge,
             },
+            ...(!position && {
+              '&:hover:before': { backgroundColor: 'transparent' },
+            }),
           })}
         >
           {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
