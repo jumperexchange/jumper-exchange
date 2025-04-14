@@ -1,22 +1,26 @@
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { FeatureCards } from '@/components/FeatureCards';
+import { partnerThemeSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import React from 'react';
-import { Layout } from 'src/Layout';
+import { Layout as BaseLayout } from 'src/Layout';
+
+type Params = Promise<{ partnerTheme: string }>;
+export const fetchCache = 'default-cache';
 
 export async function generateMetadata({
-  params: { partnerTheme },
+  params,
 }: {
-  params: { partnerTheme: string };
+  params: Params;
 }): Promise<Metadata> {
+  const { partnerTheme } = await params;
+
   const partnerThemes = await getPartnerThemes();
   const partnerThemesData = partnerThemes.data?.find(
-    (d) => d.attributes?.uid === partnerTheme,
+    (d) => d?.uid === partnerTheme,
   );
-  const theme = partnerThemesData
-    ? partnerThemesData.attributes?.uid
-    : 'default';
+  const theme = partnerThemesData ? partnerThemesData?.uid : 'default';
   return {
     other: {
       'partner-theme': theme,
@@ -26,15 +30,23 @@ export async function generateMetadata({
 
 export default async function PartnerThemeLayout({
   children,
-  params: { partnerTheme },
+  params,
 }: {
   children: React.ReactNode;
-  params: { partnerTheme: string };
+  params: Params;
 }) {
-  const partnerThemes = await getPartnerThemes();
+  const { partnerTheme } = await params;
 
+  // Validate partner theme format
+  const result = partnerThemeSchema.safeParse(partnerTheme);
+  if (!result.success) {
+    return notFound();
+  }
+
+  // Check if partner theme exists in Strapi
+  const partnerThemes = await getPartnerThemes();
   const partnerThemesData = partnerThemes.data?.find(
-    (d) => d.attributes?.uid === partnerTheme,
+    (d) => d?.uid === partnerTheme,
   );
 
   if (!partnerThemesData) {
@@ -43,7 +55,7 @@ export default async function PartnerThemeLayout({
 
   return (
     <>
-      <Layout disableNavbar={true}>{children}</Layout>
+      <BaseLayout disableNavbar={true}>{children}</BaseLayout>
       <FeatureCards />
     </>
   );

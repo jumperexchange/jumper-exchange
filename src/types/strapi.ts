@@ -6,6 +6,7 @@ import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 export interface ImageData<T> {
   data: T;
 }
+
 interface MediaFormat {
   name: string;
   hash: string;
@@ -17,19 +18,18 @@ interface MediaFormat {
   size: number;
   url: string;
 }
-export interface MediaData {
-  id: number;
-  attributes: MediaAttributes;
-}
 
-export interface StrapiMediaData {
-  id: number;
-  attributes: StrapiMediaAttributes;
+export interface StrapiMediaData extends StrapiMediaAttributes {
+  id: string;
+  documentId: string;
+  // attributes: StrapiMediaAttributes;
 }
 
 type MediaAttributes = SpindlMediaAttributes | StrapiMediaAttributes;
 
 export interface StrapiMediaAttributes {
+  id: string;
+  documentId: string;
   name: string;
   alternativeText: string | undefined;
   caption?: string;
@@ -75,9 +75,10 @@ export interface StrapiResponse<T> {
 export type FeatureCardData = StrapiFeatureCardData | SpindlCardData;
 
 /* Feature-Cards */
-export interface StrapiFeatureCardData {
+export interface StrapiFeatureCardData extends FeatureCardAttributes {
   id: number;
-  attributes: FeatureCardAttributes;
+  documentId: string;
+  // attributes: FeatureCardAttributes;
 }
 
 interface FeatureCardDisplayConditions {
@@ -85,12 +86,12 @@ interface FeatureCardDisplayConditions {
   showOnce?: boolean;
 }
 
-interface FeatureCardExclusions {
-  data: {
-    id: number;
-    attributes: Pick<FeatureCardAttributes, 'uid'>;
-  }[];
+interface FeatureCardExclusion extends Pick<FeatureCardAttributes, 'uid'> {
+  id: number;
+  documentId: string;
+  // attributes: Pick<FeatureCardAttributes, 'uid'>;
 }
+
 export interface FeatureCardAttributes {
   Title: string;
   Subtitle: string;
@@ -106,9 +107,9 @@ export interface FeatureCardAttributes {
   publishedAt?: string;
   locale: string;
   uid: string;
-  BackgroundImageLight?: ImageData<MediaData>;
-  BackgroundImageDark?: ImageData<MediaData>;
-  featureCardsExclusions?: FeatureCardExclusions;
+  BackgroundImageLight?: MediaAttributes;
+  BackgroundImageDark?: MediaAttributes;
+  featureCardsExclusions?: FeatureCardExclusion[];
 
   localizations: {
     data: any[];
@@ -116,9 +117,9 @@ export interface FeatureCardAttributes {
 }
 
 /* Jumper User */
-export interface JumperUserData {
+export interface JumperUserData extends JumperUserAttributes {
   id: number;
-  attributes: JumperUserAttributes;
+  // attributes: JumperUserAttributes;
 }
 
 interface JumperUserAttributes {
@@ -135,21 +136,21 @@ interface JumperUserAttributes {
 export interface TagData {
   data: TagAttributes[];
 }
+
 export interface TagAttributes {
-  attributes: {
-    Title: string;
-    TextColor?: string;
-    Key: string;
-    BackgroundColor?: string;
-    blog_articles: {
-      data: BlogArticleData[];
-    };
-    createdAt: string;
-    locale: string;
-    publishedAt?: string;
-    updatedAt: string;
-  };
+  // attributes: {
+  Title: string;
+  TextColor?: string;
+  Key: string;
+  BackgroundColor?: string;
+  blog_articles: BlogArticleData[];
+  createdAt: string;
+  locale: string;
+  publishedAt?: string;
+  updatedAt: string;
+  // };
   id: number;
+  documentId: string;
 }
 
 /* FAQ-Items */
@@ -162,8 +163,9 @@ interface FaqItemAttributes {
   displayOnBlogPage: boolean;
 }
 
-export interface FaqMeta {
+export interface FaqMeta extends FaqItemAttributes {
   id: number;
+  documentId: string;
   attributes: FaqItemAttributes;
 }
 
@@ -172,48 +174,53 @@ export interface FaqData {
 }
 
 /* Author */
-export interface AuthorData {
-  attributes: any;
-  data: AuthorAttributes;
+export interface AuthorData extends AuthorAttributes {
+  // attributes: any;
+  // data: AuthorAttributes;
 }
+
 interface AuthorAttributes {
-  attributes: {
-    Name: string;
-    createdAt: string;
-    publishedAt?: string;
-    updatedAt: string;
-    Avatar: AvatarItem;
-    Role?: string;
-    Bio?: string;
-    Twitter?: string;
-    LinkedIn?: string;
-  };
+  // attributes: {
+  Name: string;
+  createdAt: string;
+  publishedAt?: string;
+  updatedAt: string;
+  Avatar: AvatarItem;
+  Role?: string;
+  Bio?: string;
+  Twitter?: string;
+  LinkedIn?: string;
+  // };
   id: number;
+  documentId: string;
 }
 
-export interface AvatarItem {
-  data: AvatarData;
+export interface AvatarItem extends AvatarData {
+  // data: AvatarData;
 }
 
-export interface AvatarData {
-  id: number;
-  attributes: StrapiMediaAttributes;
+export interface AvatarData extends StrapiMediaAttributes {
+  id: string;
+  documentId: string;
+  // attributes: StrapiMediaAttributes;
 }
 
 /* Blog */
-export interface BlogArticleData {
+export interface BlogArticleData extends BlogArticleAttributes {
   id: number;
-  attributes: BlogArticleAttributes;
+  documentId: string;
+  // attributes: BlogArticleAttributes;
 }
+
 export interface BlogArticleAttributes {
   Title: string;
   Subtitle: string;
   Content: RootNode[];
-  Image: ImageData<StrapiMediaData>;
+  Image: StrapiMediaData;
   Slug: string;
   createdAt: string;
   updatedAt: string;
-  tags: TagData;
+  tags: TagAttributes[];
   author: AuthorData;
   faq_items: FaqData;
   publishedAt?: string;
@@ -224,9 +231,10 @@ export interface BlogArticleAttributes {
   };
 }
 
-export interface PartnerThemesData {
+export interface PartnerThemesData extends PartnerThemesAttributes {
   id: number;
-  attributes: PartnerThemesAttributes;
+  documentId: string;
+  // attributes: PartnerThemesAttributes;
 }
 
 export interface Customization {
@@ -263,12 +271,12 @@ export interface PartnerThemesAttributes {
   uid: string;
   SelectableInMenu?: boolean;
   PartnerURL?: URL;
-  BackgroundImageLight: ImageData<StrapiMediaData>;
-  BackgroundImageDark: ImageData<StrapiMediaData>;
-  FooterImageLight: ImageData<StrapiMediaData>;
-  FooterImageDark: ImageData<StrapiMediaData>;
-  LogoLight: ImageData<StrapiMediaData>;
-  LogoDark: ImageData<StrapiMediaData>;
+  BackgroundImageLight: StrapiMediaData;
+  BackgroundImageDark: StrapiMediaData;
+  FooterImageLight: StrapiMediaData;
+  FooterImageDark: StrapiMediaData;
+  LogoLight: StrapiMediaData;
+  LogoDark: StrapiMediaData;
   BackgroundColorLight?: string;
   BackgroundColorDark?: string;
   Bridges: RepeatableComponent[];

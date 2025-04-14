@@ -108,7 +108,7 @@ export const CampaignHeader = ({
               <CardInfoTypogragphy fontSize={14}>
                 Total Rewards
               </CardInfoTypogragphy>
-              <CardInfoTypogragphy fontSize={32}>{'$100k'}</CardInfoTypogragphy>
+              <CardInfoTypogragphy fontSize={32}>{'+$75k'}</CardInfoTypogragphy>
             </CampaignDigitInfoBox>
           </VerticalCenterBox>
         )}

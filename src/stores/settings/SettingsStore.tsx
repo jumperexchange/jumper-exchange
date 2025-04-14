@@ -10,8 +10,7 @@ export const SettingsStoreContext = createContext<SettingsStore | null>(null);
 export const SettingsStoreProvider: React.FC<
   PropsWithChildren<{ welcomeScreenClosed: boolean }>
 > = ({ children, welcomeScreenClosed }) => {
-  const storeRef = useRef<SettingsStore>();
-
+  const storeRef = useRef<SettingsStore | null>(null);
   if (!storeRef.current) {
     storeRef.current = createSettingsStore({ welcomeScreenClosed });
   }

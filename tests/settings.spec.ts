@@ -14,9 +14,6 @@ test.describe('Settings menu', () => {
     const settingsTitle = page.locator(
       'xpath=//p[normalize-space(text())="Settings"]',
     );
-    const bestReturnButton = page.locator(
-      'xpath=//button[normalize-space(text())="Best Return"]',
-    );
     const fastestButton = page.locator(
       'xpath=//button[normalize-space(text())="Fastest"]',
     );

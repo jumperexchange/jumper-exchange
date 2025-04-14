@@ -21,7 +21,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
   //filter url
   apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('publicationState', 'preview');
+    apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken =
     process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
       ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
@@ -41,7 +41,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
     enabled: enabled,
   });
 
-  const tokenList = data?.[0].attributes?.['DATA'] || {};
+  const tokenList = data?.[0]?.['DATA'] || {};
   return {
     tokens: tokenList,
     isSuccess,

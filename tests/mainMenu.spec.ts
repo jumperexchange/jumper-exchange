@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import {
-  openOrCloseMainMenu,
-  checkTheNumberOfMenuItems,
   checkSocialNetworkIcons,
-  sectionOnTheBlogPage,
+  checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
+  openOrCloseMainMenu,
+  sectionOnTheBlogPage,
 } from './testData/menuFunctions';
 
 import values from '../tests/testData/values.json' assert { type: 'json' };
@@ -42,6 +42,24 @@ test.describe('Main Menu flows', () => {
       .click();
 
     await expect(missionTitle).toBeVisible();
+  });
+
+  test('Should open the Jumper Profile page and then open the leaderboard page', async ({
+    page,
+  }) => {
+    const leaderboardButton = await page.locator('#leaderboard-button');
+    const whereDoYouRank = await page.locator(
+      'xpath=//p[normalize-space(text())="Where do you rank?"]',
+    );
+    const connectWalletButtonOnLeaderboardPage = await page.locator(
+      '#leaderboard-entry-connect-button',
+    );
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Jumper Profile');
+    await page.locator('.profile-page').isVisible();
+    await leaderboardButton.click();
+    await expect(whereDoYouRank).toBeVisible();
+    await expect(connectWalletButtonOnLeaderboardPage).toBeVisible();
   });
 
   test('Should be able to navigate to the Jumper Learn', async ({ page }) => {

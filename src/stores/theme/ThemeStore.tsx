@@ -9,7 +9,7 @@ export const ThemeStoreContext = createContext<ThemeStore | null>(null);
 export const ThemeStoreProvider: React.FC<
   PropsWithChildren<{ value: ThemeProps }>
 > = ({ children, value }) => {
-  const storeRef = useRef<ThemeStore>();
+  const storeRef = useRef<ThemeStore | null>(null);
 
   if (!storeRef.current) {
     storeRef.current = createThemeStore(value);
