@@ -1,5 +1,5 @@
 import type { IconButtonProps } from '@mui/material';
-import { Box, IconButton } from '@mui/material';
+import { alpha, Box, IconButton } from '@mui/material';
 
 import { getContrastAlphaColor } from '@/utils/colors';
 import { darken, lighten, styled } from '@mui/material/styles';
@@ -9,8 +9,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   width: 'fit-content',
   flexWrap: 'wrap',
   padding: theme.spacing(1),
-  backgroundColor:
-    getContrastAlphaColor(theme, '12%'),
+  backgroundColor: alpha(theme.palette.white.main, 0.12),
   borderRadius: '24px',
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
@@ -18,7 +17,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(2),
   ...theme.applyStyles("light", {
-    backgroundColor: getContrastAlphaColor(theme, '4%')
+    backgroundColor: alpha(theme.palette.black.main, 0.04)
   })
 }));
 
@@ -32,51 +31,48 @@ export const PaginationIndexButton = styled(IconButton, {
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor:
-      getContrastAlphaColor(theme, '32%'),
+    backgroundColor: alpha(theme.palette.white.main, 0.32),
     ...theme.applyStyles("light", {
-      backgroundColor: getContrastAlphaColor(theme, '4%')
+      backgroundColor: alpha(theme.palette.black.main, 0.04)
     })
   },
   variants: [
     {
       props: ({ active }) => active,
       style: {
-        backgroundColor:
-          theme.palette.mode === 'light'
-            ? theme.palette.white.main
-            : getContrastAlphaColor(theme, '12%'),
-        color:
-          theme.palette.mode === 'light'
-            ? lighten(theme.palette.text.primary, 0.2)
-            : theme.palette.text.primary,
+        backgroundColor: alpha(theme.palette.white.main, 0.12),
+        color: (theme.vars || theme).palette.text.primary,
+        ...theme.applyStyles("light", {
+          backgroundColor: (theme.vars || theme).palette.white.main,
+          color: lighten(theme.palette.black.main, 0.2),
+        }),
         '& .MuiTouchRipple-root': {
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? theme.palette.alphaDark100.main
-              : theme.palette.alphaLight300.main,
+          backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
           zIndex: -1,
+          ...theme.applyStyles("light", {
+            backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+          }),
         },
         '&:hover': {
-          color:
-            theme.palette.mode === 'light'
-              ? lighten(theme.palette.text.primary, 0.2)
-              : theme.palette.text.primary,
+          color: (theme.vars || theme).palette.text.primary,
+          ...theme.applyStyles("light", {
+            color: lighten(theme.palette.text.primary, 0.2),
+          }),
         },
       },
     },
     {
       props: ({ active }) => !active,
       style: {
-        color:
-          theme.palette.mode === 'light'
-            ? lighten(theme.palette.text.primary, 0.4)
-            : darken(theme.palette.text.primary, 0.2),
+        color: darken(theme.palette.white.main, 0.2),
+        ...theme.applyStyles("light", {
+          color: lighten(theme.palette.black.main, 0.4),
+        }),
         '&:hover': {
-          color:
-            theme.palette.mode === 'light'
-              ? lighten(theme.palette.text.primary, 0.4)
-              : darken(theme.palette.text.primary, 0.2),
+          color: darken(theme.palette.white.main, 0.2),
+          ...theme.applyStyles("light", {
+            color: lighten(theme.palette.black.main, 0.4),
+          }),
         },
       },
     },
@@ -84,14 +80,13 @@ export const PaginationIndexButton = styled(IconButton, {
 }));
 
 export const PaginationButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.grey[500],
+  color: (theme.vars || theme).palette.grey[500],
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor:
-      getContrastAlphaColor(theme, '12%'),
+    backgroundColor: alpha(theme.palette.white.main, 0.12),
     ...theme.applyStyles("light", {
-      backgroundColor: getContrastAlphaColor(theme, '4%')
+      backgroundColor: alpha(theme.palette.black.main, 0.04)
     })
   },
 }));

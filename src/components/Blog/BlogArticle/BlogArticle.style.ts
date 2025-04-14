@@ -15,17 +15,16 @@ import { urbanist } from 'src/fonts/fonts';
 
 export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
   width: '100%',
-  color:
-    alpha(theme.palette.text.primary, 0.88),
+  color: alpha(theme.palette.white.main, 0.88),
   maxWidth: theme.breakpoints.values.xl,
   textAlign: 'center',
   padding: theme.spacing(2),
   [theme.breakpoints.up('xl' as Breakpoint)]: {
     margin: theme.spacing(0, 'auto'),
   },
-  ...theme.applyStyles("light", {
-    color: theme.palette.grey[800]
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.grey[800],
+  }),
 }));
 
 export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
@@ -35,15 +34,15 @@ export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
   fontSize: '16px',
   fontWeight: 400,
   lineHeight: '32px',
-  color: alpha(theme.palette.text.primary, 0.88),
+  color: alpha(theme.palette.white.main, 0.88),
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  ...theme.applyStyles("light", {
-    color: theme.palette.grey[800]
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.grey[800],
+  }),
 }));
 
 export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -157,11 +156,10 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     width: '100%',
   },
   '& a': {
-    color:
-      theme.palette.accent1Alt.main,
-    ...theme.applyStyles("light", {
-      color: theme.palette.primary.main
-    })
+    color: (theme.vars || theme).palette.accent1Alt.main,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.primary.main,
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(0, 'auto'),
@@ -217,10 +215,10 @@ export const BlogAuthorMetaWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   //todo: add to theme colors
-  color: alpha(theme.palette.text.primary, 0.88),
-  ...theme.applyStyles("light", {
-    color: '#525252'
-  })
+  color: alpha(theme.palette.white.main, 0.88),
+  ...theme.applyStyles('light', {
+    color: '#525252',
+  }),
 }));
 
 export const Divider = styled(MuiDivider)(({ theme }) => ({
@@ -231,11 +229,14 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
 // Typography:
 
 export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.text.primary, 0.88),
+  color: alpha(theme.palette.white.main, 0.88),
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(8),
   },
+  ...theme.applyStyles("light", {
+    color: alpha(theme.palette.black.main, 0.88),
+  })
 }));
 
 export const BlogArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -254,13 +255,16 @@ export const BlogArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
 }));
 
 export const BlogArticleSubtitle = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.text.primary, 0.88),
+  color: alpha(theme.palette.white.main, 0.88),
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(6),
   fontWeight: 700,
   fontFamily: urbanist.style.fontFamily,
   fontSize: '28px',
   lineHeight: '40px',
+  ...theme.applyStyles('light', {
+    color: alpha(theme.palette.black.main, 0.88),
+  }),
 }));
 
 export const BlogArticleSubtitleSkeleton = styled(Skeleton)(({ theme }) => ({
@@ -279,14 +283,14 @@ export const BlogArticleSubtitleSkeleton = styled(Skeleton)(({ theme }) => ({
 
 export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
   ({ theme }) => ({
-    color: alpha(theme.palette.text.primary, 0.88),
+    color: alpha(theme.palette.white.main, 0.88),
     fontSize: '24px',
     lineHeight: '28px',
     fontWeight: 700,
     fontFamily: urbanist.style.fontFamily,
-    ...theme.applyStyles("light", {
-      color: theme.palette.black.main
-    })
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.black.main,
+    }),
   }),
 );
 

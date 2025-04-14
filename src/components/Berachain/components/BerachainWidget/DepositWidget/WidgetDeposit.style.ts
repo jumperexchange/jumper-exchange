@@ -8,16 +8,16 @@ export const MaxButton = styled(Button, {
   fontSize: '0.875rem',
   minWidth: 'unset',
   height: 'auto',
-  color: theme.palette.text.primary,
-  backgroundColor: alpha(mainColor ?? theme.palette.primary.main, 0.78),
+  color: (theme.vars || theme).palette.text.primary,
+  backgroundColor: alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.78),
   '&:hover': {
-    backgroundColor: alpha(mainColor ?? theme.palette.primary.main, 0.48),
+    backgroundColor: alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.48),
   },
 }));
 
 export const BerachainWidgetSelection = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   justifyContent: 'space-between',
   flexDirection: 'column',
   backgroundColor: '#1E1D1C',
@@ -31,7 +31,7 @@ export const BerachainWidgetSelection = styled(Box)(({ theme }) => ({
 // TODO: Rename it to something more generic as it is used to have the most used berabackground
 export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   justifyContent: 'space-between',
   flexDirection: 'column',
   borderRadius: '16px',

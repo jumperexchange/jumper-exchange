@@ -8,9 +8,9 @@ import {
 } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   display: 'flex',
   width: '100%',
   justifyContent: 'start',
@@ -31,7 +31,7 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
 
 export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   justifyContent: 'space-between',
 }));
 
@@ -68,7 +68,7 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
     minWidth: 300,
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.white.main
+    backgroundColor: (theme.vars || theme).palette.white.main
   })
 }));
 
@@ -100,12 +100,12 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
 }));
 
 export const RewardsOpenIconButton = styled(MuiIconButton)<IconButtonProps>(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   transition: 'background 0.3s',
   width: theme.spacing(6),
   height: theme.spacing(6),
-  backgroundColor: theme.palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: theme.palette.bgQuaternary.hover,
+    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
   },
 }));

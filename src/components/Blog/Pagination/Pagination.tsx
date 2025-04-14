@@ -87,9 +87,9 @@ export const Pagination = ({
           <ArrowBackIcon
             sx={(theme) => ({
               color:
-                darken(theme.palette.text.primary, 0.2),
+                darken(theme.palette.white.main, 0.2),
               ...theme.applyStyles("light", {
-                color: lighten(theme.palette.text.primary, 0.6)
+                color: lighten(theme.palette.black.main, 0.6)
               })
             })}
           />
@@ -116,9 +116,9 @@ export const Pagination = ({
           <ArrowForwardIcon
             sx={(theme) => ({
               color:
-                darken(theme.palette.text.primary, 0.2),
-              ...theme.applyStyles("light", {
-                color: lighten(theme.palette.text.primary, 0.6)
+              darken(theme.palette.white.main, 0.2),
+            ...theme.applyStyles("light", {
+              color: lighten(theme.palette.black.main, 0.6)
               })
             })}
           />

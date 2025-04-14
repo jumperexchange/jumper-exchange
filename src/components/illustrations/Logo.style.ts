@@ -4,9 +4,9 @@ import { styled } from '@mui/material';
 export const LogoWrapper = styled('div')(({ theme }) => {
   const mainCol =
     theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
+      ? (theme.vars || theme).palette.accent1.main
+      : (theme.vars || theme).palette.accent1Alt.main;
+  const subCol = (theme.vars || theme).palette.accent2.main;
 
   return {
     cursor: 'pointer',
@@ -33,9 +33,9 @@ export const LogoWrapper = styled('div')(({ theme }) => {
 export const CollabLogoWrapper = styled('div')(({ theme }) => {
   const mainCol =
     theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
+      ? (theme.vars || theme).palette.accent1.main
+      : (theme.vars || theme).palette.accent1Alt.main;
+  const subCol = (theme.vars || theme).palette.accent2.main;
 
   return {
     cursor: 'pointer',

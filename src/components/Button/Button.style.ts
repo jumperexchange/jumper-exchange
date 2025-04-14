@@ -12,28 +12,28 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   fontWeight: 'bold',
   transition: 'background-color 250ms',
   overflow: 'hidden',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   '&:hover': {
     backgroundColor:
-      theme.palette.primary.main,
+      (theme.vars || theme).palette.primary.main,
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.accent1.main
+      backgroundColor: (theme.vars || theme).palette.accent1.main
     })
   },
 }));
 
 export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
-  color: theme.palette.white.main,
-  backgroundColor: theme.palette.primary.main,
+  color: (theme.vars || theme).palette.white.main,
+  backgroundColor: (theme.vars || theme).palette.primary.main,
   ':hover': {
-    backgroundColor: darken(theme.palette.primary.main, 0.16),
+    backgroundColor: (theme.vars || theme).palette.primary.dark,
   },
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor: theme.palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: theme.palette.bgQuaternary.hover,
+    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
   },
 }));
 
@@ -84,13 +84,13 @@ export const SuperfestButton = styled(ButtonBase)(({ theme }) => ({
 export const LevelButton = styled(ButtonSecondary)(({ theme }) => ({
   display: 'flex',
   color:
-    theme.palette.white.main,
+    (theme.vars || theme).palette.white.main,
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',
   paddingLeft: '12px',
   height: '32px',
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 }));

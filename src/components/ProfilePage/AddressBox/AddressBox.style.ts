@@ -19,7 +19,7 @@ export const AddressBoxContainer = styled(Box, {
   paddingBottom: theme.spacing(1),
   width: '100%',
   minHeight: 200,
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.up('sm')]: {
     minHeight: 256,
     paddingTop: 0,
@@ -45,7 +45,7 @@ export const AddressBoxContainer = styled(Box, {
     backgroundColor:
       alpha(theme.palette.grey[100], 0.08),
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.grey[100]
+      backgroundColor: (theme.vars || theme).palette.grey[100]
     })
   },
   variants: [
@@ -54,8 +54,8 @@ export const AddressBoxContainer = styled(Box, {
       style: {
         background:
           theme.palette.mode === 'light'
-            ? `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`
-            : `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
+            ? `linear-gradient(to bottom, ${(theme.vars || theme).palette.primary.main} 50%, ${(theme.vars || theme).palette.grey[100]} 50%)`
+            : `linear-gradient(to bottom, ${(theme.vars || theme).palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
       },
     },
     {
@@ -77,13 +77,13 @@ export const ProfileIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor:
     alpha(theme.palette.grey[200], 0.08),
   color:
-    theme.palette.grey[100],
+    (theme.vars || theme).palette.grey[100],
   width: '32px',
   height: '32px',
   marginLeft: theme.spacing(1),
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.grey[200],
-    color: theme.palette.black.main
+    backgroundColor: (theme.vars || theme).palette.grey[200],
+    color: (theme.vars || theme).palette.black.main
   })
 }));
 

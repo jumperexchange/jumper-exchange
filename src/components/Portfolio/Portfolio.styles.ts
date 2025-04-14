@@ -12,7 +12,7 @@ import {
 import { lighten } from '@mui/material/styles';
 
 export const TotalValue = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textOverflow: 'ellipsis',
   fontWeight: '700',
   fontSize: '48px',
@@ -64,7 +64,7 @@ export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
 );
 
 export const TypographyPrimary = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   fontSize: '1.125rem',
   fontWeight: 700,
   lineHeight: '1.5rem',
@@ -72,7 +72,7 @@ export const TypographyPrimary = styled(Typography)(({ theme }) => ({
 }));
 
 export const TypographySecondary = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   fontSize: '0.75rem',
   fontWeight: 500,
   lineHeight: '1rem',
@@ -86,7 +86,7 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
   '& .MuiAvatar-root': {
     width: 16,
     height: 16,
-    border: `2px solid ${theme.palette.surface2.main}`,
+    border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
     '&:last-child': {
       marginLeft: '-6px',
     },
@@ -96,12 +96,12 @@ export const CustomAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
   width: 16,
   height: 16,
-  border: `2px solid ${theme.palette.surface2.main}`,
+  border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
 }));
 
 export const Icon = styled(SvgIcon)``;
 export const CustomDivider = styled(Divider)(({ theme }) => ({
-  backgroundColor: theme.palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   opacity: 0.3,
 }));
 

@@ -18,5 +18,5 @@ export const IconHeaderContainer = styled(Box)(({ theme }) => ({
 export const IconHeaderTitle = styled(Typography)(({ theme }) => ({
   marginLeft: '8px',
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
 }));

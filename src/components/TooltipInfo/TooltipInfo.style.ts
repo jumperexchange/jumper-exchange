@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 export const Tooltip = styled(MuiTooltip)<StyledInfoIconProps>(({ theme }) => ({
   cursor: 'help',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
 }));
 
 interface StyledInfoIconProps {

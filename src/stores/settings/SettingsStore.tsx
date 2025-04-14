@@ -21,27 +21,6 @@ export const SettingsStoreProvider: React.FC<
 
   const { mode, setMode } = useColorScheme();
 
-  console.log('---', mode)
-  useEffect(() => {
-    console.log('setmode', mode, setMode)
-    if (mode) {
-      return;
-    }
-
-    console.log('testtt')
-
-
-    setMode('light');
-
-  }, []);
-
-  useEffect(() => {
-    console.log('current mode:', mode)
-  }, [mode]);
-
-  console.log('--ergfd', mode)
-
-
   if (!mode) {
     return <div>prefersDarkMode: {prefersDarkMode.toString()}</div>;
   }

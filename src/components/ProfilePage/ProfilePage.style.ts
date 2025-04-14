@@ -21,7 +21,7 @@ export const PageContainer = styled(Container)(({ theme }) => ({
 }));
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
@@ -42,10 +42,10 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
 
 export const ProfileInfoBox = styled(Box)(({ theme }) => ({
   gab: theme.spacing(2),
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   padding: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
@@ -57,7 +57,7 @@ export const ProfileInfoBox = styled(Box)(({ theme }) => ({
 
 export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   lineHeight: '64px',
   fontWeight: 700,
   fontSize: 48,
@@ -99,5 +99,5 @@ export const NoSelectTypographyTitlePosition = styled(NoSelectTypographyTitle, {
 
 export const NoSelectTypography = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
 }));

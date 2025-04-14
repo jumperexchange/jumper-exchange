@@ -147,7 +147,7 @@ export const MenuPaper = styled(Paper, {
     prop !== 'isMobile' && prop !== 'width' && prop !== 'show',
 })<MenuPaperProps>(({ theme, isMobile, show, width }) => ({
   display: !show ? 'none' : 'block',
-  background: theme.palette.surface1.main,
+  background: (theme.vars || theme).palette.surface1.main,
   padding: 0,
   marginTop: 0,
   // TODO: Fix this
@@ -244,7 +244,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     left: 'initial',
     right: 'initial',
     padding: theme.spacing(0, 1.5, 0, 1.5),
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

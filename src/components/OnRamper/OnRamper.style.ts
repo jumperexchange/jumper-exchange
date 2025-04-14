@@ -9,5 +9,5 @@ export const OnRamperIFrame = styled('iframe')(({ theme }) => ({
   maxWidth: 416,
   height: 630,
   minWidth: 375,
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
 }));

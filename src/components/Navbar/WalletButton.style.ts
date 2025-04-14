@@ -40,6 +40,7 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
 export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
+  height: 48
 }));
 
 export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
@@ -55,13 +56,13 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   paddingRight: theme.spacing(1.5),
   gap: '0.5rem',
   backgroundColor:
-    theme.palette.alphaLight300.main,
+    (theme.vars || theme).palette.alphaLight300.main,
   boxShadow: '0px 2px 8px 0px #00000014',
   '&:hover': {
     backgroundColor:
-      theme.palette.alphaLight300.main,
+      (theme.vars || theme).palette.alphaLight300.main,
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.white.main
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
   '&:hover:before': {
@@ -75,7 +76,7 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     background: getContrastAlphaColor(theme, '4%'),
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.white.main
+    backgroundColor: (theme.vars || theme).palette.white.main
   })
 }));
 
@@ -86,7 +87,7 @@ export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
   borderColor:
     alpha(theme.palette.white.main, 0.08),
   ...theme.applyStyles("light", {
-    borderColor: theme.palette.white.main
+    borderColor: (theme.vars || theme).palette.white.main
   })
 }));
 

@@ -60,7 +60,7 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
             fill:
               theme.palette.mode === 'light'
                 ? theme.palette.grey[700]
-                : alpha(theme.palette.text.primary, 0.88),
+                : alpha(theme.palette.white.main, 0.88),
           },
         }}
         fullWidth={true}

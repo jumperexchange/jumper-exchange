@@ -172,8 +172,8 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-      {/* <InitColorSchemeScript attribute="class" /> */}
-      <AppRouterCacheProvider options={{ enableCssLayer: false }}>
+      <InitColorSchemeScript attribute="class" defaultMode="system" />
+      <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
             <TranslationsProvider
               namespaces={[defaultNS]}

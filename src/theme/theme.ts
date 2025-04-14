@@ -367,118 +367,136 @@ const themeBase = createTheme({
   }
 });
 
+const palette = {
+  white: {
+    main: '#FFFFFF',
+    light: '#FFFFFF',
+    dark: '#FFFFFF',
+  },
+  black: {
+    main: '#000000',
+    light: '#000000',
+    dark: '#000000',
+  },
+  alphaDark100: {
+    main: 'rgba(0, 0, 0, 0.04)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark200: {
+    main: 'rgba(0, 0, 0, 0.08)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark300: {
+    main: 'rgba(0, 0, 0, 0.12)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark400: {
+    main: 'rgba(0, 0, 0, 0.16)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark500: {
+    main: 'rgba(0, 0, 0, 0.24)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark600: {
+    main: 'rgba(0, 0, 0, 0.32)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark700: {
+    main: 'rgba(0, 0, 0, 0.48)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark800: {
+    main: 'rgba(0, 0, 0, 0.64)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight100: {
+    main: 'rgba(255, 255, 255, 0.04)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight200: {
+    main: 'rgba(255, 255, 255, 0.08)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight300: {
+    main: 'rgba(255, 255, 255, 0.12)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight400: {
+    main: 'rgba(255, 255, 255, 0.16)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight500: {
+    main: 'rgba(255, 255, 255, 0.24)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight600: {
+    main: 'rgba(255, 255, 255, 0.32)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight700: {
+    main: 'rgba(255, 255, 255, 0.48)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight800: {
+    main: 'rgba(255, 255, 255, 0.64)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  grey: {
+    100: '#F6F5FA',
+    200: '#ECEBF0',
+    300: '#DDDCE0',
+    400: '#C9C8CC',
+    500: '#9DA1A3',
+    600: '#8A8D8F',
+    700: '#70767A',
+    800: '#4B4F52',
+    900: '#000000',
+  },
+  success: {
+    main: '#0AA65B',
+    light: '#0AA65B',
+    dark: '#0AA65B',
+  },
+  error: {
+    main: '#E5452F',
+    light: '#E5452F',
+    dark: '#E5452F',
+  },
+  warning: {
+    main: '#FFCC00',
+    light: '#FFCC00',
+    dark: '#EBC942',
+  },
+  info: {
+    main: '#297EFF',
+    light: '#297EFF',
+    dark: '#297EFF',
+  },
+}
+
 // in a separate 'createTheme' to allow listening to breakpoints set above
-const themeCustomized = createTheme({
+export const themeCustomized = extendTheme({
   cssVariables: true,
   colorSchemeSelector: 'class',
-  palette: {
-    alphaDark100: {
-      main: 'rgba(0, 0, 0, 0.04)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark200: {
-      main: 'rgba(0, 0, 0, 0.08)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark300: {
-      main: 'rgba(0, 0, 0, 0.12)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark400: {
-      main: 'rgba(0, 0, 0, 0.16)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark500: {
-      main: 'rgba(0, 0, 0, 0.24)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark600: {
-      main: 'rgba(0, 0, 0, 0.32)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark700: {
-      main: 'rgba(0, 0, 0, 0.48)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark800: {
-      main: 'rgba(0, 0, 0, 0.64)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight100: {
-      main: 'rgba(255, 255, 255, 0.04)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight200: {
-      main: 'rgba(255, 255, 255, 0.08)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight300: {
-      main: 'rgba(255, 255, 255, 0.12)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight400: {
-      main: 'rgba(255, 255, 255, 0.16)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight500: {
-      main: 'rgba(255, 255, 255, 0.24)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight600: {
-      main: 'rgba(255, 255, 255, 0.32)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight700: {
-      main: 'rgba(255, 255, 255, 0.48)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight800: {
-      main: 'rgba(255, 255, 255, 0.64)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-  },
-  shape: {
-    ...shape,
-  },
+  shape,
   components: {
-    Background: {
-      styleOverrides: {
-        // the slot name defined in the `slot` and `overridesResolver` parameters
-        // of the `styled` API
-        root: ({ theme }) => ({
-          position: 'fixed',
-          left: 0,
-          bottom: 0,
-          right: 0,
-          top: 0,
-          zIndex: -1,
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          backgroundColor: theme.vars.palette.bg.main,
-          // typed-safe access to the `variant` prop
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-          },
-        }),
-      },
-    },
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
@@ -540,9 +558,9 @@ const themeCustomized = createTheme({
     MuiFormLabel: {
       styleOverrides: {
         root: ({ theme }) => ({
-          color: theme.palette.text.primary,
+          color: (theme.vars || theme).palette.text.primary,
           '&.Mui-focused': {
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           },
         }),
       },
@@ -886,43 +904,36 @@ const themeCustomized = createTheme({
       fontWeight: 700,
     },
   },
-
-  palette: {
-    grey: {
-      100: '#F6F5FA',
-      200: '#ECEBF0',
-      300: '#DDDCE0',
-      400: '#C9C8CC',
-      500: '#9DA1A3',
-      600: '#8A8D8F',
-      700: '#70767A',
-      800: '#4B4F52',
-      900: '#000000',
-    },
-    success: {
-      main: '#0AA65B',
-      light: '#0AA65B',
-      dark: '#0AA65B',
-    },
-    error: {
-      main: '#E5452F',
-      light: '#E5452F',
-      dark: '#E5452F',
-    },
-    warning: {
-      main: '#FFCC00',
-      light: '#FFCC00',
-      dark: '#EBC942',
-    },
-    info: {
-      main: '#297EFF',
-      light: '#297EFF',
-      dark: '#297EFF',
-    },
-  },
+  palette,
   colorSchemes: {
     light: {
-      palette: {
+      components: {
+        Background: {
+          styleOverrides: {
+            // the slot name defined in the `slot` and `overridesResolver` parameters
+            // of the `styled` API
+            root: ({ theme }) => ({
+              position: 'fixed',
+              left: 0,
+              bottom: 0,
+              right: 0,
+              top: 0,
+              zIndex: -1,
+              overflow: 'hidden',
+              pointerEvents: 'none',
+              backgroundColor: (theme.vars || theme).palette.bg.main,
+              // typed-safe access to the `variant` prop
+              [theme.breakpoints.up('sm' as Breakpoint)]: {
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+              },
+            }),
+          },
+        },
+      },
+       palette: {
+        ...palette,
+        mode: 'light',
         background: {
           default: '#FCFAFF',
         },
@@ -941,9 +952,7 @@ const themeCustomized = createTheme({
           800: 'rgba(0, 0, 0, 0.64)',
         },
         bg: {
-          light: '#F3EBFF',
           main: '#F3EBFF',
-          dark: '#F3EBFF',
         },
         bgSecondary: {
           main: alpha(themeBase.palette.white.main, 0.48),
@@ -1022,7 +1031,7 @@ const themeCustomized = createTheme({
               zIndex: -1,
               overflow: 'hidden',
               pointerEvents: 'none',
-              backgroundColor: theme.palette.surface1.main,
+              backgroundColor: (theme.vars || theme).palette.surface1.main,
               // typed-safe access to the `variant` prop
               [theme.breakpoints.up('sm' as Breakpoint)]: {
                 backgroundRepeat: 'no-repeat',
@@ -1033,7 +1042,11 @@ const themeCustomized = createTheme({
         },
       },
       palette: {
+        ...palette,
         mode: 'dark',
+        Tooltip: {
+          bg: themeBase.palette.black.main,
+        },
         background: {
           default: '#120F29', //'#241D52',
         },
@@ -1052,9 +1065,7 @@ const themeCustomized = createTheme({
           800: 'rgba(255, 255, 255, 0.64)',
         },
         bg: {
-          light: '#030014',
-          main: '#030014',
-          dark: '#030014',
+          main: '#120F29',
         },
         bgSecondary: {
           main: alpha(themeBase.palette.white.main, 0.12),
@@ -1123,374 +1134,6 @@ const themeCustomized = createTheme({
 });
 
 const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
+
 export const lightTheme = themeCustomized
 export const darkTheme = themeCustomized
-
-// export const lightTheme = createTheme(
-//   deepmerge(themePreset, {
-//     palette: {
-//       mode: 'light',
-//       background: {
-//         default: '#FCFAFF',
-//       },
-//       text: {
-//         primary: '#000',
-//         secondary: alpha(themeCustomized.palette.black.main, 0.75),
-//       },
-//       grey: {
-//         100: 'rgba(0, 0, 0, 0.04)',
-//         200: 'rgba(0, 0, 0, 0.08)',
-//         300: 'rgba(0, 0, 0, 0.12)',
-//         400: 'rgba(0, 0, 0, 0.16)',
-//         500: 'rgba(0, 0, 0, 0.24)',
-//         600: 'rgba(0, 0, 0, 0.32)',
-//         700: 'rgba(0, 0, 0, 0.48)',
-//         800: 'rgba(0, 0, 0, 0.64)',
-//       },
-//       bg: {
-//         light: '#F3EBFF',
-//         main: '#F3EBFF',
-//         dark: '#F3EBFF',
-//       },
-//       bgSecondary: {
-//         main: alpha(themeCustomized.palette.white.main, 0.48),
-//       },
-//       bgTertiary: {
-//         main: themeCustomized.palette.white.main,
-//       },
-//       bgQuaternary: {
-//         hover: alpha('#653BA3', 0.12),
-//         main: alpha('#31007A', 0.08),
-//       },
-//       primary: {
-//         light: '#31007A',
-//         main: '#31007A',
-//         dark: '#290066',
-//       },
-//       secondary: {
-//         light: '#E9E1F5',
-//         main: '#E9E1F5',
-//         dark: '#E9E1F5',
-//       },
-//       tertiary: {
-//         light: '#FCEBFF',
-//         main: '#FCEBFF',
-//         dark: '#FCEBFF',
-//       },
-//       accent1: {
-//         light: '#31007A',
-//         main: '#31007A',
-//         dark: '#31007A',
-//       },
-//       accent1Alt: {
-//         light: '#BEA0EB',
-//         main: '#BEA0EB',
-//         dark: '#BEA0EB',
-//       },
-//       accent2: {
-//         light: '#8700B8',
-//         main: '#8700B8',
-//         dark: '#8700B8',
-//       },
-//       surface1: {
-//         light: '#faf5ff',
-//         main: '#faf5ff',
-//         dark: '#faf5ff',
-//       },
-//       surface2: {
-//         light: '#FFFFFF',
-//         main: '#FFFFFF',
-//         dark: '#FFFFFF',
-//       },
-//       surface3: {
-//         light: '#E5E1EB',
-//         main: '#E5E1EB',
-//         dark: '#E5E1EB',
-//       },
-
-//       alphaDark100: {
-//         main: 'rgba(0, 0, 0, 0.04)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark200: {
-//         main: 'rgba(0, 0, 0, 0.08)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark300: {
-//         main: 'rgba(0, 0, 0, 0.12)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark400: {
-//         main: 'rgba(0, 0, 0, 0.16)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark500: {
-//         main: 'rgba(0, 0, 0, 0.24)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark600: {
-//         main: 'rgba(0, 0, 0, 0.32)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark700: {
-//         main: 'rgba(0, 0, 0, 0.48)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaDark800: {
-//         main: 'rgba(0, 0, 0, 0.64)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight100: {
-//         main: 'rgba(255, 255, 255, 0.04)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight200: {
-//         main: 'rgba(255, 255, 255, 0.08)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight300: {
-//         main: 'rgba(255, 255, 255, 0.12)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight400: {
-//         main: 'rgba(255, 255, 255, 0.16)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight500: {
-//         main: 'rgba(255, 255, 255, 0.24)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight600: {
-//         main: 'rgba(255, 255, 255, 0.32)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight700: {
-//         main: 'rgba(255, 255, 255, 0.48)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//       alphaLight800: {
-//         main: 'rgba(255, 255, 255, 0.64)',
-//         // @ts-ignore
-//         mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-//       },
-//     },
-//     shadows: [
-//       'none',
-//       '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-//       '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-//       ...themeBase.shadows.slice(3),
-//     ],
-//   }),
-// );
-
-console.log('light', lightTheme);
-/*
-export const darkTheme = createTheme(
-  deepmerge(themePreset, {
-    components: {
-      Background: {
-        styleOverrides: {
-          // functions cannot merged because of mui... I know it's bad :(
-          root: ({ theme }: { theme: Theme }) => ({
-            position: 'fixed',
-            left: 0,
-            bottom: 0,
-            right: 0,
-            top: 0,
-            zIndex: -1,
-            overflow: 'hidden',
-            pointerEvents: 'none',
-            backgroundColor: theme.palette.surface1.main,
-            // typed-safe access to the `variant` prop
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover',
-            },
-          }),
-        },
-      },
-    },
-    palette: {
-      mode: 'dark',
-      background: {
-        default: '#120F29', //'#241D52',
-      },
-      text: {
-        primary: '#fff',
-        secondary: alpha(themeCustomized.palette.white.main, 0.75),
-      },
-      grey: {
-        100: 'rgba(255, 255, 255, 0.04)',
-        200: 'rgba(255, 255, 255, 0.08)',
-        300: 'rgba(255, 255, 255, 0.12)',
-        400: 'rgba(255, 255, 255, 0.16)',
-        500: 'rgba(255, 255, 255, 0.24)',
-        600: 'rgba(255, 255, 255, 0.32)',
-        700: 'rgba(255, 255, 255, 0.48)',
-        800: 'rgba(255, 255, 255, 0.64)',
-      },
-      bg: {
-        light: '#030014',
-        main: '#030014',
-        dark: '#030014',
-      },
-      bgSecondary: {
-        main: alpha(themeCustomized.palette.white.main, 0.12),
-      },
-      bgTertiary: {
-        main: themeCustomized.palette.alphaLight200.main,
-      },
-      bgQuaternary: {
-        hover: alpha('#653BA3', 0.56),
-        main: alpha('#653BA3', 0.42),
-      },
-      primary: {
-        light: '#653BA3',
-        main: '#653BA3',
-        dark: '#543188',
-      },
-      secondary: {
-        light: '#321D52',
-        main: '#321D52',
-        dark: '#321D52',
-      },
-      tertiary: {
-        light: '#33163D',
-        main: '#33163D',
-        dark: '#33163D',
-      },
-      accent1: {
-        light: '#653BA3',
-        main: '#653BA3',
-        dark: '#653BA3',
-      },
-      accent1Alt: {
-        light: '#BEA0EB',
-        main: '#BEA0EB',
-        dark: '#BEA0EB',
-      },
-      accent2: {
-        light: '#D35CFF',
-        main: '#D35CFF',
-        dark: '#D35CFF',
-      },
-      surface1: {
-        light: '#120F29',
-        main: '#120F29',
-        dark: '#120F29',
-      },
-      surface2: {
-        light: '#24203D',
-        main: '#24203D',
-        dark: '#24203D',
-      },
-      surface3: {
-        light: '#302B52',
-        main: '#302B52',
-        dark: '#302B52',
-      },
-
-      alphaDark100: {
-        main: 'rgba(0, 0, 0, 0.04)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark200: {
-        main: 'rgba(0, 0, 0, 0.08)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark300: {
-        main: 'rgba(0, 0, 0, 0.12)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark400: {
-        main: 'rgba(0, 0, 0, 0.16)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark500: {
-        main: 'rgba(0, 0, 0, 0.24)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark600: {
-        main: 'rgba(0, 0, 0, 0.32)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark700: {
-        main: 'rgba(0, 0, 0, 0.48)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaDark800: {
-        main: 'rgba(0, 0, 0, 0.64)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight100: {
-        main: 'rgba(255, 255, 255, 0.04)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight200: {
-        main: 'rgba(255, 255, 255, 0.08)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight300: {
-        main: 'rgba(255, 255, 255, 0.12)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight400: {
-        main: 'rgba(255, 255, 255, 0.16)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight500: {
-        main: 'rgba(255, 255, 255, 0.24)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight600: {
-        main: 'rgba(255, 255, 255, 0.32)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight700: {
-        main: 'rgba(255, 255, 255, 0.48)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-      alphaLight800: {
-        main: 'rgba(255, 255, 255, 0.64)',
-        // @ts-ignore
-        mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-      },
-    },
-    shadows: [
-      'none',
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-      ...themeBase.shadows.slice(3),
-    ],
-  }),
-); */

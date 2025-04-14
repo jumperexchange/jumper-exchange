@@ -168,6 +168,7 @@ export const BlogBackgroundGradient = styled(BackgroundGradient)(
       `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`,
     ...theme.applyStyles("light", {
       position: 'fixed',
+      backgroundColor: (theme.vars || theme).palette.bg.main,
       background: `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`
     })
   }),

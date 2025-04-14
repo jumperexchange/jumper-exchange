@@ -7,7 +7,7 @@ export const SuperfestCarouselContainer = styled(Box)(({ theme }) => ({
   borderRadius: '12px',
   width: '90%',
   padding: theme.spacing(2),
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(2, 4, 0),
     padding: theme.spacing(3),
@@ -59,16 +59,16 @@ export const SeeAllButtonContainer = styled(Box, {
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
   color: 'inherit',
   backgroundColor:
-    theme.palette.alphaLight400.main,
+    (theme.vars || theme).palette.alphaLight400.main,
   width: 320,
   '&:hover': {
     backgroundColor:
-      theme.palette.alphaLight500.main,
+      (theme.vars || theme).palette.alphaLight500.main,
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.alphaDark200.main
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main
     })
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.alphaDark100.main
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
   })
 }));

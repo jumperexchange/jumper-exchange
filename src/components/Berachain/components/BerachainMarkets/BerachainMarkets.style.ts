@@ -11,7 +11,7 @@ export const BerachainMarketFilters = styled(Box)(({ theme }) => ({
 export const BerachainMarketFiltersButton = styled(Button)(({ theme }) => ({
   display: 'flex',
   height: 48,
-  color: theme.palette.text.primary, // alpha(theme.palette.text.primary, 0.48),
+  color: (theme.vars || theme).palette.text.primary, // alpha(theme.palette.text.primary, 0.48),
   padding: theme.spacing(1.5),
   alignItems: 'center',
   gap: theme.spacing(1.5),
@@ -28,7 +28,7 @@ export const BerachainMarketBaffleFormControlLabel = styled(FormControlLabel)(
   ({ theme }) => ({
     display: 'flex',
     height: 48,
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     padding: theme.spacing(1.5),
     alignItems: 'center',
     gap: theme.spacing(1.5),
@@ -88,7 +88,7 @@ export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon, {
 }));
 
 export const BerachainRedirectionCTA = styled(Button)(({ theme }) => ({
-  color: theme.palette.black.main,
+  color: (theme.vars || theme).palette.black.main,
   background: '#FF8425',
   marginTop: theme.spacing(1.5),
   transition: ' background-color 300ms ease-in',

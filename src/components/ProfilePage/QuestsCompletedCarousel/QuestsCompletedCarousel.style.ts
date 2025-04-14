@@ -6,7 +6,7 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
     alpha(theme.palette.white.main, 0.08),
   padding: theme.spacing(2),
   borderRadius: '32px',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(8, 8, 0),
     padding: theme.spacing(6, 3),
@@ -30,7 +30,7 @@ export const CompletedQuestContainer = styled(Box)(({ theme }) => ({
 export const CompletedQuestHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
 }));
 
 export const CompletedQuestTitle = styled(Typography)(({ theme }) => ({

@@ -13,6 +13,7 @@ import {
   getWidgetTheme,
 } from './utils';
 import { useMediaQuery } from '@mui/material';
+import { themeCustomized } from 'src/theme/theme';
 
 export function ThemeProviderBase({
   children,
@@ -36,8 +37,10 @@ export function ThemeProviderBase({
     'default',
   );
 
+  console.log('---', mode)
+
   const currentMuiTheme = useMemo(
-    () => getMuiTheme(themes, partnerTheme, effectiveThemeMode),
+    () => getMuiTheme(themes, partnerTheme, mode),
     [effectiveThemeMode, partnerTheme, themes],
   );
 
@@ -55,8 +58,14 @@ export function ThemeProviderBase({
     themes,
   ]);
 
+  // useEffect(() => {
+  //   setMode('dark');
+  // }, [setMode]);
+
+  // TODO: remove this when the bug is fixed
+
   return (
-    <MuiThemeProvider theme={currentMuiTheme}>
+    <MuiThemeProvider theme={themeCustomized}>
       {children}
       </MuiThemeProvider>
   );

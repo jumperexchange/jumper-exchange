@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 export const BerachainAnimationFrame = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.black.main,
+  backgroundColor: (theme.vars || theme).palette.black.main,
   position: 'absolute',
   left: 0,
   right: 0,
@@ -40,7 +40,7 @@ export const BerachainPlanetGround = styled(Box)(({ theme }) => ({
 }));
 
 export const BerchainSpaceGlow = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.black.main,
+  backgroundColor: (theme.vars || theme).palette.black.main,
   position: 'absolute',
   left: 0,
   right: 0,

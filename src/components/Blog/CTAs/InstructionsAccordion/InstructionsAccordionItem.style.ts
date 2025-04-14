@@ -17,9 +17,9 @@ export const InstructionsAccordionItemContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   a: {
     color:
-      theme.palette.accent1Alt.main,
+      (theme.vars || theme).palette.accent1Alt.main,
     ...theme.applyStyles("light", {
-      color: theme.palette.primary.main
+      color: (theme.vars || theme).palette.primary.main
     })
   },
   '& a:not(:first-child)': {
@@ -102,8 +102,8 @@ export const InstructionsAccordionLinkBox = styled(Box)(({ theme }) => ({
   textAlign: 'left',
   alignItems: 'center',
   alignContent: 'center',
-  color: theme.palette.black.main,
+  color: (theme.vars || theme).palette.black.main,
   '&:hover': {
-    color: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.primary.main,
   },
 }));

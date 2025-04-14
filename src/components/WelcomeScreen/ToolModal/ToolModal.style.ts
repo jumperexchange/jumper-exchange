@@ -19,13 +19,13 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
   paddingBottom: theme.spacing(3),
   borderRadius: '12px',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   width: `calc( 100% - ${theme.spacing(3)})`,
   maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
   background:
-    theme.palette.surface2.main,
+    (theme.vars || theme).palette.surface2.main,
   '&:focus-visible': {
     outline: 0,
   },
@@ -34,7 +34,7 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
     width: 640,
   },
   ...theme.applyStyles("light", {
-    background: theme.palette.surface1.main
+    background: (theme.vars || theme).palette.surface1.main
   })
 }));
 
@@ -53,7 +53,7 @@ export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
   left: 'initial',
   right: 'initial',
   position: 'sticky',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -67,9 +67,9 @@ export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
   backgroundImage: 'unset',
   '@supports ( -moz-appearance:none )': {
     backgroundColor:
-      theme.palette.surface2.main,
+      (theme.vars || theme).palette.surface2.main,
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.surface1.main
+      backgroundColor: (theme.vars || theme).palette.surface1.main
     })
   },
   ...theme.applyStyles("light", {
@@ -95,7 +95,7 @@ export const ToolModalTitle = styled(Typography)(() => ({
 }));
 
 export const ToolModalIconButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   transform: 'translateX(8px)',
 }));
 
@@ -111,7 +111,7 @@ export const ToolModalAvatar = styled(Avatar)(() => ({
 }));
 
 export const ToolModaItemlTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 72,

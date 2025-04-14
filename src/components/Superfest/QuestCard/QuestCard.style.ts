@@ -11,13 +11,13 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   borderRadius: '8px',
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.white.main
+    backgroundColor: (theme.vars || theme).palette.white.main
   })
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   flexDirection: 'column',
   justifyContent: 'space-between',
   flexGrow: 1,
@@ -25,7 +25,7 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingBottom: '24px',
   paddingLeft: '16px',
   paddingRight: '16px',
-  backgroundColor: theme.palette.bgTertiary.main, // backgroundColor: '#fff0ca',
+  backgroundColor: (theme.vars || theme).palette.bgTertiary.main, // backgroundColor: '#fff0ca',
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
 }));

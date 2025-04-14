@@ -56,7 +56,7 @@ export const ButtonInfoAlertClickable = styled(ButtonPrimary)(({ theme }) => ({
   justifyContent: 'center',
   textAlign: 'center',
   '&:hover': {
-    backgroundColor: theme.palette.info.main,
+    backgroundColor: (theme.vars || theme).palette.info.main,
   },
   ...theme.applyStyles("light", {
     backgroundColor: darken(theme.palette.info.main, 0.1)

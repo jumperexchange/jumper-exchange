@@ -16,10 +16,10 @@ export const TabsContainer = styled(Tabs)(({ theme }) => ({
     top: '50%',
     transform: 'translateY(-50%) scaleY(0.98)',
     backgroundColor:
-      theme.palette.alphaLight300.main,
+      (theme.vars || theme).palette.alphaLight300.main,
     zIndex: '-1',
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.white.main
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
   '> .MuiTabs-root': {
@@ -46,14 +46,14 @@ export const Tab = styled(MuiTab)(({ theme }) => ({
   transition: 'background 250ms',
   background: 'transparent',
   minHeight: 'unset',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'none',
   '&.Mui-selected': {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     backgroundColor:
       alpha(theme.palette.white.main, 0.1),
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.white.main
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
   ':hover': {

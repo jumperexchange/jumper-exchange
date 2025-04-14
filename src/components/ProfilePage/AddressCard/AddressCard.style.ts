@@ -19,19 +19,19 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   background:
-    theme.palette.bgTertiary.main,
+    (theme.vars || theme).palette.bgTertiary.main,
   alignItems: 'center',
   borderRadius: 24,
   overflow: 'hidden',
   position: 'relative',
   width: '100%',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   minHeight: 256,
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
   },
   ...theme.applyStyles("light", {
-    background: theme.palette.white.main
+    background: (theme.vars || theme).palette.white.main
   })
 }));
 
@@ -46,7 +46,7 @@ export const AddressBlockiesImage = styled(Image, {
   borderRadius: '100%',
   borderStyle: 'solid',
   borderWidth: '5px',
-  borderColor: theme.palette.white.main,
+  borderColor: (theme.vars || theme).palette.white.main,
   zIndex: 1,
   variants: [
     {
@@ -55,7 +55,7 @@ export const AddressBlockiesImage = styled(Image, {
         backgroundColor:
           theme.palette.mode === 'light'
             ? '#F9F5FF'
-            : theme.palette.accent1Alt.main,
+            : (theme.vars || theme).palette.accent1Alt.main,
       },
     },
   ],
@@ -71,19 +71,19 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     backgroundColor: 'transparent',
     color:
-      theme.palette.grey[100],
+      (theme.vars || theme).palette.grey[100],
     width: 32,
     height: 32,
     marginLeft: theme.spacing(1),
     ':hover': {
       color:
-        theme.palette.grey[100],
+        (theme.vars || theme).palette.grey[100],
       ...theme.applyStyles("light", {
-        color: theme.palette.black.main
+        color: (theme.vars || theme).palette.black.main
       })
     },
     ...theme.applyStyles("light", {
-      color: theme.palette.black.main
+      color: (theme.vars || theme).palette.black.main
     })
   }),
 );
@@ -95,9 +95,9 @@ export const AddressButton = styled(ButtonTransparent)(({ theme }) => ({
   borderRadius: '16px',
   '&:hover': {
     backgroundColor:
-      theme.palette.alphaLight300.main,
+      (theme.vars || theme).palette.alphaLight300.main,
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.white.main
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
 }));
@@ -107,9 +107,9 @@ export const AddressConnectButton = styled(ButtonSecondary)(({ theme }) => ({
   height: 40,
   padding: theme.spacing(1, 2),
   color:
-    theme.palette.white.main,
+    (theme.vars || theme).palette.white.main,
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 }));
 
@@ -170,8 +170,8 @@ export const ImageBackground = styled(Box, {
       style: {
         background:
           theme.palette.mode === 'light'
-            ? `linear-gradient(to bottom, ${theme.palette.primary.main} 50%, ${theme.palette.grey[100]} 50%)`
-            : `linear-gradient(to bottom, ${theme.palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
+            ? `linear-gradient(to bottom, ${(theme.vars || theme).palette.primary.main} 50%, ${(theme.vars || theme).palette.grey[100]} 50%)`
+            : `linear-gradient(to bottom, ${(theme.vars || theme).palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
       },
     },
     {

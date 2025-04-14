@@ -18,10 +18,10 @@ export const SuperFestPoweredContainer = styled('div')<ContainerProps>(({ theme 
     '.link-jumper': {
       fontWeight: '700',
       color:
-        theme.palette.accent1Alt.main,
+        (theme.vars || theme).palette.accent1Alt.main,
       textDecoration: 'none',
       ...theme.applyStyles("light", {
-        color: theme.palette.accent1.main
+        color: (theme.vars || theme).palette.accent1.main
       })
     },
   },

@@ -13,6 +13,6 @@ export const BerachainStarsContainer = styled(Box)(({ theme }) => ({
     width: 1,
     height: 1,
     borderRadius: '2px',
-    backgroundColor: theme.palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.white.main,
   },
 }));

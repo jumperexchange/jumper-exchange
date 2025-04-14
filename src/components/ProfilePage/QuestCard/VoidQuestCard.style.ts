@@ -6,16 +6,16 @@ export const VoidQuestCardContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor:
-    theme.palette.alphaLight200.main,
+    (theme.vars || theme).palette.alphaLight200.main,
   height: 440,
   width: 288,
   borderRadius: '24px',
   border: 16,
   borderColor:
-    theme.palette.alphaLight200.main,
+    (theme.vars || theme).palette.alphaLight200.main,
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.white.main,
-    borderColor: theme.palette.white.main
+    backgroundColor: (theme.vars || theme).palette.white.main,
+    borderColor: (theme.vars || theme).palette.white.main
   })
 }));
 
@@ -25,6 +25,6 @@ export const VoidQuestCardIcon = styled(QuestionMarkIcon)(({ theme }) => ({
   color:
     alpha(theme.palette.grey[400], 0.08),
   ...theme.applyStyles("light", {
-    color: theme.palette.grey[400]
+    color: (theme.vars || theme).palette.grey[400]
   })
 }));

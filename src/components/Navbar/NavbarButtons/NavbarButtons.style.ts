@@ -18,7 +18,7 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
   justifyContent: 'center',
   backgroundColor: 'transparent',
   color:
-    theme.palette.accent1Alt.main,
+    (theme.vars || theme).palette.accent1Alt.main,
   width: 48,
   borderRadius: '50%',
   marginLeft: theme.spacing(1.5),
@@ -28,13 +28,13 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
     backgroundColor:
       getContrastAlphaColor(theme, '12%'),
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.alphaDark100.main
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main
     })
   },
   ':hover': {
     backgroundColor: 'transparent',
   },
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 })});

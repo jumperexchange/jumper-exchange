@@ -187,7 +187,6 @@ export const BlogArticle = ({
               id={id}
               baseUrl={baseUrl}
               content={content}
-              activeThemeMode={activeThemeMode}
             />
           ) : (
             <BlogArticleContentSkeleton variant="text" />

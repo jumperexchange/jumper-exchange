@@ -25,7 +25,7 @@ const getStatusColor = (
     case 'FAILED':
       return alpha(theme.palette.error.main, 0.12);
     default:
-      return theme.palette.grey[theme.palette.mode === 'light' ? 300 : 800];
+      return (theme.vars || theme).palette.grey[theme.palette.mode === 'light' ? 300 : 800];
   }
 };
 
@@ -35,7 +35,7 @@ export const CircularIcon = styled(Box, {
   ({ theme, status, substatus }) => ({
     backgroundColor: ['ACTION_REQUIRED', 'DONE', 'FAILED'].includes(status!)
       ? getStatusColor(theme, status, substatus)
-      : theme.palette.background.paper,
+      : (theme.vars || theme).palette.background.paper,
     borderStyle: 'solid',
     borderColor: getStatusColor(theme, status, substatus),
     borderWidth: !['ACTION_REQUIRED', 'DONE', 'FAILED'].includes(status!)
@@ -70,8 +70,8 @@ const circleAnimation = keyframes`
 export const CircularProgressPending = styled(MuiCircularProgress)`
   color: ${({ theme }) =>
     theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.primary.light};
+      ? (theme.vars || theme).palette.primary.main
+      : (theme.vars || theme).palette.primary.light};
   animation-duration: 3s;
   position: absolute;
   .${circularProgressClasses.circle} {

@@ -1,25 +1,26 @@
 import { getContrastAlphaColor } from '@/utils/colors';
-import { IconButton as MuiIconButtom, darken, styled } from '@mui/material';
+import { IconButton as MuiIconButtom, alpha, darken, styled } from '@mui/material';
 
 export const IconButton = styled(MuiIconButtom)(({ theme }) => ({
-  color: getContrastAlphaColor(theme, '84%'),
+  color: alpha(theme.palette.white.main, 0.88),
   transition: 'background 0.3s',
   width: '48px',
   height: '48px',
   backgroundColor:
-    theme.palette.alphaLight300.main,
+    (theme.vars || theme).palette.alphaLight300.main,
   '&:hover': {
     backgroundColor: getContrastAlphaColor(theme, '8%'),
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.white.main
+    color: alpha(theme.palette.black.main, 0.88),
+    backgroundColor: (theme.vars || theme).palette.white.main
   })
 }));
 
 export const IconButtonPrimary = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   backgroundColor:
-    theme.palette.primary.main,
+    (theme.vars || theme).palette.primary.main,
   ':hover': {
     backgroundColor:
       darken(theme.palette.primary.main, 0.16),
@@ -28,43 +29,44 @@ export const IconButtonPrimary = styled(IconButton)(({ theme }) => ({
     })
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.accent1.main
+    color: theme.palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.accent1.main
   })
 }));
 
 export const IconButtonSecondary = styled(IconButton)(({ theme }) => ({
   // todo add color to theme
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   backgroundColor:
-    theme.palette.alphaLight300.main,
+    (theme.vars || theme).palette.alphaLight300.main,
   '&:hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
   },
   ...theme.applyStyles("light", {
     color: '#240752',
-    backgroundColor: theme.palette.white.main
+    backgroundColor: (theme.vars || theme).palette.white.main
   })
 }));
 
 export const IconButtonTertiary = styled(IconButton)(({ theme }) => ({
   backgroundColor:
-    theme.palette.alphaLight300.main,
+    (theme.vars || theme).palette.alphaLight300.main,
   '&:hover': {
     backgroundColor:
-      theme.palette.alphaLight500.main,
+      (theme.vars || theme).palette.alphaLight500.main,
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.alphaDark300.main
+      backgroundColor: (theme.vars || theme).palette.alphaDark300.main
     })
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.alphaDark100.main
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
   })
 }));
 
 export const SuperfestIconButtonPrimary = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   backgroundColor:
-    theme.palette.primary.main,
+    (theme.vars || theme).palette.primary.main,
   ':hover': {
     backgroundColor:
       darken(theme.palette.primary.main, 0.16),
@@ -73,6 +75,6 @@ export const SuperfestIconButtonPrimary = styled(IconButton)(({ theme }) => ({
     })
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.accent1.main
+    backgroundColor: (theme.vars || theme).palette.accent1.main
   })
 }));

@@ -30,6 +30,7 @@ import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
+import { useColorScheme } from '@mui/material';
 
 export function Widget({
   starterVariant,
@@ -325,6 +326,8 @@ export function Widget({
     widgetTheme.config.theme,
     integratorStringByType,
   ]);
+
+  console.log('Widget config', config);
 
   return (
     <WidgetWrapper

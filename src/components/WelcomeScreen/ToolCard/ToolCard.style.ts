@@ -14,9 +14,9 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
   width: 104,
   height: 96,
   color:
-    theme.palette.accent1Alt.main,
+    (theme.vars || theme).palette.accent1Alt.main,
   userSelect: 'none',
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '16px',
   transitionProperty: 'box-shadow, background',
   transitionDuration: '.3s',
@@ -26,7 +26,7 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor:
       alpha(theme.palette.white.main, 0.8),
-    boxShadow: theme.shadows[1],
+    boxShadow: (theme.vars || theme).shadows[1],
     ...theme.applyStyles("light", {
       backgroundColor: alpha(theme.palette.white.main, 0.2)
     })
@@ -36,7 +36,7 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
     height: 120,
   },
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.primary.main,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.04), 0px 8px 16px rgba(0, 0, 0, 0.04)'
   })
 }));

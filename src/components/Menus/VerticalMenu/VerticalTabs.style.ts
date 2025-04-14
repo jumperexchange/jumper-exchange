@@ -22,10 +22,10 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
     borderRadius: '28px',
     transform: 'translateY(0) scaleY(0.98)',
     backgroundColor:
-      theme.palette.alphaLight300.main,
+      (theme.vars || theme).palette.alphaLight300.main,
     zIndex: '-1',
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.white.main
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
   '> .MuiTabs-root': {
@@ -54,7 +54,7 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
   transition: 'background 250ms',
   background: 'transparent',
   minHeight: 'unset',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'none',
   ':hover': {
     backgroundColor: getContrastAlphaColor(theme, '4%'),
@@ -64,7 +64,7 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
       alpha(theme.palette.white.main, 0.1),
     pointerEvents: 'none',
     ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.white.main
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
   ':not(.Mui-selected) > svg': {

@@ -133,7 +133,7 @@ export const MenuItemButtonLabel = styled(Typography, {
   marginLeft: 'inherit',
   marginRight: 'inherit',
   color:
-    theme.palette.white.main,
+    (theme.vars || theme).palette.white.main,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 208,
@@ -155,7 +155,7 @@ export const MenuItemButtonLabel = styled(Typography, {
     },
   ],
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 }));
 

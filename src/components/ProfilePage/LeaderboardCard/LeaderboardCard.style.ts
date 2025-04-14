@@ -9,16 +9,16 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   backgroundColor:
-    theme.palette.bgSecondary.main,
+    (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),
-  boxShadow: theme.shadows[2],
+  boxShadow: (theme.vars || theme).shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
   ...theme.applyStyles("light", {
-    backgroundColor: theme.palette.white.main
+    backgroundColor: (theme.vars || theme).palette.white.main
   })
 }));
 
@@ -56,9 +56,9 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   lineHeight: '18px',
   height: 40,
   color:
-    theme.palette.text.primary,
+    (theme.vars || theme).palette.text.primary,
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 }));
 
@@ -73,9 +73,9 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
     borderRadius: '16px',
     '&:hover': {
       backgroundColor:
-        theme.palette.alphaLight300.main,
+        (theme.vars || theme).palette.alphaLight300.main,
       ...theme.applyStyles("light", {
-        backgroundColor: theme.palette.white.main
+        backgroundColor: (theme.vars || theme).palette.white.main
       })
     },
   }),

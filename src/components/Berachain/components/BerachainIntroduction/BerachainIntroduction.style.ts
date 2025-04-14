@@ -6,7 +6,7 @@ import { PageContainer } from 'src/components/ProfilePage/ProfilePage.style';
 
 export const BerachainIntroductionBox = styled(PageContainer)(({ theme }) => ({
   marginTop: theme.spacing(10),
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',

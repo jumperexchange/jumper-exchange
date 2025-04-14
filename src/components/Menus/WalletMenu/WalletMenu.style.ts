@@ -19,7 +19,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
     gap: theme.spacing(2),
     maxWidth: 416,
     zIndex: 2000,
-    background: theme.palette.surface1.main, // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
+    background: (theme.vars || theme).palette.surface1.main, // (theme.vars || theme).palette.surface2.main into the figma, which is not matching the right color, might need to be updated
   },
 }));
 
@@ -83,7 +83,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
-  background: theme.palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   borderRadius: '16px',
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     padding: '10px',

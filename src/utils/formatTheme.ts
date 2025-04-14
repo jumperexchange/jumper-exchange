@@ -27,10 +27,10 @@ export function getAvailableThemeModes(
     return ['light', 'dark'];
   }
 
-  if (theme.darkConfig) {
+  if ((theme.vars || theme).darkConfig) {
     result.push('dark');
   }
-  if (theme.lightConfig) {
+  if ((theme.vars || theme).lightConfig) {
     result.push('light');
   }
 
@@ -39,7 +39,7 @@ export function getAvailableThemeModes(
 
 function getLogoData(theme: PartnerThemesAttributes) {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
-  const logo = theme.LogoDark || theme.LogoLight || null;
+  const logo = (theme.vars || theme).LogoDark || (theme.vars || theme).LogoLight || null;
 
   if (!logo) {
     return;
@@ -70,40 +70,40 @@ export function formatConfig(
   const result = {
     availableThemeModes: getAvailableThemeModes(theme),
     backgroundColor:
-      theme.BackgroundColorDark || theme.BackgroundColorLight || null,
+      (theme.vars || theme).BackgroundColorDark || (theme.vars || theme).BackgroundColorLight || null,
     backgroundImageUrl: getImageUrl(theme, 'BackgroundImage', defaultMode),
     footerImageUrl: getImageUrl(theme, 'FooterImage', defaultMode),
     logo: getLogoData(theme),
-    partnerName: theme.PartnerName,
-    partnerUrl: theme.PartnerURL,
-    selectableInMenu: theme.SelectableInMenu || false,
-    createdAt: theme.createdAt,
-    uid: theme.uid,
+    partnerName: (theme.vars || theme).PartnerName,
+    partnerUrl: (theme.vars || theme).PartnerURL,
+    selectableInMenu: (theme.vars || theme).SelectableInMenu || false,
+    createdAt: (theme.vars || theme).createdAt,
+    uid: (theme.vars || theme).uid,
     hasThemeModeSwitch: false,
     hasBlurredNavigation:
-      (theme.lightConfig || theme.darkConfig)?.customization
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.customization
         ?.hasBlurredNavigation ?? false,
     hasBackgroundGradient:
-      (theme.lightConfig || theme.darkConfig)?.customization
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.customization
         ?.hasBackgroundGradient ?? false,
     integrator:
-      (theme.lightConfig || theme.darkConfig)?.config?.integrator ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.integrator ?? undefined,
     fromChain:
-      (theme.lightConfig || theme.darkConfig)?.config?.fromChain ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.fromChain ?? undefined,
     toChain:
-      (theme.lightConfig || theme.darkConfig)?.config?.toChain ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.toChain ?? undefined,
     toToken:
-      (theme.lightConfig || theme.darkConfig)?.config?.toToken ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.toToken ?? undefined,
     fromToken:
-      (theme.lightConfig || theme.darkConfig)?.config?.fromToken ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.fromToken ?? undefined,
     hiddenUI:
-      (theme.lightConfig || theme.darkConfig)?.config?.hiddenUI ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.hiddenUI ?? undefined,
     variant:
-      (theme.lightConfig || theme.darkConfig)?.config?.variant ?? undefined,
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.variant ?? undefined,
     chains:
-      (theme.lightConfig || theme.darkConfig)?.config?.chains ?? undefined,
-    allowedBridges: theme.Bridges?.map((i) => i.key),
-    allowedExchanges: theme.Exchanges?.map((i) => i.key),
+      ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config?.chains ?? undefined,
+    allowedBridges: (theme.vars || theme).Bridges?.map((i) => i.key),
+    allowedExchanges: (theme.vars || theme).Exchanges?.map((i) => i.key),
   };
 
   return result;
@@ -114,7 +114,7 @@ export function formatTheme(theme: PartnerThemesAttributes) {
 
   const formattedMUITheme = {
     // @ts-expect-error
-    ...(theme.lightConfig || theme.darkConfig).customization,
+    ...((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig).customization,
     components: {
       Background: {
         styleOverrides: {
@@ -141,15 +141,15 @@ export function formatTheme(theme: PartnerThemesAttributes) {
   };
 
   const formattedWidgetTheme =
-    (theme.lightConfig || theme.darkConfig)?.config ?? {};
+    ((theme.vars || theme).lightConfig || (theme.vars || theme).darkConfig)?.config ?? {};
 
   return {
     config,
     activeMUITheme: formattedMUITheme,
     activeWidgetTheme: formattedWidgetTheme,
-    themeName: theme.uid,
+    themeName: (theme.vars || theme).uid,
   };
 }
 
 export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) =>
-  theme.lightConfig ? 'light' : 'dark';
+  (theme.vars || theme).lightConfig ? 'light' : 'dark';

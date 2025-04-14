@@ -5,13 +5,13 @@ import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, lighten, styled } from '@mui/material/styles';
 
 const MessageCard = styled(Box)(({ theme }) => ({
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: (theme.vars || theme).shape.borderRadius,
   position: 'relative',
   whiteSpace: 'pre-line',
   margin: 'auto',
   width: '100%',
   padding: theme.spacing(2, 3),
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 416,
   },
@@ -48,7 +48,7 @@ export const InfoMessageCardTitle = styled(Box)(({ theme }) => ({
   color:
     lighten(theme.palette.info.main, 0.24),
   ...theme.applyStyles("light", {
-    color: theme.palette.info.main
+    color: (theme.vars || theme).palette.info.main
   })
 }));
 
@@ -62,5 +62,5 @@ export const InfoMessageCardClickable = styled(MessageCard)(({ theme }) => ({
 }));
 
 export const InfoMessageCardSubtitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.black.main,
+  color: (theme.vars || theme).palette.black.main,
 }));

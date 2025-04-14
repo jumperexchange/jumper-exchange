@@ -14,7 +14,7 @@ export const BlogArticleWrapper = styled(Box)(({ theme }) => ({
     top: -200,
     bottom: 0,
     height: 'calc( 100% + 200px )',
-    background: theme.palette.white.main,
+    background: (theme.vars || theme).palette.white.main,
   },
 }));
 

@@ -8,14 +8,14 @@ import { IconButtonPrimary } from '../IconButton.style';
 
 export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',
   gap: theme.spacing(1.5),
   alignItems: 'center',
-  backgroundColor: theme.palette.bgSecondary.main,
-  boxShadow: theme.shadows[1],
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  boxShadow: (theme.vars || theme).shadows[1],
   borderRadius: '32px',
   cursor: 'pointer',
   padding: theme.spacing(6),

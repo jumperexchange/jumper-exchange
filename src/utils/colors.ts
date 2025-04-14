@@ -8,6 +8,6 @@ export const getContrastAlphaColor = (theme: Theme, alpha: string | number) =>
     : `rgb(255 255 255 / ${alpha})`;
 
 export const getContrastTextColor = (theme: Theme, background?: string) =>
-  getContrastRatio(common.white, background ?? theme.palette.primary.main) >= 3
+  getContrastRatio(common.white, background ?? (theme.vars || theme).palette.primary.main) >= 3
     ? common.white
     : common.black;

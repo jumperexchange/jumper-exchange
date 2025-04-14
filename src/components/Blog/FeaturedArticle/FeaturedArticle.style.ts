@@ -8,9 +8,9 @@ import Link from 'next/link';
 export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   display: 'grid',
   gridTemplateRows: '1fr',
   textDecoration: 'none',
@@ -66,7 +66,7 @@ export const FeaturedArticleMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   fontSize: '16px',
   alignItems: 'center',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   marginTop: theme.spacing(2),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,
@@ -96,7 +96,7 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     borderRadius: '14px',
     alignSelf: 'center',
-    boxShadow: theme.shadows[1],
+    boxShadow: (theme.vars || theme).shadows[1],
   },
 }));
 
@@ -108,7 +108,7 @@ export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   userSelect: 'none',
   transform: 'unset',
   alignSelf: 'flex-start',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.up('md' as Breakpoint)]: {
     alignSelf: 'center',
   },
@@ -155,7 +155,7 @@ export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
 
 export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   // color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
   flexDirection: 'column',
   alignSelf: 'center',
@@ -195,7 +195,7 @@ export const FeaturedArticleDetails = styled(Box)(({ theme }) => ({
 
 export const FeaturedArticleTitle = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   marginBottom: theme.spacing(3),
   marginTop: theme.spacing(3),
   overflow: 'hidden',

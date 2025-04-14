@@ -15,8 +15,8 @@ export const Tag = styled(Typography, {
   textWrap: 'nowrap',
   width: 'fit-content',
   backgroundColor:
-    theme.palette.alphaLight300.main,
-  color: theme.palette.text.primary,
+    (theme.vars || theme).palette.alphaLight300.main,
+  color: (theme.vars || theme).palette.text.primary,
   userSelect: 'none',
   borderRadius: '24px',
   flexShrink: 0,

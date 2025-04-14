@@ -101,7 +101,7 @@ export const useMainMenuContent = () => {
           fill:
             theme.palette.mode === 'light'
               ? theme.palette.grey[700]
-              : alpha(theme.palette.text.primary, 0.88),
+              : alpha(theme.palette.white.main, 0.88),
         },
       },
       showMoreIcon: false,
@@ -219,7 +219,7 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Discord',
-      prefixIcon: <Discord color={theme.palette.text.primary} />,
+      prefixIcon: <Discord color={(theme.vars || theme).palette.text.primary} />,
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
@@ -247,7 +247,7 @@ export const useMainMenuContent = () => {
       prefixIcon: (
         <Discord
           color={
-            theme.palette.mode === 'light'
+            mode === 'light'
               ? theme.palette.primary.main
               : theme.palette.white.main
           }

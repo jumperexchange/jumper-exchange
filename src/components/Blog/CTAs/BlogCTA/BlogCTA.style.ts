@@ -42,7 +42,7 @@ export const BlogCtaTitle = styled(Box)(({ theme }) => ({
   fontFamily: urbanist.style.fontFamily,
   fontWeight: 700,
   color:
-    theme.palette.accent1Alt.main,
+    (theme.vars || theme).palette.accent1Alt.main,
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
@@ -52,7 +52,7 @@ export const BlogCtaTitle = styled(Box)(({ theme }) => ({
     textDecoration: 'auto',
   },
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 }));
 

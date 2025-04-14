@@ -46,7 +46,7 @@ export const WelcomeContent = styled(Box)(() => ({
 export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
   marginTop: 2,
   color:
-    theme.palette.accent1Alt.main,
+    (theme.vars || theme).palette.accent1Alt.main,
   '& > .link-jumper': {
     fontWeight: 700,
     color: 'inherit',
@@ -58,7 +58,7 @@ export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
     lineHeight: '32px',
   },
   ...theme.applyStyles("light", {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   })
 }));
 

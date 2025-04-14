@@ -61,7 +61,7 @@ export default async function NotFound() {
               <SettingsStoreProvider welcomeScreenClosed={true}>
                 <WalletProvider>
                   <Background />
-                  <NavbarContainer>
+                  <NavbarContainer enableColorOnDark>
                     <Link component={RouterLink} href="/">
                       <Logo variant="default" />
                     </Link>
