@@ -181,7 +181,7 @@ function Task({
                           component={'span'}
                           mr={'8px'}
                           sx={(theme) => ({
-                            color: theme.palette.text.primary,
+                            color: (theme.vars || theme).palette.text.primary,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             maxWidth: 208,
@@ -194,7 +194,7 @@ function Task({
                         </Typography>
                         <ArrowForwardIcon
                           style={{
-                            color: theme.palette.text.primary,
+                            color: (theme.vars || theme).palette.text.primary,
                           }}
                         />
                       </InstructionsAccordionLinkBox>
@@ -231,7 +231,7 @@ function Task({
                     }
                     loadingIndicator={
                       <CircularProgress
-                        sx={(theme) => ({ color: theme.palette.text.primary })}
+                        sx={(theme) => ({ color: (theme.vars || theme).palette.text.primary })}
                         size={16}
                       />
                     }
@@ -255,7 +255,7 @@ function Task({
                         border: '1px solid #E5452F!important',
                       },
                       '&.MuiButton-loading': {
-                        border: `1px solid ${theme.palette.text.primary}!important`,
+                        border: `1px solid ${(theme.vars || theme).palette.text.primary}!important`,
                       },
                     })}
                   >
