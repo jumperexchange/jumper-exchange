@@ -13,7 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.1",
-    "@lifi/explorer": "^0.2.1",
+    "@lifi/explorer": "^0.2.2",
     "@lifi/sdk": "^3.6.7",
     "@lifi/wallet-management": "^3.7.3",
     "@lifi/widget": "^3.18.4",
