@@ -1,8 +1,11 @@
 'use client';
 import { useMetaTag } from '@/hooks/useMetaTag';
-import { useThemeStore } from '@/stores/theme';
+import { ThemeStoreProvider, useThemeStore } from '@/stores/theme';
 import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import { ThemeProvider as MuiThemeProvider, useColorScheme } from '@mui/material/styles';
+import {
+  ThemeProvider as MuiThemeProvider,
+  useColorScheme,
+} from '@mui/material/styles';
 import { useEffect, useMemo } from 'react';
 import type { ThemeProviderProps } from './types';
 import {
@@ -10,50 +13,87 @@ import {
   getMuiTheme,
   getPartnerTheme,
   getWidgetTheme,
+  getWidgetThemeV2
 } from './utils';
 import { useMediaQuery } from '@mui/material';
 import { themeCustomized } from 'src/theme/theme';
+import { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
+import { ThemeProps } from 'src/types/theme';
 
 export function ThemeProviderBase({
   children,
-  activeTheme
+  themes,
 }: ThemeProviderProps) {
   const { mode, setMode } = useColorScheme();
-  const [setActiveTheme] = useThemeStore((state) => [state.setActiveTheme])
-  const [themes, setConfigTheme, setWidgetTheme] = useThemeStore((state) => [
-    state.partnerThemes,
-    state.setConfigTheme,
-    state.setWidgetTheme,
-  ]);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  // const [setActiveTheme] = useThemeStore((state) => [state.setActiveTheme]);
+  // const [setConfigTheme, setWidgetTheme] = useThemeStore((state) => [
+  //   state.setConfigTheme,
+  //   state.setWidgetTheme,
+  // ]);
+
+  console.log('canIgetmode', mode)
 
   const metaTheme = useMetaTag('partner-theme');
 
-  const partnerTheme = metaTheme || activeTheme || 'default';
+  const partnerTheme = metaTheme || 'default';
   const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
 
-  const effectiveThemeMode = getEffectiveThemeMode(
-    (isPartnerTheme && isDarkOrLightThemeMode(isPartnerTheme)) || mode,
-    'default',
-  );
+  console.log('---', mode);
 
-  console.log('---', mode)
+  // const currentMuiTheme = useMemo(
+  //   () => getMuiTheme(themes, partnerTheme, mode),
+  //   [effectiveThemeMode, partnerTheme, themes],
+  // );
 
-  const currentMuiTheme = useMemo(
-    () => getMuiTheme(themes, partnerTheme, mode),
-    [effectiveThemeMode, partnerTheme, themes],
-  );
-
-  useEffect(() => {
-    setWidgetTheme(getWidgetTheme(currentMuiTheme, partnerTheme, themes));
-    setConfigTheme(formatConfig(getPartnerTheme(themes, partnerTheme)));
-    setActiveTheme(partnerTheme);
-    setMode(effectiveThemeMode);
+/*   useEffect(() => {
+    console.log('rerender widge theme')
+    setWidgetTheme(getWidgetThemeV2(
+      mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode,
+      partnerTheme,
+      themes,
+    ));
+    // setConfigTheme(formatConfig(getPartnerTheme(themes, partnerTheme)));
+    // setActiveTheme(partnerTheme);
+    // setMode(mode);
   }, [
-    currentMuiTheme,
-    effectiveThemeMode,
+    mode,
     partnerTheme,
-    setConfigTheme,
-    setWidgetTheme,
+    themes,
+  ]); */
+
+  const themeStore = useMemo((): ThemeProps => {
+    const metaElement =
+      typeof window !== 'undefined'
+        ? document.querySelector('meta[name="partner-theme"]')
+        : undefined;
+    const metaTheme = metaElement?.getAttribute('content');
+    // const partnerTheme = metaTheme || activeTheme || 'default';
+    // const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
+
+    console.log('mode to setup', mode, prefersDarkMode, mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode)
+
+    const widgetTheme = getWidgetThemeV2(
+      mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode,
+      partnerTheme,
+      themes,
+    );
+
+    console.log('RERENDER TO', widgetTheme.config.appearance)
+    console.log('widgetTheme', widgetTheme);
+    return {
+      // activeTheme: activeTheme || 'default',
+      // themeMode: effectiveThemeMode as ThemeMode,
+      configTheme: formatConfig(
+        getPartnerTheme(themes, partnerTheme),
+      ) as PartnerThemeConfig,
+      partnerThemes: themes!,
+      widgetTheme: widgetTheme,
+    };
+  }, [
+    // activeTheme,
+    mode,
     themes,
   ]);
 
@@ -62,15 +102,11 @@ export function ThemeProviderBase({
   // }, [setMode]);
 
   // TODO: remove this when the bug is fixed
-
-
-  console.log('themeCustomized', themeCustomized);
+  console.log('themeCustomized', themeStore.widgetTheme);
 
   return (
-    <MuiThemeProvider
-     modeStorageKey="jumper-mode"
-     theme={themeCustomized}>
-      {children}
-      </MuiThemeProvider>
+    <ThemeStoreProvider value={themeStore}>
+        {children}
+    </ThemeStoreProvider>
   );
 }

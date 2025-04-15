@@ -36,8 +36,10 @@ export const useThemeMenuContent = () => {
     });
     if (!validThemes.includes(theme)) {
       setWelcomeScreenClosed(true);
+
+      throw new Error('Deprecated, need to be re-implemented');
     }
-    setMode(theme);
+    // setMode(theme);
   };
 
   const themes: any = [

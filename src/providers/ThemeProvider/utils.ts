@@ -3,8 +3,8 @@ import type { ThemeMode } from '@/types/theme';
 import { formatTheme, getAvailableThemeModes } from '@/utils/formatTheme';
 import type { Theme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import { getDefaultWidgetTheme } from 'src/config/widgetConfig';
-import { darkTheme, lightTheme } from 'src/theme';
+import { getDefaultWidgetTheme, getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
+import { themeCustomized } from 'src/theme/theme';
 
 export function getPartnerTheme(
   themes?: PartnerThemesData[],
@@ -14,24 +14,26 @@ export function getPartnerTheme(
 }
 
 export function getMuiTheme(
+  themeMode: ThemeMode,
   themes?: PartnerThemesData[],
   activeTheme?: string,
-  themeMode?: ThemeMode,
 ) {
   const partnerTheme = getPartnerTheme(themes, activeTheme);
 
+  console.log('getMuiTheme', themeCustomized, partnerTheme, themeMode);
+
   if (!partnerTheme) {
     if (['light', 'system'].includes(themeMode!)) {
-      return lightTheme;
+      return deepmerge(themeCustomized, themeCustomized.colorSchemes['light']);
     } else {
-      return darkTheme;
+      return deepmerge(themeCustomized, themeCustomized.colorSchemes['dark']);
     }
   }
 
   const formattedTheme = formatTheme(partnerTheme);
   const baseTheme = getAvailableThemeModes(partnerTheme).includes('light')
-    ? lightTheme
-    : darkTheme;
+    ? themeCustomized.colorSchemes['light']
+    : themeCustomized.colorSchemes['dark'];
 
   return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
@@ -43,6 +45,8 @@ export function getWidgetTheme(
 ) {
   const defaultWidgetTheme = getDefaultWidgetTheme(currentTheme);
   const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
+
+  console.log('partnerThemeAttributes', partnerThemeAttributes);
 
   const widgetTheme = partnerThemeAttributes
     ? {
@@ -56,15 +60,22 @@ export function getWidgetTheme(
   return widgetTheme;
 }
 
-/**
- * If resolved theme is system we need to try read from cookie first
- */
-export function getEffectiveThemeMode(
-  themeMode?: ThemeMode,
-  resolvedTheme?: string,
-): ThemeMode {
-  if (resolvedTheme === 'system') {
-    return themeMode || 'system';
-  }
-  return (resolvedTheme || themeMode || 'system') as ThemeMode;
+export function getWidgetThemeV2(
+  mode: Theme,
+  activeTheme?: string,
+  themes?: PartnerThemesData[],
+) {
+  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode);
+  const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
+
+  const widgetTheme = partnerThemeAttributes
+    ? {
+        config: deepmerge(
+          defaultWidgetTheme.config,
+          formatTheme(partnerThemeAttributes).activeWidgetTheme,
+        ),
+      }
+    : defaultWidgetTheme;
+
+  return widgetTheme;
 }

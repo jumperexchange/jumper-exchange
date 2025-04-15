@@ -7,12 +7,14 @@ import { useEffect, useMemo } from 'react';
 import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
 import { ThemeProviderBase } from './ThemeProviderBase';
 import type { ThemeProviderProps } from './types';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import {
   getEffectiveThemeMode,
   getMuiTheme,
   getPartnerTheme,
   getWidgetTheme,
 } from './utils';
+import { themeCustomized } from 'src/theme/theme';
 
 /**
  * App's theme provider component.
@@ -23,41 +25,12 @@ export function ThemeProvider({
   activeTheme,
   themes,
 }: ThemeProviderProps) {
-  const mode = 'light';
-  const themeStore = useMemo((): ThemeProps => {
-    const metaElement =
-      typeof window !== 'undefined'
-        ? document.querySelector('meta[name="partner-theme"]')
-        : undefined;
-    const metaTheme = metaElement?.getAttribute('content');
-    const partnerTheme = metaTheme || activeTheme || 'default';
-    const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
-    const effectiveThemeMode = getEffectiveThemeMode(
-      isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme) : mode,
-    );
-
-    const widgetTheme = getWidgetTheme(
-      getMuiTheme(themes, partnerTheme, effectiveThemeMode),
-      partnerTheme,
-      themes,
-    );
-    return {
-      activeTheme: activeTheme || 'default',
-      themeMode: effectiveThemeMode as ThemeMode,
-      configTheme: formatConfig(
-        getPartnerTheme(themes, partnerTheme),
-      ) as PartnerThemeConfig,
-      partnerThemes: themes!,
-      widgetTheme: widgetTheme,
-    };
-  }, [activeTheme, mode, themes]);
-
   return (
-    <ThemeStoreProvider value={themeStore}>
+    <>
       <CssBaseline />
-      <ThemeProviderBase activeTheme={activeTheme}>
-        {children}
-      </ThemeProviderBase>
-    </ThemeStoreProvider>
+      <MuiThemeProvider modeStorageKey="jumper-mode" theme={themeCustomized}>
+        <ThemeProviderBase themes={themes}>{children}</ThemeProviderBase>
+      </MuiThemeProvider>
+    </>
   );
 }

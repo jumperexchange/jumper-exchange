@@ -171,24 +171,22 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-      <InitColorSchemeScript attribute="class" defaultMode="system" />
-      <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+        <InitColorSchemeScript attribute="class" defaultMode="system" />
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
             <TranslationsProvider
               namespaces={[defaultNS]}
               locale={lng}
               resources={resources}
             >
-              {/* <NextThemeProvider enableSystem enableColorScheme> */}
-                <ThemeProvider
-                  themes={partnerThemes.data}
-                  activeTheme={'default'}
-                  >
-                  <SettingsStoreProvider welcomeScreenClosed={true}>
-                    <WalletProvider>{children}</WalletProvider>
-                  </SettingsStoreProvider>
-                </ThemeProvider>
-              {/* </NextThemeProvider> */}
+              <ThemeProvider
+                themes={partnerThemes.data}
+                activeTheme={'default'}
+              >
+                <SettingsStoreProvider welcomeScreenClosed={true}>
+                  <WalletProvider>{children}</WalletProvider>
+                </SettingsStoreProvider>
+              </ThemeProvider>
             </TranslationsProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>

@@ -30,7 +30,8 @@ import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
-import { useColorScheme } from '@mui/material';
+import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
+import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 
 export function Widget({
   starterVariant,
@@ -45,10 +46,21 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [widgetTheme, configTheme] = useThemeStore((state) => [
-    state.widgetTheme,
+  const theme = useTheme();
+  const [
+    // widgetTheme,
+     configTheme] = useThemeStore((state) => [
+    // state.widgetTheme,
     state.configTheme,
   ]);
+
+    const { mode } = useColorScheme();
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+
+  const widgetTheme = getWidgetThemeV2(
+    mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode);
+  console.log('WIDGETTHEME EFFECT', widgetTheme)
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
@@ -327,7 +339,7 @@ export function Widget({
     integratorStringByType,
   ]);
 
-  console.log('Widget config', config);
+  console.log('Widget config', config, widgetTheme);
 
   return (
     <WidgetWrapper
