@@ -47,10 +47,7 @@ export function Widget({
   autoHeight,
 }: WidgetProps) {
   const theme = useTheme();
-  const [
-    // widgetTheme,
-     configTheme] = useThemeStore((state) => [
-    // state.widgetTheme,
+  const [configTheme] = useThemeStore((state) => [
     state.configTheme,
   ]);
 
@@ -60,7 +57,6 @@ export function Widget({
 
   const widgetTheme = getWidgetThemeV2(
     mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode);
-  console.log('WIDGETTHEME EFFECT', widgetTheme)
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
@@ -157,7 +153,7 @@ export function Widget({
     widgetEvents,
   ]);
 
-  const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
+  const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
@@ -338,8 +334,6 @@ export function Widget({
     widgetTheme.config.theme,
     integratorStringByType,
   ]);
-
-  console.log('Widget config', config, widgetTheme);
 
   return (
     <WidgetWrapper

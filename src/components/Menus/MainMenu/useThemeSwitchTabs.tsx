@@ -16,9 +16,6 @@ import { useSuperfest } from 'src/hooks/useSuperfest';
 
 export const useThemeSwitchTabs = () => {
   const { mode, setMode } = useColorScheme();
-  if (!mode) {
-    return null;
-  }
   const { t } = useTranslation();
   // const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
@@ -128,7 +125,7 @@ export const useThemeSwitchTabs = () => {
         />
       ),
       onClick: () => {
-        handleSwitchMode()
+        handleSwitchMode('system');
       },
     },
   ];

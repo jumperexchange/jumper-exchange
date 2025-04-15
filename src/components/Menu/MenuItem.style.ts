@@ -126,7 +126,7 @@ export const MenuLabel = styled('div')<MenuLabelProps>(({ theme }) => ({
 }));
 
 export interface MenuItemLabelProps extends TypographyProps {
-  prefixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
 }
 
 export const MenuItemButtonLabel = styled(Typography, {

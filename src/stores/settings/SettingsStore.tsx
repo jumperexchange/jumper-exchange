@@ -9,20 +9,17 @@ import { useColorScheme, useMediaQuery } from '@mui/material';
 export const SettingsStoreContext = createContext<SettingsStore | null>(null);
 
 export const SettingsStoreProvider: React.FC<
-  PropsWithChildren<{ welcomeScreenClosed: boolean }>
+  PropsWithChildren<{ welcomeScreenClosed?: boolean }>
 > = ({ children, welcomeScreenClosed }) => {
   const storeRef = useRef<SettingsStore | null>(null);
+
+  const { mode } = useColorScheme();
   if (!storeRef.current) {
     storeRef.current = createSettingsStore({ welcomeScreenClosed });
   }
 
-
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-  const { mode, setMode } = useColorScheme();
-
   if (!mode) {
-    return <div>prefersDarkMode: {prefersDarkMode.toString()}</div>;
+    return null;
   }
 
   return (

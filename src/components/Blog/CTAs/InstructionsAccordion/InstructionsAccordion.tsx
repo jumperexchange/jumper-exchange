@@ -1,4 +1,3 @@
-import { type ThemeMode } from 'src/types/theme';
 import { InstructionsAccordionContainer, InstructionsAccordionItem } from '.';
 
 interface InstructionsItemLink {

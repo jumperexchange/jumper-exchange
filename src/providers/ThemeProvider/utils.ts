@@ -1,10 +1,11 @@
 import type { PartnerThemesData } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { formatTheme, getAvailableThemeModes } from '@/utils/formatTheme';
 import type { Theme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 import { getDefaultWidgetTheme, getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
 import { themeCustomized } from 'src/theme/theme';
+import { Mode } from 'node_modules/@mui/system/esm/cssVars/useCurrentColorScheme';
+import { DefaultColorScheme } from 'node_modules/@mui/material/esm/styles/createThemeWithVars';
 
 export function getPartnerTheme(
   themes?: PartnerThemesData[],
@@ -13,8 +14,9 @@ export function getPartnerTheme(
   return themes?.find((d) => d?.uid === activeTheme);
 }
 
+// @deprecated
 export function getMuiTheme(
-  themeMode: ThemeMode,
+  themeMode: any,
   themes?: PartnerThemesData[],
   activeTheme?: string,
 ) {
@@ -38,6 +40,7 @@ export function getMuiTheme(
   return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
 
+// @deprecated
 export function getWidgetTheme(
   currentTheme: Theme,
   activeTheme?: string,
@@ -61,11 +64,11 @@ export function getWidgetTheme(
 }
 
 export function getWidgetThemeV2(
-  mode: Theme,
+  mode: Mode,
   activeTheme?: string,
   themes?: PartnerThemesData[],
 ) {
-  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode);
+  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode as DefaultColorScheme);
   const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
 
   const widgetTheme = partnerThemeAttributes

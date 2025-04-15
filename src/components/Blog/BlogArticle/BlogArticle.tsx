@@ -32,7 +32,6 @@ import {
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { readingTime } from '@/utils/readingTime';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
@@ -73,9 +72,7 @@ export const BlogArticle = ({
           <BlogArticleTopHeader>
             {tags?.[0]?.Title ? (
               <Tag
-                sx={[mainTag?.TextColor && {
-                  color: mainTag.TextColor,
-                }]}
+                sx={mainTag?.TextColor ? { color: mainTag.TextColor } : undefined}
                 backgroundColor={mainTag?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"

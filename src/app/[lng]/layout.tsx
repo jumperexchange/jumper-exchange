@@ -183,7 +183,7 @@ export default async function RootLayout({
                 themes={partnerThemes.data}
                 activeTheme={'default'}
               >
-                <SettingsStoreProvider welcomeScreenClosed={true}>
+                <SettingsStoreProvider>
                   <WalletProvider>{children}</WalletProvider>
                 </SettingsStoreProvider>
               </ThemeProvider>

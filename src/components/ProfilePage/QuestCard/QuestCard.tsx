@@ -272,7 +272,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                 )}
                 <QuestCardButtonCtaLabel
                   variant="bodyXSmallStrong"
-                  sx={[isTraitsGarded && !isUnlocked && { margin: '0 8px' }]}
+                  sx={isTraitsGarded && !isUnlocked ? { margin: '0 8px' } : {}}
                 >
                   {buttonLabel}
                 </QuestCardButtonCtaLabel>

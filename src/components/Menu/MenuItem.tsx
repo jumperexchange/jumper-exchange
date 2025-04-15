@@ -23,8 +23,8 @@ interface MenuItemProps {
   label?: string;
   onClick?: MouseEventHandler<HTMLLIElement>;
   triggerSubMenu?: MenuKeysEnum;
-  prefixIcon?: JSX.Element | string;
-  suffixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
+  suffixIcon?: React.JSX.Element | string;
 }
 
 export const MenuItem = ({

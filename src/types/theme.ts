@@ -8,7 +8,6 @@ export type ActiveTheme = 'default' | string;
 
 export interface ThemeProps {
   partnerThemes: PartnerThemesData[];
-  activeTheme: ActiveTheme;
   widgetTheme: { config: Partial<WidgetConfig> };
   configTheme: Partial<PartnerThemeConfig>;
 }

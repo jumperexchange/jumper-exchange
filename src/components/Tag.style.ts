@@ -2,7 +2,7 @@ import type { TypographyProps } from '@mui/material';
 import { Typography, alpha, styled } from '@mui/material';
 
 export interface TagProps extends TypographyProps {
-  component?: keyof JSX.IntrinsicElements;
+  component?: keyof React.JSX.IntrinsicElements;
   backgroundColor?: string;
   color?: string;
 }

@@ -6,7 +6,6 @@ import {
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import type { StrapiMediaAttributes } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { isValidElement, type JSX, type ReactElement } from 'react';

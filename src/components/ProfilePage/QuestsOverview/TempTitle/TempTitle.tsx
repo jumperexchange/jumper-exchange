@@ -51,7 +51,7 @@ export const TempTitle = () => {
           style={{
             "--PROFILE_CAMPAIGN_LIGHT_COLOR": PROFILE_CAMPAIGN_LIGHT_COLOR,
             "--PROFILE_CAMPAIGN_DARK_COLOR": PROFILE_CAMPAIGN_DARK_COLOR
-          }}>
+          } as React.CSSProperties}>
           {/*Title*/}
         </EarnedTypography>
         {/* <Typography

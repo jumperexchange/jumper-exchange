@@ -91,13 +91,14 @@ const DigitTokenSymbolCard = ({
             variant="titleXSmall"
             className="content"
             marginTop={'4px'}
-            sx={[(theme) => ({
+            sx={(theme) => ({
               marginTop: 1,
               typography: {
                 xs: theme.typography.titleXSmall,
                 sm: theme.typography.titleXSmall,
-              }
-            }), hasDeposited && { color: theme.palette.primary.main }]}
+              },
+              ...(hasDeposited && { color: theme.palette.primary.main }),
+            })}
             key={`berachain-market-card-token-label`}
           >
             {digit}

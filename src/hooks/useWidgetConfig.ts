@@ -63,7 +63,7 @@ export const useWidgetConfig = ({
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const integratorStringByType = useMemo(() => {
     if (configTheme?.integrator) {
-      return config(theme.vars || theme).integrator;
+      return configTheme.integrator;
     }
     if (widgetIntegrator) {
       return widgetIntegrator;
@@ -78,7 +78,7 @@ export const useWidgetConfig = ({
     }
 
     return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [config(theme.vars || theme).integrator, widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
   const { openWalletMenu } = useWalletMenu();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
@@ -106,10 +106,10 @@ export const useWidgetConfig = ({
     //todo: to clean this logic to explain better the split between parameters and Strapi pre-filled information
     const formParameters: Record<string, number | string | undefined> = {
       fromChain:
-        config(theme.vars || theme).fromChain ?? (fromChain || widgetCache.fromChainId),
-      fromToken: config(theme.vars || theme).fromToken ?? (fromToken || widgetCache.fromToken),
-      toChain: config(theme.vars || theme).toChain ?? toChain,
-      toToken: config(theme.vars || theme).toToken ?? toToken,
+        configTheme.fromChain ?? (fromChain || widgetCache.fromChainId),
+      fromToken: configTheme.fromToken ?? (fromToken || widgetCache.fromToken),
+      toChain: configTheme.toChain ?? toChain,
+      toToken: configTheme.toToken ?? toToken,
       fromAmount: fromAmount,
     };
 
@@ -124,14 +124,14 @@ export const useWidgetConfig = ({
     }
 
     const mergedWidgetTheme = deepmerge(
-      widget(theme.vars || theme).config.theme,
+      widgetTheme.config.theme,
       customWidgetTheme,
     );
 
     return {
       ...formParameters,
       variant:
-        config(theme.vars || theme).variant ??
+        configTheme.variant ??
         (starterVariant === 'refuel' ? 'compact' : 'wide'),
       subvariant:
         (starterVariant !== 'buy' &&
@@ -141,7 +141,7 @@ export const useWidgetConfig = ({
       walletConfig: {
         onConnect: openWalletMenu,
       },
-      chains: config(theme.vars || theme).chains ?? {
+      chains: configTheme.chains ?? {
         allow: allowChains || allowedChainsByVariant,
       },
       bridges: {
@@ -162,7 +162,7 @@ export const useWidgetConfig = ({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      appearance: widget(theme.vars || theme).config.appearance,
+      appearance: widgetTheme.config.appearance,
       theme: mergedWidgetTheme,
       keyPrefix: `jumper-${starterVariant}`,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -178,12 +178,12 @@ export const useWidgetConfig = ({
       tokens: tokens,
     };
   }, [
-    config(theme.vars || theme).fromChain,
-    config(theme.vars || theme).fromToken,
-    config(theme.vars || theme).toChain,
-    config(theme.vars || theme).toToken,
-    config(theme.vars || theme).variant,
-    config(theme.vars || theme).chains,
+    configTheme.fromChain,
+    configTheme.fromToken,
+    configTheme.toChain,
+    configTheme.toToken,
+    configTheme.variant,
+    configTheme.chains,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
     fromChain,
@@ -194,8 +194,8 @@ export const useWidgetConfig = ({
     toToken,
     fromAmount,
     memeListTokens,
-    widget(theme.vars || theme).config.theme,
-    widget(theme.vars || theme).config.appearance,
+    widgetTheme.config.theme,
+    widgetTheme.config.appearance,
     customWidgetTheme,
     starterVariant,
     partnerName,

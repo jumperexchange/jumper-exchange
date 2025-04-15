@@ -36,7 +36,7 @@ export default async function PartnerThemeLayout({
   params: Params;
 }) {
   const { partnerTheme } = await params;
-  permanentRedirect('/'); // Disabling the partnerTheme pages for now
+  redirect('/'); // Disabling the partnerTheme pages for now
   return;
 
   // Validate partner theme format

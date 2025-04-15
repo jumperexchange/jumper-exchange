@@ -22,11 +22,6 @@ export const createThemeStore = (props: ThemeProps) =>
             widgetTheme,
           });
         },
-        setActiveTheme: (theme: string) => {
-          set({
-            activeTheme: theme,
-          });
-        },
       }),
       {
         name: 'jumper-theme-store',
@@ -56,7 +51,6 @@ export const createThemeStore = (props: ThemeProps) =>
         },
         partialize: (state) => {
           return {
-            activeTheme: state.activeTheme,
             configTheme: state.configTheme,
             widgetTheme: state.widgetTheme,
           };

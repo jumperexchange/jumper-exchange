@@ -1,6 +1,6 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
-import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
+import type { ComponentsOverrides, ComponentsVariants, CssVarsTheme } from '@mui/material';
 import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -80,7 +80,10 @@ declare module '@mui/material/styles' {
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
-    bgQuaternary?: PaletteOptions['primary'];
+    bgQuaternary?: {
+      main: string;
+      hover: string;
+    };
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -492,7 +495,7 @@ const palette = {
 }
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
-export const themeCustomized = extendTheme({
+export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme = extendTheme({
   cssVariables: true,
   cssVarPrefix: 'jumper',
   colorSchemeSelector: 'class',
@@ -1010,6 +1013,7 @@ export const themeCustomized = extendTheme({
           dark: '#E5E1EB',
         },
       },
+      // @ts-expect-error
       shadows: [
         'none',
         '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
@@ -1100,6 +1104,7 @@ export const themeCustomized = extendTheme({
           dark: '#302B52',
         },
       },
+      // @ts-expect-error
       shadows: [
         'none',
         '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',

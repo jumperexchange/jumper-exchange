@@ -30,10 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
-  const { mode, setMode } = useColorScheme();
-  if (!mode) {
-    return null;
-  }
+  const { mode } = useColorScheme();
   const { t, i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
   const router = useRouter();
@@ -73,7 +70,7 @@ export const useMainMenuContent = () => {
     mainMenu.push({
       children: (
         <Tabs
-          data={themeSwitchTabs}
+          data={themeSwitchTabs || []}
           value={mode === 'light' ? 0 : mode === 'dark' ? 1 : 2}
           ariaLabel="theme-switch-tabs"
           containerStyles={containerStyles}
