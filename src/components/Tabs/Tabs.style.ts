@@ -1,6 +1,5 @@
 'use client';
 
-import { getContrastAlphaColor } from '@/utils/colors';
 import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
 export const TabsContainer = styled(Tabs)(({ theme }) => ({

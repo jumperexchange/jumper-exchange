@@ -1,10 +1,12 @@
-import { useTheme } from '@mui/material';
+import { useColorScheme, useTheme } from '@mui/material';
 
 // jumper-icon
 export const JumperIcon = () => {
   const theme = useTheme();
+  const { mode } = useColorScheme();
+
   const mainCol =
-    theme.palette.mode === 'light'
+    mode === 'light'
       ? theme.palette.accent1.main
       : theme.palette.accent1Alt.main;
 

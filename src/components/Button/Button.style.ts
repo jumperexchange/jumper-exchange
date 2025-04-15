@@ -1,5 +1,4 @@
 'use client';
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { Button as MuiButton, alpha, darken } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';
@@ -37,7 +36,10 @@ export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
 }));
 
 export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.black.main, 0.08),
+  backgroundColor: alpha(theme.palette.white.main, 0.04),
+  ...theme.applyStyles('light', {
+    background: alpha(theme.palette.black.main, 0.08),
+  }),
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.12),
     ...theme.applyStyles('light', {
@@ -61,9 +63,6 @@ export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
       backgroundColor: alpha(theme.palette.black.main, 0.04),
     }),
   },
-  ...theme.applyStyles('dark', {
-    backgroundColor: alpha(theme.palette.white.main, 0.12),
-  }),
 }));
 
 export const SuperfestButton = styled(ButtonBase)(({ theme }) => ({

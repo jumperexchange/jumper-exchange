@@ -650,6 +650,29 @@ export const themeCustomized = extendTheme({
         },
       },
     },
+    Background: {
+      styleOverrides: {
+        root: ({ theme }: { theme: Theme }) => ({
+          position: 'fixed',
+          left: 0,
+          bottom: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          backgroundColor: (theme.vars || theme).palette.surface1.main,
+          ...theme.applyStyles('light', {
+            backgroundColor: (theme.vars || theme).palette.bg.main,
+          }),
+          // typed-safe access to the `variant` prop
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+          },
+        }),
+      },
+    },
   },
   typography: {
     fontFamily: [
@@ -907,30 +930,6 @@ export const themeCustomized = extendTheme({
   palette,
   colorSchemes: {
     light: {
-      components: {
-        Background: {
-          styleOverrides: {
-            // the slot name defined in the `slot` and `overridesResolver` parameters
-            // of the `styled` API
-            root: ({ theme }) => ({
-              position: 'fixed',
-              left: 0,
-              bottom: 0,
-              right: 0,
-              top: 0,
-              zIndex: -1,
-              overflow: 'hidden',
-              pointerEvents: 'none',
-              backgroundColor: (theme.vars || theme).palette.bg.main,
-              // typed-safe access to the `variant` prop
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-              },
-            }),
-          },
-        },
-      },
        palette: {
         ...palette,
         mode: 'light',
@@ -1018,29 +1017,6 @@ export const themeCustomized = extendTheme({
       ],
     },
     dark: {
-      components: {
-        Background: {
-          styleOverrides: {
-            // functions cannot merged because of mui... I know it's bad :(
-            root: ({ theme }: { theme: Theme }) => ({
-              position: 'fixed',
-              left: 0,
-              bottom: 0,
-              right: 0,
-              top: 0,
-              zIndex: -1,
-              overflow: 'hidden',
-              pointerEvents: 'none',
-              backgroundColor: (theme.vars || theme).palette.surface1.main,
-              // typed-safe access to the `variant` prop
-              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-              },
-            }),
-          },
-        },
-      },
       palette: {
         ...palette,
         mode: 'dark',

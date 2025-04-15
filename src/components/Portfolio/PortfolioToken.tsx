@@ -85,7 +85,7 @@ function PortfolioToken({ token }: PortfolioTokenProps) {
             },
           }}
         >
-          <Grid container display="flex" alignItems="center">
+          <Grid container display="flex" alignItems="center" sx={{ width: '100%' }}>
             <Grid size={2}>
               {hasMultipleChains ? (
                 <MuiAvatar>

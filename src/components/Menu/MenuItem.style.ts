@@ -5,7 +5,6 @@ import type {
 } from '@mui/material';
 import { alpha, MenuItem as MUIMenuItem, Typography } from '@mui/material';
 
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 

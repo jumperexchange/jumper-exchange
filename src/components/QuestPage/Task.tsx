@@ -32,7 +32,6 @@ import {
   InstructionsAccordionToggle,
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';

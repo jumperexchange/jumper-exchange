@@ -60,18 +60,18 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
           aria-label="close"
           onClick={() => setWalletMenuState(false)}
           sx={{
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
             '&:hover': {
               backgroundColor: alpha(theme.palette.text.primary, 0.04),
             },
           }}
-        >TOTO
+        >
           <CloseIcon />
         </IconButton>
         <WalletButton sx={{ width: 'auto' }} onClick={handleOpenWalletMenu}>
           <Typography
             sx={{
-              color: theme.palette.text.primary,
+              color: (theme.vars || theme).palette.text.primary,
             }}
             variant="bodySmallStrong"
           >

@@ -1,4 +1,3 @@
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, styled } from '@mui/material';
 import { IconButtonTertiary } from 'src/components/IconButton.style';

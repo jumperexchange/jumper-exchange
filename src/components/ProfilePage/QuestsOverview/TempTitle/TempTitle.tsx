@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import { Box, useColorScheme, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import {
@@ -11,9 +11,10 @@ import { EarnedTypography } from '../../Rewards/RewardsCarousel.style';
 
 export const TempTitle = () => {
   const theme = useTheme();
+  const { mode } = useColorScheme();
 
   const IMAGE_LOGO =
-    theme.palette.mode === 'light'
+    mode === 'light'
       ? PROFILE_CAMPAIGN_LIGHT_CHAIN
       : PROFILE_CAMPAIGN_DARK_CHAIN;
 
@@ -59,7 +60,7 @@ export const TempTitle = () => {
           lineHeight={'18px'}
           fontWeight={500}
           color={
-            theme.palette.mode === 'light'
+            mode === 'light'
               ? PROFILE_CAMPAIGN_LIGHT_COLOR
               : PROFILE_CAMPAIGN_DARK_COLOR
           }

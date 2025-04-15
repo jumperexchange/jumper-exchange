@@ -2,7 +2,6 @@
 import type { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import type { MenuListItem } from '@/types/internal';
-import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';

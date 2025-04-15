@@ -10,7 +10,6 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { DISCORD_URL } from '@/const/urls';
-import { getContrastAlphaColor } from '@/utils/colors';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { useTranslation } from 'react-i18next';
 import {

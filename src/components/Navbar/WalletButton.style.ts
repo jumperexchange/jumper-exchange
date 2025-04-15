@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
-import { getContrastAlphaColor } from 'src/utils/colors';
 import { ButtonTransparent } from '../Button';
 import { avatarMask12 } from '../Mask.style';
 

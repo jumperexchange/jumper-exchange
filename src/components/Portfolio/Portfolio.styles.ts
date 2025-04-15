@@ -40,8 +40,7 @@ export const CustomAccordion = styled(Accordion)<{ isExpanded?: boolean }>(
       padding: '16px',
       borderRadius: 12,
       '&:hover': {
-        backgroundColor:
-          lighten(theme.palette.surface2.main, 0.04),
+        backgroundColor: '#2c2844',
         borderRadius: '16px',
         ...theme.applyStyles("light", {
           backgroundColor: darken(theme.palette.surface2.main, 0.04)

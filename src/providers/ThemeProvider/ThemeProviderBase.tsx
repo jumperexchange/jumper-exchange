@@ -64,6 +64,9 @@ export function ThemeProviderBase({
 
   // TODO: remove this when the bug is fixed
 
+
+  console.log('themeCustomized', themeCustomized);
+
   return (
     <MuiThemeProvider theme={themeCustomized}>
       {children}

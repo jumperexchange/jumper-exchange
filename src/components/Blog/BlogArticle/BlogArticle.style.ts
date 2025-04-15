@@ -8,7 +8,6 @@ import {
   alpha,
 } from '@mui/material';
 
-import { getContrastAlphaColor } from '@/utils/colors';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { urbanist } from 'src/fonts/fonts';

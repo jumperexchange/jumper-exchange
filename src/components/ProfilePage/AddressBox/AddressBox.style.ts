@@ -52,10 +52,11 @@ export const AddressBoxContainer = styled(Box, {
     {
       props: ({ imgUrl }) => !imgUrl,
       style: {
-        background:
-          theme.palette.mode === 'light'
-            ? `linear-gradient(to bottom, ${(theme.vars || theme).palette.primary.main} 50%, ${(theme.vars || theme).palette.grey[100]} 50%)`
-            : `linear-gradient(to bottom, ${(theme.vars || theme).palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
+        background: `linear-gradient(to bottom, ${(theme.vars || theme).palette.accent1Alt.main} 50%, ${'transparent'} 50%)`,
+
+        ...theme.applyStyles('light', {
+          background: `linear-gradient(to bottom, ${(theme.vars || theme).palette.primary.main} 50%, ${(theme.vars || theme).palette.grey[100]} 50%)`,
+        }),
       },
     },
     {

@@ -1,4 +1,3 @@
-import { getContrastAlphaColor } from '@/utils/colors';
 import { alpha, IconButton as MuiIconButtom, styled } from '@mui/material';
 
 export const ProfileIconButton = styled(MuiIconButtom)(({ theme }) => ({

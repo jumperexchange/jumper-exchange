@@ -47,23 +47,21 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         paddingY: '16px',
         display: 'flex',
         '&:hover': {
-          backgroundColor:
-            lighten(theme.palette.surface2.main, 0.04),
-          ...theme.applyStyles("light", {
-            backgroundColor: darken(theme.palette.surface2.main, 0.04)
-          })
+          backgroundColor: '#2c2844',
+          ...theme.applyStyles('light', {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          }),
         },
         '&:last-child:hover': {
           borderRadius: '0 0 16px 16px',
-          backgroundColor:
-            darken(theme.palette.surface2.main, 0.04),
-          ...theme.applyStyles("light", {
-            backgroundColor: darken(theme.palette.surface2.main, 0.04)
-          })
+          backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          ...theme.applyStyles('light', {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          }),
         },
       })}
     >
-      <Grid container display="flex" alignItems="center">
+      <Grid container display="flex" alignItems="center" sx={{ width: '100%' }}>
         <Grid textAlign="left" size={2}>
           <Badge
             overlap="circular"

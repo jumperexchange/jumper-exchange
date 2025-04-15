@@ -61,9 +61,16 @@ export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
     padding: '10px 24px',
     height: 40,
     width: '100%',
-    background: alpha(theme.palette.text.primary, 0.04),
+    background: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      background: alpha(theme.palette.black.main, 0.04),
+    }),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.text.primary, 0.08),
+      backgroundColor: alpha(theme.palette.white.main, 0.08),
+
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.08),
+    }),
     },
   }),
 );

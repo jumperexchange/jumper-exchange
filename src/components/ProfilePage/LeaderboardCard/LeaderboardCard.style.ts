@@ -71,6 +71,9 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
     height: 64,
     background: 'transparent',
     borderRadius: '16px',
+    ...theme.applyStyles("light", {
+      background: (theme.vars || theme).palette.white.main
+    }),
     '&:hover': {
       backgroundColor:
         (theme.vars || theme).palette.alphaLight300.main,

@@ -4,7 +4,6 @@ import { alpha, Box } from '@mui/material';
 import { darken, lighten, styled } from '@mui/material/styles';
 import { ButtonPrimary } from 'src/components/Button';
 import { IconButtonAlpha } from 'src/components/IconButton';
-import { getContrastAlphaColor } from 'src/utils/colors';
 import { InfoMessageCard } from '../../MessageCard';
 
 export const InfoAlertContainer = styled(Box)(({ theme }) => ({

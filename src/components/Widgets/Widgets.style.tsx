@@ -3,7 +3,7 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 import Image from 'next/image';
-import { DEFAULT_WELCOME_SCREEN_HEIGHT } from '../WelcomeScreen';
+import { DEFAULT_WELCOME_SCREEN_HEIGHT, WelcomeScreen } from '../WelcomeScreen';
 
 const GLOW_EFFECT_TOP_POSITION = '50%';
 const GLOW_EFFECT_TOP_OFFSET_POSITION = '5%';
@@ -15,13 +15,6 @@ export interface WidgetContainerProps {
 export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed }) => {
-  let opacity = 0;
-  if (!welcomeScreenClosed && theme.palette.mode === 'dark') {
-    opacity = 0.24;
-  } else if (!welcomeScreenClosed && theme.palette.mode === 'light') {
-    opacity = 0.12;
-  }
-
   return {
     display: 'flex',
     flexDirection: 'column',
@@ -58,15 +51,19 @@ export const WidgetContainer = styled(Box, {
       left: '50%',
       // default top position of glow-effect
       top: GLOW_EFFECT_TOP_POSITION,
-      opacity,
+      opacity: !welcomeScreenClosed ? 0.24 : 0,
+      ...theme.applyStyles('light', {
+        opacity: !welcomeScreenClosed ? 0.12 : 0,
+      }),
       [theme.breakpoints.up('lg' as Breakpoint)]: {
         // using vh here as well to make it a circle-ish glow
         maxWidth: '90vh',
         maxHeight: '90vh',
       },
-      ...theme.applyStyles("light", {
-        background: 'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);'
-      })
+      ...theme.applyStyles('light', {
+        background:
+          'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
+      }),
     },
     // radial shadow glow -> hover
     '&:hover:after': {},
@@ -99,7 +96,11 @@ export const WidgetContainer = styled(Box, {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
           '&:hover:after': {
-            opacity: theme.palette.mode === 'light' ? 0.34 : 0.48,
+            opacity: 0.48,
+
+            ...theme.applyStyles('light', {
+              opacity: 0.34,
+            }),
             // adjusting top position of glow-effect while hovering for "spot-light" effect
             top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
           },

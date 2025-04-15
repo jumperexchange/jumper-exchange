@@ -156,7 +156,6 @@ export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
 export const FeaturedArticleContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   color: (theme.vars || theme).palette.text.primary,
-  // color: theme.palette.mode === 'light' ? '#525252' : lighten('#525252', 0.8), //todo: add to theme
   flexDirection: 'column',
   alignSelf: 'center',
   justifyContent: 'flex-end',

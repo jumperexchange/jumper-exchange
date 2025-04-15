@@ -1,7 +1,6 @@
 'use client';
 
 import { ButtonSecondary } from '@/components/Button/Button.style';
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { ButtonProps } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 

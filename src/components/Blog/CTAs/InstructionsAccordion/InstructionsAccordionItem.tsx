@@ -1,4 +1,3 @@
-import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';

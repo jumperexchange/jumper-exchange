@@ -67,11 +67,15 @@ const circleAnimation = keyframes`
 
 // This `styled()` function invokes keyframes. `styled-components` only supports keyframes
 // in string templates. Do not convert these styles in JS object as it will break.
+// TODO: verify it if it works after migration
 export const CircularProgressPending = styled(MuiCircularProgress)`
-  color: ${({ theme }) =>
-    theme.palette.mode === 'light'
-      ? (theme.vars || theme).palette.primary.main
-      : (theme.vars || theme).palette.primary.light};
+  color: ${({ theme }) => (theme.vars || theme).palette.primary.light};
+
+    ${({ theme }) =>
+    theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.primary.main,
+    })}
+
   animation-duration: 3s;
   position: absolute;
   .${circularProgressClasses.circle} {

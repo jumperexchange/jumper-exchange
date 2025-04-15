@@ -17,7 +17,6 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
-import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -100,7 +99,7 @@ export const useMainMenuContent = () => {
         },
         '> button:hover svg': {
           fill:
-            theme.palette.mode === 'light'
+            mode === 'light'
               ? theme.palette.grey[700]
               : alpha(theme.palette.white.main, 0.88),
         },

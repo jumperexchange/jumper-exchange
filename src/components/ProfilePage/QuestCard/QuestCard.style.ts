@@ -98,7 +98,7 @@ export interface XPDisplayBoxProps extends BoxProps {
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'completed',
+  shouldForwardProp: (prop) => prop !== 'completed' && prop !== 'active',
 })<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
   color: (theme.vars || theme).palette.primary.main,
