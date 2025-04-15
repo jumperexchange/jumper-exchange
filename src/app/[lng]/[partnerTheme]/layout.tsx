@@ -2,7 +2,7 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import { FeatureCards } from '@/components/FeatureCards';
 import { partnerThemeSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import React from 'react';
 import { Layout as BaseLayout } from 'src/Layout';
 
@@ -36,6 +36,8 @@ export default async function PartnerThemeLayout({
   params: Params;
 }) {
   const { partnerTheme } = await params;
+  permanentRedirect('/'); // Disabling the partnerTheme pages for now
+  return;
 
   // Validate partner theme format
   const result = partnerThemeSchema.safeParse(partnerTheme);

@@ -3,7 +3,6 @@ import { useMetaTag } from '@/hooks/useMetaTag';
 import { useThemeStore } from '@/stores/theme';
 import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
 import { ThemeProvider as MuiThemeProvider, useColorScheme } from '@mui/material/styles';
-import { useTheme as useNextTheme } from 'next-themes';
 import { useEffect, useMemo } from 'react';
 import type { ThemeProviderProps } from './types';
 import {
@@ -68,7 +67,9 @@ export function ThemeProviderBase({
   console.log('themeCustomized', themeCustomized);
 
   return (
-    <MuiThemeProvider theme={themeCustomized}>
+    <MuiThemeProvider
+     modeStorageKey="jumper-mode"
+     theme={themeCustomized}>
       {children}
       </MuiThemeProvider>
   );

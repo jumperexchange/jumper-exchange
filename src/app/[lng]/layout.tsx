@@ -7,7 +7,6 @@ import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import i18nConfig from 'i18n-config';
 import type { Metadata } from 'next';
-import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import type { ReactNode } from 'react';

@@ -1,5 +1,4 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import {
@@ -11,11 +10,12 @@ import { useStrapi } from 'src/hooks/useStrapi';
 import { validThemes } from 'src/hooks/useWelcomeScreen';
 import type { PartnerThemesData } from 'src/types/strapi';
 import { useSettingsStore } from '@/stores/settings';
+import { useColorScheme } from '@mui/material';
 
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { mode, setMode } = useColorScheme();
   const setWelcomeScreenClosed = useSettingsStore(
     (state) => state.setWelcomeScreenClosed,
   );
@@ -37,7 +37,7 @@ export const useThemeMenuContent = () => {
     if (!validThemes.includes(theme)) {
       setWelcomeScreenClosed(true);
     }
-    setTheme(theme);
+    setMode(theme);
   };
 
   const themes: any = [
@@ -47,9 +47,9 @@ export const useThemeMenuContent = () => {
         handleThemeSwitch('system');
       },
       checkIcon:
-        resolvedTheme === 'dark' ||
-        resolvedTheme === 'light' ||
-        resolvedTheme === undefined,
+        mode === 'dark' ||
+        mode === 'light' ||
+        mode === undefined,
     },
   ];
 
@@ -61,7 +61,7 @@ export const useThemeMenuContent = () => {
         onClick: () => {
           handleThemeSwitch(el?.uid);
         },
-        checkIcon: resolvedTheme === el?.uid,
+        checkIcon: mode === el?.uid,
       }),
   );
 

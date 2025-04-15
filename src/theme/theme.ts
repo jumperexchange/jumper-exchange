@@ -494,6 +494,7 @@ const palette = {
 // in a separate 'createTheme' to allow listening to breakpoints set above
 export const themeCustomized = extendTheme({
   cssVariables: true,
+  cssVarPrefix: 'jumper',
   colorSchemeSelector: 'class',
   shape,
   components: {
