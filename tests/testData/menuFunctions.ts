@@ -39,8 +39,8 @@ export enum Theme {
 }
 export async function switchTheme(page, theme: Theme) {
   const themeSelector = {
-    [Theme.Light]: '#theme-switch-tabs-0',
-    [Theme.Dark]: '#theme-switch-tabs-1',
+    [(theme.vars || theme).Light]: '#theme-switch-tabs-0',
+    [(theme.vars || theme).Dark]: '#theme-switch-tabs-1',
   };
   await page.locator(themeSelector[theme]).click();
   await page.locator('#main-burger-menu-button').click();

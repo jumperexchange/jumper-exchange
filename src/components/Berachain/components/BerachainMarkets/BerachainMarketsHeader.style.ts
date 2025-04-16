@@ -6,7 +6,7 @@ export const BerachainMarketHeaderBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   alignItems: 'center',
   borderRadius: '16px',
   border: '1px solid #383433',
@@ -56,8 +56,8 @@ export const BerachainMarketHeaderSubtitle = styled(Typography)(
 );
 
 export const BerachainMarketHeaderCTA = styled(Button)(({ theme }) => ({
-  color: theme.palette.black.main,
-  background: theme.palette.white.main,
+  color: (theme.vars || theme).palette.black.main,
+  background: (theme.vars || theme).palette.white.main,
   marginTop: theme.spacing(1.5),
   transition: ' background-color 300ms ease-in',
   '&:hover': {

@@ -1,16 +1,12 @@
 'use client';
 
-import { getContrastAlphaColor } from '@/utils/colors';
 import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
 export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   display: 'none',
   borderRadius: 28,
   padding: 0,
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? getContrastAlphaColor(theme, '4%')
-      : getContrastAlphaColor(theme, '12%'),
+  backgroundColor: alpha(theme.palette.white.main, 0.12),
   alignItems: 'center',
   '.MuiTabs-flexContainer': {
     alignItems: 'center',
@@ -23,11 +19,11 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
     width: '48px',
     borderRadius: '28px',
     transform: 'translateY(0) scaleY(0.98)',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : theme.palette.alphaLight300.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
     zIndex: '-1',
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
   '> .MuiTabs-root': {
     minHeight: 'unset !important',
@@ -35,6 +31,9 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     display: 'flex',
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.black.main, 0.04),
+  }),
 }));
 
 export const VerticalTab = styled(MuiTab)(({ theme }) => ({
@@ -52,17 +51,20 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
   transition: 'background 250ms',
   background: 'transparent',
   minHeight: 'unset',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'none',
   ':hover': {
-    backgroundColor: getContrastAlphaColor(theme, '4%'),
+    backgroundColor: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.04),
+    }),
   },
   '&.Mui-selected': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : alpha(theme.palette.white.main, 0.1),
+    backgroundColor: alpha(theme.palette.white.main, 0.1),
     pointerEvents: 'none',
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
   ':not(.Mui-selected) > svg': {
     opacity: 0.5,

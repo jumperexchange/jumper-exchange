@@ -65,9 +65,10 @@ const RefreshIcon: React.FC<
             sx={(theme) => ({
               position: 'absolute',
               color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[300]
-                  : theme.palette.grey[800],
+                (theme.vars || theme).palette.grey[300],
+              ...theme.applyStyles("light", {
+                color: (theme.vars || theme).palette.grey[300]
+              })
             })}
           />
           <CircularProgress
@@ -76,10 +77,10 @@ const RefreshIcon: React.FC<
             value={value}
             sx={(theme) => ({
               opacity: value === 100 && !isLoading ? 0.5 : 1,
-              color:
-                theme.palette.mode === 'light'
-                  ? theme.palette.primary.main
-                  : theme.palette.primary.light,
+              color: (theme.vars || theme).palette.primary.light,
+              ...theme.applyStyles("light", {
+                color: (theme.vars || theme).palette.primary.main
+              })
             })}
           />
         </CircularBox>

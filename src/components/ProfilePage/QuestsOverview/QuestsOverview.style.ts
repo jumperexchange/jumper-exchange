@@ -8,11 +8,11 @@ export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   gridTemplateColumns: 'repeat(auto-fit, minmax(288px, 1fr))',
   gridColumnGap: theme.spacing(1),
   gridRowGap: theme.spacing(2),
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '32px',
   padding: theme.spacing(2, 1),
   paddingBottom: theme.spacing(1.25),
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   marginTop: theme.spacing(4),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(4, 3, 3.25),
@@ -59,14 +59,16 @@ export const SeeAllButtonContainer = styled(Box, {
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
   color: 'inherit',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.alphaDark100.main
-      : theme.palette.alphaLight400.main,
+    (theme.vars || theme).palette.alphaLight400.main,
   width: 320,
   '&:hover': {
     backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.alphaDark200.main
-        : theme.palette.alphaLight500.main,
+      (theme.vars || theme).palette.alphaLight500.main,
+    ...theme.applyStyles("light", {
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main
+    })
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
+  })
 }));

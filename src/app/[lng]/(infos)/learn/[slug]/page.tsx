@@ -9,7 +9,6 @@ import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
-import { getCookies } from '../../../../lib/getCookies';
 
 type Params = Promise<{ slug: string }>;
 
@@ -85,7 +84,6 @@ export default async function Page({ params }: { params: Params }) {
 
   const validatedSlug = result.data;
   const article = await getArticleBySlug(validatedSlug);
-  const { activeThemeMode } = await getCookies();
 
   const articleData: BlogArticleData = article.data.data?.[0];
 
@@ -104,7 +102,6 @@ export default async function Page({ params }: { params: Params }) {
       article={articleData}
       url={article.url}
       articles={relatedArticles.data}
-      activeThemeMode={activeThemeMode}
     />
   );
 }

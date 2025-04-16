@@ -8,9 +8,9 @@ import {
 } from '@mui/material';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   display: 'flex',
   width: '100%',
   justifyContent: 'start',
@@ -31,7 +31,7 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
 
 export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   justifyContent: 'space-between',
 }));
 
@@ -52,9 +52,7 @@ export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
 
 export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -69,6 +67,9 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     minWidth: 300,
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: (theme.vars || theme).palette.white.main
+  })
 }));
 
 export const ClaimButtonBox = styled(Box)(({ theme }) => ({
@@ -98,15 +99,13 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsOpenIconButton = styled(MuiIconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
-  color: theme.palette.white.main,
+export const RewardsOpenIconButton = styled(MuiIconButton)<IconButtonProps>(({ theme }) => ({
+  color: (theme.vars || theme).palette.white.main,
   transition: 'background 0.3s',
   width: theme.spacing(6),
   height: theme.spacing(6),
-  backgroundColor: theme.palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: theme.palette.bgQuaternary.hover,
+    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
   },
 }));

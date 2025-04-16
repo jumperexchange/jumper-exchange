@@ -1,9 +1,10 @@
-import { useTheme } from '@mui/material';
+import { useColorScheme, useTheme } from '@mui/material';
 
 export function SirBridgeLot() {
   const theme = useTheme();
+  const { mode } = useColorScheme();
 
-  return theme.palette.mode === 'light' ? (
+  return mode === 'light' ? (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="180"

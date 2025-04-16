@@ -19,7 +19,6 @@ export const Univ2Information = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-
         marginY: theme.spacing(8),
         gap: 1,
       }}

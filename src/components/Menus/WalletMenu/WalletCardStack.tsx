@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 export const WalletCardStack = ({
   children,
 }: {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
 }) => {
   return (
     <Stack

@@ -19,7 +19,7 @@ interface Info {
 interface Data {
   id: string;
   label: string;
-  value: string | number | JSX.Element | JSX.Element[];
+  value: string | number | React.JSX.Element | React.JSX.Element[];
 }
 
 function InformationCard({
@@ -63,5 +63,4 @@ function InformationCard({
     </InformationCardContainer>
   );
 }
-
 export default InformationCard;

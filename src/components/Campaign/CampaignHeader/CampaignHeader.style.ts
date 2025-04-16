@@ -10,7 +10,7 @@ export const InformationShareLink = styled(Link)(() => ({
 
 export const ColoredProtocolShareButton = styled(IconButton)(({ theme }) => ({
   background: alpha(theme.palette.white.main, 0.08),
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   '&:hover': {
     background: alpha(theme.palette.white.main, 0.16),
@@ -44,7 +44,7 @@ export const VerticalCenterBox = styled(Box)(({ theme }) => ({
 }));
 
 export const CampaignTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   fontWeight: 700,
   fontSize: 32,
   [theme.breakpoints.down('md' as Breakpoint)]: {
@@ -60,7 +60,6 @@ export const CampaignDescription = styled(Typography)(({ theme }) => ({
   marginTop: theme.spacing(0.5),
   fontWeight: 500,
   fontSize: 16,
-
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: 12,
   },
@@ -70,7 +69,7 @@ export const CampaignDescription = styled(Typography)(({ theme }) => ({
 }));
 
 export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   fontWeight: 700,
 }));
 

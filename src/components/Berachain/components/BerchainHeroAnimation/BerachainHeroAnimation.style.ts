@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 export const BerachainAnimationFrame = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.black.main,
+  backgroundColor: (theme.vars || theme).palette.black.main,
   position: 'absolute',
   left: 0,
   right: 0,
@@ -40,7 +40,7 @@ export const BerachainPlanetGround = styled(Box)(({ theme }) => ({
 }));
 
 export const BerchainSpaceGlow = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.black.main,
+  backgroundColor: (theme.vars || theme).palette.black.main,
   position: 'absolute',
   left: 0,
   right: 0,
@@ -93,31 +93,26 @@ export const BerachainAsteroidX2 = styled(Image)`
   top: 0;
   right: 0;
 `;
-
 export const BerachainAsteroidX3 = styled(Image)`
   position: absolute;
   top: 0;
   right: 0;
 `;
-
 export const BerachainAsteroidX4 = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
 `;
-
 export const BerachainAsteroidX5 = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
 `;
-
 export const BerachainAsteroidX6 = styled(Image)`
   position: absolute;
   top: 0;
   left: 0;
 `;
-
 export const BerachainAsteroidX7 = styled(Image)`
   position: absolute;
   top: 0;

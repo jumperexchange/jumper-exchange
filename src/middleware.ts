@@ -2,7 +2,7 @@
 import acceptLanguage from 'accept-language';
 import { i18nRouter } from 'next-i18n-router';
 import type { NextRequest } from 'next/server';
-import i18nConfig from '../i18nconfig';
+import i18nConfig from 'i18n-config';
 import { locales } from './i18n/i18next-locales';
 
 acceptLanguage.languages(locales);

@@ -10,9 +10,7 @@ export const BannerMainBox = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignContent: 'center',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   textAlign: 'center',
   overflow: 'hidden',
   borderRadius: '8px',
@@ -22,15 +20,18 @@ export const BannerMainBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     height: '620px',
   },
+  ...theme.applyStyles("light", {
+    backgroundColor: (theme.vars || theme).palette.white.main
+  })
 }));
 
 export const BannerBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   padding: '32px',
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   [theme.breakpoints.up('md' as Breakpoint)]: {
     height: '35%',
   },
@@ -62,15 +63,16 @@ export const QuestDatesBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.black.main, 0.04)
-      : theme.palette.alphaLight300.main,
+    (theme.vars || theme).palette.alphaLight300.main,
   paddingTop: '4px',
   paddingBottom: '4px',
   paddingLeft: '8px',
   paddingRight: '8px',
   borderRadius: '128px',
   justifyContent: 'center',
+  ...theme.applyStyles("light", {
+    backgroundColor: alpha(theme.palette.black.main, 0.04)
+  })
 }));
 
 export const QuestsPageMainBox = styled(Box)(({ theme }) => ({

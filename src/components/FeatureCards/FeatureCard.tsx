@@ -8,7 +8,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useSettingsStore } from '@/stores/settings';
 import type { FeatureCardAttributes, FeatureCardData } from '@/types/strapi';
 import CloseIcon from '@mui/icons-material/Close';
-import { Slide, useTheme } from '@mui/material';
+import { Slide, useColorScheme, useTheme } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
@@ -32,6 +32,7 @@ interface FeatureCardProps {
 export const FeatureCard = ({ data }: FeatureCardProps) => {
   const [open, setOpen] = useState(true);
   const eventFired = useRef(false);
+  const { mode: themeMode } = useColorScheme();
 
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
@@ -92,7 +93,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   }, [data?.uid, data?.Title, data?.URL, open, trackEvent]);
 
   const imageUrl = useMemo(() => {
-    const imageMode = mode || theme.palette.mode;
+    const imageMode = mode || themeMode;
     if (!data?.BackgroundImageDark?.url || !data?.BackgroundImageLight?.url) {
       return null;
     }
@@ -109,7 +110,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     data?.BackgroundImageDark?.url,
     data?.BackgroundImageLight?.url,
     mode,
-    theme.palette.mode,
+    themeMode,
   ]);
 
   const handleSpindl = (

@@ -1,7 +1,6 @@
-import { Badge, Box, Tooltip, Typography } from '@mui/material';
+import { Badge, Box, SvgIcon, Tooltip, Typography } from '@mui/material';
 import type { ExtraRewards } from '@/components/Berachain/BerachainType';
 import React from 'react';
-import SvgIcon from '@mui/material/SvgIcon/SvgIcon';
 
 interface BerachainMarketCardWithBadgeProps {
   extraRewards?: ExtraRewards;

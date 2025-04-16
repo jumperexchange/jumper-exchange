@@ -40,7 +40,7 @@ export const BerachainMarketsSortFilterBox = styled(Box)(({ theme }) => ({
 }));
 
 export const BerachainMarketsSortLabel = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   marginLeft: '8px',
   height: '40px',
   alignContent: 'center',

@@ -1,4 +1,3 @@
-import type { ThemeMode } from '@/types/theme';
 import { WalletButtons } from '../Navbar/WalletButtons';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
@@ -10,7 +9,6 @@ export interface BlogWidgetProps {
   toToken?: string;
   fromAmount?: string;
   allowChains?: string;
-  activeThemeMode?: ThemeMode;
 }
 
 export const BlogWidget = ({
@@ -20,7 +18,6 @@ export const BlogWidget = ({
   toToken,
   fromAmount,
   allowChains,
-  activeThemeMode,
 }: BlogWidgetProps) => {
   const allowChainsArray = (allowChains || '')
     .split(',')
@@ -41,7 +38,6 @@ export const BlogWidget = ({
         toToken={toToken}
         allowChains={allowChainsArray}
         widgetIntegrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
-        activeThemeMode={activeThemeMode}
       />
     </>
   );

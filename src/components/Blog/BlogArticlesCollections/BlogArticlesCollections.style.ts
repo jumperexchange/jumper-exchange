@@ -6,19 +6,19 @@ import { SectionTitle } from 'src/components/ProfilePage/ProfilePage.style';
 
 export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',
   gap: theme.spacing(1.5),
   alignItems: 'center',
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '32px',
   transition: 'background-color 250ms',
   marginBottom: theme.spacing(14.5),
   padding: theme.spacing(2),
   margin: theme.spacing(6, 2, 0),
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   ':last-of-type': {
     marginBottom: theme.spacing(6),
   },
@@ -50,6 +50,6 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
 
 export const BlogArticlesCollectionsTitle = styled(SectionTitle)(
   ({ theme }) => ({
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
   }),
 );

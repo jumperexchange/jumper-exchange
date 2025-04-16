@@ -5,13 +5,13 @@ import type { Breakpoint } from '@mui/material/styles';
 import { alpha, darken, lighten, styled } from '@mui/material/styles';
 
 const MessageCard = styled(Box)(({ theme }) => ({
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: (theme.vars || theme).shape.borderRadius,
   position: 'relative',
   whiteSpace: 'pre-line',
   margin: 'auto',
   width: '100%',
   padding: theme.spacing(2, 3),
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     width: 416,
   },
@@ -20,42 +20,47 @@ const MessageCard = styled(Box)(({ theme }) => ({
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
   borderRadius: '12px',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.warning.main, 0.24)
-      : alpha(theme.palette.warning.main, 0.16),
+    alpha(theme.palette.warning.main, 0.16),
+  ...theme.applyStyles("light", {
+    backgroundColor: alpha(theme.palette.warning.main, 0.24)
+  })
 }));
 
 export const WarningMessageCardTitle = styled(Box)(({ theme }) => ({
   padding: 0,
   color:
-    theme.palette.mode === 'light'
-      ? darken(theme.palette.warning.main, 0.36)
-      : alpha(theme.palette.warning.dark, 1),
+    alpha(theme.palette.warning.dark, 1),
+  ...theme.applyStyles("light", {
+    color: darken(theme.palette.warning.main, 0.36)
+  })
 }));
 
 export const InfoMessageCard = styled(MessageCard)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.info.main, 0.12)
-      : alpha(theme.palette.info.main, 0.16),
+    alpha(theme.palette.info.main, 0.16),
+  ...theme.applyStyles("light", {
+    backgroundColor: alpha(theme.palette.info.main, 0.12)
+  })
 }));
 
 export const InfoMessageCardTitle = styled(Box)(({ theme }) => ({
   padding: 0,
   color:
-    theme.palette.mode === 'light'
-      ? theme.palette.info.main
-      : lighten(theme.palette.info.main, 0.24),
+    lighten(theme.palette.info.main, 0.24),
+  ...theme.applyStyles("light", {
+    color: (theme.vars || theme).palette.info.main
+  })
 }));
 
 export const InfoMessageCardClickable = styled(MessageCard)(({ theme }) => ({
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.info.main, 0.12)
-      : alpha(theme.palette.info.main, 0.16),
+    alpha(theme.palette.info.main, 0.16),
   cursor: 'pointer',
+  ...theme.applyStyles("light", {
+    backgroundColor: alpha(theme.palette.info.main, 0.12)
+  })
 }));
 
 export const InfoMessageCardSubtitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.black.main,
+  color: (theme.vars || theme).palette.black.main,
 }));

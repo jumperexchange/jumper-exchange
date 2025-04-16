@@ -17,7 +17,6 @@ export const AccordionBox = styled(Box)(({ theme }) => ({
   position: 'relative',
   maxWidth: theme.breakpoints.values.md,
   width: '100% !important',
-
   [theme.breakpoints.up('sm')]: {
     width: theme.breakpoints.values.md,
     maxWidth: theme.breakpoints.values.md,
@@ -43,7 +42,7 @@ export const FaqShowMoreArrow = styled(ArrowForwardIosIcon, {
   width: arrowSize || 24,
   height: arrowSize || 24,
   transition: 'transform 0.3s ease',
-  transform: 'rotate(90deg)',
+  transform: 'rotate(90deg)'
 }));
 
 export interface AccordionItemWrapperProps extends BoxProps {
@@ -77,7 +76,6 @@ export const Accordion = styled(MuiAccordion)(({ theme }) => ({
   '&:last-of-type': {
     borderRadius: '16px',
   },
-
   '&:hover': {
     background: alpha(theme.palette.text.primary, 0.02),
   },
@@ -91,7 +89,7 @@ export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export const AccordionTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   margin: theme.spacing(2, 'auto'),
   marginBottom: theme.spacing(4),
   textAlign: 'center',
@@ -99,7 +97,7 @@ export const AccordionTitle = styled(Typography)(({ theme }) => ({
 
 export const AccordionToggleButton = styled(Box)(({ theme }) => ({
   background: alpha(theme.palette.text.primary, 0.08),
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   width: 32,
   height: 32,
@@ -108,9 +106,8 @@ export const AccordionToggleButton = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   borderRadius: '50%',
   backgroundColor: alpha(theme.palette.text.primary, 0.08),
-
   '&:hover': {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     background: alpha(theme.palette.text.primary, 0.16),
   },
 }));

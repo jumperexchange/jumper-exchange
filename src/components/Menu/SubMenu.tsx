@@ -2,11 +2,10 @@
 import type { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import type { MenuListItem } from '@/types/internal';
-import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box, IconButton, useTheme } from '@mui/material';
+import { alpha, Box, IconButton, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
@@ -80,7 +79,10 @@ export const SubMenu = ({
               marginLeft: 0,
               color: theme.palette.text.primary,
               '&:hover': {
-                backgroundColor: getContrastAlphaColor(theme, '4%'),
+                backgroundColor: alpha(theme.palette.white.main, 0.04),
+                ...theme.applyStyles('light', {
+                  backgroundColor: alpha(theme.palette.black.main, 0.04),
+                }),
               },
             }}
             onClick={(event) => {

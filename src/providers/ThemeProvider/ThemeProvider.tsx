@@ -1,18 +1,14 @@
 'use client';
 import { ThemeStoreProvider } from '@/stores/theme';
-import type { ThemeMode, ThemeProps } from '@/types/theme';
+import type { ThemeProps } from '@/types/theme';
 import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import { CssBaseline } from '@mui/material';
-import { useMemo } from 'react';
+import { CssBaseline, useColorScheme, useMediaQuery } from '@mui/material';
+import { useEffect, useMemo } from 'react';
 import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
 import { ThemeProviderBase } from './ThemeProviderBase';
 import type { ThemeProviderProps } from './types';
-import {
-  getEffectiveThemeMode,
-  getMuiTheme,
-  getPartnerTheme,
-  getWidgetTheme,
-} from './utils';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { themeCustomized } from 'src/theme/theme';
 
 /**
  * App's theme provider component.
@@ -20,44 +16,14 @@ import {
  */
 export function ThemeProvider({
   children,
-  activeTheme,
   themes,
-  themeMode,
 }: ThemeProviderProps) {
-  const themeStore = useMemo((): ThemeProps => {
-    const metaElement =
-      typeof window !== 'undefined'
-        ? document.querySelector('meta[name="partner-theme"]')
-        : undefined;
-    const metaTheme = metaElement?.getAttribute('content');
-    const partnerTheme = metaTheme || activeTheme || 'default';
-    const isPartnerTheme = themes?.find((d) => d?.uid === partnerTheme);
-    const effectiveThemeMode = getEffectiveThemeMode(
-      isPartnerTheme ? isDarkOrLightThemeMode(isPartnerTheme) : themeMode,
-    );
-
-    const widgetTheme = getWidgetTheme(
-      getMuiTheme(themes, partnerTheme, effectiveThemeMode),
-      partnerTheme,
-      themes,
-    );
-    return {
-      activeTheme: activeTheme || 'default',
-      themeMode: effectiveThemeMode as ThemeMode,
-      configTheme: formatConfig(
-        getPartnerTheme(themes, partnerTheme),
-      ) as PartnerThemeConfig,
-      partnerThemes: themes!,
-      widgetTheme: widgetTheme,
-    };
-  }, [activeTheme, themeMode, themes]);
-
   return (
-    <ThemeStoreProvider value={themeStore}>
-      <CssBaseline />
-      <ThemeProviderBase activeTheme={activeTheme} themeMode={themeMode}>
-        {children}
-      </ThemeProviderBase>
-    </ThemeStoreProvider>
+    <>
+      <CssBaseline enableColorScheme />
+      <MuiThemeProvider modeStorageKey="jumper-mode" theme={themeCustomized}>
+        <ThemeProviderBase themes={themes}>{children}</ThemeProviderBase>
+      </MuiThemeProvider>
+    </>
   );
 }

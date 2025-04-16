@@ -21,7 +21,7 @@ export interface PaginationButtonProps extends ButtonProps {
 
 export const PaginationLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   '&:hover': {
     textDecoration: 'none',
   },
@@ -32,7 +32,7 @@ export const PaginationButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'activePage',
 })<PaginationButtonProps>(({ theme }) => ({
   backgroundColor: 'transparent',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   height: 34,
   display: 'none',
   alignItems: 'center',
@@ -49,13 +49,13 @@ export const PaginationButton = styled(Button, {
     {
       props: ({ activePage }) => activePage,
       style: {
-        backgroundColor: theme.palette.white.main,
+        backgroundColor: (theme.vars || theme).palette.white.main,
       },
     },
     {
       props: ({ activePage }) => activePage,
       style: {
-        color: theme.palette.black.main,
+        color: (theme.vars || theme).palette.black.main,
       },
     },
     {
@@ -73,9 +73,9 @@ export const PaginationButton = styled(Button, {
     {
       props: ({ activePage }) => activePage,
       style: {
-        boxShadow: theme.shadows[2],
+        boxShadow: (theme.vars || theme).shadows[2],
         '&:hover': {
-          backgroundColor: theme.palette.white.main,
+          backgroundColor: (theme.vars || theme).palette.white.main,
         },
       },
     },

@@ -7,17 +7,17 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),
-  boxShadow: theme.shadows[2],
+  boxShadow: (theme.vars || theme).shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
@@ -53,10 +53,10 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   width: '100%',
   lineHeight: '18px',
   height: 40,
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));
 
 interface LeaderboardUserPositionButtonProps extends ButtonProps {
@@ -69,16 +69,18 @@ export const LeaderboardUserPositionButton = styled(ButtonTransparent, {
   padding: theme.spacing(0, 1),
   textDecoration: 'none',
   position: 'relative',
-  marginTop: theme.spacing(1),
+  marginTop: theme.spacing(0.5),
   height: 64,
   background: 'transparent',
   borderRadius: '16px',
   ...(isGtMillion && { fontSize: '38px !important' }),
-
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.white.main,
+  }),
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.white.main
-        : theme.palette.alphaLight300.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
 }));

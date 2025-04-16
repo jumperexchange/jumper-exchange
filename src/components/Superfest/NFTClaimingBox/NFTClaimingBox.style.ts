@@ -7,7 +7,7 @@ export const NFTClaimingContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: '12px',
   width: '90%',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.down('md' as Breakpoint)]: {
     marginTop: '64px',
   },
@@ -34,7 +34,7 @@ export const NFTClaimingHeader = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignContent: 'center',
   textAlign: 'center',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
 }));
 
 export const NFTClaimingTitle = styled(Typography)(({ theme }) => ({

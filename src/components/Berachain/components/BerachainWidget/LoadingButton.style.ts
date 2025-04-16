@@ -16,10 +16,10 @@ export const CustomLoadingButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'overrideStyle',
 })<CustomLoadingButtonProps>(({ theme, overrideStyle }) => ({
   [`&.${buttonClasses.loading}`]: {
-    border: `1px solid ${overrideStyle?.mainColor ?? theme.palette.primary.main}`,
+    border: `1px solid ${overrideStyle?.mainColor ?? (theme.vars || theme).palette.primary.main}`,
   },
   [`&.${buttonClasses.loadingIndicator}`]: {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
   },
   [`&.${buttonClasses.disabled}`]: {
     // TODO: Refactorize the button

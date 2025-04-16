@@ -18,18 +18,28 @@ const InfoCardContainer = React.forwardRef<
   return (
     <Box
       ref={ref}
-      sx={{
-        display: 'flex', // Matches `flex`
-        flexDirection: 'column', // Matches `flex-col`
-        height: 'fit-content', // Matches `h-fit`
-        width: '100%', // Matches `w-full`
-        gap: 3, // Matches `gap-3` (spacing scale, 3 is equivalent to 24px)
-        borderRadius: '12px', // Matches `rounded-xl` (extra-large rounding)
-        border: '1px solid', // Matches `border`
-        borderColor: (theme) => theme.palette.divider, // Matches `border-divider`
-        backgroundColor: 'white', // Matches `bg-white`
-        padding: '20px', // Matches `p-5` (20px in the spacing scale)
-      }}
+      sx={theme => ({
+        // Matches `flex`
+        display: 'flex',
+        // Matches `flex-col`
+        flexDirection: 'column',
+        // Matches `h-fit`
+        height: 'fit-content',
+        // Matches `w-full`
+        width: '100%',
+        // Matches `gap-3` (spacing scale, 3 is equivalent to 24px)
+        gap: 3,
+        // Matches `rounded-xl` (extra-large rounding)
+        borderRadius: '12px',
+        // Matches `border`
+        border: '1px solid',
+        // Matches `border-divider`
+        borderColor: theme.palette.divider,
+        // Matches `bg-white`
+        backgroundColor: 'white',
+        // Matches `p-5` (20px in the spacing scale)
+        padding: '20px'
+      })}
       // className={cn(
       /*"flex h-fit w-full flex-col gap-3 rounded-xl border border-divider bg-white p-5",*/
       // className
@@ -47,9 +57,9 @@ const InfoCardRowKey = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Box
     ref={ref}
-    sx={{
-      color: (theme) => theme.palette.text.secondary,
-    }}
+    sx={theme => ({
+      color: theme.palette.text.secondary
+    })}
     // className={cn("text-secondary", className)}
     {...props}
   />

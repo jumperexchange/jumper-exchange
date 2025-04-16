@@ -15,7 +15,7 @@ export const BeraChainWelcomeBox = styled(Box)(({ theme }) => ({
 
 export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   textAlign: 'center',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -34,7 +34,6 @@ export const BeraChainWelcomeContent = styled(Box)(({ theme }) => ({
 //     marginTop: theme.spacing(3),
 //   },
 // }));
-
 export const BerachainWelcomeSubtitleLabel = styled(Typography)(
   ({ theme }) => ({
     display: 'flex',
@@ -79,8 +78,8 @@ export const BerachainWelcomeBoxContent = styled(Box)(({ theme }) => ({
 
 export const BerachainWelcomeConnectButtonCTA = styled(Button)(({ theme }) => ({
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-  color: theme.palette.black.main,
-  backgroundColor: theme.palette.white.main,
+  color: (theme.vars || theme).palette.black.main,
+  backgroundColor: (theme.vars || theme).palette.white.main,
   padding: theme.spacing(1, 2),
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     height: 40,
@@ -100,7 +99,7 @@ export const BerachainButtonWrapperLink = styled(Link)(({ theme }) => ({
 }));
 
 export const BerachainWelcomeLearnMoreButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   backgroundColor: alpha(theme.palette.white.main, 0.24),
   padding: theme.spacing(1, 2),
   [theme.breakpoints.down('sm' as Breakpoint)]: {

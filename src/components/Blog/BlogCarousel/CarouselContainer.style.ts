@@ -23,7 +23,7 @@ export const CarouselHeader = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   marginTop: theme.spacing(1.5),
   justifyContent: 'space-between',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: 0,
   },

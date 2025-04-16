@@ -86,9 +86,9 @@ interface BerachainMarketCardBadgeProps extends TypographyProps {
   type?: BerachainProtocolType | string;
 }
 
-export const BerachainMarketCardBadge = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<BerachainMarketCardBadgeProps>(({ theme, type }) => ({
+export const BerachainMarketCardBadge = styled(Typography)<BerachainMarketCardBadgeProps>(({
+  theme
+}) => ({
   borderRadius: '12px',
   border: `1px solid ${alpha(theme.palette.white.main, 0.48)}`,
   boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',

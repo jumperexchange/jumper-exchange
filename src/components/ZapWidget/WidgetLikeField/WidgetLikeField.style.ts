@@ -19,9 +19,9 @@ export const MaxButton = styled(Button, {
   height: 'auto',
   color: '#fff',
   backgroundColor:
-    mainColor ?? alpha(mainColor ?? theme.palette.primary.main, 0.75),
+    mainColor ?? alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.75),
   '&:hover': {
-    backgroundColor: mainColor ?? theme.palette.primary.main,
+    backgroundColor: mainColor ?? (theme.vars || theme).palette.primary.main,
   },
 }));
 
@@ -36,18 +36,19 @@ export const WidgetLikeGrid = styled(Grid)(({ theme }) => ({
   marginTop: theme.spacing(2),
   border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
   gap: '8px',
-  backgroundColor: theme.palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   boxShadow:
-    theme.palette.mode === 'light'
-      ? '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-      : '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+    '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+  ...theme.applyStyles("light", {
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
+  })
 }));
 
 export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   padding: '16px',
-  backgroundColor: theme.palette.surface2.main,
-  border: `1px solid ${theme.palette.mode === 'light' ? '#E5E1EB' : '#302B52'}`,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  border: `1px solid ${'#302B52'}`,
   display: 'flex',
   flexDirection: 'row',
   alignContent: 'flex-start',
@@ -71,6 +72,9 @@ export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
     borderBottom: 'none',
   },
+  ...theme.applyStyles("light", {
+    border: `1px solid ${'#E5E1EB'}`
+  })
 }));
 
 export const WidgetFormHelperText = styled(FormHelperText)(({ theme }) => ({

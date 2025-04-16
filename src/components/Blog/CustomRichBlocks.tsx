@@ -6,7 +6,6 @@ import {
 } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import type { StrapiMediaAttributes } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { isValidElement, type JSX, type ReactElement } from 'react';
@@ -29,7 +28,6 @@ interface CustomRichBlocksProps {
   baseUrl?: string;
   content: RootNode[] | undefined;
   id?: number;
-  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
@@ -39,7 +37,7 @@ interface ImageData {
 
 // TODO: Fix dynamic typing line 102
 interface WidgetRouteSettings
-  extends Omit<BlogWidgetProps, 'activeThemeMode' | 'fromChain' | 'toChain'> {
+  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
   fromChain?: string;
   toChain?: string;
 }
@@ -72,7 +70,6 @@ export const CustomRichBlocks = ({
   id,
   baseUrl,
   content,
-  activeThemeMode,
   variant,
 }: CustomRichBlocksProps) => {
   const customRichBlocks = {
@@ -192,7 +189,6 @@ export const CustomRichBlocks = ({
               fromAmount={props.fromAmount}
               toToken={props.toToken}
               allowChains={props.allowChains}
-              activeThemeMode={activeThemeMode}
               key={generateKey('widget')}
             />
           );
@@ -215,7 +211,6 @@ export const CustomRichBlocks = ({
             <InstructionsAccordion
               data={instructions_array}
               key={generateKey('instructions')}
-              activeThemeMode={activeThemeMode}
               variant={variant}
             />
           );

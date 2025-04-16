@@ -20,7 +20,10 @@ export default function PortfolioTokenSkeleton() {
                     sx={(theme) => ({
                       border: `2px solid ${theme.palette.surface2.main}`,
                       backgroundColor:
-                        theme.palette.mode === 'light' ? '#e4e4e4' : '#3f3d56',
+                        '#3f3d56',
+                      ...theme.applyStyles("light", {
+                        backgroundColor: '#e4e4e4'
+                      })
                     })}
                   />
                 }

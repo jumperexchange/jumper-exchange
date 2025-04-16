@@ -1,9 +1,10 @@
-import { useTheme } from '@mui/material';
+import { useColorScheme, useTheme } from '@mui/material';
 
 export function BerachainIcon() {
   const theme = useTheme();
+  const { mode } = useColorScheme();
 
-  if (theme.palette.mode === 'light') {
+  if (mode === 'light') {
     return (
       <svg
         width="24"

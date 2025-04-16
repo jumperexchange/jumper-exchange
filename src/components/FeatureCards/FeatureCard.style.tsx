@@ -33,11 +33,10 @@ export const FCard = styled(MuiCard, {
   position: 'relative',
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
-  backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${
-    isDarkCard || theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : '#20223D'
-  } 506px 349px)`,
+  backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${isDarkCard ? '#20223D' : null} 506px 349px)`,
+  ...theme.applyStyles('light', {
+    backgroundImage: `url(${backgroundImageUrl}), radial-gradient(circle at 506px 437px, #3F49E1 -43%, ${isDarkCard ? theme.palette.white.main : null} 506px 349px)`
+  }),
   backgroundSize: 'contain',
   boxShadow: theme.shadows[1],
   ':last-child': {
@@ -71,7 +70,7 @@ export const FeatureCardTitle = styled(Typography, {
   userSelect: 'none',
   maxHeight: 32,
   overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  textOverflow: 'ellipsis'
 }));
 
 export interface FeatureCardSubtitleProps extends TypographyProps {
@@ -87,7 +86,7 @@ export const FeatureCardSubtitle = styled(Typography, {
   userSelect: 'none',
   height: 48,
   overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  textOverflow: 'ellipsis'
 }));
 
 export const FeatureCardActions = styled(CardActions)(({ theme }) => ({
@@ -104,9 +103,13 @@ export const FeatureCardCtaLink = styled(Link, {
 })<FeatureCardCtaLinkProps>(({ theme, data }) => ({
   textDecoration: 'none',
   color:
-    data?.DisplayConditions.mode === 'dark' || theme.palette.mode === 'light'
+    data?.DisplayConditions.mode === 'dark'
       ? theme.palette.primary?.main
       : theme.palette.accent1Alt.main,
+
+      ...theme.applyStyles('light', {
+        color: (theme.vars || theme).palette.primary.main,
+      }),
 }));
 
 export interface FeatureCardCtaLabelProps extends TypographyProps {
@@ -121,5 +124,5 @@ export const FeatureCardCtaLabel = styled(Typography, {
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: (data?.CTAColor || typographyColor) ?? 'inherit',
+  color: (data?.CTAColor || typographyColor) ?? 'inherit'
 }));

@@ -176,7 +176,6 @@ export const WithdrawWidgetInputTokenTab = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-
           marginY: theme.spacing(8),
           gap: 1,
         }}

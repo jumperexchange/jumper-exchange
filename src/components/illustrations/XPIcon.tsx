@@ -1,4 +1,4 @@
-import SvgIcon from '@mui/material/SvgIcon/SvgIcon';
+import { SvgIcon } from '@mui/material';
 import type { CSSProperties } from 'react';
 
 export const XPIcon = ({

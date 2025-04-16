@@ -43,7 +43,7 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
       aria-describedby="modal-modal-description"
     >
       <ModalContainer className="modal-container">
-        <ModalHeaderAppBar>
+        <ModalHeaderAppBar enableColorOnDark>
           <ToolModalTitle
             id="modal-modal-title"
             variant={'headerXSmall'}
@@ -61,7 +61,7 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
         <ModalContent container>
           {data?.map((el, index) => {
             return (
-              <ToolModalGrid item key={`${title}-item-${index}`}>
+              <ToolModalGrid key={`${title}-item-${index}`}>
                 <ToolModalAvatar src={el.logoURI} />
                 <ToolModaItemlTitle variant={'bodyXSmall'}>
                   {el.name}

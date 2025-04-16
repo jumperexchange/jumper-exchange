@@ -2,11 +2,11 @@ import type { Breakpoint } from '@mui/material';
 import { Box, Stack, Typography, styled } from '@mui/material';
 
 export const AvailableMissionsContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   padding: theme.spacing(2),
   borderRadius: '12px',
   width: '90%',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   [theme.breakpoints.down('md' as Breakpoint)]: {
     marginTop: '64px',
   },
@@ -31,7 +31,7 @@ export const AvailableMissionsHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   alignContent: 'center',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   justifyContent: 'space-between',
 }));
 

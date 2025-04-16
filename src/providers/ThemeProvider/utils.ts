@@ -1,10 +1,11 @@
 import type { PartnerThemesData } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { formatTheme, getAvailableThemeModes } from '@/utils/formatTheme';
 import type { Theme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import { getDefaultWidgetTheme } from 'src/config/widgetConfig';
-import { darkTheme, lightTheme } from 'src/theme';
+import { getDefaultWidgetTheme, getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
+import { themeCustomized } from 'src/theme/theme';
+import { Mode } from 'node_modules/@mui/system/esm/cssVars/useCurrentColorScheme';
+import { DefaultColorScheme } from 'node_modules/@mui/material/esm/styles/createThemeWithVars';
 
 export function getPartnerTheme(
   themes?: PartnerThemesData[],
@@ -13,29 +14,31 @@ export function getPartnerTheme(
   return themes?.find((d) => d?.uid === activeTheme);
 }
 
+// @deprecated
 export function getMuiTheme(
+  themeMode: any,
   themes?: PartnerThemesData[],
   activeTheme?: string,
-  themeMode?: ThemeMode,
 ) {
   const partnerTheme = getPartnerTheme(themes, activeTheme);
 
   if (!partnerTheme) {
     if (['light', 'system'].includes(themeMode!)) {
-      return lightTheme;
+      return deepmerge(themeCustomized, themeCustomized.colorSchemes['light']);
     } else {
-      return darkTheme;
+      return deepmerge(themeCustomized, themeCustomized.colorSchemes['dark']);
     }
   }
 
   const formattedTheme = formatTheme(partnerTheme);
   const baseTheme = getAvailableThemeModes(partnerTheme).includes('light')
-    ? lightTheme
-    : darkTheme;
+    ? themeCustomized.colorSchemes['light']
+    : themeCustomized.colorSchemes['dark'];
 
   return deepmerge(baseTheme, formattedTheme.activeMUITheme);
 }
 
+// @deprecated
 export function getWidgetTheme(
   currentTheme: Theme,
   activeTheme?: string,
@@ -56,15 +59,22 @@ export function getWidgetTheme(
   return widgetTheme;
 }
 
-/**
- * If resolved theme is system we need to try read from cookie first
- */
-export function getEffectiveThemeMode(
-  themeMode?: ThemeMode,
-  resolvedTheme?: string,
-): ThemeMode {
-  if (resolvedTheme === 'system') {
-    return themeMode || 'system';
-  }
-  return (resolvedTheme || themeMode || 'system') as ThemeMode;
+export function getWidgetThemeV2(
+  mode: Mode,
+  activeTheme?: string,
+  themes?: PartnerThemesData[],
+) {
+  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode as DefaultColorScheme);
+  const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
+
+  const widgetTheme = partnerThemeAttributes
+    ? {
+        config: deepmerge(
+          defaultWidgetTheme.config,
+          formatTheme(partnerThemeAttributes).activeWidgetTheme,
+        ),
+      }
+    : defaultWidgetTheme;
+
+  return widgetTheme;
 }
