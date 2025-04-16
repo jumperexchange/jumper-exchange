@@ -69,6 +69,10 @@ export enum TrackingAction {
   ClickAuthorsLinkedIn = 'action_click_author_linkedin',
   ClickAuthorsX = 'action_click_author_x',
 
+  // VoluntaryFee
+  VoluntaryFeeTransferStarted = 'action_voluntary_fee_transfer_started',
+  VoluntaryFeeTransferSucccess = 'action_voluntary_fee_transfer_successfully',
+
   // Quests
   ClickQuestCard = 'action_click_quest_card',
   ClickMissionCta = 'action_click_mission_cta',
@@ -117,6 +121,7 @@ export enum TrackingCategory {
   Quests = 'cat_quests',
   Banner = 'cat_banner',
   CampaignBanner = 'cat_campaign_banner',
+  VoluntaryFee = 'cat_voluntary_fee',
 }
 
 // can be used as custom dimensions / metrics
@@ -233,6 +238,18 @@ export enum TrackingEventParameter {
   SearchFirstResultName = 'param_search_first_result_name',
   SearchFirstResultSymbol = 'param_search_first_result_symbol',
   SearchFirstResultChainId = 'param_search_first_result_chain_id',
+
+  // VoluntaryFee
+  RouteFromChainId = 'param_route_from_chain',
+  RouteToChainId = 'param_route_to_chain',
+  RouteFromToken = 'param_route_from_token',
+  RouteToToken = 'param_route_to_token',
+  RouteAmountUSD = 'param_route_amount_usd',
+  RouteNumberOfSteps = 'param_route_nb_steps',
+  RouteVoluntaryFeeChainId = 'param_voluntary_fees_chain_id',
+  RouteVoluntaryFeeToken = 'param_voluntary_fees_token',
+  RouteVoluntaryFeeAmount = 'param_voluntary_fees_amount',
+  RouteVoluntaryFeeAmountUSD = 'param_voluntary_fees_amount_usd',
 
   //Banner
   ActiveCampaign = 'param_banner_campaign',

@@ -162,6 +162,12 @@
     "title": "",
     "description": "As Jumper organize ad-hoc campaigns, the missions are updated on a monthly basis to create the associated graphics. Keep in mind: XP coming from specific campaigns will be updated on a monthly basis as well."
   },
+  "flexibleFee": {
+    "title": "Help us grow Jumper!",
+    "description": "Lorem ipsum...",
+    "availableAmount": "{{balanceUSD}} • {{balance}} {{tokenSymbol}} available",
+    "cta": "Support"
+  },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",

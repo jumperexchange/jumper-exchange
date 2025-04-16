@@ -337,6 +337,12 @@ export function Widget({
         <LiFiWidget
           integrator={config.integrator}
           config={config}
+          feeConfig={{
+            name: 'Fee',
+            fee: 0.02,
+            logoURI:
+              'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/sushi.png',
+          }}
           formRef={formRef}
         />
       </ClientOnly>

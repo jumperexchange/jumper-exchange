@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use client';
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
@@ -223,6 +224,7 @@ export function WidgetEvents() {
     };
 
     const onAvailableRoutes = async (availableRoutes: Route[]) => {
+      console.log('availableRoutes', availableRoutes);
       // current available routes
       const newObj: JumperEventData = {
         [TrackingEventParameter.FromToken]: sourceChainToken.tokenAddress || '',
@@ -246,6 +248,7 @@ export function WidgetEvents() {
         destinationChainToken.chainId &&
         destinationChainToken.tokenAddress
       ) {
+        console.log('TRIGGER AVAILABLE ROUTES'!);
         previousRoutesRef.current = newObj;
         const transformedRoutes = availableRoutes.reduce<
           Record<number, TransformedRoute>
@@ -274,6 +277,7 @@ export function WidgetEvents() {
           };
           return acc;
         }, {});
+        console.log('TRIGGER AVAILABLE ROUTES EVENT'!);
         trackEvent({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnAvailableRoutes,
