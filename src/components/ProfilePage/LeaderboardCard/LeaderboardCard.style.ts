@@ -1,15 +1,13 @@
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, ButtonProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import Link from 'next/link';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
-import { TierboxInfoTitles } from '../LevelBox/TierBox.style';
 
 export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  backgroundColor:
-    (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),
@@ -17,9 +15,9 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.white.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const RankContainer = styled(CardContainer)(({ theme }) => ({
@@ -55,37 +53,34 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
   width: '100%',
   lineHeight: '18px',
   height: 40,
-  color:
-    (theme.vars || theme).palette.text.primary,
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.primary.main
-  })
+  color: (theme.vars || theme).palette.text.primary,
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));
 
-export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
-  ({ theme }) => ({
-    padding: theme.spacing(0, 1),
-    textDecoration: 'none',
-    position: 'relative',
-    marginTop: theme.spacing(0.5),
-    height: 64,
-    background: 'transparent',
-    borderRadius: '16px',
-    ...theme.applyStyles("light", {
-      background: (theme.vars || theme).palette.white.main
-    }),
-    '&:hover': {
-      backgroundColor:
-        (theme.vars || theme).palette.alphaLight300.main,
-      ...theme.applyStyles("light", {
-        backgroundColor: (theme.vars || theme).palette.white.main
-      })
-    },
-  }),
-);
+interface LeaderboardUserPositionButtonProps extends ButtonProps {
+  isGtMillion: boolean;
+}
 
-export const LeaderboardUserTitle = styled(TierboxInfoTitles)(({ theme }) => ({
-  width: '100%',
-  alignSelf: 'flex-start',
-  marginTop: theme.spacing(1),
+export const LeaderboardUserPositionButton = styled(ButtonTransparent, {
+  shouldForwardProp: (prop) => prop !== 'isGtMillion',
+})<LeaderboardUserPositionButtonProps>(({ theme, isGtMillion }) => ({
+  padding: theme.spacing(0, 1),
+  textDecoration: 'none',
+  position: 'relative',
+  marginTop: theme.spacing(0.5),
+  height: 64,
+  background: 'transparent',
+  borderRadius: '16px',
+  ...(isGtMillion && { fontSize: '38px !important' }),
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.white.main,
+  }),
+  '&:hover': {
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
+  },
 }));
