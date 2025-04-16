@@ -814,6 +814,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme = extend
       fontWeight: 700,
       lineHeight: '20px',
     },
+
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',
