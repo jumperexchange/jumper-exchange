@@ -18,11 +18,13 @@ export const CampaignPage = ({ campaign, path }: CampaignPageProps) => {
       <BackButton path={path} title={campaign.Title} />
       <MerklRewards campaign={campaign} />
       <CampaignHeader campaign={campaign} />
-      <QuestsOverview
-        quests={campaign.quests}
-        pastCampaigns={[]}
-        label={campaign.Slug}
-      />
+      {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (
+        <QuestsOverview
+          quests={campaign.quests}
+          pastCampaigns={[]}
+          label={campaign.Slug}
+        />
+      )}
     </PageContainer>
   );
 };

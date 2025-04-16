@@ -30,7 +30,7 @@ export const QuestsOverview = ({
         {t('missions.available')}
       </QuestsOverviewTitle>
       {/** render quests */}
-      {quests?.map((quest, index: number) => {
+      {quests.map((quest, index: number) => {
         const imgUrl = quest?.Image?.url;
         const imgURL = imgUrl && new URL(imgUrl, baseUrl);
         const rewards = quest?.CustomInformation?.['rewards'];
