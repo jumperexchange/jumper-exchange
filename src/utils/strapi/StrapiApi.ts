@@ -222,6 +222,11 @@ class QuestStrapiApi extends StrapiApi {
     return this;
   }
 
+  filterByNoCampaignAttached(): this {
+    this.apiUrl.searchParams.set('filters[campaign][$null]', 'true');
+    return this;
+  }
+
   filterByShowProfileBanner(): this {
     this.apiUrl.searchParams.set('filters[ShowProfileBanner][$eq]', 'true');
     return this;
@@ -300,10 +305,11 @@ class CampaignStrapiApi extends StrapiApi {
     const currentDate = new Date().toISOString();
     this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
     this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
-    this.apiUrl.searchParams.set('populate[0]', 'quests');
+    this.apiUrl.searchParams.set('populate[0]', 'quests.Image');
     this.apiUrl.searchParams.set('populate[1]', 'Background');
     this.apiUrl.searchParams.set('populate[2]', 'Icon');
     this.apiUrl.searchParams.set('populate[3]', 'ProfileBannerImage');
+    this.apiUrl.searchParams.set('populate[4]', 'merkl_rewards');
   }
 
   private addProfileBannerParams(): void {

@@ -364,7 +364,23 @@ export interface CampaignAttributes {
   ProfileBannerCTA?: string;
   ProfileBannerImage?: StrapiMediaData;
   ShowProfileBanner: boolean;
-  ClaimableTokens?: ClaimableRewards;
+  merkl_rewards?: MerklRewardsData[];
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+}
+
+/* MerklRewards */
+export interface MerklRewardsData extends MerklRewardsAttributes {
+  id: number;
+  documentId: string;
+}
+
+export interface MerklRewardsAttributes {
+  ChainId: string | null;
+  TokenAddress: string | null;
+  DistributorAddress: string | null;
+  Label: string;
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;

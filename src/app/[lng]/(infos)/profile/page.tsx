@@ -2,6 +2,7 @@ import { getProfileBannerCampaigns } from '@/app/lib/getProfileBannerCampaigns';
 import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
+import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 
 export const metadata: Metadata = {
   title: 'Jumper Loyalty Pass',
@@ -14,5 +15,6 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const { data: campaigns } = await getProfileBannerCampaigns();
-  return <ProfilePage campaigns={campaigns} />;
+  const { data: questsData } = await getQuestsWithNoCampaignAttached();
+  return <ProfilePage quests={questsData.data} campaigns={campaigns} />;
 }

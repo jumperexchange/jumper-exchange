@@ -18,7 +18,11 @@ export const CampaignPage = ({ campaign, path }: CampaignPageProps) => {
       <BackButton path={path} title={campaign.Title} />
       <MerklRewards campaign={campaign} />
       <CampaignHeader campaign={campaign} />
-      <QuestsOverview pastCampaigns={[]} label={campaign.Slug} />
+      <QuestsOverview
+        quests={campaign.quests}
+        pastCampaigns={[]}
+        label={campaign.Slug}
+      />
     </PageContainer>
   );
 };

@@ -1,8 +1,7 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import type { CampaignData } from '@/types/strapi';
+import type { CampaignData, QuestData } from '@/types/strapi';
 import { useContext } from 'react';
-import { useMerklRewardsOnCampaigns } from 'src/hooks/useMerklRewardsOnCampaigns';
 import { useTraits } from 'src/hooks/useTraits';
 import { AddressCard } from './AddressCard/AddressCard';
 import { LeaderboardCard } from './LeaderboardCard/LeaderboardCard';
@@ -18,13 +17,15 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
+import { useMerklUserRewards } from 'src/hooks/useMerklUserRewards';
 import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 interface ProfilePageProps {
   campaigns?: CampaignData[];
+  quests?: QuestData[];
 }
 
-export const ProfilePage = ({ campaigns }: ProfilePageProps) => {
+export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
@@ -34,7 +35,7 @@ export const ProfilePage = ({ campaigns }: ProfilePageProps) => {
   //   user: account?.address || '',
   // });
 
-  const { pastCampaigns } = useMerklRewardsOnCampaigns({
+  const { pastCampaigns } = useMerklUserRewards({
     userAddress: walletAddress,
   });
 
@@ -49,7 +50,13 @@ export const ProfilePage = ({ campaigns }: ProfilePageProps) => {
         </ProfileInfoBox>
       </ProfileHeaderBox>
       <CampaignBanner campaigns={campaigns} />
-      <QuestsOverview pastCampaigns={pastCampaigns} traits={traits} />
+      {quests && (
+        <QuestsOverview
+          quests={quests}
+          pastCampaigns={pastCampaigns}
+          traits={traits}
+        />
+      )}
       <QuestsCompletedCarousel pdas={pdas} loading={isLoading} />
     </PageContainer>
   );
