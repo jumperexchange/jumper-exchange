@@ -104,36 +104,3 @@ export const CampaignDigitInfoBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
 }));
-
-export const CampaignLinks = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  gap: theme.spacing(1),
-  marginTop: theme.spacing(2),
-}));
-
-export const CampaignLink = styled(Link)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(1),
-  textDecoration: 'none',
-  color: theme.palette.white.main,
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
-  padding: theme.spacing(1),
-  borderRadius: theme.spacing(1),
-  transition: 'background-color 300ms ease-in-out',
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.16),
-  },
-}));
-
-export const CampaignLinkText = styled(Typography)(({ theme }) => ({
-  color: theme.palette.white.main,
-  fontWeight: 500,
-  fontSize: 14,
-}));
-
-export const CampaignLinkIcon = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  color: theme.palette.white.main,
-}));
