@@ -156,7 +156,6 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'pass' },
         });
         closeAllMenus();
-        router.push(JUMPER_LOYALTY_PATH);
       },
     },
     {
@@ -172,7 +171,6 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
         });
         closeAllMenus();
-        router.push(JUMPER_LEARN_PATH);
       },
     },
     {
@@ -187,6 +185,7 @@ export const useMainMenuContent = () => {
           action: TrackingAction.ClickJumperScanLink,
           data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
         });
+        closeAllMenus();
       },
     },
     {

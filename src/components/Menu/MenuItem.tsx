@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import type { MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
+import RouterLink from 'next/link';
 
 export interface MenuItemLinkType {
   url: string;
@@ -85,6 +86,7 @@ export const MenuItem = ({
         )}
         {!showButton && link?.url && (
           <MenuItemLink
+            as={RouterLink}
             href={link.url}
             target={link.external ? '_blank' : '_self'}
           >
