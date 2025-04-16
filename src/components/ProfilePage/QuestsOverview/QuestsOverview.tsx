@@ -65,16 +65,16 @@ export const QuestsOverview = ({
           //   quest?.attributes?.quests_platform?.data?.attributes?.Name
           // ,
           startDate: startDate,
-          endDate: endDate,
-          chains: chains,
-          rewards: rewards,
-          completed: completed,
-          claimingIds: claimingIds,
+          endDate,
+          chains,
+          rewards,
+          completed,
+          claimingIds,
           variableWeeklyAPY:
             quest.Points && quest?.Points > 0 && rewardType === 'weekly'
               ? true
               : undefined,
-          rewardRange: rewardRange,
+          rewardRange,
           isTraitsGarded: questTraits && questTraits?.length > 0,
           isUnlocked: isUnlockedForUser,
           hideXPProgressComponents: true,
