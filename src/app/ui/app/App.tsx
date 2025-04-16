@@ -45,8 +45,6 @@ const App = ({ children }: { children: React.ReactNode }) => {
     }
   }, [setWelcomeScreenClosed]);
 
-  console.log('welcomeScreenClosed', welcomeScreenClosed, enabled);
-
   return (
     <Box onClick={handleWelcomeScreenEnter}>
       <Slide

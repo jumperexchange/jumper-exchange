@@ -3,8 +3,7 @@ import type { Breakpoint } from '@mui/material';
 import { Typography, styled } from '@mui/material';
 
 export const CustomColor = styled(Typography)(({ theme }) => ({
-  background:
-    `linear-gradient(90deg, #FFF 25%, ${(theme.vars || theme).palette.accent1Alt.main} 50%, #D35CFF 75%)`,
+  backgroundImage: `linear-gradient(90deg, #FFF 25%, ${(theme.vars || theme).palette.accent1Alt.main} 50%, #D35CFF 75%)`,
   backgroundClip: 'text',
   margin: 0,
   fontFamily: urbanist.style.fontFamily,
@@ -20,6 +19,6 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
     lineHeight: '72px',
   },
   ...theme.applyStyles("light", {
-    background: `linear-gradient(90deg, ${(theme.vars || theme).palette.primary.main} 10%, #D35CFF 100%);`
+    backgroundImage: `linear-gradient(90deg, ${(theme.vars || theme).palette.primary.main} 10%, #D35CFF 100%);`
   })
 }));

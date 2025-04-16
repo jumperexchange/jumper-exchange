@@ -60,8 +60,7 @@ export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
   minHeight: 48,
   top: 0,
   padding: theme.spacing(1.5, 3),
-  backgroundColor:
-    alpha(theme.palette.surface2.main, 0.2),
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   backdropFilter: 'blur(12px)',
   boxShadow: 'unset',
   backgroundImage: 'unset',

@@ -20,7 +20,7 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   return (
     <>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       <MuiThemeProvider modeStorageKey="jumper-mode" theme={themeCustomized}>
         <ThemeProviderBase themes={themes}>{children}</ThemeProviderBase>
       </MuiThemeProvider>

@@ -138,6 +138,30 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
+        <style>
+          {`
+          // Adding default loading background colors
+          /* Light mode */
+          body.light {
+            background-color: #FCFAFF;
+          }
+          @media (prefers-color-scheme: light) {
+            body {
+              background-color: #FCFAFF;
+            }
+          }
+
+          /* Dark mode */
+          @media (prefers-color-scheme: dark) {
+            body {
+              background-color: #1A0B47;
+            }
+          }
+          body.dark {
+            background-color: #1A0B47;
+          }
+`}
+        </style>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script
           async

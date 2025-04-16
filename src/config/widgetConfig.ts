@@ -1,14 +1,12 @@
 import type { Appearance, WidgetConfig } from '@lifi/widget';
-import type { Breakpoint, Theme } from '@mui/material';
+import { type Breakpoint, type Theme } from '@mui/material';
 import { DefaultColorScheme } from 'node_modules/@mui/material/esm/styles/createThemeWithVars';
-import { Mode } from 'node_modules/@mui/system/esm/cssVars/useCurrentColorScheme';
 import { themeCustomized } from 'src/theme/theme';
 
 // INFO: Do NOT use theme.vars here, it will break the widget
 export const getDefaultWidgetTheme = (
   theme: Theme,
 ): { config: Partial<WidgetConfig> } => {
-  console.log('widgettt', theme);
   return {
     config: {
       appearance: theme.palette.mode,
@@ -88,7 +86,7 @@ export const getDefaultWidgetThemeV2 = (
         palette: {
           background: {
             paper: themeCustomized.colorSchemes[mode].palette.surface2.main,
-            default: themeCustomized.colorSchemes[mode].palette.surface1.main,
+            default: (themeCustomized.vars || themeCustomized).palette.surface1.main,
           },
           primary: {
             main: themeCustomized.colorSchemes[mode].palette.accent1.main,

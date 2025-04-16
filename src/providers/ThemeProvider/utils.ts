@@ -22,8 +22,6 @@ export function getMuiTheme(
 ) {
   const partnerTheme = getPartnerTheme(themes, activeTheme);
 
-  console.log('getMuiTheme', themeCustomized, partnerTheme, themeMode);
-
   if (!partnerTheme) {
     if (['light', 'system'].includes(themeMode!)) {
       return deepmerge(themeCustomized, themeCustomized.colorSchemes['light']);
@@ -48,8 +46,6 @@ export function getWidgetTheme(
 ) {
   const defaultWidgetTheme = getDefaultWidgetTheme(currentTheme);
   const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
-
-  console.log('partnerThemeAttributes', partnerThemeAttributes);
 
   const widgetTheme = partnerThemeAttributes
     ? {

@@ -43,7 +43,7 @@ export const ToolModal = ({ title, open, setOpen, data }: ToolModalProps) => {
       aria-describedby="modal-modal-description"
     >
       <ModalContainer className="modal-container">
-        <ModalHeaderAppBar>
+        <ModalHeaderAppBar enableColorOnDark>
           <ToolModalTitle
             id="modal-modal-title"
             variant={'headerXSmall'}

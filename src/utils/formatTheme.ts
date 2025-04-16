@@ -110,7 +110,6 @@ export function formatConfig(
 }
 
 export function formatTheme(theme: PartnerThemesAttributes) {
-  console.log('formathe', theme);
   const config = formatConfig(theme);
 
   const formattedMUITheme = {
