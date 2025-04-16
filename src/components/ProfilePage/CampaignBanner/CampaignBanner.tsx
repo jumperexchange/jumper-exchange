@@ -12,7 +12,7 @@ import {
 import { CampaignInformation } from './CampaignInformation';
 
 interface CampaignBannerProps {
-  campaigns?: CampaignData[];
+  campaigns: CampaignData[];
 }
 
 export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
@@ -23,10 +23,6 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-
-  if (!campaigns || campaigns.length === 0) {
-    return null;
-  }
 
   const imageWidth = isMobile ? 320 : 640;
   const imageHeight = isMobile ? 160 : 320;

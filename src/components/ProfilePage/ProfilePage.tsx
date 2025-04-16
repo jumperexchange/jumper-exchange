@@ -49,7 +49,9 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
           <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
-      <CampaignBanner campaigns={campaigns} />
+      {Array.isArray(campaigns) && campaigns?.length > 0 && (
+        <CampaignBanner campaigns={campaigns} />
+      )}
       {quests && (
         <QuestsOverview
           quests={quests}
