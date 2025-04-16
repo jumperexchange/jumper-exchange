@@ -52,7 +52,7 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
       {Array.isArray(campaigns) && campaigns?.length > 0 && (
         <CampaignBanner campaigns={campaigns} />
       )}
-      {quests && (
+      {Array.isArray(quests) && quests?.length > 0 && (
         <QuestsOverview
           quests={quests}
           pastCampaigns={pastCampaigns}
