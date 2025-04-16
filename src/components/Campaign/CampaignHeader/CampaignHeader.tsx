@@ -6,6 +6,7 @@ import XIcon from '@mui/icons-material/X';
 import type { Theme } from '@mui/material';
 import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   CampaignDescription,
   CampaignDigitInfoBox,
@@ -25,10 +26,7 @@ export const CampaignHeader = ({ campaign }: CampaignHeaderProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
 
   return (
     <CampaignHeaderBoxBackground

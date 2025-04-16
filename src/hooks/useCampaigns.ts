@@ -1,5 +1,6 @@
 import type { CampaignData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 export interface UseCampaignsProps {
   campaigns: CampaignData[] | undefined;
@@ -13,10 +14,7 @@ const STRAPI_CONTENT_TYPE = 'campaigns';
 export const useCampaigns = (
   showProfileBanner?: boolean,
 ): UseCampaignsProps => {
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
   const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
 
   // Selected needed fields

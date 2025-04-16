@@ -3,6 +3,7 @@ import type { Theme } from '@mui/material';
 import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BannerImage,
   BannerImageBox,
@@ -30,10 +31,7 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
   const imageWidth = isMobile ? 320 : 640;
   const imageHeight = isMobile ? 160 : 320;
 
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : process.env.NEXT_PUBLIC_STRAPI_URL;
+  const apiBaseUrl = getStrapiBaseUrl();
 
   return (
     <Box display="flex" flexDirection="column">
