@@ -4,6 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { WalletLinking } from 'src/components/ProfilePage/WalletLinking/WalletLinking';
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useMercleNft } from 'src/hooks/useMercleNft';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
@@ -42,7 +43,6 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
-
   const handleCopyButton = (textToCopy?: string) => {
     if (!textToCopy) {
       return;
@@ -113,6 +113,7 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
             >
               <KeyboardArrowDownIcon />
             </ProfileIconButton>
+            <WalletLinking anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
             <AddressMenu
               open={openAddressMenu}
               setOpen={setOpenAddressMenu}

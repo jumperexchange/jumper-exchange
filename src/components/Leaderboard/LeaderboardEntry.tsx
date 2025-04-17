@@ -13,9 +13,8 @@ import {
   RankWalletImageSkeleton,
 } from './LeaderboardEntry.style';
 
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
-import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
 import useBlockieImg from 'src/hooks/useBlockieImg';
+import { obfuscatedAddressFormatter } from 'src/utils/obfuscatedAddressFormatter';
 
 interface LeaderboardEntryProps {
   isUserPosition?: boolean;
