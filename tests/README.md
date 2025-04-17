@@ -24,16 +24,18 @@ After installing dependencies, install the necessary browsers:
 ```sh
 pnpm exec playwright install
 ```
+
 ## Run the local env
+
 ```sh
-pnpm dev  
+pnpm dev
 ```
 
 ## Running Tests
-```sh 
- npx playwright test --headed 
-```
 
+```sh
+ npx playwright test --headed
+```
 
 ### Run a Specific Test File
 
@@ -41,16 +43,16 @@ pnpm dev
 pnpm playwright test <path_to_test_file>
 ```
 
-
 ## Generating and Viewing Reports
 
 After running tests, view the HTML report:
 
 ```sh
-pnpm playwright show-report 
+pnpm playwright show-report
 ```
 
-## Run tests over VS Code plugin : 
- - Install "Playwright Test for VSCode" extension 
- - Click on the "Test" icon from side bar 
- - Choose the test you want to run and click on the "Play" icon
+## Run tests over VS Code plugin :
+
+- Install "Playwright Test for VSCode" extension
+- Click on the "Test" icon from side bar
+- Choose the test you want to run and click on the "Play" icon

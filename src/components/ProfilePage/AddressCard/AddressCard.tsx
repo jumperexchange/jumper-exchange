@@ -42,7 +42,6 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
   });
   const { setSnackbarState } = useMenuStore((state) => state);
   const { openWalletMenu } = useWalletMenu();
-
   const handleCopyButton = (textToCopy?: string) => {
     if (!textToCopy) {
       return;
