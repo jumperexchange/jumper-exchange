@@ -27,8 +27,12 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     const metaMaskWalletOption = page.locator(
       'xpath=//span[normalize-space(text())="MetaMask"]',
     );
-    const noRecentTransactions = page.locator('xpath=//p[normalize-space(text())="No recent transactions"]');
-    const transactionHistoryButton = page.locator('xpath=//button[@aria-label="Transaction history"]');
+    const noRecentTransactions = page.locator(
+      'xpath=//p[normalize-space(text())="No recent transactions"]',
+    );
+    const transactionHistoryButton = page.locator(
+      'xpath=//button[@aria-label="Transaction history"]',
+    );
     // const ethereumOption = page.locator(
     //   'xpath=//span[normalize-space(text())="Ethereum"]',
     // );

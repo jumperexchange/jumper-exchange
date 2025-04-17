@@ -665,6 +665,7 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '20px',
     },
+
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',
