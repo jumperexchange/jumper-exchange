@@ -81,7 +81,7 @@ export const useMerklUserRewards = ({
   const activeCampaigns = [] as string[];
   const pastCampaigns = [] as string[];
   // Call to get the active positions
-  const MERKL_POSITIONS_API = `${MERKL_API}/users/${userAddress}/rewards?chainIds=${ACTIVE_CHAINS.join(',')}`;
+  const MERKL_POSITIONS_API = `${MERKL_API}/users/${userAddress}/rewards?chainId=${ACTIVE_CHAINS.join(',')}`;
   const {
     data: userRewardsData,
     isSuccess: positionsIsSuccess,
