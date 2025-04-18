@@ -9,13 +9,11 @@ export const RewardsAmountBox = ({
   rewardAmount,
   tokenLogo,
   chainLogo,
-  decimalsToShow,
 }: {
   isConfirmed: boolean;
   rewardAmount: number;
   tokenLogo: string;
   chainLogo: string;
-  decimalsToShow: number;
 }) => {
   //HOOKS
   const { account } = useAccount();
@@ -23,15 +21,11 @@ export const RewardsAmountBox = ({
     theme.breakpoints.down('md'),
   );
 
-  //CONST
-  const REWARD_CHAIN_LOGO = chainLogo;
-  const REWARD_TOKEN_LOGO = tokenLogo;
-
   return (
     <FlexCenterRowBox minWidth="96px">
       <Box marginLeft="32px">
         <Image
-          src={REWARD_TOKEN_LOGO}
+          src={tokenLogo}
           alt={`token-image`}
           width={40}
           height={40}
@@ -41,7 +35,7 @@ export const RewardsAmountBox = ({
         />
         {isMobile ? undefined : (
           <Image
-            src={REWARD_CHAIN_LOGO}
+            src={chainLogo}
             alt="chain image"
             width={20}
             height={20}
@@ -71,7 +65,13 @@ export const RewardsAmountBox = ({
           isConfirmed
             ? '0'
             : rewardAmount
-              ? rewardAmount.toFixed(decimalsToShow)
+              ? Intl.NumberFormat('en-US', {
+                  style: 'decimal',
+                  notation: 'standard',
+                  useGrouping: true,
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 8,
+                }).format(rewardAmount)
               : '...'}
         </Typography>
       </AmountInputBox>

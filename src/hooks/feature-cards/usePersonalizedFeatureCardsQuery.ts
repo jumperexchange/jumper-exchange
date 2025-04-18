@@ -39,8 +39,8 @@ export const usePersonalizedFeatureCardsQuery =
     const apiBaseUrl =
       process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
         ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-        : `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
-    const apiUrl = new URL(`${apiBaseUrl}/${STRAPI_CONTENT_TYPE}`);
+        : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+    const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
 
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');

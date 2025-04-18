@@ -1,7 +1,12 @@
-import type { Breakpoint } from '@mui/material';
-import { IconButton, Typography } from '@mui/material';
-import { alpha, Box, styled } from '@mui/material';
-import Link from 'next/link';
+import type { Breakpoint, TypographyProps } from '@mui/material';
+import {
+  alpha,
+  Box,
+  IconButton,
+  Link,
+  styled,
+  Typography,
+} from '@mui/material';
 
 export const InformationShareLink = styled(Link)(() => ({
   color: 'inherit',
@@ -18,6 +23,7 @@ export const ColoredProtocolShareButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
+  alignItems: 'center',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   display: 'flex',
@@ -28,12 +34,8 @@ export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
   paddingRight: theme.spacing(3),
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    justifyContent: 'center',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    justifyContent: 'flex-end',
-  },
+  backgroundColor: alpha(theme.palette.primary.main, 0.24),
+  justifyContent: 'center',
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({
@@ -43,8 +45,14 @@ export const VerticalCenterBox = styled(Box)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-export const CampaignTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.white.main,
+interface CampaignTitleProps extends TypographyProps {
+  lightMode?: boolean;
+}
+
+export const CampaignTitle = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignTitleProps>(({ theme, lightMode }) => ({
+  color: !lightMode ? theme.palette.white.main : theme.palette.black.main,
   fontWeight: 700,
   fontSize: 32,
   [theme.breakpoints.down('md' as Breakpoint)]: {
@@ -55,8 +63,17 @@ export const CampaignTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const CampaignDescription = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.text.primary, 0.48),
+interface CampaignDescriptionProps extends TypographyProps {
+  lightMode?: boolean;
+}
+
+export const CampaignDescription = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignDescriptionProps>(({ theme, lightMode }) => ({
+  color: alpha(
+    !lightMode ? theme.palette.white.main : theme.palette.black.main,
+    0.48,
+  ),
   marginTop: theme.spacing(0.5),
   fontWeight: 500,
   fontSize: 16,
@@ -75,8 +92,9 @@ export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
 }));
 
 export const CampaignDigitInfoBox = styled(Box)(({ theme }) => ({
-  width: '216px',
-  backgroundColor: '#E86F20CC',
+  maxWidth: '216px',
+  minWidth: '164px',
+  backgroundColor: alpha(theme.palette.primary.main, 0.8),
   boxShadow: '0 4px 6px #00000020',
   borderRadius: theme.spacing(2),
   paddingLeft: theme.spacing(3),

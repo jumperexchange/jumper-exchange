@@ -3,7 +3,7 @@ import { Typography, useTheme } from '@mui/material';
 import { Button } from 'src/components/Button';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import type { AvailableRewards } from 'src/hooks/useMerklUserRewardsOnCampaign';
 import {
   useAccount,
   useSwitchChain,
@@ -85,7 +85,6 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           isConfirmed={isConfirmed}
           tokenLogo={availableReward.tokenLogo}
           chainLogo={availableReward.chainLogo}
-          decimalsToShow={availableReward.decimalsToShow}
         />
       </FlexCenterRowBox>
       {isConfirmed ? null : (

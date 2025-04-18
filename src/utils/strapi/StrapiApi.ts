@@ -7,7 +7,8 @@ interface GetStrapiBaseUrlProps {
     | 'faq-items'
     | 'tags'
     | 'partner-themes'
-    | 'quests';
+    | 'quests'
+    | 'campaigns';
 }
 
 interface PaginationProps {
@@ -57,7 +58,7 @@ class StrapiApi {
         console.error('Local Strapi URL is not provided.');
         throw new Error('Local Strapi URL is not provided.');
       }
-      return process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL;
+      return `${process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL}/api`;
     } else {
       // Use default Strapi URL for other environments
       if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
@@ -214,6 +215,22 @@ class QuestStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set(`filters[${key}][$eq]`, value);
     return this;
   }
+
+  filterByDateRange(currentDate: string): this {
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
+    return this;
+  }
+
+  filterByNoCampaignAttached(): this {
+    this.apiUrl.searchParams.set('filters[campaign][$null]', 'true');
+    return this;
+  }
+
+  filterByShowProfileBanner(): this {
+    this.apiUrl.searchParams.set('filters[ShowProfileBanner][$eq]', 'true');
+    return this;
+  }
 }
 
 class FeatureCardStrapiApi extends StrapiApi {
@@ -279,9 +296,59 @@ class BlogFaqStrapiApi extends StrapiApi {
   }
 }
 
+class CampaignStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'campaigns' });
+  }
+
+  private addCampaignPageParams(): void {
+    const currentDate = new Date().toISOString();
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
+    this.apiUrl.searchParams.set('populate[0]', 'quests.Image');
+    this.apiUrl.searchParams.set('populate[1]', 'Background');
+    this.apiUrl.searchParams.set('populate[2]', 'Icon');
+    this.apiUrl.searchParams.set('populate[3]', 'ProfileBannerImage');
+    this.apiUrl.searchParams.set('populate[4]', 'merkl_rewards');
+  }
+
+  private addProfileBannerParams(): void {
+    const currentDate = new Date().toISOString();
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
+    this.apiUrl.searchParams.set('fields[0]', 'ProfileBannerTitle');
+    this.apiUrl.searchParams.set('fields[1]', 'ProfileBannerDescription');
+    this.apiUrl.searchParams.set('fields[2]', 'ProfileBannerBadge');
+    this.apiUrl.searchParams.set('fields[3]', 'ProfileBannerCTA');
+    this.apiUrl.searchParams.set('fields[4]', 'Slug');
+    this.apiUrl.searchParams.set('populate[0]', 'ProfileBannerImage');
+  }
+
+  useCampaignPageParams(): this {
+    this.addCampaignPageParams();
+    return this;
+  }
+
+  useCampaignBannerParams(): this {
+    this.addProfileBannerParams();
+    return this;
+  }
+
+  filterBySlug(slug: string): this {
+    this.apiUrl.searchParams.set('filters[Slug][$eq]', slug);
+    return this;
+  }
+
+  filterByShowProfileBanner(): this {
+    this.apiUrl.searchParams.set('filters[ShowProfileBanner][$eq]', 'true');
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
+  CampaignStrapiApi,
   FeatureCardStrapiApi,
   PartnerThemeStrapiApi,
   QuestStrapiApi,
