@@ -50,11 +50,15 @@ export const CampaignHeader = ({
             alt={'top banner'}
             width={132}
             height={132}
-            style={{ objectFit: 'contain', borderRadius: '50%' }}
+            style={{
+              objectFit: 'contain',
+              borderRadius: '50%',
+              alignSelf: 'center',
+            }}
           />
           <VerticalCenterBox>
-            <CampaignTitle>Explore Berachain</CampaignTitle>
-            <CampaignDescription>{`Jumper is teaming up with the top tier Berachain protocols to bring you exciting rewards.`}</CampaignDescription>
+            <CampaignTitle>Enjoy DeFi on Lisk</CampaignTitle>
+            <CampaignDescription>{`Jumper is teaming up with the top tier Lisk protocols to bring you exciting yield and rewards.`}</CampaignDescription>
             <Box display="flex" gap="8px">
               {Xlink && (
                 <InformationShareLink
@@ -105,10 +109,8 @@ export const CampaignHeader = ({
         {!isMobile && (
           <VerticalCenterBox>
             <CampaignDigitInfoBox>
-              <CardInfoTypogragphy fontSize={14}>
-                Total Rewards
-              </CardInfoTypogragphy>
-              <CardInfoTypogragphy fontSize={32}>{'+$75k'}</CardInfoTypogragphy>
+              <CardInfoTypogragphy fontSize={14}>Max APY</CardInfoTypogragphy>
+              <CardInfoTypogragphy fontSize={32}>{'50%'}</CardInfoTypogragphy>
             </CampaignDigitInfoBox>
           </VerticalCenterBox>
         )}

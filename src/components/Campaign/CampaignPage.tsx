@@ -28,12 +28,14 @@ export const CampaignPage = ({
       <BackButton path={path} title={activeCampaign} />
       <MerklRewards />
       <CampaignHeader
-        bannerImage={'https://strapi.jumper.exchange/uploads/BG_dbd731b976.png'}
+        bannerImage={
+          'https://strapi.jumper.exchange/uploads/Lisk_Background_e42d7fb465.jpg'
+        }
         tokenImage={
-          'https://strapi.jumper.exchange/uploads/Np_M0_F_Gcg_EMJCIT_Nnh_M_Fnl5_Ul8_f69135f4bf.avif'
+          'https://strapi.jumper.exchange/uploads/LISK_logo_2305c31809.jpg'
         }
         websiteLink={
-          'https://lifi.notion.site/Jumper-x-Berachain-Campaign-rules-1a5f0ff14ac7806dbb93c58165d9252e'
+          'https://www.notion.so/lifi/Jumper-x-Lisk-Ecosystem-Campaign-FAQ-1cef0ff14ac780d289e7cd6877bd9136'
         }
         Xlink={''}
       />

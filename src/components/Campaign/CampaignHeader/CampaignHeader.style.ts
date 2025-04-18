@@ -1,6 +1,5 @@
 import type { Breakpoint } from '@mui/material';
-import { IconButton, Typography } from '@mui/material';
-import { alpha, Box, styled } from '@mui/material';
+import { alpha, Box, IconButton, styled, Typography } from '@mui/material';
 import Link from 'next/link';
 
 export const InformationShareLink = styled(Link)(() => ({
@@ -24,16 +23,8 @@ export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   height: 180,
   borderRadius: theme.spacing(4),
-  paddingLeft: theme.spacing(3),
-  paddingRight: theme.spacing(3),
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(1),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    justifyContent: 'center',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    justifyContent: 'flex-end',
-  },
+  padding: theme.spacing(4, 3),
+  justifyContent: 'center',
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({
@@ -56,7 +47,7 @@ export const CampaignTitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const CampaignDescription = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.text.primary, 0.48),
+  color: alpha(theme.palette.white.main, 0.75),
   marginTop: theme.spacing(0.5),
   fontWeight: 500,
   fontSize: 16,
@@ -76,7 +67,7 @@ export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
 
 export const CampaignDigitInfoBox = styled(Box)(({ theme }) => ({
   width: '216px',
-  backgroundColor: '#E86F20CC',
+  backgroundColor: alpha('#00824b', 0.8),
   boxShadow: '0 4px 6px #00000020',
   borderRadius: theme.spacing(2),
   paddingLeft: theme.spacing(3),
