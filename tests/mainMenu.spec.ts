@@ -71,15 +71,15 @@ test.describe('Main Menu flows', () => {
     ];
     const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
     const blogArticle = await page.locator(
-      'xpath=//div[@class="MuiBox-root mui-8r1wue"]',
+      'xpath=(//div[@class="MuiCardContent-root mui-6l9nau-MuiCardContent-root"])[1]',
     );
     const articleTitle = await page.locator(
       'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
-    const learnUrl = `${await page.url()}learn`;
+  
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Learn');
-    expect(await page.url()).toBe(learnUrl);
+    await expect(page).toHaveURL(values.localLearnURL);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
     sectionOnTheBlogPage(page, sectionName);
