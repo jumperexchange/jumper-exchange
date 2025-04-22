@@ -190,6 +190,10 @@ export function useUserTracking() {
             (data[TrackingEventParameter.ToAmount] &&
               parseFloat(data[TrackingEventParameter.ToAmount])) ||
             0,
+          toAmountMin:
+            (data[TrackingEventParameter.ToAmountMin] &&
+              parseFloat(data[TrackingEventParameter.ToAmountMin])) ||
+            0,
           toAmountUSD:
             (data[TrackingEventParameter.ToAmountUSD] &&
               parseFloat(data[TrackingEventParameter.ToAmountUSD])) ||
