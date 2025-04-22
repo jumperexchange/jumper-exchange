@@ -40,10 +40,7 @@ export async function generateMetadata({
       openGraph,
     };
   } catch (err) {
-    return {
-      title: `Jumper Campaign | ${sliceStrToXChar(slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the campaign "${slug.replaceAll('-', ' ')}".`,
-    };
+    notFound();
   }
 }
 
