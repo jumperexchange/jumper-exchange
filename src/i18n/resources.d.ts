@@ -183,7 +183,7 @@ interface Resources {
       steps: {
         intro: {
           title: 'Transfer your XP points to a new wallet';
-          description: "To transfer your XP points, you'll need to connect both your current wallet (with XP) and your new wallet. Each wallet will require a signature to verify ownership. Note: Only EVM wallets are supported. After verification, your transfer request will be submitted for approval.";
+          description: "To transfer your XP points, you'll need to connect both your current wallet (with XP) and your new wallet. Each wallet will require a signature to verify ownership. After verification, your transfer request will be submitted for approval. Note: Only EVM wallets are supported.";
           buttonLabel: 'Continue';
         };
         source: {
@@ -206,6 +206,10 @@ interface Resources {
           title: 'Submit';
           description: 'Move {{points}} XP from {{sourceWallet}} to {{destinationWallet}}';
         };
+        success: {
+          title: 'Transfer Request Submitted';
+          description: 'Your XP transfer request has been submitted successfully. We will process your request shortly.';
+        };
       };
       actions: {
         continue: 'Continue';
@@ -213,6 +217,7 @@ interface Resources {
         verifyWallet: 'Verify Wallet';
         sign: 'Sign Message';
         submit: 'Submit';
+        done: 'Done';
       };
       errors: {
         sameWalletAsSource: 'This wallet is already set as the source wallet. Please use a different wallet for the destination.';

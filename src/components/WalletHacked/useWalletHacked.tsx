@@ -4,12 +4,14 @@ import {
   useAccountDisconnect,
   useWalletMenu,
 } from '@lifi/wallet-management';
+import CheckIcon from '@mui/icons-material/Check';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SiweMessage, generateNonce } from 'siwe';
 import { useSignMessage } from 'wagmi';
 
-type Step = 'intro' | 'source' | 'destination' | 'summary';
+type Step = 'intro' | 'source' | 'destination' | 'summary' | 'success';
 
 interface StepContent {
   title: string;
@@ -25,6 +27,7 @@ interface UseWalletHackedProps {}
 
 export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const { account } = useAccount();
   const disconnectWallet = useAccountDisconnect();
   const { openWalletMenu } = useWalletMenu();
@@ -78,6 +81,21 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
         if (destinationWalletSigned) {
           setCurrentStep('summary');
         }
+        break;
+      case 'success':
+        // Reset the form
+        setCurrentStep('intro');
+        setSourceWallet(null);
+        setDestinationWallet(null);
+        setSourceWalletVerified(false);
+        setSourceWalletSigned(false);
+        setDestinationWalletVerified(false);
+        setDestinationWalletSigned(false);
+        setSourceSignature(null);
+        setSourceMessage(null);
+        setDestinationSignature(null);
+        setDestinationMessage(null);
+        setError(null);
         break;
       default:
         break;
@@ -193,18 +211,23 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
     }
 
     try {
-      const response = await fetch('/api/wallet/transfer-xp', {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const response = await fetch(`${apiBaseUrl}/auth/verify-wallets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          sourceWallet,
-          destinationWallet,
-          sourceSignature: sourceSignature,
-          destinationSignature: destinationSignature,
-          sourceMessage: sourceMessage,
-          destinationMessage: destinationMessage,
+          origin_wallet: {
+            address: sourceWallet,
+            message: sourceMessage,
+            signature: sourceSignature,
+          },
+          destination_wallet: {
+            address: destinationWallet,
+            message: destinationMessage,
+            signature: destinationSignature,
+          },
         }),
       });
 
@@ -213,8 +236,10 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
         throw new Error(error.message || 'Failed to submit transfer request');
       }
 
-      // Handle successful submission
-      // console.log('Transfer request submitted successfully');
+      const responseData = await response.json();
+      const verificationId = responseData.data.verification_id;
+      setCurrentStep('success');
+      return { success: true, verificationId };
     } catch (error) {
       setError(
         error instanceof Error
@@ -352,6 +377,8 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
         return t('walletHacked.actions.continue');
       case 'summary':
         return t('walletHacked.actions.submit');
+      case 'success':
+        return t('walletHacked.actions.done');
       default:
         return '';
     }
@@ -412,6 +439,24 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
         return handleContinue;
       case 'summary':
         return handleSubmit;
+      case 'success':
+        return () => {
+          // Reset the form or close the modal
+          setCurrentStep('intro');
+          setSourceWallet(null);
+          setDestinationWallet(null);
+          setSourceWalletVerified(false);
+          setSourceWalletSigned(false);
+          setDestinationWalletVerified(false);
+          setDestinationWalletSigned(false);
+          setSourceSignature(null);
+          setSourceMessage(null);
+          setDestinationSignature(null);
+          setDestinationMessage(null);
+          setError(null);
+          // Redirect to homepage
+          router.push('/');
+        };
       default:
         return () => {};
     }
@@ -432,6 +477,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
     handleSubmit,
     setError,
     t,
+    router,
   ]);
 
   const getStepContent = useCallback((): StepContent => {
@@ -441,8 +487,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
           title: t('walletHacked.steps.intro.title'),
           description: t('walletHacked.steps.intro.description'),
           buttonLabel: t('walletHacked.actions.continue'),
-
-          onClick: handleContinue,
+          onClick: getOnClick,
         };
       case 'source':
         if (!sourceWallet) {
@@ -450,7 +495,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             title: t('walletHacked.steps.source.title'),
             description: t('walletHacked.steps.source.connectDescription'),
             buttonLabel: t('walletHacked.actions.connectWallet'),
-            onClick: handleConnectSourceWallet,
+            onClick: getOnClick,
             content: error ? (
               <div style={{ color: 'red', textAlign: 'center', width: '100%' }}>
                 {error}
@@ -465,9 +510,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             buttonLabel: !account?.address
               ? t('walletHacked.actions.connectWallet')
               : t('walletHacked.actions.verifyWallet'),
-            onClick: !account?.address
-              ? handleConnectSourceWallet
-              : () => handleVerifyWallet('source'),
+            onClick: getOnClick,
             showWalletAddress: true,
             walletAddress: sourceWallet,
             content: error ? (
@@ -484,9 +527,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             buttonLabel: !account?.address
               ? t('walletHacked.actions.connectWallet')
               : t('walletHacked.actions.sign'),
-            onClick: !account?.address
-              ? handleConnectSourceWallet
-              : () => handleSignMessage('source'),
+            onClick: getOnClick,
             showWalletAddress: true,
             walletAddress: sourceWallet,
             content: error ? (
@@ -500,7 +541,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
           title: t('walletHacked.steps.source.title'),
           description: t('walletHacked.steps.source.readyDescription'),
           buttonLabel: t('walletHacked.actions.continue'),
-          onClick: handleContinue,
+          onClick: getOnClick,
           showWalletAddress: true,
           walletAddress: sourceWallet,
           content: error ? (
@@ -515,7 +556,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             title: t('walletHacked.steps.destination.title'),
             description: t('walletHacked.steps.destination.connectDescription'),
             buttonLabel: t('walletHacked.actions.connectWallet'),
-            onClick: handleConnectDestinationWallet,
+            onClick: getOnClick,
             content: error ? (
               <div style={{ color: 'red', textAlign: 'center', width: '100%' }}>
                 {error}
@@ -530,9 +571,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             buttonLabel: !account?.address
               ? t('walletHacked.actions.connectWallet')
               : t('walletHacked.actions.verifyWallet'),
-            onClick: !account?.address
-              ? handleConnectDestinationWallet
-              : () => handleVerifyWallet('destination'),
+            onClick: getOnClick,
             showWalletAddress: true,
             walletAddress: destinationWallet,
             content: error ? (
@@ -549,9 +588,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             buttonLabel: !account?.address
               ? t('walletHacked.actions.connectWallet')
               : t('walletHacked.actions.sign'),
-            onClick: !account?.address
-              ? handleConnectDestinationWallet
-              : () => handleSignMessage('destination'),
+            onClick: getOnClick,
             showWalletAddress: true,
             walletAddress: destinationWallet,
             content: error ? (
@@ -565,7 +602,7 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
           title: t('walletHacked.steps.destination.title'),
           description: t('walletHacked.steps.destination.readyDescription'),
           buttonLabel: t('walletHacked.actions.continue'),
-          onClick: handleContinue,
+          onClick: getOnClick,
           showWalletAddress: true,
           walletAddress: destinationWallet,
           content: error ? (
@@ -583,12 +620,37 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
             destinationWallet: destinationWallet || '',
           }),
           buttonLabel: t('walletHacked.actions.submit'),
-          onClick: handleSubmit,
+          onClick: getOnClick,
           content: error ? (
             <div style={{ color: 'red', textAlign: 'center', width: '100%' }}>
               {error}
             </div>
           ) : undefined,
+        };
+      case 'success':
+        return {
+          title: t('walletHacked.steps.success.title'),
+          description: t('walletHacked.steps.success.description'),
+          buttonLabel: t('walletHacked.actions.done'),
+          onClick: getOnClick,
+          content: (
+            <div style={{ textAlign: 'center', width: '100%' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  backgroundColor: '#D6FFE7',
+                  width: '96px',
+                  height: '96px',
+                  alignItems: 'center',
+                  borderRadius: '48px',
+                  margin: 'auto',
+                }}
+              >
+                <CheckIcon sx={{ color: '#00B849', fontSize: '48px' }} />
+              </div>
+            </div>
+          ),
         };
       default:
         return {
@@ -600,22 +662,17 @@ export const useWalletHacked = ({}: UseWalletHackedProps = {}) => {
     }
   }, [
     currentStep,
-    menuIndex,
+    t,
     sourceWallet,
-    destinationWallet,
     sourceWalletVerified,
     sourceWalletSigned,
+    error,
+    destinationWallet,
     destinationWalletVerified,
     destinationWalletSigned,
-    error,
-    t,
-    handleContinue,
-    handleConnectSourceWallet,
-    handleConnectDestinationWallet,
-    handleVerifyWallet,
-    handleSignMessage,
-    handleSubmit,
     sourcePoints,
+    account?.address,
+    getOnClick,
   ]);
 
   return {
