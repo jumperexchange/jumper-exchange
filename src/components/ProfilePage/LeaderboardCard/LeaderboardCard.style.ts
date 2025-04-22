@@ -1,8 +1,7 @@
-import type { Breakpoint } from '@mui/material';
+import type { Breakpoint, ButtonProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import Link from 'next/link';
 import { ButtonSecondary, ButtonTransparent } from 'src/components/Button';
-import { TierboxInfoTitles } from '../LevelBox/TierBox.style';
 
 export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -60,26 +59,26 @@ export const CardButton = styled(ButtonSecondary)(({ theme }) => ({
       : theme.palette.text.primary,
 }));
 
-export const LeaderboardUserPositionButton = styled(ButtonTransparent)(
-  ({ theme }) => ({
-    padding: theme.spacing(0, 1),
-    textDecoration: 'none',
-    position: 'relative',
-    marginTop: theme.spacing(0.5),
-    height: 64,
-    background: 'transparent',
-    borderRadius: '16px',
-    '&:hover': {
-      backgroundColor:
-        theme.palette.mode === 'light'
-          ? theme.palette.white.main
-          : theme.palette.alphaLight300.main,
-    },
-  }),
-);
+interface LeaderboardUserPositionButtonProps extends ButtonProps {
+  isGtMillion: boolean;
+}
 
-export const LeaderboardUserTitle = styled(TierboxInfoTitles)(({ theme }) => ({
-  width: '100%',
-  alignSelf: 'flex-start',
+export const LeaderboardUserPositionButton = styled(ButtonTransparent, {
+  shouldForwardProp: (prop) => prop !== 'isGtMillion',
+})<LeaderboardUserPositionButtonProps>(({ theme, isGtMillion }) => ({
+  padding: theme.spacing(0, 1),
+  textDecoration: 'none',
+  position: 'relative',
   marginTop: theme.spacing(1),
+  height: 64,
+  background: 'transparent',
+  borderRadius: '16px',
+  ...(isGtMillion && { fontSize: '38px !important' }),
+
+  '&:hover': {
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.white.main
+        : theme.palette.alphaLight300.main,
+  },
 }));

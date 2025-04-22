@@ -9,7 +9,6 @@ import {
   CardButton,
   CardButtonContainer,
   LeaderboardUserPositionButton,
-  LeaderboardUserTitle,
   RankContainer,
   RankContentContainer,
 } from './LeaderboardCard.style';
@@ -22,6 +21,7 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
     parseFloat(leaderboardUserData?.position) / LEADERBOARD_LENGTH,
   );
   const position = leaderboardUserData?.position;
+  const isGtMillion = parseInt(position) >= 1000000;
 
   return (
     <RankContainer>
@@ -33,21 +33,23 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
         />
       </Box>
       <RankContentContainer>
-        {position ? (
-          <LeaderboardUserPositionButton
-            as={'a'}
-            aria-label="Open leaderboard with your position"
-            href={`/leaderboard?page=${userPage}`}
-          >
-            <LeaderboardUserTitle variant="titleLarge">
-              {position
-                ? t('format.decimal2Digit', { value: position })
-                : 'N/A'}
-            </LeaderboardUserTitle>
-          </LeaderboardUserPositionButton>
-        ) : (
-          <LeaderboardUserTitle variant="titleLarge">N/A</LeaderboardUserTitle>
-        )}
+        <LeaderboardUserPositionButton
+          isGtMillion={isGtMillion}
+          disabled={!position}
+          as={position ? 'a' : 'div'}
+          aria-label="Open leaderboard with your position"
+          {...(position && { href: `/leaderboard?page=${userPage}` })}
+          sx={(theme) => ({
+            typography: {
+              xs: theme.typography.titleLarge,
+            },
+            ...(!position && {
+              '&:hover:before': { backgroundColor: 'transparent' },
+            }),
+          })}
+        >
+          {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
+        </LeaderboardUserPositionButton>
         <CardButtonContainer
           href="/leaderboard"
           passHref
