@@ -1031,6 +1031,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme = extend
         },
         background: {
           default: '#120F29', //'#241D52',
+          paper: '#24203d', //'#241D52',
         },
         text: {
           primary: '#fff',

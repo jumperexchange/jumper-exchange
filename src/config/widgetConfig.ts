@@ -58,13 +58,17 @@ export const getDefaultWidgetThemeV2 = (
     throw new Error(`Theme mode "${mode}" is not defined in the theme.`);
   }
 
-  return {
+  const copiedTheme = {...themeCustomized };
+
+  copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
+
+  const config = {
     config: {
       appearance: mode as Appearance,
       theme: {
         // @ts-ignore
         typography: {
-          fontFamily: themeCustomized.typography.fontFamily,
+          fontFamily: copiedTheme.typography.fontFamily,
         },
         header: {
           overflow: 'visible',
@@ -72,38 +76,21 @@ export const getDefaultWidgetThemeV2 = (
         container: {
           borderRadius: '12px',
           maxWidth: '100%',
-          [themeCustomized.breakpoints.up('sm' as Breakpoint)]: {
+          [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
             borderRadius: '12px',
             maxWidth: 416,
             minWidth: 416,
-            boxShadow: themeCustomized.shadows[1],
+            boxShadow: copiedTheme.shadows[1],
           },
         },
         shape: {
           borderRadius: 12,
           borderRadiusSecondary: 24,
         },
-        palette: {
-          background: {
-            paper: themeCustomized.colorSchemes[mode].palette.surface2.main,
-            default: (themeCustomized.vars || themeCustomized).palette.surface1.main,
-          },
-          primary: {
-            main: themeCustomized.colorSchemes[mode].palette.accent1.main,
-          },
-          secondary: {
-            main: themeCustomized.colorSchemes[mode].palette.accent2.main,
-          },
-          grey: {
-            ...themeCustomized.colorSchemes[mode].palette.grey,
-            // TODO: Fix it later
-            [800]:
-              mode === 'dark'
-                ? '#302b52'
-                : themeCustomized.colorSchemes[mode].palette.grey[800],
-          },
-        },
+        colorScheme: copiedTheme.colorSchemes,
       },
     },
   };
+
+  return config;
 };
