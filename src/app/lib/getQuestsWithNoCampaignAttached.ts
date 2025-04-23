@@ -3,7 +3,6 @@ import type { QuestData, StrapiResponse } from 'src/types/strapi';
 
 export async function getQuestsWithNoCampaignAttached() {
   const urlParams = new QuestStrapiApi().filterByNoCampaignAttached();
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
 
@@ -18,7 +17,7 @@ export async function getQuestsWithNoCampaignAttached() {
     throw new Error('Failed to fetch data');
   }
 
-  const data: StrapiResponse<QuestData> = await res.json(); // Use the defined type here
+  const data: StrapiResponse<QuestData> = await res.json();
 
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return { data };
 }
