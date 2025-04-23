@@ -215,7 +215,7 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     position: 'sticky',
     top: 0,
     alignItems: 'center',
-    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+    backgroundColor: 'inherit',
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
@@ -238,7 +238,7 @@ export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
 
 export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
   ({ theme }) => ({
-    backgroundColor: 'transparent',
+    background: 'transparent!important',
     zIndex: 1500,
     position: 'fixed',
     top: 'initial',
@@ -250,6 +250,7 @@ export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: 48,
+
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       padding: theme.spacing(0, 1.5),
       position: 'relative',

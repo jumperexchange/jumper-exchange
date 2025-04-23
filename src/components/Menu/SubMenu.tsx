@@ -77,7 +77,7 @@ export const SubMenu = ({
             edge="start"
             sx={{
               marginLeft: 0,
-              color: theme.palette.text.primary,
+              color: (theme.vars || theme).palette.text.primary,
               '&:hover': {
                 backgroundColor: alpha(theme.palette.white.main, 0.04),
                 ...theme.applyStyles('light', {

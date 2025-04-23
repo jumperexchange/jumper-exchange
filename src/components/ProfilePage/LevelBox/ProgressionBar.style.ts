@@ -118,11 +118,9 @@ export const ProgressionChartBg = styled(Box, {
   width: '100%',
   height: '100%',
   borderRadius: '12px',
-  backgroundColor: chartBg
-    ? (theme.vars || theme).palette.alphaLight200.main
-    : 'inherit',
+  backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
 
   ...theme.applyStyles('light', {
-    backgroundColor: chartBg ? (theme.vars || theme).palette.alphaDark200.main : 'inherit',
+    backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
   }),
 }));
