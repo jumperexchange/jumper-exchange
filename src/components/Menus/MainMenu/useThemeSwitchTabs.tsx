@@ -9,8 +9,8 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useColorScheme } from '@mui/material';
-import { Mode } from 'node_modules/@mui/system/esm/cssVars/useCurrentColorScheme';
 import { useTranslation } from 'react-i18next';
+import type { Appearance } from '@lifi/widget';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useSuperfest } from 'src/hooks/useSuperfest';
 
@@ -24,7 +24,7 @@ export const useThemeSwitchTabs = () => {
   const [configTheme] = useThemeStore((state) => [
     state.configTheme,
   ]);
-  const handleSwitchMode = (mode: Mode) => {
+  const handleSwitchMode = (mode: Appearance) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
       action: TrackingAction.SwitchTheme,

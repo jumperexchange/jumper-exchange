@@ -1,11 +1,10 @@
 import type { PartnerThemesData } from '@/types/strapi';
 import { formatTheme, getAvailableThemeModes } from '@/utils/formatTheme';
-import type { Theme } from '@mui/material';
+import type { PaletteMode, Theme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 import { getDefaultWidgetTheme, getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
 import { themeCustomized } from 'src/theme/theme';
-import { Mode } from 'node_modules/@mui/system/esm/cssVars/useCurrentColorScheme';
-import { DefaultColorScheme } from 'node_modules/@mui/material/esm/styles/createThemeWithVars';
+import type { Appearance } from '@lifi/widget';
 
 export function getPartnerTheme(
   themes?: PartnerThemesData[],
@@ -16,7 +15,7 @@ export function getPartnerTheme(
 
 // @deprecated
 export function getMuiTheme(
-  themeMode: any,
+  themeMode: Appearance,
   themes?: PartnerThemesData[],
   activeTheme?: string,
 ) {
@@ -60,11 +59,11 @@ export function getWidgetTheme(
 }
 
 export function getWidgetThemeV2(
-  mode: Mode,
+  mode: PaletteMode,
   activeTheme?: string,
   themes?: PartnerThemesData[],
 ) {
-  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode as DefaultColorScheme);
+  const defaultWidgetTheme = getDefaultWidgetThemeV2(mode);
   const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
 
   const widgetTheme = partnerThemeAttributes

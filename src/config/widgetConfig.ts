@@ -1,6 +1,5 @@
 import type { Appearance, WidgetConfig } from '@lifi/widget';
-import { type Breakpoint, type Theme } from '@mui/material';
-import { type SupportedColorScheme } from '@mui/material/styles';
+import { CssVarsTheme, PaletteMode, type Breakpoint, type Theme } from '@mui/material';
 import { themeCustomized } from 'src/theme/theme';
 
 // INFO: Do NOT use theme.vars here, it will break the widget
@@ -52,21 +51,28 @@ export const getDefaultWidgetTheme = (
 
 // INFO: Do NOT use theme.vars here, it will break the widget
 export const getDefaultWidgetThemeV2 = (
-  mode: SupportedColorScheme,
+  mode: PaletteMode,
 ): { config: Partial<WidgetConfig> } => {
   if (!themeCustomized.colorSchemes[mode]) {
     throw new Error(`Theme mode "${mode}" is not defined in the theme.`);
   }
 
-  const copiedTheme = { ...themeCustomized };
+  const copiedTheme: Omit<Theme, 'applyStyles'> & CssVarsTheme = { ...themeCustomized };
 
+  if (!copiedTheme.colorSchemes.dark) {
+    copiedTheme.colorSchemes.dark = {} as NonNullable<typeof copiedTheme.colorSchemes.dark>;
+  }
+  if (!copiedTheme.colorSchemes.dark.palette) {
+    copiedTheme.colorSchemes.dark.palette = {} as NonNullable<typeof copiedTheme.colorSchemes.dark.palette>;
+  }
+  if (!copiedTheme.colorSchemes.dark.palette.grey) {
+    copiedTheme.colorSchemes.dark.palette.grey = {} as NonNullable<typeof copiedTheme.colorSchemes.dark.palette.grey>;
+  }
   copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
 
   const config = {
     config: {
-      appearance: mode as Appearance,
       theme: {
-        // @ts-ignore
         typography: {
           fontFamily: copiedTheme.typography.fontFamily,
         },
@@ -92,5 +98,6 @@ export const getDefaultWidgetThemeV2 = (
     },
   };
 
+  // @ts-ignore
   return config;
 };
