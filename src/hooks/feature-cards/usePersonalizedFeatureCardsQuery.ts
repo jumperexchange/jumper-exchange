@@ -1,6 +1,7 @@
 import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 export interface UsePersonalizedFeatureCardsProps {
   data: StrapiFeatureCardData[];
@@ -36,10 +37,7 @@ export const usePersonalizedFeatureCardsQuery =
       refetchInterval: 1000 * 60 * 60,
     });
 
-    const apiBaseUrl =
-      process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-        ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-        : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+    const apiBaseUrl = getStrapiBaseUrl();
     const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
 
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
