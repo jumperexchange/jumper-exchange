@@ -1,4 +1,4 @@
-import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
+import type { BoxProps, TypographyProps } from '@mui/material';
 import { Box, IconButton, Link, styled, Typography } from '@mui/material';
 
 export const InformationShareLink = styled(Link)(() => ({
@@ -19,14 +19,16 @@ interface CampaignHeaderBoxBackgroundProps extends BoxProps {
   lightMode?: boolean;
 }
 
-export const CampaignHeaderBoxBackground = styled(Box, {
+export const CampaignHeaderContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'lightMode',
 })<CampaignHeaderBoxBackgroundProps>(({ theme, lightMode }) => ({
   alignItems: 'center',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  width: '100%',
   height: 180,
   borderRadius: theme.spacing(4),
   paddingLeft: theme.spacing(3),
@@ -36,7 +38,6 @@ export const CampaignHeaderBoxBackground = styled(Box, {
   backgroundColor: !lightMode
     ? theme.palette.alphaLight300.main
     : theme.palette.alphaLight700.main,
-  justifyContent: 'center',
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({
@@ -54,14 +55,6 @@ export const CampaignTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'lightMode',
 })<CampaignTitleProps>(({ theme, lightMode }) => ({
   color: !lightMode ? theme.palette.white.main : theme.palette.black.main,
-  fontWeight: 700,
-  fontSize: 32,
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: 24,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: 32,
-  },
 }));
 
 interface CampaignDescriptionProps extends TypographyProps {
@@ -75,31 +68,18 @@ export const CampaignDescription = styled(Typography, {
     ? theme.palette.alphaLight700.main
     : theme.palette.alphaDark700.main,
   marginTop: theme.spacing(0.5),
-  fontWeight: 500,
-  fontSize: 16,
-
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: 12,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: 16,
-  },
-}));
-
-export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
-  color: theme.palette.white.main,
-  fontWeight: 700,
 }));
 
 interface CampaignDigitInfoBoxProps extends BoxProps {
   lightMode?: boolean;
 }
 
-export const CampaignDigitInfoBox = styled(Box, {
+export const CampaignHeaderInfos = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'lightMode',
 })<CampaignDigitInfoBoxProps>(({ theme, lightMode }) => ({
   maxWidth: '216px',
   minWidth: '164px',
+  color: !lightMode ? theme.palette.white.main : theme.palette.black.main,
   backgroundColor: !lightMode
     ? theme.palette.alphaLight300.main
     : theme.palette.white.main,
