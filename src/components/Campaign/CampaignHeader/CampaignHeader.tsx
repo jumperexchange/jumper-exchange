@@ -30,6 +30,7 @@ export const CampaignHeader = ({ campaign }: CampaignHeaderProps) => {
 
   return (
     <CampaignHeaderBoxBackground
+      lightMode={campaign.LightMode}
       sx={{
         backgroundImage: `url(${apiBaseUrl}${campaign.Background.url})`,
       }}

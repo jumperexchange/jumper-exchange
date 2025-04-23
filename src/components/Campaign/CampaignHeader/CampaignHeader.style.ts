@@ -1,12 +1,5 @@
-import type { Breakpoint, TypographyProps } from '@mui/material';
-import {
-  alpha,
-  Box,
-  IconButton,
-  Link,
-  styled,
-  Typography,
-} from '@mui/material';
+import type { BoxProps, Breakpoint, TypographyProps } from '@mui/material';
+import { Box, IconButton, Link, styled, Typography } from '@mui/material';
 
 export const InformationShareLink = styled(Link)(() => ({
   color: 'inherit',
@@ -14,15 +7,21 @@ export const InformationShareLink = styled(Link)(() => ({
 }));
 
 export const ColoredProtocolShareButton = styled(IconButton)(({ theme }) => ({
-  background: alpha(theme.palette.white.main, 0.08),
+  background: theme.palette.alphaLight200.main,
   color: theme.palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   '&:hover': {
-    background: alpha(theme.palette.white.main, 0.16),
+    background: theme.palette.alphaLight400.main,
   },
 }));
 
-export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
+interface CampaignHeaderBoxBackgroundProps extends BoxProps {
+  lightMode?: boolean;
+}
+
+export const CampaignHeaderBoxBackground = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignHeaderBoxBackgroundProps>(({ theme, lightMode }) => ({
   alignItems: 'center',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
@@ -34,7 +33,9 @@ export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
   paddingRight: theme.spacing(3),
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
-  backgroundColor: alpha(theme.palette.primary.main, 0.24),
+  backgroundColor: !lightMode
+    ? theme.palette.alphaLight300.main
+    : theme.palette.alphaLight700.main,
   justifyContent: 'center',
 }));
 
@@ -70,10 +71,9 @@ interface CampaignDescriptionProps extends TypographyProps {
 export const CampaignDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'lightMode',
 })<CampaignDescriptionProps>(({ theme, lightMode }) => ({
-  color: alpha(
-    !lightMode ? theme.palette.white.main : theme.palette.black.main,
-    0.48,
-  ),
+  color: !lightMode
+    ? theme.palette.alphaLight700.main
+    : theme.palette.alphaDark700.main,
   marginTop: theme.spacing(0.5),
   fontWeight: 500,
   fontSize: 16,
@@ -91,10 +91,18 @@ export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
-export const CampaignDigitInfoBox = styled(Box)(({ theme }) => ({
+interface CampaignDigitInfoBoxProps extends BoxProps {
+  lightMode?: boolean;
+}
+
+export const CampaignDigitInfoBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignDigitInfoBoxProps>(({ theme, lightMode }) => ({
   maxWidth: '216px',
   minWidth: '164px',
-  backgroundColor: alpha(theme.palette.primary.main, 0.8),
+  backgroundColor: !lightMode
+    ? theme.palette.alphaLight300.main
+    : theme.palette.white.main,
   boxShadow: '0 4px 6px #00000020',
   borderRadius: theme.spacing(2),
   paddingLeft: theme.spacing(3),
