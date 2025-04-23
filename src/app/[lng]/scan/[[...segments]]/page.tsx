@@ -77,10 +77,11 @@ export default async function Page({
   // Validate segments
   const result = scanParamsSchema.safeParse({ segments: segments });
 
-  console.log('---testscan', result);
   if (!result.success) {
-    return <div>loading...</div>;
+    return notFound();
   }
 
-  return <ScanPage lng={lng} />;
+  return <div>test</div>
+
+  // return <ScanPage lng={lng} />;
 }

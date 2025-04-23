@@ -111,9 +111,7 @@ export interface ProgressionChartBgProps extends BoxProps {
   chartBg?: string;
 }
 
-export const ProgressionChartBg = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'chartBg',
-})<ProgressionChartBgProps>(({ theme, chartBg }) => ({
+export const ProgressionChartBg = styled(Box)<ProgressionChartBgProps>(({ theme }) => ({
   position: 'absolute',
   width: '100%',
   height: '100%',

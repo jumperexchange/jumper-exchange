@@ -103,32 +103,8 @@ export default async function RootLayout({
   params: Params;
 }) {
   const { lng } = await params;
-
-  /** old
-/*
-   const cookiesHandler = await cookies();
-   const [resourcesPromise, activeThemePromise] = await Promise.allSettled([
-    initTranslations(lng || fallbackLng, namespaces),
-    getActiveTheme(cookiesHandler),
-  ]);*/
-  /*
-
-  const { activeTheme, themes, themeMode, isPartnerTheme } =
-    activeThemePromise.status === 'fulfilled'
-      ? activeThemePromise.value
-      : ({} as ActiveThemeResult);
-
-  const resources =
-    resourcesPromise.status === 'fulfilled'
-      ? resourcesPromise.value.resources
-      : undefined;
-*/
-
   const partnerThemes = await getPartnerThemes();
-
-  /** new*/
   const { resources } = await initTranslations(lng || fallbackLng, namespaces);
-  /** end new*/
 
   return (
     <html
