@@ -23,10 +23,6 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-
-  const imageWidth = isMobile ? 320 : 640;
-  const imageHeight = isMobile ? 160 : 320;
-
   const apiBaseUrl = getStrapiBaseUrl();
 
   return (
@@ -72,8 +68,8 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
                 <BannerImage
                   src={`${apiBaseUrl}${campaign.ProfileBannerImage.url}`}
                   alt={'campaign banner'}
-                  width={imageWidth}
-                  height={imageHeight}
+                  width={isMobile ? 320 : 640}
+                  height={isMobile ? 160 : 320}
                   isImageLoading={loadingImages[campaign.Slug]}
                   onLoadingComplete={() =>
                     setLoadingImages((prev) => ({
