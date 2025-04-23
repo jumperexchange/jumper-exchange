@@ -1,10 +1,24 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getCampaigns } from 'src/app/lib/getCampaigns';
 import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import { CampaignPage } from 'src/components/Campaign/CampaignPage';
 import { getSiteUrl, JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+
+// Add generateStaticParams function
+export async function generateStaticParams() {
+  const { data } = await getCampaigns();
+
+  if (!data) {
+    return [];
+  }
+
+  return data.map((campaign) => ({
+    slug: campaign.Slug,
+  }));
+}
 
 export async function generateMetadata({
   params,

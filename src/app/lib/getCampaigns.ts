@@ -1,15 +1,16 @@
+import type { CampaignData, StrapiResponse } from '@/types/strapi';
 import { CampaignStrapiApi } from '@/utils/strapi/StrapiApi';
-import type { GetCampaignsResponse } from './getCampaigns';
 
-export async function getCampaignBySlug(
-  slug: string,
-): Promise<GetCampaignsResponse> {
+export interface GetCampaignsResponse extends StrapiResponse<CampaignData> {
+  url: string;
+}
+
+export async function getCampaigns(): Promise<GetCampaignsResponse> {
   const urlParams = new CampaignStrapiApi()
     .useCampaignPageParams()
-    .filterBySlug(slug)
     .addPaginationParams({
       page: 1,
-      pageSize: 1,
+      pageSize: 50,
       withCount: false,
     });
 
