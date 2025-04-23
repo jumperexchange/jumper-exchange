@@ -17,7 +17,7 @@ export interface MerklApyRes {
 }
 
 export const useMissionsAPY = (CTAs: CTALinkInt[] = []): useMissionsAPYRes => {
-  const MERKL_CAMPAIGN_API = `${MERKL_API}/opportunities?chainIds=${REWARDS_CHAIN_IDS.join(',')}`; //&creatorTag=${CREATOR_TAG}
+  const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${REWARDS_CHAIN_IDS.join(',')}`; //&creatorTag=${CREATOR_TAG}  const { data, isSuccess, isLoading } = useQuery({
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['campaignInfo'],
     queryFn: async () => {
