@@ -1,5 +1,6 @@
 import type { Quest } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export interface UseQuestsProps {
   quests: Quest[] | undefined;
@@ -40,10 +41,7 @@ export const useOngoingFestMissions = (): UseQuestsProps => {
   apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
-  const apiAccesToken =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const apiAccesToken = getStrapiApiAccessToken();
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['ongoingFestMissions'],
 

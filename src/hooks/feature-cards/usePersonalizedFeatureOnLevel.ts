@@ -2,6 +2,7 @@ import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export interface UsePersonalizedFeatureOnLevelProps {
   featureCards: StrapiFeatureCardData[] | undefined;
@@ -39,10 +40,7 @@ export const usePersonalizedFeatureOnLevel = ({
 
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
-  const apiAccesToken =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const apiAccesToken = getStrapiApiAccessToken();
   const { data, isSuccess } = useQuery({
     queryKey: ['personalizedFeatureCardsOnLevel'],
 

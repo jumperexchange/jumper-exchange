@@ -7,6 +7,7 @@ import {
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
 import type { Account } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export interface UseStrapiProps<T> {
   data: StrapiResponseData<T>;
@@ -183,10 +184,7 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('pagination[pageSize]', '50');
 
   // use local strapi on develop || prod strapi
-  const apiAccesToken =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const apiAccesToken = getStrapiApiAccessToken();
 
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
     queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],

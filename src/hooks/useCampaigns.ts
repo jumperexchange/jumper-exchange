@@ -1,6 +1,9 @@
 import type { CampaignData } from '@/types/strapi';
 import { useQuery } from '@tanstack/react-query';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import {
+  getStrapiApiAccessToken,
+  getStrapiBaseUrl,
+} from 'src/utils/strapi/strapiHelper';
 
 export interface UseCampaignsProps {
   campaigns: CampaignData[] | undefined;
@@ -47,10 +50,7 @@ export const useCampaigns = (
   process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
 
-  const apiAccessToken =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN
-      : process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+  const apiAccessToken = getStrapiApiAccessToken();
 
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['campaigns', showProfileBanner],
