@@ -81,7 +81,5 @@ export default async function Page({
     return notFound();
   }
 
-  return <div>test</div>
-
-  // return <ScanPage lng={lng} />;
+  return <ScanPage lng={lng} />;
 }
