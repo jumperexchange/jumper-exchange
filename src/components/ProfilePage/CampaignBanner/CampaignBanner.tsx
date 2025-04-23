@@ -3,6 +3,12 @@ import type { Theme } from '@mui/material';
 import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BannerImage,
@@ -20,6 +26,7 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
     [key: string]: boolean;
   }>({});
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -53,6 +60,16 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
       {filteredCampaigns.map((campaign) => (
         <Link
           key={campaign.Slug}
+          onClick={() => {
+            trackEvent({
+              category: TrackingCategory.CampaignBanner,
+              action: TrackingAction.ClickCampaignBanner,
+              label: 'click-campaign-banner',
+              data: {
+                [TrackingEventParameter.ActiveCampaignBanner]: campaign.Slug,
+              },
+            });
+          }}
           href={`${process.env.NEXT_PUBLIC_SITE_URL}/campaign/${campaign.Slug}`}
           style={{
             marginTop: theme.spacing(4),

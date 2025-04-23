@@ -1,14 +1,6 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Theme } from '@mui/material';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const/trackingKeys';
-import { JUMPER_CAMPAIGN_PATH } from 'src/const/urls';
-import { useUserTracking } from 'src/hooks/userTracking';
 import {
   BannerButton,
   CampaignInfoVerticalBox,
@@ -29,9 +21,7 @@ export const CampaignInformation = ({
   description: string;
   cta?: string;
 }) => {
-  const { trackEvent } = useUserTracking();
   const theme = useTheme();
-  const router = useRouter();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -72,20 +62,7 @@ export const CampaignInformation = ({
         </Typography>
       </TextDescriptionBox>
 
-      <BannerButton
-        onClick={() => {
-          trackEvent({
-            category: TrackingCategory.CampaignBanner,
-            action: TrackingAction.ClickCampaignBanner,
-            label: 'click-campaign-banner',
-            data: {
-              [TrackingEventParameter.ActiveCampaignBanner]: slug,
-            },
-          });
-          router.push(`${JUMPER_CAMPAIGN_PATH}/${slug}`);
-        }}
-        fullWidth={true}
-      >
+      <BannerButton fullWidth={true}>
         <Typography variant="bodyMediumStrong">{cta || 'Explore'}</Typography>
         <ArrowForwardIcon />
       </BannerButton>

@@ -50,16 +50,6 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
-    color: theme.palette.primary.main,
-    '&:hover': {
-      backgroundColor: theme.palette.alphaDark100.main,
-    },
-    ...theme.applyStyles('dark', {
-      color: theme.palette.text.primary,
-      '&:hover': {
-        backgroundColor: theme.palette.alphaLight100.main,
-      },
-    }),
     [theme.breakpoints.down('md' as Breakpoint)]: {
       marginTop: 16,
     },
