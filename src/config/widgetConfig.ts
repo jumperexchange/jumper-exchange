@@ -1,6 +1,6 @@
 import type { Appearance, WidgetConfig } from '@lifi/widget';
 import { type Breakpoint, type Theme } from '@mui/material';
-import { DefaultColorScheme } from 'node_modules/@mui/material/esm/styles/createThemeWithVars';
+import { type SupportedColorScheme } from '@mui/material/styles';
 import { themeCustomized } from 'src/theme/theme';
 
 // INFO: Do NOT use theme.vars here, it will break the widget
@@ -52,13 +52,13 @@ export const getDefaultWidgetTheme = (
 
 // INFO: Do NOT use theme.vars here, it will break the widget
 export const getDefaultWidgetThemeV2 = (
-  mode: DefaultColorScheme,
+  mode: SupportedColorScheme,
 ): { config: Partial<WidgetConfig> } => {
-  if (themeCustomized.colorSchemes[mode] === undefined) {
+  if (!themeCustomized.colorSchemes[mode]) {
     throw new Error(`Theme mode "${mode}" is not defined in the theme.`);
   }
 
-  const copiedTheme = {...themeCustomized };
+  const copiedTheme = { ...themeCustomized };
 
   copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
 
@@ -87,7 +87,7 @@ export const getDefaultWidgetThemeV2 = (
           borderRadius: 12,
           borderRadiusSecondary: 24,
         },
-        colorScheme: copiedTheme.colorSchemes,
+        colorSchemes: copiedTheme.colorSchemes,
       },
     },
   };
