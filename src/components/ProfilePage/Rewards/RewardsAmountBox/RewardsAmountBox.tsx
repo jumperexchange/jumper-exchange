@@ -1,6 +1,7 @@
 import { useAccount } from '@lifi/wallet-management';
 import { Box, type Theme, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import { AmountInputBox } from '../RewardsCarousel.style';
 
@@ -17,6 +18,7 @@ export const RewardsAmountBox = ({
 }) => {
   //HOOKS
   const { account } = useAccount();
+  const { t } = useTranslation();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -65,13 +67,7 @@ export const RewardsAmountBox = ({
           isConfirmed
             ? '0'
             : rewardAmount
-              ? Intl.NumberFormat('en-US', {
-                  style: 'decimal',
-                  notation: 'standard',
-                  useGrouping: true,
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 8,
-                }).format(rewardAmount)
+              ? t('format.decimal2Digit', { value: rewardAmount })
               : '...'}
         </Typography>
       </AmountInputBox>
