@@ -3,7 +3,6 @@ import { Box, styled } from '@mui/material';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import { ButtonSecondary } from 'src/components/Button';
-import { getContrastAlphaColor } from 'src/utils/colors';
 
 export const CampaignBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -51,13 +50,16 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
-    color:
-      theme.palette.mode === 'light'
-        ? theme.palette.primary.main
-        : theme.palette.text.primary,
+    color: theme.palette.primary.main,
     '&:hover': {
-      backgroundColor: getContrastAlphaColor(theme, '4%'),
+      backgroundColor: theme.palette.alphaDark100.main,
     },
+    ...theme.applyStyles('dark', {
+      color: theme.palette.text.primary,
+      '&:hover': {
+        backgroundColor: theme.palette.alphaLight100.main,
+      },
+    }),
     [theme.breakpoints.down('md' as Breakpoint)]: {
       marginTop: 16,
     },
