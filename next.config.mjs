@@ -7,7 +7,6 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   experimental: {
     serverSourceMaps: false,
-    turbo: {}
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {
