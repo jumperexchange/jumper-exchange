@@ -19,11 +19,13 @@ import {
 export const CampaignInformation = ({
   tag,
   title,
+  slug,
   description,
   cta,
 }: {
   tag?: string;
   title: string;
+  slug: string;
   description: string;
   cta?: string;
 }) => {
@@ -77,16 +79,14 @@ export const CampaignInformation = ({
             action: TrackingAction.ClickCampaignBanner,
             label: 'click-campaign-banner',
             data: {
-              [TrackingEventParameter.ActiveCampaignBanner]: 'berachain',
+              [TrackingEventParameter.ActiveCampaignBanner]: slug,
             },
           });
-          router.push(`${JUMPER_CAMPAIGN_PATH}/berachain`);
+          router.push(`${JUMPER_CAMPAIGN_PATH}/${slug}`);
         }}
         fullWidth={true}
       >
-        <Typography fontSize={16} fontWeight={700}>
-          {cta || 'Explore'}
-        </Typography>
+        <Typography variant="bodyMediumStrong">{cta || 'Explore'}</Typography>
         <ArrowForwardIcon />
       </BannerButton>
     </CampaignInfoVerticalBox>

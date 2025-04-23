@@ -32,7 +32,7 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
       ProfileBannerTitle: string;
       ProfileBannerDescription: string;
       ProfileBannerBadge: string;
-      ProfileBannerCTA: string;
+      ProfileBannerCTA?: string;
       Slug: string;
     } =>
       Boolean(
@@ -96,6 +96,7 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
             <CampaignInformation
               tag={campaign.ProfileBannerBadge}
               title={campaign.ProfileBannerTitle}
+              slug={campaign.Slug}
               description={campaign.ProfileBannerDescription}
               cta={campaign.ProfileBannerCTA}
             />
