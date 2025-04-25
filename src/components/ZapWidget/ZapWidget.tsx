@@ -1,7 +1,7 @@
 import { WidgetEvents } from '@/components/Widgets';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import type { TokenAmount, WidgetConfig } from '@lifi/widget';
+import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
@@ -15,10 +15,18 @@ import type { Breakpoint } from '@mui/material';
 import { Box, Skeleton } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useThemeStore } from 'src/stores/theme';
-import { formatUnits } from 'viem';
+import { formatUnits, http, type Hex, createWalletClient, custom } from 'viem';
+import { optimism, base, mainnet } from 'viem/chains';
 import { useReadContracts } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
+
+import {
+  createMeeClient,
+  mcUSDC,
+  toFeeToken,
+  toMultichainNexusAccount,
+} from '@biconomy/abstractjs';
 
 export interface ProjectData {
   chain: string;
@@ -44,11 +52,12 @@ export function ZapWidget({
   claimingIds,
 }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
+  const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
 
   const { data, isSuccess } = useZaps(projectData);
   const { openWalletMenu } = useWalletMenu();
 
-  const [widgetTheme, configTheme] = useThemeStore((state) => [
+  const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
     state.configTheme,
   ]);
@@ -95,24 +104,23 @@ export function ZapWidget({
   });
 
   const widgetEvents = useWidgetEvents();
-  // Custom effect to refetch the balance
   useEffect(() => {
-    function onRouteExecutionCompleted() {
-      refetch();
+    function onRouteExecutionStarted(route: Route) {
+      setCurrentRoute(route);
     }
 
     widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
+      WidgetEvent.RouteExecutionStarted,
+      onRouteExecutionStarted as any,
     );
 
     return () => {
       widgetEvents.off(
-        WidgetEvent.RouteExecutionCompleted,
-        onRouteExecutionCompleted,
+        WidgetEvent.RouteExecutionStarted,
+        onRouteExecutionStarted as any,
       );
     };
-  }, [widgetEvents]);
+  }, [widgetEvents, refetch]);
 
   const lpTokenDecimals = depositTokenDecimals ?? 18;
 
@@ -130,7 +138,203 @@ export function ZapWidget({
         amount: '0' as any,
       });
     }
-  }, [isSuccess]);
+  }, [isSuccess, projectData, data]);
+
+  useEffect(() => {
+    if (window.ethereum && typeof window.ethereum.request === 'function') {
+      const originalRequest = window.ethereum.request;
+      window.ethereum.request = async (args: {
+        method: string;
+        params?: any[];
+      }) => {
+        // override wallet_getCapabilities to always use atomic transaction
+        if (args.method === 'wallet_getCapabilities') {
+          const mockCapabilities = {
+            '0x1': {
+              atomic: {
+                status: 'supported',
+              },
+            },
+            '0x2105': {
+              atomic: {
+                status: 'supported',
+              },
+            },
+            '0x1a4': {
+              atomic: {
+                status: 'supported',
+              },
+            },
+          };
+          return Promise.resolve(mockCapabilities);
+        // override wallet_sendCalls to use biconomy
+        } else if (args.method === 'wallet_sendCalls') {
+          try {
+            // validate incoming sendCalls params
+            if (
+              !args.params ||
+              !Array.isArray(args.params) ||
+              args.params.length === 0
+            ) {
+              throw new Error(
+                'Invalid args.params structure for wallet_sendCalls',
+              );
+            }
+            const paramsObject = args.params[0];
+            if (
+              typeof paramsObject !== 'object' ||
+              paramsObject === null ||
+              !Array.isArray(paramsObject.calls)
+            ) {
+              throw new Error(
+                "Invalid params object structure: Missing or invalid 'calls' array",
+              );
+            }
+            const { calls } = paramsObject;
+            if (calls.length === 0) {
+              throw new Error("'calls' array is empty");
+            }
+
+            // validate eoa
+            // This represents the user's Externally Owned Account (EOA).
+            const eoa = window.ethereum.selectedAddress as Hex | undefined;
+            if (!eoa) {
+              throw new Error(
+                'No Ethereum account selected. Please connect your wallet.',
+              );
+            }
+
+            // create wallet client
+            // Corresponds to setting up the EOA signer required for the Nexus Account.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#initialize-accounts-and-client
+            const walletClient = createWalletClient({
+              account: eoa,
+              transport: custom(window.ethereum),
+            });
+
+            // create multichain nexus account
+            // Creates the Biconomy "Multichain Nexus Account", a smart contract account
+            // that orchestrates actions across multiple chains.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
+            const oNexus = await toMultichainNexusAccount({
+              signer: walletClient,
+              chains: [mainnet, optimism, base],
+              transports: [http(), http(), http()],
+            });
+
+            // create mee client
+            // Initializes the Biconomy "MEE (Modular Execution Environment) Client".
+            // This client interacts with Biconomy's backend to manage the orchestration.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#modular-execution-environment-mee
+            const meeClient = await createMeeClient({
+              account: oNexus,
+            });
+
+            // validate current chain id
+            const currentChainIdString = window.ethereum.chainId;
+            if (!currentChainIdString) {
+              throw new Error('Cannot determine current chain ID from wallet.');
+            }
+            const currentChainId = parseInt(currentChainIdString, 16);
+            if (isNaN(currentChainId)) {
+              throw new Error('Invalid chain ID from wallet.');
+            }
+
+            // build composable instructions
+            // These are the "Instructions" for the orchestration sequence.
+            // Each item in the `calls` array is converted into a raw calldata instruction.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#instructions
+            const instructions = await Promise.all(
+              calls.map(async (call: any) => {
+                if (!call.data) {
+                  throw new Error('Invalid call structure: Missing data field');
+                }
+
+                return await oNexus.buildComposable({
+                  type: 'rawCalldata',
+                  data: {
+                    to: call.to,
+                    calldata: call.data,
+                    chainId: currentChainId,
+                  },
+                });
+              }),
+            );
+
+            if (!currentRoute) {
+              throw new Error(
+                'Cannot process transaction: Route is undefined.',
+              );
+            }
+
+            // temporary fix for fee token
+            const feeTokenBase = mcUSDC;
+            feeTokenBase.addressOn = () =>
+              currentRoute?.fromToken.address as `0x${string}`;
+
+            // get fusion quote
+            // Fetches a "Fusion Quote" from Biconomy.
+            // This quote includes the transaction cost and requires the trigger transaction details
+            // (source token, amount, chain) and the sequence of instructions.
+            // The `feeToken` specifies which token will be used to pay for gas.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#get-a-quote-and-execute
+            const quote = await meeClient.getFusionQuote({
+              trigger: {
+                tokenAddress: currentRoute?.fromToken.address as `0x${string}`,
+                amount: BigInt(currentRoute?.fromAmount),
+                chainId: currentChainId,
+              },
+              feeToken: toFeeToken({
+                chainId: currentChainId,
+                mcToken: feeTokenBase,
+              }),
+              instructions,
+            });
+
+            // execute fusion quote
+            // Initiates the execution of the obtained Fusion Quote.
+            // This generates the actual transaction for the user to sign.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#understanding-fusion-execution
+            const { hash } = await meeClient.executeFusionQuote({
+              fusionQuote: quote,
+            });
+
+            // wait for supertransaction receipt
+            // Waits for the entire multi-step, potentially cross-chain transaction sequence to complete.
+            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#get-a-quote-and-execute
+            const receipt = await meeClient.waitForSupertransactionReceipt({
+              hash,
+            });
+
+            return hash;
+          } catch (error) {
+            console.error('Error processing wallet_sendCalls:', error);
+            if (
+              typeof error === 'object' &&
+              error !== null &&
+              'message' in error
+            ) {
+              console.error('Error message:', error.message);
+            }
+            if (
+              typeof error === 'object' &&
+              error !== null &&
+              'details' in error
+            ) {
+              console.error('Error details:', error.details);
+            }
+            throw error;
+          }
+        } else {
+          return originalRequest(args);
+        }
+      };
+    } else {
+      console.error(
+        '[PATCH] window.ethereum or window.ethereum.request not found. Cannot apply patch.',
+      );
+    }
+  }, [currentRoute]);
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     const baseConfig: WidgetConfig = {
@@ -175,7 +379,7 @@ export function ZapWidget({
       },
     };
     return baseConfig;
-  }, [isSuccess, widgetTheme.config.theme, widgetTheme.config.appearance]);
+  }, [isSuccess, widgetTheme.config, projectData, data, openWalletMenu]);
 
   const analytics = {
     ...data?.data?.analytics,
