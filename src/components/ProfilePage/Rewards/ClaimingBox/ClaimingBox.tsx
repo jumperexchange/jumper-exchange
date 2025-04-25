@@ -3,7 +3,7 @@ import { Typography, useTheme } from '@mui/material';
 import { Button } from 'src/components/Button';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import type { AvailableRewards } from 'src/hooks/useMerklUserRewardsOnCampaign';
+import type { AvailableRewards } from 'src/hooks/useMerklRewards';
 import {
   useAccount,
   useSwitchChain,

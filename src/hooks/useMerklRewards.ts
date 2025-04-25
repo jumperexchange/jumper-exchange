@@ -1,0 +1,222 @@
+'use client';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
+import type { ClaimableRewards, MerklRewardsData } from 'src/types/strapi';
+import { type MerklToken } from './useMerklTokens';
+
+interface ChainInfo {
+  id: number;
+  name: string;
+  icon: string;
+  Explorer: {
+    id: string;
+    type: string;
+    url: string;
+    chainId: number;
+  }[];
+}
+
+interface TokenInfo {
+  address: string;
+  chainId: number;
+  symbol: string;
+  decimals: number;
+}
+
+interface RewardBreakdown {
+  reason: string;
+  amount: string;
+  claimed: string;
+  pending: string;
+  campaignId: string;
+}
+
+interface Reward {
+  root: string;
+  recipient: string;
+  amount: string;
+  claimed: string;
+  pending: string;
+  proofs: string[];
+  token: TokenInfo;
+  breakdowns: RewardBreakdown[];
+}
+
+interface MerklRewardResponse {
+  chain: ChainInfo;
+  rewards: Reward[];
+}
+
+export interface AvailableRewards {
+  chainId: number;
+  address: string;
+  symbol: string;
+  accumulatedAmountForContractBN: string;
+  amountToClaim: number;
+  amountAccumulated: number;
+  proof: string[];
+  explorerLink: string;
+  chainLogo: string;
+  tokenLogo: string;
+  claimingAddress: string;
+  tokenDecimals: number;
+}
+
+export interface UseMerklRes {
+  isSuccess: boolean;
+  isLoading: boolean;
+  userTVL: number;
+  availableRewards: AvailableRewards[];
+  pastCampaigns: string[];
+}
+
+export interface UseMerklRewardsProps {
+  userAddress?: string;
+  rewardToken?: string;
+  MerklRewards?: MerklRewardsData[];
+  claimableTokens?: ClaimableRewards;
+  includeTokenIcons?: boolean;
+}
+
+const MERKL_API = 'https://api.merkl.xyz/v4';
+const MERKL_CLAIMING_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
+
+export const useMerklRewards = ({
+  userAddress,
+  MerklRewards,
+  claimableTokens,
+  includeTokenIcons = false,
+}: UseMerklRewardsProps): UseMerklRes => {
+  // state
+  let userTVL = 0;
+  let rewardsToClaim: AvailableRewards[] = [];
+  const pastCampaigns = [] as string[];
+
+  // Get unique chain IDs from MerklRewards or use default chains
+  const chainIds =
+    Array.isArray(MerklRewards) && MerklRewards.length > 0
+      ? [
+          ...new Set(
+            MerklRewards.flatMap((reward) => reward.ChainId).filter(Boolean),
+          ),
+        ]
+      : REWARDS_CHAIN_IDS;
+
+  // Get Merkl tokens for each chain if we need token icons
+  const merklTokensQueries = useQueries({
+    queries: includeTokenIcons
+      ? chainIds.map((chainId) => ({
+          queryKey: ['MerklTokens', chainId],
+          queryFn: async () => {
+            const response = await fetch(
+              `${MERKL_API}/tokens/reward/${chainId}`,
+            );
+            return response.json();
+          },
+          enabled: !!chainId,
+          refetchInterval: 1000 * 60 * 60,
+        }))
+      : [],
+  });
+
+  // Map of chainId to tokens
+  const merklTokensByChain: Record<string, MerklToken[] | undefined> = {};
+  if (includeTokenIcons) {
+    chainIds.forEach((chainId, index) => {
+      if (chainId) {
+        merklTokensByChain[chainId.toString()] = merklTokensQueries[index].data;
+      }
+    });
+  }
+
+  // Call to get the active positions with new v4 API format
+  const MERKL_POSITIONS_API = `${MERKL_API}/users/${userAddress}/rewards${
+    chainIds?.length > 0 ? '?chainId=' + chainIds.join(',') : ''
+  }`;
+
+  const {
+    data: userRewardsData,
+    isSuccess: positionsIsSuccess,
+    isLoading: positionsIsLoading,
+  } = useQuery<MerklRewardResponse[]>({
+    queryKey: ['MerklPositions', userAddress, chainIds.join(',')],
+    queryFn: async () => {
+      const response = await fetch(MERKL_POSITIONS_API);
+      if (!response.ok) {
+        throw new Error(`Merkl API error: ${response.status}`);
+      }
+      return response.json();
+    },
+    enabled: !!userAddress && chainIds.length > 0,
+    refetchInterval: 1000 * 60 * 60,
+  });
+
+  // Process the rewards data with new v4 format
+  if (userRewardsData) {
+    userRewardsData.forEach((chainData) => {
+      // Get token addresses from MerklRewards if provided
+      const tokenAddresses = (MerklRewards || [])
+        .flatMap((el) => el.TokenAddress)
+        .filter((el) => !!el)
+        .map((addr) => (addr as string).toLowerCase());
+
+      chainData.rewards.forEach((reward) => {
+        // Skip if we have token addresses and this reward's token is not in the list
+        if (
+          tokenAddresses?.length > 0 &&
+          !tokenAddresses.includes(reward.token.address.toLowerCase())
+        ) {
+          return;
+        }
+
+        // Find matching token for icon if needed
+        let tokenLogo = '';
+        if (includeTokenIcons) {
+          const chainTokens =
+            merklTokensByChain[reward.token.chainId.toString()];
+          const matchingToken = chainTokens?.find(
+            (token: MerklToken) =>
+              token.address.toLowerCase() ===
+              reward.token.address.toLowerCase(),
+          );
+          tokenLogo = matchingToken?.icon || '';
+        }
+
+        // Calculate amounts
+        const amountBigInt = BigInt(reward.amount);
+        const claimedBigInt = BigInt(reward.claimed);
+        const decimals = reward.token.decimals;
+
+        rewardsToClaim.push({
+          chainId: reward.token.chainId,
+          address: reward.token.address,
+          symbol: reward.token.symbol,
+          accumulatedAmountForContractBN: reward.amount,
+          amountToClaim: Number(
+            (amountBigInt - claimedBigInt) / BigInt(10 ** decimals),
+          ),
+          amountAccumulated: Number(amountBigInt / BigInt(10 ** decimals)),
+          proof: reward.proofs,
+          explorerLink: chainData.chain.Explorer[0]?.url || '',
+          chainLogo: chainData.chain.icon,
+          tokenLogo,
+          claimingAddress: MERKL_CLAIMING_ADDRESS,
+          tokenDecimals: decimals,
+        });
+
+        // Collect campaign IDs
+        reward.breakdowns.forEach((breakdown) => {
+          pastCampaigns.push(breakdown.campaignId);
+        });
+      });
+    });
+  }
+
+  return {
+    isLoading: positionsIsLoading,
+    isSuccess: positionsIsSuccess,
+    userTVL: userTVL,
+    availableRewards: rewardsToClaim,
+    pastCampaigns: [...new Set(pastCampaigns)], // Deduplicate campaign IDs
+  };
+};

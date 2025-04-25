@@ -17,7 +17,7 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
-import { useMerklUserRewards } from 'src/hooks/useMerklUserRewards';
+import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 interface ProfilePageProps {
@@ -35,10 +35,9 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   //   user: account?.address || '',
   // });
 
-  const { pastCampaigns } = useMerklUserRewards({
+  const { pastCampaigns } = useMerklRewards({
     userAddress: walletAddress,
   });
-
   return (
     <PageContainer className="profile-page">
       {!isPublic && <MerklRewards />}

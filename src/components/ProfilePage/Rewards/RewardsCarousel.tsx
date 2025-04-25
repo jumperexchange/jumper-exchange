@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import type { AvailableRewards } from 'src/hooks/useMerklUserRewardsOnCampaign';
+import type { AvailableRewards } from 'src/hooks/useMerklRewards';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 import {
   EarnedTypography,

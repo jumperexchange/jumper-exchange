@@ -1,7 +1,7 @@
 import { TasksBox } from '@/components/QuestPage/TasksBox';
 import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
-import { useMerklUserRewards } from 'src/hooks/useMerklUserRewards';
+import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
 import { BackButton } from './BackButton/BackButton';
@@ -34,8 +34,8 @@ export const QuestsMissionPage = ({
   const points = quest?.Points;
 
   const { account } = useAccount();
-  const { pastCampaigns } = useMerklUserRewards({
-    userAddress: account?.address,
+  const { pastCampaigns } = useMerklRewards({
+    userAddress: account.address,
   });
   const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 

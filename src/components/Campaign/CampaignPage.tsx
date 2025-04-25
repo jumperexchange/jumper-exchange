@@ -19,11 +19,7 @@ export const CampaignPage = ({ campaign, path }: CampaignPageProps) => {
       <MerklRewards campaign={campaign} />
       <CampaignHeader campaign={campaign} />
       {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (
-        <QuestsOverview
-          quests={campaign.quests}
-          pastCampaigns={[]}
-          label={campaign.Slug}
-        />
+        <QuestsOverview quests={campaign.quests} label={campaign.Slug} />
       )}
     </PageContainer>
   );
