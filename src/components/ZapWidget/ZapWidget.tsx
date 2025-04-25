@@ -104,7 +104,12 @@ export function ZapWidget({
   });
 
   const widgetEvents = useWidgetEvents();
+  // Custom effect to refetch the balance
   useEffect(() => {
+    function onRouteExecutionCompleted() {
+      refetch();
+    }
+
     function onRouteExecutionStarted(route: Route) {
       setCurrentRoute(route);
     }
@@ -114,10 +119,19 @@ export function ZapWidget({
       onRouteExecutionStarted as any,
     );
 
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionCompleted,
+      onRouteExecutionCompleted,
+    );
+
     return () => {
       widgetEvents.off(
         WidgetEvent.RouteExecutionStarted,
         onRouteExecutionStarted as any,
+      );
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
       );
     };
   }, [widgetEvents, refetch]);
