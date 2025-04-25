@@ -50,6 +50,17 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
+    color: theme.palette.text.primary, // TODO: (theme.vars || theme).palette.text.primary,
+    '&:hover': {
+      backgroundColor: theme.palette.alphaLight100.main, // TODO: (theme.vars || theme).palette.alphaLight100.main,
+    },
+
+    ...theme.applyStyles('light', {
+      color: theme.palette.primary.main, // TODO: (theme.vars || theme).palette.primary.main,
+      '&:hover': {
+        backgroundColor: theme.palette.alphaDark100.main, // TODO: (theme.vars || theme).palette.alphaDark100.main,
+      },
+    }),
     [theme.breakpoints.down('md' as Breakpoint)]: {
       marginTop: 16,
     },
