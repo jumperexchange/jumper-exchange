@@ -13,6 +13,12 @@ export interface UseCampaignsProps {
 }
 
 const STRAPI_CONTENT_TYPE = 'campaigns';
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+
+interface StrapiResponse {
+  data: CampaignData[];
+}
 
 export const useCampaigns = (
   showProfileBanner?: boolean,
@@ -52,22 +58,28 @@ export const useCampaigns = (
 
   const apiAccessToken = getStrapiApiAccessToken();
 
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery<StrapiResponse>({
     queryKey: ['campaigns', showProfileBanner],
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
           Authorization: `Bearer ${apiAccessToken}`,
         },
+        next: {
+          revalidate: 3600, // Revalidate every hour
+          tags: ['campaigns'], // Tag for manual revalidation
+        },
       });
       const result = await response.json();
-      return result.data;
+      return result;
     },
-    refetchInterval: 1000 * 60 * 60, // Refetch every hour
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   return {
-    campaigns: data,
+    campaigns: data?.data,
     isLoading,
     url: apiUrl,
     isSuccess,

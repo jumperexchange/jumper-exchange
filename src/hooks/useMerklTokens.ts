@@ -45,6 +45,8 @@ export interface UseMerklTokensProps {
 }
 
 const MERKL_API = 'https://api.merkl.xyz/v4';
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 export const useMerklTokens = ({
   chainId,
@@ -55,15 +57,22 @@ export const useMerklTokens = ({
     data: merklTokensData,
     isSuccess: positionsIsSuccess,
     isLoading: positionsIsLoading,
-  } = useQuery({
+  } = useQuery<MerklToken[]>({
     queryKey: ['MerklTokens', chainId],
     enabled: !!chainId,
     queryFn: async () => {
-      const response = await fetch(MERKL_TOKENS_API, {});
+      const response = await fetch(MERKL_TOKENS_API, {
+        next: {
+          revalidate: 3600, // Revalidate every hour
+          tags: ['merkl-tokens', `merkl-tokens-${chainId}`], // Tag for manual revalidation
+        },
+      });
       const result = await response.json();
       return result;
     },
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   return {

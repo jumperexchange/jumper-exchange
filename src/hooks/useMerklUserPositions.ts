@@ -36,6 +36,8 @@ export interface UseMerklUserPositionsProps {
 }
 
 const MERKL_API = 'https://api.merkl.xyz/v4';
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 export const useMerklUserPositions = ({
   userAddress,
@@ -49,6 +51,12 @@ export const useMerklUserPositions = ({
     queryFn: async () => {
       const response = await fetch(
         `${MERKL_API}/users/${userAddress}/positions`,
+        {
+          next: {
+            revalidate: 3600, // Revalidate every hour
+            tags: ['merkl-positions', `merkl-positions-${userAddress}`], // Tag for manual revalidation
+          },
+        },
       );
       if (!response.ok) {
         throw new Error(`Merkl API error: ${response.status}`);
@@ -56,7 +64,9 @@ export const useMerklUserPositions = ({
       return response.json();
     },
     enabled: !!userAddress,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   return {

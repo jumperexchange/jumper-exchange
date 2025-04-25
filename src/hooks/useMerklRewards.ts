@@ -80,6 +80,8 @@ export interface UseMerklRewardsProps {
 
 const MERKL_API = 'https://api.merkl.xyz/v4';
 const MERKL_CLAIMING_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 export const useMerklRewards = ({
   userAddress,
@@ -110,11 +112,19 @@ export const useMerklRewards = ({
           queryFn: async () => {
             const response = await fetch(
               `${MERKL_API}/tokens/reward/${chainId}`,
+              {
+                next: {
+                  revalidate: 3600, // Revalidate every hour
+                  tags: ['merkl-tokens', `merkl-tokens-${chainId}`], // Tag for manual revalidation
+                },
+              },
             );
             return response.json();
           },
           enabled: !!chainId,
-          refetchInterval: 1000 * 60 * 60,
+          refetchInterval: CACHE_TIME, // Refetch every hour
+          staleTime: STALE_TIME, // Consider data stale after 5 minutes
+          gcTime: CACHE_TIME, // Keep data in cache for 1 hour
         }))
       : [],
   });
@@ -141,14 +151,21 @@ export const useMerklRewards = ({
   } = useQuery<MerklRewardResponse[]>({
     queryKey: ['MerklPositions', userAddress, chainIds.join(',')],
     queryFn: async () => {
-      const response = await fetch(MERKL_POSITIONS_API);
+      const response = await fetch(MERKL_POSITIONS_API, {
+        next: {
+          revalidate: 3600, // Revalidate every hour
+          tags: ['merkl-rewards', `merkl-rewards-${userAddress}`], // Tag for manual revalidation
+        },
+      });
       if (!response.ok) {
         throw new Error(`Merkl API error: ${response.status}`);
       }
       return response.json();
     },
     enabled: !!userAddress && chainIds.length > 0,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   // Process the rewards data with new v4 format
