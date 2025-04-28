@@ -8,7 +8,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   width: 'fit-content',
   flexWrap: 'wrap',
   padding: theme.spacing(1),
-  backgroundColor: alpha(theme.palette.white.main, 0.12),
+  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
   borderRadius: '24px',
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
@@ -16,7 +16,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(2),
   ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.black.main, 0.04)
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
   })
 }));
 
@@ -30,9 +30,9 @@ export const PaginationIndexButton = styled(IconButton, {
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.32),
+    backgroundColor: (theme.vars || theme).alphaLight600.main,
     ...theme.applyStyles("light", {
-      backgroundColor: alpha(theme.palette.black.main, 0.04)
+      backgroundColor: theme.palette.alphaDark100.main
     })
   },
   variants: [
@@ -85,7 +85,7 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.12),
     ...theme.applyStyles("light", {
-      backgroundColor: alpha(theme.palette.black.main, 0.04)
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main
     })
   },
 }));

@@ -54,9 +54,9 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           borderRadius: '24px',
           padding: theme.spacing(1),
           '> button:hover': {
-            backgroundColor: alpha(theme.palette.white.main, 0.04),
+            backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
             ...theme.applyStyles("light", {
-              backgroundColor: alpha(theme.palette.black.main, 0.04)
+              backgroundColor: (theme.vars || theme).palette.alphaDark100.main
             })
           },
           '> button:hover svg': {

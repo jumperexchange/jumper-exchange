@@ -64,7 +64,7 @@ export const Banner = () => {
             fontWeight: 700,
             lineHeight: '20px',
             ...theme.applyStyles("light", {
-              color: theme.palette.accent1.main
+              color: (theme.vars || palette).accent1.main
             })
           })}
         >

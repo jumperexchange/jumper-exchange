@@ -64,7 +64,7 @@ export const ZapActionProtocolDisclaimer = styled(ZapActionProtocolCard)(
     alignItems: 'flex-start',
     gap: '12px',
     ...theme.applyStyles("light", {
-      background: alpha(theme.palette.white.main, 0.04)
+      background: (theme.vars || theme).palette.alphaLight100.main
     })
   }),
 );

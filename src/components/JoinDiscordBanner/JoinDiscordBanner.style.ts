@@ -26,7 +26,7 @@ export const DiscordBannerLink = styled(Link)(({ theme }) => ({
     backgroundColor:
       alpha(theme.palette.white.main, 0.2),
     ...theme.applyStyles("light", {
-      backgroundColor: alpha(theme.palette.white.main, 1)
+      backgroundColor: (theme.vars || theme).palette.white.main
     })
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {

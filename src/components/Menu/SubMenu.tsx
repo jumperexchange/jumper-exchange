@@ -79,9 +79,9 @@ export const SubMenu = ({
               marginLeft: 0,
               color: (theme.vars || theme).palette.text.primary,
               '&:hover': {
-                backgroundColor: alpha(theme.palette.white.main, 0.04),
+                backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
                 ...theme.applyStyles('light', {
-                  backgroundColor: alpha(theme.palette.black.main, 0.04),
+                  backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
                 }),
               },
             }}
