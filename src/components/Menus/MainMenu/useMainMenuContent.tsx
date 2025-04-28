@@ -216,7 +216,11 @@ export const useMainMenuContent = () => {
     {
       label: 'Discord',
       prefixIcon: (
-        <Discord color={(theme.vars || theme).palette.text.primary} />
+        <Discord
+        sx={{
+          color: (theme.vars || theme).palette.text.primary,
+        }}
+        />
       ),
       showMoreIcon: false,
       onClick: () => {
