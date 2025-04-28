@@ -349,13 +349,6 @@ export function Widget({
           formRef={formRef}
         />
       </ClientOnly>
-{/*      <Suspense fallback={<LifiWidgetSkeleton config={config} />}>
-        <LiFiWidget
-          integrator={config.integrator}
-          config={config}
-          formRef={formRef}
-        />
-      </Suspense>*/}
     </WidgetWrapper>
   );
 }
