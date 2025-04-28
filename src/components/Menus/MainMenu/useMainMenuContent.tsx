@@ -244,11 +244,12 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.support'),
       prefixIcon: (
         <Discord
-          color={
-            mode === 'light'
-              ? theme.palette.primary.main
-              : theme.palette.white.main
-          }
+          sx={{
+            color: theme.palette.common.white,
+            ...theme.applyStyles('light', {
+              color: (theme.vars || theme).palette.primary.main,
+            }),
+          }}
         />
       ),
       onClick: () => {
