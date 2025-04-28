@@ -17,7 +17,9 @@ const { config, connectors } = createDefaultWagmiConfig({
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,
-  lazy: true,
+  wagmiConfig: {
+    ssr: true,
+  }
 });
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {

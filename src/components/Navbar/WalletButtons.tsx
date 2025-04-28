@@ -22,7 +22,7 @@ import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
-import { useEnsName } from 'wagmi';
+import { useEnsName, useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -85,6 +85,8 @@ export const WalletButtons = () => {
       });
     }
   };
+
+  console.log('activeAccount', activeAccount);
 
   return (
     <>
