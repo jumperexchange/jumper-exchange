@@ -86,8 +86,6 @@ export const WalletButtons = () => {
     }
   };
 
-  console.log('activeAccount', activeAccount);
-
   return (
     <>
       {!activeAccount?.address ? (
