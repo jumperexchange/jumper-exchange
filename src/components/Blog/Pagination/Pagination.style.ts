@@ -30,7 +30,7 @@ export const PaginationIndexButton = styled(IconButton, {
   width: 40,
   height: 40,
   '&:hover': {
-    backgroundColor: (theme.vars || theme).alphaLight600.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
     ...theme.applyStyles("light", {
       backgroundColor: theme.palette.alphaDark100.main
     })
