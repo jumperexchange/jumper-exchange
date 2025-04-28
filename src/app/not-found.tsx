@@ -60,7 +60,6 @@ export default async function NotFound() {
                       </Link>
                       <NavbarButtons />
                     </NavbarContainer>
-                    <div>Not found</div>
                     <NotFoundComponent />
                   </WalletProvider>
                 </SettingsStoreProvider>
