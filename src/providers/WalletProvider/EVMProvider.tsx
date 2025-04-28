@@ -17,6 +17,7 @@ const { config, connectors } = createDefaultWagmiConfig({
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,
+  lazy: true, // Lazy loading of connectors, only loads when needed to avoid having an extra 2MB in the bundle size
   wagmiConfig: {
     ssr: true,
   }
