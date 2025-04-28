@@ -44,6 +44,6 @@ export const Tag = styled(Typography, {
     },
   ],
   ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.black.main, 0.04)
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
   })
 }));
