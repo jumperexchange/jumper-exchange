@@ -90,7 +90,7 @@ export const BerachainMarketCardBadge = styled(Typography)<BerachainMarketCardBa
   theme
 }) => ({
   borderRadius: '12px',
-  border: `1px solid ${alpha(theme.palette.white.main, 0.48)}`,
+  border: `1px solid ${(theme.vars || theme).palette.alphaLight700.main}`,
   boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
   padding: theme.spacing(0.5, 1),
 }));

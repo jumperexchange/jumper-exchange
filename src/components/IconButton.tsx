@@ -14,10 +14,11 @@ export const IconButton = styled(MuiIconButtom)<IconButtonProps>(
     height: '48px',
     backgroundColor: theme.palette.alphaLight300.main,
     '&:hover': {
-      backgroundColor: alpha(theme.palette.white.main, 0.08),
+      backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
 
       ...theme.applyStyles('light', {
-        backgroundColor: alpha(theme.palette.black.main, 0.08),
+        backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+
       }),
     },
     ...theme.applyStyles('light', {
@@ -46,9 +47,9 @@ export const IconButtonSecondary = styled(IconButton)(({ theme }) => ({
   color: theme.palette.white.main,
   backgroundColor: theme.palette.alphaLight300.main,
   '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.04),
+    backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
     ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.black.main, 0.04),
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
     }),
   },
   ...theme.applyStyles('light', {

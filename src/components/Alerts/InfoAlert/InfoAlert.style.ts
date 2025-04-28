@@ -39,11 +39,11 @@ export const InfoAlertButton = styled(IconButtonAlpha)(({ theme }) => ({
   position: 'absolute',
   right: theme.spacing(2),
   top: theme.spacing(2),
-  backgroundColor: alpha(theme.palette.white.main, 0.04),
+  backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
   width: 24,
   height: 24,
   ...theme.applyStyles('light', {
-    backgroundColor: alpha(theme.palette.black.main, 0.04),
+    backgroundColor: theme.palette.alphaDark100.main,
   }),
 }));
 
