@@ -102,7 +102,7 @@ function TotalBalance({
             fontWeight={500}
             fontSize={14}
             sx={(theme) => ({
-              color: theme.palette.text.primary,
+              color: (theme.vars || theme).palette.text.primary,
             })}
           >
             {t('navbar.walletMenu.totalBalance')}
@@ -149,9 +149,9 @@ function TotalBalance({
                 includeDecimals
                 decimalPrecision={2}
                 includeCommas
-                incrementColor={theme.palette.text.primary}
-                decrementColor={theme.palette.text.primary}
-                color={theme.palette.text.primary}
+                incrementColor={(theme.vars || theme).palette.text.primary}
+                decrementColor={(theme.vars || theme).palette.text.primary}
+                color={(theme.vars || theme).palette.text.primary}
                 containerStyles={{
                   display: 'inline-flex',
                   textAlign: 'center',
