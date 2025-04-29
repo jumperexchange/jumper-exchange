@@ -168,11 +168,16 @@ export const scanParamsSchema = z.object({
           return false;
         }
 
+        // If there's no value, that's valid
+        if (!value) {
+          return true;
+        }
+
         if (type === 'tx') {
           return transactionHashSchema.safeParse(value).success;
         }
 
-        // For block and wallet, validate as address
+        // For wallet, validate as address
         return scanAddressSchema.safeParse(value).success;
       },
       {
