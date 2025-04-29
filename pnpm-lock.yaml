@@ -17,6 +17,9 @@ importers:
       '@abstract-foundation/agw-react':
         specifier: ^1.6.4
         version: 1.6.4(bcb99e8ce21ca62f5aa6f4fa81957909)
+      '@biconomy/abstractjs':
+        specifier: ^1.0.3
+        version: 1.0.3(@rhinestone/module-sdk@0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@bigmi/react':
         specifier: ^0.1.1
         version: 0.1.1(@tanstack/query-core@5.71.1)(@types/react@19.1.0)(bs58@5.0.0)(bufferutil@4.0.9)(immer@10.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(wagmi@2.14.16(@react-native-async-storage/async-storage@1.24.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@types/react@19.1.0)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.71.1)(@tanstack/react-query@5.72.0(react@19.1.0))(@types/react@19.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2))(zod@3.24.2)
@@ -1101,6 +1104,13 @@ packages:
   '@babel/types@7.27.0':
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
+
+  '@biconomy/abstractjs@1.0.3':
+    resolution: {integrity: sha512-IwmuKfw2PhQlB3jrtFEVXWH8mQQV90qappjuyA+dJVSuc5ejig6lEWkuD+6qBqsghZcmIhAD5mRBsOBV1fC03g==}
+    peerDependencies:
+      '@rhinestone/module-sdk': 0.2.7
+      typescript: ^5.8.2
+      viem: ^2.26.2
 
   '@bigmi/client@0.1.1':
     resolution: {integrity: sha512-Z5r4HiHqHMzTw4k/LzM6IM21tTqlWqEOKbdbNuYQpUWvgQxeHY7Bj9pXkWtUlF1BIRyy7FZOmSkQZ69Br9kyIA==}
@@ -3133,6 +3143,11 @@ packages:
 
   '@reown/appkit@1.7.2':
     resolution: {integrity: sha512-oo/evAyVxwc33i8ZNQ0+A/VE6vyTyzL3NBJmAe3I4vobgQeiobxMM0boKyLRMMbJggPn8DtoAAyG4GfpKaUPzQ==}
+
+  '@rhinestone/module-sdk@0.2.7':
+    resolution: {integrity: sha512-clZVB6erRdkDpaYodFsRVhU+Sj4immytLWK76jL9MsjnBg9vDEEMK3izUpsGax6YLDI0/QTrn0sW0qyhLz8fBQ==}
+    peerDependencies:
+      viem: ^2.0.0
 
   '@rive-app/canvas@2.26.7':
     resolution: {integrity: sha512-0/L3jsLdpVXfZHqkK6famgLQf7wFT1TuWrB4A8I8K+/uLPulpTK76/jJ78odCdZ7WyO5OpRkK2OwuW5MvH4qJg==}
@@ -8095,6 +8110,9 @@ packages:
     resolution: {integrity: sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew==}
     engines: {node: '>=10.0.0'}
 
+  solady@0.0.235:
+    resolution: {integrity: sha512-JUEXLDG7ag3HmqUnrDG7ilhafH6R9bFPpwV63O2kH4UbnS2+gRGEOqqy4k01O7tHjo3MWkDD0cpG+UY9pjy/fQ==}
+
   sonic-boom@2.8.0:
     resolution: {integrity: sha512-kuonw1YOYYNOve5iHdSahXPOK49GqwA+LZhI6Wz/l0rP57iKyXXIHaRagOBHAPmGwJC6od2Z9zgvZ5loSgMlVg==}
 
@@ -10109,6 +10127,12 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+
+  '@biconomy/abstractjs@1.0.3(@rhinestone/module-sdk@0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+    dependencies:
+      '@rhinestone/module-sdk': 0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      typescript: 5.8.3
+      viem: 2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
 
   '@bigmi/client@0.1.1(@tanstack/query-core@5.71.1)(@types/react@19.1.0)(bs58@5.0.0)(bufferutil@4.0.9)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(wagmi@2.14.16(@react-native-async-storage/async-storage@1.24.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@types/react@19.1.0)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.71.1)(@tanstack/react-query@5.72.0(react@19.1.0))(@types/react@19.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2))(zod@3.24.2)':
     dependencies:
@@ -12951,6 +12975,12 @@ snapshots:
       - uploadthing
       - utf-8-validate
       - zod
+
+  '@rhinestone/module-sdk@0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+    dependencies:
+      solady: 0.0.235
+      tslib: 2.8.1
+      viem: 2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
 
   '@rive-app/canvas@2.26.7': {}
 
@@ -19827,6 +19857,8 @@ snapshots:
       debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
+
+  solady@0.0.235: {}
 
   sonic-boom@2.8.0:
     dependencies:
