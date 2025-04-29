@@ -164,7 +164,7 @@ export const scanParamsSchema = z.object({
         }
 
         const [type, value] = segments;
-        if (!['tx', 'block', 'wallet'].includes(type)) {
+        if (!['tx', 'wallet'].includes(type)) {
           return false;
         }
 
