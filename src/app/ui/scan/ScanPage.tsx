@@ -31,7 +31,11 @@ export default function ScanPage({ lng }: { lng: string }) {
       base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
       theme: {
         // These colors and values correspond to the figma design
-        shape: { borderRadiusSecondary: 900, borderRadius: 12 },
+        shape: {
+          borderRadiusSecondary: 900,
+          borderRadiusTertiary: 900,
+          borderRadius: 12,
+        },
         colorSchemes: {
           light: {
             palette: {
