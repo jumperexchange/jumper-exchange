@@ -128,6 +128,17 @@ export const questSlugSchema = z
   .max(100, 'Quest slug is too long');
 
 /**
+ * Schema for transaction hashes (0x + 64 hex characters)
+ */
+export const transactionHashSchema = z
+  .string()
+  .transform((val) => val.toLowerCase())
+  .refine((val) => /^0x[a-f0-9]{64}$/.test(val), {
+    message:
+      'Invalid transaction hash format. Must be 0x followed by 64 hexadecimal characters',
+  });
+
+/**
  * Schema for scan segments (tx, block, wallet)
  */
 export const scanSegmentSchema = z
@@ -143,7 +154,31 @@ export const scanAddressSchema = baseAddressSchema;
  * Schema for scan route params
  */
 export const scanParamsSchema = z.object({
-  segments: z.array(z.union([scanSegmentSchema, scanAddressSchema])).optional(),
+  segments: z
+    .array(z.string())
+    .optional()
+    .refine(
+      (segments) => {
+        if (!segments || segments.length === 0) {
+          return true;
+        }
+
+        const [type, value] = segments;
+        if (!['tx', 'block', 'wallet'].includes(type)) {
+          return false;
+        }
+
+        if (type === 'tx') {
+          return transactionHashSchema.safeParse(value).success;
+        }
+
+        // For block and wallet, validate as address
+        return scanAddressSchema.safeParse(value).success;
+      },
+      {
+        message: 'Invalid scan segments format',
+      },
+    ),
 });
 
 /**
