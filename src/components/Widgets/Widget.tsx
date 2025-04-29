@@ -291,7 +291,7 @@ export function Widget({
       buildUrl: true,
       integrator: integratorStringByType,
       tokens: tokens,
-      // useRelayerRoutes: true,
+      useRelayerRoutes: true,
     };
   }, [
     configTheme?.fromChain,
