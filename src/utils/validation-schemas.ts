@@ -128,15 +128,25 @@ export const questSlugSchema = z
   .max(100, 'Quest slug is too long');
 
 /**
- * Schema for transaction hashes (0x + 64 hex characters)
+ * Schema for transaction hashes (supports both Ethereum and Solana formats)
  */
 export const transactionHashSchema = z
   .string()
-  .transform((val) => val.toLowerCase())
-  .refine((val) => /^0x[a-f0-9]{64}$/.test(val), {
-    message:
-      'Invalid transaction hash format. Must be 0x followed by 64 hexadecimal characters',
-  });
+  .transform((val) => val) // Remove toLowerCase() as Solana signatures are case-sensitive
+  .refine(
+    (val) => {
+      // Check for Ethereum format (0x + 64 hex chars)
+      if (val.startsWith('0x')) {
+        return /^0x[a-f0-9]{64}$/.test(val.toLowerCase());
+      }
+      // Check for Solana format (base58)
+      return /^[1-9A-HJ-NP-Za-km-z]{88}$/.test(val); // Exact length for Solana
+    },
+    {
+      message:
+        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...) or a Solana transaction signature',
+    },
+  );
 
 /**
  * Schema for scan segments (tx, block, wallet)
