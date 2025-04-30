@@ -21,7 +21,7 @@ export const PageContainer = styled(Container)(({ theme }) => ({
 }));
 
 export const SectionTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   fontWeight: 700,
   fontSize: '24px',
   lineHeight: '32px',
@@ -42,16 +42,14 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
 
 export const ProfileInfoBox = styled(Box)(({ theme }) => ({
   gab: theme.spacing(2),
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   padding: theme.spacing(2),
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
-
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     flexDirection: 'row',
   },
@@ -59,7 +57,7 @@ export const ProfileInfoBox = styled(Box)(({ theme }) => ({
 
 export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   lineHeight: '64px',
   fontWeight: 700,
   fontSize: 48,
@@ -67,30 +65,39 @@ export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
 
 export const NoSelectTypographyTitlePosition = styled(NoSelectTypographyTitle, {
   shouldForwardProp: (prop) => prop !== 'hasPosition',
-})<{ hasPosition: boolean }>(({ theme, hasPosition }) => ({
+})<{
+  hasPosition: boolean;
+}>(({ theme }) => ({
   borderRadius: '12px',
   textIndent: '12px',
   fontWeight: 700,
-  ...(hasPosition
-    ? {
-        cursor: 'pointer',
-        transition: 'background-color 0.3s ease-in',
-        '&:hover': {
-          backgroundColor: alpha(theme.palette.black.main, 0.04),
-        },
-      }
-    : {
-        pointerEvents: 'none',
-      }),
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     fontSize: 28,
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: 48,
   },
+  variants: [
+    {
+      props: ({ hasPosition }) => hasPosition,
+      style: {
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease-in',
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.black.main, 0.04),
+        },
+      },
+    },
+    {
+      props: ({ hasPosition }) => !hasPosition,
+      style: {
+        pointerEvents: 'none',
+      },
+    },
+  ],
 }));
 
 export const NoSelectTypography = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
 }));

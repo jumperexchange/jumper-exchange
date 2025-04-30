@@ -9,23 +9,19 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { Link } from '@mui/material';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import { ThemeProvider as NextThemeProvider } from 'next-themes';
-import { cookies } from 'next/headers';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import RouterLink from 'next/link';
 import Script from 'next/script';
-import { defaultNS, namespaces } from 'src/i18n';
 import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
+import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
+import { SettingsStoreProvider } from 'src/stores/settings/SettingsStore';
 
 export default async function NotFound() {
-  const cookiesHandler = await cookies();
-  const locale = cookiesHandler.get('NEXT_LOCALE')?.value ?? 'en';
-
-  const { resources } = await initTranslations(locale, namespaces);
+  const { resources } = await initTranslations(fallbackLng, namespaces);
 
   return (
     <html
-      lang={locale}
+      lang={fallbackLng}
       suppressHydrationWarning
       className={fonts.map((f) => f.variable).join(' ')}
     >
@@ -49,21 +45,16 @@ export default async function NotFound() {
       <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <ReactQueryProvider>
-            <NextThemeProvider
-              themes={['dark', 'light']}
-              forcedTheme={'light'}
-              enableSystem
-              enableColorScheme
-            >
-              <ThemeProvider themes={[]}>
-                <TranslationsProvider
-                  namespaces={[defaultNS]}
-                  locale={locale}
-                  resources={resources}
-                >
+            <ThemeProvider themes={[]}>
+              <TranslationsProvider
+                namespaces={[defaultNS]}
+                locale={fallbackLng}
+                resources={resources}
+              >
+                <SettingsStoreProvider welcomeScreenClosed={true}>
                   <WalletProvider>
                     <Background />
-                    <NavbarContainer>
+                    <NavbarContainer enableColorOnDark>
                       <Link component={RouterLink} href="/">
                         <Logo variant="default" />
                       </Link>
@@ -71,9 +62,9 @@ export default async function NotFound() {
                     </NavbarContainer>
                     <NotFoundComponent />
                   </WalletProvider>
-                </TranslationsProvider>
-              </ThemeProvider>
-            </NextThemeProvider>
+                </SettingsStoreProvider>
+              </TranslationsProvider>
+            </ThemeProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>
       </body>

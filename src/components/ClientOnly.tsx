@@ -1,3 +1,4 @@
+'use client'
 import { useHydrated } from '@/hooks/useHydrated';
 import { type PropsWithChildren } from 'react';
 

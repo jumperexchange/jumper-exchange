@@ -35,7 +35,7 @@ function Recipe({
       className="mb-2 grid grid-cols-2 gap-x-1 md:gap-x-3"
     >
       {type === 'deposit' && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Typography variant="body2" color="textSecondary">
             Deposit Script
           </Typography>
@@ -63,7 +63,7 @@ function Recipe({
         </Grid>
       )}
       {type === 'withdraw' && (
-        <Grid xs={12}>
+        <Grid size={12}>
           <Typography variant="body2" color="textSecondary">
             Withdrawal Script
           </Typography>

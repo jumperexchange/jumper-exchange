@@ -33,5 +33,13 @@ export const callRequest = async <T>({
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
-  return response.json();
+  // For 201 Created responses or any response with no body, return success
+  if (
+    response.status === 201 ||
+    response.headers.get('content-length') === '0'
+  ) {
+    return { success: true } as T;
+  }
+
+  return await response.json();
 };
