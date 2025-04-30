@@ -74,13 +74,13 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
     height: 32,
     marginLeft: theme.spacing(1),
     ':hover': {
-      color: (theme.vars || theme).palette.grey[100],
-      ...theme.applyStyles('light', {
-        color: (theme.vars || theme).palette.black.main,
-      }),
+      color: (theme.vars || theme).palette.common.white,
     },
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.black.main,
+      ':hover': {
+        color: (theme.vars || theme).palette.black.main,
+      }
     }),
   }),
 );
