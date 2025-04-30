@@ -124,7 +124,7 @@ export const getDefaultWidgetThemeV2 = (
             styleOverrides: {
               root: {
                 '.widget-wrapper &': {
-                  backgroundColor: themeCustomized.vars.palette.common.white,
+                  backgroundColor: themeCustomized.palette.common.white,
                   ...themeCustomized.applyStyles('light', {
                     backgroundColor: 'transparent',
                   }),
