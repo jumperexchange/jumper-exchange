@@ -7,7 +7,7 @@ import {
   type Breakpoint,
   type Theme,
 } from '@mui/material';
-import { palette } from '@mui/system';
+import { palette, style } from '@mui/system';
 import { themeCustomized } from 'src/theme/theme';
 
 // INFO: Do NOT use theme.vars here, it will break the widget
@@ -120,6 +120,20 @@ export const getDefaultWidgetThemeV2 = (
             palette: formatWidgetPalette(copiedTheme.colorSchemes.dark),
           },
         },
+        components: {
+          MuiAvatar: {
+            styleOverrides: {
+              root: {
+                '.widget-wrapper &': {
+                  backgroundColor: themeCustomized.vars.palette.common.white,
+                  ...themeCustomized.applyStyles('light', {
+                    backgroundColor: 'transparent',
+                  }),
+                },
+              }
+            },
+          }
+        }
       },
     },
   };
