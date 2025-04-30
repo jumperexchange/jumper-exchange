@@ -7,7 +7,6 @@ import {
   type Breakpoint,
   type Theme,
 } from '@mui/material';
-import { palette, style } from '@mui/system';
 import { themeCustomized } from 'src/theme/theme';
 
 // INFO: Do NOT use theme.vars here, it will break the widget
