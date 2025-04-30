@@ -62,9 +62,7 @@ export const WidgetWrapper = styled(Box, {
       right: 0,
       bottom: 0,
       background:
-        theme.palette.mode === 'light'
-          ? `linear-gradient(180deg, transparent 15%,  ${theme.palette.white.main} 40%)`
-          : `linear-gradient(180deg, transparent 15%,  ${theme.palette.black.main} 40%)`,
+        `linear-gradient(180deg, transparent 15%,  ${(theme.vars || theme).palette.black.main} 40%)`,
       opacity: 0.5,
       margin: 'auto',
       transitionProperty: 'opacity, bottom',
@@ -74,6 +72,9 @@ export const WidgetWrapper = styled(Box, {
       borderTopRightRadius: '12px',
       borderTopLeftRadius: '12px',
       top: 0,
+      ...theme.applyStyles("light", {
+        background: `linear-gradient(180deg, transparent 15%,  ${(theme.vars || theme).palette.white.main} 40%)`
+      })
     },
     // hover animation of widget overlay
     '& > div:hover:before': {

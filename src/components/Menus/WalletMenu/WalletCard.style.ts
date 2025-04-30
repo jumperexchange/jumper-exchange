@@ -20,7 +20,7 @@ export const WalletAvatar = styled(Avatar)(() => ({
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
   boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
   display: 'flex',
-  background: theme.palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   borderRadius: '16px',
   padding: theme.spacing(2),
   [theme.breakpoints.down('sm' as Breakpoint)]: {
@@ -52,18 +52,18 @@ export const WalletCardBadge = styled(Badge)(() => ({
 
 export const Button = styled(ButtonTransparent)(({ theme }) => ({
   minWidth: 'auto',
-  backgroundColor: theme.palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: theme.palette.bgQuaternary.hover,
+    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
   },
 }));
 
 export const WalletChainAvatar = styled(Avatar)(({ theme }) => ({
   borderRadius: '50%',
-  border: `2px solid ${theme.palette.surface2.main}`,
+  border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
   '> .MuiAvatar-root': {
     '+ .MuiBadge-badge .MuiAvatar-root': {
-      border: `2px solid ${theme.palette.surface2.main}`,
+      border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
     },
   },
 }));

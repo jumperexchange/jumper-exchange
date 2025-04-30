@@ -219,8 +219,6 @@ function WidgetLikeField({
   return (
     <Grid container justifyContent={'center'}>
       <Grid
-        xs={12}
-        md={12}
         p={3}
         bgcolor={'#fff'}
         borderRadius={1}
@@ -228,6 +226,10 @@ function WidgetLikeField({
           backgroundColor: theme.palette.surface1.main,
           padding: theme.spacing(2, 3),
         })}
+        size={{
+          xs: 12,
+          md: 12,
+        }}
       >
         <Box
           component="form"

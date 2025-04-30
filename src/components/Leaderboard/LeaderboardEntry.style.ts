@@ -19,10 +19,7 @@ interface LeaderboardEntryWrapperProps extends BoxProps {
 }
 
 export const LeaderboardEntryWrapper = styled(Box, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isUserPosition' &&
-    prop !== 'isUserConnected' &&
-    prop !== 'isUserEntry',
+  shouldForwardProp: (prop) => prop !== 'isUserEntry' && prop !== 'isUserConnected' && prop !== 'isUserPosition',
 })<LeaderboardEntryWrapperProps>(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(2, 0),
@@ -34,14 +31,14 @@ export const LeaderboardEntryWrapper = styled(Box, {
     {
       props: ({ isUserEntry }) => isUserEntry,
       style: {
-        background:
-          theme.palette.mode === 'light'
-            ? theme.palette.white.main
-            : theme.palette.bgTertiary.main,
+        background: (theme.vars || theme).palette.bgTertiary.main,
         borderRadius: '24px',
-        boxShadow: theme.shadows[2],
+        boxShadow: (theme.vars || theme).shadows[2],
         marginTop: theme.spacing(3),
         padding: theme.spacing(2, 1),
+        ...theme.applyStyles('light', {
+          background: (theme.vars || theme).palette.white.main,
+        }),
         [theme.breakpoints.up('sm' as Breakpoint)]: {
           padding: theme.spacing(2, 3),
         },
@@ -54,10 +51,10 @@ export const LeaderboardEntryWrapper = styled(Box, {
         transition: 'background-color 250ms',
         ':hover': {
           cursor: 'pointer',
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? darken(theme.palette.white.main, 0.04)
-              : theme.palette.alphaLight300.main,
+          backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+        ...theme.applyStyles('light', {
+          background: darken(theme.palette.white.main, 0.04),
+        }),
         },
       },
     },
@@ -73,7 +70,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
           right: -2,
           borderRadius: '6px',
           backgroundColor: alpha(theme.palette.black.main, 0.04),
-          boxShadow: `inset 0 0 0 1px ${theme.palette.grey[400]}`,
+          boxShadow: `inset 0 0 0 1px ${(theme.vars || theme).palette.grey[400]}`,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             left: -12,
             right: -12,
@@ -85,7 +82,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
 }));
 
 export const LeaderboardEntryDivider = styled(Divider)(({ theme }) => ({
-  color: theme.palette.alphaDark100.main,
+  color: (theme.vars || theme).palette.alphaDark100.main,
   margin: theme.spacing(0, 3),
 }));
 
