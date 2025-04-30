@@ -119,20 +119,6 @@ export const getDefaultWidgetThemeV2 = (
             palette: formatWidgetPalette(copiedTheme.colorSchemes.dark),
           },
         },
-        components: {
-          MuiAvatar: {
-            styleOverrides: {
-              root: {
-                '.widget-wrapper &': {
-                  backgroundColor: themeCustomized.palette.common.white,
-                  ...themeCustomized.applyStyles('light', {
-                    backgroundColor: 'transparent',
-                  }),
-                },
-              }
-            },
-          }
-        }
       },
     },
   };
