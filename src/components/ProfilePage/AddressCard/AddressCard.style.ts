@@ -32,9 +32,6 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   ...theme.applyStyles('light', {
     background: (theme.vars || theme).palette.white.main,
   }),
-  ...theme.applyStyles('light', {
-    background: (theme.vars || theme).palette.white.main,
-  }),
 }));
 
 interface AddressBlockiesImageProps extends ImageProps {
