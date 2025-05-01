@@ -17,15 +17,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { useThemeStore } from 'src/stores/theme';
 import { formatUnits, http, type Hex, createWalletClient, custom } from 'viem';
 import { optimism, base, mainnet } from 'viem/chains';
-import { useReadContracts } from 'wagmi';
+import { useReadContracts, useAccount } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
 import {
   createMeeClient,
-  mcUSDC,
+  mcUSDT,
   toFeeToken,
   toMultichainNexusAccount,
+  runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
 
 export interface ProjectData {
@@ -56,6 +57,7 @@ export function ZapWidget({
 
   const { data, isSuccess } = useZaps(projectData);
   const { openWalletMenu } = useWalletMenu();
+  const { address, chain } = useAccount();
 
   const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -169,6 +171,11 @@ export function ZapWidget({
                 status: 'supported',
               },
             },
+            '0xa': {
+              atomic: {
+                status: 'supported',
+              },
+            },
             '0x2105': {
               atomic: {
                 status: 'supported',
@@ -181,7 +188,7 @@ export function ZapWidget({
             },
           };
           return Promise.resolve(mockCapabilities);
-        // override wallet_sendCalls to use biconomy
+          // override wallet_sendCalls to use biconomy
         } else if (args.method === 'wallet_sendCalls') {
           try {
             // validate incoming sendCalls params
@@ -209,29 +216,15 @@ export function ZapWidget({
               throw new Error("'calls' array is empty");
             }
 
-            // validate eoa
-            // This represents the user's Externally Owned Account (EOA).
-            const eoa = window.ethereum.selectedAddress as Hex | undefined;
-            if (!eoa) {
-              throw new Error(
-                'No Ethereum account selected. Please connect your wallet.',
-              );
-            }
-
-            // create wallet client
-            // Corresponds to setting up the EOA signer required for the Nexus Account.
-            // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#initialize-accounts-and-client
-            const walletClient = createWalletClient({
-              account: eoa,
-              transport: custom(window.ethereum),
-            });
-
             // create multichain nexus account
             // Creates the Biconomy "Multichain Nexus Account", a smart contract account
             // that orchestrates actions across multiple chains.
             // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
             const oNexus = await toMultichainNexusAccount({
-              signer: walletClient,
+              signer: createWalletClient({
+                chain,
+                transport: custom(global?.window?.ethereum ?? ''),
+              }),
               chains: [mainnet, optimism, base],
               transports: [http(), http(), http()],
             });
@@ -281,10 +274,86 @@ export function ZapWidget({
               );
             }
 
-            // temporary fix for fee token
-            const feeTokenBase = mcUSDC;
-            feeTokenBase.addressOn = () =>
-              currentRoute?.fromToken.address as `0x${string}`;
+            // Add Ionic deposit instruction
+            const depositAddress = projectData?.address as `0x${string}`;
+            const depositChainId = projectData?.chainId;
+
+            // Approve ionic to spend USDC
+            const approveInstruction = await oNexus.buildComposable({
+              type: 'default',
+              data: {
+                abi: [
+                  {
+                    inputs: [
+                      { name: 'spender', type: 'address' },
+                      { name: 'amount', type: 'uint256' },
+                    ],
+                    name: 'approve',
+                    outputs: [{ name: '', type: 'bool' }],
+                    stateMutability: 'nonpayable',
+                    type: 'function',
+                  },
+                ],
+                to: mcUSDT.addressOn(depositChainId),
+                chainId: depositChainId,
+                functionName: 'approve',
+                args: [depositAddress, BigInt(currentRoute.toAmount)],
+              },
+            });
+            instructions.push(approveInstruction); // Add approval instruction first
+
+            // Deposit instruction
+            const ionicDepositInstruction = await oNexus.buildComposable({
+              type: 'default',
+              data: {
+                abi: [
+                  {
+                    inputs: [{ name: 'amount', type: 'uint256' }],
+                    name: 'mint',
+                    outputs: [],
+                    stateMutability: 'nonpayable',
+                    type: 'function',
+                  },
+                ],
+                to: depositAddress,
+                chainId: depositChainId,
+                functionName: 'mint',
+                args: [BigInt(currentRoute.toAmount)],
+              },
+            });
+            instructions.push(ionicDepositInstruction);
+
+            // Add instruction to transfer LP tokens back to EOA
+            const transferLpInstruction = await oNexus.buildComposable({
+              type: 'default',
+              data: {
+                abi: [
+                  {
+                    constant: false,
+                    inputs: [
+                      { name: '_to', type: 'address' },
+                      { name: '_value', type: 'uint256' },
+                    ],
+                    name: 'transfer',
+                    outputs: [{ name: '', type: 'bool' }],
+                    payable: false,
+                    stateMutability: 'nonpayable',
+                    type: 'function',
+                  },
+                ],
+                to: depositAddress,
+                chainId: depositChainId,
+                functionName: 'transfer',
+                args: [
+                  address, // Recipient is the user's EOA
+                  runtimeERC20BalanceOf({
+                    targetAddress: oNexus.addressOn(depositChainId, true), // Get balance of oNexus on Base
+                    tokenAddress: depositAddress, // LP token address
+                  }),
+                ],
+              },
+            });
+            instructions.push(transferLpInstruction); // Add transfer as the last instruction
 
             // get fusion quote
             // Fetches a "Fusion Quote" from Biconomy.
@@ -300,7 +369,7 @@ export function ZapWidget({
               },
               feeToken: toFeeToken({
                 chainId: currentChainId,
-                mcToken: feeTokenBase,
+                mcToken: mcUSDT,
               }),
               instructions,
             });
@@ -313,12 +382,16 @@ export function ZapWidget({
               fusionQuote: quote,
             });
 
+            console.log('--- hash ---', hash);
+
             // wait for supertransaction receipt
             // Waits for the entire multi-step, potentially cross-chain transaction sequence to complete.
             // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#get-a-quote-and-execute
             const receipt = await meeClient.waitForSupertransactionReceipt({
               hash,
             });
+
+            console.log('--- receipt ---', receipt);
 
             return hash;
           } catch (error) {

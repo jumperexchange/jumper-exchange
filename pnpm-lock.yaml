@@ -18,8 +18,8 @@ importers:
         specifier: ^1.6.4
         version: 1.6.4(bcb99e8ce21ca62f5aa6f4fa81957909)
       '@biconomy/abstractjs':
-        specifier: ^1.0.3
-        version: 1.0.3(@rhinestone/module-sdk@0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+        specifier: ^1.0.7
+        version: 1.0.7(@rhinestone/module-sdk@0.2.8(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@bigmi/react':
         specifier: ^0.1.1
         version: 0.1.1(@tanstack/query-core@5.71.1)(@types/react@19.1.0)(bs58@5.0.0)(bufferutil@4.0.9)(immer@10.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(wagmi@2.14.16(@react-native-async-storage/async-storage@1.24.0(react-native@0.78.2(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@types/react@19.1.0)(bufferutil@4.0.9)(react@19.1.0)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.71.1)(@tanstack/react-query@5.72.0(react@19.1.0))(@types/react@19.1.0)(bufferutil@4.0.9)(encoding@0.1.13)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2))(zod@3.24.2)
@@ -77,6 +77,9 @@ importers:
       '@next/third-parties':
         specifier: ^14.2.22
         version: 14.2.26(next@15.2.4(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(@playwright/test@1.51.1)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@rhinestone/module-sdk':
+        specifier: ^0.2.8
+        version: 0.2.8(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       '@rive-app/react-canvas':
         specifier: ^4.18.6
         version: 4.18.6(react@19.1.0)
@@ -1105,8 +1108,8 @@ packages:
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
 
-  '@biconomy/abstractjs@1.0.3':
-    resolution: {integrity: sha512-IwmuKfw2PhQlB3jrtFEVXWH8mQQV90qappjuyA+dJVSuc5ejig6lEWkuD+6qBqsghZcmIhAD5mRBsOBV1fC03g==}
+  '@biconomy/abstractjs@1.0.7':
+    resolution: {integrity: sha512-a2o0XfoTiPRiC7WhaF2Vxm9kdGQDWoc7qQQXS+KvV8Pl5TC3S6dx2CmXE8YIwvMLxA7feaRvRogrUlVyIvN11g==}
     peerDependencies:
       '@rhinestone/module-sdk': 0.2.7
       typescript: ^5.8.2
@@ -3144,8 +3147,8 @@ packages:
   '@reown/appkit@1.7.2':
     resolution: {integrity: sha512-oo/evAyVxwc33i8ZNQ0+A/VE6vyTyzL3NBJmAe3I4vobgQeiobxMM0boKyLRMMbJggPn8DtoAAyG4GfpKaUPzQ==}
 
-  '@rhinestone/module-sdk@0.2.7':
-    resolution: {integrity: sha512-clZVB6erRdkDpaYodFsRVhU+Sj4immytLWK76jL9MsjnBg9vDEEMK3izUpsGax6YLDI0/QTrn0sW0qyhLz8fBQ==}
+  '@rhinestone/module-sdk@0.2.8':
+    resolution: {integrity: sha512-azCJrJqTEJJgheidxv6vT6tKURXvbQecsRWF4AESjA4UIUlJj3ds3BJMHWCdPjJooDKFgdMQBRveFpzmmveorA==}
     peerDependencies:
       viem: ^2.0.0
 
@@ -10128,9 +10131,9 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@biconomy/abstractjs@1.0.3(@rhinestone/module-sdk@0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+  '@biconomy/abstractjs@1.0.7(@rhinestone/module-sdk@0.2.8(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)))(typescript@5.8.3)(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
-      '@rhinestone/module-sdk': 0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
+      '@rhinestone/module-sdk': 0.2.8(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))
       typescript: 5.8.3
       viem: 2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
 
@@ -12976,7 +12979,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@rhinestone/module-sdk@0.2.7(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
+  '@rhinestone/module-sdk@0.2.8(viem@2.26.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2))':
     dependencies:
       solady: 0.0.235
       tslib: 2.8.1

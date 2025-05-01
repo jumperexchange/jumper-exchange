@@ -7,7 +7,7 @@
   "dependencies": {
     "@abstract-foundation/agw-client": "^1.5.0",
     "@abstract-foundation/agw-react": "^1.6.4",
-    "@biconomy/abstractjs": "^1.0.3",
+    "@biconomy/abstractjs": "^1.0.7",
     "@bigmi/react": "^0.1.1",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
@@ -27,6 +27,7 @@
     "@mui/material-nextjs": "^6.4.3",
     "@mui/utils": "^6.4.6",
     "@next/third-parties": "^14.2.22",
+    "@rhinestone/module-sdk": "^0.2.8",
     "@rive-app/react-canvas": "^4.18.6",
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@sentry/browser": "^9.11.0",
