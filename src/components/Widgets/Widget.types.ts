@@ -1,6 +1,5 @@
 'use client';
 import type { StarterVariantType } from '@/types/internal';
-import type { ThemeMode } from '@/types/theme';
 import { ChainId } from '@lifi/sdk';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
@@ -18,7 +17,6 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowToChains?: number[];
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
-  activeThemeMode?: ThemeMode;
   activeTheme?: string;
   autoHeight?: boolean;
 }

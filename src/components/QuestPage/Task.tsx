@@ -2,6 +2,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
 import type { Breakpoint } from '@mui/material';
 import {
+  alpha,
   Box,
   Button,
   CircularProgress,
@@ -31,7 +32,6 @@ import {
   InstructionsAccordionToggle,
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -128,17 +128,20 @@ function Task({
             (isTablet ? (
               <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
                 <ExpandMoreIcon
-                  sx={{
-                    ...(open && { transform: 'rotate(180deg)' }),
-                  }}
+                  sx={[open && { transform: 'rotate(180deg)' }]}
                 />
               </InstructionsAccordionToggle>
             ) : (
               <ExpandMoreIcon
-                sx={{
-                  color: getContrastAlphaColor(theme, 0.32),
-                  ...(open && { transform: 'rotate(180deg)' }),
-                }}
+                sx={[
+                  {
+                    color: alpha(theme.palette.white.main, 0.32),
+                    ...theme.applyStyles('light', {
+                      backgroundColor: alpha(theme.palette.black.main, 0.32),
+                    }),
+                  },
+                  open && { transform: 'rotate(180deg)' },
+                ]}
               />
             ))}
         </InstructionsAccordionItemMain>
@@ -178,7 +181,7 @@ function Task({
                           component={'span'}
                           mr={'8px'}
                           sx={(theme) => ({
-                            color: theme.palette.text.primary,
+                            color: (theme.vars || theme).palette.text.primary,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             maxWidth: 208,
@@ -191,7 +194,7 @@ function Task({
                         </Typography>
                         <ArrowForwardIcon
                           style={{
-                            color: theme.palette.text.primary,
+                            color: (theme.vars || theme).palette.text.primary,
                           }}
                         />
                       </InstructionsAccordionLinkBox>
@@ -228,7 +231,7 @@ function Task({
                     }
                     loadingIndicator={
                       <CircularProgress
-                        sx={(theme) => ({ color: theme.palette.text.primary })}
+                        sx={(theme) => ({ color: (theme.vars || theme).palette.text.primary })}
                         size={16}
                       />
                     }
@@ -252,7 +255,7 @@ function Task({
                         border: '1px solid #E5452F!important',
                       },
                       '&.MuiButton-loading': {
-                        border: `1px solid ${theme.palette.text.primary}!important`,
+                        border: `1px solid ${(theme.vars || theme).palette.text.primary}!important`,
                       },
                     })}
                   >

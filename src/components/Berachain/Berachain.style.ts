@@ -4,7 +4,7 @@ import { inter } from 'src/fonts/fonts';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 
 export const BerachainFrame = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.black.main,
+  backgroundColor: (theme.vars || theme).palette.black.main,
   position: 'fixed',
   overflowY: 'scroll',
   top: 0,
@@ -58,7 +58,7 @@ export const BerachainBackground = styled(Box)(({ theme }) => ({
 
 export const BerachainBackButton = styled(Button)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   padding: theme.spacing(0.75, 1.5),
   justifyContent: 'center',
   alignItems: 'center',

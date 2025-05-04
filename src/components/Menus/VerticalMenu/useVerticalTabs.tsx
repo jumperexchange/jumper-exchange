@@ -38,7 +38,7 @@ export const useVerticalTabs = () => {
           sx={(theme) => ({
             marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           })}
         />
       ),
@@ -52,7 +52,7 @@ export const useVerticalTabs = () => {
           sx={(theme) => ({
             marginRight: 0.75,
             marginBottom: `${theme.spacing(0)} !important`,
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           })}
         />
       ),

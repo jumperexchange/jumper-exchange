@@ -5,18 +5,19 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   height: 450,
   width: 288,
   textAlign: 'center',
   borderRadius: '8px',
+  ...theme.applyStyles("light", {
+    backgroundColor: (theme.vars || theme).palette.white.main
+  })
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   flexDirection: 'column',
   justifyContent: 'space-between',
   flexGrow: 1,
@@ -24,7 +25,7 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingBottom: '24px',
   paddingLeft: '16px',
   paddingRight: '16px',
-  backgroundColor: theme.palette.bgTertiary.main, // backgroundColor: '#fff0ca',
+  backgroundColor: (theme.vars || theme).palette.bgTertiary.main, // backgroundColor: '#fff0ca',
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
 }));
@@ -40,9 +41,7 @@ export interface QuestCardInfoBoxProps extends BoxProps {
   points?: number;
 }
 
-export const QuestCardInfoBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'points',
-})<QuestCardInfoBoxProps>({
+export const QuestCardInfoBox = styled(Box)<QuestCardInfoBoxProps>({
   display: 'flex',
   flexDirection: 'column',
 });

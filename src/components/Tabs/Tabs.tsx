@@ -6,7 +6,7 @@ export interface TabProps {
   label?: string;
   tooltip?: string;
   value: number;
-  icon?: JSX.Element;
+  icon?: React.JSX.Element;
   onClick: (event: React.MouseEvent<HTMLDivElement>, index: number) => void;
   disabled?: boolean;
 }
