@@ -25,14 +25,15 @@ interface MerklRewardsProps {
 
 export const MerklRewards = ({ campaign }: MerklRewardsProps) => {
   const { account } = useAccount();
-  const { availableRewards, pastCampaigns, isSuccess } = useMerklRewards({
-    userAddress: account.address,
-    MerklRewards: campaign?.merkl_rewards,
-    includeTokenIcons: true,
-  });
+  const { availableRewards, pastCampaigns, isSuccess, isLoading } =
+    useMerklRewards({
+      userAddress: account.address,
+      MerklRewards: campaign?.merkl_rewards,
+      includeTokenIcons: true,
+    });
 
   const hideComponent = useMemo(
-    () => shouldHideComponent(account, false, !isSuccess, availableRewards),
+    () => shouldHideComponent(account, isLoading, isSuccess, availableRewards),
     [account, isSuccess, availableRewards],
   );
 

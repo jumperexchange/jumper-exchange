@@ -5,5 +5,5 @@ export const PROFILE_CAMPAIGN_DARK_TOKEN = `${process.env.NEXT_PUBLIC_STRAPI_URL
 export const PROFILE_CAMPAIGN_LIGHT_TOKEN = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Sei_Symbol_Gradient_ea276889b3.png`;
 export const PROFILE_CAMPAIGN_DARK_CHAIN = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Sei_Symbol_Gradient_ea276889b3.png`;
 export const PROFILE_CAMPAIGN_LIGHT_CHAIN = `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Sei_Symbol_Gradient_ea276889b3.png`;
-export const REWARDS_CHAIN_IDS = ['1135', '30', '8453', '80094'];
+export const REWARDS_CHAIN_IDS = ['1135', '30', '8453', '80094', '1']; //todo: remove ETH from this list --> 1
 export const MERKL_CREATOR_TAG = 'jumper-test';
