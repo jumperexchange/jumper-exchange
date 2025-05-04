@@ -21,7 +21,7 @@ interface CarouselContainerProps {
   sx?: CSSObject;
   children: ReactNode | ReactNode[];
   trackingCategory?: string;
-  hideNavigationButtons?: boolean;
+  hidePagination?: boolean;
 }
 const swipeDistance = 420;
 
@@ -32,7 +32,7 @@ export const CarouselContainer = ({
   updateTooltip,
   children,
   trackingCategory,
-  hideNavigationButtons = false,
+  hidePagination = false,
 }: CarouselContainerProps) => {
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +97,7 @@ export const CarouselContainer = ({
             </Box>
           )}
         </CarouselCenteredBox>
-        {!hideNavigationButtons && (
+        {!hidePagination && (
           <CarouselNavigationContainer>
             <CarouselNavigationButton
               aria-label="previous"

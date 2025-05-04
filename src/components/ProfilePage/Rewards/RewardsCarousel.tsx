@@ -46,7 +46,7 @@ export const RewardsCarousel = ({
       </Typography>
 
       <CarouselContainer
-        hideNavigationButtons={true}
+        hidePagination={true}
         sx={{ marginTop: 0, paddingBottom: 0 }}
       >
         <RewardsCarouselItems>
