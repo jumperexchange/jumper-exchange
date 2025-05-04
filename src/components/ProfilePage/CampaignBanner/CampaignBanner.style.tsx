@@ -7,8 +7,7 @@ import { ButtonSecondary } from 'src/components/Button';
 export const CampaignBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(3),
-  color: theme.palette.text.primary,
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: theme.palette.alphaLight500.main,
   borderRadius: '24px',
   flexDirection: 'column',
   boxShadow: theme.shadows[1],
@@ -21,6 +20,9 @@ export const CampaignBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     flexDirection: 'row',
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.bgSecondary.main,
+  }),
 }));
 
 export const CampaignInfoVerticalBox = styled(Box)(({ theme }) => ({
@@ -28,6 +30,11 @@ export const CampaignInfoVerticalBox = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'space-between',
   gap: theme.spacing(1),
+  color: theme.palette.white.main,
+
+  ...theme.applyStyles('light', {
+    color: theme.palette.black.main, // TODO: theme.palette.primary.main,
+  }),
 }));
 
 export const CampaignTagBox = styled(Box)(({ theme }) => ({
@@ -50,15 +57,13 @@ export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
-    color: theme.palette.text.primary, // TODO: (theme.vars || theme).palette.text.primary,
     '&:hover': {
-      backgroundColor: theme.palette.alphaLight100.main, // TODO: (theme.vars || theme).palette.alphaLight100.main,
+      backgroundColor: theme.palette.alphaLight100.main, // TODO: theme.palette.alphaLight100.main,
     },
 
     ...theme.applyStyles('light', {
-      color: theme.palette.primary.main, // TODO: (theme.vars || theme).palette.primary.main,
       '&:hover': {
-        backgroundColor: theme.palette.alphaDark100.main, // TODO: (theme.vars || theme).palette.alphaDark100.main,
+        backgroundColor: theme.palette.alphaDark100.main, // TODO: theme.palette.alphaDark100.main,
       },
     }),
     [theme.breakpoints.down('md' as Breakpoint)]: {

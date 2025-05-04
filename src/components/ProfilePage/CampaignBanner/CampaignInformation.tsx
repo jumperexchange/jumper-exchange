@@ -30,14 +30,7 @@ export const CampaignInformation = ({
     <CampaignInfoVerticalBox>
       {!isMobile && tag && (
         <CampaignTagBox>
-          <Typography
-            variant="title2XSmall"
-            sx={{
-              color: theme.palette.text.primary,
-            }}
-          >
-            {tag}
-          </Typography>
+          <Typography variant="title2XSmall">{tag}</Typography>
         </CampaignTagBox>
       )}
       <TextDescriptionBox>
@@ -54,9 +47,9 @@ export const CampaignInformation = ({
         </Typography>
         <Typography
           variant="bodyMedium"
-          sx={(theme) => ({
-            color: theme.palette.text.secondary,
-          })}
+          sx={{
+            opacity: 0.75, // use theme.palette.text.secondary instead
+          }}
         >
           {description}
         </Typography>

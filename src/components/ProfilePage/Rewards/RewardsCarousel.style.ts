@@ -7,7 +7,13 @@ import {
   styled,
 } from '@mui/material';
 
-export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
+interface RewardsCarouselContainerProps {
+  rewardsLength?: number;
+}
+
+export const RewardsCarouselContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'rewardsLength',
+})<RewardsCarouselContainerProps>(({ theme, rewardsLength }) => ({
   backgroundColor: theme.palette.bgSecondary.main,
   borderRadius: '24px',
   boxShadow: theme.shadows[1],
@@ -17,16 +23,21 @@ export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   alignItems: 'center',
   marginBottom: theme.spacing(4),
-  padding: theme.spacing(3, 6, 3, 6),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '8px',
-  },
+  padding: theme.spacing(3),
+  flexDirection: rewardsLength && rewardsLength < 3 ? 'row' : 'column',
+
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    paddingLeft: theme.spacing(4),
     flexDirection: 'row',
     gap: '32px',
   },
+}));
+
+export const RewardsCarouselItems = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  overflow: 'hidden',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
 }));
 
 export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
@@ -50,11 +61,8 @@ export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+export const ClaimingBoxContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.white.main, 0.08),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -63,12 +71,10 @@ export const RewardsCarouselMainBox = styled(Box)(({ theme }) => ({
   minHeight: theme.spacing(9),
   flexDirection: 'row',
   padding: theme.spacing(2),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    minWidth: 400,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    minWidth: 300,
-  },
+
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.white.main,
+  }),
 }));
 
 export const ClaimButtonBox = styled(Box)(({ theme }) => ({
@@ -79,12 +85,6 @@ export const ClaimButtonBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   minWidth: theme.spacing(9),
   marginLeft: theme.spacing(4),
-}));
-
-export const EarnedTypography = styled(Typography)(({ theme }) => ({
-  fontSize: '24px',
-  lineHeight: '32px',
-  fontWeight: 700,
 }));
 
 export const AmountInputBox = styled(Box)(({ theme }) => ({

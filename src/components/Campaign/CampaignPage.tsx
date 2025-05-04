@@ -1,6 +1,7 @@
 'use client';
 
 import type { CampaignData } from '@/types/strapi';
+import { useTranslation } from 'react-i18next';
 import { MerklRewards } from '../ProfilePage/MerklRewards';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { QuestsOverview } from '../ProfilePage/QuestsOverview/QuestsOverview';
@@ -13,9 +14,14 @@ interface CampaignPageProps {
 }
 
 export const CampaignPage = ({ campaign, path }: CampaignPageProps) => {
+  const { t } = useTranslation();
+
   return (
     <PageContainer className="profile-page">
-      <BackButton path={path} title={campaign.Title} />
+      <BackButton
+        path={path}
+        title={t('navbar.navbarMenu.profile') || 'Profile'}
+      />
       <MerklRewards campaign={campaign} />
       <CampaignHeader campaign={campaign} />
       {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (

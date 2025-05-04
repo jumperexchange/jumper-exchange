@@ -37,9 +37,12 @@ export const MerklRewards = ({ campaign }: MerklRewardsProps) => {
     [account, isSuccess, availableRewards],
   );
 
+  if (hideComponent) {
+    return null;
+  }
+
   return (
     <RewardsCarousel
-      hideComponent={hideComponent}
       availableRewards={availableRewards}
       isMerklSuccess={isSuccess}
     />
