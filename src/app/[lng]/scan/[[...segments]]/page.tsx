@@ -76,6 +76,7 @@ export default async function Page({
   const { lng, segments } = await params;
   // Validate segments
   const result = scanParamsSchema.safeParse({ segments: segments });
+
   if (!result.success) {
     return notFound();
   }

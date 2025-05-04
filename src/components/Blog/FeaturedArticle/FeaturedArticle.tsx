@@ -13,6 +13,7 @@ import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import useClient from 'src/hooks/useClient';
+import RouterLink from 'next/link';
 import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
@@ -60,6 +61,7 @@ export const FeaturedArticle = ({
   return featuredArticle ? (
     <>
       <FeaturedArticleLink
+        as={RouterLink}
         href={
           featuredArticle?.RedirectURL ??
           `${JUMPER_LEARN_PATH}/${featuredArticle?.Slug}`

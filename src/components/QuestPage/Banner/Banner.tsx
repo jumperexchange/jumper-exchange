@@ -21,7 +21,7 @@ interface SuperfestMissionPageVar {
   baseUrl: string;
   pastCampaigns: string[];
   activeCampaign?: 'superfest';
-  rotatingBadge?: JSX.Element;
+  rotatingBadge?: React.JSX.Element;
 }
 
 export interface Chain {

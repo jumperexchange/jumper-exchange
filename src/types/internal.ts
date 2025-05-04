@@ -24,8 +24,8 @@ export type StarterVariantType = 'buy' | WidgetSubvariant;
 export interface MenuListItem {
   label: string;
   triggerSubMenu?: MenuKeysEnum;
-  prefixIcon?: JSX.Element | string;
-  suffixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
+  suffixIcon?: React.JSX.Element | string;
   showMoreIcon?: boolean;
   styles?: SxProps<Theme>;
   checkIcon?: boolean;
@@ -36,7 +36,7 @@ export interface MenuListItem {
 
 export interface ChainsMenuListItem {
   label: string;
-  prefixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
   showMoreIcon?: boolean;
   checkIcon?: boolean;
   onClick?: () => void;
@@ -46,8 +46,8 @@ export interface ChainsMenuListItem {
 export interface ChainsMenuListItem {
   label: string;
   triggerSubMenu?: string;
-  prefixIcon?: JSX.Element | string;
-  suffixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
+  suffixIcon?: React.JSX.Element | string;
   showMoreIcon?: boolean;
   checkIcon?: boolean;
   url?: string;

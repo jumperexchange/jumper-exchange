@@ -8,7 +8,7 @@ export const InformationShareLink = styled(Link)(() => ({
 
 export const ColoredProtocolShareButton = styled(IconButton)(({ theme }) => ({
   background: theme.palette.alphaLight200.main,
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   '&:hover': {
     background: theme.palette.alphaLight400.main,

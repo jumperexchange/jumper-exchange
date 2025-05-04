@@ -1,12 +1,3 @@
-export const cookiesExpires = 3;
-
-export const localStorageKey = {
-  activeTab: 'activeTab',
-  themeMode: 'themeMode',
-  clientWallets: 'clientWallets',
-  disabledFeatureCards: 'disabledFeatureCards',
-};
-
 interface DefaultSettingsType {
   clientWallets: string[];
   disabledFeatureCards: string[];

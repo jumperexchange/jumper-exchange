@@ -6,8 +6,8 @@ import { MenuLabel } from '.';
 interface MenuItemLabelProps {
   showMoreIcon?: boolean;
   label?: string;
-  prefixIcon?: JSX.Element | string;
-  suffixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
+  suffixIcon?: React.JSX.Element | string;
 }
 
 export const MenuItemLabel = ({

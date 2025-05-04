@@ -3,7 +3,6 @@ import {
   Box,
   IconButton as MuiIconButton,
   Typography,
-  alpha,
   styled,
 } from '@mui/material';
 
@@ -14,9 +13,9 @@ interface RewardsCarouselContainerProps {
 export const RewardsCarouselContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'rewardsLength',
 })<RewardsCarouselContainerProps>(({ theme, rewardsLength }) => ({
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   display: 'flex',
   width: '100%',
   justifyContent: 'start',
@@ -42,7 +41,7 @@ export const RewardsCarouselItems = styled(Box)(({ theme }) => ({
 
 export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   justifyContent: 'space-between',
 }));
 
@@ -62,7 +61,7 @@ export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
 }));
 
 export const ClaimingBoxContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.white.main, 0.08),
+  backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -73,7 +72,7 @@ export const ClaimingBoxContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
 
   ...theme.applyStyles('light', {
-    backgroundColor: theme.palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.white.main,
   }),
 }));
 
@@ -98,15 +97,15 @@ export const AmountInputBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RewardsOpenIconButton = styled(MuiIconButton, {
-  shouldForwardProp: (prop) => prop !== 'styles',
-})<IconButtonProps>(({ theme }) => ({
-  color: theme.palette.white.main,
-  transition: 'background 0.3s',
-  width: theme.spacing(6),
-  height: theme.spacing(6),
-  backgroundColor: theme.palette.bgQuaternary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.bgQuaternary.hover,
-  },
-}));
+export const RewardsOpenIconButton = styled(MuiIconButton)<IconButtonProps>(
+  ({ theme }) => ({
+    color: (theme.vars || theme).palette.white.main,
+    transition: 'background 0.3s',
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+    backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
+    '&:hover': {
+      backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
+    },
+  }),
+);
