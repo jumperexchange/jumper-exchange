@@ -2,8 +2,24 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import type { ClaimableRewards, MerklRewardsData } from 'src/types/strapi';
-import { type MerklToken } from './useMerklTokens';
 
+interface MerklToken {
+  id: string;
+  name: string;
+  chainId: number;
+  address: string;
+  decimals: number;
+  symbol: string;
+  displaySymbol: string;
+  icon: string;
+  verified: boolean;
+  isTest: boolean;
+  isPoint: boolean;
+  isPreTGE: boolean;
+  isNative: boolean;
+  price: number | null;
+  minimumAmountPerHour: string;
+}
 interface ChainInfo {
   id: number;
   name: string;
