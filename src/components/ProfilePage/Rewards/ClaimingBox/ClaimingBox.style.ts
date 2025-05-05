@@ -9,7 +9,7 @@ export const ClaimingButton = styled(ButtonPrimary, {
   padding: '16px',
   width: '100%',
   minWidth: theme.spacing(12),
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   typography: {
     xs: theme.typography.bodySmallStrong,
   },

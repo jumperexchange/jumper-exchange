@@ -7,11 +7,11 @@ export const InformationShareLink = styled(Link)(() => ({
 }));
 
 export const ColoredProtocolShareButton = styled(IconButton)(({ theme }) => ({
-  background: theme.palette.alphaLight200.main,
+  background: (theme.vars || theme).palette.alphaLight200.main,
   color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   '&:hover': {
-    background: theme.palette.alphaLight400.main,
+    background: (theme.vars || theme).palette.alphaLight400.main,
   },
 }));
 
@@ -36,8 +36,8 @@ export const CampaignHeaderContainer = styled(Box, {
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
   backgroundColor: !lightMode
-    ? theme.palette.alphaLight300.main
-    : theme.palette.alphaLight700.main,
+    ? (theme.vars || theme).palette.alphaLight300.main
+    : (theme.vars || theme).palette.alphaLight700.main,
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({
@@ -54,7 +54,9 @@ interface CampaignTitleProps extends TypographyProps {
 export const CampaignTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'lightMode',
 })<CampaignTitleProps>(({ theme, lightMode }) => ({
-  color: !lightMode ? theme.palette.white.main : theme.palette.black.main,
+  color: !lightMode
+    ? (theme.vars || theme).palette.white.main
+    : (theme.vars || theme).palette.black.main,
 }));
 
 interface CampaignDescriptionProps extends TypographyProps {
@@ -65,8 +67,8 @@ export const CampaignDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'lightMode',
 })<CampaignDescriptionProps>(({ theme, lightMode }) => ({
   color: !lightMode
-    ? theme.palette.alphaLight700.main
-    : theme.palette.alphaDark700.main,
+    ? (theme.vars || theme).palette.alphaLight700.main
+    : (theme.vars || theme).palette.alphaDark700.main,
   marginTop: theme.spacing(0.5),
 }));
 
@@ -79,10 +81,12 @@ export const CampaignHeaderInfos = styled(Box, {
 })<CampaignDigitInfoBoxProps>(({ theme, lightMode }) => ({
   maxWidth: '216px',
   minWidth: '164px',
-  color: !lightMode ? theme.palette.white.main : theme.palette.black.main,
+  color: !lightMode
+    ? (theme.vars || theme).palette.white.main
+    : (theme.vars || theme).palette.black.main,
   backgroundColor: !lightMode
-    ? theme.palette.alphaLight300.main
-    : theme.palette.white.main,
+    ? (theme.vars || theme).palette.alphaLight300.main
+    : (theme.vars || theme).palette.white.main,
   boxShadow: '0 4px 6px #00000020',
   borderRadius: theme.spacing(2),
   paddingLeft: theme.spacing(3),

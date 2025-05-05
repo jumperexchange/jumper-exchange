@@ -2,10 +2,10 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import type { Theme } from '@mui/material';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import {
-  BannerButton,
-  CampaignInfoVerticalBox,
-  CampaignTagBox,
-  TextDescriptionBox,
+  CampaignInfoBox,
+  CampaignInfoContent,
+  CampaignInfoCtaButton,
+  CampaignInfoTagBox,
 } from './CampaignBanner.style';
 
 export const CampaignInformation = ({
@@ -27,13 +27,13 @@ export const CampaignInformation = ({
   );
 
   return (
-    <CampaignInfoVerticalBox>
+    <CampaignInfoBox>
       {!isMobile && tag && (
-        <CampaignTagBox>
+        <CampaignInfoTagBox>
           <Typography variant="title2XSmall">{tag}</Typography>
-        </CampaignTagBox>
+        </CampaignInfoTagBox>
       )}
-      <TextDescriptionBox>
+      <CampaignInfoContent>
         <Typography
           variant="bodyXLargeStrong"
           sx={(theme) => ({
@@ -47,18 +47,18 @@ export const CampaignInformation = ({
         </Typography>
         <Typography
           variant="bodyMedium"
-          sx={{
-            opacity: 0.75, // use theme.palette.text.secondary instead
-          }}
+          sx={(theme) => ({
+            color: (theme.vars || theme).palette.text.secondary,
+          })}
         >
           {description}
         </Typography>
-      </TextDescriptionBox>
+      </CampaignInfoContent>
 
-      <BannerButton fullWidth={true}>
+      <CampaignInfoCtaButton fullWidth={true}>
         <Typography variant="bodyMediumStrong">{cta || 'Explore'}</Typography>
         <ArrowForwardIcon />
-      </BannerButton>
-    </CampaignInfoVerticalBox>
+      </CampaignInfoCtaButton>
+    </CampaignInfoBox>
   );
 };

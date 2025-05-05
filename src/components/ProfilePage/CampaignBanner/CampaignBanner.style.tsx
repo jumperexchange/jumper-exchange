@@ -7,7 +7,7 @@ import { ButtonSecondary } from 'src/components/Button';
 export const CampaignBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(3),
-  backgroundColor: theme.palette.alphaLight500.main,
+  backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
   borderRadius: '24px',
   flexDirection: 'column',
   boxShadow: theme.shadows[1],
@@ -21,24 +21,24 @@ export const CampaignBox = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
   ...theme.applyStyles('light', {
-    backgroundColor: theme.palette.bgSecondary.main,
+    backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   }),
 }));
 
-export const CampaignInfoVerticalBox = styled(Box)(({ theme }) => ({
+export const CampaignInfoBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   gap: theme.spacing(1),
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
 
   ...theme.applyStyles('light', {
-    color: theme.palette.black.main, // TODO: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.black.main, // TODO: (theme.vars || theme).palette.primary.main,
   }),
 }));
 
-export const CampaignTagBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.bgQuaternary.main,
+export const CampaignInfoTagBox = styled(Box)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   display: 'flex',
   padding: theme.spacing(0.5, 1),
   justifyContent: 'center',
@@ -47,23 +47,23 @@ export const CampaignTagBox = styled(Box)(({ theme }) => ({
   width: 'fit-content',
 }));
 
-export const TextDescriptionBox = styled(Box)(({ theme }) => ({
+export const CampaignInfoContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),
 }));
 
-export const BannerButton = styled(ButtonSecondary)<MuiButtonProps>(
+export const CampaignInfoCtaButton = styled(ButtonSecondary)<MuiButtonProps>(
   ({ theme }) => ({
     gap: '8px',
     borderRadius: '24px',
     '&:hover': {
-      backgroundColor: theme.palette.alphaLight100.main, // TODO: theme.palette.alphaLight100.main,
+      backgroundColor: (theme.vars || theme).palette.alphaLight100.main, // TODO: (theme.vars || theme).palette.alphaLight100.main,
     },
 
     ...theme.applyStyles('light', {
       '&:hover': {
-        backgroundColor: theme.palette.alphaDark100.main, // TODO: theme.palette.alphaDark100.main,
+        backgroundColor: (theme.vars || theme).palette.alphaDark100.main, // TODO: (theme.vars || theme).palette.alphaDark100.main,
       },
     }),
     [theme.breakpoints.down('md' as Breakpoint)]: {

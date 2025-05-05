@@ -85,7 +85,7 @@ export const CampaignHeader = ({ campaign }: CampaignHeaderProps) => {
                       sx={(theme) => ({
                         width: '16px',
                         height: '16px',
-                        color: theme.palette.white.main,
+                        color: (theme.vars || theme).palette.white.main,
                       })}
                     />
                   </ColoredProtocolShareButton>
@@ -109,7 +109,7 @@ export const CampaignHeader = ({ campaign }: CampaignHeaderProps) => {
                       sx={(theme) => ({
                         width: '16px',
                         height: '16px',
-                        color: theme.palette.white.main,
+                        color: (theme.vars || theme).palette.white.main,
                       })}
                     />
                   </ColoredProtocolShareButton>
