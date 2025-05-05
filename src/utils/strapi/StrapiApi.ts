@@ -1,4 +1,5 @@
 import type { Account } from '@lifi/wallet-management';
+import { getStrapiApiAccessToken, getStrapiBaseUrl } from './strapiHelper';
 
 interface GetStrapiBaseUrlProps {
   contentType:
@@ -27,7 +28,7 @@ class StrapiApi {
     this.contentType = contentType;
 
     // Set up API access token based on environment
-    this.apiAccessToken = this.getApiAccessToken();
+    this.apiAccessToken = getStrapiApiAccessToken() || '';
 
     // Set up base URL
     this.baseUrl = this.getBaseUrl();
@@ -41,6 +42,11 @@ class StrapiApi {
     }
   }
 
+  /* todo:
+   move this method to strapiHelper
+   use on apiAccessToken and replace getApiAccessToken() calls across the app
+   remove this method after migration
+   */
   public getApiAccessToken(): string {
     if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
       // Use local-strapi-api token for development environment
@@ -58,14 +64,14 @@ class StrapiApi {
         console.error('Local Strapi URL is not provided.');
         throw new Error('Local Strapi URL is not provided.');
       }
-      return `${process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL}/api`;
+      return `${getStrapiBaseUrl()}/api`;
     } else {
       // Use default Strapi URL for other environments
       if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
         console.error('Strapi URL is not provided.');
         throw new Error('Strapi URL is not provided.');
       }
-      return `${process.env.NEXT_PUBLIC_STRAPI_URL}/api`;
+      return `${getStrapiBaseUrl()}/api`;
     }
   }
 

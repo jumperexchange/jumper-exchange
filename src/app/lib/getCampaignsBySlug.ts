@@ -15,7 +15,7 @@ export async function getCampaignBySlug(
 
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = urlParams.apiAccessToken;
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',

@@ -6,17 +6,10 @@ export interface GetCampaignsResponse extends StrapiResponse<CampaignData> {
 }
 
 export async function getCampaigns(): Promise<GetCampaignsResponse> {
-  const urlParams = new CampaignStrapiApi()
-    .useCampaignPageParams()
-    .addPaginationParams({
-      page: 1,
-      pageSize: 50,
-      withCount: false,
-    });
-
+  const urlParams = new CampaignStrapiApi().useCampaignPageParams();
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = urlParams.apiAccessToken;
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
