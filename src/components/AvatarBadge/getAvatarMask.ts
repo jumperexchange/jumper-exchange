@@ -1,4 +1,4 @@
-import type { BadgeOffsetProps } from './AvatarBadge';
+import { BadgeOffsetProps } from './AvatarBadge.style';
 
 interface GetAvatarMask {
   avatarSize: number;

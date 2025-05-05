@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
 import type { AvailableRewards } from 'src/hooks/useMerklRewards';
@@ -6,6 +5,7 @@ import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 import {
   RewardsCarouselContainer,
   RewardsCarouselItems,
+  RewardsCarouselTitle,
 } from './RewardsCarousel.style';
 
 interface RewardsCarouselProps {
@@ -33,17 +33,9 @@ export const RewardsCarousel = ({
 
   return (
     <RewardsCarouselContainer rewardsLength={rewardsWithAmount.length}>
-      <Typography
-        variant="titleSmall"
-        sx={(theme) => ({
-          color: theme.palette.text.primary,
-          [theme.breakpoints.up('md')]: {
-            width: '140px',
-          },
-        })}
-      >
+      <RewardsCarouselTitle variant="titleSmall">
         {t('profile_page.rewards')}
-      </Typography>
+      </RewardsCarouselTitle>
 
       <CarouselContainer
         hidePagination={true}

@@ -13,6 +13,7 @@ interface RewardsCarouselContainerProps {
 export const RewardsCarouselContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'rewardsLength',
 })<RewardsCarouselContainerProps>(({ theme, rewardsLength }) => ({
+  color: (theme.vars || theme).palette.text.primary,
   backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
   boxShadow: (theme.vars || theme).shadows[1],
@@ -39,24 +40,9 @@ export const RewardsCarouselItems = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-export const RewardsCarouselHeader = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  color: (theme.vars || theme).palette.text.primary,
-  justifyContent: 'space-between',
-}));
-
 export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: '24px',
-  lineHeight: '32px',
-  color: 'inherit',
-  margin: theme.spacing(3, 1.5, 0),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(0, 1.5, 0),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    justifyContent: 'flex-start',
-    margin: 0,
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    whiteSpace: 'nowrap',
   },
 }));
 

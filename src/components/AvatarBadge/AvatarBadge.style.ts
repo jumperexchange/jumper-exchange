@@ -1,47 +1,10 @@
-import { Avatar as MuiAvatar, Badge as MuiBadge } from '@mui/material';
+import { Avatar, Badge, Avatar as MuiAvatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { getAvatarMask } from './getAvatarMask';
 
-// Styled component for Avatar with dynamic mask
-export const StyledAvatar = styled(MuiAvatar, {
-  shouldForwardProp: (prop) => prop !== 'badgeSize' && prop !== 'avatarSize',
-})<{
-  avatarSize: number;
-  badgeSize: number;
-}>(({ avatarSize, badgeSize }) => ({
-  margin: 'auto',
-  height: avatarSize,
-  width: avatarSize,
-  '> img': {
-    height: '100%',
-    width: '100%',
-    objectFit: 'contain',
-  },
-  mask: getAvatarMask({ avatarSize, badgeSize }), // Applying the dynamic mask
-}));
-
 // Styled component for Badge Content (badge image)
-export const StyledBadgeContent = styled(MuiAvatar)<{ size: number }>(
-  ({ size }) => ({
-    width: size,
-    height: size,
-    backgroundColor: '#fff',
-    '& img': {
-      objectFit: 'contain',
-    },
-  }),
-);
 
 // Styled component for AvatarBadge
-export const StyledAvatarBadge = styled(MuiBadge)<{
-  avatarSize: number;
-  badgeSize: number;
-}>(({ avatarSize, badgeSize }) => ({
-  borderRadius: '50%',
-  '> .MuiAvatar-root': {
-    mask: getAvatarMask({ avatarSize, badgeSize }), // Applying the same dynamic mask to the badge
-  },
-}));
 
 // Styled avatar
 export const StyledBadgeAvatar = styled(MuiAvatar, {
@@ -57,4 +20,61 @@ export const StyledBadgeAvatar = styled(MuiAvatar, {
   top: 'unset',
   left: 'unset',
   // display: 'block',
+}));
+
+export interface BadgeOffsetProps {
+  x?: number;
+  y?: number;
+}
+
+interface StyledAvatarProps {
+  avatarSize: number;
+  badgeSize: number;
+  badgeOffset?: BadgeOffsetProps;
+  badgeGap?: number;
+}
+
+// Styled Avatar component for the badge
+export const StyledAvatar = styled(Avatar, {
+  shouldForwardProp: (prop) =>
+    prop !== 'avatarSize' &&
+    prop !== 'badgeSize' &&
+    prop !== 'badgeOffset' &&
+    prop !== 'badgeGap',
+})<StyledAvatarProps>(({ avatarSize, badgeSize, badgeOffset, badgeGap }) => ({
+  height: avatarSize,
+  width: avatarSize,
+  mask: getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap }), // Apply dynamic mask based on avatar and badge size
+  '> img': {
+    height: '100%',
+    width: '100%',
+    objectFit: 'contain',
+  },
+}));
+
+interface StyledBadgeProps {
+  badgeOffset?: BadgeOffsetProps;
+}
+
+// Styled Badge component for the badge
+export const StyledBadge = styled(Badge, {
+  shouldForwardProp: (prop) => prop !== 'badgeOffset',
+})<StyledBadgeProps>(({ badgeOffset }) => ({
+  borderRadius: '50%',
+  display: 'block',
+
+  '.MuiBadge-badge': {
+    position: 'static', // Remove absolute positioning
+    transform: 'none', // Remove unwanted transformations
+    top: 'unset', // Remove positioning
+    right: 'unset', // Remove positioning
+    zIndex: 'unset', // Remove z-index if not needed
+    minWidth: 'unset', // Remove minimum width
+    padding: 'unset', // Remove padding if not needed
+    height: 'unset', // Remove height
+    lineHeight: 'unset', // Remove line height
+    ...((badgeOffset?.x || badgeOffset?.y) && {
+      transform: `translate(${badgeOffset?.x ? badgeOffset.x : 0}px, ${badgeOffset?.y ? badgeOffset.y : 0}px)`,
+    }),
+  },
 }));

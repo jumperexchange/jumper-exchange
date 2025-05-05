@@ -1,10 +1,11 @@
 import { useAccount } from '@lifi/wallet-management';
-import { type Theme, Typography, useMediaQuery } from '@mui/material';
+import { type Theme, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
 import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import { ClaimingAmountLabel } from './ClaimingDetails.style';
 
-export const ClaimingAmount = ({
+export const ClaimingDetails = ({
   isConfirmed,
   rewardAmount,
   tokenLogo,
@@ -23,7 +24,7 @@ export const ClaimingAmount = ({
   );
 
   return (
-    <FlexCenterRowBox gap={1}>
+    <FlexCenterRowBox gap={1.5}>
       <AvatarBadge
         avatarSrc={tokenLogo}
         badgeSrc={chainLogo}
@@ -35,13 +36,13 @@ export const ClaimingAmount = ({
         badgeAlt={'chain-logo'}
       />
       {/* <AmountInputBox> */}
-      <Typography variant="titleSmall">
+      <ClaimingAmountLabel variant="titleSmall">
         {!account?.address || rewardAmount === 0 || !rewardAmount || isConfirmed
           ? '0'
           : rewardAmount
             ? t('format.decimal2Digit', { value: rewardAmount })
             : '...'}
-      </Typography>
+      </ClaimingAmountLabel>
       {/* </AmountInputBox> */}
     </FlexCenterRowBox>
   );

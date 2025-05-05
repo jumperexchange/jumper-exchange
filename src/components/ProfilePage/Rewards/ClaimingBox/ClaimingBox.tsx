@@ -12,8 +12,8 @@ import {
   ClaimingBoxContainer,
   RewardsOpenIconButton,
 } from '../RewardsCarousel.style';
-import { ClaimingAmount } from './ClaimingAmount';
 import { ClaimingButton } from './ClaimingBox.style';
+import { ClaimingDetails } from './ClaimingDetails';
 
 interface ClaimRewardParams {
   tokenChainid: number;
@@ -80,14 +80,13 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
 
   return (
     <ClaimingBoxContainer marginTop={'8px'} gap={3}>
-      <ClaimingAmount
+      <ClaimingDetails
         rewardAmount={amount}
         isConfirmed={isConfirmed}
         tokenLogo={availableReward.tokenLogo}
         chainLogo={availableReward.chainLogo}
       />
       {isConfirmed ? null : (
-        // <ClaimButtonBox>
         <ClaimingButton
           isDisabled={isButtonDisabled}
           disabled={isButtonDisabled}
@@ -106,7 +105,6 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
         >
           {isPending || isConfirming ? 'Claiming...' : 'Claim'}
         </ClaimingButton>
-        // </ClaimButtonBox>
       )}
       {hash && isConfirmed ? (
         <a
