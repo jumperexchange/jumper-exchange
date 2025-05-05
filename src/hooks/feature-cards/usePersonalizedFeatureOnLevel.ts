@@ -2,7 +2,10 @@ import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
+import {
+  getStrapiApiAccessToken,
+  getStrapiBaseUrl,
+} from 'src/utils/strapi/strapiHelper';
 
 export interface UsePersonalizedFeatureOnLevelProps {
   featureCards: StrapiFeatureCardData[] | undefined;
@@ -24,10 +27,7 @@ export const usePersonalizedFeatureOnLevel = ({
   const levelData = getLevelBasedOnPoints(points);
   const level = levelData.level;
 
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
   const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
 
   apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
