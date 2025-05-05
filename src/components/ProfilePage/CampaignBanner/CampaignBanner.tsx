@@ -43,10 +43,6 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
   );
   const apiBaseUrl = getStrapiBaseUrl();
 
-  if (campaigns.length === 0) {
-    return null;
-  }
-
   return (
     <Box display="flex" flexDirection="column">
       {campaigns.map((campaign) => (
