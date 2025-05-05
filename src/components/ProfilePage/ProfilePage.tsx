@@ -1,6 +1,6 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import type { CampaignData, QuestData } from '@/types/strapi';
+import type { CampaignData, QuestData, StrapiMediaData } from '@/types/strapi';
 import { useContext } from 'react';
 import { useTraits } from 'src/hooks/useTraits';
 import { AddressCard } from './AddressCard/AddressCard';
@@ -25,6 +25,27 @@ interface ProfilePageProps {
   quests?: QuestData[];
 }
 
+// Type guard to filter campaigns that can be displayed in banners
+interface CampaignWithBanner extends CampaignData {
+  ProfileBannerImage: StrapiMediaData;
+  ProfileBannerTitle: string;
+  ProfileBannerDescription: string;
+  ProfileBannerBadge: string;
+  ProfileBannerCTA?: string;
+  Slug: string;
+}
+
+const isBannerCampaign = (
+  campaign: CampaignData,
+): campaign is CampaignWithBanner =>
+  Boolean(
+    campaign.ProfileBannerImage?.url &&
+      campaign.ProfileBannerTitle &&
+      campaign.ProfileBannerDescription &&
+      campaign.ProfileBannerBadge &&
+      campaign.Slug,
+  );
+
 export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
@@ -38,6 +59,9 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   const { pastCampaigns } = useMerklRewards({
     userAddress: walletAddress,
   });
+
+  const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
+
   return (
     <PageContainer className="profile-page">
       {!isPublic && <MerklRewards />}
@@ -48,8 +72,8 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
           <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
-      {Array.isArray(campaigns) && campaigns?.length > 0 && (
-        <CampaignBanner campaigns={campaigns} />
+      {validBannerCampaigns.length > 0 && (
+        <CampaignBanner campaigns={validBannerCampaigns} />
       )}
       {Array.isArray(quests) && quests?.length > 0 && (
         <QuestsOverview

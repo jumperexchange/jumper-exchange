@@ -1,4 +1,4 @@
-import type { CampaignData } from '@/types/strapi';
+import type { CampaignData, StrapiMediaData } from '@/types/strapi';
 import type { Theme } from '@mui/material';
 import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
@@ -17,8 +17,19 @@ import {
 } from './CampaignBanner.style';
 import { CampaignInformation } from './CampaignInformation';
 
+// Define the expected structure of campaigns that will be passed to this component
+// This ensures type safety without exporting the types
+interface CampaignWithBanner extends CampaignData {
+  ProfileBannerImage: StrapiMediaData;
+  ProfileBannerTitle: string;
+  ProfileBannerDescription: string;
+  ProfileBannerBadge: string;
+  ProfileBannerCTA?: string;
+  Slug: string;
+}
+
 interface CampaignBannerProps {
-  campaigns: CampaignData[];
+  campaigns: CampaignWithBanner[];
 }
 
 export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
@@ -31,33 +42,14 @@ export const CampaignBanner = ({ campaigns }: CampaignBannerProps) => {
     theme.breakpoints.down('md'),
   );
   const apiBaseUrl = getStrapiBaseUrl();
-  const filteredCampaigns = campaigns.filter(
-    (
-      campaign,
-    ): campaign is CampaignData & {
-      ProfileBannerImage: { url: string };
-      ProfileBannerTitle: string;
-      ProfileBannerDescription: string;
-      ProfileBannerBadge: string;
-      ProfileBannerCTA?: string;
-      Slug: string;
-    } =>
-      Boolean(
-        campaign.ProfileBannerImage?.url &&
-          campaign.ProfileBannerTitle &&
-          campaign.ProfileBannerDescription &&
-          campaign.ProfileBannerBadge &&
-          campaign.Slug,
-      ),
-  );
 
-  if (Array.isArray(filteredCampaigns) && filteredCampaigns.length === 0) {
+  if (campaigns.length === 0) {
     return null;
   }
 
   return (
     <Box display="flex" flexDirection="column">
-      {filteredCampaigns.map((campaign) => (
+      {campaigns.map((campaign) => (
         <Link
           key={campaign.Slug}
           onClick={() => {
