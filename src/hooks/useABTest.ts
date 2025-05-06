@@ -32,6 +32,8 @@ export const useABTest = ({
       return resFormatted;
     },
     enabled: !!feature && !!address,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 15 * 60 * 1000, // 15 minutes
   });
 
   const isEnabled =
