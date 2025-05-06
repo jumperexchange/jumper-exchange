@@ -87,7 +87,7 @@ const PopularBridgeSection = ({
               width="50%"
               key={generateKey(token.address)}
               sx={(theme) => ({
-                color: theme.palette.text.primary,
+                color: (theme.vars || theme).palette.text.primary,
               })}
               component={Link}
               href={bridgeUrl}
