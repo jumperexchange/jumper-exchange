@@ -4,15 +4,14 @@ import { Box, alpha, styled } from '@mui/material';
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor:
-    alpha(theme.palette.white.main, 0.08),
+  backgroundColor: alpha(theme.palette.white.main, 0.08),
   height: 450,
   width: 288,
   textAlign: 'center',
   borderRadius: '8px',
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.white.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
@@ -61,7 +60,7 @@ export interface QuestPlatformMainBoxProps extends BoxProps {
 
 export const QuestPlatformMainBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>({
+})<QuestPlatformMainBoxProps>(() => ({
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
@@ -73,7 +72,7 @@ export const QuestPlatformMainBox = styled(Box, {
       },
     },
   ],
-});
+}));
 
 export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
@@ -81,7 +80,7 @@ export interface XPDisplayBoxProps extends BoxProps {
 
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<XPDisplayBoxProps>({
+})<XPDisplayBoxProps>(() => ({
   marginRight: undefined,
   display: 'flex',
   height: '28px',
@@ -98,7 +97,7 @@ export const XPDisplayBox = styled(Box, {
       },
     },
   ],
-});
+}));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',
