@@ -1,60 +1,48 @@
 import { useQuery } from '@tanstack/react-query';
-import { useABTestStore } from 'src/stores/abTests';
+import { type AbTestName } from 'src/const/abtests';
+import { useAbTestsStore } from 'src/stores/abTests';
 
 export interface UseABTestProps {
-  isSuccess: boolean;
-  isLoading: boolean;
   isEnabled: boolean;
+  isLoading: boolean;
 }
 
 export const useABTest = ({
   feature,
-  user,
+  address,
 }: {
-  feature: string;
-  user: string;
+  feature: AbTestName;
+  address: string;
 }): UseABTestProps => {
-  const { abtests, setAbtest } = useABTestStore();
+  const { activeAbTests, setActiveAbTest } = useAbTestsStore();
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['ab_test', feature, user],
-    enabled: !!feature && !!user,
+  const { data, isLoading } = useQuery({
+    queryKey: ['abtest', feature, address],
     queryFn: async () => {
-      if (!feature || !user) {
-        return { isEnabled: false, isSuccess: true, isLoading: false };
-      }
-
-      const res = await fetch(
-        `${apiBaseUrl}/posthog/feature-flag?key=${feature}&distinctId=${user}`,
+      const response = await fetch(
+        `${apiBaseUrl}/posthog/feature-flag?key=${feature}&distinctId=${address}`,
       );
-
-      if (!res.ok) {
-        return undefined;
-      }
-
-      const resFormatted = await res.json();
-
-      if (!resFormatted || !('data' in resFormatted)) {
-        return { isEnabled: false };
-      }
+      const resFormatted = await response.json();
 
       if (resFormatted && feature) {
-        setAbtest(feature, resFormatted.data);
+        setActiveAbTest(feature, resFormatted.data);
       }
 
-      return {
-        isEnabled: Boolean(resFormatted.data),
-      };
+      return resFormatted;
     },
+    enabled: !!feature && !!address,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    gcTime: 15 * 60 * 1000, // 15 minutes
   });
 
   const isEnabled =
-    feature in abtests ? abtests[feature] : (data?.isEnabled ?? false);
+    feature in activeAbTests
+      ? activeAbTests[feature]
+      : (data?.isEnabled ?? false);
 
   return {
     isEnabled,
-    isSuccess,
     isLoading,
   };
 };
