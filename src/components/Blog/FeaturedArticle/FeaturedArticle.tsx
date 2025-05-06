@@ -13,6 +13,7 @@ import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import useClient from 'src/hooks/useClient';
+import RouterLink from 'next/link';
 import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
@@ -51,20 +52,19 @@ export const FeaturedArticle = ({
     featuredArticle &&
     t('format.shortDate', {
       value: new Date(
-        featuredArticle?.attributes?.publishedAt ||
-          featuredArticle?.attributes?.createdAt,
+        featuredArticle?.publishedAt || featuredArticle?.createdAt,
       ),
     });
 
-  const minRead =
-    featuredArticle && readingTime(featuredArticle?.attributes?.Content);
+  const minRead = featuredArticle && readingTime(featuredArticle?.Content);
 
   return featuredArticle ? (
     <>
       <FeaturedArticleLink
+        as={RouterLink}
         href={
-          featuredArticle.attributes?.RedirectURL ??
-          `${JUMPER_LEARN_PATH}/${featuredArticle?.attributes?.Slug}`
+          featuredArticle?.RedirectURL ??
+          `${JUMPER_LEARN_PATH}/${featuredArticle?.Slug}`
         }
         onClick={() => {
           handleFeatureCardClick(featuredArticle);
@@ -76,24 +76,21 @@ export const FeaturedArticle = ({
           height={0}
           sizes="100vw"
           priority
-          src={`${url}${featuredArticle.attributes.Image.data.attributes?.formats?.medium.url || featuredArticle.attributes.Image.data.attributes?.url}`}
+          src={`${url}${featuredArticle?.Image?.formats?.medium.url || featuredArticle?.Image?.url}`}
           alt={
-            featuredArticle.attributes?.Image.data.attributes
-              ?.alternativeText ?? featuredArticle.attributes?.Title
+            featuredArticle?.Image?.alternativeText ?? featuredArticle?.Title
           }
         />
         <FeaturedArticleContent>
           <FeaturedArticleDetails>
-            {featuredArticle.attributes?.tags.data
-              .slice(0, 1)
-              .map((el, index) => (
-                <Tag
-                  key={`blog-highlights-tag-${index}`}
-                  variant="bodyMediumStrong"
-                >
-                  {el.attributes?.Title}
-                </Tag>
-              ))}
+            {featuredArticle?.tags.slice(0, 1).map((el, index) => (
+              <Tag
+                key={`blog-highlights-tag-${index}`}
+                variant="bodyMediumStrong"
+              >
+                {el?.Title}
+              </Tag>
+            ))}
             <FeaturedArticleMetaContainer>
               {isClient ? (
                 <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
@@ -122,12 +119,12 @@ export const FeaturedArticle = ({
           </FeaturedArticleDetails>
           <Box>
             <FeaturedArticleTitle variant="headerMedium" as="h2">
-              {featuredArticle.attributes?.Title}
+              {featuredArticle?.Title}
             </FeaturedArticleTitle>
           </Box>
           <Box>
             <FeaturedArticleSubtitle>
-              {featuredArticle.attributes?.Subtitle}
+              {featuredArticle?.Subtitle}
             </FeaturedArticleSubtitle>
           </Box>
         </FeaturedArticleContent>

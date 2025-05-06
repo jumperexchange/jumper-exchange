@@ -208,12 +208,12 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     />
                   </XPRewardsInfo>
                 )}
-                {points ? (
+                {points || apy > 0 || variableWeeklyAPY ? (
                   <>
                     {apy > 0 && !variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={true}
-                        completed={true}
+                        active={false}
+                        completed={false}
                         points={`${Number(apy).toFixed(1)}%`}
                         tooltip={
                           rewardsProgress &&
@@ -272,9 +272,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                 )}
                 <QuestCardButtonCtaLabel
                   variant="bodyXSmallStrong"
-                  sx={{
-                    ...(isTraitsGarded && !isUnlocked && { margin: '0 8px' }),
-                  }}
+                  sx={isTraitsGarded && !isUnlocked ? { margin: '0 8px' } : {}}
                 >
                   {buttonLabel}
                 </QuestCardButtonCtaLabel>

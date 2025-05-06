@@ -1,6 +1,6 @@
 'use client';
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import { Link as MuiLink, Typography, useTheme } from '@mui/material';
+import { Link as MuiLink, Typography, useColorScheme, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
@@ -24,13 +24,14 @@ const SwapStepsExplainerSection = ({
   chainName,
 }: SwapStepsExplainerProps) => {
   const theme = useTheme();
+  const { mode } = useColorScheme();
 
   const steps = [
     {
       title: 'Step 1: Prepare Your Wallet',
       description: `To swap tokens on ${sourceChain?.name}, you will first need to connect your wallet.`,
       img: {
-        imgUrl: `/widget/widget-connect-wallet-${theme.palette.mode}.png`,
+        imgUrl: `/widget/widget-connect-wallet-${mode}.png`,
         width: 460,
         height: 338,
         alt: 'Widget connection image',
@@ -180,9 +181,8 @@ const SwapStepsExplainerSection = ({
         steps. This guide will walk you through the process of transferring your
         assets.
       </Typography>
-
       {steps.map((step, index) => (
-        <Fragment key={index}>
+        <Fragment key={`swap-steps-${index}`}>
           <Divider />
           <StepDetail
             title={step.title}
@@ -195,5 +195,4 @@ const SwapStepsExplainerSection = ({
     </DynamicPagesContainer>
   );
 };
-
 export default SwapStepsExplainerSection;

@@ -32,7 +32,6 @@ import {
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { readingTime } from '@/utils/readingTime';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
@@ -40,14 +39,12 @@ import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 interface BlogArticleProps {
   article: BlogArticleData;
   baseUrl?: string;
-  activeThemeMode?: ThemeMode;
   id?: number;
 }
 
 export const BlogArticle = ({
   article,
   baseUrl,
-  activeThemeMode,
 }: BlogArticleProps) => {
   const theme = useTheme();
   const {
@@ -61,29 +58,27 @@ export const BlogArticle = ({
     updatedAt,
     tags,
     Image: image,
-  } = article.attributes;
+  } = article;
   const id = article.id;
   const minRead = readingTime(content);
   const { t } = useTranslation();
+
+  const mainTag = tags[0];
 
   return (
     <>
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
-            {tags?.data[0]?.attributes?.Title ? (
+            {tags?.[0]?.Title ? (
               <Tag
-                sx={{
-                  ...(tags.data[0]?.attributes?.TextColor && {
-                    color: tags.data[0]?.attributes?.TextColor,
-                  }),
-                }}
-                backgroundColor={tags.data[0]?.attributes?.BackgroundColor}
+                sx={mainTag?.TextColor ? { color: mainTag.TextColor } : undefined}
+                backgroundColor={mainTag?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"
-                key={`blog-article-tag-${tags.data[0]?.id}`}
+                key={`blog-article-tag-${mainTag?.id}`}
               >
-                {tags.data[0].attributes?.Title}
+                {mainTag?.Title}
               </Tag>
             ) : (
               <BlogArticleHeaderTagSkeleton variant="rectangular" />
@@ -119,12 +114,12 @@ export const BlogArticle = ({
           <BlogMetaContainer>
             {/*// The following block is a duplication of the row 196 onwards but with slightly different styles, needs to be revisited*/}
             <BlogAuthorContainer>
-              {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
+              {author?.Avatar?.url ? (
                 <BlogAuthorAvatar
                   width={64}
                   height={64}
-                  src={`${baseUrl}${author.data.attributes?.Avatar.data.attributes?.url}`}
-                  alt={`${author.data.attributes?.Name}'s avatar`}
+                  src={`${baseUrl}${author?.Avatar?.url}`}
+                  alt={`${author?.Name}'s avatar`}
                 />
               ) : (
                 <BlogAuthorAvatarSkeleton variant="rounded" />
@@ -148,12 +143,12 @@ export const BlogArticle = ({
                   },
                 }}
               >
-                {author?.data ? (
+                {author ? (
                   <BlogArticlAuthorName
                     variant="bodyXSmallStrong"
                     component="span"
                   >
-                    {author.data?.attributes?.Name}
+                    {author?.Name}
                   </BlogArticlAuthorName>
                 ) : (
                   <BlogArticlAuthorNameSkeleton variant="text" />
@@ -170,10 +165,10 @@ export const BlogArticle = ({
         </BlogArticleContentContainer>
       </BlogArticleContainer>
       <BlogArticleImageContainer>
-        {image?.data ? (
+        {image ? (
           <BlogArticleImage
-            src={`${baseUrl}${image.data.attributes?.url}`}
-            alt={image?.data.attributes?.alternativeText ?? title}
+            src={`${baseUrl}${image.url}`}
+            alt={image?.alternativeText ?? title}
             priority
             width={1200}
             height={640}
@@ -189,18 +184,17 @@ export const BlogArticle = ({
               id={id}
               baseUrl={baseUrl}
               content={content}
-              activeThemeMode={activeThemeMode}
             />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}
           <Divider />
           <BlogAuthorWrapper>
-            {author?.data?.attributes?.Avatar.data?.attributes?.url ? (
+            {author?.Avatar?.url ? (
               <BlogAuthorAvatar
                 width={64}
                 height={64}
-                src={`${baseUrl}${author.data.attributes?.Avatar.data.attributes?.url}`}
+                src={`${baseUrl}${author?.Avatar?.url}`}
                 alt="author-avatar"
               />
             ) : (
@@ -212,16 +206,16 @@ export const BlogArticle = ({
               />
             )}
             <BlogAuthorMetaWrapper>
-              {author?.data ? (
+              {author ? (
                 <BlogArticlAuthorName component="span">
-                  {author.data.attributes?.Name}
+                  {author.Name}
                 </BlogArticlAuthorName>
               ) : (
                 <BlogArticlAuthorNameSkeleton variant="text" />
               )}
-              {author?.data ? (
+              {author ? (
                 <BlogArticlAuthorRole variant="bodyXSmall" component="span">
-                  {author.data.attributes?.Role}
+                  {author?.Role}
                 </BlogArticlAuthorRole>
               ) : (
                 <BlogArticlAuthorRoleSkeleton variant="text" />
@@ -235,13 +229,13 @@ export const BlogArticle = ({
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>
       </BlogArticleContainer>
-      {image?.data && publishedAt && author?.data && title && createdAt ? (
+      {image && publishedAt && author && title && createdAt ? (
         <ArticleJsonSchema
           title={title}
-          images={[`${baseUrl}${image.data.attributes?.url}`]}
+          images={[`${baseUrl}${image?.url}`]}
           datePublished={publishedAt || createdAt}
           dateModified={updatedAt || createdAt}
-          authorName={author.data.attributes?.Name}
+          authorName={author?.Name}
         />
       ) : null}
     </>

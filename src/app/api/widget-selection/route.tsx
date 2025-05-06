@@ -31,69 +31,69 @@ import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
+import {
+  widgetSelectionSchema,
+  type WidgetSelectionParams,
+} from 'src/utils/image-generation/widgetSchemas';
 
 const WIDGET_IMAGE_WIDTH = 416;
 const WIDGET_IMAGE_HEIGHT = 496;
 const WIDGET_IMAGE_SCALING_FACTOR = 2;
 
 export async function GET(request: Request) {
-  const {
-    fromChainId,
-    toChainId,
-    fromToken,
-    toToken,
-    theme,
-    amount,
-    highlighted,
-  } = parseSearchParams(request.url);
+  try {
+    const params = parseSearchParams<WidgetSelectionParams>(
+      request.url,
+      widgetSelectionSchema,
+    );
 
-  // Fetch data asynchronously before rendering
-  const fromTokenData = await fetchTokenData(fromChainId, fromToken);
-  const toTokenData = await fetchTokenData(toChainId, toToken);
-  const fromChain = await fetchChainData(fromChainId as unknown as ChainId);
-  const toChain = await fetchChainData(toChainId as unknown as ChainId);
+    // Fetch data asynchronously before rendering
+    const [fromTokenData, toTokenData, fromChain, toChain] = await Promise.all([
+      fetchTokenData(params.fromChainId.toString(), params.fromToken),
+      fetchTokenData(params.toChainId.toString(), params.toToken),
+      fetchChainData(params.fromChainId as unknown as ChainId),
+      fetchChainData(params.toChainId as unknown as ChainId),
+    ]);
 
-  const options = await imageResponseOptions({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  });
+    const options = await imageResponseOptions({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    });
 
-  const imageFrameStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
+    const imageStyle = imageFrameStyles({
+      width: WIDGET_IMAGE_WIDTH,
+      height: WIDGET_IMAGE_HEIGHT,
+      scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
+    }) as CSSProperties;
 
-  const imageStyle = imageFrameStyles({
-    width: WIDGET_IMAGE_WIDTH,
-    height: WIDGET_IMAGE_HEIGHT,
-    scalingFactor: WIDGET_IMAGE_SCALING_FACTOR,
-  }) as CSSProperties;
-
-  return new ImageResponse(
-    (
-      <div style={imageFrameStyle}>
-        <img
-          alt="Widget Selection Example"
-          width={'100%'}
-          height={'100%'}
-          style={imageStyle}
-          src={`${getSiteUrl()}/widget/widget-selection-${theme === 'dark' ? 'dark' : 'light'}.png`}
-        />
-        <WidgetSelectionImage
-          height={WIDGET_IMAGE_WIDTH}
-          width={WIDGET_IMAGE_HEIGHT}
-          fromToken={fromTokenData}
-          toToken={toTokenData}
-          fromChain={fromChain}
-          toChain={toChain}
-          amount={amount}
-          theme={theme as 'light' | 'dark'}
-          highlighted={highlighted as HighlightedAreas}
-        />
-      </div>
-    ),
-    options,
-  );
+    return new ImageResponse(
+      (
+        <div style={imageStyle}>
+          <img
+            alt="Widget Selection Example"
+            width={'100%'}
+            height={'100%'}
+            style={imageStyle}
+            src={`${getSiteUrl()}/widget/widget-selection-${params.theme}.png`}
+          />
+          <WidgetSelectionImage
+            height={WIDGET_IMAGE_WIDTH}
+            width={WIDGET_IMAGE_HEIGHT}
+            fromToken={fromTokenData}
+            toToken={toTokenData}
+            fromChain={fromChain}
+            toChain={toChain}
+            amount={params.amount}
+            theme={params.theme}
+            highlighted={params.highlighted as HighlightedAreas}
+          />
+        </div>
+      ),
+      options,
+    );
+  } catch (error) {
+    console.error('Error generating widget selection image:', error);
+    return new Response('Internal server error', { status: 500 });
+  }
 }

@@ -1,8 +1,7 @@
-import { getContrastAlphaColor } from '@/utils/colors';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { alpha, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import {
@@ -46,6 +45,7 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
   return cleanText;
 };
 
+// TODO: Refactor this component to use Accordion component from mui
 export const InstructionsAccordionItem = ({
   title,
   step,
@@ -54,7 +54,6 @@ export const InstructionsAccordionItem = ({
   url,
   buttonTitles,
   buttonLinks,
-  activeThemeMode,
   variant,
 }: InstructionsAccordionItemProps) => {
   const [open, setOpen] = useState(false);
@@ -92,10 +91,22 @@ export const InstructionsAccordionItem = ({
 
   return (
     <InstructionsAccordionItemContainer
-      sx={{
-        typograpy: isSuperfest ? sora.style.fontFamily : undefined,
-        borderColor: isSuperfest ? theme.palette.black.main : undefined,
-      }}
+      sx={[
+        isSuperfest
+          ? {
+              typograpy: sora.style.fontFamily,
+            }
+          : {
+              typograpy: null,
+            },
+        isSuperfest
+          ? {
+              borderColor: theme.palette.black.main,
+            }
+          : {
+              borderColor: null,
+            },
+      ]}
     >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
@@ -115,18 +126,19 @@ export const InstructionsAccordionItem = ({
         {step ? (
           isTablet ? (
             <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
-              <ExpandMoreIcon
-                sx={{
-                  ...(open && { transform: 'rotate(180deg)' }),
-                }}
-              />
+              <ExpandMoreIcon sx={[open && { transform: 'rotate(180deg)' }]} />
             </InstructionsAccordionToggle>
           ) : (
             <ExpandMoreIcon
-              sx={{
-                color: getContrastAlphaColor(theme, 0.32),
-                ...(open && { transform: 'rotate(180deg)' }),
-              }}
+              sx={[
+                {
+                  color: alpha(theme.palette.white.main, 0.32),
+                  ...theme.applyStyles('light', {
+                    color: alpha(theme.palette.black.main, 0.32),
+                  }),
+                },
+                open && { transform: 'rotate(180deg)' },
+              ]}
             />
           )
         ) : null}

@@ -40,15 +40,14 @@ const SwapExplanationSection = () => {
           background: theme.palette.bgSecondary.main,
           boxShadow: theme.shadows[1],
           '&:hover': {
-            background:
-              theme.palette.mode === 'light'
-                ? theme.palette.white.main
-                : alpha(theme.palette.white.main, 0.16),
+            background: (theme.vars || theme).palette.alphaLight400.main,
+            ...theme.applyStyles('light', {
+              background: (theme.vars || theme).palette.white.main,
+            }),
           },
         })}
       />
     </DynamicPagesContainer>
   );
 };
-
 export default SwapExplanationSection;

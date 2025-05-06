@@ -1,6 +1,4 @@
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useTheme } from 'next-themes';
-import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
 import { STRAPI_PARTNER_THEMES } from 'src/const/strapiContentKeys';
 import {
@@ -11,13 +9,17 @@ import {
 import { useStrapi } from 'src/hooks/useStrapi';
 import { validThemes } from 'src/hooks/useWelcomeScreen';
 import type { PartnerThemesData } from 'src/types/strapi';
+import { useSettingsStore } from '@/stores/settings';
+import { useColorScheme } from '@mui/material';
 
 export const useThemeMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const { resolvedTheme, setTheme } = useTheme();
+  const { mode, setMode } = useColorScheme();
+  const setWelcomeScreenClosed = useSettingsStore(
+    (state) => state.setWelcomeScreenClosed,
+  );
 
-  const [, setCookie] = useCookies();
   const { data: partnerThemes, isSuccess } = useStrapi<PartnerThemesData>({
     contentType: STRAPI_PARTNER_THEMES,
     queryKey: ['partner-themes'],
@@ -33,12 +35,11 @@ export const useThemeMenuContent = () => {
       },
     });
     if (!validThemes.includes(theme)) {
-      setCookie('welcomeScreenClosed', true, {
-        path: '/',
-        sameSite: true,
-      });
+      setWelcomeScreenClosed(true);
+
+      throw new Error('Deprecated, need to be re-implemented');
     }
-    setTheme(theme);
+    // setMode(theme);
   };
 
   const themes: any = [
@@ -48,21 +49,21 @@ export const useThemeMenuContent = () => {
         handleThemeSwitch('system');
       },
       checkIcon:
-        resolvedTheme === 'dark' ||
-        resolvedTheme === 'light' ||
-        resolvedTheme === undefined,
+        mode === 'dark' ||
+        mode === 'light' ||
+        mode === undefined,
     },
   ];
 
   partnerThemes?.map(
     (el) =>
-      el.attributes?.SelectableInMenu &&
+      el?.SelectableInMenu &&
       themes.push({
-        label: el.attributes?.PartnerName,
+        label: el?.PartnerName,
         onClick: () => {
-          handleThemeSwitch(el?.attributes?.uid);
+          handleThemeSwitch(el?.uid);
         },
-        checkIcon: resolvedTheme === el.attributes?.uid,
+        checkIcon: mode === el?.uid,
       }),
   );
 

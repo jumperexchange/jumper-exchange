@@ -1,55 +1,85 @@
-import ScanPage from '@/app/ui/scan/ScanPage';
-import type { Metadata } from 'next';
 import { siteName } from '@/app/lib/metadata';
+import ScanPage from '@/app/ui/scan/ScanPage';
 import { getSiteUrl } from '@/const/urls';
+import { scanParamsSchema } from '@/utils/validation-schemas';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
+type MetadataParams = Promise<{ segments: string[] }>;
 
 export async function generateMetadata({
-  params: { segments = [] },
+  params,
 }: {
-  params: {
-    segments: string[];
-  };
+  params: MetadataParams;
 }): Promise<Metadata> {
-  const slugToTitle: { [key: string]: string } = {
-    tx: 'Transaction',
-    block: 'Block',
-    wallet: 'wallet',
-  };
+  try {
+    const { segments = [] } = await params;
 
-  const [slug, address] = segments;
+    // Validate segments
+    const result = scanParamsSchema.safeParse({ segments });
+    if (!result.success) {
+      throw new Error('Invalid scan segments');
+    }
 
-  const title = `Jumper Scan | ${slug && address ? `${slugToTitle[slug]} ${address}` : 'Blockchain Explorer'}`;
-  const description =
-    'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.';
-  const canonical = `${getSiteUrl()}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
+    const slugToTitle: { [key: string]: string } = {
+      tx: 'Transaction',
+      block: 'Block',
+      wallet: 'wallet',
+    };
 
-  return {
-    robots: {
-      index: false,
-    },
-    title,
-    description,
-    alternates: {
-      canonical,
-    },
-    openGraph: {
+    const [slug, address] = result.data.segments || [];
+
+    const title = `Jumper Scan | ${slug && address ? `${slugToTitle[slug]} ${address}` : 'Blockchain Explorer'}`;
+    const description =
+      'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.';
+    const canonical = `${getSiteUrl()}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
+
+    return {
+      robots: {
+        index: false,
+      },
       title,
       description,
-      siteName,
-      url: canonical,
-    },
-    twitter: {
-      title,
-      description,
-    },
-  };
+      alternates: {
+        canonical,
+      },
+      openGraph: {
+        title,
+        description,
+        siteName,
+        url: canonical,
+      },
+      twitter: {
+        title,
+        description,
+      },
+    };
+  } catch (err) {
+    return {
+      title: 'Jumper Scan | Blockchain Explorer',
+      description:
+        'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.',
+      alternates: {
+        canonical: `${getSiteUrl()}/scan`,
+      },
+    };
+  }
 }
 
-export default function Page({
-  params: { lng },
+type Params = Promise<{ lng: string; segments: string[] }>;
+export default async function Page({
+  params,
 }: {
   children: React.ReactNode;
-  params: { lng: string };
+  params: Params;
 }) {
+  const { lng, segments } = await params;
+  // Validate segments
+  const result = scanParamsSchema.safeParse({ segments: segments });
+
+  if (!result.success) {
+    return notFound();
+  }
+
   return <ScanPage lng={lng} />;
 }

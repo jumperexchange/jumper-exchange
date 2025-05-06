@@ -1,7 +1,13 @@
 'use client';
 import ConnectButton from '@/components/Navbar/ConnectButton';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useWalletAddressImg } from '@/hooks/useAddressImg';
 import { useChains } from '@/hooks/useChains';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { getAddressLabel } from '@/utils/getAddressLabel';
 import { walletDigest } from '@/utils/walletDigest';
@@ -16,7 +22,7 @@ import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
-import { useEnsName } from 'wagmi';
+import { useEnsName, useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { XPIcon } from '../illustrations/XPIcon';
 import {
@@ -41,11 +47,9 @@ export const WalletButtons = () => {
   });
   const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const pathname = usePathname();
-
   const { openWalletMenu: _openWalletMenu, setWalletMenuState } = useMenuStore(
     (state) => state,
   );
-
   const { data: ensName, isSuccess: isSuccessEnsName } = useEnsName({
     address: activeAccount?.address as Address | undefined,
     chainId: mainnet.id,
@@ -55,12 +59,12 @@ export const WalletButtons = () => {
     ensName,
     address: activeAccount?.address,
   });
-
   const activeChain = useMemo(
     () =>
       chains?.find((chainEl: Chain) => chainEl.id === activeAccount?.chainId),
     [chains, activeAccount?.chainId],
   );
+  const { trackEvent } = useUserTracking();
 
   const handleXPClick = () => {
     router.push(JUMPER_LOYALTY_PATH);
@@ -68,6 +72,18 @@ export const WalletButtons = () => {
 
   const handleWalletMenuClick = () => {
     setWalletMenuState(!_openWalletMenu);
+    if (!_openWalletMenu) {
+      // Only track the event if the menu is not already open
+      trackEvent({
+        category: TrackingCategory.WalletMenu,
+        action: TrackingAction.OpenMenu,
+        label: 'open_portfolio_menu',
+        data: {
+          [TrackingEventParameter.Menu]: 'portfolio',
+          [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+        },
+      });
+    }
   };
 
   return (

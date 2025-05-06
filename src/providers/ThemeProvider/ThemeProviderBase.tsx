@@ -1,67 +1,62 @@
 'use client';
 import { useMetaTag } from '@/hooks/useMetaTag';
-import { useThemeStore } from '@/stores/theme';
+import { ThemeStoreProvider, useThemeStore } from '@/stores/theme';
 import { formatConfig, isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { useTheme as useNextTheme } from 'next-themes';
+import {
+  ThemeProvider as MuiThemeProvider,
+  useColorScheme,
+} from '@mui/material/styles';
 import { useEffect, useMemo } from 'react';
-import { useCookies } from 'react-cookie';
 import type { ThemeProviderProps } from './types';
 import {
-  getEffectiveThemeMode,
   getMuiTheme,
   getPartnerTheme,
   getWidgetTheme,
+  getWidgetThemeV2
 } from './utils';
+import { useMediaQuery } from '@mui/material';
+import { themeCustomized } from 'src/theme/theme';
+import { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
+import { ThemeProps } from 'src/types/theme';
 
 export function ThemeProviderBase({
   children,
-  activeTheme,
-  themeMode,
+  themes,
 }: ThemeProviderProps) {
-  const { resolvedTheme } = useNextTheme();
-  const [, setCookie] = useCookies(['theme', 'themeMode']);
-  const [themes, setConfigTheme, setWidgetTheme] = useThemeStore((state) => [
-    state.partnerThemes,
-    state.setConfigTheme,
-    state.setWidgetTheme,
-  ]);
+  const { mode, setMode } = useColorScheme();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const metaTheme = useMetaTag('partner-theme');
 
-  const partnerTheme = metaTheme || activeTheme || 'default';
-  const isPartnerTheme = themes?.find(
-    (d) => d.attributes?.uid === partnerTheme,
-  );
+  const partnerTheme = metaTheme || 'default';
 
-  const effectiveThemeMode = getEffectiveThemeMode(
-    (isPartnerTheme?.attributes &&
-      isDarkOrLightThemeMode(isPartnerTheme?.attributes)) ||
-      themeMode,
-    resolvedTheme,
-  );
+  const themeStore = useMemo((): ThemeProps => {
+    const metaElement =
+      typeof window !== 'undefined'
+        ? document.querySelector('meta[name="partner-theme"]')
+        : undefined;
 
-  const currentMuiTheme = useMemo(
-    () => getMuiTheme(themes, partnerTheme, effectiveThemeMode),
-    [effectiveThemeMode, partnerTheme, themes],
-  );
+    const widgetTheme = getWidgetThemeV2(
+      mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode,
+      partnerTheme,
+      themes,
+    );
 
-  useEffect(() => {
-    setWidgetTheme(getWidgetTheme(currentMuiTheme, partnerTheme, themes));
-    setConfigTheme(formatConfig(getPartnerTheme(themes, partnerTheme)));
-    setCookie('theme', partnerTheme, { path: '/', sameSite: true });
-    setCookie('themeMode', effectiveThemeMode, { path: '/', sameSite: true });
+    return {
+      configTheme: formatConfig(
+        getPartnerTheme(themes, partnerTheme),
+      ) as PartnerThemeConfig,
+      partnerThemes: themes!,
+      widgetTheme: widgetTheme,
+    };
   }, [
-    currentMuiTheme,
-    effectiveThemeMode,
-    partnerTheme,
-    setConfigTheme,
-    setCookie,
-    setWidgetTheme,
+    mode,
     themes,
   ]);
 
   return (
-    <MuiThemeProvider theme={currentMuiTheme}>{children}</MuiThemeProvider>
+    <ThemeStoreProvider value={themeStore}>
+        {children}
+    </ThemeStoreProvider>
   );
 }

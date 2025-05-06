@@ -1,13 +1,11 @@
-import { getCookies } from '@/app/lib/getCookies';
 import { Widgets } from '@/components/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 
-const Page = () => {
+const Page = async () => {
   const variant = 'refuel';
-  const { activeThemeMode } = getCookies();
   return (
     <>
-      <Widget starterVariant={variant} activeThemeMode={activeThemeMode} />
+      <Widget starterVariant={variant} />
       <Widgets widgetVariant={variant} />
     </>
   );

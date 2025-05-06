@@ -12,9 +12,7 @@ import Image from 'next/image';
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+    alpha(theme.palette.white.main, 0.08),
   borderRadius: '24px',
   flexDirection: 'column',
   height: 'auto',
@@ -25,7 +23,10 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   minWidth: 288,
   textAlign: 'center',
   transition: 'background-color 250ms',
-  boxShadow: theme.shadows[2],
+  boxShadow: (theme.vars || theme).shadows[2],
+  ...theme.applyStyles("light", {
+    backgroundColor: (theme.vars || theme).palette.white.main
+  })
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({
@@ -52,7 +53,7 @@ export const QuestCardTitleBox = styled(Box)(() => ({
 export const QuestCardTitle = styled(Typography)(({ theme }) => ({
   textAlign: 'left',
   userSelect: 'none',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxHeight: '24px',
@@ -97,11 +98,11 @@ export interface XPDisplayBoxProps extends BoxProps {
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
+  shouldForwardProp: (prop) => prop !== 'completed' && prop !== 'active',
 })<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.primary.main,
-  backgroundColor: '#F0E5FF',
+  color: (theme.vars || theme).palette.primary.main,
+  backgroundColor: (theme.vars || theme).palette.background.default,
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
@@ -161,7 +162,7 @@ export const QuestCardButtonCta = styled(Button)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   height: 24,
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms',
   backgroundColor: alpha(theme.palette.text.primary, 0.04),
   '&:hover': {

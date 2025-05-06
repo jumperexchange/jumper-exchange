@@ -40,7 +40,7 @@ export const BerachainInformationProtocolIntro = styled(Box)(({ theme }) => ({
 export const BerachainInformationProtocolCard = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   gap: theme.spacing(1.5),
   padding: theme.spacing(3),
   borderRadius: '24px',
@@ -56,7 +56,7 @@ export const BerachainInformationProtocolShareLink = styled(Link)(() => ({
 export const BerachainInformationProtocolShare = styled(IconButton)(
   ({ theme }) => ({
     background: alpha(theme.palette.text.primary, 0.08),
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     transition: 'background-color 300ms ease-in-out',
     '&:hover': {
       background: alpha(theme.palette.text.primary, 0.16),

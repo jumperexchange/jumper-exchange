@@ -1,12 +1,11 @@
 'use client';
 import { ClientOnly } from '@/components/ClientOnly';
 import { TabsMap } from '@/const/tabsMap';
-import { useMultisig } from '@/hooks/useMultisig';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
 import getApiUrl from '@/utils/getApiUrl';
-import { ChainId, EVM } from '@lifi/sdk';
+import { ChainId } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
 import {
@@ -16,7 +15,7 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { getWalletClient, switchChain } from '@wagmi/core';
+import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -24,18 +23,11 @@ import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const/trackingKeys';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
-import { useUserTracking } from 'src/hooks/userTracking';
+import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
-import { isIframeEnvironment } from 'src/utils/iframe';
-import { useConfig } from 'wagmi';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 
@@ -52,19 +44,22 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [widgetTheme, configTheme] = useThemeStore((state) => [
-    state.widgetTheme,
+  const theme = useTheme();
+  const [configTheme] = useThemeStore((state) => [
     state.configTheme,
   ]);
+
+    const { mode } = useColorScheme();
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+
+  const widgetTheme = getWidgetThemeV2(
+    mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode);
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
-  const { trackEvent } = useUserTracking();
   const { account } = useAccount();
-  const wagmiConfig = useConfig();
-  const { isMultisigSigner, getMultisigWidgetConfig } = useMultisig();
-  const { multisigWidget, multisigSdkConfig } = getMultisigWidgetConfig();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
@@ -119,12 +114,6 @@ export function Widget({
       }
     });
 
-    if (configTheme?.integrator !== 'abs.jmp.exchange') {
-      formRef.current?.setFieldValue('toAddress', undefined, {
-        setUrlSearchParam: true,
-      });
-    }
-
     if (
       configTheme?.integrator === 'abs.jmp.exchange' &&
       isConnectedAGW &&
@@ -161,7 +150,7 @@ export function Widget({
     widgetEvents,
   ]);
 
-  const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
+  const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(
@@ -278,7 +267,6 @@ export function Widget({
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
-      ...multisigWidget,
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       languageResources: {
         en: {
@@ -295,33 +283,13 @@ export function Widget({
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
-          allowSwitchChain: !isMultisigSigner && !isConnectedAGW, // avoid routes requiring chain switch for multisig or smart account wallets
+          allowSwitchChain: !isConnectedAGW, // avoid routes requiring chain switch for multisig or smart account wallets
         },
-        providers:
-          isMultisigSigner && isIframeEnvironment()
-            ? [
-                EVM({
-                  getWalletClient: () => getWalletClient(wagmiConfig),
-                  switchChain: async (chainId) => {
-                    const chain = await switchChain(wagmiConfig, { chainId });
-                    trackEvent({
-                      category: TrackingCategory.Widget,
-                      action: TrackingAction.SwitchChain,
-                      label: 'switch-chain',
-                      data: {
-                        [TrackingEventParameter.ChainId]: chainId,
-                      },
-                    });
-                    return getWalletClient(wagmiConfig, { chainId: chain.id });
-                  },
-                  multisig: multisigSdkConfig,
-                }),
-              ]
-            : undefined,
       },
       buildUrl: true,
       integrator: integratorStringByType,
       tokens: tokens,
+      useRelayerRoutes: true,
     };
   }, [
     configTheme?.fromChain,
@@ -329,6 +297,7 @@ export function Widget({
     configTheme?.toChain,
     configTheme?.toToken,
     configTheme?.chains,
+    configTheme?.integrator,
     configTheme?.allowedBridges,
     configTheme?.allowedExchanges,
     configTheme?.hiddenUI,
@@ -341,6 +310,7 @@ export function Widget({
     fromAmount,
     memeListTokens,
     starterVariant,
+    subvariant,
     openWalletMenu,
     isConnectedAGW,
     allowChains,
@@ -351,12 +321,7 @@ export function Widget({
     destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
-    multisigWidget,
-    isMultisigSigner,
-    multisigSdkConfig,
     integratorStringByType,
-    wagmiConfig,
-    trackEvent,
   ]);
 
   return (
