@@ -151,6 +151,7 @@ declare module '@mui/material/styles' {
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
+    titleMedium: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
@@ -184,6 +185,7 @@ declare module '@mui/material/styles' {
     bodyXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
+    titleMedium: React.CSSProperties;
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
@@ -252,6 +254,7 @@ declare module '@mui/material/Typography' {
     bodyXSmall: true;
     brandHeaderXLarge: true;
     titleSmall: true;
+    titleMedium: true;
     titleXSmall: true;
     title2XSmall: true;
     titleLarge: true;
@@ -814,7 +817,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme = extend
       fontWeight: 700,
       lineHeight: '20px',
     },
-
+    titleMedium: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '32px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '40px',
+    },
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',

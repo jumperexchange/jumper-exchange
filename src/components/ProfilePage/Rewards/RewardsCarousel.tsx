@@ -1,16 +1,15 @@
-import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
-import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
+import type { AvailableRewards } from 'src/hooks/useMerklRewards';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 import {
-  EarnedTypography,
   RewardsCarouselContainer,
+  RewardsCarouselItems,
+  RewardsCarouselTitle,
 } from './RewardsCarousel.style';
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;
-  hideComponent: boolean;
   availableRewards: AvailableRewards[];
 }
 
@@ -20,39 +19,38 @@ interface RewardsCarouselProps {
 
 export const RewardsCarousel = ({
   availableRewards,
-  hideComponent,
   isMerklSuccess,
 }: RewardsCarouselProps) => {
   const { t } = useTranslation();
 
+  const rewardsWithAmount = availableRewards.filter(
+    (reward) => reward.amountToClaim > 0 && isMerklSuccess,
+  );
+
+  if (rewardsWithAmount.length === 0) {
+    return null;
+  }
+
   return (
-    !hideComponent && (
-      <RewardsCarouselContainer>
-        <FlexCenterRowBox>
-          <Box>
-            <EarnedTypography
-              sx={(theme) => ({
-                color: theme.palette.text.primary,
-              })}
-            >
-              {t('profile_page.rewards')}
-            </EarnedTypography>
-          </Box>
-        </FlexCenterRowBox>
-        {availableRewards.map((availableReward, i) => {
-          const amount = availableReward.amountToClaim;
-          return (
-            <Box key={i + availableReward.address}>
-              {amount > 0 && isMerklSuccess && (
-                <ClaimingBox
-                  amount={amount}
-                  availableReward={availableReward}
-                />
-              )}
-            </Box>
-          );
-        })}
-      </RewardsCarouselContainer>
-    )
+    <RewardsCarouselContainer rewardsLength={rewardsWithAmount.length}>
+      <RewardsCarouselTitle variant="titleSmall">
+        {t('profile_page.rewards')}
+      </RewardsCarouselTitle>
+
+      <CarouselContainer
+        hidePagination={true}
+        sx={{ marginTop: 0, paddingBottom: 0 }}
+      >
+        <RewardsCarouselItems>
+          {rewardsWithAmount.map((availableReward, i) => (
+            <ClaimingBox
+              key={`${i}-${availableReward.address}`}
+              amount={availableReward.amountToClaim}
+              availableReward={availableReward}
+            />
+          ))}
+        </RewardsCarouselItems>
+      </CarouselContainer>
+    </RewardsCarouselContainer>
   );
 };
