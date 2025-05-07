@@ -1,7 +1,7 @@
-import type { MetadataRoute } from 'next';
-import { isProduction } from '@/utils/isProduction';
 import { generateSitemaps } from '@/app/[lng]/bridge/sitemap';
 import { getSiteUrl } from '@/const/urls';
+import { isProduction } from '@/utils/isProduction';
+import type { MetadataRoute } from 'next';
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   // Cannot have a sitemap index yet with app router, so we need to generate the sitemaps here
@@ -18,6 +18,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     sitemap: [`${getSiteUrl()}/sitemap.xml`].concat(
       bridgeSitemaps,
       `${getSiteUrl()}/en/swap/sitemap.xml`,
+      `${getSiteUrl()}/en/campaign/sitemap.xml`,
     ),
   };
 }
