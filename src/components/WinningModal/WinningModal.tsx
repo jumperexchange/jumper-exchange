@@ -85,16 +85,16 @@ export const WinningModal: React.FC<WinningModalProps> = ({
   const [layout, setLayout] = useState<
     'winning' | 'email' | 'nice-try' | 'final' | ''
   >(() => {
-    // if (hasSigned) {
-    //   return 'final';
-    // }
-    // if (ticket.winner && ticket.position === 1) {
-    //   return 'winning';
-    // }
-    // if (!ticket.winner && ticket.position && ticket.position > 1) {
-    //   return 'nice-try';
-    // }
-    return 'winning';
+    if (hasSigned) {
+      return 'final';
+    }
+    if (ticket.winner && ticket.position === 1) {
+      return 'winning';
+    }
+    if (!ticket.winner && ticket.position && ticket.position > 1) {
+      return 'nice-try';
+    }
+    return '';
   });
 
   useEffect(() => {

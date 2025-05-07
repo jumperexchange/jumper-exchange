@@ -467,9 +467,8 @@ export function WidgetEvents() {
       />
       <WinningModal
         isOpen={
-          // Boolean(ticket.winner && ticket.position === 1) ||
-          // Boolean(!ticket.winner && ticket.position && ticket.position > 1)
-          true
+          Boolean(ticket.winner && ticket.position === 1) ||
+          Boolean(!ticket.winner && ticket.position && ticket.position > 1)
         }
         ticket={ticket}
         onClose={() => setTicket({ winner: false, position: null })}
