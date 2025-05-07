@@ -33,7 +33,7 @@ const BridgePage = ({
           marginY={2}
           textAlign="center"
           sx={(theme) => ({
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
             fontSize: { xs: '40px', sm: '40px' },
           })}
         >
