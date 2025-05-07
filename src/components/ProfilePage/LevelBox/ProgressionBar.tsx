@@ -51,7 +51,7 @@ export const ProgressionBar = ({
                 levelData={levelData}
                 chartCol={chartCol}
               />
-              <ProgressionChartBg chartBg={chartBg} />
+              <ProgressionChartBg />
             </ProgressionChart>
             {hideLevelIndicator ? null : levelData ? (
               <LevelIndicatorWrapper>

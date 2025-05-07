@@ -1,4 +1,3 @@
-import { type ThemeMode } from 'src/types/theme';
 import { InstructionsAccordionContainer, InstructionsAccordionItem } from '.';
 
 interface InstructionsItemLink {
@@ -13,19 +12,16 @@ export interface InstructionItemProps {
   url?: string;
   buttonTitles?: string[];
   buttonLinks?: string[];
-  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
 interface InstructionsAccordionProps {
   data: InstructionItemProps[];
-  activeThemeMode?: ThemeMode;
   variant?: string;
 }
 
 export const InstructionsAccordion = ({
   data,
-  activeThemeMode,
   variant,
 }: InstructionsAccordionProps) => {
   if (!data) {
@@ -43,7 +39,6 @@ export const InstructionsAccordion = ({
           link={el.link}
           buttonTitles={el.buttonTitles}
           buttonLinks={el.buttonLinks}
-          activeThemeMode={activeThemeMode}
           variant={variant}
         />
       ))}

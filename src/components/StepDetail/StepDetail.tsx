@@ -45,5 +45,4 @@ const StepDetail = ({ title, description, img, content }: StepDetailProps) => {
     </StepDetailContainer>
   );
 };
-
 export default StepDetail;

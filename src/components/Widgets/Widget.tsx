@@ -17,7 +17,7 @@ import {
 } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { tokens } from 'src/config/tokens';
 import { AbTestCases } from 'src/const/abtests';
@@ -30,6 +30,8 @@ import { useABTestStore } from 'src/stores/abTests';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
+import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
+import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 
 export function Widget({
   starterVariant,
@@ -44,10 +46,17 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [widgetTheme, configTheme] = useThemeStore((state) => [
-    state.widgetTheme,
+  const theme = useTheme();
+  const [configTheme] = useThemeStore((state) => [
     state.configTheme,
   ]);
+
+    const { mode } = useColorScheme();
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+
+  const widgetTheme = getWidgetThemeV2(
+    mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode);
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
@@ -144,7 +153,7 @@ export function Widget({
     widgetEvents,
   ]);
 
-  const { welcomeScreenClosed, enabled } = useWelcomeScreen(activeTheme);
+  const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
   const allowedChainsByVariant = useMemo(

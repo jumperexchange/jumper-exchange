@@ -47,22 +47,22 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         paddingY: '16px',
         display: 'flex',
         '&:hover': {
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? darken(theme.palette.surface2.main, 0.04)
-              : lighten(theme.palette.surface2.main, 0.04),
+          backgroundColor: '#2c2844',
+          ...theme.applyStyles('light', {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          }),
         },
         '&:last-child:hover': {
           borderRadius: '0 0 16px 16px',
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? darken(theme.palette.surface2.main, 0.04)
-              : darken(theme.palette.surface2.main, 0.04),
+          backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          ...theme.applyStyles('light', {
+            backgroundColor: darken(theme.palette.surface2.main, 0.04),
+          }),
         },
       })}
     >
-      <Grid container display="flex" alignItems="center">
-        <Grid item xs={2} textAlign="left">
+      <Grid container display="flex" alignItems="center" sx={{ width: '100%' }}>
+        <Grid textAlign="left" size={2}>
           <Badge
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -82,7 +82,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             </MuiAvatar>
           </Badge>
         </Grid>
-        <Grid item xs={5} textAlign="left">
+        <Grid textAlign="left" size={5}>
           <TypographyPrimary
             sx={{ fontSize: '0.875rem', lineHeight: '1.125rem' }}
           >
@@ -94,7 +94,7 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
             {token.chainName}
           </TypographySecondary>
         </Grid>
-        <Grid item xs={5} style={{ textAlign: 'right' }}>
+        <Grid style={{ textAlign: 'right' }} size={5}>
           <TypographyPrimary
             sx={{
               fontWeight: 600,

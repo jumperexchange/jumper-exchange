@@ -4,12 +4,12 @@ import type { BoxProps } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
 export const DynamicPagesContainer = styled(Box)<BoxProps>(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   position: 'relative',
   borderRadius: 32,
-  backgroundColor: theme.palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   display: 'flex',
   textDecoration: 'none',
   flexDirection: 'column',

@@ -14,14 +14,13 @@ export const BlogArticleWrapper = styled(Box)(({ theme }) => ({
     top: -200,
     bottom: 0,
     height: 'calc( 100% + 200px )',
-    background: theme.palette.white.main,
+    background: (theme.vars || theme).palette.white.main,
   },
 }));
 
 export const BlogArticleSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6, 2, 0.25),
   position: 'relative',
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(6, 2, 0.25),
     paddingTop: theme.spacing(12),

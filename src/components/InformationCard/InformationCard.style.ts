@@ -10,10 +10,20 @@ interface InformationCardContainerProps extends BoxProps {
 
 export const InformationCardContainer = styled(DynamicPagesContainer, {
   shouldForwardProp: (prop) => prop !== 'fullWidth',
-})<InformationCardContainerProps>(({ theme, fullWidth }) => ({
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    ...(!fullWidth && { maxWidth: 'calc(50% - 16px)' }),
-  },
+})<InformationCardContainerProps>(({
+  theme
+}) => ({
+  [theme.breakpoints.up('md' as Breakpoint)]: {},
+  variants: [{
+    props: (
+      {
+        fullWidth
+      }
+    ) => !fullWidth,
+    style: {
+      [theme.breakpoints.up('md' as Breakpoint)]: { maxWidth: 'calc(50% - 16px)' }
+    }
+  }]
 }));
 
 interface InformationCardCellProps extends TableCellProps {
@@ -22,9 +32,23 @@ interface InformationCardCellProps extends TableCellProps {
 
 export const InformationCardCell = styled(TableCell, {
   shouldForwardProp: (prop) => prop !== 'fullWidth',
-})<InformationCardCellProps>(({ theme, fullWidth }) => ({
+})<InformationCardCellProps>(({
+  theme
+}) => ({
   borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`,
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    width: fullWidth ? '160px' : '30%',
+    width: '30%',
   },
+  variants: [{
+    props: (
+      {
+        fullWidth
+      }
+    ) => fullWidth,
+    style: {
+      [theme.breakpoints.up('md' as Breakpoint)]: {
+        width: '160px'
+      }
+    }
+  }]
 }));
