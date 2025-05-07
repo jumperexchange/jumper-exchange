@@ -315,7 +315,6 @@ class CampaignStrapiApi extends StrapiApi {
   private addCampaignPageParams(): void {
     const currentDate = new Date().toISOString();
     this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
-    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
     this.apiUrl.searchParams.set('populate[0]', 'quests.Image');
     this.apiUrl.searchParams.set('populate[1]', 'Background');
     this.apiUrl.searchParams.set('populate[2]', 'Icon');
