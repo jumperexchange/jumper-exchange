@@ -1,7 +1,7 @@
 import { Modal, Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { WinningLayout } from './WinningLayout';
-import { EmailLayout } from './EmailLayout';
+import { ContactLayout } from './ContactLayout';
 import { useAccount, useSignMessage } from 'wagmi';
 import dynamic from 'next/dynamic';
 import { NiceTryLayout } from './NiceTryLayout';
@@ -20,6 +20,7 @@ const Confetti = dynamic(() => import('react-confetti'), {
 });
 
 const WinningModalContainer = styled(Box)(({ theme }) => ({
+  overflowY: 'auto',
   position: 'absolute',
   top: '8px',
   right: '8px',
@@ -83,7 +84,7 @@ export const WinningModal: React.FC<WinningModalProps> = ({
   const { signMessageAsync } = useSignMessage();
 
   const [layout, setLayout] = useState<
-    'winning' | 'email' | 'nice-try' | 'final' | ''
+    'winning' | 'contact' | 'nice-try' | 'final'
   >(() => {
     if (hasSigned) {
       return 'final';
@@ -94,7 +95,7 @@ export const WinningModal: React.FC<WinningModalProps> = ({
     if (!ticket.winner && ticket.position && ticket.position > 1) {
       return 'nice-try';
     }
-    return '';
+    return 'nice-try';
   });
 
   useEffect(() => {
@@ -110,7 +111,7 @@ export const WinningModal: React.FC<WinningModalProps> = ({
   }, [ticket.position, ticket.winner, hasSigned]);
 
   const handleCollect = () => {
-    setLayout('email');
+    setLayout('contact');
   };
 
   const handleBack = () => {
@@ -205,14 +206,14 @@ export const WinningModal: React.FC<WinningModalProps> = ({
           isDisplay={layout === 'winning'}
         />
 
-        <EmailLayout
+        <ContactLayout
           onBack={handleBack}
           onClose={handleClose}
           onContinue={handleContinue}
           isMobile={isMobile}
           contact={contact}
           setContact={setContact}
-          isDisplay={layout === 'email'}
+          isDisplay={layout === 'contact'}
           isSigning={isSigning}
         />
 

@@ -99,18 +99,19 @@ const FieldName = styled('p')({
   fontFamily: interTight.style.fontFamily,
 });
 
-const ErrorMessage = styled('p')({
+const ErrorMessage = styled('p')<{ isMobile: boolean }>(({ isMobile }) => ({
   position: 'absolute',
-  bottom: '-10px',
+  bottom: isMobile ? '-5px' : '-10px',
   left: '10px',
-  color: '#FF0055',
+  fontWeight: 'bold',
+  color: '#FF09D3',
   fontFamily: interTight.style.fontFamily,
-  fontSize: '10px',
+  fontSize: isMobile ? '10px' : '12px',
   lineHeight: '16px',
   marginTop: '4px',
-});
+}));
 
-interface EmailLayoutProps {
+interface ContactLayoutProps {
   onBack: () => void;
   onClose: () => void;
   onContinue: () => void;
@@ -125,7 +126,7 @@ const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 const telegramRegex = /^@[a-zA-Z0-9_]+$/;
 
-export const EmailLayout = ({
+export const ContactLayout = ({
   onBack,
   onClose,
   onContinue,
@@ -134,7 +135,7 @@ export const EmailLayout = ({
   setContact,
   isDisplay,
   isSigning,
-}: EmailLayoutProps) => {
+}: ContactLayoutProps) => {
   const [isValidInput, setIsValidInput] = useState(false);
 
   const validateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -201,7 +202,7 @@ export const EmailLayout = ({
           />
           <FieldName>Email or Telegram tag</FieldName>
           {!isValidInput && contact !== '' && (
-            <ErrorMessage>
+            <ErrorMessage isMobile={isMobile}>
               Please enter a valid email address or Telegram tag
             </ErrorMessage>
           )}
