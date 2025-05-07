@@ -4,7 +4,7 @@ import {
   WidgetEvent,
   type RouteExecutionUpdate,
 } from '@lifi/widget';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useCallRequest } from 'src/hooks/useCallRequest';
 import {
   isSpindlFetchResponse,
@@ -25,15 +25,17 @@ export const useSpindlCards = () => {
   const spindlConfig = getSpindlConfig();
   const { fetchData } = useCallRequest();
 
-  // Feature Flag logic: Show Spindl for ~100% of users
-  // const showSpindle = Math.random() < 1;
+  // Feature Flag logic: Show Spindl for ~30% of users
+  const showSpindle = useMemo(() => {
+    return Math.random() < 0.3;
+  }, []);
 
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
-      // if (!showSpindle) {
-      //   // console.log('User is not part of the Spindl A/B test group.');
-      //   return; // Exit early if the user is not in the A/B test group
-      // }
+      if (!showSpindle) {
+        // console.log('User is not part of the Spindl A/B test group.');
+        return; // Exit early if the user is not in the A/B test group
+      }
 
       const locale = getLocale().split('-');
       const queryParams: Record<string, string | undefined> = {
