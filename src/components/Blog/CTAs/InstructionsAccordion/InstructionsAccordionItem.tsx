@@ -1,9 +1,10 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
-import { alpha, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { alpha, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
+import { ButtonSecondary } from 'src/components/Button';
 import {
   TrackingAction,
   TrackingCategory,
@@ -20,7 +21,8 @@ import {
   InstructionsAccordionItemLabel,
   InstructionsAccordionItemMain,
   InstructionsAccordionItemMore,
-  InstructionsAccordionLinkBox,
+  InstructionsAccordionLink,
+  InstructionsAccordionLinkLabel,
   InstructionsAccordionToggle,
 } from '.';
 
@@ -148,60 +150,28 @@ export const InstructionsAccordionItem = ({
           <>
             <Typography>{step}</Typography>
             {buttonLinks && buttonTitles && buttonTitles.length > 0 ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignContent: 'center',
-                  justifyContent: 'flex-start',
-                  mt: '8px',
-                }}
-              >
+              <InstructionsAccordionButtonMainBox>
                 {buttonTitles.map((_, i: number) => {
                   return (
-                    <InstructionsAccordionButtonMainBox
-                      typography={
-                        variant === 'superfest'
-                          ? sora.style.fontFamily
-                          : undefined
-                      }
-                      key={`external-link-${i}`}
+                    <InstructionsAccordionLink
+                      href={buttonLinks[i]}
+                      as={ButtonSecondary}
+                      size="small"
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => handleClick(i)}
                     >
-                      <a
-                        href={buttonLinks[i]}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                        onClick={() => handleClick(i)}
+                      <InstructionsAccordionLinkLabel
+                        variant={'bodyMediumStrong'}
+                        as={'span'}
                       >
-                        <InstructionsAccordionLinkBox>
-                          <Typography
-                            variant={'bodyMediumStrong'}
-                            component={'span'}
-                            mr={'8px'}
-                            sx={(theme) => ({
-                              color: theme.palette.text.primary,
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              maxWidth: 208,
-                              [theme.breakpoints.up('sm' as Breakpoint)]: {
-                                maxWidth: 168,
-                              },
-                            })}
-                          >
-                            {buttonTitles[i]}
-                          </Typography>
-                          <ArrowForwardIcon
-                            style={{
-                              color: theme.palette.text.primary,
-                            }}
-                          />
-                        </InstructionsAccordionLinkBox>
-                      </a>
-                    </InstructionsAccordionButtonMainBox>
+                        {buttonTitles[i]}
+                      </InstructionsAccordionLinkLabel>
+                      <ArrowForwardIcon />
+                    </InstructionsAccordionLink>
                   );
                 })}
-              </Box>
+              </InstructionsAccordionButtonMainBox>
             ) : null}
           </>
         </InstructionsAccordionItemMore>
