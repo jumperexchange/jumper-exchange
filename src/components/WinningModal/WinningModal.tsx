@@ -84,7 +84,7 @@ export const WinningModal: React.FC<WinningModalProps> = ({
   const { signMessageAsync } = useSignMessage();
 
   const [layout, setLayout] = useState<
-    'winning' | 'contact' | 'nice-try' | 'final'
+    'winning' | 'contact' | 'nice-try' | 'final' | ''
   >(() => {
     if (hasSigned) {
       return 'final';
