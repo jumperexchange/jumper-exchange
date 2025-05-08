@@ -237,6 +237,11 @@ class QuestStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set('filters[ShowProfileBanner][$eq]', 'true');
     return this;
   }
+
+  populateCampaign(): this {
+    this.apiUrl.searchParams.set('populate[5]', 'campaign');
+    return this;
+  }
 }
 
 class FeatureCardStrapiApi extends StrapiApi {
