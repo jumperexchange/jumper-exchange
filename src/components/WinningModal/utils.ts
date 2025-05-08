@@ -13,10 +13,16 @@ interface CheckWinningSwapResponse {
   id: string;
 }
 
+interface SubmitContactResponse {
+  success: boolean;
+  message: string;
+}
+
 interface SubmitContactParams {
   address: string;
   signature: string;
   contact: string;
+  timestamp: number;
 }
 
 export const slideInFromRight = keyframes`
@@ -92,12 +98,7 @@ export async function checkWinningSwap({
       throw new Error('Failed to check winning swap');
     }
 
-    const data = await response.json();
-    return {
-      winner: data.winner,
-      position: data.position,
-      id: data.id,
-    };
+    return await response.json();
   } catch (error) {
     console.error('Error checking winning swap:', error);
     return {
@@ -112,20 +113,37 @@ export async function submitContact({
   address,
   signature,
   contact,
-}: SubmitContactParams): Promise<Response> {
-  return await fetch(
-    `${process.env.NEXT_PUBLIC_GOLDEN_TICKET_API_URL}/golden-ticket/submit-contact`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+  timestamp,
+}: SubmitContactParams): Promise<SubmitContactResponse> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_GOLDEN_TICKET_API_URL}/golden-ticket/submit-contact`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          address,
+          contact,
+          signature,
+          timestamp,
+        }),
       },
-      body: JSON.stringify({
-        address,
-        timestamp: Date.now(),
-        signature,
-        contact,
-      }),
-    },
-  );
+    );
+
+    return await response.json();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error submitting contact:', error);
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+    return {
+      success: false,
+      message: 'An unknown error occurred',
+    };
+  }
 }

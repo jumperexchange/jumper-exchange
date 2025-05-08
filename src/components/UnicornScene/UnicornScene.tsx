@@ -5,8 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 export type UnicornSceneProps = {
   projectId?: string;
   jsonFilePath?: string;
-  width?: number | string;
-  height?: number | string;
   scale?: number;
   dpi?: number;
   fps?: number;
@@ -14,20 +12,19 @@ export type UnicornSceneProps = {
   ariaLabel?: string;
   className?: string;
   lazyLoad?: boolean;
+  isMobile?: boolean;
 };
 
 export default function UnicornScene({
   projectId,
   jsonFilePath,
-  width = '100%',
-  height = '100%',
   scale = 1,
   dpi = 1.5,
   fps = 60,
   altText = 'Unicorn Scene',
   ariaLabel = altText,
-  className = '',
   lazyLoad = false,
+  isMobile = false,
 }: UnicornSceneProps) {
   const elementRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{ destroy: () => void } | null>(null);
@@ -147,17 +144,18 @@ export default function UnicornScene({
     <div
       ref={elementRef}
       style={{
-        width: typeof width === 'number' ? `${width}px` : width,
-        height: typeof height === 'number' ? `${height}px` : height,
+        height: isMobile ? '250px' : '500px',
+        width: isMobile ? '100%' : '120%',
       }}
-      className={`relative ${className}`}
       role="img"
       aria-label={ariaLabel}
       data-us-dpi={dpi}
       data-us-scale={scale}
       data-us-fps={fps}
+      data-us-disablemobile
       data-us-alttext={altText}
       data-us-arialabel={ariaLabel}
+      data-us-production={true}
       data-us-lazyload={lazyLoad ? 'true' : ''}
     >
       {error && <div className="text-red-500">{error}</div>}

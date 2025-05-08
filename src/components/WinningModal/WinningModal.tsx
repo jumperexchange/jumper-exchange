@@ -14,6 +14,7 @@ import {
   submitContact,
 } from './utils';
 import FinalLayout from './FinalLayout';
+import { ErrorLayout } from './ErrorLayout';
 
 const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
@@ -25,7 +26,7 @@ const WinningModalContainer = styled(Box)(({ theme }) => ({
   top: '8px',
   right: '8px',
   height: 'calc(100vh - 16px)',
-  width: '640px',
+  width: '700px',
   backgroundColor: '#5000FF',
   backgroundImage: 'url(/winning-modal-bg.png)',
   backgroundSize: 'cover',
@@ -79,12 +80,12 @@ export const WinningModal: React.FC<WinningModalProps> = ({
   const [contact, setContact] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
-
+  const [error, setError] = useState('');
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
 
   const [layout, setLayout] = useState<
-    'winning' | 'contact' | 'nice-try' | 'final' | ''
+    'winning' | 'contact' | 'nice-try' | 'final' | 'error' | ''
   >(() => {
     if (hasSigned) {
       return 'final';
@@ -95,7 +96,10 @@ export const WinningModal: React.FC<WinningModalProps> = ({
     if (!ticket.winner && ticket.position && ticket.position > 1) {
       return 'nice-try';
     }
-    return 'nice-try';
+    if (error) {
+      return 'error';
+    }
+    return '';
   });
 
   useEffect(() => {
@@ -118,22 +122,30 @@ export const WinningModal: React.FC<WinningModalProps> = ({
     setLayout('winning');
   };
 
+  const handleRetry = () => {
+    setError('');
+    setLayout('contact');
+  };
+
   const handleContinue = async () => {
     try {
       if (!address || !contact) {
+        setError('Account address or email is missing');
+        setLayout('error');
         throw new Error('Account address or email is missing');
       }
 
+      const timestamp = Date.now();
+
       const message = JSON.stringify({
         contact,
-        timestamp: Date.now(),
+        timestamp,
         purpose: 'contact_verification',
       });
 
       setIsSigning(true);
       const signature = await signMessageAsync({
-        account: address as `0x${string}`,
-        message: message,
+        message,
       });
 
       if (!signature) {
@@ -144,12 +156,14 @@ export const WinningModal: React.FC<WinningModalProps> = ({
         address,
         signature,
         contact,
+        timestamp,
       });
 
       setIsSigning(false);
 
-      if (!response.ok) {
-        throw new Error('Failed to verify winner');
+      if (!response.success) {
+        setError(response.message);
+        throw new Error(response.message);
       }
 
       setShowConfetti(true);
@@ -174,6 +188,10 @@ export const WinningModal: React.FC<WinningModalProps> = ({
       }, 8000);
     } catch (error) {
       console.error('Error in handleContinue:', error);
+      setError(
+        error instanceof Error ? error.message : 'An unknown error occurred',
+      );
+      setLayout('error');
       setIsSigning(false);
     }
   };
@@ -228,6 +246,14 @@ export const WinningModal: React.FC<WinningModalProps> = ({
           onClose={handleClose}
           isDisplay={layout === 'final'}
           isMobile={isMobile}
+        />
+
+        <ErrorLayout
+          onClose={handleClose}
+          isMobile={isMobile}
+          isDisplay={layout === 'error'}
+          error={error}
+          onRetry={handleRetry}
         />
       </WinningModalContainer>
     </Modal>

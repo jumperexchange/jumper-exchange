@@ -95,18 +95,24 @@ export const WinningLayout = ({
           </StyledTypography>
         </TextContainer>
 
-        <UnicornScene
-          projectId="m4fo5UXVxF5iqkKIweQn?production"
-          width="100%"
-          height={isMobile ? '300px' : '400px'}
-          scale={1}
-          dpi={isMobile ? 2 : 1.5}
-          fps={60}
-          altText="Golden Ticket Animation"
-          ariaLabel="Animated golden ticket scene"
-          lazyLoad={false}
-          className="mb-6"
-        />
+        <div
+          style={{
+            scale: isMobile ? 1 : 0.9,
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <UnicornScene
+            projectId="m4fo5UXVxF5iqkKIweQn?production"
+            scale={0.8}
+            dpi={2}
+            fps={60}
+            altText="Golden Ticket Animation"
+            ariaLabel="Animated golden ticket scene"
+            lazyLoad={false}
+            isMobile={isMobile}
+          />
+        </div>
 
         <Button
           muiVariant="contained"
