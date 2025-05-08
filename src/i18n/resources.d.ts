@@ -105,7 +105,7 @@ interface Resources {
     abstractAlert: {
       title: 'This wallet only works on Abstract!';
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
-      buttonText: 'Check the docs';
+      buttonText: 'Check the AGW docs';
     };
     featureCard: {
       learnMore: 'Learn more';
@@ -176,9 +176,6 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
-    };
-    campaign: {
-      ended: 'Campaign has ended on {{date}}';
     };
   };
 }
