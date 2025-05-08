@@ -128,6 +128,27 @@ export const questSlugSchema = z
   .max(100, 'Quest slug is too long');
 
 /**
+ * Schema for transaction hashes (supports both Ethereum and Solana formats)
+ */
+export const transactionHashSchema = z
+  .string()
+  .transform((val) => val) // Remove toLowerCase() as Solana signatures are case-sensitive
+  .refine(
+    (val) => {
+      // Check for Ethereum format (0x + 64 hex chars)
+      if (val.startsWith('0x')) {
+        return /^0x[a-f0-9]{64}$/.test(val.toLowerCase());
+      }
+      // Check for Solana format (base58)
+      return /^[1-9A-HJ-NP-Za-km-z]{88}$/.test(val); // Exact length for Solana
+    },
+    {
+      message:
+        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...) or a Solana transaction signature',
+    },
+  );
+
+/**
  * Schema for scan segments (tx, block, wallet)
  */
 export const scanSegmentSchema = z
@@ -143,7 +164,36 @@ export const scanAddressSchema = baseAddressSchema;
  * Schema for scan route params
  */
 export const scanParamsSchema = z.object({
-  segments: z.array(z.union([scanSegmentSchema, scanAddressSchema])).optional(),
+  segments: z
+    .array(z.string())
+    .optional()
+    .refine(
+      (segments) => {
+        if (!segments || segments.length === 0) {
+          return true;
+        }
+
+        const [type, value] = segments;
+        if (!['tx', 'wallet'].includes(type)) {
+          return false;
+        }
+
+        // If there's no value, that's valid
+        if (!value) {
+          return true;
+        }
+
+        if (type === 'tx') {
+          return transactionHashSchema.safeParse(value).success;
+        }
+
+        // For wallet, validate as address
+        return scanAddressSchema.safeParse(value).success;
+      },
+      {
+        message: 'Invalid scan segments format',
+      },
+    ),
 });
 
 /**

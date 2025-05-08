@@ -3,7 +3,9 @@ import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
 
 export async function getQuestsBy(key: string, value: string) {
-  const urlParams = new QuestStrapiApi().filterBy(key, value);
+  const urlParams = new QuestStrapiApi()
+    .filterBy(key, value)
+    .populateCampaign();
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();

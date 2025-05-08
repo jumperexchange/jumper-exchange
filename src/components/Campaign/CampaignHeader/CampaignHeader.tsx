@@ -1,64 +1,81 @@
+'use client';
+
+import type { CampaignData } from '@/types/strapi';
 import LanguageIcon from '@mui/icons-material/Language';
 import XIcon from '@mui/icons-material/X';
 import type { Theme } from '@mui/material';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   CampaignDescription,
-  CampaignDigitInfoBox,
-  CampaignHeaderBoxBackground,
+  CampaignHeaderContainer,
+  CampaignHeaderInfos,
   CampaignTitle,
-  CardInfoTypogragphy,
   ColoredProtocolShareButton,
   InformationShareLink,
   VerticalCenterBox,
 } from './CampaignHeader.style';
 
-export const CampaignHeader = ({
-  bannerImage,
-  tokenImage,
-  websiteLink,
-  Xlink,
-}: {
-  bannerImage: string;
-  tokenImage: string;
-  websiteLink?: string;
-  Xlink?: string;
-}) => {
-  const theme = useTheme();
+interface CampaignHeaderProps {
+  campaign: CampaignData;
+}
+
+export const CampaignHeader = ({ campaign }: CampaignHeaderProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+  const apiBaseUrl = getStrapiBaseUrl();
 
   return (
-    <CampaignHeaderBoxBackground
+    <CampaignHeaderContainer
       sx={{
-        backgroundImage: `url(${bannerImage})`,
+        backgroundImage: `url(${apiBaseUrl}${campaign.Background.url})`,
       }}
+      lightMode={campaign.LightMode}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-      >
-        <Box display="flex" flexDirection="row">
-          <Image
-            src={tokenImage}
-            alt={'top banner'}
-            width={132}
-            height={132}
-            style={{ objectFit: 'contain', borderRadius: '50%' }}
-          />
-          <VerticalCenterBox>
-            <CampaignTitle>Explore Berachain</CampaignTitle>
-            <CampaignDescription>{`Jumper is teaming up with the top tier Berachain protocols to bring you exciting rewards.`}</CampaignDescription>
-            <Box display="flex" gap="8px">
-              {Xlink && (
+      <Box display="flex" flexDirection="row">
+        <Image
+          src={`${apiBaseUrl}${campaign.Icon.url}`}
+          alt={'campaign icon'}
+          width={132}
+          height={132}
+          style={{ objectFit: 'contain', borderRadius: '50%' }}
+        />
+        <VerticalCenterBox>
+          <CampaignTitle
+            lightMode={campaign.LightMode}
+            sx={(theme) => ({
+              typography: {
+                xs: theme.typography.titleSmall,
+                md: theme.typography.headerMedium,
+              },
+            })}
+          >
+            {campaign.Title}
+          </CampaignTitle>
+          <CampaignDescription
+            lightMode={campaign.LightMode}
+            sx={(theme) => ({
+              typography: {
+                xs: theme.typography.bodyXSmall,
+                md: theme.typography.bodyMedium,
+              },
+            })}
+          >
+            {campaign.Description}
+          </CampaignDescription>
+          {(!!campaign.XUrl || !!campaign.InfoUrl) && (
+            <Box
+              sx={(theme) => ({
+                display: 'flex',
+                gap: theme.spacing(1),
+                marginTop: theme.spacing(1),
+              })}
+            >
+              {campaign.XUrl && (
                 <InformationShareLink
-                  href={Xlink}
+                  href={campaign.XUrl}
                   style={{
                     textDecoration: 'none',
                   }}
@@ -68,16 +85,16 @@ export const CampaignHeader = ({
                       sx={(theme) => ({
                         width: '16px',
                         height: '16px',
-                        color: theme.palette.white.main,
+                        color: (theme.vars || theme).palette.white.main,
                       })}
                     />
                   </ColoredProtocolShareButton>
                 </InformationShareLink>
               )}
 
-              {websiteLink && (
+              {campaign.InfoUrl && (
                 <a
-                  href={websiteLink}
+                  href={campaign.InfoUrl}
                   target="_blank"
                   style={{
                     textDecoration: 'none',
@@ -92,27 +109,31 @@ export const CampaignHeader = ({
                       sx={(theme) => ({
                         width: '16px',
                         height: '16px',
-                        color: theme.palette.white.main,
+                        color: (theme.vars || theme).palette.white.main,
                       })}
                     />
                   </ColoredProtocolShareButton>
                 </a>
               )}
             </Box>
-          </VerticalCenterBox>
-        </Box>
-
-        {!isMobile && (
-          <VerticalCenterBox>
-            <CampaignDigitInfoBox>
-              <CardInfoTypogragphy fontSize={14}>
-                Total Rewards
-              </CardInfoTypogragphy>
-              <CardInfoTypogragphy fontSize={32}>{'+$75k'}</CardInfoTypogragphy>
-            </CampaignDigitInfoBox>
-          </VerticalCenterBox>
-        )}
+          )}
+        </VerticalCenterBox>
       </Box>
-    </CampaignHeaderBoxBackground>
+
+      {!isMobile && !!campaign.BenefitLabel && !!campaign.BenefitValue && (
+        <VerticalCenterBox>
+          <CampaignHeaderInfos
+            sx={(theme) => ({ backgroundColor: campaign.BenefitColor })}
+          >
+            <Typography variant="bodySmallStrong">
+              {campaign.BenefitLabel}
+            </Typography>
+            <Typography variant="titleMedium">
+              {campaign.BenefitValue}
+            </Typography>
+          </CampaignHeaderInfos>
+        </VerticalCenterBox>
+      )}
+    </CampaignHeaderContainer>
   );
 };

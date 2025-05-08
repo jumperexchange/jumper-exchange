@@ -1,10 +1,9 @@
-import {
-  type AvailableRewards,
-  useMerklRewardsOnCampaigns,
-} from '@/hooks/useMerklRewardsOnCampaigns';
-import { useAccount } from '@lifi/wallet-management';
 import { RewardsCarousel } from '@/components/ProfilePage/Rewards/RewardsCarousel';
+import type { CampaignData } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
 import { useMemo } from 'react';
+import type { AvailableRewards } from 'src/hooks/useMerklRewards';
+import { useMerklRewards } from 'src/hooks/useMerklRewards';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
@@ -20,33 +19,32 @@ const shouldHideComponent = (
   );
 };
 
-export function MerklRewards() {
-  const { account } = useAccount();
+interface MerklRewardsProps {
+  campaign?: CampaignData;
+}
 
-  const {
-    availableRewards,
-    isLoading: isRewardLoading,
-    isSuccess: isRewardSuccess,
-  } = useMerklRewardsOnCampaigns({
-    userAddress: account?.address,
-  });
+export const MerklRewards = ({ campaign }: MerklRewardsProps) => {
+  const { account } = useAccount();
+  const { availableRewards, pastCampaigns, isSuccess, isLoading } =
+    useMerklRewards({
+      userAddress: account.address,
+      MerklRewards: campaign?.merkl_rewards,
+      includeTokenIcons: true,
+    });
 
   const hideComponent = useMemo(
-    () =>
-      shouldHideComponent(
-        account,
-        isRewardLoading,
-        isRewardSuccess,
-        availableRewards,
-      ),
-    [account, isRewardLoading, isRewardSuccess, availableRewards],
+    () => shouldHideComponent(account, isLoading, isSuccess, availableRewards),
+    [account, isSuccess, availableRewards],
   );
+
+  if (hideComponent) {
+    return null;
+  }
 
   return (
     <RewardsCarousel
-      hideComponent={hideComponent}
       availableRewards={availableRewards}
-      isMerklSuccess={isRewardSuccess}
+      isMerklSuccess={isSuccess}
     />
   );
-}
+};
