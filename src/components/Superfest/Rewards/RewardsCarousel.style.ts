@@ -6,7 +6,6 @@ import {
   alpha,
   styled,
 } from '@mui/material';
-import { sequel65 } from 'src/fonts/fonts';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#fdfbef',
@@ -69,20 +68,6 @@ export const ClaimButtonBox = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     marginLeft: '32px',
     width: '15%',
-  },
-}));
-
-export const EarnedTypography = styled(Typography)(({ theme }) => ({
-  typography: sequel65.style.fontFamily,
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: '32px',
-    lineHeight: '32px',
-    fontWeight: 700,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: '32px',
-    lineHeight: '48px',
-    fontWeight: 700,
   },
 }));
 

@@ -1,7 +1,5 @@
-import type { Breakpoint } from '@mui/material';
-import { IconButton, Typography } from '@mui/material';
-import { alpha, Box, styled } from '@mui/material';
-import Link from 'next/link';
+import type { BoxProps, TypographyProps } from '@mui/material';
+import { Box, IconButton, Link, styled, Typography } from '@mui/material';
 
 export const InformationShareLink = styled(Link)(() => ({
   color: 'inherit',
@@ -9,31 +7,37 @@ export const InformationShareLink = styled(Link)(() => ({
 }));
 
 export const ColoredProtocolShareButton = styled(IconButton)(({ theme }) => ({
-  background: alpha(theme.palette.white.main, 0.08),
+  background: (theme.vars || theme).palette.alphaLight200.main,
   color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms ease-in-out',
   '&:hover': {
-    background: alpha(theme.palette.white.main, 0.16),
+    background: (theme.vars || theme).palette.alphaLight400.main,
   },
 }));
 
-export const CampaignHeaderBoxBackground = styled(Box)(({ theme }) => ({
+interface CampaignHeaderBoxBackgroundProps extends BoxProps {
+  lightMode?: boolean;
+}
+
+export const CampaignHeaderContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignHeaderBoxBackgroundProps>(({ theme, lightMode }) => ({
+  alignItems: 'center',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  width: '100%',
   height: 180,
   borderRadius: theme.spacing(4),
   paddingLeft: theme.spacing(3),
   paddingRight: theme.spacing(3),
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    justifyContent: 'center',
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    justifyContent: 'flex-end',
-  },
+  backgroundColor: !lightMode
+    ? (theme.vars || theme).palette.alphaLight300.main
+    : (theme.vars || theme).palette.alphaLight700.main,
 }));
 
 export const VerticalCenterBox = styled(Box)(({ theme }) => ({
@@ -43,39 +47,46 @@ export const VerticalCenterBox = styled(Box)(({ theme }) => ({
   marginLeft: theme.spacing(2),
 }));
 
-export const CampaignTitle = styled(Typography)(({ theme }) => ({
-  color: (theme.vars || theme).palette.white.main,
-  fontWeight: 700,
-  fontSize: 32,
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: 24,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: 32,
-  },
+interface CampaignTitleProps extends TypographyProps {
+  lightMode?: boolean;
+}
+
+export const CampaignTitle = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignTitleProps>(({ theme, lightMode }) => ({
+  color: !lightMode
+    ? (theme.vars || theme).palette.white.main
+    : (theme.vars || theme).palette.black.main,
 }));
 
-export const CampaignDescription = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.text.primary, 0.48),
+interface CampaignDescriptionProps extends TypographyProps {
+  lightMode?: boolean;
+}
+
+export const CampaignDescription = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignDescriptionProps>(({ theme, lightMode }) => ({
+  color: !lightMode
+    ? (theme.vars || theme).palette.alphaLight700.main
+    : (theme.vars || theme).palette.alphaDark700.main,
   marginTop: theme.spacing(0.5),
-  fontWeight: 500,
-  fontSize: 16,
-  [theme.breakpoints.down('md' as Breakpoint)]: {
-    fontSize: 12,
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    fontSize: 16,
-  },
 }));
 
-export const CardInfoTypogragphy = styled(Typography)(({ theme }) => ({
-  color: (theme.vars || theme).palette.white.main,
-  fontWeight: 700,
-}));
+interface CampaignDigitInfoBoxProps extends BoxProps {
+  lightMode?: boolean;
+}
 
-export const CampaignDigitInfoBox = styled(Box)(({ theme }) => ({
-  width: '216px',
-  backgroundColor: '#E86F20CC',
+export const CampaignHeaderInfos = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'lightMode',
+})<CampaignDigitInfoBoxProps>(({ theme, lightMode }) => ({
+  maxWidth: '216px',
+  minWidth: '164px',
+  color: !lightMode
+    ? (theme.vars || theme).palette.white.main
+    : (theme.vars || theme).palette.black.main,
+  backgroundColor: !lightMode
+    ? (theme.vars || theme).palette.alphaLight300.main
+    : (theme.vars || theme).palette.white.main,
   boxShadow: '0 4px 6px #00000020',
   borderRadius: theme.spacing(2),
   paddingLeft: theme.spacing(3),
