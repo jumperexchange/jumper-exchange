@@ -2,11 +2,16 @@ import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { QuestData, StrapiResponse } from 'src/types/strapi';
 
 export async function getQuestsWithNoCampaignAttached() {
-  const urlParams = new QuestStrapiApi().filterByNoCampaignAttached();
-  const apiBaseUrl = urlParams.getApiBaseUrl();
+  const urlParams = new QuestStrapiApi()
+    .filterByNoCampaignAttached()
+    .filterByStartAndEndDate()
+    .addPaginationParams({
+      page: 1,
+      pageSize: 25,
+      withCount: false,
+    });
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
-
   const res = await fetch(decodeURIComponent(apiUrl), {
     cache: 'force-cache',
     headers: {

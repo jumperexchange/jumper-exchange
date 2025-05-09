@@ -12,7 +12,7 @@ export async function getProfileBannerCampaigns(): Promise<GetProfileBannerCampa
     .filterByShowProfileBanner()
     .addPaginationParams({
       page: 1,
-      pageSize: 50,
+      pageSize: 10,
       withCount: false,
     });
 
