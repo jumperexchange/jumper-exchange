@@ -29,6 +29,8 @@ import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { WinningModal } from '@/components/WinningModal/WinningModal';
+import { checkWinningSwap } from '../WinningModal/utils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -57,6 +59,10 @@ export function WidgetEvents() {
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
   const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
+  const [ticket, setTicket] = useState<{
+    winner: boolean;
+    position: number | null;
+  }>({ winner: false, position: null });
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -96,6 +102,25 @@ export function WidgetEvents() {
           [TrackingEventParameter.Action]: 'execution_completed',
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
         });
+
+        const txStatus = data.param_transaction_status;
+        if (account?.address) {
+          if (txStatus !== 'COMPLETED') {
+            return;
+          }
+
+          const txHash = data.param_transaction_hash;
+
+          if (txHash) {
+            const { winner, position } = await checkWinningSwap({
+              txHash,
+              userAddress: account.address,
+            });
+
+            setTicket({ winner, position });
+          }
+        }
+
         // reset ref obj
         previousRoutesRef.current = {};
         trackTransaction({
@@ -439,6 +464,14 @@ export function WidgetEvents() {
       <MultisigConfirmationModal
         open={isMultiSigConfirmationModalOpen}
         onClose={onMultiSigConfirmationModalClose}
+      />
+      <WinningModal
+        isOpen={
+          Boolean(ticket.winner && ticket.position === 1) ||
+          Boolean(!ticket.winner && ticket.position && ticket.position > 1)
+        }
+        ticket={ticket}
+        onClose={() => setTicket({ winner: false, position: null })}
       />
     </>
   );
