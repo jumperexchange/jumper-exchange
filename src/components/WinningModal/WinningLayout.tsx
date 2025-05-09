@@ -88,7 +88,7 @@ export const WinningLayout = ({
             maxWidth={'600px'}
             textTransform={'uppercase'}
             fontWeight={'extra-bold'}
-            marginTop={'80px'}
+            marginTop={isMobile ? '40px' : '80px'}
             marginLeft={isMobile ? '16px' : '40px'}
           >
             WOW! it's a golden ticket!
@@ -97,8 +97,8 @@ export const WinningLayout = ({
 
         <div
           style={{
-            scale: isMobile ? 1 : 0.9,
-            width: '100%',
+            scale: isMobile ? 0.7 : 0.9,
+            width: isMobile ? '110%' : '100%',
             height: '100%',
           }}
         >

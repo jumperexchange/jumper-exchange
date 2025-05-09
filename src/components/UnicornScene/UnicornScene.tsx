@@ -144,8 +144,9 @@ export default function UnicornScene({
     <div
       ref={elementRef}
       style={{
-        height: isMobile ? '250px' : '500px',
-        width: isMobile ? '100%' : '120%',
+        height: isMobile ? '400px' : '500px',
+        width: isMobile ? '160%' : '120%',
+        marginTop: isMobile ? '-20%' : '0',
       }}
       role="img"
       aria-label={ariaLabel}
