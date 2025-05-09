@@ -203,8 +203,6 @@ class QuestStrapiApi extends StrapiApi {
     super({ contentType: 'quests' }); // Set content type to "blog-articles" automatically
     const questParams = new QuestParams(this.apiUrl);
     this.apiUrl = questParams.addParams();
-    process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-      this.apiUrl.searchParams.set('status', 'draft');
   }
 
   sort(order: 'asc' | 'desc'): this {
@@ -222,7 +220,8 @@ class QuestStrapiApi extends StrapiApi {
     return this;
   }
 
-  filterByDateRange(currentDate: string): this {
+  filterByStartAndEndDate(): this {
+    const currentDate = new Date(Date.now()).toISOString().split('T')[0];
     this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
     this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
     return this;
@@ -235,6 +234,11 @@ class QuestStrapiApi extends StrapiApi {
 
   filterByShowProfileBanner(): this {
     this.apiUrl.searchParams.set('filters[ShowProfileBanner][$eq]', 'true');
+    return this;
+  }
+
+  populateCampaign(): this {
+    this.apiUrl.searchParams.set('populate[5]', 'campaign');
     return this;
   }
 }
