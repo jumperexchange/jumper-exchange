@@ -220,7 +220,8 @@ class QuestStrapiApi extends StrapiApi {
     return this;
   }
 
-  filterByStartAndEndDate(currentDate: string): this {
+  filterByStartAndEndDate(): this {
+    const currentDate = new Date(Date.now()).toISOString().split('T')[0];
     this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
     this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
     return this;

@@ -2,10 +2,9 @@ import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { QuestData, StrapiResponse } from 'src/types/strapi';
 
 export async function getQuestsWithNoCampaignAttached() {
-  const currentDate = new Date(Date.now()).toISOString().split('T')[0];
   const urlParams = new QuestStrapiApi()
     .filterByNoCampaignAttached()
-    .filterByStartAndEndDate(currentDate)
+    .filterByStartAndEndDate()
     .addPaginationParams({
       page: 1,
       pageSize: 25,
