@@ -2,6 +2,7 @@
 
 import type { CampaignData } from '@/types/strapi';
 import { useTranslation } from 'react-i18next';
+import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { MerklRewards } from '../ProfilePage/MerklRewards';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { QuestsOverview } from '../ProfilePage/QuestsOverview/QuestsOverview';
@@ -10,16 +11,14 @@ import { CampaignHeader } from './CampaignHeader/CampaignHeader';
 
 interface CampaignPageProps {
   campaign: CampaignData;
-  path: string;
 }
 
-export const CampaignPage = ({ campaign, path }: CampaignPageProps) => {
+export const CampaignPage = ({ campaign }: CampaignPageProps) => {
   const { t } = useTranslation();
-
   return (
     <PageContainer className="profile-page">
       <BackButton
-        path={path}
+        path={JUMPER_LOYALTY_PATH}
         title={t('navbar.navbarMenu.profile') || 'Profile'}
       />
       <MerklRewards campaign={campaign} />
