@@ -3,6 +3,8 @@ import { getSiteUrl } from '@/const/urls';
 import { walletAddressSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
+import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 
 type Params = Promise<{ walletAddress: string }>;
 
@@ -57,6 +59,14 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   const sanitizedAddress = result.data;
-
-  return <ProfilePage walletAddress={sanitizedAddress} isPublic />;
+  const { data: campaigns } = await getProfileBannerCampaigns();
+  const { data: questsData } = await getQuestsWithNoCampaignAttached();
+  return (
+    <ProfilePage
+      quests={questsData.data}
+      campaigns={campaigns}
+      walletAddress={sanitizedAddress}
+      isPublic
+    />
+  );
 }
