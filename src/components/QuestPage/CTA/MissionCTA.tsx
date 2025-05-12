@@ -24,7 +24,6 @@ import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
   CTAExplanationBox,
   CTAMainBox,
-  MissionCtaButtonSF,
   SeveralCTABox,
   SeveralMissionCtaContainer,
   StartedTitleBox,
@@ -40,26 +39,11 @@ const MissionCTAButton = ({
   activeCampaign,
   onClick,
 }: MissionCTAButtonProps) => {
-  const theme = useTheme();
-  if (activeCampaign === 'superfest') {
-    return (
-      <MissionCtaButtonSF onClick={onClick}>
-        <ArrowForwardIcon
-          sx={{
-            color: theme.palette.text.primary,
-            width: '20px',
-            height: '20px',
-          }}
-        />
-      </MissionCtaButtonSF>
-    );
-  } else {
-    return (
-      <IconButtonPrimary onClick={onClick}>
-        <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
-      </IconButtonPrimary>
-    );
-  }
+  return (
+    <IconButtonPrimary onClick={onClick}>
+      <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
+    </IconButtonPrimary>
+  );
 };
 
 export interface CTALinkInt {

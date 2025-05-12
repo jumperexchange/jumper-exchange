@@ -39,7 +39,6 @@ interface Resources {
         developers: 'Developers';
         support: 'Support';
         profile: 'Profile';
-        fest: 'Superfest Festival';
       };
       walletMenu: {
         disconnect: 'Disconnect';
@@ -105,7 +104,7 @@ interface Resources {
     abstractAlert: {
       title: 'This wallet only works on Abstract!';
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
-      buttonText: 'Check the AGW docs';
+      buttonText: 'Check the docs';
     };
     featureCard: {
       learnMore: 'Learn more';

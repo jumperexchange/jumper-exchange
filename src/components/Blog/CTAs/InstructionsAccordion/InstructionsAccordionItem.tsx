@@ -3,14 +3,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { Breakpoint } from '@mui/material';
 import { alpha, Typography, useMediaQuery, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ButtonSecondary } from 'src/components/Button';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { sora } from 'src/fonts/fonts';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { InstructionItemProps } from '.';
 import {
@@ -69,14 +68,6 @@ export const InstructionsAccordionItem = ({
     step && setOpen((prev) => !prev);
   };
 
-  const isSuperfest = variant === 'superfest';
-
-  useEffect(() => {
-    if (variant === 'superfest') {
-      setOpen(true);
-    }
-  }, []);
-
   const handleClick = (i: number) => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -94,20 +85,12 @@ export const InstructionsAccordionItem = ({
   return (
     <InstructionsAccordionItemContainer
       sx={[
-        isSuperfest
-          ? {
-              typograpy: sora.style.fontFamily,
-            }
-          : {
-              typograpy: null,
-            },
-        isSuperfest
-          ? {
-              borderColor: theme.palette.black.main,
-            }
-          : {
-              borderColor: null,
-            },
+        {
+          typograpy: null,
+        },
+        {
+          borderColor: null,
+        },
       ]}
     >
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>

@@ -1,11 +1,11 @@
+import InfoIcon from '@mui/icons-material/Info';
 import type { SxProps, Theme } from '@mui/material';
 import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
 import {
+  BerachainMarketCardTokenContainer,
   BeraChainProgressCardContent,
   BeraChainProgressCardHeader,
-} from 'src/components/Berachain/components/BerachainMarketCard/StatCard/BerachainProgressCard.style';
-import { BerachainMarketCardTokenContainer } from 'src/components/Berachain/components/BerachainMarketCard/BerachainMarketCard.style';
+} from './style';
 
 interface DigitCardProps {
   title: string;
@@ -79,14 +79,19 @@ const DigitTextCard = ({
             variant="h6"
             className="content"
             key={`berachain-market-card-token-label`}
-            sx={[{
-              fontWeight: 700,
-              marginTop: '4px'
-            }, hasDeposited ? {
-              color: theme.palette.primary.main
-            } : {
-              color: null
-            }]}
+            sx={[
+              {
+                fontWeight: 700,
+                marginTop: '4px',
+              },
+              hasDeposited
+                ? {
+                    color: theme.palette.primary.main,
+                  }
+                : {
+                    color: null,
+                  },
+            ]}
           >
             {digit}
           </Typography>

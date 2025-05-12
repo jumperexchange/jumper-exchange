@@ -31,8 +31,7 @@
       "theme": "Theme",
       "developers": "Developers",
       "support": "Support",
-      "profile": "Profile",
-      "fest": "Superfest Festival"
+      "profile": "Profile"
     },
     "walletMenu": {
       "disconnect": "Disconnect",

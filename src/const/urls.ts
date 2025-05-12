@@ -16,7 +16,6 @@ export const JUMPER_BRIDGE_PATH = '/bridge';
 export const JUMPER_SWAP_PATH = '/swap';
 export const JUMPER_TX_PATH = '/tx';
 export const JUMPER_WALLET_PATH = '/wallet';
-export const JUMPER_FEST_PATH = '/superfest';
 export const JUMPER_MEMECOIN_PATH = '/memecoins';
 export const JUMPER_QUESTS_PATH = '/quests';
 export const JUMPER_BOYCO_PATH = '/berachain';

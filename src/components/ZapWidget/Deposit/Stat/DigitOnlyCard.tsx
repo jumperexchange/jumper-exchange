@@ -1,10 +1,10 @@
+import InfoIcon from '@mui/icons-material/Info';
 import type { SxProps, Theme } from '@mui/material';
 import { Tooltip, Typography } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
 import {
   BeraChainProgressCardContent,
   BeraChainProgressCardHeader,
-} from 'src/components/Berachain/components/BerachainMarketCard/StatCard/BerachainProgressCard.style';
+} from './style';
 
 interface DigitCardProps {
   title: string;
