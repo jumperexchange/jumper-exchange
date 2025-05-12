@@ -1,10 +1,7 @@
 import InfoIcon from '@mui/icons-material/Info';
 import type { SxProps, Theme } from '@mui/material';
 import { Tooltip, Typography } from '@mui/material';
-import {
-  BeraChainProgressCardContent,
-  BeraChainProgressCardHeader,
-} from './style';
+import { DigitCardBox, DigitCardHeader } from './style';
 
 interface DigitCardProps {
   title: string;
@@ -22,11 +19,8 @@ const DigitOnlyCard = ({
   sx = {},
 }: DigitCardProps) => {
   return (
-    <BeraChainProgressCardContent sx={sx}>
-      <BeraChainProgressCardHeader
-        display={'flex'}
-        className="header-container"
-      >
+    <DigitCardBox sx={sx}>
+      <DigitCardHeader display={'flex'} className="header-container">
         <Typography className="title" variant="subtitle2">
           {title}
         </Typography>
@@ -46,7 +40,7 @@ const DigitOnlyCard = ({
             }}
           />
         </Tooltip>
-      </BeraChainProgressCardHeader>
+      </DigitCardHeader>
       <Typography
         className="content"
         variant="h6"
@@ -58,7 +52,7 @@ const DigitOnlyCard = ({
         {digit}
         {endAdornment}
       </Typography>
-    </BeraChainProgressCardContent>
+    </DigitCardBox>
   );
 };
 

@@ -2,9 +2,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import type { SxProps, Theme } from '@mui/material';
 import { Box, Skeleton, Tooltip, Typography, useTheme } from '@mui/material';
 import {
-  BerachainMarketCardTokenContainer,
-  BeraChainProgressCardContent,
-  BeraChainProgressCardHeader,
+  DigitCardBox,
+  DigitCardHeader,
+  DigitCardTokenContainer,
 } from './style';
 
 interface DigitCardProps {
@@ -28,8 +28,8 @@ const DigitTextCard = ({
   const theme = useTheme();
 
   return (
-    <BeraChainProgressCardContent sx={sx}>
-      <BeraChainProgressCardHeader display={'flex'}>
+    <DigitCardBox sx={sx}>
+      <DigitCardHeader display={'flex'}>
         <Typography variant="subtitle2">{title}</Typography>
         <Tooltip
           title={tooltipText}
@@ -47,7 +47,7 @@ const DigitTextCard = ({
             }}
           />
         </Tooltip>
-      </BeraChainProgressCardHeader>
+      </DigitCardHeader>
       <Box
         sx={{
           justifyContent: 'center',
@@ -55,13 +55,13 @@ const DigitTextCard = ({
           gap: '16px',
         }}
       >
-        <BerachainMarketCardTokenContainer
+        <DigitCardTokenContainer
           sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-          key={`berachain-market-card-token-container-name-${title}`}
+          key={`market-card-token-container-name-${title}`}
         >
           {tokenImage ? (
             <img
-              key={`berachain-market-card-token-${tokenImage}`}
+              key={`market-card-token-${tokenImage}`}
               src={tokenImage}
               alt={`${digit} logo`}
               width={24}
@@ -70,7 +70,7 @@ const DigitTextCard = ({
             />
           ) : (
             <Skeleton
-              key={`berachain-market-card-token-skeleton`}
+              key={`market-card-token-skeleton`}
               variant="circular"
               sx={{ width: 24, height: 24 }}
             />
@@ -78,7 +78,7 @@ const DigitTextCard = ({
           <Typography
             variant="h6"
             className="content"
-            key={`berachain-market-card-token-label`}
+            key={`market-card-token-label`}
             sx={[
               {
                 fontWeight: 700,
@@ -95,9 +95,9 @@ const DigitTextCard = ({
           >
             {digit}
           </Typography>
-        </BerachainMarketCardTokenContainer>
+        </DigitCardTokenContainer>
       </Box>
-    </BeraChainProgressCardContent>
+    </DigitCardBox>
   );
 };
 
