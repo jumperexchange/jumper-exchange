@@ -29,8 +29,8 @@ import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
-import { WinningModal } from '@/components/WinningModal/WinningModal';
-import { checkWinningSwap } from '../WinningModal/utils';
+import { GoldenTicketModal } from 'src/components/GoldenTicketModal/GoldenTicketModal';
+import { checkWinningSwap } from '@/components/GoldenTicketModal/utils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -112,9 +112,22 @@ export function WidgetEvents() {
           const txHash = data.param_transaction_hash;
 
           if (txHash) {
-            const { winner, position } = await checkWinningSwap({
+            const { winner, position } = await await checkWinningSwap({
               txHash,
               userAddress: account.address,
+              fromChainId: route.fromChainId,
+              toChainId: route.toChainId,
+              fromToken: {
+                address: route.fromToken.address,
+                symbol: route.fromToken.symbol,
+                decimals: route.fromToken.decimals,
+              },
+              toToken: {
+                address: route.toToken.address,
+                symbol: route.toToken.symbol,
+                decimals: route.toToken.decimals,
+              },
+              fromAmount: route.fromAmount,
             });
 
             setTicket({ winner, position });
@@ -465,7 +478,7 @@ export function WidgetEvents() {
         open={isMultiSigConfirmationModalOpen}
         onClose={onMultiSigConfirmationModalClose}
       />
-      <WinningModal
+      <GoldenTicketModal
         isOpen={
           Boolean(ticket.winner && ticket.position === 1) ||
           Boolean(!ticket.winner && ticket.position && ticket.position > 1)

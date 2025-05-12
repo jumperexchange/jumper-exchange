@@ -5,6 +5,19 @@ import { Bagel_Fat_One } from 'next/font/google';
 interface CheckWinningSwapParams {
   txHash: string;
   userAddress: string;
+  fromChainId: number;
+  toChainId: number;
+  fromToken: {
+    address: string;
+    symbol: string;
+    decimals: number;
+  };
+  toToken: {
+    address: string;
+    symbol: string;
+    decimals: number;
+  };
+  fromAmount: string;
 }
 
 interface CheckWinningSwapResponse {
@@ -78,6 +91,11 @@ export const bagelFatOne = Bagel_Fat_One({
 export async function checkWinningSwap({
   txHash,
   userAddress,
+  fromChainId,
+  toChainId,
+  fromToken,
+  toToken,
+  fromAmount,
 }: CheckWinningSwapParams): Promise<CheckWinningSwapResponse> {
   try {
     const response = await fetch(
@@ -90,6 +108,11 @@ export async function checkWinningSwap({
         body: JSON.stringify({
           address: userAddress,
           txHash,
+          fromChainId,
+          toChainId,
+          fromToken,
+          toToken,
+          fromAmount,
         }),
       },
     );

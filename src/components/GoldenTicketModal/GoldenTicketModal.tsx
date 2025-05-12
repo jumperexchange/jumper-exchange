@@ -20,7 +20,7 @@ const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
 });
 
-const WinningModalContainer = styled(Box)(({ theme }) => ({
+const GoldenTicketModalContainer = styled(Box)(({ theme }) => ({
   overflowY: 'auto',
   position: 'absolute',
   top: '8px',
@@ -59,7 +59,7 @@ const WinningModalContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-interface WinningModalProps {
+interface GoldenTicketModalProps {
   onClose: () => void;
   isOpen: boolean;
   ticket: {
@@ -68,7 +68,7 @@ interface WinningModalProps {
   };
 }
 
-export const WinningModal: React.FC<WinningModalProps> = ({
+export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
   onClose,
   ticket,
   isOpen,
@@ -206,7 +206,7 @@ export const WinningModal: React.FC<WinningModalProps> = ({
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <WinningModalContainer className={isClosing ? 'closing' : ''}>
+      <GoldenTicketModalContainer className={isClosing ? 'closing' : ''}>
         {showConfetti && (
           <Confetti
             width={window.innerWidth}
@@ -255,7 +255,7 @@ export const WinningModal: React.FC<WinningModalProps> = ({
           error={error}
           onRetry={handleRetry}
         />
-      </WinningModalContainer>
+      </GoldenTicketModalContainer>
     </Modal>
   );
 };
