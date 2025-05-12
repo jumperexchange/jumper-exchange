@@ -1,62 +1,69 @@
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import CheckIcon from '@mui/icons-material/Check';
-import {
-  Box,
-  Card,
-  CircularProgress,
-  darken,
-  Drawer,
-  Grid,
-  Input,
-  Typography,
-} from '@mui/material';
+import { CircularProgress, darken, Drawer, Grid } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
-import { Transfer, useTxHistory } from 'src/hooks/useTxHistory';
+import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { formatInputAmount } from 'src/utils/format';
 import { parseUnits } from 'viem';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { ContributionButton } from './FeeContribution.style';
+import {
+  CONTRIBUTION_AB_TEST_PERCENTAGE,
+  CONTRIBUTION_AMOUNTS,
+  MIN_CONTRIBUTION_USD,
+} from './constants';
+import {
+  ContributionButton,
+  ContributionButtonConfirm,
+  ContributionCard,
+  ContributionCardTitle,
+  ContributionCustomInput,
+  ContributionDescription,
+  ContributionWrapper,
+  DrawerWrapper,
+} from './FeeContribution.style';
+import { checkContributionByTxHistory, getContributionAmounts } from './utils';
 
-const checkContributionByTxHistory = (
-  transfers: Transfer[] | undefined,
-): boolean => {
-  const transactionCount = transfers?.length ?? 0;
-  return (
-    transactionCount === 0 ||
-    (transactionCount > 0 && transactionCount % 3 === 0)
-  );
-};
+type TranslationKey =
+  | 'title'
+  | 'contributionSent'
+  | 'description'
+  | 'custom'
+  | 'confirm'
+  | 'error.amountTooSmall';
 
-const DEFAULT_CONTRIBUTION_AMOUNTS = [0.5, 1, 2];
+export interface ContributionTranslations {
+  title: string;
+  contributionSent: string;
+  description: string;
+  custom: string;
+  confirm: string;
+  error: {
+    amountTooSmall: string;
+  };
+}
 
-const getContributionAmounts = (volume: number) => {
-  if (volume >= 100000) {
-    return [5, 10, 15];
-  } else if (volume >= 10000) {
-    return [2, 10, 15];
-  } else if (volume >= 1000) {
-    return [1, 5, 10];
-  } else {
-    return DEFAULT_CONTRIBUTION_AMOUNTS;
-  }
-};
+export interface FeeContributionProps {
+  translations?: Partial<ContributionTranslations>;
+}
 
-const FeeContribution = () => {
+const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
+  const { t } = useTranslation();
   const [address, setAddress] = useState<string | undefined>(undefined);
   const [contributionAmounts, setContributionAmounts] = useState<number[]>(
-    DEFAULT_CONTRIBUTION_AMOUNTS,
+    CONTRIBUTION_AMOUNTS.DEFAULT,
   );
-  // Show Contribution for ~10% of users
+
+  // AB test flag - show contribution for ~10% of users
   const isContributionAbEnabled = useMemo(() => {
-    return Math.random() < 0.1;
+    return Math.random() < CONTRIBUTION_AB_TEST_PERCENTAGE;
   }, []);
   const [amount, setAmount] = useState<string | undefined>();
   const [inputAmount, setInputAmount] = useState<string | undefined>(undefined);
@@ -67,7 +74,7 @@ const FeeContribution = () => {
     address,
     completedRoute?.toToken,
   );
-  const [showContribution, setShowContribution] = useState(false);
+  const [showContribution, setShowContribution] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const {
     status: txStatus,
@@ -92,7 +99,6 @@ const FeeContribution = () => {
 
   const hasTrackedImpressionRef = useRef(false);
   const hasTrackedConfirmationRef = useRef(false);
-  const { t } = useTranslation();
 
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -118,32 +124,57 @@ const FeeContribution = () => {
 
   // Set the address of the user from last tx
   useEffect(() => {
-    setAddress(completedRoute?.fromAddress);
-  }, [completedRoute]);
-
-  // Check if contribution is enabled
-  useEffect(() => {
-    if (data?.transfers) {
-      const isContributionEnabledByTxHistory = checkContributionByTxHistory(
-        data.transfers,
-      );
-      const txUsdAmount = Number(completedRoute?.toAmountUSD || 0);
-      if (
-        txUsdAmount >= 10 &&
-        isContributionAbEnabled &&
-        isContributionEnabledByTxHistory &&
-        account?.chainType === ChainType.EVM
-      ) {
-        // if contribution is enabled:
-        // - based on chain type === EVM
-        // - based on past tx´s
-        // - and based on ab test
-        // - and based on the contribution amount > 10 USD
-        setShowContribution(true);
-        setContributionAmounts(getContributionAmounts(txUsdAmount));
-      }
+    if (completedRoute?.fromAddress) {
+      setAddress(completedRoute.fromAddress);
     }
-  }, [data]);
+  }, [completedRoute?.fromAddress]);
+
+  // Check if contribution should be shown based on:
+  // - Transaction history
+  // - AB test
+  // - Transaction amount >= $10
+  // - Chain type is EVM
+  useEffect(() => {
+    if (
+      !data?.transfers ||
+      !completedRoute?.toAmountUSD ||
+      !account?.chainType
+    ) {
+      return;
+    }
+
+    const txUsdAmount = Number(completedRoute.toAmountUSD);
+    const isContributionEnabledByTxHistory = checkContributionByTxHistory(
+      data.transfers,
+    );
+    const isEvmChain = account.chainType === ChainType.EVM;
+    const isSameWallet =
+      completedRoute.fromAddress === completedRoute.toAddress;
+    const isWalletAccess = account.address === completedRoute.fromAddress;
+    const isEligibleForContribution =
+      txUsdAmount >= MIN_CONTRIBUTION_USD &&
+      isSameWallet &&
+      isWalletAccess &&
+      isContributionAbEnabled &&
+      isContributionEnabledByTxHistory &&
+      isEvmChain;
+
+    if (isEligibleForContribution) {
+      // if contribution is enabled:
+      // - based on chain type === EVM
+      // - fromWallet === toWallet
+      // - based on past tx´s
+      // - and based on ab test
+      // - and based on the contribution amount > 10 USD
+      setShowContribution(true);
+      setContributionAmounts(getContributionAmounts(txUsdAmount));
+    }
+  }, [
+    data?.transfers,
+    completedRoute?.toAmountUSD,
+    account?.chainType,
+    isContributionAbEnabled,
+  ]);
 
   // Handle contribution button click
   const handleButtonClick = (selectedAmount: number) => {
@@ -253,8 +284,14 @@ const FeeContribution = () => {
         completedRoute.toToken.decimals,
       );
 
+      // Note: The contribution should be sent to a dedicated wallet address, not the token contract address
+      // Previously we were using the token contract address (completedRoute.toToken.address) which was incorrect
+      // as that would try to send tokens to the token contract itself. Instead, we need to send to a wallet
+      // that can receive and manage these contributions.
+      const contributionWalletAddress = '0x...'; // TODO: Replace with actual contribution wallet address
+
       await writeContract({
-        address: completedRoute.toToken.address as `0x${string}`, // todo: change to actual wallet address !
+        address: completedRoute.fromAddress as `0x${string}`, // todo: change to actual wallet address !
         abi: [
           {
             name: 'transfer',
@@ -273,14 +310,11 @@ const FeeContribution = () => {
       });
     } catch (error) {
       console.error('Error sending contribution:', error);
-      // Add user-friendly error message
       if (
         error instanceof Error &&
-        error.message === 'Amount too small for this token'
+        error.message === t('contribution.error.amountTooSmall')
       ) {
-        alert(
-          'The contribution amount is too small for this token. Please try a larger amount.',
-        );
+        alert(t('contribution.error.amountTooSmall'));
       }
     } finally {
       setIsSending(false);
@@ -295,30 +329,25 @@ const FeeContribution = () => {
     );
   }, [amount]);
 
+  // Use translations from props if provided, otherwise use i18n translations
+  const getTranslation = (key: TranslationKey): string => {
+    if (key === 'error.amountTooSmall') {
+      return (
+        translations?.error?.amountTooSmall ??
+        t('contribution.error.amountTooSmall')
+      );
+    }
+    const translationKey = `contribution.${key}` as const;
+    return translations?.[key] ?? t(translationKey);
+  };
+
   if (!showContribution) {
     return null;
   }
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        transition: 'height 250ms',
-        height: showContribution ? '156px' : '0px',
-      }}
-    >
-      <Box
-        ref={containerRef}
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          top: 0,
-          overflow: 'hidden',
-          borderRadius: '24px',
-        }}
-      >
+    <ContributionWrapper showContribution={showContribution}>
+      <DrawerWrapper ref={containerRef}>
         <Drawer
           open={showContribution}
           anchor="top"
@@ -350,22 +379,10 @@ const FeeContribution = () => {
             },
           }}
         >
-          <Card
-            sx={(theme) => ({
-              display: 'flex',
-              flexDirection: 'column',
-              gap: theme.spacing(2),
-              border: 'unset',
-              padding: theme.spacing(2),
-              borderRadius: '16px',
-              boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-            })}
-          >
-            <Typography
-              sx={{ fontSize: '14px', lineHeight: '20px', fontWeight: 700 }}
-            >
-              {t('contribution.title')}
-            </Typography>
+          <ContributionCard>
+            <ContributionCardTitle>
+              {getTranslation('title')}
+            </ContributionCardTitle>
             <Grid
               container
               spacing={2}
@@ -386,21 +403,13 @@ const FeeContribution = () => {
                 </Grid>
               ))}
               <Grid size={3}>
-                <Input
+                <ContributionCustomInput
                   value={inputAmount ? `$${inputAmount}` : ''}
                   aria-autocomplete="none"
                   onChange={onChangeValue}
                   onClick={handleCustom}
                   disableUnderline
-                  placeholder={t('contribution.custom')}
-                  sx={(theme) => ({
-                    height: '32px',
-                    '& .MuiInputBase-input::placeholder': {
-                      color: theme.palette.text.primary,
-                      opacity: 1,
-                      textAlign: 'center',
-                    },
-                  })}
+                  placeholder={getTranslation('custom')}
                   slotProps={{
                     input: {
                       sx: (theme) => ({
@@ -430,50 +439,30 @@ const FeeContribution = () => {
             </Grid>
 
             {!!amount ? (
-              <ContributionButton
+              <ContributionButtonConfirm
                 active={false}
                 onClick={handleConfirm}
+                isTxConfirmed={isTxConfirmed}
                 disabled={isSending || isTxPending || isTxConfirming}
-                sx={() => ({
-                  height: '40px',
-                  fontSize: '14px',
-                  lineHeight: '16px',
-                  fontWeight: 700,
-                  gap: '8px',
-                  ...(isTxConfirmed && {
-                    backgroundColor: '#D6FFE7',
-                    color: '#00B849',
-                    '&:hover': {
-                      backgroundColor: darken('#D6FFE7', 0.04),
-                    },
-                  }),
-                })}
               >
                 {isTxConfirmed ? <CheckIcon /> : null}
                 {isSending || isTxPending || isTxConfirming ? (
                   <CircularProgress size={20} color="inherit" />
                 ) : isTxConfirmed ? (
-                  t('contribution.contributionSent')
+                  getTranslation('contributionSent')
                 ) : (
-                  t('contribution.confirm')
+                  getTranslation('confirm')
                 )}
-              </ContributionButton>
+              </ContributionButtonConfirm>
             ) : (
-              <Typography
-                sx={(theme) => ({
-                  fontSize: '12px',
-                  lineHeight: '16px',
-                  fontWeight: 500,
-                  color: theme.palette.grey[700],
-                })}
-              >
-                {t('contribution.description')}
-              </Typography>
+              <ContributionDescription>
+                {getTranslation('description')}
+              </ContributionDescription>
             )}
-          </Card>
+          </ContributionCard>
         </Drawer>
-      </Box>
-    </Box>
+      </DrawerWrapper>
+    </ContributionWrapper>
   );
 };
 

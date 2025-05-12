@@ -57,7 +57,7 @@ export function Widget({
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { account } = useAccount();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
@@ -336,7 +336,20 @@ export function Widget({
           config={config}
           formRef={formRef}
           feeConfig={{
-            _vcComponent: () => <FeeContribution />,
+            _vcComponent: () => (
+              <FeeContribution
+                translations={{
+                  title: t('contribution.title'),
+                  contributionSent: t('contribution.contributionSent'),
+                  description: t('contribution.description'),
+                  custom: t('contribution.custom'),
+                  confirm: t('contribution.confirm'),
+                  error: {
+                    amountTooSmall: t('contribution.error.amountTooSmall'),
+                  },
+                }}
+              />
+            ),
           }}
         />
       </ClientOnly>
