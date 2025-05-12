@@ -90,7 +90,7 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
     if (hasSigned) {
       return 'final';
     }
-    if (ticket.winner && ticket.position === 1) {
+    if (ticket.winner) {
       return 'winning';
     }
     if (!ticket.winner && ticket.position && ticket.position > 1) {
@@ -106,7 +106,7 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
     if (hasSigned) {
       return setLayout('final');
     }
-    if (ticket.winner && ticket.position === 1) {
+    if (ticket.winner) {
       return setLayout('winning');
     }
     if (!ticket.winner && ticket.position && ticket.position > 1) {

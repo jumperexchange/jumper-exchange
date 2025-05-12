@@ -112,7 +112,7 @@ export function WidgetEvents() {
           const txHash = data.param_transaction_hash;
 
           if (txHash) {
-            const { winner, position } = await await checkWinningSwap({
+            const { winner, position } = await checkWinningSwap({
               txHash,
               userAddress: account.address,
               fromChainId: route.fromChainId,
@@ -480,7 +480,7 @@ export function WidgetEvents() {
       />
       <GoldenTicketModal
         isOpen={
-          Boolean(ticket.winner && ticket.position === 1) ||
+          Boolean(ticket.winner) ||
           Boolean(!ticket.winner && ticket.position && ticket.position > 1)
         }
         ticket={ticket}
