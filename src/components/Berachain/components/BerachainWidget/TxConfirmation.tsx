@@ -1,7 +1,7 @@
 import CheckIcon from '@mui/icons-material/Check';
 import InfoIcon from '@mui/icons-material/Info';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { alpha, Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 
 export const TxConfirmation = ({
   s,
@@ -25,7 +25,7 @@ export const TxConfirmation = ({
         justifyContent: 'space-between',
         backgroundColor: 'inherit',
         padding: theme.spacing(2),
-        border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+        border: `1px solid ${theme.palette.alphaLight200.main}`,
         gap: '8px',
       }}
     >
@@ -73,7 +73,7 @@ export const TxConfirmation = ({
       >
         <Box
           sx={{
-            backgroundColor: alpha(theme.palette.white.main, 0.08),
+            backgroundColor: theme.palette.alphaLight200.main,
             borderRadius: '50%',
             flexDirection: 'row',
             alignItems: 'center',

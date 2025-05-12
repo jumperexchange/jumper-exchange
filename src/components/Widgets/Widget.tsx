@@ -29,6 +29,7 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
+import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 
 export function Widget({
@@ -45,16 +46,14 @@ export function Widget({
   autoHeight,
 }: WidgetProps) {
   const theme = useTheme();
-  const [configTheme] = useThemeStore((state) => [
-    state.configTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
 
-    const { mode } = useColorScheme();
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
+  const { mode } = useColorScheme();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const widgetTheme = getWidgetThemeV2(
-    mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode);
+    mode === 'system' || !mode ? (prefersDarkMode ? 'dark' : 'light') : mode,
+  );
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);
@@ -336,6 +335,9 @@ export function Widget({
           integrator={config.integrator}
           config={config}
           formRef={formRef}
+          feeConfig={{
+            _vcComponent: () => <FeeContribution />,
+          }}
         />
       </ClientOnly>
     </WidgetWrapper>
