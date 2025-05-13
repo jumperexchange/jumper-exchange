@@ -2,18 +2,17 @@
 import { styled } from '@mui/material';
 
 export const LogoWrapper = styled('div')(({ theme }) => {
-  const mainCol =
-    theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
+  const subCol = (theme.vars || theme).palette.accent2.main;
 
   return {
     cursor: 'pointer',
     display: 'flex',
     fill: 'none',
     '.main-color': {
-      fill: mainCol,
+      fill: (theme.vars || theme).palette.accent1Alt.main,
+      ...theme.applyStyles('light', {
+        fill: (theme.vars || theme).palette.accent1.main,
+      }),
     },
     '.sub-color': {
       fill: subCol,
@@ -31,11 +30,7 @@ export const LogoWrapper = styled('div')(({ theme }) => {
 });
 
 export const CollabLogoWrapper = styled('div')(({ theme }) => {
-  const mainCol =
-    theme.palette.mode === 'light'
-      ? theme.palette.accent1.main
-      : theme.palette.accent1Alt.main;
-  const subCol = theme.palette.accent2.main;
+  const subCol = (theme.vars || theme).palette.accent2.main;
 
   return {
     cursor: 'pointer',
@@ -44,7 +39,10 @@ export const CollabLogoWrapper = styled('div')(({ theme }) => {
     alignContent: 'center',
     fill: 'none',
     '.main-color': {
-      fill: mainCol,
+      fill: (theme.vars || theme).palette.accent1.main,
+      ...theme.applyStyles('light', {
+        fill: (theme.vars || theme).palette.accent1Alt.main,
+      }),
     },
     '.sub-color': {
       fill: subCol,

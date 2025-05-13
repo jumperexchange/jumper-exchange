@@ -22,8 +22,7 @@ interface WelcomeScreenProps {
 }
 
 export const WelcomeScreen = ({ activeTheme }: WelcomeScreenProps) => {
-  const { welcomeScreenClosed, setWelcomeScreenClosed } =
-    useWelcomeScreen(activeTheme);
+  const { welcomeScreenClosed, setWelcomeScreenClosed } = useWelcomeScreen();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);

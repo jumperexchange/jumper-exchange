@@ -29,7 +29,7 @@ export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
     <>
       <PreviewImage
         src={imageData.url}
-        // read the following to udnerstand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
+        // read the following to understand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
         width={0}
         height={0}
         sizes="100vw"

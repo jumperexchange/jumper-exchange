@@ -20,12 +20,12 @@ export const QuestCardBottomBox = styled(Box)(({ theme }) => ({
   paddingBottom: '24px',
   paddingLeft: '16px',
   paddingRight: '16px',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? theme.palette.white.main
-      : alpha(theme.palette.white.main, 0.08),
+  backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
   borderBottomLeftRadius: '8px',
   borderBottomRightRadius: '8px',
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const QuestCardTitleBox = styled(Box)(() => ({
@@ -59,7 +59,7 @@ export interface QuestPlatformMainBoxProps extends BoxProps {
 
 export const QuestPlatformMainBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'platformName',
-})<QuestPlatformMainBoxProps>({
+})<QuestPlatformMainBoxProps>(() => ({
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
@@ -71,7 +71,7 @@ export const QuestPlatformMainBox = styled(Box, {
       },
     },
   ],
-});
+}));
 
 export interface XPDisplayBoxProps extends BoxProps {
   active?: boolean;
@@ -80,7 +80,7 @@ export interface XPDisplayBoxProps extends BoxProps {
 
 export const XPDisplayBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'completed',
-})<XPDisplayBoxProps>({
+})<XPDisplayBoxProps>(({ theme }) => ({
   marginRight: undefined,
   display: 'flex',
   height: '28px',
@@ -101,7 +101,7 @@ export const XPDisplayBox = styled(Box, {
       style: { backgroundColor: '#42B852' },
     },
   ],
-});
+}));
 
 export const XPIconBox = styled(Box)(({ theme }) => ({
   display: 'flex',

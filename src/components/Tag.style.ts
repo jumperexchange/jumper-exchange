@@ -2,7 +2,7 @@ import type { TypographyProps } from '@mui/material';
 import { Typography, alpha, styled } from '@mui/material';
 
 export interface TagProps extends TypographyProps {
-  component?: keyof JSX.IntrinsicElements;
+  component?: keyof React.JSX.IntrinsicElements;
   backgroundColor?: string;
   color?: string;
 }
@@ -14,11 +14,8 @@ export const Tag = styled(Typography, {
   padding: theme.spacing(0, 3),
   textWrap: 'nowrap',
   width: 'fit-content',
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.black.main, 0.04)
-      : theme.palette.alphaLight300.main,
-  color: theme.palette.text.primary,
+  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+  color: (theme.vars || theme).palette.text.primary,
   userSelect: 'none',
   borderRadius: '24px',
   flexShrink: 0,
@@ -31,7 +28,9 @@ export const Tag = styled(Typography, {
   alignItems: 'center',
   variants: [
     {
-      props: ({ backgroundColor }) => backgroundColor,
+      props: ({ backgroundColor }) => {
+        return backgroundColor;
+      },
       style: {
         backgroundColor: backgroundColor,
       },
@@ -43,4 +42,7 @@ export const Tag = styled(Typography, {
       },
     },
   ],
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+  }),
 }));

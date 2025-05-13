@@ -1,6 +1,7 @@
 import { ChainId } from '@lifi/sdk';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'src/components/Button';
 import {
   useAccount,
@@ -14,7 +15,6 @@ import { FlexCenterRowBox } from '../SuperfestPage/SuperfestMissionPage.style';
 import { RewardsAmountBox } from './RewardsAmountBox/RewardsAmountBox';
 import {
   ClaimButtonBox,
-  EarnedTypography,
   RewardsCarouselContainer,
   RewardsCarouselMainBox,
   RewardsOpenIconButton,
@@ -42,6 +42,7 @@ export const RewardsCarousel = ({
 }: RewardsCarouselProps) => {
   const { address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const { t } = useTranslation();
   const { data: hash, isPending, writeContract } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
@@ -95,7 +96,7 @@ export const RewardsCarousel = ({
           <RewardsCarouselMainBox>
             <FlexCenterRowBox>
               <Box>
-                <EarnedTypography>You've earned:</EarnedTypography>
+                <Typography variant="titleSmall">You've earned:</Typography>
               </Box>
               <RewardsAmountBox
                 rewardAmount={rewardAmount}

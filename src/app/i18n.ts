@@ -8,9 +8,8 @@ import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { dateFormatter } from 'src/utils/formatDate';
-import i18nConfig from '../../i18nconfig';
+import i18nConfig from '../../i18n-config';
 
-// TODO: use https://nextjs.org/docs/app/building-your-application/routing/internationalization#localization
 export default async function initTranslations(
   locale: string,
   namespaces: string[],
@@ -34,10 +33,10 @@ export default async function initTranslations(
     lng: locale,
     resources,
     fallbackLng: i18nConfig.defaultLocale,
-    react: { useSuspense: false },
+    react: { useSuspense: true },
     supportedLngs: i18nConfig.locales,
     returnEmptyString: false,
-    partialBundledLanguages: true,
+    partialBundledLanguages: false,
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
     ns: namespaces,

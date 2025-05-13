@@ -6,7 +6,6 @@ import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import type { BlogArticleData } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
@@ -18,14 +17,12 @@ interface LearnArticlePageProps {
   article: BlogArticleData;
   articles: BlogArticleData[];
   url: string;
-  activeThemeMode?: ThemeMode;
 }
 
 const LearnArticlePage = ({
   article,
   articles,
   url,
-  activeThemeMode,
 }: LearnArticlePageProps) => {
   const { t } = useTranslation();
 
@@ -33,11 +30,7 @@ const LearnArticlePage = ({
     <>
       <BlogArticleWrapper>
         <BlogBackgroundGradient />
-        <BlogArticle
-          article={article}
-          baseUrl={url}
-          activeThemeMode={activeThemeMode}
-        />
+        <BlogArticle article={article} baseUrl={url} />
       </BlogArticleWrapper>
       <BlogArticleSection>
         <Box component={Background} sx={{ position: 'absolute' }} />

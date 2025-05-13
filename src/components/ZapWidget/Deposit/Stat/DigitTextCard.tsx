@@ -79,11 +79,19 @@ const DigitTextCard = ({
             variant="h6"
             className="content"
             key={`berachain-market-card-token-label`}
-            sx={{
-              color: hasDeposited ? theme.palette.primary.main : undefined,
-              fontWeight: 700,
-              marginTop: '4px',
-            }}
+            sx={[
+              {
+                fontWeight: 700,
+                marginTop: '4px',
+              },
+              hasDeposited
+                ? {
+                    color: theme.palette.primary.main,
+                  }
+                : {
+                    color: null,
+                  },
+            ]}
           >
             {digit}
           </Typography>

@@ -1,7 +1,7 @@
 'use client';
 
 import type { BoxProps, Breakpoint, TableCellProps } from '@mui/material';
-import { alpha, styled, TableCell } from '@mui/material';
+import { styled, TableCell } from '@mui/material';
 import { DynamicPagesContainer } from '../DynamicPagesContainer';
 
 interface InformationCardContainerProps extends BoxProps {
@@ -10,10 +10,18 @@ interface InformationCardContainerProps extends BoxProps {
 
 export const InformationCardContainer = styled(DynamicPagesContainer, {
   shouldForwardProp: (prop) => prop !== 'fullWidth',
-})<InformationCardContainerProps>(({ theme, fullWidth }) => ({
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    ...(!fullWidth && { maxWidth: 'calc(50% - 16px)' }),
-  },
+})<InformationCardContainerProps>(({ theme }) => ({
+  [theme.breakpoints.up('md' as Breakpoint)]: {},
+  variants: [
+    {
+      props: ({ fullWidth }) => !fullWidth,
+      style: {
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          maxWidth: 'calc(50% - 16px)',
+        },
+      },
+    },
+  ],
 }));
 
 interface InformationCardCellProps extends TableCellProps {
@@ -22,9 +30,25 @@ interface InformationCardCellProps extends TableCellProps {
 
 export const InformationCardCell = styled(TableCell, {
   shouldForwardProp: (prop) => prop !== 'fullWidth',
-})<InformationCardCellProps>(({ theme, fullWidth }) => ({
-  borderBottom: `1px solid ${alpha(theme.palette.text.primary, 0.12)}`,
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    width: fullWidth ? '160px' : '30%',
+})<InformationCardCellProps>(({ theme }) => ({
+  '.MuiLink-root': {
+    color: (theme.vars || theme).palette.text.primary,
   },
+  borderBottom: `1px solid ${(theme.vars || theme).palette.alphaLight300.main}`,
+  ...theme.applyStyles('light', {
+    borderBottom: `1px solid ${(theme.vars || theme).palette.alphaDark300.main}`,
+  }),
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    width: '30%',
+  },
+  variants: [
+    {
+      props: ({ fullWidth }) => fullWidth,
+      style: {
+        [theme.breakpoints.up('md' as Breakpoint)]: {
+          width: '160px',
+        },
+      },
+    },
+  ],
 }));

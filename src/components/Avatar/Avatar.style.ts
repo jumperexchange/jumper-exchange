@@ -2,7 +2,7 @@ import { Avatar, Box, Skeleton } from '@mui/material';
 import { darken, styled } from '@mui/material/styles';
 
 export const AvatarSkeletonContainer = styled(Box)(({ theme }) => ({
-  background: theme.palette.background.paper,
+  background: (theme.vars || theme).palette.background.paper,
   borderRadius: '50%',
 }));
 
@@ -20,30 +20,30 @@ export const LargeAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 export const LargeAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
-  border: `6px solid ${theme.palette.surface1.main}`,
+  border: `6px solid ${(theme.vars || theme).palette.surface1.main}`,
   width: 40,
   height: 40,
 }));
 
 export const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  background: theme.palette.background.paper,
+  background: (theme.vars || theme).palette.background.paper,
   width: 16,
   height: 16,
   top: theme.spacing(-0.25),
-  backgroundColor: theme.palette.surface1.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   // img: {
   //   padding: theme.spacing(0.25),
   //   borderRadius: '50%',
   //   objectFit: 'contain',
-  //   background: theme.palette.text.primary,
+  //   background: (theme.vars || theme).palette.text.primary,
   // },
 }));
 
 export const SmallAvatarSkeletonBase = styled(Skeleton)(({ theme }) => ({
-  border:
-    theme.palette.mode === 'light'
-      ? `2px solid ${darken(theme.palette.white.main, 0.04)}`
-      : `2px solid ${theme.palette.alphaLight400.main}`,
+  border: `2px solid ${(theme.vars || theme).palette.alphaLight400.main}`,
   width: 16,
   height: 16,
+  ...theme.applyStyles('light', {
+    border: `2px solid ${darken(theme.palette.white.main, 0.04)}`,
+  }),
 }));

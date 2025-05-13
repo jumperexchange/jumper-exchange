@@ -1,5 +1,4 @@
 'use client';
-import { getContrastAlphaColor } from '@/utils/colors';
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { Button as MuiButton, alpha, darken } from '@mui/material'; //ButtonProps
 import { styled } from '@mui/material/styles';
@@ -12,40 +11,40 @@ const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   fontWeight: 'bold',
   transition: 'background-color 250ms',
   overflow: 'hidden',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.accent1.main
-        : theme.palette.primary.main,
+    backgroundColor: (theme.vars || theme).palette.primary.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.accent1.main,
+    }),
   },
 }));
 
 export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
-  color: theme.palette.white.main,
-  backgroundColor: theme.palette.primary.main,
+  color: (theme.vars || theme).palette.white.main,
+  backgroundColor: (theme.vars || theme).palette.primary.main,
   ':hover': {
-    backgroundColor: darken(theme.palette.primary.main, 0.16),
+    backgroundColor: (theme.vars || theme).palette.primary.dark,
   },
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor: theme.palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: theme.palette.bgQuaternary.hover,
+    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
   },
 }));
 
 export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark'
-      ? alpha(theme.palette.white.main, 0.12)
-      : alpha(theme.palette.black.main, 0.08),
+  backgroundColor: alpha(theme.palette.white.main, 0.04),
+  ...theme.applyStyles('light', {
+    background: alpha(theme.palette.black.main, 0.08),
+  }),
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.black.main, 0.08)
-        : alpha(theme.palette.white.main, 0.12),
+    backgroundColor: alpha(theme.palette.white.main, 0.12),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.08),
+    }),
   },
   '&:before': {
     content: '" "',
@@ -59,32 +58,35 @@ export const ButtonTransparent = styled(ButtonBase)(({ theme }) => ({
     borderRadius: 'inherit',
   },
   '&:hover:before': {
-    background: getContrastAlphaColor(theme, '4%'),
+    background: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.black.main, 0.04),
+    }),
   },
 }));
 
 export const SuperfestButton = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : alpha(theme.palette.primary.main, 0.42),
+  backgroundColor: alpha(theme.palette.primary.main, 0.42),
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.primary.main, 0.12)
-        : alpha(theme.palette.primary.main, 0.56),
+    backgroundColor: alpha(theme.palette.primary.main, 0.56),
+    ...theme.applyStyles('light', {
+      backgroundColor: alpha(theme.palette.primary.main, 0.12),
+    }),
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+  }),
 }));
 
 export const LevelButton = styled(ButtonSecondary)(({ theme }) => ({
   display: 'flex',
-  color:
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   justifyContent: 'center',
   alignItems: 'center',
   pointerEvents: 'none',
   paddingLeft: '12px',
   height: '32px',
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));

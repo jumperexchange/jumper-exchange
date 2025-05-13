@@ -14,13 +14,13 @@ interface NavbarContainerProps extends AppBarProps {
 
 export const NavbarContainer = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'hasBlurredNavigation',
-})<NavbarContainerProps>(({ theme, hasBlurredNavigation }) => ({
+})<NavbarContainerProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   position: 'sticky',
   top: 0,
-  backdropFilter: !hasBlurredNavigation ? 'blur(12px)' : 'blur(12px)',
+  backdropFilter: 'blur(12px)',
   boxShadow: 'unset',
   background: 'transparent',
   alignItems: 'center',
@@ -35,6 +35,14 @@ export const NavbarContainer = styled(AppBar, {
     padding: theme.spacing(3),
     height: HeaderHeight.MD,
   },
+  variants: [
+    {
+      props: ({ hasBlurredNavigation }) => !hasBlurredNavigation,
+      style: {
+        backdropFilter: 'blur(12px)',
+      },
+    },
+  ],
 }));
 
 export const LogoLink = styled(Link)(({ theme }) => ({

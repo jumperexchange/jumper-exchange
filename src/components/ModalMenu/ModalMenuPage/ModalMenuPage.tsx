@@ -1,9 +1,8 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha, IconButton, Typography } from '@mui/material';
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, JSX, SetStateAction } from 'react';
 import { ButtonSecondary } from 'src/components/Button';
-import { getContrastAlphaColor } from 'src/utils/colors';
 import { ModalMenuContent, ModalMenuHeader } from './ModalMenuPage.style';
 
 export const ModalMenuPage = ({
@@ -42,9 +41,9 @@ export const ModalMenuPage = ({
               edge="start"
               sx={(theme) => ({
                 marginLeft: 0,
-                color: theme.palette.text.primary,
+                color: (theme.vars || theme).palette.text.primary,
                 '&:hover': {
-                  backgroundColor: getContrastAlphaColor(theme, '4%'),
+                  backgroundColor: theme.palette.grey[100],
                 },
               })}
               onClick={(event) => {
@@ -63,9 +62,12 @@ export const ModalMenuPage = ({
               aria-label="close"
               onClick={() => setOpen?.(false)}
               sx={(theme) => ({
-                color: theme.palette.text.primary,
+                color: (theme.vars || theme).palette.text.primary,
                 '&:hover': {
-                  backgroundColor: alpha(theme.palette.text.primary, 0.04),
+                  backgroundColor: alpha(
+                    (theme.vars || theme).palette.text.primary,
+                    0.04,
+                  ),
                 },
               })}
             >
@@ -81,7 +83,9 @@ export const ModalMenuPage = ({
           <Typography
             variant="bodyMediumStrong"
             component="span"
-            sx={(theme) => ({ color: theme.palette.text.primary })}
+            sx={(theme) => ({
+              color: (theme.vars || theme).palette.text.primary,
+            })}
           >
             {buttonLabel}
           </Typography>

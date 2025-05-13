@@ -19,15 +19,12 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
   paddingBottom: theme.spacing(3),
   borderRadius: '12px',
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   width: `calc( 100% - ${theme.spacing(3)})`,
   maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
-  background:
-    theme.palette.mode === 'light'
-      ? theme.palette.surface1.main
-      : theme.palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   '&:focus-visible': {
     outline: 0,
   },
@@ -35,6 +32,9 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
     margin: 0,
     width: 640,
   },
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.surface1.main,
+  }),
 }));
 
 export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
@@ -52,26 +52,26 @@ export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
   left: 'initial',
   right: 'initial',
   position: 'sticky',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
   minHeight: 48,
   top: 0,
   padding: theme.spacing(1.5, 3),
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.surface1.main, 0.84)
-      : alpha(theme.palette.surface2.main, 0.2),
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   backdropFilter: 'blur(12px)',
   boxShadow: 'unset',
   backgroundImage: 'unset',
   '@supports ( -moz-appearance:none )': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.surface1.main
-        : theme.palette.surface2.main,
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+    }),
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+  }),
 }));
 
 export const ModalHeader = styled(Box)(() => ({
@@ -92,7 +92,7 @@ export const ToolModalTitle = styled(Typography)(() => ({
 }));
 
 export const ToolModalIconButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   transform: 'translateX(8px)',
 }));
 
@@ -108,7 +108,7 @@ export const ToolModalAvatar = styled(Avatar)(() => ({
 }));
 
 export const ToolModaItemlTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   maxWidth: 72,

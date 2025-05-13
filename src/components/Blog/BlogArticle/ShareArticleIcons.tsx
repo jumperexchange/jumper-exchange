@@ -143,10 +143,18 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
         tooltipMsg={t('blog.shareLink')}
         icon={
           <LinkIcon
-            sx={{
-              width: '28px',
-              marginLeft: showCopyMessage ? '2px' : 0,
-            }}
+            sx={[
+              {
+                width: '28px',
+              },
+              showCopyMessage
+                ? {
+                    marginLeft: '2px',
+                  }
+                : {
+                    marginLeft: 0,
+                  },
+            ]}
           />
         }
         showMsgActive={showCopyMessage}

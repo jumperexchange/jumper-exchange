@@ -25,7 +25,9 @@ const getStatusColor = (
     case 'FAILED':
       return alpha(theme.palette.error.main, 0.12);
     default:
-      return theme.palette.grey[theme.palette.mode === 'light' ? 300 : 800];
+      return (theme.vars || theme).palette.grey[
+        theme.palette.mode === 'light' ? 300 : 800
+      ];
   }
 };
 
@@ -35,7 +37,7 @@ export const CircularIcon = styled(Box, {
   ({ theme, status, substatus }) => ({
     backgroundColor: ['ACTION_REQUIRED', 'DONE', 'FAILED'].includes(status!)
       ? getStatusColor(theme, status, substatus)
-      : theme.palette.background.paper,
+      : (theme.vars || theme).palette.background.paper,
     borderStyle: 'solid',
     borderColor: getStatusColor(theme, status, substatus),
     borderWidth: !['ACTION_REQUIRED', 'DONE', 'FAILED'].includes(status!)
@@ -67,11 +69,15 @@ const circleAnimation = keyframes`
 
 // This `styled()` function invokes keyframes. `styled-components` only supports keyframes
 // in string templates. Do not convert these styles in JS object as it will break.
+// TODO: verify it if it works after migration
 export const CircularProgressPending = styled(MuiCircularProgress)`
-  color: ${({ theme }) =>
-    theme.palette.mode === 'light'
-      ? theme.palette.primary.main
-      : theme.palette.primary.light};
+  color: ${({ theme }) => (theme.vars || theme).palette.primary.light};
+
+  ${({ theme }) =>
+    theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.primary.main,
+    })}
+
   animation-duration: 3s;
   position: absolute;
   .${circularProgressClasses.circle} {

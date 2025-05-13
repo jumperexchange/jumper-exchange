@@ -20,10 +20,11 @@ export const MissionCtaContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#69d7ff',
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken('#69d7ff', 0.02) //todo: add to theme
-        : alpha('#69d7ff', 0.16),
+    backgroundColor: alpha('#69d7ff', 0.16),
+    ...theme.applyStyles('light', {
+      //todo: add to theme
+      backgroundColor: darken('#69d7ff', 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -48,13 +49,14 @@ export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   transition: 'background-color 250ms',
   borderRadius: '16px',
-  backgroundColor: theme.palette.bgTertiary.main,
+  backgroundColor: (theme.vars || theme).palette.bgTertiary.main,
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken(theme.palette.bgTertiary.main, 0.02) //todo: add to theme
-        : alpha(theme.palette.bgTertiary.main, 0.16),
+    backgroundColor: alpha(theme.palette.bgTertiary.main, 0.16),
+    ...theme.applyStyles('light', {
+      //todo: add to theme
+      backgroundColor: darken(theme.palette.bgTertiary.main, 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -65,11 +67,10 @@ export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
 export const MissionCtaTitle = styled(Box)(({ theme }) => ({
   fontFamily: inter.style.fontFamily,
   fontWeight: 700,
-  color: theme.palette.black.main,
+  color: (theme.vars || theme).palette.black.main,
   fontSize: '32px',
   lineHeight: '38px',
   userSelect: 'none',
-
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     fontSize: '40px',
     lineHeight: '56px',
@@ -141,14 +142,14 @@ export const StartedTitleBox = styled(Box)(({ theme }) => ({
 
 export const CTAMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   flexDirection: 'column',
   width: '80%',
   maxWidth: '1210px',
   marginTop: '64px',
   borderRadius: '8px',
   padding: '32px',
-  backgroundColor: theme.palette.bgSecondary.main, //'#fdfbef',
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main, //'#fdfbef',
 }));
 
 export const CTAExplanationBox = styled(Box)(({ theme }) => ({

@@ -21,19 +21,19 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   border: 'unset',
   padding: theme.spacing(2),
   borderRadius: '32px',
-  background: theme.palette.bgTertiary.main,
+  background: (theme.vars || theme).palette.bgTertiary.main,
   transition: 'background-color 250ms',
-  boxShadow: theme.shadows[2],
+  boxShadow: (theme.vars || theme).shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minWidth: 250,
     width: 416,
   },
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? darken(theme.palette.white.main, 0.04)
-        : theme.palette.alphaLight300.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: darken(theme.palette.white.main, 0.04),
+    }),
   },
 }));
 
@@ -124,7 +124,7 @@ export const BlogArticleCardMetaContainer = styled(Box, {
   alignItems: 'center',
   fontSize: '14px',
   height: 40,
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   '*': { textWrap: 'nowrap' },
   [theme.breakpoints.up('sm' as Breakpoint)]: {},
   variants: [

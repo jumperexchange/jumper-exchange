@@ -147,17 +147,19 @@ export const MenuPaper = styled(Paper, {
     prop !== 'isMobile' && prop !== 'width' && prop !== 'show',
 })<MenuPaperProps>(({ theme, isMobile, show, width }) => ({
   display: !show ? 'none' : 'block',
-  background: theme.palette.surface1.main,
+  background: (theme.vars || theme).palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  boxShadow:
-    theme.palette.mode === 'light'
-      ? `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-          isMobile ? '-' : ''
-        }8px 16px rgba(0, 0, 0, 0.16)`
-      : `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-          isMobile ? '-' : ''
-        }8px 16px rgba(0, 0, 0, 0.08)`,
+  // TODO: Fix this
+  boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+    isMobile ? '-' : ''
+  }8px 16px rgba(0, 0, 0, 0.08)`,
+
+  ...theme.applyStyles('light', {
+    boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
+      isMobile ? '-' : ''
+    }8px 16px rgba(0, 0, 0, 0.16)`,
+  }),
   borderRadius: '12px 12px 0 0',
   marginBottom: 0,
   // viewHeight - navbarHeight - offset
@@ -213,7 +215,7 @@ export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
     position: 'sticky',
     top: 0,
     alignItems: 'center',
-    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+    backgroundColor: 'inherit',
     backdropFilter: 'blur(12px)',
     zIndex: 1400,
     overflow: 'hidden',
@@ -236,18 +238,19 @@ export interface MenuHeaderAppBarProps extends Omit<AppBarProps, 'component'> {
 
 export const MenuHeaderAppBar = styled(AppBar)<MenuHeaderAppBarProps>(
   ({ theme }) => ({
-    backgroundColor: 'transparent',
+    background: 'transparent!important',
     zIndex: 1500,
     position: 'fixed',
     top: 'initial',
     left: 'initial',
     right: 'initial',
     padding: theme.spacing(0, 1.5, 0, 1.5),
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: 48,
+
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       padding: theme.spacing(0, 1.5),
       position: 'relative',

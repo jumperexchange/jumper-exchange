@@ -11,7 +11,7 @@ export const BerachainMarketFilters = styled(Box)(({ theme }) => ({
 export const BerachainMarketFiltersButton = styled(Button)(({ theme }) => ({
   display: 'flex',
   height: 48,
-  color: theme.palette.text.primary, // alpha(theme.palette.text.primary, 0.48),
+  color: (theme.vars || theme).palette.text.primary, // alpha(theme.palette.text.primary, 0.48),
   padding: theme.spacing(1.5),
   alignItems: 'center',
   gap: theme.spacing(1.5),
@@ -28,7 +28,7 @@ export const BerachainMarketBaffleFormControlLabel = styled(FormControlLabel)(
   ({ theme }) => ({
     display: 'flex',
     height: 48,
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     padding: theme.spacing(1.5),
     alignItems: 'center',
     gap: theme.spacing(1.5),
@@ -64,17 +64,27 @@ interface BerachainMarketFilterArrowProps {
 
 export const BerachainMarketFilterArrow = styled(KeyboardArrowDownIcon, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<BerachainMarketFilterArrowProps>(({ active, theme }) => ({
+})<BerachainMarketFilterArrowProps>(({ theme }) => ({
   color: alpha(theme.palette.text.primary, 0.24),
   marginTop: theme.spacing(0.25),
   width: 24,
   height: 24,
   transition: 'transform 0.3s ease',
-  transform: `rotate(${active ? '180deg' : '0deg'})`,
+  transform: `rotate(${'0deg'})`,
+  variants: [
+    {
+      props: ({ active }) => active,
+      style: {
+        transform: {
+          transform: '180deg',
+        },
+      },
+    },
+  ],
 }));
 
 export const BerachainRedirectionCTA = styled(Button)(({ theme }) => ({
-  color: theme.palette.black.main,
+  color: (theme.vars || theme).palette.black.main,
   background: '#FF8425',
   marginTop: theme.spacing(1.5),
   transition: ' background-color 300ms ease-in',

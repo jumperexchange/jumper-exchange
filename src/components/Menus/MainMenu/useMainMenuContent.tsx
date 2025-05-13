@@ -17,29 +17,26 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
-import { getContrastAlphaColor } from '@/utils/colors';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
-import { Typography } from '@mui/material';
+import { alpha, Typography, useColorScheme } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useThemeSwitchTabs } from './useThemeSwitchTabs';
 
 export const useMainMenuContent = () => {
+  const { mode } = useColorScheme();
   const { t, i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
-  const [themeMode, configTheme] = useThemeStore((state) => [
-    state.themeMode,
-    state.configTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
     (state) => state,
   );
@@ -73,8 +70,8 @@ export const useMainMenuContent = () => {
     mainMenu.push({
       children: (
         <Tabs
-          data={themeSwitchTabs}
-          value={themeMode === 'light' ? 0 : themeMode === 'dark' ? 1 : 2}
+          data={themeSwitchTabs || []}
+          value={mode === 'light' ? 0 : mode === 'dark' ? 1 : 2}
           ariaLabel="theme-switch-tabs"
           containerStyles={containerStyles}
           tabStyles={tabStyles}
@@ -92,13 +89,16 @@ export const useMainMenuContent = () => {
         paddingTop: `${theme.spacing(0.5)} !important`,
         padding: theme.spacing(0.5),
         '> button:hover': {
-          backgroundColor: getContrastAlphaColor(theme, '4%'),
+          backgroundColor: alpha(theme.palette.white.main, 0.04),
+          ...theme.applyStyles('light', {
+            backgroundColor: alpha(theme.palette.black.main, 0.04),
+          }),
         },
         '> button:hover svg': {
           fill:
-            theme.palette.mode === 'light'
+            mode === 'light'
               ? theme.palette.grey[700]
-              : theme.palette.grey[300],
+              : alpha(theme.palette.white.main, 0.88),
         },
       },
       showMoreIcon: false,
@@ -156,7 +156,6 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'pass' },
         });
         closeAllMenus();
-        router.push(JUMPER_LOYALTY_PATH);
       },
     },
     {
@@ -172,7 +171,6 @@ export const useMainMenuContent = () => {
           data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
         });
         closeAllMenus();
-        router.push(JUMPER_LEARN_PATH);
       },
     },
     {
@@ -187,6 +185,7 @@ export const useMainMenuContent = () => {
           action: TrackingAction.ClickJumperScanLink,
           data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
         });
+        closeAllMenus();
       },
     },
     {
@@ -216,7 +215,13 @@ export const useMainMenuContent = () => {
     },
     {
       label: 'Discord',
-      prefixIcon: <Discord color={theme.palette.text.primary} />,
+      prefixIcon: (
+        <Discord
+          sx={{
+            color: (theme.vars || theme).palette.text.primary,
+          }}
+        />
+      ),
       showMoreIcon: false,
       onClick: () => {
         trackEvent({
@@ -243,11 +248,12 @@ export const useMainMenuContent = () => {
       label: t('navbar.navbarMenu.support'),
       prefixIcon: (
         <Discord
-          color={
-            theme.palette.mode === 'light'
-              ? theme.palette.primary.main
-              : theme.palette.white.main
-          }
+          sx={{
+            color: theme.palette.common.white,
+            ...theme.applyStyles('light', {
+              color: (theme.vars || theme).palette.primary.main,
+            }),
+          }}
         />
       ),
       onClick: () => {

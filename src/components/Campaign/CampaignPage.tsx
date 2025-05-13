@@ -1,5 +1,8 @@
 'use client';
 
+import type { CampaignData } from '@/types/strapi';
+import { useTranslation } from 'react-i18next';
+import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { MerklRewards } from '../ProfilePage/MerklRewards';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { QuestsOverview } from '../ProfilePage/QuestsOverview/QuestsOverview';
@@ -7,37 +10,22 @@ import { BackButton } from '../QuestPage/BackButton/BackButton';
 import { CampaignHeader } from './CampaignHeader/CampaignHeader';
 
 interface CampaignPageProps {
-  label: string;
-  baseUrl?: string;
-  activeCampaign?: string;
-  path: string;
+  campaign: CampaignData;
 }
 
-export const CampaignPage = ({
-  label,
-  activeCampaign,
-  path,
-}: CampaignPageProps) => {
-  // const { account } = useAccount();
-  // const { pastCampaigns } = useMerklRewardsOnCampaigns({
-  //   userAddress: account?.address,
-  // });
-
+export const CampaignPage = ({ campaign }: CampaignPageProps) => {
+  const { t } = useTranslation();
   return (
     <PageContainer className="profile-page">
-      <BackButton path={path} title={activeCampaign} />
-      <MerklRewards />
-      <CampaignHeader
-        bannerImage={'https://strapi.jumper.exchange/uploads/BG_dbd731b976.png'}
-        tokenImage={
-          'https://strapi.jumper.exchange/uploads/Np_M0_F_Gcg_EMJCIT_Nnh_M_Fnl5_Ul8_f69135f4bf.avif'
-        }
-        websiteLink={
-          'https://lifi.notion.site/Jumper-x-Berachain-Campaign-rules-1a5f0ff14ac7806dbb93c58165d9252e'
-        }
-        Xlink={''}
+      <BackButton
+        path={JUMPER_LOYALTY_PATH}
+        title={t('navbar.navbarMenu.profile') || 'Profile'}
       />
-      <QuestsOverview pastCampaigns={[]} label={label} />
+      <MerklRewards campaign={campaign} />
+      <CampaignHeader campaign={campaign} />
+      {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (
+        <QuestsOverview quests={campaign.quests} label={campaign.Slug} />
+      )}
     </PageContainer>
   );
 };

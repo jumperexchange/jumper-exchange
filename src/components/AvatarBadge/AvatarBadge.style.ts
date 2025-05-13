@@ -1,7 +1,31 @@
 import { Avatar, Badge, Avatar as MuiAvatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import type { BadgeOffsetProps } from './AvatarBadge';
 import { getAvatarMask } from './getAvatarMask';
+
+// Styled component for Badge Content (badge image)
+
+// Styled component for AvatarBadge
+
+// Styled avatar
+export const StyledBadgeAvatar = styled(MuiAvatar, {
+  shouldForwardProp: (prop) => prop !== 'badgeSize',
+})<{
+  badgeSize: number;
+}>(({ badgeSize }) => ({
+  width: badgeSize,
+  height: badgeSize,
+  position: 'absolute',
+  bottom: 0,
+  right: 0,
+  top: 'unset',
+  left: 'unset',
+  // display: 'block',
+}));
+
+export interface BadgeOffsetProps {
+  x?: number;
+  y?: number;
+}
 
 interface StyledAvatarProps {
   avatarSize: number;
@@ -56,19 +80,4 @@ export const StyledBadge = styled(Badge, {
       transform: `translate(${badgeOffset?.x ? badgeOffset.x : 0}px, ${badgeOffset?.y ? badgeOffset.y : 0}px)`,
     }),
   },
-}));
-
-// Styled avatar
-export const StyledBadgeAvatar = styled(MuiAvatar, {
-  shouldForwardProp: (prop) => prop !== 'badgeSize',
-})<{
-  badgeSize: number;
-}>(({ badgeSize }) => ({
-  width: badgeSize,
-  height: badgeSize,
-  position: 'absolute',
-  bottom: 0,
-  right: 0,
-  top: 'unset',
-  left: 'unset',
 }));

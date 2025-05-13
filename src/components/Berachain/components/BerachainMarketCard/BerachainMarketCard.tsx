@@ -156,16 +156,24 @@ export const BerachainMarketCard = ({
             }}
           >
             <BeraChainProgressCardComponent
-              sx={{
-                height: '100%',
-                padding: theme.spacing(1.5, 2),
-                display: 'flex',
-                justifyContent: 'space-between',
-                backgroundColor: deposited ? '#291812' : undefined,
-                [theme.breakpoints.up('sm' as Breakpoint)]: {
+              sx={[
+                {
+                  height: '100%',
                   padding: theme.spacing(1.5, 2),
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  [theme.breakpoints.up('sm' as Breakpoint)]: {
+                    padding: theme.spacing(1.5, 2),
+                  },
                 },
-              }}
+                deposited
+                  ? {
+                      backgroundColor: '#291812',
+                    }
+                  : {
+                      backgroundColor: null,
+                    },
+              ]}
             >
               <DigitTokenSymbolCard
                 sx={(theme) => ({

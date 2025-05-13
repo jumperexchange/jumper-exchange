@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import type { MouseEvent, MouseEventHandler, ReactNode } from 'react';
 import { MenuItemContainer, MenuItemLink } from '.';
 import { MenuItemLabel } from './MenuItemLabel';
+import RouterLink from 'next/link';
 
 export interface MenuItemLinkType {
   url: string;
@@ -23,8 +24,8 @@ interface MenuItemProps {
   label?: string;
   onClick?: MouseEventHandler<HTMLLIElement>;
   triggerSubMenu?: MenuKeysEnum;
-  prefixIcon?: JSX.Element | string;
-  suffixIcon?: JSX.Element | string;
+  prefixIcon?: React.JSX.Element | string;
+  suffixIcon?: React.JSX.Element | string;
 }
 
 export const MenuItem = ({
@@ -65,16 +66,16 @@ export const MenuItem = ({
               ml={!!prefixIcon ? '9.5px' : 'inherit'}
               mr={!!prefixIcon ? '9.5px' : 'inherit'}
               sx={(theme) => ({
-                color:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.primary.main
-                    : theme.palette.white.main,
+                color: (theme.vars || theme).palette.white.main,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 maxWidth: 208,
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
                   maxWidth: 168,
                 },
+                ...theme.applyStyles('light', {
+                  color: (theme.vars || theme).palette.primary.main,
+                }),
               })}
             >
               {label}
@@ -84,6 +85,7 @@ export const MenuItem = ({
         )}
         {!showButton && link?.url && (
           <MenuItemLink
+            as={RouterLink}
             href={link.url}
             target={link.external ? '_blank' : '_self'}
           >

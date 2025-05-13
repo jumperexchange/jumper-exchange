@@ -9,10 +9,12 @@ import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { BannerContainer } from './Banner.style';
+import { useColorScheme } from '@mui/material';
 
 export const Banner = () => {
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
+  const { mode } = useColorScheme();
 
   const handleClick = () => {
     trackEvent({
@@ -48,20 +50,20 @@ export const Banner = () => {
           height={24}
           style={{ marginRight: 8 }}
           src={
-            theme.palette.mode === 'light'
+            mode === 'light'
               ? 'https://strapi.jumper.exchange/uploads/jumper_57348536c0.svg'
               : 'https://strapi.jumper.exchange/uploads/jumper_04f15d06be.svg'
           }
         />
         <Typography
           sx={(theme) => ({
-            color:
-              theme.palette.mode === 'light'
-                ? theme.palette.accent1.main
-                : '#FFFFFFD6',
+            color: '#FFFFFFD6',
             fontSize: '16px',
             fontWeight: 700,
             lineHeight: '20px',
+            ...theme.applyStyles('light', {
+              color: (theme.vars || theme).palette.accent1.main,
+            }),
           })}
         >
           {' '}
@@ -73,7 +75,7 @@ export const Banner = () => {
           height={24}
           style={{ marginLeft: 8 }}
           src={
-            theme.palette.mode === 'light'
+            mode === 'light'
               ? 'https://strapi.jumper.exchange/uploads/theme_c92ac9f474.svg'
               : 'https://strapi.jumper.exchange/uploads/button_darkl_70bedec2df.svg'
           }

@@ -8,14 +8,14 @@ import { IconButtonPrimary } from '../IconButton.style';
 
 export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   display: 'flex',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'unset',
   flexDirection: 'column',
   justifyContent: 'center',
   gap: theme.spacing(1.5),
   alignItems: 'center',
-  backgroundColor: theme.palette.bgSecondary.main,
-  boxShadow: theme.shadows[1],
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  boxShadow: (theme.vars || theme).shadows[1],
   borderRadius: '32px',
   cursor: 'pointer',
   padding: theme.spacing(6),
@@ -23,10 +23,10 @@ export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   margin: theme.spacing(6, 2),
   marginBottom: theme.spacing(14.5),
   '&:hover': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? alpha(theme.palette.white.main, 1)
-        : alpha(theme.palette.white.main, 0.2),
+    backgroundColor: alpha(theme.palette.white.main, 0.2),
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),

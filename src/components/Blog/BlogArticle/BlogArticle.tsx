@@ -32,7 +32,6 @@ import {
 import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
-import type { ThemeMode } from '@/types/theme';
 import { readingTime } from '@/utils/readingTime';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
@@ -40,15 +39,10 @@ import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 interface BlogArticleProps {
   article: BlogArticleData;
   baseUrl?: string;
-  activeThemeMode?: ThemeMode;
   id?: number;
 }
 
-export const BlogArticle = ({
-  article,
-  baseUrl,
-  activeThemeMode,
-}: BlogArticleProps) => {
+export const BlogArticle = ({ article, baseUrl }: BlogArticleProps) => {
   const theme = useTheme();
   const {
     Subtitle: subtitle,
@@ -75,11 +69,9 @@ export const BlogArticle = ({
           <BlogArticleTopHeader>
             {tags?.[0]?.Title ? (
               <Tag
-                sx={{
-                  ...(mainTag?.TextColor && {
-                    color: mainTag.TextColor,
-                  }),
-                }}
+                sx={
+                  mainTag?.TextColor ? { color: mainTag.TextColor } : undefined
+                }
                 backgroundColor={mainTag?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"
@@ -187,12 +179,7 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <CustomRichBlocks
-              id={id}
-              baseUrl={baseUrl}
-              content={content}
-              activeThemeMode={activeThemeMode}
-            />
+            <CustomRichBlocks id={id} baseUrl={baseUrl} content={content} />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}

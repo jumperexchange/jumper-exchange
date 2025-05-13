@@ -19,7 +19,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
     gap: theme.spacing(2),
     maxWidth: 416,
     zIndex: 2000,
-    background: theme.palette.surface1.main, // theme.palette.surface2.main into the figma, which is not matching the right color, might need to be updated
+    background: (theme.vars || theme).palette.surface1.main, // (theme.vars || theme).palette.surface2.main into the figma, which is not matching the right color, might need to be updated
   },
 }));
 
@@ -61,9 +61,16 @@ export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
     padding: '10px 24px',
     height: 40,
     width: '100%',
-    background: alpha(theme.palette.text.primary, 0.04),
+    background: alpha(theme.palette.white.main, 0.04),
+    ...theme.applyStyles('light', {
+      background: alpha(theme.palette.black.main, 0.04),
+    }),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.text.primary, 0.08),
+      backgroundColor: alpha(theme.palette.white.main, 0.08),
+
+      ...theme.applyStyles('light', {
+        backgroundColor: alpha(theme.palette.black.main, 0.08),
+      }),
     },
   }),
 );
@@ -83,7 +90,7 @@ export const WalletCardContainer = styled(Container)(({ theme }) => ({
   padding: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
-  background: theme.palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   borderRadius: '16px',
   [theme.breakpoints.down('sm' as Breakpoint)]: {
     padding: '10px',

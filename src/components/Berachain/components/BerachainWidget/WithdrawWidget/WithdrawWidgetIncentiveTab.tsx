@@ -169,20 +169,30 @@ export const WithdrawWidgetIncentiveTab = ({
           return (
             <FormControlLabel
               value={tokenIndex}
-              sx={{
-                display: 'flex', // Equivalent to `flex`
-                justifyContent: 'space-between', // Equivalent to `justify-between`
-                alignItems: 'flex-start',
-                gap: 2, // Equivalent to `gap-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
-                borderRadius: '16px', // Equivalent to `rounded-2xl` (16px)
-                border:
-                  value !== tokenIndex
-                    ? '1px solid #554F4E'
-                    : '1px solid #FF8425', // Creates the border
-                padding: 3, // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
-                marginY: 1,
-                marginX: 0,
-              }}
+              sx={[
+                {
+                  // Equivalent to `flex`
+                  display: 'flex',
+                  // Equivalent to `justify-between`
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  // Equivalent to `gap-2` (MUI uses theme-based spacing; `2` = 2 * 8px = 16px)
+                  gap: 2,
+                  // Equivalent to `rounded-2xl` (16px)
+                  borderRadius: '16px',
+                  // Equivalent to `p-3` (MUI uses theme-based spacing; `3` = 3 * 8px = 24px)
+                  padding: 3,
+                  marginY: 1,
+                  marginX: 0,
+                },
+                value !== tokenIndex
+                  ? {
+                      border: '1px solid #554F4E',
+                    }
+                  : {
+                      border: '1px solid #FF8425',
+                    },
+              ]}
               control={
                 <Radio
                   sx={{ visibility: 'hidden' }}

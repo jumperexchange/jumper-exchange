@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 
 export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   left: '50%',
   transform: 'translateX(-50%)',
   width: 416,
@@ -24,11 +24,11 @@ export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(3),
   borderRadius: '16px',
-  background:
-    theme.palette.mode === 'light'
-      ? theme.palette.surface1.main
-      : theme.palette.surface2.main,
-  boxShadow: theme.shadows[1],
+  background: (theme.vars || theme).palette.surface2.main,
+  boxShadow: (theme.vars || theme).shadows[1],
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.surface1.main,
+  }),
 }));
 
 export const MultisigConfirmationModalButton = styled(Button)(({ theme }) => ({
@@ -56,7 +56,7 @@ export const MultisigConfirmationModalIcon = styled(InfoRounded)(
     margin: theme.spacing(3),
     height: 48,
     width: 48,
-    color: theme.palette.info.main,
+    color: (theme.vars || theme).palette.info.main,
     zIndex: 2,
   }),
 );

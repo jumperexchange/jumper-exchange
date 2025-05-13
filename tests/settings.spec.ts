@@ -24,7 +24,7 @@ test.describe('Settings menu', () => {
       'xpath=//button[normalize-space(text())="Fast"]',
     );
     const customSlippage = page.locator('xpath=//input[@placeholder="Custom"]');
-    await page.locator('xpath=//div[@class="MuiBox-root mui-afg6ra"]').click();
+    await page.locator('xpath=//button[@aria-label="Settings"]').click();
     await expect(settingsTitle).toBeVisible();
     await itemInSettingsMenu(page, 'Route priority');
     await checkItemInSettingsMenu(page, 'Best Return', { enabled: true });

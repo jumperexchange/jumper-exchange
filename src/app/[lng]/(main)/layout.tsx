@@ -1,4 +1,3 @@
-import { getCookies } from '@/app/lib/getCookies';
 import { FeatureCards } from '@/components/FeatureCards';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
@@ -14,11 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function MainLayout({ children }: PropsWithChildren) {
-  const { activeTheme } = await getCookies();
   return (
     <>
       <Layout>
-        <App activeTheme={activeTheme}>{children}</App>
+        <App>{children}</App>
       </Layout>
       <FeatureCards />
     </>
