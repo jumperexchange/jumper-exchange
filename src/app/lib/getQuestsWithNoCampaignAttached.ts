@@ -12,10 +12,13 @@ export async function getQuestsWithNoCampaignAttached() {
     });
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
+
   const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'force-cache',
     headers: {
       Authorization: `Bearer ${accessToken}`,
+    },
+    next: {
+      revalidate: 60 * 1, // revalidate every 5 minutes
     },
   });
 
