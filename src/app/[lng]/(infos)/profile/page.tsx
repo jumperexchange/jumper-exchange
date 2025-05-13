@@ -17,11 +17,5 @@ export default async function Page() {
   const { data: campaigns } = await getProfileBannerCampaigns();
   const { data: questsData } = await getQuestsWithNoCampaignAttached();
 
-  return (
-    <>
-      <pre>{JSON.stringify(questsData, null, 2)}</pre>
-      <p>Rendered at: {new Date().toISOString()}</p>
-      <ProfilePage quests={questsData.data} campaigns={campaigns} />
-    </>
-  );
+  return <ProfilePage quests={questsData.data} campaigns={campaigns} />;
 }

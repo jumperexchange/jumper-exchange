@@ -18,7 +18,7 @@ export async function getQuestsWithNoCampaignAttached() {
       Authorization: `Bearer ${accessToken}`,
     },
     next: {
-      revalidate: 60 * 1, // revalidate every 5 minutes
+      revalidate: 60 * 5, // revalidate every 5 minutes
     },
   });
 
