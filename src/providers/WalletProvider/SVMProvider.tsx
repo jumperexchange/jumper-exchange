@@ -2,6 +2,7 @@
 
 import type { Adapter } from '@solana/wallet-adapter-base';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { CoinbaseWalletAdapter } from '@solana/wallet-adapter-coinbase';
 import {
   ConnectionProvider,
   WalletProvider,
@@ -30,6 +31,7 @@ const wallets: Adapter[] = [
       projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
     },
   }),
+  new CoinbaseWalletAdapter(),
 ];
 
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
