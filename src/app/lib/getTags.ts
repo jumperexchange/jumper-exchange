@@ -1,5 +1,4 @@
 import type { StrapiResponse, TagAttributes } from '@/types/strapi';
-import { TagData } from '@/types/strapi';
 import { TagStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export interface GetTagsResponse extends StrapiResponse<TagAttributes> {
@@ -51,9 +50,11 @@ export async function getTags(): Promise<GetTagsResponse> {
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'force-cache',
     headers: {
       Authorization: `Bearer ${accessToken}`,
+    },
+    next: {
+      revalidate: 60 * 5, // revalidate every 5 minutes
     },
   });
 
