@@ -19,7 +19,7 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        An error occured
+        An error occurred
         {/*<NextError />*/}
       </body>
     </html>
