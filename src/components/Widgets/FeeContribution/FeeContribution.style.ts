@@ -101,17 +101,6 @@ export const ContributionButton = styled(Button, {
           : theme.palette.grey[300],
       },
     }),
-    // ...theme.applyStyles('light', {
-    //   color: (theme.vars || theme).palette.text.primary,
-    //   backgroundColor: active
-    //     ? 'rgba(101, 59, 163, 0.64)'
-    //     : (theme.vars || theme).palette.grey[100],
-    //   '&:hover': {
-    //     backgroundColor: active
-    //       ? 'rgba(101, 59, 163, 0.84)'
-    //       : `${theme.palette.grey[300]} !important`,
-    //   },
-    // }),
   };
 });
 
