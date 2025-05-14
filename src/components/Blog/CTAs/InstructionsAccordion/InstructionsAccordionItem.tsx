@@ -83,16 +83,7 @@ export const InstructionsAccordionItem = ({
   };
 
   return (
-    <InstructionsAccordionItemContainer
-      sx={[
-        {
-          typograpy: null,
-        },
-        {
-          borderColor: null,
-        },
-      ]}
-    >
+    <InstructionsAccordionItemContainer>
       <InstructionsAccordionItemMain onClick={(e) => handleOpen(e)}>
         <InstructionsAccordionItemHeader>
           <InstructionsAccordionItemIndex>
