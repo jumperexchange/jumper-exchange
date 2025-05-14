@@ -176,6 +176,13 @@ interface Resources {
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
+    tooltips: {
+      tvl: 'Total value of crypto assets deposited in this market.';
+      apy: 'Expected yearly return rate of the tokens invested.';
+      deposit: 'The displayed token is the token required to deposit into this market.';
+      deposited: 'Amount you have deposited into this market.';
+      boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
+    };
   };
 }
 
