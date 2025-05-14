@@ -31,14 +31,13 @@ export const QuestsMissionPage = ({
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest?.CustomInformation?.['rewards'];
+  const rewardsIds = quest?.CustomInformation?.['rewardsIds'];
   const points = quest?.Points;
-
   const { account } = useAccount();
   const { pastCampaigns } = useMerklRewards({
     userAddress: account.address,
   });
-  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
-
+  const { CTAsWithAPYs } = useMissionsAPY(rewardsIds);
   return (
     <QuestsContainer>
       <QuestPageMainBox>

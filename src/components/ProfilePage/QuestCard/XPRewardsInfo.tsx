@@ -26,13 +26,16 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
       <XPDisplayBox
         active={active}
         completed={completed}
-        bgcolor={bgColor}
-        sx={tooltip ? [{ cursor: 'help' }] : []}
+        sx={{
+          ...(bgColor && { backgroundColor: bgColor }),
+          ...(color && { color }),
+          ...(tooltip && { cursor: 'help' }),
+        }}
       >
         <XPDisplayBoxLabel variant="bodySmallStrong">
           {points}
         </XPDisplayBoxLabel>
-        {children ? children : <XPIcon color={color} />}
+        {children ? children : <XPIcon color={'inherit'} />}
       </XPDisplayBox>
     </Tooltip>
   );

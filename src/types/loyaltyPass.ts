@@ -70,6 +70,7 @@ type QuestsPlatformData = { id: number } & QuestsPlatformAttributes;
 export interface QuestChains {
   name: string;
   logo: string;
+  chainId?: number;
 }
 
 export interface CustomInformation {

@@ -1,9 +1,11 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Box,
+  Skeleton,
   type Theme,
   Tooltip,
   Typography,
+  useColorScheme,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -24,7 +26,6 @@ import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
   CTAExplanationBox,
   CTAMainBox,
-  MissionCtaButtonSF,
   SeveralCTABox,
   SeveralMissionCtaContainer,
   StartedTitleBox,
@@ -41,25 +42,17 @@ const MissionCTAButton = ({
   onClick,
 }: MissionCTAButtonProps) => {
   const theme = useTheme();
-  if (activeCampaign === 'superfest') {
-    return (
-      <MissionCtaButtonSF onClick={onClick}>
-        <ArrowForwardIcon
-          sx={{
-            color: theme.palette.text.primary,
-            width: '20px',
-            height: '20px',
-          }}
-        />
-      </MissionCtaButtonSF>
-    );
-  } else {
-    return (
-      <IconButtonPrimary onClick={onClick}>
-        <ArrowForwardIcon sx={{ width: '28px', height: '28px' }} />
-      </IconButtonPrimary>
-    );
-  }
+  return (
+    <IconButtonPrimary onClick={onClick}>
+      <ArrowForwardIcon
+        sx={{
+          width: '28px',
+          height: '28px',
+          color: (theme.vars || theme).palette.white.main,
+        }}
+      />
+    </IconButtonPrimary>
+  );
 };
 
 export interface CTALinkInt {
@@ -100,6 +93,7 @@ export const MissionCTA = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+  const { mode } = useColorScheme();
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
 
@@ -174,13 +168,17 @@ export const MissionCTA = ({
                 }
               >
                 <CTAExplanationBox>
-                  <Image
-                    src={CTA.logo}
-                    alt={`Image for ${CTA.logo}`}
-                    width={48}
-                    height={48}
-                    priority={false}
-                  />
+                  {CTA.logo ? (
+                    <Image
+                      src={CTA.logo}
+                      alt={`Image for ${CTA.logo}`}
+                      width={48}
+                      height={48}
+                      priority={false}
+                    />
+                  ) : (
+                    <Skeleton variant="circular" width={48} height={48} />
+                  )}
                   <Typography
                     marginTop={{ xs: '16px', md: '0px' }}
                     fontSize={{ xs: '16px', sm: '22px' }}
@@ -202,7 +200,11 @@ export const MissionCTA = ({
                       arrow
                     >
                       <XPDisplayBox
-                        bgcolor={theme.palette.primary.main}
+                        bgcolor={
+                          mode === 'dark'
+                            ? (theme.vars || theme).palette.alphaLight300.main
+                            : (theme.vars || theme).palette.alphaDark100.main
+                        }
                         marginRight={'16px'}
                         height={'32px'}
                         minWidth={'88px'}
@@ -210,12 +212,15 @@ export const MissionCTA = ({
                         <Typography
                           variant="bodyMediumStrong"
                           sx={(theme) => ({
-                            color: theme.palette.text.primary,
+                            color: (theme.vars || theme).palette.text.primary,
                           })}
                         >
                           {`${Number(CTA.apy).toFixed(1)}%`}
                         </Typography>
-                        <XPIconBox marginLeft="4px">
+                        <XPIconBox
+                          marginLeft="4px"
+                          sx={{ backgroundColor: '#fff', borderRadius: '12px' }}
+                        >
                           <APYIcon size={24} />
                         </XPIconBox>
                       </XPDisplayBox>
@@ -233,7 +238,7 @@ export const MissionCTA = ({
                           fontSize: '16px',
                           fontWeight: 700,
                           lineHeight: '20px',
-                          color: theme.palette.white.main,
+                          color: (theme.vars || theme).palette.white.main,
                         })}
                       >
                         {CTA?.weeklyApy

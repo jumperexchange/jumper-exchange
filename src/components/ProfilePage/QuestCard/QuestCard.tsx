@@ -1,7 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoneIcon from '@mui/icons-material/Done';
 import LockIcon from '@mui/icons-material/Lock';
-import { Box, Skeleton } from '@mui/material';
+import { Box, Skeleton, useColorScheme, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -61,6 +61,7 @@ export interface QuestCardProps {
   isLoading?: boolean;
   isTraitsGarded?: boolean;
   isUnlocked?: boolean;
+  rewardsIds?: string[];
   label?: string;
   points?: number;
   startDate?: string;
@@ -94,6 +95,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     isUnlocked,
     label,
     points,
+    rewardsIds,
     // rewards,
     rewardsProgress,
     rewardRange,
@@ -103,7 +105,12 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
   } = data;
 
   const { t } = useTranslation();
-  const { apy } = useMissionsMaxAPY(claimingIds);
+  const chainIds = chains
+    ?.flatMap((chain) => chain.chainId)
+    ?.filter((id): id is number => id !== undefined);
+  const { apy, data: maxData } = useMissionsMaxAPY(rewardsIds, chainIds);
+  const theme = useTheme();
+  const { mode } = useColorScheme();
   const { trackEvent } = useUserTracking();
   const handleClick = () => {
     trackEvent({
@@ -215,6 +222,16 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                         active={false}
                         completed={false}
                         points={`${Number(apy).toFixed(1)}%`}
+                        color={
+                          mode === 'dark'
+                            ? (theme.vars || theme).palette.text.secondary
+                            : (theme.vars || theme).palette.primary.main
+                        }
+                        bgColor={
+                          mode === 'dark'
+                            ? (theme.vars || theme).palette.alphaLight300.main
+                            : (theme.vars || theme).palette.alphaDark100.main
+                        }
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
