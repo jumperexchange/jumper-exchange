@@ -10,9 +10,15 @@ export const MaxButton = styled(Button, {
   minWidth: 'unset',
   height: 'auto',
   color: (theme.vars || theme).palette.text.primary,
-  backgroundColor: alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.78),
+  backgroundColor: alpha(
+    mainColor ?? (theme.vars || theme).palette.primary.main,
+    0.78,
+  ),
   '&:hover': {
-    backgroundColor: alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.48),
+    backgroundColor: alpha(
+      mainColor ?? (theme.vars || theme).palette.primary.main,
+      0.48,
+    ),
   },
 }));
 

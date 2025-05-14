@@ -9,9 +9,15 @@ export const MaxButton = styled(Button, {
   minWidth: 'unset',
   height: 'auto',
   color: (theme.vars || theme).palette.text.primary,
-  backgroundColor: alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.78),
+  backgroundColor: alpha(
+    mainColor ?? (theme.vars || theme).palette.primary.main,
+    0.78,
+  ),
   '&:hover': {
-    backgroundColor: alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.48),
+    backgroundColor: alpha(
+      mainColor ?? (theme.vars || theme).palette.primary.main,
+      0.48,
+    ),
   },
 }));
 
@@ -44,9 +50,7 @@ export const BerachainDepositInputBackground = styled(Box)(({ theme }) => ({
 
 export const BerachainDetailsAccordion = styled(Accordion)<{
   isExpanded?: boolean;
-}>(({
-  theme
-}) => ({
+}>(({ theme }) => ({
   background: 'transparent',
   border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
   cursor: 'pointer',

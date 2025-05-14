@@ -31,9 +31,7 @@ export interface SeeAllButtonContainerProps extends BoxProps {
 
 export const SeeAllButtonContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'show',
-})<SeeAllButtonContainerProps>(({
-  theme
-}) => ({
+})<SeeAllButtonContainerProps>(({ theme }) => ({
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
@@ -44,31 +42,27 @@ export const SeeAllButtonContainer = styled(Box, {
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     marginTop: theme.spacing(6),
   },
-  variants: [{
-    props: (
-      {
-        show
-      }
-    ) => show,
-    style: {
-      marginTop: theme.spacing(2)
-    }
-  }]
+  variants: [
+    {
+      props: ({ show }) => show,
+      style: {
+        marginTop: theme.spacing(2),
+      },
+    },
+  ],
 }));
 
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
   color: 'inherit',
-  backgroundColor:
-    (theme.vars || theme).palette.alphaLight400.main,
+  backgroundColor: (theme.vars || theme).palette.alphaLight400.main,
   width: 320,
   '&:hover': {
-    backgroundColor:
-      (theme.vars || theme).palette.alphaLight500.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.alphaDark200.main
-    })
+    backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+    }),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+  }),
 }));

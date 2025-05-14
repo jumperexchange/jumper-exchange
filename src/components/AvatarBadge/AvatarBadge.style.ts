@@ -54,25 +54,28 @@ export const StyledAvatar = styled(Avatar, {
 
 interface StyledBadgeProps {
   badgeOffset?: BadgeOffsetProps;
+  avatarSize: number;
 }
 
 // Styled Badge component for the badge
 export const StyledBadge = styled(Badge, {
-  shouldForwardProp: (prop) => prop !== 'badgeOffset',
-})<StyledBadgeProps>(({ badgeOffset }) => ({
+  shouldForwardProp: (prop) => prop !== 'badgeOffset' && prop !== 'avatarSize',
+})<StyledBadgeProps>(({ badgeOffset, avatarSize }) => ({
   borderRadius: '50%',
   display: 'block',
+  height: avatarSize,
+  width: avatarSize,
 
   '.MuiBadge-badge': {
-    position: 'static', // Remove absolute positioning
-    transform: 'none', // Remove unwanted transformations
-    top: 'unset', // Remove positioning
-    right: 'unset', // Remove positioning
-    zIndex: 'unset', // Remove z-index if not needed
-    minWidth: 'unset', // Remove minimum width
-    padding: 'unset', // Remove padding if not needed
-    height: 'unset', // Remove height
-    lineHeight: 'unset', // Remove line height
+    position: 'static',
+    transform: 'none',
+    top: 'unset',
+    right: 'unset',
+    zIndex: 'unset',
+    minWidth: 'unset',
+    padding: 'unset',
+    height: 'unset',
+    lineHeight: 'unset',
     ...((badgeOffset?.x || badgeOffset?.y) && {
       transform: `translate(${badgeOffset?.x ? badgeOffset.x : 0}px, ${badgeOffset?.y ? badgeOffset.y : 0}px)`,
     }),

@@ -42,11 +42,10 @@ export const AddressBoxContainer = styled(Box, {
     top: '50%',
     right: 0,
     bottom: 0,
-    backgroundColor:
-      alpha(theme.palette.grey[100], 0.08),
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.grey[100]
-    })
+    backgroundColor: alpha(theme.palette.grey[100], 0.08),
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.grey[100],
+    }),
   },
   variants: [
     {
@@ -75,17 +74,15 @@ export const AddressBoxContainer = styled(Box, {
 }));
 
 export const ProfileIconButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor:
-    alpha(theme.palette.grey[200], 0.08),
-  color:
-    (theme.vars || theme).palette.grey[100],
+  backgroundColor: alpha(theme.palette.grey[200], 0.08),
+  color: (theme.vars || theme).palette.grey[100],
   width: '32px',
   height: '32px',
   marginLeft: theme.spacing(1),
-  ...theme.applyStyles("light", {
+  ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.grey[200],
-    color: (theme.vars || theme).palette.black.main
-  })
+    color: (theme.vars || theme).palette.black.main,
+  }),
 }));
 
 export const AddressDisplayBox = styled(Box)(({ theme }) => ({

@@ -12,17 +12,14 @@ import {
   getMuiTheme,
   getPartnerTheme,
   getWidgetTheme,
-  getWidgetThemeV2
+  getWidgetThemeV2,
 } from './utils';
 import { useMediaQuery } from '@mui/material';
 import { themeCustomized } from 'src/theme/theme';
 import { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
 import { ThemeProps } from 'src/types/theme';
 
-export function ThemeProviderBase({
-  children,
-  themes,
-}: ThemeProviderProps) {
+export function ThemeProviderBase({ children, themes }: ThemeProviderProps) {
   const { mode, setMode } = useColorScheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -37,7 +34,7 @@ export function ThemeProviderBase({
         : undefined;
 
     const widgetTheme = getWidgetThemeV2(
-      mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode,
+      mode === 'system' || !mode ? (prefersDarkMode ? 'dark' : 'light') : mode,
       partnerTheme,
       themes,
     );
@@ -49,14 +46,7 @@ export function ThemeProviderBase({
       partnerThemes: themes!,
       widgetTheme: widgetTheme,
     };
-  }, [
-    mode,
-    themes,
-  ]);
+  }, [mode, themes]);
 
-  return (
-    <ThemeStoreProvider value={themeStore}>
-        {children}
-    </ThemeStoreProvider>
-  );
+  return <ThemeStoreProvider value={themeStore}>{children}</ThemeStoreProvider>;
 }

@@ -21,11 +21,10 @@ export const MissionCtaContainer = styled(Box)(({ theme }) => ({
   '&:hover': {
     cursor: 'pointer',
     //todo: add to theme
-    backgroundColor:
-      alpha('#69d7ff', 0.16),
-    ...theme.applyStyles("light", {
-      backgroundColor: darken('#69d7ff', 0.02)
-    })
+    backgroundColor: alpha('#69d7ff', 0.16),
+    ...theme.applyStyles('light', {
+      backgroundColor: darken('#69d7ff', 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -52,12 +51,11 @@ export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.bgTertiary.main, // backgroundColor: '#fff0ca',
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      alpha(theme.palette.bgTertiary.main, 0.16),
-    ...theme.applyStyles("light", {
-      backgroundColor: //todo: add to theme
-      darken(theme.palette.bgTertiary.main, 0.02)
-    })
+    backgroundColor: alpha(theme.palette.bgTertiary.main, 0.16),
+    ...theme.applyStyles('light', {
+      //todo: add to theme
+      backgroundColor: darken(theme.palette.bgTertiary.main, 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),

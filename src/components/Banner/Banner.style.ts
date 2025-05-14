@@ -12,13 +12,12 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   fontWeight: 700,
   cursor: 'pointer',
   ':hover': {
-    backgroundColor:
-      lighten('#30007A', 0.04),
-    ...theme.applyStyles("light", {
-      backgroundColor: darken('#CEADFF', 0.04)
-    })
+    backgroundColor: lighten('#30007A', 0.04),
+    ...theme.applyStyles('light', {
+      backgroundColor: darken('#CEADFF', 0.04),
+    }),
   },
-  ...theme.applyStyles("light", {
-    background: '#CEADFF'
-  })
+  ...theme.applyStyles('light', {
+    background: '#CEADFF',
+  }),
 }));

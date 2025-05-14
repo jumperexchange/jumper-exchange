@@ -39,7 +39,7 @@ export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
 export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(3),
   textWrap: 'nowrap',
-  height: 48
+  height: 48,
 }));
 
 export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
@@ -54,15 +54,13 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   padding: theme.spacing(1),
   paddingRight: theme.spacing(1.5),
   gap: '0.5rem',
-  backgroundColor:
-    (theme.vars || theme).palette.alphaLight300.main,
+  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
   boxShadow: '0px 2px 8px 0px #00000014',
   '&:hover': {
-    backgroundColor:
-      (theme.vars || theme).palette.alphaLight300.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.white.main
-    })
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
   },
   '&:hover:before': {
     content: '" "',
@@ -72,22 +70,21 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     bottom: 0,
     left: 0,
     transition: 'background-color 250ms',
-    background: alpha(theme.palette.white.main, 0.04)
+    background: alpha(theme.palette.white.main, 0.04),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.white.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
   borderRadius: '100%',
   borderStyle: 'solid',
   borderWidth: '2px',
-  borderColor:
-    alpha(theme.palette.white.main, 0.08),
-  ...theme.applyStyles("light", {
-    borderColor: (theme.vars || theme).palette.white.main
-  })
+  borderColor: alpha(theme.palette.white.main, 0.08),
+  ...theme.applyStyles('light', {
+    borderColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const SkeletonWalletMenuButton = styled(Skeleton)(({ theme }) => ({

@@ -24,8 +24,7 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
   maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
-  background:
-    (theme.vars || theme).palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   '&:focus-visible': {
     outline: 0,
   },
@@ -33,9 +32,9 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
     margin: 0,
     width: 640,
   },
-  ...theme.applyStyles("light", {
-    background: (theme.vars || theme).palette.surface1.main
-  })
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.surface1.main,
+  }),
 }));
 
 export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
@@ -65,15 +64,14 @@ export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
   boxShadow: 'unset',
   backgroundImage: 'unset',
   '@supports ( -moz-appearance:none )': {
-    backgroundColor:
-      (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.surface1.main
-    })
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+    }),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.surface1.main, 0.84)
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+  }),
 }));
 
 export const ModalHeader = styled(Box)(() => ({

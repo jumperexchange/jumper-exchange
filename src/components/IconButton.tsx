@@ -18,7 +18,6 @@ export const IconButton = styled(MuiIconButtom)<IconButtonProps>(
 
       ...theme.applyStyles('light', {
         backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
-
       }),
     },
     ...theme.applyStyles('light', {

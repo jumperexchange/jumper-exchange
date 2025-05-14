@@ -30,10 +30,7 @@ const LearnArticlePage = ({
     <>
       <BlogArticleWrapper>
         <BlogBackgroundGradient />
-        <BlogArticle
-          article={article}
-          baseUrl={url}
-        />
+        <BlogArticle article={article} baseUrl={url} />
       </BlogArticleWrapper>
       <BlogArticleSection>
         <Box component={Background} sx={{ position: 'absolute' }} />

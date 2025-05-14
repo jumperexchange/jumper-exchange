@@ -112,7 +112,6 @@ export const getDefaultWidgetThemeV2 = (
           light: {
             ...copiedTheme.colorSchemes.light,
             palette: formatWidgetPalette(copiedTheme.colorSchemes.light),
-
           },
           dark: {
             ...copiedTheme.colorSchemes.dark,

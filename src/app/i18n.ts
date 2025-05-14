@@ -1,14 +1,14 @@
-import type { Resource, i18n } from 'i18next';
-import { createInstance } from 'i18next';
-import { initReactI18next } from 'react-i18next/initReactI18next';
-import resourcesToBackend from 'i18next-resources-to-backend';
-import i18nConfig from '../../i18n-config';
 import {
   currencyFormatter,
   decimalFormatter,
   percentFormatter,
 } from '@/utils/formatNumbers';
+import type { Resource, i18n } from 'i18next';
+import { createInstance } from 'i18next';
+import resourcesToBackend from 'i18next-resources-to-backend';
+import { initReactI18next } from 'react-i18next/initReactI18next';
 import { dateFormatter } from 'src/utils/formatDate';
+import i18nConfig from '../../i18n-config';
 
 export default async function initTranslations(
   locale: string,

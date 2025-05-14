@@ -58,17 +58,15 @@ export const SeeAllButtonContainer = styled(Box, {
 
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,
-  backgroundColor:
-    (theme.vars || theme).palette.alphaLight400.main,
+  backgroundColor: (theme.vars || theme).palette.alphaLight400.main,
   width: 320,
   '&:hover': {
-    backgroundColor:
-      (theme.vars || theme).palette.alphaLight500.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.alphaDark200.main
-    })
+    backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+    }),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+  }),
 }));

@@ -26,14 +26,14 @@ export const ClaimingDetails = ({
   return (
     <FlexCenterRowBox gap={1.5}>
       <AvatarBadge
-        avatarSrc={tokenLogo}
-        badgeSrc={chainLogo}
+        avatarAlt={'token-logo'}
         avatarSize={40}
-        badgeSize={20}
+        avatarSrc={tokenLogo}
+        badgeAlt={'chain-logo'}
         badgeGap={4}
         badgeOffset={{ x: 8, y: 8 }}
-        alt={'token-logo'}
-        badgeAlt={'chain-logo'}
+        badgeSize={20}
+        badgeSrc={chainLogo}
       />
       {/* <AmountInputBox> */}
       <ClaimingAmountLabel variant="titleSmall">

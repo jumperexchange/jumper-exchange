@@ -25,7 +25,9 @@ const getStatusColor = (
     case 'FAILED':
       return alpha(theme.palette.error.main, 0.12);
     default:
-      return (theme.vars || theme).palette.grey[theme.palette.mode === 'light' ? 300 : 800];
+      return (theme.vars || theme).palette.grey[
+        theme.palette.mode === 'light' ? 300 : 800
+      ];
   }
 };
 
@@ -71,7 +73,7 @@ const circleAnimation = keyframes`
 export const CircularProgressPending = styled(MuiCircularProgress)`
   color: ${({ theme }) => (theme.vars || theme).palette.primary.light};
 
-    ${({ theme }) =>
+  ${({ theme }) =>
     theme.applyStyles('light', {
       color: (theme.vars || theme).palette.primary.main,
     })}

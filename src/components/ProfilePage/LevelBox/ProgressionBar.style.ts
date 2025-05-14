@@ -111,14 +111,16 @@ export interface ProgressionChartBgProps extends BoxProps {
   chartBg?: string;
 }
 
-export const ProgressionChartBg = styled(Box)<ProgressionChartBgProps>(({ theme }) => ({
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-  borderRadius: '12px',
-  backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
+export const ProgressionChartBg = styled(Box)<ProgressionChartBgProps>(
+  ({ theme }) => ({
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: '12px',
+    backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
 
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+    }),
   }),
-}));
+);

@@ -19,7 +19,7 @@ export const StyledInfoIcon = styled(InfoIcon, {
   opacity: 0.72,
   marginLeft: theme.spacing(1),
   color: `${(theme.vars || theme).palette.text.primary}!important`,
-  ...theme.applyStyles("light", {
-    opacity: 0.24
-  })
+  ...theme.applyStyles('light', {
+    opacity: 0.24,
+  }),
 }));

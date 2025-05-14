@@ -5,10 +5,7 @@ export default async function Page() {
   const variant = 'default'; // exchange
   return (
     <>
-      <Widget
-        activeTheme={variant}
-        starterVariant={variant}
-      />
+      <Widget activeTheme={variant} starterVariant={variant} />
       <Widgets widgetVariant={variant} />
     </>
   );

@@ -42,10 +42,7 @@ interface BlogArticleProps {
   id?: number;
 }
 
-export const BlogArticle = ({
-  article,
-  baseUrl,
-}: BlogArticleProps) => {
+export const BlogArticle = ({ article, baseUrl }: BlogArticleProps) => {
   const theme = useTheme();
   const {
     Subtitle: subtitle,
@@ -72,7 +69,9 @@ export const BlogArticle = ({
           <BlogArticleTopHeader>
             {tags?.[0]?.Title ? (
               <Tag
-                sx={mainTag?.TextColor ? { color: mainTag.TextColor } : undefined}
+                sx={
+                  mainTag?.TextColor ? { color: mainTag.TextColor } : undefined
+                }
                 backgroundColor={mainTag?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"
@@ -180,11 +179,7 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <CustomRichBlocks
-              id={id}
-              baseUrl={baseUrl}
-              content={content}
-            />
+            <CustomRichBlocks id={id} baseUrl={baseUrl} content={content} />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}

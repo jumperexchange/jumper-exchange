@@ -73,9 +73,9 @@ export const MenuItem = ({
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
                   maxWidth: 168,
                 },
-                ...theme.applyStyles("light", {
-                  color: (theme.vars || theme).palette.primary.main
-                })
+                ...theme.applyStyles('light', {
+                  color: (theme.vars || theme).palette.primary.main,
+                }),
               })}
             >
               {label}

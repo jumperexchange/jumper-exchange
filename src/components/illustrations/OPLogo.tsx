@@ -17,11 +17,7 @@ export const OPLogo = () => {
           cx="25"
           cy="25"
           r="25"
-          fill={
-            mode === 'light'
-              ? 'white'
-              : theme.palette.surface1.main
-          }
+          fill={mode === 'light' ? 'white' : theme.palette.surface1.main}
         />
         <path
           fillRule="evenodd"

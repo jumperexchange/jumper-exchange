@@ -21,9 +21,7 @@ export const useThemeSwitchTabs = () => {
   const { trackEvent } = useUserTracking();
   const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const [configTheme] = useThemeStore((state) => [
-    state.configTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const handleSwitchMode = (mode: Appearance) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,

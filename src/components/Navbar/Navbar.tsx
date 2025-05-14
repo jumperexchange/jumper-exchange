@@ -38,7 +38,10 @@ export const Navbar = ({ disableNavbar = false }) => {
   }
 
   return (
-    <NavbarContainer enableColorOnDark hasBlurredNavigation={configTheme?.hasBlurredNavigation}>
+    <NavbarContainer
+      enableColorOnDark
+      hasBlurredNavigation={configTheme?.hasBlurredNavigation}
+    >
       <LogoLink href={logoHref} id="jumper-logo" onClick={handleClick}>
         <Logo
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}

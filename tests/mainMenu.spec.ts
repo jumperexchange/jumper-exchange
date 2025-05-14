@@ -76,7 +76,7 @@ test.describe('Main Menu flows', () => {
     const articleTitle = await page.locator(
       'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
-  
+
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Learn');
     await expect(page).toHaveURL(values.localLearnURL);

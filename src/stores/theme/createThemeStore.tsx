@@ -29,18 +29,18 @@ export const createThemeStore = (props: ThemeProps) =>
         migrate: (persistedState: any, version: number) => {
           if (version === 0) {
             const cookies = new Cookies();
-            const theme = cookies.get('theme')
-            const themeMode = cookies.get('themeMode')
+            const theme = cookies.get('theme');
+            const themeMode = cookies.get('themeMode');
             const newStore = { ...persistedState };
 
             if (theme) {
               newStore.activeTheme = theme;
-              cookies.remove('theme', { path: '/', sameSite: true })
+              cookies.remove('theme', { path: '/', sameSite: true });
             }
 
             if (themeMode) {
               newStore.themeMode = themeMode;
-              cookies.remove('themeMode', { path: '/', sameSite: true })
+              cookies.remove('themeMode', { path: '/', sameSite: true });
             }
 
             console.debug('theme/themeMode cookies migrated');

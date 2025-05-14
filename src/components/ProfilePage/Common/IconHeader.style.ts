@@ -10,9 +10,9 @@ export const IconHeaderContainer = styled(Box)(({ theme }) => ({
   paddingLeft: '6px',
   borderRadius: '32px',
   width: 'fit-content',
-  ...theme.applyStyles("light", {
-    backgroundColor: '#f5f5f5'
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: '#f5f5f5',
+  }),
 }));
 
 export const IconHeaderTitle = styled(Typography)(({ theme }) => ({

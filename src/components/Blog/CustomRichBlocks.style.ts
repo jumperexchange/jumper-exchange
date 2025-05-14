@@ -17,12 +17,8 @@ export const BlogParagraph = styled(Typography, {
     prop !== 'italic' &&
     prop !== 'quote' &&
     prop !== 'underline' &&
-    prop !== 'strikethrough'
-})<BlogParagraphProps>(({
-  theme,
-  underline,
-  strikethrough,
-}) => {
+    prop !== 'strikethrough',
+})<BlogParagraphProps>(({ theme, underline, strikethrough }) => {
   // TODO: Fix this
   const textDecoration = underline
     ? 'underline'
@@ -68,25 +64,23 @@ export const BlogHeadline = styled(Typography)(({ theme }) => ({
   color: alpha(theme.palette.white.main, 0.88),
   a: {
     fontWeight: 600,
-    textDecorationColor:
-      alpha(theme.palette.accent1Alt.main, 0.4),
-    ...theme.applyStyles("light", {
-      textDecorationColor: alpha(theme.palette.primary.main, 0.04)
-    })
+    textDecorationColor: alpha(theme.palette.accent1Alt.main, 0.4),
+    ...theme.applyStyles('light', {
+      textDecorationColor: alpha(theme.palette.primary.main, 0.04),
+    }),
   },
   'a:hover': {
-    textDecorationColor:
-      (theme.vars || theme).palette.accent1Alt.main,
-    ...theme.applyStyles("light", {
-      textDecorationColor: (theme.vars || theme).palette.primary.main
-    })
+    textDecorationColor: (theme.vars || theme).palette.accent1Alt.main,
+    ...theme.applyStyles('light', {
+      textDecorationColor: (theme.vars || theme).palette.primary.main,
+    }),
   },
   '& a:not(:first-child)': {
     marginLeft: theme.spacing(0.5),
   },
-  ...theme.applyStyles("light", {
+  ...theme.applyStyles('light', {
     color: alpha(theme.palette.black.main, 0.88),
-  })
+  }),
 }));
 
 export const BlogH1 = styled(BlogHeadline)(({ theme }) => ({
@@ -121,8 +115,7 @@ export const BlogH6 = styled(BlogHeadline)(({ theme }) => ({
 
 export const BlogLink = styled(Link)(({ theme }) => ({
   marginLeft: theme.spacing(0.75),
-  color:
-    (theme.vars || theme).palette.accent1Alt.main,
+  color: (theme.vars || theme).palette.accent1Alt.main,
   fontWeight: 600,
   cursor: 'pointer',
   display: 'inline',
@@ -131,7 +124,7 @@ export const BlogLink = styled(Link)(({ theme }) => ({
   ':first-child': {
     marginLeft: 0,
   },
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.primary.main
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));

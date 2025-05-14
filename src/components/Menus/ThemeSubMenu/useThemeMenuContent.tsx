@@ -48,10 +48,7 @@ export const useThemeMenuContent = () => {
       onClick: () => {
         handleThemeSwitch('system');
       },
-      checkIcon:
-        mode === 'dark' ||
-        mode === 'light' ||
-        mode === undefined,
+      checkIcon: mode === 'dark' || mode === 'light' || mode === undefined,
     },
   ];
 

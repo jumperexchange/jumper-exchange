@@ -16,7 +16,6 @@ export const Banner = () => {
   const { trackEvent } = useUserTracking();
   const { mode } = useColorScheme();
 
-
   const handleClick = () => {
     trackEvent({
       category: TrackingCategory.Banner,
@@ -58,14 +57,13 @@ export const Banner = () => {
         />
         <Typography
           sx={(theme) => ({
-            color:
-              '#FFFFFFD6',
+            color: '#FFFFFFD6',
             fontSize: '16px',
             fontWeight: 700,
             lineHeight: '20px',
-            ...theme.applyStyles("light", {
-              color: (theme.vars || theme).palette.accent1.main
-            })
+            ...theme.applyStyles('light', {
+              color: (theme.vars || theme).palette.accent1.main,
+            }),
           })}
         >
           {' '}

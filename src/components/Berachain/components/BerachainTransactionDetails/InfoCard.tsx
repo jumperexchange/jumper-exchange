@@ -18,7 +18,7 @@ const InfoCardContainer = React.forwardRef<
   return (
     <Box
       ref={ref}
-      sx={theme => ({
+      sx={(theme) => ({
         // Matches `flex`
         display: 'flex',
         // Matches `flex-col`
@@ -38,7 +38,7 @@ const InfoCardContainer = React.forwardRef<
         // Matches `bg-white`
         backgroundColor: 'white',
         // Matches `p-5` (20px in the spacing scale)
-        padding: '20px'
+        padding: '20px',
       })}
       // className={cn(
       /*"flex h-fit w-full flex-col gap-3 rounded-xl border border-divider bg-white p-5",*/
@@ -57,8 +57,8 @@ const InfoCardRowKey = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Box
     ref={ref}
-    sx={theme => ({
-      color: theme.palette.text.secondary
+    sx={(theme) => ({
+      color: theme.palette.text.secondary,
     })}
     // className={cn("text-secondary", className)}
     {...props}

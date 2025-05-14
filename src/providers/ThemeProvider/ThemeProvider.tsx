@@ -14,10 +14,7 @@ import { themeCustomized } from 'src/theme/theme';
  * App's theme provider component.
  * Provider for the MUI theme context, mainly setting up the MUI provider, very linked to the next-theme provider
  */
-export function ThemeProvider({
-  children,
-  themes,
-}: ThemeProviderProps) {
+export function ThemeProvider({ children, themes }: ThemeProviderProps) {
   return (
     <>
       <CssBaseline enableColorScheme />

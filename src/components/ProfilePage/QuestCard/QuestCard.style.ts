@@ -11,8 +11,7 @@ import Image from 'next/image';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  backgroundColor:
-    alpha(theme.palette.white.main, 0.08),
+  backgroundColor: alpha(theme.palette.white.main, 0.08),
   borderRadius: '24px',
   flexDirection: 'column',
   height: 'auto',
@@ -24,9 +23,9 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[2],
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.white.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({

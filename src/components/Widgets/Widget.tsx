@@ -45,16 +45,14 @@ export function Widget({
   autoHeight,
 }: WidgetProps) {
   const theme = useTheme();
-  const [configTheme] = useThemeStore((state) => [
-    state.configTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
 
-    const { mode } = useColorScheme();
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
+  const { mode } = useColorScheme();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const widgetTheme = getWidgetThemeV2(
-    mode === 'system' || !mode ? prefersDarkMode ? 'dark' : 'light' : mode);
+    mode === 'system' || !mode ? (prefersDarkMode ? 'dark' : 'light') : mode,
+  );
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
   const formRef = useRef<FormState>(null);

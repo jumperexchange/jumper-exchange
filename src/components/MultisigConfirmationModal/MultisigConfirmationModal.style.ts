@@ -24,12 +24,11 @@ export const MultisigConfirmationModalContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(3),
   borderRadius: '16px',
-  background:
-    (theme.vars || theme).palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   boxShadow: (theme.vars || theme).shadows[1],
-  ...theme.applyStyles("light", {
-    background: (theme.vars || theme).palette.surface1.main
-  })
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.surface1.main,
+  }),
 }));
 
 export const MultisigConfirmationModalButton = styled(Button)(({ theme }) => ({

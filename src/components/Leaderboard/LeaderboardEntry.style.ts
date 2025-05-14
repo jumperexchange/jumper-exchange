@@ -19,7 +19,10 @@ interface LeaderboardEntryWrapperProps extends BoxProps {
 }
 
 export const LeaderboardEntryWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'isUserEntry' && prop !== 'isUserConnected' && prop !== 'isUserPosition',
+  shouldForwardProp: (prop) =>
+    prop !== 'isUserEntry' &&
+    prop !== 'isUserConnected' &&
+    prop !== 'isUserPosition',
 })<LeaderboardEntryWrapperProps>(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(2, 0),
@@ -52,9 +55,9 @@ export const LeaderboardEntryWrapper = styled(Box, {
         ':hover': {
           cursor: 'pointer',
           backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
-        ...theme.applyStyles('light', {
-          background: darken(theme.palette.white.main, 0.04),
-        }),
+          ...theme.applyStyles('light', {
+            background: darken(theme.palette.white.main, 0.04),
+          }),
         },
       },
     },

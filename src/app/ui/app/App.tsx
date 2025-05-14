@@ -13,7 +13,6 @@ export interface AppProps {
 }
 
 const App = ({ children }: { children: React.ReactNode }) => {
-
   const { trackEvent } = useUserTracking();
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =

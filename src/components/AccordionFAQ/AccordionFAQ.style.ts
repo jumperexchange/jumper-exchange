@@ -42,7 +42,7 @@ export const FaqShowMoreArrow = styled(ArrowForwardIosIcon, {
   width: arrowSize || 24,
   height: arrowSize || 24,
   transition: 'transform 0.3s ease',
-  transform: 'rotate(90deg)'
+  transform: 'rotate(90deg)',
 }));
 
 export interface AccordionItemWrapperProps extends BoxProps {

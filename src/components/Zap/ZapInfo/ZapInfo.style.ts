@@ -28,9 +28,10 @@ export const ZapProtocolActionInfoBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('lg' as Breakpoint)]: {
     maxWidth: 640,
   },
-  ...theme.applyStyles("light", {
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  })
+  ...theme.applyStyles('light', {
+    boxShadow:
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  }),
 }));
 
 export const ZapActionProtocolIntro = styled(Box)(({ theme }) => ({
@@ -47,25 +48,23 @@ export const ZapActionProtocolCard = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: '24px',
   border: `1px solid ${(theme.vars || theme).palette.grey[800]}`,
-  background:
-    (theme.vars || theme).palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-  ...theme.applyStyles("light", {
+  ...theme.applyStyles('light', {
     border: `1px solid ${'#E5E1EB'}`,
-    background: (theme.vars || theme).palette.white.main
-  })
+    background: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const ZapActionProtocolDisclaimer = styled(ZapActionProtocolCard)(
   ({ theme }) => ({
-    background:
-      alpha(theme.palette.text.primary, 0.48),
+    background: alpha(theme.palette.text.primary, 0.48),
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: '12px',
-    ...theme.applyStyles("light", {
-      background: (theme.vars || theme).palette.alphaLight100.main
-    })
+    ...theme.applyStyles('light', {
+      background: (theme.vars || theme).palette.alphaLight100.main,
+    }),
   }),
 );
 
@@ -93,7 +92,8 @@ export const ZapTabsBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     maxWidth: 432,
   },
-  ...theme.applyStyles("light", {
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  })
+  ...theme.applyStyles('light', {
+    boxShadow:
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  }),
 }));

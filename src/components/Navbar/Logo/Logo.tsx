@@ -38,16 +38,15 @@ export const Logo = ({ variant }: LogoProps) => {
             width="32px"
             height="32px"
             sx={(theme) => ({
-              color:
-                theme.palette.grey[500],
+              color: theme.palette.grey[500],
               width: '16px',
               height: '16px',
               marginLeft: theme.spacing(-2),
               marginRight: theme.spacing(2),
               alignSelf: 'center',
-              ...theme.applyStyles("light", {
-                color: theme.palette.black.main
-              })
+              ...theme.applyStyles('light', {
+                color: theme.palette.black.main,
+              }),
             })}
           />
           <Image

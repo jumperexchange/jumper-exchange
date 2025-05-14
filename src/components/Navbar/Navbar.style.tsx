@@ -14,9 +14,7 @@ interface NavbarContainerProps extends AppBarProps {
 
 export const NavbarContainer = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'hasBlurredNavigation',
-})<NavbarContainerProps>(({
-  theme
-}) => ({
+})<NavbarContainerProps>(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -37,16 +35,14 @@ export const NavbarContainer = styled(AppBar, {
     padding: theme.spacing(3),
     height: HeaderHeight.MD,
   },
-  variants: [{
-    props: (
-      {
-        hasBlurredNavigation
-      }
-    ) => !hasBlurredNavigation,
-    style: {
-      backdropFilter: 'blur(12px)'
-    }
-  }]
+  variants: [
+    {
+      props: ({ hasBlurredNavigation }) => !hasBlurredNavigation,
+      style: {
+        backdropFilter: 'blur(12px)',
+      },
+    },
+  ],
 }));
 
 export const LogoLink = styled(Link)(({ theme }) => ({

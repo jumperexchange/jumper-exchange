@@ -16,9 +16,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Layout>
-        <App>
-          {children}
-        </App>
+        <App>{children}</App>
       </Layout>
       <FeatureCards />
     </>

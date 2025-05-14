@@ -80,7 +80,7 @@ export const ProfileIconButton = styled(IconButton)<IconButtonProps>(
       color: (theme.vars || theme).palette.black.main,
       ':hover': {
         color: (theme.vars || theme).palette.black.main,
-      }
+      },
     }),
   }),
 );

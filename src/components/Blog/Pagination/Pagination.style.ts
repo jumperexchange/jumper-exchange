@@ -15,9 +15,9 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+  }),
 }));
 
 export interface PaginationIndexButtonProps extends IconButtonProps {
@@ -31,9 +31,9 @@ export const PaginationIndexButton = styled(IconButton, {
   height: 40,
   '&:hover': {
     backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: theme.palette.alphaDark100.main
-    })
+    ...theme.applyStyles('light', {
+      backgroundColor: theme.palette.alphaDark100.main,
+    }),
   },
   variants: [
     {
@@ -41,20 +41,20 @@ export const PaginationIndexButton = styled(IconButton, {
       style: {
         backgroundColor: alpha(theme.palette.white.main, 0.12),
         color: (theme.vars || theme).palette.text.primary,
-        ...theme.applyStyles("light", {
+        ...theme.applyStyles('light', {
           backgroundColor: (theme.vars || theme).palette.white.main,
           color: lighten(theme.palette.black.main, 0.2),
         }),
         '& .MuiTouchRipple-root': {
           backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
           zIndex: -1,
-          ...theme.applyStyles("light", {
+          ...theme.applyStyles('light', {
             backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
           }),
         },
         '&:hover': {
           color: (theme.vars || theme).palette.text.primary,
-          ...theme.applyStyles("light", {
+          ...theme.applyStyles('light', {
             color: lighten(theme.palette.text.primary, 0.2),
           }),
         },
@@ -64,12 +64,12 @@ export const PaginationIndexButton = styled(IconButton, {
       props: ({ active }) => !active,
       style: {
         color: darken(theme.palette.white.main, 0.2),
-        ...theme.applyStyles("light", {
+        ...theme.applyStyles('light', {
           color: lighten(theme.palette.black.main, 0.4),
         }),
         '&:hover': {
           color: darken(theme.palette.white.main, 0.2),
-          ...theme.applyStyles("light", {
+          ...theme.applyStyles('light', {
             color: lighten(theme.palette.black.main, 0.4),
           }),
         },
@@ -84,8 +84,8 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   height: 40,
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.12),
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.alphaDark100.main
-    })
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+    }),
   },
 }));
