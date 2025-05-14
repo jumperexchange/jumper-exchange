@@ -49,7 +49,7 @@ export function usePortfolioTokens() {
   const isFetching = queries.every((query) => query.isFetching);
   const refetch = () => queries.map((query) => query.refetch());
 
-  // Usefull to refresh after bridging something
+  // Useful to refresh after bridging something
   useEffect(() => {
     if (!forceRefresh) {
       return;
