@@ -7,6 +7,7 @@ import {
   Card,
   darken,
   Input,
+  InputProps,
   styled,
   Typography,
 } from '@mui/material';
@@ -49,10 +50,17 @@ export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
-export const ContributionCustomInput = styled(Input)(({ theme }) => ({
+interface ContributionCustomInputProps extends InputProps {
+  active: boolean;
+}
+
+export const ContributionCustomInput = styled(Input, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<ContributionCustomInputProps>(({ theme, active }) => ({
   height: '32px',
+  borderRadius: '16px',
   '& .MuiInputBase-input::placeholder': {
-    color: theme.palette.text.primary,
+    // color: theme.palette.text.primary,
     opacity: 1,
     textAlign: 'center',
   },
@@ -60,23 +68,52 @@ export const ContributionCustomInput = styled(Input)(({ theme }) => ({
 
 interface ContributionButtonProps extends ButtonProps {
   active: boolean;
+  mode: 'light' | 'dark' | 'system' | undefined;
 }
 
 export const ContributionButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<ContributionButtonProps>(({ theme, active }) => ({
-  width: '100%',
-  fontSize: '12px',
-  lineHeight: '16px',
-  fontWeight: 700,
-  height: '32px',
-  color: alpha(theme.palette.text.primary, 0.84),
-  transition: 'background-color 250ms',
-  backgroundColor: active ? '#F0E5FF' : theme.palette.grey[100],
-  '&:hover': {
-    backgroundColor: active ? darken('#F0E5FF', 0.04) : theme.palette.grey[300],
-  },
-}));
+})<ContributionButtonProps>(({ theme, active, mode }) => {
+  console.log('active', active);
+  console.log('theme.palette.mode', theme.palette.mode);
+  return {
+    width: '100%',
+    fontSize: '12px',
+    lineHeight: '16px',
+    fontWeight: 700,
+    height: '32px',
+
+    transition: 'background-color 250ms',
+    color: (theme.vars || theme).palette.text.primary,
+    backgroundColor: active
+      ? 'rgba(101, 59, 163, 0.84) !important'
+      : (theme.vars || theme).palette.grey[200] + ' !important',
+    '&:hover': {
+      backgroundColor: active
+        ? '#653BA3 !important'
+        : (theme.vars || theme).palette.grey[300] + ' !important',
+    },
+    ...(mode === 'light' && {
+      backgroundColor: active ? '#F0E5FF' : theme.palette.grey[100],
+      '&:hover': {
+        backgroundColor: active
+          ? darken('#F0E5FF', 0.08)
+          : theme.palette.grey[300],
+      },
+    }),
+    // ...theme.applyStyles('light', {
+    //   color: (theme.vars || theme).palette.text.primary,
+    //   backgroundColor: active
+    //     ? 'rgba(101, 59, 163, 0.64)'
+    //     : (theme.vars || theme).palette.grey[100],
+    //   '&:hover': {
+    //     backgroundColor: active
+    //       ? 'rgba(101, 59, 163, 0.84)'
+    //       : `${theme.palette.grey[300]} !important`,
+    //   },
+    // }),
+  };
+});
 
 interface ContributionButtonConfirmProps extends ContributionButtonProps {
   isTxConfirmed: boolean;
@@ -84,7 +121,7 @@ interface ContributionButtonConfirmProps extends ContributionButtonProps {
 
 export const ContributionButtonConfirm = styled(ContributionButton, {
   shouldForwardProp: (prop) => prop !== 'isTxConfirmed',
-})<ContributionButtonConfirmProps>(({ isTxConfirmed }) => ({
+})<ContributionButtonConfirmProps>(({ isTxConfirmed, mode }) => ({
   height: '40px',
   fontSize: '14px',
   lineHeight: '16px',
@@ -103,5 +140,10 @@ export const ContributionDescription = styled(Typography)(({ theme }) => ({
   fontSize: '12px',
   lineHeight: '16px',
   fontWeight: 500,
-  color: theme.palette.grey[700],
+  color: alpha('#fff', 0.84),
+  height: '40px',
+
+  ...theme.applyStyles('light', {
+    color: theme.palette.grey[700],
+  }),
 }));

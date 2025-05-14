@@ -1,5 +1,9 @@
 import { Transfer } from 'src/hooks/useTxHistory';
-import { CONTRIBUTION_AMOUNTS, VOLUME_THRESHOLDS } from './constants';
+import {
+  CONTRIBUTION_AMOUNTS,
+  VOLUME_THRESHOLDS,
+  contributionFeeAddresses,
+} from './constants';
 
 /**
  * Determines if contribution should be shown based on transaction history
@@ -28,4 +32,14 @@ export const getContributionAmounts = (volume: number): number[] => {
     return CONTRIBUTION_AMOUNTS.LOW_VOLUME;
   }
   return CONTRIBUTION_AMOUNTS.DEFAULT;
+};
+
+/**
+ * Gets the contribution fee address for a given chain ID
+ * Returns undefined if no specific address is configured for the chain
+ */
+export const getContributionFeeAddress = (
+  chainId: number,
+): string | undefined => {
+  return contributionFeeAddresses[chainId];
 };

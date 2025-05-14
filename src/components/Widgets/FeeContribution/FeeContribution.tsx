@@ -1,21 +1,30 @@
-import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import CheckIcon from '@mui/icons-material/Check';
-import { CircularProgress, darken, Drawer, Grid } from '@mui/material';
+import {
+  CircularProgress,
+  darken,
+  Drawer,
+  Grid,
+  useColorScheme,
+} from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
 import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { formatInputAmount } from 'src/utils/format';
 import { parseUnits } from 'viem';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import {
+  useSendTransaction,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
 import {
   CONTRIBUTION_AB_TEST_PERCENTAGE,
   CONTRIBUTION_AMOUNTS,
-  MIN_CONTRIBUTION_USD,
 } from './constants';
 import {
   ContributionButton,
@@ -27,7 +36,8 @@ import {
   ContributionWrapper,
   DrawerWrapper,
 } from './FeeContribution.style';
-import { checkContributionByTxHistory, getContributionAmounts } from './utils';
+import * as helper from './helper';
+import { getContributionAmounts, getContributionFeeAddress } from './utils';
 
 type TranslationKey =
   | 'title'
@@ -47,7 +57,6 @@ export interface ContributionTranslations {
     amountTooSmall: string;
   };
 }
-
 export interface FeeContributionProps {
   translations?: Partial<ContributionTranslations>;
 }
@@ -60,6 +69,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const [contributionAmounts, setContributionAmounts] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
   );
+  const { mode } = useColorScheme();
 
   // AB test flag - show contribution for ~10% of users
   const isContributionAbEnabled = useMemo(() => {
@@ -74,7 +84,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     address,
     completedRoute?.toToken,
   );
-  const [showContribution, setShowContribution] = useState(true);
+  const [showContribution, setShowContribution] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const {
     status: txStatus,
@@ -84,6 +94,12 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     error: txError,
     writeContract,
   } = useWriteContract();
+  const {
+    data: hash,
+    sendTransaction,
+    isSuccess: isNativeTxSuccess,
+    isPending: isNativeTxPending,
+  } = useSendTransaction();
 
   const {
     data: txReceipt,
@@ -121,7 +137,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     setInputAmount(formattedAmount);
     setAmount(formattedAmount);
   }
-
   // Set the address of the user from last tx
   useEffect(() => {
     if (completedRoute?.fromAddress) {
@@ -134,46 +149,30 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - AB test
   // - Transaction amount >= $10
   // - Chain type is EVM
+  // - Valid contribution fee address exists for the chain
   useEffect(() => {
     if (
-      !data?.transfers ||
-      !completedRoute?.toAmountUSD ||
-      !account?.chainType
+      !helper.isEligibleForContribution(
+        data,
+        completedRoute ?? undefined,
+        account,
+        isContributionAbEnabled,
+      )
     ) {
+      setShowContribution(false);
       return;
     }
 
-    const txUsdAmount = Number(completedRoute.toAmountUSD);
-    const isContributionEnabledByTxHistory = checkContributionByTxHistory(
-      data.transfers,
-    );
-    const isEvmChain = account.chainType === ChainType.EVM;
-    const isSameWallet =
-      completedRoute.fromAddress === completedRoute.toAddress;
-    const isWalletAccess = account.address === completedRoute.fromAddress;
-    const isEligibleForContribution =
-      txUsdAmount >= MIN_CONTRIBUTION_USD &&
-      isSameWallet &&
-      isWalletAccess &&
-      isContributionAbEnabled &&
-      isContributionEnabledByTxHistory &&
-      isEvmChain;
-
-    if (isEligibleForContribution) {
-      // if contribution is enabled:
-      // - based on chain type === EVM
-      // - fromWallet === toWallet
-      // - based on past tx´s
-      // - and based on ab test
-      // - and based on the contribution amount > 10 USD
-      setShowContribution(true);
-      setContributionAmounts(getContributionAmounts(txUsdAmount));
-    }
+    // If eligible, set contribution amounts based on transaction amount
+    const txUsdAmount = Number(completedRoute?.toAmountUSD);
+    setShowContribution(true);
+    setContributionAmounts(getContributionAmounts(txUsdAmount));
   }, [
     data?.transfers,
     completedRoute?.toAmountUSD,
     account?.chainType,
     isContributionAbEnabled,
+    completedRoute?.toChainId,
   ]);
 
   // Handle contribution button click
@@ -262,6 +261,14 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         throw new Error(t('contribution.error.amountTooSmall'));
       }
 
+      // Get the contribution fee address for the chain
+      const feeAddress = getContributionFeeAddress(completedRoute.toChainId);
+      if (!feeAddress) {
+        throw new Error(
+          'No contribution fee address configured for this chain',
+        );
+      }
+
       // Track click event
       trackEvent({
         action: TrackingAction.ClickContribute,
@@ -284,30 +291,31 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         completedRoute.toToken.decimals,
       );
 
-      // Note: The contribution should be sent to a dedicated wallet address, not the token contract address
-      // Previously we were using the token contract address (completedRoute.toToken.address) which was incorrect
-      // as that would try to send tokens to the token contract itself. Instead, we need to send to a wallet
-      // that can receive and manage these contributions.
-      const contributionWalletAddress = '0x...'; // TODO: Replace with actual contribution wallet address
-
-      await writeContract({
-        address: completedRoute.fromAddress as `0x${string}`, // todo: change to actual wallet address !
-        abi: [
-          {
-            name: 'transfer',
-            type: 'function',
-            stateMutability: 'nonpayable',
-            inputs: [
-              { name: 'to', type: 'address' },
-              { name: 'amount', type: 'uint256' },
-            ],
-            outputs: [{ name: '', type: 'bool' }],
-          },
-        ],
-        functionName: 'transfer',
-        args: [account.address as `0x${string}`, amountInTokenUnits],
-        chainId: completedRoute.toChainId,
-      });
+      if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
+        await sendTransaction({
+          to: feeAddress as `0x${string}`,
+          value: amountInTokenUnits,
+        });
+      } else {
+        await writeContract({
+          address: completedRoute.toToken.address as `0x${string}`,
+          abi: [
+            {
+              name: 'transfer',
+              type: 'function',
+              stateMutability: 'nonpayable',
+              inputs: [
+                { name: 'to', type: 'address' },
+                { name: 'amount', type: 'uint256' },
+              ],
+              outputs: [{ name: '', type: 'bool' }],
+            },
+          ],
+          functionName: 'transfer',
+          args: [feeAddress as `0x${string}`, amountInTokenUnits],
+          chainId: completedRoute.toChainId,
+        });
+      }
     } catch (error) {
       console.error('Error sending contribution:', error);
       if (
@@ -395,6 +403,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                     active={
                       !!amount && parseFloat(amount) === contributionAmount
                     }
+                    mode={mode}
                     onClick={() => handleButtonClick(contributionAmount)}
                     size="small"
                   >
@@ -404,6 +413,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               ))}
               <Grid size={3}>
                 <ContributionCustomInput
+                  active={isCustomActive}
                   value={inputAmount ? `$${inputAmount}` : ''}
                   aria-autocomplete="none"
                   onChange={onChangeValue}
@@ -411,6 +421,11 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                   disableUnderline
                   placeholder={getTranslation('custom')}
                   slotProps={{
+                    root: {
+                      sx: (theme) => ({
+                        borderRadius: '16px',
+                      }),
+                    },
                     input: {
                       sx: (theme) => ({
                         height: '32px',
@@ -421,16 +436,27 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                         lineHeight: '16px',
                         fontWeight: 700,
                         textAlign: 'center',
-                        backgroundColor: isCustomActive
-                          ? '#F0E5FF'
-                          : theme.palette.grey[100],
-                        color: theme.palette.text.primary,
                         transition: 'background-color 250ms',
+                        color: (theme.vars || theme).palette.text.primary,
+
+                        backgroundColor: isCustomActive
+                          ? 'rgba(101, 59, 163, 0.84)'
+                          : (theme.vars || theme).palette.grey[200],
                         '&:hover': {
                           backgroundColor: isCustomActive
-                            ? darken('#F0E5FF', 0.04)
-                            : theme.palette.grey[300],
+                            ? '#653BA3'
+                            : (theme.vars || theme).palette.grey[300],
                         },
+                        ...(mode === 'light' && {
+                          backgroundColor: isCustomActive
+                            ? '#F0E5FF'
+                            : theme.palette.grey[100],
+                          '&:hover': {
+                            backgroundColor: isCustomActive
+                              ? darken('#F0E5FF', 0.08)
+                              : theme.palette.grey[300],
+                          },
+                        }),
                       }),
                     },
                   }}
@@ -442,13 +468,22 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               <ContributionButtonConfirm
                 active={false}
                 onClick={handleConfirm}
+                mode={mode}
                 isTxConfirmed={isTxConfirmed}
-                disabled={isSending || isTxPending || isTxConfirming}
+                disabled={
+                  isSending ||
+                  isTxPending ||
+                  isTxConfirming ||
+                  isNativeTxPending
+                }
               >
-                {isTxConfirmed ? <CheckIcon /> : null}
-                {isSending || isTxPending || isTxConfirming ? (
+                {isTxConfirmed || isNativeTxSuccess ? <CheckIcon /> : null}
+                {isSending ||
+                isTxPending ||
+                isTxConfirming ||
+                isNativeTxPending ? (
                   <CircularProgress size={20} color="inherit" />
-                ) : isTxConfirmed ? (
+                ) : isTxConfirmed || isNativeTxSuccess ? (
                   getTranslation('contributionSent')
                 ) : (
                   getTranslation('confirm')
