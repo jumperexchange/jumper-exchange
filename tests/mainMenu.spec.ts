@@ -129,15 +129,23 @@ test.describe('Main Menu flows', () => {
 
   test('Should be able to navigate to X', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await page.getByRole('link', { name: 'X', exact: true }).click();
+    await itemInMenu(page, 'X');
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.xUrl);
   });
 
   test('Should be able to navigate to Discord', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await page.getByRole('link', { name: 'Discord' }).click();
+    await itemInMenu(page, 'Discord');
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
+  });
+  
+  test('Should be able to click on the Support button', async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Support');
+    const iFrameLocator = page.frameLocator('iframe[title="Discord chat embed"]');
+    const openDiscordAppInIframe= await iFrameLocator.getByText('Open Discord App')
+    await expect(openDiscordAppInIframe).toBeVisible();
   });
 });
