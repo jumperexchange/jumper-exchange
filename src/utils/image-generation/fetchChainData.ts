@@ -10,7 +10,7 @@ export async function fetchChainData(chainId: ChainId | null) {
     const formattedChainId =
       typeof chainId !== 'number' ? parseInt(chainId) : chainId;
     const chainsData = await getChains({
-      chainTypes: [ChainType.EVM, ChainType.SVM],
+      chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
     });
     return getChainById(chainsData, formattedChainId as ChainId);
   } catch (error) {
