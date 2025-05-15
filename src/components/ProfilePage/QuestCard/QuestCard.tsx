@@ -1,7 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoneIcon from '@mui/icons-material/Done';
 import LockIcon from '@mui/icons-material/Lock';
-import { Box, Skeleton, useColorScheme, useTheme } from '@mui/material';
+import { Box, Skeleton, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -17,6 +17,7 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useThemeMode } from 'src/hooks/useThemeMode';
 import type { QuestChains } from 'src/types/loyaltyPass';
 import { formatMonthDayDateShort } from 'src/utils/formatDate';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
@@ -110,8 +111,9 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     ?.filter((id): id is number => id !== undefined);
   const { apy, data: maxData } = useMissionsMaxAPY(rewardsIds, chainIds);
   const theme = useTheme();
-  const { mode } = useColorScheme();
   const { trackEvent } = useUserTracking();
+  const themeMode = useThemeMode();
+
   const handleClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -223,12 +225,12 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                         completed={false}
                         points={`${Number(apy).toFixed(1)}%`}
                         color={
-                          mode === 'dark'
+                          themeMode === 'dark'
                             ? (theme.vars || theme).palette.text.secondary
                             : (theme.vars || theme).palette.primary.main
                         }
                         bgColor={
-                          mode === 'dark'
+                          themeMode === 'dark'
                             ? (theme.vars || theme).palette.alphaLight300.main
                             : (theme.vars || theme).palette.alphaDark100.main
                         }
