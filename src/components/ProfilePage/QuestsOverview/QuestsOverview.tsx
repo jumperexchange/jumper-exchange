@@ -70,6 +70,7 @@ export const QuestsOverview = ({
           rewards,
           completed,
           claimingIds,
+          rewardsIds,
           variableWeeklyAPY:
             quest.Points && quest?.Points > 0 && rewardType === 'weekly'
               ? true
