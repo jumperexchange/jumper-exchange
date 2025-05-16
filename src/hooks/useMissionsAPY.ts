@@ -1,6 +1,6 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import type { CTALinkInt } from 'src/components/Superfest/SuperfestPage/CTA/MissionCTA';
+import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 
 const MERKL_API = 'https://api.merkl.xyz/v3';

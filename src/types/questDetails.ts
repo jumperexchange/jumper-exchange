@@ -1,16 +1,19 @@
 import type { ChainId } from '@lifi/sdk';
 import type { FaqProps } from 'src/components/AccordionFAQ';
-import type { Quest } from './loyaltyPass';
-import type { Chain } from '@/components/Superfest/SuperfestPage/Banner/Banner';
-import type { CTALinkInt } from '@/components/Superfest/SuperfestPage/CTA/MissionCTA';
 import type { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
+import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
+import type { Quest } from './loyaltyPass';
 
 export interface QuestSocials {
   twitter: string;
   telegram: string;
   website?: string;
 }
-// Define interfaces for the nested structures
+
+export interface Chain {
+  logo: string;
+  name: string;
+}
 export interface QuestDetails {
   type: string;
   socials: QuestSocials;
