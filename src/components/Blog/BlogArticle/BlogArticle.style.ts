@@ -150,6 +150,7 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
 
 export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
+  color: (theme.vars || theme).palette.text.secondary,
   marginTop: theme.spacing(4),
   img: {
     width: '100%',
@@ -159,6 +160,9 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.primary.main,
     }),
+  },
+  '& li': {
+    color: 'inherit',
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(0, 'auto'),
@@ -222,8 +226,8 @@ export const BlogAuthorMetaWrapper = styled(Box)(({ theme }) => ({
 
 export const Divider = styled(MuiDivider)(({ theme }) => ({
   borderColor: alpha(theme.palette.white.main, 0.12),
-  ...theme.applyStyles("light", {
-    borderColor: alpha(theme.palette.black.main, 0.12)
+  ...theme.applyStyles('light', {
+    borderColor: alpha(theme.palette.black.main, 0.12),
   }),
   margin: theme.spacing(8, 0, 0),
 }));
@@ -236,9 +240,9 @@ export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginTop: theme.spacing(8),
   },
-  ...theme.applyStyles("light", {
+  ...theme.applyStyles('light', {
     color: alpha(theme.palette.black.main, 0.88),
-  })
+  }),
 }));
 
 export const BlogArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
