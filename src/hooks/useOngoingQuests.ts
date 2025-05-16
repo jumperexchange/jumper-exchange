@@ -1,6 +1,9 @@
 import type { Quest } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
+import {
+  getStrapiApiAccessToken,
+  getStrapiBaseUrl,
+} from 'src/utils/strapi/strapiHelper';
 
 export interface UseQuestsProps {
   quests: Quest[] | undefined;
@@ -11,10 +14,7 @@ export interface UseQuestsProps {
 
 const STRAPI_CONTENT_TYPE = 'quests';
 export const useOngoingQuests = (label?: string): UseQuestsProps => {
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
   const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
 
   //selected needed field
