@@ -61,7 +61,7 @@ async function checkElement(page: Page, selector: string, elementType: string, o
  * @param locator The locator object for the combined numerator/denominator string
  * @returns An object with numerator and denominator values
  */
-export async function getNumeratorDenominator(locator: Locator): Promise<{ numerator: string; denominator: string }> {
+async function getNumeratorDenominator(locator: Locator): Promise<{ numerator: string; denominator: string }> {
   const combinedNumeratorDenominator = await locator.textContent() ?? '';
   const numerator = combinedNumeratorDenominator.split('/')[0];
   const denominator = combinedNumeratorDenominator.split('/')[1];

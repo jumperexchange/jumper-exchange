@@ -3,7 +3,6 @@ import {
   clickItemInSettingsMenu,
   checkItemInSettingsMenu,
   checkSettingInSettingsMenu,
-  getNumeratorDenominator,
   checkFractionsEqual,
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
