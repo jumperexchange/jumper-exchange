@@ -5,26 +5,6 @@ import {
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
-/**
- * Selectors for the Settings menu and its components
- * All selectors use XPath for precise text matching
- */
-const SELECTORS = {
-  // Main menu elements
-  settingsButton: 'xpath=//button[@aria-label="Settings"]',
-  settingsTitle: 'xpath=//p[normalize-space(text())="Settings"]',
-  
-  // Route priority options
-  fastestButton: 'xpath=//button[normalize-space(text())="Fastest"]',
-  
-  // Gas price options
-  slowGasPrice: 'xpath=//button[normalize-space(text())="Slow"]',
-  fastGasPrice: 'xpath=//button[normalize-space(text())="Fast"]',
-  
-  // Slippage settings
-  customSlippage: 'xpath=//input[@placeholder="Custom"]'
-} as const;
-
 test.describe('Settings menu', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -34,8 +14,8 @@ test.describe('Settings menu', () => {
   test('should verify all settings menu functionality', async ({ page }) => {
     // Step 1: Open settings menu and verify title
     await test.step('Open settings menu', async () => {
-      await page.locator(SELECTORS.settingsButton).click();
-      await expect(page.locator(SELECTORS.settingsTitle)).toBeVisible();
+      await page.getByRole('button', { name: 'Settings' }).click();
+      await expect(page.getByText('Settings')).toBeVisible();
     });
 
     // Step 2: Verify route priority options
@@ -45,8 +25,7 @@ test.describe('Settings menu', () => {
       await checkItemInSettingsMenu(page, 'Fastest', { visible: true });
       
       // Select fastest route
-      const fastestButton = page.locator(SELECTORS.fastestButton);
-      await fastestButton.click();
+      await itemInSettingsMenu(page, 'Fastest');
       await checkItemInSettingsMenu(page, 'Reset settings', { visible: true });
     });
 
@@ -57,17 +36,15 @@ test.describe('Settings menu', () => {
       await checkItemInSettingsMenu(page, 'Fast', { enabled: true });
       
       // Verify gas price buttons are enabled
-      const slowGasPrice = page.locator(SELECTORS.slowGasPrice);
-      const fastGasPrice = page.locator(SELECTORS.fastGasPrice);
-      await expect(slowGasPrice).toBeEnabled();
-      await expect(fastGasPrice).toBeEnabled();
+      await checkItemInSettingsMenu(page, 'Slow', { enabled: true });
+      await checkItemInSettingsMenu(page, 'Fast', { enabled: true });
     });
 
     // Step 4: Verify slippage settings
     await test.step('Verify slippage settings', async () => {
       await itemInSettingsMenu(page, 'Max. slippage');
       await checkItemInSettingsMenu(page, 'Auto', { visible: true });
-      await expect(page.locator(SELECTORS.customSlippage)).toBeVisible();
+      await expect(page.locator('xpath=//input[@placeholder="Custom"]')).toBeVisible();
     });
   });
 });

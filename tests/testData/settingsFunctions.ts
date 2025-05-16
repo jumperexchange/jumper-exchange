@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 
 export async function itemInSettingsMenu(page, selector: string) {
   await page
-    .locator(`xpath=//p[normalize-space(text())="${selector}"]`)
+    .getByText(selector, { exact: true })
     .click();
 }
 
