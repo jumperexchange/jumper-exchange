@@ -8,7 +8,7 @@ export async function getArticlesByTag(
   const urlParams = new ArticleStrapiApi().filterByTag(tag).sort('desc');
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = urlParams.apiAccessToken;
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
       Authorization: `Bearer ${accessToken}`,

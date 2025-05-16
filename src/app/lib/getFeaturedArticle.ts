@@ -4,7 +4,7 @@ export async function getFeaturedArticle() {
   const urlParams = new ArticleStrapiApi().sort('desc').filterByFeatured();
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = urlParams.apiAccessToken;
   try {
     const res = await fetch(decodeURIComponent(apiUrl), {
       headers: {

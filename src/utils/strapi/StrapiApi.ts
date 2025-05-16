@@ -42,21 +42,6 @@ class StrapiApi {
     }
   }
 
-  /* todo:
-   move this method to strapiHelper
-   use on apiAccessToken and replace getApiAccessToken() calls across the app
-   remove this method after migration
-   */
-  public getApiAccessToken(): string {
-    if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
-      // Use local-strapi-api token for development environment
-      return process.env.NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN || '';
-    } else {
-      // Use default STRAPI API token for other environments
-      return process.env.NEXT_PUBLIC_STRAPI_API_TOKEN || '';
-    }
-  }
-
   private getBaseUrl(): string {
     if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
       // Use local Strapi URL for development environment
