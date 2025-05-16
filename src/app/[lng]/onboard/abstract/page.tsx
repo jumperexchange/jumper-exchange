@@ -11,7 +11,7 @@ export default function Page() {
           variant="h1"
           sx={(theme) => ({
             textAlign: 'center',
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
             fontSize: { xs: '40px', sm: '40px' },
           })}
         >
