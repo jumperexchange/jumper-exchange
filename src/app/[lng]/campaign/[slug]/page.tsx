@@ -67,6 +67,6 @@ export default async function Page({ params }: { params: Params }) {
   if (!campaign || !campaign.data || campaign.data.length === 0) {
     notFound();
   }
-
+  // test:
   return <CampaignPage campaign={campaign.data[0]} />;
 }
