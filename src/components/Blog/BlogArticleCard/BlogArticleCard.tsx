@@ -23,7 +23,7 @@ import {
 
 interface BlogArticleCardProps {
   article: BlogArticleData;
-  baseUrl: string;
+  baseUrl?: string;
   trackingCategory: string;
   styles?: CSSObject;
 }
@@ -61,7 +61,7 @@ export const BlogArticleCard = ({
         onClick={handleClick}
         sx={styles}
       >
-        {article?.Image ? (
+        {article?.Image && baseUrl ? (
           <BlogArticleCardImage
             src={`${baseUrl}${article?.Image?.formats.small.url || article?.Image?.url}`}
             alt={article?.Image?.alternativeText ?? article?.Title}

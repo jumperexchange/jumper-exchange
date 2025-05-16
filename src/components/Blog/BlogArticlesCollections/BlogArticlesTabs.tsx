@@ -8,9 +8,9 @@ import type {
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
-import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { CarouselHeader } from '../BlogCarousel';
 import { Pagination } from '../Pagination/Pagination';
@@ -69,7 +69,7 @@ export function BlogArticlesTabs({
                       },
                     }}
                     article={article}
-                    baseUrl={process.env.NEXT_PUBLIC_STRAPI_URL}
+                    baseUrl={getStrapiBaseUrl()}
                     key={`blog-articles-collection-${index}-${articleIndex}`}
                     trackingCategory={TrackingCategory.BlogArticlesCollection}
                   />
