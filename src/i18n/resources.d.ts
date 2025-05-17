@@ -158,6 +158,16 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
     };
+    contribution: {
+      title: 'Contribute';
+      custom: 'Custom';
+      confirm: 'Confirm';
+      contributionSent: 'Contribution Sent!';
+      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
+      error: {
+        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
+      };
+    };
     leaderboard: {
       title: 'Leaderboard';
       description: 'The leaderboard is updated on a daily basis.';

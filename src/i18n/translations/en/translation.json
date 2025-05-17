@@ -169,5 +169,15 @@
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "contribution": {
+    "title": "Contribute",
+    "custom": "Custom",
+    "confirm": "Confirm",
+    "contributionSent": "Contribution Sent!",
+    "description": "Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.",
+    "error": {
+      "amountTooSmall": "The contribution amount is too small for this token. Please try a larger amount."
+    }
   }
 }
