@@ -115,6 +115,11 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const hasTrackedImpressionRef = useRef(false);
   const hasTrackedConfirmationRef = useRef(false);
 
+  const isTransactionLoading = useMemo(
+    () => isSending || isTxPending || isTxConfirming || isNativeTxPending,
+    [isSending, isTxPending, isTxConfirming, isNativeTxPending],
+  );
+
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     // Remove dollar sign if present and format the amount
@@ -150,6 +155,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - Chain type is EVM
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
+    // todo: Uncomment before merging this PR to re-enable checks
     // if (
     //   !helper.isEligibleForContribution(
     //     data,
@@ -158,7 +164,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     //     isContributionAbEnabled,
     //   )
     // ) {
-    //   setShowContribution(true);
+    //   setShowContribution(false);
     //   return;
     // }
 
@@ -468,18 +474,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                 onClick={handleConfirm}
                 mode={mode}
                 isTxConfirmed={isTxConfirmed}
-                disabled={
-                  isSending ||
-                  isTxPending ||
-                  isTxConfirming ||
-                  isNativeTxPending
-                }
+                disabled={isTransactionLoading}
               >
                 {isTxConfirmed || isNativeTxSuccess ? <CheckIcon /> : null}
-                {isSending ||
-                isTxPending ||
-                isTxConfirming ||
-                isNativeTxPending ? (
+                {isTransactionLoading ? (
                   <CircularProgress size={20} color="inherit" />
                 ) : isTxConfirmed || isNativeTxSuccess ? (
                   getTranslation('contributionSent')
