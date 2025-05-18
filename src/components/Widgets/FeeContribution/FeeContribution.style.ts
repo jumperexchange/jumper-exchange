@@ -85,11 +85,13 @@ export const ContributionButton = styled(Button, {
       : (theme.vars || theme).palette.grey[300] + ' !important',
   },
   ...(mode === 'light' && {
-    backgroundColor: active ? '#F0E5FF' : theme.palette.grey[100],
+    backgroundColor: active
+      ? '#F0E5FF'
+      : (theme.vars || theme).palette.grey[100],
     '&:hover': {
       backgroundColor: active
         ? darken('#F0E5FF', 0.08)
-        : theme.palette.grey[300],
+        : (theme.vars || theme).palette.grey[300],
     },
   }),
 }));
@@ -123,6 +125,6 @@ export const ContributionDescription = styled(Typography)(({ theme }) => ({
   height: '40px',
 
   ...theme.applyStyles('light', {
-    color: theme.palette.grey[700],
+    color: (theme.vars || theme).palette.grey[700],
   }),
 }));
