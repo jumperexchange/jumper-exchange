@@ -82,10 +82,8 @@ export async function getTxHistoryQuery(walletAddress?: string) {
   const toTimestamp = Math.floor(Date.now() / 1000); // Current timestamp in seconds
   const fromTimestamp = toTimestamp - 30 * 24 * 60 * 60; // 30 days ago in seconds
 
-  const integrator = 'dev.jumper.exchange';
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_LIFI_API_URL}/analytics/transfers?integrator=${integrator}&wallet=${walletAddress}&fromTimestamp=${fromTimestamp}&toTimestamp=${toTimestamp}`,
+    `${process.env.NEXT_PUBLIC_LIFI_API_URL}/analytics/transfers?integrator=${process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR}&wallet=${walletAddress}&fromTimestamp=${fromTimestamp}&toTimestamp=${toTimestamp}`,
   );
 
   if (!response.ok) {
