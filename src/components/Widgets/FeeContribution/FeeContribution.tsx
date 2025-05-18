@@ -412,7 +412,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               ))}
               <Grid size={3}>
                 <ContributionCustomInput
-                  active={isCustomActive}
                   value={inputAmount ? `$${inputAmount}` : ''}
                   aria-autocomplete="none"
                   onChange={onChangeValue}

@@ -7,7 +7,6 @@ import {
   Card,
   darken,
   Input,
-  InputProps,
   styled,
   Typography,
 } from '@mui/material';
@@ -50,17 +49,12 @@ export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
-interface ContributionCustomInputProps extends InputProps {
-  active: boolean;
-}
-
 export const ContributionCustomInput = styled(Input, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<ContributionCustomInputProps>(({ theme, active }) => ({
+})(() => ({
   height: '32px',
   borderRadius: '16px',
   '& .MuiInputBase-input::placeholder': {
-    // color: theme.palette.text.primary,
     opacity: 1,
     textAlign: 'center',
   },
