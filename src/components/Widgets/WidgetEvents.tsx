@@ -396,7 +396,7 @@ export function WidgetEvents() {
       );
       widgetEvents.off(
         WidgetEvent.LowAddressActivityConfirmed,
-        onDestinationChainTokenSelection,
+        onLowAddressActivityConfirmed,
       );
       // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
