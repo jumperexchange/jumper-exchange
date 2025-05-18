@@ -66,37 +66,33 @@ interface ContributionButtonProps extends ButtonProps {
 }
 
 export const ContributionButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<ContributionButtonProps>(({ theme, active, mode }) => {
-  console.log('active', active);
-  console.log('theme.palette.mode', theme.palette.mode);
-  return {
-    width: '100%',
-    fontSize: '12px',
-    lineHeight: '16px',
-    fontWeight: 700,
-    height: '32px',
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'mode',
+})<ContributionButtonProps>(({ theme, active, mode }) => ({
+  width: '100%',
+  fontSize: '12px',
+  lineHeight: '16px',
+  fontWeight: 700,
+  height: '32px',
 
-    transition: 'background-color 250ms',
-    color: (theme.vars || theme).palette.text.primary,
+  transition: 'background-color 250ms',
+  color: (theme.vars || theme).palette.text.primary,
+  backgroundColor: active
+    ? 'rgba(101, 59, 163, 0.84) !important'
+    : (theme.vars || theme).palette.grey[200] + ' !important',
+  '&:hover': {
     backgroundColor: active
-      ? 'rgba(101, 59, 163, 0.84) !important'
-      : (theme.vars || theme).palette.grey[200] + ' !important',
+      ? '#653BA3 !important'
+      : (theme.vars || theme).palette.grey[300] + ' !important',
+  },
+  ...(mode === 'light' && {
+    backgroundColor: active ? '#F0E5FF' : theme.palette.grey[100],
     '&:hover': {
       backgroundColor: active
-        ? '#653BA3 !important'
-        : (theme.vars || theme).palette.grey[300] + ' !important',
+        ? darken('#F0E5FF', 0.08)
+        : theme.palette.grey[300],
     },
-    ...(mode === 'light' && {
-      backgroundColor: active ? '#F0E5FF' : theme.palette.grey[100],
-      '&:hover': {
-        backgroundColor: active
-          ? darken('#F0E5FF', 0.08)
-          : theme.palette.grey[300],
-      },
-    }),
-  };
-});
+  }),
+}));
 
 interface ContributionButtonConfirmProps extends ContributionButtonProps {
   isTxConfirmed: boolean;
