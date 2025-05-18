@@ -1,4 +1,4 @@
-import { Transfer } from 'src/hooks/useTxHistory';
+import { StatusResponse } from '@lifi/sdk';
 import {
   CONTRIBUTION_AMOUNTS,
   VOLUME_THRESHOLDS,
@@ -12,9 +12,12 @@ import {
  * - Every third transaction (count % 3 = 0)
  */
 export const checkContributionByTxHistory = (
-  transfers: Transfer[] | undefined,
+  transfers: StatusResponse[] | undefined,
 ): boolean => {
-  const transactionCount = transfers?.length ?? 0;
+  if (!(Array.isArray(transfers) && transfers.length)) {
+    return false;
+  }
+  const transactionCount = transfers.length;
   return transactionCount === 0 || transactionCount % 3 === 0;
 };
 

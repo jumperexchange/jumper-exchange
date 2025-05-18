@@ -1,11 +1,14 @@
-import { ChainType, Route } from '@lifi/sdk';
+import { ChainType, Route, StatusResponse } from '@lifi/sdk';
 import { Account } from '@lifi/wallet-management';
-import { TransferResponse } from 'src/types/transfers';
 import { MIN_CONTRIBUTION_USD } from './constants';
 import {
   checkContributionByTxHistory,
   getContributionFeeAddress,
 } from './utils';
+
+export interface TransferResponse {
+  transfers: StatusResponse[] | undefined;
+}
 
 export const hasValidTransferData = (
   data: TransferResponse | null | undefined,
