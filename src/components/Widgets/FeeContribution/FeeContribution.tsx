@@ -16,6 +16,11 @@ import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { formatInputAmount } from 'src/utils/format';
+import {
+  createNativeTransactionConfig,
+  createTokenTransactionConfig,
+  ERC20_TRANSFER_ABI,
+} from 'src/utils/transaction';
 import { parseUnits } from 'viem';
 import {
   useSendTransaction,
@@ -297,29 +302,26 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       );
 
       if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
-        await sendTransaction({
-          to: feeAddress as `0x${string}`,
-          value: amountInTokenUnits,
-        });
+        const nativeTxConfig = createNativeTransactionConfig(
+          feeAddress as `0x${string}`,
+          amountInTokenUnits,
+        );
+        await sendTransaction(nativeTxConfig);
       } else {
-        await writeContract({
-          address: completedRoute.toToken.address as `0x${string}`,
-          abi: [
-            {
-              name: 'transfer',
-              type: 'function',
-              stateMutability: 'nonpayable',
-              inputs: [
-                { name: 'to', type: 'address' },
-                { name: 'amount', type: 'uint256' },
-              ],
-              outputs: [{ name: '', type: 'bool' }],
-            },
-          ],
-          functionName: 'transfer',
-          args: [feeAddress as `0x${string}`, amountInTokenUnits],
-          chainId: completedRoute.toChainId,
-        });
+        // Type assertion to ensure we're using the token transaction config
+        const txConfig = createTokenTransactionConfig(
+          completedRoute.toToken.address as `0x${string}`,
+          feeAddress as `0x${string}`,
+          amountInTokenUnits,
+          completedRoute.toChainId,
+        ) as {
+          address: `0x${string}`;
+          abi: typeof ERC20_TRANSFER_ABI;
+          functionName: 'transfer';
+          args: [`0x${string}`, bigint];
+        };
+
+        await writeContract(txConfig);
       }
     } catch (error) {
       console.error('Error sending contribution:', error);
