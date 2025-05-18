@@ -10,7 +10,7 @@ export const queryKey = ['tokenStats'];
 
 export const getTokensQuery = async () => {
   const tokens = await getTokens({
-    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO],
+    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
   });
   return tokens;
 };
