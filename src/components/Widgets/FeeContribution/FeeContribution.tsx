@@ -36,7 +36,6 @@ import {
   ContributionWrapper,
   DrawerWrapper,
 } from './FeeContribution.style';
-import * as helper from './helper';
 import { getContributionAmounts, getContributionFeeAddress } from './utils';
 
 type TranslationKey =
@@ -151,17 +150,17 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - Chain type is EVM
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
-    if (
-      !helper.isEligibleForContribution(
-        data,
-        completedRoute ?? undefined,
-        account,
-        isContributionAbEnabled,
-      )
-    ) {
-      setShowContribution(false);
-      return;
-    }
+    // if (
+    //   !helper.isEligibleForContribution(
+    //     data,
+    //     completedRoute ?? undefined,
+    //     account,
+    //     isContributionAbEnabled,
+    //   )
+    // ) {
+    //   setShowContribution(true);
+    //   return;
+    // }
 
     // If eligible, set contribution amounts based on transaction amount
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
