@@ -150,6 +150,7 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
 
 export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
+  color: (theme.vars || theme).palette.text.secondary,
   marginTop: theme.spacing(4),
   img: {
     width: '100%',
@@ -159,6 +160,9 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.primary.main,
     }),
+  },
+  '& li': {
+    color: 'inherit',
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(0, 'auto'),

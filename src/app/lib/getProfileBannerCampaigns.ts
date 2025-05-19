@@ -21,9 +21,11 @@ export async function getProfileBannerCampaigns(): Promise<GetProfileBannerCampa
   const accessToken = urlParams.getApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
-    cache: 'force-cache',
     headers: {
       Authorization: `Bearer ${accessToken}`,
+    },
+    next: {
+      revalidate: 60 * 5, // revalidate every 5 minutes
     },
   });
 

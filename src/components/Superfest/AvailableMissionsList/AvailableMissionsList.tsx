@@ -61,6 +61,7 @@ export const AvailableMissionsList = ({
     } = event;
     setCategoryFilter(typeof value === 'string' ? value.split(',') : value);
   };
+
   return (
     <AvailableMissionsContainer>
       <AvailableMissionsHeader>
