@@ -73,7 +73,7 @@ test.describe('Settings menu', () => {
     });
 
     // Step 5: Verify Bridge Settings - Deselect and select 1 bridge
-    await test.step('Verify Bridge Settings - Deselect 1 bridge', async () => {
+    await test.step('Verify Bridge Settings - Deselect and select 1 bridge', async () => {
       await clickItemInSettingsMenu(page, 'Bridges');
       await expect(page.getByText('Bridges', { exact: true })).toBeVisible();
       const bridgeListItem = page.getByTestId('CheckIcon');
@@ -95,7 +95,7 @@ test.describe('Settings menu', () => {
     });
 
     // Step 6: Verify Exchange Settings - Deselect and select all exchanges
-    await test.step('Verify Exchange Settings - Deselect all exchanges', async () => {
+    await test.step('Verify Exchange Settings - Deselect and select all exchanges', async () => {
       await clickItemInSettingsMenu(page, 'Exchanges');
       await expect(page.getByText('Exchanges', { exact: true })).toBeVisible();
       const deselectAllButton = page.getByTestId('CheckBoxOutlinedIcon');
