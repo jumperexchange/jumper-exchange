@@ -16,5 +16,6 @@ export const metadata: Metadata = {
 export default async function Page() {
   const { data: campaigns } = await getProfileBannerCampaigns();
   const { data: questsData } = await getQuestsWithNoCampaignAttached();
+
   return <ProfilePage quests={questsData.data} campaigns={campaigns} />;
 }
