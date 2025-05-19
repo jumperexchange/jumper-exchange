@@ -66,34 +66,32 @@ export const BackgroundGradients = styled('span')(({ theme }) => ({
     content: '" "',
     width: '100vh',
     height: '100vh',
-    transform:
-      'translate( -50vh, 100vh ) scale(1.5)',
+    transform: 'translate( -50vh, 100vh ) scale(1.5)',
     opacity: '0.24',
     background:
       'radial-gradient(50% 50% at 50% 50%, #1969FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles("light", {
+    ...theme.applyStyles('light', {
       transform: undefined,
-      opacity: '0.12'
-    })
+      opacity: '0.12',
+    }),
   },
   ':after': {
     content: '" "',
     position: 'absolute',
     width: '100vw',
     height: '100vw',
-    transform:
-      'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))',
+    transform: 'translate(-0%, -50%) scale( calc( 1 + 1 / 3 ))',
     right: 0,
     bottom: 0,
     opacity: '0.24',
     background:
       'radial-gradient(50% 50% at 50% 50%, #E1147B 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles("light", {
+    ...theme.applyStyles('light', {
       width: '100vh',
       height: '100vh',
       transform: 'translate(50%,50%) scale(1.5)',
-      opacity: '0.12'
-    })
+      opacity: '0.12',
+    }),
   },
 }));
 
@@ -108,9 +106,9 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
     bottom: 0,
     background:
       'radial-gradient(50% 50% at 50% 50%, #BB00FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles("light", {
-      opacity: '0.16'
-    })
+    ...theme.applyStyles('light', {
+      opacity: '0.16',
+    }),
   }),
 );
 
@@ -125,9 +123,9 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
     opacity: '0.24',
     background:
       'radial-gradient(50% 50% at 50% 50%, #0044FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles("light", {
-      opacity: '0.16'
-    })
+    ...theme.applyStyles('light', {
+      opacity: '0.16',
+    }),
   }),
 );
 
@@ -136,8 +134,7 @@ export const BackgroundGradientTopCenter = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-    transform:
-      'translate(-50%, -50%) scale( calc( 1 + 1 / 3 ))',
+    transform: 'translate(-50%, -50%) scale( calc( 1 + 1 / 3 ))',
     top: 0,
     left: '50%',
     width: '100vw',
@@ -145,12 +142,12 @@ export const BackgroundGradientTopCenter = styled(BackgroundGradient)(
     opacity: '0.24',
     background:
       'radial-gradient(50% 50% at 50% 50%, #8800FF 0%, rgba(255, 255, 255, 0) 100%)',
-    ...theme.applyStyles("light", {
+    ...theme.applyStyles('light', {
       transform: 'translate(-50%, -50%) scale(1.5)',
       width: '100vh',
       height: '100vh',
-      opacity: '0.12'
-    })
+      opacity: '0.12',
+    }),
   }),
 );
 
@@ -164,27 +161,11 @@ export const BlogBackgroundGradient = styled(BackgroundGradient)(
     width: '100%',
     height: 'calc( 100vh + 200px )',
     zIndex: -1,
-    background:
-      `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`,
-    ...theme.applyStyles("light", {
+    background: `linear-gradient(180deg, ${alpha(theme.palette.bg.main, 1)} 0%, ${alpha(theme.palette.bg.main, 0)} 100%)`,
+    ...theme.applyStyles('light', {
       position: 'fixed',
       backgroundColor: (theme.vars || theme).palette.bg.main,
-      background: `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`
-    })
+      background: `linear-gradient(180deg, rgba(3, 0, 20, 1) 0%, ${darken('#9747FF', 0.6)} 150%)`,
+    }),
   }),
 );
-
-export const SuperfestBackgroundContainer = styled('div')(({ theme }) => ({
-  position: 'fixed',
-  backgroundRepeat: 'repeat',
-  width: '100%',
-  height: '100%',
-  backgroundImage: `url(${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/Superfest_OP_9e52e7917e.svg)`,
-  overflow: 'hidden',
-  pointerEvents: 'none',
-  left: 0,
-  bottom: 0,
-  right: 0,
-  top: 0,
-  zIndex: -1,
-}));
