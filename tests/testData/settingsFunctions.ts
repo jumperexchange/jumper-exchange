@@ -62,13 +62,20 @@ async function checkElement(page: Page, selector: string, elementType: string, o
  */
 async function getNumeratorDenominator(locator: Locator): Promise<{ numerator: number; denominator: number }> {
   const combinedText = await locator.textContent() ?? '';
-  const [numerator, denominator] = combinedText.split('/');
+  const [numeratorString, denominatorString] = combinedText.split('/');
   
-  if (!numerator || !denominator) {
+  if (!numeratorString || !denominatorString) {
     throw new Error(`Invalid fraction format: ${combinedText}`);
   }
+
+  const numerator = Number(numeratorString);
+  const denominator = Number(denominatorString);
+
+  if (denominator === 0) {
+    throw new Error('Denominator cannot be 0');
+  }
   
-  return { numerator: Number(numerator), denominator: Number(denominator) };
+  return { numerator, denominator };
 }
 
 /**
