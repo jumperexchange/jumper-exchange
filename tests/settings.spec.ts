@@ -4,6 +4,8 @@ import {
   checkItemInSettingsMenu,
   checkSettingInSettingsMenu,
   checkFractionsEqual,
+  checkDeselectedAmount as checkDeselectedAmount,
+  checkNoneSelected,
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
 
@@ -68,6 +70,48 @@ test.describe('Settings menu', () => {
       // Verify that the slippage value is set to the custom value
       await checkSettingInSettingsMenu(page, `${slippageValue}%`, { visible: true });
       await expect(page.locator('span.MuiBadge-badge.MuiBadge-colorWarning')).toBeVisible();
+    });
+
+    // Step 5: Verify Bridge Settings - Deselect and select 1 bridge
+    await test.step('Verify Bridge Settings - Deselect 1 bridge', async () => {
+      await clickItemInSettingsMenu(page, 'Bridges');
+      await expect(page.getByText('Bridges', { exact: true })).toBeVisible();
+      const bridgeListItem = page.getByTestId('CheckIcon');
+      const bridgeName = await bridgeListItem.locator('..').locator('span').first().textContent() as string;
+      
+      // Deselect 1 bridge
+      await bridgeListItem.first().click();
+      // Return to Settings Menu
+      await page.getByTestId('ArrowBackIcon').first().click();
+      // Verify that 1 bridge was deselected
+      await checkDeselectedAmount(page, 'Bridges', 1);
+      // Select previously deselected bridge
+      await clickItemInSettingsMenu(page, 'Bridges');
+      await page.getByText(bridgeName).click();
+      // Return to Settings Menu
+      await page.getByTestId('ArrowBackIcon').first().click();
+      // Verify that all bridges are selected
+      await checkFractionsEqual(page, 'Bridges');
+    });
+
+    // Step 6: Verify Exchange Settings - Deselect and select all exchanges
+    await test.step('Verify Exchange Settings - Deselect all exchanges', async () => {
+      await clickItemInSettingsMenu(page, 'Exchanges');
+      await expect(page.getByText('Exchanges', { exact: true })).toBeVisible();
+      const deselectAllButton = page.getByTestId('CheckBoxOutlinedIcon');
+      await deselectAllButton.click();
+      // Return to Settings Menu
+      await page.getByTestId('ArrowBackIcon').first().click();
+      // Verify that 1 exchange was deselected
+      await checkNoneSelected(page, 'Exchanges');
+      // Select all exchanges
+      await clickItemInSettingsMenu(page, 'Exchanges');
+      const selectAllButton = page.getByTestId('IndeterminateCheckBoxOutlinedIcon');
+      await selectAllButton.click();
+      // Return to Settings Menu
+      await page.getByTestId('ArrowBackIcon').first().click();
+      // Verify that all exchanges are selected
+      await checkFractionsEqual(page, 'Exchanges');
     });
 
     // Final step: Reset settings
