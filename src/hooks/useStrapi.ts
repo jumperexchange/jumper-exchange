@@ -178,7 +178,7 @@ export const useStrapi = <T>({
     }
   }
   // show drafts ONLY on development env
-  process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
+  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
   process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('pagination[pageSize]', '50');

@@ -99,7 +99,7 @@ export async function checkWinningSwap({
 }: CheckWinningSwapParams): Promise<CheckWinningSwapResponse> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_GOLDEN_TICKET_API_URL}/golden-ticket/verify-transaction`,
+      `https://jumper.goldenticket.builtby.dad/golden-ticket/verify-transaction`,
       {
         method: 'POST',
         headers: {
@@ -140,7 +140,7 @@ export async function submitContact({
 }: SubmitContactParams): Promise<SubmitContactResponse> {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_GOLDEN_TICKET_API_URL}/golden-ticket/submit-contact`,
+      `https://jumper.goldenticket.builtby.dad/golden-ticket/submit-contact`,
       {
         method: 'POST',
         headers: {
