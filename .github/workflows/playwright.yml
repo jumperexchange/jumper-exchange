@@ -14,32 +14,32 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [ 1, 2, 3, 4 ]
+        shard: [1, 2, 3, 4]
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-    - name: Install pnpm
-      run: npm install -g pnpm
-    - name: Install dependencies
-      run: pnpm install
-    - name: Install xvfb server
-      run: sudo apt-get install xvfb
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
-    - name: Run Playwright tests
-      env:
-        PLAYWRIGHT_HTML_OUTPUT_NAME: report-${{ matrix.shard }}.html
-      run: |
-       pnpm build:cache:ci &
-        pnpm run test:ci:e2e \
-          --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
-          --reporter=html
-    - name: Upload Playwright Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install xvfb server
+        run: sudo apt-get install xvfb
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_NAME: report-${{ matrix.shard }}.html
+        run: |
+          pnpm build:cache:ci &
+           pnpm run test:ci:e2e \
+             --shard ${{ matrix.shard }}/${{ strategy.job-total }} \
+             --reporter=html
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
           name: playwright-report-${{ matrix.shard }}
           path: playwright-report/
           retention-days: 2
