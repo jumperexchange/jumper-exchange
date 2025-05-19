@@ -101,10 +101,10 @@ export default function FinalLayout({
 
         <div
           style={{
-            position: 'absolute',
-            bottom: isMobile ? '30%' : '40%',
-            left: '50%',
-            transform: 'translateX(-50%)',
+            marginTop: isMobile ? '30px' : '80px',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           <MarkIcon isMobile={isMobile} />

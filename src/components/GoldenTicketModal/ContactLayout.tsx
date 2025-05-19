@@ -54,6 +54,7 @@ const Input = styled(TextField)({
     fontWeight: 400,
     padding: '14px 5px 0',
     boxShadow: 'none',
+    minHeight: '80px',
     border: 'none',
     '& fieldset': {
       border: 'none',
