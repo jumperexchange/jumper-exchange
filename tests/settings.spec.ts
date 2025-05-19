@@ -4,7 +4,7 @@ import {
   checkItemInSettingsMenu,
   checkSettingInSettingsMenu,
   checkFractionsEqual,
-  checkDeselectedAmount as checkDeselectedAmount,
+  checkDeselectedAmount,
   checkNoneSelected,
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
