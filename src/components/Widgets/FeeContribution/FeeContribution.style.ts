@@ -6,8 +6,8 @@ import {
   ButtonProps,
   Card,
   darken,
-  Input,
   styled,
+  TextField,
   Typography,
 } from '@mui/material';
 
@@ -49,7 +49,7 @@ export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
-export const ContributionCustomInput = styled(Input, {
+export const ContributionCustomInput = styled(TextField, {
   shouldForwardProp: (prop) => prop !== 'active',
 })(() => ({
   height: '32px',

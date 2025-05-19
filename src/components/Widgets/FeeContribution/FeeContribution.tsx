@@ -5,6 +5,7 @@ import {
   darken,
   Drawer,
   Grid,
+  InputAdornment,
   useColorScheme,
 } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -127,9 +128,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
-    // Remove dollar sign if present and format the amount
-    const valueWithoutDollar = value.replace('$', '');
-
     // Calculate max amount in USD based on token balance
     const maxTokenAmount = tokenBalanceData
       ? Number(tokenBalanceData.amount) /
@@ -137,12 +135,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       : 0;
     const maxUsdAmount =
       maxTokenAmount * Number(completedRoute?.toToken?.priceUSD || 0);
-    const formattedAmount = formatInputAmount(
-      valueWithoutDollar,
-      2,
-      false,
-      maxUsdAmount,
-    );
+    const formattedAmount = formatInputAmount(value, 2, false, maxUsdAmount);
     setInputAmount(formattedAmount);
     setAmount(formattedAmount);
   }
@@ -420,27 +413,62 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               ))}
               <Grid size={3}>
                 <ContributionCustomInput
-                  value={inputAmount ? `$${inputAmount}` : ''}
+                  value={inputAmount || ''}
                   aria-autocomplete="none"
                   onChange={onChangeValue}
                   onClick={handleCustom}
-                  disableUnderline
+                  onFocus={handleCustom}
                   placeholder={getTranslation('custom')}
                   slotProps={{
                     root: {
                       sx: (theme) => ({
                         borderRadius: '16px',
+                        width: '100%',
+                        flexGrow: 1,
+                        padding: 0,
+                        maxWidth: '100%',
+                        fieldset: {
+                          border: 'none',
+                        },
                       }),
                     },
                     input: {
+                      startAdornment: inputAmount ? (
+                        <InputAdornment
+                          position="start"
+                          disableTypography
+                          sx={(theme) => ({
+                            fontSize: '12px',
+                            marginRight: 0,
+                            lineHeight: '16px',
+                            fontWeight: 700,
+                            color: 'white !important', //(theme.vars || theme).palette.text.primary,
+                            ...(inputAmount && {
+                              padding: 0,
+                              // paddingLeft: '28px',
+                            }),
+                          })}
+                        >
+                          $
+                        </InputAdornment>
+                      ) : null,
                       sx: (theme) => ({
+                        input: {
+                          ...(inputAmount && {
+                            width: inputAmount.length * 8 + 'px',
+                            paddingLeft: theme.spacing(0.5),
+                          }),
+                          padding: inputAmount ? '0' : '0 16px',
+                        },
+
                         height: '32px',
-                        border: 'none',
                         borderRadius: '16px',
-                        padding: 0,
+                        justifyContent: 'center',
+                        ':focus': { padding: '0 12px 0 24px' }, // Added left padding for the $ symbol
                         fontSize: '12px',
                         lineHeight: '16px',
                         fontWeight: 700,
+                        paddingLeft: 0,
                         textAlign: 'center',
                         transition: 'background-color 250ms',
                         color: (theme.vars || theme).palette.text.primary,
