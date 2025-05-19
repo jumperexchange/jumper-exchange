@@ -105,7 +105,7 @@ interface Resources {
     abstractAlert: {
       title: 'This wallet only works on Abstract!';
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
-      buttonText: 'Check the AGW docs';
+      buttonText: 'Check the docs';
     };
     featureCard: {
       learnMore: 'Learn more';
@@ -158,16 +158,6 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
     };
-    contribution: {
-      title: 'Contribute';
-      custom: 'Custom';
-      confirm: 'Confirm';
-      contributionSent: 'Contribution Sent!';
-      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
-      error: {
-        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
-      };
-    };
     leaderboard: {
       title: 'Leaderboard';
       description: 'The leaderboard is updated on a daily basis.';
@@ -186,6 +176,19 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
+    };
+    contribution: {
+      title: 'Contribute';
+      custom: 'Custom';
+      confirm: 'Confirm';
+      contributionSent: 'Contribution Sent!';
+      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
+      error: {
+        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
+        errorSending: 'Error sending contribution:';
+        invalidTokenPrice: 'Invalid token price';
+        noFeeAddress: 'No contribution fee address configured for this chain.';
+      };
     };
   };
 }

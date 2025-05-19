@@ -345,7 +345,12 @@ export function Widget({
                   custom: t('contribution.custom'),
                   confirm: t('contribution.confirm'),
                   error: {
+                    errorSending: t('contribution.error.errorSending'),
                     amountTooSmall: t('contribution.error.amountTooSmall'),
+                    noFeeAddress: t('contribution.error.noFeeAddress'),
+                    invalidTokenPrice: t(
+                      'contribution.error.invalidTokenPrice',
+                    ),
                   },
                 }}
               />

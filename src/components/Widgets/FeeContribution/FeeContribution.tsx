@@ -9,7 +9,6 @@ import {
   useColorScheme,
 } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
 import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
@@ -43,15 +42,6 @@ import {
   DrawerWrapper,
 } from './FeeContribution.style';
 import { getContributionAmounts, getContributionFeeAddress } from './utils';
-
-type TranslationKey =
-  | 'title'
-  | 'contributionSent'
-  | 'description'
-  | 'custom'
-  | 'confirm'
-  | 'error.amountTooSmall';
-
 export interface ContributionTranslations {
   title: string;
   contributionSent: string;
@@ -60,16 +50,18 @@ export interface ContributionTranslations {
   confirm: string;
   error: {
     amountTooSmall: string;
+    noFeeAddress: string;
+    errorSending: string;
+    invalidTokenPrice: string;
   };
 }
 export interface FeeContributionProps {
-  translations?: Partial<ContributionTranslations>;
+  translations: ContributionTranslations;
 }
 
 const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
-  const { t } = useTranslation();
   const [address, setAddress] = useState<string | undefined>(undefined);
   const [contributionAmounts, setContributionAmounts] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
@@ -251,7 +243,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       // amount is in USD, convert to token amount
       const tokenPriceUSD = Number(completedRoute.toToken.priceUSD);
       if (!tokenPriceUSD || tokenPriceUSD <= 0)
-        throw new Error('Invalid token price');
+        throw new Error(translations.error.invalidTokenPrice);
 
       const usdAmount = parseFloat(amount);
       // Use token's actual decimals for precision
@@ -261,15 +253,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
       // Ensure we have a non-zero amount after conversion
       if (parseFloat(tokenAmount) === 0) {
-        throw new Error(t('contribution.error.amountTooSmall'));
+        throw new Error(translations.error.amountTooSmall);
       }
 
       // Get the contribution fee address for the chain
       const feeAddress = getContributionFeeAddress(completedRoute.toChainId);
       if (!feeAddress) {
-        throw new Error(
-          'No contribution fee address configured for this chain',
-        );
+        throw new Error(translations.error.noFeeAddress);
       }
 
       // Track click event
@@ -317,12 +307,16 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         await writeContract(txConfig);
       }
     } catch (error) {
-      console.error('Error sending contribution:', error);
-      if (
-        error instanceof Error &&
-        error.message === t('contribution.error.amountTooSmall')
-      ) {
-        alert(t('contribution.error.amountTooSmall'));
+      console.error(translations.error.errorSending, error);
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        if (errorMessage === translations?.error?.amountTooSmall) {
+          console.error(errorMessage);
+        } else if (errorMessage === translations?.error?.noFeeAddress) {
+          console.error(errorMessage);
+        } else if (errorMessage === translations?.error?.invalidTokenPrice) {
+          console.error(errorMessage);
+        }
       }
     } finally {
       setIsSending(false);
@@ -336,18 +330,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       parseFloat(amount) > 0
     );
   }, [amount]);
-
-  // Use translations from props if provided, otherwise use i18n translations
-  const getTranslation = (key: TranslationKey): string => {
-    if (key === 'error.amountTooSmall') {
-      return (
-        translations?.error?.amountTooSmall ??
-        t('contribution.error.amountTooSmall')
-      );
-    }
-    const translationKey = `contribution.${key}` as const;
-    return translations?.[key] ?? t(translationKey);
-  };
 
   if (!showContribution) {
     return null;
@@ -388,9 +370,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
           }}
         >
           <ContributionCard>
-            <ContributionCardTitle>
-              {getTranslation('title')}
-            </ContributionCardTitle>
+            <ContributionCardTitle>{translations.title}</ContributionCardTitle>
             <Grid
               container
               spacing={2}
@@ -418,7 +398,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                   onChange={onChangeValue}
                   onClick={handleCustom}
                   onFocus={handleCustom}
-                  placeholder={getTranslation('custom')}
+                  placeholder={translations.custom}
                   slotProps={{
                     root: {
                       sx: (theme) => ({
@@ -510,14 +490,14 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                 {isTransactionLoading ? (
                   <CircularProgress size={20} color="inherit" />
                 ) : isTxConfirmed || isNativeTxSuccess ? (
-                  getTranslation('contributionSent')
+                  translations.contributionSent
                 ) : (
-                  getTranslation('confirm')
+                  translations.confirm
                 )}
               </ContributionButtonConfirm>
             ) : (
               <ContributionDescription>
-                {getTranslation('description')}
+                {translations.description}
               </ContributionDescription>
             )}
           </ContributionCard>
