@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 
-  export async function clickItemInSettingsMenu(page: Page, selector: string) {
+export async function clickItemInSettingsMenu(page: Page, selector: string) {
   await page
     .getByText(selector, { exact: true })
     .click();
@@ -52,36 +52,77 @@ async function checkElement(page: Page, selector: string, elementType: string, o
     await expect(item).not.toBeVisible();
   }
 }
+
 /**
  * Helper function that extracts the numerator and denominator from a combined numerator/denominator string
  * 
- * This function takes a locator object and returns an object with the numerator and denominator values.
- * The combined numerator/denominator string is expected to be in the format "numerator/denominator".
- * 
  * @param locator The locator object for the combined numerator/denominator string
  * @returns An object with numerator and denominator values
+ * @throws Error if the fraction format is invalid
  */
-async function getNumeratorDenominator(locator: Locator): Promise<{ numerator: string; denominator: string }> {
-  const combinedNumeratorDenominator = await locator.textContent() ?? '';
-  const numerator = combinedNumeratorDenominator.split('/')[0];
-  const denominator = combinedNumeratorDenominator.split('/')[1];
+async function getNumeratorDenominator(locator: Locator): Promise<{ numerator: number; denominator: number }> {
+  const combinedText = await locator.textContent() ?? '';
+  const [numeratorString, denominatorString] = combinedText.split('/');
+  
+  if (!numeratorString || !denominatorString) {
+    throw new Error(`Invalid fraction format: ${combinedText}`);
+  }
+
+  const numerator = Number(numeratorString);
+  const denominator = Number(denominatorString);
+
+  if (denominator === 0) {
+    throw new Error('Denominator cannot be 0');
+  }
+  
   return { numerator, denominator };
 }
 
 /**
- * Helper function that checks if the numerator and denominator are equal for a given category
+ * Gets the fraction locator for a specific category
  * 
- * This function takes a page object and a category name (e.g. 'Bridges' or 'Exchanges')
- * and verifies that the numerator and denominator values are equal.
+ * @param page The Playwright page object
+ * @param category The category name (e.g. 'Bridges' or 'Exchanges')
+ * @returns The locator for the fraction element
+ */
+function getFractionLocator(page: Page, category: string): Locator {
+  return page.getByText(category)
+    .locator('..')
+    .locator('..')
+    .locator('xpath=//*[contains(text(), "/")]');
+}
+
+/**
+ * Verifies that the numerator and denominator are equal for a given category
  * 
  * @param page The Playwright page object
  * @param category The category name to check (e.g. 'Bridges' or 'Exchanges')
  */
-export async function checkFractionsEqual(page: Page, category: string) {
-  const fractionLocator = page.getByText(category)
-    .locator('..')
-    .locator('..')
-    .locator('xpath=//*[contains(text(), "/")]');
-  const fractions = await getNumeratorDenominator(fractionLocator);
-  await expect(fractions.numerator).toEqual(fractions.denominator);
+export async function checkFractionsEqual(page: Page, category: string): Promise<void> {
+  await checkDeselectedAmount(page, category, 0);
+}
+
+/**
+ * Verifies that the numerator is less than the denominator for a given category by the deselected amount
+ * 
+ * @param page The Playwright page object
+ * @param category The category name to check (e.g. 'Bridges' or 'Exchanges')
+ * @param deselectedAmount The amount the numerator is less than the denominator
+ */
+export async function checkDeselectedAmount(page: Page, category: string, deselectedAmount: number): Promise<void> {
+  const fractionLocator = getFractionLocator(page, category);
+  const { numerator, denominator } = await getNumeratorDenominator(fractionLocator);
+  await expect(numerator).toBe(denominator - deselectedAmount);
+}
+
+/**
+ * Verifies that the numerator is 0 for a given category
+ * 
+ * @param page The Playwright page object
+ * @param category The category name to check (e.g. 'Bridges' or 'Exchanges')
+ */
+export async function checkNoneSelected(page: Page, category: string): Promise<void> {
+  const fractionLocator = getFractionLocator(page, category);
+  const { numerator, denominator } = await getNumeratorDenominator(fractionLocator);
+  await expect(numerator).toBe(0);
 }
