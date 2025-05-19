@@ -464,11 +464,11 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                         ...(mode === 'light' && {
                           backgroundColor: isCustomActive
                             ? '#F0E5FF'
-                            : theme.palette.grey[100],
+                            : (theme.vars || theme).palette.grey[100],
                           '&:hover': {
                             backgroundColor: isCustomActive
                               ? darken('#F0E5FF', 0.08)
-                              : theme.palette.grey[300],
+                              : (theme.vars || theme).palette.grey[300],
                           },
                         }),
                       }),

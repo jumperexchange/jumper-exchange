@@ -25,7 +25,7 @@ export const TxConfirmation = ({
         justifyContent: 'space-between',
         backgroundColor: 'inherit',
         padding: theme.spacing(2),
-        border: `1px solid ${theme.palette.alphaLight200.main}`,
+        border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
         gap: '8px',
       }}
     >
@@ -58,7 +58,9 @@ export const TxConfirmation = ({
             />
           )}
         </Box>
-        <Typography sx={{ color: theme.palette.text.primary }}>{s}</Typography>
+        <Typography sx={{ color: (theme.vars || theme).palette.text.primary }}>
+          {s}
+        </Typography>
       </Box>
       <a
         href={link}
@@ -73,7 +75,7 @@ export const TxConfirmation = ({
       >
         <Box
           sx={{
-            backgroundColor: theme.palette.alphaLight200.main,
+            backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
             borderRadius: '50%',
             flexDirection: 'row',
             alignItems: 'center',
@@ -85,7 +87,7 @@ export const TxConfirmation = ({
             sx={(theme) => ({
               width: '16px',
               height: '16px',
-              color: theme.palette.white.main,
+              color: (theme.vars || theme).palette.white.main,
             })}
           />
         </Box>
