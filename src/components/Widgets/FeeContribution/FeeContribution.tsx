@@ -6,7 +6,6 @@ import {
   Drawer,
   Grid,
   InputAdornment,
-  useColorScheme,
 } from '@mui/material';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
@@ -66,7 +65,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const [contributionAmounts, setContributionAmounts] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
   );
-  const { mode } = useColorScheme();
 
   // AB test flag - show contribution for ~10% of users
   const isContributionAbEnabled = useMemo(() => {
@@ -460,7 +458,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                             ? '#653BA3'
                             : (theme.vars || theme).palette.grey[300],
                         },
-                        ...(mode === 'light' && {
+                        ...theme.applyStyles('light', {
                           backgroundColor: isCustomAmountActive
                             ? '#F0E5FF'
                             : (theme.vars || theme).palette.grey[100],
