@@ -61,61 +61,111 @@ export const ContributionCustomInput = styled(TextField, {
 }));
 
 interface ContributionButtonProps extends ButtonProps {
-  active: boolean;
-  mode: 'light' | 'dark' | 'system' | undefined;
+  selected: boolean;
 }
 
 export const ContributionButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'mode',
-})<ContributionButtonProps>(({ theme, active, mode }) => ({
-  width: '100%',
-  fontSize: '12px',
-  lineHeight: '16px',
-  fontWeight: 700,
-  height: '32px',
-
-  transition: 'background-color 250ms',
-  color: (theme.vars || theme).palette.text.primary,
-  backgroundColor: active
-    ? 'rgba(101, 59, 163, 0.84) !important'
-    : (theme.vars || theme).palette.grey[200] + ' !important',
-  '&:hover': {
-    backgroundColor: active
-      ? '#653BA3 !important'
-      : (theme.vars || theme).palette.grey[300] + ' !important',
-  },
-  ...(mode === 'light' && {
-    backgroundColor: active
-      ? '#F0E5FF'
-      : (theme.vars || theme).palette.grey[100],
-    '&:hover': {
-      backgroundColor: active
-        ? darken('#F0E5FF', 0.08)
-        : (theme.vars || theme).palette.grey[300],
-    },
+  shouldForwardProp: (prop) => prop !== 'selected',
+})<ContributionButtonProps>(
+  ({ theme }) => ({
+    width: '100%',
+    fontSize: '12px',
+    lineHeight: '16px',
+    fontWeight: 700,
+    height: '32px',
+    transition: 'background-color 250ms',
+    color: (theme.vars || theme).palette.text.primary,
+    borderColor: 'transparent',
   }),
-}));
+  {
+    variants: [
+      {
+        props: { selected: true },
+        style: ({ theme }) => ({
+          backgroundColor: 'rgba(101, 59, 163, 0.84)',
+          '&:hover': { backgroundColor: '#653BA3' },
+          ...theme.applyStyles('light', {
+            backgroundColor: '#F0E5FF',
+            '&:hover': {
+              color: (theme.vars || theme).palette.text.primary,
+              backgroundColor: darken('#F0E5FF', 0.08),
+            },
+          }),
+        }),
+      },
+      {
+        props: { selected: false },
+        style: ({ theme }) => ({
+          backgroundColor: `${(theme.vars || theme).palette.grey[200]} !important`,
+          '&:hover': {
+            backgroundColor: `${(theme.vars || theme).palette.grey[300]} !important`,
+          },
+          ...theme.applyStyles('light', {
+            backgroundColor: (theme.vars || theme).palette.grey[100],
+            '&:hover': {
+              backgroundColor: (theme.vars || theme).palette.grey[300],
+            },
+          }),
+        }),
+      },
+    ],
+  },
+);
 
-interface ContributionButtonConfirmProps extends ContributionButtonProps {
+interface ContributionButtonConfirmProps extends ButtonProps {
   isTxConfirmed: boolean;
 }
 
-export const ContributionButtonConfirm = styled(ContributionButton, {
+export const ContributionButtonConfirm = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'isTxConfirmed',
-})<ContributionButtonConfirmProps>(({ isTxConfirmed, mode }) => ({
-  height: '40px',
-  fontSize: '14px',
-  lineHeight: '16px',
-  fontWeight: 700,
-  gap: '8px',
-  ...(isTxConfirmed && {
-    backgroundColor: '#D6FFE7',
-    color: '#00B849',
-    '&:hover': {
-      backgroundColor: darken('#D6FFE7', 0.04),
-    },
+})<ContributionButtonConfirmProps>(
+  ({ theme }) => ({
+    width: '100%',
+    fontSize: '14px',
+    lineHeight: '16px',
+    fontWeight: 700,
+    height: '40px',
+    gap: '8px',
+    transition: 'background-color 250ms',
   }),
-}));
+  {
+    variants: [
+      {
+        props: { isTxConfirmed: true },
+        style: ({ theme }) => ({
+          color: '#00B849',
+          backgroundColor: 'rgba(101, 59, 163, 0.84)',
+          '&:hover': { backgroundColor: '#653BA3' },
+
+          ...theme.applyStyles('light', {
+            backgroundColor: '#D6FFE7',
+            color: '#00B849',
+            '&:hover': {
+              backgroundColor: darken('#D6FFE7', 0.04),
+            },
+          }),
+        }),
+      },
+      {
+        props: { isTxConfirmed: false },
+        style: ({ theme }) => ({
+          backgroundColor: 'rgba(101, 59, 163, 0.84)',
+          color: (theme.vars || theme).palette.text.primary,
+          '&:hover': {
+            backgroundColor: '#653BA3',
+          },
+          ...theme.applyStyles('light', {
+            backgroundColor: '#F0E5FF',
+            color: (theme.vars || theme).palette.text.primary,
+            '&:hover': {
+              backgroundColor: darken('#F0E5FF', 0.08),
+            },
+          }),
+        }),
+      },
+    ],
+  },
+);
 
 export const ContributionDescription = styled(Typography)(({ theme }) => ({
   fontSize: '12px',

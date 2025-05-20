@@ -380,10 +380,9 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               {contributionAmounts.map((contributionAmount) => (
                 <Grid size={3} key={contributionAmount}>
                   <ContributionButton
-                    active={
+                    selected={
                       !!amount && parseFloat(amount) === contributionAmount
                     }
-                    mode={mode}
                     onClick={() => handleButtonClick(contributionAmount)}
                     size="small"
                   >
@@ -422,7 +421,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                             marginRight: 0,
                             lineHeight: '16px',
                             fontWeight: 700,
-                            color: 'white !important', //(theme.vars || theme).palette.text.primary,
+                            color: (theme.vars || theme).palette.text.primary,
                             ...(inputAmount && {
                               padding: 0,
                               // paddingLeft: '28px',
@@ -480,9 +479,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
             {!!amount ? (
               <ContributionButtonConfirm
-                active={false}
                 onClick={handleConfirm}
-                mode={mode}
                 isTxConfirmed={isTxConfirmed}
                 disabled={isTransactionLoading}
               >
