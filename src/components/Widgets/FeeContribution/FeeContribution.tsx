@@ -323,7 +323,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     }
   };
 
-  const isCustomActive = useMemo(() => {
+  const isCustomAmountActive = useMemo(() => {
     return (
       !!amount &&
       !contributionAmounts.includes(parseFloat(amount)) &&
@@ -452,20 +452,20 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                         transition: 'background-color 250ms',
                         color: (theme.vars || theme).palette.text.primary,
 
-                        backgroundColor: isCustomActive
+                        backgroundColor: isCustomAmountActive
                           ? 'rgba(101, 59, 163, 0.84)'
                           : (theme.vars || theme).palette.grey[200],
                         '&:hover': {
-                          backgroundColor: isCustomActive
+                          backgroundColor: isCustomAmountActive
                             ? '#653BA3'
                             : (theme.vars || theme).palette.grey[300],
                         },
                         ...(mode === 'light' && {
-                          backgroundColor: isCustomActive
+                          backgroundColor: isCustomAmountActive
                             ? '#F0E5FF'
                             : (theme.vars || theme).palette.grey[100],
                           '&:hover': {
-                            backgroundColor: isCustomActive
+                            backgroundColor: isCustomAmountActive
                               ? darken('#F0E5FF', 0.08)
                               : (theme.vars || theme).palette.grey[300],
                           },
