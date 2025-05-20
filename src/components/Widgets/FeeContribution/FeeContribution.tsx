@@ -62,7 +62,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
   const [address, setAddress] = useState<string | undefined>(undefined);
-  const [contributionAmounts, setContributionAmounts] = useState<number[]>(
+  const [contributionOptions, setContributionOptions] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
   );
 
@@ -159,7 +159,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     // If eligible, set contribution amounts based on transaction amount
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
     setShowContribution(true);
-    setContributionAmounts(getContributionAmounts(txUsdAmount));
+    setContributionOptions(getContributionAmounts(txUsdAmount));
   }, [
     data?.transfers,
     completedRoute?.toAmountUSD,
@@ -324,7 +324,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const isCustomAmountActive = useMemo(() => {
     return (
       !!amount &&
-      !contributionAmounts.includes(parseFloat(amount)) &&
+      !contributionOptions.includes(parseFloat(amount)) &&
       parseFloat(amount) > 0
     );
   }, [amount]);
@@ -375,7 +375,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               columnSpacing={1}
               justifyContent={'space-between'}
             >
-              {contributionAmounts.map((contributionAmount) => (
+              {contributionOptions.map((contributionAmount) => (
                 <Grid size={3} key={contributionAmount}>
                   <ContributionButton
                     selected={
