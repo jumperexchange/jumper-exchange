@@ -13,7 +13,7 @@ export interface ChainProps {
 
 export async function getChainsQuery() {
   const chains = await getChains({
-    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO],
+    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
   });
   return { chains };
 }

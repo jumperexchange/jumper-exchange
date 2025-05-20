@@ -95,10 +95,11 @@ export const getDefaultWidgetThemeV2 = (
           overflow: 'visible',
         },
         container: {
-          borderRadius: '12px',
+          borderRadius: '24px',
           maxWidth: '100%',
+          maxHeight: 720,
           [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
-            borderRadius: '12px',
+            borderRadius: '24px',
             maxWidth: 416,
             minWidth: 416,
             boxShadow: copiedTheme.shadows[1],
@@ -112,11 +113,15 @@ export const getDefaultWidgetThemeV2 = (
           light: {
             ...copiedTheme.colorSchemes.light,
             palette: formatWidgetPalette(copiedTheme.colorSchemes.light),
-
           },
           dark: {
             ...copiedTheme.colorSchemes.dark,
             palette: formatWidgetPalette(copiedTheme.colorSchemes.dark),
+          },
+        },
+        components: {
+          MuiCard: {
+            defaultProps: { variant: 'elevation' },
           },
         },
       },
