@@ -15,7 +15,7 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
+import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -45,17 +45,11 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-  const widgetTheme = getWidgetThemeV2(
-    mode === 'system' || !mode ? (prefersDarkMode ? 'dark' : 'light') : mode,
-  );
   const { destinationChainToken, toAddress } = useUrlParams();
   const widgetEvents = useWidgetEvents();
+  const router = useRouter();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<FormState>(null);
   const { i18n, t } = useTranslation();
   const { account } = useAccount();
@@ -67,8 +61,19 @@ export function Widget({
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
-  const router = useRouter();
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { mode } = useColorScheme();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const widgetTheme = useMemo(
+    () =>
+      getWidgetThemeV2(
+        mode === 'system' || !mode
+          ? prefersDarkMode
+            ? 'dark'
+            : 'light'
+          : mode,
+      ),
+    [mode, prefersDarkMode],
+  );
 
   const isConnectedAGW = account?.connector?.name === 'Abstract';
   useEffect(() => {
