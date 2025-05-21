@@ -152,6 +152,7 @@ export function ZapWidget({
         account: oNexusInit,
       });
 
+      console.log('--- oNexusInit ---', oNexusInit);
       setONexus(oNexusInit);
       setMeeClient(meeClientInit);
     };
@@ -374,7 +375,9 @@ export function ZapWidget({
 
       console.log('--- hash ---', hash);
 
-      return { id: hash };
+      const hashFormatted = `biconomy:${hash}`;
+
+      return { id: hashFormatted };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
   );
@@ -442,6 +445,7 @@ export function ZapWidget({
           } else if (args.method === 'wallet_sendCalls') {
             return await handleWalletSendCalls(args);
           } else if (args.method === 'wallet_getCallsStatus') {
+            console.log('--- TERA ---', args);
             return await handleWalletGetCallsStatus(args);
           } else {
             return originalRequest(args);
@@ -495,7 +499,7 @@ export function ZapWidget({
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        apiUrl: process.env.NEXT_PUBLIC_ZAP_API_URL,
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
