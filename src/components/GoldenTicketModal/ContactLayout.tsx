@@ -123,7 +123,7 @@ interface ContactLayoutProps {
   isSigning: boolean;
 }
 
-const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const telegramRegex = /^@[a-zA-Z0-9_]+$/;
 
@@ -204,7 +204,8 @@ export const ContactLayout = ({
           <FieldName>Email or Telegram tag</FieldName>
           {!isValidInput && contact !== '' && (
             <ErrorMessage isMobile={isMobile}>
-              Please enter a valid email address or Telegram tag
+              Please enter a valid email address or Telegram tag (should start
+              with @)
             </ErrorMessage>
           )}
         </InputWrapper>

@@ -196,7 +196,14 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
     }
   };
 
-  const handleClose = () => {
+  const handleClose = (
+    event?: {},
+    reason?: 'backdropClick' | 'escapeKeyDown',
+  ) => {
+    if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+      // Do nothing, prevent close
+      return;
+    }
     setIsClosing(true);
     setTimeout(() => {
       onClose();
