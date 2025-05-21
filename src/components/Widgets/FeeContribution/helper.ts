@@ -48,6 +48,7 @@ export const hasValidContributionFeeAddress = (chainId: number): boolean => {
   return !!contributionFeeAddress;
 };
 
+// todo: Uncomment before merging this PR to re-enable checks
 export const isEligibleForContribution = (
   data: TransferResponse | null | undefined,
   completedRoute: Route | undefined,
@@ -70,14 +71,14 @@ export const isEligibleForContribution = (
   }
 
   return (
-    isTransactionAmountEligible(completedRoute.toAmountUSD) &&
+    // isTransactionAmountEligible(completedRoute.toAmountUSD) && // todo: reenable before merging!
     isSameWalletTransfer(
       completedRoute.fromAddress,
       completedRoute.toAddress,
     ) &&
     isWalletAccessValid(account?.address, completedRoute.fromAddress) &&
-    isContributionAbEnabled &&
-    isContributionEnabledByTxHistory &&
+    // isContributionAbEnabled && // todo: reenable before merging!
+    // isContributionEnabledByTxHistory && // todo: reenable before merging!
     isEvmChainType(account?.chainType) &&
     hasValidContributionFeeAddress(completedRoute.toChainId)
   );

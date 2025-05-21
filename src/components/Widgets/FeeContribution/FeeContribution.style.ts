@@ -135,6 +135,7 @@ export const ContributionButtonConfirm = styled(Button, {
         style: ({ theme }) => ({
           color: '#00B849',
           backgroundColor: 'rgba(101, 59, 163, 0.84)',
+          cursor: 'unset',
           '&:hover': { backgroundColor: '#653BA3' },
 
           ...theme.applyStyles('light', {

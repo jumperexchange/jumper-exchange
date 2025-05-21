@@ -40,6 +40,7 @@ import {
   ContributionWrapper,
   DrawerWrapper,
 } from './FeeContribution.style';
+import * as helper from './helper';
 import { getContributionAmounts, getContributionFeeAddress } from './utils';
 export interface ContributionTranslations {
   title: string;
@@ -143,18 +144,17 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - Chain type is EVM
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
-    // todo: Uncomment before merging this PR to re-enable checks
-    // if (
-    //   !helper.isEligibleForContribution(
-    //     data,
-    //     completedRoute ?? undefined,
-    //     account,
-    //     isContributionAbEnabled,
-    //   )
-    // ) {
-    //   setShowContribution(false);
-    //   return;
-    // }
+    if (
+      !helper.isEligibleForContribution(
+        data,
+        completedRoute ?? undefined,
+        account,
+        isContributionAbEnabled,
+      )
+    ) {
+      setShowContribution(false);
+      return;
+    }
 
     // If eligible, set contribution amounts based on transaction amount
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
@@ -230,6 +230,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const handleConfirm = async () => {
     if (
       isTxConfirmed ||
+      isNativeTxSuccess ||
       !amount ||
       !completedRoute?.toToken ||
       !account?.address
@@ -478,7 +479,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
             {!!amount ? (
               <ContributionButtonConfirm
                 onClick={handleConfirm}
-                isTxConfirmed={isTxConfirmed}
+                isTxConfirmed={isTxConfirmed || isNativeTxSuccess}
                 disabled={isTransactionLoading}
               >
                 {isTxConfirmed || isNativeTxSuccess ? <CheckIcon /> : null}
