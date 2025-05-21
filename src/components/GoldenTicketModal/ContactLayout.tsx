@@ -102,7 +102,7 @@ const FieldName = styled('p')({
 
 const ErrorMessage = styled('p')<{ isMobile: boolean }>(({ isMobile }) => ({
   position: 'absolute',
-  bottom: isMobile ? '-5px' : '-10px',
+  bottom: isMobile ? '-25px' : '-10px',
   left: '10px',
   fontWeight: 'bold',
   color: '#FF09D3',
