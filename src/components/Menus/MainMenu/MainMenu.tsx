@@ -24,7 +24,7 @@ export const MainMenu = ({ anchorEl }: MenuProps) => {
       anchorEl={anchorEl}
     >
       {openSubMenu === MenuKeysEnum.None &&
-        mainMenuItems.map((el, index) => (
+        (mainMenuItems ?? []).map((el, index) => (
           <MenuItem
             key={`${el.label}-${index}`}
             autoFocus={index > 0 ? true : false}

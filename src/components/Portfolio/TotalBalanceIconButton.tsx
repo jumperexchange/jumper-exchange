@@ -1,10 +1,11 @@
 import { alpha, IconButton, Tooltip } from '@mui/material';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface TotalBalanceIconButtonProps {
   refetch?: () => void;
   disabled?: boolean;
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
   tooltipText?: string;
 }
 

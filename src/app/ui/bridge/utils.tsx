@@ -49,7 +49,8 @@ export function getChainInfoData(chainInfo: ExtendedChain) {
       value: chainInfo.metamask?.blockExplorerUrls?.map((blockExplorerUrl) => (
         <MuiLink
           sx={(theme) => ({
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
+            textDecoration: 'underline',
             marginRight: 2,
           })}
           component={Link}

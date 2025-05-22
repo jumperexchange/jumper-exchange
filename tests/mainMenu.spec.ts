@@ -71,15 +71,15 @@ test.describe('Main Menu flows', () => {
     ];
     const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
     const blogArticle = await page.locator(
-      'xpath=//div[@class="MuiBox-root mui-8r1wue"]',
+      'xpath=(//div[@class="MuiCardContent-root mui-6l9nau-MuiCardContent-root"])[1]',
     );
     const articleTitle = await page.locator(
       'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
-    const learnUrl = `${await page.url()}learn`;
+  
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Learn');
-    expect(await page.url()).toBe(learnUrl);
+    await expect(page).toHaveURL(values.localLearnURL);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
     sectionOnTheBlogPage(page, sectionName);
@@ -129,15 +129,23 @@ test.describe('Main Menu flows', () => {
 
   test('Should be able to navigate to X', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await page.getByRole('link', { name: 'X', exact: true }).click();
+    await itemInMenu(page, 'X');
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.xUrl);
   });
 
   test('Should be able to navigate to Discord', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await page.getByRole('link', { name: 'Discord' }).click();
+    await itemInMenu(page, 'Discord');
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
+  });
+  
+  test('Should be able to click on the Support button', async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Support');
+    const iFrameLocator = page.frameLocator('iframe[title="Discord chat embed"]');
+    const openDiscordAppInIframe= await iFrameLocator.getByText('Open Discord App')
+    await expect(openDiscordAppInIframe).toBeVisible();
   });
 });

@@ -1,7 +1,6 @@
 import type { Chain, ChainId, ExtendedChain, TokensResponse } from '@lifi/sdk';
 
 export const getChainById = (chains: ExtendedChain[], id: ChainId) => {
-  console.log('chains', chains);
   const filteredChain = chains.find((el: Chain) => el.id === id);
   if (filteredChain) {
     return filteredChain;

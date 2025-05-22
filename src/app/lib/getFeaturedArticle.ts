@@ -7,9 +7,11 @@ export async function getFeaturedArticle() {
   const accessToken = urlParams.getApiAccessToken();
   try {
     const res = await fetch(decodeURIComponent(apiUrl), {
-      cache: 'force-cache',
       headers: {
         Authorization: `Bearer ${accessToken}`,
+      },
+      next: {
+        revalidate: 60 * 5, // revalidate every 5 minutes
       },
     });
 

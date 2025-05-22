@@ -137,7 +137,7 @@ const WidgetQuoteImage = ({
                     extendedHeight={index === 0}
                     amount={amount ? parseFloat(amount) : null}
                     amountUSD={amountUSD ? parseFloat(amountUSD) : undefined}
-                    sx={{ ...(index !== 0 && { marginTop: 16, height: 110 }) }}
+                    sx={index !== 0 && { marginTop: 16, height: 110 }}
                   />
                 ))}
             </div>

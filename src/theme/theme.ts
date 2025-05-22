@@ -1,11 +1,15 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
-import type { ComponentsOverrides, ComponentsVariants } from '@mui/material';
+import type { ComponentsOverrides, ComponentsVariants, CssVarsTheme } from '@mui/material';
+import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, createTheme } from '@mui/material/styles';
+import { alpha, createTheme, extendTheme } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
+import { Channels } from 'node_modules/@mui/material/esm/styles/createPalette';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
+
+import type {} from '@mui/material/themeCssVarsAugmentation';
 
 declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
@@ -39,10 +43,6 @@ declare module '@mui/material/styles' {
     surface1: Palette['primary'];
     surface2: Palette['primary'];
     surface3: Palette['primary'];
-    templateBg: Palette['primary'];
-    templateOutline: Palette['primary'];
-    dataBg: Palette['primary'];
-    dataOutline: Palette['primary'];
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
@@ -77,14 +77,13 @@ declare module '@mui/material/styles' {
     surface1?: PaletteOptions['primary'];
     surface2?: PaletteOptions['primary'];
     surface3?: PaletteOptions['primary'];
-    templateBg?: Palette['primary'];
-    templateOutline?: Palette['primary'];
-    dataBg?: Palette['primary'];
-    dataOutline?: Palette['primary'];
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
-    bgQuaternary?: PaletteOptions['primary'];
+    bgQuaternary?: {
+      main: string;
+      hover: string;
+    };
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -102,74 +101,6 @@ declare module '@mui/material/styles' {
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
   }
-  interface TypographyVariants {
-    headerDisplay: React.CSSProperties;
-    headerXLarge: React.CSSProperties;
-    headerLarge: React.CSSProperties;
-    headerMedium: React.CSSProperties;
-    headerSmall: React.CSSProperties;
-    headerXSmall: React.CSSProperties;
-    bodyXLargeStrong: React.CSSProperties;
-    bodyXLarge: React.CSSProperties;
-    bodyLargeStrong: React.CSSProperties;
-    bodyLarge: React.CSSProperties;
-    bodyMediumStrong: React.CSSProperties;
-    bodyMedium: React.CSSProperties;
-    bodySmallStrong: React.CSSProperties;
-    bodySmall: React.CSSProperties;
-    bodyXSmallStrong: React.CSSProperties;
-    bodyXSmall: React.CSSProperties;
-    brandHeaderXLarge: React.CSSProperties;
-    titleSmall: React.CSSProperties;
-    titleXSmall: React.CSSProperties;
-    title2XSmall: React.CSSProperties;
-    titleLarge: React.CSSProperties;
-    urbanistTitleXSmall: React.CSSProperties;
-    urbanistTitleLarge: React.CSSProperties;
-    urbanistTitleXLarge: React.CSSProperties;
-    urbanistTitle2XLarge: React.CSSProperties;
-    urbanistTitle3XLarge: React.CSSProperties;
-    urbanistTitleMedium: React.CSSProperties;
-    urbanistBodyLarge: React.CSSProperties;
-    urbanistBodyXLarge: React.CSSProperties;
-    urbanistBody2XLarge: React.CSSProperties;
-  }
-
-  // allow configuration using `createTheme`
-  interface TypographyVariantsOptions {
-    headerDisplay?: React.CSSProperties;
-    headerXLarge?: React.CSSProperties;
-    headerLarge?: React.CSSProperties;
-    headerMedium?: React.CSSProperties;
-    headerSmall?: React.CSSProperties;
-    headerXSmall?: React.CSSProperties;
-    bodyXLargeStrong?: React.CSSProperties;
-    bodyXLarge: React.CSSProperties;
-    bodyLargeStrong: React.CSSProperties;
-    bodyLarge: React.CSSProperties;
-    bodyMediumStrong: React.CSSProperties;
-    bodyMedium: React.CSSProperties;
-    bodySmallStrong: React.CSSProperties;
-    bodySmall: React.CSSProperties;
-    bodyXSmallStrong: React.CSSProperties;
-    bodyXSmall: React.CSSProperties;
-    brandHeaderXLarge: React.CSSProperties;
-    titleSmall: React.CSSProperties;
-    titleXSmall: React.CSSProperties;
-    title2XSmall: React.CSSProperties;
-    titleLarge: React.CSSProperties;
-    urbanistTitleXSmall: React.CSSProperties;
-    urbanistTitleLarge: React.CSSProperties;
-    urbanistTitleXLarge: React.CSSProperties;
-    urbanistTitle2XLarge: React.CSSProperties;
-    urbanistTitle3XLarge: React.CSSProperties;
-    urbanistTitleMedium: React.CSSProperties;
-    urbanistBodyLarge: React.CSSProperties;
-    urbanistBodyXLarge: React.CSSProperties;
-    urbanistBody2XLarge: React.CSSProperties;
-  }
-}
-declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     tertiary: true;
     white: true;
@@ -180,10 +111,6 @@ declare module '@mui/material/Button' {
     surface1: true;
     surface2: true;
     surface3: true;
-    templateBg: true;
-    templateOutline: true;
-    dataBg: true;
-    dataOutline: true;
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
@@ -205,11 +132,78 @@ declare module '@mui/material/Button' {
     alphaLight700: true;
     alphaLight800: true;
   }
+
+  interface TypographyVariants {
+    headerXLarge: React.CSSProperties;
+    headerLarge: React.CSSProperties;
+    headerMedium: React.CSSProperties;
+    headerSmall: React.CSSProperties;
+    headerXSmall: React.CSSProperties;
+    bodyXLargeStrong: React.CSSProperties;
+    bodyXLarge: React.CSSProperties;
+    bodyLargeStrong: React.CSSProperties;
+    bodyLarge: React.CSSProperties;
+    bodyMediumStrong: React.CSSProperties;
+    bodyMedium: React.CSSProperties;
+    bodySmallStrong: React.CSSProperties;
+    bodySmall: React.CSSProperties;
+    bodyXSmallStrong: React.CSSProperties;
+    bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    titleMedium: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    headerXLarge: React.CSSProperties;
+    headerLarge: React.CSSProperties;
+    headerMedium: React.CSSProperties;
+    headerSmall: React.CSSProperties;
+    headerXSmall: React.CSSProperties;
+    bodyXLargeStrong: React.CSSProperties;
+    bodyXLarge: React.CSSProperties;
+    bodyLargeStrong: React.CSSProperties;
+    bodyLarge: React.CSSProperties;
+    bodyMediumStrong: React.CSSProperties;
+    bodyMedium: React.CSSProperties;
+    bodySmallStrong: React.CSSProperties;
+    bodySmall: React.CSSProperties;
+    bodyXSmallStrong: React.CSSProperties;
+    bodyXSmall: React.CSSProperties;
+    brandHeaderXLarge: React.CSSProperties;
+    titleSmall: React.CSSProperties;
+    titleMedium: React.CSSProperties;
+    titleXSmall: React.CSSProperties;
+    title2XSmall: React.CSSProperties;
+    titleLarge: React.CSSProperties;
+    urbanistTitleXSmall: React.CSSProperties;
+    urbanistTitleLarge: React.CSSProperties;
+    urbanistTitleXLarge: React.CSSProperties;
+    urbanistTitle2XLarge: React.CSSProperties;
+    urbanistTitle3XLarge: React.CSSProperties;
+    urbanistTitleMedium: React.CSSProperties;
+    urbanistBodyLarge: React.CSSProperties;
+    urbanistBodyXLarge: React.CSSProperties;
+    urbanistBody2XLarge: React.CSSProperties;
+  }
 }
+
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     '@supports (font-variation-settings: normal)': true;
-    headerDisplay: true;
     headerXLarge: true;
     headerLarge: true;
     headerMedium: true;
@@ -240,6 +234,40 @@ declare module '@mui/material/Typography' {
     urbanistBodyXLarge: true;
     urbanistBody2XLarge: true;
   }
+
+  interface TypographyPropsVariantOverrides {
+    '@supports (font-variation-settings: normal)': true;
+    headerXLarge: true;
+    headerLarge: true;
+    headerMedium: true;
+    headerSmall: true;
+    headerXSmall: true;
+    bodyXLargeStrong: true;
+    bodyXLarge: true;
+    bodyLargeStrong: true;
+    bodyLarge: true;
+    bodyMediumStrong: true;
+    bodyMedium: true;
+    bodySmallStrong: true;
+    bodySmall: true;
+    bodyXSmallStrong: true;
+    bodyXSmall: true;
+    brandHeaderXLarge: true;
+    titleSmall: true;
+    titleMedium: true;
+    titleXSmall: true;
+    title2XSmall: true;
+    titleLarge: true;
+    urbanistTitleXSmall: true;
+    urbanistTitleLarge: true;
+    urbanistTitle2XLarge: true;
+    urbanistTitleXLarge: true;
+    urbanistTitle3XLarge: true;
+    urbanistTitleMedium: true;
+    urbanistBodyLarge: true;
+    urbanistBodyXLarge: true;
+    urbanistBody2XLarge: true;
+  }
 }
 
 const shape = {
@@ -247,36 +275,235 @@ const shape = {
   borderRadiusSecondary: 8,
 };
 
-const themeBase = createTheme();
+const themeBase = createTheme({
+  // colorSchemes: { light: true, dark: true },
+  // cssVariables: false,
+  palette: {
+    white: {
+      main: '#FFFFFF',
+      light: '#FFFFFF',
+      dark: '#FFFFFF',
+    },
+    black: {
+      main: '#000000',
+      light: '#000000',
+      dark: '#000000',
+    },
+
+    alphaDark100: {
+      main: 'rgba(0, 0, 0, 0.04)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark200: {
+      main: 'rgba(0, 0, 0, 0.08)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark300: {
+      main: 'rgba(0, 0, 0, 0.12)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark400: {
+      main: 'rgba(0, 0, 0, 0.16)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark500: {
+      main: 'rgba(0, 0, 0, 0.24)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark600: {
+      main: 'rgba(0, 0, 0, 0.32)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark700: {
+      main: 'rgba(0, 0, 0, 0.48)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaDark800: {
+      main: 'rgba(0, 0, 0, 0.64)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight100: {
+      main: 'rgba(255, 255, 255, 0.04)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight200: {
+      main: 'rgba(255, 255, 255, 0.08)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight300: {
+      main: 'rgba(255, 255, 255, 0.12)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight400: {
+      main: 'rgba(255, 255, 255, 0.16)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight500: {
+      main: 'rgba(255, 255, 255, 0.24)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight600: {
+      main: 'rgba(255, 255, 255, 0.32)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight700: {
+      main: 'rgba(255, 255, 255, 0.48)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+    alphaLight800: {
+      main: 'rgba(255, 255, 255, 0.64)',
+      // @ts-ignore
+      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+    },
+  }
+});
+
+const palette = {
+  white: {
+    main: '#FFFFFF',
+    light: '#FFFFFF',
+    dark: '#FFFFFF',
+  },
+  black: {
+    main: '#000000',
+    light: '#000000',
+    dark: '#000000',
+  },
+  alphaDark100: {
+    main: 'rgba(0, 0, 0, 0.04)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark200: {
+    main: 'rgba(0, 0, 0, 0.08)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark300: {
+    main: 'rgba(0, 0, 0, 0.12)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark400: {
+    main: 'rgba(0, 0, 0, 0.16)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark500: {
+    main: 'rgba(0, 0, 0, 0.24)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark600: {
+    main: 'rgba(0, 0, 0, 0.32)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark700: {
+    main: 'rgba(0, 0, 0, 0.48)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaDark800: {
+    main: 'rgba(0, 0, 0, 0.64)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight100: {
+    main: 'rgba(255, 255, 255, 0.04)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight200: {
+    main: 'rgba(255, 255, 255, 0.08)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight300: {
+    main: 'rgba(255, 255, 255, 0.12)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight400: {
+    main: 'rgba(255, 255, 255, 0.16)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight500: {
+    main: 'rgba(255, 255, 255, 0.24)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight600: {
+    main: 'rgba(255, 255, 255, 0.32)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight700: {
+    main: 'rgba(255, 255, 255, 0.48)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight800: {
+    main: 'rgba(255, 255, 255, 0.64)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  grey: {
+    100: '#F6F5FA',
+    200: '#ECEBF0',
+    300: '#DDDCE0',
+    400: '#C9C8CC',
+    500: '#9DA1A3',
+    600: '#8A8D8F',
+    700: '#70767A',
+    800: '#4B4F52',
+    900: '#000000',
+  },
+  success: {
+    main: '#0AA65B',
+    light: '#0AA65B',
+    dark: '#0AA65B',
+  },
+  error: {
+    main: '#E5452F',
+    light: '#E5452F',
+    dark: '#E5452F',
+  },
+  warning: {
+    main: '#FFCC00',
+    light: '#FFCC00',
+    dark: '#EBC942',
+  },
+  info: {
+    main: '#297EFF',
+    light: '#297EFF',
+    dark: '#297EFF',
+  },
+}
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
-const themeCustomized = createTheme({
-  shape: {
-    ...shape,
-  },
+export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme = extendTheme({
+  cssVariables: true,
+  cssVarPrefix: 'jumper',
+  colorSchemeSelector: 'class',
+  shape,
   components: {
-    Background: {
-      styleOverrides: {
-        // the slot name defined in the `slot` and `overridesResolver` parameters
-        // of the `styled` API
-        root: ({ theme }) => ({
-          position: 'fixed',
-          left: 0,
-          bottom: 0,
-          right: 0,
-          top: 0,
-          zIndex: -1,
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          backgroundColor: theme.palette.bg.main,
-          // typed-safe access to the `variant` prop
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-          },
-        }),
-      },
-    },
     MuiScopedCssBaseline: {
       styleOverrides: {
         root: {
@@ -338,9 +565,9 @@ const themeCustomized = createTheme({
     MuiFormLabel: {
       styleOverrides: {
         root: ({ theme }) => ({
-          color: theme.palette.text.primary,
+          color: (theme.vars || theme).palette.text.primary,
           '&.Mui-focused': {
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           },
         }),
       },
@@ -406,7 +633,6 @@ const themeCustomized = createTheme({
     MuiTypography: {
       defaultProps: {
         variantMapping: {
-          headerDisplay: 'p',
           headerXLarge: 'p',
           headerLarge: 'p',
           headerMedium: 'p',
@@ -431,96 +657,28 @@ const themeCustomized = createTheme({
         },
       },
     },
-  },
-  palette: {
-    grey: {
-      100: '#F6F5FA',
-      200: '#ECEBF0',
-      300: '#DDDCE0',
-      400: '#C9C8CC',
-      500: '#9DA1A3',
-      600: '#8A8D8F',
-      700: '#70767A',
-      800: '#4B4F52',
-      900: '#000000',
-    },
-    success: {
-      main: '#0AA65B',
-      light: '#0AA65B',
-      dark: '#0AA65B',
-    },
-    error: {
-      main: '#E5452F',
-      light: '#E5452F',
-      dark: '#E5452F',
-    },
-    warning: {
-      main: '#FFCC00',
-      light: '#FFCC00',
-      dark: '#EBC942',
-    },
-    info: {
-      main: '#297EFF',
-      light: '#297EFF',
-      dark: '#297EFF',
-    },
-    white: {
-      main: '#FFFFFF',
-      light: '#FFFFFF',
-      dark: '#FFFFFF',
-    },
-    black: {
-      main: '#000000',
-      light: '#000000',
-      dark: '#000000',
-    },
-    alphaDark100: {
-      main: 'rgba(0, 0, 0, 0.04)',
-    },
-    alphaDark200: {
-      main: 'rgba(0, 0, 0, 0.08)',
-    },
-    alphaDark300: {
-      main: 'rgba(0, 0, 0, 0.12)',
-    },
-    alphaDark400: {
-      main: 'rgba(0, 0, 0, 0.16)',
-    },
-    alphaDark500: {
-      main: 'rgba(0, 0, 0, 0.24)',
-    },
-    alphaDark600: {
-      main: 'rgba(0, 0, 0, 0.32)',
-    },
-    alphaDark700: {
-      main: 'rgba(0, 0, 0, 0.48)',
-    },
-    alphaDark800: {
-      main: 'rgba(0, 0, 0, 0.64)',
-    },
-    alphaLight100: {
-      main: 'rgba(255, 255, 255, 0.04)',
-    },
-    alphaLight200: {
-      main: 'rgba(255, 255, 255, 0.08)',
-    },
-    alphaLight300: {
-      main: 'rgba(255, 255, 255, 0.12)',
-    },
-    alphaLight400: {
-      main: 'rgba(255, 255, 255, 0.16)',
-    },
-    alphaLight500: {
-      main: 'rgba(255, 255, 255, 0.24)',
-    },
-    alphaLight600: {
-      main: 'rgba(255, 255, 255, 0.32)',
-    },
-    alphaLight700: {
-      main: 'rgba(255, 255, 255, 0.48)',
-    },
-    alphaLight800: {
-      main: 'rgba(255, 255, 255, 0.64)',
+    Background: {
+      styleOverrides: {
+        root: ({ theme }: { theme: Theme }) => ({
+          position: 'fixed',
+          left: 0,
+          bottom: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          backgroundColor: (theme.vars || theme).palette.surface1.main,
+          ...theme.applyStyles('light', {
+            backgroundColor: (theme.vars || theme).palette.bg.main,
+          }),
+          // typed-safe access to the `variant` prop
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+          },
+        }),
+      },
     },
   },
   typography: {
@@ -533,12 +691,6 @@ const themeCustomized = createTheme({
       'Helvetica Neue',
       'sans-serif',
     ].join(','),
-    headerDisplay: {
-      fontStyle: 'normal',
-      fontSize: '96px',
-      lineHeight: '128px',
-      fontWeight: 700,
-    },
     headerXLarge: {
       fontStyle: 'normal',
       fontWeight: 700,
@@ -665,7 +817,13 @@ const themeCustomized = createTheme({
       fontWeight: 700,
       lineHeight: '20px',
     },
-
+    titleMedium: {
+      fontFamily: inter.style.fontFamily,
+      fontSize: '32px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '40px',
+    },
     titleLarge: {
       fontSize: '48px',
       fontStyle: 'normal',
@@ -783,237 +941,192 @@ const themeCustomized = createTheme({
       fontWeight: 700,
     },
   },
+  palette,
+  colorSchemes: {
+    light: {
+       palette: {
+        ...palette,
+        mode: 'light',
+        background: {
+          default: '#FCFAFF',
+        },
+        text: {
+          primary: '#000',
+          secondary: alpha(themeBase.palette.black.main, 0.75),
+        },
+        grey: {
+          100: 'rgba(0, 0, 0, 0.04)',
+          200: 'rgba(0, 0, 0, 0.08)',
+          300: 'rgba(0, 0, 0, 0.12)',
+          400: 'rgba(0, 0, 0, 0.16)',
+          500: 'rgba(0, 0, 0, 0.24)',
+          600: 'rgba(0, 0, 0, 0.32)',
+          700: 'rgba(0, 0, 0, 0.48)',
+          800: 'rgba(0, 0, 0, 0.64)',
+        },
+        bg: {
+          main: '#F3EBFF',
+        },
+        bgSecondary: {
+          main: alpha(themeBase.palette.white.main, 0.48),
+        },
+        bgTertiary: {
+          main: themeBase.palette.white.main,
+        },
+        bgQuaternary: {
+          hover: alpha('#653BA3', 0.12),
+          main: alpha('#31007A', 0.08),
+        },
+        primary: {
+          light: '#31007A',
+          main: '#31007A',
+          dark: '#290066',
+        },
+        secondary: {
+          light: '#E9E1F5',
+          main: '#E9E1F5',
+          dark: '#E9E1F5',
+        },
+        tertiary: {
+          light: '#FCEBFF',
+          main: '#FCEBFF',
+          dark: '#FCEBFF',
+        },
+        accent1: {
+          light: '#31007A',
+          main: '#31007A',
+          dark: '#31007A',
+        },
+        accent1Alt: {
+          light: '#BEA0EB',
+          main: '#BEA0EB',
+          dark: '#BEA0EB',
+        },
+        accent2: {
+          light: '#8700B8',
+          main: '#8700B8',
+          dark: '#8700B8',
+        },
+        surface1: {
+          light: '#faf5ff',
+          main: '#faf5ff',
+          dark: '#faf5ff',
+        },
+        surface2: {
+          light: '#FFFFFF',
+          main: '#FFFFFF',
+          dark: '#FFFFFF',
+        },
+        surface3: {
+          light: '#E5E1EB',
+          main: '#E5E1EB',
+          dark: '#E5E1EB',
+        },
+      },
+      // @ts-expect-error
+      shadows: [
+        'none',
+        '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+        '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+        ...themeBase.shadows.slice(3),
+      ],
+    },
+    dark: {
+      palette: {
+        ...palette,
+        mode: 'dark',
+        Tooltip: {
+          bg: themeBase.palette.black.main,
+        },
+        background: {
+          default: '#120F29', //'#241D52',
+          paper: '#24203d', //'#241D52',
+        },
+        text: {
+          primary: '#fff',
+          secondary: alpha(themeBase.palette.white.main, 0.75),
+        },
+        grey: {
+          100: 'rgba(255, 255, 255, 0.04)',
+          200: 'rgba(255, 255, 255, 0.08)',
+          300: 'rgba(255, 255, 255, 0.12)',
+          400: 'rgba(255, 255, 255, 0.16)',
+          500: 'rgba(255, 255, 255, 0.24)',
+          600: 'rgba(255, 255, 255, 0.32)',
+          700: 'rgba(255, 255, 255, 0.48)',
+          800: 'rgba(255, 255, 255, 0.64)',
+        },
+        bg: {
+          main: '#120F29',
+        },
+        bgSecondary: {
+          main: alpha(themeBase.palette.white.main, 0.12),
+        },
+        bgTertiary: {
+          main: themeBase.palette.alphaLight200.main,
+        },
+        bgQuaternary: {
+          hover: alpha('#653BA3', 0.56),
+          main: alpha('#653BA3', 0.42),
+        },
+        primary: {
+          light: '#653BA3',
+          main: '#653BA3',
+          dark: '#543188',
+        },
+        secondary: {
+          light: '#321D52',
+          main: '#321D52',
+          dark: '#321D52',
+        },
+        tertiary: {
+          light: '#33163D',
+          main: '#33163D',
+          dark: '#33163D',
+        },
+        accent1: {
+          light: '#653BA3',
+          main: '#653BA3',
+          dark: '#653BA3',
+        },
+        accent1Alt: {
+          light: '#BEA0EB',
+          main: '#BEA0EB',
+          dark: '#BEA0EB',
+        },
+        accent2: {
+          light: '#D35CFF',
+          main: '#D35CFF',
+          dark: '#D35CFF',
+        },
+        surface1: {
+          light: '#120F29',
+          main: '#120F29',
+          dark: '#120F29',
+        },
+        surface2: {
+          light: '#24203D',
+          main: '#24203D',
+          dark: '#24203D',
+        },
+        surface3: {
+          light: '#302B52',
+          main: '#302B52',
+          dark: '#302B52',
+        },
+      },
+      // @ts-expect-error
+      shadows: [
+        'none',
+        '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
+        '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+        ...themeBase.shadows.slice(3),
+      ],
+    }
+  }
 });
 
 const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
 
-export const lightTheme = createTheme(
-  deepmerge(themePreset, {
-    palette: {
-      mode: 'light',
-      background: {
-        default: '#FCFAFF',
-      },
-      text: {
-        primary: '#000',
-        secondary: alpha(themeCustomized.palette.black.main, 0.75),
-      },
-      grey: {
-        300: '#E5E1EB',
-      },
-      bg: {
-        light: '#F3EBFF',
-        main: '#F3EBFF',
-        dark: '#F3EBFF',
-      },
-      bgSecondary: {
-        main: alpha(themeCustomized.palette.white.main, 0.48),
-      },
-      bgTertiary: {
-        main: themeCustomized.palette.white.main,
-      },
-      bgQuaternary: {
-        hover: alpha('#653BA3', 0.12),
-        main: alpha('#31007A', 0.08),
-      },
-      primary: {
-        light: '#31007A',
-        main: '#31007A',
-        dark: '#290066',
-      },
-      secondary: {
-        light: '#E9E1F5',
-        main: '#E9E1F5',
-        dark: '#E9E1F5',
-      },
-      tertiary: {
-        light: '#FCEBFF',
-        main: '#FCEBFF',
-        dark: '#FCEBFF',
-      },
-      accent1: {
-        light: '#31007A',
-        main: '#31007A',
-        dark: '#31007A',
-      },
-      accent1Alt: {
-        light: '#BEA0EB',
-        main: '#BEA0EB',
-        dark: '#BEA0EB',
-      },
-      accent2: {
-        light: '#8700B8',
-        main: '#8700B8',
-        dark: '#8700B8',
-      },
-      surface1: {
-        light: '#faf5ff',
-        main: '#faf5ff',
-        dark: '#faf5ff',
-      },
-      surface2: {
-        light: '#FFFFFF',
-        main: '#FFFFFF',
-        dark: '#FFFFFF',
-      },
-      surface3: {
-        light: '#E5E1EB',
-        main: '#E5E1EB',
-        dark: '#E5E1EB',
-      },
-      templateBg: {
-        light: '#FEF5FF',
-        main: '#FEF5FF',
-        dark: '#FEF5FF',
-      },
-      templateOutline: {
-        light: '#C95CFF',
-        main: '#C95CFF',
-        dark: '#C95CFF',
-      },
-      dataBg: {
-        light: '#F5F6FF',
-        main: '#F5F6FF',
-        dark: '#F5F6FF',
-      },
-      dataOutline: {
-        light: '#7B61FF',
-        main: '#7B61FF',
-        dark: '#7B61FF',
-      },
-    },
-    shadows: [
-      'none',
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-      ...themeBase.shadows.slice(3),
-    ],
-  }),
-);
-
-export const darkTheme = createTheme(
-  deepmerge(themePreset, {
-    components: {
-      Background: {
-        styleOverrides: {
-          // functions cannot merged because of mui... I know it's bad :(
-          root: ({ theme }: { theme: Theme }) => ({
-            position: 'fixed',
-            left: 0,
-            bottom: 0,
-            right: 0,
-            top: 0,
-            zIndex: -1,
-            overflow: 'hidden',
-            pointerEvents: 'none',
-            backgroundColor: theme.palette.surface1.main,
-            // typed-safe access to the `variant` prop
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'cover',
-            },
-          }),
-        },
-      },
-    },
-    palette: {
-      mode: 'dark',
-      background: {
-        default: '#120F29', //'#241D52',
-      },
-      text: {
-        primary: '#fff',
-        secondary: alpha(themeCustomized.palette.white.main, 0.75),
-      },
-      grey: {
-        800: '#302B52',
-      },
-      bg: {
-        light: '#030014',
-        main: '#030014',
-        dark: '#030014',
-      },
-      bgSecondary: {
-        main: alpha(themeCustomized.palette.white.main, 0.12),
-      },
-      bgTertiary: {
-        main: themeCustomized.palette.alphaLight200.main,
-      },
-      bgQuaternary: {
-        hover: alpha('#653BA3', 0.56),
-        main: alpha('#653BA3', 0.42),
-      },
-      primary: {
-        light: '#653BA3',
-        main: '#653BA3',
-        dark: '#543188',
-      },
-      secondary: {
-        light: '#321D52',
-        main: '#321D52',
-        dark: '#321D52',
-      },
-      tertiary: {
-        light: '#33163D',
-        main: '#33163D',
-        dark: '#33163D',
-      },
-      accent1: {
-        light: '#653BA3',
-        main: '#653BA3',
-        dark: '#653BA3',
-      },
-      accent1Alt: {
-        light: '#BEA0EB',
-        main: '#BEA0EB',
-        dark: '#BEA0EB',
-      },
-      accent2: {
-        light: '#D35CFF',
-        main: '#D35CFF',
-        dark: '#D35CFF',
-      },
-      surface1: {
-        light: '#120F29',
-        main: '#120F29',
-        dark: '#120F29',
-      },
-      surface2: {
-        light: '#24203D',
-        main: '#24203D',
-        dark: '#24203D',
-      },
-      surface3: {
-        light: '#302B52',
-        main: '#302B52',
-        dark: '#302B52',
-      },
-      templateBg: {
-        light: '#401946',
-        main: '#401946',
-        dark: '#401946',
-      },
-      templateOutline: {
-        light: '#D47BEB',
-        main: '#D47BEB',
-        dark: '#D47BEB',
-      },
-      dataBg: {
-        light: '#28203D',
-        main: '#28203D',
-        dark: '#28203D',
-      },
-      dataOutline: {
-        light: '#B8ADFF',
-        main: '#B8ADFF',
-        dark: '#B8ADFF',
-      },
-    },
-    shadows: [
-      'none',
-      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-      '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-      ...themeBase.shadows.slice(3),
-    ],
-  }),
-);
+export const lightTheme = themeCustomized
+export const darkTheme = themeCustomized

@@ -23,17 +23,24 @@ const ActionFlow = React.forwardRef<
 >(({ className, size, actions, showAlertIcon = true, ...props }, ref) => {
   return (
     <Box
-      sx={{
-        display: 'flex', // Matches `flex`
-        width: '100%', // Matches `w-full`
-        flexDirection: 'column', // Matches `flex-col`
-        gap: 1, // Matches `gap-3`
-        // fontFamily: 'GT', // Matches `font-gt` (adjust for actual font family)
-        fontSize:
-          size === 'sm' ? '0.875rem' : size === 'xs' ? '0.75rem' : '1rem', // Conditional font size
-        fontWeight: 300, // Matches `font-light`
-        color: 'black', // Matches `text-black`
-      }}
+      sx={[{
+        // Matches `flex`
+        display: 'flex',
+        // Matches `w-full`
+        width: '100%',
+        // Matches `flex-col`
+        flexDirection: 'column',
+        // Matches `gap-3`
+        gap: 1,
+        // Matches `font-light`
+        fontWeight: 300,
+        // Matches `text-black`
+        color: 'black'
+      }, size === 'sm' ? {
+        fontSize: '0.875rem'
+      } : {
+        fontSize: size === 'xs' ? '0.75rem' : '1rem'
+      }]}
       // className={className} // Include additional custom classes
       ref={ref}
       // className={cn(
@@ -51,28 +58,43 @@ const ActionFlow = React.forwardRef<
           return (
             <Box
               key={BASE_KEY}
-              sx={{
-                display: 'flex', // Matches `flex`
-                flexDirection: 'row', // Matches `flex-row`
-                border: '1px solid', // Matches `border`
-                borderColor: (theme) => theme.palette.text.primary, // Matches `border-divider` (uses MUI's theme for the divider color)
-                borderRadius: '4px', // Matches `rounded-md` (Material-UI's default rounded border radius)
-                padding: '4px', // Matches `p-1` (4px in the spacing scale)
-              }}
+              sx={theme => ({
+                // Matches `flex`
+                display: 'flex',
+                // Matches `flex-row`
+                flexDirection: 'row',
+                // Matches `border`
+                border: '1px solid',
+                // Matches `border-divider` (uses MUI's theme for the divider color)
+                borderColor: theme.palette.text.primary,
+                // Matches `rounded-md` (Material-UI's default rounded border radius)
+                borderRadius: '4px',
+                // Matches `p-1` (4px in the spacing scale)
+                padding: '4px'
+              })}
             >
               {/*// Below box is the number*/}
               <Box
-                sx={{
-                  display: 'flex', // Matches `flex`
-                  height: size === 'sm' || size === 'xs' ? 20 : 24, // Conditional height (5 = 20px, 6 = 24px)
-                  width: size === 'sm' || size === 'xs' ? 20 : 24, // Conditional width
-                  flexShrink: 0, // Matches `shrink-0`
-                  flexDirection: 'column', // Matches `flex-col`
-                  justifyContent: 'center', // Matches `place-content-center`
-                  alignItems: 'center', // Matches `items-center`
-                  borderRadius: '4px', // Matches `rounded-md`
-                  border: (theme) => `1px solid ${theme.palette.text.primary}`, // Matches `border border-divider`
-                }}
+                sx={theme => ({
+                  // Matches `flex`
+                  display: 'flex',
+                  // Conditional height (5 = 20px, 6 = 24px)
+                  height: size === 'sm' || size === 'xs' ? 20 : 24,
+                  // Conditional width
+                  width: size === 'sm' || size === 'xs' ? 20 : 24,
+                  // Matches `shrink-0`
+                  flexShrink: 0,
+                  // Matches `flex-col`
+                  flexDirection: 'column',
+                  // Matches `place-content-center`
+                  justifyContent: 'center',
+                  // Matches `items-center`
+                  alignItems: 'center',
+                  // Matches `rounded-md`
+                  borderRadius: '4px',
+                  // Matches `border border-divider`
+                  border: `1px solid ${theme.palette.text.primary}`
+                })}
                 // className={cn(
                 //   "flex h-6 w-6 shrink-0 flex-col place-content-center items-center rounded-md border border-divider",
                 //   size === "sm" && "h-5 w-5",
@@ -80,10 +102,14 @@ const ActionFlow = React.forwardRef<
                 // )}
               >
                 <Box
-                  sx={{
-                    display: 'flex', // Matches `flex`
-                    height: size === 'sm' ? 16 : size === 'xs' ? 12 : 20, // Dynamic height (h-4 = 16px, h-3 = 12px, h-5 = 20px)
-                  }}
+                  sx={[{
+                    // Matches `flex`
+                    display: 'flex'
+                  }, size === 'sm' ? {
+                    height: 16
+                  } : {
+                    height: size === 'xs' ? 12 : 20
+                  }]}
                   // className={cn(
                   //   "flex h-5",
                   //   size === "sm" && "h-4",
@@ -94,34 +120,47 @@ const ActionFlow = React.forwardRef<
                     variant="body2"
                     color="textSecondary"
                     component="span"
-                    sx={{
-                      lineHeight: size === 'xs' ? '12px' : '20px', // Dynamic line height: leading-3 = 12px, leading-5 = 20px
-                    }}
+                    sx={[size === 'xs' ? {
+                      lineHeight: '12px'
+                    } : {
+                      lineHeight: '20px'
+                    }]}
                   >
                     {actionIndex + 1}
                   </Typography>
                 </Box>
               </Box>
-
               <Box
-                sx={{
-                  marginLeft: size === 'xs' ? '8px' : '12px', // Dynamic margin-left: `ml-2` = 8px, `ml-3` = 12px
-                  marginTop: '0.1rem', // Matches `mt-[0.1rem]`
-                  display: 'flex', // Matches `flex`
-                  flexGrow: 1, // Matches `grow`
-                  whiteSpace: 'pre-wrap', // Matches `text-wrap`
-                  fontWeight: 300, // Matches `font-light`
-                }}
+                sx={[{
+                  // Matches `mt-[0.1rem]`
+                  marginTop: '0.1rem',
+                  // Matches `flex`
+                  display: 'flex',
+                  // Matches `grow`
+                  flexGrow: 1,
+                  // Matches `text-wrap`
+                  whiteSpace: 'pre-wrap',
+                  // Matches `font-light`
+                  fontWeight: 300
+                }, size === 'xs' ? {
+                  marginLeft: '8px'
+                } : {
+                  marginLeft: '12px'
+                }]}
                 // className={cn(
                 //   "ml-3 mt-[0.1rem] flex grow text-wrap font-light",
                 //   size === "xs" && "ml-2"
                 // )}
               >
                 <Box
-                  sx={{
-                    wordBreak: 'break-all', // Matches `break-all`
-                    lineHeight: size === 'sm' ? '20px' : '20px', // `leading-5` translates to `20px` in both cases
-                  }}
+                  sx={[{
+                    // Matches `break-all`
+                    wordBreak: 'break-all'
+                  }, size === 'sm' ? {
+                    lineHeight: '20px'
+                  } : {
+                    lineHeight: '20px'
+                  }]}
                   // className={cn(
                   //   "break-all leading-5",
                   //   size === "sm" && "leading-5"

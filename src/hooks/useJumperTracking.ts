@@ -69,6 +69,7 @@ export interface JumperDataTrackTransactionProps {
   sessionId: string;
   stepNumber?: number;
   toAmount: number;
+  toAmountMin?: number;
   toAmountUSD?: number;
   toChainId: number;
   toToken: string;
@@ -125,6 +126,7 @@ export const useJumperTracking = () => {
       sessionId: data.sessionId,
       stepNumber: data.stepNumber,
       toAmount: data.toAmount,
+      toAmountMin: data.toAmountMin,
       toAmountUSD: data.toAmountUSD,
       toChainId: data.toChainId,
       toToken: data.toToken,

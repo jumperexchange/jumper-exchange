@@ -30,8 +30,6 @@ import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 import type { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
 import {
   createMeeClient,
-  mcUSDT,
-  toFeeToken,
   toMultichainNexusAccount,
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
@@ -131,6 +129,7 @@ export function ZapWidget({
         console.warn('Chain is undefined, skipping MEE client initialization.');
         return;
       }
+
       // create multichain nexus account
       // Creates the Biconomy "Multichain Nexus Account", a smart contract account
       // that orchestrates actions across multiple chains.
@@ -152,7 +151,6 @@ export function ZapWidget({
         account: oNexusInit,
       });
 
-      console.log('--- oNexusInit ---', oNexusInit);
       setONexus(oNexusInit);
       setMeeClient(meeClientInit);
     };
@@ -362,10 +360,17 @@ export function ZapWidget({
           amount: BigInt(currentRoute.fromAmount),
           chainId: currentChainId,
         },
-        feeToken: toFeeToken({
+        cleanUps: [
+          {
+            tokenAddress: depositToken,
+            chainId: chain.id,
+            recipientAddress: account.address as `0x${string}`,
+          },
+        ],
+        feeToken: {
+          address: currentRoute.fromToken.address as `0x${string}`,
           chainId: currentChainId,
-          mcToken: mcUSDT, // TODO: Hardcoded
-        }),
+        },
         instructions,
       });
 
@@ -375,9 +380,7 @@ export function ZapWidget({
 
       console.log('--- hash ---', hash);
 
-      const hashFormatted = `biconomy:${hash}`;
-
-      return { id: hashFormatted };
+      return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
   );
@@ -445,7 +448,6 @@ export function ZapWidget({
           } else if (args.method === 'wallet_sendCalls') {
             return await handleWalletSendCalls(args);
           } else if (args.method === 'wallet_getCallsStatus') {
-            console.log('--- TERA ---', args);
             return await handleWalletGetCallsStatus(args);
           } else {
             return originalRequest(args);
@@ -510,6 +512,7 @@ export function ZapWidget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
+        HiddenUI.ToAddress,
       ],
       appearance: widgetTheme.config.appearance,
       theme: {

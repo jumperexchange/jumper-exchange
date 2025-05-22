@@ -21,6 +21,7 @@ interface CarouselContainerProps {
   sx?: CSSObject;
   children: ReactNode | ReactNode[];
   trackingCategory?: string;
+  hidePagination?: boolean;
 }
 const swipeDistance = 420;
 
@@ -31,6 +32,7 @@ export const CarouselContainer = ({
   updateTooltip,
   children,
   trackingCategory,
+  hidePagination = false,
 }: CarouselContainerProps) => {
   const theme = useTheme();
   const carouselContainerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +71,16 @@ export const CarouselContainer = ({
       });
     }
   }, []);
+
+  if (!title && !updateTitle) {
+    // If there is no title or updateTitle, we don't need to render the header
+    return (
+      <CarouselContainerBox ref={carouselContainerRef} sx={sx}>
+        {children}
+      </CarouselContainerBox>
+    );
+  }
+
   return (
     <Box>
       <CarouselHeader>
@@ -85,21 +97,23 @@ export const CarouselContainer = ({
             </Box>
           )}
         </CarouselCenteredBox>
-        <CarouselNavigationContainer>
-          <CarouselNavigationButton
-            aria-label="previous"
-            onClick={() => handleChange('prev')}
-          >
-            <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
-          </CarouselNavigationButton>
-          <CarouselNavigationButton
-            aria-label="next"
-            sx={{ marginLeft: theme.spacing(1) }}
-            onClick={() => handleChange('next')}
-          >
-            <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
-          </CarouselNavigationButton>
-        </CarouselNavigationContainer>
+        {!hidePagination && (
+          <CarouselNavigationContainer>
+            <CarouselNavigationButton
+              aria-label="previous"
+              onClick={() => handleChange('prev')}
+            >
+              <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
+            </CarouselNavigationButton>
+            <CarouselNavigationButton
+              aria-label="next"
+              sx={{ marginLeft: theme.spacing(1) }}
+              onClick={() => handleChange('next')}
+            >
+              <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
+            </CarouselNavigationButton>
+          </CarouselNavigationContainer>
+        )}
       </CarouselHeader>
       <CarouselContainerBox ref={carouselContainerRef} sx={sx}>
         {children}

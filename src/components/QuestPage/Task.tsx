@@ -1,8 +1,20 @@
-import { useAccount } from '@lifi/wallet-management';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
+import { useUserTracking } from '@/hooks/userTracking';
+import type { TaskVerification } from '@/types/loyaltyPass';
+import { useAccount } from '@lifi/wallet-management';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import type { Breakpoint } from '@mui/material';
 import {
-  Box,
+  alpha,
   Button,
   CircularProgress,
   Stack,
@@ -10,17 +22,9 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import type { TaskVerification } from '@/types/loyaltyPass';
+import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
 import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking';
-import {
-  InstructionsAccordionButtonMainBox,
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
   InstructionsAccordionItemIndex,
@@ -30,11 +34,6 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getContrastAlphaColor } from '@/utils/colors';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 
 function isVerified(isSuccess: boolean, isValid: boolean) {
   return isSuccess || isValid;
@@ -128,17 +127,20 @@ function Task({
             (isTablet ? (
               <InstructionsAccordionToggle onClick={(e) => handleOpen(e)}>
                 <ExpandMoreIcon
-                  sx={{
-                    ...(open && { transform: 'rotate(180deg)' }),
-                  }}
+                  sx={[open && { transform: 'rotate(180deg)' }]}
                 />
               </InstructionsAccordionToggle>
             ) : (
               <ExpandMoreIcon
-                sx={{
-                  color: getContrastAlphaColor(theme, 0.32),
-                  ...(open && { transform: 'rotate(180deg)' }),
-                }}
+                sx={[
+                  {
+                    color: alpha(theme.palette.white.main, 0.32),
+                    ...theme.applyStyles('light', {
+                      backgroundColor: alpha(theme.palette.black.main, 0.32),
+                    }),
+                  },
+                  open && { transform: 'rotate(180deg)' },
+                ]}
               />
             ))}
         </InstructionsAccordionItemMain>
@@ -155,49 +157,37 @@ function Task({
             >
               <Typography>{task.description}</Typography>
               {task.CTALink && task.CTAText && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignContent: 'center',
-                    justifyContent: 'flex-start',
-                    mt: '8px',
-                  }}
+                <Link
+                  href={task.CTALink}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                  onClick={() => handleCTAClick()}
                 >
-                  <InstructionsAccordionButtonMainBox>
-                    <a
-                      href={task.CTALink}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                      onClick={() => handleCTAClick()}
+                  <InstructionsAccordionLinkBox>
+                    <Typography
+                      variant={'bodyMediumStrong'}
+                      component={'span'}
+                      mr={'8px'}
+                      sx={(theme) => ({
+                        color: (theme.vars || theme).palette.text.primary,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxWidth: 208,
+                        [theme.breakpoints.up('sm' as Breakpoint)]: {
+                          maxWidth: 168,
+                        },
+                      })}
                     >
-                      <InstructionsAccordionLinkBox>
-                        <Typography
-                          variant={'bodyMediumStrong'}
-                          component={'span'}
-                          mr={'8px'}
-                          sx={(theme) => ({
-                            color: theme.palette.text.primary,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            maxWidth: 208,
-                            [theme.breakpoints.up('sm' as Breakpoint)]: {
-                              maxWidth: 168,
-                            },
-                          })}
-                        >
-                          {task.CTAText}
-                        </Typography>
-                        <ArrowForwardIcon
-                          style={{
-                            color: theme.palette.text.primary,
-                          }}
-                        />
-                      </InstructionsAccordionLinkBox>
-                    </a>
-                  </InstructionsAccordionButtonMainBox>
-                </Box>
+                      {task.CTAText}
+                    </Typography>
+                    <ArrowForwardIcon
+                      style={{
+                        color: (theme.vars || theme).palette.text.primary,
+                      }}
+                    />
+                  </InstructionsAccordionLinkBox>
+                </Link>
               )}
             </InstructionsAccordionItemMore>
             <Stack flexDirection="row" justifyContent="center">
@@ -228,7 +218,9 @@ function Task({
                     }
                     loadingIndicator={
                       <CircularProgress
-                        sx={(theme) => ({ color: theme.palette.text.primary })}
+                        sx={(theme) => ({
+                          color: (theme.vars || theme).palette.text.primary,
+                        })}
                         size={16}
                       />
                     }
@@ -252,7 +244,7 @@ function Task({
                         border: '1px solid #E5452F!important',
                       },
                       '&.MuiButton-loading': {
-                        border: `1px solid ${theme.palette.text.primary}!important`,
+                        border: `1px solid ${(theme.vars || theme).palette.text.primary}!important`,
                       },
                     })}
                   >

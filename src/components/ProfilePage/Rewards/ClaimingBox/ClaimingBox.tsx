@@ -1,21 +1,19 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Typography, useTheme } from '@mui/material';
-import { Button } from 'src/components/Button';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import { useTheme } from '@mui/material';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import type { AvailableRewards } from 'src/hooks/useMerklRewardsOnCampaigns';
+import type { AvailableRewards } from 'src/hooks/useMerklRewards';
 import {
   useAccount,
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
-import { RewardsAmountBox } from '../RewardsAmountBox/RewardsAmountBox';
 import {
-  ClaimButtonBox,
-  RewardsCarouselMainBox,
+  ClaimingBoxContainer,
   RewardsOpenIconButton,
 } from '../RewardsCarousel.style';
+import { ClaimingButton } from './ClaimingBox.style';
+import { ClaimingDetails } from './ClaimingDetails';
 
 interface ClaimRewardParams {
   tokenChainid: number;
@@ -40,6 +38,9 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
     useWaitForTransactionReceipt({
       hash,
     });
+
+  const isButtonDisabled =
+    isPending || isConfirming || (!!amount && amount === 0) || !amount;
 
   async function handleClick({
     tokenChainid,
@@ -78,61 +79,32 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
   }
 
   return (
-    <RewardsCarouselMainBox marginTop={'8px'}>
-      <FlexCenterRowBox>
-        <RewardsAmountBox
-          rewardAmount={amount}
-          isConfirmed={isConfirmed}
-          tokenLogo={availableReward.tokenLogo}
-          chainLogo={availableReward.chainLogo}
-          decimalsToShow={availableReward.decimalsToShow}
-        />
-      </FlexCenterRowBox>
+    <ClaimingBoxContainer marginTop={'8px'} gap={3}>
+      <ClaimingDetails
+        rewardAmount={amount}
+        isConfirmed={isConfirmed}
+        tokenLogo={availableReward.tokenLogo}
+        chainLogo={availableReward.chainLogo}
+      />
       {isConfirmed ? null : (
-        <ClaimButtonBox>
-          <Button
-            disabled={
-              isPending || isConfirming || (!!amount && amount === 0) || !amount
-            }
-            variant="primary"
-            aria-label="Claim"
-            size="large"
-            styles={{
-              opacity:
-                isPending ||
-                isConfirming ||
-                (!!amount && amount === 0) ||
-                !amount
-                  ? 0.3
-                  : undefined,
-              alignItems: 'center',
-              padding: '16px',
-              width: '100%',
-            }}
-            onClick={() =>
-              handleClick({
-                tokenChainid: availableReward.chainId,
-                proof: availableReward.proof,
-                rewardAmount: availableReward.amountToClaim,
-                rewardAmountBN: availableReward.accumulatedAmountForContractBN,
-                rewardToken: availableReward.address,
-                claimingAddress:
-                  availableReward.claimingAddress as `0x${string}`,
-              })
-            }
-          >
-            <Typography
-              fontSize="14px"
-              lineHeight="18px"
-              fontWeight={700}
-              sx={(theme) => ({
-                color: theme.palette.text.primary,
-              })}
-            >
-              {isPending || isConfirming ? 'Claiming...' : 'Claim'}
-            </Typography>
-          </Button>
-        </ClaimButtonBox>
+        <ClaimingButton
+          isDisabled={isButtonDisabled}
+          disabled={isButtonDisabled}
+          aria-label="Claim"
+          size="large"
+          onClick={() =>
+            handleClick({
+              tokenChainid: availableReward.chainId,
+              proof: availableReward.proof,
+              rewardAmount: availableReward.amountToClaim,
+              rewardAmountBN: availableReward.accumulatedAmountForContractBN,
+              rewardToken: availableReward.address,
+              claimingAddress: availableReward.claimingAddress as `0x${string}`,
+            })
+          }
+        >
+          {isPending || isConfirming ? 'Claiming...' : 'Claim'}
+        </ClaimingButton>
       )}
       {hash && isConfirmed ? (
         <a
@@ -141,7 +113,6 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           style={{
             textDecoration: 'none',
             color: 'inherit',
-            marginLeft: '32px',
           }}
           rel="noreferrer"
         >
@@ -155,6 +126,6 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           </RewardsOpenIconButton>
         </a>
       ) : undefined}
-    </RewardsCarouselMainBox>
+    </ClaimingBoxContainer>
   );
 };

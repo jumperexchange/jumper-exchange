@@ -42,7 +42,7 @@ export const useAddressMenuContent = () => {
         <LinkIcon
           sx={{
             height: '16px',
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           }}
         />
       ),
@@ -58,7 +58,7 @@ export const useAddressMenuContent = () => {
         <OpenInNewIcon
           sx={{
             height: '16px',
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           }}
         />
       ),
@@ -77,7 +77,7 @@ export const useAddressMenuContent = () => {
         <ReceiptLongIcon
           sx={{
             height: '16px',
-            color: theme.palette.text.primary,
+            color: (theme.vars || theme).palette.text.primary,
           }}
         />
       ),

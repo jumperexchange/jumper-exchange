@@ -5,6 +5,7 @@ import { useChains } from './useChains';
 
 export const useActiveAccountByChainType = () => {
   const { accounts } = useAccount();
+
   const { sourceChainToken } = useChainTokenSelectionStore();
   const { getChainById } = useChains();
 
