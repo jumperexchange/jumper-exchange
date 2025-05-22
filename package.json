@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.0",
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.4",
+    "@intercom/messenger-js-sdk": "^0.0.14",
     "@lifi/explorer": "^0.3.0",
     "@lifi/sdk": "^3.7.2",
     "@lifi/wallet-management": "^3.9.2",
