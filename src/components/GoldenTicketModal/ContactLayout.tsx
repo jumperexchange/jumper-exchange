@@ -3,19 +3,16 @@ import { Button } from '@/components/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { bagelFatOne, interTight } from './utils';
 import { ChevronRight } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const BackButton = styled('button', {
   shouldForwardProp: (prop) => prop !== 'isMobile',
 })<{ isMobile: boolean }>(({ isMobile }) => ({
-  position: 'absolute',
   backgroundColor: 'transparent',
   border: 'none',
   fontFamily: interTight.style.fontFamily,
   cursor: 'pointer',
-  top: isMobile ? '16px' : '52px',
-  left: isMobile ? '16px' : '40px',
   color: 'white',
   display: 'flex',
   alignItems: 'center',
@@ -24,12 +21,10 @@ const BackButton = styled('button', {
   fontWeight: 'bold',
   fontSize: '12px',
   lineHeight: '16px',
+  padding: 0,
 }));
 
 const CloseButton = styled('button')({
-  position: 'absolute',
-  top: '16px',
-  right: '16px',
   color: 'white',
   backgroundColor: 'transparent',
   border: 'none',
@@ -37,6 +32,15 @@ const CloseButton = styled('button')({
   fontFamily: interTight.style.fontFamily,
   fontSize: '12px',
   fontWeight: 'bold',
+  padding: 0,
+});
+
+const HeaderRow = styled('div')({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  minHeight: '40px',
 });
 
 const StyledTypography = styled(Typography)({
@@ -84,7 +88,7 @@ const InputWrapper = styled('label')({
   display: 'flex',
   width: 'calc(100% - 80px)',
   justifyContent: 'start',
-  marginTop: '72px',
+  marginTop: '52px',
   position: 'relative',
   marginLeft: '40px',
 });
@@ -112,6 +116,12 @@ const ErrorMessage = styled('p')<{ isMobile: boolean }>(({ isMobile }) => ({
   marginTop: '4px',
 }));
 
+const Content = styled('div')({
+  flex: 1,
+  width: '100%',
+  overflowY: 'auto',
+});
+
 interface ContactLayoutProps {
   onBack: () => void;
   onClose: () => void;
@@ -138,6 +148,7 @@ export const ContactLayout = ({
   isSigning,
 }: ContactLayoutProps) => {
   const [isValidInput, setIsValidInput] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const validateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (
@@ -166,60 +177,73 @@ export const ContactLayout = ({
         }}
         style={{ display: isDisplay ? 'flex' : 'none' }}
       >
-        <BackButton onClick={onBack} isMobile={isMobile}>
-          <ChevronRight sx={{ transform: 'rotate(180deg)' }} />
-          Back
-        </BackButton>
-        <CloseButton onClick={onClose}>
-          <CloseIcon />
-        </CloseButton>
-        <StyledTypography
-          variant="h4"
-          textAlign="left"
-          marginY={2}
-          color="white"
-          fontSize={isMobile ? '42px' : '62px'}
-          lineHeight={isMobile ? '42px' : '62px'}
-          maxWidth={'600px'}
-          textTransform={'uppercase'}
-          fontWeight={'extra-bold'}
-          marginTop={'80px'}
-          marginLeft={isMobile ? '16px' : '40px'}
-        >
-          WOW! it's a golden ticket!
-        </StyledTypography>
+        <Content>
+          <HeaderRow>
+            <BackButton onClick={onBack} isMobile={isMobile}>
+              <ChevronRight sx={{ transform: 'rotate(180deg)' }} />
+              Back
+            </BackButton>
+            <CloseButton onClick={onClose}>
+              <CloseIcon />
+            </CloseButton>
+          </HeaderRow>
+          <StyledTypography
+            variant="h4"
+            textAlign="left"
+            marginY={2}
+            color="white"
+            fontSize={isMobile ? '42px' : '62px'}
+            lineHeight={isMobile ? '42px' : '62px'}
+            maxWidth={'600px'}
+            textTransform={'uppercase'}
+            fontWeight={'extra-bold'}
+            marginTop={'40px'}
+            marginLeft={isMobile ? '16px' : '40px'}
+          >
+            WOW! it's a golden ticket!
+          </StyledTypography>
 
-        <InputWrapper>
-          <Input
-            type="text"
-            placeholder="Email or @telegram"
-            variant="outlined"
-            value={contact}
-            onChange={(e) => {
-              setContact(e.target.value);
-              validateInput(e as React.ChangeEvent<HTMLInputElement>);
-            }}
-            fullWidth
-          />
-          <FieldName>Email or Telegram tag</FieldName>
-          {!isValidInput && contact !== '' && (
-            <ErrorMessage isMobile={isMobile}>
-              Please enter a valid email address or Telegram tag (should start
-              with @)
-            </ErrorMessage>
-          )}
-        </InputWrapper>
-
+          <InputWrapper>
+            <Input
+              type="text"
+              placeholder="Email or @telegram"
+              variant="outlined"
+              value={contact}
+              onChange={(e) => {
+                setContact(e.target.value);
+                validateInput(e as React.ChangeEvent<HTMLInputElement>);
+              }}
+              onFocus={() => {
+                setTimeout(() => {
+                  inputRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                  });
+                }, 400);
+              }}
+              inputRef={inputRef}
+              fullWidth
+            />
+            <FieldName>Email or Telegram tag</FieldName>
+            {!isValidInput && contact !== '' && (
+              <ErrorMessage isMobile={isMobile}>
+                Please enter a valid email address or Telegram tag (should start
+                with @)
+              </ErrorMessage>
+            )}
+          </InputWrapper>
+        </Content>
         <Button
           muiVariant="contained"
           styles={{
             fontFamily: interTight.style.fontFamily,
-            position: 'absolute',
-            bottom: '40px',
-            right: '40px',
+            alignSelf: 'flex-end',
+            marginTop: '32px',
+            marginRight: '40px',
+            marginBottom: '20px',
             backgroundColor: 'white !important',
             color: 'black !important',
-            fontSize: isMobile ? '14x' : '16px',
+            fontSize: isMobile ? '14px' : '16px',
             fontWeight: 'bold',
             borderRadius: '1000px',
             padding: isMobile ? '16px 40px' : '35px 55px',
