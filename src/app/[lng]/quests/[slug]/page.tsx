@@ -72,7 +72,7 @@ export async function generateStaticParams() {
 }
 
 export const dynamicParams = true;
-export const revalidate = 60 * 5;
+export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;

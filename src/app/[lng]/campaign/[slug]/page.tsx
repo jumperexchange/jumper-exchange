@@ -20,8 +20,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export const dynamicParams = 'force-static';
-export const revalidate = 5 * 60;
+export const dynamicParams = true;
+export const dynamic = 'force-static';
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
