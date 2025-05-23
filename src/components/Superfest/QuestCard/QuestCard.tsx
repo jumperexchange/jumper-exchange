@@ -11,7 +11,6 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { Button } from '../../Button';
 import { SuperfestXPIcon } from '../../illustrations/XPIcon';
@@ -74,7 +73,7 @@ export const QuestCard = ({
 }: QuestCardProps) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { apy } = useMissionsMaxAPY(claimingIds);
+  // const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const handleClick = () => {
@@ -138,7 +137,7 @@ export const QuestCard = ({
           </FlexCenterRowBox>
           {points ? (
             <FlexCenterRowBox>
-              {apy > 0 && !variableWeeklyAPY && (
+              {/* {apy > 0 && !variableWeeklyAPY && (
                 <XPDisplayBox active={active} bgcolor={'#ff0420'}>
                   <SoraTypography
                     fontSize="14px"
@@ -154,7 +153,7 @@ export const QuestCard = ({
                     <APYIcon size={20} />
                   </XPIconBox>
                 </XPDisplayBox>
-              )}
+              )} */}
               {variableWeeklyAPY && (
                 <XPDisplayBox active={active} bgcolor={'#ff0420'}>
                   <SoraTypography

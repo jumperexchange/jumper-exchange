@@ -1,30 +1,22 @@
+import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 import {
   type ContractCall,
   type TokenAmount,
   useFieldActions,
 } from '@lifi/widget';
-import {
-  Avatar as MuiAvatar,
-  Avatar,
-  Badge,
-  Box,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
+  APY_TOOLTIP,
   DEPOSIT_TOOLTIP,
   DEPOSITED_TOOLTIP,
   TVL_TOOLTIP,
-  APY_TOOLTIP,
 } from 'src/components/Berachain/const/title';
-import { useTranslation } from 'react-i18next';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { ColoredStatBox } from './DepositCard.style';
 import DigitOnlyCard from './Stat/DigitOnlyCard';
 import DigitTextCard from './Stat/DigitTextCard';
-import { ColoredStatBox } from './DepositCard.style';
-import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 
 export interface ItemPriceProps {
   token: TokenAmount;
@@ -56,7 +48,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
 }) => {
   const { setFieldValue } = useFieldActions();
 
-  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds);
+  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [chainId]);
   const theme = useTheme();
   const { t } = useTranslation();
 

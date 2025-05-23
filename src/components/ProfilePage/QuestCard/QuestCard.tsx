@@ -1,7 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoneIcon from '@mui/icons-material/Done';
 import LockIcon from '@mui/icons-material/Lock';
-import { Box, Skeleton } from '@mui/material';
+import { Box, Skeleton, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
@@ -17,6 +17,7 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useThemeMode } from 'src/hooks/useThemeMode';
 import type { QuestChains } from 'src/types/loyaltyPass';
 import { formatMonthDayDateShort } from 'src/utils/formatDate';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
@@ -61,6 +62,7 @@ export interface QuestCardProps {
   isLoading?: boolean;
   isTraitsGarded?: boolean;
   isUnlocked?: boolean;
+  rewardsIds?: string[];
   label?: string;
   points?: number;
   startDate?: string;
@@ -94,6 +96,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     isUnlocked,
     label,
     points,
+    rewardsIds,
     // rewards,
     rewardsProgress,
     rewardRange,
@@ -103,8 +106,14 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
   } = data;
 
   const { t } = useTranslation();
-  const { apy } = useMissionsMaxAPY(claimingIds);
+  const chainIds = chains
+    ?.flatMap((chain) => chain.chainId)
+    ?.filter((id): id is number => id !== undefined);
+  const { apy, data: maxData } = useMissionsMaxAPY(rewardsIds, chainIds);
+  const theme = useTheme();
   const { trackEvent } = useUserTracking();
+  const themeMode = useThemeMode();
+
   const handleClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -215,6 +224,16 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                         active={false}
                         completed={false}
                         points={`${Number(apy).toFixed(1)}%`}
+                        color={
+                          themeMode === 'dark'
+                            ? (theme.vars || theme).palette.text.secondary
+                            : (theme.vars || theme).palette.primary.main
+                        }
+                        bgColor={
+                          themeMode === 'dark'
+                            ? (theme.vars || theme).palette.alphaLight300.main
+                            : (theme.vars || theme).palette.alphaDark100.main
+                        }
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
