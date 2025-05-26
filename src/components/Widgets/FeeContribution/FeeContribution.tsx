@@ -17,8 +17,9 @@ import { useRouteStore } from 'src/stores/route/RouteStore';
 import {
   createNativeTransactionConfig,
   createTokenTransactionConfig,
-  ERC20_TRANSFER_ABI,
 } from 'src/utils/transaction';
+import { erc20Abi } from 'viem';
+
 import { parseUnits } from 'viem';
 import {
   useSendTransaction,
@@ -313,7 +314,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
           completedRoute.toChainId,
         ) as {
           address: `0x${string}`;
-          abi: typeof ERC20_TRANSFER_ABI;
+          abi: typeof erc20Abi;
           functionName: 'transfer';
           args: [`0x${string}`, bigint];
         };

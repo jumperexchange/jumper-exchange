@@ -1,18 +1,4 @@
-import { type Address } from 'viem';
-
-// ERC20 Transfer ABI - commonly used for token transfers
-export const ERC20_TRANSFER_ABI = [
-  {
-    name: 'transfer',
-    type: 'function',
-    stateMutability: 'nonpayable',
-    inputs: [
-      { name: 'to', type: 'address' },
-      { name: 'amount', type: 'uint256' },
-    ],
-    outputs: [{ name: '', type: 'bool' }],
-  },
-] as const;
+import { erc20Abi, type Address } from 'viem';
 
 // Type for transaction configuration
 export type TransactionConfig =
@@ -22,7 +8,7 @@ export type TransactionConfig =
     }
   | {
       address: Address;
-      abi: typeof ERC20_TRANSFER_ABI;
+      abi: typeof erc20Abi;
       functionName: 'transfer';
       args: [Address, bigint];
       chainId: number;
@@ -52,7 +38,7 @@ export function createTokenTransactionConfig(
 ): TransactionConfig {
   return {
     address: tokenAddress,
-    abi: ERC20_TRANSFER_ABI,
+    abi: erc20Abi,
     functionName: 'transfer',
     args: [to, amount],
     chainId,
