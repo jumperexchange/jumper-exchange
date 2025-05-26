@@ -34,6 +34,7 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
+import { useMenuStore } from '@/stores/menu';
 
 export interface ProjectData {
   chain: string;
@@ -62,6 +63,7 @@ export function ZapWidget({
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
+  const { setSnackbarState } = useMenuStore((state) => state);
 
   const { data, isSuccess } = useZaps(projectData);
   const zapData = data?.data;
@@ -363,7 +365,7 @@ export function ZapWidget({
         cleanUps: [
           {
             tokenAddress: depositToken,
-            chainId: chain.id,
+            chainId: depositChainId,
             recipientAddress: account.address as `0x${string}`,
           },
         ],
@@ -378,7 +380,7 @@ export function ZapWidget({
         fusionQuote: quote,
       });
 
-      console.log('--- hash ---', hash);
+      setSnackbarState(true, `Transaction hash: ${hash}`, 'info');
 
       return { id: hash };
     },
@@ -409,7 +411,7 @@ export function ZapWidget({
       const receipt = await meeClient.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
       });
-      console.log('--- receipt ---', receipt);
+      setSnackbarState(true, `Explorer: https://meescan.biconomy.io/details/${hash}`, 'success');
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -501,7 +503,16 @@ export function ZapWidget({
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_ZAP_API_URL,
+        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+      },
+      explorerUrls: {
+        "1": ['https://meescan.biconomy.io/details/'],
+        "10": ['https://meescan.biconomy.io/details/'],
+        "854": ['https://meescan.biconomy.io/details/'],
+        "137": ['https://meescan.biconomy.io/details/'],
+        "8453": ['https://meescan.biconomy.io/details/'],
+        "1313161554": ['https://meescan.biconomy.io/details/'],
+        "11155111": ['https://meescan.biconomy.io/details/'],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -513,6 +524,7 @@ export function ZapWidget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
         HiddenUI.ToAddress,
+        HiddenUI.ReverseTokensButton
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
