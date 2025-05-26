@@ -14,7 +14,6 @@ import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useRouteStore } from 'src/stores/route/RouteStore';
-import { formatInputAmount } from 'src/utils/format';
 import {
   createNativeTransactionConfig,
   createTokenTransactionConfig,
@@ -42,6 +41,7 @@ import {
 } from './FeeContribution.style';
 import * as helper from './helper';
 import { getContributionAmounts, getContributionFeeAddress } from './utils';
+
 export interface ContributionTranslations {
   title: string;
   contributionSent: string;
@@ -71,8 +71,8 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const isContributionAbEnabled = useMemo(() => {
     return Math.random() < CONTRIBUTION_AB_TEST_PERCENTAGE;
   }, []);
-  const [amount, setAmount] = useState<string | undefined>();
-  const [inputAmount, setInputAmount] = useState<string | undefined>(undefined);
+  const [amount, setAmount] = useState<string>('');
+  const [inputAmount, setInputAmount] = useState<string>('');
   const [isSending, setIsSending] = useState(false);
   const completedRoute = useRouteStore((state) => state.completedRoute);
   const { data } = useTxHistory(address, completedRoute?.id);
@@ -117,19 +117,33 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     [isSending, isTxPending, isTxConfirming, isNativeTxPending],
   );
 
-  function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
-    // Calculate max amount in USD based on token balance
+  // Calculate max amount in USD based on token balance
+  const maxUsdAmount = useMemo(() => {
     const maxTokenAmount = tokenBalanceData
       ? Number(tokenBalanceData.amount) /
         Math.pow(10, tokenBalanceData.decimals)
       : 0;
-    const maxUsdAmount =
-      maxTokenAmount * Number(completedRoute?.toToken?.priceUSD || 0);
-    const formattedAmount = formatInputAmount(value, 2, false, maxUsdAmount);
-    setInputAmount(formattedAmount);
-    setAmount(formattedAmount);
+    return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD || 0);
+  }, [tokenBalanceData, completedRoute?.toToken?.priceUSD]);
+
+  function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+    // First validate the input value
+    const validatedValue = helper.validateInputAmount(value);
+    const numericValue = Number(validatedValue);
+    if (!isNaN(numericValue)) {
+      if (numericValue > maxUsdAmount) {
+        // Check if maxUsdAmount is bigger than the validated value
+        const formattedMaxUsdAmount = helper.formatAmount(maxUsdAmount);
+        setAmount(formattedMaxUsdAmount);
+        setInputAmount(formattedMaxUsdAmount);
+      } else {
+        setAmount(validatedValue);
+        setInputAmount(validatedValue);
+      }
+    }
   }
+
   // Set the address of the user from last tx
   useEffect(() => {
     if (completedRoute?.fromAddress) {
@@ -170,16 +184,17 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Handle contribution button click
   const handleButtonClick = (selectedAmount: number) => {
-    if (!!amount && selectedAmount === parseFloat(amount)) {
-      setAmount(undefined);
+    if (amount && parseFloat(amount) === selectedAmount) {
+      setAmount('');
     } else {
-      setAmount(selectedAmount.toString());
+      const amountStr = selectedAmount.toString();
+      setAmount(amountStr);
     }
   };
 
   // Handle custom contribution amount
   const handleCustom = () => {
-    if (!!inputAmount && parseFloat(inputAmount) > 0) {
+    if (inputAmount && parseFloat(inputAmount) > 0) {
       setAmount(inputAmount);
     }
   };
@@ -391,7 +406,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               ))}
               <Grid size={3}>
                 <ContributionCustomInput
-                  value={inputAmount || ''}
+                  value={inputAmount}
                   aria-autocomplete="none"
                   onChange={onChangeValue}
                   onClick={handleCustom}
@@ -406,7 +421,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                         padding: 0,
                         maxWidth: '100%',
                         fieldset: {
-                          border: 'none',
+                          border: 'none !important',
                         },
                       }),
                     },
@@ -442,7 +457,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                         height: '32px',
                         borderRadius: '16px',
                         justifyContent: 'center',
-                        ':focus': { padding: '0 12px 0 24px' }, // Added left padding for the $ symbol
+                        ':focus': { padding: '0 12px 0 24px', border: 'none' }, // Added left padding for the $ symbol
                         fontSize: '12px',
                         lineHeight: '16px',
                         fontWeight: 700,
@@ -453,11 +468,11 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
                         backgroundColor: isCustomAmountActive
                           ? 'rgba(101, 59, 163, 0.84)'
-                          : (theme.vars || theme).palette.grey[200],
+                          : `${(theme.vars || theme).palette.grey[200]} !important`,
                         '&:hover': {
                           backgroundColor: isCustomAmountActive
                             ? '#653BA3'
-                            : (theme.vars || theme).palette.grey[300],
+                            : `${(theme.vars || theme).palette.grey[300]} !important`,
                         },
                         ...theme.applyStyles('light', {
                           backgroundColor: isCustomAmountActive
