@@ -107,7 +107,7 @@ export const validateInputAmount = (
   if (!value) return '';
 
   // Sanitize the input value
-  const { originalValue, cleanValue } = sanitizeNumberField(value);
+  const { cleanValue } = sanitizeNumberField(value);
 
   // For values with a decimal point, handle decimal places
   if (cleanValue.includes('.')) {
