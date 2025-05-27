@@ -7,6 +7,7 @@ import {
   Grid,
   InputAdornment,
 } from '@mui/material';
+import * as Sentry from '@sentry/nextjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
@@ -20,6 +21,7 @@ import {
 } from 'src/utils/transaction';
 import { erc20Abi } from 'viem';
 
+import { isProduction } from 'src/utils/isProduction';
 import { parseUnits } from 'viem';
 import {
   useSendTransaction,
@@ -257,9 +259,20 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     try {
       // amount is in USD, convert to token amount
       const tokenPriceUSD = Number(completedRoute.toToken.priceUSD);
-      if (!tokenPriceUSD || tokenPriceUSD <= 0)
+      const sentryHint = {
+        tags: {
+          component: 'FeeContribution',
+          action: 'handleConfirm',
+        },
+      };
+      if (!tokenPriceUSD || tokenPriceUSD <= 0) {
+        isProduction &&
+          Sentry.captureException(
+            new Error(translations.error.invalidTokenPrice),
+            sentryHint,
+          );
         throw new Error(translations.error.invalidTokenPrice);
-
+      }
       const usdAmount = parseFloat(amount);
       // Use token's actual decimals for precision
       const tokenAmount = (usdAmount / tokenPriceUSD).toFixed(
@@ -268,12 +281,22 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
       // Ensure we have a non-zero amount after conversion
       if (parseFloat(tokenAmount) === 0) {
+        isProduction &&
+          Sentry.captureException(
+            new Error(translations.error.amountTooSmall),
+            sentryHint,
+          );
         throw new Error(translations.error.amountTooSmall);
       }
 
       // Get the contribution fee address for the chain
       const feeAddress = getContributionFeeAddress(completedRoute.toChainId);
       if (!feeAddress) {
+        isProduction &&
+          Sentry.captureException(
+            new Error(translations.error.noFeeAddress),
+            sentryHint,
+          );
         throw new Error(translations.error.noFeeAddress);
       }
 
@@ -322,15 +345,31 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         await writeContract(txConfig);
       }
     } catch (error) {
-      console.error(translations.error.errorSending, error);
       if (error instanceof Error) {
         const errorMessage = error.message;
-        if (errorMessage === translations?.error?.amountTooSmall) {
+        if (
+          errorMessage === translations?.error?.amountTooSmall ||
+          errorMessage === translations?.error?.noFeeAddress ||
+          errorMessage === translations?.error?.invalidTokenPrice
+        ) {
+          errorMessage === translations?.error?.invalidTokenPrice;
+        }
+        {
           console.error(errorMessage);
-        } else if (errorMessage === translations?.error?.noFeeAddress) {
-          console.error(errorMessage);
-        } else if (errorMessage === translations?.error?.invalidTokenPrice) {
-          console.error(errorMessage);
+          Sentry.captureException(
+            `${translations.error.errorSending}: ${errorMessage}`,
+            {
+              tags: {
+                component: 'FeeContribution',
+                action: 'handleConfirm',
+              },
+              extra: {
+                tokenAddress: completedRoute?.toToken?.address,
+                chainId: completedRoute?.toChainId,
+                amount,
+              },
+            },
+          );
         }
       }
     } finally {
@@ -378,7 +417,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
             backdrop: {
               sx: {
                 position: 'absolute',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity as needed
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 borderRadius: '24px',
               },
             },
