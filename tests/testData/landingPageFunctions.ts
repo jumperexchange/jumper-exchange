@@ -21,11 +21,21 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
   await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
-export async function checkIfBestReturnLabelIsVisible(page) {
-  const bestReturnLabel = page.locator(
-    'xpath=//p[normalize-space(text())="Best Return"]',
-  );
-  await expect(bestReturnLabel).toBeVisible();
+async function routesLabel(page, locator) {
+  return page.locator(`xpath=//p[normalize-space(text())="${locator}"]`);
+}
+
+export async function checkIfBestReturnLabelIsVisible(
+  page,
+  shouldBeVisible = true,
+) {
+  if (shouldBeVisible) {
+    const label = await routesLabel(page, 'Best Return');
+    await expect(label).toBeVisible();
+  } else {
+    const label = await routesLabel(page, 'No routes available');
+    await expect(label).toBeVisible();
+  }
 }
 export async function navigateToTab(page, tabKey, expectedText) {
   await page.locator(`#tab-key-${tabKey}`).click();
