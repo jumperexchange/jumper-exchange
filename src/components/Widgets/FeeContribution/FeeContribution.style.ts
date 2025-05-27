@@ -62,6 +62,9 @@ export const ContributionCustomInput = styled(TextField, {
 })<ContributionCustomInputProps>(
   ({ theme, isCustomAmountActive, inputAmount, hasInputAmount }) => ({
     width: '100%',
+    borderRadius: '24px',
+    overflow: 'hidden',
+    transition: 'background-color 250ms',
     backgroundColor: isCustomAmountActive
       ? 'rgba(101, 59, 163, 0.84)'
       : `${(theme.vars || theme).palette.grey[200]} !important`,
@@ -70,8 +73,16 @@ export const ContributionCustomInput = styled(TextField, {
         ? '#653BA3'
         : `${(theme.vars || theme).palette.grey[300]} !important`,
     },
-    borderRadius: '24px',
-    overflow: 'hidden',
+    ...theme.applyStyles('light', {
+      backgroundColor: isCustomAmountActive
+        ? '#F0E5FF'
+        : (theme.vars || theme).palette.grey[100],
+      '&:hover': {
+        backgroundColor: isCustomAmountActive
+          ? darken('#F0E5FF', 0.08)
+          : (theme.vars || theme).palette.grey[300],
+      },
+    }),
     '& .MuiInputBase-root': {
       borderRadius: '16px',
       width: '100%',
@@ -102,30 +113,19 @@ export const ContributionCustomInput = styled(TextField, {
       lineHeight: '16px',
       fontWeight: 700,
       textAlign: 'center',
-      transition: 'background-color 250ms',
       color: (theme.vars || theme).palette.text.primary,
       backgroundColor: 'transparent !important',
       '&:hover': {
         backgroundColor: 'transparent !important',
       },
-      '::placeholder': {
-        color: theme.palette.text.secondary,
+      '&::placeholder': {
+        color: (theme.vars || theme).palette.text.primary,
         opacity: 1,
       },
       '&:focus': {
         padding: 0,
         border: 'none',
       },
-      ...theme.applyStyles('light', {
-        backgroundColor: isCustomAmountActive
-          ? '#F0E5FF'
-          : (theme.vars || theme).palette.grey[100],
-        '&:hover': {
-          backgroundColor: isCustomAmountActive
-            ? darken('#F0E5FF', 0.08)
-            : (theme.vars || theme).palette.grey[300],
-        },
-      }),
     },
     '& .MuiInputAdornment-root': {
       fontSize: '12px',
