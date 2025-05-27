@@ -2,7 +2,7 @@
 
 import { HeaderHeight } from '@/const/headerHeight';
 import { useMenuStore } from '@/stores/menu';
-import { hide, Intercom, show } from '@intercom/messenger-js-sdk';
+import { hide, Intercom, onHide, show } from '@intercom/messenger-js-sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { useTheme } from '@mui/material';
 import WidgetBot from '@widgetbot/react-embed';
@@ -34,6 +34,10 @@ export const SupportModal = () => {
       alignment: 'right',
     });
   }
+
+  onHide(() => {
+    setSupportModalState(false);
+  });
 
   useEffect(() => {
     if (!openSupportModal) {
