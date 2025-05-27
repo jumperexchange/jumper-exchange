@@ -35,7 +35,11 @@ import {
   DrawerWrapper,
 } from './FeeContribution.style';
 import * as helper from './helper';
-import { getContributionAmounts, getContributionFeeAddress } from './utils';
+import {
+  checkContributionByTxHistory,
+  getContributionAmounts,
+  getContributionFeeAddress,
+} from './utils';
 
 export interface ContributionTranslations {
   title: string;
@@ -121,6 +125,50 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD || 0);
   }, [tokenBalanceData, completedRoute?.toToken?.priceUSD]);
 
+  // Early synchronous eligibility checks
+  const isEligibleBySyncChecks = useMemo(() => {
+    if (!account?.chainType || !completedRoute?.toAmountUSD) {
+      return false;
+    }
+
+    return (
+      helper.isEvmChainType(account.chainType) &&
+      helper.isTransactionAmountEligible(completedRoute.toAmountUSD) &&
+      helper.hasValidContributionFeeAddress(completedRoute.toChainId)
+    );
+  }, [
+    account?.chainType,
+    completedRoute?.toAmountUSD,
+    completedRoute?.toChainId,
+  ]);
+
+  // Async-dependent eligibility check
+  const isEligibleByTxHistory = useMemo(() => {
+    if (!isEligibleBySyncChecks) {
+      return false;
+    }
+    return checkContributionByTxHistory(data?.transfers);
+  }, [isEligibleBySyncChecks, data?.transfers]);
+
+  // Final eligibility determination
+  const isEligible = useMemo(() => {
+    return (
+      isEligibleBySyncChecks && isEligibleByTxHistory && isContributionAbEnabled
+    );
+  }, [isEligibleBySyncChecks, isEligibleByTxHistory, isContributionAbEnabled]);
+
+  // Update contribution options when eligible
+  useEffect(() => {
+    if (!isEligible) {
+      setShowContribution(false);
+      return;
+    }
+
+    const txUsdAmount = Number(completedRoute?.toAmountUSD);
+    setShowContribution(true);
+    setContributionOptions(getContributionAmounts(txUsdAmount));
+  }, [isEligible, completedRoute?.toAmountUSD]);
+
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     // First validate the input value
@@ -145,54 +193,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       setAddress(completedRoute.fromAddress);
     }
   }, [completedRoute?.fromAddress]);
-
-  // Check if contribution should be shown based on:
-  // - Transaction history
-  // - AB test
-  // - Transaction amount >= $10
-  // - Chain type is EVM
-  // - Valid contribution fee address exists for the chain
-  useEffect(() => {
-    if (
-      !helper.isEligibleForContribution(
-        data,
-        completedRoute ?? undefined,
-        account,
-        isContributionAbEnabled,
-      )
-    ) {
-      setShowContribution(false);
-      return;
-    }
-
-    // If eligible, set contribution amounts based on transaction amount
-    const txUsdAmount = Number(completedRoute?.toAmountUSD);
-    setShowContribution(true);
-    setContributionOptions(getContributionAmounts(txUsdAmount));
-  }, [
-    data?.transfers,
-    completedRoute?.toAmountUSD,
-    account?.chainType,
-    isContributionAbEnabled,
-    completedRoute?.toChainId,
-  ]);
-
-  // Handle contribution button click
-  const handleButtonClick = (selectedAmount: number) => {
-    if (amount && parseFloat(amount) === selectedAmount) {
-      setAmount('');
-    } else {
-      const amountStr = selectedAmount.toString();
-      setAmount(amountStr);
-    }
-  };
-
-  // Handle custom contribution amount
-  const handleCustom = () => {
-    if (inputAmount && parseFloat(inputAmount) > 0) {
-      setAmount(inputAmount);
-    }
-  };
 
   // Track contribution impression
   useEffect(() => {
@@ -239,6 +239,23 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       hasTrackedConfirmationRef.current = true;
     }
   }, [isTxConfirmed]); // Only depend on isTxConfirmed
+
+  // Handle contribution button click
+  const handleButtonClick = (selectedAmount: number) => {
+    if (amount && parseFloat(amount) === selectedAmount) {
+      setAmount('');
+    } else {
+      const amountStr = selectedAmount.toString();
+      setAmount(amountStr);
+    }
+  };
+
+  // Handle custom contribution amount
+  const handleCustom = () => {
+    if (inputAmount && parseFloat(inputAmount) > 0) {
+      setAmount(inputAmount);
+    }
+  };
 
   // Handle contribution confirmation to sign the tx
   const handleConfirm = async () => {
