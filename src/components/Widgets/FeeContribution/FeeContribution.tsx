@@ -242,7 +242,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Handle contribution button click
   const handleButtonClick = (selectedAmount: number) => {
-    if (amount && parseFloat(amount) === selectedAmount) {
+    if (amount && Number(amount) === selectedAmount) {
       setAmount('');
     } else {
       const amountStr = selectedAmount.toString();
@@ -252,7 +252,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Handle custom contribution amount
   const handleCustom = () => {
-    if (inputAmount && parseFloat(inputAmount) > 0) {
+    if (inputAmount && Number(inputAmount) > 0) {
       setAmount(inputAmount);
     }
   };
@@ -286,14 +286,14 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
           );
         throw new Error(translations.error.invalidTokenPrice);
       }
-      const usdAmount = parseFloat(amount);
+      const usdAmount = Number(amount);
       // Use token's actual decimals for precision
       const tokenAmount = (usdAmount / tokenPriceUSD).toFixed(
         completedRoute.toToken.decimals,
       );
 
       // Ensure we have a non-zero amount after conversion
-      if (parseFloat(tokenAmount) === 0) {
+      if (Number(tokenAmount) === 0) {
         isProduction &&
           Sentry.captureException(
             new Error(translations.error.amountTooSmall),
@@ -393,8 +393,8 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const isCustomAmountActive = useMemo(() => {
     return (
       !!amount &&
-      !contributionOptions.includes(parseFloat(amount)) &&
-      parseFloat(amount) > 0
+      !contributionOptions.includes(Number(amount)) &&
+      Number(amount) > 0
     );
   }, [amount]);
 
@@ -427,9 +427,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               {contributionOptions.map((contributionAmount) => (
                 <Grid size={3} key={contributionAmount}>
                   <ContributionButton
-                    selected={
-                      !!amount && parseFloat(amount) === contributionAmount
-                    }
+                    selected={!!amount && Number(amount) === contributionAmount}
                     onClick={() => handleButtonClick(contributionAmount)}
                     size="small"
                   >
