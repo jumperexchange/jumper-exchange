@@ -12,7 +12,7 @@ import {
  * - Every third transaction (count % 3 = 0)
  */
 export const checkContributionByTxHistory = (
-  transfers: StatusResponse[] | undefined,
+  transfers?: StatusResponse[],
 ): boolean => {
   if (!(Array.isArray(transfers) && transfers.length)) {
     return false;

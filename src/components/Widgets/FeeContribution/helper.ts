@@ -8,7 +8,7 @@ import {
 } from './utils';
 
 export interface TransferResponse {
-  transfers: StatusResponse[] | undefined;
+  transfers: StatusResponse[];
 }
 
 export const hasValidTransferData = (
