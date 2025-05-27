@@ -9,10 +9,7 @@ import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useRouteStore } from 'src/stores/route/RouteStore';
-import {
-  createNativeTransactionConfig,
-  createTokenTransactionConfig,
-} from 'src/utils/transaction';
+import { createTokenTransactionConfig } from 'src/utils/transaction';
 import { erc20Abi } from 'viem';
 
 import { isProduction } from 'src/utils/isProduction';
@@ -323,11 +320,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       );
 
       if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
-        const nativeTxConfig = createNativeTransactionConfig(
-          feeAddress as `0x${string}`,
-          amountInTokenUnits,
-        );
-        await sendTransaction(nativeTxConfig);
+        await sendTransaction({
+          to: feeAddress as `0x${string}`,
+          value: amountInTokenUnits,
+        });
       } else {
         // Type assertion to ensure we're using the token transaction config
         const txConfig = createTokenTransactionConfig(

@@ -15,19 +15,6 @@ export type TransactionConfig =
     };
 
 /**
- * Creates a transaction configuration for sending native currency
- */
-export function createNativeTransactionConfig(
-  to: Address,
-  value: bigint,
-): TransactionConfig {
-  return {
-    to,
-    value,
-  };
-}
-
-/**
  * Creates a transaction configuration for sending ERC20 tokens
  */
 export function createTokenTransactionConfig(
