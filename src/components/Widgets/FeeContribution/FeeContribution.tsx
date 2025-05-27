@@ -199,19 +199,23 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Track contribution impression
   useEffect(() => {
-    if (showContribution && !hasTrackedImpressionRef.current) {
+    if (
+      completedRoute &&
+      showContribution &&
+      !hasTrackedImpressionRef.current
+    ) {
       trackEvent({
         action: TrackingAction.ContributeImpression,
         category: TrackingCategory.Widget,
         label: 'fee_contribution_impression',
         data: {
-          donator: account?.address || '',
-          original_tx_id: completedRoute?.id || '',
-          original_amount: completedRoute?.toAmount || '',
-          original_amount_usd: completedRoute?.toAmountUSD || '',
-          original_token_symbol: completedRoute?.toToken?.symbol || '',
-          original_donation_chain: completedRoute?.toChainId || 0,
-          original_tx_token_address: completedRoute?.toToken?.address || '',
+          donator: account.address || '',
+          original_tx_id: completedRoute.id || '',
+          original_amount: completedRoute.toAmount || '',
+          original_amount_usd: completedRoute.toAmountUSD || '',
+          original_token_symbol: completedRoute.toToken.symbol || '',
+          original_donation_chain: completedRoute.toChainId || 0,
+          original_tx_token_address: completedRoute.toToken?.address || '',
         },
       });
       hasTrackedImpressionRef.current = true;
@@ -220,18 +224,18 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Track contribution success
   useEffect(() => {
-    if (isTxConfirmed && !hasTrackedConfirmationRef.current) {
+    if (completedRoute && isTxConfirmed && !hasTrackedConfirmationRef.current) {
       trackEvent({
         action: TrackingAction.ContributeSuccess,
         category: TrackingCategory.Widget,
         label: 'fee_contribution_success',
         data: {
           donator: account?.address || '',
-          original_tx_id: completedRoute?.id || '',
+          original_tx_id: completedRoute.id || '',
           donation_amount_usd: amount || 0,
-          donation_token_symbol: completedRoute?.toToken?.symbol || '',
-          donation_token_address: completedRoute?.toToken?.address || '',
-          donation_chain: completedRoute?.toChainId || 0,
+          donation_token_symbol: completedRoute.toToken?.symbol || '',
+          donation_token_address: completedRoute.toToken?.address || '',
+          donation_chain: completedRoute.toChainId || 0,
           donation_tx_hash: txReceipt?.transactionHash || '',
         },
       });
@@ -296,20 +300,21 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       }
 
       // Track click event
-      trackEvent({
-        action: TrackingAction.ClickContribute,
-        category: TrackingCategory.Widget,
-        label: 'click_fee_contribution',
-        data: {
-          donator: account?.address || '',
-          original_tx_id: completedRoute?.id || '',
-          donation_amount_usd: usdAmount || 0,
-          donation_amount_token: tokenAmount || 0,
-          donation_token_symbol: completedRoute?.toToken?.symbol || '',
-          donation_token_address: completedRoute?.toToken?.address || '',
-          donation_chain: completedRoute?.toChainId || 0,
-        },
-      });
+      completedRoute &&
+        trackEvent({
+          action: TrackingAction.ClickContribute,
+          category: TrackingCategory.Widget,
+          label: 'click_fee_contribution',
+          data: {
+            donator: account?.address || '',
+            original_tx_id: completedRoute.id || '',
+            donation_amount_usd: usdAmount || 0,
+            donation_amount_token: tokenAmount || 0,
+            donation_token_symbol: completedRoute.toToken.symbol || '',
+            donation_token_address: completedRoute.toToken.address || '',
+            donation_chain: completedRoute.toChainId || 0,
+          },
+        });
 
       // Convert to token units with proper precision
       const amountInTokenUnits = parseUnits(
