@@ -1,6 +1,6 @@
 import { useAccount } from '@lifi/wallet-management';
 import CheckIcon from '@mui/icons-material/Check';
-import { CircularProgress, Drawer, Grid, InputAdornment } from '@mui/material';
+import { CircularProgress, Grid, InputAdornment } from '@mui/material';
 import * as Sentry from '@sentry/nextjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
@@ -33,6 +33,7 @@ import {
   ContributionCardTitle,
   ContributionCustomInput,
   ContributionDescription,
+  ContributionDrawer,
   ContributionWrapper,
   DrawerWrapper,
 } from './FeeContribution.style';
@@ -386,28 +387,15 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   return (
     <ContributionWrapper showContribution={showContribution}>
       <DrawerWrapper ref={containerRef}>
-        <Drawer
+        <ContributionDrawer
           open={showContribution}
           anchor="top"
           hideBackdrop={true}
           container={() => containerRef.current}
-          sx={{ position: 'absolute' }}
           ModalProps={{
             disablePortal: true,
             disableEnforceFocus: true,
             disableAutoFocus: true,
-          }}
-          slotProps={{
-            paper: {
-              sx: {
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                width: '100%',
-                borderRadius: '24px',
-              },
-            },
           }}
         >
           <ContributionCard>
@@ -482,7 +470,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
               </ContributionDescription>
             )}
           </ContributionCard>
-        </Drawer>
+        </ContributionDrawer>
       </DrawerWrapper>
     </ContributionWrapper>
   );

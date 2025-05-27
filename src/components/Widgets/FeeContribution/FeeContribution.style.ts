@@ -6,6 +6,7 @@ import {
   ButtonProps,
   Card,
   darken,
+  Drawer,
   styled,
   TextField,
   Typography,
@@ -257,4 +258,16 @@ export const ContributionDescription = styled(Typography)(({ theme }) => ({
   ...theme.applyStyles('light', {
     color: (theme.vars || theme).palette.grey[700],
   }),
+}));
+
+export const ContributionDrawer = styled(Drawer)(({ theme }) => ({
+  position: 'absolute',
+  '& .MuiDrawer-paper': {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    borderRadius: '24px',
+  },
 }));
