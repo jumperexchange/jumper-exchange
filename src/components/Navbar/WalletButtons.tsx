@@ -93,7 +93,7 @@ export const WalletButtons = () => {
       ) : (
         <Stack direction="row" spacing={2}>
           {isDesktop && !pathname.includes(JUMPER_SCAN_PATH) && (
-            <WalletMenuButton id="wallet-digest-button" onClick={handleXPClick}>
+            <WalletMenuButton id="wallet-digest-button-xp" onClick={handleXPClick}>
               <ImageWalletMenuButton
                 src={imgLink}
                 alt={`${activeAccount?.address} wallet Icon`}
