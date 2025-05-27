@@ -1,12 +1,6 @@
 import { useAccount } from '@lifi/wallet-management';
 import CheckIcon from '@mui/icons-material/Check';
-import {
-  CircularProgress,
-  darken,
-  Drawer,
-  Grid,
-  InputAdornment,
-} from '@mui/material';
+import { CircularProgress, Drawer, Grid, InputAdornment } from '@mui/material';
 import * as Sentry from '@sentry/nextjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
@@ -414,13 +408,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                 borderRadius: '24px',
               },
             },
-            backdrop: {
-              sx: {
-                position: 'absolute',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                borderRadius: '24px',
-              },
-            },
           }}
         >
           <ContributionCard>
@@ -452,80 +439,23 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
                   onClick={handleCustom}
                   onFocus={handleCustom}
                   placeholder={translations.custom}
-                  slotProps={{
-                    root: {
-                      sx: (theme) => ({
-                        borderRadius: '16px',
-                        width: '100%',
-                        flexGrow: 1,
-                        padding: 0,
-                        maxWidth: '100%',
-                        fieldset: {
-                          border: 'none !important',
-                        },
-                      }),
-                    },
-                    input: {
-                      startAdornment: inputAmount ? (
-                        <InputAdornment
-                          position="start"
-                          disableTypography
-                          sx={(theme) => ({
-                            fontSize: '12px',
-                            marginRight: 0,
-                            lineHeight: '16px',
-                            fontWeight: 700,
-                            color: (theme.vars || theme).palette.text.primary,
-                            ...(inputAmount && {
-                              padding: 0,
-                              // paddingLeft: '28px',
-                            }),
-                          })}
-                        >
-                          $
-                        </InputAdornment>
-                      ) : null,
-                      sx: (theme) => ({
-                        input: {
-                          ...(inputAmount && {
-                            width: inputAmount.length * 8 + 'px',
-                            paddingLeft: theme.spacing(0.5),
-                          }),
-                          padding: inputAmount ? '0' : '0 16px',
-                        },
-
-                        height: '32px',
-                        borderRadius: '16px',
-                        justifyContent: 'center',
-                        ':focus': { padding: '0 12px 0 24px', border: 'none' }, // Added left padding for the $ symbol
-                        fontSize: '12px',
-                        lineHeight: '16px',
-                        fontWeight: 700,
-                        paddingLeft: 0,
-                        textAlign: 'center',
-                        transition: 'background-color 250ms',
-                        color: (theme.vars || theme).palette.text.primary,
-
-                        backgroundColor: isCustomAmountActive
-                          ? 'rgba(101, 59, 163, 0.84)'
-                          : `${(theme.vars || theme).palette.grey[200]} !important`,
-                        '&:hover': {
-                          backgroundColor: isCustomAmountActive
-                            ? '#653BA3'
-                            : `${(theme.vars || theme).palette.grey[300]} !important`,
-                        },
-                        ...theme.applyStyles('light', {
-                          backgroundColor: isCustomAmountActive
-                            ? '#F0E5FF'
-                            : (theme.vars || theme).palette.grey[100],
-                          '&:hover': {
-                            backgroundColor: isCustomAmountActive
-                              ? darken('#F0E5FF', 0.08)
-                              : (theme.vars || theme).palette.grey[300],
-                          },
+                  isCustomAmountActive={isCustomAmountActive}
+                  hasInputAmount={!!inputAmount}
+                  InputProps={{
+                    startAdornment: inputAmount ? (
+                      <InputAdornment position="start" disableTypography>
+                        $
+                      </InputAdornment>
+                    ) : null,
+                    sx: (theme) => ({
+                      input: {
+                        ...(inputAmount && {
+                          width: inputAmount.length * 8 + 'px',
+                          paddingLeft: theme.spacing(0.5),
                         }),
-                      }),
-                    },
+                        padding: inputAmount ? '0' : '0 16px',
+                      },
+                    }),
                   }}
                 />
               </Grid>

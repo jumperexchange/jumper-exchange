@@ -49,16 +49,95 @@ export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
 }));
 
+interface ContributionCustomInputProps {
+  isCustomAmountActive?: boolean;
+  hasInputAmount?: boolean;
+  inputAmount?: string;
+}
+
 export const ContributionCustomInput = styled(TextField, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})(() => ({
-  height: '32px',
-  borderRadius: '16px',
-  '& .MuiInputBase-input::placeholder': {
-    opacity: 1,
-    textAlign: 'center',
-  },
-}));
+  shouldForwardProp: (prop) =>
+    !['isCustomAmountActive', 'hasInputAmount'].includes(prop as string),
+})<ContributionCustomInputProps>(
+  ({ theme, isCustomAmountActive, inputAmount, hasInputAmount }) => ({
+    width: '100%',
+    backgroundColor: isCustomAmountActive
+      ? 'rgba(101, 59, 163, 0.84)'
+      : `${(theme.vars || theme).palette.grey[200]} !important`,
+    '&:hover': {
+      backgroundColor: isCustomAmountActive
+        ? '#653BA3'
+        : `${(theme.vars || theme).palette.grey[300]} !important`,
+    },
+    borderRadius: '24px',
+    overflow: 'hidden',
+    '& .MuiInputBase-root': {
+      borderRadius: '16px',
+      width: '100%',
+      justifyContent: 'center',
+      flexGrow: 1,
+      padding: 0,
+      maxWidth: '100%',
+      '& fieldset': {
+        border: 'none !important',
+      },
+    },
+    '& .MuiInputBase-input': {
+      ...(hasInputAmount &&
+        inputAmount && {
+          width: `${inputAmount?.length * 8}px`,
+          paddingLeft: theme.spacing(0.5),
+        }),
+      // padding: hasInputAmount ? '0' : '0 16px',
+      padding: 0,
+      height: '32px',
+      borderRadius: '16px',
+      justifyContent: 'center',
+      ':focus': {
+        padding: '0 12px 0 24px',
+        border: 'none',
+      },
+      fontSize: '12px',
+      lineHeight: '16px',
+      fontWeight: 700,
+      textAlign: 'center',
+      transition: 'background-color 250ms',
+      color: (theme.vars || theme).palette.text.primary,
+      backgroundColor: 'transparent !important',
+      '&:hover': {
+        backgroundColor: 'transparent !important',
+      },
+      '::placeholder': {
+        color: theme.palette.text.secondary,
+        opacity: 1,
+      },
+      '&:focus': {
+        padding: 0,
+        border: 'none',
+      },
+      ...theme.applyStyles('light', {
+        backgroundColor: isCustomAmountActive
+          ? '#F0E5FF'
+          : (theme.vars || theme).palette.grey[100],
+        '&:hover': {
+          backgroundColor: isCustomAmountActive
+            ? darken('#F0E5FF', 0.08)
+            : (theme.vars || theme).palette.grey[300],
+        },
+      }),
+    },
+    '& .MuiInputAdornment-root': {
+      fontSize: '12px',
+      marginRight: 0,
+      lineHeight: '16px',
+      fontWeight: 700,
+      color: (theme.vars || theme).palette.text.primary,
+      ...(hasInputAmount && {
+        padding: 0,
+      }),
+    },
+  }),
+);
 
 interface ContributionButtonProps extends ButtonProps {
   selected: boolean;
