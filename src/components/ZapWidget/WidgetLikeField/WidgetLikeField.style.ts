@@ -73,7 +73,7 @@ export const CustomFormControl = styled(FormControl)(({ theme }) => ({
     borderBottom: 'none',
   },
   ...theme.applyStyles("light", {
-    border: `1px solid ${'#E5E1EB'}`,
+    border: `1px solid ${'#E5E1EB'}`
   })
 }));
 
