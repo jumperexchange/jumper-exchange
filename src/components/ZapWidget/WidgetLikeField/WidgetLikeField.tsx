@@ -220,11 +220,11 @@ function WidgetLikeField({
     <Grid container justifyContent={'center'}>
       <Grid
         p={3}
-        bgcolor={'#fff'}
         borderRadius={1}
         sx={(theme) => ({
-          backgroundColor: theme.palette.surface1.main,
+          backgroundColor: (theme.vars || theme).palette.surface1.main,
           padding: theme.spacing(2, 3),
+          boxShadow: theme.shadows[2],
         })}
         size={{
           xs: 12,
@@ -242,7 +242,7 @@ function WidgetLikeField({
           onSubmit={onSubmit}
         >
           <InputLabel htmlFor="component" sx={{ marginBottom: 2 }}>
-            <Typography variant="titleSmall">{label}</Typography>
+            <Typography variant="titleSmall" sx={(theme) => ({ color: (theme.vars || theme).palette.text.primary })}>{label}</Typography>
           </InputLabel>
           <CustomFormControl
             variant="standard"
@@ -250,6 +250,7 @@ function WidgetLikeField({
             sx={{
               display: 'flex',
               flexDirection: 'row',
+              border: (theme) => `1px solid ${theme.palette.divider}`,
             }}
           >
             <WidgetFieldStartAdornment

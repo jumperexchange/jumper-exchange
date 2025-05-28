@@ -34,7 +34,6 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
-import { useMenuStore } from '@/stores/menu';
 
 export interface ProjectData {
   chain: string;
@@ -63,7 +62,6 @@ export function ZapWidget({
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
-  const { setSnackbarState } = useMenuStore((state) => state);
 
   const { data, isSuccess } = useZaps(projectData);
   const zapData = data?.data;
@@ -379,9 +377,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-
-      setSnackbarState(true, `Transaction hash: ${hash}`, 'info');
-
+      
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -411,7 +407,9 @@ export function ZapWidget({
       const receipt = await meeClient.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
       });
-      setSnackbarState(true, `Explorer: https://meescan.biconomy.io/details/${hash}`, 'success');
+
+      const originalReceipts = receipt?.receipts;
+      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -425,7 +423,7 @@ export function ZapWidget({
         status: receipt?.transactionStatus?.toLowerCase().includes('success')
           ? 200
           : 400,
-        receipts: receipt?.receipts,
+        receipts: originalReceipts,
       };
     },
     [meeClient],
@@ -494,12 +492,9 @@ export function ZapWidget({
   const widgetConfig: WidgetConfig = useMemo(() => {
     const baseConfig: WidgetConfig = {
       toAddress: {
-        name: '',
-        address: '',
+        name: 'Smart Account',
+        address: address as `0x${string}` || '0x',
         chainType: ChainType.EVM,
-      },
-      bridges: {
-        allow: ['across', 'stargateV2', 'stargate', 'symbiosis'],
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
@@ -523,7 +518,7 @@ export function ZapWidget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
-        HiddenUI.ToAddress,
+        // HiddenUI.ToAddress,
         HiddenUI.ReverseTokensButton
       ],
       appearance: widgetTheme.config.appearance,
