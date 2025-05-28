@@ -74,7 +74,6 @@ export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   },
   ...theme.applyStyles("light", {
     border: `1px solid ${'#E5E1EB'}`,
-    backgroundColor: (theme.vars || theme).palette.surface1.main
   })
 }));
 

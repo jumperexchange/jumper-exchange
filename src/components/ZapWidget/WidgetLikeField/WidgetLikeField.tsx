@@ -224,7 +224,6 @@ function WidgetLikeField({
         sx={(theme) => ({
           backgroundColor: (theme.vars || theme).palette.surface1.main,
           padding: theme.spacing(2, 3),
-          boxShadow: theme.shadows[2],
         })}
         size={{
           xs: 12,
@@ -250,7 +249,6 @@ function WidgetLikeField({
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              border: (theme) => `1px solid ${theme.palette.divider}`,
             }}
           >
             <WidgetFieldStartAdornment
