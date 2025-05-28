@@ -28,13 +28,13 @@ async function routesLabel(page, locator) {
 export async function checkRoutesVisibility(
   page: Page,
   options: {
-    bestRetrunshouldBeVisible: boolean;
+    bestRetrunShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
   }
 ) {
-  const { bestRetrunshouldBeVisible, checkRelayRoute } = options;
+  const { bestRetrunShouldBeVisible, checkRelayRoute } = options;
 
-  if (bestRetrunshouldBeVisible) {
+  if (bestRetrunShouldBeVisible) {
     const bestReturnLabel = await routesLabel(page, 'Best Return');
     await expect(bestReturnLabel).toBeVisible();
 
