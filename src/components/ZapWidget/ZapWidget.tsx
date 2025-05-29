@@ -377,7 +377,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-      
+
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -409,7 +409,8 @@ export function ZapWidget({
       });
 
       const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -493,7 +494,7 @@ export function ZapWidget({
     const baseConfig: WidgetConfig = {
       toAddress: {
         name: 'Smart Account',
-        address: address as `0x${string}` || '0x',
+        address: (address as `0x${string}`) || '0x',
         chainType: ChainType.EVM,
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -501,13 +502,13 @@ export function ZapWidget({
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
       },
       explorerUrls: {
-        "1": ['https://meescan.biconomy.io/details/'],
-        "10": ['https://meescan.biconomy.io/details/'],
-        "854": ['https://meescan.biconomy.io/details/'],
-        "137": ['https://meescan.biconomy.io/details/'],
-        "8453": ['https://meescan.biconomy.io/details/'],
-        "1313161554": ['https://meescan.biconomy.io/details/'],
-        "11155111": ['https://meescan.biconomy.io/details/'],
+        '1': ['https://meescan.biconomy.io/details/'],
+        '10': ['https://meescan.biconomy.io/details/'],
+        '854': ['https://meescan.biconomy.io/details/'],
+        '137': ['https://meescan.biconomy.io/details/'],
+        '8453': ['https://meescan.biconomy.io/details/'],
+        '1313161554': ['https://meescan.biconomy.io/details/'],
+        '11155111': ['https://meescan.biconomy.io/details/'],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -519,7 +520,7 @@ export function ZapWidget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
         // HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton
+        HiddenUI.ReverseTokensButton,
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
