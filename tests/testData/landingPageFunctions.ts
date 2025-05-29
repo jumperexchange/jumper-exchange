@@ -21,12 +21,33 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
   await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
-export async function checkIfBestReturnLabelIsVisible(page) {
-  const bestReturnLabel = page.locator(
-    'xpath=//p[normalize-space(text())="Best Return"]',
-  );
-  await expect(bestReturnLabel).toBeVisible();
+async function routesLabel(page, locator) {
+  return page.locator(`xpath=//p[normalize-space(text())="${locator}"]`);
 }
+
+export async function checkRoutesVisibility(
+  page: Page,
+  options: {
+    bestRetrunShouldBeVisible: boolean;
+    checkRelayRoute?: boolean;
+  }
+) {
+  const { bestRetrunShouldBeVisible, checkRelayRoute } = options;
+
+  if (bestRetrunShouldBeVisible) {
+    const bestReturnLabel = await routesLabel(page, 'Best Return');
+    await expect(bestReturnLabel).toBeVisible();
+
+    if (checkRelayRoute) {
+      const relayLabel = await routesLabel(page, 'Relay via LI.FI');
+      await expect(relayLabel).toBeVisible();
+    }
+  } else {
+    const noRoutesLabel = await routesLabel(page, 'No routes available');
+    await expect(noRoutesLabel).toBeVisible();
+  }
+}
+
 export async function navigateToTab(page, tabKey, expectedText) {
   await page.locator(`#tab-key-${tabKey}`).click();
   await expect(
