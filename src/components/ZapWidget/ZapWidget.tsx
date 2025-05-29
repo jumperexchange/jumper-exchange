@@ -35,6 +35,31 @@ import {
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
 
+// Utility function to build composable instructions based on contract configuration
+const buildContractComposable = async (
+  oNexus: MultichainSmartAccount,
+  contractConfig: {
+    address: string;
+    chainId: number;
+    abi: any;
+    functionName: string;
+    args: any[];
+    gasLimit?: bigint;
+  }
+) => {
+  return oNexus.buildComposable({
+    type: 'default',
+    data: {
+      abi: [contractConfig.abi],
+      to: contractConfig.address as `0x${string}`,
+      chainId: contractConfig.chainId,
+      functionName: contractConfig.functionName,
+      gasLimit: contractConfig.gasLimit,
+      args: contractConfig.args,
+    },
+  });
+};
+
 export interface ProjectData {
   chain: string;
   chainId: number;
@@ -281,49 +306,43 @@ export function ZapWidget({
       ];
 
       // token approval
-      const approveInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.approve],
-          to: depositToken,
-          chainId: depositChainId,
-          functionName: integrationData.abi.approve.name,
-          gasLimit: 100000n,
-          args: [
-            depositAddress,
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositToken,
-              constraints,
-            }),
-          ],
-        },
+      const approveInstruction = await buildContractComposable(oNexus, {
+        address: depositToken,
+        chainId: depositChainId,
+        abi: integrationData.abi.approve,
+        functionName: integrationData.abi.approve.name,
+        gasLimit: 100000n,
+        args: [
+          depositAddress,
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositToken,
+            constraints,
+          }),
+        ],
       });
       instructions.push(approveInstruction);
 
       // Deposit instruction
-      const depositInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.deposit],
-          to: depositAddress,
-          chainId: depositChainId,
-          functionName: integrationData.abi.deposit.name,
-          gasLimit: 1000000n,
-          args: [
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositToken,
-              constraints,
-            }),
-          ],
-        },
+      const depositInstruction = await buildContractComposable(oNexus, {
+        address: depositAddress,
+        chainId: depositChainId,
+        abi: integrationData.abi.deposit,
+        functionName: integrationData.abi.deposit.name,
+        gasLimit: 1000000n,
+        args: [
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositToken,
+            constraints,
+          }),
+        ],
       });
       instructions.push(depositInstruction);
 
@@ -331,26 +350,23 @@ export function ZapWidget({
       if (!address) {
         throw new Error('User address (EOA) is not available.');
       }
-      const transferLpInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.transfer],
-          to: depositAddress, // This should be the LP token address
-          chainId: depositChainId,
-          functionName: integrationData.abi.transfer.name,
-          gasLimit: 200000n,
-          args: [
-            address, // Recipient is the user's EOA
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositAddress, // LP token address
-              constraints,
-            }),
-          ],
-        },
+      const transferLpInstruction = await buildContractComposable(oNexus, {
+        address: depositAddress,
+        chainId: depositChainId,
+        abi: integrationData.abi.transfer,
+        functionName: integrationData.abi.transfer.name,
+        gasLimit: 200000n,
+        args: [
+          address,
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositAddress,
+            constraints,
+          }),
+        ],
       });
       instructions.push(transferLpInstruction);
 
