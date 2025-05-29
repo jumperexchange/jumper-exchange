@@ -1,13 +1,13 @@
 {
   "ETHtoETHswap": {
-    "ETHtoUSDT": {
+    "ETHtoETH": {
       "tokenSymbol": "ETH",
       "fromToken": "0x0000000000000000000000000000000000000000",
       "fromChain": "1",
       "amount": "1",
-      "toTokenSymbol": "USDT",
-      "toToken": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-      "toChain": "1"
+      "toTokenSymbol": "ETH",
+      "toToken": "0x0000000000000000000000000000000000000000",
+      "toChain": "42161"
     },
 
     "USDTtoDAI": {
