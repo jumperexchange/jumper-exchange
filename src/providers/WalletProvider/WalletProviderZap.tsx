@@ -11,8 +11,8 @@ export const WalletProviderZap: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     createConfig({
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
-      apiUrl: process.env.NEXT_PUBLIC_ZAP_API_URL,
-      providers: [EVM(), Solana(), UTXO(), Sui()],
+      apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+      providers: [EVM(), Solana(), UTXO()],
       integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       rpcUrls: {
         ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),

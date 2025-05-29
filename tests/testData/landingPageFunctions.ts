@@ -25,18 +25,29 @@ async function routesLabel(page, locator) {
   return page.locator(`xpath=//p[normalize-space(text())="${locator}"]`);
 }
 
-export async function checkIfBestReturnLabelIsVisible(
-  page,
-  shouldBeVisible = true,
+export async function checkRoutesVisibility(
+  page: Page,
+  options: {
+    bestRetrunShouldBeVisible: boolean;
+    checkRelayRoute?: boolean;
+  },
 ) {
-  if (shouldBeVisible) {
-    const label = await routesLabel(page, 'Best Return');
-    await expect(label).toBeVisible();
+  const { bestRetrunShouldBeVisible, checkRelayRoute } = options;
+
+  if (bestRetrunShouldBeVisible) {
+    const bestReturnLabel = await routesLabel(page, 'Best Return');
+    await expect(bestReturnLabel).toBeVisible();
+
+    if (checkRelayRoute) {
+      const relayLabel = await routesLabel(page, 'Relay via LI.FI');
+      await expect(relayLabel).toBeVisible();
+    }
   } else {
-    const label = await routesLabel(page, 'No routes available');
-    await expect(label).toBeVisible();
+    const noRoutesLabel = await routesLabel(page, 'No routes available');
+    await expect(noRoutesLabel).toBeVisible();
   }
 }
+
 export async function navigateToTab(page, tabKey, expectedText) {
   await page.locator(`#tab-key-${tabKey}`).click();
   await expect(

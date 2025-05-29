@@ -1,7 +1,7 @@
 import { WidgetEvents } from '@/components/Widgets';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import type { TokenAmount, WidgetConfig } from '@lifi/widget';
+import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
@@ -13,12 +13,27 @@ import {
 } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material';
 import { Box, Skeleton } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useThemeStore } from 'src/stores/theme';
-import { formatUnits } from 'viem';
-import { useReadContracts } from 'wagmi';
+import {
+  formatUnits,
+  http,
+  createWalletClient,
+  custom,
+  parseUnits,
+} from 'viem';
+import { optimism, base, mainnet } from 'viem/chains';
+import { useReadContracts, useAccount } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
+
+import type { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
+import {
+  createMeeClient,
+  toMultichainNexusAccount,
+  runtimeERC20BalanceOf,
+  greaterThanOrEqualTo,
+} from '@biconomy/abstractjs';
 
 export interface ProjectData {
   chain: string;
@@ -44,24 +59,22 @@ export function ZapWidget({
   claimingIds,
 }: CustomWidgetProps) {
   const [token, setToken] = useState<TokenAmount>();
+  const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
+  const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
+  const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
 
   const { data, isSuccess } = useZaps(projectData);
+  const zapData = data?.data;
   const { openWalletMenu } = useWalletMenu();
+  const { address, chain } = useAccount();
 
-  const [widgetTheme, configTheme] = useThemeStore((state) => [
+  const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
     state.configTheme,
   ]);
 
-  const {
-    data: [
-      { result: depositTokenData } = {},
-      { result: depositTokenDecimals } = {},
-    ] = [],
-    isLoading: isLoadingDepositTokenData,
-    refetch,
-  } = useReadContracts({
-    contracts: [
+  const contractsConfig = useMemo(() => {
+    return [
       {
         address: projectData.address as `0x${string}`,
         abi: [
@@ -72,7 +85,7 @@ export function ZapWidget({
             stateMutability: 'view',
             type: 'function',
           },
-        ],
+        ] as const,
         functionName: 'balanceOf',
         args: [account.address as `0x${string}`],
       },
@@ -85,14 +98,64 @@ export function ZapWidget({
             stateMutability: 'view',
             type: 'function',
           },
-        ],
+        ] as const,
         address: (projectData.tokenAddress ||
           projectData.address) as `0x${string}`,
         chainId: projectData.chainId,
         functionName: 'decimals',
       },
-    ],
+    ];
+  }, [
+    projectData.address,
+    projectData.tokenAddress,
+    projectData.chainId,
+    account.address,
+  ]);
+
+  const {
+    data: [
+      { result: depositTokenData } = {},
+      { result: depositTokenDecimals } = {},
+    ] = [],
+    isLoading: isLoadingDepositTokenData,
+    refetch,
+  } = useReadContracts({
+    contracts: contractsConfig,
   });
+
+  useEffect(() => {
+    const initMeeClient = async () => {
+      if (!chain) {
+        console.warn('Chain is undefined, skipping MEE client initialization.');
+        return;
+      }
+
+      // create multichain nexus account
+      // Creates the Biconomy "Multichain Nexus Account", a smart contract account
+      // that orchestrates actions across multiple chains.
+      // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
+      const oNexusInit = await toMultichainNexusAccount({
+        signer: createWalletClient({
+          chain,
+          transport: custom(global?.window?.ethereum ?? ''),
+        }),
+        chains: [mainnet, optimism, base],
+        transports: [http(), http(), http()],
+      });
+
+      // create mee client
+      // Initializes the Biconomy "MEE (Modular Execution Environment) Client".
+      // This client interacts with Biconomy's backend to manage the orchestration.
+      // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#modular-execution-environment-mee
+      const meeClientInit = await createMeeClient({
+        account: oNexusInit,
+      });
+
+      setONexus(oNexusInit);
+      setMeeClient(meeClientInit);
+    };
+    initMeeClient();
+  }, [chain]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
@@ -101,6 +164,15 @@ export function ZapWidget({
       refetch();
     }
 
+    function onRouteExecutionStarted(route: Route) {
+      setCurrentRoute(route);
+    }
+
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionStarted,
+      onRouteExecutionStarted as any,
+    );
+
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
       onRouteExecutionCompleted,
@@ -108,44 +180,335 @@ export function ZapWidget({
 
     return () => {
       widgetEvents.off(
+        WidgetEvent.RouteExecutionStarted,
+        onRouteExecutionStarted as any,
+      );
+      widgetEvents.off(
         WidgetEvent.RouteExecutionCompleted,
         onRouteExecutionCompleted,
       );
     };
-  }, [widgetEvents]);
+  }, [widgetEvents, refetch]);
 
-  const lpTokenDecimals = depositTokenDecimals ?? 18;
+  const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && zapData) {
       setToken({
-        chainId: projectData.chainId,
-        address: data?.data?.market?.address as `0x${string}`,
-        symbol: data?.data?.market?.lpToken.symbol,
-        name: data?.data?.market?.lpToken.name,
-        decimals: data?.data?.market?.lpToken.decimals,
+        chainId: zapData.market?.depositToken.chainId,
+        address: zapData.market?.depositToken.address as `0x${string}`,
+        symbol: zapData.market?.depositToken.symbol,
+        name: zapData.market?.depositToken.name,
+        decimals: zapData.market?.depositToken.decimals,
         priceUSD: '0',
-        coinKey: data?.data?.market?.lpToken.name as any,
-        logoURI: data?.data?.meta?.logoURI,
+        coinKey: zapData.market?.depositToken.name as any,
+        logoURI: zapData.market?.depositToken.logoURI,
         amount: '0' as any,
       });
     }
-  }, [isSuccess]);
+  }, [isSuccess, projectData, zapData]);
+
+  // Helper function to handle 'wallet_sendCalls'
+  const handleWalletSendCalls = useCallback(
+    async (args: { method: string; params?: any[] }) => {
+      if (!meeClient || !oNexus) {
+        throw new Error('MEE client or oNexus not initialized');
+      }
+      if (
+        !args.params ||
+        !Array.isArray(args.params) ||
+        args.params.length === 0
+      ) {
+        throw new Error('Invalid args.params structure for wallet_sendCalls');
+      }
+      const paramsObject = args.params[0];
+      if (
+        typeof paramsObject !== 'object' ||
+        paramsObject === null ||
+        !Array.isArray(paramsObject.calls)
+      ) {
+        throw new Error(
+          "Invalid params object structure: Missing or invalid 'calls' array at sendCalls",
+        );
+      }
+      const { calls } = paramsObject;
+      if (calls.length === 0) {
+        throw new Error("'calls' array is empty");
+      }
+
+      if (!chain) {
+        throw new Error('Cannot determine current chain ID from wallet.');
+      }
+      const currentChainId = chain.id;
+
+      if (!currentRoute) {
+        throw new Error('Cannot process transaction: Route is undefined.');
+      }
+      if (!zapData) {
+        throw new Error('Integration data is not available.');
+      }
+
+      const integrationData = zapData;
+      const depositAddress = integrationData.market?.address as `0x${string}`;
+      const depositToken = integrationData.market?.depositToken?.address;
+      const depositChainId = projectData.chainId;
+
+      if (!depositAddress || !depositToken) {
+        throw new Error('Deposit address or token is undefined.');
+      }
+
+      // raw calldata from the widget
+      const instructions = await Promise.all(
+        calls.map(async (call: any) => {
+          if (!call.to || !call.data) {
+            throw new Error('Invalid call structure: Missing to or data field');
+          }
+          return oNexus.buildComposable({
+            type: 'rawCalldata',
+            data: {
+              to: call.to,
+              calldata: call.data,
+              chainId: currentChainId,
+            },
+          });
+        }),
+      );
+
+      // constraints
+      const depositTokenDecimals = zapData.market?.depositToken.decimals;
+      const constraints = [
+        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value
+      ];
+
+      // token approval
+      const approveInstruction = await oNexus.buildComposable({
+        type: 'default',
+        data: {
+          abi: [integrationData.abi.approve],
+          to: depositToken,
+          chainId: depositChainId,
+          functionName: integrationData.abi.approve.name,
+          gasLimit: 100000n,
+          args: [
+            depositAddress,
+            runtimeERC20BalanceOf({
+              targetAddress: oNexus.addressOn(
+                depositChainId,
+                true,
+              ) as `0x${string}`,
+              tokenAddress: depositToken,
+              constraints,
+            }),
+          ],
+        },
+      });
+      instructions.push(approveInstruction);
+
+      // Deposit instruction
+      const depositInstruction = await oNexus.buildComposable({
+        type: 'default',
+        data: {
+          abi: [integrationData.abi.deposit],
+          to: depositAddress,
+          chainId: depositChainId,
+          functionName: integrationData.abi.deposit.name,
+          gasLimit: 1000000n,
+          args: [
+            runtimeERC20BalanceOf({
+              targetAddress: oNexus.addressOn(
+                depositChainId,
+                true,
+              ) as `0x${string}`,
+              tokenAddress: depositToken,
+              constraints,
+            }),
+          ],
+        },
+      });
+      instructions.push(depositInstruction);
+
+      // Add instruction to transfer LP tokens back to EOA
+      if (!address) {
+        throw new Error('User address (EOA) is not available.');
+      }
+      const transferLpInstruction = await oNexus.buildComposable({
+        type: 'default',
+        data: {
+          abi: [integrationData.abi.transfer],
+          to: depositAddress, // This should be the LP token address
+          chainId: depositChainId,
+          functionName: integrationData.abi.transfer.name,
+          gasLimit: 200000n,
+          args: [
+            address, // Recipient is the user's EOA
+            runtimeERC20BalanceOf({
+              targetAddress: oNexus.addressOn(
+                depositChainId,
+                true,
+              ) as `0x${string}`,
+              tokenAddress: depositAddress, // LP token address
+              constraints,
+            }),
+          ],
+        },
+      });
+      instructions.push(transferLpInstruction);
+
+      const quote = await meeClient.getFusionQuote({
+        trigger: {
+          tokenAddress: currentRoute.fromToken.address as `0x${string}`,
+          amount: BigInt(currentRoute.fromAmount),
+          chainId: currentChainId,
+        },
+        cleanUps: [
+          {
+            tokenAddress: depositToken,
+            chainId: depositChainId,
+            recipientAddress: account.address as `0x${string}`,
+          },
+        ],
+        feeToken: {
+          address: currentRoute.fromToken.address as `0x${string}`,
+          chainId: currentChainId,
+        },
+        instructions,
+      });
+
+      const { hash } = await meeClient.executeFusionQuote({
+        fusionQuote: quote,
+      });
+
+      return { id: hash };
+    },
+    [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
+  );
+
+  // Helper function to handle 'wallet_getCallsStatus'
+  const handleWalletGetCallsStatus = useCallback(
+    async (args: { method: string; params?: any[] }) => {
+      if (!meeClient) {
+        // oNexus is not directly used here but its initialization is tied to meeClient
+        throw new Error('MEE client not initialized');
+      }
+      if (
+        !args.params ||
+        !Array.isArray(args.params) ||
+        args.params.length === 0
+      ) {
+        throw new Error(
+          'Invalid args.params structure for wallet_getCallsStatus',
+        );
+      }
+      const hash = args.params[0];
+      if (typeof hash !== 'string' || !hash) {
+        throw new Error('Missing or invalid hash in params object');
+      }
+
+      const receipt = await meeClient.waitForSupertransactionReceipt({
+        hash: hash as `0x${string}`,
+      });
+
+      const originalReceipts = receipt?.receipts;
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `biconomy:${hash}` as `0x${string}`;
+
+      const chainIdAsNumber = receipt?.paymentInfo?.chainId;
+      const hexChainId = chainIdAsNumber
+        ? `0x${Number(chainIdAsNumber).toString(16)}`
+        : undefined;
+
+      return {
+        atomic: true,
+        chainId: hexChainId,
+        id: hash,
+        status: receipt?.transactionStatus?.toLowerCase().includes('success')
+          ? 200
+          : 400,
+        receipts: originalReceipts,
+      };
+    },
+    [meeClient],
+  );
+
+  useEffect(() => {
+    if (window.ethereum && typeof window.ethereum.request === 'function') {
+      const originalRequest = window.ethereum.request;
+      window.ethereum.request = async (args: {
+        method: string;
+        params?: any[];
+      }) => {
+        try {
+          if (args.method === 'wallet_getCapabilities') {
+            const mockCapabilities = {
+              '0x1': { atomic: { status: 'supported' } },
+              '0xa': { atomic: { status: 'supported' } },
+              '0x2105': { atomic: { status: 'supported' } },
+              '0x1a4': { atomic: { status: 'supported' } },
+            };
+            return Promise.resolve(mockCapabilities);
+          } else if (args.method === 'wallet_sendCalls') {
+            return await handleWalletSendCalls(args);
+          } else if (args.method === 'wallet_getCallsStatus') {
+            return await handleWalletGetCallsStatus(args);
+          } else {
+            return originalRequest(args);
+          }
+        } catch (error) {
+          console.error(`Error processing ${args.method}:`, error);
+          if (
+            typeof error === 'object' &&
+            error !== null &&
+            'message' in error
+          ) {
+            console.error('Error message:', (error as Error).message);
+          }
+          if (
+            typeof error === 'object' &&
+            error !== null &&
+            'details' in error
+          ) {
+            console.error('Error details:', (error as any).details);
+          }
+          // Re-throw the error so it can be caught by the caller if necessary
+          throw error;
+        }
+      };
+    } else {
+      console.error(
+        '[PATCH] window.ethereum or window.ethereum.request not found. Cannot apply patch.',
+      );
+    }
+  }, [
+    currentRoute,
+    meeClient,
+    oNexus,
+    chain,
+    zapData,
+    projectData,
+    address,
+    handleWalletSendCalls,
+    handleWalletGetCallsStatus,
+  ]);
 
   const widgetConfig: WidgetConfig = useMemo(() => {
     const baseConfig: WidgetConfig = {
       toAddress: {
-        ...data?.data?.meta,
-        name: data?.data?.market?.lpToken.symbol,
-        address: data?.data?.market?.address,
+        name: 'Smart Account',
+        address: (address as `0x${string}`) || '0x',
         chainType: ChainType.EVM,
-      },
-      bridges: {
-        allow: ['across', 'stargateV2', 'stargate', 'symbiosis'],
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_ZAP_API_URL,
+        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+      },
+      explorerUrls: {
+        '1': ['https://meescan.biconomy.io/details/'],
+        '10': ['https://meescan.biconomy.io/details/'],
+        '854': ['https://meescan.biconomy.io/details/'],
+        '137': ['https://meescan.biconomy.io/details/'],
+        '8453': ['https://meescan.biconomy.io/details/'],
+        '1313161554': ['https://meescan.biconomy.io/details/'],
+        '11155111': ['https://meescan.biconomy.io/details/'],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -156,6 +519,8 @@ export function ZapWidget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
+        // HiddenUI.ToAddress,
+        HiddenUI.ReverseTokensButton,
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
@@ -174,13 +539,19 @@ export function ZapWidget({
         },
       },
     };
+    if (oNexus && baseConfig.toAddress) {
+      baseConfig.toAddress.address = oNexus.addressOn(
+        projectData.chainId,
+        true,
+      ) as `0x${string}`;
+    }
     return baseConfig;
-  }, [isSuccess, widgetTheme.config.theme, widgetTheme.config.appearance]);
+  }, [widgetTheme.config, projectData, openWalletMenu, oNexus]);
 
   const analytics = {
-    ...data?.data?.analytics,
+    ...(zapData?.analytics || {}), // Provide default empty object
     position: depositTokenData
-      ? formatUnits(depositTokenData, lpTokenDecimals)
+      ? formatUnits(depositTokenData as bigint, lpTokenDecimals)
       : 0,
   };
 
@@ -191,10 +562,10 @@ export function ZapWidget({
           <LiFiWidget
             contractComponent={
               <DepositCard
-                underlyingToken={data?.data?.market?.depositToken}
+                underlyingToken={zapData?.market?.depositToken}
                 token={token}
-                chainId={projectData?.chainId}
-                contractTool={data?.data?.meta}
+                chainId={zapData?.market?.depositToken.chainId}
+                contractTool={zapData?.meta}
                 analytics={analytics}
                 contractCalls={[]}
                 claimingIds={claimingIds}
