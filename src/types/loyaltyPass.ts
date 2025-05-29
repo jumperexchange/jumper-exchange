@@ -110,6 +110,7 @@ export interface TaskVerification {
   description: string;
   CTALink?: string;
   CTAText?: string;
+  CampaignId?: string;
   uuid: string;
   hasTask: boolean;
 }

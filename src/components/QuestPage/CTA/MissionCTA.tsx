@@ -3,7 +3,6 @@ import {
   Box,
   Skeleton,
   type Theme,
-  Tooltip,
   Typography,
   useColorScheme,
   useMediaQuery,
@@ -13,8 +12,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IconButtonPrimary } from 'src/components/IconButton';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
-import { XPDisplayBox } from 'src/components/ProfilePage/QuestCard/QuestCard.style';
-import { XPIconBox } from 'src/components/ProfilePage/QuestCardDetailled/QuestCard.style';
+import { XPRewardsInfo } from 'src/components/ProfilePage/QuestCard/XPRewardsInfo';
 import {
   TrackingAction,
   TrackingCategory,
@@ -29,7 +27,6 @@ import {
   SeveralCTABox,
   SeveralMissionCtaContainer,
   StartedTitleBox,
-  StartedTitleTypography,
 } from './MissionCTA.style';
 
 interface MissionCTAButtonProps {
@@ -128,7 +125,17 @@ export const MissionCTA = ({
   return (
     <CTAMainBox>
       <StartedTitleBox>
-        <StartedTitleTypography>Get Started</StartedTitleTypography>
+        <Typography
+          variant="titleMedium"
+          sx={{
+            typography: {
+              xs: theme.typography.titleSmall,
+              sm: theme.typography.titleMedium,
+            },
+          }}
+        >
+          Get Started
+        </Typography>
         {!signature && rewards ? (
           <Box marginTop="32px">
             <Typography
@@ -190,67 +197,27 @@ export const MissionCTA = ({
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
                   {CTA.apy && !variableWeeklyAPY && (
-                    <Tooltip
-                      className="tooltip-icon"
-                      title={
-                        'Expected extra rewards to win during the campaign for the tokens invested.'
-                      }
-                      placement={'top'}
-                      enterTouchDelay={0}
-                      arrow
+                    <XPRewardsInfo
+                      variant="apy"
+                      label={`${Number(CTA.apy).toFixed(1)}%`}
+                      tooltip="Expected extra rewards to win during the campaign for the tokens invested."
                     >
-                      <XPDisplayBox
-                        bgcolor={
-                          mode === 'dark'
-                            ? (theme.vars || theme).palette.alphaLight300.main
-                            : (theme.vars || theme).palette.alphaDark100.main
-                        }
-                        marginRight={'16px'}
-                        height={'32px'}
-                        minWidth={'88px'}
-                      >
-                        <Typography
-                          variant="bodyMediumStrong"
-                          sx={(theme) => ({
-                            color: (theme.vars || theme).palette.text.primary,
-                          })}
-                        >
-                          {`${Number(CTA.apy).toFixed(1)}%`}
-                        </Typography>
-                        <XPIconBox
-                          marginLeft="4px"
-                          sx={{ backgroundColor: '#fff', borderRadius: '12px' }}
-                        >
-                          <APYIcon size={24} />
-                        </XPIconBox>
-                      </XPDisplayBox>
-                    </Tooltip>
+                      <APYIcon size={24} />
+                    </XPRewardsInfo>
                   )}
                   {variableWeeklyAPY && (
-                    <XPDisplayBox
-                      bgcolor={'#ff0420'}
-                      marginRight={'16px'}
-                      height={'32px'}
-                      minWidth={'88px'}
-                    >
-                      <Typography
-                        sx={(theme) => ({
-                          fontSize: '16px',
-                          fontWeight: 700,
-                          lineHeight: '20px',
-                          color: (theme.vars || theme).palette.white.main,
-                        })}
-                      >
-                        {CTA?.weeklyApy
+                    <XPRewardsInfo
+                      variant="variableWeeklyAPY"
+                      label={
+                        CTA?.weeklyApy
                           ? CTA?.weeklyApy
                           : rewardRange
                             ? rewardRange
-                            : `VAR.%`}
-                      </Typography>
-                      <XPIconBox marginLeft="4px">
-                        <APYIcon size={24} />
-                      </XPIconBox>
-                    </XPDisplayBox>
+                            : `VAR.%`
+                      }
+                    >
+                      <APYIcon size={24} />
+                    </XPRewardsInfo>
                   )}
                   {!isMobile && (
                     <MissionCTAButton

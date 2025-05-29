@@ -85,18 +85,14 @@ export const QuestPlatformMainBox = styled(Box)<BoxProps>(() => ({
 }));
 
 export interface XPDisplayBoxProps extends BoxProps {
-  active?: boolean;
-  completed?: boolean;
+  variant: 'apy' | 'xp' | 'completed' | 'variableWeeklyAPY';
   bgcolor?: string;
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) =>
-    prop !== 'completed' && prop !== 'active' && prop !== 'bgcolor',
+  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'bgcolor',
 })<XPDisplayBoxProps>(({ theme, bgcolor }) => ({
   display: 'flex',
-  color: (theme.vars || theme).palette.primary.main,
-  backgroundColor: bgcolor || (theme.vars || theme).palette.background.default,
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
@@ -105,17 +101,39 @@ export const XPDisplayBox = styled(Box, {
   ':not(last-of-type)': {
     marginRight: theme.spacing(1),
   },
+
   variants: [
     {
-      props: ({ completed }) => completed,
+      props: ({ variant }) => variant === 'completed',
       style: {
         color: '#00B849',
+        backgroundColor: '#D6FFE7',
       },
     },
     {
-      props: ({ completed }) => completed,
+      props: ({ variant }) => variant === 'apy',
       style: {
-        backgroundColor: '#D6FFE7',
+        color: (theme.vars || theme).palette.text.primary,
+        backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+
+        ...theme.applyStyles('light', {
+          backgroundColor: (theme.vars || theme).palette.primary.main,
+          color: (theme.vars || theme).palette.white.main,
+        }),
+      },
+    },
+    {
+      props: ({ variant }) => variant === 'variableWeeklyAPY',
+      style: {
+        color: (theme.vars || theme).palette.text.secondary,
+        backgroundColor: (theme.vars || theme).palette.accent1.main,
+        marginRight: theme.spacing(2),
+        height: '32px',
+        minWidth: '88px',
+        ...theme.applyStyles('light', {
+          color: (theme.vars || theme).palette.white.main,
+          backgroundColor: '#653BA3',
+        }),
       },
     },
   ],

@@ -4,37 +4,21 @@ import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { XPDisplayBox, XPDisplayBoxLabel } from './QuestCard.style';
 
 interface XPRewardsInfoProps {
-  bgColor?: string;
-  points: string;
+  label: string;
   tooltip?: string;
-  active?: boolean;
-  completed?: boolean;
-  color?: string;
+  variant: 'apy' | 'xp' | 'completed' | 'variableWeeklyAPY';
 }
 
 export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
-  bgColor,
-  points,
+  label,
   tooltip,
-  active,
   children,
-  completed,
-  color,
+  variant,
 }) => {
   return (
     <Tooltip title={tooltip} placement="top" enterTouchDelay={0} arrow>
-      <XPDisplayBox
-        active={active}
-        completed={completed}
-        sx={{
-          ...(bgColor && { backgroundColor: bgColor }),
-          ...(color && { color }),
-          ...(tooltip && { cursor: 'help' }),
-        }}
-      >
-        <XPDisplayBoxLabel variant="bodySmallStrong">
-          {points}
-        </XPDisplayBoxLabel>
+      <XPDisplayBox variant={variant}>
+        <XPDisplayBoxLabel variant="bodySmallStrong">{label}</XPDisplayBoxLabel>
         {children ? children : <XPIcon color={'inherit'} />}
       </XPDisplayBox>
     </Tooltip>

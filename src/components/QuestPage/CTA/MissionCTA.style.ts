@@ -1,4 +1,4 @@
-import { inter, urbanist } from '@/fonts/fonts';
+import { inter } from '@/fonts/fonts';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -20,12 +20,11 @@ export const MissionCtaContainer = styled(Box)(({ theme }) => ({
   backgroundColor: '#69d7ff',
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      alpha('#69d7ff', 0.16),
-    ...theme.applyStyles("light", {
-      backgroundColor: //todo: add to theme
-      darken('#69d7ff', 0.02)
-    })
+    backgroundColor: alpha('#69d7ff', 0.16),
+    ...theme.applyStyles('light', {
+      //todo: add to theme
+      backgroundColor: darken('#69d7ff', 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -53,12 +52,11 @@ export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.bgTertiary.main,
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      alpha(theme.palette.bgTertiary.main, 0.16),
-    ...theme.applyStyles("light", {
-      backgroundColor: //todo: add to theme
-      darken(theme.palette.bgTertiary.main, 0.02)
-    })
+    backgroundColor: alpha(theme.palette.bgTertiary.main, 0.16),
+    ...theme.applyStyles('light', {
+      //todo: add to theme
+      backgroundColor: darken(theme.palette.bgTertiary.main, 0.02),
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     gap: theme.spacing(4),
@@ -122,7 +120,7 @@ export const SeveralCTABox = styled(Box)(({ theme }) => ({
 }));
 
 export const StartedTitleTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: urbanist.style.fontFamily,
+  fontFamily: inter.style.fontFamily,
   [theme.breakpoints.down('md' as Breakpoint)]: {
     fontSize: '16px',
     fontWeight: 700,

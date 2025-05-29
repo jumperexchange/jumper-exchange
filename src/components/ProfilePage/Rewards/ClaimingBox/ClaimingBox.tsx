@@ -1,7 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import type { AvailableRewards } from 'src/hooks/useMerklRewards';
+import { AvailableRewards } from 'src/types/merkl';
 import {
   useAccount,
   useSwitchChain,

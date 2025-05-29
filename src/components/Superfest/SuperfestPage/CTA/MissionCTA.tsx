@@ -146,10 +146,13 @@ export const MissionCTA = ({
                 <FlexCenterRowBox>
                   {CTA.apy && !variableWeeklyAPY && (
                     <XPDisplayBox
-                      bgcolor={'#ff0420'}
-                      marginRight={'16px'}
-                      height={'32px'}
-                      minWidth={'88px'}
+                      variant="apy"
+                      sx={{
+                        backgroundColor: '#ff0420',
+                        marginRight: '16px',
+                        height: '32px',
+                        minWidth: '88px',
+                      }}
                     >
                       <SoraTypography
                         fontSize="16px"
@@ -168,10 +171,13 @@ export const MissionCTA = ({
                   )}
                   {variableWeeklyAPY && (
                     <XPDisplayBox
-                      bgcolor={'#ff0420'}
-                      marginRight={'16px'}
-                      height={'32px'}
-                      minWidth={'88px'}
+                      variant="apy"
+                      sx={{
+                        backgroundColor: '#ff0420',
+                        marginRight: '16px',
+                        height: '32px',
+                        minWidth: '88px',
+                      }}
                     >
                       <SoraTypography
                         fontSize="16px"

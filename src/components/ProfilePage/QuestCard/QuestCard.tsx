@@ -8,7 +8,6 @@ import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
 import type { Chain } from 'src/components/QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/QuestPage/QuestsMissionPage.style';
-import { PROFILE_CAMPAIGN_FLASHY_APY_COLOR } from 'src/const/partnerRewardsTheme';
 import {
   TrackingAction,
   TrackingCategory,
@@ -53,7 +52,6 @@ export interface QuestCardProps {
   action?: string;
   active?: boolean;
   chains?: QuestChains[];
-  claimingIds?: string[];
   completed?: boolean;
   ctaLink?: string;
   hideXPProgressComponents?: boolean;
@@ -84,7 +82,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     action,
     active,
     chains,
-    claimingIds,
     completed,
     ctaLink,
     endDate,
@@ -204,13 +201,12 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
               <RewardsWrapper>
                 {rewardsQuestCard && (
                   <XPRewardsInfo
-                    completed={true}
-                    points={`${rewardsProgress?.earnedXP}`}
+                    variant="completed"
+                    label={`${rewardsProgress?.earnedXP}`}
                     tooltip={t('questCard.earnedXPDescription', {
                       earnedXP: rewardsProgress?.earnedXP,
                       action: action,
                     })}
-                    active={true}
                   >
                     <CheckCircleIcon
                       sx={{ width: '20px', height: '20px', color: 'inherit' }}
@@ -221,19 +217,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                   <>
                     {apy > 0 && !variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={false}
-                        completed={false}
-                        points={`${Number(apy).toFixed(1)}%`}
-                        color={
-                          themeMode === 'dark'
-                            ? (theme.vars || theme).palette.text.secondary
-                            : (theme.vars || theme).palette.primary.main
-                        }
-                        bgColor={
-                          themeMode === 'dark'
-                            ? (theme.vars || theme).palette.alphaLight300.main
-                            : (theme.vars || theme).palette.alphaDark100.main
-                        }
+                        variant="apy"
+                        label={`${Number(apy).toFixed(1)}%`} //points={`${Number(apy).toFixed(1)}%`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -247,9 +232,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     )}
                     {variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={true}
-                        bgColor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
-                        points={rewardRange ? rewardRange : `VAR.%`}
+                        variant="variableWeeklyAPY"
+                        label={rewardRange ? rewardRange : `VAR.%`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -263,8 +247,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     )}
                     {!hideXPProgressComponents && (
                       <XPRewardsInfo
-                        completed={completed}
-                        points={`+${points}`}
+                        variant="completed"
+                        label={`+${points}`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -272,8 +256,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                             action: action,
                           })
                         }
-                        active={true}
-                        color={completed ? '#00B849' : undefined}
                       />
                     )}
                   </>

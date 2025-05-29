@@ -2,8 +2,8 @@ import { RewardsCarousel } from '@/components/ProfilePage/Rewards/RewardsCarouse
 import type { CampaignData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useMemo } from 'react';
-import type { AvailableRewards } from 'src/hooks/useMerklRewards';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
+import { AvailableRewards } from 'src/types/merkl';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
