@@ -15,7 +15,7 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
+import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -28,6 +28,7 @@ import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 
@@ -59,6 +60,10 @@ export function Widget({
   });
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
+  const {
+    sourceChainToken: sourceChainTokenSelected,
+    destinationChainToken: destionationChainTokenSelected,
+  } = useChainTokenSelectionStore();
 
   const { mode } = useColorScheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -257,6 +262,10 @@ export function Widget({
       },
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
+        ...(sourceChainTokenSelected.chainId === ChainId.HYP ||
+        destionationChainTokenSelected.chainId === ChainId.HYP
+          ? [HiddenUI.ToAddress]
+          : []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
