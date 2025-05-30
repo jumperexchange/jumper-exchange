@@ -20,5 +20,5 @@ export async function getArticleBySlug(slug: string) {
 
   const data = await res.json(); // Extract data from the response
 
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return { data };
 }

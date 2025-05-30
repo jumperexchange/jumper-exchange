@@ -9,6 +9,7 @@ import { Skeleton } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import useClient from 'src/hooks/useClient';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -23,19 +24,18 @@ import {
 
 interface BlogArticleCardProps {
   article: BlogArticleData;
-  baseUrl?: string;
   trackingCategory: string;
   styles?: CSSObject;
 }
 
 export const BlogArticleCard = ({
   article,
-  baseUrl,
   trackingCategory,
   styles,
 }: BlogArticleCardProps) => {
   const { trackEvent } = useUserTracking();
   const minRead = readingTime(article?.Content);
+  const baseUrl = getStrapiBaseUrl();
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
   const isClient = useClient();
