@@ -48,7 +48,7 @@ export async function generateMetadata({
 
 export const revalidate = 86400;
 export const dynamicParams = true; // or false, to 404 on unknown paths
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
   const { chains } = await getChainsQuery();
