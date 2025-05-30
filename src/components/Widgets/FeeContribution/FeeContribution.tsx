@@ -206,13 +206,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         category: TrackingCategory.Widget,
         label: 'fee_contribution_impression',
         data: {
-          donator: account.address || '',
-          original_tx_id: completedRoute.id || '',
-          original_amount: completedRoute.toAmount || '',
-          original_amount_usd: completedRoute.toAmountUSD || '',
-          original_token_symbol: completedRoute.toToken.symbol || '',
+          ...(account?.address && { donator: account.address }),
+          original_tx_id: completedRoute.id,
+          original_amount: completedRoute.toAmount,
+          original_amount_usd: completedRoute.toAmountUSD,
+          original_token_symbol: completedRoute.toToken.symbol,
           original_donation_chain: completedRoute.toChainId || 0,
-          original_tx_token_address: completedRoute.toToken?.address || '',
+          original_tx_token_address: completedRoute.toToken?.address,
         },
       });
       hasTrackedImpressionRef.current = true;
@@ -227,13 +227,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         category: TrackingCategory.Widget,
         label: 'fee_contribution_success',
         data: {
-          donator: account?.address || '',
-          original_tx_id: completedRoute.id || '',
+          ...(account?.address && { donator: account.address }),
+          original_tx_id: completedRoute.id,
           donation_amount_usd: amount || 0,
-          donation_token_symbol: completedRoute.toToken?.symbol || '',
-          donation_token_address: completedRoute.toToken?.address || '',
+          donation_token_symbol: completedRoute.toToken?.symbol,
+          donation_token_address: completedRoute.toToken?.address,
           donation_chain: completedRoute.toChainId || 0,
-          donation_tx_hash: txReceipt?.transactionHash || '',
+          donation_tx_hash: txReceipt?.transactionHash,
         },
       });
       hasTrackedConfirmationRef.current = true;
@@ -320,12 +320,12 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
           category: TrackingCategory.Widget,
           label: 'click_fee_contribution',
           data: {
-            donator: account?.address || '',
-            original_tx_id: completedRoute.id || '',
+            ...(account?.address && { donator: account.address }),
+            original_tx_id: completedRoute.id,
             donation_amount_usd: usdAmount || 0,
             donation_amount_token: tokenAmount || 0,
-            donation_token_symbol: completedRoute.toToken.symbol || '',
-            donation_token_address: completedRoute.toToken.address || '',
+            donation_token_symbol: completedRoute.toToken.symbol,
+            donation_token_address: completedRoute.toToken.address,
             donation_chain: completedRoute.toChainId || 0,
           },
         });
