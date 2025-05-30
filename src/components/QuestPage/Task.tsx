@@ -7,7 +7,6 @@ import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
 import { useUserTracking } from '@/hooks/userTracking';
 import type { TaskVerification } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -24,6 +23,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
+import { useMerklOpportunities } from 'src/hooks/useMerklOpportunities';
 import {
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
@@ -34,6 +34,8 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
+import { APYIcon } from '../illustrations/APYIcon';
+import { XPRewardsInfo } from '../ProfilePage/QuestCard/XPRewardsInfo';
 
 function isVerified(isSuccess: boolean, isValid: boolean) {
   return isSuccess || isValid;
@@ -56,6 +58,7 @@ function Task({
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
+  const { data } = useMerklOpportunities({ campaignId: task.CampaignId });
 
   const handleOpen:
     | MouseEventHandler<HTMLDivElement | HTMLButtonElement>
@@ -115,13 +118,23 @@ function Task({
           sx={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: 'auto',
           }}
         >
-          <InstructionsAccordionItemHeader>
-            <InstructionsAccordionItemLabel>
+          <InstructionsAccordionItemHeader
+            className="HEADER"
+            sx={{ width: '100%' }}
+          >
+            <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
+            {Array.isArray(data) && data.length === 1 && data[0].apy && (
+              <XPRewardsInfo
+                variant="apy"
+                label={data[0].apy?.toFixed(1)} //Number(apy).toFixed(1)
+              >
+                <APYIcon size={20} />
+              </XPRewardsInfo>
+            )}
           </InstructionsAccordionItemHeader>
           {task &&
             (isTablet ? (
@@ -181,11 +194,6 @@ function Task({
                     >
                       {task.CTAText}
                     </Typography>
-                    <ArrowForwardIcon
-                      style={{
-                        color: (theme.vars || theme).palette.text.primary,
-                      }}
-                    />
                   </InstructionsAccordionLinkBox>
                 </Link>
               )}

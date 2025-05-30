@@ -28,6 +28,7 @@ interface SuperfestMissionPageVar {
 export interface Chain {
   logo: string;
   name: string;
+  chainId?: number;
 }
 export const BannerBox = ({
   quest,

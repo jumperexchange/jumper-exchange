@@ -1,8 +1,8 @@
 import { useAccount } from '@lifi/wallet-management';
 import { notFound } from 'next/navigation';
 import generateKey from 'src/app/lib/generateKey';
+import { useMerklOpportunities } from 'src/hooks/useMerklOpportunities';
 import { useMerklRewardsOnSpecificToken } from 'src/hooks/useMerklRewardsOnSpecificToken';
-import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { type Quest } from 'src/types/loyaltyPass';
 import { SuperfestContainer } from '../Superfest.style';
@@ -29,6 +29,7 @@ export const SuperfestMissionPage = ({
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest?.CustomInformation?.['rewards'];
+  const rewardsIds = quest?.CustomInformation?.['rewardsIds'];
   const points = quest?.Points;
 
   const { account } = useAccount();
@@ -44,7 +45,7 @@ export const SuperfestMissionPage = ({
   } = useTurtleMember({
     userAddress: account?.address,
   });
-  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
+  const { data } = useMerklOpportunities({ rewardsIds });
 
   if (!quest) {
     return notFound();
@@ -68,14 +69,14 @@ export const SuperfestMissionPage = ({
           }
         />
         {/* Big CTA */}
-        {CTAsWithAPYs?.length > 0 && (
+        {data?.length > 0 && (
           <MissionCTA
             id={quest.id}
             title={attributes?.Title}
             url={attributes?.Link}
             rewards={!!rewards}
             key={generateKey('cta')}
-            CTAs={CTAsWithAPYs}
+            CTAs={data}
             variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
             signature={missionType === 'turtle_signature'}
             rewardRange={rewardRange}

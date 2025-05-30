@@ -1,8 +1,8 @@
 import { TasksBox } from '@/components/QuestPage/TasksBox';
 import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
+import { useMerklOpportunities } from 'src/hooks/useMerklOpportunities';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
-import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
@@ -31,14 +31,13 @@ export const QuestsMissionPage = ({
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest?.CustomInformation?.['rewards'];
+  const rewardsIds = quest?.CustomInformation?.['rewardsIds'];
   const points = quest?.Points;
-
   const { account } = useAccount();
   const { pastCampaigns } = useMerklRewards({
     userAddress: account.address,
   });
-  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
-
+  const { data } = useMerklOpportunities({ rewardsIds });
   return (
     <QuestsContainer>
       <QuestPageMainBox>
@@ -50,7 +49,7 @@ export const QuestsMissionPage = ({
           pastCampaigns={pastCampaigns}
         />
         {/* Big CTA */}
-        {CTAsWithAPYs?.length > 0 && (
+        {data?.length > 0 && (
           <MissionCTA
             id={quest.id}
             title={attributes?.Title}
@@ -58,7 +57,7 @@ export const QuestsMissionPage = ({
             activeCampaign={activeCampaign}
             rewards={!!rewards}
             key={generateKey('cta')}
-            CTAs={CTAsWithAPYs}
+            CTAs={data}
             variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
             signature={missionType === 'turtle_signature'}
             rewardRange={rewardRange}
