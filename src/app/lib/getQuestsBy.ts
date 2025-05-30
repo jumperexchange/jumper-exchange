@@ -9,7 +9,7 @@ export async function getQuestsBy(key: string, value: string) {
     .filterByStartAndEndDate();
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = urlParams.apiAccessToken;
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {

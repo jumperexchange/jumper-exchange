@@ -24,7 +24,6 @@ export default async function Page() {
       tags={tags}
       carouselArticles={carouselArticles}
       featuredArticle={featuredArticle}
-      url={carouselArticles.url}
     />
   );
 }
