@@ -12,7 +12,6 @@ import { useRouteStore } from 'src/stores/route/RouteStore';
 import { createTokenTransactionConfig } from 'src/utils/transaction';
 import { erc20Abi } from 'viem';
 
-import { isProduction } from 'src/utils/isProduction';
 import { parseUnits } from 'viem';
 import {
   useSendTransaction,
@@ -279,11 +278,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         },
       };
       if (!tokenPriceUSD || tokenPriceUSD <= 0) {
-        isProduction &&
-          Sentry.captureException(
-            new Error(translations.error.invalidTokenPrice),
-            sentryHint,
-          );
+        Sentry.captureException(
+          new Error(translations.error.invalidTokenPrice),
+          sentryHint,
+        );
         throw new Error(translations.error.invalidTokenPrice);
       }
       const usdAmount = Number(amount);
@@ -294,22 +292,20 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
       // Ensure we have a non-zero amount after conversion
       if (Number(tokenAmount) === 0) {
-        isProduction &&
-          Sentry.captureException(
-            new Error(translations.error.amountTooSmall),
-            sentryHint,
-          );
+        Sentry.captureException(
+          new Error(translations.error.amountTooSmall),
+          sentryHint,
+        );
         throw new Error(translations.error.amountTooSmall);
       }
 
       // Get the contribution fee address for the chain
       const feeAddress = getContributionFeeAddress(completedRoute.toChainId);
       if (!feeAddress) {
-        isProduction &&
-          Sentry.captureException(
-            new Error(translations.error.noFeeAddress),
-            sentryHint,
-          );
+        Sentry.captureException(
+          new Error(translations.error.noFeeAddress),
+          sentryHint,
+        );
         throw new Error(translations.error.noFeeAddress);
       }
 
