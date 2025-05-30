@@ -262,8 +262,8 @@ export function Widget({
       },
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
-        ...(sourceChainTokenSelected.chainId === ChainId.HYP ||
-        destionationChainTokenSelected.chainId === ChainId.HYP
+        ...(sourceChainTokenSelected.chainId === (998 as ChainId) ||
+        destionationChainTokenSelected.chainId === (998 as ChainId)
           ? [HiddenUI.ToAddress]
           : []),
         HiddenUI.Appearance,
