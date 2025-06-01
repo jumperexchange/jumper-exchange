@@ -16,7 +16,6 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { useThemeMode } from 'src/hooks/useThemeMode';
 import type { QuestChains } from 'src/types/loyaltyPass';
 import { formatMonthDayDateShort } from 'src/utils/formatDate';
 import { ProgressionBar } from '../LevelBox/ProgressionBar';
@@ -109,7 +108,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
   const { apy, data: maxData } = useMissionsMaxAPY(rewardsIds, chainIds);
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
-  const themeMode = useThemeMode();
 
   const handleClick = () => {
     trackEvent({
