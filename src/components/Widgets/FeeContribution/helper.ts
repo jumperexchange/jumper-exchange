@@ -41,29 +41,29 @@ export const isEligibleForContribution = (
   account: Account,
   isContributionAbEnabled: boolean,
 ): boolean => {
-  // if (
-  //   !hasValidTransferData(data, completedRoute) ||
-  //   !hasValidAccountData(account)
-  // ) {
-  //   return false;
-  // }
+  if (
+    !hasValidTransferData(data, completedRoute) ||
+    !hasValidAccountData(account)
+  ) {
+    return false;
+  }
 
   const isContributionEnabledByTxHistory = checkContributionByTxHistory(
     data?.transfers,
   );
 
-  // if (!completedRoute?.toChainId) {
-  //   return false;
-  // }
+  if (!completedRoute?.toChainId) {
+    return false;
+  }
 
   return (
-    // isTransactionAmountEligible(completedRoute.toAmountUSD) && // todo: reenable before merging!
-    //   completedRoute.fromAddress === completedRoute.toAddress && // check if last tx was sent to same wallet
-    // account?.address === completedRoute.fromAddress && // check if last tx was sent from current wallet
-    // isContributionAbEnabled && // todo: reenable before merging!
-    // isContributionEnabledByTxHistory && // todo: reenable before merging!
-    isEvmChainType(account?.chainType)
-    // && hasValidContributionFeeAddress(completedRoute.toChainId)
+    isTransactionAmountEligible(completedRoute.toAmountUSD) &&
+    completedRoute.fromAddress === completedRoute.toAddress && // check if last tx was sent to same wallet
+    account?.address === completedRoute.fromAddress && // check if last tx was sent from current wallet
+    isContributionAbEnabled &&
+    isContributionEnabledByTxHistory &&
+    isEvmChainType(account?.chainType) &&
+    hasValidContributionFeeAddress(completedRoute.toChainId)
   );
 };
 

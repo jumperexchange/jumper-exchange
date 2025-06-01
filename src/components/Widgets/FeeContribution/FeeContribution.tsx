@@ -168,30 +168,30 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - Transaction amount >= $10
   // - Chain type is EVM
   // - Valid contribution fee address exists for the chain
-  // useEffect(() => {
-  //   if (
-  //     !helper.isEligibleForContribution(
-  //       data,
-  //       completedRoute,
-  //       account,
-  //       isContributionAbEnabled,
-  //     )
-  //   ) {
-  //     setShowContribution(false);
-  //     return;
-  //   }
+  useEffect(() => {
+    if (
+      !helper.isEligibleForContribution(
+        data,
+        completedRoute,
+        account,
+        isContributionAbEnabled,
+      )
+    ) {
+      setShowContribution(false);
+      return;
+    }
 
-  //   // If eligible, set contribution amounts based on transaction amount
-  //   const txUsdAmount = Number(completedRoute?.toAmountUSD);
-  //   setShowContribution(true);
-  //   setContributionOptions(getContributionAmounts(txUsdAmount));
-  // }, [
-  //   data?.transfers,
-  //   completedRoute?.toAmountUSD,
-  //   account?.chainType,
-  //   isContributionAbEnabled,
-  //   completedRoute?.toChainId,
-  // ]);
+    // If eligible, set contribution amounts based on transaction amount
+    const txUsdAmount = Number(completedRoute?.toAmountUSD);
+    setShowContribution(true);
+    setContributionOptions(getContributionAmounts(txUsdAmount));
+  }, [
+    data?.transfers,
+    completedRoute?.toAmountUSD,
+    account?.chainType,
+    isContributionAbEnabled,
+    completedRoute?.toChainId,
+  ]);
 
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
