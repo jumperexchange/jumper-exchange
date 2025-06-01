@@ -60,7 +60,6 @@ export interface FeeContributionProps {
 const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
-  const [address, setAddress] = useState<string | undefined>(undefined);
   const [contributionOptions, setContributionOptions] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
   );
@@ -73,23 +72,19 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const [inputAmount, setInputAmount] = useState<string>('');
   const [isSending, setIsSending] = useState(false);
   const completedRoute = useRouteStore((state) => state.completedRoute);
-  const { data } = useTxHistory(address, completedRoute?.id);
+  const { data } = useTxHistory(account?.address, completedRoute?.id);
   const { data: tokenBalanceData } = useGetTokenBalance(
-    address,
+    account?.address,
     completedRoute?.toToken,
   );
   const [showContribution, setShowContribution] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const {
-    status: txStatus,
     data: writeTxHash,
     isPending: isTxPending,
-    isError: isTxError,
-    error: txError,
     writeContract,
   } = useWriteContract();
   const {
-    data: hash,
     sendTransaction,
     isSuccess: isNativeTxSuccess,
     isPending: isNativeTxPending,
@@ -99,7 +94,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     data: txReceipt,
     isLoading: isTxConfirming,
     isSuccess: isTxConfirmed,
-    isError: isTxConfirmError,
   } = useWaitForTransactionReceipt({
     chainId: completedRoute?.toChainId,
     hash: writeTxHash,
@@ -168,6 +162,37 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     setContributionOptions(getContributionAmounts(txUsdAmount));
   }, [isEligible, completedRoute?.toAmountUSD]);
 
+  // Check if contribution should be shown based on:
+  // - Transaction history
+  // - AB test
+  // - Transaction amount >= $10
+  // - Chain type is EVM
+  // - Valid contribution fee address exists for the chain
+  // useEffect(() => {
+  //   if (
+  //     !helper.isEligibleForContribution(
+  //       data,
+  //       completedRoute,
+  //       account,
+  //       isContributionAbEnabled,
+  //     )
+  //   ) {
+  //     setShowContribution(false);
+  //     return;
+  //   }
+
+  //   // If eligible, set contribution amounts based on transaction amount
+  //   const txUsdAmount = Number(completedRoute?.toAmountUSD);
+  //   setShowContribution(true);
+  //   setContributionOptions(getContributionAmounts(txUsdAmount));
+  // }, [
+  //   data?.transfers,
+  //   completedRoute?.toAmountUSD,
+  //   account?.chainType,
+  //   isContributionAbEnabled,
+  //   completedRoute?.toChainId,
+  // ]);
+
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     // First validate the input value
@@ -185,13 +210,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       }
     }
   }
-
-  // Set the address of the user from last tx
-  useEffect(() => {
-    if (completedRoute?.fromAddress) {
-      setAddress(completedRoute.fromAddress);
-    }
-  }, [completedRoute?.fromAddress]);
 
   // Track contribution impression
   useEffect(() => {

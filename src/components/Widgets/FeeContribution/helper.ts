@@ -12,8 +12,8 @@ export interface TransferResponse {
 }
 
 export const hasValidTransferData = (
-  data: TransferResponse | null | undefined,
-  completedRoute?: Route,
+  data: TransferResponse | null,
+  completedRoute: Route | null,
 ): boolean => {
   return !!data?.transfers && !!completedRoute?.toAmountUSD;
 };
@@ -35,11 +35,10 @@ export const hasValidContributionFeeAddress = (chainId: number): boolean => {
   return !!contributionFeeAddress;
 };
 
-// todo: Uncomment before merging this PR to re-enable checks
 export const isEligibleForContribution = (
-  data: TransferResponse | null | undefined,
-  completedRoute: Route | undefined,
-  account: Account | undefined,
+  data: TransferResponse | null,
+  completedRoute: Route | null,
+  account: Account,
   isContributionAbEnabled: boolean,
 ): boolean => {
   // if (
