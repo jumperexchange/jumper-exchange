@@ -4,14 +4,8 @@ import {
   MERKL_CREATOR_TAG,
   REWARDS_CHAIN_IDS,
 } from 'src/const/partnerRewardsTheme';
+import { TokenData } from 'src/types/merkl';
 
-interface TokenData {
-  accumulated: string;
-  decimals: number;
-  proof: string[];
-  symbol: string;
-  unclaimed: string;
-}
 interface UserPosition {
   balance: number;
   token: string;

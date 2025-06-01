@@ -2,7 +2,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import {
-  AvailableRewards,
+  AvailableRewardsExtended,
   ChainInfo,
   MerklToken,
   Reward,
@@ -16,7 +16,7 @@ interface MerklRewardResponse {
 export interface UseMerklRes {
   isSuccess: boolean;
   isLoading: boolean;
-  availableRewards: AvailableRewards[];
+  availableRewards: AvailableRewardsExtended[];
   pastCampaigns: string[];
 }
 

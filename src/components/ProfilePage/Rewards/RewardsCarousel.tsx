@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
-import { AvailableRewards } from 'src/types/merkl';
+import { AvailableRewardsExtended } from 'src/types/merkl';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 import {
   RewardsCarouselContainer,
@@ -10,7 +10,7 @@ import {
 
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;
-  availableRewards: AvailableRewards[];
+  availableRewards: AvailableRewardsExtended[];
 }
 
 // -------

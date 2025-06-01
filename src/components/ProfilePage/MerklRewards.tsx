@@ -3,13 +3,13 @@ import type { CampaignData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useMemo } from 'react';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
-import { AvailableRewards } from 'src/types/merkl';
+import { AvailableRewardsExtended } from 'src/types/merkl';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
   isRewardLoading: boolean,
   isRewardSuccess: boolean,
-  availableRewards: AvailableRewards[],
+  availableRewards: AvailableRewardsExtended[],
 ) => {
   return (
     !account?.address ||

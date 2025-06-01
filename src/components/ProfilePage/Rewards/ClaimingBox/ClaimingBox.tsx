@@ -1,7 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import { AvailableRewards } from 'src/types/merkl';
+import { AvailableRewardsExtended } from 'src/types/merkl';
 import {
   useAccount,
   useSwitchChain,
@@ -26,7 +26,7 @@ interface ClaimRewardParams {
 
 interface ClaimingBoxProps {
   amount: number;
-  availableReward: AvailableRewards;
+  availableReward: AvailableRewardsExtended;
 }
 
 export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
