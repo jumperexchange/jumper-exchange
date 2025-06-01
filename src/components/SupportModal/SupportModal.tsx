@@ -19,21 +19,24 @@ export const SupportModal = () => {
   const [isIntercomLoaded, setIsIntercomLoaded] = useState(false);
   const [isDiscordSupport, setIsDiscordSupport] = useState(false);
 
-  if (process.env.NEXT_PUBLIC_INTERCOM_API_KEY) {
-    Intercom({
-      name: 'JumperExchange_Intercom',
-      company: {
-        company_id: process.env.NEXT_PUBLIC_ENVIRONMENT,
-        name: process.env.NEXT_PUBLIC_SITE_URL,
-      },
-      app_id: process.env.NEXT_PUBLIC_INTERCOM_API_KEY,
-      ...(account && account.address && { user_id: account.address }),
-      background_color: (theme.vars || theme).palette.surface1.main,
-      action_color: (theme.vars || theme).palette.primary.main,
-      hide_default_launcher: true,
-      alignment: 'right',
-    });
-  }
+  // Initialize Intercom only once
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_INTERCOM_API_KEY) {
+      Intercom({
+        name: 'JumperExchange_Intercom',
+        company: {
+          company_id: process.env.NEXT_PUBLIC_ENVIRONMENT,
+          name: process.env.NEXT_PUBLIC_SITE_URL,
+        },
+        app_id: process.env.NEXT_PUBLIC_INTERCOM_API_KEY,
+        ...(account && account.address && { user_id: account.address }),
+        background_color: (theme.vars || theme).palette.surface1.main,
+        action_color: (theme.vars || theme).palette.primary.main,
+        hide_default_launcher: true,
+        alignment: 'right',
+      });
+    }
+  }, []);
 
   onHide(() => {
     setSupportModalState(false);
