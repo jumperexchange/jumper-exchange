@@ -121,7 +121,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       ? Number(tokenBalanceData.amount) /
         Math.pow(10, tokenBalanceData.decimals)
       : 0;
-    return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD || 0);
+    return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD);
   }, [tokenBalanceData, completedRoute?.toToken?.priceUSD]);
 
   // Early synchronous eligibility checks
@@ -210,7 +210,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
           original_amount: completedRoute.toAmount,
           original_amount_usd: completedRoute.toAmountUSD,
           original_token_symbol: completedRoute.toToken.symbol,
-          original_donation_chain: completedRoute.toChainId || 0,
+          original_donation_chain: completedRoute.toChainId,
           original_tx_token_address: completedRoute.toToken?.address,
         },
       });
@@ -228,10 +228,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         data: {
           ...(account?.address && { donator: account.address }),
           original_tx_id: completedRoute.id,
-          donation_amount_usd: amount || 0,
+          donation_amount_usd: amount,
           donation_token_symbol: completedRoute.toToken?.symbol,
           donation_token_address: completedRoute.toToken?.address,
-          donation_chain: completedRoute.toChainId || 0,
+          donation_chain: completedRoute.toChainId,
           donation_tx_hash: txReceipt?.transactionHash,
         },
       });
@@ -318,11 +318,11 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
           data: {
             ...(account?.address && { donator: account.address }),
             original_tx_id: completedRoute.id,
-            donation_amount_usd: usdAmount || 0,
-            donation_amount_token: tokenAmount || 0,
+            donation_amount_usd: usdAmount,
+            donation_amount_token: tokenAmount,
             donation_token_symbol: completedRoute.toToken.symbol,
             donation_token_address: completedRoute.toToken.address,
-            donation_chain: completedRoute.toChainId || 0,
+            donation_chain: completedRoute.toChainId,
           },
         });
 
