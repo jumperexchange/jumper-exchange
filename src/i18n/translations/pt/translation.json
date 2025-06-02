@@ -153,21 +153,21 @@
   },
   "leaderboard": {
     "title": "Tabela de Classificação",
-    "description": "",
-    "rankCtaConnect": "",
-    "updatedLabel": "",
-    "connectWallet": ""
+    "description": "A tabela de classificação é atualizada diariamente.",
+    "rankCtaConnect": "Onde você está classificado?",
+    "updatedLabel": "Atualizado: {{date}}",
+    "connectWallet": "Conectar carteira"
   },
   "completedMissionsInformation": {
     "title": "",
-    "description": ""
+    "description": "Como a Jumper organiza campanhas ad-hoc, as missões são atualizadas mensalmente para criar os gráficos associados. Tenha em mente: XP proveniente de campanhas específicas também será atualizado mensalmente."
   },
   "format": {
-    "currency": "",
-    "decimal": "",
-    "percent": "",
-    "decimal2Digit": "",
-    "date": "",
-    "shortDate": ""
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "percent": "{{value, percentExt()}}",
+    "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
+    "date": "{{value, dateExt(month: long)}}",
+    "shortDate": "{{value, dateExt(month: short)}}"
   }
 }
