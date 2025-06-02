@@ -1,123 +1,173 @@
 {
   "navbar": {
     "welcome": {
-      "title": "En iyi rotayı bul",
-      "subtitle": "<0>4 kez denetlenmiş</0> <1>LI.FI</1> tarafından desteklenen çok zincirli likidite toplayıcı",
-      "cta": "Başlayın"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
-    "poweredByLifi": "<1>LI.FI</1><0> Tarafından Desteklenmektedir</0>",
     "links": {
-      "exchange": "Al-Sat",
-      "dashboard": "Kontrol Paneli",
-      "refuel": "Gaz",
-      "buy": "Satın al"
+      "exchange": "",
+      "dashboard": "",
+      "refuel": "",
+      "buy": ""
     },
     "statsCards": {
-      "dexs": "DEX'ler",
-      "bridges": "Köprüler",
-      "chains": "Ağlar"
+      "dexs": "",
+      "bridges": "",
+      "chains": ""
     },
-    "connect": "Bağlan",
+    "connect": "",
     "walletSelectMenu": {
-      "connectWallet": "Bir Cüzdan Bağlayın",
-      "wallets": "Cüzdanlar",
+      "connectWallet": "",
+      "wallets": "",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "Cüzdan ekosistemi seçin",
-        "noEcosystemAdapter": "Uygun ekosistem bağdaştırıcısı bulunamadı"
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
       }
     },
-    "seeAllWallets": "Tüm cüzdanları göster",
+    "seeAllWallets": "",
     "navbarMenu": {
-      "brandAssets": "Varlıklar",
-      "theme": "Tema",
-      "developers": "Geliştiriciler",
-      "lifiExplorer": "LI.FI Scan",
-      "aboutLIFI": "LI.FI Hakkında",
-      "support": "Destek",
-      "profile": "Jumper Profili"
+      "brandAssets": "",
+      "theme": "",
+      "developers": "",
+      "support": "",
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
-      "disconnect": "Bağlantıyı Kes",
-      "chains": "Ağlar",
-      "switchChain": "Ağ değiştir",
-      "copy": "Kopyala",
-      "explore": "Keşfet",
-      "copiedMsg": "Cüzdan Adresi kopyalandı",
-      "walletNotInstalled": "{{wallet}} kurulu değil",
-      "connectAnotherWallet": "Başka bir cüzdana bağlan",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
+      "walletNotInstalled": "",
+      "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "Açık temaya geç",
-      "switchToDark": "Koyu Temaya geç",
-      "switchToSystem": "Sisteme geçiş yap"
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Dökümantasyon"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {
-    "ctaHeadline": "Daha fazlası için Discord sunucumuza katıl",
-    "ctaButton": "Discord'a katıl"
+    "ctaHeadline": "",
+    "ctaButton": ""
   },
   "blog": {
-    "title": "İpuçları ve öğreticiler",
-    "categories": "Kategoriler",
-    "allCategories": "Tümü",
-    "subtitle": "Kısaca, tüm seviyeler için DeFi ve kriptoya ilişkin adım adım kılavuzlar",
-    "minRead": "Okuma süresi:{{minRead}}",
-    "seeAllPosts": "Tüm gönderileri gör",
-    "recentPosts": "Son Gönderiler",
-    "similarPosts": "Benzer gönderiler",
-    "goToArticle": "Makaleye git",
-    "openApp": "Uygulamayı aç",
-    "faq": "SSS",
-    "jumperCta": "jumper.exchange'i deneyin",
-    "copiedLink": "Bağlantı kopyalandı",
-    "shareLinkedIn": "Makaleyi LinkedIn'de paylaş",
-    "shareFb": "Makaleyi Facebook'ta paylaş",
-    "shareX": "Makaleyi X'te paylaş",
-    "shareLink": "Bağlantıyı paylaş"
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
   },
   "solanaAlert": {
-    "title": "Solana ağında kısıtlı token desteği bulunmaktadır",
-    "subtitle": "Şu anda hem Solana ağına hem Solana ağından sadece USDC ve USDT köprü kurulabiliyor."
+    "title": "",
+    "subtitle": ""
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
   },
   "featureCard": {
-    "learnMore": "Daha fazla bilgi edinin"
+    "learnMore": ""
   },
   "button": {
-    "okay": "Tamam"
+    "okay": ""
   },
   "error": {
-    "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
+    "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "Çoklu cüzdan bağlandı",
-      "description": "Lütfen diğer cüzdan katılımcılarını imzalamaya hazır olmaları için bilgilendirin."
+      "title": "",
+      "description": ""
     },
     "transactionInitiated": {
-      "title": "Çoklu imza gerekiyor",
-      "description": "Lütfen diğer cüzdan katılımcılarını işlem süresi geçmeden imzalamaları için bilgilendirin."
-    },
-    "alert": {
-      "title": "Çoklu cüzdan bağlandı",
-      "description": "İşlemi tamamlamak için hedef cüzdan adresi gereklidir."
+      "title": "",
+      "description": ""
     }
   },
   "questCard": {
-    "completed": "Tamamlanan",
-    "join": "Katıl"
+    "completed": "",
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
-    "available": "Mevcut Görevler",
-    "completed": "Tamamlanan Görevler"
+    "available": "",
+    "completed": ""
   },
   "profile_page": {
-    "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
-    "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz."
+    "mobileTitle": "",
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
