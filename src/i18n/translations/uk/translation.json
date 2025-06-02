@@ -1,173 +1,173 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Знайдіть найкращий маршрут",
+      "subtitle": "<0>4x аудитований</0> мульти-чейн агрегатор ліквідності на основі <1>LI.FI</1>",
+      "cta": "Почати"
     },
     "links": {
-      "exchange": "",
-      "dashboard": "",
-      "refuel": "",
-      "buy": ""
+      "exchange": "Обмін",
+      "dashboard": "Дешборд",
+      "refuel": "Газ",
+      "buy": "Купівля"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "DEXs",
+      "bridges": "Бриджей",
+      "chains": "Чейнів"
     },
-    "connect": "",
+    "connect": "Під’єднатися",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "Під'єднати гаманець",
+      "wallets": "Гаманці",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "Виберіть екосистему гаманця",
+        "noEcosystemAdapter": "Відповідного адаптера для екосистеми не знайдено"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
-      "profile": "",
-      "fest": ""
+      "brandAssets": "Бренд ресурси",
+      "theme": "Тема",
+      "developers": "Розробникам",
+      "support": "Підтримка",
+      "profile": "Профіль Jumper",
+      "fest": "Superfest Festival"
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": "",
-      "refreshBalances": "",
-      "totalBalance": "",
-      "totalBalanceTooltip": "",
-      "totalBalanceRefresh": "",
-      "numberOfChains": ""
+      "disconnect": "Від'єднатись",
+      "chains": "Чейни",
+      "switchChain": "Перемикнути чейн",
+      "copy": "Скопіювати",
+      "explore": "Переглянути",
+      "copiedMsg": "Адреса гаманця скопійована",
+      "walletNotInstalled": "{{wallet}} не встановлено",
+      "connectAnotherWallet": "Під'єднати інший гаманець",
+      "refreshBalances": "Оновити баланс",
+      "totalBalance": "Загальний баланс",
+      "totalBalanceTooltip": "Ваш загальний баланс не завжди може бути точним через потенційні проблеми з індексацією. Ми працюємо над цим!",
+      "totalBalanceRefresh": "Натисніть тут, щоб перезавантажити індексацію своїх токенів.",
+      "numberOfChains": "{{numberOfChains}} чейнів"
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": "",
-      "lightModeDisabled": "",
-      "darkModeDisabled": "",
-      "systemModeDisabled": "",
-      "default": ""
+      "switchToLight": "Увімкнути світлу тему",
+      "switchToDark": "Увімкнути темну тему",
+      "switchToSystem": "Увімкнути системну тему",
+      "lightModeDisabled": "Світлий режим вимкнений для цієї теми",
+      "darkModeDisabled": "Темний режим вимкнений для цієї теми",
+      "systemModeDisabled": "Системний режим вимкнений для цієї теми",
+      "default": "Стандартна"
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "GitHub",
+      "documentation": "Документація"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
+    "ctaButton": "Доєднуйся до нас у Discord"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "Поради та навчальні матеріали",
+    "categories": "Категорії",
+    "allCategories": "Всі",
+    "subtitle": "TL;DR покрокові інструкції до DeFi і крипто для всіх рівнів",
+    "minRead": "{{minRead}} хв читання",
+    "seeAllPosts": "Переглянути всі записи",
+    "recentPosts": "Останні дописи",
+    "similarPosts": "Схожі дописи",
+    "goToArticle": "Перейти до статті",
+    "openApp": "Відкрити додаток",
+    "faq": "FAQ",
+    "jumperCta": "Спробуйте jumper.exchange",
+    "copiedLink": "Посилання скопійовано",
+    "shareLinkedIn": "Поділитися статтею на LinkedIn",
+    "shareFb": "Поділитися статтею в Facebook",
+    "shareX": "Поділитися статтею на X",
+    "shareLink": "Поділитись посиланням"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Обмежена підтримка токенів Solana",
+    "subtitle": "Наразі можна перевести тільки USDT і USDT до та з Solana."
   },
   "seiAlert": {
-    "title": "",
-    "subtitle": "",
-    "buttonText": ""
+    "title": "Необхідно зв'язати гаманець SEI EVM",
+    "subtitle": "Щоб використовувати SEI EVM, вам потрібно зв'язати адресу свого гаманця з екосистемою SEI.",
+    "buttonText": "Прив'язати гаманець"
   },
   "abstractAlert": {
-    "title": "",
-    "subtitle": "",
-    "buttonText": ""
+    "title": "Цей гаманець працює тільки на Abstract!",
+    "subtitle": "Гаманець Abstract існує лише на Abstract чейні. Не використовуйте цю адресу на будь-якому іншому блокчейні, або ви можете втратити ваші кошти.",
+    "buttonText": "Перевірте документацію"
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "Дізнатися більше"
   },
   "button": {
-    "okay": ""
+    "okay": "Добре"
   },
   "error": {
-    "message": ""
+    "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Multisig гаманець під'єднано",
+      "description": "Будь ласка, повідомте інших учасників гаманця, щоб вони були готові до підпису."
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "Потрібні кілька підписів",
+      "description": "Будь ласка, повідомте інших учасників multisig гаманця підписати до закінчення терміну транзакції."
     }
   },
   "questCard": {
-    "completed": "",
-    "join": "",
-    "xpToEarnDescription": "",
-    "earnedXPDescription": "",
+    "completed": "Завершено",
+    "join": "Приєднатися",
+    "xpToEarnDescription": "Завершіть {{action}} щоб заробити +{{xpToEarn}} addtional XP в цьому місяці.",
+    "earnedXPDescription": "Ви розблокували {{earnedXP}}XP від {{action}} цього місяця, і це було додано до вашого загального XP-балансу.",
     "action": {
-      "chain_oor": "",
-      "transact_oor": "",
-      "swap_oor": "",
-      "bridge_oor": ""
+      "chain_oor": "дослідження чейнів",
+      "transact_oor": "торгівля",
+      "swap_oor": "обмін",
+      "bridge_oor": "мости"
     }
   },
   "promo": {
-    "new": ""
+    "new": "Нове"
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "Доступні місії",
+    "completed": "Виконані місії"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": "",
-    "level": "",
-    "rank": "",
-    "rankInfo": "",
-    "pointsInfo": "",
-    "levelInfo": "",
-    "copyAddress": "",
-    "shareProfile": "",
-    "open": "",
-    "rewards": ""
+    "mobileTitle": "Доступно лише на комп'ютері",
+    "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим.",
+    "level": "Рівень",
+    "rank": "Ранг",
+    "rankInfo": "Ранг - це ваша позиція в таблиці. Отримайте XP і рухайтеся вгору в таблиці лідерів.",
+    "pointsInfo": "Досвід ваш результат від взаємодії з Jumper. Коли ви отримуєте XP, ваш рівень піднімається. XP отримані з Jumper транзакцій оновлюються щодня.",
+    "levelInfo": "Вищий рівень збільшує шанси виграти нагороди у розіграшах, отримати привілеї, бонуси від партнерів, винагороди та інше.",
+    "copyAddress": "Копіювати адресу гаманця",
+    "shareProfile": "Поділитися профілем",
+    "open": "Відкрити {{tool}}",
+    "rewards": "Отримані винагороди"
   },
   "leaderboard": {
-    "title": "",
-    "description": "",
-    "rankCtaConnect": "",
-    "updatedLabel": "",
-    "connectWallet": ""
+    "title": "Таблиця лідерів",
+    "description": "Таблиця лідерів оновлюється щоденно.",
+    "rankCtaConnect": "Який у вас ранг?",
+    "updatedLabel": "Оновлено: {{date}}",
+    "connectWallet": "Під'єднати гаманець"
   },
   "completedMissionsInformation": {
     "title": "",
-    "description": ""
+    "description": "Оскільки Jumper організовує разові кампанії, місії оновлюються щомісяця для створення відповідної графіки. Майте на увазі: досвід (XP), отриманий з конкретних кампаній, також оновлюватиметься щомісяця."
   },
   "format": {
-    "currency": "",
-    "decimal": "",
-    "percent": "",
-    "decimal2Digit": "",
-    "date": "",
-    "shortDate": ""
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "percent": "{{value, percentExt()}}",
+    "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
+    "date": "{{value, dateExt(month: long)}}",
+    "shortDate": "{{value, dateExt(month: short)}}"
   }
 }
