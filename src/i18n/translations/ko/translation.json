@@ -5,12 +5,11 @@
       "subtitle": "",
       "cta": ""
     },
-    "poweredByLifi": "",
     "links": {
       "exchange": "",
-      "dashboard": "대시보드",
-      "refuel": "가스",
-      "buy": "매수"
+      "dashboard": "",
+      "refuel": "",
+      "buy": ""
     },
     "statsCards": {
       "dexs": "",
@@ -29,33 +28,39 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "테마",
-      "developers": "개발자",
-      "lifiExplorer": "",
-      "aboutLIFI": "Li.Fi에 관하여",
-      "support": "지원",
-      "profile": ""
+      "theme": "",
+      "developers": "",
+      "support": "",
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
-      "disconnect": "연결 해제",
-      "chains": "체인",
-      "switchChain": "체인 변경",
-      "copy": "복사",
-      "explore": "탐색",
-      "copiedMsg": "지갑 주소 복사 완료",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "라이트 모드로 전환",
-      "switchToDark": "다크 모드로 전환",
-      "switchToSystem": ""
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "깃허브",
-      "documentation": "문서"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {
@@ -85,6 +90,16 @@
     "title": "",
     "subtitle": ""
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": ""
   },
@@ -102,15 +117,22 @@
     "transactionInitiated": {
       "title": "",
       "description": ""
-    },
-    "alert": {
-      "title": "",
-      "description": ""
     }
   },
   "questCard": {
     "completed": "",
-    "join": ""
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "",
@@ -118,6 +140,34 @@
   },
   "profile_page": {
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
