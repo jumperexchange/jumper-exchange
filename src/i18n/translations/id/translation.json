@@ -1,48 +1,48 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Temukan rute terbaik",
+      "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
+      "cta": "Memulai"
     },
     "links": {
-      "exchange": "",
-      "dashboard": "",
+      "exchange": "Pertukaran",
+      "dashboard": "Dasbor",
       "refuel": "",
-      "buy": ""
+      "buy": "Beli"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "DEX",
+      "bridges": "Bridge",
+      "chains": "Jaringan"
     },
-    "connect": "",
+    "connect": "Hubungkan",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "Hubungkan ke wallet",
+      "wallets": "Dompet",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "Pilih ekosistem dompet",
+        "noEcosystemAdapter": "Tidak ditemukan adaptor ekosistem yang sesuai"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "Lihat semua dompet",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
-      "profile": "",
+      "brandAssets": "Merek Aset",
+      "theme": "Tema",
+      "developers": "Para Pengembang",
+      "support": "Bantuan",
+      "profile": "Profil Jumper",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": "",
+      "disconnect": "Tidak terkoneksi",
+      "chains": "Jaringan",
+      "switchChain": "Pindah Jaringan",
+      "copy": "Salin",
+      "explore": "Jelajah",
+      "copiedMsg": "Alamat dompet disalin",
+      "walletNotInstalled": "{{wallet}} belum terinstall",
+      "connectAnotherWallet": "Hubungkan dompet yang lain",
       "refreshBalances": "",
       "totalBalance": "",
       "totalBalanceTooltip": "",
@@ -50,9 +50,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": "",
+      "switchToLight": "Beralih ke Tema Terang",
+      "switchToDark": "Beralih ke Tema Gelap",
+      "switchToSystem": "Beralih ke Sistem",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
       "systemModeDisabled": "",
@@ -60,35 +60,35 @@
     },
     "developers": {
       "github": "",
-      "documentation": ""
+      "documentation": "Dokumentasi"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Gabung ke Discord untuk mengetahui lebih lanjut",
+    "ctaButton": "Bergabunglah ke Discord kami"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "Tips dan tutorial",
+    "categories": "Kategori",
+    "allCategories": "Semua",
+    "subtitle": "TL;DR panduan langkah demi langkah tentang DeFi dan kripto untuk semua level",
+    "minRead": "{{minRead}} min baca",
+    "seeAllPosts": "Lihat semua pos",
+    "recentPosts": "Pos terbaru",
+    "similarPosts": "Posting yang Mirip",
+    "goToArticle": "Pergi ke artikel",
+    "openApp": "Buka Aplikasi",
+    "faq": "Pertanyaan Umum (FAQ)",
+    "jumperCta": "Coba jumper.exchange",
+    "copiedLink": "Tautan yang Disalin",
+    "shareLinkedIn": "Bagi artikel di LinkedIn",
+    "shareFb": "Bagi artikel di Facebook",
+    "shareX": "Bagi artikel di X",
+    "shareLink": "Bagikan tautan"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Dukungan token Solana terbatas",
+    "subtitle": "Saat ini hanya USDC dan USDT yang dapat dijembatani ke dan dari Solana."
   },
   "seiAlert": {
     "title": "",
@@ -101,27 +101,27 @@
     "buttonText": ""
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "Pelajari lebih lanjut"
   },
   "button": {
-    "okay": ""
+    "okay": "Oke"
   },
   "error": {
-    "message": ""
+    "message": "Ada yang salah. Silakan coba memuat ulang halaman tersebut. Jika masalah terus berlanjut, hubungi dukungan kami."
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Dompet multisig terhubung",
+      "description": "Harap beri tahu peserta dompet lainnya untuk siap menandatangani."
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "Dibutuhkan banyak tanda tangan",
+      "description": "Harap beri tahu peserta dalam dompet multisig lainnya untuk menandatangani sebelum transaksi berakhir."
     }
   },
   "questCard": {
-    "completed": "",
-    "join": "",
+    "completed": "Selesai",
+    "join": "Gabung",
     "xpToEarnDescription": "",
     "earnedXPDescription": "",
     "action": {
@@ -135,8 +135,8 @@
     "new": ""
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "Misi yang tersedia",
+    "completed": "Misi yang telah selesai"
   },
   "profile_page": {
     "mobileTitle": "",
