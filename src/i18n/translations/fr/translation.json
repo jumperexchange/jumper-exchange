@@ -1,123 +1,173 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Trouvez la meilleure route",
-      "subtitle": "<0>4x audit</0> agrégateur de liquidité multi-chaînes alimenté par <1>LI.FI</1>",
-      "cta": "Commencer"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
-    "poweredByLifi": "<0>Propulsé par </0><1>LI.FI</1>",
     "links": {
-      "exchange": "Échanger",
-      "dashboard": "Tableau de bord",
-      "refuel": "Gaz",
-      "buy": "Acheter"
+      "exchange": "",
+      "dashboard": "",
+      "refuel": "",
+      "buy": ""
     },
     "statsCards": {
-      "dexs": "DEXs",
-      "bridges": "Ponts",
-      "chains": "Chaines"
+      "dexs": "",
+      "bridges": "",
+      "chains": ""
     },
-    "connect": "Connecter",
+    "connect": "",
     "walletSelectMenu": {
-      "connectWallet": "Connecter un portefeuille",
-      "wallets": "Portefeuilles",
+      "connectWallet": "",
+      "wallets": "",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "Sélectionnez l'écosystème du portefeuille",
-        "noEcosystemAdapter": "Aucun adaptateur écosystème approprié trouvé"
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
       }
     },
-    "seeAllWallets": "Afficher tous les portefeuilles",
+    "seeAllWallets": "",
     "navbarMenu": {
-      "brandAssets": "Actifs de marque",
-      "theme": "Thème",
-      "developers": "Développeurs",
-      "lifiExplorer": "Explorateur LI.FI",
-      "aboutLIFI": "À propos de LI.FI",
-      "support": "Support",
-      "profile": "Profil Jumper"
+      "brandAssets": "",
+      "theme": "",
+      "developers": "",
+      "support": "",
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
-      "disconnect": "Se déconnecter",
-      "chains": "Chaînes",
-      "switchChain": "Changer de chaîne",
-      "copy": "Copier",
-      "explore": "Explorer",
-      "copiedMsg": "Adresse du portefeuille copiée",
-      "walletNotInstalled": "{{wallet}} n'est pas installé",
-      "connectAnotherWallet": "Connecter un autre portefeuille",
-      "refreshBalances": "Rafraichir les valeurs",
-      "totalBalance": "Valeur total"
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
+      "walletNotInstalled": "",
+      "connectAnotherWallet": "",
+      "refreshBalances": "",
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "Basculer en mode clair",
-      "switchToDark": "Basculer en mode sombre",
-      "switchToSystem": "Basculer vers Système"
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Documentation"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {
-    "ctaHeadline": "Rejoignez notre Discord pour en savoir plus",
-    "ctaButton": "Rejoignez notre Discord"
+    "ctaHeadline": "",
+    "ctaButton": ""
   },
   "blog": {
-    "title": "Conseils et tutoriels",
-    "categories": "Catégories",
-    "allCategories": "Tout",
-    "subtitle": "TL;DR guide pas à pas vers la DeFi et la crypto pour tous les niveaux",
-    "minRead": "{{minRead}} minute(s) de lecture",
-    "seeAllPosts": "Voir tous les posts",
-    "recentPosts": "Posts récents",
-    "similarPosts": "Posts similaires",
-    "goToArticle": "Aller à l'article",
-    "openApp": "Ouvrir l’application",
-    "faq": "FAQ",
-    "jumperCta": "Essayez jumper.exchange",
-    "copiedLink": "Lien copié",
-    "shareLinkedIn": "Partager l'article sur LinkedIn",
-    "shareFb": "Partager l'article sur Facebook",
-    "shareX": "Partager l'article sur X",
-    "shareLink": "Partager le lien"
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
   },
   "solanaAlert": {
-    "title": "Prise en charge de jeton Solana limité",
-    "subtitle": "Actuellement, seuls les USDC et USDT peuvent être transférés vers et depuis Solana."
+    "title": "",
+    "subtitle": ""
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
   },
   "featureCard": {
-    "learnMore": "Plus d'info"
+    "learnMore": ""
   },
   "button": {
-    "okay": "Ok"
+    "okay": ""
   },
   "error": {
-    "message": "Une erreur s'est produite. Essayez de recharger la page. Si le problème persiste, contactez notre support."
+    "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "Portefeuille multisignature connecté",
-      "description": "Merci d'informer les autres participants du portefeuille que la transaction est prête à être signée."
+      "title": "",
+      "description": ""
     },
     "transactionInitiated": {
-      "title": "Signatures multiples requises",
-      "description": "Merci de demander autres participants disposant d'un portefeuille multisignature, de signer avant que la transaction n'expire."
-    },
-    "alert": {
-      "title": "Portefeuille multisignature connecté",
-      "description": "L'adresse du portefeuille de destination est nécessaire pour effectuer l'échange."
+      "title": "",
+      "description": ""
     }
   },
   "questCard": {
-    "completed": "Complété",
-    "join": "Rejoindre"
+    "completed": "",
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
-    "available": "Missions Disponibles",
-    "completed": "Missions Complétées"
+    "available": "",
+    "completed": ""
   },
   "profile_page": {
-    "mobileTitle": "Disponible uniquement sur le bureau",
-    "mobileDescription": "La page du profil de Jumper n'est pas encore disponible sur les petits écrans. Nous y travaillons."
+    "mobileTitle": "",
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
