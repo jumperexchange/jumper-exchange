@@ -7,8 +7,8 @@
     },
     "links": {
       "exchange": "",
-      "dashboard": "",
-      "refuel": "",
+      "dashboard": "डैशबोर्ड",
+      "refuel": "गैस",
       "buy": ""
     },
     "statsCards": {
@@ -28,16 +28,16 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
+      "theme": "विषय",
+      "developers": "डेवलपर",
+      "support": "सहायता",
       "profile": "",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
+      "disconnect": "डिस्कनेक्ट करें",
+      "chains": "चेन",
+      "switchChain": "चेन बदले",
       "copy": "",
       "explore": "",
       "copiedMsg": "",
@@ -59,8 +59,8 @@
       "default": ""
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "गिटहब",
+      "documentation": "प्रलेखन"
     }
   },
   "discordBanner": {
