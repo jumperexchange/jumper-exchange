@@ -15,7 +15,7 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
+import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -28,6 +28,7 @@ import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 
@@ -45,13 +46,18 @@ export function Widget({
   autoHeight,
 }: WidgetProps) {
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { destinationChainToken, toAddress } = useUrlParams();
+  const { destinationChainToken: destinationChainTokenFromUrl, toAddress } =
+    useUrlParams();
   const widgetEvents = useWidgetEvents();
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { account } = useAccount();
+  const {
+    sourceChainToken: sourceChainTokenSelected,
+    destinationChainToken: destionationChainTokenSelected,
+  } = useChainTokenSelectionStore();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
@@ -60,6 +66,12 @@ export function Widget({
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
+  console.log(
+    'destinationChainToken from useUrlParams',
+    destinationChainTokenFromUrl,
+  );
+  console.log('sourceChainToken', sourceChainTokenSelected.chainId);
+  console.log('destinationChainToken', destionationChainTokenSelected.chainId);
   const { mode } = useColorScheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const widgetTheme = useMemo(
@@ -147,7 +159,7 @@ export function Widget({
     account.address,
     account.chainId,
     configTheme?.integrator,
-    destinationChainToken,
+    destinationChainTokenFromUrl,
     isConnectedAGW,
     toAddress,
     widgetEvents,
@@ -220,6 +232,10 @@ export function Widget({
       tokens.allow.concat(memeListTokens);
     }
 
+    const destinationChainIdSelected =
+      destionationChainTokenSelected.chainId ||
+      destinationChainTokenFromUrl.chainId;
+
     return {
       ...formParameters,
       variant:
@@ -264,7 +280,7 @@ export function Widget({
       ],
       requiredUI:
         // if AGW connected and destinationChainToken is NOT ABS, require toAddress
-        isConnectedAGW && destinationChainToken.chainId !== ChainId.ABS
+        isConnectedAGW && destinationChainIdSelected !== ChainId.ABS
           ? ['toAddress']
           : undefined,
       appearance: widgetTheme.config.appearance,
@@ -321,7 +337,8 @@ export function Widget({
     allowToChains,
     i18n.language,
     i18n.languages,
-    destinationChainToken.chainId,
+    destinationChainTokenFromUrl.chainId,
+    destionationChainTokenSelected.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     integratorStringByType,
