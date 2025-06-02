@@ -24,11 +24,10 @@ import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { useUrlParams } from 'src/hooks/useUrlParams';
+import { useTokenSelection } from 'src/hooks/useTokenSelection';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
 
@@ -46,7 +45,8 @@ export function Widget({
   autoHeight,
 }: WidgetProps) {
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { destinationChainToken, toAddress } = useUrlParams();
+  const { sourceChainToken, destinationChainToken, toAddress } =
+    useTokenSelection();
   const widgetEvents = useWidgetEvents();
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -60,10 +60,6 @@ export function Widget({
   });
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
-  const {
-    sourceChainToken: sourceChainTokenSelected,
-    destinationChainToken: destionationChainTokenSelected,
-  } = useChainTokenSelectionStore();
 
   const { mode } = useColorScheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -262,8 +258,10 @@ export function Widget({
       },
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
-        ...(sourceChainTokenSelected.chainId === (998 as ChainId) ||
-        destionationChainTokenSelected.chainId === (998 as ChainId)
+        ...((sourceChainToken.chainId === (998 as ChainId) &&
+          destinationChainToken.isEvm) ||
+        (destinationChainToken.chainId === (998 as ChainId) &&
+          sourceChainToken.isEvm)
           ? [HiddenUI.ToAddress]
           : []),
         HiddenUI.Appearance,
