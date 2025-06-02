@@ -1,48 +1,48 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Tìm tuyến đường tốt nhất",
+      "subtitle": "<0>4x audited</0> Nguồn tổng hợp thanh khoản đa chuỗi được cung cấp bởi <1>LI.FI</1>",
+      "cta": "Bắt đầu"
     },
     "links": {
-      "exchange": "",
-      "dashboard": "",
+      "exchange": "Hoán đổi",
+      "dashboard": "Tổng quan",
       "refuel": "",
-      "buy": ""
+      "buy": "Mua"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "Các Dex",
+      "bridges": "Các cầu nối",
+      "chains": "Các chuỗi"
     },
-    "connect": "",
+    "connect": "Kết nối",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "Kết nối ví",
+      "wallets": "Ví",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "Chọn hệ sinh thái ví",
+        "noEcosystemAdapter": "Không tìm thấy bộ chuyển đổi hệ sinh thái thích hợp"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "Xem tất cả ví",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
-      "profile": "",
+      "brandAssets": "Tài sản thương hiệu",
+      "theme": "Giao diện",
+      "developers": "Lập trình viên",
+      "support": "Hỗ trợ",
+      "profile": "Hồ sơ Jumper",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": "",
+      "disconnect": "Ngắt kết nối",
+      "chains": "Chuỗi",
+      "switchChain": "Thay đổi Chain",
+      "copy": "Sao Chép",
+      "explore": "Trình khám phá",
+      "copiedMsg": "Địa chỉ ví đã được sao chép",
+      "walletNotInstalled": "{{wallet}} chưa được cài đặt",
+      "connectAnotherWallet": "Kết nối ví khác",
       "refreshBalances": "",
       "totalBalance": "",
       "totalBalanceTooltip": "",
@@ -50,9 +50,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": "",
+      "switchToLight": "Đổi sang Chế độ nền sáng",
+      "switchToDark": "Chuyển sang Chế độ nền tối",
+      "switchToSystem": "Chuyển sang hệ thống",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
       "systemModeDisabled": "",
@@ -60,35 +60,35 @@
     },
     "developers": {
       "github": "",
-      "documentation": ""
+      "documentation": "Tài liệu"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Tham gia Discord để xem thêm",
+    "ctaButton": "Tham gia Discord của chúng tôi"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "Lời khuyên và hướng dẫn",
+    "categories": "Danh mục",
+    "allCategories": "Tất cả",
+    "subtitle": "Hướng dẫn từng bước về DeFi và tiền điện tử cho mọi cấp độ",
+    "minRead": "{{minRead}} thời gian đọc tối thiểu",
+    "seeAllPosts": "Xem tất cả các bài viết",
+    "recentPosts": "Bài viết gần đây",
+    "similarPosts": "Những bài viết tương tự",
+    "goToArticle": "Đi tới bài viết",
+    "openApp": "Mở ứng dụng",
+    "faq": "Hỏi/đáp",
+    "jumperCta": "Trải nghiệm Jumper.exchange",
+    "copiedLink": "Sao chép liên kết",
+    "shareLinkedIn": "Chia sẻ bài viết trên LinkedIn",
+    "shareFb": "Chia sẻ bài viết trên Facebook",
+    "shareX": "Chia sẻ bài viết trên X",
+    "shareLink": "Chia sẻ liên kết"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Giới hạn mã thông báo trên Solana",
+    "subtitle": "Hiện tại chỉ có USDC và USDT có thể được chuyển đến và đi từ Solana."
   },
   "seiAlert": {
     "title": "",
@@ -101,27 +101,27 @@
     "buttonText": ""
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "Xem thêm"
   },
   "button": {
     "okay": ""
   },
   "error": {
-    "message": ""
+    "message": "Đã xảy ra lỗi. Vui lòng thử tải lại trang. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ của chúng tôi."
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Đã kết nối ví Multisig",
+      "description": "Vui lòng thông báo cho những người tham gia ví khác để sẵn sàng ký."
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "Cần nhiều chữ ký",
+      "description": "Vui lòng thông báo cho những người tham gia ví multisig khác để ký trước khi giao dịch hết hạn."
     }
   },
   "questCard": {
-    "completed": "",
-    "join": "",
+    "completed": "Đã hoàn thành",
+    "join": "Tham gia",
     "xpToEarnDescription": "",
     "earnedXPDescription": "",
     "action": {
@@ -135,12 +135,12 @@
     "new": ""
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "Nhiệm vụ có sẵn",
+    "completed": "Nhiệm vụ đã hoàn thành"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": "",
+    "mobileTitle": "Chỉ khả dụng trên Máy tính",
+    "mobileDescription": "Trang Hồ sơ Jumper chưa có sẵn trên màn hình nhỏ. Chúng tôi đang phát triển.",
     "level": "",
     "rank": "",
     "rankInfo": "",
