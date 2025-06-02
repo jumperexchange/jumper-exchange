@@ -1,48 +1,48 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "En iyi rotayı bul",
+      "subtitle": "<0>4 kez denetlenmiş</0> <1>LI.FI</1> tarafından desteklenen çok zincirli likidite toplayıcı",
+      "cta": "Başlayın"
     },
     "links": {
-      "exchange": "",
-      "dashboard": "",
-      "refuel": "",
-      "buy": ""
+      "exchange": "Al-Sat",
+      "dashboard": "Kontrol Paneli",
+      "refuel": "Gaz",
+      "buy": "Satın al"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "DEX'ler",
+      "bridges": "Köprüler",
+      "chains": "Ağlar"
     },
-    "connect": "",
+    "connect": "Bağlan",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "Bir Cüzdan Bağlayın",
+      "wallets": "Cüzdanlar",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "Cüzdan ekosistemi seçin",
+        "noEcosystemAdapter": "Uygun ekosistem bağdaştırıcısı bulunamadı"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "Tüm cüzdanları göster",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
-      "profile": "",
+      "brandAssets": "Varlıklar",
+      "theme": "Tema",
+      "developers": "Geliştiriciler",
+      "support": "Destek",
+      "profile": "Jumper Profili",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": "",
+      "disconnect": "Bağlantıyı Kes",
+      "chains": "Ağlar",
+      "switchChain": "Ağ değiştir",
+      "copy": "Kopyala",
+      "explore": "Keşfet",
+      "copiedMsg": "Cüzdan Adresi kopyalandı",
+      "walletNotInstalled": "{{wallet}} kurulu değil",
+      "connectAnotherWallet": "Başka bir cüzdana bağlan",
       "refreshBalances": "",
       "totalBalance": "",
       "totalBalanceTooltip": "",
@@ -50,9 +50,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": "",
+      "switchToLight": "Açık temaya geç",
+      "switchToDark": "Koyu Temaya geç",
+      "switchToSystem": "Sisteme geçiş yap",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
       "systemModeDisabled": "",
@@ -60,35 +60,35 @@
     },
     "developers": {
       "github": "",
-      "documentation": ""
+      "documentation": "Dökümantasyon"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Daha fazlası için Discord sunucumuza katıl",
+    "ctaButton": "Discord'a katıl"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "İpuçları ve öğreticiler",
+    "categories": "Kategoriler",
+    "allCategories": "Tümü",
+    "subtitle": "Kısaca, tüm seviyeler için DeFi ve kriptoya ilişkin adım adım kılavuzlar",
+    "minRead": "Okuma süresi:{{minRead}}",
+    "seeAllPosts": "Tüm gönderileri gör",
+    "recentPosts": "Son Gönderiler",
+    "similarPosts": "Benzer gönderiler",
+    "goToArticle": "Makaleye git",
+    "openApp": "Uygulamayı aç",
+    "faq": "SSS",
+    "jumperCta": "jumper.exchange'i deneyin",
+    "copiedLink": "Bağlantı kopyalandı",
+    "shareLinkedIn": "Makaleyi LinkedIn'de paylaş",
+    "shareFb": "Makaleyi Facebook'ta paylaş",
+    "shareX": "Makaleyi X'te paylaş",
+    "shareLink": "Bağlantıyı paylaş"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Solana ağında kısıtlı token desteği bulunmaktadır",
+    "subtitle": "Şu anda hem Solana ağına hem Solana ağından sadece USDC ve USDT köprü kurulabiliyor."
   },
   "seiAlert": {
     "title": "",
@@ -101,27 +101,27 @@
     "buttonText": ""
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "Daha fazla bilgi edinin"
   },
   "button": {
-    "okay": ""
+    "okay": "Tamam"
   },
   "error": {
-    "message": ""
+    "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Çoklu cüzdan bağlandı",
+      "description": "Lütfen diğer cüzdan katılımcılarını imzalamaya hazır olmaları için bilgilendirin."
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "Çoklu imza gerekiyor",
+      "description": "Lütfen diğer cüzdan katılımcılarını işlem süresi geçmeden imzalamaları için bilgilendirin."
     }
   },
   "questCard": {
-    "completed": "",
-    "join": "",
+    "completed": "Tamamlanan",
+    "join": "Katıl",
     "xpToEarnDescription": "",
     "earnedXPDescription": "",
     "action": {
@@ -135,12 +135,12 @@
     "new": ""
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "Mevcut Görevler",
+    "completed": "Tamamlanan Görevler"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": "",
+    "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
+    "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz.",
     "level": "",
     "rank": "",
     "rankInfo": "",
