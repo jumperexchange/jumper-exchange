@@ -1,123 +1,173 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Temukan rute terbaik",
-      "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
-      "cta": "Memulai"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
-    "poweredByLifi": "<0>Dipersembahkan oleh </0><1>LI.FI</1>",
     "links": {
-      "exchange": "Pertukaran",
-      "dashboard": "Dasbor",
-      "refuel": "Gas",
-      "buy": "Beli"
+      "exchange": "",
+      "dashboard": "",
+      "refuel": "",
+      "buy": ""
     },
     "statsCards": {
-      "dexs": "DEX",
-      "bridges": "Bridge",
-      "chains": "Jaringan"
+      "dexs": "",
+      "bridges": "",
+      "chains": ""
     },
-    "connect": "Hubungkan",
+    "connect": "",
     "walletSelectMenu": {
-      "connectWallet": "Hubungkan ke wallet",
-      "wallets": "Dompet",
+      "connectWallet": "",
+      "wallets": "",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "Pilih ekosistem dompet",
-        "noEcosystemAdapter": "Tidak ditemukan adaptor ekosistem yang sesuai"
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
       }
     },
-    "seeAllWallets": "Lihat semua dompet",
+    "seeAllWallets": "",
     "navbarMenu": {
-      "brandAssets": "Merek Aset",
-      "theme": "Tema",
-      "developers": "Para Pengembang",
-      "lifiExplorer": "LI.FI Scan",
-      "aboutLIFI": "Tentang LI.FI",
-      "support": "Bantuan",
-      "profile": "Profil Jumper"
+      "brandAssets": "",
+      "theme": "",
+      "developers": "",
+      "support": "",
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
-      "disconnect": "Tidak terkoneksi",
-      "chains": "Jaringan",
-      "switchChain": "Pindah Jaringan",
-      "copy": "Salin",
-      "explore": "Jelajah",
-      "copiedMsg": "Alamat dompet disalin",
-      "walletNotInstalled": "{{wallet}} belum terinstall",
-      "connectAnotherWallet": "Hubungkan dompet yang lain",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
+      "walletNotInstalled": "",
+      "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "Beralih ke Tema Terang",
-      "switchToDark": "Beralih ke Tema Gelap",
-      "switchToSystem": "Beralih ke Sistem"
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Dokumentasi"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {
-    "ctaHeadline": "Gabung ke Discord untuk mengetahui lebih lanjut",
-    "ctaButton": "Bergabunglah ke Discord kami"
+    "ctaHeadline": "",
+    "ctaButton": ""
   },
   "blog": {
-    "title": "Tips dan tutorial",
-    "categories": "Kategori",
-    "allCategories": "Semua",
-    "subtitle": "TL;DR panduan langkah demi langkah tentang DeFi dan kripto untuk semua level",
-    "minRead": "{{minRead}} min baca",
-    "seeAllPosts": "Lihat semua pos",
-    "recentPosts": "Pos terbaru",
-    "similarPosts": "Posting yang Mirip",
-    "goToArticle": "Pergi ke artikel",
-    "openApp": "Buka Aplikasi",
-    "faq": "Pertanyaan Umum (FAQ)",
-    "jumperCta": "Coba jumper.exchange",
-    "copiedLink": "Tautan yang Disalin",
-    "shareLinkedIn": "Bagi artikel di LinkedIn",
-    "shareFb": "Bagi artikel di Facebook",
-    "shareX": "Bagi artikel di X",
-    "shareLink": "Bagikan tautan"
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
   },
   "solanaAlert": {
-    "title": "Dukungan token Solana terbatas",
-    "subtitle": "Saat ini hanya USDC dan USDT yang dapat dijembatani ke dan dari Solana."
+    "title": "",
+    "subtitle": ""
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
   },
   "featureCard": {
-    "learnMore": "Pelajari lebih lanjut"
+    "learnMore": ""
   },
   "button": {
-    "okay": "Oke"
+    "okay": ""
   },
   "error": {
-    "message": "Ada yang salah. Silakan coba memuat ulang halaman tersebut. Jika masalah terus berlanjut, hubungi dukungan kami."
+    "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "Dompet multisig terhubung",
-      "description": "Harap beri tahu peserta dompet lainnya untuk siap menandatangani."
+      "title": "",
+      "description": ""
     },
     "transactionInitiated": {
-      "title": "Dibutuhkan banyak tanda tangan",
-      "description": "Harap beri tahu peserta dalam dompet multisig lainnya untuk menandatangani sebelum transaksi berakhir."
-    },
-    "alert": {
-      "title": "Dompet multisig terhubung",
-      "description": "Alamat dompet tujuan diperlukan untuk menyelesaikan pertukaran."
+      "title": "",
+      "description": ""
     }
   },
   "questCard": {
-    "completed": "Selesai",
-    "join": "Gabung"
+    "completed": "",
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
-    "available": "Misi yang tersedia",
-    "completed": "Misi yang telah selesai"
+    "available": "",
+    "completed": ""
   },
   "profile_page": {
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
