@@ -1,158 +1,158 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Encontre a melhor rota",
+      "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
+      "cta": "Começar"
     },
     "links": {
-      "exchange": "",
-      "dashboard": "",
-      "refuel": "",
-      "buy": ""
+      "exchange": "Conversão",
+      "dashboard": "Painel de controle",
+      "refuel": "Gás",
+      "buy": "Comprar"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "DEXs",
+      "bridges": "Pontes",
+      "chains": "Cadeias"
     },
-    "connect": "",
+    "connect": "Conectar",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "Conectar uma carteira",
+      "wallets": "Carteiras",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "Selecione o ecossistema da carteira",
+        "noEcosystemAdapter": "Não foi encontrado nenhum adaptador de ecossistema adequado"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
-      "profile": "",
-      "fest": ""
+      "brandAssets": "Ativos da marca",
+      "theme": "Tema",
+      "developers": "Desenvolvedores",
+      "support": "Suporte",
+      "profile": "Perfil Jumper",
+      "fest": "Festival Superfest"
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": "",
-      "refreshBalances": "",
-      "totalBalance": "",
-      "totalBalanceTooltip": "",
-      "totalBalanceRefresh": "",
-      "numberOfChains": ""
+      "disconnect": "Desconectar",
+      "chains": "Cadeias",
+      "switchChain": "Trocar Cadeia",
+      "copy": "Copiar",
+      "explore": "Explorar",
+      "copiedMsg": "Endereço da carteira copiado",
+      "walletNotInstalled": "{{wallet}} não está instalada",
+      "connectAnotherWallet": "Conectar outra carteira",
+      "refreshBalances": "Atualizar saldos",
+      "totalBalance": "Saldo total",
+      "totalBalanceTooltip": "Seu saldo total pode nem sempre estar exato devido a possíveis problemas de indexação. Estamos resolvendo!",
+      "totalBalanceRefresh": "Clique aqui para reiniciar a indexação de seus tokens agora.",
+      "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": "",
-      "lightModeDisabled": "",
-      "darkModeDisabled": "",
-      "systemModeDisabled": "",
-      "default": ""
+      "switchToLight": "Mudar para o Modo Claro",
+      "switchToDark": "Mudar para o Modo Escuro",
+      "switchToSystem": "Alternar para sistema",
+      "lightModeDisabled": "Modo claro está desativado para este tema",
+      "darkModeDisabled": "Modo escuro está desativado para este tema",
+      "systemModeDisabled": "Modo sistema está desativado para este tema",
+      "default": "Padrão"
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "GitHub",
+      "documentation": "Documentação"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "Entre no nosso Discord para saber mais",
+    "ctaButton": "Entre no nosso Discord"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "Dicas e tutoriais",
+    "categories": "Categorias",
+    "allCategories": "Tudo",
+    "subtitle": "Resumo: guias com passo-a-passo para DeFi e cripto para todos os níveis",
+    "minRead": "{{minRead}} leitura mínima",
+    "seeAllPosts": "Ver todas as publicações",
+    "recentPosts": "Publicações recentes",
+    "similarPosts": "Publicações semelhantes",
+    "goToArticle": "Ir para o artigo",
+    "openApp": "Abrir aplicativo",
+    "faq": "FAQ (Perguntas Mais Frequentes)",
+    "jumperCta": "Tente jumper.exchange",
+    "copiedLink": "Link copiado",
+    "shareLinkedIn": "Compartilhar artigo no LinkedIn",
+    "shareFb": "Compartilhar artigo no Facebook",
+    "shareX": "Compartilhar artigo no X",
+    "shareLink": "Compartilhar o link"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "Suporte limitado ao token Solana",
+    "subtitle": "No momento, apenas USDC e USDT podem ser enviados para e a partir da rede Solana."
   },
   "seiAlert": {
-    "title": "",
-    "subtitle": "",
-    "buttonText": ""
+    "title": "Necessário vincular a carteira SEI EVM",
+    "subtitle": "Para usar a SEI EVM, você precisa vincular seu endereço de carteira ao ecossistema SEI.",
+    "buttonText": "Vincular Carteira"
   },
   "abstractAlert": {
-    "title": "",
-    "subtitle": "",
-    "buttonText": ""
+    "title": "Esta carteira só funciona na Abstract!",
+    "subtitle": "A Carteira Abstract só existe na Abstract. Não use este endereço em qualquer outra blockchain, você perderá seus fundos.",
+    "buttonText": "Verifique a documentação"
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "Saiba mais"
   },
   "button": {
-    "okay": ""
+    "okay": "Ok"
   },
   "error": {
-    "message": ""
+    "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Carteira Multisig conectada",
+      "description": "Por favor, notifique os outros participantes da carteira para estarem prontos para assinarem."
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "São necessárias múltiplas assinaturas",
+      "description": "Por favor, notifique os outros participantes da carteira multisig para assinarem antes que a transação expire."
     }
   },
   "questCard": {
-    "completed": "",
-    "join": "",
-    "xpToEarnDescription": "",
-    "earnedXPDescription": "",
+    "completed": "Concluído",
+    "join": "Entrar",
+    "xpToEarnDescription": "Complete a barra de progresso por {{action}} para ganhar +{{xpToEarn}} XP adicional este mês.",
+    "earnedXPDescription": "Você desbloqueou {{earnedXP}}XP por {{action}} até agora este mês e foi adicionado ao seu total saldo de XP.",
     "action": {
-      "chain_oor": "",
-      "transact_oor": "",
-      "swap_oor": "",
-      "bridge_oor": ""
+      "chain_oor": "explorando cadeias",
+      "transact_oor": "negociando",
+      "swap_oor": "convertendo",
+      "bridge_oor": "ponte"
     }
   },
   "promo": {
-    "new": ""
+    "new": "Novo"
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "Missões Disponíveis",
+    "completed": "Missões Concluídas"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": "",
-    "level": "",
-    "rank": "",
-    "rankInfo": "",
-    "pointsInfo": "",
-    "levelInfo": "",
-    "copyAddress": "",
-    "shareProfile": "",
-    "open": "",
-    "rewards": ""
+    "mobileTitle": "Disponível apenas no Computador",
+    "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso.",
+    "level": "Nível",
+    "rank": "Classificação",
+    "rankInfo": "Rank é sua posição na tabela de classificação. Ganhe XP e suba na tabela de classificação.",
+    "pointsInfo": "XP é sua pontuação por interagir com a Jumper. Enquanto você ganha pontos de XP, seu nível aumenta. XP provenientes das transações Jumper é atualizado diariamente.",
+    "levelInfo": "Um nível mais alto aumenta suas chances de ganhar recompensas de sorteios, vantagens, parceiros, recompensas e mais.",
+    "copyAddress": "Copiar o endereço da carteira",
+    "shareProfile": "Partilhar perfil",
+    "open": "Abre {{tool}}",
+    "rewards": "Recompensas ganhas"
   },
   "leaderboard": {
-    "title": "",
+    "title": "Tabela de Classificação",
     "description": "",
     "rankCtaConnect": "",
     "updatedLabel": "",
