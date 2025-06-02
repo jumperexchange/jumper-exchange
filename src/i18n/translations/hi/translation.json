@@ -5,7 +5,6 @@
       "subtitle": "",
       "cta": ""
     },
-    "poweredByLifi": "",
     "links": {
       "exchange": "",
       "dashboard": "डैशबोर्ड",
@@ -31,10 +30,9 @@
       "brandAssets": "",
       "theme": "विषय",
       "developers": "डेवलपर",
-      "lifiExplorer": "",
-      "aboutLIFI": "लिफी के बारे में",
       "support": "सहायता",
-      "profile": ""
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
       "disconnect": "डिस्कनेक्ट करें",
@@ -46,12 +44,19 @@
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "",
       "switchToDark": "",
-      "switchToSystem": ""
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
       "github": "गिटहब",
@@ -85,6 +90,16 @@
     "title": "",
     "subtitle": ""
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": ""
   },
@@ -102,15 +117,22 @@
     "transactionInitiated": {
       "title": "",
       "description": ""
-    },
-    "alert": {
-      "title": "",
-      "description": ""
     }
   },
   "questCard": {
     "completed": "",
-    "join": ""
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "",
@@ -118,6 +140,34 @@
   },
   "profile_page": {
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
