@@ -1,19 +1,18 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Scopri la route migliore",
-      "subtitle": "<0>4x verificato</0> aggregatori di liquidità multi-chain powerade by <1>LI.FI</1>",
-      "cta": "Inizia adesso"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
-    "poweredByLifi": "",
     "links": {
       "exchange": "",
       "dashboard": "",
       "refuel": "",
-      "buy": "Acquista"
+      "buy": ""
     },
     "statsCards": {
-      "dexs": "DEX",
+      "dexs": "",
       "bridges": "",
       "chains": ""
     },
@@ -29,33 +28,39 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "Tema",
-      "developers": "Sviluppatori",
-      "lifiExplorer": "",
-      "aboutLIFI": "Info su LI.FI",
-      "support": "Assistenza",
-      "profile": ""
+      "theme": "",
+      "developers": "",
+      "support": "",
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
-      "disconnect": "Disconnetti",
+      "disconnect": "",
       "chains": "",
-      "switchChain": "Cambia Chain",
-      "copy": "Copia",
-      "explore": "Esplora",
-      "copiedMsg": "Indirizzo del portafogli copiato",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "Passa al tema chiaro",
-      "switchToDark": "Passa al tema scuro",
-      "switchToSystem": ""
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
       "github": "",
-      "documentation": "Documentazione"
+      "documentation": ""
     }
   },
   "discordBanner": {
@@ -85,32 +90,49 @@
     "title": "",
     "subtitle": ""
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": ""
   },
   "button": {
-    "okay": "Ok"
+    "okay": ""
   },
   "error": {
     "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "Portafoglio Multisig connesso",
-      "description": "Si prega di avvisare gli altri partecipanti del wallet di essere pronti per firmare."
+      "title": "",
+      "description": ""
     },
     "transactionInitiated": {
-      "title": "Sono necessarie firme multiple",
-      "description": "Si prega di avvisare gli altri partecipanti del wallet multisig di firmare prima della scadenza della transazione."
-    },
-    "alert": {
-      "title": "Wallet Multisig connesso",
-      "description": "L'indirizzo del wallet di destinazione è necessario per completare lo scambio."
+      "title": "",
+      "description": ""
     }
   },
   "questCard": {
     "completed": "",
-    "join": ""
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "",
@@ -118,6 +140,34 @@
   },
   "profile_page": {
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
