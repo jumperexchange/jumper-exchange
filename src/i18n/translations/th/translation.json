@@ -1,48 +1,48 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "หาเส้นทางที่ดีที่สุด",
+      "subtitle": "4x ในการตรวจสอบหลายเชนโดย LI.FI",
+      "cta": "เริ่มต้นใช้งาน"
     },
     "links": {
-      "exchange": "",
-      "dashboard": "",
-      "refuel": "",
-      "buy": ""
+      "exchange": "แลกเปลี่ยน",
+      "dashboard": "แผงหน้าจอ",
+      "refuel": "แก็ส",
+      "buy": "ซื้อ"
     },
     "statsCards": {
-      "dexs": "",
-      "bridges": "",
-      "chains": ""
+      "dexs": "DEX",
+      "bridges": "บริดจ์",
+      "chains": "เชน"
     },
-    "connect": "",
+    "connect": "เชื่อมต่อ",
     "walletSelectMenu": {
-      "connectWallet": "",
-      "wallets": "",
+      "connectWallet": "เชื่อมต่อกระเป๋าเงิน",
+      "wallets": "กระเป๋าเงิน",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "",
-        "noEcosystemAdapter": ""
+        "selectEcosystem": "เลือก ecosystem ของ wallet",
+        "noEcosystemAdapter": "ไม่พบอแดปเตอร์ Ecosystem ที่เหมาะสม"
       }
     },
-    "seeAllWallets": "",
+    "seeAllWallets": "ดูกระเป๋าเงินทั้งหมด",
     "navbarMenu": {
-      "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
-      "profile": "",
+      "brandAssets": "มูลค่าสินทรัพท์ของแบรนด์",
+      "theme": "ธีม",
+      "developers": "ผู้พัฒนา",
+      "support": "สนับสนุน",
+      "profile": "โปรไฟล์ Jumper",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
-      "walletNotInstalled": "",
-      "connectAnotherWallet": "",
+      "disconnect": "ยกเลิกการเชื่อมต่อ",
+      "chains": "เชน",
+      "switchChain": "เปลี่ยนเชน",
+      "copy": "คัดลอก",
+      "explore": "สำรวจ",
+      "copiedMsg": "คัดลอกที่อยู่กระเป๋าเงินแล้ว",
+      "walletNotInstalled": "{{wallet}} ยังไม่ถูกติดตั้ง",
+      "connectAnotherWallet": "เชื่อมต่อกระเป๋าเงินอื่น",
       "refreshBalances": "",
       "totalBalance": "",
       "totalBalanceTooltip": "",
@@ -50,45 +50,45 @@
       "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
-      "switchToSystem": "",
+      "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
+      "switchToDark": "เปลี่ยนเป็นธีมมืด",
+      "switchToSystem": "เปลี่ยนไปยังระบบ",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
       "systemModeDisabled": "",
       "default": ""
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "เว็บไซท์ Github",
+      "documentation": "เอกสาร"
     }
   },
   "discordBanner": {
-    "ctaHeadline": "",
-    "ctaButton": ""
+    "ctaHeadline": "เข้าร่วม Discord ของเราเพื่อเรียนรู้เพิ่มเติม",
+    "ctaButton": "เข้าร่วมเซิฟเวอร์ Discord ของเรา"
   },
   "blog": {
-    "title": "",
-    "categories": "",
-    "allCategories": "",
-    "subtitle": "",
-    "minRead": "",
-    "seeAllPosts": "",
-    "recentPosts": "",
-    "similarPosts": "",
-    "goToArticle": "",
-    "openApp": "",
-    "faq": "",
-    "jumperCta": "",
-    "copiedLink": "",
-    "shareLinkedIn": "",
-    "shareFb": "",
-    "shareX": "",
-    "shareLink": ""
+    "title": "เคล็ดลับและบทแนะนำ",
+    "categories": "หมวดหมู่",
+    "allCategories": "ทั้งหมด",
+    "subtitle": "สรุปย่อ: คู่มือทีละขั้นตอนสำหรับ DeFi และคริปโตสำหรับทุกระดับ",
+    "minRead": "{{minRead}} อ่านน้อยที่สุด",
+    "seeAllPosts": "ดูโพสทั้งหมด",
+    "recentPosts": "โพสต์ล่าสุด",
+    "similarPosts": "โพสต์ที่ใกล้เคียง",
+    "goToArticle": "ไปยังบทความ",
+    "openApp": "เปิดแอปฯ",
+    "faq": "คำถามที่พบบ่อย",
+    "jumperCta": "ทดลองใช้ jumper.exchange",
+    "copiedLink": "คัดลอกลิงค์แล้ว",
+    "shareLinkedIn": "แบ่งปันบทความบน LinkedIn",
+    "shareFb": "แบ่งปันบทความบน Facebook",
+    "shareX": "แบ่งปันบทความบน X",
+    "shareLink": "แบ่งปันลิงค์"
   },
   "solanaAlert": {
-    "title": "",
-    "subtitle": ""
+    "title": "รองรับโทเค็น Solana อย่างจำกัด",
+    "subtitle": "ขณะนี้เฉพาะ USDC และ USDT เท่านั้นที่สามารถสร้างสะสมและเบริดไปยังและมาจาก Solana ได้"
   },
   "seiAlert": {
     "title": "",
@@ -101,27 +101,27 @@
     "buttonText": ""
   },
   "featureCard": {
-    "learnMore": ""
+    "learnMore": "เรียนรู้เพิ่มเติม"
   },
   "button": {
-    "okay": ""
+    "okay": "ตกลง"
   },
   "error": {
-    "message": ""
+    "message": "เกิดข้อผิดพลาดบางอย่าง โปรดลองโหลดหน้าเว็บใหม่อีกครั้ง หากปัญหายังคงอยู่ กรุณาติดต่อฝ่ายสนับสนุนของเรา"
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Multisig wallet เชื่อมต่อแล้ว",
+      "description": "กรุณาแจ้งผู้ใช้งานวอลเล็ตอื่น ๆ ให้เตรียมพร้อมที่จะลงนาม"
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "จำเป็นต้องใช้ Multiple signatures",
+      "description": "กรุณาแจ้งผู้ใช้งานอื่นที่เข้าร่วมในวอลเล็ตมัลติซิกให้ลงนามก่อนที่ธุรกรรมจะหมดอายุ"
     }
   },
   "questCard": {
-    "completed": "",
-    "join": "",
+    "completed": "เสร็จสมบูรณ์",
+    "join": "เข้าร่วม",
     "xpToEarnDescription": "",
     "earnedXPDescription": "",
     "action": {
@@ -135,12 +135,12 @@
     "new": ""
   },
   "missions": {
-    "available": "",
-    "completed": ""
+    "available": "ภารกิจที่มีอยู่",
+    "completed": "ภารกิจที่สำเร็จแล้ว"
   },
   "profile_page": {
-    "mobileTitle": "",
-    "mobileDescription": "",
+    "mobileTitle": "เฉพาะบนคอมพิวเตอร์เท่านั้น",
+    "mobileDescription": "หน้าโปรไฟล์ของ Jumper ยังไม่พร้อมใช้งานบนหน้าจอขนาดเล็ก  เรากำลังพัฒนาอยู่",
     "level": "",
     "rank": "",
     "rankInfo": "",
