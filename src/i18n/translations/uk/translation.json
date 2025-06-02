@@ -1,123 +1,173 @@
 {
   "navbar": {
     "welcome": {
-      "title": "Знайдіть найкращий маршрут",
-      "subtitle": "<0>4x аудитований</0> мульти-чейн агрегатор ліквідності на основі <1>LI.FI</1>",
-      "cta": "Почати"
+      "title": "",
+      "subtitle": "",
+      "cta": ""
     },
-    "poweredByLifi": "<0>Powered by </0><1>LI.FI</1>",
     "links": {
-      "exchange": "Обмін",
-      "dashboard": "Дешборд",
-      "refuel": "Газ",
-      "buy": "Купівля"
+      "exchange": "",
+      "dashboard": "",
+      "refuel": "",
+      "buy": ""
     },
     "statsCards": {
-      "dexs": "DEXs",
-      "bridges": "Бриджей",
-      "chains": "Чейнів"
+      "dexs": "",
+      "bridges": "",
+      "chains": ""
     },
-    "connect": "Під’єднатися",
+    "connect": "",
     "walletSelectMenu": {
-      "connectWallet": "Під'єднати гаманець",
-      "wallets": "Гаманці",
+      "connectWallet": "",
+      "wallets": "",
       "ecosystemSelectMenu": {
-        "selectEcosystem": "Виберіть екосистему гаманця",
-        "noEcosystemAdapter": "Відповідного адаптера для екосистеми не знайдено"
+        "selectEcosystem": "",
+        "noEcosystemAdapter": ""
       }
     },
-    "seeAllWallets": "Переглянути всі гаманці",
+    "seeAllWallets": "",
     "navbarMenu": {
-      "brandAssets": "Бренд ресурси",
-      "theme": "Тема",
-      "developers": "Розробникам",
-      "lifiExplorer": "LI.FI Scan",
-      "aboutLIFI": "Про LI.FI",
-      "support": "Підтримка",
-      "profile": "Профіль Jumper"
+      "brandAssets": "",
+      "theme": "",
+      "developers": "",
+      "support": "",
+      "profile": "",
+      "fest": ""
     },
     "walletMenu": {
-      "disconnect": "Від'єднатись",
-      "chains": "Чейни",
-      "switchChain": "Перемикнути чейн",
-      "copy": "Скопіювати",
-      "explore": "Переглянути",
-      "copiedMsg": "Адреса гаманця скопійована",
-      "walletNotInstalled": "{{wallet}} не встановлено",
-      "connectAnotherWallet": "Під'єднати інший гаманець",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
+      "walletNotInstalled": "",
+      "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "Увімкнути світлу тему",
-      "switchToDark": "Увімкнути темну тему",
-      "switchToSystem": "Увімкнути системну тему"
+      "switchToLight": "",
+      "switchToDark": "",
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Документація"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {
-    "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
-    "ctaButton": "Доєднуйся до нас у Discord"
+    "ctaHeadline": "",
+    "ctaButton": ""
   },
   "blog": {
-    "title": "Поради та навчальні матеріали",
-    "categories": "Категорії",
-    "allCategories": "Всі",
-    "subtitle": "TL;DR покрокові інструкції до DeFi і крипто для всіх рівнів",
-    "minRead": "{{minRead}} хв читання",
-    "seeAllPosts": "Переглянути всі записи",
-    "recentPosts": "Останні дописи",
-    "similarPosts": "Схожі дописи",
-    "goToArticle": "Перейти до статті",
-    "openApp": "Відкрити додаток",
-    "faq": "FAQ",
-    "jumperCta": "Спробуйте jumper.exchange",
-    "copiedLink": "Посилання скопійовано",
-    "shareLinkedIn": "Поділитися статтею на LinkedIn",
-    "shareFb": "Поділитися статтею в Facebook",
-    "shareX": "Поділитися статтею на X",
-    "shareLink": "Поділитись посиланням"
+    "title": "",
+    "categories": "",
+    "allCategories": "",
+    "subtitle": "",
+    "minRead": "",
+    "seeAllPosts": "",
+    "recentPosts": "",
+    "similarPosts": "",
+    "goToArticle": "",
+    "openApp": "",
+    "faq": "",
+    "jumperCta": "",
+    "copiedLink": "",
+    "shareLinkedIn": "",
+    "shareFb": "",
+    "shareX": "",
+    "shareLink": ""
   },
   "solanaAlert": {
-    "title": "Обмежена підтримка токенів Solana",
-    "subtitle": "Наразі можна перевести тільки USDT і USDT до та з Solana."
+    "title": "",
+    "subtitle": ""
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
   },
   "featureCard": {
-    "learnMore": "Дізнатися більше"
+    "learnMore": ""
   },
   "button": {
-    "okay": "Добре"
+    "okay": ""
   },
   "error": {
-    "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
+    "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "Multisig гаманець під'єднано",
-      "description": "Будь ласка, повідомте інших учасників гаманця, щоб вони були готові до підпису."
+      "title": "",
+      "description": ""
     },
     "transactionInitiated": {
-      "title": "Потрібні кілька підписів",
-      "description": "Будь ласка, повідомте інших учасників multisig гаманця підписати до закінчення терміну транзакції."
-    },
-    "alert": {
-      "title": "Multisig гаманець під'єднано",
-      "description": "Для завершення обміну необхідна адреса гаманця призначення."
+      "title": "",
+      "description": ""
     }
   },
   "questCard": {
-    "completed": "Завершено",
-    "join": "Приєднатися"
+    "completed": "",
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
-    "available": "Доступні місії",
-    "completed": "Виконані місії"
+    "available": "",
+    "completed": ""
   },
   "profile_page": {
-    "mobileTitle": "Доступно лише на комп'ютері",
-    "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим."
+    "mobileTitle": "",
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }
