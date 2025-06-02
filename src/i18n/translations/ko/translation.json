@@ -7,9 +7,9 @@
     },
     "links": {
       "exchange": "",
-      "dashboard": "",
-      "refuel": "",
-      "buy": ""
+      "dashboard": "대시보드",
+      "refuel": "가스",
+      "buy": "매수"
     },
     "statsCards": {
       "dexs": "",
@@ -28,19 +28,19 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
+      "theme": "테마",
+      "developers": "개발자",
+      "support": "지원",
       "profile": "",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
-      "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
+      "disconnect": "연결 해제",
+      "chains": "체인",
+      "switchChain": "체인 변경",
+      "copy": "복사",
+      "explore": "탐색",
+      "copiedMsg": "지갑 주소 복사 완료",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
@@ -50,8 +50,8 @@
       "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
+      "switchToLight": "라이트 모드로 전환",
+      "switchToDark": "다크 모드로 전환",
       "switchToSystem": "",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
@@ -59,8 +59,8 @@
       "default": ""
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "깃허브",
+      "documentation": "문서"
     }
   },
   "discordBanner": {
