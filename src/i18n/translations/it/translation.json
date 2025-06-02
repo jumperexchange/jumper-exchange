@@ -1,18 +1,18 @@
 {
   "navbar": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "cta": ""
+      "title": "Scopri la route migliore",
+      "subtitle": "<0>4x verificato</0> aggregatori di liquidità multi-chain powerade by <1>LI.FI</1>",
+      "cta": "Inizia adesso"
     },
     "links": {
       "exchange": "",
       "dashboard": "",
       "refuel": "",
-      "buy": ""
+      "buy": "Acquista"
     },
     "statsCards": {
-      "dexs": "",
+      "dexs": "DEX",
       "bridges": "",
       "chains": ""
     },
@@ -28,19 +28,19 @@
     "seeAllWallets": "",
     "navbarMenu": {
       "brandAssets": "",
-      "theme": "",
-      "developers": "",
-      "support": "",
+      "theme": "Tema",
+      "developers": "Sviluppatori",
+      "support": "Assistenza",
       "profile": "",
       "fest": ""
     },
     "walletMenu": {
-      "disconnect": "",
+      "disconnect": "Disconnetti",
       "chains": "",
-      "switchChain": "",
-      "copy": "",
-      "explore": "",
-      "copiedMsg": "",
+      "switchChain": "Cambia Chain",
+      "copy": "Copia",
+      "explore": "Esplora",
+      "copiedMsg": "Indirizzo del portafogli copiato",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
@@ -50,8 +50,8 @@
       "numberOfChains": ""
     },
     "themes": {
-      "switchToLight": "",
-      "switchToDark": "",
+      "switchToLight": "Passa al tema chiaro",
+      "switchToDark": "Passa al tema scuro",
       "switchToSystem": "",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
@@ -60,7 +60,7 @@
     },
     "developers": {
       "github": "",
-      "documentation": ""
+      "documentation": "Documentazione"
     }
   },
   "discordBanner": {
@@ -104,19 +104,19 @@
     "learnMore": ""
   },
   "button": {
-    "okay": ""
+    "okay": "Ok"
   },
   "error": {
     "message": ""
   },
   "multisig": {
     "connected": {
-      "title": "",
-      "description": ""
+      "title": "Portafoglio Multisig connesso",
+      "description": "Si prega di avvisare gli altri partecipanti del wallet di essere pronti per firmare."
     },
     "transactionInitiated": {
-      "title": "",
-      "description": ""
+      "title": "Sono necessarie firme multiple",
+      "description": "Si prega di avvisare gli altri partecipanti del wallet multisig di firmare prima della scadenza della transazione."
     }
   },
   "questCard": {
