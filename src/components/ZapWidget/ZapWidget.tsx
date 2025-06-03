@@ -59,7 +59,6 @@ const buildContractComposable = async (
     },
   });
 };
-
 export interface ProjectData {
   chain: string;
   chainId: number;
@@ -350,6 +349,7 @@ export function ZapWidget({
       if (!address) {
         throw new Error('User address (EOA) is not available.');
       }
+
       const transferLpInstruction = await buildContractComposable(oNexus, {
         address: depositAddress,
         chainId: depositChainId,
@@ -517,13 +517,31 @@ export function ZapWidget({
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
       },
       explorerUrls: {
-        "1": ['https://meescan.biconomy.io/details/'],
-        "10": ['https://meescan.biconomy.io/details/'],
-        "854": ['https://meescan.biconomy.io/details/'],
-        "137": ['https://meescan.biconomy.io/details/'],
-        "8453": ['https://meescan.biconomy.io/details/'],
-        "1313161554": ['https://meescan.biconomy.io/details/'],
-        "11155111": ['https://meescan.biconomy.io/details/'],
+        "1": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "10": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "854": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "1313161554": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "11155111": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -534,7 +552,7 @@ export function ZapWidget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
-        // HiddenUI.ToAddress,
+        HiddenUI.ToAddress,
         HiddenUI.ReverseTokensButton
       ],
       appearance: widgetTheme.config.appearance,
