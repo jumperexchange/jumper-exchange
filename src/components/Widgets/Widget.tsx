@@ -54,10 +54,8 @@ export function Widget({
   const formRef = useRef<FormState>(null);
   const { i18n } = useTranslation();
   const { account } = useAccount();
-  const {
-    sourceChainToken: sourceChainTokenSelected,
-    destinationChainToken: destionationChainTokenSelected,
-  } = useChainTokenSelectionStore();
+  const { destinationChainToken: destionationChainTokenSelected } =
+    useChainTokenSelectionStore();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
