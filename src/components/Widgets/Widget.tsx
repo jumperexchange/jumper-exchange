@@ -65,13 +65,6 @@ export function Widget({
   });
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
-
-  console.log(
-    'destinationChainToken from useUrlParams',
-    destinationChainTokenFromUrl,
-  );
-  console.log('sourceChainToken', sourceChainTokenSelected.chainId);
-  console.log('destinationChainToken', destionationChainTokenSelected.chainId);
   const { mode } = useColorScheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const widgetTheme = useMemo(
