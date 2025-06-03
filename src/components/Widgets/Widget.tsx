@@ -20,7 +20,7 @@ import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { tokens } from 'src/config/tokens';
+import { ARB_NATIVE_USDC, tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
@@ -259,7 +259,8 @@ export function Widget({
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
         ...((sourceChainToken.chainId === (998 as ChainId) &&
-          destinationChainToken.isEvm) ||
+          destinationChainToken.chainId === ChainId.ARB &&
+          destinationChainToken.tokenAddress === ARB_NATIVE_USDC) ||
         (destinationChainToken.chainId === (998 as ChainId) &&
           sourceChainToken.isEvm)
           ? [HiddenUI.ToAddress]
