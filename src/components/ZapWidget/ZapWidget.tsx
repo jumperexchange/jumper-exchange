@@ -35,6 +35,30 @@ import {
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
 
+// Utility function to build composable instructions based on contract configuration
+const buildContractComposable = async (
+  oNexus: MultichainSmartAccount,
+  contractConfig: {
+    address: string;
+    chainId: number;
+    abi: any;
+    functionName: string;
+    args: any[];
+    gasLimit?: bigint;
+  },
+) => {
+  return oNexus.buildComposable({
+    type: 'default',
+    data: {
+      abi: [contractConfig.abi],
+      to: contractConfig.address as `0x${string}`,
+      chainId: contractConfig.chainId,
+      functionName: contractConfig.functionName,
+      gasLimit: contractConfig.gasLimit,
+      args: contractConfig.args,
+    },
+  });
+};
 export interface ProjectData {
   chain: string;
   chainId: number;
@@ -281,49 +305,43 @@ export function ZapWidget({
       ];
 
       // token approval
-      const approveInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.approve],
-          to: depositToken,
-          chainId: depositChainId,
-          functionName: integrationData.abi.approve.name,
-          gasLimit: 100000n,
-          args: [
-            depositAddress,
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositToken,
-              constraints,
-            }),
-          ],
-        },
+      const approveInstruction = await buildContractComposable(oNexus, {
+        address: depositToken,
+        chainId: depositChainId,
+        abi: integrationData.abi.approve,
+        functionName: integrationData.abi.approve.name,
+        gasLimit: 100000n,
+        args: [
+          depositAddress,
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositToken,
+            constraints,
+          }),
+        ],
       });
       instructions.push(approveInstruction);
 
       // Deposit instruction
-      const depositInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.deposit],
-          to: depositAddress,
-          chainId: depositChainId,
-          functionName: integrationData.abi.deposit.name,
-          gasLimit: 1000000n,
-          args: [
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositToken,
-              constraints,
-            }),
-          ],
-        },
+      const depositInstruction = await buildContractComposable(oNexus, {
+        address: depositAddress,
+        chainId: depositChainId,
+        abi: integrationData.abi.deposit,
+        functionName: integrationData.abi.deposit.name,
+        gasLimit: 1000000n,
+        args: [
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositToken,
+            constraints,
+          }),
+        ],
       });
       instructions.push(depositInstruction);
 
@@ -331,26 +349,24 @@ export function ZapWidget({
       if (!address) {
         throw new Error('User address (EOA) is not available.');
       }
-      const transferLpInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.transfer],
-          to: depositAddress, // This should be the LP token address
-          chainId: depositChainId,
-          functionName: integrationData.abi.transfer.name,
-          gasLimit: 200000n,
-          args: [
-            address, // Recipient is the user's EOA
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositAddress, // LP token address
-              constraints,
-            }),
-          ],
-        },
+
+      const transferLpInstruction = await buildContractComposable(oNexus, {
+        address: depositAddress,
+        chainId: depositChainId,
+        abi: integrationData.abi.transfer,
+        functionName: integrationData.abi.transfer.name,
+        gasLimit: 200000n,
+        args: [
+          address,
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositAddress,
+            constraints,
+          }),
+        ],
       });
       instructions.push(transferLpInstruction);
 
@@ -377,7 +393,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-      
+
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -409,7 +425,8 @@ export function ZapWidget({
       });
 
       const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -493,7 +510,7 @@ export function ZapWidget({
     const baseConfig: WidgetConfig = {
       toAddress: {
         name: 'Smart Account',
-        address: address as `0x${string}` || '0x',
+        address: (address as `0x${string}`) || '0x',
         chainType: ChainType.EVM,
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -501,13 +518,41 @@ export function ZapWidget({
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
       },
       explorerUrls: {
-        "1": ['https://meescan.biconomy.io/details/'],
-        "10": ['https://meescan.biconomy.io/details/'],
-        "854": ['https://meescan.biconomy.io/details/'],
-        "137": ['https://meescan.biconomy.io/details/'],
-        "8453": ['https://meescan.biconomy.io/details/'],
-        "1313161554": ['https://meescan.biconomy.io/details/'],
-        "11155111": ['https://meescan.biconomy.io/details/'],
+        '1': [
+          {
+            url: 'https://meescan.biconomy.io',
+            txPath: 'details',
+            addressPath: 'address',
+          },
+        ],
+        '10': [
+          {
+            url: 'https://meescan.biconomy.io',
+            txPath: 'details',
+            addressPath: 'address',
+          },
+        ],
+        '854': [
+          {
+            url: 'https://meescan.biconomy.io',
+            txPath: 'details',
+            addressPath: 'address',
+          },
+        ],
+        '1313161554': [
+          {
+            url: 'https://meescan.biconomy.io',
+            txPath: 'details',
+            addressPath: 'address',
+          },
+        ],
+        '11155111': [
+          {
+            url: 'https://meescan.biconomy.io',
+            txPath: 'details',
+            addressPath: 'address',
+          },
+        ],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -518,8 +563,8 @@ export function ZapWidget({
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
-        // HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton
+        HiddenUI.ToAddress,
+        HiddenUI.ReverseTokensButton,
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
