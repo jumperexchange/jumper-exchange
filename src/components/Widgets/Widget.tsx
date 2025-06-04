@@ -162,6 +162,14 @@ export function Widget({
     [starterVariant, partnerName],
   );
 
+  const isBridgeFromHypeToArbNativeUSDC =
+    sourceChainToken.chainId === (998 as ChainId) &&
+    destinationChainToken.chainId === ChainId.ARB &&
+    destinationChainToken.tokenAddress === ARB_NATIVE_USDC;
+  const isBridgeFromEvmToHype =
+    destinationChainToken.chainId === (998 as ChainId) &&
+    sourceChainToken.isEvm;
+
   const integratorStringByType = useMemo(() => {
     if (configTheme?.integrator) {
       return configTheme.integrator;
@@ -258,11 +266,7 @@ export function Widget({
       },
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
-        ...((sourceChainToken.chainId === (998 as ChainId) &&
-          destinationChainToken.chainId === ChainId.ARB &&
-          destinationChainToken.tokenAddress === ARB_NATIVE_USDC) ||
-        (destinationChainToken.chainId === (998 as ChainId) &&
-          sourceChainToken.isEvm)
+        ...(isBridgeFromHypeToArbNativeUSDC || isBridgeFromEvmToHype
           ? [HiddenUI.ToAddress]
           : []),
         HiddenUI.Appearance,

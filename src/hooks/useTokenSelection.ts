@@ -17,19 +17,20 @@ export const useTokenSelection = () => {
     destinationChainToken: destionationChainTokenSelected,
   } = useChainTokenSelectionStore();
 
-  const sourceChainToken = useMemo(() => {
-    return sourceChainTokenSelected || sourceChainTokenParam;
-  }, [sourceChainTokenSelected, sourceChainTokenParam]);
-  const destinationChainToken = useMemo(() => {
-    return destionationChainTokenSelected || destinationChainTokenParam;
-  }, [destionationChainTokenSelected, destinationChainTokenParam]);
+  const sourceChainToken = sourceChainTokenSelected || sourceChainTokenParam;
+  const destinationChainToken =
+    destionationChainTokenSelected || destinationChainTokenParam;
 
-  const isEvmSourceChain =
+  const isEvmSourceChain = useMemo(() => {
     sourceChainToken?.chainId &&
-    getChainById(sourceChainToken.chainId)?.chainType === ChainType.EVM;
-  const isEvmDestinationChain =
-    destinationChainToken?.chainId &&
-    getChainById(destinationChainToken.chainId)?.chainType === ChainType.EVM;
+      getChainById(sourceChainToken.chainId)?.chainType === ChainType.EVM;
+  }, [sourceChainToken]);
+  const isEvmDestinationChain = useMemo(() => {
+    return (
+      destinationChainToken?.chainId &&
+      getChainById(destinationChainToken.chainId)?.chainType === ChainType.EVM
+    );
+  }, [destinationChainToken]);
 
   return {
     sourceChainToken: { ...sourceChainToken, isEvm: isEvmSourceChain },
