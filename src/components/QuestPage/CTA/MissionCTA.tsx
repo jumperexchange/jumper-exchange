@@ -196,7 +196,7 @@ export const MissionCTA = ({
                   </Typography>
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
-                  {CTA.apy && !variableWeeklyAPY && (
+                  {!!CTA.apy && !variableWeeklyAPY && (
                     <XPRewardsInfo
                       variant="apy"
                       label={`${Number(CTA.apy).toFixed(1)}%`}
@@ -205,7 +205,7 @@ export const MissionCTA = ({
                       <APYIcon size={24} />
                     </XPRewardsInfo>
                   )}
-                  {variableWeeklyAPY && (
+                  {!!variableWeeklyAPY && (
                     <XPRewardsInfo
                       variant="variableWeeklyAPY"
                       label={
