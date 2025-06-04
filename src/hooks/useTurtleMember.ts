@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { exists, defaultConfig } from '@turtledev/api';
 
 interface UseTurtleProps {
   userAddress?: string;
@@ -16,19 +17,23 @@ const JUMPER_REF = 'JUMPER';
 export const useTurtleMember = ({
   userAddress,
 }: UseTurtleProps): UseTurtleRes => {
-  const TURTLE_CHECK_API = `https://points.turtle.club/user/${userAddress}/exists`;
-  const TURTLE_REFCHECK_API = `https://points.turtle.club/referral/${userAddress}`;
-
-  const { data, isSuccess, isLoading } = useQuery({
+  const {
+    data: isMember,
+    isSuccess: isMemberSuccess,
+    isLoading: isMemberLoading,
+  } = useQuery({
     queryKey: ['turtleMemberCheck'],
     queryFn: async () => {
       try {
-        const response = await fetch(TURTLE_CHECK_API);
-        const result = await response.text();
-        if (result) {
-          return result === 'true';
+        if (!userAddress) {
+          return false;
         }
-        return false;
+
+        const existsOptions = {
+          user: userAddress,
+        };
+
+        return await exists(existsOptions, defaultConfig);
       } catch (err) {
         console.error(err);
         return false;
@@ -46,7 +51,10 @@ export const useTurtleMember = ({
     queryKey: ['turtleMemberRefCheck'],
     queryFn: async () => {
       try {
-        const response = await fetch(TURTLE_REFCHECK_API);
+        // @Note: Seems @turtledev/api doesn't have a direct method for referral check, so we make a fetch call
+        const response = await fetch(
+          `${defaultConfig.pointsEndpoint}/referral/${userAddress}`,
+        );
         const result = await response.json();
         if (result && result.used_referral) {
           return result.used_referral === JUMPER_REF;
@@ -62,9 +70,9 @@ export const useTurtleMember = ({
   });
 
   return {
-    isMember: data,
+    isMember,
     isJumperMember: refCheck,
-    isSuccess: isSuccess && refCheckIsSuccess,
-    isLoading: isLoading && refCheckIsLoading,
+    isSuccess: isMemberSuccess && refCheckIsSuccess,
+    isLoading: isMemberLoading && refCheckIsLoading,
   };
 };
