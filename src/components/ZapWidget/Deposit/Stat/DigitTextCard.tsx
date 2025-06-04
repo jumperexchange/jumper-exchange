@@ -83,7 +83,7 @@ const DigitTextCard = ({
               fontWeight: 700,
               marginTop: '4px'
             }, hasDeposited ? {
-              color: theme.palette.primary.main
+              color: (theme.vars || theme).palette.text.primary
             } : {
               color: null
             }]}
