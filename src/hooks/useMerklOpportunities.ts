@@ -4,6 +4,8 @@ import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import { MerklOpportunity } from 'src/types/merkl';
 
 const MERKL_API = 'https://api.merkl.xyz/v4';
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 interface UseMerklOpportunitiesRes {
   isLoading: boolean;
@@ -28,18 +30,44 @@ export const useMerklOpportunities = ({
     queryFn: async () => {
       try {
         if (campaignId) {
+          // if campaignId is provided, filter opportunities by campaignId
           const response = await fetch(
             `${MERKL_API}/opportunities?campaignId=${campaignId}`,
+            {
+              next: {
+                revalidate: 3600, // Revalidate every hour
+                tags: [
+                  'merkl-opportunities',
+                  `merkl-opportunities-${campaignId}`,
+                ], // Tag for manual revalidation
+              },
+            },
           );
+          if (!response.ok) {
+            throw new Error(`Merkl API error: ${response.status}`);
+          }
           const result = await response.json();
           return result as MerklOpportunity;
         } else {
+          // else if rewardsIds is provided, search for opportunities by rewardsId
           const opportunities = await Promise.all(
             rewardsIds.map(async (rewardsId) => {
               if (!rewardsId) return null;
               const response = await fetch(
                 `${MERKL_API}/opportunities?&search=${rewardsId}`,
+                {
+                  next: {
+                    revalidate: 3600, // Revalidate every hour
+                    tags: [
+                      'merkl-opportunities',
+                      `merkl-opportunities-${rewardsId}`,
+                    ], // Tag for manual revalidation
+                  },
+                },
               );
+              if (!response.ok) {
+                throw new Error(`Merkl API error: ${response.status}`);
+              }
               const result = await response.json();
               return result as MerklOpportunity[];
             }),
@@ -52,7 +80,9 @@ export const useMerklOpportunities = ({
       }
     },
     enabled: !!campaignId || rewardsIds.length > 0,
-    refetchInterval: 1000 * 60 * 60, // Refetch every hour
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   if (rewardsIds.length > 0 && data && Array.isArray(data)) {

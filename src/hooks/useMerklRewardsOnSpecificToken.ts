@@ -60,6 +60,8 @@ const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
 const CREATOR_TAG = MERKL_CREATOR_TAG;
 
 const MERKL_API = 'https://api.merkl.xyz/v3';
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 // TESTING
 // const TOKEN = '0x41A65AAE5d1C8437288d5a29B4D049897572758E';
@@ -83,15 +85,24 @@ export const useMerklRewardsOnSpecificToken = ({
     isSuccess: positionsIsSuccess,
     isLoading: positionsIsLoading,
   } = useQuery({
-    queryKey: ['MerklPositions'],
-
+    queryKey: ['MerklPositions', userAddress, ACTIVE_CHAINS.join(',')],
     queryFn: async () => {
-      const response = await fetch(MERKL_POSITIONS_API, {});
+      const response = await fetch(MERKL_POSITIONS_API, {
+        next: {
+          revalidate: 3600, // Revalidate every hour
+          tags: ['merkl-positions', `merkl-positions-${userAddress}`], // Tag for manual revalidation
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Merkl API error: ${response.status}`);
+      }
       const result = await response.json();
       return result as MerklPositionData;
     },
     enabled: !!userAddress,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   // loop through the chains and positions
@@ -112,15 +123,27 @@ export const useMerklRewardsOnSpecificToken = ({
     isSuccess: rewardsIsSuccess,
     isLoading: rewardsIsLoading,
   } = useQuery({
-    queryKey: ['MerklRewards'],
-
+    queryKey: ['MerklRewards', userAddress, rewardChainId],
     queryFn: async () => {
-      const response = await fetch(MERKL_REWARDS_API, {});
+      const response = await fetch(MERKL_REWARDS_API, {
+        next: {
+          revalidate: 3600, // Revalidate every hour
+          tags: [
+            'merkl-rewards',
+            `merkl-rewards-${userAddress}-${rewardChainId}`,
+          ], // Tag for manual revalidation
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Merkl API error: ${response.status}`);
+      }
       const result = await response.json();
       return result;
     },
     enabled: !!userAddress,
-    refetchInterval: 1000 * 60 * 60,
+    refetchInterval: CACHE_TIME, // Refetch every hour
+    staleTime: STALE_TIME, // Consider data stale after 5 minutes
+    gcTime: CACHE_TIME, // Keep data in cache for 1 hour
   });
 
   // transform to know what is not coming from Jumper campaigns
