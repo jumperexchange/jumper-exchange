@@ -120,10 +120,7 @@ function Task({
             justifyContent: 'space-between',
           }}
         >
-          <InstructionsAccordionItemHeader
-            className="HEADER"
-            sx={{ width: '100%' }}
-          >
+          <InstructionsAccordionItemHeader sx={{ width: '100%' }}>
             <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
