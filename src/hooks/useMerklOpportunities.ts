@@ -1,7 +1,6 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
-import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import { MerklOpportunity } from 'src/types/merkl';
 
 const MERKL_API = 'https://api.merkl.xyz/v4';
@@ -30,7 +29,7 @@ export const useMerklOpportunities = ({
       try {
         if (campaignId) {
           const response = await fetch(
-            `${MERKL_API}/opportunities/${campaignId}`,
+            `${MERKL_API}/opportunities?campaignId=${campaignId}`,
           );
           const result = await response.json();
           return result as MerklOpportunity;
@@ -39,7 +38,7 @@ export const useMerklOpportunities = ({
             rewardsIds.map(async (rewardsId) => {
               if (!rewardsId) return null;
               const response = await fetch(
-                `${MERKL_API}/opportunities?chainId=${REWARDS_CHAIN_IDS[0]}&search=${rewardsId}`,
+                `${MERKL_API}/opportunities?&search=${rewardsId}`,
               );
               const result = await response.json();
               return result as MerklOpportunity[];
@@ -84,13 +83,13 @@ export const useMerklOpportunities = ({
   }
 
   // Type guard to check if data is a single object
-  if (data && !Array.isArray(data)) {
+  if (data && Array.isArray(data) && data.length === 1 && !!campaignId) {
     const opportunitiesByCampaignId = {
-      claimingId: data.id,
-      apy: data.apr,
-      logo: data.protocol.icon,
-      text: data.name,
-      link: data.depositUrl,
+      claimingId: data[0].id,
+      apy: data[0].apr,
+      logo: data[0].protocol.icon,
+      text: data[0].name,
+      link: data[0].depositUrl,
     };
 
     return {
@@ -99,7 +98,6 @@ export const useMerklOpportunities = ({
       isSuccess,
     };
   }
-
   return {
     data: [],
     isLoading,
