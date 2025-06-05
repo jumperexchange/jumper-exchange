@@ -7,7 +7,7 @@ export const useDexsAndBridges = () => {
     queryFn: async () => {
       const apiUrl = getApiUrl();
       // The widget query is automatically adding ? at the end of the URL,
-      // so adding it there will avoid to duplicated the api call.
+      // so adding it there avoids duplicating the API call.
       const response = await fetch(`${apiUrl}/tools?`);
       const result = await response.json();
       return result;
