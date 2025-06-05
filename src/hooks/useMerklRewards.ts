@@ -33,10 +33,13 @@ const MERKL_CLAIMING_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
 const CACHE_TIME = 1000 * 60 * 60; // 1 hour
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
+interface TokenAddressesByChain {
+  [chainId: number]: Set<string>;
+}
+
 export const useMerklRewards = ({
   userAddress,
   MerklRewards,
-  claimableTokens,
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
   // Get unique chain IDs from MerklRewards or use default chains
@@ -48,45 +51,6 @@ export const useMerklRewards = ({
           ),
         ]
       : REWARDS_CHAIN_IDS;
-
-  // Get Merkl tokens for each chain if we need token icons
-  const merklTokensQueries = useQueries({
-    queries: includeTokenIcons
-      ? chainIds.map((chainId) => ({
-          queryKey: ['MerklTokens', chainId],
-          queryFn: async () => {
-            const response = await fetch(
-              `${MERKL_API}/tokens/reward/${chainId}`,
-              {
-                next: {
-                  revalidate: 3600, // Revalidate every hour
-                  tags: ['merkl-tokens', `merkl-tokens-${chainId}`], // Tag for manual revalidation
-                },
-              },
-            );
-            return response.json();
-          },
-          enabled: !!chainId,
-          refetchInterval: CACHE_TIME, // Refetch every hour
-          staleTime: STALE_TIME, // Consider data stale after 5 minutes
-          gcTime: CACHE_TIME, // Keep data in cache for 1 hour
-        }))
-      : [],
-  });
-
-  // Map of chainId to tokens
-  const merklTokensByChain: Record<string, MerklToken[] | undefined> =
-    includeTokenIcons
-      ? chainIds.reduce(
-          (acc, chainId, index) => {
-            if (chainId) {
-              acc[chainId.toString()] = merklTokensQueries[index].data;
-            }
-            return acc;
-          },
-          {} as Record<string, MerklToken[] | undefined>,
-        )
-      : {};
 
   // Call to get the active positions with new v4 API format
   const MERKL_POSITIONS_API = `${MERKL_API}/users/${userAddress}/rewards${
@@ -118,86 +82,155 @@ export const useMerklRewards = ({
   });
 
   // Process the rewards data with new v4 format
-  const { rewardsToClaim, pastCampaigns } = userRewardsData
-    ? (() => {
-        // Get token addresses from MerklRewards if provided
-        const tokenAddresses = (MerklRewards || [])
-          .flatMap((el) => el.TokenAddress)
-          .filter((el) => !!el)
-          .map((addr) => (addr as string).toLowerCase());
-
-        // Process all rewards and collect campaign IDs
-        const processedData = userRewardsData.flatMap((chainData) => {
-          const rewards = chainData.rewards
-            .filter((reward) => {
-              // Skip if we have token addresses and this reward's token is not in the list
-              if (tokenAddresses?.length > 0) {
-                return tokenAddresses.includes(
-                  reward.token.address.toLowerCase(),
-                );
+  const { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards } =
+    userRewardsData
+      ? (() => {
+          // Get token addresses with their chain IDs from MerklRewards if provided
+          const tokenAddressesByChain = (
+            MerklRewards || []
+          ).reduce<TokenAddressesByChain>((acc, reward) => {
+            if (reward.ChainId && reward.TokenAddress) {
+              const chainId = Number(reward.ChainId);
+              const tokenAddress = (
+                reward.TokenAddress as string
+              ).toLowerCase();
+              if (!acc[chainId]) {
+                acc[chainId] = new Set();
               }
-              return true;
-            })
-            .map((reward) => {
-              // Find matching token for icon if needed
-              let tokenLogo = '';
-              if (includeTokenIcons) {
-                const chainTokens =
-                  merklTokensByChain[reward.token.chainId.toString()];
-                const matchingToken = chainTokens?.find(
-                  (token: MerklToken) =>
-                    token.address.toLowerCase() ===
-                    reward.token.address.toLowerCase(),
-                );
-                tokenLogo = matchingToken?.icon || '';
-              }
+              acc[chainId].add(tokenAddress);
+            }
+            return acc;
+          }, {});
 
-              // Calculate amounts
-              const amountBigInt = BigInt(reward.amount);
-              const claimedBigInt = BigInt(reward.claimed);
-              const decimals = reward.token.decimals;
-
-              return {
-                chainId: reward.token.chainId,
-                address: reward.token.address,
-                symbol: reward.token.symbol,
-                accumulatedAmountForContractBN: reward.amount,
-                amountToClaim: Number(
+          // Process all rewards and collect campaign IDs
+          const processedData = userRewardsData.flatMap((chainData) => {
+            const chainId = Number(chainData.chain.id);
+            const rewards = chainData.rewards
+              .filter((reward) => {
+                // Skip if we have token addresses for this chain and this reward's token is not in the list
+                const chainTokens = tokenAddressesByChain[chainId];
+                if (chainTokens?.size > 0) {
+                  return chainTokens.has(reward.token.address.toLowerCase());
+                }
+                return true;
+              })
+              .map((reward) => {
+                // Calculate amounts
+                const amountBigInt = BigInt(reward.amount);
+                const claimedBigInt = BigInt(reward.claimed);
+                const decimals = reward.token.decimals;
+                const amountToClaim = Number(
                   (amountBigInt - claimedBigInt) / BigInt(10 ** decimals),
-                ),
-                amountAccumulated: Number(
-                  amountBigInt / BigInt(10 ** decimals),
-                ),
-                proof: reward.proofs,
-                explorerLink: chainData.chain.Explorer[0]?.url || '',
-                chainLogo: chainData.chain.icon,
-                tokenLogo,
-                claimingAddress: MERKL_CLAIMING_ADDRESS,
-                tokenDecimals: decimals,
-              };
-            });
+                );
 
-          return rewards;
-        });
+                return {
+                  chainId: reward.token.chainId,
+                  address: reward.token.address,
+                  symbol: reward.token.symbol,
+                  accumulatedAmountForContractBN: reward.amount,
+                  amountToClaim,
+                  amountAccumulated: Number(
+                    amountBigInt / BigInt(10 ** decimals),
+                  ),
+                  proof: reward.proofs,
+                  explorerLink: chainData.chain.Explorer[0]?.url || '',
+                  chainLogo: chainData.chain.icon,
+                  tokenLogo: '', // Will be filled later if needed
+                  claimingAddress: MERKL_CLAIMING_ADDRESS,
+                  tokenDecimals: decimals,
+                };
+              });
 
-        // Collect all campaign IDs
-        const campaignIds = userRewardsData.flatMap((chainData) =>
-          chainData.rewards.flatMap((reward) =>
-            reward.breakdowns.map((breakdown) => breakdown.campaignId),
-          ),
-        );
+            return rewards;
+          });
 
-        return {
-          rewardsToClaim: processedData,
-          pastCampaigns: [...new Set(campaignIds)],
+          // Collect all campaign IDs
+          const campaignIds = userRewardsData.flatMap((chainData) =>
+            chainData.rewards.flatMap((reward) =>
+              reward.breakdowns.map((breakdown) => breakdown.campaignId),
+            ),
+          );
+
+          // Get unique chain IDs where user has claimable rewards
+          const chainsWithRewards = new Set(
+            processedData
+              .filter((reward) => reward.amountToClaim > 0)
+              .map((reward) => reward.chainId),
+          );
+
+          return {
+            rewardsToClaim: processedData,
+            pastCampaigns: [...new Set(campaignIds)],
+            chainsWithClaimableRewards: Array.from(chainsWithRewards),
+          };
+        })()
+      : {
+          rewardsToClaim: [],
+          pastCampaigns: [],
+          chainsWithClaimableRewards: [],
         };
-      })()
-    : { rewardsToClaim: [], pastCampaigns: [] };
+
+  // Get Merkl tokens only for chains where user has claimable rewards
+  const merklTokensQueries = useQueries({
+    queries: includeTokenIcons
+      ? chainsWithClaimableRewards.map((chainId) => ({
+          queryKey: ['MerklTokens', chainId],
+          queryFn: async () => {
+            const response = await fetch(
+              `${MERKL_API}/tokens/reward/${chainId}`,
+              {
+                next: {
+                  revalidate: 3600, // Revalidate every hour
+                  tags: ['merkl-tokens', `merkl-tokens-${chainId}`], // Tag for manual revalidation
+                },
+              },
+            );
+            if (!response.ok) {
+              throw new Error(`Merkl API error: ${response.status}`);
+            }
+            return response.json();
+          },
+          enabled: !!userAddress && !!chainId,
+          refetchInterval: CACHE_TIME, // Refetch every hour
+          staleTime: STALE_TIME, // Consider data stale after 5 minutes
+          gcTime: CACHE_TIME, // Keep data in cache for 1 hour
+        }))
+      : [],
+  });
+
+  // Map of chainId to tokens
+  const merklTokensByChain: Record<string, MerklToken[] | undefined> =
+    includeTokenIcons
+      ? chainsWithClaimableRewards.reduce(
+          (acc, chainId, index) => {
+            if (chainId) {
+              acc[chainId.toString()] = merklTokensQueries[index].data;
+            }
+            return acc;
+          },
+          {} as Record<string, MerklToken[] | undefined>,
+        )
+      : {};
+
+  // Add token logos to rewards if needed
+  const rewardsWithLogos = includeTokenIcons
+    ? rewardsToClaim.map((reward) => {
+        const chainTokens = merklTokensByChain[reward.chainId.toString()];
+        const matchingToken = chainTokens?.find(
+          (token: MerklToken) =>
+            token.address.toLowerCase() === reward.address.toLowerCase(),
+        );
+        return {
+          ...reward,
+          tokenLogo: matchingToken?.icon || '',
+        };
+      })
+    : rewardsToClaim;
 
   return {
     isLoading: positionsIsLoading,
     isSuccess: positionsIsSuccess,
-    availableRewards: rewardsToClaim,
+    availableRewards: rewardsWithLogos,
     pastCampaigns,
   };
 };

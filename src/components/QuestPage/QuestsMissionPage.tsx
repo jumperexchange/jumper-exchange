@@ -26,7 +26,6 @@ export const QuestsMissionPage = ({
   path,
 }: QuestsMissionPageVar) => {
   const attributes = quest;
-  const CTAs = quest?.CustomInformation?.['CTA'];
   const missionType = quest?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
@@ -37,6 +36,7 @@ export const QuestsMissionPage = ({
   const { pastCampaigns } = useMerklRewards({
     userAddress: account.address,
   });
+
   const { data } = useMerklOpportunities({ rewardsIds });
   return (
     <QuestsContainer>
