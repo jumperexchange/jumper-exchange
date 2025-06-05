@@ -92,7 +92,7 @@ test.describe('Verify essential mobile flows', () => {
 
     await test.step('welcome can be closed', async () => {
       await closeWelcomeScreen(page);
-      expect(page.locator(LANDING_PAGE.GET_STARTED_BUTTON)).not.toBeVisible();
+      await expect(page.locator(LANDING_PAGE.GET_STARTED_BUTTON)).not.toBeVisible();
     });
   });
 
