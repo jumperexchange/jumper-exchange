@@ -1,16 +1,12 @@
 import { ChainId, ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-import type {
-  ChainTokenSelected,
-  FormFieldChanged,
-  FormState,
-} from '@lifi/widget';
+import type { FormFieldChanged, FormState } from '@lifi/widget';
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { RefObject, useEffect, useMemo, useState } from 'react';
 import { ExtendedChainId } from 'src/components/Widgets/Widget.types';
 import { ARB_NATIVE_USDC } from 'src/config/tokens';
-import { useChains } from './useChains';
 import { useUrlParams } from './useUrlParams';
+import { useWidgetSelectedChains } from './useWidgetSelectedChains';
 
 interface UseWidgetSelectionProps {
   formRef?: RefObject<FormState | null>;
@@ -29,10 +25,10 @@ export const useWidgetSelection = ({
   allowToChains,
   configThemeChains,
 }: UseWidgetSelectionProps) => {
-  const { getChainById } = useChains();
   const widgetEvents = useWidgetEvents();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
+  const { sourceChainToken, destinationChainToken } = useWidgetSelectedChains();
 
   const {
     sourceChainToken: sourceChainTokenParam,
@@ -90,62 +86,17 @@ export const useWidgetSelection = ({
     wrapperRef,
   ]);
 
-  const sourceChainToken = useMemo<ChainTokenSelected | undefined>(() => {
-    if (formValues.fromChain && formValues.fromToken) {
-      return {
-        chainId: formValues.fromChain,
-        tokenAddress: formValues.fromToken,
-      };
-    }
-    if (sourceChainTokenParam?.chainId && sourceChainTokenParam?.token) {
-      return {
-        chainId: sourceChainTokenParam.chainId,
-        tokenAddress: sourceChainTokenParam.token,
-      };
-    }
-    return undefined;
-  }, [formValues.fromChain, formValues.fromToken, sourceChainTokenParam]);
-
-  const destinationChainToken = useMemo<ChainTokenSelected | undefined>(() => {
-    if (formValues.toChain && formValues.toToken) {
-      return { chainId: formValues.toChain, tokenAddress: formValues.toToken };
-    }
-    if (
-      destinationChainTokenParam?.chainId &&
-      destinationChainTokenParam?.token
-    ) {
-      return {
-        chainId: destinationChainTokenParam.chainId,
-        tokenAddress: destinationChainTokenParam.token,
-      };
-    }
-    return undefined;
-  }, [formValues.toChain, formValues.toToken, destinationChainTokenParam]);
-
-  const isEvmSourceChain = useMemo(() => {
-    return (
-      sourceChainToken?.chainId &&
-      getChainById(sourceChainToken.chainId)?.chainType === ChainType.EVM
-    );
-  }, [sourceChainToken, getChainById]);
-
-  const isEvmDestinationChain = useMemo(() => {
-    return (
-      destinationChainToken?.chainId &&
-      getChainById(destinationChainToken.chainId)?.chainType === ChainType.EVM
-    );
-  }, [destinationChainToken, getChainById]);
-
   // Bridge condition checks
   const bridgeConditions = useMemo(() => {
     const isBridgeFromHypeToArbNativeUSDC =
       sourceChainToken?.chainId === ExtendedChainId.HYPE &&
       destinationChainToken?.chainId === ChainId.ARB &&
-      destinationChainToken?.tokenAddress === ARB_NATIVE_USDC;
+      destinationChainToken?.tokenAddress?.toLowerCase() ===
+        ARB_NATIVE_USDC.toLowerCase();
 
     const isBridgeFromEvmToHype =
-      destinationChainToken?.chainId === ExtendedChainId.HYPE &&
-      isEvmSourceChain;
+      sourceChainToken.chainType === ChainType.EVM &&
+      destinationChainToken.chainId === ExtendedChainId.HYPE;
 
     const isAGWToNonABSChain =
       isConnectedAGW && destinationChainToken?.chainId !== ChainId.ABS;
@@ -159,52 +110,48 @@ export const useWidgetSelection = ({
       shouldRequireToAddress: isAGWToNonABSChain,
     };
   }, [
-    sourceChainToken?.chainId,
-    destinationChainToken?.chainId,
-    destinationChainToken?.tokenAddress,
-    isEvmSourceChain,
+    sourceChainToken.chainId,
+    sourceChainToken.chainType,
+    destinationChainToken.chainId,
+    destinationChainToken.tokenAddress,
+    isConnectedAGW,
+  ]);
+
+  useEffect(() => {
+    if (!formRef?.current) return;
+
+    if (isConnectedAGW && formValues.toAddress === account.address) {
+      formRef.current.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
+      return;
+    }
+
+    if (
+      bridgeConditions.isBridgeFromEvmToHype ||
+      bridgeConditions.isBridgeFromHypeToArbNativeUSDC
+    ) {
+      formRef.current.setFieldValue('toAddress', undefined, {
+        setUrlSearchParam: true,
+      });
+    }
+  }, [
+    bridgeConditions.isBridgeFromEvmToHype,
+    bridgeConditions.isBridgeFromHypeToArbNativeUSDC,
+    formValues.toAddress,
+    account.address,
     isConnectedAGW,
   ]);
 
   useEffect(() => {
     const handleFormFieldChanged = (fieldChange: FormFieldChanged) => {
-      if (!fieldChange || !formRef?.current) return;
+      if (!fieldChange) return;
 
       // Update form values
       setFormValues((prev) => ({
         ...prev,
         [fieldChange.fieldName]: fieldChange.newValue,
       }));
-
-      // Handle AGW address check
-      if (
-        isConnectedAGW &&
-        fieldChange.fieldName === 'toAddress' &&
-        fieldChange.newValue === account.address
-      ) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        return;
-      }
-
-      // Handle bridge conditions
-      const isBridgeFromHypeToArbNativeUSDC =
-        fieldChange.fieldName === 'fromChain' &&
-        fieldChange.newValue === ExtendedChainId.HYPE &&
-        formValues.toChain === ChainId.ARB &&
-        formValues.toToken === ARB_NATIVE_USDC;
-
-      const isBridgeFromEvmToHype =
-        fieldChange.fieldName === 'toChain' &&
-        fieldChange.newValue === ExtendedChainId.HYPE &&
-        isEvmSourceChain;
-
-      if (isBridgeFromHypeToArbNativeUSDC || isBridgeFromEvmToHype) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
     };
 
     widgetEvents.on(WidgetEvent.FormFieldChanged, handleFormFieldChanged);
@@ -218,20 +165,10 @@ export const useWidgetSelection = ({
     account.address,
     formValues.toChain,
     formValues.toToken,
-    isEvmSourceChain,
+    sourceChainToken.chainType,
   ]);
 
   return {
-    sourceChainToken: sourceChainToken
-      ? { ...sourceChainToken, isEvm: isEvmSourceChain }
-      : undefined,
-    destinationChainToken: destinationChainToken
-      ? {
-          ...destinationChainToken,
-          isEvm: isEvmDestinationChain,
-        }
-      : undefined,
-    toAddress,
     bridgeConditions,
   };
 };
