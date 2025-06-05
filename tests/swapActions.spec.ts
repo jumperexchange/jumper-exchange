@@ -22,7 +22,10 @@ test.describe('On chain swaps', () => {
       await page.getByTestId('ArrowBackIcon').first().click();
       const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoETH);
       await page.goto(`/${urlParams}`);
-      await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true, checkRelayRoute: true });
+      await checkRoutesVisibility(page, {
+        bestReturnShouldBeVisible: true,
+        checkRelayRoute: true,
+      });
     });
   });
 
@@ -56,7 +59,7 @@ test.describe('On chain swaps', () => {
     await test.step(`Check ${chainData.SOLtoHYPE.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHYPE.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
       const urlParams = buildUlParams(chainData.SOLtoHYPE.SOLtoUSDC);
       await page.goto(`/${urlParams}`);
-      await checkRoutesVisibility(page, {bestReturnShouldBeVisible: false });
+      await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
     });
 
     await test.step(`Check ${chainData.SUItoHYPE.SUItoUSDC.tokenSymbol} to ${chainData.SUItoHYPE.SUItoUSDC.toTokenSymbol} swap pair`, async () => {

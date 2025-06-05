@@ -15,7 +15,7 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
+import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -29,6 +29,7 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
+import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 
 export function Widget({
@@ -50,7 +51,7 @@ export function Widget({
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<FormState>(null);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { account } = useAccount();
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
@@ -339,6 +340,27 @@ export function Widget({
           integrator={config.integrator}
           config={config}
           formRef={formRef}
+          feeConfig={{
+            _vcComponent: () => (
+              <FeeContribution
+                translations={{
+                  title: t('contribution.title'),
+                  contributionSent: t('contribution.contributionSent'),
+                  description: t('contribution.description'),
+                  custom: t('contribution.custom'),
+                  confirm: t('contribution.confirm'),
+                  error: {
+                    errorSending: t('contribution.error.errorSending'),
+                    amountTooSmall: t('contribution.error.amountTooSmall'),
+                    noFeeAddress: t('contribution.error.noFeeAddress'),
+                    invalidTokenPrice: t(
+                      'contribution.error.invalidTokenPrice',
+                    ),
+                  },
+                }}
+              />
+            ),
+          }}
         />
       </ClientOnly>
     </WidgetWrapper>

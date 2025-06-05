@@ -26,6 +26,7 @@ import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
+import { useRouteStore } from 'src/stores/route/RouteStore';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
@@ -50,6 +51,7 @@ export function WidgetEvents() {
   const [setDestinationChain] = useMultisigStore((state) => [
     state.setDestinationChain,
   ]);
+  const setCompletedRoute = useRouteStore((state) => state.setCompletedRoute);
 
   const { account } = useAccount();
 
@@ -92,9 +94,10 @@ export function WidgetEvents() {
     };
 
     const onRouteExecutionCompleted = async (route: Route) => {
-      //to do: if route is not lifi then refetch position of destination token??
-
       if (route.id) {
+        // Store the completed route
+        setCompletedRoute(route);
+
         // Refresh portfolio value
         setForceRefresh(true);
 
@@ -452,6 +455,7 @@ export function WidgetEvents() {
     trackEvent,
     trackTransaction,
     widgetEvents,
+    setCompletedRoute,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {
