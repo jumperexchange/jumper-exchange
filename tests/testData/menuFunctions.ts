@@ -50,6 +50,3 @@ export async function switchTheme(page, theme: Theme) {
   await page.locator('#main-burger-menu-button').click();
 }
 
-export async function getElementByText(page, text: string) {
-  return page.locator(`xpath=//p[normalize-space(text())="${text}"]`);
-}

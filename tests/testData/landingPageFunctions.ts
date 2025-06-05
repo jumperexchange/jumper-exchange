@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { getElementByText } from './menuFunctions';
+import { getElementByText } from './commonFunctions';
 
 export async function findTheBestRoute(page) {
   await page.getByRole('heading', { name: 'Find the best route' });
@@ -25,13 +25,13 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
 export async function checkRoutesVisibility(
   page: Page,
   options: {
-    bestRetrunShouldBeVisible: boolean;
+     bestReturnShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
   }
 ) {
-  const { bestRetrunShouldBeVisible, checkRelayRoute } = options;
+  const { bestReturnShouldBeVisible, checkRelayRoute } = options;
 
-  if (bestRetrunShouldBeVisible) {
+  if ( bestReturnShouldBeVisible) {
     const bestReturnLabel = await getElementByText(page, 'Best Return');
     await expect(bestReturnLabel).toBeVisible();
 

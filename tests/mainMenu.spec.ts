@@ -6,9 +6,8 @@ import {
   openOrCloseMainMenu,
   openLeaderboardPage,
   sectionOnTheBlogPage,
-  getElementByText,
 } from './testData/menuFunctions';
-
+import { getElementByText } from './testData/commonFunctions';
 import values from '../tests/testData/values.json' assert { type: 'json' };
 import {
   closeWelcomeScreen,
