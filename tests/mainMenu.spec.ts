@@ -4,9 +4,10 @@ import {
   checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
   openOrCloseMainMenu,
+  openLeaderboardPage,
   sectionOnTheBlogPage,
 } from './testData/menuFunctions';
-
+import { getElementByText } from './testData/commonFunctions';
 import values from '../tests/testData/values.json' assert { type: 'json' };
 import {
   closeWelcomeScreen,
@@ -47,9 +48,10 @@ test.describe('Main Menu flows', () => {
   test('Should open the Jumper Profile page and then open the leaderboard page', async ({
     page,
   }) => {
-    const leaderboardButton = await page.locator('#leaderboard-button');
-    const whereDoYouRank = await page.locator(
-      'xpath=//p[normalize-space(text())="Where do you rank?"]',
+    const whereDoYouRank = await getElementByText(page, 'Where do you rank?');
+    const completedMissions = await getElementByText(
+      page,
+      'Completed Missions',
     );
     const connectWalletButtonOnLeaderboardPage = await page.locator(
       '#leaderboard-entry-connect-button',
@@ -57,7 +59,8 @@ test.describe('Main Menu flows', () => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Profile');
     await page.locator('.profile-page').isVisible();
-    await leaderboardButton.click();
+    await expect(completedMissions).not.toHaveCSS('cursor', 'pointer');
+    await openLeaderboardPage(page);
     await expect(whereDoYouRank).toBeVisible();
     await expect(connectWalletButtonOnLeaderboardPage).toBeVisible();
   });
@@ -76,7 +79,7 @@ test.describe('Main Menu flows', () => {
     const articleTitle = await page.locator(
       'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
-  
+
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Learn');
     await expect(page).toHaveURL(values.localLearnURL);
@@ -114,9 +117,11 @@ test.describe('Main Menu flows', () => {
   test.skip('Should be able to open quests mission page and switch background color', async ({
     page,
   }) => {
-    const jumperProfileBackButton = await page.locator(
-      'xpath=//p[normalize-space(text())="JUMPER LOYALTY PASS"]',
+    const jumperProfileBackButton = await getElementByText(
+      page,
+      'Jumper Profile',
     );
+
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
     await openOrCloseMainMenu(page);
@@ -140,12 +145,15 @@ test.describe('Main Menu flows', () => {
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
   });
-  
+
   test('Should be able to click on the Support button', async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Support');
-    const iFrameLocator = page.frameLocator('iframe[title="Discord chat embed"]');
-    const openDiscordAppInIframe= await iFrameLocator.getByText('Open Discord App')
+    const iFrameLocator = page.frameLocator(
+      'iframe[title="Discord chat embed"]',
+    );
+    const openDiscordAppInIframe =
+      await iFrameLocator.getByText('Open Discord App');
     await expect(openDiscordAppInIframe).toBeVisible();
   });
 });

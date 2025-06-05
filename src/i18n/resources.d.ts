@@ -39,7 +39,6 @@ interface Resources {
         developers: 'Developers';
         support: 'Support';
         profile: 'Profile';
-        fest: 'Superfest Festival';
       };
       walletMenu: {
         disconnect: 'Disconnect';
@@ -189,6 +188,13 @@ interface Resources {
         invalidTokenPrice: 'Invalid token price';
         noFeeAddress: 'No contribution fee address configured for this chain.';
       };
+    };
+    tooltips: {
+      tvl: 'Total value of crypto assets deposited in this market.';
+      apy: 'Expected yearly return rate of the tokens invested.';
+      deposit: 'The displayed token is the token required to deposit into this market.';
+      deposited: 'Amount you have deposited into this market.';
+      boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
     };
   };
 }

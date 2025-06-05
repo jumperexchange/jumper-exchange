@@ -18,10 +18,9 @@ export const MaxButton = styled(Button, {
   minWidth: 'unset',
   height: 'auto',
   color: '#fff',
-  backgroundColor:
-    mainColor ?? alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.75),
+  backgroundColor: mainColor ?? alpha(theme.palette.primary.main, 0.75),
   '&:hover': {
-    backgroundColor: mainColor ?? (theme.vars || theme).palette.primary.main,
+    backgroundColor: mainColor ?? theme.palette.primary.main,
   },
 }));
 
@@ -39,9 +38,10 @@ export const WidgetLikeGrid = styled(Grid)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   boxShadow:
     '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-  ...theme.applyStyles("light", {
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)'
-  })
+  ...theme.applyStyles('light', {
+    boxShadow:
+      '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
+  }),
 }));
 
 export const CustomFormControl = styled(FormControl)(({ theme }) => ({
@@ -72,9 +72,9 @@ export const CustomFormControl = styled(FormControl)(({ theme }) => ({
   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
     borderBottom: 'none',
   },
-  ...theme.applyStyles("light", {
-    border: `1px solid ${'#E5E1EB'}`
-  })
+  ...theme.applyStyles('light', {
+    border: `1px solid ${'#E5E1EB'}`,
+  }),
 }));
 
 export const WidgetFormHelperText = styled(FormHelperText)(({ theme }) => ({
