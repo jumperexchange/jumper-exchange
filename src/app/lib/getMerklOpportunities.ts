@@ -1,13 +1,11 @@
 import {
   fetchMerklOpportunities,
-  MERKL_API,
-  transformMerklOpportunities,
+  transformOpportunity,
 } from '@/utils/merkl/merklApi';
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
+import { MerklOpportunity } from 'src/types/merkl';
 
 export interface GetMerklOpportunitiesResponse {
-  data: CTALinkInt[];
-  url: string;
+  data: MerklOpportunity[];
 }
 
 export async function getMerklOpportunities({
@@ -23,13 +21,14 @@ export async function getMerklOpportunities({
       campaignId,
     });
 
-    const data = transformMerklOpportunities(
-      opportunities,
-      rewardsIds,
-      campaignId,
-    );
+    // Transform opportunities based on the context
+    const data = opportunities.map((opportunity) => {
+      // If we have rewardsIds, find the matching rewardsId for this opportunity
+      const matchingRewardsId = rewardsIds.find((id) => id === opportunity.id);
+      return transformOpportunity(opportunity, matchingRewardsId);
+    });
 
-    return { data, url: MERKL_API };
+    return { data };
   } catch (error) {
     console.error('Error fetching Merkl opportunities:', error);
     throw new Error('Failed to fetch Merkl opportunities');

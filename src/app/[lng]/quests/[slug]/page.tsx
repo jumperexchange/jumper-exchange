@@ -2,9 +2,10 @@ import { questSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteName } from 'src/app/lib/metadata';
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { MerklOpportunity } from 'src/types/merkl';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getMerklOpportunities } from '../../../lib/getMerklOpportunities';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
@@ -32,6 +33,7 @@ export async function generateMetadata({
     }
 
     const questData = quest.data;
+    const baseUrl = getStrapiBaseUrl();
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
@@ -40,7 +42,7 @@ export async function generateMetadata({
       url: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
       images: [
         {
-          url: `${quest.url}${questData.Image?.url}`,
+          url: `${baseUrl}${questData.Image?.url}`,
           width: 900,
           height: 450,
           alt: 'banner image',
@@ -75,7 +77,7 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  const { data, url } = await getQuestBySlug(slugResult.data);
+  const { data } = await getQuestBySlug(slugResult.data);
   if (!data) {
     return notFound();
   }
@@ -85,7 +87,7 @@ export default async function Page({ params }: { params: Params }) {
   const merklOpportunities =
     Array.isArray(rewardsIds) && rewardsIds.length > 0
       ? await getMerklOpportunities({ rewardsIds })
-      : { data: [], url: '' };
+      : { data: [] };
 
   // Fetch Merkl opportunities for tasks if they have campaign IDs
   const taskOpportunities = await Promise.all(
@@ -102,7 +104,7 @@ export default async function Page({ params }: { params: Params }) {
   );
 
   // Convert to a map for easier lookup
-  const taskOpportunitiesMap: Record<string, CTALinkInt[]> =
+  const taskOpportunitiesMap: Record<string, MerklOpportunity[]> =
     taskOpportunities.reduce(
       (acc, curr) => {
         if (curr) {
@@ -110,13 +112,11 @@ export default async function Page({ params }: { params: Params }) {
         }
         return acc;
       },
-      {} as Record<string, CTALinkInt[]>,
+      {} as Record<string, MerklOpportunity[]>,
     );
-
   return (
     <QuestPage
       quest={data}
-      url={url}
       merklOpportunities={merklOpportunities.data}
       taskOpportunities={taskOpportunitiesMap}
     />

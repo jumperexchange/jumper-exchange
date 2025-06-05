@@ -1,8 +1,8 @@
 import type { ChainId } from '@lifi/sdk';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import type { Quest } from './loyaltyPass';
+import { MerklOpportunity } from './merkl';
 
 export interface QuestSocials {
   twitter: string;
@@ -26,7 +26,7 @@ export interface QuestDetails {
   rewards: RewardsInterface;
   missionType: string;
   traits: string[];
-  CTA: CTALinkInt[];
+  CTA: MerklOpportunity[];
   partner: { logo: string; name: string }[];
   marketIds?: string[];
 }

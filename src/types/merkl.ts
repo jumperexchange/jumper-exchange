@@ -34,7 +34,7 @@ interface TokenInfo {
   decimals: number;
 }
 
-interface RewardBreakdown {
+export interface RewardBreakdown {
   reason: string;
   amount: string;
   claimed: string;
@@ -71,7 +71,7 @@ export interface AvailableRewardsExtended extends AvailableRewards {
   tokenDecimals: number;
 }
 
-interface Token {
+export interface Token {
   id: string;
   name: string;
   chainId: number;
@@ -88,7 +88,7 @@ interface Token {
   displaySymbol?: string;
 }
 
-interface Chain {
+export interface Chain {
   id: number;
   name: string;
   icon: string;
@@ -100,7 +100,7 @@ interface Chain {
   }>;
 }
 
-interface Protocol {
+export interface Protocol {
   id: string;
   tags: string[];
   name: string;
@@ -109,20 +109,20 @@ interface Protocol {
   icon: string;
 }
 
-interface Breakdown {
+export interface Breakdown {
   distributionType: string;
   identifier: string;
   type: string;
   value: number;
 }
 
-interface AprRecord {
+export interface AprRecord {
   cumulated: number;
   timestamp: string;
   breakdowns: Breakdown[];
 }
 
-interface TvlRecord {
+export interface TvlRecord {
   id: string;
   total: number;
   timestamp: string;
@@ -133,11 +133,11 @@ interface TvlRecord {
   }>;
 }
 
-interface RewardToken extends Token {
+export interface RewardToken extends Token {
   displaySymbol: string;
 }
 
-interface RewardBreakdown {
+export interface RewardBreakdown {
   token: RewardToken;
   amount: string;
   value: number;
@@ -147,7 +147,7 @@ interface RewardBreakdown {
   dailyRewardsRecordId: string;
 }
 
-interface RewardsRecord {
+export interface RewardsRecord {
   id: string;
   total: number;
   timestamp: string;
@@ -155,6 +155,7 @@ interface RewardsRecord {
 }
 
 export interface MerklOpportunity {
+  // Core properties
   chainId: number;
   type: string;
   identifier: string;
@@ -177,6 +178,15 @@ export interface MerklOpportunity {
   aprRecord: AprRecord;
   tvlRecord: TvlRecord;
   rewardsRecord: RewardsRecord;
+
+  // UI related properties
+  logo: string;
+  text: string;
+  link: string;
+  claimingId: string;
+  rewardId?: string;
+  apy: number;
+  weeklyApy?: string;
 }
 
 export interface TokenData {
@@ -209,3 +219,5 @@ interface MerklPositionData {
     [key: string]: TokenDataPosition;
   };
 }
+
+export type TaskOpportunities = Record<string, MerklOpportunity[]>;

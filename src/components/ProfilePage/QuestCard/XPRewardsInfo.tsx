@@ -19,7 +19,7 @@ export const XPRewardsInfo: React.FC<PropsWithChildren<XPRewardsInfoProps>> = ({
     <Tooltip title={tooltip} placement="top" enterTouchDelay={0} arrow>
       <XPDisplayBox variant={variant}>
         <XPDisplayBoxLabel variant="bodySmallStrong">{label}</XPDisplayBoxLabel>
-        {children ? children : <XPIcon color={'inherit'} />}
+        {children ? children : <XPIcon />}
       </XPDisplayBox>
     </Tooltip>
   );

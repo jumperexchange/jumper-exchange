@@ -3,9 +3,10 @@ import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { type Quest } from 'src/types/loyaltyPass';
+import { MerklOpportunity } from 'src/types/merkl';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
-import { CTALinkInt, MissionCTA } from './CTA/MissionCTA';
+import { MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
@@ -13,16 +14,14 @@ import { StepsBox } from './StepsBox/StepsBox';
 
 interface QuestsMissionPageVar {
   quest: Quest;
-  baseUrl: string;
   activeCampaign?: string;
   path: string;
-  merklOpportunities?: CTALinkInt[];
-  taskOpportunities?: Record<string, CTALinkInt[]>;
+  merklOpportunities?: MerklOpportunity[];
+  taskOpportunities?: Record<string, MerklOpportunity[]>;
 }
 
 export const QuestsMissionPage = ({
   quest,
-  baseUrl,
   activeCampaign,
   path,
   merklOpportunities = [],
@@ -44,17 +43,12 @@ export const QuestsMissionPage = ({
       <QuestPageMainBox>
         <BackButton path={path} title={activeCampaign} />
         {/* big component with the main information */}
-        <BannerBox
-          quest={quest}
-          baseUrl={baseUrl}
-          pastCampaigns={pastCampaigns}
-        />
+        <BannerBox quest={quest} pastCampaigns={pastCampaigns} />
         {/* Big CTA */}
         {merklOpportunities.length > 0 && (
           <MissionCTA
             id={quest.id}
             title={attributes?.Title}
-            url={attributes?.Link}
             activeCampaign={activeCampaign}
             rewards={!!rewards}
             key={generateKey('cta')}
@@ -80,7 +74,7 @@ export const QuestsMissionPage = ({
             taskOpportunities={taskOpportunities}
           />
         ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
-          <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
+          <StepsBox steps={attributes?.Steps} />
         ) : undefined}
         {/* Additional Info */}
         {attributes?.Information && (

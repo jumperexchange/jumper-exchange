@@ -1,5 +1,12 @@
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
-import { MerklOpportunity } from 'src/types/merkl';
+import {
+  AprRecord,
+  Chain,
+  MerklOpportunity,
+  Protocol,
+  RewardsRecord,
+  Token,
+  TvlRecord,
+} from 'src/types/merkl';
 
 export const MERKL_API = 'https://api.merkl.xyz/v4';
 export const CACHE_TIME = 1000 * 60 * 60; // 1 hour
@@ -59,43 +66,67 @@ export async function fetchMerklOpportunities({
   }
 }
 
-export function transformMerklOpportunities(
-  opportunities: MerklOpportunity[],
-  rewardsIds: string[],
-  campaignId?: string,
-): CTALinkInt[] {
-  if (rewardsIds.length > 0) {
-    return rewardsIds
-      .map((rewardsId: string) => {
-        const opportunity = opportunities.find((opp) =>
-          opp.aprRecord?.breakdowns?.some(
-            (breakdown) => breakdown.identifier === rewardsId,
-          ),
-        );
-        if (opportunity) {
-          return {
-            claimingId: rewardsId,
-            apy: opportunity.apr,
-            logo: opportunity.protocol.icon,
-            text: opportunity.name,
-            link: opportunity.depositUrl,
-          };
-        }
-      })
-      .filter((el) => !!el);
-  }
+export interface TransformedMerklOpportunity {
+  // Core properties
+  chainId: number;
+  type: string;
+  identifier: string;
+  name: string;
+  description: string;
+  howToSteps: string[];
+  status: string;
+  action: string;
 
-  if (campaignId && opportunities.length === 1) {
-    return [
-      {
-        claimingId: opportunities[0].id,
-        apy: opportunities[0].apr,
-        logo: opportunities[0].protocol.icon,
-        text: opportunities[0].name,
-        link: opportunities[0].depositUrl,
-      },
-    ];
-  }
+  // Financial metrics
+  tvl: number;
+  apr: number;
+  apy: number;
+  dailyRewards: number;
 
-  return [];
+  // Identifiers and links
+  id: string;
+  claimingId: string;
+  depositUrl: string;
+  explorerAddress: string;
+  lastCampaignCreatedAt: string;
+
+  // UI related
+  logo: string;
+  text: string;
+  link: string;
+  tags: string[];
+
+  // Nested objects
+  tokens: Token[];
+  chain: Chain;
+  protocol: Protocol;
+  aprRecord: AprRecord;
+  tvlRecord: TvlRecord;
+  rewardsRecord: RewardsRecord;
 }
+
+// Export the transformed opportunity type
+export interface TransformedMerklOpportunity extends MerklOpportunity {
+  // UI related properties that are added during transformation
+  logo: string;
+  text: string;
+  link: string;
+  claimingId: string;
+  apy: number;
+}
+
+// Export the transformation function
+export const transformOpportunity = (
+  opportunity: MerklOpportunity,
+  rewardsId?: string,
+): TransformedMerklOpportunity => {
+  return {
+    ...opportunity,
+    // Add UI-related properties
+    logo: opportunity.protocol.icon,
+    text: opportunity.name,
+    link: opportunity.depositUrl,
+    claimingId: rewardsId || opportunity.id,
+    apy: opportunity.apr, // Note: apy is same as apr
+  };
+};

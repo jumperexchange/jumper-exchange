@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
+import { MerklOpportunity } from 'src/types/merkl';
 import {
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
@@ -35,7 +36,6 @@ import {
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
 import { APYIcon } from '../illustrations/APYIcon';
 import { XPRewardsInfo } from '../ProfilePage/QuestCard/XPRewardsInfo';
-import { CTALinkInt } from './CTA/MissionCTA';
 
 function isVerified(isSuccess: boolean, isValid: boolean) {
   return isSuccess || isValid;
@@ -46,7 +46,7 @@ interface TaskProps {
   task: TaskVerification;
   isValid?: boolean;
   index: number;
-  merklOpportunities: CTALinkInt[];
+  merklOpportunities: MerklOpportunity[];
 }
 
 function Task({

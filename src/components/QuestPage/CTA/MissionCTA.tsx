@@ -4,7 +4,6 @@ import {
   Skeleton,
   type Theme,
   Typography,
-  useColorScheme,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -20,6 +19,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { MerklOpportunity } from 'src/types/merkl';
 import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
@@ -53,23 +53,12 @@ const MissionCTAButton = ({
   );
 };
 
-export interface CTALinkInt {
-  logo: string;
-  text: string;
-  link: string;
-  claimingId: string;
-  rewardId?: string;
-  apy?: number;
-  weeklyApy?: string;
-}
-
 interface MissionCtaProps {
-  title?: string;
-  url?: string;
+  CTAs: MerklOpportunity[];
   rewards?: boolean;
-  id?: number;
+  title: string;
+  id: number;
   label?: string;
-  CTAs: CTALinkInt[];
   variableWeeklyAPY?: boolean;
   signature?: boolean;
   rewardRange?: string;
@@ -90,7 +79,6 @@ export const MissionCTA = ({
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const { mode } = useColorScheme();
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
@@ -102,23 +90,29 @@ export const MissionCTA = ({
     activeCampaign,
     title,
   }: {
-    rewardId?: string;
-    id?: number;
-    claimingId: string;
+    id: number;
+    title: string;
     activeCampaign?: string;
-    title?: string;
+    claimingId?: string;
+    rewardId?: string;
   }) => {
     trackEvent({
       category: TrackingCategory.Missions,
       action: TrackingAction.ClickMissionCta,
       label: `click-mission-cta-${id}`,
       data: {
-        [TrackingEventParameter.MissionCtaRewardId]: rewardId || '',
-        [TrackingEventParameter.MissionCtaClaimingId]: claimingId || '',
-        [TrackingEventParameter.MissionCtaTitle]: title || '',
-        [TrackingEventParameter.MissionCtaLabel]: label || '',
-        [TrackingEventParameter.MissionCtaPartnerId]: id || '',
-        [TrackingEventParameter.MissionCtaCampaign]: activeCampaign || '',
+        [TrackingEventParameter.MissionCtaTitle]: title,
+        [TrackingEventParameter.MissionCtaPartnerId]: id,
+        ...(rewardId && {
+          [TrackingEventParameter.MissionCtaRewardId]: rewardId,
+        }),
+        ...(claimingId && {
+          [TrackingEventParameter.MissionCtaClaimingId]: claimingId,
+        }),
+        ...(label && { [TrackingEventParameter.MissionCtaLabel]: label }),
+        ...(activeCampaign && {
+          [TrackingEventParameter.MissionCtaCampaign]: activeCampaign || '',
+        }),
       },
     });
   };
@@ -152,7 +146,7 @@ export const MissionCTA = ({
       </StartedTitleBox>
       <SeveralCTABox>
         {signature && <SignatureCTA />}
-        {CTAs.map((CTA: CTALinkInt, i: number) => {
+        {CTAs.map((CTA: MerklOpportunity, i: number) => {
           return (
             <Link
               key={`cta-mission-${i}`}

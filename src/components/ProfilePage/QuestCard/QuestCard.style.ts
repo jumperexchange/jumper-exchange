@@ -86,12 +86,11 @@ export const QuestPlatformMainBox = styled(Box)<BoxProps>(() => ({
 
 export interface XPDisplayBoxProps extends BoxProps {
   variant: 'apy' | 'xp' | 'completed' | 'variableWeeklyAPY';
-  bgcolor?: string;
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'bgcolor',
-})<XPDisplayBoxProps>(({ theme, bgcolor }) => ({
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
   height: 32,
   alignItems: 'center',
@@ -119,6 +118,18 @@ export const XPDisplayBox = styled(Box, {
         ...theme.applyStyles('light', {
           backgroundColor: (theme.vars || theme).palette.primary.main,
           color: (theme.vars || theme).palette.white.main,
+        }),
+      },
+    },
+    {
+      props: ({ variant }) => variant === 'xp',
+      style: {
+        color: (theme.vars || theme).palette.white.main,
+        backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+
+        ...theme.applyStyles('light', {
+          backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+          color: (theme.vars || theme).palette.primary.main,
         }),
       },
     },

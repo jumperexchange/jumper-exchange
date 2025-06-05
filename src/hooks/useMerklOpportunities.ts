@@ -1,12 +1,12 @@
 'use client';
 import { getMerklOpportunities } from '@/app/lib/getMerklOpportunities';
 import { useQuery } from '@tanstack/react-query';
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
+import { MerklOpportunity } from 'src/types/merkl';
 
 interface UseMerklOpportunitiesRes {
   isLoading: boolean;
   isSuccess: boolean;
-  data: CTALinkInt[];
+  data: MerklOpportunity[];
 }
 
 interface UseMerklOpportunitiesProps {
@@ -18,7 +18,7 @@ export const useMerklOpportunities = ({
   rewardsIds = [],
   campaignId,
 }: UseMerklOpportunitiesProps): UseMerklOpportunitiesRes => {
-  const { data, isSuccess, isLoading } = useQuery<CTALinkInt[]>({
+  const { data, isSuccess, isLoading } = useQuery<MerklOpportunity[]>({
     queryKey: ['merklOpportunities', campaignId ?? rewardsIds],
     queryFn: async () => {
       const response = await getMerklOpportunities({

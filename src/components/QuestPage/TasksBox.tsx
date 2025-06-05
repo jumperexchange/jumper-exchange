@@ -2,7 +2,7 @@ import Task from '@/components/QuestPage/Task';
 import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
 import type { Quest } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
-import { CTALinkInt } from './CTA/MissionCTA';
+import { MerklOpportunity } from 'src/types/merkl';
 import { DescriptionTitleTypography } from './DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
@@ -12,7 +12,7 @@ import {
 interface StepsBoxProps {
   tasks: Quest['tasks_verification'];
   documentId: string;
-  taskOpportunities: Record<string, CTALinkInt[]>;
+  taskOpportunities: Record<string, MerklOpportunity[]>;
 }
 
 export const TasksBox = ({

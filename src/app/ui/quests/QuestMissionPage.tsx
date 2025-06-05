@@ -1,33 +1,37 @@
 'use client';
 
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
+import { useMemo } from 'react';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { Quest } from 'src/types/loyaltyPass';
+import { MerklOpportunity } from 'src/types/merkl';
 
 interface QuestPageProps {
   quest: Quest;
-  url: string;
-  merklOpportunities: CTALinkInt[];
-  taskOpportunities: Record<string, CTALinkInt[]>;
+  merklOpportunities: MerklOpportunity[];
+  taskOpportunities: Record<string, MerklOpportunity[]>;
 }
 
 const QuestPage = ({
   quest,
-  url,
   merklOpportunities,
   taskOpportunities,
 }: QuestPageProps) => {
-  const path = quest.campaign?.Slug
-    ? `${JUMPER_CAMPAIGN_PATH}/${quest.campaign.Slug}`
-    : JUMPER_LOYALTY_PATH;
+  const { campaign } = quest;
+
+  const path = useMemo(
+    () =>
+      campaign?.Slug
+        ? `${JUMPER_CAMPAIGN_PATH}/${campaign.Slug}`
+        : JUMPER_LOYALTY_PATH,
+    [campaign?.Slug],
+  );
 
   return (
     <QuestsMissionPage
       quest={quest}
-      baseUrl={url}
       path={path}
-      activeCampaign={quest.campaign?.Title}
+      activeCampaign={campaign?.Title}
       merklOpportunities={merklOpportunities}
       taskOpportunities={taskOpportunities}
     />
