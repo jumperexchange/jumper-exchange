@@ -11,6 +11,7 @@ import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
+import { JUMPER_REFERRAL } from 'src/const/quests';
 
 interface SignatureInt {
   isLive: boolean;
@@ -26,11 +27,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const [messagedHasBeenSigned, setMessagedHasBeenSigned] =
     useState<boolean>(false);
   const { signMessageAsync } = useSignMessage();
-  const {
-    isMember,
-    isLoading: isMemberCheckLoading,
-    isSuccess: isMemberCheckSuccess,
-  } = useTurtleMember({
+  const { isMember, refetchMember, refetchJumperMember } = useTurtleMember({
     userAddress: account?.address,
   });
 
@@ -57,14 +54,16 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
         user: account.address,
         signupToken: preparedSignupData.signup_token,
         signature,
-        referral: 'JUMPER', // referral string
-        network: '1',
+        referral: JUMPER_REFERRAL,
+        network: '1', // Turtle is available only on Ethereum mainnet
       };
       const isSignupSuccess = await signup(signupOptions, defaultConfig);
       if (!isSignupSuccess) {
         throw new Error(`Invalid signature`);
       }
       setMessagedHasBeenSigned(true);
+      await refetchMember();
+      await refetchJumperMember();
     } catch (err) {
       console.error(err);
     }

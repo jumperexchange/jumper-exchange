@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { exists, defaultConfig } from '@turtledev/api';
+import { JUMPER_REFERRAL } from 'src/const/quests';
 
 interface UseTurtleProps {
   userAddress?: string;
@@ -8,11 +9,11 @@ interface UseTurtleProps {
 interface UseTurtleRes {
   isMember?: boolean;
   isJumperMember?: boolean;
+  refetchMember: UseQueryResult['refetch'];
+  refetchJumperMember: UseQueryResult['refetch'];
   isLoading: boolean;
   isSuccess: boolean;
 }
-
-const JUMPER_REF = 'JUMPER';
 
 export const useTurtleMember = ({
   userAddress,
@@ -21,8 +22,9 @@ export const useTurtleMember = ({
     data: isMember,
     isSuccess: isMemberSuccess,
     isLoading: isMemberLoading,
+    refetch: refetchMember,
   } = useQuery({
-    queryKey: ['turtleMemberCheck'],
+    queryKey: ['turtleMemberCheck', userAddress],
     queryFn: async () => {
       try {
         if (!userAddress) {
@@ -47,8 +49,9 @@ export const useTurtleMember = ({
     data: refCheck,
     isSuccess: refCheckIsSuccess,
     isLoading: refCheckIsLoading,
+    refetch: refetchRefCheck,
   } = useQuery({
-    queryKey: ['turtleMemberRefCheck'],
+    queryKey: ['turtleMemberRefCheck', userAddress],
     queryFn: async () => {
       try {
         // @Note: Seems @turtledev/api doesn't have a direct method for referral check, so we make a fetch call
@@ -57,7 +60,7 @@ export const useTurtleMember = ({
         );
         const result = await response.json();
         if (result && result.used_referral) {
-          return result.used_referral === JUMPER_REF;
+          return result.used_referral === JUMPER_REFERRAL;
         }
         return false;
       } catch (err) {
@@ -72,6 +75,8 @@ export const useTurtleMember = ({
   return {
     isMember,
     isJumperMember: refCheck,
+    refetchMember,
+    refetchJumperMember: refetchRefCheck,
     isSuccess: isMemberSuccess && refCheckIsSuccess,
     isLoading: isMemberLoading && refCheckIsLoading,
   };
