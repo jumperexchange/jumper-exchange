@@ -7,6 +7,7 @@ import type {
 } from '@lifi/widget';
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { RefObject, useEffect, useMemo, useState } from 'react';
+import { ExtendedChainId } from 'src/components/Widgets/Widget.types';
 import { ARB_NATIVE_USDC } from 'src/config/tokens';
 import { useChains } from './useChains';
 import { useUrlParams } from './useUrlParams';
@@ -138,12 +139,13 @@ export const useWidgetSelection = ({
   // Bridge condition checks
   const bridgeConditions = useMemo(() => {
     const isBridgeFromHypeToArbNativeUSDC =
-      sourceChainToken?.chainId === (998 as ChainId) &&
+      sourceChainToken?.chainId === ExtendedChainId.HYPE &&
       destinationChainToken?.chainId === ChainId.ARB &&
       destinationChainToken?.tokenAddress === ARB_NATIVE_USDC;
 
     const isBridgeFromEvmToHype =
-      destinationChainToken?.chainId === (998 as ChainId) && isEvmSourceChain;
+      destinationChainToken?.chainId === ExtendedChainId.HYPE &&
+      isEvmSourceChain;
 
     const isAGWToNonABSChain =
       isConnectedAGW && destinationChainToken?.chainId !== ChainId.ABS;
@@ -189,13 +191,13 @@ export const useWidgetSelection = ({
       // Handle bridge conditions
       const isBridgeFromHypeToArbNativeUSDC =
         fieldChange.fieldName === 'fromChain' &&
-        fieldChange.newValue === (998 as ChainId) &&
+        fieldChange.newValue === ExtendedChainId.HYPE &&
         formValues.toChain === ChainId.ARB &&
         formValues.toToken === ARB_NATIVE_USDC;
 
       const isBridgeFromEvmToHype =
         fieldChange.fieldName === 'toChain' &&
-        fieldChange.newValue === (998 as ChainId) &&
+        fieldChange.newValue === ExtendedChainId.HYPE &&
         isEvmSourceChain;
 
       if (isBridgeFromHypeToArbNativeUSDC || isBridgeFromEvmToHype) {
