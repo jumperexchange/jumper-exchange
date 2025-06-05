@@ -30,6 +30,7 @@ import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
+import { ExtendedChainId } from './Widget.types';
 
 export function Widget({
   starterVariant,
@@ -163,11 +164,11 @@ export function Widget({
   );
 
   const isBridgeFromHypeToArbNativeUSDC =
-    sourceChainToken.chainId === (998 as ChainId) &&
+    sourceChainToken.chainId === ExtendedChainId.HYPE &&
     destinationChainToken.chainId === ChainId.ARB &&
     destinationChainToken.tokenAddress === ARB_NATIVE_USDC;
   const isBridgeFromEvmToHype =
-    destinationChainToken.chainId === (998 as ChainId) &&
+    destinationChainToken.chainId === ExtendedChainId.HYPE &&
     sourceChainToken.isEvm;
 
   const integratorStringByType = useMemo(() => {
