@@ -45,7 +45,7 @@ const buildContractComposable = async (
     functionName: string;
     args: any[];
     gasLimit?: bigint;
-  },
+  }
 ) => {
   return oNexus.buildComposable({
     type: 'default',
@@ -393,7 +393,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-
+      
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -425,8 +425,7 @@ export function ZapWidget({
       });
 
       const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash =
-        `biconomy:${hash}` as `0x${string}`;
+      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -510,7 +509,7 @@ export function ZapWidget({
     const baseConfig: WidgetConfig = {
       toAddress: {
         name: 'Smart Account',
-        address: (address as `0x${string}`) || '0x',
+        address: address as `0x${string}` || '0x',
         chainType: ChainType.EVM,
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -518,41 +517,31 @@ export function ZapWidget({
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
       },
       explorerUrls: {
-        '1': [
-          {
-            url: 'https://meescan.biconomy.io',
-            txPath: 'details',
-            addressPath: 'address',
-          },
-        ],
-        '10': [
-          {
-            url: 'https://meescan.biconomy.io',
-            txPath: 'details',
-            addressPath: 'address',
-          },
-        ],
-        '854': [
-          {
-            url: 'https://meescan.biconomy.io',
-            txPath: 'details',
-            addressPath: 'address',
-          },
-        ],
-        '1313161554': [
-          {
-            url: 'https://meescan.biconomy.io',
-            txPath: 'details',
-            addressPath: 'address',
-          },
-        ],
-        '11155111': [
-          {
-            url: 'https://meescan.biconomy.io',
-            txPath: 'details',
-            addressPath: 'address',
-          },
-        ],
+        "1": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "10": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "854": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "1313161554": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
+        "11155111": [{
+          url: 'https://meescan.biconomy.io',
+          txPath: 'details',
+          addressPath: 'address',
+        }],
       },
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
@@ -564,7 +553,7 @@ export function ZapWidget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
         HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton,
+        HiddenUI.ReverseTokensButton
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
