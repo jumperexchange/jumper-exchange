@@ -15,14 +15,14 @@ const shouldHideComponent = (
 };
 
 interface MerklRewardsProps {
-  merkl_rewards?: MerklRewardsData[];
+  merklRewards?: MerklRewardsData[];
 }
 
-export const MerklRewards = ({ merkl_rewards }: MerklRewardsProps) => {
+export const MerklRewards = ({ merklRewards }: MerklRewardsProps) => {
   const { account } = useAccount();
   const { availableRewards, isSuccess, isLoading } = useMerklRewards({
     userAddress: account.address,
-    MerklRewards: merkl_rewards,
+    merklRewards,
     includeTokenIcons: true,
   });
 

@@ -22,7 +22,7 @@ export const CampaignPage = ({ campaign }: CampaignPageProps) => {
         title={t('navbar.navbarMenu.profile') || 'Profile'}
       />
       {campaign.merkl_rewards && (
-        <MerklRewards merkl_rewards={campaign.merkl_rewards} />
+        <MerklRewards merklRewards={campaign.merkl_rewards} />
       )}
       <CampaignHeader campaign={campaign} />
       {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (

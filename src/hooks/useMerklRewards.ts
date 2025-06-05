@@ -24,7 +24,7 @@ export interface UseMerklRes {
 export interface UseMerklRewardsProps {
   userAddress?: string;
   rewardToken?: string;
-  MerklRewards?: MerklRewardsData[];
+  merklRewards?: MerklRewardsData[];
   claimableTokens?: ClaimableRewards;
   includeTokenIcons?: boolean;
 }
@@ -39,15 +39,15 @@ interface TokenAddressesByChain {
 
 export const useMerklRewards = ({
   userAddress,
-  MerklRewards,
+  merklRewards,
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
-  // Get unique chain IDs from MerklRewards or use default chains
+  // Get unique chain IDs from merklRewards or use default chains
   const chainIds =
-    Array.isArray(MerklRewards) && MerklRewards.length > 0
+    Array.isArray(merklRewards) && merklRewards.length > 0
       ? [
           ...new Set(
-            MerklRewards.flatMap((reward) => reward.ChainId).filter(Boolean),
+            merklRewards.flatMap((reward) => reward.ChainId).filter(Boolean),
           ),
         ]
       : REWARDS_CHAIN_IDS;
@@ -85,9 +85,9 @@ export const useMerklRewards = ({
   const { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards } =
     userRewardsData
       ? (() => {
-          // Get token addresses with their chain IDs from MerklRewards if provided
+          // Get token addresses with their chain IDs from merklRewards if provided
           const tokenAddressesByChain = (
-            MerklRewards || []
+            merklRewards || []
           ).reduce<TokenAddressesByChain>((acc, reward) => {
             if (reward.ChainId && reward.TokenAddress) {
               const chainId = Number(reward.ChainId);
