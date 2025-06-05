@@ -61,8 +61,8 @@ export const useWidgetSelection = ({
   useEffect(() => {
     if (
       !wrapperRef?.current ||
-      configThemeChains?.to?.allow?.includes(2741) ||
-      allowToChains?.includes(2741)
+      configThemeChains?.to?.allow?.includes(ChainId.ABS) ||
+      allowToChains?.includes(ChainId.ABS)
     ) {
       return;
     }
