@@ -23,7 +23,6 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
-import { useMerklOpportunities } from 'src/hooks/useMerklOpportunities';
 import {
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
@@ -36,29 +35,32 @@ import {
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
 import { APYIcon } from '../illustrations/APYIcon';
 import { XPRewardsInfo } from '../ProfilePage/QuestCard/XPRewardsInfo';
+import { CTALinkInt } from './CTA/MissionCTA';
 
 function isVerified(isSuccess: boolean, isValid: boolean) {
   return isSuccess || isValid;
 }
 
-// TODO: Refactor this component to use Accordion component from mui (and refactor InstructionsAccordionItem.tsx)
+interface TaskProps {
+  questId: string;
+  task: TaskVerification;
+  isValid?: boolean;
+  index: number;
+  merklOpportunities: CTALinkInt[];
+}
+
 function Task({
   task,
   questId,
   isValid = false,
   index,
-}: {
-  questId: string;
-  task: TaskVerification;
-  isValid?: boolean;
-  index: number;
-}) {
+  merklOpportunities,
+}: TaskProps) {
   const [open, setOpen] = useState(false);
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const isTablet = useMediaQuery(theme.breakpoints.up('sm' as Breakpoint));
-  const { data } = useMerklOpportunities({ campaignId: task.CampaignId });
 
   const handleOpen:
     | MouseEventHandler<HTMLDivElement | HTMLButtonElement>
@@ -124,14 +126,16 @@ function Task({
             <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
-            {Array.isArray(data) && data.length === 1 && data[0].apy && (
-              <XPRewardsInfo
-                variant="apy"
-                label={data[0].apy?.toFixed(1)} //Number(apy).toFixed(1)
-              >
-                <APYIcon size={20} />
-              </XPRewardsInfo>
-            )}
+            {Array.isArray(merklOpportunities) &&
+              merklOpportunities.length === 1 &&
+              merklOpportunities[0].apy && (
+                <XPRewardsInfo
+                  variant="apy"
+                  label={merklOpportunities[0].apy?.toFixed(1)}
+                >
+                  <APYIcon size={20} />
+                </XPRewardsInfo>
+              )}
           </InstructionsAccordionItemHeader>
           {task &&
             (isTablet ? (

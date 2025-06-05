@@ -1,4 +1,5 @@
 'use client';
+import { MERKL_API } from '@/utils/merkl/merklApi';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import {
@@ -28,7 +29,6 @@ export interface UseMerklRewardsProps {
   includeTokenIcons?: boolean;
 }
 
-const MERKL_API = 'https://api.merkl.xyz/v4';
 const MERKL_CLAIMING_ADDRESS = '0x3Ef3D8bA38EBe18DB133cEc108f4D14CE00Dd9Ae';
 const CACHE_TIME = 1000 * 60 * 60; // 1 hour
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes

@@ -2,6 +2,7 @@ import Task from '@/components/QuestPage/Task';
 import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
 import type { Quest } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
+import { CTALinkInt } from './CTA/MissionCTA';
 import { DescriptionTitleTypography } from './DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
@@ -11,9 +12,14 @@ import {
 interface StepsBoxProps {
   tasks: Quest['tasks_verification'];
   documentId: string;
+  taskOpportunities: Record<string, CTALinkInt[]>;
 }
 
-export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
+export const TasksBox = ({
+  tasks,
+  documentId,
+  taskOpportunities,
+}: StepsBoxProps) => {
   const { account } = useAccount();
   const { data: verified } = useGetVerifiedTasks(account?.address);
   return (
@@ -34,6 +40,7 @@ export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
           index={index}
           questId={documentId}
           key={task.uuid}
+          merklOpportunities={taskOpportunities[task.uuid] || []}
         />
       ))}
     </QuestsPageElementContainer>

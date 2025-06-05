@@ -1,9 +1,9 @@
 'use client';
+import { MERKL_API } from '@/utils/merkl/merklApi';
 import { useQueries } from '@tanstack/react-query';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
-const MERKL_API = 'https://api.merkl.xyz/v4';
 
 interface MerklV4Token {
   address: string;

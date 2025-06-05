@@ -2,8 +2,10 @@ import { questSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteName } from 'src/app/lib/metadata';
+import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import { getSiteUrl } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { getMerklOpportunities } from '../../../lib/getMerklOpportunities';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
 
@@ -78,5 +80,44 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  return <QuestPage quest={data} url={url} />;
+  // Fetch Merkl opportunities if rewardsIds are present
+  const rewardsIds = data.CustomInformation?.['rewardsIds'] || [];
+  const merklOpportunities =
+    Array.isArray(rewardsIds) && rewardsIds.length > 0
+      ? await getMerklOpportunities({ rewardsIds })
+      : { data: [], url: '' };
+
+  // Fetch Merkl opportunities for tasks if they have campaign IDs
+  const taskOpportunities = await Promise.all(
+    (data.tasks_verification || []).map(async (task) => {
+      if (!task.CampaignId) return null;
+      const opportunities = await getMerklOpportunities({
+        campaignId: task.CampaignId,
+      });
+      return {
+        taskId: task.uuid,
+        opportunities: opportunities.data,
+      };
+    }),
+  );
+
+  // Convert to a map for easier lookup
+  const taskOpportunitiesMap = taskOpportunities.reduce(
+    (acc, curr) => {
+      if (curr) {
+        acc[curr.taskId] = curr.opportunities;
+      }
+      return acc;
+    },
+    {} as Record<string, CTALinkInt[]>,
+  );
+
+  return (
+    <QuestPage
+      quest={data}
+      url={url}
+      merklOpportunities={merklOpportunities.data}
+      taskOpportunities={taskOpportunitiesMap}
+    />
+  );
 }
