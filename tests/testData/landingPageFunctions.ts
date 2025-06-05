@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { getElementByText } from './commonFunctions';
 
 export async function findTheBestRoute(page) {
   await page.getByRole('heading', { name: 'Find the best route' });
@@ -21,29 +22,25 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
   await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
-async function routesLabel(page, locator) {
-  return page.locator(`xpath=//p[normalize-space(text())="${locator}"]`);
-}
-
 export async function checkRoutesVisibility(
   page: Page,
   options: {
-    bestRetrunShouldBeVisible: boolean;
+    bestReturnShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
-  }
+  },
 ) {
-  const { bestRetrunShouldBeVisible, checkRelayRoute } = options;
+  const { bestReturnShouldBeVisible, checkRelayRoute } = options;
 
-  if (bestRetrunShouldBeVisible) {
-    const bestReturnLabel = await routesLabel(page, 'Best Return');
+  if (bestReturnShouldBeVisible) {
+    const bestReturnLabel = await getElementByText(page, 'Best Return');
     await expect(bestReturnLabel).toBeVisible();
 
     if (checkRelayRoute) {
-      const relayLabel = await routesLabel(page, 'Relay via LI.FI');
+      const relayLabel = await getElementByText(page, 'Relay via LI.FI');
       await expect(relayLabel).toBeVisible();
     }
   } else {
-    const noRoutesLabel = await routesLabel(page, 'No routes available');
+    const noRoutesLabel = await getElementByText(page, 'No routes available');
     await expect(noRoutesLabel).toBeVisible();
   }
 }
