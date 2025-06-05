@@ -3,9 +3,10 @@
 import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
+import { Quest } from 'src/types/loyaltyPass';
 
 interface QuestPageProps {
-  quest: any;
+  quest: Quest;
   url: string;
   merklOpportunities: CTALinkInt[];
   taskOpportunities: Record<string, CTALinkInt[]>;
