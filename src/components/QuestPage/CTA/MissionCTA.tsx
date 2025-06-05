@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { IconButtonPrimary } from 'src/components/IconButton';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPRewardsInfo } from 'src/components/ProfilePage/QuestCard/XPRewardsInfo';
@@ -86,13 +87,13 @@ export const MissionCTA = ({
   rewardRange,
   activeCampaign,
 }: MissionCtaProps) => {
-  // const { trackEvent } = useUserTracking();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
   const { mode } = useColorScheme();
   const theme = useTheme();
   const { trackEvent } = useUserTracking();
+  const { t } = useTranslation();
 
   const handleClick = ({
     rewardId,
@@ -200,7 +201,7 @@ export const MissionCTA = ({
                     <XPRewardsInfo
                       variant="apy"
                       label={`${Number(CTA.apy).toFixed(1)}%`}
-                      tooltip="Expected extra rewards to win during the campaign for the tokens invested."
+                      tooltip={t('tooltips.apy')}
                     >
                       <APYIcon size={24} />
                     </XPRewardsInfo>

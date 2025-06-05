@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteName } from 'src/app/lib/metadata';
 import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
-import { getSiteUrl } from 'src/const/urls';
+import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getMerklOpportunities } from '../../../lib/getMerklOpportunities';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
@@ -37,7 +37,7 @@ export async function generateMetadata({
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
       description: `${sliceStrToXChar(questData.Information || 'Quest description', 60)}`,
       siteName: siteName,
-      url: `${getSiteUrl()}/quests/${slug}`,
+      url: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
       images: [
         {
           url: `${quest.url}${questData.Image?.url}`,
@@ -53,7 +53,7 @@ export async function generateMetadata({
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
       description: questData.Subtitle,
       alternates: {
-        canonical: `${getSiteUrl()}/quests/${slug}`,
+        canonical: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
       },
       twitter: openGraph,
       openGraph,
