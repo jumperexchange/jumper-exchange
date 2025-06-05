@@ -102,15 +102,16 @@ export default async function Page({ params }: { params: Params }) {
   );
 
   // Convert to a map for easier lookup
-  const taskOpportunitiesMap = taskOpportunities.reduce(
-    (acc, curr) => {
-      if (curr) {
-        acc[curr.taskId] = curr.opportunities;
-      }
-      return acc;
-    },
-    {} as Record<string, CTALinkInt[]>,
-  );
+  const taskOpportunitiesMap: Record<string, CTALinkInt[]> =
+    taskOpportunities.reduce(
+      (acc, curr) => {
+        if (curr) {
+          acc[curr.taskId] = curr.opportunities;
+        }
+        return acc;
+      },
+      {} as Record<string, CTALinkInt[]>,
+    );
 
   return (
     <QuestPage
