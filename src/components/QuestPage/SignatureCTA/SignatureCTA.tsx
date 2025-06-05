@@ -3,8 +3,7 @@
 import { useAccount } from '@lifi/wallet-management';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { SiweMessage, generateNonce } from 'siwe';
+import { useState } from 'react';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { useSignMessage } from 'wagmi';
 import { defaultConfig, prepareSignup, signup } from '@turtledev/api';
