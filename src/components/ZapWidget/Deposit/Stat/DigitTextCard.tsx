@@ -78,7 +78,7 @@ const DigitTextCard = ({
           <Typography
             variant="h6"
             className="content"
-            key={`market-card-token-label`}
+            key={`berachain-market-card-token-label`}
             sx={[
               {
                 fontWeight: 700,
@@ -86,7 +86,7 @@ const DigitTextCard = ({
               },
               hasDeposited
                 ? {
-                    color: theme.palette.primary.main,
+                    color: (theme.vars || theme).palette.text.primary,
                   }
                 : {
                     color: null,
