@@ -25,13 +25,13 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
 export async function checkRoutesVisibility(
   page: Page,
   options: {
-     bestReturnShouldBeVisible: boolean;
+    bestReturnShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
-  }
+  },
 ) {
   const { bestReturnShouldBeVisible, checkRelayRoute } = options;
 
-  if ( bestReturnShouldBeVisible) {
+  if (bestReturnShouldBeVisible) {
     const bestReturnLabel = await getElementByText(page, 'Best Return');
     await expect(bestReturnLabel).toBeVisible();
 

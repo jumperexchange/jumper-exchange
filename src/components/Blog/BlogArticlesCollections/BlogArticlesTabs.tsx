@@ -8,7 +8,6 @@ import type {
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
-import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
@@ -69,7 +68,6 @@ export function BlogArticlesTabs({
                       },
                     }}
                     article={article}
-                    baseUrl={process.env.NEXT_PUBLIC_STRAPI_URL}
                     key={`blog-articles-collection-${index}-${articleIndex}`}
                     trackingCategory={TrackingCategory.BlogArticlesCollection}
                   />

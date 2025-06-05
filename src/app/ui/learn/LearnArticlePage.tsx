@@ -16,24 +16,16 @@ import {
 interface LearnArticlePageProps {
   article: BlogArticleData;
   articles: BlogArticleData[];
-  url: string;
 }
 
-const LearnArticlePage = ({
-  article,
-  articles,
-  url,
-}: LearnArticlePageProps) => {
+const LearnArticlePage = ({ article, articles }: LearnArticlePageProps) => {
   const { t } = useTranslation();
 
   return (
     <>
       <BlogArticleWrapper>
         <BlogBackgroundGradient />
-        <BlogArticle
-          article={article}
-          baseUrl={url}
-        />
+        <BlogArticle article={article} />
       </BlogArticleWrapper>
       <BlogArticleSection>
         <Box component={Background} sx={{ position: 'absolute' }} />
@@ -42,7 +34,6 @@ const LearnArticlePage = ({
             title={t('blog.similarPosts')}
             showAllButton={true}
             data={articles}
-            url={url}
           />
         )}
         <JoinDiscordBanner />

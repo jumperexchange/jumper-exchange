@@ -10,6 +10,7 @@ import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { isValidElement, type JSX, type ReactElement } from 'react';
 import newlineToBr from 'src/utils/newlineToBr';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BlogParagraphContainer } from './BlogArticle/BlogArticle.style';
 import type { BlogWidgetProps } from './BlogWidget';
 import { BlogWidget } from './BlogWidget';
@@ -68,10 +69,10 @@ type QuoteElement = RichElement<QuoteProps>;
 
 export const CustomRichBlocks = ({
   id,
-  baseUrl,
   content,
   variant,
 }: CustomRichBlocksProps) => {
+  const baseUrl = getStrapiBaseUrl();
   const customRichBlocks = {
     image: (data: ImageData) =>
       baseUrl ? (

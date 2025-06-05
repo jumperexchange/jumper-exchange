@@ -5,7 +5,7 @@ export async function openOrCloseMainMenu(page) {
   await expect(page.getByRole('menu')).toBeVisible();
 }
 
-export async function openLeaderboardPage(page){
+export async function openLeaderboardPage(page) {
   await page.locator('#leaderboard-button').click();
 }
 
@@ -49,4 +49,3 @@ export async function switchTheme(page, theme: Theme) {
   await page.locator(themeSelector[theme]).click();
   await page.locator('#main-burger-menu-button').click();
 }
-

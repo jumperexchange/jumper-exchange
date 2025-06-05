@@ -69,7 +69,6 @@ export interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   rewardRange?: string;
   title?: string;
-  url?: string;
   variableWeeklyAPY?: boolean;
 }
 
@@ -162,32 +161,23 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
           )}
           <Box>
             <QuestCardInfoBox>
-              {!isLoading ? (
-                <>
-                  {
-                    chains && (
-                      <FlexCenterRowBox>
-                        {chains.map((elem: Chain, i: number) => (
-                          <Image
-                            key={elem.name + '-' + i}
-                            src={elem.logo}
-                            style={{
-                              marginLeft: i === 0 ? '' : '-8px',
-                              zIndex: 100 - i,
-                              borderRadius: '50%',
-                            }}
-                            alt={elem.name}
-                            width="32"
-                            height="32"
-                          />
-                        ))}
-                      </FlexCenterRowBox>
-                    )
-                    // : (
-                    //   <JumperIconDark />
-                    // )
-                  }
-                </>
+              {!isLoading && chains ? (
+                <FlexCenterRowBox>
+                  {chains.map((elem: Chain, i: number) => (
+                    <Image
+                      key={elem.name + '-' + i}
+                      src={elem.logo}
+                      style={{
+                        marginLeft: i === 0 ? '' : '-8px',
+                        zIndex: 100 - i,
+                        borderRadius: '50%',
+                      }}
+                      alt={elem.name}
+                      width="32"
+                      height="32"
+                    />
+                  ))}
+                </FlexCenterRowBox>
               ) : (
                 <Skeleton variant="circular" width={'32px'} height={'32px'} />
               )}
