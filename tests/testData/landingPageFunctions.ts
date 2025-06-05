@@ -30,7 +30,7 @@ export async function checkRoutesVisibility(
   options: {
     bestRetrunShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
-  },
+  }
 ) {
   const { bestRetrunShouldBeVisible, checkRelayRoute } = options;
 

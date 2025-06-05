@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import chainData from './testData/chainData.json' assert { type: 'json' };
 import {
   buildUlParams,
@@ -22,10 +22,7 @@ test.describe('On chain swaps', () => {
       await page.getByTestId('ArrowBackIcon').first().click();
       const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoETH);
       await page.goto(`/${urlParams}`);
-      await checkRoutesVisibility(page, {
-        bestRetrunShouldBeVisible: true,
-        checkRelayRoute: true,
-      });
+      await checkRoutesVisibility(page, { bestRetrunShouldBeVisible: true, checkRelayRoute: true });
     });
   });
 
@@ -59,7 +56,7 @@ test.describe('On chain swaps', () => {
     await test.step(`Check ${chainData.SOLtoHYPE.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHYPE.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
       const urlParams = buildUlParams(chainData.SOLtoHYPE.SOLtoUSDC);
       await page.goto(`/${urlParams}`);
-      await checkRoutesVisibility(page, { bestRetrunShouldBeVisible: false });
+      await checkRoutesVisibility(page, {bestRetrunShouldBeVisible: false });
     });
 
     await test.step(`Check ${chainData.SUItoHYPE.SUItoUSDC.tokenSymbol} to ${chainData.SUItoHYPE.SUItoUSDC.toTokenSymbol} swap pair`, async () => {
