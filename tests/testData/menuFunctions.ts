@@ -10,6 +10,10 @@ export async function openOrCloseMainMenu(page) {
   await expect(page.locator(MAIN_MENU.MENU)).toBeVisible();
 }
 
+export async function openLeaderboardPage(page){
+  await page.locator('#leaderboard-button').click();
+}
+
 export async function checkTheNumberOfMenuItems(
   page,
   numberOfMenuItems: number,
@@ -55,3 +59,4 @@ export async function switchTheme(page, theme: Theme) {
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   }
 }
+
