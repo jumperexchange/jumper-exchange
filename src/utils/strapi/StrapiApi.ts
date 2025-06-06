@@ -95,19 +95,73 @@ class StrapiApi {
   }
 }
 
+type ArticleField =
+  | 'Title'
+  | 'Subtitle'
+  | 'Slug'
+  | 'RedirectURL'
+  | 'featured'
+  | 'WordCount'
+  | 'Content'
+  | 'publishedAt'
+  | 'createdAt'
+  | 'updatedAt';
+
 class ArticleParams {
   private apiUrl: URL;
+
+  private static defaultFields: ArticleField[] = [
+    'Title',
+    'Subtitle',
+    'Slug',
+    'RedirectURL',
+    'featured',
+    'WordCount',
+    'Content',
+    'publishedAt',
+    'createdAt',
+    'updatedAt',
+  ];
+
+  private static defaultPopulates = [
+    'Image',
+    'tags',
+    'author.Avatar',
+    'faq_items',
+  ];
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
     this.apiUrl.searchParams.set('filters[Slug][$notNull]', 'true');
   }
 
-  addParams(): URL {
-    this.apiUrl.searchParams.set('populate[0]', 'Image');
-    this.apiUrl.searchParams.set('populate[1]', 'tags');
-    this.apiUrl.searchParams.set('populate[2]', 'author.Avatar');
-    this.apiUrl.searchParams.set('populate[3]', 'faq_items');
+  addParams({
+    includeFields,
+    excludeFields,
+    populate = ArticleParams.defaultPopulates,
+  }: {
+    includeFields?: ArticleField[];
+    excludeFields?: ArticleField[];
+    populate?: string[];
+  } = {}): URL {
+    let fields = [...ArticleParams.defaultFields];
+
+    if (includeFields) {
+      fields = fields.filter((f) => includeFields.includes(f));
+    }
+
+    if (excludeFields) {
+      fields = fields.filter((f) => !excludeFields.includes(f));
+    }
+
+    fields.forEach((field, index) => {
+      this.apiUrl.searchParams.set(`fields[${index}]`, field);
+    });
+
+    populate.forEach((relation, index) => {
+      this.apiUrl.searchParams.set(`populate[${index}]`, relation);
+    });
+
     return this.apiUrl;
   }
 }
@@ -148,10 +202,16 @@ class QuestParams {
 }
 
 class ArticleStrapiApi extends StrapiApi {
-  constructor() {
+  constructor({
+    includeFields,
+    excludeFields,
+  }: {
+    includeFields?: ArticleField[];
+    excludeFields?: ArticleField[];
+  } = {}) {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
     const articleParams = new ArticleParams(this.apiUrl);
-    this.apiUrl = articleParams.addParams();
+    this.apiUrl = articleParams.addParams({ includeFields, excludeFields });
   }
 
   sort(order: 'asc' | 'desc'): this {

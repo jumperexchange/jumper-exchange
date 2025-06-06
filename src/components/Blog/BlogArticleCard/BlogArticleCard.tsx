@@ -35,7 +35,7 @@ export const BlogArticleCard = ({
   styles,
 }: BlogArticleCardProps) => {
   const { trackEvent } = useUserTracking();
-  const minRead = readingTime(article?.Content);
+  const minRead = readingTime(article?.WordCount);
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
   const isClient = useClient();
