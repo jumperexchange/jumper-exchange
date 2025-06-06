@@ -117,7 +117,7 @@ export const BannerBox = ({
                       ]
                 }
                 title={'Jumper XP'}
-                value={`${String(attributes?.Points)}`}
+                value={String(attributes?.Points)}
               />
             ) : undefined}
           </RewardMainBox>

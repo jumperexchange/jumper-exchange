@@ -1,14 +1,13 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DoneIcon from '@mui/icons-material/Done';
 import LockIcon from '@mui/icons-material/Lock';
-import { Box, Skeleton } from '@mui/material';
+import { Box, Skeleton, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
 import type { Chain } from 'src/components/QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/QuestPage/QuestsMissionPage.style';
-import { PROFILE_CAMPAIGN_FLASHY_APY_COLOR } from 'src/const/partnerRewardsTheme';
 import {
   TrackingAction,
   TrackingCategory,
@@ -52,7 +51,6 @@ export interface QuestCardProps {
   action?: string;
   active?: boolean;
   chains?: QuestChains[];
-  claimingIds?: string[];
   completed?: boolean;
   ctaLink?: string;
   hideXPProgressComponents?: boolean;
@@ -61,6 +59,7 @@ export interface QuestCardProps {
   isLoading?: boolean;
   isTraitsGarded?: boolean;
   isUnlocked?: boolean;
+  rewardsIds?: string[];
   label?: string;
   points?: number;
   startDate?: string;
@@ -82,7 +81,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     action,
     active,
     chains,
-    claimingIds,
     completed,
     ctaLink,
     endDate,
@@ -94,6 +92,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     isUnlocked,
     label,
     points,
+    rewardsIds,
     // rewards,
     rewardsProgress,
     rewardRange,
@@ -103,8 +102,13 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
   } = data;
 
   const { t } = useTranslation();
-  const { apy } = useMissionsMaxAPY(claimingIds);
+  const chainIds = chains
+    ?.flatMap((chain) => chain.chainId)
+    ?.filter((id): id is number => id !== undefined);
+  const { apy, data: maxData } = useMissionsMaxAPY(rewardsIds, chainIds);
+  const theme = useTheme();
   const { trackEvent } = useUserTracking();
+
   const handleClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -195,13 +199,12 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
               <RewardsWrapper>
                 {rewardsQuestCard && (
                   <XPRewardsInfo
-                    completed={true}
-                    points={`${rewardsProgress?.earnedXP}`}
+                    variant="completed"
+                    label={`${rewardsProgress?.earnedXP}`}
                     tooltip={t('questCard.earnedXPDescription', {
                       earnedXP: rewardsProgress?.earnedXP,
                       action: action,
                     })}
-                    active={true}
                   >
                     <CheckCircleIcon
                       sx={{ width: '20px', height: '20px', color: 'inherit' }}
@@ -212,9 +215,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                   <>
                     {apy > 0 && !variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={false}
-                        completed={false}
-                        points={`${Number(apy).toFixed(1)}%`}
+                        variant="apy"
+                        label={`${Number(apy).toFixed(1)}%`} //points={`${Number(apy).toFixed(1)}%`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -228,9 +230,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     )}
                     {variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={true}
-                        bgColor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
-                        points={rewardRange ? rewardRange : `VAR.%`}
+                        variant="variableWeeklyAPY"
+                        label={rewardRange ? rewardRange : `VAR.%`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -244,8 +245,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     )}
                     {!hideXPProgressComponents && (
                       <XPRewardsInfo
-                        completed={completed}
-                        points={`+${points}`}
+                        variant="completed"
+                        label={`+${points}`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -253,8 +254,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                             action: action,
                           })
                         }
-                        active={true}
-                        color={completed ? '#00B849' : undefined}
                       />
                     )}
                   </>

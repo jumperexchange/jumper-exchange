@@ -21,7 +21,9 @@ export const CampaignPage = ({ campaign }: CampaignPageProps) => {
         path={JUMPER_LOYALTY_PATH}
         title={t('navbar.navbarMenu.profile') || 'Profile'}
       />
-      <MerklRewards campaign={campaign} />
+      {campaign.merkl_rewards && (
+        <MerklRewards merkl_rewards={campaign.merkl_rewards} />
+      )}
       <CampaignHeader campaign={campaign} />
       {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (
         <QuestsOverview quests={campaign.quests} label={campaign.Slug} />

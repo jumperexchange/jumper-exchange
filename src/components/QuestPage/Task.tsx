@@ -7,7 +7,6 @@ import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
 import { useUserTracking } from '@/hooks/userTracking';
 import type { TaskVerification } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -34,23 +33,29 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
+import { APYIcon } from '../illustrations/APYIcon';
+import { XPRewardsInfo } from '../ProfilePage/QuestCard/XPRewardsInfo';
+import { CTALinkInt } from './CTA/MissionCTA';
 
 function isVerified(isSuccess: boolean, isValid: boolean) {
   return isSuccess || isValid;
 }
 
-// TODO: Refactor this component to use Accordion component from mui (and refactor InstructionsAccordionItem.tsx)
+interface TaskProps {
+  questId: string;
+  task: TaskVerification;
+  isValid?: boolean;
+  index: number;
+  merklOpportunities: CTALinkInt[];
+}
+
 function Task({
   task,
   questId,
   isValid = false,
   index,
-}: {
-  questId: string;
-  task: TaskVerification;
-  isValid?: boolean;
-  index: number;
-}) {
+  merklOpportunities,
+}: TaskProps) {
   const [open, setOpen] = useState(false);
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
@@ -115,13 +120,22 @@ function Task({
           sx={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: 'auto',
           }}
         >
-          <InstructionsAccordionItemHeader>
-            <InstructionsAccordionItemLabel>
+          <InstructionsAccordionItemHeader sx={{ width: '100%' }}>
+            <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
+            {Array.isArray(merklOpportunities) &&
+              merklOpportunities.length === 1 &&
+              merklOpportunities[0].apy && (
+                <XPRewardsInfo
+                  variant="apy"
+                  label={merklOpportunities[0].apy?.toFixed(1)}
+                >
+                  <APYIcon size={20} />
+                </XPRewardsInfo>
+              )}
           </InstructionsAccordionItemHeader>
           {task &&
             (isTablet ? (
@@ -181,11 +195,6 @@ function Task({
                     >
                       {task.CTAText}
                     </Typography>
-                    <ArrowForwardIcon
-                      style={{
-                        color: (theme.vars || theme).palette.text.primary,
-                      }}
-                    />
                   </InstructionsAccordionLinkBox>
                 </Link>
               )}

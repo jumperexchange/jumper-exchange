@@ -2,11 +2,10 @@ import { TasksBox } from '@/components/QuestPage/TasksBox';
 import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
-import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
-import { MissionCTA } from './CTA/MissionCTA';
+import { CTALinkInt, MissionCTA } from './CTA/MissionCTA';
 import { DescriptionBox } from './DescriptionBox/DescriptionBox';
 import { InformationAlertBox } from './InformationBox/InformationAlertBox';
 import { QuestPageMainBox, QuestsContainer } from './QuestPage.style';
@@ -17,6 +16,8 @@ interface QuestsMissionPageVar {
   baseUrl: string;
   activeCampaign?: string;
   path: string;
+  merklOpportunities?: CTALinkInt[];
+  taskOpportunities?: Record<string, CTALinkInt[]>;
 }
 
 export const QuestsMissionPage = ({
@@ -24,20 +25,19 @@ export const QuestsMissionPage = ({
   baseUrl,
   activeCampaign,
   path,
+  merklOpportunities = [],
+  taskOpportunities = {},
 }: QuestsMissionPageVar) => {
   const attributes = quest;
-  const CTAs = quest?.CustomInformation?.['CTA'];
   const missionType = quest?.CustomInformation?.['missionType'];
   const rewardType = attributes?.CustomInformation?.['rewardType'];
   const rewardRange = attributes?.CustomInformation?.['rewardRange'];
   const rewards = quest?.CustomInformation?.['rewards'];
   const points = quest?.Points;
-
   const { account } = useAccount();
   const { pastCampaigns } = useMerklRewards({
     userAddress: account.address,
   });
-  const { CTAsWithAPYs } = useMissionsAPY(CTAs);
 
   return (
     <QuestsContainer>
@@ -50,7 +50,7 @@ export const QuestsMissionPage = ({
           pastCampaigns={pastCampaigns}
         />
         {/* Big CTA */}
-        {CTAsWithAPYs?.length > 0 && (
+        {merklOpportunities.length > 0 && (
           <MissionCTA
             id={quest.id}
             title={attributes?.Title}
@@ -58,7 +58,7 @@ export const QuestsMissionPage = ({
             activeCampaign={activeCampaign}
             rewards={!!rewards}
             key={generateKey('cta')}
-            CTAs={CTAsWithAPYs}
+            CTAs={merklOpportunities}
             variableWeeklyAPY={points > 0 && rewardType === 'weekly'}
             signature={missionType === 'turtle_signature'}
             rewardRange={rewardRange}
@@ -77,6 +77,7 @@ export const QuestsMissionPage = ({
           <TasksBox
             tasks={attributes?.tasks_verification}
             documentId={quest.documentId}
+            taskOpportunities={taskOpportunities}
           />
         ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} baseUrl={baseUrl} />
