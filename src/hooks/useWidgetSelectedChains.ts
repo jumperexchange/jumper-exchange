@@ -90,8 +90,6 @@ export const useWidgetSelectedChains = () => {
     return getChainById(destinationChainToken.chainId)?.chainType;
   }, [destinationChainToken?.chainId, getChainById]);
 
-  console.log(sourceChainToken, sourceChainType);
-
   useEffect(() => {
     const handleFormFieldChanged = (fieldChange: FormFieldChanged) => {
       if (!fieldChange) return;
