@@ -116,7 +116,7 @@ class ArticleParams {
     'Slug',
     'RedirectURL',
     'featured',
-    'WordCount',
+    // 'WordCount',
     'Content',
     'publishedAt',
     'createdAt',
