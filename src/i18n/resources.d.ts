@@ -39,7 +39,6 @@ interface Resources {
         developers: 'Developers';
         support: 'Support';
         profile: 'Profile';
-        fest: 'Superfest Festival';
       };
       walletMenu: {
         disconnect: 'Disconnect';
@@ -105,7 +104,7 @@ interface Resources {
     abstractAlert: {
       title: 'This wallet only works on Abstract!';
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
-      buttonText: 'Check the AGW docs';
+      buttonText: 'Check the docs';
     };
     featureCard: {
       learnMore: 'Learn more';
@@ -176,6 +175,13 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
+    };
+    tooltips: {
+      tvl: 'Total value of crypto assets deposited in this market.';
+      apy: 'Expected yearly return rate of the tokens invested.';
+      deposit: 'The displayed token is the token required to deposit into this market.';
+      deposited: 'Amount you have deposited into this market.';
+      boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
     };
   };
 }

@@ -241,7 +241,14 @@ function WidgetLikeField({
           onSubmit={onSubmit}
         >
           <InputLabel htmlFor="component" sx={{ marginBottom: 2 }}>
-            <Typography variant="titleSmall" sx={(theme) => ({ color: (theme.vars || theme).palette.text.primary })}>{label}</Typography>
+            <Typography
+              variant="titleSmall"
+              sx={(theme) => ({
+                color: (theme.vars || theme).palette.text.primary,
+              })}
+            >
+              {label}
+            </Typography>
           </InputLabel>
           <CustomFormControl
             variant="standard"

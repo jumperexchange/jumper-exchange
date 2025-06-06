@@ -3,14 +3,15 @@
 import { useAccount } from '@lifi/wallet-management';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { SiweMessage, generateNonce } from 'siwe';
+import { useState } from 'react';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { useSignMessage } from 'wagmi';
+import { defaultConfig, prepareSignup, signup } from '@turtledev/api';
 import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
+import { JUMPER_REFERRAL } from 'src/const/quests';
 
 interface SignatureInt {
   isLive: boolean;
@@ -23,81 +24,50 @@ interface SignatureCtaProps {
 
 export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
   const { account } = useAccount();
-  const [messageToSign, setMessageToSign] = useState<string | undefined>(
-    undefined,
-  );
   const [messagedHasBeenSigned, setMessagedHasBeenSigned] =
     useState<boolean>(false);
   const { signMessageAsync } = useSignMessage();
-  const {
-    isMember,
-    isLoading: isMemberCheckLoading,
-    isSuccess: isMemberCheckSuccess,
-  } = useTurtleMember({
+  const { isMember, refetchMember, refetchJumperMember } = useTurtleMember({
     userAddress: account?.address,
   });
 
   const handleSignatureClick = async () => {
     try {
-      const POST_ENDPOINT = 'https://points.turtle.club/user/verify_siwe';
-      if (messageToSign && account?.address) {
-        const domain = 'jumper.exchange';
-        const origin = 'https://jumper.exchange';
-        const nonce = generateNonce();
-
-        const siweMess = new SiweMessage({
-          version: '1',
-          domain,
-          uri: origin,
-          address: account.address,
-          chainId: 1,
-          statement: messageToSign,
-          nonce,
-        }).toMessage();
-
-        const sig = await signMessageAsync({
-          account: account.address as `0x${string}`,
-          message: String(siweMess),
-        });
-        const payload = {
-          message: siweMess, // same message as from before
-          signature: sig, // hex signature
-          referral: 'JUMPER', // referral string
-        };
-        const res = await fetch(POST_ENDPOINT, {
-          body: JSON.stringify(payload),
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!res.ok) {
-          throw new Error(`Response status: ${res.status}`);
-        }
-        if (res.status === 200) {
-          setMessagedHasBeenSigned(true);
-        }
+      if (!account?.address) {
+        throw new Error('No account address found');
       }
+      const prepareSignupOptions = {
+        user: account.address,
+      };
+      const preparedSignupData = await prepareSignup(
+        prepareSignupOptions,
+        defaultConfig,
+      );
+      if (!preparedSignupData) {
+        throw new Error('Failed to prepare signup data');
+      }
+      const signature = await signMessageAsync({
+        account: account.address as `0x${string}`,
+        message: preparedSignupData.sign_message,
+      });
+      const signupOptions = {
+        user: account.address,
+        signupToken: preparedSignupData.signup_token,
+        signature,
+        referral: JUMPER_REFERRAL,
+        network: '1', // Turtle is available only on Ethereum mainnet
+      };
+      const isSignupSuccess = await signup(signupOptions, defaultConfig);
+      if (!isSignupSuccess) {
+        throw new Error(`Invalid signature`);
+      }
+      setMessagedHasBeenSigned(true);
+      await refetchMember();
+      await refetchJumperMember();
     } catch (err) {
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    async function fetchMessage() {
-      try {
-        const GET_ENDPOINT = 'https://points.turtle.club/user/siwe_message';
-        const response = await fetch(`${GET_ENDPOINT}`);
-        const message = await response.text();
-        if (message) {
-          setMessageToSign(message);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchMessage();
-  }, []);
 
   return (
     <>

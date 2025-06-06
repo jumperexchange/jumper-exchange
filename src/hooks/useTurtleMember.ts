@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { exists, defaultConfig } from '@turtledev/api';
+import { JUMPER_REFERRAL } from 'src/const/quests';
 
 interface UseTurtleProps {
   userAddress?: string;
@@ -7,28 +9,33 @@ interface UseTurtleProps {
 interface UseTurtleRes {
   isMember?: boolean;
   isJumperMember?: boolean;
+  refetchMember: UseQueryResult['refetch'];
+  refetchJumperMember: UseQueryResult['refetch'];
   isLoading: boolean;
   isSuccess: boolean;
 }
 
-const JUMPER_REF = 'JUMPER';
-
 export const useTurtleMember = ({
   userAddress,
 }: UseTurtleProps): UseTurtleRes => {
-  const TURTLE_CHECK_API = `https://points.turtle.club/user/${userAddress}/exists`;
-  const TURTLE_REFCHECK_API = `https://points.turtle.club/referral/${userAddress}`;
-
-  const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['turtleMemberCheck'],
+  const {
+    data: isMember,
+    isSuccess: isMemberSuccess,
+    isLoading: isMemberLoading,
+    refetch: refetchMember,
+  } = useQuery({
+    queryKey: ['turtleMemberCheck', userAddress],
     queryFn: async () => {
       try {
-        const response = await fetch(TURTLE_CHECK_API);
-        const result = await response.text();
-        if (result) {
-          return result === 'true';
+        if (!userAddress) {
+          return false;
         }
-        return false;
+
+        const existsOptions = {
+          user: userAddress,
+        };
+
+        return await exists(existsOptions, defaultConfig);
       } catch (err) {
         console.error(err);
         return false;
@@ -42,14 +49,18 @@ export const useTurtleMember = ({
     data: refCheck,
     isSuccess: refCheckIsSuccess,
     isLoading: refCheckIsLoading,
+    refetch: refetchRefCheck,
   } = useQuery({
-    queryKey: ['turtleMemberRefCheck'],
+    queryKey: ['turtleMemberRefCheck', userAddress],
     queryFn: async () => {
       try {
-        const response = await fetch(TURTLE_REFCHECK_API);
+        // @Note: Seems @turtledev/api doesn't have a direct method for referral check, so we make a fetch call
+        const response = await fetch(
+          `${defaultConfig.pointsEndpoint}/referral/${userAddress}`,
+        );
         const result = await response.json();
         if (result && result.used_referral) {
-          return result.used_referral === JUMPER_REF;
+          return result.used_referral === JUMPER_REFERRAL;
         }
         return false;
       } catch (err) {
@@ -62,9 +73,11 @@ export const useTurtleMember = ({
   });
 
   return {
-    isMember: data,
+    isMember,
     isJumperMember: refCheck,
-    isSuccess: isSuccess && refCheckIsSuccess,
-    isLoading: isLoading && refCheckIsLoading,
+    refetchMember,
+    refetchJumperMember: refetchRefCheck,
+    isSuccess: isMemberSuccess && refCheckIsSuccess,
+    isLoading: isMemberLoading && refCheckIsLoading,
   };
 };

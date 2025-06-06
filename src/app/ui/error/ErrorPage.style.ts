@@ -9,22 +9,24 @@ export const CenteredContainer = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   height: '100vh',
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.background.default,
+  }),
 }));
 
 export const ErrorMessage = styled(Typography)(({ theme }) => ({
   margin: theme.spacing(2.5),
   textAlign: 'center',
-  color:
-    (theme.vars || theme).palette.accent1Alt.main,
+  color: (theme.vars || theme).palette.accent1Alt.main,
   fontWeight: 700,
   [theme.breakpoints.up('sm')]: {
     fontSize: '24px',
     fontWeight: 400,
     lineHeight: '32px',
   },
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.primary.main
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.accent1Alt.main,
+  }),
 }));
 
 export const SupportMessage = styled(Typography)<TypographyProps>(

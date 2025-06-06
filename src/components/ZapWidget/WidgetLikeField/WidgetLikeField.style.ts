@@ -18,10 +18,9 @@ export const MaxButton = styled(Button, {
   minWidth: 'unset',
   height: 'auto',
   color: '#fff',
-  backgroundColor:
-    mainColor ?? alpha(mainColor ?? (theme.vars || theme).palette.primary.main, 0.75),
+  backgroundColor: mainColor ?? alpha(theme.palette.primary.main, 0.75),
   '&:hover': {
-    backgroundColor: mainColor ?? (theme.vars || theme).palette.primary.main,
+    backgroundColor: mainColor ?? theme.palette.primary.main,
   },
 }));
 

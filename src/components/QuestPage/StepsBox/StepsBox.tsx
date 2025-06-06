@@ -19,12 +19,7 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
           Steps to complete the mission
         </DescriptionTitleTypography>
       </LeftTextBox>
-      <CustomRichBlocks
-        id={1}
-        baseUrl={baseUrl}
-        content={steps}
-        variant={'superfest'}
-      />
+      <CustomRichBlocks id={1} baseUrl={baseUrl} content={steps} />
     </QuestsPageElementContainer>
   );
 };

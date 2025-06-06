@@ -66,17 +66,3 @@ export const IconButtonTertiary = styled(IconButton)(({ theme }) => ({
     backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
   }),
 }));
-
-export const SuperfestIconButtonPrimary = styled(IconButton)(({ theme }) => ({
-  color: (theme.vars || theme).palette.white.main,
-  backgroundColor: (theme.vars || theme).palette.primary.main,
-  ':hover': {
-    backgroundColor: darken(theme.palette.primary.main, 0.16),
-    ...theme.applyStyles('light', {
-      backgroundColor: darken(theme.palette.accent1.main, 0.16),
-    }),
-  },
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.accent1.main,
-  }),
-}));

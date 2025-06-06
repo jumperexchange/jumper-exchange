@@ -5,7 +5,6 @@
       "subtitle": "<0>4x audited</0><1>LI.FI</1> によるマルチチェーン流動性アグリゲータ",
       "cta": "はじめよう"
     },
-    "poweredByLifi": "<0>Powered by </0><1>LI.FI</1>",
     "links": {
       "exchange": "スワップ",
       "dashboard": "ダッシュボード",
@@ -31,10 +30,9 @@
       "brandAssets": "ブランドアセット",
       "theme": "テーマ",
       "developers": "開発者",
-      "lifiExplorer": "LI.FIエクスプローラー",
-      "aboutLIFI": "LI.FIについて",
       "support": "サポート",
-      "profile": "Jumperプロフィール"
+      "profile": "Jumperプロフィール",
+      "fest": ""
     },
     "walletMenu": {
       "disconnect": "接続を解除",
@@ -46,15 +44,22 @@
       "walletNotInstalled": "{{wallet}} はインストールされていません。",
       "connectAnotherWallet": "別のウォレットを接続する",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "ライトモード",
       "switchToDark": "ダークモード",
-      "switchToSystem": "システム設定に準拠"
+      "switchToSystem": "システム設定に準拠",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
+      "github": "",
       "documentation": "公式ドキュメント"
     }
   },
@@ -85,6 +90,16 @@
     "title": "Solanaトークンの限定的サポート",
     "subtitle": "現時点では、USDCとUSDTのみがSolanaとの間でブリッジできます。"
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": "さらに詳しく"
   },
@@ -102,15 +117,22 @@
     "transactionInitiated": {
       "title": "複数の署名が必要です",
       "description": "トランザクションの有効期限が切れる前に他のマルチシグウォレット参加者に通知してください"
-    },
-    "alert": {
-      "title": "マルチシグウォレットが接続されました",
-      "description": "交換を完了するには、宛先ウォレットアドレスが必要です。"
     }
   },
   "questCard": {
     "completed": "完了しました",
-    "join": "参加する"
+    "join": "参加する",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "利用可能なミッション",
@@ -118,6 +140,34 @@
   },
   "profile_page": {
     "mobileTitle": "デスクトップでのみ利用可能です",
-    "mobileDescription": "Jumper プロファイルページは、まだ小さな画面では利用できません。私たちは現在作業中です。"
+    "mobileDescription": "Jumper プロファイルページは、まだ小さな画面では利用できません。私たちは現在作業中です。",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
   }
 }

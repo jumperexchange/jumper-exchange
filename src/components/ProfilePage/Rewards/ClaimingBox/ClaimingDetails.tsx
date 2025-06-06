@@ -2,7 +2,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { type Theme, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
-import { FlexCenterRowBox } from 'src/components/Superfest/SuperfestPage/SuperfestMissionPage.style';
+import { FlexCenterRowBox } from 'src/components/QuestPage/QuestsMissionPage.style';
 import { ClaimingAmountLabel } from './ClaimingDetails.style';
 
 export const ClaimingDetails = ({

@@ -16,13 +16,8 @@ export const JUMPER_BRIDGE_PATH = '/bridge';
 export const JUMPER_SWAP_PATH = '/swap';
 export const JUMPER_TX_PATH = '/tx';
 export const JUMPER_WALLET_PATH = '/wallet';
-export const JUMPER_FEST_PATH = '/superfest';
-export const JUMPER_MEMECOIN_PATH = '/memecoins';
 export const JUMPER_QUESTS_PATH = '/quests';
-export const JUMPER_BOYCO_PATH = '/berachain';
 export const JUMPER_CAMPAIGN_PATH = '/campaign';
-
-export const GALXE_ENDPOINT = 'https://graphigo.prd.galaxy.eco/query';
 
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
@@ -38,6 +33,5 @@ export const pages: SitemapPage[] = [
   { path: '/', priority: 1.0 },
   { path: JUMPER_LEARN_PATH, priority: 0.9 },
   { path: JUMPER_LOYALTY_PATH, priority: 0.8 },
-  // { path: '/buy', priority: 0.7 },
   { path: '/gas', priority: 0.7 },
 ];

@@ -8,7 +8,6 @@ import {
 } from '@/const/trackingKeys';
 import {
   DISCORD_URL,
-  JUMPER_BOYCO_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_LOYALTY_PATH,
   JUMPER_SCAN_PATH,
@@ -217,9 +216,9 @@ export const useMainMenuContent = () => {
       label: 'Discord',
       prefixIcon: (
         <Discord
-        sx={{
-          color: (theme.vars || theme).palette.text.primary,
-        }}
+          sx={{
+            color: (theme.vars || theme).palette.text.primary,
+          }}
         />
       ),
       showMoreIcon: false,
