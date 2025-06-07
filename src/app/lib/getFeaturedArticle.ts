@@ -1,7 +1,11 @@
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 
 export async function getFeaturedArticle() {
-  const urlParams = new ArticleStrapiApi().sort('desc').filterByFeatured();
+  const urlParams = new ArticleStrapiApi({
+    excludeFields: ['Content'],
+  })
+    .sort('desc')
+    .filterByFeatured();
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();

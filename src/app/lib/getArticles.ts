@@ -9,11 +9,15 @@ export async function getArticles(
   excludeId?: number,
   pageSize?: number,
 ): Promise<GetArticlesResponse> {
-  const urlParams = new ArticleStrapiApi().sort('desc').addPaginationParams({
-    page: 1,
-    pageSize: pageSize || 20,
-    withCount: false,
-  });
+  const urlParams = new ArticleStrapiApi({
+    excludeFields: ['Content'],
+  })
+    .sort('desc')
+    .addPaginationParams({
+      page: 1,
+      pageSize: pageSize || 20,
+      withCount: false,
+    });
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.getApiAccessToken();
@@ -30,15 +34,13 @@ export async function getArticles(
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json().then((output) =>
-    // filter out given excludeId
-    {
-      return {
-        meta: output.meta,
-        data: output.data.filter((el: BlogArticleData) => el.id !== excludeId),
-      };
-    },
-  ); // Extract data from the response
+  const responseData = await res.json();
+  const data = {
+    meta: responseData.meta,
+    data: responseData.data.filter(
+      (el: BlogArticleData) => el.id !== excludeId,
+    ),
+  };
 
   return { ...data, url: apiBaseUrl }; // Return a plain object
 }

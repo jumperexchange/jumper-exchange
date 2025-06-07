@@ -56,7 +56,7 @@ export const FeaturedArticle = ({
       ),
     });
 
-  const minRead = featuredArticle && readingTime(featuredArticle?.Content);
+  const minRead = featuredArticle && readingTime(featuredArticle?.WordCount);
 
   return featuredArticle ? (
     <>
