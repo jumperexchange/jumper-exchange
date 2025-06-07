@@ -31,8 +31,7 @@
       "theme": "विषय",
       "developers": "डेवलपर",
       "support": "सहायता",
-      "profile": "",
-      "fest": ""
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "डिस्कनेक्ट करें",
@@ -169,5 +168,12 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

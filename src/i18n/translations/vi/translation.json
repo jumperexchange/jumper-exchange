@@ -31,8 +31,7 @@
       "theme": "Giao diện",
       "developers": "Lập trình viên",
       "support": "Hỗ trợ",
-      "profile": "Hồ sơ Jumper",
-      "fest": ""
+      "profile": "Hồ sơ Jumper"
     },
     "walletMenu": {
       "disconnect": "Ngắt kết nối",
@@ -169,5 +168,12 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }
