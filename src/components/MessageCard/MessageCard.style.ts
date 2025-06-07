@@ -19,46 +19,43 @@ const MessageCard = styled(Box)(({ theme }) => ({
 
 export const WarningMessageCard = styled(MessageCard)(({ theme }) => ({
   borderRadius: '12px',
-  backgroundColor:
-    alpha(theme.palette.warning.main, 0.16),
-  ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.warning.main, 0.24)
-  })
+  backgroundColor: alpha(theme.palette.warning.main, 0.16),
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.warning.main, 0.24),
+  }),
 }));
 
 export const WarningMessageCardTitle = styled(Box)(({ theme }) => ({
   padding: 0,
-  color:
-    alpha(theme.palette.warning.dark, 1),
-  ...theme.applyStyles("light", {
-    color: darken(theme.palette.warning.main, 0.36)
-  })
+  color: alpha(theme.palette.warning.dark, 1),
+  ...theme.applyStyles('light', {
+    color: darken(theme.palette.warning.main, 0.36),
+  }),
 }));
 
 export const InfoMessageCard = styled(MessageCard)(({ theme }) => ({
-  backgroundColor:
-    alpha(theme.palette.info.main, 0.16),
-  ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.info.main, 0.12)
-  })
+  backgroundColor: alpha(theme.palette.info.main, 0.16),
+  color: (theme.vars || theme).palette.text.secondary,
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.info.main, 0.12),
+  }),
 }));
 
 export const InfoMessageCardTitle = styled(Box)(({ theme }) => ({
   padding: 0,
-  color:
-    lighten(theme.palette.info.main, 0.24),
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.info.main
-  })
+  color: lighten(theme.palette.info.main, 0.24),
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.info.main,
+  }),
 }));
 
 export const InfoMessageCardClickable = styled(MessageCard)(({ theme }) => ({
-  backgroundColor:
-    alpha(theme.palette.info.main, 0.16),
+  backgroundColor: alpha(theme.palette.info.main, 0.16),
+  color: (theme.vars || theme).palette.text.secondary,
   cursor: 'pointer',
-  ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.info.main, 0.12)
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.info.main, 0.12),
+  }),
 }));
 
 export const InfoMessageCardSubtitle = styled(Typography)(({ theme }) => ({
