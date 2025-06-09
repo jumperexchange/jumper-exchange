@@ -10,7 +10,7 @@ export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
 export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_LEARN_PATH = '/learn';
-export const JUMPER_LOYALTY_PATH = '/profile';
+export const JUMPER_PROFILE_PATH = '/profile';
 export const JUMPER_SCAN_PATH = '/scan';
 export const JUMPER_ZAP_PATH = '/zap';
 export const JUMPER_BRIDGE_PATH = '/bridge';
@@ -33,14 +33,14 @@ export function getSiteUrl() {
 export const pages: SitemapPage[] = [
   { path: JUMPER_MAIN_PATH, priority: 1.0 },
   { path: JUMPER_LEARN_PATH, priority: 0.9 },
-  { path: JUMPER_LOYALTY_PATH, priority: 0.8 },
+  { path: JUMPER_PROFILE_PATH, priority: 0.8 },
   { path: '/gas', priority: 0.7 },
 ];
 
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
   Learn = JUMPER_LEARN_PATH,
-  Profile = JUMPER_LOYALTY_PATH,
+  Profile = JUMPER_PROFILE_PATH,
   Scan = JUMPER_SCAN_PATH,
   Zap = JUMPER_ZAP_PATH,
   Bridge = JUMPER_BRIDGE_PATH,

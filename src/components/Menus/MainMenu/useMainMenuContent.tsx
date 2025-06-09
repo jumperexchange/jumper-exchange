@@ -9,7 +9,7 @@ import {
 import {
   DISCORD_URL,
   JUMPER_LEARN_PATH,
-  JUMPER_LOYALTY_PATH,
+  JUMPER_PROFILE_PATH,
   JUMPER_SCAN_PATH,
   X_URL,
 } from '@/const/urls';
@@ -146,7 +146,7 @@ export const useMainMenuContent = () => {
       label: 'Jumper Profile',
       prefixIcon: <AccountCircleIcon />,
       showMoreIcon: false,
-      link: { url: JUMPER_LOYALTY_PATH },
+      link: { url: JUMPER_PROFILE_PATH },
       onClick: () => {
         trackEvent({
           category: TrackingCategory.Menu,
