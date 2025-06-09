@@ -1,7 +1,6 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
 import { useMenuStore } from '@/stores/menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
@@ -12,7 +11,7 @@ import {
   JUMPER_TX_PATH,
   JUMPER_WALLET_PATH,
 } from 'src/const/urls';
-import { MenuToggle, NavbarButtonsContainer, RedirectToApp } from '.';
+import { MenuToggle, MenuIcon, NavbarButtonsContainer, RedirectToApp } from '.';
 import dynamic from 'next/dynamic';
 
 const WalletButtons = dynamic(
@@ -81,14 +80,9 @@ export const NavbarButtons = () => {
           aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
           aria-expanded={openMainMenu ? 'true' : undefined}
           aria-haspopup="true"
-          onClick={(e) => handleOnOpenNavbarMainMenu(e)}
+          onClick={handleOnOpenNavbarMainMenu}
         >
-          <MenuIcon
-            sx={{
-              fontSize: '32px',
-              color: 'inherit',
-            }}
-          />
+          <MenuIcon />
         </MenuToggle>
       </NavbarButtonsContainer>
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
