@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "查看所有支持的钱包",
     "navbarMenu": {
+      "learn": "学习",
+      "scan": "扫描",
       "brandAssets": "品牌资产",
       "theme": "主题",
       "developers": "开发者",
       "support": "技术支持",
+      "resources": "资源",
       "profile": "Jumper 个人资料"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "深色主题",
+      "light": "浅色主题",
+      "system": "系统主题",
       "switchToLight": "切换到浅色主题",
       "switchToDark": "切换到深色主题",
       "switchToSystem": "与系统保持一致",

@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "শিখুন",
+      "scan": "স্ক্যান করুন",
       "brandAssets": "",
       "theme": "থিম",
       "developers": "ডেভেলপারস",
       "support": "সাপোর্ট",
+      "resources": "রিসোর্স",
       "profile": ""
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "ডার্ক",
+      "light": "লাইট",
+      "system": "সিস্টেম",
       "switchToLight": "লাইট মোডে স্যুইচ করুন",
       "switchToDark": "ডার্ক মোডে স্যুইচ করুন",
       "switchToSystem": "",

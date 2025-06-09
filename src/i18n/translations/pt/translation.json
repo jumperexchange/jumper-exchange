@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
+      "learn": "Aprender",
+      "scan": "Escanear",
       "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
       "support": "Suporte",
+      "resources": "Recursos",
       "profile": "Perfil Jumper"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
+      "dark": "Escuro",
+      "light": "Claro",
+      "system": "Sistema",
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
       "switchToSystem": "Alternar para sistema",

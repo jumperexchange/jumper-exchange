@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "Ver todas las billeteras",
     "navbarMenu": {
+      "learn": "Aprender",
+      "scan": "Escanear",
       "brandAssets": "Recursos de marca",
       "theme": "Tema",
       "developers": "Desarrolladores",
       "support": "Soporte",
+      "resources": "Recursos",
       "profile": "Perfil de Jumper"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "Oscuro",
+      "light": "Claro",
+      "system": "Sistema",
       "switchToLight": "Cambiar a tema claro",
       "switchToDark": "Cambiar a tema oscuro",
       "switchToSystem": "Cambiar a sistema",

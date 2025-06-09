@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "Afficher tous les portefeuilles",
     "navbarMenu": {
+      "learn": "Apprendre",
+      "scan": "Scanner",
       "brandAssets": "Actifs de marque",
       "theme": "Thème",
       "developers": "Développeurs",
       "support": "",
+      "resources": "Ressources",
       "profile": "Profil Jumper"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "Sombre",
+      "light": "Clair",
+      "system": "Système",
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
       "switchToSystem": "Basculer vers Système",

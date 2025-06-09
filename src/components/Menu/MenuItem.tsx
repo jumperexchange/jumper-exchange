@@ -14,7 +14,7 @@ export interface MenuItemLinkType {
 
 interface MenuItemProps {
   open: boolean;
-  showButton: boolean | undefined;
+  showButton?: boolean | undefined;
   children?: ReactNode; // Update the type here
   disableRipple?: boolean | undefined;
   autoFocus?: boolean;
@@ -73,9 +73,9 @@ export const MenuItem = ({
                 [theme.breakpoints.up('sm' as Breakpoint)]: {
                   maxWidth: 168,
                 },
-                ...theme.applyStyles("light", {
-                  color: (theme.vars || theme).palette.primary.main
-                })
+                ...theme.applyStyles('light', {
+                  color: (theme.vars || theme).palette.primary.main,
+                }),
               })}
             >
               {label}

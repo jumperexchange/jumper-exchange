@@ -1,5 +1,6 @@
-import { Tabs } from '@/components/Tabs/Tabs';
+import { useMemo, useCallback } from 'react';
 import { Discord } from '@/components/illustrations/Discord';
+import { Link3Icon } from '@/components/illustrations/Link3Icon';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import {
   TrackingAction,
@@ -9,259 +10,292 @@ import {
 import {
   DISCORD_URL,
   JUMPER_LEARN_PATH,
-  JUMPER_PROFILE_PATH,
   JUMPER_SCAN_PATH,
+  LINK3_URL,
+  TELEGRAM_URL,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import XIcon from '@mui/icons-material/X';
-import { alpha, Typography, useColorScheme } from '@mui/material';
+import { Telegram } from '@mui/icons-material';
+import { Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { usePathname, useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { useThemeSwitchTabs } from './useThemeSwitchTabs';
+import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
+
+interface MenuLink {
+  url: string;
+  external?: boolean;
+}
+
+interface MenuItem {
+  label: string;
+  prefixIcon: React.JSX.Element | string;
+  suffixIcon?: React.JSX.Element | string;
+  showMoreIcon?: boolean;
+  link?: MenuLink;
+  triggerSubMenu?: MenuKeysEnum;
+  onClick: () => void;
+}
+
+interface SocialLink {
+  label: string;
+  prefixIcon: React.JSX.Element | string;
+  link: MenuLink;
+  onClick: () => void;
+}
 
 export const useMainMenuContent = () => {
-  const { mode } = useColorScheme();
   const { t, i18n } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const router = useRouter();
   const theme = useTheme();
-  const pathname = usePathname();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
-    (state) => state,
+  const { selectedThemeIcon } = useThemeModesMenuContent();
+  const { setSubMenuState, closeAllMenus } = useMenuStore((state) => state);
+
+  const trackPageLoad = useCallback(
+    (destination: string, url: string, source = TrackingCategory.Menu) => {
+      trackEvent({
+        category: TrackingCategory.Pageload,
+        action: TrackingAction.PageLoad,
+        label: `pageload-${destination}`,
+        data: {
+          [TrackingEventParameter.PageloadSource]: source,
+          [TrackingEventParameter.PageloadDestination]: destination,
+          [TrackingEventParameter.PageloadURL]: url,
+          [TrackingEventParameter.PageloadExternal]: true,
+        },
+      });
+    },
+    [trackEvent],
   );
 
-  const themeSwitchTabs = useThemeSwitchTabs();
-
-  const containerStyles = {
-    display: 'flex',
-    width: '100%',
-    borderRadius: '24px',
-    div: {
-      height: 38,
+  const trackMenuClick = useCallback(
+    (label: string, action: TrackingAction, menu: string) => {
+      trackEvent({
+        category: TrackingCategory.Menu,
+        label,
+        action,
+        data: { [TrackingEventParameter.Menu]: menu },
+      });
     },
-    '.MuiTabs-indicator': {
-      height: 38,
-      zIndex: -1,
-      borderRadius: '18px',
-    },
-  };
+    [trackEvent],
+  );
 
-  const tabStyles = {
-    height: 38,
-    margin: theme.spacing(0.75),
-    minWidth: 'unset',
-    borderRadius: '18px',
-  };
+  const handleLearnClick = useCallback(() => {
+    trackMenuClick(
+      'click-jumper-learn-link',
+      TrackingAction.ClickJumperLearnLink,
+      'jumper_learn',
+    );
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
 
-  let mainMenu: any[] = [];
+  const handleScanClick = useCallback(() => {
+    trackMenuClick(
+      'open-jumper-scan',
+      TrackingAction.ClickJumperScanLink,
+      'jumper_scan',
+    );
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
 
-  if (configTheme?.hasThemeModeSwitch) {
-    mainMenu.push({
-      children: (
-        <Tabs
-          data={themeSwitchTabs || []}
-          value={mode === 'light' ? 0 : mode === 'dark' ? 1 : 2}
-          ariaLabel="theme-switch-tabs"
-          containerStyles={containerStyles}
-          tabStyles={tabStyles}
-        />
-      ),
-      styles: {
-        width: 'auto',
-        margin: theme.spacing(1.5),
-        gap: '8px',
-        backgroundColor: 'transparent',
-        borderRadius: '24px',
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-        paddingTop: `${theme.spacing(0.5)} !important`,
-        padding: theme.spacing(0.5),
-        '> button:hover': {
-          backgroundColor: alpha(theme.palette.white.main, 0.04),
-          ...theme.applyStyles('light', {
-            backgroundColor: alpha(theme.palette.black.main, 0.04),
-          }),
-        },
-        '> button:hover svg': {
-          fill:
-            mode === 'light'
-              ? theme.palette.grey[700]
-              : alpha(theme.palette.white.main, 0.88),
-        },
-      },
-      showMoreIcon: false,
-      disableRipple: true,
+  const handleSupportClick = useCallback(() => {
+    trackMenuClick(
+      'click-discord-link',
+      TrackingAction.ClickDiscordLink,
+      'jumper_discord',
+    );
+    trackPageLoad('jumper_discord', DISCORD_URL, TrackingCategory.MainMenu);
+  }, [trackMenuClick, trackPageLoad]);
+
+  const handleThemeClick = useCallback(() => {
+    setSubMenuState(MenuKeysEnum.ThemeMode);
+  }, [setSubMenuState]);
+
+  const handleLanguageClick = useCallback(() => {
+    setSubMenuState(MenuKeysEnum.Language);
+  }, [setSubMenuState]);
+
+  const handleResourcesClick = useCallback(() => {
+    setSubMenuState(MenuKeysEnum.Devs);
+    trackEvent({
+      category: TrackingCategory.MainMenu,
+      action: TrackingAction.OpenMenu,
+      label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
+      data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
     });
-  }
+  }, [setSubMenuState, trackEvent]);
 
-  mainMenu = mainMenu.concat([
-    {
-      label: t('language.key', { ns: 'language' }),
-      prefixIcon: <LanguageIcon />,
-      suffixIcon: (
-        <Typography
-          variant="bodyMedium"
-          textTransform={'uppercase'}
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            maxWidth: 38,
-          }}
-        >
-          {i18n.language}
-        </Typography>
-      ),
-      showMoreIcon: true,
-      triggerSubMenu: MenuKeysEnum.Language,
+  const socialLinkIconStyle = useMemo(
+    () => ({
+      color: (theme.vars || theme).palette.alphaLight500.main,
+      ...theme.applyStyles('light', {
+        color: theme.palette.alphaDark500.main,
+      }),
+    }),
+    [theme],
+  );
+
+  const createSocialLink = useCallback(
+    (
+      label: string,
+      icon: React.JSX.Element | string,
+      url: string,
+      trackingKey: string,
+      action: TrackingAction,
+    ): SocialLink => ({
+      label,
+      prefixIcon: icon,
+      link: { url, external: true },
       onClick: () => {
-        setSubMenuState(MenuKeysEnum.Language);
+        trackMenuClick(
+          `click-${trackingKey}-link`,
+          action,
+          `${trackingKey}-jumper`,
+        );
+        trackPageLoad(`${trackingKey}_jumper`, url);
       },
-    },
-    {
-      label: t('navbar.navbarMenu.developers'),
-      prefixIcon: <DeveloperModeIcon />,
-      triggerSubMenu: MenuKeysEnum.Devs,
-      onClick: () => {
-        setSubMenuState(MenuKeysEnum.Devs);
-        trackEvent({
-          category: TrackingCategory.MainMenu,
-          action: TrackingAction.OpenMenu,
-          label: `open_submenu_${MenuKeysEnum.Devs.toLowerCase()}`,
-          data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
-        });
+    }),
+    [trackMenuClick, trackPageLoad],
+  );
+
+  const languageSuffixIcon = useMemo(
+    () => (
+      <Typography
+        variant="bodyMedium"
+        textTransform="uppercase"
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: 38,
+        }}
+      >
+        {i18n.language}
+      </Typography>
+    ),
+    [i18n.language],
+  );
+
+  const discordSupportIcon = useMemo(
+    () => (
+      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
+    ),
+    [theme],
+  );
+
+  const mainMenuItems: MenuItem[] = useMemo(() => {
+    const baseItems: MenuItem[] = [
+      {
+        label: t('navbar.navbarMenu.learn'),
+        prefixIcon: <SchoolIcon />,
+        showMoreIcon: false,
+        link: { url: JUMPER_LEARN_PATH },
+        onClick: handleLearnClick,
       },
-    },
-    {
-      label: 'Jumper Profile',
-      prefixIcon: <AccountCircleIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_PROFILE_PATH },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-pass-link',
-          action: TrackingAction.ClickJumperProfileLink,
-          data: { [TrackingEventParameter.Menu]: 'pass' },
-        });
-        closeAllMenus();
+      {
+        label: t('navbar.navbarMenu.scan'),
+        prefixIcon: <SearchOutlinedIcon />,
+        showMoreIcon: false,
+        link: { url: JUMPER_SCAN_PATH, external: false },
+        onClick: handleScanClick,
       },
-    },
-    {
-      label: 'Jumper Learn',
-      prefixIcon: <SchoolIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_LEARN_PATH },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-jumper-learn-link',
-          action: TrackingAction.ClickJumperLearnLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_learn' },
-        });
-        closeAllMenus();
+      {
+        label: t('navbar.navbarMenu.support'),
+        prefixIcon: discordSupportIcon,
+        showMoreIcon: false,
+        link: { url: DISCORD_URL, external: true },
+        onClick: handleSupportClick,
       },
-    },
-    {
-      label: 'Jumper Scan',
-      prefixIcon: <SearchOutlinedIcon />,
-      showMoreIcon: false,
-      link: { url: JUMPER_SCAN_PATH, external: false },
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'open-jumper-scan',
-          action: TrackingAction.ClickJumperScanLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_scan' },
-        });
-        closeAllMenus();
+    ];
+
+    // Conditionally add theme menu item
+    if (configTheme?.hasThemeModeSwitch) {
+      baseItems.push({
+        label: t('navbar.navbarMenu.theme'),
+        prefixIcon: selectedThemeIcon,
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.ThemeMode,
+        onClick: handleThemeClick,
+      });
+    }
+
+    baseItems.push(
+      {
+        label: t('language.key', { ns: 'language' }),
+        prefixIcon: <LanguageIcon />,
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.Language,
+        suffixIcon: languageSuffixIcon,
+        onClick: handleLanguageClick,
       },
-    },
-    {
-      label: 'X',
-      prefixIcon: <XIcon />,
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-x-link',
-          action: TrackingAction.ClickXLink,
-          data: { [TrackingEventParameter.Menu]: 'x-jumper' },
-        });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-x_jumper',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.Menu,
-            [TrackingEventParameter.PageloadDestination]: 'x-jumper',
-            [TrackingEventParameter.PageloadURL]: X_URL,
-            [TrackingEventParameter.PageloadExternal]: true,
-          },
-        });
+      {
+        label: t('navbar.navbarMenu.resources'),
+        prefixIcon: <FolderOpen />,
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.Devs,
+        onClick: handleResourcesClick,
       },
-      link: { url: X_URL, external: true },
-    },
-    {
-      label: 'Discord',
-      prefixIcon: (
-        <Discord
-          sx={{
-            color: (theme.vars || theme).palette.text.primary,
-          }}
-        />
-      ),
-      showMoreIcon: false,
-      onClick: () => {
-        trackEvent({
-          category: TrackingCategory.Menu,
-          label: 'click-discord-link',
-          action: TrackingAction.ClickDiscordLink,
-          data: { [TrackingEventParameter.Menu]: 'jumper_discord' },
-        });
-        trackEvent({
-          category: TrackingCategory.Pageload,
-          action: TrackingAction.PageLoad,
-          label: 'pageload-discord',
-          data: {
-            [TrackingEventParameter.PageloadSource]: TrackingCategory.MainMenu,
-            [TrackingEventParameter.PageloadDestination]: 'jumper_discord',
-            [TrackingEventParameter.PageloadURL]: DISCORD_URL,
-            [TrackingEventParameter.PageloadExternal]: true,
-          },
-        });
-      },
-      link: { url: DISCORD_URL, external: true },
-    },
-    {
-      label: t('navbar.navbarMenu.support'),
-      prefixIcon: (
-        <Discord
-          sx={{
-            color: theme.palette.common.white,
-            ...theme.applyStyles('light', {
-              color: (theme.vars || theme).palette.primary.main,
-            }),
-          }}
-        />
-      ),
-      onClick: () => {
-        setSupportModalState(true);
-      },
-      showButton: true,
-    },
+    );
+
+    return baseItems;
+  }, [
+    t,
+    handleLearnClick,
+    handleScanClick,
+    discordSupportIcon,
+    handleSupportClick,
+    configTheme?.hasThemeModeSwitch,
+    selectedThemeIcon,
+    handleThemeClick,
+    languageSuffixIcon,
+    handleLanguageClick,
+    handleResourcesClick,
   ]);
 
-  return mainMenu;
-  //Todo: to generate on the server side
+  const mainMenuSocialLinks: SocialLink[] = useMemo(
+    () => [
+      createSocialLink(
+        'X',
+        <XIcon sx={socialLinkIconStyle} />,
+        X_URL,
+        'x',
+        TrackingAction.ClickXLink,
+      ),
+      createSocialLink(
+        'Discord',
+        <Discord sx={socialLinkIconStyle} />,
+        DISCORD_URL,
+        'discord',
+        TrackingAction.ClickDiscordLink,
+      ),
+      createSocialLink(
+        'Telegram',
+        <Telegram sx={socialLinkIconStyle} />,
+        TELEGRAM_URL,
+        'telegram',
+        TrackingAction.ClickTelegramLink,
+      ),
+      createSocialLink(
+        'Link3',
+        <Link3Icon sx={socialLinkIconStyle} />,
+        LINK3_URL,
+        'link3',
+        TrackingAction.ClickLink3Link,
+      ),
+    ],
+    [createSocialLink, socialLinkIconStyle],
+  );
+
+  return {
+    mainMenuItems,
+    mainMenuSocialLinks,
+  };
+  // Todo: to generate on the server side
 };

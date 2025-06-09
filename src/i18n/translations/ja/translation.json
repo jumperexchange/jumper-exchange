@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "すべてのウォレットを見る",
     "navbarMenu": {
+      "learn": "学ぶ",
+      "scan": "スキャン",
       "brandAssets": "ブランドアセット",
       "theme": "テーマ",
       "developers": "開発者",
       "support": "サポート",
+      "resources": "リソース",
       "profile": "Jumperプロフィール"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "ダークモード",
+      "light": "ライトモード",
+      "system": "システム設定",
       "switchToLight": "ライトモード",
       "switchToDark": "ダークモード",
       "switchToSystem": "システム設定に準拠",
