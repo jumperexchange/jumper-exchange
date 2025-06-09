@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "미션",
       "dashboard": "대시보드",
       "refuel": "가스",
       "buy": "매수"
