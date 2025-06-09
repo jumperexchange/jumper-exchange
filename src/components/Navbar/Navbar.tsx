@@ -11,6 +11,7 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from 'src/stores/theme';
 import { Logo, LogoLink, NavbarButtons, NavbarContainer } from '.';
+import { NavbarLinks } from './NavbarLinks';
 
 export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
@@ -38,12 +39,16 @@ export const Navbar = ({ disableNavbar = false }) => {
   }
 
   return (
-    <NavbarContainer enableColorOnDark hasBlurredNavigation={configTheme?.hasBlurredNavigation}>
+    <NavbarContainer
+      enableColorOnDark
+      hasBlurredNavigation={configTheme?.hasBlurredNavigation}
+    >
       <LogoLink href={logoHref} id="jumper-logo" onClick={handleClick}>
         <Logo
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLink>
+      <NavbarLinks />
       <NavbarButtons />
     </NavbarContainer>
   );

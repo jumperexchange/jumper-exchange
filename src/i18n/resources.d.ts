@@ -14,6 +14,7 @@ interface Resources {
       };
       links: {
         exchange: 'Exchange';
+        missions: 'Missions';
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';

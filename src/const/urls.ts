@@ -8,6 +8,7 @@ export const GITHUB_URL = 'https://github.com/jumperexchange';
 export const X_SHARE_URL = 'https://x.com/share';
 export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
 export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
+export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_LOYALTY_PATH = '/profile';
 export const JUMPER_SCAN_PATH = '/scan';
@@ -30,8 +31,19 @@ export function getSiteUrl() {
 
 // prepare sitemap
 export const pages: SitemapPage[] = [
-  { path: '/', priority: 1.0 },
+  { path: JUMPER_MAIN_PATH, priority: 1.0 },
   { path: JUMPER_LEARN_PATH, priority: 0.9 },
   { path: JUMPER_LOYALTY_PATH, priority: 0.8 },
   { path: '/gas', priority: 0.7 },
 ];
+
+export enum AppPaths {
+  Main = JUMPER_MAIN_PATH,
+  Learn = JUMPER_LEARN_PATH,
+  Profile = JUMPER_LOYALTY_PATH,
+  Scan = JUMPER_SCAN_PATH,
+  Zap = JUMPER_ZAP_PATH,
+  Bridge = JUMPER_BRIDGE_PATH,
+  Swap = JUMPER_SWAP_PATH,
+  Tx = JUMPER_TX_PATH,
+}

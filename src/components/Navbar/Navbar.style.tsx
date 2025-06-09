@@ -51,3 +51,27 @@ export const LogoLink = styled(Link)(({ theme }) => ({
   height: '32px',
   alignContent: 'center',
 }));
+
+export const NavbarLinksContainer = styled('ul')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: theme.spacing(1),
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  alignItems: 'center',
+  [theme.breakpoints.up('sm')]: {
+    paddingLeft: theme.spacing(4),
+  },
+}));
+
+export const NavbarLink = styled(Link)(({ theme }) => ({
+  ...theme.typography.bodyMedium,
+  fontWeight: theme.typography.fontWeightBold,
+  color: theme.palette.text.primary,
+  textAlign: 'center',
+  textDecoration: 'none',
+  padding: theme.spacing(1.5, 2.5),
+  transition: 'all 0.3s ease-in-out',
+  borderRadius: '24px',
+}));
