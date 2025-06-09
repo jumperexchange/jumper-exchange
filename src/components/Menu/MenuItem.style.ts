@@ -4,17 +4,13 @@ import type {
   TypographyProps,
 } from '@mui/material';
 import { alpha, MenuItem as MUIMenuItem, Typography } from '@mui/material';
-
-import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import type { Breakpoint } from '@mui/material/styles';
 
-export interface MenuItemProps extends MUIMenuItemProps {
-  showButton?: boolean;
-}
-
-export const MenuItemContainer = styled(MUIMenuItem, {
-  shouldForwardProp: (prop) => prop !== 'showButton',
-})<MenuItemProps>(({ theme }) => ({
+/**
+ * Base styled component for MenuItem that applies common styles and disables interaction.
+ */
+export const MenuItemBaseContainer = styled(MUIMenuItem)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'inherit',
@@ -23,117 +19,80 @@ export const MenuItemContainer = styled(MUIMenuItem, {
   justifyContent: 'space-between',
   margin: theme.spacing(0, 1.5),
   height: 48,
-  marginTop: 0,
   borderRadius: '12px',
   width: 'auto',
+  pointerEvents: 'auto',
   placeContent: 'space-between',
+  '&:hover, &:focus, &:active, &.Mui-selected': {
+    backgroundColor: 'inherit',
+  },
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    height: 48,
+  },
+}));
+
+export interface MenuItemProps extends MUIMenuItemProps {
+  showButton?: boolean;
+}
+
+export const MenuItemContainer = styled(MenuItemBaseContainer, {
+  shouldForwardProp: (prop) => prop !== 'showButton',
+})<MenuItemProps>(({ theme, showButton }) => ({
+  pointerEvents: 'auto',
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.04),
     ...theme.applyStyles('light', {
       backgroundColor: alpha(theme.palette.black.main, 0.04),
     }),
   },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: 48,
-  },
-  variants: [
-    {
-      props: ({ showButton }) => showButton,
-      style: {
-        padding: theme.spacing(0, 1.5, 1.5),
-      },
+  ...(showButton && {
+    padding: theme.spacing(0, 1.5, 1.5),
+    height: 'auto',
+    marginTop: theme.spacing(1),
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
-    {
-      props: ({ showButton }) => showButton,
-      style: {
-        height: 'auto',
-      },
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      height: 'auto',
     },
-    {
-      props: ({ showButton }) => showButton,
-      style: {
-        marginTop: theme.spacing(1),
-      },
-    },
-    {
-      props: ({ showButton }) => showButton,
-      style: {
-        '&:hover': {
-          backgroundColor: 'transparent',
-        },
-      },
-    },
-    {
-      props: ({ showButton }) => showButton,
-      style: {
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          height: 'auto',
-        },
-      },
-    },
-  ],
+  }),
 }));
 
 export interface MenuLabelProps extends ListItemProps {
   variant?: 'xs' | 'md' | 'lg';
 }
 
-export const MenuLabel = styled('div')<MenuLabelProps>(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  maxWidth: 260,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxWidth: 244,
-  },
-  variants: [
-    {
-      props: {
-        variant: 'xs',
-      },
-      style: {
-        maxWidth: 198,
-      },
-    },
-    {
-      props: {
-        variant: 'xs',
-      },
-      style: {
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          maxWidth: 168,
-        },
-      },
-    },
-    {
-      props: {
-        variant: 'md',
-      },
-      style: {
-        maxWidth: 232,
-      },
-    },
-    {
-      props: {
-        variant: 'md',
-      },
-      style: {
-        [theme.breakpoints.up('sm' as Breakpoint)]: {
-          maxWidth: 194,
-        },
-      },
-    },
-  ],
-}));
+export const MenuLabel = styled('div')<MenuLabelProps>(({ theme, variant }) => {
+  const baseMaxWidth = {
+    xs: 198,
+    md: 232,
+    lg: 260,
+  }[variant ?? 'lg'];
 
+  const smMaxWidth = {
+    xs: 168,
+    md: 194,
+    lg: 244,
+  }[variant ?? 'lg'];
+
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    maxWidth: baseMaxWidth,
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      maxWidth: smMaxWidth,
+    },
+  };
+});
 export interface MenuItemLabelProps extends TypographyProps {
   prefixIcon?: React.JSX.Element | string;
 }
 
 export const MenuItemButtonLabel = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'prefixIcon',
-})<MenuItemLabelProps>(({ theme }) => ({
-  marginLeft: 'inherit',
-  marginRight: 'inherit',
+})<MenuItemLabelProps>(({ theme, prefixIcon }) => ({
+  marginLeft: prefixIcon ? '9.5px' : 'inherit',
+  marginRight: prefixIcon ? '9.5px' : 'inherit',
   color: (theme.vars || theme).palette.white.main,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
@@ -141,42 +100,27 @@ export const MenuItemButtonLabel = styled(Typography, {
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     maxWidth: 168,
   },
-  variants: [
-    {
-      props: ({ prefixIcon }) => !!prefixIcon,
-      style: {
-        marginLeft: '9.5px',
-      },
-    },
-    {
-      props: ({ prefixIcon }) => !!prefixIcon,
-      style: {
-        marginRight: '9.5px',
-      },
-    },
-  ],
   ...theme.applyStyles('light', {
     color: (theme.vars || theme).palette.primary.main,
   }),
 }));
 
 export const MenuItemLabel = styled(Typography)<MenuItemLabelProps>(
-  ({ theme }) => ({
+  ({ theme, prefixIcon }) => ({
     marginLeft: theme.spacing(1.5),
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
-      maxWidth: 'inherit',
+      maxWidth: prefixIcon ? 188 : 'inherit',
     },
-    variants: [
-      {
-        props: ({ prefixIcon }) => prefixIcon,
-        style: {
-          [theme.breakpoints.up('sm' as Breakpoint)]: {
-            maxWidth: 188,
-          },
-        },
-      },
-    ],
   }),
 );
+
+export const MenuDelimiter = styled('div')(({ theme }) => ({
+  width: '100%',
+  height: 1,
+  backgroundColor: theme.palette.alphaLight200.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: theme.palette.alphaDark200.main,
+  }),
+}));

@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "Xem tất cả ví",
     "navbarMenu": {
+      "learn": "Học",
+      "scan": "Quét",
       "brandAssets": "Tài sản thương hiệu",
       "theme": "Giao diện",
       "developers": "Lập trình viên",
       "support": "Hỗ trợ",
+      "resources": "Tài nguyên",
       "profile": "Hồ sơ Jumper"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "Chế độ nền tối",
+      "light": "Chế độ nền sáng",
+      "system": "Chế độ hệ thống",
       "switchToLight": "Đổi sang Chế độ nền sáng",
       "switchToDark": "Chuyển sang Chế độ nền tối",
       "switchToSystem": "Chuyển sang hệ thống",

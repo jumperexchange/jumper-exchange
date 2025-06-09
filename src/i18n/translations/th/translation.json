@@ -28,10 +28,13 @@
     },
     "seeAllWallets": "ดูกระเป๋าเงินทั้งหมด",
     "navbarMenu": {
+      "learn": "เรียนรู้",
+      "scan": "สแกน",
       "brandAssets": "มูลค่าสินทรัพท์ของแบรนด์",
       "theme": "ธีม",
       "developers": "ผู้พัฒนา",
       "support": "สนับสนุน",
+      "resources": "ทรัพยากร",
       "profile": "โปรไฟล์ Jumper"
     },
     "walletMenu": {
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "โหมดมืด",
+      "light": "โหมดสว่าง",
+      "system": "การตั้งค่าระบบ",
       "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
       "switchToDark": "เปลี่ยนเป็นธีมมืด",
       "switchToSystem": "เปลี่ยนไปยังระบบ",
