@@ -6,6 +6,7 @@ import type {
 import { alpha, MenuItem as MUIMenuItem, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import type { Breakpoint } from '@mui/material/styles';
+import { Link } from '@/components/Link';
 
 /**
  * Base styled component for MenuItem that applies common styles and disables interaction.
@@ -31,7 +32,7 @@ export const MenuItemBaseContainer = styled(MUIMenuItem)(({ theme }) => ({
   },
 }));
 
-export interface MenuItemProps extends MUIMenuItemProps {
+interface MenuItemProps extends MUIMenuItemProps {
   showButton?: boolean;
 }
 
@@ -58,7 +59,7 @@ export const MenuItemContainer = styled(MenuItemBaseContainer, {
   }),
 }));
 
-export interface MenuLabelProps extends ListItemProps {
+interface MenuLabelProps extends ListItemProps {
   variant?: 'xs' | 'md' | 'lg';
 }
 
@@ -84,7 +85,7 @@ export const MenuLabel = styled('div')<MenuLabelProps>(({ theme, variant }) => {
     },
   };
 });
-export interface MenuItemLabelProps extends TypographyProps {
+interface MenuItemLabelProps extends TypographyProps {
   prefixIcon?: React.JSX.Element | string;
 }
 
@@ -124,3 +125,14 @@ export const MenuDelimiter = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.alphaDark200.main,
   }),
 }));
+
+export const MenuItemLink = styled(Link)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  height: 48,
+  width: '100%',
+  textDecoration: 'none',
+  color: 'inherit',
+}));
+
+export const MenuItemText = styled('span')({});
