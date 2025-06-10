@@ -44,6 +44,13 @@ interface MenuItem {
   onClick: () => void;
 }
 
+const enum SocialLinkLabel {
+  TELEGRAM = 'Telegram',
+  DISCORD = 'Discord',
+  LINK3 = 'Link3',
+  X = 'X',
+}
+
 interface SocialLink {
   label: string;
   prefixIcon: React.JSX.Element | string;
@@ -57,10 +64,20 @@ export const useMainMenuContent = () => {
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon } = useThemeModesMenuContent();
-  const { setSubMenuState, closeAllMenus } = useMenuStore((state) => state);
+  const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
+    (state) => state,
+  );
 
   const trackPageLoad = useCallback(
-    (destination: string, url: string, source = TrackingCategory.Menu) => {
+    ({
+      destination,
+      url,
+      source = TrackingCategory.Menu,
+    }: {
+      destination: string;
+      url: string;
+      source?: TrackingCategory;
+    }) => {
       trackEvent({
         category: TrackingCategory.Pageload,
         action: TrackingAction.PageLoad,
@@ -77,43 +94,46 @@ export const useMainMenuContent = () => {
   );
 
   const trackMenuClick = useCallback(
-    (label: string, action: TrackingAction, menu: string) => {
+    ({
+      label,
+      action,
+      dataMenuParam,
+    }: {
+      label: string;
+      action: TrackingAction;
+      dataMenuParam: string;
+    }) => {
       trackEvent({
         category: TrackingCategory.Menu,
         label,
         action,
-        data: { [TrackingEventParameter.Menu]: menu },
+        data: { [TrackingEventParameter.Menu]: dataMenuParam },
       });
     },
     [trackEvent],
   );
 
   const handleLearnClick = useCallback(() => {
-    trackMenuClick(
-      'click-jumper-learn-link',
-      TrackingAction.ClickJumperLearnLink,
-      'jumper_learn',
-    );
+    trackMenuClick({
+      label: 'click-jumper-learn-link',
+      action: TrackingAction.ClickJumperLearnLink,
+      dataMenuParam: 'jumper_learn',
+    });
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
   const handleScanClick = useCallback(() => {
-    trackMenuClick(
-      'open-jumper-scan',
-      TrackingAction.ClickJumperScanLink,
-      'jumper_scan',
-    );
+    trackMenuClick({
+      label: 'open-jumper-scan',
+      action: TrackingAction.ClickJumperScanLink,
+      dataMenuParam: 'jumper_scan',
+    });
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
   const handleSupportClick = useCallback(() => {
-    trackMenuClick(
-      'click-discord-link',
-      TrackingAction.ClickDiscordLink,
-      'jumper_discord',
-    );
-    trackPageLoad('jumper_discord', DISCORD_URL, TrackingCategory.MainMenu);
-  }, [trackMenuClick, trackPageLoad]);
+    setSupportModalState(true);
+  }, [setSupportModalState]);
 
   const handleThemeClick = useCallback(() => {
     setSubMenuState(MenuKeysEnum.ThemeMode);
@@ -144,23 +164,33 @@ export const useMainMenuContent = () => {
   );
 
   const createSocialLink = useCallback(
-    (
-      label: string,
-      icon: React.JSX.Element | string,
-      url: string,
-      trackingKey: string,
-      action: TrackingAction,
-    ): SocialLink => ({
+    ({
+      label,
+      icon,
+      url,
+      trackingKey,
+      action,
+    }: {
+      label: string;
+      icon: React.JSX.Element | string;
+      url: string;
+      trackingKey: string;
+      action: TrackingAction;
+    }): SocialLink => ({
       label,
       prefixIcon: icon,
       link: { url, external: true },
       onClick: () => {
-        trackMenuClick(
-          `click-${trackingKey}-link`,
+        trackMenuClick({
+          label: `click-${trackingKey}-link`,
+          dataMenuParam: `${trackingKey}-jumper`,
           action,
-          `${trackingKey}-jumper`,
-        );
-        trackPageLoad(`${trackingKey}_jumper`, url);
+        });
+        trackPageLoad({
+          destination: `${trackingKey}_jumper`,
+          url,
+          source: TrackingCategory.MainMenu,
+        });
       },
     }),
     [trackMenuClick, trackPageLoad],
@@ -210,7 +240,6 @@ export const useMainMenuContent = () => {
         label: t('navbar.navbarMenu.support'),
         prefixIcon: discordSupportIcon,
         showMoreIcon: false,
-        link: { url: DISCORD_URL, external: true },
         onClick: handleSupportClick,
       },
     ];
@@ -261,34 +290,34 @@ export const useMainMenuContent = () => {
 
   const mainMenuSocialLinks: SocialLink[] = useMemo(
     () => [
-      createSocialLink(
-        'X',
-        <XIcon sx={socialLinkIconStyle} />,
-        X_URL,
-        'x',
-        TrackingAction.ClickXLink,
-      ),
-      createSocialLink(
-        'Discord',
-        <Discord sx={socialLinkIconStyle} />,
-        DISCORD_URL,
-        'discord',
-        TrackingAction.ClickDiscordLink,
-      ),
-      createSocialLink(
-        'Telegram',
-        <Telegram sx={socialLinkIconStyle} />,
-        TELEGRAM_URL,
-        'telegram',
-        TrackingAction.ClickTelegramLink,
-      ),
-      createSocialLink(
-        'Link3',
-        <Link3Icon sx={socialLinkIconStyle} />,
-        LINK3_URL,
-        'link3',
-        TrackingAction.ClickLink3Link,
-      ),
+      createSocialLink({
+        label: SocialLinkLabel.X,
+        icon: <XIcon sx={socialLinkIconStyle} />,
+        url: X_URL,
+        trackingKey: SocialLinkLabel.X.toLowerCase(),
+        action: TrackingAction.ClickXLink,
+      }),
+      createSocialLink({
+        label: SocialLinkLabel.DISCORD,
+        icon: <Discord sx={socialLinkIconStyle} />,
+        url: DISCORD_URL,
+        trackingKey: SocialLinkLabel.DISCORD.toLowerCase(),
+        action: TrackingAction.ClickDiscordLink,
+      }),
+      createSocialLink({
+        label: SocialLinkLabel.TELEGRAM,
+        icon: <Telegram sx={socialLinkIconStyle} />,
+        url: TELEGRAM_URL,
+        trackingKey: SocialLinkLabel.TELEGRAM.toLowerCase(),
+        action: TrackingAction.ClickTelegramLink,
+      }),
+      createSocialLink({
+        label: SocialLinkLabel.LINK3,
+        icon: <Link3Icon sx={socialLinkIconStyle} />,
+        url: LINK3_URL,
+        trackingKey: SocialLinkLabel.LINK3.toLowerCase(),
+        action: TrackingAction.ClickLink3Link,
+      }),
     ],
     [createSocialLink, socialLinkIconStyle],
   );
