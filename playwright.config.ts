@@ -19,6 +19,22 @@ dotenv.config({ path: './tests/.env.test' });
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 // const baseURL = `http://localhost:${PORT}`;
 
+const qaseReporter = [
+  'playwright-qase-reporter',
+  {
+    testops: {
+      api: {
+        token: process.env.QASE_TESTOPS_API_TOKEN,
+      },
+      project: 'FE',
+      uploadAttachments: true,
+      run: {
+        complete: true,
+      },
+    },
+  },
+] as const
+
 export default defineConfig({
   timeout: 120 * 1000,
   expect: {
@@ -34,8 +50,9 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 4 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? 'blob' : [['html']],
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  reporter: process.env.CI
+    ? [['blob'], qaseReporter]
+    : [['list'], ['html'], qaseReporter],  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
