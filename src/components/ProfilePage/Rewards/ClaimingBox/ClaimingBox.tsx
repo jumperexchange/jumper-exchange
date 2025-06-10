@@ -64,13 +64,6 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           abi: MerklDistribABI,
           functionName: 'claim',
           args: [[address], [rewardToken], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
-          // TESTING
-          // args: [
-          //   [address],
-          //   [TEST_TOKEN],
-          //   [accumulatedAmountForContractBN],
-          //   [proof],
-          // ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
       }
     } catch (err) {
