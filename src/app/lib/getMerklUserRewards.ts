@@ -1,5 +1,14 @@
 import { merklApi } from 'src/utils/merkl/merklApi';
 
+type MerklUsersRewardsApiResponse = Awaited<
+  ReturnType<ReturnType<typeof merklApi.users>['rewards']['get']>
+>;
+type MerklUsersRewardsResponse = NonNullable<
+  MerklUsersRewardsApiResponse['data']
+>;
+export type MerklUserRewardsData = NonNullable<MerklUsersRewardsResponse[0]>;
+export type MerklUserRewards = MerklUserRewardsData['rewards'];
+export type MerklUserChains = MerklUserRewardsData['chain'];
 interface GetMerklUserRewardsProps {
   userAddress?: string;
   chainIds?: string[];
@@ -10,7 +19,7 @@ export const getMerklUserRewards = async ({
   userAddress,
   chainIds,
   claimableOnly = false,
-}: GetMerklUserRewardsProps) => {
+}: GetMerklUserRewardsProps): Promise<MerklUserRewardsData[]> => {
   if (!userAddress) {
     return [];
   }
@@ -24,7 +33,7 @@ export const getMerklUserRewards = async ({
       .users({ address: userAddress })
       .rewards.get({
         query: {
-          chainId: chainIds.filter((id) => id !== null),
+          chainId: chainIds.filter((chainId) => chainId !== null),
           breakdownPage: 0,
           claimableOnly,
         },
@@ -35,6 +44,6 @@ export const getMerklUserRewards = async ({
     return response.data;
   } catch (error) {
     console.error('Error fetching max APY for identifiers:', error);
-    return {};
+    return [];
   }
 };

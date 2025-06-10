@@ -25,7 +25,6 @@ export async function getMerklTokens({
       return [];
     }
 
-    // If data is an object, look for the first array of tokens
     const tokenArrays = Object.values(response.data).flat();
 
     return tokenArrays || [];
