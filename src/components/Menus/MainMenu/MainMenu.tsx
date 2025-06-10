@@ -1,7 +1,5 @@
 import { Menu } from '@/components/Menu/Menu';
-import { MenuItem } from '@/components/Menu/MenuItem';
-import { MenuItemBase } from '@/components/Menu/MenuItemBase';
-import { MenuDelimiter } from '@/components/Menu';
+import { MenuItem, MenuDelimiter } from '@/components/Menu/MenuItem/';
 import { Link } from '@/components/Link';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
@@ -44,7 +42,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
 
   const renderedSocialLinks = useMemo(
     () => (
-      <MenuItemBase>
+      <MenuItem open isInteractive={false}>
         <Stack direction="column" spacing={2} marginTop={1} width="100%">
           <MenuDelimiter />
           <Stack direction="row" justifyContent="space-between" width="100%">
@@ -61,7 +59,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
             ))}
           </Stack>
         </Stack>
-      </MenuItemBase>
+      </MenuItem>
     ),
     [mainMenuSocialLinks],
   );
