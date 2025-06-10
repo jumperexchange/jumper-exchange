@@ -35,6 +35,7 @@ export const NavbarLinks = () => {
         <NavbarLink
           key={href}
           href={href}
+          role="link"
           sx={(theme: Theme) => getLinkStyles(pathname === href, theme)}
         >
           {label}

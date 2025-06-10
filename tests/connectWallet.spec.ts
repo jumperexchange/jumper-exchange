@@ -1,12 +1,10 @@
 import { testWithSynpress } from '@synthetixio/synpress-core';
 import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
 import {
-  itemInMenu,
   closeWelcomeScreen,
+  itemInNavigation,
 } from './testData/landingPageFunctions';
 import basicSetup from './wallet-setup/basic.setup';
-
-import { openOrCloseMainMenu } from './testData/menuFunctions';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
@@ -45,8 +43,7 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     await closeWelcomeScreen(page);
     await transactionHistoryButton.click();
     await expect(noRecentTransactions).toBeVisible();
-    await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Profile');
+    await itemInNavigation(page, 'Missions');
     await page.locator('.profile-page').isVisible();
   });
 });
