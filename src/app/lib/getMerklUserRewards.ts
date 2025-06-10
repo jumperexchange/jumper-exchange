@@ -33,7 +33,7 @@ export const getMerklUserRewards = async ({
       .users({ address: userAddress })
       .rewards.get({
         query: {
-          chainId: chainIds.filter((chainId) => chainId !== null),
+          chainId: chainIds.filter((chainId) => Boolean(chainId)),
           breakdownPage: 0,
           claimableOnly,
         },
