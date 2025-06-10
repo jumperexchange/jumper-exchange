@@ -1,8 +1,7 @@
 import Task from '@/components/QuestPage/Task';
 import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
-import type { Quest } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
-import { MerklOpportunity } from 'src/types/merkl';
+import { TaskVerificationExtended } from 'src/types/merkl';
 import { DescriptionTitleTypography } from './DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
@@ -10,18 +9,19 @@ import {
 } from './QuestsMissionPage.style';
 
 interface StepsBoxProps {
-  tasks: Quest['tasks_verification'];
+  tasks: TaskVerificationExtended[];
   documentId: string;
-  taskOpportunities: Record<string, MerklOpportunity[]>;
+  // taskOpportunities: Record<string, MerklV4Opportunity[]>;
 }
 
 export const TasksBox = ({
   tasks,
   documentId,
-  taskOpportunities,
+  // taskOpportunities,
 }: StepsBoxProps) => {
   const { account } = useAccount();
   const { data: verified } = useGetVerifiedTasks(account?.address);
+
   return (
     <QuestsPageElementContainer>
       <LeftTextBox>
@@ -40,7 +40,7 @@ export const TasksBox = ({
           index={index}
           questId={documentId}
           key={task.uuid}
-          merklOpportunities={taskOpportunities[task.uuid] || []}
+          // merklOpportunities={taskOpportunities[task.uuid] || []}
         />
       ))}
     </QuestsPageElementContainer>

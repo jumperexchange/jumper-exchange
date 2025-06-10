@@ -1,8 +1,8 @@
 import type { ChainId } from '@lifi/sdk';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
 import type { Quest } from './loyaltyPass';
-import { MerklOpportunity } from './merkl';
 
 export interface QuestSocials {
   twitter: string;
@@ -13,6 +13,7 @@ export interface QuestSocials {
 export interface Chain {
   logo: string;
   name: string;
+  chainId: number;
 }
 export interface QuestDetails {
   type: string;

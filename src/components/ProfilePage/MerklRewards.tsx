@@ -1,9 +1,9 @@
-import { RewardsCarousel } from '@/components/ProfilePage/Rewards/RewardsCarousel';
 import type { MerklRewardsData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useMemo } from 'react';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { AvailableRewardsExtended } from 'src/types/merkl';
+import { RewardsCarousel } from './Rewards/RewardsCarousel';
 
 const shouldHideComponent = (
   account: { address?: string } | undefined,
@@ -24,6 +24,7 @@ export const MerklRewards = ({ merklRewards }: MerklRewardsProps) => {
     userAddress: account.address,
     merklRewards,
     includeTokenIcons: true,
+    claimableOnly: true,
   });
 
   const hideComponent = useMemo(

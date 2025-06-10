@@ -1,9 +1,9 @@
 import { TasksBox } from '@/components/QuestPage/TasksBox';
 import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { type Quest } from 'src/types/loyaltyPass';
-import { MerklOpportunity } from 'src/types/merkl';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
 import { MissionCTA } from './CTA/MissionCTA';
@@ -17,7 +17,6 @@ interface QuestsMissionPageVar {
   activeCampaign?: string;
   path: string;
   merklOpportunities?: MerklOpportunity[];
-  taskOpportunities?: Record<string, MerklOpportunity[]>;
 }
 
 export const QuestsMissionPage = ({
@@ -25,7 +24,6 @@ export const QuestsMissionPage = ({
   activeCampaign,
   path,
   merklOpportunities = [],
-  taskOpportunities = {},
 }: QuestsMissionPageVar) => {
   const attributes = quest;
   const missionType = quest?.CustomInformation?.['missionType'];
@@ -35,7 +33,7 @@ export const QuestsMissionPage = ({
   const points = quest?.Points;
   const { account } = useAccount();
   const { pastCampaigns } = useMerklRewards({
-    userAddress: account.address,
+    userAddress: account?.address,
   });
 
   return (
@@ -71,7 +69,6 @@ export const QuestsMissionPage = ({
           <TasksBox
             tasks={attributes?.tasks_verification}
             documentId={quest.documentId}
-            taskOpportunities={taskOpportunities}
           />
         ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} />

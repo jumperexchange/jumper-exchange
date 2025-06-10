@@ -5,7 +5,6 @@ import {
 } from '@/const/trackingKeys';
 import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
 import { useUserTracking } from '@/hooks/userTracking';
-import type { TaskVerification } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,7 +22,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
-import { MerklOpportunity } from 'src/types/merkl';
+import { TaskVerificationExtended } from 'src/types/merkl';
 import {
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
@@ -43,19 +42,12 @@ function isVerified(isSuccess: boolean, isValid: boolean) {
 
 interface TaskProps {
   questId: string;
-  task: TaskVerification;
+  task: TaskVerificationExtended;
   isValid?: boolean;
   index: number;
-  merklOpportunities: MerklOpportunity[];
 }
 
-function Task({
-  task,
-  questId,
-  isValid = false,
-  index,
-  merklOpportunities,
-}: TaskProps) {
+function Task({ task, questId, isValid = false, index }: TaskProps) {
   const [open, setOpen] = useState(false);
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
@@ -126,12 +118,12 @@ function Task({
             <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
-            {Array.isArray(merklOpportunities) &&
-              merklOpportunities.length === 1 &&
-              merklOpportunities[0].apy && (
+            {Array.isArray(task.opportunity) &&
+              task.opportunity.length === 1 &&
+              task.opportunity[0].apr && (
                 <XPRewardsInfo
                   variant="apy"
-                  label={merklOpportunities[0].apy?.toFixed(1)}
+                  label={task.opportunity[0].apr?.toFixed(1)}
                 >
                   <APYIcon size={20} />
                 </XPRewardsInfo>

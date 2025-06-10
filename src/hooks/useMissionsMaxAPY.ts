@@ -69,7 +69,7 @@ export const useMissionsMaxAPY = (
       queryFn: async () => {
         try {
           const response = await fetch(
-            `${MERKL_API}/opportunities?chainId=${chainId}&search=${address}`,
+            `${MERKL_API}/v4/opportunities?chainId=${chainId}&search=${address}`,
           );
           const result = await response.json();
           return result as MerklV4Opportunity[];

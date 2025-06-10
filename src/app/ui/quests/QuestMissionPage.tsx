@@ -1,22 +1,17 @@
 'use client';
 
 import { useMemo } from 'react';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
 import { Quest } from 'src/types/loyaltyPass';
-import { MerklOpportunity } from 'src/types/merkl';
 
-interface QuestPageProps {
+interface QuestMissionPageProps {
   quest: Quest;
   merklOpportunities: MerklOpportunity[];
-  taskOpportunities: Record<string, MerklOpportunity[]>;
 }
 
-const QuestPage = ({
-  quest,
-  merklOpportunities,
-  taskOpportunities,
-}: QuestPageProps) => {
+const QuestPage = ({ quest, merklOpportunities }: QuestMissionPageProps) => {
   const { campaign } = quest;
 
   const path = useMemo(
@@ -30,10 +25,9 @@ const QuestPage = ({
   return (
     <QuestsMissionPage
       quest={quest}
+      merklOpportunities={merklOpportunities}
       path={path}
       activeCampaign={campaign?.Title}
-      merklOpportunities={merklOpportunities}
-      taskOpportunities={taskOpportunities}
     />
   );
 };

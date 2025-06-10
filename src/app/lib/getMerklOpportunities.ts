@@ -1,36 +1,129 @@
-import {
-  fetchMerklOpportunities,
-  transformOpportunity,
-} from '@/utils/merkl/merklApi';
-import { MerklOpportunity } from 'src/types/merkl';
+import { merklApi } from 'src/utils/merkl/merklApi';
 
-export interface GetMerklOpportunitiesResponse {
-  data: MerklOpportunity[];
+// Infer types from the API
+type MerklOpportunitesApiResponse = Awaited<
+  ReturnType<typeof merklApi.opportunities.get>
+>;
+
+type MerklOpportunitiesResponse = NonNullable<
+  MerklOpportunitesApiResponse['data']
+>;
+export type MerklOpportunity = NonNullable<MerklOpportunitiesResponse[0]>;
+interface GetMerklOpportunitiesProps {
+  campaignId?: string;
+  chainIds?: string[];
+  searchQueries?: string[];
 }
 
 export async function getMerklOpportunities({
-  rewardsIds = [],
   campaignId,
-}: {
-  rewardsIds?: string[];
-  campaignId?: string;
-}): Promise<GetMerklOpportunitiesResponse> {
+  chainIds,
+  searchQueries,
+}: GetMerklOpportunitiesProps): Promise<MerklOpportunity[]> {
+  if (!chainIds?.length && !searchQueries?.length && !campaignId) {
+    return [];
+  }
+
   try {
-    const opportunities = await fetchMerklOpportunities({
-      rewardsIds,
-      campaignId,
-    });
+    const allOpportunities: MerklOpportunity[] = [];
 
-    // Transform opportunities based on the context
-    const data = opportunities.map((opportunity) => {
-      // If we have rewardsIds, find the matching rewardsId for this opportunity
-      const matchingRewardsId = rewardsIds.find((id) => id === opportunity.id);
-      return transformOpportunity(opportunity, matchingRewardsId);
-    });
+    // If we have multiple chainIds, loop through them first
+    if (chainIds?.length) {
+      for (const chainIdItem of chainIds) {
+        // if search queries are provided, fetch all opportunities for that chain and search query
+        if (searchQueries?.length) {
+          for (const searchItem of searchQueries) {
+            try {
+              const response = await merklApi.opportunities.get({
+                query: {
+                  chainId: chainIdItem,
+                  search: searchItem,
+                },
+              });
 
-    return { data };
+              if (response.data && Array.isArray(response.data)) {
+                allOpportunities.push(
+                  ...(response.data.filter(Boolean) as MerklOpportunity[]),
+                );
+              }
+            } catch (error) {
+              console.error(
+                `Error fetching opportunities for chain ${chainIdItem} and search ${searchItem}:`,
+                error,
+              );
+            }
+          }
+        } else {
+          // if no search queries, fetch all opportunities for that chain
+          try {
+            const response = await merklApi.opportunities.get({
+              query: {
+                chainId: chainIdItem,
+              },
+            });
+
+            if (response.data && Array.isArray(response.data)) {
+              allOpportunities.push(
+                ...(response.data.filter(Boolean) as MerklOpportunity[]),
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Error fetching opportunities for chain ${chainIdItem}:`,
+              error,
+            );
+          }
+        }
+      }
+    } else {
+      if (campaignId) {
+        // if only campaignId is provided, fetch all opportunities for that campaign
+        try {
+          const response = await merklApi.opportunities.get({
+            query: {
+              campaignId,
+            },
+          });
+          if (response.data && Array.isArray(response.data)) {
+            allOpportunities.push(
+              ...(response.data.filter(Boolean) as MerklOpportunity[]),
+            );
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching opportunities for campaignId: ${campaignId}:`,
+            error,
+          );
+        }
+      }
+      if (searchQueries?.length) {
+        // if only search queries are provided, fetch all opportunities for that search query
+        for (const searchItem of searchQueries) {
+          try {
+            const response = await merklApi.opportunities.get({
+              query: {
+                search: searchItem,
+              },
+            });
+
+            if (response.data && Array.isArray(response.data)) {
+              allOpportunities.push(
+                ...(response.data.filter(Boolean) as MerklOpportunity[]),
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Error fetching opportunities for search ${searchItem}:`,
+              error,
+            );
+          }
+        }
+      }
+    }
+
+    return allOpportunities;
   } catch (error) {
     console.error('Error fetching Merkl opportunities:', error);
-    throw new Error('Failed to fetch Merkl opportunities');
+    return [];
   }
 }

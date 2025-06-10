@@ -3,7 +3,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
-import { MerklOpportunity } from 'src/types/merkl';
+import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
+import { filterUniqueByIdentifier } from 'src/utils/merkl/merklHelper';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getMerklOpportunities } from '../../../lib/getMerklOpportunities';
@@ -82,43 +83,19 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  // Fetch Merkl opportunities if rewardsIds are present
-  const rewardsIds = data.CustomInformation?.['rewardsIds'] || [];
+  // fetch merkl opportunities if rewardsIds are present
+  const rewardsIds = data.CustomInformation?.['rewardsIds'];
   const merklOpportunities =
-    Array.isArray(rewardsIds) && rewardsIds.length > 0
-      ? await getMerklOpportunities({ rewardsIds })
-      : { data: [] };
+    Array.isArray(rewardsIds) && rewardsIds?.length > 0
+      ? await getMerklOpportunities({ searchQueries: rewardsIds }).then((el) =>
+          filterUniqueByIdentifier(el),
+        )
+      : [];
 
-  // Fetch Merkl opportunities for tasks if they have campaign IDs
-  const taskOpportunities = await Promise.all(
-    (data.tasks_verification || []).map(async (task) => {
-      if (!task.CampaignId) return null;
-      const opportunities = await getMerklOpportunities({
-        campaignId: task.CampaignId,
-      });
-      return {
-        taskId: task.uuid,
-        opportunities: opportunities.data,
-      };
-    }),
+  // fetches and add apy to task_verification items:
+  data.tasks_verification = await fetchTaskOpportunities(
+    data.tasks_verification,
   );
 
-  // Convert to a map for easier lookup
-  const taskOpportunitiesMap: Record<string, MerklOpportunity[]> =
-    taskOpportunities.reduce(
-      (acc, curr) => {
-        if (curr) {
-          acc[curr.taskId] = curr.opportunities;
-        }
-        return acc;
-      },
-      {} as Record<string, MerklOpportunity[]>,
-    );
-  return (
-    <QuestPage
-      quest={data}
-      merklOpportunities={merklOpportunities.data}
-      taskOpportunities={taskOpportunitiesMap}
-    />
-  );
+  return <QuestPage quest={data} merklOpportunities={merklOpportunities} />;
 }

@@ -1,7 +1,9 @@
 'use client';
-import { getMerklOpportunities } from '@/app/lib/getMerklOpportunities';
+import {
+  getMerklOpportunities,
+  MerklOpportunity,
+} from '@/app/lib/getMerklOpportunities';
 import { useQuery } from '@tanstack/react-query';
-import { MerklOpportunity } from 'src/types/merkl';
 
 interface UseMerklOpportunitiesRes {
   isLoading: boolean;
@@ -10,24 +12,23 @@ interface UseMerklOpportunitiesRes {
 }
 
 interface UseMerklOpportunitiesProps {
-  rewardsIds?: string[];
-  campaignId?: string;
+  chainId: number;
+  searchQuery?: string;
 }
 
 export const useMerklOpportunities = ({
-  rewardsIds = [],
-  campaignId,
+  chainId,
+  searchQuery,
 }: UseMerklOpportunitiesProps): UseMerklOpportunitiesRes => {
   const { data, isSuccess, isLoading } = useQuery<MerklOpportunity[]>({
-    queryKey: ['merklOpportunities', campaignId ?? rewardsIds],
+    queryKey: ['merklOpportunities', chainId, searchQuery],
     queryFn: async () => {
-      const response = await getMerklOpportunities({
-        rewardsIds,
-        campaignId,
+      return getMerklOpportunities({
+        chainIds: [chainId.toString()],
+        ...(searchQuery && { searchQueries: [searchQuery] }),
       });
-      return response.data;
     },
-    enabled: !!campaignId || rewardsIds.length > 0,
+    enabled: !!chainId,
     refetchInterval: 1000 * 60 * 60, // 1 hour
     staleTime: 1000 * 60 * 5, // 5 minutes
     gcTime: 1000 * 60 * 60, // 1 hour

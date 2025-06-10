@@ -1,3 +1,10 @@
+import { type MerklApi } from '@merkl/api';
+import { type MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
+import { TaskVerification } from './loyaltyPass';
+import { QuestData } from './strapi';
+
+export type MerklApi = typeof MerklApi;
+
 export interface MerklToken {
   id: string;
   name: string;
@@ -32,6 +39,7 @@ interface TokenInfo {
   chainId: number;
   symbol: string;
   decimals: number;
+  price: number;
 }
 
 export interface RewardBreakdown {
@@ -137,6 +145,15 @@ export interface RewardToken extends Token {
   displaySymbol: string;
 }
 
+export interface TaskVerificationExtended extends TaskVerification {
+  opportunity?: MerklOpportunity;
+}
+
+export interface QuestDataExtended extends QuestData {
+  opportunities?: MerklOpportunity[];
+  maxApy?: number;
+}
+
 export interface RewardBreakdown {
   token: RewardToken;
   amount: string;
@@ -153,71 +170,3 @@ export interface RewardsRecord {
   timestamp: string;
   breakdowns: RewardBreakdown[];
 }
-
-export interface MerklOpportunity {
-  // Core properties
-  chainId: number;
-  type: string;
-  identifier: string;
-  name: string;
-  description: string;
-  howToSteps: string[];
-  status: string;
-  action: string;
-  tvl: number;
-  apr: number;
-  dailyRewards: number;
-  tags: string[];
-  id: string;
-  depositUrl: string;
-  explorerAddress: string;
-  lastCampaignCreatedAt: string;
-  tokens: Token[];
-  chain: Chain;
-  protocol: Protocol;
-  aprRecord: AprRecord;
-  tvlRecord: TvlRecord;
-  rewardsRecord: RewardsRecord;
-
-  // UI related properties
-  logo: string;
-  text: string;
-  link: string;
-  claimingId: string;
-  rewardId?: string;
-  apy: number;
-  weeklyApy?: string;
-}
-
-export interface TokenData {
-  accumulated: string;
-  decimals: number;
-  proof: string[];
-  symbol: string;
-  unclaimed: string;
-}
-interface UserPosition {
-  balance: number;
-  token: string;
-  origin: string;
-  totalSupply: number;
-  tvl: number;
-}
-
-interface TokenDataPosition {
-  userPositions: UserPosition[];
-  symbol?: string;
-  decimals: number;
-  token: string;
-  userTVL: number;
-  totalSupply?: number;
-  tvl?: number;
-}
-
-interface MerklPositionData {
-  [key: string]: {
-    [key: string]: TokenDataPosition;
-  };
-}
-
-export type TaskOpportunities = Record<string, MerklOpportunity[]>;

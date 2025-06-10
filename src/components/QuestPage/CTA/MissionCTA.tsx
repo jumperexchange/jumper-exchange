@@ -1,8 +1,8 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 import {
   Box,
   Skeleton,
-  type Theme,
   Typography,
   useMediaQuery,
   useTheme,
@@ -10,6 +10,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { IconButtonPrimary } from 'src/components/IconButton';
 import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { XPRewardsInfo } from 'src/components/ProfilePage/QuestCard/XPRewardsInfo';
@@ -19,7 +20,6 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { MerklOpportunity } from 'src/types/merkl';
 import { FlexCenterRowBox } from '../QuestsMissionPage.style';
 import { SignatureCTA } from '../SignatureCTA/SignatureCTA';
 import {
@@ -29,29 +29,6 @@ import {
   SeveralMissionCtaContainer,
   StartedTitleBox,
 } from './MissionCTA.style';
-
-interface MissionCTAButtonProps {
-  activeCampaign?: string;
-  onClick: () => void;
-}
-
-const MissionCTAButton = ({
-  activeCampaign,
-  onClick,
-}: MissionCTAButtonProps) => {
-  const theme = useTheme();
-  return (
-    <IconButtonPrimary onClick={onClick}>
-      <ArrowForwardIcon
-        sx={{
-          width: '28px',
-          height: '28px',
-          color: (theme.vars || theme).palette.white.main,
-        }}
-      />
-    </IconButtonPrimary>
-  );
-};
 
 interface MissionCtaProps {
   CTAs: MerklOpportunity[];
@@ -76,25 +53,17 @@ export const MissionCTA = ({
   rewardRange,
   activeCampaign,
 }: MissionCtaProps) => {
-  const isMobile = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down('md'),
-  );
-  const theme = useTheme();
-  const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { trackEvent } = useUserTracking();
 
   const handleClick = ({
-    rewardId,
-    id,
     claimingId,
-    activeCampaign,
     title,
   }: {
-    id: number;
-    title: string;
-    activeCampaign?: string;
     claimingId?: string;
-    rewardId?: string;
+    title: string;
   }) => {
     trackEvent({
       category: TrackingCategory.Missions,
@@ -103,9 +72,9 @@ export const MissionCTA = ({
       data: {
         [TrackingEventParameter.MissionCtaTitle]: title,
         [TrackingEventParameter.MissionCtaPartnerId]: id,
-        ...(rewardId && {
-          [TrackingEventParameter.MissionCtaRewardId]: rewardId,
-        }),
+        // ...(rewardId && {
+        //   [TrackingEventParameter.MissionCtaRewardId]: rewardId,
+        // }),
         ...(claimingId && {
           [TrackingEventParameter.MissionCtaClaimingId]: claimingId,
         }),
@@ -156,24 +125,22 @@ export const MissionCTA = ({
                 color: 'inherit',
                 marginBottom: '16px',
               }}
-              href={CTA.link || '/'}
+              href={CTA.depositUrl || CTA.protocol?.url || '/'}
               target="_blank"
             >
               <SeveralMissionCtaContainer
                 onClick={() =>
                   handleClick({
-                    id,
-                    rewardId: CTA.rewardId,
-                    claimingId: CTA.claimingId,
-                    title: CTA.text,
+                    claimingId: CTA.identifier,
+                    title: CTA.name,
                   })
                 }
               >
                 <CTAExplanationBox>
-                  {CTA.logo ? (
+                  {CTA.protocol?.icon ? (
                     <Image
-                      src={CTA.logo}
-                      alt={`Image for ${CTA.logo}`}
+                      src={CTA.protocol?.icon}
+                      alt={`Image for ${CTA.protocol.name}`}
                       width={48}
                       height={48}
                       priority={false}
@@ -187,14 +154,14 @@ export const MissionCTA = ({
                     fontWeight={700}
                     marginLeft={'16px'}
                   >
-                    {CTA.text ?? 'Go to Protocol Page'}
+                    {CTA.name ?? title ?? 'Go to Protocol Page'}
                   </Typography>
                 </CTAExplanationBox>
                 <FlexCenterRowBox>
-                  {!!CTA.apy && !variableWeeklyAPY && (
+                  {!!CTA.apr && !variableWeeklyAPY && (
                     <XPRewardsInfo
                       variant="apy"
-                      label={`${Number(CTA.apy).toFixed(1)}%`}
+                      label={`${Number(CTA.apr).toFixed(1)}%`}
                       tooltip={t('tooltips.apy')}
                     >
                       <APYIcon size={24} />
@@ -203,29 +170,28 @@ export const MissionCTA = ({
                   {!!variableWeeklyAPY && (
                     <XPRewardsInfo
                       variant="variableWeeklyAPY"
-                      label={
-                        CTA?.weeklyApy
-                          ? CTA?.weeklyApy
-                          : rewardRange
-                            ? rewardRange
-                            : `VAR.%`
-                      }
+                      label={rewardRange ? rewardRange : `VAR.%`}
                     >
                       <APYIcon size={24} />
                     </XPRewardsInfo>
                   )}
                   {!isMobile && (
-                    <MissionCTAButton
+                    <IconButtonPrimary
                       onClick={() =>
                         handleClick({
-                          id,
-                          title,
-                          claimingId: CTA.claimingId,
-                          rewardId: CTA.rewardId,
+                          claimingId: CTA.identifier,
+                          title: CTA.name,
                         })
                       }
-                      activeCampaign={activeCampaign}
-                    />
+                    >
+                      <ArrowForwardIcon
+                        sx={(theme) => ({
+                          width: '28px',
+                          height: '28px',
+                          color: (theme.vars || theme).palette.white.main,
+                        })}
+                      />
+                    </IconButtonPrimary>
                   )}
                 </FlexCenterRowBox>
               </SeveralMissionCtaContainer>
