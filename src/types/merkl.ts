@@ -146,7 +146,7 @@ export interface RewardToken extends Token {
 }
 
 export interface TaskVerificationExtended extends TaskVerification {
-  opportunity?: MerklOpportunity;
+  maxApy?: number;
 }
 
 export interface QuestDataExtended extends QuestData {

@@ -2,6 +2,7 @@
 import { MERKL_API } from '@/utils/merkl/merklApi';
 import { useQueries } from '@tanstack/react-query';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
+import { sanitizeSearchQuery } from 'src/utils/merkl/merklHelper';
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
 
@@ -59,7 +60,7 @@ export const useMissionsMaxAPY = (
   const queryCombinations = (chainIds || ACTIVE_CHAINS).flatMap((chainId) =>
     (searchQuery || []).map((claimingId) => ({
       chainId,
-      address: claimingId.includes('_') ? claimingId.split('_')[1] : claimingId,
+      address: sanitizeSearchQuery(claimingId),
     })),
   );
 

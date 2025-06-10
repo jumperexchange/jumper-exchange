@@ -60,6 +60,7 @@ function Task({ task, questId, isValid = false, index }: TaskProps) {
     e.stopPropagation();
     task && setOpen((prev) => !prev);
   };
+
   const handleCTAClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -118,16 +119,11 @@ function Task({ task, questId, isValid = false, index }: TaskProps) {
             <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
-            {Array.isArray(task.opportunity) &&
-              task.opportunity.length === 1 &&
-              task.opportunity[0].apr && (
-                <XPRewardsInfo
-                  variant="apy"
-                  label={task.opportunity[0].apr?.toFixed(1)}
-                >
-                  <APYIcon size={20} />
-                </XPRewardsInfo>
-              )}
+            {!!task.maxApy && task.maxApy > 0 && (
+              <XPRewardsInfo variant="apy" label={task.maxApy.toFixed(1)}>
+                <APYIcon size={20} />
+              </XPRewardsInfo>
+            )}
           </InstructionsAccordionItemHeader>
           {task &&
             (isTablet ? (

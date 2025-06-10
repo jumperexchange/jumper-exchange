@@ -65,7 +65,7 @@ const processTokenAddressesByChain = (
   return merklRewards.reduce<TokenAddressesByChain>((acc, reward) => {
     if (reward.ChainId && reward.TokenAddress) {
       const chainId = Number(reward.ChainId);
-      const tokenAddress = (reward.TokenAddress as string).toLowerCase();
+      const tokenAddress = reward.TokenAddress.toLowerCase();
       if (!acc[chainId]) {
         acc[chainId] = new Set();
       }
@@ -187,7 +187,7 @@ export const useMerklRewards = ({
       ? processRewardsData(userRewardsData as MerklUserReward[], merklRewards)
       : {
           rewardsToClaim: [],
-          pastCampaigns: [] as string[],
+          pastCampaigns: [],
           chainsWithClaimableRewards: [],
         };
 
