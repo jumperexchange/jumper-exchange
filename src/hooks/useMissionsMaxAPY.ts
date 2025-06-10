@@ -1,57 +1,21 @@
 'use client';
-import { MERKL_API } from '@/utils/merkl/merklApi';
 import { useQueries } from '@tanstack/react-query';
+import {
+  getMerklOpportunities,
+  MerklOpportunity,
+} from 'src/app/lib/getMerklOpportunities';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import { sanitizeSearchQuery } from 'src/utils/merkl/merklHelper';
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
-
-interface MerklV4Token {
-  address: string;
-  symbol: string;
-  decimals: number;
-  price: number;
-}
-
-interface MerklV4Opportunity {
-  chainId: number;
-  type: string;
-  identifier: string;
-  name: string;
-  status: string;
-  apr: number;
-  dailyRewards: number;
-  tokens: MerklV4Token[];
-  aprRecord: {
-    cumulated: number;
-    timestamp: string;
-    breakdowns: Array<{
-      distributionType: string;
-      identifier: string;
-      type: string;
-      value: number;
-    }>;
-  };
-  rewardsRecord: {
-    total: number;
-    timestamp: string;
-    breakdowns: Array<{
-      token: MerklV4Token;
-      amount: string;
-      value: number;
-      distributionType: string;
-      campaignId: string;
-    }>;
-  };
-}
-
 interface useMissionsAPYRes {
   isLoading: boolean;
   isSuccess: boolean;
   apy: number;
-  data: MerklV4Opportunity[];
+  data: MerklOpportunity[];
 }
 
+// todo: testing of DepositCard.tsx
 export const useMissionsMaxAPY = (
   searchQuery: string[] | undefined,
   chainIds: number[] | undefined,
@@ -69,11 +33,10 @@ export const useMissionsMaxAPY = (
       queryKey: ['merklOpportunities', chainId, address],
       queryFn: async () => {
         try {
-          const response = await fetch(
-            `${MERKL_API}/v4/opportunities?chainId=${chainId}&search=${address}`,
-          );
-          const result = await response.json();
-          return result as MerklV4Opportunity[];
+          return await getMerklOpportunities({
+            chainIds: [String(chainId)],
+            searchQueries: [address],
+          });
         } catch (err) {
           console.error(
             `Error fetching Merkl opportunities for chain ${chainId} and address ${address}:`,
@@ -92,7 +55,7 @@ export const useMissionsMaxAPY = (
 
   const data = results
     .map((r) => r.data)
-    .filter((d): d is MerklV4Opportunity[] => Array.isArray(d))
+    .filter((d) => Array.isArray(d))
     .flat();
 
   let apy = 0;
@@ -101,7 +64,7 @@ export const useMissionsMaxAPY = (
     // Find the highest APR among the claiming IDs by checking breakdowns
     for (const opportunity of data) {
       // Check each breakdown in aprRecord for matching identifier
-      const matchingBreakdown = opportunity.aprRecord.breakdowns.find(
+      const matchingBreakdown = opportunity.aprRecord?.breakdowns.find(
         (breakdown) => searchQuery.includes(breakdown.identifier),
       );
 
