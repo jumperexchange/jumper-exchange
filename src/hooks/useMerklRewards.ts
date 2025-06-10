@@ -6,7 +6,7 @@ import { useCallback, useMemo } from 'react';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import { AvailableRewardsExtended } from 'src/types/merkl';
 import type { ClaimableRewards, MerklRewardsData } from 'src/types/strapi';
-import { CACHE_TIME, STALE_TIME } from 'src/utils/merkl/merklApi';
+import { MERKL_CACHE_TIME, MERKL_STALE_TIME } from 'src/utils/merkl/merklApi';
 import { processRewardsData } from 'src/utils/merkl/merklHelper';
 
 interface UseMerklRes {
@@ -61,9 +61,9 @@ export const useMerklRewards = ({
     queryKey: ['MerklUserRewards', userAddress, chainIds.join(',')],
     queryFn: fetchUserRewards,
     enabled: !!userAddress && chainIds.length > 0,
-    refetchInterval: CACHE_TIME,
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    refetchInterval: MERKL_CACHE_TIME,
+    staleTime: MERKL_STALE_TIME,
+    gcTime: MERKL_CACHE_TIME,
   });
 
   // Memoize processed rewards data
@@ -89,9 +89,9 @@ export const useMerklRewards = ({
           return getMerklTokens({ chainId: numericChainId });
         },
         enabled: !!userAddress && !!chainId && includeTokenIcons,
-        refetchInterval: CACHE_TIME,
-        staleTime: STALE_TIME,
-        gcTime: CACHE_TIME,
+        refetchInterval: MERKL_CACHE_TIME,
+        staleTime: MERKL_STALE_TIME,
+        gcTime: MERKL_CACHE_TIME,
         retry: 1,
         retryDelay: 1000,
       })),
