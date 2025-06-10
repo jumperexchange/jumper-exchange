@@ -1,4 +1,4 @@
-import { inter } from '@/fonts/fonts';
+import { inter, urbanist } from '@/fonts/fonts';
 import type { Breakpoint } from '@mui/material';
 import { Box, Typography, alpha, darken } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -65,7 +65,7 @@ export const SeveralMissionCtaContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const MissionCtaTitle = styled(Box)(({ theme }) => ({
-  fontFamily: inter.style.fontFamily,
+  fontFamily: urbanist.style.fontFamily,
   fontWeight: 700,
   color: (theme.vars || theme).palette.black.main,
   fontSize: '32px',
