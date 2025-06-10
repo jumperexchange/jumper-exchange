@@ -83,7 +83,7 @@ export const useMerklRewards = ({
   const tokenQueriesConfig = useMemo(
     () =>
       chainsWithClaimableRewards.map((chainId) => ({
-        queryKey: ['MerklTokens', chainId] as const,
+        queryKey: ['MerklTokens', chainId, userAddress] as const,
         queryFn: async () => {
           const numericChainId = Number(chainId);
           return getMerklTokens({ chainId: numericChainId });
