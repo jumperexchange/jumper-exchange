@@ -52,6 +52,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
                 href={socialLink.link.url}
                 target="_blank"
                 onClick={socialLink.onClick}
+                role="link"
                 aria-label={`${socialLink.label} social link`}
               >
                 {socialLink.prefixIcon}
