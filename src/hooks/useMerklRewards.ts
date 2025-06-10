@@ -2,11 +2,13 @@
 import { getMerklTokens, MerklToken } from '@/app/lib/getMerklTokens';
 import { getMerklUserRewards } from '@/app/lib/getMerklUserRewards';
 import { useQueries, useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import { AvailableRewardsExtended } from 'src/types/merkl';
 import type { ClaimableRewards, MerklRewardsData } from 'src/types/strapi';
 import { CACHE_TIME, STALE_TIME } from 'src/utils/merkl/merklApi';
 import { processRewardsData } from 'src/utils/merkl/merklHelper';
+
 interface UseMerklRes {
   isSuccess: boolean;
   isLoading: boolean;
@@ -28,18 +30,27 @@ export const useMerklRewards = ({
   claimableOnly = false,
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
-  // Get unique chain IDs from merklRewards or use default chains
-  const chainIds: string[] =
-    Array.isArray(merklRewards) && merklRewards.length > 0
-      ? [
-          ...new Set(
-            merklRewards
-              .flatMap((reward) => reward.ChainId)
-              .filter(Boolean)
-              .map(String),
-          ),
-        ]
-      : REWARDS_CHAIN_IDS;
+  // Memoize chain IDs calculation - use Set for O(1) lookup
+  const chainIds = useMemo(() => {
+    if (!Array.isArray(merklRewards) || merklRewards.length === 0) {
+      return REWARDS_CHAIN_IDS;
+    }
+
+    // Use Set for automatic deduplication, then convert to array
+    return Array.from(
+      new Set(
+        merklRewards
+          .map((reward) => reward.ChainId)
+          .filter(Boolean)
+          .map(String),
+      ),
+    );
+  }, [merklRewards]);
+
+  // Memoize query function
+  const fetchUserRewards = useCallback(async () => {
+    return getMerklUserRewards({ userAddress, chainIds, claimableOnly });
+  }, [userAddress, chainIds, claimableOnly]);
 
   // Fetch user rewards
   const {
@@ -48,65 +59,82 @@ export const useMerklRewards = ({
     isLoading: positionsIsLoading,
   } = useQuery({
     queryKey: ['MerklUserRewards', userAddress, chainIds.join(',')],
-    queryFn: () => {
-      if (!userAddress) throw new Error('User address is required');
-      return getMerklUserRewards({ userAddress, chainIds, claimableOnly });
-    },
+    queryFn: fetchUserRewards,
     enabled: !!userAddress && chainIds.length > 0,
     refetchInterval: CACHE_TIME,
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
   });
 
-  // Process the rewards data
+  // Memoize processed rewards data
   const { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards } =
-    userRewardsData
-      ? processRewardsData(userRewardsData, merklRewards)
-      : {
+    useMemo(() => {
+      if (!userRewardsData) {
+        return {
           rewardsToClaim: [],
           pastCampaigns: [],
           chainsWithClaimableRewards: [],
         };
+      }
+      return processRewardsData(userRewardsData, merklRewards);
+    }, [userRewardsData, merklRewards]);
+
+  // Memoize token queries configuration - only create queries for chains with claimable rewards
+  const tokenQueriesConfig = useMemo(
+    () =>
+      chainsWithClaimableRewards.map((chainId) => ({
+        queryKey: ['MerklTokens', chainId] as const,
+        queryFn: async () => {
+          const numericChainId = Number(chainId);
+          return getMerklTokens({ chainId: numericChainId });
+        },
+        enabled: !!userAddress && !!chainId && includeTokenIcons,
+        refetchInterval: CACHE_TIME,
+        staleTime: STALE_TIME,
+        gcTime: CACHE_TIME,
+        retry: 1,
+        retryDelay: 1000,
+      })),
+    [chainsWithClaimableRewards, userAddress, includeTokenIcons],
+  );
 
   // Get Merkl tokens for chains with claimable rewards
   const merklTokensQueries = useQueries({
-    queries: chainsWithClaimableRewards.map((chainId) => ({
-      queryKey: ['MerklTokens', chainId],
-      queryFn: async () => {
-        const numericChainId = Number(chainId);
-        return getMerklTokens({ chainId: numericChainId });
-      },
-      enabled: !!userAddress && !!chainId && includeTokenIcons,
-      refetchInterval: CACHE_TIME,
-      staleTime: STALE_TIME,
-      gcTime: CACHE_TIME,
-      retry: 1,
-      retryDelay: 1000,
-    })),
+    queries: tokenQueriesConfig,
   });
 
-  // Map of chainId to tokens
-  const merklTokensByChain = chainsWithClaimableRewards.reduce<
-    Record<string, MerklToken[]>
-  >((acc, chainId, index) => {
-    if (chainId) {
-      acc[chainId.toString()] = merklTokensQueries[index].data || [];
-    }
-    return acc;
-  }, {});
+  // Memoize tokens by chain mapping and create address lookup map for O(1) access
+  const { merklTokensByChain, tokenAddressMap } = useMemo(() => {
+    const tokensByChain: Record<string, MerklToken[]> = {};
+    const addressMap: Record<string, MerklToken> = {};
 
-  // Add token logos to rewards if needed
-  const rewardsWithLogos = rewardsToClaim.map((reward) => {
-    const chainTokens = merklTokensByChain[reward.chainId.toString()];
-    const matchingToken = chainTokens?.find(
-      (token) => token.address.toLowerCase() === reward.address.toLowerCase(),
-    );
-    return {
-      ...reward,
-      tokenLogo: matchingToken?.icon || '',
-    };
-  });
+    chainsWithClaimableRewards.forEach((chainId, index) => {
+      const tokens = merklTokensQueries[index].data || [];
+      tokensByChain[chainId.toString()] = tokens;
 
+      // Create a flat map of address -> token for O(1) lookup
+      tokens.forEach((token) => {
+        addressMap[token.address.toLowerCase()] = token;
+      });
+    });
+
+    return { merklTokensByChain: tokensByChain, tokenAddressMap: addressMap };
+  }, [chainsWithClaimableRewards, merklTokensQueries]);
+
+  // Memoize rewards with logos - use the address map for O(1) lookup instead of find()
+  const rewardsWithLogos = useMemo(
+    () =>
+      rewardsToClaim.map((reward) => {
+        const matchingToken = tokenAddressMap[reward.address.toLowerCase()];
+        return {
+          ...reward,
+          tokenLogo: matchingToken?.icon || '',
+        };
+      }),
+    [rewardsToClaim, tokenAddressMap],
+  );
+
+  // Early return for no user address
   if (!userAddress) {
     return {
       isLoading: false,
