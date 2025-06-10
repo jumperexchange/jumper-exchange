@@ -203,19 +203,19 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                   <>
                     {
                       // Enable to show XP (points) badge
-                      /* {points && (
-                      <XPRewardsInfo
-                        variant="xp"
-                        label={points.toString()} //points={`${Number(apy).toFixed(1)}%`}
-                        tooltip={
-                          rewardsProgress &&
-                          t('questCard.xpToEarnDescription', {
-                            xpToEarn: points,
-                            action: action,
-                          })
-                        }
-                      />
-                    )} */
+                      points && (
+                        <XPRewardsInfo
+                          variant="xp"
+                          label={points.toString()} //points={`${Number(apy).toFixed(1)}%`}
+                          tooltip={
+                            rewardsProgress &&
+                            t('questCard.xpToEarnDescription', {
+                              xpToEarn: points,
+                              action: action,
+                            })
+                          }
+                        />
+                      )
                     }
                     {!!maxApy && maxApy > 0 && !variableWeeklyAPY && (
                       <XPRewardsInfo
