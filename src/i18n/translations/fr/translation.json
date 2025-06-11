@@ -15,7 +15,7 @@
     "statsCards": {
       "dexs": "DEXs",
       "bridges": "Ponts",
-      "chains": "Chaînes"
+      "chains": "Chaines"
     },
     "connect": "Connecter",
     "walletSelectMenu": {
@@ -45,8 +45,8 @@
       "copiedMsg": "Adresse du portefeuille copiée",
       "walletNotInstalled": "{{wallet}} n'est pas installé",
       "connectAnotherWallet": "Connecter un autre portefeuille",
-      "refreshBalances": "Rafraîchir les valeurs",
-      "totalBalance": "Valeur totale"
+      "refreshBalances": "Rafraichir les valeurs",
+      "totalBalance": "Valeur total"
     },
     "themes": {
       "switchToLight": "Basculer en mode clair",
@@ -101,7 +101,7 @@
     },
     "transactionInitiated": {
       "title": "Signatures multiples requises",
-      "description": "Merci de demander aux autres participants disposant d'un portefeuille multisignature de signer avant que la transaction n'expire."
+      "description": "Merci de demander autres participants disposant d'un portefeuille multisignature de signer avant que la transaction n'expire."
     },
     "alert": {
       "title": "Portefeuille multisignature connecté",
