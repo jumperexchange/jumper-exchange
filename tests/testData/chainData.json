@@ -50,7 +50,7 @@
       "amount": "100"
     }
   },
-  "EVMtoHYPE": {
+  "EVMtoHypercore": {
     "ETHtoUSDC": {
       "tokenSymbol": "ETH",
       "fromToken": "0x0000000000000000000000000000000000000000",
@@ -61,7 +61,18 @@
       "toChain": "998"
     }
   },
-  "BTCtoHYPE": {
+  "ArbUSDCtoHypercore": {
+    "USDCtoUSDC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "fromChain": "42161",
+      "amount": "5",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "998"
+    }
+  },
+  "BTCtoHypercore": {
     "BTCtoUSDC": {
       "tokenSymbol": "BTC",
       "fromToken": "bitcoin",
@@ -72,7 +83,7 @@
       "toChain": "998"
     }
   },
-  "SOLtoHYPE":{
+  "SOLtoHypercore": {
     "SOLtoUSDC": {
       "tokenSymbol": "SOL",
       "fromToken": "11111111111111111111111111111111",
@@ -83,7 +94,7 @@
       "toChain": "998"
     }
   },
-  "SUItoHYPE":{
+  "SUItoHypercore": {
     "SUItoUSDC": {
       "tokenSymbol": "USDC",
       "fromToken": "0x0000000000000000000000000000000000000000000000000000000000000002%3A%3Asui%3A%3ASUI&",
