@@ -31,8 +31,7 @@
       "theme": "Tema",
       "developers": "Desarrolladores",
       "support": "Soporte",
-      "profile": "Perfil de Jumper",
-      "fest": ""
+      "profile": "Perfil de Jumper"
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -169,5 +168,12 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }
