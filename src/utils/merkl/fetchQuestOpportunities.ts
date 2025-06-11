@@ -6,21 +6,22 @@ import { calculateMaxApy } from './merklHelper';
 export const fetchQuestOpportunitiesByRewardsIds = async (
   questsData: QuestData[],
 ): Promise<QuestDataExtended[]> => {
-  await Promise.all(
-    questsData.map(async (quest, index) => {
-      const rewardsIds = quest.CustomInformation?.['rewardsIds'];
-      const merklOpportunities =
-        Array.isArray(rewardsIds) && rewardsIds?.length > 0
+  const extendedQuests = await Promise.all(
+    questsData.map(async (quest) => {
+      const rewardsIds = quest.CustomInformation?.rewardsIds;
+
+      const opportunities =
+        Array.isArray(rewardsIds) && rewardsIds.length > 0
           ? await getMerklOpportunities({ searchQueries: rewardsIds })
           : [];
-      (questsData[index] as QuestDataExtended)['opportunities'] =
-        merklOpportunities;
 
-      // Calculate max APY for this quest
-      const maxApy = calculateMaxApy(merklOpportunities);
-      (questsData[index] as QuestDataExtended)['maxApy'] = maxApy;
+      const maxApy = calculateMaxApy(opportunities);
 
-      return questsData;
+      return {
+        ...quest,
+        opportunities,
+        maxApy,
+      };
     }),
   );
 
