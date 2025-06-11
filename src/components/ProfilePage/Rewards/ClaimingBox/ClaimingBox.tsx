@@ -72,7 +72,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
   }
 
   return (
-    <ClaimingBoxContainer marginTop={'8px'} gap={3}>
+    <ClaimingBoxContainer gap={3}>
       <ClaimingDetails
         rewardAmount={amount}
         isConfirmed={isConfirmed}
@@ -83,6 +83,8 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
         <ClaimingButton
           isDisabled={isButtonDisabled}
           disabled={isButtonDisabled}
+          loading={isPending || isConfirming}
+          loadingPosition="start"
           aria-label="Claim"
           size="large"
           onClick={() =>
@@ -96,7 +98,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
             })
           }
         >
-          {isPending || isConfirming ? 'Claiming...' : 'Claim'}
+          {isPending || isConfirming ? 'Claiming' : 'Claim'}
         </ClaimingButton>
       )}
       {hash && isConfirmed ? (
