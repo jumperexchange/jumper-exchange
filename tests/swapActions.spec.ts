@@ -62,17 +62,26 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
+      
+      await test.step(`[NEGATIVE] Check  ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.tokenSymbol} to ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.toTokenSymbol} swap pair when amount is less than 5USDC`, async () => {
+        const urlParams = buildUlParams(
+          chainData.ArbUSDCtoHypercore.NegativeUSDCtoUSDC
+        );
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
+      });
+
       await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.EVMtoHypercore.ETHtoUSDC);
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
-      // await test.step(`Check ${chainData.BTCtoHypercore.BTCtoUSDC.tokenSymbol} to ${chainData.BTCtoHypercore.BTCtoUSDC.toTokenSymbol} swap pair`, async () => {
-      //   const urlParams = buildUlParams(chainData.BTCtoHypercore.BTCtoUSDC);
-      //   await page.goto(`/${urlParams}`);
-      //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      // }); // BTC routes are not available
+      await test.step(`Check ${chainData.BTCtoHypercore.BTCtoUSDC.tokenSymbol} to ${chainData.BTCtoHypercore.BTCtoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.BTCtoHypercore.BTCtoUSDC);
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      }); 
 
       await test.step(`Check ${chainData.SOLtoHypercore.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHypercore.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.SOLtoHypercore.SOLtoUSDC);
