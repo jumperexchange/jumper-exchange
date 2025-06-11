@@ -1,7 +1,7 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
 import { useMenuStore } from '@/stores/menu';
-import { Box } from '@mui/material';
+import { Box, Theme, useMediaQuery } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
@@ -11,7 +11,13 @@ import {
   JUMPER_TX_PATH,
   JUMPER_WALLET_PATH,
 } from 'src/const/urls';
-import { MenuToggle, MenuIcon, NavbarButtonsContainer, RedirectToApp } from '.';
+import {
+  MenuToggle,
+  DotsMenuIcon,
+  HamburgerMenuIcon,
+  NavbarButtonsContainer,
+  RedirectToApp,
+} from '.';
 import dynamic from 'next/dynamic';
 
 const WalletButtons = dynamic(
@@ -23,6 +29,7 @@ const WalletButtons = dynamic(
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
 
   const walletManagementRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
@@ -60,6 +67,8 @@ export const NavbarButtons = () => {
       setMainMenuState(true);
     }
   };
+
+  const MenuIcon = isDesktop ? DotsMenuIcon : HamburgerMenuIcon;
 
   return (
     <>

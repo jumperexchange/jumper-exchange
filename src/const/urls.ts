@@ -13,6 +13,7 @@ export const TELEGRAM_URL = 'https://t.me/jumperexchange';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_PROFILE_PATH = '/profile';
+export const JUMPER_MISSIONS_PATH = '/missions';
 export const JUMPER_SCAN_PATH = '/scan';
 export const JUMPER_ZAP_PATH = '/zap';
 export const JUMPER_BRIDGE_PATH = '/bridge';
@@ -43,6 +44,7 @@ export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
   Learn = JUMPER_LEARN_PATH,
   Profile = JUMPER_PROFILE_PATH,
+  Missions = JUMPER_MISSIONS_PATH,
   Scan = JUMPER_SCAN_PATH,
   Zap = JUMPER_ZAP_PATH,
   Bridge = JUMPER_BRIDGE_PATH,

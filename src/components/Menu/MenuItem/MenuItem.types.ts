@@ -10,6 +10,7 @@ export interface MenuItemLinkType {
 export interface MenuItemProps extends PropsWithChildren {
   open: boolean;
   isInteractive?: boolean;
+  isDivider?: boolean;
   showButton?: boolean;
   disableRipple?: boolean;
   autoFocus?: boolean;
