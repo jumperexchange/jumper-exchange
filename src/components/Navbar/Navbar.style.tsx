@@ -68,10 +68,13 @@ export const NavbarLinksContainer = styled('ul')(({ theme }) => ({
 export const NavbarLink = styled(Link)(({ theme }) => ({
   ...theme.typography.bodyMedium,
   fontWeight: theme.typography.fontWeightBold,
-  color: theme.palette.text.primary,
+  color: theme.palette.white.main,
   textAlign: 'center',
   textDecoration: 'none',
   padding: theme.spacing(1.5, 2.5),
   transition: 'all 0.3s ease-in-out',
   borderRadius: '24px',
+  ...theme.applyStyles('light', {
+    color: theme.palette.text.primary,
+  }),
 }));

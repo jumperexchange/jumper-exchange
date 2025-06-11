@@ -23,17 +23,11 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
     marginLeft: theme.spacing(1.5),
     minWidth: 'unset',
     height: 48,
-    ':hover:before': {
-      backgroundColor: alpha(theme.palette.white.main, 0.12),
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-      }),
-    },
     '&[aria-expanded="true"]': {
-      backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
+      backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
     },
     ':hover': {
-      backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
+      backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
     },
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.primary.main,
