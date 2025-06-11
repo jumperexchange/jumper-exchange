@@ -18,8 +18,8 @@ importers:
         specifier: ^1.8.5
         version: 1.8.5(d3cee4eba1d8380e530e694d07edb731)
       '@biconomy/abstractjs':
-        specifier: ^1.0.13
-        version: 1.0.13(@rhinestone/module-sdk@0.2.7(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42)))(typescript@5.8.3)(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42))
+        specifier: ^1.0.15
+        version: 1.0.15(@rhinestone/module-sdk@0.2.7(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42)))(typescript@5.8.3)(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42))
       '@bigmi/react':
         specifier: ^0.3.1
         version: 0.3.1(@tanstack/query-core@5.79.0)(@tanstack/react-query@5.79.0(react@19.1.0))(@types/react@19.1.6)(bs58@5.0.0)(immer@10.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))
@@ -1085,8 +1085,8 @@ packages:
     resolution: {integrity: sha512-Y1GkI4ktrtvmawoSq+4FCVHNryea6uR+qUQy0AGxLSsjCX0nVmkYQMBLHDkXZuo5hGx7eYdnIaslsdBFm7zbUw==}
     engines: {node: '>=6.9.0'}
 
-  '@biconomy/abstractjs@1.0.13':
-    resolution: {integrity: sha512-fqIhBFfVC+mKL5RH1kVLk08JwYWWFkPVuvrBmUiTTeHpGm6omeGJsYBR61W9XD7nmjsell1bnbCRla2+VAdRbg==}
+  '@biconomy/abstractjs@1.0.15':
+    resolution: {integrity: sha512-iVMi2G08LQ0W1M5yTYmQYYi+THDV4OT/RfwmForYyKBTogqzyBM4Vj8dgif8ReLEsD0uZbiVsx2/Xh3b2HQvzw==}
     peerDependencies:
       '@rhinestone/module-sdk': 0.2.7
       typescript: ^5.8.2
@@ -9780,7 +9780,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@biconomy/abstractjs@1.0.13(@rhinestone/module-sdk@0.2.7(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42)))(typescript@5.8.3)(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42))':
+  '@biconomy/abstractjs@1.0.15(@rhinestone/module-sdk@0.2.7(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42)))(typescript@5.8.3)(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42))':
     dependencies:
       '@rhinestone/module-sdk': 0.2.7(viem@2.30.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.42))
       typescript: 5.8.3
