@@ -101,7 +101,7 @@
     },
     "transactionInitiated": {
       "title": "Signatures multiples requises",
-      "description": "Merci de demander autres participants disposant d'un portefeuille multisignature de signer avant que la transaction n'expire."
+      "description": "Merci de demander autres participants disposant d'un portefeuille multisignature, de signer avant que la transaction n'expire."
     },
     "alert": {
       "title": "Portefeuille multisignature connecté",
