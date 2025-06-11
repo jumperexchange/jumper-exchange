@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { NavbarLink, NavbarLinksContainer } from './Navbar.style';
 import { AppPaths } from 'src/const/urls';
-import { Theme } from '@mui/material';
+import { Theme, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 const getLinkStyles = (isActive: boolean, theme: Theme) => {
@@ -23,10 +23,15 @@ const getLinkStyles = (isActive: boolean, theme: Theme) => {
 export const NavbarLinks = () => {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+
+  if (!isDesktop) {
+    return null;
+  }
 
   const links = [
     { href: AppPaths.Main, label: t('navbar.links.exchange') },
-    { href: AppPaths.Profile, label: t('navbar.links.missions') },
+    { href: AppPaths.Missions, label: t('navbar.links.missions') },
   ];
 
   return (

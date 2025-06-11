@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { Discord } from '@/components/illustrations/Discord';
 import { Link3Icon } from '@/components/illustrations/Link3Icon';
+import { XPIcon } from '@/components/illustrations/XPIcon';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import {
   TrackingAction,
@@ -8,9 +9,8 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import {
+  AppPaths,
   DISCORD_URL,
-  JUMPER_LEARN_PATH,
-  JUMPER_SCAN_PATH,
   LINK3_URL,
   TELEGRAM_URL,
   X_URL,
@@ -22,27 +22,25 @@ import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import XIcon from '@mui/icons-material/X';
 import { Telegram } from '@mui/icons-material';
-import { Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Typography, useMediaQuery } from '@mui/material';
+import { Theme, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
+import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { ImageWalletMenuButton } from 'src/components/Navbar/WalletButton.style';
+import { useWalletAddressImg } from 'src/hooks/useAddressImg';
+import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 
 interface MenuLink {
   url: string;
   external?: boolean;
 }
 
-interface MenuItem {
-  label: string;
-  prefixIcon: React.JSX.Element | string;
-  suffixIcon?: React.JSX.Element | string;
-  showMoreIcon?: boolean;
-  link?: MenuLink;
-  triggerSubMenu?: MenuKeysEnum;
-  onClick: () => void;
-}
+interface MenuItem extends Omit<MenuItemProps, 'open'> {}
 
 const enum SocialLinkLabel {
   TELEGRAM = 'Telegram',
@@ -58,26 +56,27 @@ interface SocialLink {
   onClick: () => void;
 }
 
-export const useMainMenuContent = () => {
-  const { t, i18n } = useTranslation();
+interface TrackPageloadParams {
+  destination: string;
+  url: string;
+  source?: TrackingCategory;
+}
+
+interface TrackMenuClickParams {
+  label: string;
+  action: TrackingAction;
+  dataMenuParam: string;
+}
+
+export const useMenuTracking = () => {
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
-  const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { selectedThemeIcon } = useThemeModesMenuContent();
-  const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
-    (state) => state,
-  );
 
   const trackPageLoad = useCallback(
     ({
       destination,
       url,
       source = TrackingCategory.Menu,
-    }: {
-      destination: string;
-      url: string;
-      source?: TrackingCategory;
-    }) => {
+    }: TrackPageloadParams) => {
       trackEvent({
         category: TrackingCategory.Pageload,
         action: TrackingAction.PageLoad,
@@ -94,15 +93,7 @@ export const useMainMenuContent = () => {
   );
 
   const trackMenuClick = useCallback(
-    ({
-      label,
-      action,
-      dataMenuParam,
-    }: {
-      label: string;
-      action: TrackingAction;
-      dataMenuParam: string;
-    }) => {
+    ({ label, action, dataMenuParam }: TrackMenuClickParams) => {
       trackEvent({
         category: TrackingCategory.Menu,
         label,
@@ -112,6 +103,43 @@ export const useMainMenuContent = () => {
     },
     [trackEvent],
   );
+
+  return { trackPageLoad, trackMenuClick };
+};
+
+export const useMenuActions = () => {
+  const { trackEvent } = useUserTracking();
+  const { trackMenuClick } = useMenuTracking();
+  const { setSupportModalState, setSubMenuState, closeAllMenus } = useMenuStore(
+    (state) => state,
+  );
+
+  const handleExchangeClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-exchange-link',
+      action: TrackingAction.ClickJumperExchangeLink,
+      dataMenuParam: 'jumper_exchange',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
+  const handleMissionsClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-missions-link',
+      action: TrackingAction.ClickJumperMissionsLink,
+      dataMenuParam: 'jumper_missions',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
+  const handleProfileClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-profile-link',
+      action: TrackingAction.ClickJumperProfileLink,
+      dataMenuParam: 'jumper_profile',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
 
   const handleLearnClick = useCallback(() => {
     trackMenuClick({
@@ -152,6 +180,23 @@ export const useMainMenuContent = () => {
       data: { [TrackingEventParameter.Menu]: MenuKeysEnum.Devs },
     });
   }, [setSubMenuState, trackEvent]);
+
+  return {
+    handleExchangeClick,
+    handleMissionsClick,
+    handleProfileClick,
+    handleLearnClick,
+    handleScanClick,
+    handleSupportClick,
+    handleThemeClick,
+    handleLanguageClick,
+    handleResourcesClick,
+  };
+};
+
+export const useSocialLinks = () => {
+  const theme = useTheme();
+  const { trackMenuClick, trackPageLoad } = useMenuTracking();
 
   const socialLinkIconStyle = useMemo(
     () => ({
@@ -196,99 +241,7 @@ export const useMainMenuContent = () => {
     [trackMenuClick, trackPageLoad],
   );
 
-  const languageSuffixIcon = useMemo(
-    () => (
-      <Typography
-        variant="bodyMedium"
-        textTransform="uppercase"
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 38,
-        }}
-      >
-        {i18n.language}
-      </Typography>
-    ),
-    [i18n.language],
-  );
-
-  const discordSupportIcon = useMemo(
-    () => (
-      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
-    ),
-    [theme],
-  );
-
-  const mainMenuItems: MenuItem[] = useMemo(() => {
-    const baseItems: MenuItem[] = [
-      {
-        label: t('navbar.navbarMenu.learn'),
-        prefixIcon: <SchoolIcon />,
-        showMoreIcon: false,
-        link: { url: JUMPER_LEARN_PATH },
-        onClick: handleLearnClick,
-      },
-      {
-        label: t('navbar.navbarMenu.scan'),
-        prefixIcon: <SearchOutlinedIcon />,
-        showMoreIcon: false,
-        link: { url: JUMPER_SCAN_PATH, external: false },
-        onClick: handleScanClick,
-      },
-      {
-        label: t('navbar.navbarMenu.support'),
-        prefixIcon: discordSupportIcon,
-        showMoreIcon: false,
-        onClick: handleSupportClick,
-      },
-    ];
-
-    // Conditionally add theme menu item
-    if (configTheme?.hasThemeModeSwitch) {
-      baseItems.push({
-        label: t('navbar.navbarMenu.theme'),
-        prefixIcon: selectedThemeIcon,
-        showMoreIcon: true,
-        triggerSubMenu: MenuKeysEnum.ThemeMode,
-        onClick: handleThemeClick,
-      });
-    }
-
-    baseItems.push(
-      {
-        label: t('language.key', { ns: 'language' }),
-        prefixIcon: <LanguageIcon />,
-        showMoreIcon: true,
-        triggerSubMenu: MenuKeysEnum.Language,
-        suffixIcon: languageSuffixIcon,
-        onClick: handleLanguageClick,
-      },
-      {
-        label: t('navbar.navbarMenu.resources'),
-        prefixIcon: <FolderOpen />,
-        showMoreIcon: true,
-        triggerSubMenu: MenuKeysEnum.Devs,
-        onClick: handleResourcesClick,
-      },
-    );
-
-    return baseItems;
-  }, [
-    t,
-    handleLearnClick,
-    handleScanClick,
-    discordSupportIcon,
-    handleSupportClick,
-    configTheme?.hasThemeModeSwitch,
-    selectedThemeIcon,
-    handleThemeClick,
-    languageSuffixIcon,
-    handleLanguageClick,
-    handleResourcesClick,
-  ]);
-
-  const mainMenuSocialLinks: SocialLink[] = useMemo(
+  const socialLinks: SocialLink[] = useMemo(
     () => [
       createSocialLink({
         label: SocialLinkLabel.X,
@@ -322,9 +275,195 @@ export const useMainMenuContent = () => {
     [createSocialLink, socialLinkIconStyle],
   );
 
+  return { socialLinks };
+};
+
+export const useMenuItems = () => {
+  const { t, i18n } = useTranslation();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
+  const { selectedThemeIcon } = useThemeModesMenuContent();
+  const activeAccount = useActiveAccountByChainType();
+  const { level } = useLoyaltyPass(activeAccount?.address);
+  const levelImageSrc = useWalletAddressImg({
+    userAddress: activeAccount?.address,
+  });
+
+  const {
+    handleExchangeClick,
+    handleMissionsClick,
+    handleProfileClick,
+    handleLearnClick,
+    handleScanClick,
+    handleSupportClick,
+    handleThemeClick,
+    handleLanguageClick,
+    handleResourcesClick,
+  } = useMenuActions();
+
+  const languageSuffixIcon = useMemo(
+    () => (
+      <Typography
+        variant="bodyMedium"
+        textTransform="uppercase"
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: 38,
+        }}
+      >
+        {i18n.language}
+      </Typography>
+    ),
+    [i18n.language],
+  );
+
+  const discordSupportIcon = useMemo(
+    () => (
+      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
+    ),
+    [theme],
+  );
+
+  const mobileMenuItems: MenuItem[] = useMemo(() => {
+    if (isDesktop) {
+      return [];
+    }
+
+    return [
+      {
+        label: t('navbar.links.exchange'),
+        prefixIcon: <SwapHorizIcon />,
+        showMoreIcon: false,
+        link: { url: AppPaths.Main },
+        onClick: handleExchangeClick,
+      },
+      {
+        label: t('navbar.links.missions'),
+        prefixIcon: <XPIcon />,
+        showMoreIcon: false,
+        link: { url: AppPaths.Missions },
+        onClick: handleMissionsClick,
+      },
+      {
+        label: `${t('profile_page.level')} ${level ?? 0}`,
+        prefixIcon: (
+          <ImageWalletMenuButton
+            src={levelImageSrc}
+            alt={`${activeAccount?.address} wallet Icon`}
+            width={24}
+            height={24}
+            priority={false}
+            unoptimized={true}
+          />
+        ),
+        showMoreIcon: false,
+        link: { url: AppPaths.Profile },
+        onClick: handleProfileClick,
+      },
+      {
+        isDivider: true,
+      },
+    ];
+  }, [
+    isDesktop,
+    t,
+    level,
+    levelImageSrc,
+    activeAccount?.address,
+    handleExchangeClick,
+    handleMissionsClick,
+    handleProfileClick,
+  ]);
+
+  const baseMenuItems: MenuItem[] = useMemo(() => {
+    const baseItems: MenuItem[] = [];
+
+    baseItems.push(
+      {
+        label: t('navbar.navbarMenu.learn'),
+        prefixIcon: <SchoolIcon />,
+        showMoreIcon: false,
+        link: { url: AppPaths.Learn },
+        onClick: handleLearnClick,
+      },
+      {
+        label: t('navbar.navbarMenu.scan'),
+        prefixIcon: <SearchOutlinedIcon />,
+        showMoreIcon: false,
+        link: { url: AppPaths.Scan, external: false },
+        onClick: handleScanClick,
+      },
+      {
+        label: t('navbar.navbarMenu.support'),
+        prefixIcon: discordSupportIcon,
+        showMoreIcon: false,
+        onClick: handleSupportClick,
+      },
+    );
+
+    // Conditionally add theme menu item
+    if (configTheme?.hasThemeModeSwitch) {
+      baseItems.push({
+        label: t('navbar.navbarMenu.theme'),
+        prefixIcon: selectedThemeIcon,
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.ThemeMode,
+        onClick: handleThemeClick,
+      });
+    }
+
+    baseItems.push(
+      {
+        label: t('language.key', { ns: 'language' }),
+        prefixIcon: <LanguageIcon />,
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.Language,
+        suffixIcon: languageSuffixIcon,
+        onClick: handleLanguageClick,
+      },
+      {
+        label: t('navbar.navbarMenu.resources'),
+        prefixIcon: <FolderOpen />,
+        showMoreIcon: true,
+        triggerSubMenu: MenuKeysEnum.Devs,
+        onClick: handleResourcesClick,
+      },
+      {
+        isDivider: true,
+      },
+    );
+
+    return baseItems;
+  }, [
+    t,
+    handleLearnClick,
+    handleScanClick,
+    discordSupportIcon,
+    handleSupportClick,
+    configTheme?.hasThemeModeSwitch,
+    selectedThemeIcon,
+    handleThemeClick,
+    languageSuffixIcon,
+    handleLanguageClick,
+    handleResourcesClick,
+  ]);
+
+  const menuItems: MenuItem[] = useMemo(() => {
+    return [...mobileMenuItems, ...baseMenuItems];
+  }, [mobileMenuItems, baseMenuItems]);
+
+  return { menuItems };
+};
+
+export const useMainMenuContent = () => {
+  const { menuItems } = useMenuItems();
+  const { socialLinks } = useSocialLinks();
+
   return {
-    mainMenuItems,
-    mainMenuSocialLinks,
+    mainMenuItems: menuItems,
+    mainMenuSocialLinks: socialLinks,
   };
   // Todo: to generate on the server side
 };

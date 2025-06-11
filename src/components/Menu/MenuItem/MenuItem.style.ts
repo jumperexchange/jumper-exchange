@@ -3,7 +3,12 @@ import type {
   MenuItemProps as MUIMenuItemProps,
   TypographyProps,
 } from '@mui/material';
-import { alpha, MenuItem as MUIMenuItem, Typography } from '@mui/material';
+import {
+  alpha,
+  Divider,
+  MenuItem as MUIMenuItem,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import type { Breakpoint } from '@mui/material/styles';
 import { Link } from '@/components/Link';
@@ -24,6 +29,9 @@ export const MenuItemBaseContainer = styled(MUIMenuItem)(({ theme }) => ({
   width: 'auto',
   pointerEvents: 'auto',
   placeContent: 'space-between',
+  '&:last-of-type': {
+    marginBottom: `${theme.spacing(1.5)} !important`,
+  },
   '&:hover, &:focus, &:active, &.Mui-selected': {
     backgroundColor: 'inherit',
   },
@@ -117,12 +125,12 @@ export const MenuItemLabel = styled(Typography)<MenuItemLabelProps>(
   }),
 );
 
-export const MenuDelimiter = styled('div')(({ theme }) => ({
-  width: '100%',
-  height: 1,
-  backgroundColor: theme.palette.alphaLight200.main,
+export const MenuDelimiter = styled(Divider)(({ theme }) => ({
+  marginLeft: theme.spacing(3),
+  marginRight: theme.spacing(3),
+  borderColor: theme.palette.alphaLight200.main,
   ...theme.applyStyles('light', {
-    backgroundColor: theme.palette.alphaDark200.main,
+    borderColor: theme.palette.alphaDark200.main,
   }),
 }));
 

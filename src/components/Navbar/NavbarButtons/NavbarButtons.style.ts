@@ -3,7 +3,8 @@
 import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { ButtonProps } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
-import MoreHoriz from '@mui/icons-material/MoreHoriz';
+import MuiMoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MuiMenuIcon from '@mui/icons-material/Menu';
 
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',
@@ -48,7 +49,15 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
   };
 });
 
-export const MenuIcon = styled(MoreHoriz)(({ theme }) => ({
+export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) => ({
+  fontSize: '24px',
+  color: theme.palette.white.main,
+  ...theme.applyStyles('light', {
+    color: theme.palette.black.main,
+  }),
+}));
+
+export const HamburgerMenuIcon = styled(MuiMenuIcon)(({ theme }) => ({
   fontSize: '24px',
   color: theme.palette.white.main,
   ...theme.applyStyles('light', {

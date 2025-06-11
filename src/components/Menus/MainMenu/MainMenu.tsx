@@ -1,10 +1,12 @@
 import { Menu } from '@/components/Menu/Menu';
-import { MenuItem, MenuDelimiter } from '@/components/Menu/MenuItem/';
+import { MenuItem } from '@/components/Menu/MenuItem/';
 import { Link } from '@/components/Link';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { Stack } from '@mui/system';
-import { DevelopersSubmenu, LanguagesSubmenu, useMainMenuContent } from '..';
+import { useMainMenuContent } from './hooks';
+import { DevelopersSubmenu } from '@/components/Menus/DevelopersSubMenu/DevelopersSubMenu';
+import { LanguagesSubmenu } from '@/components/Menus/LanguagesSubMenu/LanguageSubMenu';
 import { ThemeModesSubmenu } from '@/components/Menus/ThemeModesSubMenu/ThemeModesSubMenu';
 import { ThemeSubmenu } from '@/components/Menus/ThemeSubMenu/ThemeSubMenu';
 import { useMemo } from 'react';
@@ -34,6 +36,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
           triggerSubMenu={item.triggerSubMenu}
           showMoreIcon={item.showMoreIcon}
           onClick={item.onClick}
+          isDivider={item.isDivider}
           open
         />
       )),
@@ -43,22 +46,24 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
   const renderedSocialLinks = useMemo(
     () => (
       <MenuItem open isInteractive={false}>
-        <Stack direction="column" spacing={2} marginTop={1} width="100%">
-          <MenuDelimiter />
-          <Stack direction="row" justifyContent="space-between" width="100%">
-            {mainMenuSocialLinks.map((socialLink, index) => (
-              <Link
-                key={socialLink.label}
-                href={socialLink.link.url}
-                target="_blank"
-                onClick={socialLink.onClick}
-                role="link"
-                aria-label={`${socialLink.label} social link`}
-              >
-                {socialLink.prefixIcon}
-              </Link>
-            ))}
-          </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%"
+        >
+          {mainMenuSocialLinks.map((socialLink, index) => (
+            <Link
+              key={socialLink.label}
+              href={socialLink.link.url}
+              target="_blank"
+              onClick={socialLink.onClick}
+              role="link"
+              aria-label={`${socialLink.label} social link`}
+            >
+              {socialLink.prefixIcon}
+            </Link>
+          ))}
         </Stack>
       </MenuItem>
     ),
