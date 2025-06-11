@@ -16,7 +16,6 @@ export const fetchQuestOpportunitiesByRewardsIds = async (
           : [];
 
       const maxApy = calculateMaxApy(opportunities);
-
       return {
         ...quest,
         opportunities,
@@ -24,8 +23,7 @@ export const fetchQuestOpportunitiesByRewardsIds = async (
       };
     }),
   );
-
-  return questsData as QuestDataExtended[];
+  return extendedQuests as QuestDataExtended[];
 };
 
 export const fetchQuestOpportunitiesByClaimingIds = async (

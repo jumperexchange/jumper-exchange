@@ -69,8 +69,8 @@ export default async function Page({ params }: { params: Params }) {
     notFound();
   }
 
-  campaign.data[0].quests = await fetchQuestOpportunitiesByRewardsIds(
+  const extendedQuests = await fetchQuestOpportunitiesByRewardsIds(
     campaign.data[0].quests,
   );
-  return <CampaignPage campaign={campaign.data[0]} />;
+  return <CampaignPage campaign={campaign.data[0]} quests={extendedQuests} />;
 }

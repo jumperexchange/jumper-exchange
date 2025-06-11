@@ -21,7 +21,9 @@ export default async function Page() {
   ]);
 
   // Fetch max APY for all quests and add to quest data
-  questsData.data = await fetchQuestOpportunitiesByRewardsIds(questsData.data);
+  const questsExtended = await fetchQuestOpportunitiesByRewardsIds(
+    questsData.data,
+  );
 
-  return <ProfilePage quests={questsData.data} campaigns={campaigns} />;
+  return <ProfilePage quests={questsExtended} campaigns={campaigns} />;
 }
