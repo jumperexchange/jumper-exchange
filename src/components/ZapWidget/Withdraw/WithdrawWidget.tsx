@@ -5,15 +5,16 @@ import { formatUnits } from 'viem';
 import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 import type { ProjectData } from '../ZapWidget';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
+import type { AbiFunction } from 'viem';
 
 export interface WithdrawWidgetProps {
   token: TokenAmount;
   contractCalls?: ContractCall[];
   lpTokenDecimals: number;
   projectData: ProjectData;
-  depositTokenData: any;
+  depositTokenData: number | bigint | undefined;
   refetchPosition: () => void;
-  withdrawAbi?: any;
+  withdrawAbi?: AbiFunction;
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
@@ -56,12 +57,12 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
         helperText={{
           left: 'Available balance',
           right: depositTokenData
-            ? formatUnits(depositTokenData, lpTokenDecimals)
+            ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
             : '0.00',
         }}
         balance={
           depositTokenData
-            ? formatUnits(depositTokenData, lpTokenDecimals)
+            ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
             : '0.00'
         }
         projectData={projectData}
