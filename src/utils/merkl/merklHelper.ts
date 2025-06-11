@@ -31,8 +31,6 @@ const processReward = (
   reward: MerklUserRewards[0],
   chainData: MerklUserRewardsData,
 ): AvailableRewardsExtended => {
-  console.log('REWARD', reward);
-  console.log('CHAIN DATA', chainData);
   const amountBigInt = BigInt(reward.amount);
   const claimedBigInt = BigInt(reward.claimed);
   const decimals = reward.token.decimals;
