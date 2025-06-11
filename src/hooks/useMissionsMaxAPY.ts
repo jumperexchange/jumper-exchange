@@ -20,64 +20,58 @@ export const useMissionsMaxAPY = (
   searchQuery: string[] | undefined,
   chainIds: number[] | undefined,
 ): useMissionsAPYRes => {
-  // Create all combinations of chainIds and searchQuery with simple underscore check
-  const queryCombinations = (chainIds || ACTIVE_CHAINS).flatMap((chainId) =>
-    (searchQuery || []).map((claimingId) => ({
-      chainId,
-      address: sanitizeSearchQuery(claimingId),
-    })),
-  );
+  const { opportunities, maxApy, isLoading, isSuccess } = useQueries({
+    queries: (chainIds || ACTIVE_CHAINS).flatMap((chainId) =>
+      (searchQuery || []).map((claimingId) => ({
+        queryKey: [
+          'merklOpportunities',
+          chainId,
+          sanitizeSearchQuery(claimingId),
+        ],
+        queryFn: async () => {
+          try {
+            return await getMerklOpportunities({
+              chainIds: [String(chainId)],
+              searchQueries: [sanitizeSearchQuery(claimingId)],
+            });
+          } catch (err) {
+            console.error(
+              `Error fetching Merkl opportunities for chain ${chainId} and address ${sanitizeSearchQuery(claimingId)}:`,
+              err,
+            );
+            return [];
+          }
+        },
+        enabled: !!searchQuery?.length,
+        refetchInterval: 1000 * 60 * 60, // 1 hour
+        retry: 3,
+        refetchOnWindowFocus: false,
+        refetchOnMount: true,
+      })),
+    ),
+    combine: (results) => {
+      const allData = results.flatMap((r) => r.data || []);
 
-  const results = useQueries({
-    queries: queryCombinations.map(({ chainId, address }) => ({
-      queryKey: ['merklOpportunities', chainId, address],
-      queryFn: async () => {
-        try {
-          return await getMerklOpportunities({
-            chainIds: [String(chainId)],
-            searchQueries: [address],
-          });
-        } catch (err) {
-          console.error(
-            `Error fetching Merkl opportunities for chain ${chainId} and address ${address}:`,
-            err,
-          );
-          return [];
-        }
-      },
-      enabled: !!searchQuery && searchQuery.length > 0,
-      refetchInterval: 1000 * 60 * 60, // 1 hour
-      retry: 3,
-      refetchOnWindowFocus: false,
-      refetchOnMount: true,
-    })),
+      const apy = allData.reduce((maxApy, opportunity) => {
+        const matchingBreakdown = opportunity.aprRecord?.breakdowns.find(
+          (breakdown) => searchQuery?.includes(breakdown.identifier),
+        );
+        return Math.max(maxApy, matchingBreakdown?.value || 0);
+      }, 0);
+
+      return {
+        opportunities: allData,
+        maxApy: apy,
+        isLoading: results.some((r) => r.isLoading),
+        isSuccess: results.every((r) => r.isSuccess),
+      };
+    },
   });
 
-  const data = results
-    .map((r) => r.data)
-    .filter((d) => Array.isArray(d))
-    .flat();
-
-  let apy = 0;
-
-  if (searchQuery && data) {
-    // Find the highest APR among the claiming IDs by checking breakdowns
-    for (const opportunity of data) {
-      // Check each breakdown in aprRecord for matching identifier
-      const matchingBreakdown = opportunity.aprRecord?.breakdowns.find(
-        (breakdown) => searchQuery.includes(breakdown.identifier),
-      );
-
-      if (matchingBreakdown && matchingBreakdown.value > apy) {
-        apy = matchingBreakdown.value;
-      }
-    }
-  }
-
   return {
-    apy,
-    data,
-    isLoading: results.some((r) => r.isLoading),
-    isSuccess: results.every((r) => r.isSuccess),
+    apy: maxApy,
+    data: opportunities,
+    isLoading,
+    isSuccess,
   };
 };

@@ -79,47 +79,41 @@ export const useMerklRewards = ({
       return processRewardsData(userRewardsData, merklRewards);
     }, [userRewardsData, merklRewards]);
 
-  // Memoize token queries configuration - only create queries for chains with claimable rewards
-  const tokenQueriesConfig = useMemo(
-    () =>
-      chainsWithClaimableRewards.map((chainId) => ({
-        queryKey: ['MerklTokens', chainId, userAddress] as const,
-        queryFn: async () => {
-          const numericChainId = Number(chainId);
-          return getMerklTokens({ chainId: numericChainId });
-        },
-        enabled: !!userAddress && !!chainId && includeTokenIcons,
-        refetchInterval: MERKL_CACHE_TIME,
-        staleTime: MERKL_STALE_TIME,
-        gcTime: MERKL_CACHE_TIME,
-        retry: 1,
-        retryDelay: 1000,
-      })),
-    [chainsWithClaimableRewards, userAddress, includeTokenIcons],
-  );
+  // Get Merkl tokens for chains with claimable rewards using combine method
+  const { merklTokensByChain, tokenAddressMap } = useQueries({
+    queries: chainsWithClaimableRewards.map((chainId) => ({
+      queryKey: ['MerklTokens', chainId, userAddress] as const,
+      queryFn: async () => {
+        const numericChainId = Number(chainId);
+        return getMerklTokens({ chainId: numericChainId });
+      },
+      enabled: !!userAddress && !!chainId && includeTokenIcons,
+      refetchInterval: MERKL_CACHE_TIME,
+      staleTime: MERKL_STALE_TIME,
+      gcTime: MERKL_CACHE_TIME,
+      retry: 1,
+      retryDelay: 1000,
+    })),
+    combine: (results) => {
+      const tokensByChain: Record<string, MerklToken[]> = {};
+      const addressMap: Record<string, MerklToken> = {};
 
-  // Get Merkl tokens for chains with claimable rewards
-  const merklTokensQueries = useQueries({
-    queries: tokenQueriesConfig,
-  });
+      chainsWithClaimableRewards.forEach((chainId, index) => {
+        const tokens = results[index].data || [];
+        tokensByChain[chainId.toString()] = tokens;
 
-  // Memoize tokens by chain mapping and create address lookup map for O(1) access
-  const { merklTokensByChain, tokenAddressMap } = useMemo(() => {
-    const tokensByChain: Record<string, MerklToken[]> = {};
-    const addressMap: Record<string, MerklToken> = {};
-
-    chainsWithClaimableRewards.forEach((chainId, index) => {
-      const tokens = merklTokensQueries[index].data || [];
-      tokensByChain[chainId.toString()] = tokens;
-
-      // Create a flat map of address -> token for O(1) lookup
-      tokens.forEach((token) => {
-        addressMap[token.address.toLowerCase()] = token;
+        // Create flat map for O(1) lookup
+        tokens.forEach((token) => {
+          addressMap[token.address.toLowerCase()] = token;
+        });
       });
-    });
 
-    return { merklTokensByChain: tokensByChain, tokenAddressMap: addressMap };
-  }, [chainsWithClaimableRewards, merklTokensQueries]);
+      return {
+        merklTokensByChain: tokensByChain,
+        tokenAddressMap: addressMap,
+      };
+    },
+  });
 
   // Memoize rewards with logos - use the address map for O(1) lookup instead of find()
   const rewardsWithLogos = useMemo(
