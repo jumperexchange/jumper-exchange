@@ -137,6 +137,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Async-dependent eligibility check
   const isEligibleByTxHistory = useMemo(() => {
+    return true; // todo: remove
     if (!isEligibleBySyncChecks) {
       return false;
     }
@@ -145,6 +146,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Final eligibility determination
   const isEligible = useMemo(() => {
+    return true;
     return (
       isEligibleBySyncChecks && isEligibleByTxHistory && isContributionAbEnabled
     );

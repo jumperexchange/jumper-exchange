@@ -57,11 +57,12 @@ export const isEligibleForContribution = (
   }
 
   return (
-    isTransactionAmountEligible(completedRoute.toAmountUSD) &&
+    // todo: re-activate checks -->
+    // isTransactionAmountEligible(completedRoute.toAmountUSD) &&
     completedRoute.fromAddress === completedRoute.toAddress && // check if last tx was sent to same wallet
     account?.address === completedRoute.fromAddress && // check if last tx was sent from current wallet
-    isContributionAbEnabled &&
-    isContributionEnabledByTxHistory &&
+    // isContributionAbEnabled &&
+    // isContributionEnabledByTxHistory &&
     isEvmChainType(account?.chainType) &&
     hasValidContributionFeeAddress(completedRoute.toChainId)
   );
