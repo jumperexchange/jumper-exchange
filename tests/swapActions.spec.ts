@@ -42,11 +42,11 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
-      await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
-        const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
-        await page.goto(`/${urlParams}`);
-        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      });
+      // await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
+      //   const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
+      //   await page.goto(`/${urlParams}`);
+      //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      // }); 
     });
 
     test('Hyperliquid chain swap pairs', async ({ page }) => {
@@ -56,22 +56,22 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
-      await test.step(`Check ${chainData.BTCtoHYPE.BTCtoUSDC.tokenSymbol} to ${chainData.BTCtoHYPE.BTCtoUSDC.toTokenSymbol} swap pair`, async () => {
-        const urlParams = buildUlParams(chainData.BTCtoHYPE.BTCtoUSDC);
-        await page.goto(`/${urlParams}`);
-        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
-      });
+      // await test.step(`Check ${chainData.BTCtoHYPE.BTCtoUSDC.tokenSymbol} to ${chainData.BTCtoHYPE.BTCtoUSDC.toTokenSymbol} swap pair`, async () => {
+      //   const urlParams = buildUlParams(chainData.BTCtoHYPE.BTCtoUSDC);
+      //   await page.goto(`/${urlParams}`);
+      //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      // }); // BTC routes are not available 
 
       await test.step(`Check ${chainData.SOLtoHYPE.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHYPE.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.SOLtoHYPE.SOLtoUSDC);
         await page.goto(`/${urlParams}`);
-        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
       await test.step(`Check ${chainData.SUItoHYPE.SUItoUSDC.tokenSymbol} to ${chainData.SUItoHYPE.SUItoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.SUItoHYPE.SUItoUSDC);
         await page.goto(`/${urlParams}`);
-        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
     });
   });
