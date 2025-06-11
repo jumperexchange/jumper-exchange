@@ -1,13 +1,15 @@
 'use client';
 
-import { HeaderHeight } from '@/const/headerHeight';
 import { useMenuStore } from '@/stores/menu';
 import { hide, Intercom, onHide, show } from '@intercom/messenger-js-sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { useTheme } from '@mui/material';
-import WidgetBot from '@widgetbot/react-embed';
-import { useEffect, useState } from 'react';
-import { Modal, SupportModalContainer } from './SupportModal.style';
+import { useEffect } from 'react';
+import { ButtonPrimary } from '../Button';
+import { SupportLink } from './Support.style';
+import { SupportMuiModal } from './SupportModal.style';
+
+const DISCORD_SUPPORT_URL = 'https://discord.gg/jumperexchange';
 
 export const Support = () => {
   const theme = useTheme();
@@ -16,109 +18,55 @@ export const Support = () => {
     state.openSupportModal,
     state.setSupportModalState,
   ]);
-  const [isIntercomLoaded, setIsIntercomLoaded] = useState(false);
-  const [isDiscordSupport, setIsDiscordSupport] = useState(false);
-  console.log('SUPPORT INITIALIZED');
+
   // Initialize Intercom only once
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_INTERCOM_API_KEY) {
-      Intercom({
-        name: 'JumperExchange_Intercom',
-        company: {
-          company_id: process.env.NEXT_PUBLIC_ENVIRONMENT,
-          name: process.env.NEXT_PUBLIC_SITE_URL,
-        },
-        app_id: process.env.NEXT_PUBLIC_INTERCOM_API_KEY,
-        ...(account && account.address && { user_id: account.address }),
-        background_color: (theme.vars || theme).palette.surface1.main,
-        action_color: (theme.vars || theme).palette.primary.main,
-        hide_default_launcher: true,
-        alignment: 'right',
-      });
+      try {
+        Intercom({
+          name: 'JumperExchange_Intercom',
+          app_id: process.env.NEXT_PUBLIC_INTERCOM_API_KEY,
+          custom_launcher_selector: 'intercom-support',
+          ...(account && account.address && { user_id: account.address }),
+          alignment: 'right',
+          action_color: theme.palette.primary.main, // theme.vars is not accessible in iframe
+          background_color: theme.palette.surface1.main,
+          hide_default_launcher: true,
+        });
+        console.log('Intercom initialized successfully');
+      } catch (error) {
+        console.error('Error initializing Intercom:', error);
+      }
+    } else {
+      console.warn('Intercom API key not found');
     }
-  }, []);
+  }, [account, theme]);
 
   onHide(() => {
     setSupportModalState(false);
   });
 
   useEffect(() => {
-    if (!openSupportModal) {
-      setIsIntercomLoaded(false);
-      setIsDiscordSupport(false);
-      return;
-    }
-
-    // Add a small delay before showing the widget
-    const intercomQueue = setTimeout(() => {
-      setIsDiscordSupport(true);
-    }, 500); // 500ms delay
-
-    // Function to check for Intercom container
-    const checkIntercomStatus = () => {
-      const isIntercomContainerLoaded = !!document.querySelector(
-        '#intercom-container',
-      );
-      if (isIntercomContainerLoaded) {
-        setIsIntercomLoaded(true);
-        setIsDiscordSupport(false); // Hide widget if Intercom is loaded
-        return true;
-      }
-      return false;
-    };
-
-    // Initial check
-    if (!checkIntercomStatus()) {
-      const intervalId = setInterval(() => {
-        if (checkIntercomStatus()) {
-          clearInterval(intervalId);
-        }
-      }, 100);
-
-      return () => {
-        clearInterval(intervalId);
-        clearTimeout(intercomQueue);
-      };
-    }
-
-    return () => clearTimeout(intercomQueue);
-  }, [openSupportModal]);
-
-  useEffect(() => {
     if (openSupportModal) {
+      console.log('Showing Intercom');
       show();
     }
-  }, [openSupportModal, isIntercomLoaded]);
+  }, [openSupportModal]);
 
   const handleClose = () => {
-    if (isIntercomLoaded) {
+    try {
       hide();
+    } catch (error) {
+      console.error('Error hiding Intercom:', error);
     }
     setSupportModalState(false);
   };
 
   return (
-    <Modal open={openSupportModal} onClose={handleClose}>
-      <SupportModalContainer>
-        {isDiscordSupport && !isIntercomLoaded && (
-          <WidgetBot
-            server="849912621360218112"
-            channel="1108568727148056646" // #🩹︱web-support
-            shard="https://emerald.widgetbot.io"
-            style={{
-              width: '100%',
-              height: '80vh',
-              maxHeight: `calc( 100vh - ${HeaderHeight.XS} )`,
-              [`@media (minWidth: ${theme.breakpoints.values.sm}px)`]: {
-                maxHeight: `calc( 100vh - ${HeaderHeight.SM} )`,
-              },
-              [`@media (minWidth:${theme.breakpoints.values.md}px)`]: {
-                height: 500,
-              },
-            }}
-          />
-        )}
-      </SupportModalContainer>
-    </Modal>
+    <SupportMuiModal open={openSupportModal} onClose={handleClose}>
+      <SupportLink href={DISCORD_SUPPORT_URL} target="_blank">
+        <ButtonPrimary component={'span'}>Get support on Discord</ButtonPrimary>
+      </SupportLink>
+    </SupportMuiModal>
   );
 };
