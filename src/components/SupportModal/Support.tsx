@@ -1,9 +1,9 @@
 'use client';
-
 import { useMenuStore } from '@/stores/menu';
 import { Intercom, show } from '@intercom/messenger-js-sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { useTheme } from '@mui/material';
+import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 
 const DISCORD_SUPPORT_URL = 'https://discord.gg/jumperexchange';
@@ -25,8 +25,8 @@ export const Support = () => {
           alignment: 'right',
           hide_default_launcher: true,
         });
-        console.log('Intercom initialized successfully');
       } catch (error) {
+        Sentry.captureException(error);
         console.error('Error initializing Intercom:', error);
       }
     } else {
