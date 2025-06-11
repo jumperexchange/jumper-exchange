@@ -13,6 +13,7 @@ export interface WithdrawWidgetProps {
   projectData: ProjectData;
   depositTokenData: any;
   refetchPosition: () => void;
+  withdrawAbi?: any;
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
@@ -21,6 +22,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   projectData,
   depositTokenData,
   refetchPosition,
+  withdrawAbi,
 }) => {
   const theme = useTheme();
 
@@ -64,6 +66,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
         }
         projectData={projectData}
         writeDecimals={lpTokenDecimals}
+        withdrawAbi={withdrawAbi}
       />
     </WithdrawWidgetBox>
   );

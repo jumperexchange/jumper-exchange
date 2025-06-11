@@ -76,6 +76,7 @@ interface WidgetLikeFieldProps {
   writeDecimals: number;
   token: TokenAmount;
   refetch: () => void;
+  withdrawAbi?: any;
 }
 
 function WidgetLikeField({
@@ -91,6 +92,7 @@ function WidgetLikeField({
   projectData,
   writeDecimals,
   refetch,
+  withdrawAbi,
 }: WidgetLikeFieldProps) {
   const { trackEvent } = useUserTracking();
   const chains = useChains();
@@ -177,8 +179,8 @@ function WidgetLikeField({
         address: (projectData?.withdrawAddress ||
           projectData?.address) as `0x${string}`,
         chainId: projectData?.chainId,
-        functionName: 'redeem',
-        abi: [
+        functionName: withdrawAbi?.name || 'redeem',
+        abi: withdrawAbi ? [withdrawAbi] : [
           {
             inputs: [{ name: 'amount', type: 'uint256' }],
             name: 'redeem',
