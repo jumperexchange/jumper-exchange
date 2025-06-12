@@ -11,6 +11,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const LINK3_URL = 'https://link3.to/jumperexchange';
 export const TELEGRAM_URL = 'https://t.me/jumperexchange';
 export const JUMPER_MAIN_PATH = '/';
+export const JUMPER_GAS_PATH = '/gas';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_PROFILE_PATH = '/profile';
 export const JUMPER_MISSIONS_PATH = '/missions';
@@ -42,6 +43,7 @@ export const pages: SitemapPage[] = [
 
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
+  Gas = JUMPER_GAS_PATH,
   Learn = JUMPER_LEARN_PATH,
   Profile = JUMPER_PROFILE_PATH,
   Missions = JUMPER_MISSIONS_PATH,
