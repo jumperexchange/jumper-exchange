@@ -55,7 +55,7 @@ export const FloatingLinksContainer = styled(Stack)(({ theme }) => ({
   left: 0,
   right: 0,
   position: 'fixed',
-  bottom: theme.spacing(1),
+  bottom: theme.spacing(1.25),
   margin: theme.spacing(0, 2),
   padding: theme.spacing(1.25, 1.5),
   justifyContent: 'space-between',
