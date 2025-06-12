@@ -108,20 +108,24 @@ type ArticleField =
   | 'createdAt'
   | 'updatedAt';
 
+const mainArticleFields: ArticleField[] = [
+  'Title',
+  'Subtitle',
+  'Slug',
+  'RedirectURL',
+  'featured',
+  'WordCount',
+  'publishedAt',
+  'createdAt',
+  'updatedAt',
+] as const;
+
 class ArticleParams {
   private apiUrl: URL;
 
   private static defaultFields: ArticleField[] = [
-    'Title',
-    'Subtitle',
-    'Slug',
-    'RedirectURL',
-    'featured',
-    'WordCount',
+    ...mainArticleFields,
     'Content',
-    'publishedAt',
-    'createdAt',
-    'updatedAt',
   ];
 
   private static defaultPopulates = [
@@ -178,17 +182,7 @@ class TagParams {
     'TextColor',
   ];
 
-  private static defaultArticleFields: ArticleField[] = [
-    'Title',
-    'Subtitle',
-    'Slug',
-    'RedirectURL',
-    'featured',
-    'WordCount',
-    'publishedAt',
-    'createdAt',
-    'updatedAt',
-  ];
+  private static defaultArticleFields: ArticleField[] = [...mainArticleFields];
 
   private static defaultArticlePopulates: string[] = ['Image'];
 
