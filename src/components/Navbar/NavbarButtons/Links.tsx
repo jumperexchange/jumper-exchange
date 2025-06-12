@@ -4,6 +4,19 @@ import { Link } from './Links.style';
 import { AppPaths } from 'src/const/urls';
 import { useTranslation } from 'react-i18next';
 import { Theme } from '@mui/material';
+import { useMemo } from 'react';
+
+const isPathActive = (
+  currentPathname: string,
+  link: string,
+  subLinks?: string[],
+) => {
+  if (currentPathname === link) {
+    return true;
+  }
+
+  return !!subLinks?.some((subLink) => subLink === currentPathname);
+};
 
 const getLinkStyles = (isActive: boolean, theme: Theme) => {
   if (isActive) {
@@ -31,23 +44,33 @@ export const Links = () => {
   const pathname = usePathname();
   const { t } = useTranslation();
 
-  const links = [
-    { href: AppPaths.Main, label: t('navbar.links.exchange') },
-    { href: AppPaths.Missions, label: t('navbar.links.missions') },
-  ];
+  const links = useMemo(
+    () => [
+      {
+        href: AppPaths.Main,
+        label: t('navbar.links.exchange'),
+        subLinks: [AppPaths.Gas],
+      },
+      { href: AppPaths.Missions, label: t('navbar.links.missions') },
+    ],
+    [t],
+  );
 
   return (
     <>
-      {links.map(({ href, label }) => (
-        <Link
-          key={href}
-          href={href}
-          role="link"
-          sx={(theme: Theme) => getLinkStyles(pathname === href, theme)}
-        >
-          {label}
-        </Link>
-      ))}
+      {links.map(({ href, label, subLinks }) => {
+        const isActive = isPathActive(pathname, href, subLinks);
+        return (
+          <Link
+            key={href}
+            href={href}
+            role="link"
+            sx={(theme: Theme) => getLinkStyles(isActive, theme)}
+          >
+            {label}
+          </Link>
+        );
+      })}
     </>
   );
 };
