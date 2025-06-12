@@ -5,7 +5,6 @@
       "subtitle": "",
       "cta": ""
     },
-    "poweredByLifi": "",
     "links": {
       "exchange": "",
       "dashboard": "대시보드",
@@ -31,8 +30,6 @@
       "brandAssets": "",
       "theme": "테마",
       "developers": "개발자",
-      "lifiExplorer": "",
-      "aboutLIFI": "Li.Fi에 관하여",
       "support": "지원",
       "profile": ""
     },
@@ -46,12 +43,19 @@
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "라이트 모드로 전환",
       "switchToDark": "다크 모드로 전환",
-      "switchToSystem": ""
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
       "github": "깃허브",
@@ -85,6 +89,16 @@
     "title": "",
     "subtitle": ""
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": ""
   },
@@ -102,15 +116,22 @@
     "transactionInitiated": {
       "title": "",
       "description": ""
-    },
-    "alert": {
-      "title": "",
-      "description": ""
     }
   },
   "questCard": {
     "completed": "",
-    "join": ""
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "",
@@ -118,6 +139,41 @@
   },
   "profile_page": {
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

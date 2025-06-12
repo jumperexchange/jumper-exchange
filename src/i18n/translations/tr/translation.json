@@ -5,7 +5,6 @@
       "subtitle": "<0>4 kez denetlenmiş</0> <1>LI.FI</1> tarafından desteklenen çok zincirli likidite toplayıcı",
       "cta": "Başlayın"
     },
-    "poweredByLifi": "<1>LI.FI</1><0> Tarafından Desteklenmektedir</0>",
     "links": {
       "exchange": "Al-Sat",
       "dashboard": "Kontrol Paneli",
@@ -31,8 +30,6 @@
       "brandAssets": "Varlıklar",
       "theme": "Tema",
       "developers": "Geliştiriciler",
-      "lifiExplorer": "LI.FI Scan",
-      "aboutLIFI": "LI.FI Hakkında",
       "support": "Destek",
       "profile": "Jumper Profili"
     },
@@ -46,15 +43,22 @@
       "walletNotInstalled": "{{wallet}} kurulu değil",
       "connectAnotherWallet": "Başka bir cüzdana bağlan",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
-      "switchToSystem": "Sisteme geçiş yap"
+      "switchToSystem": "Sisteme geçiş yap",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
+      "github": "",
       "documentation": "Dökümantasyon"
     }
   },
@@ -85,6 +89,16 @@
     "title": "Solana ağında kısıtlı token desteği bulunmaktadır",
     "subtitle": "Şu anda hem Solana ağına hem Solana ağından sadece USDC ve USDT köprü kurulabiliyor."
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": "Daha fazla bilgi edinin"
   },
@@ -102,15 +116,22 @@
     "transactionInitiated": {
       "title": "Çoklu imza gerekiyor",
       "description": "Lütfen diğer cüzdan katılımcılarını işlem süresi geçmeden imzalamaları için bilgilendirin."
-    },
-    "alert": {
-      "title": "Çoklu cüzdan bağlandı",
-      "description": "İşlemi tamamlamak için hedef cüzdan adresi gereklidir."
     }
   },
   "questCard": {
     "completed": "Tamamlanan",
-    "join": "Katıl"
+    "join": "Katıl",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "Mevcut Görevler",
@@ -118,6 +139,41 @@
   },
   "profile_page": {
     "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
-    "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz."
+    "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz.",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

@@ -35,6 +35,18 @@ import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { useToken } from '@/hooks/useToken';
 import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
+import type { AbiFunction } from 'viem';
+
+// Type definitions for better type safety
+interface WithdrawTrackingData {
+  protocol_name: string;
+  chain_id: number;
+  withdrawn_token: string;
+  amount_withdrawn: string;
+  amount_withdrawn_usd: number;
+  timestamp: Date;
+  [key: string]: string | number | boolean | Date;
+}
 
 interface Image {
   url: string;
@@ -76,6 +88,7 @@ interface WidgetLikeFieldProps {
   writeDecimals: number;
   token: TokenAmount;
   refetch: () => void;
+  withdrawAbi?: AbiFunction;
 }
 
 function WidgetLikeField({
@@ -91,6 +104,7 @@ function WidgetLikeField({
   projectData,
   writeDecimals,
   refetch,
+  withdrawAbi,
 }: WidgetLikeFieldProps) {
   const { trackEvent } = useUserTracking();
   const chains = useChains();
@@ -138,19 +152,22 @@ function WidgetLikeField({
 
     setValue('');
     refetch();
+    
+    const trackingData = {
+      protocol_name: projectData.integrator,
+      chain_id: token.chainId,
+      withdrawn_token: token.address,
+      amount_withdrawn: value ?? 'NA',
+      amount_withdrawn_usd:
+        parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
+      timestamp: new Date().toISOString(),
+    };
+    
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'zap_withdraw',
       label: 'execution_success',
-      data: {
-        protocol_name: projectData.integrator,
-        chain_id: token.chainId,
-        withdrawn_token: token.address,
-        amount_withdrawn: value ?? 'NA',
-        amount_withdrawn_usd:
-          parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
-        timestamp: new Date(),
-      } as any, // Shortcut
+      data: trackingData,
       isConversion: true,
     });
   }, [transactionReceiptData]);
@@ -177,8 +194,8 @@ function WidgetLikeField({
         address: (projectData?.withdrawAddress ||
           projectData?.address) as `0x${string}`,
         chainId: projectData?.chainId,
-        functionName: 'redeem',
-        abi: [
+        functionName: (withdrawAbi?.name || 'redeem') as 'redeem',
+        abi: withdrawAbi ? [withdrawAbi] : [
           {
             inputs: [{ name: 'amount', type: 'uint256' }],
             name: 'redeem',
@@ -220,10 +237,9 @@ function WidgetLikeField({
     <Grid container justifyContent={'center'}>
       <Grid
         p={3}
-        bgcolor={'#fff'}
         borderRadius={1}
         sx={(theme) => ({
-          backgroundColor: theme.palette.surface1.main,
+          backgroundColor: (theme.vars || theme).palette.surface1.main,
           padding: theme.spacing(2, 3),
         })}
         size={{
@@ -242,7 +258,14 @@ function WidgetLikeField({
           onSubmit={onSubmit}
         >
           <InputLabel htmlFor="component" sx={{ marginBottom: 2 }}>
-            <Typography variant="titleSmall">{label}</Typography>
+            <Typography
+              variant="titleSmall"
+              sx={(theme) => ({
+                color: (theme.vars || theme).palette.text.primary,
+              })}
+            >
+              {label}
+            </Typography>
           </InputLabel>
           <CustomFormControl
             variant="standard"
