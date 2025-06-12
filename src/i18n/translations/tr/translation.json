@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "Al-Sat",
-      "missions": "Görevler",
+      "missions": "",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
       "buy": "Satın al"
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "Tüm cüzdanları göster",
     "navbarMenu": {
-      "learn": "Öğren",
-      "scan": "Tara",
+      "learn": "",
+      "scan": "",
       "brandAssets": "Varlıklar",
       "theme": "Tema",
       "developers": "Geliştiriciler",
       "support": "Destek",
-      "resources": "Kaynaklar",
+      "resources": "",
       "profile": "Jumper Profili"
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "dark": "Koyu",
-      "light": "Açık",
-      "system": "Sistem",
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
       "switchToSystem": "Sisteme geçiş yap",

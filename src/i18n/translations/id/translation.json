@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "Pertukaran",
-      "missions": "Misi",
+      "missions": "",
       "dashboard": "Dasbor",
       "refuel": "",
       "buy": "Beli"
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "Lihat semua dompet",
     "navbarMenu": {
-      "learn": "Pelajari",
-      "scan": "Pindai",
+      "learn": "",
+      "scan": "",
       "brandAssets": "Merek Aset",
       "theme": "Tema",
       "developers": "Para Pengembang",
       "support": "Bantuan",
-      "resources": "Sumber Daya",
+      "resources": "",
       "profile": "Profil Jumper"
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "dark": "Gelap",
-      "light": "Terang",
-      "system": "Sistem",
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Beralih ke Tema Terang",
       "switchToDark": "Beralih ke Tema Gelap",
       "switchToSystem": "Beralih ke Sistem",

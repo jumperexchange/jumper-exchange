@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "",
-      "missions": "미션",
+      "missions": "",
       "dashboard": "대시보드",
       "refuel": "가스",
       "buy": "매수"
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
-      "learn": "학습",
-      "scan": "스캔",
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "테마",
       "developers": "개발자",
       "support": "지원",
-      "resources": "리소스",
+      "resources": "",
       "profile": ""
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "dark": "다크",
-      "light": "라이트",
-      "system": "시스템",
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "라이트 모드로 전환",
       "switchToDark": "다크 모드로 전환",
       "switchToSystem": "",
