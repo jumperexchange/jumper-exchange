@@ -7,7 +7,10 @@ import {
   openLeaderboardPage,
   sectionOnTheBlogPage,
 } from './testData/menuFunctions';
-import { getElementByText } from './testData/commonFunctions';
+import {
+  getElementByText,
+  triggerButtonClick,
+} from './testData/commonFunctions';
 import values from '../tests/testData/values.json' assert { type: 'json' };
 import {
   closeWelcomeScreen,
@@ -35,7 +38,7 @@ test.describe('Main Menu flows', () => {
     const missionTitle = page.locator(
       'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
-    await itemInNavigation(page, 'Missions');
+    await triggerButtonClick(page, 'Level');
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
@@ -56,7 +59,7 @@ test.describe('Main Menu flows', () => {
     const connectWalletButtonOnLeaderboardPage = await page.locator(
       '#leaderboard-entry-connect-button',
     );
-    await itemInNavigation(page, 'Missions');
+    await triggerButtonClick(page, 'Level');
     await page.locator('.profile-page').isVisible();
     await expect(completedMissions).not.toHaveCSS('cursor', 'pointer');
     await openLeaderboardPage(page);
