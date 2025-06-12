@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "",
-      "missions": "मिशन",
+      "missions": "",
       "dashboard": "डैशबोर्ड",
       "refuel": "गैस",
       "buy": ""
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
-      "learn": "सीखें",
-      "scan": "स्कैन करें",
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "विषय",
       "developers": "डेवलपर",
       "support": "सहायता",
-      "resources": "संसाधन",
+      "resources": "",
       "profile": ""
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "dark": "डार्क",
-      "light": "लाइट",
-      "system": "सिस्टम",
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "",
       "switchToDark": "",
       "switchToSystem": "",

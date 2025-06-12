@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "Обмін",
-      "missions": "Місії",
+      "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
       "buy": "Купівля"
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
-      "learn": "Навчання",
-      "scan": "Сканування",
+      "learn": "",
+      "scan": "",
       "brandAssets": "Бренд ресурси",
       "theme": "Тема",
       "developers": "Розробникам",
       "support": "Підтримка",
-      "resources": "Ресурси",
+      "resources": "",
       "profile": "Профіль Jumper"
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": "{{numberOfChains}} чейнів"
     },
     "themes": {
-      "dark": "Темна",
-      "light": "Світла",
-      "system": "Системна",
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Увімкнути світлу тему",
       "switchToDark": "Увімкнути темну тему",
       "switchToSystem": "Увімкнути системну тему",

@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "แลกเปลี่ยน",
-      "missions": "ภารกิจ",
+      "missions": "",
       "dashboard": "แผงหน้าจอ",
       "refuel": "แก็ส",
       "buy": "ซื้อ"
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "ดูกระเป๋าเงินทั้งหมด",
     "navbarMenu": {
-      "learn": "เรียนรู้",
-      "scan": "สแกน",
+      "learn": "",
+      "scan": "",
       "brandAssets": "มูลค่าสินทรัพท์ของแบรนด์",
       "theme": "ธีม",
       "developers": "ผู้พัฒนา",
       "support": "สนับสนุน",
-      "resources": "ทรัพยากร",
+      "resources": "",
       "profile": "โปรไฟล์ Jumper"
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
-      "dark": "โหมดมืด",
-      "light": "โหมดสว่าง",
-      "system": "การตั้งค่าระบบ",
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
       "switchToDark": "เปลี่ยนเป็นธีมมืด",
       "switchToSystem": "เปลี่ยนไปยังระบบ",
