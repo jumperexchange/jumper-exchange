@@ -2,9 +2,9 @@
 
 import { ButtonSecondary } from '@/components/Button/Button.style';
 import type { ButtonProps } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import MuiMoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import MuiMenuIcon from '@mui/icons-material/Menu';
+import Stack from '@mui/system/Stack';
 
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',
@@ -51,10 +51,19 @@ export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) => ({
   }),
 }));
 
-export const HamburgerMenuIcon = styled(MuiMenuIcon)(({ theme }) => ({
-  fontSize: '24px',
-  color: theme.palette.white.main,
-  ...theme.applyStyles('light', {
-    color: theme.palette.black.main,
-  }),
+export const FloatingLinksContainer = styled(Stack)(({ theme }) => ({
+  left: 0,
+  right: 0,
+  position: 'fixed',
+  bottom: theme.spacing(1),
+  margin: theme.spacing(0, 2),
+  padding: theme.spacing(1.25, 1.5),
+  justifyContent: 'space-between',
+  backgroundColor: (theme.vars || theme).palette.surface3.main,
+  boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+  borderRadius: 64,
+}));
+
+export const LinksContainer = styled('div')(({ theme }) => ({
+  marginLeft: theme.spacing(4),
 }));

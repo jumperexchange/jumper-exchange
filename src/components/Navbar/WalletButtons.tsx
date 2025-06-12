@@ -142,9 +142,11 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <WalletLabel variant={'bodyMediumStrong'}>
-              {addressLabel ?? walletDigest(activeAccount?.address)}
-            </WalletLabel>
+            {isDesktop && (
+              <WalletLabel variant={'bodyMediumStrong'}>
+                {addressLabel ?? walletDigest(activeAccount?.address)}
+              </WalletLabel>
+            )}
           </WalletMenuButton>
         </Stack>
       )}

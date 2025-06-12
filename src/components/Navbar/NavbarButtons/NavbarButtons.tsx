@@ -1,7 +1,9 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
 import { useMenuStore } from '@/stores/menu';
-import { Box, Theme, useMediaQuery } from '@mui/material';
+import Portal from '@mui/material/Portal';
+import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
@@ -14,11 +16,13 @@ import {
 import {
   MenuToggle,
   DotsMenuIcon,
-  HamburgerMenuIcon,
   NavbarButtonsContainer,
   RedirectToApp,
+  FloatingLinksContainer,
+  LinksContainer,
 } from '.';
 import dynamic from 'next/dynamic';
+import { Links } from './Links';
 
 const WalletButtons = dynamic(
   () => import('../WalletButtons').then((mod) => mod.WalletButtons),
@@ -29,7 +33,7 @@ const WalletButtons = dynamic(
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const walletManagementRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
@@ -68,10 +72,14 @@ export const NavbarButtons = () => {
     }
   };
 
-  const MenuIcon = isDesktop ? DotsMenuIcon : HamburgerMenuIcon;
-
   return (
     <>
+      {isDesktop && (
+        <LinksContainer>
+          <Links />
+        </LinksContainer>
+      )}
+
       <NavbarButtonsContainer className="settings">
         {(redirectToApp || !hideConnectButton) && (
           <Box ref={walletManagementRef} display="flex" flexDirection="row">
@@ -81,21 +89,42 @@ export const NavbarButtons = () => {
             {!hideConnectButton && <WalletButtons />}
           </Box>
         )}
-
-        <MenuToggle
-          ref={mainMenuAnchor}
-          id="main-burger-menu-button"
-          aria-label="Main Menu"
-          aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
-          aria-expanded={openMainMenu ? 'true' : undefined}
-          aria-haspopup="true"
-          onClick={handleOnOpenNavbarMainMenu}
-        >
-          <MenuIcon />
-        </MenuToggle>
+        {isDesktop && (
+          <MenuToggle
+            ref={mainMenuAnchor}
+            id="main-burger-menu-button"
+            aria-label="Main Menu"
+            aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
+            aria-expanded={openMainMenu ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleOnOpenNavbarMainMenu}
+          >
+            <DotsMenuIcon />
+          </MenuToggle>
+        )}
       </NavbarButtonsContainer>
+
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
       <WalletMenu anchorEl={walletManagementRef.current ?? undefined} />
+
+      <Portal>
+        {!isDesktop && (
+          <FloatingLinksContainer direction="row">
+            <Links />
+            <MenuToggle
+              ref={mainMenuAnchor}
+              id="main-burger-menu-button"
+              aria-label="Main Menu"
+              aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
+              aria-expanded={openMainMenu ? 'true' : undefined}
+              aria-haspopup="true"
+              onClick={handleOnOpenNavbarMainMenu}
+            >
+              <DotsMenuIcon />
+            </MenuToggle>
+          </FloatingLinksContainer>
+        )}
+      </Portal>
     </>
   );
 };

@@ -291,8 +291,6 @@ export const useMenuItems = () => {
   });
 
   const {
-    handleExchangeClick,
-    handleMissionsClick,
     handleProfileClick,
     handleLearnClick,
     handleScanClick,
@@ -333,20 +331,6 @@ export const useMenuItems = () => {
 
     return [
       {
-        label: t('navbar.links.exchange'),
-        prefixIcon: <SwapHorizIcon />,
-        showMoreIcon: false,
-        link: { url: AppPaths.Main },
-        onClick: handleExchangeClick,
-      },
-      {
-        label: t('navbar.links.missions'),
-        prefixIcon: <XPIcon />,
-        showMoreIcon: false,
-        link: { url: AppPaths.Missions },
-        onClick: handleMissionsClick,
-      },
-      {
         label: `${t('profile_page.level')} ${level ?? 0}`,
         prefixIcon: (
           <ImageWalletMenuButton
@@ -362,9 +346,6 @@ export const useMenuItems = () => {
         link: { url: AppPaths.Profile },
         onClick: handleProfileClick,
       },
-      {
-        isDivider: true,
-      },
     ];
   }, [
     isDesktop,
@@ -372,8 +353,6 @@ export const useMenuItems = () => {
     level,
     levelImageSrc,
     activeAccount?.address,
-    handleExchangeClick,
-    handleMissionsClick,
     handleProfileClick,
   ]);
 

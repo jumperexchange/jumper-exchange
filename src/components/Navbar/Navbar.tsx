@@ -11,7 +11,6 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from 'src/stores/theme';
 import { Logo, LogoLink, NavbarButtons, NavbarContainer } from '.';
-import { NavbarLinks } from './NavbarLinks';
 
 export const Navbar = ({ disableNavbar = false }) => {
   const pathname = usePathname();
@@ -48,7 +47,6 @@ export const Navbar = ({ disableNavbar = false }) => {
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLink>
-      <NavbarLinks />
       <NavbarButtons />
     </NavbarContainer>
   );

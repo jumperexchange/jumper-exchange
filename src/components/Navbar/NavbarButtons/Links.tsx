@@ -1,9 +1,9 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { NavbarLink, NavbarLinksContainer } from './Navbar.style';
+import { Link } from './Links.style';
 import { AppPaths } from 'src/const/urls';
-import { Theme, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Theme } from '@mui/material';
 
 const getLinkStyles = (isActive: boolean, theme: Theme) => {
   if (isActive) {
@@ -26,14 +26,10 @@ const getLinkStyles = (isActive: boolean, theme: Theme) => {
   };
 };
 
-export const NavbarLinks = () => {
+// @TODO might need to implement Tabs for nicer transition effects
+export const Links = () => {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
-
-  if (!isDesktop) {
-    return null;
-  }
 
   const links = [
     { href: AppPaths.Main, label: t('navbar.links.exchange') },
@@ -41,17 +37,17 @@ export const NavbarLinks = () => {
   ];
 
   return (
-    <NavbarLinksContainer>
+    <>
       {links.map(({ href, label }) => (
-        <NavbarLink
+        <Link
           key={href}
           href={href}
           role="link"
           sx={(theme: Theme) => getLinkStyles(pathname === href, theme)}
         >
           {label}
-        </NavbarLink>
+        </Link>
       ))}
-    </NavbarLinksContainer>
+    </>
   );
 };

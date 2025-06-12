@@ -1037,9 +1037,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#FFFFFF',
           },
           surface3: {
-            light: '#E5E1EB',
-            main: '#E5E1EB',
-            dark: '#E5E1EB',
+            light: '#F6F0FF',
+            main: '#F6F0FF',
+            dark: '#F6F0FF',
           },
         },
         // @ts-expect-error
@@ -1129,9 +1129,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#24203D',
           },
           surface3: {
-            light: '#302B52',
-            main: '#302B52',
-            dark: '#302B52',
+            light: '#120F29',
+            main: '#120F29',
+            dark: '#120F29',
           },
         },
         // @ts-expect-error
