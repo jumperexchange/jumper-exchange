@@ -660,7 +660,7 @@ export function ZapWidget({
           lpTokenDecimals={lpTokenDecimals}
           projectData={projectData}
           depositTokenData={depositTokenData}
-          withdrawAbi={zapData?.abi?.redeem}
+          withdrawAbi={zapData?.abi?.withdraw}
         />
       )}
       <WidgetEvents />
