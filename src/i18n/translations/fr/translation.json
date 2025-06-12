@@ -5,7 +5,6 @@
       "subtitle": "<0>4x audit</0> agrégateur de liquidité multi-chaînes alimenté par <1>LI.FI</1>",
       "cta": "Commencer"
     },
-    "poweredByLifi": "<0>Propulsé par </0><1>LI.FI</1>",
     "links": {
       "exchange": "Échanger",
       "dashboard": "Tableau de bord",
@@ -13,7 +12,7 @@
       "buy": "Acheter"
     },
     "statsCards": {
-      "dexs": "DEXs",
+      "dexs": "",
       "bridges": "Ponts",
       "chains": "Chaines"
     },
@@ -31,9 +30,7 @@
       "brandAssets": "Actifs de marque",
       "theme": "Thème",
       "developers": "Développeurs",
-      "lifiExplorer": "Explorateur LI.FI",
-      "aboutLIFI": "À propos de LI.FI",
-      "support": "Support",
+      "support": "",
       "profile": "Profil Jumper"
     },
     "walletMenu": {
@@ -46,16 +43,23 @@
       "walletNotInstalled": "{{wallet}} n'est pas installé",
       "connectAnotherWallet": "Connecter un autre portefeuille",
       "refreshBalances": "Rafraichir les valeurs",
-      "totalBalance": "Valeur total"
+      "totalBalance": "Valeur total",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
-      "switchToSystem": "Basculer vers Système"
+      "switchToSystem": "Basculer vers Système",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
-      "documentation": "Documentation"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {
@@ -73,7 +77,7 @@
     "similarPosts": "Posts similaires",
     "goToArticle": "Aller à l'article",
     "openApp": "Ouvrir l’application",
-    "faq": "FAQ",
+    "faq": "",
     "jumperCta": "Essayez jumper.exchange",
     "copiedLink": "Lien copié",
     "shareLinkedIn": "Partager l'article sur LinkedIn",
@@ -84,6 +88,16 @@
   "solanaAlert": {
     "title": "Prise en charge de jeton Solana limité",
     "subtitle": "Actuellement, seuls les USDC et USDT peuvent être transférés vers et depuis Solana."
+  },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
   },
   "featureCard": {
     "learnMore": "Plus d'info"
@@ -102,15 +116,22 @@
     "transactionInitiated": {
       "title": "Signatures multiples requises",
       "description": "Merci de demander autres participants disposant d'un portefeuille multisignature, de signer avant que la transaction n'expire."
-    },
-    "alert": {
-      "title": "Portefeuille multisignature connecté",
-      "description": "L'adresse du portefeuille de destination est nécessaire pour effectuer l'échange."
     }
   },
   "questCard": {
     "completed": "Complété",
-    "join": "Rejoindre"
+    "join": "Rejoindre",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "Missions Disponibles",
@@ -118,6 +139,41 @@
   },
   "profile_page": {
     "mobileTitle": "Disponible uniquement sur le bureau",
-    "mobileDescription": "La page du profil de Jumper n'est pas encore disponible sur les petits écrans. Nous y travaillons."
+    "mobileDescription": "La page du profil de Jumper n'est pas encore disponible sur les petits écrans. Nous y travaillons.",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

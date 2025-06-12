@@ -1,13 +1,13 @@
 {
   "ETHtoETHswap": {
-    "ETHtoUSDT": {
+    "ETHtoETH": {
       "tokenSymbol": "ETH",
       "fromToken": "0x0000000000000000000000000000000000000000",
       "fromChain": "1",
       "amount": "1",
-      "toTokenSymbol": "USDT",
-      "toToken": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-      "toChain": "1"
+      "toTokenSymbol": "ETH",
+      "toToken": "0x0000000000000000000000000000000000000000",
+      "toChain": "42161"
     },
 
     "USDTtoDAI": {
@@ -48,6 +48,50 @@
       "toTokenSymbol": "WBTC",
       "toChain": "42161",
       "amount": "100"
+    }
+  },
+  "EVMtoHYPE": {
+    "ETHtoUSDC": {
+      "tokenSymbol": "ETH",
+      "fromToken": "0x0000000000000000000000000000000000000000",
+      "fromChain": "1",
+      "amount": "1",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "998"
+    }
+  },
+  "BTCtoHYPE": {
+    "BTCtoUSDC": {
+      "tokenSymbol": "BTC",
+      "fromToken": "bitcoin",
+      "fromChain": "20000000000001",
+      "amount": "1",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "998"
+    }
+  },
+  "SOLtoHYPE":{
+    "SOLtoUSDC": {
+      "tokenSymbol": "SOL",
+      "fromToken": "11111111111111111111111111111111",
+      "fromChain": "1151111081099710",
+      "amount": "2",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "998"
+    }
+  },
+  "SUItoHYPE":{
+    "SUItoUSDC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0x0000000000000000000000000000000000000000000000000000000000000002%3A%3Asui%3A%3ASUI&",
+      "fromChain": "9270000000000000",
+      "amount": "4",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "998"
     }
   }
 }

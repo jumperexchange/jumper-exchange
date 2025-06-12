@@ -5,11 +5,10 @@
       "subtitle": "<0>4x diaudit</0> agregator likuiditas multi-rantai yang didukung oleh <1>LI.FI</1>",
       "cta": "Memulai"
     },
-    "poweredByLifi": "<0>Dipersembahkan oleh </0><1>LI.FI</1>",
     "links": {
       "exchange": "Pertukaran",
       "dashboard": "Dasbor",
-      "refuel": "Gas",
+      "refuel": "",
       "buy": "Beli"
     },
     "statsCards": {
@@ -31,8 +30,6 @@
       "brandAssets": "Merek Aset",
       "theme": "Tema",
       "developers": "Para Pengembang",
-      "lifiExplorer": "LI.FI Scan",
-      "aboutLIFI": "Tentang LI.FI",
       "support": "Bantuan",
       "profile": "Profil Jumper"
     },
@@ -46,15 +43,22 @@
       "walletNotInstalled": "{{wallet}} belum terinstall",
       "connectAnotherWallet": "Hubungkan dompet yang lain",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "Beralih ke Tema Terang",
       "switchToDark": "Beralih ke Tema Gelap",
-      "switchToSystem": "Beralih ke Sistem"
+      "switchToSystem": "Beralih ke Sistem",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
+      "github": "",
       "documentation": "Dokumentasi"
     }
   },
@@ -85,6 +89,16 @@
     "title": "Dukungan token Solana terbatas",
     "subtitle": "Saat ini hanya USDC dan USDT yang dapat dijembatani ke dan dari Solana."
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": "Pelajari lebih lanjut"
   },
@@ -102,15 +116,22 @@
     "transactionInitiated": {
       "title": "Dibutuhkan banyak tanda tangan",
       "description": "Harap beri tahu peserta dalam dompet multisig lainnya untuk menandatangani sebelum transaksi berakhir."
-    },
-    "alert": {
-      "title": "Dompet multisig terhubung",
-      "description": "Alamat dompet tujuan diperlukan untuk menyelesaikan pertukaran."
     }
   },
   "questCard": {
     "completed": "Selesai",
-    "join": "Gabung"
+    "join": "Gabung",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "Misi yang tersedia",
@@ -118,6 +139,41 @@
   },
   "profile_page": {
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

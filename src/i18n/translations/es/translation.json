@@ -5,15 +5,14 @@
       "subtitle": "<0>4x auditado</0> agregador de liquidez multicadena impulsado por <1>LI.FI</1>",
       "cta": "Comenzar"
     },
-    "poweredByLifi": "<0>Creado por </0><1>LI.FI</1>",
     "links": {
       "exchange": "Cambiar",
       "dashboard": "Panel",
-      "refuel": "Gas",
+      "refuel": "",
       "buy": "Comprar"
     },
     "statsCards": {
-      "dexs": "DEXs",
+      "dexs": "",
       "bridges": "Puentes",
       "chains": "Cadenas"
     },
@@ -31,8 +30,6 @@
       "brandAssets": "Recursos de marca",
       "theme": "Tema",
       "developers": "Desarrolladores",
-      "lifiExplorer": "Explorador LI.FI",
-      "aboutLIFI": "Acerca de LI.FI",
       "support": "Soporte",
       "profile": "Perfil de Jumper"
     },
@@ -46,15 +43,22 @@
       "walletNotInstalled": "{{wallet}} no está instalado",
       "connectAnotherWallet": "Conectar otra billetera",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
       "switchToLight": "Cambiar a tema claro",
       "switchToDark": "Cambiar a tema oscuro",
-      "switchToSystem": "Cambiar a sistema"
+      "switchToSystem": "Cambiar a sistema",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
-      "github": "GitHub",
+      "github": "",
       "documentation": "Documentación"
     }
   },
@@ -85,11 +89,21 @@
     "title": "Soporte limitado de tokens en Solana",
     "subtitle": "Actualmente sólo USDC y USDT se pueden enviar desde y hacia Solana."
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": "Aprende más"
   },
   "button": {
-    "okay": "Okay"
+    "okay": ""
   },
   "error": {
     "message": "Algo salió mal. Por favor, intente recargar la página. Si el problema persiste, póngase en contacto con nuestro soporte."
@@ -102,15 +116,22 @@
     "transactionInitiated": {
       "title": "Múltiples firmas necesarias",
       "description": "Por favor, notifique a otros participantes en la billetera multifirma antes de que la transacción expire."
-    },
-    "alert": {
-      "title": "Billetera multifirma conectada",
-      "description": "La dirección de la billetera de destino es necesaria para completar el cambio."
     }
   },
   "questCard": {
     "completed": "Completado",
-    "join": "Unirse"
+    "join": "Unirse",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "Misiones Disponibles",
@@ -118,6 +139,41 @@
   },
   "profile_page": {
     "mobileTitle": "Sólo disponible en escritorio",
-    "mobileDescription": "La página del perfil de Jumper todavía no está disponible en pantallas pequeñas. Estamos trabajando en ello."
+    "mobileDescription": "La página del perfil de Jumper todavía no está disponible en pantallas pequeñas. Estamos trabajando en ello.",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }
