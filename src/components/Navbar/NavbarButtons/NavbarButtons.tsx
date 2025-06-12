@@ -1,9 +1,9 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
 import { useMenuStore } from '@/stores/menu';
-import Portal from '@mui/material/Portal';
+// import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
-import useMediaQuery from '@mui/material/useMediaQuery';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
@@ -18,11 +18,11 @@ import {
   DotsMenuIcon,
   NavbarButtonsContainer,
   RedirectToApp,
-  FloatingLinksContainer,
-  LinksContainer,
+  // FloatingLinksContainer,
+  // LinksContainer,
 } from '.';
 import dynamic from 'next/dynamic';
-import { Links } from './Links';
+// import { Links } from './Links';
 
 const WalletButtons = dynamic(
   () => import('../WalletButtons').then((mod) => mod.WalletButtons),
@@ -33,7 +33,7 @@ const WalletButtons = dynamic(
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  // const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const walletManagementRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
@@ -74,11 +74,12 @@ export const NavbarButtons = () => {
 
   return (
     <>
-      {isDesktop && (
+      {/* @Note: This will be enabled once the missions page is implemented */}
+      {/* {isDesktop && (
         <LinksContainer>
           <Links />
         </LinksContainer>
-      )}
+      )} */}
 
       <NavbarButtonsContainer className="settings">
         {(redirectToApp || !hideConnectButton) && (
@@ -89,7 +90,8 @@ export const NavbarButtons = () => {
             {!hideConnectButton && <WalletButtons />}
           </Box>
         )}
-        {isDesktop && (
+        {/* @Note: This will be enabled once the missions page is implemented */}
+        {/* {isDesktop && (
           <MenuToggle
             ref={mainMenuAnchor}
             id="main-burger-menu-button"
@@ -101,13 +103,25 @@ export const NavbarButtons = () => {
           >
             <DotsMenuIcon />
           </MenuToggle>
-        )}
+        )} */}
+        <MenuToggle
+          ref={mainMenuAnchor}
+          id="main-burger-menu-button"
+          aria-label="Main Menu"
+          aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
+          aria-expanded={openMainMenu ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleOnOpenNavbarMainMenu}
+        >
+          <DotsMenuIcon />
+        </MenuToggle>
       </NavbarButtonsContainer>
 
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
       <WalletMenu anchorEl={walletManagementRef.current ?? undefined} />
 
-      <Portal>
+      {/* @Note: This will be enabled once the missions page is implemented */}
+      {/* <Portal>
         {!isDesktop && (
           <FloatingLinksContainer direction="row">
             <Links />
@@ -124,7 +138,7 @@ export const NavbarButtons = () => {
             </MenuToggle>
           </FloatingLinksContainer>
         )}
-      </Portal>
+      </Portal> */}
     </>
   );
 };
