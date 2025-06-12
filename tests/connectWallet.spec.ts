@@ -43,7 +43,7 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     await closeWelcomeScreen(page);
     await transactionHistoryButton.click();
     await expect(noRecentTransactions).toBeVisible();
-    await itemInNavigation(page, 'Missions');
+    await itemInNavigation(page, 'Level');
     await page.locator('.profile-page').isVisible();
   });
 });
