@@ -28,6 +28,7 @@ import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { themeAllowChains, WidgetWrapper } from '.';
 import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
@@ -58,6 +59,9 @@ export function Widget({
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
+  const contributionDisplayed = useContributionStore(
+    (state) => state.contributionDisplayed,
+  );
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
@@ -334,6 +338,7 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
+      contributionDisplayed={contributionDisplayed}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
@@ -345,7 +350,7 @@ export function Widget({
               <FeeContribution
                 translations={{
                   title: t('contribution.title'),
-                  contributionSent: t('contribution.contributionSent'),
+                  thankYou: t('contribution.thankYou'),
                   description: t('contribution.description'),
                   custom: t('contribution.custom'),
                   confirm: t('contribution.confirm'),

@@ -13,12 +13,15 @@ const DEFAULT_WIDGET_TOP_OFFSET_VAR = `${DEFAULT_WELCOME_SCREEN_HEIGHT} - ${DEFA
 export interface WidgetWrapperProps extends BoxProps {
   welcomeScreenClosed?: boolean;
   autoHeight?: boolean;
+  contributionDisplayed?: boolean;
 }
 
 export const WidgetWrapper = styled(Box, {
   shouldForwardProp: (prop) =>
-    prop !== 'welcomeScreenClosed' && prop !== 'autoHeight',
-})<WidgetWrapperProps>(({ theme, welcomeScreenClosed, autoHeight }) => {
+    prop !== 'welcomeScreenClosed' &&
+    prop !== 'autoHeight' &&
+    prop !== 'contributionDisplayed',
+})<WidgetWrapperProps>(({ theme, autoHeight, contributionDisplayed }) => {
   // autoHeight is used to adapt widget-height automatically instead of default 686px
   const widgetHeight: 'auto' | number = autoHeight
     ? 'auto'
@@ -61,8 +64,7 @@ export const WidgetWrapper = styled(Box, {
       left: 0,
       right: 0,
       bottom: 0,
-      background:
-        `linear-gradient(180deg, transparent 15%,  ${(theme.vars || theme).palette.black.main} 40%)`,
+      background: `linear-gradient(180deg, transparent 15%,  ${(theme.vars || theme).palette.black.main} 40%)`,
       opacity: 0.5,
       margin: 'auto',
       transitionProperty: 'opacity, bottom',
@@ -72,15 +74,21 @@ export const WidgetWrapper = styled(Box, {
       borderTopRightRadius: '12px',
       borderTopLeftRadius: '12px',
       top: 0,
-      ...theme.applyStyles("light", {
-        background: `linear-gradient(180deg, transparent 15%,  ${(theme.vars || theme).palette.white.main} 40%)`
-      })
+      ...theme.applyStyles('light', {
+        background: `linear-gradient(180deg, transparent 15%,  ${(theme.vars || theme).palette.white.main} 40%)`,
+      }),
     },
     // hover animation of widget overlay
     '& > div:hover:before': {
       opacity: 0.25,
       top: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
     },
+    ...(contributionDisplayed && {
+      // Target the widget-relative-container element
+      '& [id^="widget-relative-container-"]': {
+        height: '525px',
+      },
+    }),
     variants: [
       {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,

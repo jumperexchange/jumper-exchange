@@ -180,7 +180,7 @@ interface Resources {
       title: 'Contribute';
       custom: 'Custom';
       confirm: 'Confirm';
-      contributionSent: 'Contribution Sent';
+      thankYou: 'Thank you!';
       description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
       error: {
         amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';

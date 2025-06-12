@@ -12,6 +12,7 @@ import { useRouteStore } from 'src/stores/route/RouteStore';
 import { createTokenTransactionConfig } from 'src/utils/transaction';
 import { erc20Abi } from 'viem';
 
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { parseUnits } from 'viem';
 import {
   useSendTransaction,
@@ -29,9 +30,7 @@ import {
   ContributionCardTitle,
   ContributionCustomInput,
   ContributionDescription,
-  ContributionDrawer,
   ContributionWrapper,
-  DrawerWrapper,
 } from './FeeContribution.style';
 import * as helper from './helper';
 import {
@@ -42,7 +41,7 @@ import {
 
 export interface ContributionTranslations {
   title: string;
-  contributionSent: string;
+  thankYou: string;
   description: string;
   custom: string;
   confirm: string;
@@ -71,14 +70,18 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const [amount, setAmount] = useState<string>('');
   const [inputAmount, setInputAmount] = useState<string>('');
   const [isSending, setIsSending] = useState(false);
-  const completedRoute = useRouteStore((state) => state.completedRoute);
+  const { completedRoute } = useRouteStore((state) => state);
+  const {
+    contributed,
+    setContributed,
+    contributionDisplayed,
+    setContributionDisplayed,
+  } = useContributionStore((state) => state);
   const { data } = useTxHistory(account?.address, completedRoute?.id);
   const { data: tokenBalanceData } = useGetTokenBalance(
     account?.address,
     completedRoute?.toToken,
   );
-  const [showContribution, setShowContribution] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
   const {
     data: writeTxHash,
     isPending: isTxPending,
@@ -155,12 +158,12 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // Update contribution options when eligible
   useEffect(() => {
     if (!isEligible) {
-      setShowContribution(false);
+      setContributionDisplayed(false);
       return;
     }
 
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
-    setShowContribution(true);
+    setContributionDisplayed(true);
     setContributionOptions(getContributionAmounts(txUsdAmount));
   }, [isEligible, completedRoute?.toAmountUSD]);
 
@@ -179,13 +182,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
         isContributionAbEnabled,
       )
     ) {
-      setShowContribution(false);
+      setContributionDisplayed(false);
       return;
     }
 
     // If eligible, set contribution amounts based on transaction amount
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
-    setShowContribution(true);
+    setContributionDisplayed(true);
     setContributionOptions(getContributionAmounts(txUsdAmount));
   }, [
     data?.transfers,
@@ -196,6 +199,9 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   ]);
 
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
+    if (contributed) {
+      return;
+    }
     const { value } = event.target;
     // First validate the input value
     const validatedValue = helper.validateInputAmount(value);
@@ -217,7 +223,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   useEffect(() => {
     if (
       completedRoute &&
-      showContribution &&
+      contributionDisplayed &&
       !hasTrackedImpressionRef.current
     ) {
       trackEvent({
@@ -236,41 +242,25 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       });
       hasTrackedImpressionRef.current = true;
     }
-  }, [showContribution]); // Only depend on showContribution
-
-  // Track contribution success
-  useEffect(() => {
-    if (completedRoute && isTxConfirmed && !hasTrackedConfirmationRef.current) {
-      trackEvent({
-        action: TrackingAction.ContributeSuccess,
-        category: TrackingCategory.Widget,
-        label: 'fee_contribution_success',
-        data: {
-          ...(account?.address && { donator: account.address }),
-          original_tx_id: completedRoute.id,
-          donation_amount_usd: amount,
-          donation_token_symbol: completedRoute.toToken?.symbol,
-          donation_token_address: completedRoute.toToken?.address,
-          donation_chain: completedRoute.toChainId,
-          donation_tx_hash: txReceipt?.transactionHash,
-        },
-      });
-      hasTrackedConfirmationRef.current = true;
-    }
-  }, [isTxConfirmed]); // Only depend on isTxConfirmed
+  }, [contributionDisplayed]); // Only depend on showContribution
 
   // Handle contribution button click
   const handleButtonClick = (selectedAmount: number) => {
-    if (amount && Number(amount) === selectedAmount) {
+    if (contributed) {
+      return;
+    }
+    if (!contributed && amount && Number(amount) === selectedAmount) {
       setAmount('');
     } else {
       const amountStr = selectedAmount.toString();
       setAmount(amountStr);
     }
   };
-
   // Handle custom contribution amount
-  const handleCustom = () => {
+  const handleCustomClick = () => {
+    if (contributed) {
+      return;
+    }
     if (inputAmount && Number(inputAmount) > 0) {
       setAmount(inputAmount);
     }
@@ -414,96 +404,118 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     );
   }, [amount]);
 
-  if (!showContribution) {
+  // Move the setContributed logic to useEffect
+  useEffect(() => {
+    if (
+      completedRoute &&
+      (isTxConfirmed || isNativeTxSuccess) &&
+      !hasTrackedConfirmationRef.current
+    ) {
+      trackEvent({
+        action: TrackingAction.ContributeSuccess,
+        category: TrackingCategory.Widget,
+        label: 'fee_contribution_success',
+        data: {
+          ...(account?.address && { donator: account.address }),
+          ...(txReceipt && { donation_tx_hash: txReceipt.transactionHash }),
+          original_tx_id: completedRoute.id,
+          donation_amount_usd: amount,
+          donation_token_symbol: completedRoute.toToken?.symbol,
+          donation_token_address: completedRoute.toToken?.address,
+          donation_chain: completedRoute.toChainId,
+        },
+      });
+      setContributed(true);
+      hasTrackedConfirmationRef.current = true;
+    }
+  }, [
+    completedRoute,
+    isTxConfirmed,
+    isNativeTxSuccess,
+    hasTrackedConfirmationRef,
+    trackEvent,
+    account?.address,
+    amount,
+    txReceipt?.transactionHash,
+    setContributed,
+  ]);
+
+  if (!contributionDisplayed) {
     return null;
   }
 
   return (
-    <ContributionWrapper showContribution={showContribution}>
-      <DrawerWrapper ref={containerRef}>
-        <ContributionDrawer
-          open={showContribution}
-          anchor="top"
-          hideBackdrop={true}
-          container={() => containerRef.current}
-          ModalProps={{
-            disablePortal: true,
-            disableEnforceFocus: true,
-            disableAutoFocus: true,
-          }}
+    <ContributionWrapper showContribution={contributionDisplayed}>
+      <ContributionCard>
+        <ContributionCardTitle>{translations.title}</ContributionCardTitle>
+        <Grid
+          container
+          spacing={2}
+          columnSpacing={1}
+          justifyContent={'space-between'}
         >
-          <ContributionCard>
-            <ContributionCardTitle>{translations.title}</ContributionCardTitle>
-            <Grid
-              container
-              spacing={2}
-              columnSpacing={1}
-              justifyContent={'space-between'}
-            >
-              {contributionOptions.map((contributionAmount) => (
-                <Grid size={3} key={contributionAmount}>
-                  <ContributionButton
-                    selected={!!amount && Number(amount) === contributionAmount}
-                    onClick={() => handleButtonClick(contributionAmount)}
-                    size="small"
-                  >
-                    ${contributionAmount}
-                  </ContributionButton>
-                </Grid>
-              ))}
-              <Grid size={3}>
-                <ContributionCustomInput
-                  value={inputAmount}
-                  aria-autocomplete="none"
-                  onChange={onChangeValue}
-                  onClick={handleCustom}
-                  onFocus={handleCustom}
-                  placeholder={translations.custom}
-                  isCustomAmountActive={isCustomAmountActive}
-                  hasInputAmount={!!inputAmount}
-                  InputProps={{
-                    startAdornment: inputAmount ? (
-                      <InputAdornment position="start" disableTypography>
-                        $
-                      </InputAdornment>
-                    ) : null,
-                    sx: (theme) => ({
-                      input: {
-                        ...(inputAmount && {
-                          width: inputAmount.length * 8 + 'px',
-                          paddingLeft: theme.spacing(0.5),
-                        }),
-                        padding: inputAmount ? '0' : '0 16px',
-                      },
-                    }),
-                  }}
-                />
-              </Grid>
-            </Grid>
-
-            {!!amount ? (
-              <ContributionButtonConfirm
-                onClick={handleConfirm}
-                isTxConfirmed={isTxConfirmed || isNativeTxSuccess}
-                disabled={isTransactionLoading}
+          {contributionOptions.map((contributionAmount) => (
+            <Grid size={3} key={contributionAmount}>
+              <ContributionButton
+                selected={!!amount && Number(amount) === contributionAmount}
+                onClick={() => handleButtonClick(contributionAmount)}
+                size="small"
               >
-                {isTxConfirmed || isNativeTxSuccess ? <CheckIcon /> : null}
-                {isTransactionLoading ? (
-                  <CircularProgress size={20} color="inherit" />
-                ) : isTxConfirmed || isNativeTxSuccess ? (
-                  translations.contributionSent
-                ) : (
-                  translations.confirm
-                )}
-              </ContributionButtonConfirm>
+                ${contributionAmount}
+              </ContributionButton>
+            </Grid>
+          ))}
+          <Grid size={3}>
+            <ContributionCustomInput
+              value={inputAmount}
+              aria-autocomplete="none"
+              onChange={onChangeValue}
+              onClick={handleCustomClick}
+              onFocus={handleCustomClick}
+              placeholder={translations.custom}
+              isCustomAmountActive={isCustomAmountActive}
+              hasInputAmount={!!inputAmount}
+              InputProps={{
+                startAdornment: inputAmount ? (
+                  <InputAdornment position="start" disableTypography>
+                    $
+                  </InputAdornment>
+                ) : null,
+                sx: (theme) => ({
+                  input: {
+                    ...(inputAmount && {
+                      width: inputAmount.length * 8 + 'px',
+                      paddingLeft: theme.spacing(0.5),
+                    }),
+                    padding: inputAmount ? '0' : '0 16px',
+                  },
+                }),
+              }}
+            />
+          </Grid>
+        </Grid>
+
+        {!!amount || contributed ? (
+          <ContributionButtonConfirm
+            onClick={handleConfirm}
+            isTxConfirmed={contributed}
+            disabled={isTransactionLoading}
+          >
+            {contributed ? <CheckIcon /> : null}
+            {isTransactionLoading ? (
+              <CircularProgress size={20} color="inherit" />
+            ) : contributed ? (
+              translations.thankYou
             ) : (
-              <ContributionDescription>
-                {translations.description}
-              </ContributionDescription>
+              translations.confirm
             )}
-          </ContributionCard>
-        </ContributionDrawer>
-      </DrawerWrapper>
+          </ContributionButtonConfirm>
+        ) : (
+          <ContributionDescription>
+            {translations.description}
+          </ContributionDescription>
+        )}
+      </ContributionCard>
     </ContributionWrapper>
   );
 };
