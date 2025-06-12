@@ -1,7 +1,5 @@
 import {
   alpha,
-  Box,
-  BoxProps,
   Button,
   ButtonProps,
   Card,
@@ -12,28 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 
-interface ContributionWrapperProps extends BoxProps {
-  showContribution: boolean;
-}
-
-export const ContributionWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'showContribution',
-})<ContributionWrapperProps>(({ showContribution }) => ({
-  position: 'relative',
-  transition: 'height 250ms',
-  height: showContribution ? '156px' : '0px',
-}));
-
-export const DrawerWrapper = styled(Box)(() => ({
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  top: 0,
-  overflow: 'hidden',
-  borderRadius: '24px',
-}));
-
 export const ContributionCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -42,6 +18,7 @@ export const ContributionCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: '16px',
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+  marginBottom: theme.spacing(2),
 }));
 
 export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
@@ -215,7 +192,6 @@ export const ContributionButtonConfirm = styled(Button, {
         style: ({ theme }) => ({
           color: '#00B849',
           backgroundColor: 'rgba(101, 59, 163, 0.84)',
-          cursor: 'unset',
           '&:hover': { backgroundColor: '#653BA3' },
 
           ...theme.applyStyles('light', {

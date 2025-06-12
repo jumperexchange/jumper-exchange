@@ -84,9 +84,9 @@ export const WidgetWrapper = styled(Box, {
       top: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
     },
     ...(contributionDisplayed && {
-      // Target the widget-relative-container element
+      // Target the widget-relative-container element used for the FeeContribution component
       '& [id^="widget-relative-container-"]': {
-        height: '525px',
+        height: '600px',
       },
     }),
     variants: [

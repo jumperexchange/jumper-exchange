@@ -8,12 +8,10 @@ import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
 import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { createTokenTransactionConfig } from 'src/utils/transaction';
-import { erc20Abi } from 'viem';
-
-import { useContributionStore } from 'src/stores/contribution/ContributionStore';
-import { parseUnits } from 'viem';
+import { erc20Abi, parseUnits } from 'viem';
 import {
   useSendTransaction,
   useWaitForTransactionReceipt,
@@ -30,7 +28,6 @@ import {
   ContributionCardTitle,
   ContributionCustomInput,
   ContributionDescription,
-  ContributionWrapper,
 } from './FeeContribution.style';
 import * as helper from './helper';
 import {
@@ -140,7 +137,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Async-dependent eligibility check
   const isEligibleByTxHistory = useMemo(() => {
-    return true; // todo: remove
     if (!isEligibleBySyncChecks) {
       return false;
     }
@@ -149,7 +145,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Final eligibility determination
   const isEligible = useMemo(() => {
-    return true;
     return (
       isEligibleBySyncChecks && isEligibleByTxHistory && isContributionAbEnabled
     );
@@ -157,7 +152,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Update contribution options when eligible
   useEffect(() => {
-    if (!isEligible) {
+    if (!isEligible || contributed) {
       setContributionDisplayed(false);
       return;
     }
@@ -175,6 +170,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
     if (
+      contributed ||
       !helper.isEligibleForContribution(
         data,
         completedRoute,
@@ -268,6 +264,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Handle contribution confirmation to sign the tx
   const handleConfirm = async () => {
+    if (contributed) {
+      setContributionDisplayed(false);
+      return;
+    }
     if (
       isTxConfirmed ||
       isNativeTxSuccess ||
@@ -445,78 +445,76 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   }
 
   return (
-    <ContributionWrapper showContribution={contributionDisplayed}>
-      <ContributionCard>
-        <ContributionCardTitle>{translations.title}</ContributionCardTitle>
-        <Grid
-          container
-          spacing={2}
-          columnSpacing={1}
-          justifyContent={'space-between'}
-        >
-          {contributionOptions.map((contributionAmount) => (
-            <Grid size={3} key={contributionAmount}>
-              <ContributionButton
-                selected={!!amount && Number(amount) === contributionAmount}
-                onClick={() => handleButtonClick(contributionAmount)}
-                size="small"
-              >
-                ${contributionAmount}
-              </ContributionButton>
-            </Grid>
-          ))}
-          <Grid size={3}>
-            <ContributionCustomInput
-              value={inputAmount}
-              aria-autocomplete="none"
-              onChange={onChangeValue}
-              onClick={handleCustomClick}
-              onFocus={handleCustomClick}
-              placeholder={translations.custom}
-              isCustomAmountActive={isCustomAmountActive}
-              hasInputAmount={!!inputAmount}
-              InputProps={{
-                startAdornment: inputAmount ? (
-                  <InputAdornment position="start" disableTypography>
-                    $
-                  </InputAdornment>
-                ) : null,
-                sx: (theme) => ({
-                  input: {
-                    ...(inputAmount && {
-                      width: inputAmount.length * 8 + 'px',
-                      paddingLeft: theme.spacing(0.5),
-                    }),
-                    padding: inputAmount ? '0' : '0 16px',
-                  },
-                }),
-              }}
-            />
+    <ContributionCard>
+      <ContributionCardTitle>{translations.title}</ContributionCardTitle>
+      <Grid
+        container
+        spacing={2}
+        columnSpacing={1}
+        justifyContent={'space-between'}
+      >
+        {contributionOptions.map((contributionAmount) => (
+          <Grid size={3} key={contributionAmount}>
+            <ContributionButton
+              selected={!!amount && Number(amount) === contributionAmount}
+              onClick={() => handleButtonClick(contributionAmount)}
+              size="small"
+            >
+              ${contributionAmount}
+            </ContributionButton>
           </Grid>
+        ))}
+        <Grid size={3}>
+          <ContributionCustomInput
+            value={inputAmount}
+            aria-autocomplete="none"
+            onChange={onChangeValue}
+            onClick={handleCustomClick}
+            onFocus={handleCustomClick}
+            placeholder={translations.custom}
+            isCustomAmountActive={isCustomAmountActive}
+            hasInputAmount={!!inputAmount}
+            InputProps={{
+              startAdornment: inputAmount ? (
+                <InputAdornment position="start" disableTypography>
+                  $
+                </InputAdornment>
+              ) : null,
+              sx: (theme) => ({
+                input: {
+                  ...(inputAmount && {
+                    width: inputAmount.length * 8 + 'px',
+                    paddingLeft: theme.spacing(0.5),
+                  }),
+                  padding: inputAmount ? '0' : '0 16px',
+                },
+              }),
+            }}
+          />
         </Grid>
+      </Grid>
 
-        {!!amount || contributed ? (
-          <ContributionButtonConfirm
-            onClick={handleConfirm}
-            isTxConfirmed={contributed}
-            disabled={isTransactionLoading}
-          >
-            {contributed ? <CheckIcon /> : null}
-            {isTransactionLoading ? (
-              <CircularProgress size={20} color="inherit" />
-            ) : contributed ? (
-              translations.thankYou
-            ) : (
-              translations.confirm
-            )}
-          </ContributionButtonConfirm>
-        ) : (
-          <ContributionDescription>
-            {translations.description}
-          </ContributionDescription>
-        )}
-      </ContributionCard>
-    </ContributionWrapper>
+      {!!amount || contributed ? (
+        <ContributionButtonConfirm
+          onClick={handleConfirm}
+          isTxConfirmed={contributed}
+          disabled={isTransactionLoading && !contributed}
+        >
+          {contributed ? <CheckIcon /> : null}
+          {isTransactionLoading ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : contributed ? (
+            translations.thankYou
+          ) : (
+            translations.confirm
+          )}
+        </ContributionButtonConfirm>
+      ) : (
+        <ContributionDescription>
+          {translations.description}
+        </ContributionDescription>
+      )}
+    </ContributionCard>
   );
 };
 
