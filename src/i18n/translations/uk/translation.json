@@ -31,8 +31,7 @@
       "theme": "Тема",
       "developers": "Розробникам",
       "support": "Підтримка",
-      "profile": "Профіль Jumper",
-      "fest": "Superfest Festival"
+      "profile": "Профіль Jumper"
     },
     "walletMenu": {
       "disconnect": "Від'єднатись",
@@ -169,5 +168,12 @@
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

@@ -31,8 +31,7 @@
       "theme": "主题",
       "developers": "开发者",
       "support": "技术支持",
-      "profile": "Jumper 个人资料",
-      "fest": ""
+      "profile": "Jumper 个人资料"
     },
     "walletMenu": {
       "disconnect": "断开连接",
@@ -169,5 +168,12 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }

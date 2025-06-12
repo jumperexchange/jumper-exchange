@@ -31,8 +31,7 @@
       "theme": "Tema",
       "developers": "Sviluppatori",
       "support": "Assistenza",
-      "profile": "",
-      "fest": ""
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "Disconnetti",
@@ -169,5 +168,12 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }
