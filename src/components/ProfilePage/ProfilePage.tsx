@@ -1,6 +1,6 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import type { CampaignData, QuestData, StrapiMediaData } from '@/types/strapi';
+import type { CampaignData, StrapiMediaData } from '@/types/strapi';
 import { useContext } from 'react';
 import { useTraits } from 'src/hooks/useTraits';
 import { AddressCard } from './AddressCard/AddressCard';
@@ -17,12 +17,15 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
+import { useAccount } from '@lifi/wallet-management';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
+import { QuestDataExtended } from 'src/types/merkl';
 import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 interface ProfilePageProps {
   campaigns?: CampaignData[];
-  quests?: QuestData[];
+  quests?: QuestDataExtended[];
+  questApys?: Record<string, number>;
 }
 
 // Type guard to filter campaigns that can be displayed in banners
@@ -50,6 +53,7 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
+  const { account } = useAccount();
 
   // const { isEnabled: isABTestEnabled } = useABTest({
   //   feature: 'test_ab_1',
@@ -57,7 +61,7 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   // });
 
   const { pastCampaigns } = useMerklRewards({
-    userAddress: walletAddress,
+    userAddress: account.address,
   });
 
   const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];

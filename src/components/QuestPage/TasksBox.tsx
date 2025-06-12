@@ -1,20 +1,24 @@
+import Task from '@/components/QuestPage/Task';
+import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
+import { useAccount } from '@lifi/wallet-management';
+import { TaskVerificationExtended } from 'src/types/merkl';
 import { DescriptionTitleTypography } from './DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
   QuestsPageElementContainer,
 } from './QuestsMissionPage.style';
-import type { Quest } from '@/types/loyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
-import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
-import Task from '@/components/QuestPage/Task';
-import { useEffect } from 'react';
 
 interface StepsBoxProps {
-  tasks: Quest['tasks_verification'];
+  tasks: TaskVerificationExtended[];
   documentId: string;
+  // taskOpportunities: Record<string, MerklV4Opportunity[]>;
 }
 
-export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
+export const TasksBox = ({
+  tasks,
+  documentId,
+  // taskOpportunities,
+}: StepsBoxProps) => {
   const { account } = useAccount();
   const { data: verified } = useGetVerifiedTasks(account?.address);
 
@@ -36,6 +40,7 @@ export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
           index={index}
           questId={documentId}
           key={task.uuid}
+          // merklOpportunities={taskOpportunities[task.uuid] || []}
         />
       ))}
     </QuestsPageElementContainer>

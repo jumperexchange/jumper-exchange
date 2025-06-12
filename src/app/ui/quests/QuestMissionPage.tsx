@@ -1,19 +1,33 @@
 'use client';
 
+import { useMemo } from 'react';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
+import { Quest } from 'src/types/loyaltyPass';
 
-const QuestPage = ({ quest, url }: any) => {
-  const path = quest.campaign?.Slug
-    ? `${JUMPER_CAMPAIGN_PATH}/${quest.campaign.Slug}`
-    : JUMPER_LOYALTY_PATH;
+interface QuestMissionPageProps {
+  quest: Quest;
+  merklOpportunities: MerklOpportunity[];
+}
+
+const QuestPage = ({ quest, merklOpportunities }: QuestMissionPageProps) => {
+  const { campaign } = quest;
+
+  const path = useMemo(
+    () =>
+      campaign?.Slug
+        ? `${JUMPER_CAMPAIGN_PATH}/${campaign.Slug}`
+        : JUMPER_LOYALTY_PATH,
+    [campaign?.Slug],
+  );
 
   return (
     <QuestsMissionPage
       quest={quest}
-      baseUrl={url}
+      merklOpportunities={merklOpportunities}
       path={path}
-      activeCampaign={quest.campaign?.Title}
+      activeCampaign={campaign?.Title}
     />
   );
 };

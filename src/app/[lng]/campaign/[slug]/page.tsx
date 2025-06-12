@@ -5,6 +5,7 @@ import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import { CampaignPage } from 'src/components/Campaign/CampaignPage';
 import { getSiteUrl } from 'src/const/urls';
+import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 // Add generateStaticParams function
@@ -72,5 +73,8 @@ export default async function Page({ params }: { params: Params }) {
     notFound();
   }
 
-  return <CampaignPage campaign={campaign.data[0]} />;
+  const extendedQuests = await fetchQuestOpportunitiesByRewardsIds(
+    campaign.data[0].quests,
+  );
+  return <CampaignPage campaign={campaign.data[0]} quests={extendedQuests} />;
 }
