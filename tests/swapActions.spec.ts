@@ -46,7 +46,7 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
       //   const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
       //   await page.goto(`/${urlParams}`);
       //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      // }); 
+      // });
     });
 
     test('Hyperliquid chain swap pairs', async ({ page }) => {
@@ -60,7 +60,7 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
       //   const urlParams = buildUlParams(chainData.BTCtoHYPE.BTCtoUSDC);
       //   await page.goto(`/${urlParams}`);
       //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      // }); // BTC routes are not available 
+      // }); // BTC routes are not available
 
       await test.step(`Check ${chainData.SOLtoHYPE.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHYPE.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.SOLtoHYPE.SOLtoUSDC);

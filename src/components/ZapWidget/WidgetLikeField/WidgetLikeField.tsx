@@ -152,7 +152,7 @@ function WidgetLikeField({
 
     setValue('');
     refetch();
-    
+
     const trackingData = {
       protocol_name: projectData.integrator,
       chain_id: token.chainId,
@@ -162,7 +162,7 @@ function WidgetLikeField({
         parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
       timestamp: new Date().toISOString(),
     };
-    
+
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'zap_withdraw',
@@ -195,15 +195,17 @@ function WidgetLikeField({
           projectData?.address) as `0x${string}`,
         chainId: projectData?.chainId,
         functionName: (withdrawAbi?.name || 'redeem') as 'redeem',
-        abi: withdrawAbi ? [withdrawAbi] : [
-          {
-            inputs: [{ name: 'amount', type: 'uint256' }],
-            name: 'redeem',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-        ],
+        abi: withdrawAbi
+          ? [withdrawAbi]
+          : [
+              {
+                inputs: [{ name: 'amount', type: 'uint256' }],
+                name: 'redeem',
+                outputs: [{ name: '', type: 'uint256' }],
+                stateMutability: 'nonpayable',
+                type: 'function',
+              },
+            ],
         args: [parseUnits(value, writeDecimals)],
       });
     } catch (e) {
