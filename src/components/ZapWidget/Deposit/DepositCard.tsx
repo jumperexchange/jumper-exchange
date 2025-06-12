@@ -13,6 +13,7 @@ import DigitOnlyCard from './Stat/DigitOnlyCard';
 import DigitTextCard from './Stat/DigitTextCard';
 
 export interface ItemPriceProps {
+  poolName: string;
   token: TokenAmount;
   underlyingToken: TokenAmount;
   contractCalls?: ContractCall[];
@@ -32,6 +33,7 @@ export interface ItemPriceProps {
 }
 
 export const DepositCard: React.FC<ItemPriceProps> = ({
+  poolName,
   token,
   underlyingToken,
   contractCalls,
@@ -75,7 +77,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           alt={'Protocol'}
         />
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {`${contractTool?.name} ${underlyingToken?.symbol.toUpperCase()} Pool`}
+          {poolName}
         </Typography>
       </Box>
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
