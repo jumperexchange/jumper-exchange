@@ -31,8 +31,7 @@
       "theme": "テーマ",
       "developers": "開発者",
       "support": "サポート",
-      "profile": "Jumperプロフィール",
-      "fest": ""
+      "profile": "Jumperプロフィール"
     },
     "walletMenu": {
       "disconnect": "接続を解除",
@@ -169,5 +168,12 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
   }
 }
