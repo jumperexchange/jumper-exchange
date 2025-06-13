@@ -202,7 +202,7 @@ export const useSocialLinks = () => {
     () => ({
       color: (theme.vars || theme).palette.alphaLight500.main,
       ...theme.applyStyles('light', {
-        color: theme.palette.alphaDark500.main,
+        color: (theme.vars || theme).palette.alphaDark500.main,
       }),
     }),
     [theme],

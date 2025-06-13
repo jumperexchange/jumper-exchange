@@ -11,8 +11,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-
-type Appearance = 'light' | 'dark' | 'system';
+import { Appearance } from '@lifi/widget';
 
 export const useThemeModesMenuContent = () => {
   const { mode, setMode } = useColorScheme();
