@@ -7,7 +7,7 @@ import {
   StyledEntityCardImageContainer,
   StyledWideEntityCardTitle,
   StyledEntityCardDescription,
-  StyledParticipantAvatar,
+  StyledWideParticipantAvatar,
   StyledParticipantsContainer,
   StyledRewardAvatar,
   StyledCompactRewardLabel,
@@ -49,7 +49,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
       <StyledEntityCardContentContainer sx={{ gap: 3 }}>
         <StyledParticipantsContainer>
           {participants?.map((participant, index) => (
-            <StyledParticipantAvatar
+            <StyledWideParticipantAvatar
               key={participant.label || `participant-${index}`}
               src={participant.avatarUrl}
               alt={participant.label || `Participant ${index + 1}`}
@@ -68,6 +68,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
               return rewards.map((reward) => (
                 <StyledWideRewardChipContainer
                   key={`${rewardKey}-${reward.label}`}
+                  clickable={false}
                   label={
                     <StyledCompactRewardLabel>
                       {reward.value} {reward.label}
