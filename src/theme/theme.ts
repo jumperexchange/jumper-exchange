@@ -5,6 +5,11 @@ import type {
   ComponentsVariants,
   CssVarsTheme,
 } from '@mui/material';
+import type {
+  ComponentsOverrides,
+  ComponentsVariants,
+  CssVarsTheme,
+} from '@mui/material';
 import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -32,6 +37,8 @@ declare module '@mui/material/styles' {
   interface Shape {
     borderRadius: number;
     borderRadiusSecondary: number;
+    cardBorderRadius: number;
+    buttonBorderRadius: number;
   }
 
   interface ThemeOptions {
@@ -281,6 +288,8 @@ declare module '@mui/material/Typography' {
 const shape = {
   borderRadius: 12,
   borderRadiusSecondary: 8,
+  cardBorderRadius: 24,
+  buttonBorderRadius: 128,
 };
 
 const themeBase = createTheme({
@@ -513,6 +522,7 @@ const palette = {
     light: '#297EFF',
     dark: '#297EFF',
   },
+};
 };
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
@@ -1037,9 +1047,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#FFFFFF',
           },
           surface3: {
-            light: '#F6F0FF',
-            main: '#F6F0FF',
-            dark: '#F6F0FF',
+            light: '#E5E1EB',
+            main: '#E5E1EB',
+            dark: '#E5E1EB',
           },
         },
         // @ts-expect-error
@@ -1129,9 +1139,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#24203D',
           },
           surface3: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: '#302B52',
+            main: '#302B52',
+            dark: '#302B52',
           },
         },
         // @ts-expect-error
