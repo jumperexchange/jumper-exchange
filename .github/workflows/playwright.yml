@@ -7,6 +7,62 @@ permissions:
   pull-requests: write
   contents: write
 jobs:
+  create-qase-run:
+    name: Create Qase Run
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      run_id: ${{ steps.create-run.outputs.run_id }}
+      public_link: ${{ steps.create-public-link.outputs.public_link }}
+    steps:
+      - name: Create Qase Test Run
+        id: create-run
+        run: |
+          if [ -z "${{ secrets.QASE_TOKEN }}" ]; then
+            echo "No Qase API token available, skipping Qase run creation"
+            exit 0
+          fi
+
+          RUN_TITLE="[Jumper Exchange] CI Run ${{ github.run_id }}"
+          
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_URL="${{ github.event.pull_request.html_url }}"
+            DESCRIPTION="Pull Request: [$PR_URL]($PR_URL)"
+          else
+            DESCRIPTION=""
+          fi
+
+          data=$(jq -n \
+            --arg title "$RUN_TITLE" \
+            --arg description "$DESCRIPTION" \
+            '{title: $title, description: $description}')
+
+          response=$(curl --silent --fail --show-error --request POST \
+            --url https://api.qase.io/v1/run/FE \
+            --header "Token: ${{ secrets.QASE_TOKEN }}" \
+            --header 'accept: application/json' \
+            --header 'content-type: application/json' \
+            --data "$data")
+
+          run_id=$(echo "$response" | jq -r '.result.id')
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+
+          echo "Qase API Response: $response"
+          echo "Extracted Run ID: $run_id"
+
+      - name: Create public link to run
+        id: create-public-link
+        run: |
+          public_link=$(curl --silent --fail --show-error --request PATCH \
+            --url "https://api.qase.io/v1/run/FE/${{ steps.create-run.outputs.run_id }}/public" \
+            --header "Token: ${{ secrets.QASE_TOKEN }}" \
+            --header 'accept: application/json' \
+            --header 'content-type: application/json' \
+            --data '{"status":true}' \
+            | jq -r '.result.url')
+
+          echo "public_link=$public_link" >> "$GITHUB_OUTPUT"
+          echo "Public link: $public_link"
   test:
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: true
@@ -29,10 +85,21 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps chromium
     - name: Run Playwright tests
+      env:
+        QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
+        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
       run: |
-       pnpm build:cache:ci &
-        pnpm run test:ci:e2e \
+       pnpm build:cache:ci
+        if [ -n "${{ secrets.QASE_TOKEN }}" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
+          echo "Running tests with Qase reporting (Run ID: $QASE_TESTOPS_RUN_ID)"
+        pnpm run test:ci:e2e:qase \
           --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+        else
+          echo "Running tests without Qase reporting (API token or run ID not available)"
+          pnpm run test:ci:e2e \
+           --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+        fi
+
     - name: Upload blob report to Github Actions Artifacts
       if: ${{ !cancelled()}}
       uses: actions/upload-artifact@v4
@@ -40,6 +107,20 @@ jobs:
           name: blob-report-${{ matrix.shard }}
           path: blob-report
           retention-days: 1
+
+  post-comment:
+    needs: [create-qase-run, test]
+    if: ${{ !cancelled() && github.event_name == 'pull_request' && needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post comment to PR with public link
+        run: |
+          gh pr comment "$PR_NUMBER" \
+            --body "📊 [Qase Test Report](${{ needs.create-qase-run.outputs.public_link }}) is available."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}          
 
   merge-reports:
     if: ${{ !cancelled() }}
