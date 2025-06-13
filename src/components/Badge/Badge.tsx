@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { StyledBadge, StyledBadgeLabel } from './Badge.styled';
+import { StyledBadge, StyledBadgeLabel } from './Badge.styles';
 
 export interface BadgeProps {
   startIcon?: React.ReactElement;
