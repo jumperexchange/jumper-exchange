@@ -13,6 +13,8 @@ export type Participant = {
 
 export type EntityCardType = 'wide' | 'compact';
 
+export type RewardGroupKey = 'apy' | 'xp' | 'coins';
+
 export interface EntityCardProps {
   id: string;
   slug: string;
@@ -27,8 +29,6 @@ export interface EntityCardProps {
     label: string;
   };
   participants: Participant[];
-  rewardGroups?: {
-    [key: string]: Reward[];
-  };
+  rewardGroups?: Partial<Record<RewardGroupKey, Reward[]>>;
   onClick?: () => void;
 }
