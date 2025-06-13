@@ -72,7 +72,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;
 
-              if (rewards.length === 1) {
+              if (rewardKey !== 'coins') {
                 return (
                   <StyledCompactRewardChipContainer
                     clickable={false}

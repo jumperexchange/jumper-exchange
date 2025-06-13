@@ -137,7 +137,7 @@ export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
   },
   '& .MuiChip-avatar': {
     width: 'fit-content',
-    padding: 0,
+    padding: theme.spacing(0, 0.25),
     margin: 0,
   },
   ...theme.applyStyles('light', {
@@ -156,7 +156,7 @@ export const StyledCompactRewardLabel = styled(Typography)(({ theme }) => ({
 }));
 
 export const StyledRewardsAvatarsContainer = styled((props: StackProps) => (
-  <Stack direction="row" spacing={-1} alignItems="center" {...props} />
+  <Stack direction="row" spacing={-1.25} alignItems="center" {...props} />
 ))(({ theme }) => ({}));
 
 export const StyledRewardAvatar = styled(BaseAvatar)(({ theme }) => ({
