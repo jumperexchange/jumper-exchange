@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Card, { CardProps } from '@mui/material/Card';
-import Chip from '@mui/material/Chip';
+import Chip, { ChipProps } from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Stack, { StackProps } from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -109,7 +109,12 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
   }),
 }));
 
-export const StyledParticipantAvatar = styled(BaseAvatar)(() => ({
+export const StyledCompactParticipantAvatar = styled(BaseAvatar)(() => ({
+  height: 32,
+  width: 32,
+}));
+
+export const StyledWideParticipantAvatar = styled(BaseAvatar)(() => ({
   height: 40,
   width: 40,
 }));
@@ -119,7 +124,11 @@ export const StyledRewardsContainer = styled(Stack)(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
-export const StyledCompactRewardChipContainer = styled(Chip)(({ theme }) => ({
+export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
+  // Currently this component is not clickable, but passing an onClick prop to the parent container makes it throw an error.
+  // https://github.com/mui/material-ui/issues/46262
+  return <Chip {...props} onClick={() => {}} />;
+})(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
   backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
   borderRadius: (theme.vars || theme).shape.buttonBorderRadius,
