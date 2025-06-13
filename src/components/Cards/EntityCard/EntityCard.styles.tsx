@@ -1,13 +1,15 @@
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Card, { CardProps } from '@mui/material/Card';
 import Chip, { ChipProps } from '@mui/material/Chip';
-import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import Stack, { StackProps } from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { Link } from 'src/components/Link';
-import Skeleton from '@mui/material/Skeleton';
+
+// Card & Containers
 
 export const StyledEntityCard = styled(Card)<CardProps>(
   ({ theme, onClick }) => ({
@@ -39,6 +41,8 @@ export const StyledEntityCardBadgeContainer = styled(Box)(({ theme }) => ({
   zIndex: 1,
 }));
 
+// Image
+
 export const StyledEntityCardImageContainer = styled(Box)(() => ({
   display: 'block',
   position: 'relative',
@@ -47,7 +51,10 @@ export const StyledEntityCardImageContainer = styled(Box)(() => ({
 export const StyledEntityCardImage = styled(Image)(() => ({
   objectFit: 'cover',
   objectPosition: 'center',
+  aspectRatio: '2 / 1',
 }));
+
+// Titles & Description
 
 export const StyledEntityCardTitleBase = styled(Typography)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,
@@ -76,6 +83,8 @@ export const StyledEntityCardDescription = styled(Typography)(({ theme }) => ({
   opacity: 0.48,
 }));
 
+// Link
+
 export const StyledEntityCardLink = styled(Link)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,
   ...theme.typography.bodyMediumStrong,
@@ -90,14 +99,7 @@ export const StyledEntityCardLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export const StyledParticipantsContainer = styled((props: StackProps) => (
-  <Stack direction="row" spacing={-1.25} {...props} />
-))(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  left: theme.spacing(3),
-  transform: 'translateY(-50%)',
-}));
+// Avatars
 
 const BaseAvatar = styled(Avatar)(({ theme }) => ({
   boxSizing: 'content-box',
@@ -119,14 +121,28 @@ export const StyledWideParticipantAvatar = styled(BaseAvatar)(() => ({
   width: 40,
 }));
 
+export const StyledParticipantsContainer = styled((props: StackProps) => (
+  <Stack direction="row" spacing={-1.25} {...props} />
+))(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: theme.spacing(3),
+  transform: 'translateY(-50%)',
+}));
+
+// Rewards & Chips
+
 export const StyledRewardsContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
   flexWrap: 'wrap',
 }));
 
+/*
+ * Currently this component is not clickable,
+ * but passing an onClick prop to the parent container makes it throw an error.
+ * https://github.com/mui/material-ui/issues/46262
+ */
 export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
-  // Currently this component is not clickable, but passing an onClick prop to the parent container makes it throw an error.
-  // https://github.com/mui/material-ui/issues/46262
   return <Chip {...props} onClick={() => {}} />;
 })(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
@@ -167,6 +183,8 @@ export const StyledRewardAvatar = styled(BaseAvatar)(({ theme }) => ({
     marginBottom: theme.spacing(0.5),
   },
 }));
+
+// Skeletons
 
 export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.grey[100],
