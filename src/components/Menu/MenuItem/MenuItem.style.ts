@@ -49,9 +49,9 @@ export const MenuItemContainer = styled(MenuItemBaseContainer, {
 })<MenuItemProps>(({ theme, showButton }) => ({
   pointerEvents: 'auto',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.04),
+    backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
     ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.black.main, 0.04),
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
     }),
   },
   ...(showButton && {
@@ -128,9 +128,9 @@ export const MenuItemLabel = styled(Typography)<MenuItemLabelProps>(
 export const MenuDelimiter = styled(Divider)(({ theme }) => ({
   marginLeft: theme.spacing(3),
   marginRight: theme.spacing(3),
-  borderColor: theme.palette.alphaLight200.main,
+  borderColor: (theme.vars || theme).palette.alphaLight200.main,
   ...theme.applyStyles('light', {
-    borderColor: theme.palette.alphaDark200.main,
+    borderColor: (theme.vars || theme).palette.alphaDark200.main,
   }),
 }));
 
