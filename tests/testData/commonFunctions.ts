@@ -11,6 +11,5 @@ export async function triggerButtonClick(
   page: Page,
   buttonText: string,
 ): Promise<void> {
-  const button = page.getByRole('button', { name: buttonText });
-  await button.click();
+  await page.getByRole('button', { name: buttonText }).click();
 }
