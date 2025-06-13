@@ -6,7 +6,7 @@ import {
   StyledCompactEntityCardTitle,
   StyledEntityCardImage,
   StyledEntityCardImageContainer,
-  StyledParticipantAvatar,
+  StyledCompactParticipantAvatar,
   StyledParticipantsContainer,
   StyledRewardAvatar,
   StyledCompactRewardLabel,
@@ -54,7 +54,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
       >
         <StyledParticipantsContainer>
           {participants?.map((participant, index) => (
-            <StyledParticipantAvatar
+            <StyledCompactParticipantAvatar
               key={participant.label || `participant-${index}`}
               src={participant.avatarUrl}
               alt={participant.label || `Participant ${index + 1}`}
@@ -75,6 +75,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
               if (rewards.length === 1) {
                 return (
                   <StyledCompactRewardChipContainer
+                    clickable={false}
                     key={rewardKey}
                     label={
                       <StyledCompactRewardLabel>
@@ -87,8 +88,13 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
 
               return (
                 <StyledCompactRewardChipContainer
+                  clickable={false}
                   key={rewardKey}
-                  sx={{ display: 'inline-block' }}
+                  sx={(theme) => ({
+                    display: 'inline-block',
+                    paddingLeft: theme.spacing(0.5),
+                    paddingRight: theme.spacing(0.5),
+                  })}
                   avatar={
                     <StyledRewardsAvatarsContainer>
                       {rewards
