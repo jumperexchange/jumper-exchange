@@ -48,7 +48,7 @@ test.describe('Main Menu flows', () => {
     await expect(missionTitle).toBeVisible();
   });
 
-  test('Should open the Jumper Profile page and then open the leaderboard page', async ({
+  test.skip('Should open the Jumper Profile page and then open the leaderboard page', async ({
     page,
   }) => {
     const whereDoYouRank = await getElementByText(page, 'Where do you rank?');

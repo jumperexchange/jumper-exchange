@@ -5,6 +5,7 @@ import {
   itemInNavigation,
 } from './testData/landingPageFunctions';
 import basicSetup from './wallet-setup/basic.setup';
+import { triggerButtonClick } from './testData/commonFunctions';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
@@ -43,7 +44,7 @@ test.describe('Connect Metamask with Jumper app and open /profile page', () => {
     await closeWelcomeScreen(page);
     await transactionHistoryButton.click();
     await expect(noRecentTransactions).toBeVisible();
-    await itemInNavigation(page, 'Level');
+    await triggerButtonClick(page, 'Level');
     await page.locator('.profile-page').isVisible();
   });
 });
