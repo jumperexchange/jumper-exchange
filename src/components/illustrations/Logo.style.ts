@@ -17,15 +17,6 @@ export const LogoWrapper = styled('div')(({ theme }) => {
     '.sub-color': {
       fill: subCol,
     },
-    [theme.breakpoints.down('sm')]: {
-      '& .jumper-learn-logo, & .jumper-logo, ': {
-        width: 32,
-        height: 32,
-      },
-      '& .jumper-learn-logo-desktop, & .jumper-logo-desktop': {
-        display: 'none',
-      },
-    },
   };
 });
 

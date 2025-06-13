@@ -92,7 +92,9 @@ test.describe('Verify essential mobile flows', () => {
 
     await test.step('welcome can be closed', async () => {
       await closeWelcomeScreen(page);
-      await expect(page.locator(LANDING_PAGE.GET_STARTED_BUTTON)).not.toBeVisible();
+      await expect(
+        page.locator(LANDING_PAGE.GET_STARTED_BUTTON),
+      ).not.toBeVisible();
     });
   });
 
@@ -106,7 +108,7 @@ test.describe('Verify essential mobile flows', () => {
     });
 
     await test.step('check the number of menu items', async () => {
-      await checkTheNumberOfMenuItems(page, 9);
+      await checkTheNumberOfMenuItems(page, 7);
     });
 
     await test.step('switch theme', async () => {

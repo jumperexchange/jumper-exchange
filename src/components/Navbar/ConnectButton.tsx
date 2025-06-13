@@ -15,7 +15,7 @@ function ConnectButton() {
         openWalletMenu();
       }}
     >
-      <ConnectButtonLabel variant={'bodyMediumStrong'}>
+      <ConnectButtonLabel variant={'bodyXSmallStrong'}>
         {t('navbar.connect')}
       </ConnectButtonLabel>
     </ConnectButtonWrapper>
