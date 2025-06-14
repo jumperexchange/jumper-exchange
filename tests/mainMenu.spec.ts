@@ -1,18 +1,18 @@
 import { expect, test } from '@playwright/test';
-import {
-  checkSocialNetworkIcons,
-  checkTheNumberOfMenuItems,
-  expectBackgroundColorToHaveCss,
-  openOrCloseMainMenu,
-  openLeaderboardPage,
-  sectionOnTheBlogPage,
-} from './testData/menuFunctions';
-import { getElementByText } from './testData/commonFunctions';
 import values from '../tests/testData/values.json' assert { type: 'json' };
+import { getElementByText } from './testData/commonFunctions';
 import {
   closeWelcomeScreen,
   itemInMenu,
 } from './testData/landingPageFunctions';
+import {
+  checkSocialNetworkIcons,
+  checkTheNumberOfMenuItems,
+  expectBackgroundColorToHaveCss,
+  openLeaderboardPage,
+  openOrCloseMainMenu,
+  sectionOnTheBlogPage,
+} from './testData/menuFunctions';
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -49,7 +49,10 @@ test.describe('Main Menu flows', () => {
     page,
   }) => {
     const whereDoYouRank = await getElementByText(page, 'Where do you rank?');
-    const completedMissions = await getElementByText(page, 'Completed Missions');
+    const completedMissions = await getElementByText(
+      page,
+      'Completed Missions',
+    );
     const connectWalletButtonOnLeaderboardPage = await page.locator(
       '#leaderboard-entry-connect-button',
     );
@@ -76,7 +79,7 @@ test.describe('Main Menu flows', () => {
     const articleTitle = await page.locator(
       'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
     );
-  
+
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Jumper Learn');
     await expect(page).toHaveURL(values.localLearnURL);
@@ -114,9 +117,11 @@ test.describe('Main Menu flows', () => {
   test.skip('Should be able to open quests mission page and switch background color', async ({
     page,
   }) => {
+    const jumperProfileBackButton = await getElementByText(
+      page,
+      'Jumper Profile',
+    );
 
-    const jumperProfileBackButton = await getElementByText(page, 'Jumper Profile');
- 
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
     await openOrCloseMainMenu(page);
@@ -140,12 +145,14 @@ test.describe('Main Menu flows', () => {
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
   });
-  
+
   test('Should be able to click on the Support button', async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Support');
-    const iFrameLocator = page.frameLocator('iframe[title="Discord chat embed"]');
-    const openDiscordAppInIframe= await iFrameLocator.getByText('Open Discord App')
-    await expect(openDiscordAppInIframe).toBeVisible();
+    const iFrameLocator = page.frameLocator(
+      'iframe[title="Intercom live chat"]',
+    );
+    const openIntercomAppInIframe = await iFrameLocator.getByText('Home');
+    await expect(openIntercomAppInIframe).toBeVisible();
   });
 });

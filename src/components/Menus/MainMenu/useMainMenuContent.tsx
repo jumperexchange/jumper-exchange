@@ -255,9 +255,11 @@ export const useMainMenuContent = () => {
           }}
         />
       ),
+
       onClick: () => {
         setSupportModalState(true);
       },
+      styles: { '&:hover': { backgroundColor: 'transparent' } },
       showButton: true,
     },
   ]);
