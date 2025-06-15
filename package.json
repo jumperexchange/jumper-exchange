@@ -70,6 +70,7 @@
     "sharp": "^0.34.2",
     "siwe": "^2.3.2",
     "universal-cookie": "^8.0.1",
+    "utils": "link:@mysten/sui/utils",
     "uuid": "^11.1.0",
     "viem": "^2.31.0",
     "wagmi": "^2.15.6",
