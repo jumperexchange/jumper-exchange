@@ -3,6 +3,14 @@ import {
   sanitizeAddress,
   sanitizeNumeric,
 } from './image-generation/sanitizeParams';
+import {
+  isValidEthereumAddress,
+  isValidEthereumTransaction,
+  isValidSolanaAddress,
+  isValidSolanaTransaction,
+  isValidUTXOAddress,
+  isValidUTXOTransaction,
+} from './regex-patterns';
 
 /**
  * Helper function to check if a string contains only alphanumeric characters
@@ -36,19 +44,18 @@ export const amountSchema = z
   .refine((val) => /^\d+(\.\d+)?$/.test(val), 'Amount must be a valid number');
 
 /**
- * Base schema for blockchain addresses (supports both EVM and Solana formats)
+ * Base schema for blockchain addresses (supports EVM, Solana, and Bitcoin formats)
  */
 const baseAddressSchema = z
   .string()
   .transform((val) => sanitizeAddress(val))
   .refine((val) => {
-    // Check for Ethereum address format (0x...)
-    if (val.startsWith('0x')) {
-      return /^0x[a-fA-F0-9]{40}$/.test(val);
-    }
-    // Check for Solana address format (base58)
-    return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(val);
-  }, 'Invalid address format. Must be either an Ethereum address (0x...) or a Solana address (base58)');
+    return (
+      isValidEthereumAddress(val) ||
+      isValidSolanaAddress(val) ||
+      isValidUTXOAddress(val)
+    );
+  }, 'Invalid address format. Must be either an Ethereum address (0x...), a Solana address (base58), or a Bitcoin address (1..., 3..., or bc1...)');
 
 /**
  * Schema for token addresses
@@ -128,23 +135,22 @@ export const questSlugSchema = z
   .max(100, 'Quest slug is too long');
 
 /**
- * Schema for transaction hashes (supports both Ethereum and Solana formats)
+ * Schema for transaction hashes (supports Ethereum, Solana, and Bitcoin formats)
  */
 export const transactionHashSchema = z
   .string()
   .transform((val) => val) // Remove toLowerCase() as Solana signatures are case-sensitive
   .refine(
     (val) => {
-      // Check for Ethereum format (0x + 64 hex chars)
-      if (val.startsWith('0x')) {
-        return /^0x[a-f0-9]{64}$/.test(val.toLowerCase());
-      }
-      // Check for Solana format (base58)
-      return /^[1-9A-HJ-NP-Za-km-z]{88}$/.test(val); // Exact length for Solana
+      return (
+        isValidEthereumTransaction(val) ||
+        isValidSolanaTransaction(val) ||
+        isValidUTXOTransaction(val)
+      );
     },
     {
       message:
-        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...) or a Solana transaction signature',
+        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a Bitcoin transaction hash (64 hex chars), or a Solana transaction signature',
     },
   );
 

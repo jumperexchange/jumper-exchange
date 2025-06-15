@@ -1,5 +1,10 @@
 import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
+import {
+  ETHEREUM_HEX_REGEX,
+  isValidUTXOAddress,
+  SOLANA_ADDRESS_REGEX,
+} from '../regex-patterns';
 
 // Helper function to sanitize numeric values
 export function sanitizeNumeric(value: string): string {
@@ -31,14 +36,20 @@ export const sanitizeAddress = (address: string): string => {
     // Not a valid Solana address
   }
 
+  // Check if it's a valid Bitcoin address
+  const trimmedAddress = address.trim();
+  if (isValidUTXOAddress(trimmedAddress)) {
+    return trimmedAddress;
+  }
+
   // Provide more specific error messages for common issues
-  if (/^0x[a-f0-9]*$/i.test(cleanAddress) && cleanAddress.length !== 42) {
+  if (ETHEREUM_HEX_REGEX.test(cleanAddress) && cleanAddress.length !== 42) {
     // Checks if string has 0x prefix and hex characters but not exactly 42 chars (standard ETH address length)
     throw new Error('Invalid Ethereum address: incorrect length');
   }
 
   if (
-    /^[1-9A-HJ-NP-Za-km-z]*$/.test(cleanAddress) &&
+    SOLANA_ADDRESS_REGEX.test(cleanAddress) &&
     (cleanAddress.length < 32 || cleanAddress.length > 44)
   ) {
     // Checks if string has valid Base58 characters but invalid length for Solana addresses
@@ -47,6 +58,6 @@ export const sanitizeAddress = (address: string): string => {
 
   // Generic error for other cases
   throw new Error(
-    'Invalid address: Must be a valid Ethereum or Solana address',
+    'Invalid address: Must be a valid Ethereum, Solana, or Bitcoin address',
   );
 };
