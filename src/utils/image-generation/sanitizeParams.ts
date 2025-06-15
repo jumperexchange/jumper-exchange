@@ -2,6 +2,7 @@ import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
 import {
   ETHEREUM_HEX_REGEX,
+  isValidSuiAddress,
   isValidUTXOAddress,
   SOLANA_ADDRESS_REGEX,
 } from '../regex-patterns';
@@ -36,9 +37,14 @@ export const sanitizeAddress = (address: string): string => {
     // Not a valid Solana address
   }
 
-  // Check if it's a valid Bitcoin address
+  // Check if it's a valid UTXO address
   const trimmedAddress = address.trim();
   if (isValidUTXOAddress(trimmedAddress)) {
+    return trimmedAddress;
+  }
+
+  // Check if it's a valid SUI address
+  if (isValidSuiAddress(trimmedAddress)) {
     return trimmedAddress;
   }
 
@@ -58,6 +64,6 @@ export const sanitizeAddress = (address: string): string => {
 
   // Generic error for other cases
   throw new Error(
-    'Invalid address: Must be a valid Ethereum, Solana, or Bitcoin address',
+    'Invalid address: Must be a valid Ethereum, Solana, UTXO, or SUI address',
   );
 };

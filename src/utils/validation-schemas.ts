@@ -8,6 +8,8 @@ import {
   isValidEthereumTransaction,
   isValidSolanaAddress,
   isValidSolanaTransaction,
+  isValidSuiAddress,
+  isValidSuiTransaction,
   isValidUTXOAddress,
   isValidUTXOTransaction,
 } from './regex-patterns';
@@ -44,7 +46,7 @@ export const amountSchema = z
   .refine((val) => /^\d+(\.\d+)?$/.test(val), 'Amount must be a valid number');
 
 /**
- * Base schema for blockchain addresses (supports EVM, Solana, and Bitcoin formats)
+ * Base schema for blockchain addresses (supports EVM, Solana, UTXO, and SUI formats)
  */
 const baseAddressSchema = z
   .string()
@@ -53,9 +55,10 @@ const baseAddressSchema = z
     return (
       isValidEthereumAddress(val) ||
       isValidSolanaAddress(val) ||
-      isValidUTXOAddress(val)
+      isValidUTXOAddress(val) ||
+      isValidSuiAddress(val)
     );
-  }, 'Invalid address format. Must be either an Ethereum address (0x...), a Solana address (base58), or a Bitcoin address (1..., 3..., or bc1...)');
+  }, 'Invalid address format. Must be either an Ethereum address (0x...), a Solana address (base58), a UTXO address (1..., 3..., or bc1...), or a SUI address');
 
 /**
  * Schema for token addresses
@@ -135,7 +138,7 @@ export const questSlugSchema = z
   .max(100, 'Quest slug is too long');
 
 /**
- * Schema for transaction hashes (supports Ethereum, Solana, and Bitcoin formats)
+ * Schema for transaction hashes (supports Ethereum, Solana, UTXO, and SUI formats)
  */
 export const transactionHashSchema = z
   .string()
@@ -145,12 +148,13 @@ export const transactionHashSchema = z
       return (
         isValidEthereumTransaction(val) ||
         isValidSolanaTransaction(val) ||
-        isValidUTXOTransaction(val)
+        isValidUTXOTransaction(val) ||
+        isValidSuiTransaction(val)
       );
     },
     {
       message:
-        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a Bitcoin transaction hash (64 hex chars), or a Solana transaction signature',
+        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a UTXO transaction hash (64 hex chars), a Solana transaction signature, or a SUI transaction digest',
     },
   );
 
