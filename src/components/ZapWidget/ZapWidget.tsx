@@ -574,6 +574,9 @@ export function ZapWidget({
         address: address as `0x${string}` || '0x',
         chainType: ChainType.EVM,
       },
+      bridges: {
+        allow: ['across', 'stargateV2', 'symbiosis'],
+      },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
