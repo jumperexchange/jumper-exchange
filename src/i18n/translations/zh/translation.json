@@ -175,5 +175,11 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

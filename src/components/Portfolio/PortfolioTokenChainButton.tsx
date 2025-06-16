@@ -12,7 +12,6 @@ import {
   ButtonBase,
   darken,
   Grid,
-  lighten,
   Avatar as MuiAvatar,
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -54,10 +53,6 @@ function PortfolioTokenChainButton({ token }: PortfolioTokenChainButtonProps) {
         },
         '&:last-child:hover': {
           borderRadius: '0 0 16px 16px',
-          backgroundColor: darken(theme.palette.surface2.main, 0.04),
-          ...theme.applyStyles('light', {
-            backgroundColor: darken(theme.palette.surface2.main, 0.04),
-          }),
         },
       })}
     >
