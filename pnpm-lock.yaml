@@ -206,9 +206,6 @@ importers:
       universal-cookie:
         specifier: ^8.0.1
         version: 8.0.1
-      utils:
-        specifier: '@mysten/sui/utils'
-        version: link:@mysten/sui/utils
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
