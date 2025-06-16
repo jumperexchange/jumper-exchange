@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "",
       "refuel": "",
       "buy": "Acquista"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "Tema",
       "developers": "Sviluppatori",
       "support": "Assistenza",
+      "resources": "",
       "profile": ""
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Passa al tema chiaro",
       "switchToDark": "Passa al tema scuro",
       "switchToSystem": "",
