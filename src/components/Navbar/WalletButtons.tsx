@@ -18,7 +18,7 @@ import { Stack, Typography, useMediaQuery } from '@mui/material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { JUMPER_LOYALTY_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
+import { JUMPER_PROFILE_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
@@ -40,7 +40,7 @@ export const WalletButtons = () => {
   const activeAccount = useActiveAccountByChainType();
   const { t } = useTranslation();
   const { isSuccess } = useChains();
-  const { points, isLoading } = useLoyaltyPass(activeAccount?.address);
+  const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
   const router = useRouter();
   const imgLink = useWalletAddressImg({
     userAddress: activeAccount?.address,
@@ -66,8 +66,8 @@ export const WalletButtons = () => {
   );
   const { trackEvent } = useUserTracking();
 
-  const handleXPClick = () => {
-    router.push(JUMPER_LOYALTY_PATH);
+  const handleLevelClick = () => {
+    router.push(JUMPER_PROFILE_PATH);
   };
 
   const handleWalletMenuClick = () => {
@@ -91,11 +91,11 @@ export const WalletButtons = () => {
       {!activeAccount?.address ? (
         <ConnectButton />
       ) : (
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={1}>
           {isDesktop && !pathname.includes(JUMPER_SCAN_PATH) && (
             <WalletMenuButton
               id="wallet-digest-button-xp"
-              onClick={handleXPClick}
+              onClick={handleLevelClick}
             >
               <ImageWalletMenuButton
                 src={imgLink}
@@ -114,10 +114,9 @@ export const WalletButtons = () => {
                   marginRight={1.1}
                   marginLeft={1}
                 >
-                  {points ? t('format.decimal2Digit', { value: points }) : 0}
+                  {`${t('profile_page.level')} ${level ?? 0}`}
                 </Typography>
               )}
-              <XPIcon sx={{ width: 32, height: 32 }} />
             </WalletMenuButton>
           )}
           <WalletMenuButton
@@ -143,9 +142,11 @@ export const WalletButtons = () => {
                 />
               </WalletMgmtBadge>
             ) : null}
-            <WalletLabel variant={'bodyMediumStrong'}>
-              {addressLabel ?? walletDigest(activeAccount?.address)}
-            </WalletLabel>
+            {isDesktop && (
+              <WalletLabel variant={'bodyMediumStrong'}>
+                {addressLabel ?? walletDigest(activeAccount?.address)}
+              </WalletLabel>
+            )}
           </WalletMenuButton>
         </Stack>
       )}
