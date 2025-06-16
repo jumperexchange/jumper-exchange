@@ -207,7 +207,7 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       utils:
-        specifier: link:@mysten/sui/utils
+        specifier: '@mysten/sui/utils'
         version: link:@mysten/sui/utils
       uuid:
         specifier: ^11.1.0
