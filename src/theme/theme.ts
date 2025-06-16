@@ -5,11 +5,6 @@ import type {
   ComponentsVariants,
   CssVarsTheme,
 } from '@mui/material';
-import type {
-  ComponentsOverrides,
-  ComponentsVariants,
-  CssVarsTheme,
-} from '@mui/material';
 import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -522,7 +517,6 @@ const palette = {
     light: '#297EFF',
     dark: '#297EFF',
   },
-};
 };
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
