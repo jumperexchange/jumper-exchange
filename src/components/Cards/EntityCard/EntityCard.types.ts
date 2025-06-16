@@ -11,7 +11,7 @@ export type Participant = {
   label?: string;
 };
 
-export type EntityCardType = 'wide' | 'compact';
+export type EntityCardVariant = 'wide' | 'compact';
 
 export type RewardGroupKey = 'apy' | 'xp' | 'coins';
 
@@ -22,7 +22,7 @@ export interface EntityCardProps {
   isLoading?: boolean;
   description?: string;
   imageUrl: string;
-  type?: EntityCardType;
+  variant?: EntityCardVariant;
   badge?: ReactNode;
   partnerLink?: {
     url: string;

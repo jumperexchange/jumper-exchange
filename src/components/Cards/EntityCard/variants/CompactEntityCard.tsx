@@ -64,9 +64,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             />
           ))}
         </StyledParticipantsContainer>
-        <StyledCompactEntityCardTitle variant="titleXSmall">
-          {title}
-        </StyledCompactEntityCardTitle>
+        <StyledCompactEntityCardTitle>{title}</StyledCompactEntityCardTitle>
         {rewardGroups && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
