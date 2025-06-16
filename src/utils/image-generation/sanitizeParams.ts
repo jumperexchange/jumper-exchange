@@ -20,7 +20,8 @@ export const sanitizeAddress = (address: string): string => {
   }
 
   // Remove any whitespace and convert to lowercase
-  const cleanAddress = address.trim().toLowerCase();
+  const trimmedAddress = address.trim();
+  const cleanAddress = trimmedAddress.toLowerCase();
 
   // Check if it's a valid Ethereum address
   if (isAddress(cleanAddress)) {
@@ -30,15 +31,13 @@ export const sanitizeAddress = (address: string): string => {
   // Check if it's a valid Solana address - case sensitive!
   try {
     // Use the original trimmed address (not lowercase) for Solana
-    const originalTrimmed = address.trim();
-    const pubKey = new PublicKey(originalTrimmed);
+    const pubKey = new PublicKey(trimmedAddress);
     return pubKey.toString();
   } catch (e) {
     // Not a valid Solana address
   }
 
   // Check if it's a valid UTXO address
-  const trimmedAddress = address.trim();
   if (isValidUTXOAddress(trimmedAddress)) {
     return trimmedAddress;
   }
