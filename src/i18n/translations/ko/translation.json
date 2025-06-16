@@ -31,8 +31,7 @@
       "theme": "테마",
       "developers": "개발자",
       "support": "지원",
-      "profile": "",
-      "fest": ""
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "연결 해제",
@@ -169,5 +168,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }
