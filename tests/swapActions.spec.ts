@@ -46,30 +46,51 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
       //   const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
       //   await page.goto(`/${urlParams}`);
       //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      // }); 
+      // });
     });
 
     test('Hyperliquid chain swap pairs', async ({ page }) => {
-      await test.step(`Check ${chainData.EVMtoHYPE.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHYPE.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
-        const urlParams = buildUlParams(chainData.EVMtoHYPE.ETHtoUSDC);
+      await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.EVMtoHypercore.ETHtoUSDC);
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      });
+      await test.step(`Check ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.tokenSymbol} to ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(
+          chainData.ArbUSDCtoHypercore.USDCtoUSDC,
+        );
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      });
+      
+      await test.step(`[NEGATIVE] Check  ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.tokenSymbol} to ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.toTokenSymbol} swap pair when amount is less than 5USDC`, async () => {
+        const urlParams = buildUlParams(
+          chainData.ArbUSDCtoHypercore.NegativeUSDCtoUSDC
+        );
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
+      });
+
+      await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.EVMtoHypercore.ETHtoUSDC);
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
-      // await test.step(`Check ${chainData.BTCtoHYPE.BTCtoUSDC.tokenSymbol} to ${chainData.BTCtoHYPE.BTCtoUSDC.toTokenSymbol} swap pair`, async () => {
-      //   const urlParams = buildUlParams(chainData.BTCtoHYPE.BTCtoUSDC);
-      //   await page.goto(`/${urlParams}`);
-      //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      // }); // BTC routes are not available 
+      await test.step(`Check ${chainData.BTCtoHypercore.BTCtoUSDC.tokenSymbol} to ${chainData.BTCtoHypercore.BTCtoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.BTCtoHypercore.BTCtoUSDC);
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      }); 
 
-      await test.step(`Check ${chainData.SOLtoHYPE.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHYPE.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
-        const urlParams = buildUlParams(chainData.SOLtoHYPE.SOLtoUSDC);
+      await test.step(`Check ${chainData.SOLtoHypercore.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHypercore.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.SOLtoHypercore.SOLtoUSDC);
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
-      await test.step(`Check ${chainData.SUItoHYPE.SUItoUSDC.tokenSymbol} to ${chainData.SUItoHYPE.SUItoUSDC.toTokenSymbol} swap pair`, async () => {
-        const urlParams = buildUlParams(chainData.SUItoHYPE.SUItoUSDC);
+      await test.step(`Check ${chainData.SUItoHypercore.SUItoUSDC.tokenSymbol} to ${chainData.SUItoHypercore.SUItoUSDC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.SUItoHypercore.SUItoUSDC);
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
