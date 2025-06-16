@@ -96,7 +96,7 @@ const commonProps = {
 export const Compact: Story = {
   args: {
     ...commonProps,
-    type: 'compact',
+    variant: 'compact',
   },
 };
 
@@ -106,7 +106,7 @@ export const CompactWithRewards: Story = {
     rewardGroups: {
       coins: coinRewards,
     },
-    type: 'compact',
+    variant: 'compact',
   },
 };
 
@@ -116,7 +116,7 @@ export const CompactWithSingleReward: Story = {
     rewardGroups: {
       coins: [coinRewards[0]],
     },
-    type: 'compact',
+    variant: 'compact',
   },
 };
 
@@ -124,7 +124,7 @@ export const CompactWithSingleParticipant: Story = {
   args: {
     ...commonProps,
     participants: [participants[0]],
-    type: 'compact',
+    variant: 'compact',
   },
 };
 
@@ -133,14 +133,14 @@ export const CompactWithTruncatedTitle: Story = {
     ...commonProps,
     title:
       'This is a very long title that should be truncated in the compact view to ensure it fits within the card without overflowing or breaking the layout',
-    type: 'compact',
+    variant: 'compact',
   },
 };
 
 export const Wide: Story = {
   args: {
     ...commonProps,
-    type: 'wide',
+    variant: 'wide',
   },
 };
 
@@ -148,7 +148,7 @@ export const WideWithSingleParticipant: Story = {
   args: {
     ...commonProps,
     participants: [participants[0]],
-    type: 'wide',
+    variant: 'wide',
   },
 };
 
@@ -158,7 +158,7 @@ export const WideWithRewards: Story = {
     rewardGroups: {
       coins: [...coinRewards, ...extraRewards],
     },
-    type: 'wide',
+    variant: 'wide',
   },
 };
 
@@ -167,14 +167,14 @@ export const WideWithLongTitle: Story = {
     ...commonProps,
     title:
       'This is a very long title that should not be truncated in the wide view, allowing for more space to display the full title without breaking the layout',
-    type: 'wide',
+    variant: 'wide',
   },
 };
 
 export const Loading: Story = {
   args: {
     ...commonProps,
-    type: 'compact',
+    variant: 'compact',
     isLoading: true,
   },
 };
