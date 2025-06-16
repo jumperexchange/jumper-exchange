@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "डैशबोर्ड",
       "refuel": "गैस",
       "buy": ""
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "विषय",
       "developers": "डेवलपर",
       "support": "सहायता",
+      "resources": "",
       "profile": ""
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "",
       "switchToDark": "",
       "switchToSystem": "",
@@ -175,5 +182,11 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

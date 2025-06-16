@@ -16,6 +16,7 @@ import { description, siteName, title } from '../lib/metadata';
 import { getSiteUrl } from '@/const/urls';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 
 export const metadata: Metadata = {
   title,
@@ -184,7 +185,10 @@ export default async function RootLayout({
                 activeTheme={'default'}
               >
                 <SettingsStoreProvider>
-                  <WalletProvider>{children}</WalletProvider>
+                  <WalletProvider>
+                    <NavbarWrapper />
+                    {children}
+                  </WalletProvider>
                 </SettingsStoreProvider>
               </ThemeProvider>
             </TranslationsProvider>

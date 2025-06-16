@@ -13,6 +13,10 @@ import { useColorScheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 
+/**
+ * @deprecated
+ * @returns
+ */
 export const useThemeSwitchTabs = () => {
   const { mode, setMode } = useColorScheme();
   const { t } = useTranslation();
