@@ -35,6 +35,7 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
+import { useTranslation } from 'react-i18next';
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -74,7 +75,11 @@ interface WalletCapabilitiesArgs extends WalletMethodArgs {
   params?: never;
 }
 
-type EthereumRequestArgs = WalletSendCallsArgs | WalletGetCallsStatusArgs | WalletCapabilitiesArgs | WalletMethodArgs;
+type EthereumRequestArgs =
+  | WalletSendCallsArgs
+  | WalletGetCallsStatusArgs
+  | WalletCapabilitiesArgs
+  | WalletMethodArgs;
 
 interface ContractComposableConfig {
   address: string;
@@ -87,7 +92,7 @@ interface ContractComposableConfig {
 
 const buildContractComposable = async (
   oNexus: MultichainSmartAccount,
-  contractConfig: ContractComposableConfig
+  contractConfig: ContractComposableConfig,
 ) => {
   return oNexus.buildComposable({
     type: 'default',
@@ -134,6 +139,12 @@ export function ZapWidget({
   const zapData = data?.data;
   const { openWalletMenu } = useWalletMenu();
   const { address, chain } = useAccount();
+
+  const { t } = useTranslation();
+
+  const poolName = useMemo(() => {
+    return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
+  }, [JSON.stringify(zapData)]);
 
   const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -235,10 +246,7 @@ export function ZapWidget({
       setCurrentRoute(route);
     }
 
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionStarted,
-      onRouteExecutionStarted,
-    );
+    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
 
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -268,7 +276,10 @@ export function ZapWidget({
         name: zapData.market?.depositToken.name,
         decimals: zapData.market?.depositToken.decimals,
         priceUSD: '0',
-        coinKey: zapData.market?.depositToken.symbol || zapData.market?.depositToken.name || '',
+        coinKey:
+          zapData.market?.depositToken.symbol ||
+          zapData.market?.depositToken.name ||
+          '',
         logoURI: zapData.market?.depositToken.logoURI,
         amount: BigInt(0),
       });
@@ -393,7 +404,9 @@ export function ZapWidget({
       instructions.push(depositInstruction);
 
       // Only add transferLpInstruction if deposit ABI does NOT have an address input
-      const depositHasAddressArg = depositInputs.some((input: AbiInput) => input.type === 'address');
+      const depositHasAddressArg = depositInputs.some(
+        (input: AbiInput) => input.type === 'address',
+      );
 
       if (!depositHasAddressArg) {
         if (!address) {
@@ -443,7 +456,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-      
+
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -471,7 +484,8 @@ export function ZapWidget({
       });
 
       const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -497,17 +511,26 @@ export function ZapWidget({
       window.ethereum.request = async (args: EthereumRequestArgs) => {
         try {
           if (args.method === 'wallet_getCapabilities') {
-            const mockCapabilities = {
-              '0x1': { atomic: { status: 'supported' } },
-              '0xa': { atomic: { status: 'supported' } },
-              '0x2105': { atomic: { status: 'supported' } },
-              '0x1a4': { atomic: { status: 'supported' } },
-            };
+            // Use the same explorerChainIds that are defined in widgetConfig
+            const mockCapabilities = widgetConfig.explorerUrls ? 
+              Object.keys(widgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
+                const chainId = parseInt(chainIdStr);
+                acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
+                return acc;
+              }, {}) : 
+              {
+                '0x1': { atomic: { status: 'supported' } },  // mainnet
+                '0xa': { atomic: { status: 'supported' } },  // optimism
+                '0x2105': { atomic: { status: 'supported' } }, // base
+                '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
+              };
             return Promise.resolve(mockCapabilities);
           } else if (args.method === 'wallet_sendCalls') {
             return await handleWalletSendCalls(args as WalletSendCallsArgs);
           } else if (args.method === 'wallet_getCallsStatus') {
-            return await handleWalletGetCallsStatus(args as WalletGetCallsStatusArgs);
+            return await handleWalletGetCallsStatus(
+              args as WalletGetCallsStatusArgs,
+            );
           } else {
             return originalRequest(args);
           }
@@ -525,7 +548,10 @@ export function ZapWidget({
             error !== null &&
             'details' in error
           ) {
-            console.error('Error details:', (error as Record<string, unknown>).details);
+            console.error(
+              'Error details:',
+              (error as Record<string, unknown>).details,
+            );
           }
           // Re-throw the error so it can be caught by the caller if necessary
           throw error;
@@ -549,23 +575,50 @@ export function ZapWidget({
   ]);
 
   const widgetConfig: WidgetConfig = useMemo(() => {
-    const explorerConfig = [{
-      url: 'https://meescan.biconomy.io',
-      txPath: 'details',
-      addressPath: 'address',
-    }];
-    const explorerChainIds = [
-      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146, 10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020, 57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747, 250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689, 7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001, 428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321, 20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312, 11155111, 84532
+    const explorerConfig = [
+      {
+        url: 'https://meescan.biconomy.io',
+        txPath: 'details',
+        addressPath: 'address',
+      },
     ];
-    const explorerUrls = explorerChainIds.reduce((acc, id) => {
-      acc[String(id)] = explorerConfig;
-      return acc;
-    }, {} as Record<string, typeof explorerConfig>);
+    const explorerChainIds = [
+      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146,
+      10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020,
+      57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747,
+      250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689,
+      7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001,
+      428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321,
+      20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312,
+      11155111, 84532,
+    ];
+    const explorerUrls = explorerChainIds.reduce(
+      (acc, id) => {
+        acc[String(id)] = explorerConfig;
+        return acc;
+      },
+      {} as Record<string, typeof explorerConfig>,
+    );
     const baseConfig: WidgetConfig = {
+      languageResources: {
+        en: {
+          main: {
+            sentToAddress: t('widget.zap.sentToAddressName', {
+              name: poolName,
+            }),
+            sendToAddress: t('widget.zap.sendToAddressName', {
+              name: poolName,
+            }),
+          },
+        },
+      },
       toAddress: {
         name: 'Smart Account',
-        address: address as `0x${string}` || '0x',
+        address: (address as `0x${string}`) || '0x',
         chainType: ChainType.EVM,
+      },
+      bridges: {
+        allow: ['across', 'stargateV2', 'symbiosis'],
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
@@ -576,13 +629,14 @@ export function ZapWidget({
       subvariantOptions: { custom: 'deposit' },
       integrator: projectData.integrator,
       disabledUI: [DisabledUI.ToAddress],
+      requiredUI: [RequiredUI.ToAddress],
       hiddenUI: [
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
         HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton
+        HiddenUI.ReverseTokensButton,
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
@@ -594,7 +648,6 @@ export function ZapWidget({
       },
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
-      requiredUI: [RequiredUI.ToAddress],
       walletConfig: {
         onConnect() {
           openWalletMenu();
@@ -608,7 +661,7 @@ export function ZapWidget({
       ) as `0x${string}`;
     }
     return baseConfig;
-  }, [widgetTheme.config, projectData, openWalletMenu, oNexus]);
+  }, [t, poolName, widgetTheme.config, projectData, openWalletMenu, oNexus]);
 
   const analytics = {
     ...(zapData?.analytics || {}), // Provide default empty object
@@ -624,6 +677,7 @@ export function ZapWidget({
           <LiFiWidget
             contractComponent={
               <DepositCard
+                poolName={poolName}
                 underlyingToken={zapData?.market?.depositToken}
                 token={token}
                 chainId={zapData?.market?.depositToken.chainId}
@@ -660,7 +714,7 @@ export function ZapWidget({
           lpTokenDecimals={lpTokenDecimals}
           projectData={projectData}
           depositTokenData={depositTokenData}
-          withdrawAbi={zapData?.abi?.redeem}
+          withdrawAbi={zapData?.abi?.withdraw}
         />
       )}
       <WidgetEvents />

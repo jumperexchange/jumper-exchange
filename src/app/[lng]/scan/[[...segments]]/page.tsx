@@ -66,6 +66,8 @@ export async function generateMetadata({
   }
 }
 
+export const dynamic = 'force-static';
+
 type Params = Promise<{ lng: string; segments: string[] }>;
 export default async function Page({
   params,

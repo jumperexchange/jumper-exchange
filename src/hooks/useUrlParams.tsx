@@ -9,6 +9,7 @@ interface ChainTokenSelection {
   sourceChainToken: ChainToken;
   destinationChainToken: ChainToken;
   toAddress?: string;
+  fromAmount?: string;
 }
 
 export const useUrlParams = (): ChainTokenSelection => {
@@ -22,6 +23,7 @@ export const useUrlParams = (): ChainTokenSelection => {
       token: undefined,
     },
     toAddress: undefined,
+    fromAmount: undefined,
   });
 
   useEffect(() => {
@@ -36,6 +38,7 @@ export const useUrlParams = (): ChainTokenSelection => {
       const fromToken = queryParameters.get('fromToken');
       const toToken = queryParameters.get('toToken');
       const toAddress = queryParameters.get('toAddress');
+      const fromAmount = queryParameters.get('fromAmount');
 
       setUrlParams({
         sourceChainToken: {
@@ -47,6 +50,7 @@ export const useUrlParams = (): ChainTokenSelection => {
           token: toToken ?? undefined,
         },
         toAddress: toAddress ?? undefined,
+        fromAmount: fromAmount ?? undefined,
       });
     };
 

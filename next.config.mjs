@@ -19,7 +19,7 @@ const nextConfig = {
     if (config.cache) {
       config.cache = Object.freeze({
         type: 'memory',
-      })
+      });
     }
     return config;
   },

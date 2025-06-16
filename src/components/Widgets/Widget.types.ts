@@ -12,6 +12,10 @@ export const themeAllowChains: ChainId[] = [
   ChainId.BSC,
 ];
 
+export const ExtendedChainId = {
+  HYPE: 998 as ChainId,
+} as Record<string, ChainId>;
+
 export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   allowToChains?: number[];

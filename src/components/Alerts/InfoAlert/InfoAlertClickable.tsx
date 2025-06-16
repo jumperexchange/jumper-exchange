@@ -79,13 +79,7 @@ export const InfoAlertClickable = ({
               />
               <Typography variant={'headerXSmall'}>{title}</Typography>
             </InfoMessageCardTitle>
-            <Typography
-              variant={'bodySmall'}
-              pt={theme.spacing(1.5)}
-              sx={(theme) => ({
-                color: theme.palette.text.primary,
-              })}
-            >
+            <Typography variant={'bodySmall'} pt={theme.spacing(1.5)}>
               {subtitle}
             </Typography>
             <ButtonInfoAlertClickable size="small">

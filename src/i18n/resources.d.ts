@@ -183,6 +183,12 @@ interface Resources {
       deposited: 'Amount you have deposited into this market.';
       boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
     };
+    widget: {
+      zap: {
+        sendToAddressName: 'Send to {{name}}';
+        sentToAddressName: 'Sent to {{name}}';
+      };
+    };
   };
 }
 
