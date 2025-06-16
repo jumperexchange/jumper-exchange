@@ -2,19 +2,19 @@ import { SubMenu } from '@/components/Menu/SubMenu';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { useTranslation } from 'react-i18next';
-import { useDevelopersContent } from '.';
+import { useThemeModesMenuContent } from './useThemeModesMenuContent';
 
-export const DevelopersSubmenu = () => {
+export const ThemeModesSubmenu = () => {
   const { t } = useTranslation();
-  const subMenuDevelopers = useDevelopersContent();
+  const { submenuItems } = useThemeModesMenuContent();
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
   return (
     <SubMenu
-      label={t('navbar.navbarMenu.resources')}
-      triggerSubMenu={MenuKeysEnum.Devs}
-      open={openSubMenu === MenuKeysEnum.Devs}
+      label={t('navbar.navbarMenu.theme')}
+      triggerSubMenu={MenuKeysEnum.ThemeMode}
+      open={openSubMenu === MenuKeysEnum.ThemeMode}
       prevMenu={MenuKeysEnum.None}
-      subMenuList={subMenuDevelopers}
+      subMenuList={submenuItems}
     />
   );
 };
