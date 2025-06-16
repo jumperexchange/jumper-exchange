@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
 import {
-  ETHEREUM_HEX_REGEX,
+  isValidEthereumAddress,
   isValidSuiAddress,
   isValidUTXOAddress,
   SOLANA_ADDRESS_REGEX,
@@ -49,7 +49,7 @@ export const sanitizeAddress = (address: string): string => {
   }
 
   // Provide more specific error messages for common issues
-  if (ETHEREUM_HEX_REGEX.test(cleanAddress) && cleanAddress.length !== 42) {
+  if (isValidEthereumAddress(cleanAddress) && cleanAddress.length !== 42) {
     // Checks if string has 0x prefix and hex characters but not exactly 42 chars (standard ETH address length)
     throw new Error('Invalid Ethereum address: incorrect length');
   }

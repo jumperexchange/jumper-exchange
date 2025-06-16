@@ -11,7 +11,6 @@ import {
 // Ethereum/EVM patterns
 export const ETHEREUM_ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/;
 export const ETHEREUM_TRANSACTION_REGEX = /^0x[a-f0-9]{64}$/;
-export const ETHEREUM_HEX_REGEX = /^0x[a-f0-9]*$/i;
 
 // Solana patterns
 export const SOLANA_ADDRESS_REGEX = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
