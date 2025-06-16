@@ -1,76 +1,53 @@
 'use client';
-import { usePathname } from 'next/navigation';
-import { Link } from './Links.style';
+
+import { usePathname, useRouter } from 'next/navigation';
 import { AppPaths } from 'src/const/urls';
 import { useTranslation } from 'react-i18next';
-import { Theme } from '@mui/material';
 import { useMemo } from 'react';
+import {
+  HorizontalTabsContainer,
+  HorizontalTab,
+} from 'src/components/Tabs/Tabs.style';
 
-const isPathActive = (
-  currentPathname: string,
-  link: string,
-  subLinks?: string[],
-) => {
-  if (currentPathname === link) {
-    return true;
-  }
-
-  return !!subLinks?.some((subLink) => subLink === currentPathname);
-};
-
-const getLinkStyles = (isActive: boolean, theme: Theme) => {
-  if (isActive) {
-    return {
-      backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.white.main,
-        boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-      }),
-    };
-  }
-
-  return {
-    '&:hover': {
-      backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
-      }),
-    },
-  };
-};
-
-// @TODO might need to implement Tabs for nicer transition effects
 export const Links = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const { t } = useTranslation();
 
-  const links = useMemo(
+  const tabs = useMemo(
     () => [
       {
         href: AppPaths.Main,
         label: t('navbar.links.exchange'),
         subLinks: [AppPaths.Gas],
       },
-      { href: AppPaths.Missions, label: t('navbar.links.missions') },
+      {
+        href: AppPaths.Missions,
+        label: t('navbar.links.missions'),
+      },
     ],
     [t],
   );
 
+  const activeTab = useMemo(
+    () =>
+      tabs.find(
+        ({ href, subLinks }) =>
+          pathname === href ||
+          subLinks?.some((subLink) => pathname === subLink),
+      ),
+    [pathname, tabs],
+  );
+
+  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
+    router.push(newValue);
+  };
+
   return (
-    <>
-      {links.map(({ href, label, subLinks }) => {
-        const isActive = isPathActive(pathname, href, subLinks);
-        return (
-          <Link
-            key={href}
-            href={href}
-            role="link"
-            sx={(theme: Theme) => getLinkStyles(isActive, theme)}
-          >
-            {label}
-          </Link>
-        );
-      })}
-    </>
+    <HorizontalTabsContainer value={activeTab?.href} onChange={handleChange}>
+      {tabs.map(({ href, label }) => (
+        <HorizontalTab key={href} value={href} label={label} disableRipple />
+      ))}
+    </HorizontalTabsContainer>
   );
 };

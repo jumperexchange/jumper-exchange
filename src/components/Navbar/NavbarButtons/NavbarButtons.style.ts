@@ -33,11 +33,11 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
       color: (theme.vars || theme).palette.primary.main,
       '&[aria-expanded="true"]': {
         backgroundColor: (theme.vars || theme).palette.white.main,
-        boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+        boxShadow: theme.shadows[2],
       },
       ':hover': {
         backgroundColor: (theme.vars || theme).palette.white.main,
-        boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+        boxShadow: theme.shadows[2],
       },
     }),
   };
@@ -55,10 +55,12 @@ export const FloatingLinksContainer = styled(Stack)(({ theme }) => ({
   left: 0,
   right: 0,
   position: 'fixed',
+  zIndex: theme.zIndex.appBar,
   bottom: theme.spacing(1.25),
   margin: theme.spacing(0, 2),
   padding: theme.spacing(1.25, 1.5),
   justifyContent: 'space-between',
+  gap: theme.spacing(1),
   backgroundColor: (theme.vars || theme).palette.surface3.main,
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
   borderRadius: 64,
