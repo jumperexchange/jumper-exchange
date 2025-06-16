@@ -31,8 +31,7 @@
       "theme": "Tema",
       "developers": "Geliştiriciler",
       "support": "Destek",
-      "profile": "Jumper Profili",
-      "fest": ""
+      "profile": "Jumper Profili"
     },
     "walletMenu": {
       "disconnect": "Bağlantıyı Kes",
@@ -169,5 +168,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

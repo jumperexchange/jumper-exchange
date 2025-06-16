@@ -1,24 +1,20 @@
-import {
-  type ContractCall,
-  type TokenAmount,
-  useFieldActions,
-} from '@lifi/widget';
-import { Avatar, Box, Chip, Stack, Typography } from '@mui/material';
-import { useEffect, useMemo } from 'react';
-import { formatUnits } from 'viem';
-import type { ProjectData } from '../ZapWidget';
-import { Breakpoint, useTheme } from '@mui/material';
-import { WithdrawWidgetBox } from './WithdrawWidget.style';
-import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
+import { type ContractCall, type TokenAmount } from '@lifi/widget';
+import { useTheme } from '@mui/material';
+import { formatUnits } from 'viem';
+import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
+import type { ProjectData } from '../ZapWidget';
+import { WithdrawWidgetBox } from './WithdrawWidget.style';
+import type { AbiFunction } from 'viem';
 
 export interface WithdrawWidgetProps {
   token: TokenAmount;
   contractCalls?: ContractCall[];
   lpTokenDecimals: number;
   projectData: ProjectData;
-  depositTokenData: any;
+  depositTokenData: number | bigint | undefined;
   refetchPosition: () => void;
+  withdrawAbi?: AbiFunction;
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
@@ -27,6 +23,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   projectData,
   depositTokenData,
   refetchPosition,
+  withdrawAbi,
 }) => {
   const theme = useTheme();
 
@@ -60,16 +57,17 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
         helperText={{
           left: 'Available balance',
           right: depositTokenData
-            ? formatUnits(depositTokenData, lpTokenDecimals)
+            ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
             : '0.00',
         }}
         balance={
           depositTokenData
-            ? formatUnits(depositTokenData, lpTokenDecimals)
+            ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
             : '0.00'
         }
         projectData={projectData}
         writeDecimals={lpTokenDecimals}
+        withdrawAbi={withdrawAbi}
       />
     </WithdrawWidgetBox>
   );

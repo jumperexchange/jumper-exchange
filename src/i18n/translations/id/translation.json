@@ -31,8 +31,7 @@
       "theme": "Tema",
       "developers": "Para Pengembang",
       "support": "Bantuan",
-      "profile": "Profil Jumper",
-      "fest": ""
+      "profile": "Profil Jumper"
     },
     "walletMenu": {
       "disconnect": "Tidak terkoneksi",
@@ -169,5 +168,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

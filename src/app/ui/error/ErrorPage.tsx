@@ -55,9 +55,9 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           padding: theme.spacing(1),
           '> button:hover': {
             backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-            ...theme.applyStyles("light", {
-              backgroundColor: (theme.vars || theme).palette.alphaDark100.main
-            })
+            ...theme.applyStyles('light', {
+              backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+            }),
           },
           '> button:hover svg': {
             fill:
@@ -71,11 +71,8 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
         <Discord
           sx={{
             color: theme.palette.common.white,
-            ...theme.applyStyles('light', {
-              color: (theme.vars || theme).palette.primary.main,
-            }),
           }}
-         />
+        />
         <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>

@@ -21,6 +21,7 @@ import {
   createWalletClient,
   custom,
   parseUnits,
+  AbiFunction,
 } from 'viem';
 import { optimism, base, mainnet } from 'viem/chains';
 import { useReadContracts, useAccount } from 'wagmi';
@@ -34,6 +35,77 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
+import { useTranslation } from 'react-i18next';
+
+// Type definitions for better type safety
+interface AbiInput {
+  name: string;
+  type: string;
+  indexed?: boolean;
+}
+
+interface WalletCall {
+  to: `0x${string}`;
+  data: `0x${string}`;
+  value?: string;
+}
+
+interface WalletSendCallsParams {
+  calls: WalletCall[];
+  chainId?: string;
+}
+
+interface WalletMethodArgs {
+  method: string;
+  params?: unknown[];
+}
+
+interface WalletSendCallsArgs extends WalletMethodArgs {
+  method: 'wallet_sendCalls';
+  params: [WalletSendCallsParams];
+}
+
+interface WalletGetCallsStatusArgs extends WalletMethodArgs {
+  method: 'wallet_getCallsStatus';
+  params: [string]; // hash
+}
+
+interface WalletCapabilitiesArgs extends WalletMethodArgs {
+  method: 'wallet_getCapabilities';
+  params?: never;
+}
+
+type EthereumRequestArgs =
+  | WalletSendCallsArgs
+  | WalletGetCallsStatusArgs
+  | WalletCapabilitiesArgs
+  | WalletMethodArgs;
+
+interface ContractComposableConfig {
+  address: string;
+  chainId: number;
+  abi: AbiFunction;
+  functionName: string;
+  args: unknown[];
+  gasLimit?: bigint;
+}
+
+const buildContractComposable = async (
+  oNexus: MultichainSmartAccount,
+  contractConfig: ContractComposableConfig,
+) => {
+  return oNexus.buildComposable({
+    type: 'default',
+    data: {
+      abi: [contractConfig.abi],
+      to: contractConfig.address as `0x${string}`,
+      chainId: contractConfig.chainId,
+      functionName: contractConfig.functionName,
+      gasLimit: contractConfig.gasLimit,
+      args: contractConfig.args,
+    },
+  });
+};
 
 export interface ProjectData {
   chain: string;
@@ -67,6 +139,12 @@ export function ZapWidget({
   const zapData = data?.data;
   const { openWalletMenu } = useWalletMenu();
   const { address, chain } = useAccount();
+
+  const { t } = useTranslation();
+
+  const poolName = useMemo(() => {
+    return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
+  }, [JSON.stringify(zapData)]);
 
   const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -168,10 +246,7 @@ export function ZapWidget({
       setCurrentRoute(route);
     }
 
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionStarted,
-      onRouteExecutionStarted as any,
-    );
+    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
 
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -181,7 +256,7 @@ export function ZapWidget({
     return () => {
       widgetEvents.off(
         WidgetEvent.RouteExecutionStarted,
-        onRouteExecutionStarted as any,
+        onRouteExecutionStarted,
       );
       widgetEvents.off(
         WidgetEvent.RouteExecutionCompleted,
@@ -201,24 +276,23 @@ export function ZapWidget({
         name: zapData.market?.depositToken.name,
         decimals: zapData.market?.depositToken.decimals,
         priceUSD: '0',
-        coinKey: zapData.market?.depositToken.name as any,
+        coinKey:
+          zapData.market?.depositToken.symbol ||
+          zapData.market?.depositToken.name ||
+          '',
         logoURI: zapData.market?.depositToken.logoURI,
-        amount: '0' as any,
+        amount: BigInt(0),
       });
     }
   }, [isSuccess, projectData, zapData]);
 
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
-    async (args: { method: string; params?: any[] }) => {
+    async (args: WalletSendCallsArgs) => {
       if (!meeClient || !oNexus) {
         throw new Error('MEE client or oNexus not initialized');
       }
-      if (
-        !args.params ||
-        !Array.isArray(args.params) ||
-        args.params.length === 0
-      ) {
+      if (!args.params || !Array.isArray(args.params)) {
         throw new Error('Invalid args.params structure for wallet_sendCalls');
       }
       const paramsObject = args.params[0];
@@ -259,7 +333,7 @@ export function ZapWidget({
 
       // raw calldata from the widget
       const instructions = await Promise.all(
-        calls.map(async (call: any) => {
+        calls.map(async (call: WalletCall) => {
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
           }
@@ -281,78 +355,83 @@ export function ZapWidget({
       ];
 
       // token approval
-      const approveInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.approve],
-          to: depositToken,
-          chainId: depositChainId,
-          functionName: integrationData.abi.approve.name,
-          gasLimit: 100000n,
-          args: [
-            depositAddress,
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositToken,
-              constraints,
-            }),
-          ],
-        },
+      const approveInstruction = await buildContractComposable(oNexus, {
+        address: depositToken,
+        chainId: depositChainId,
+        abi: integrationData.abi.approve,
+        functionName: integrationData.abi.approve.name,
+        gasLimit: 100000n,
+        args: [
+          depositAddress,
+          runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositToken,
+            constraints,
+          }),
+        ],
       });
       instructions.push(approveInstruction);
 
-      // Deposit instruction
-      const depositInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.deposit],
-          to: depositAddress,
-          chainId: depositChainId,
-          functionName: integrationData.abi.deposit.name,
-          gasLimit: 1000000n,
-          args: [
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositToken,
-              constraints,
-            }),
-          ],
-        },
+      // Deposit instruction (dynamic ABI-driven args)
+      const depositInputs = integrationData.abi.deposit.inputs;
+      const depositArgs = depositInputs.map((input: AbiInput) => {
+        if (input.type === 'uint256') {
+          return runtimeERC20BalanceOf({
+            targetAddress: oNexus.addressOn(
+              depositChainId,
+              true,
+            ) as `0x${string}`,
+            tokenAddress: depositToken,
+            constraints,
+          });
+        } else if (input.type === 'address') {
+          // Use the user's EOA address or another relevant address
+          return address;
+        }
+        throw new Error(`Unsupported deposit input type: ${input.type}`);
+      });
+      const depositInstruction = await buildContractComposable(oNexus, {
+        address: depositAddress,
+        chainId: depositChainId,
+        abi: integrationData.abi.deposit,
+        functionName: integrationData.abi.deposit.name,
+        gasLimit: 1000000n,
+        args: depositArgs,
       });
       instructions.push(depositInstruction);
 
-      // Add instruction to transfer LP tokens back to EOA
-      if (!address) {
-        throw new Error('User address (EOA) is not available.');
-      }
-      const transferLpInstruction = await oNexus.buildComposable({
-        type: 'default',
-        data: {
-          abi: [integrationData.abi.transfer],
-          to: depositAddress, // This should be the LP token address
+      // Only add transferLpInstruction if deposit ABI does NOT have an address input
+      const depositHasAddressArg = depositInputs.some(
+        (input: AbiInput) => input.type === 'address',
+      );
+
+      if (!depositHasAddressArg) {
+        if (!address) {
+          throw new Error('User address (EOA) is not available.');
+        }
+        const transferLpInstruction = await buildContractComposable(oNexus, {
+          address: depositAddress,
           chainId: depositChainId,
+          abi: integrationData.abi.transfer,
           functionName: integrationData.abi.transfer.name,
           gasLimit: 200000n,
           args: [
-            address, // Recipient is the user's EOA
+            address,
             runtimeERC20BalanceOf({
               targetAddress: oNexus.addressOn(
                 depositChainId,
                 true,
               ) as `0x${string}`,
-              tokenAddress: depositAddress, // LP token address
+              tokenAddress: depositAddress,
               constraints,
             }),
           ],
-        },
-      });
-      instructions.push(transferLpInstruction);
+        });
+        instructions.push(transferLpInstruction);
+      }
 
       const quote = await meeClient.getFusionQuote({
         trigger: {
@@ -377,7 +456,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-      
+
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -385,16 +464,12 @@ export function ZapWidget({
 
   // Helper function to handle 'wallet_getCallsStatus'
   const handleWalletGetCallsStatus = useCallback(
-    async (args: { method: string; params?: any[] }) => {
+    async (args: WalletGetCallsStatusArgs) => {
       if (!meeClient) {
         // oNexus is not directly used here but its initialization is tied to meeClient
         throw new Error('MEE client not initialized');
       }
-      if (
-        !args.params ||
-        !Array.isArray(args.params) ||
-        args.params.length === 0
-      ) {
+      if (!args.params || !Array.isArray(args.params)) {
         throw new Error(
           'Invalid args.params structure for wallet_getCallsStatus',
         );
@@ -409,7 +484,8 @@ export function ZapWidget({
       });
 
       const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -432,23 +508,29 @@ export function ZapWidget({
   useEffect(() => {
     if (window.ethereum && typeof window.ethereum.request === 'function') {
       const originalRequest = window.ethereum.request;
-      window.ethereum.request = async (args: {
-        method: string;
-        params?: any[];
-      }) => {
+      window.ethereum.request = async (args: EthereumRequestArgs) => {
         try {
           if (args.method === 'wallet_getCapabilities') {
-            const mockCapabilities = {
-              '0x1': { atomic: { status: 'supported' } },
-              '0xa': { atomic: { status: 'supported' } },
-              '0x2105': { atomic: { status: 'supported' } },
-              '0x1a4': { atomic: { status: 'supported' } },
-            };
+            // Use the same explorerChainIds that are defined in widgetConfig
+            const mockCapabilities = widgetConfig.explorerUrls ? 
+              Object.keys(widgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
+                const chainId = parseInt(chainIdStr);
+                acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
+                return acc;
+              }, {}) : 
+              {
+                '0x1': { atomic: { status: 'supported' } },  // mainnet
+                '0xa': { atomic: { status: 'supported' } },  // optimism
+                '0x2105': { atomic: { status: 'supported' } }, // base
+                '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
+              };
             return Promise.resolve(mockCapabilities);
           } else if (args.method === 'wallet_sendCalls') {
-            return await handleWalletSendCalls(args);
+            return await handleWalletSendCalls(args as WalletSendCallsArgs);
           } else if (args.method === 'wallet_getCallsStatus') {
-            return await handleWalletGetCallsStatus(args);
+            return await handleWalletGetCallsStatus(
+              args as WalletGetCallsStatusArgs,
+            );
           } else {
             return originalRequest(args);
           }
@@ -466,7 +548,10 @@ export function ZapWidget({
             error !== null &&
             'details' in error
           ) {
-            console.error('Error details:', (error as any).details);
+            console.error(
+              'Error details:',
+              (error as Record<string, unknown>).details,
+            );
           }
           // Re-throw the error so it can be caught by the caller if necessary
           throw error;
@@ -490,36 +575,68 @@ export function ZapWidget({
   ]);
 
   const widgetConfig: WidgetConfig = useMemo(() => {
+    const explorerConfig = [
+      {
+        url: 'https://meescan.biconomy.io',
+        txPath: 'details',
+        addressPath: 'address',
+      },
+    ];
+    const explorerChainIds = [
+      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146,
+      10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020,
+      57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747,
+      250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689,
+      7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001,
+      428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321,
+      20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312,
+      11155111, 84532,
+    ];
+    const explorerUrls = explorerChainIds.reduce(
+      (acc, id) => {
+        acc[String(id)] = explorerConfig;
+        return acc;
+      },
+      {} as Record<string, typeof explorerConfig>,
+    );
     const baseConfig: WidgetConfig = {
+      languageResources: {
+        en: {
+          main: {
+            sentToAddress: t('widget.zap.sentToAddressName', {
+              name: poolName,
+            }),
+            sendToAddress: t('widget.zap.sendToAddressName', {
+              name: poolName,
+            }),
+          },
+        },
+      },
       toAddress: {
         name: 'Smart Account',
-        address: address as `0x${string}` || '0x',
+        address: (address as `0x${string}`) || '0x',
         chainType: ChainType.EVM,
+      },
+      bridges: {
+        allow: ['across', 'stargateV2', 'symbiosis'],
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
       },
-      explorerUrls: {
-        "1": ['https://meescan.biconomy.io/details/'],
-        "10": ['https://meescan.biconomy.io/details/'],
-        "854": ['https://meescan.biconomy.io/details/'],
-        "137": ['https://meescan.biconomy.io/details/'],
-        "8453": ['https://meescan.biconomy.io/details/'],
-        "1313161554": ['https://meescan.biconomy.io/details/'],
-        "11155111": ['https://meescan.biconomy.io/details/'],
-      },
+      explorerUrls,
       subvariant: 'custom',
       subvariantOptions: { custom: 'deposit' },
       integrator: projectData.integrator,
       disabledUI: [DisabledUI.ToAddress],
+      requiredUI: [RequiredUI.ToAddress],
       hiddenUI: [
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
-        // HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton
+        HiddenUI.ToAddress,
+        HiddenUI.ReverseTokensButton,
       ],
       appearance: widgetTheme.config.appearance,
       theme: {
@@ -531,7 +648,6 @@ export function ZapWidget({
       },
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
-      requiredUI: [RequiredUI.ToAddress],
       walletConfig: {
         onConnect() {
           openWalletMenu();
@@ -545,7 +661,7 @@ export function ZapWidget({
       ) as `0x${string}`;
     }
     return baseConfig;
-  }, [widgetTheme.config, projectData, openWalletMenu, oNexus]);
+  }, [t, poolName, widgetTheme.config, projectData, openWalletMenu, oNexus]);
 
   const analytics = {
     ...(zapData?.analytics || {}), // Provide default empty object
@@ -561,6 +677,7 @@ export function ZapWidget({
           <LiFiWidget
             contractComponent={
               <DepositCard
+                poolName={poolName}
                 underlyingToken={zapData?.market?.depositToken}
                 token={token}
                 chainId={zapData?.market?.depositToken.chainId}
@@ -597,6 +714,7 @@ export function ZapWidget({
           lpTokenDecimals={lpTokenDecimals}
           projectData={projectData}
           depositTokenData={depositTokenData}
+          withdrawAbi={zapData?.abi?.withdraw}
         />
       )}
       <WidgetEvents />

@@ -31,8 +31,7 @@
       "theme": "ธีม",
       "developers": "ผู้พัฒนา",
       "support": "สนับสนุน",
-      "profile": "โปรไฟล์ Jumper",
-      "fest": ""
+      "profile": "โปรไฟล์ Jumper"
     },
     "walletMenu": {
       "disconnect": "ยกเลิกการเชื่อมต่อ",
@@ -169,5 +168,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

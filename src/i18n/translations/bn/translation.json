@@ -31,8 +31,7 @@
       "theme": "থিম",
       "developers": "ডেভেলপারস",
       "support": "সাপোর্ট",
-      "profile": "",
-      "fest": ""
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "সংযোগ বিচ্ছিন্ন করুন",
@@ -169,5 +168,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }
