@@ -2,9 +2,9 @@ import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
 import {
   isValidEthereumAddress,
+  isValidSolanaAddress,
   isValidSuiAddress,
   isValidUTXOAddress,
-  SOLANA_ADDRESS_REGEX,
 } from '../regex-patterns';
 
 // Helper function to sanitize numeric values
@@ -55,7 +55,7 @@ export const sanitizeAddress = (address: string): string => {
   }
 
   if (
-    SOLANA_ADDRESS_REGEX.test(cleanAddress) &&
+    isValidSolanaAddress(cleanAddress) &&
     (cleanAddress.length < 32 || cleanAddress.length > 44)
   ) {
     // Checks if string has valid Base58 characters but invalid length for Solana addresses
