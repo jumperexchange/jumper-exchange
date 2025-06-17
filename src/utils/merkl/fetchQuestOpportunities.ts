@@ -1,7 +1,21 @@
-import { getMerklOpportunities } from 'src/app/lib/getMerklOpportunities';
+import {
+  getMerklOpportunities,
+  MerklOpportunity,
+} from 'src/app/lib/getMerklOpportunities';
 import { QuestDataExtended } from 'src/types/merkl';
 import type { QuestData } from 'src/types/strapi';
 import { calculateMaxApy } from './merklHelper';
+
+/**
+ * Fetches Merkl opportunities for a given array of rewardsIds
+ */
+export const fetchOpportunitiesByRewardsIds = async (
+  rewardsIds: unknown,
+): Promise<MerklOpportunity[]> => {
+  return Array.isArray(rewardsIds) && rewardsIds.length > 0
+    ? await getMerklOpportunities({ searchQueries: rewardsIds })
+    : [];
+};
 
 export const fetchQuestOpportunitiesByRewardsIds = async (
   questsData: QuestData[],
@@ -9,13 +23,9 @@ export const fetchQuestOpportunitiesByRewardsIds = async (
   const extendedQuests = await Promise.all(
     questsData.map(async (quest) => {
       const rewardsIds = quest.CustomInformation?.rewardsIds;
-
-      const opportunities =
-        Array.isArray(rewardsIds) && rewardsIds.length > 0
-          ? await getMerklOpportunities({ searchQueries: rewardsIds })
-          : [];
-
+      const opportunities = await fetchOpportunitiesByRewardsIds(rewardsIds);
       const maxApy = calculateMaxApy(opportunities);
+
       return {
         ...quest,
         opportunities,

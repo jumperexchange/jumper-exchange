@@ -4,11 +4,11 @@ import { notFound } from 'next/navigation';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
 import { filterUniqueByIdentifier } from 'src/utils/merkl/merklHelper';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { getMerklOpportunities } from '../../../lib/getMerklOpportunities';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
 
@@ -95,12 +95,9 @@ export default async function Page({ params }: { params: Params }) {
 
   // fetch merkl opportunities if rewardsIds are present
   const rewardsIds = data.CustomInformation?.['rewardsIds'];
-  const merklOpportunities =
-    Array.isArray(rewardsIds) && rewardsIds?.length > 0
-      ? await getMerklOpportunities({ searchQueries: rewardsIds }).then((el) =>
-          filterUniqueByIdentifier(el),
-        )
-      : [];
+  const merklOpportunities = await fetchOpportunitiesByRewardsIds(
+    rewardsIds,
+  ).then((el) => filterUniqueByIdentifier(el));
 
   // fetches and add apy to task_verification items:
   data.tasks_verification = await fetchTaskOpportunities(
