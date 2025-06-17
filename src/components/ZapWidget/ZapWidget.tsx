@@ -5,6 +5,7 @@ import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
+  EVM,
   HiddenUI,
   LiFiWidget,
   RequiredUI,
@@ -24,7 +25,7 @@ import {
   AbiFunction,
 } from 'viem';
 import { optimism, base, mainnet } from 'viem/chains';
-import { useReadContracts, useAccount } from 'wagmi';
+import { useReadContracts, useAccount, useConfig } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
@@ -35,6 +36,7 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
+import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -449,6 +451,94 @@ export function ZapWidget({
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
   );
 
+  const wagmiConfig = useConfig();
+
+  // Create a base config without the provider
+  const baseWidgetConfig = useMemo(() => {
+    const explorerConfig = [{
+      url: 'https://meescan.biconomy.io',
+      txPath: 'details',
+      addressPath: 'address',
+    }];
+    const explorerChainIds = [
+      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146, 10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020, 57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747, 250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689, 7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001, 428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321, 20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312, 11155111, 84532
+    ];
+    const explorerUrls = explorerChainIds.reduce((acc, id) => {
+      acc[String(id)] = explorerConfig;
+      return acc;
+    }, {} as Record<string, typeof explorerConfig>);
+    
+    return {
+      toAddress: {
+        name: 'Smart Account',
+        address: address as `0x${string}` || '0x',
+        chainType: ChainType.EVM,
+      },
+      bridges: {
+        allow: ['across', 'stargateV2', 'symbiosis'],
+      },
+      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      explorerUrls,
+      subvariant: 'custom',
+      subvariantOptions: { custom: 'deposit' },
+      integrator: projectData.integrator,
+      disabledUI: [DisabledUI.ToAddress],
+      hiddenUI: [
+        HiddenUI.Appearance,
+        HiddenUI.Language,
+        HiddenUI.PoweredBy,
+        HiddenUI.WalletMenu,
+        HiddenUI.ToAddress,
+        HiddenUI.ReverseTokensButton
+      ],
+      appearance: widgetTheme.config.appearance,
+      theme: {
+        ...widgetTheme.config.theme,
+        container: {
+          maxHeight: 820,
+          maxWidth: 'unset',
+        },
+      },
+      useRecommendedRoute: true,
+      contractCompactComponent: <></>,
+      requiredUI: [RequiredUI.ToAddress],
+      walletConfig: {
+        onConnect() {
+          openWalletMenu();
+        },
+      },
+    };
+  }, [widgetTheme.config, projectData, openWalletMenu, address]);
+
+  const customEVMProvider = createCustomEVMProvider({
+    wagmiConfig,
+    getCapabilities: async (client, args) => handleGetCapabilities(args),
+    getCallsStatus: async (client, args) => handleWalletGetCallsStatus(args),
+    sendCalls: async (client, args) => handleWalletSendCalls(args),
+    waitForCallsStatus: async (client, args) => { /* your logic */ },
+    getWagmiConnectorClient: (wagmiConfig, args) => { /* your logic */ },
+  });
+
+  const handleGetCapabilities = useCallback(
+    async (args: WalletCapabilitiesArgs) => {
+      // Use the same explorerChainIds that are defined in baseWidgetConfig
+      const mockCapabilities = baseWidgetConfig.explorerUrls ? 
+        Object.keys(baseWidgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
+          const chainId = parseInt(chainIdStr);
+          acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
+          return acc;
+        }, {}) : 
+        {
+          '0x1': { atomic: { status: 'supported' } },  // mainnet
+          '0xa': { atomic: { status: 'supported' } },  // optimism
+          '0x2105': { atomic: { status: 'supported' } }, // base
+          '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
+        };
+      return Promise.resolve(mockCapabilities);      
+    },
+    [baseWidgetConfig],
+  );
+
   // Helper function to handle 'wallet_getCallsStatus'
   const handleWalletGetCallsStatus = useCallback(
     async (args: WalletGetCallsStatusArgs) => {
@@ -491,141 +581,31 @@ export function ZapWidget({
     [meeClient],
   );
 
-  useEffect(() => {
-    if (window.ethereum && typeof window.ethereum.request === 'function') {
-      const originalRequest = window.ethereum.request;
-      window.ethereum.request = async (args: EthereumRequestArgs) => {
-        try {
-          if (args.method === 'wallet_getCapabilities') {
-            // Use the same explorerChainIds that are defined in widgetConfig
-            const mockCapabilities = widgetConfig.explorerUrls ? 
-              Object.keys(widgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
-                const chainId = parseInt(chainIdStr);
-                acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
-                return acc;
-              }, {}) : 
-              {
-                '0x1': { atomic: { status: 'supported' } },  // mainnet
-                '0xa': { atomic: { status: 'supported' } },  // optimism
-                '0x2105': { atomic: { status: 'supported' } }, // base
-                '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
-              };
-            return Promise.resolve(mockCapabilities);
-          } else if (args.method === 'wallet_sendCalls') {
-            return await handleWalletSendCalls(args as WalletSendCallsArgs);
-          } else if (args.method === 'wallet_getCallsStatus') {
-            return await handleWalletGetCallsStatus(args as WalletGetCallsStatusArgs);
-          } else {
-            return originalRequest(args);
-          }
-        } catch (error) {
-          console.error(`Error processing ${args.method}:`, error);
-          if (
-            typeof error === 'object' &&
-            error !== null &&
-            'message' in error
-          ) {
-            console.error('Error message:', (error as Error).message);
-          }
-          if (
-            typeof error === 'object' &&
-            error !== null &&
-            'details' in error
-          ) {
-            console.error('Error details:', (error as Record<string, unknown>).details);
-          }
-          // Re-throw the error so it can be caught by the caller if necessary
-          throw error;
-        }
-      };
-    } else {
-      console.error(
-        '[PATCH] window.ethereum or window.ethereum.request not found. Cannot apply patch.',
-      );
-    }
-  }, [
-    currentRoute,
-    meeClient,
-    oNexus,
-    chain,
-    zapData,
-    projectData,
-    address,
-    handleWalletSendCalls,
-    handleWalletGetCallsStatus,
-  ]);
-
-  const widgetConfig: WidgetConfig = useMemo(() => {
-    const explorerConfig = [{
-      url: 'https://meescan.biconomy.io',
-      txPath: 'details',
-      addressPath: 'address',
-    }];
-    const explorerChainIds = [
-      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146, 10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020, 57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747, 250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689, 7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001, 428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321, 20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312, 11155111, 84532
-    ];
-    const explorerUrls = explorerChainIds.reduce((acc, id) => {
-      acc[String(id)] = explorerConfig;
-      return acc;
-    }, {} as Record<string, typeof explorerConfig>);
-    const baseConfig: WidgetConfig = {
-      toAddress: {
-        name: 'Smart Account',
-        address: address as `0x${string}` || '0x',
-        chainType: ChainType.EVM,
-      },
-      bridges: {
-        allow: ['across', 'stargateV2', 'symbiosis'],
-      },
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
-      sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
-      },
-      explorerUrls,
-      subvariant: 'custom',
-      subvariantOptions: { custom: 'deposit' },
-      integrator: projectData.integrator,
-      disabledUI: [DisabledUI.ToAddress],
-      hiddenUI: [
-        HiddenUI.Appearance,
-        HiddenUI.Language,
-        HiddenUI.PoweredBy,
-        HiddenUI.WalletMenu,
-        HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton
-      ],
-      appearance: widgetTheme.config.appearance,
-      theme: {
-        ...widgetTheme.config.theme,
-        container: {
-          maxHeight: 820,
-          maxWidth: 'unset',
-        },
-      },
-      useRecommendedRoute: true,
-      contractCompactComponent: <></>,
-      requiredUI: [RequiredUI.ToAddress],
-      walletConfig: {
-        onConnect() {
-          openWalletMenu();
-        },
-      },
-    };
-    if (oNexus && baseConfig.toAddress) {
-      baseConfig.toAddress.address = oNexus.addressOn(
-        projectData.chainId,
-        true,
-      ) as `0x${string}`;
-    }
-    return baseConfig;
-  }, [widgetTheme.config, projectData, openWalletMenu, oNexus]);
-
   const analytics = {
     ...(zapData?.analytics || {}), // Provide default empty object
     position: depositTokenData
       ? formatUnits(depositTokenData as bigint, lpTokenDecimals)
       : 0,
   };
+
+  // Create the final widget config with the provider
+  const widgetConfig: WidgetConfig = useMemo(() => {
+    const config = {
+      ...baseWidgetConfig,
+      sdkConfig: {
+        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+        providers: [customEVMProvider],
+      },
+    };
+
+    if (oNexus && config.toAddress) {
+      config.toAddress.address = oNexus.addressOn(
+        projectData.chainId,
+        true,
+      ) as `0x${string}`;
+    }
+    return config;
+  }, [baseWidgetConfig, customEVMProvider, oNexus, projectData.chainId]);
 
   return (
     <Box display="flex" justifyContent="center">
