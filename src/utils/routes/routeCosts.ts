@@ -1,6 +1,6 @@
-import type { Estimate, Execution } from '@lifi/sdk';
 import { RouteVariant } from 'src/types/routes';
 import { formatUnits } from 'viem';
+import { getDetailInformation } from './routeUtils';
 
 export const getGasAndFeeCosts = (route: RouteVariant) => {
   // Check if there are any included steps
@@ -87,13 +87,7 @@ export const getGasAndFeeCosts = (route: RouteVariant) => {
     let totalFeeAmountUSD = 0;
 
     route.steps.forEach((step) => {
-      // Check if the step is of type LiFiStepExtended by checking the presence of the 'execution' property
-      const isExtendedStep = 'execution' in step;
-      // Determine detailInformation: use 'execution' if it's an extended step, otherwise fall back to 'estimate'
-      const detailInformation =
-        isExtendedStep && step.execution
-          ? (step.execution as Execution)
-          : (step.estimate as Estimate);
+      const detailInformation = getDetailInformation(step);
 
       // Process gas costs
       const gasCosts = detailInformation.gasCosts;
@@ -124,19 +118,13 @@ export const getGasAndFeeCosts = (route: RouteVariant) => {
 
     // Get decimals from the first token in gas/fee costs for formatting
     const gasToken = route.steps.find((step) => {
-      const info =
-        'execution' in step && step.execution
-          ? (step.execution as Execution)
-          : (step.estimate as Estimate);
-      return info.gasCosts?.[0]?.token;
+      const detailInformation = getDetailInformation(step);
+      return detailInformation.gasCosts?.[0]?.token;
     })?.estimate.gasCosts?.[0]?.token;
 
     const feeToken = route.steps.find((step) => {
-      const info =
-        'execution' in step && step.execution
-          ? (step.execution as Execution)
-          : (step.estimate as Estimate);
-      return info.feeCosts?.[0]?.token;
+      const detailInformation = getDetailInformation(step);
+      return detailInformation.feeCosts?.[0]?.token;
     })?.estimate.feeCosts?.[0]?.token;
 
     const formattedGasAmount =

@@ -1,5 +1,11 @@
-import type { LiFiStep, LiFiStepExtended, RouteExtended } from '@lifi/sdk';
+import type {
+  LiFiStep,
+  LiFiStepExtended,
+  Process,
+  RouteExtended,
+} from '@lifi/sdk';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
+import { getDetailInformation } from './routeUtils';
 
 interface GetProcessInformationType {
   [TrackingEventParameter.TransactionHash]?: string;
@@ -19,14 +25,10 @@ export const getProcessInformation = (
   const txStatuses: string[] = [];
 
   route.steps.forEach((step: LiFiStep | LiFiStepExtended) => {
-    // Check if the step is of type LiFiStepExtended by checking the presence of the 'execution' property
-    const isExtendedStep = 'execution' in step;
-    // Determine detailInformation: use 'execution' if it's an extended step, otherwise fall back to 'estimate'
-    const detailInformation =
-      isExtendedStep && step.execution ? step.execution : step.estimate;
+    const detailInformation = getDetailInformation(step);
 
     if ('process' in detailInformation) {
-      detailInformation.process.forEach((process) => {
+      detailInformation.process.forEach((process: Process) => {
         // Truncate error message at the data field to keep only useful info
         let errorMessage = process.error?.message;
         if (errorMessage && errorMessage.includes('data:')) {
