@@ -36,7 +36,11 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
+<<<<<<< HEAD
 import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
+=======
+import { useTranslation } from 'react-i18next';
+>>>>>>> develop
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -76,7 +80,11 @@ interface WalletCapabilitiesArgs extends WalletMethodArgs {
   params?: never;
 }
 
-type EthereumRequestArgs = WalletSendCallsArgs | WalletGetCallsStatusArgs | WalletCapabilitiesArgs | WalletMethodArgs;
+type EthereumRequestArgs =
+  | WalletSendCallsArgs
+  | WalletGetCallsStatusArgs
+  | WalletCapabilitiesArgs
+  | WalletMethodArgs;
 
 interface ContractComposableConfig {
   address: string;
@@ -89,7 +97,7 @@ interface ContractComposableConfig {
 
 const buildContractComposable = async (
   oNexus: MultichainSmartAccount,
-  contractConfig: ContractComposableConfig
+  contractConfig: ContractComposableConfig,
 ) => {
   return oNexus.buildComposable({
     type: 'default',
@@ -136,6 +144,12 @@ export function ZapWidget({
   const zapData = data?.data;
   const { openWalletMenu } = useWalletMenu();
   const { address, chain } = useAccount();
+
+  const { t } = useTranslation();
+
+  const poolName = useMemo(() => {
+    return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
+  }, [JSON.stringify(zapData)]);
 
   const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -237,10 +251,7 @@ export function ZapWidget({
       setCurrentRoute(route);
     }
 
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionStarted,
-      onRouteExecutionStarted,
-    );
+    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
 
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -270,7 +281,10 @@ export function ZapWidget({
         name: zapData.market?.depositToken.name,
         decimals: zapData.market?.depositToken.decimals,
         priceUSD: '0',
-        coinKey: zapData.market?.depositToken.symbol || zapData.market?.depositToken.name || '',
+        coinKey:
+          zapData.market?.depositToken.symbol ||
+          zapData.market?.depositToken.name ||
+          '',
         logoURI: zapData.market?.depositToken.logoURI,
         amount: BigInt(0),
       });
@@ -395,7 +409,9 @@ export function ZapWidget({
       instructions.push(depositInstruction);
 
       // Only add transferLpInstruction if deposit ABI does NOT have an address input
-      const depositHasAddressArg = depositInputs.some((input: AbiInput) => input.type === 'address');
+      const depositHasAddressArg = depositInputs.some(
+        (input: AbiInput) => input.type === 'address',
+      );
 
       if (!depositHasAddressArg) {
         if (!address) {
@@ -445,7 +461,7 @@ export function ZapWidget({
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
-      
+
       return { id: hash };
     },
     [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
@@ -561,7 +577,8 @@ export function ZapWidget({
       });
 
       const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash = `biconomy:${hash}` as `0x${string}`;
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `biconomy:${hash}` as `0x${string}`;
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
@@ -614,6 +631,7 @@ export function ZapWidget({
           <LiFiWidget
             contractComponent={
               <DepositCard
+                poolName={poolName}
                 underlyingToken={zapData?.market?.depositToken}
                 token={token}
                 chainId={zapData?.market?.depositToken.chainId}

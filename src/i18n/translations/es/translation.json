@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Cambiar",
+      "missions": "",
       "dashboard": "Panel",
       "refuel": "",
       "buy": "Comprar"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "Ver todas las billeteras",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Recursos de marca",
       "theme": "Tema",
       "developers": "Desarrolladores",
       "support": "Soporte",
+      "resources": "",
       "profile": "Perfil de Jumper"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Cambiar a tema claro",
       "switchToDark": "Cambiar a tema oscuro",
       "switchToSystem": "Cambiar a sistema",
@@ -175,5 +182,11 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }
