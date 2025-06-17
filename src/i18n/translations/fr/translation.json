@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Échanger",
+      "missions": "",
       "dashboard": "Tableau de bord",
       "refuel": "Gaz",
       "buy": "Acheter"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "Afficher tous les portefeuilles",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Actifs de marque",
       "theme": "Thème",
       "developers": "Développeurs",
       "support": "",
-      "profile": "Profil Jumper",
-      "fest": ""
+      "resources": "",
+      "profile": "Profil Jumper"
     },
     "walletMenu": {
       "disconnect": "Se déconnecter",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
       "switchToSystem": "Basculer vers Système",
@@ -169,5 +175,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

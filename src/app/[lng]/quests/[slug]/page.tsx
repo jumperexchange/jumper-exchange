@@ -1,6 +1,7 @@
 import { questSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
 import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
@@ -68,6 +69,15 @@ export async function generateMetadata({
     };
   }
 }
+
+export async function generateStaticParams() {
+  const { data } = await getQuestsWithNoCampaignAttached();
+
+  return data.data.map((quest) => ({ slug: quest.Slug }));
+}
+
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;

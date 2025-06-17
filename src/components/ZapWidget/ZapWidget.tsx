@@ -35,6 +35,7 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
+import { useTranslation } from 'react-i18next';
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -138,6 +139,12 @@ export function ZapWidget({
   const zapData = data?.data;
   const { openWalletMenu } = useWalletMenu();
   const { address, chain } = useAccount();
+
+  const { t } = useTranslation();
+
+  const poolName = useMemo(() => {
+    return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
+  }, [JSON.stringify(zapData)]);
 
   const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
@@ -504,12 +511,27 @@ export function ZapWidget({
       window.ethereum.request = async (args: EthereumRequestArgs) => {
         try {
           if (args.method === 'wallet_getCapabilities') {
-            const mockCapabilities = {
-              '0x1': { atomic: { status: 'supported' } },
-              '0xa': { atomic: { status: 'supported' } },
-              '0x2105': { atomic: { status: 'supported' } },
-              '0x1a4': { atomic: { status: 'supported' } },
-            };
+            // Use the same explorerChainIds that are defined in widgetConfig
+            const mockCapabilities = widgetConfig.explorerUrls
+              ? Object.keys(widgetConfig.explorerUrls).reduce(
+                  (
+                    acc: Record<string, { atomic: { status: 'supported' } }>,
+                    chainIdStr,
+                  ) => {
+                    const chainId = parseInt(chainIdStr);
+                    acc[`0x${chainId.toString(16)}`] = {
+                      atomic: { status: 'supported' },
+                    };
+                    return acc;
+                  },
+                  {},
+                )
+              : {
+                  '0x1': { atomic: { status: 'supported' } }, // mainnet
+                  '0xa': { atomic: { status: 'supported' } }, // optimism
+                  '0x2105': { atomic: { status: 'supported' } }, // base
+                  '0x1a4': { atomic: { status: 'supported' } }, // optimism-sepolia
+                };
             return Promise.resolve(mockCapabilities);
           } else if (args.method === 'wallet_sendCalls') {
             return await handleWalletSendCalls(args as WalletSendCallsArgs);
@@ -586,10 +608,25 @@ export function ZapWidget({
       {} as Record<string, typeof explorerConfig>,
     );
     const baseConfig: WidgetConfig = {
+      languageResources: {
+        en: {
+          main: {
+            sentToAddress: t('widget.zap.sentToAddressName', {
+              name: poolName,
+            }),
+            sendToAddress: t('widget.zap.sendToAddressName', {
+              name: poolName,
+            }),
+          },
+        },
+      },
       toAddress: {
         name: 'Smart Account',
         address: (address as `0x${string}`) || '0x',
         chainType: ChainType.EVM,
+      },
+      bridges: {
+        allow: ['across', 'stargateV2', 'symbiosis'],
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
@@ -600,6 +637,7 @@ export function ZapWidget({
       subvariantOptions: { custom: 'deposit' },
       integrator: projectData.integrator,
       disabledUI: [DisabledUI.ToAddress],
+      requiredUI: [RequiredUI.ToAddress],
       hiddenUI: [
         HiddenUI.Appearance,
         HiddenUI.Language,
@@ -618,7 +656,6 @@ export function ZapWidget({
       },
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
-      requiredUI: [RequiredUI.ToAddress],
       walletConfig: {
         onConnect() {
           openWalletMenu();
@@ -632,7 +669,7 @@ export function ZapWidget({
       ) as `0x${string}`;
     }
     return baseConfig;
-  }, [widgetTheme.config, projectData, openWalletMenu, oNexus]);
+  }, [t, poolName, widgetTheme.config, projectData, openWalletMenu, oNexus]);
 
   const analytics = {
     ...(zapData?.analytics || {}), // Provide default empty object
@@ -648,6 +685,7 @@ export function ZapWidget({
           <LiFiWidget
             contractComponent={
               <DepositCard
+                poolName={poolName}
                 underlyingToken={zapData?.market?.depositToken}
                 token={token}
                 chainId={zapData?.market?.depositToken.chainId}
@@ -684,7 +722,7 @@ export function ZapWidget({
           lpTokenDecimals={lpTokenDecimals}
           projectData={projectData}
           depositTokenData={depositTokenData}
-          withdrawAbi={zapData?.abi?.redeem}
+          withdrawAbi={zapData?.abi?.withdraw}
         />
       )}
       <WidgetEvents />

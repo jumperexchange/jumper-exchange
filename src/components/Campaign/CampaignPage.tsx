@@ -2,7 +2,7 @@
 
 import type { CampaignData } from '@/types/strapi';
 import { useTranslation } from 'react-i18next';
-import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
+import { JUMPER_PROFILE_PATH } from 'src/const/urls';
 import { QuestDataExtended } from 'src/types/merkl';
 import { MerklRewards } from '../ProfilePage/MerklRewards';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
@@ -20,7 +20,7 @@ export const CampaignPage = ({ campaign, quests }: CampaignPageProps) => {
   return (
     <PageContainer className="profile-page">
       <BackButton
-        path={JUMPER_LOYALTY_PATH}
+        path={JUMPER_PROFILE_PATH}
         title={t('navbar.navbarMenu.profile') || 'Profile'}
       />
       {campaign.merkl_rewards && (

@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
-import { JUMPER_CAMPAIGN_PATH, JUMPER_LOYALTY_PATH } from 'src/const/urls';
+import { JUMPER_CAMPAIGN_PATH, JUMPER_PROFILE_PATH } from 'src/const/urls';
 import { Quest } from 'src/types/loyaltyPass';
 
 interface QuestMissionPageProps {
@@ -18,7 +18,7 @@ const QuestPage = ({ quest, merklOpportunities }: QuestMissionPageProps) => {
     () =>
       campaign?.Slug
         ? `${JUMPER_CAMPAIGN_PATH}/${campaign.Slug}`
-        : JUMPER_LOYALTY_PATH,
+        : JUMPER_PROFILE_PATH,
     [campaign?.Slug],
   );
 

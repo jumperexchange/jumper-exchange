@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Conversão",
+      "missions": "",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
       "support": "Suporte",
+      "resources": "",
       "profile": "Perfil Jumper"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
       "switchToSystem": "Alternar para sistema",
@@ -175,5 +182,11 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }
