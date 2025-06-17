@@ -10,7 +10,6 @@ export async function getArticlesByTag(
   })
     .filterByTag(tag)
     .sort('desc');
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
   const res = await fetch(decodeURIComponent(apiUrl), {
@@ -32,5 +31,5 @@ export async function getArticlesByTag(
     (el: BlogArticleData) => el.id !== excludeId,
   );
 
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return { data }; // Return a plain object
 }

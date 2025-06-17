@@ -14,7 +14,6 @@ export async function getArticles(
       pageSize: pageSize || 20,
       withCount: false,
     });
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
   const res = await fetch(decodeURIComponent(apiUrl), {

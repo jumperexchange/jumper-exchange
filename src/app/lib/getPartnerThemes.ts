@@ -1,14 +1,10 @@
 import type { PartnerThemesData, StrapiResponse } from '@/types/strapi';
 import { PartnerThemeStrapiApi } from '@/utils/strapi/StrapiApi';
 
-export interface GetPartnerThemeResponse
-  extends StrapiResponse<PartnerThemesData> {
-  url: string;
-}
-
-export async function getPartnerThemes(): Promise<GetPartnerThemeResponse> {
+export async function getPartnerThemes(): Promise<
+  StrapiResponse<PartnerThemesData>
+> {
   const urlParams = new PartnerThemeStrapiApi();
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
 
@@ -32,5 +28,5 @@ export async function getPartnerThemes(): Promise<GetPartnerThemeResponse> {
     };
   });
 
-  return { ...data, url: apiBaseUrl };
+  return { ...data };
 }

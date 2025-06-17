@@ -28,13 +28,13 @@ class StrapiApi {
     this.contentType = contentType;
 
     // Set up API access token based on environment
-    this.apiAccessToken = getStrapiApiAccessToken() || '';
+    this.apiAccessToken = getStrapiApiAccessToken();
 
     // Set up base URL
-    this.baseUrl = this.getBaseUrl();
+    this.baseUrl = getStrapiBaseUrl();
 
     // Set up API URL
-    this.apiUrl = new URL(`${this.baseUrl}/${this.contentType}`);
+    this.apiUrl = new URL(`${this.baseUrl}/api/${this.contentType}`);
 
     // Show drafts ONLY on development env
     if (process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
@@ -42,30 +42,8 @@ class StrapiApi {
     }
   }
 
-  private getBaseUrl(): string {
-    if (process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true') {
-      // Use local Strapi URL for development environment
-      if (!process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL) {
-        console.error('Local Strapi URL is not provided.');
-        throw new Error('Local Strapi URL is not provided.');
-      }
-      return `${getStrapiBaseUrl()}/api`;
-    } else {
-      // Use default Strapi URL for other environments
-      if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
-        console.error('Strapi URL is not provided.');
-        throw new Error('Strapi URL is not provided.');
-      }
-      return `${getStrapiBaseUrl()}/api`;
-    }
-  }
-
   getApiUrl(): string {
     return this.apiUrl.href;
-  }
-
-  getApiBaseUrl(): string {
-    return this.apiUrl.origin;
   }
 
   addPaginationParams({

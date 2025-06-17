@@ -1,10 +1,6 @@
 import type { StrapiResponse, TagAttributes } from '@/types/strapi';
 import { TagStrapiApi } from '@/utils/strapi/StrapiApi';
 
-export interface GetTagsResponse extends StrapiResponse<TagAttributes> {
-  url: string;
-}
-
 const predefinedOrder = ['Announcement', 'Partner', 'Bridge'];
 
 // Helper function to sort tags based on predefined order
@@ -40,13 +36,12 @@ const sortBlogArticlesByPublishedDate = (tags: TagAttributes[]) => {
   });
 };
 
-export async function getTags(): Promise<GetTagsResponse> {
+export async function getTags(): Promise<StrapiResponse<TagAttributes>> {
   const urlParams = new TagStrapiApi().addPaginationParams({
     page: 1,
     pageSize: 20,
     withCount: false,
   });
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
   const res = await fetch(decodeURIComponent(apiUrl), {
@@ -72,5 +67,5 @@ export async function getTags(): Promise<GetTagsResponse> {
       data: filteredData,
     };
   });
-  return { ...data, url: apiBaseUrl };
+  return { ...data };
 }

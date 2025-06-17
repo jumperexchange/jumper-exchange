@@ -1,14 +1,17 @@
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
-import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
-import type { GetTagsResponse } from 'src/app/lib/getTags';
+import type {
+  BlogArticleData,
+  StrapiResponse,
+  TagAttributes,
+} from '@/types/strapi';
 import { BlogArticlesCollections } from 'src/components/Blog/BlogArticlesCollections/BlogArticlesCollections';
 
 interface LearnPageProps {
   carouselArticles: StrapiResponse<BlogArticleData>;
   featuredArticle: BlogArticleData;
-  tags: GetTagsResponse;
+  tags: StrapiResponse<TagAttributes>;
 }
 
 const LearnPage = ({

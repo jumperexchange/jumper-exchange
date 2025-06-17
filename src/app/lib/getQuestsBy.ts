@@ -7,7 +7,6 @@ export async function getQuestsBy(key: string, value: string) {
     .filterBy(key, value)
     .populateCampaign()
     .filterByStartAndEndDate();
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
 
@@ -26,5 +25,5 @@ export async function getQuestsBy(key: string, value: string) {
 
   const data: StrapiResponse<Quest> = await res.json(); // Use the defined type here
 
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return { data }; // Return a plain object
 }

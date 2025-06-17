@@ -2,8 +2,13 @@
 
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_PROFILE_PATH } from 'src/const/urls';
+import { Quest } from 'src/types/loyaltyPass';
 
-const QuestPage = ({ quest, url }: any) => {
+interface QuestPageProps {
+  quest: Quest;
+}
+
+const QuestPage = ({ quest }: QuestPageProps) => {
   const path = quest.campaign?.Slug
     ? `${JUMPER_CAMPAIGN_PATH}/${quest.campaign.Slug}`
     : JUMPER_PROFILE_PATH;
@@ -11,7 +16,6 @@ const QuestPage = ({ quest, url }: any) => {
   return (
     <QuestsMissionPage
       quest={quest}
-      baseUrl={url}
       path={path}
       activeCampaign={quest.campaign?.Title}
     />

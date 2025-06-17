@@ -16,7 +16,6 @@ export async function getProfileBannerCampaigns(): Promise<GetProfileBannerCampa
       withCount: false,
     });
 
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
 
@@ -35,5 +34,5 @@ export async function getProfileBannerCampaigns(): Promise<GetProfileBannerCampa
 
   const data = await res.json();
 
-  return { ...data, url: apiBaseUrl };
+  return { ...data };
 }
