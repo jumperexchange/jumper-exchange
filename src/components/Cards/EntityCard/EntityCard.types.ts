@@ -16,19 +16,19 @@ export type EntityCardVariant = 'wide' | 'compact';
 export type RewardGroupKey = 'apy' | 'xp' | 'coins';
 
 export interface EntityCardProps {
-  id: string;
-  slug: string;
-  title: string;
+  id?: string;
+  slug?: string;
+  title?: string;
   isLoading?: boolean;
   description?: string;
-  imageUrl: string;
+  imageUrl?: string;
   variant?: EntityCardVariant;
   badge?: ReactNode;
   partnerLink?: {
     url: string;
     label: string;
   };
-  participants: Participant[];
+  participants?: Participant[];
   rewardGroups?: Partial<Record<RewardGroupKey, Reward[]>>;
   onClick?: () => void;
 }

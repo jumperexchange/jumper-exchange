@@ -14,6 +14,7 @@ import {
   StyledRewardsAvatarsContainer,
   StyledRewardsContainer,
   StyledEntityCardBadgeContainer,
+  BaseSkeleton,
 } from '../EntityCard.styles';
 import { CompactEntityCardSkeleton } from './CompactEntityCardSkeleton';
 import { ENTITY_CARD_SIZES } from '../constants';
@@ -34,23 +35,45 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   return (
     <StyledEntityCard
       sx={{
-        width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+        maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
-        width={ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH}
-        height={ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT}
+        sx={{
+          maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+          width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+          height: ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT,
+        }}
       >
         {badge && (
           <StyledEntityCardBadgeContainer>
             {badge}
           </StyledEntityCardBadgeContainer>
         )}
-        <StyledEntityCardImage src={imageUrl} alt={`Image for ${title}`} fill />
+        {imageUrl ? (
+          <StyledEntityCardImage
+            src={imageUrl}
+            alt={`Image for ${title}`}
+            // For a next/image we need to set height/width
+            height={ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT}
+            width={ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH}
+          />
+        ) : (
+          <BaseSkeleton
+            animation={false}
+            variant="rectangular"
+            sx={{
+              height: '100%',
+              width: '100%',
+            }}
+          />
+        )}
       </StyledEntityCardImageContainer>
       <StyledEntityCardContentContainer
-        height={ENTITY_CARD_SIZES.COMPACT.CARD_CONTENT_HEIGHT}
+        sx={{
+          height: ENTITY_CARD_SIZES.COMPACT.CARD_CONTENT_HEIGHT,
+        }}
       >
         <StyledParticipantsContainer>
           {participants?.map((participant, index) => (
