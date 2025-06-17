@@ -9,10 +9,40 @@ type MerklOpportunitiesResponse = NonNullable<
   MerklOpportunitesApiResponse['data']
 >;
 export type MerklOpportunity = NonNullable<MerklOpportunitiesResponse[0]>;
+
 interface GetMerklOpportunitiesProps {
   campaignId?: string;
   chainIds?: string[];
   searchQueries?: string[];
+}
+
+interface FetchOpportunitiesParams {
+  chainId?: string;
+  search?: string;
+  campaignId?: string;
+}
+
+async function fetchOpportunities(
+  params: FetchOpportunitiesParams,
+): Promise<MerklOpportunity[]> {
+  try {
+    const response = await merklApi.opportunities.get({
+      query: {
+        ...params,
+      },
+    });
+
+    if (response.data && Array.isArray(response.data)) {
+      return response.data.filter(Boolean) as MerklOpportunity[];
+    }
+    return [];
+  } catch (error) {
+    const paramString = Object.entries(params)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join(', ');
+    console.error(`Error fetching opportunities for ${paramString}:`, error);
+    return [];
+  }
 }
 
 export async function getMerklOpportunities({
@@ -24,106 +54,39 @@ export async function getMerklOpportunities({
     return [];
   }
 
-  try {
-    const allOpportunities: MerklOpportunity[] = [];
+  const allOpportunities: MerklOpportunity[] = [];
 
-    // If we have multiple chainIds, loop through them first
-    if (chainIds?.length) {
-      for (const chainIdItem of chainIds) {
-        // if search queries are provided, fetch all opportunities for that chain and search query
-        if (searchQueries?.length) {
-          for (const searchItem of searchQueries) {
-            try {
-              const response = await merklApi.opportunities.get({
-                query: {
-                  chainId: chainIdItem,
-                  search: searchItem,
-                },
-              });
-
-              if (response.data && Array.isArray(response.data)) {
-                allOpportunities.push(
-                  ...(response.data.filter(Boolean) as MerklOpportunity[]),
-                );
-              }
-            } catch (error) {
-              console.error(
-                `Error fetching opportunities for chain ${chainIdItem} and search ${searchItem}:`,
-                error,
-              );
-            }
-          }
-        } else {
-          // if no search queries, fetch all opportunities for that chain
-          try {
-            const response = await merklApi.opportunities.get({
-              query: {
-                chainId: chainIdItem,
-              },
-            });
-
-            if (response.data && Array.isArray(response.data)) {
-              allOpportunities.push(
-                ...(response.data.filter(Boolean) as MerklOpportunity[]),
-              );
-            }
-          } catch (error) {
-            console.error(
-              `Error fetching opportunities for chain ${chainIdItem}:`,
-              error,
-            );
-          }
-        }
-      }
-    } else {
-      if (campaignId) {
-        // if only campaignId is provided, fetch all opportunities for that campaign
-        try {
-          const response = await merklApi.opportunities.get({
-            query: {
-              campaignId,
-            },
-          });
-          if (response.data && Array.isArray(response.data)) {
-            allOpportunities.push(
-              ...(response.data.filter(Boolean) as MerklOpportunity[]),
-            );
-          }
-        } catch (error) {
-          console.error(
-            `Error fetching opportunities for campaignId: ${campaignId}:`,
-            error,
-          );
-        }
-      }
+  // Handle chain-specific queries
+  if (chainIds?.length) {
+    for (const chainId of chainIds) {
       if (searchQueries?.length) {
-        // if only search queries are provided, fetch all opportunities for that search query
-        for (const searchItem of searchQueries) {
-          try {
-            const response = await merklApi.opportunities.get({
-              query: {
-                search: searchItem,
-              },
-            });
-
-            if (response.data && Array.isArray(response.data)) {
-              allOpportunities.push(
-                ...(response.data.filter(Boolean) as MerklOpportunity[]),
-              );
-            }
-          } catch (error) {
-            console.error(
-              `Error fetching opportunities for search ${searchItem}:`,
-              error,
-            );
-          }
+        // Fetch opportunities for each chain + search combination
+        for (const search of searchQueries) {
+          const opportunities = await fetchOpportunities({ chainId, search });
+          allOpportunities.push(...opportunities);
         }
+      } else {
+        // Fetch all opportunities for the chain
+        const opportunities = await fetchOpportunities({ chainId });
+        allOpportunities.push(...opportunities);
       }
     }
-
     return allOpportunities;
-  } catch (error) {
-    console.error('Error fetching Merkl opportunities:', error);
-    return [];
   }
+
+  // Handle campaign-specific query
+  if (campaignId) {
+    const opportunities = await fetchOpportunities({ campaignId });
+    allOpportunities.push(...opportunities);
+  }
+
+  // Handle search-only queries
+  if (searchQueries?.length) {
+    for (const search of searchQueries) {
+      const opportunities = await fetchOpportunities({ search });
+      allOpportunities.push(...opportunities);
+    }
+  }
+
+  return allOpportunities;
 }
