@@ -4,6 +4,7 @@ import {
   MerklOpportunity,
 } from '@/app/lib/getMerklOpportunities';
 import { useQuery } from '@tanstack/react-query';
+import { MERKL_CACHE_TIME, MERKL_STALE_TIME } from 'src/utils/merkl/merklApi';
 
 interface UseMerklOpportunitiesRes {
   isLoading: boolean;
@@ -29,9 +30,9 @@ export const useMerklOpportunities = ({
       });
     },
     enabled: !!chainId,
-    refetchInterval: 1000 * 60 * 60, // 1 hour
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    gcTime: 1000 * 60 * 60, // 1 hour
+    refetchInterval: MERKL_CACHE_TIME,
+    staleTime: MERKL_STALE_TIME,
+    gcTime: MERKL_CACHE_TIME,
   });
 
   return {
