@@ -1,5 +1,5 @@
-import type { Route, RouteExtended } from '@lifi/sdk';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
+import { RouteVariant } from 'src/types/routes';
 import type { TrackTransactionDataProps } from 'src/types/userTracking';
 import { calcPriceImpact, getToAmountData } from './routeAmounts';
 import { getGasAndFeeCosts } from './routeCosts';
@@ -8,7 +8,7 @@ import { getProcessInformation } from './routeProcess';
 import { getRouteStatus, getRouteType, isRouteDone } from './routeStatus';
 
 export const handleRouteData = (
-  route: RouteExtended | Route,
+  route: RouteVariant,
   customData?: object,
 ): TrackTransactionDataProps => {
   const {

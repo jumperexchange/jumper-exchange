@@ -1,7 +1,8 @@
-import type { Estimate, Execution, Route, RouteExtended } from '@lifi/sdk';
+import type { Estimate, Execution } from '@lifi/sdk';
+import { RouteVariant } from 'src/types/routes';
 import { formatUnits } from 'viem';
 
-export const getGasAndFeeCosts = (route: RouteExtended | Route) => {
+export const getGasAndFeeCosts = (route: RouteVariant) => {
   // Check if there are any included steps
   const hasIncludedSteps = route.steps.some(
     (step) => step.includedSteps && step.includedSteps.length > 0,
