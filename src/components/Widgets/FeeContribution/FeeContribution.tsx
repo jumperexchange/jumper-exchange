@@ -10,8 +10,11 @@ import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
-import { createTokenTransactionConfig } from 'src/utils/transaction';
-import { erc20Abi, parseUnits } from 'viem';
+import {
+  createNativeTransactionConfig,
+  createTokenTransactionConfig,
+} from 'src/utils/transaction';
+import { parseUnits } from 'viem';
 import {
   useSendTransaction,
   useWaitForTransactionReceipt,
@@ -343,25 +346,19 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       );
 
       if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
-        await sendTransaction({
-          to: feeAddress as `0x${string}`,
-          value: amountInTokenUnits,
-        });
+        const nativeTxConfig = createNativeTransactionConfig(
+          feeAddress as `0x${string}`,
+          amountInTokenUnits,
+        );
+        await sendTransaction(nativeTxConfig);
       } else {
-        // Type assertion to ensure we're using the token transaction config
-        const txConfig = createTokenTransactionConfig(
+        const erc20TxConfig = createTokenTransactionConfig(
           completedRoute.toToken.address as `0x${string}`,
           feeAddress as `0x${string}`,
           amountInTokenUnits,
           completedRoute.toChainId,
-        ) as {
-          address: `0x${string}`;
-          abi: typeof erc20Abi;
-          functionName: 'transfer';
-          args: [`0x${string}`, bigint];
-        };
-
-        await writeContract(txConfig);
+        );
+        await writeContract(erc20TxConfig);
       }
     } catch (error) {
       if (error instanceof Error) {

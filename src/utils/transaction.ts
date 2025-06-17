@@ -1,18 +1,23 @@
 import { erc20Abi, type Address } from 'viem';
 
-// Type for transaction configuration
+// Type for native token transaction configuration
+export type NativeTransactionConfig = {
+  to: Address;
+  value: bigint;
+};
+
+// Type for ERC20 token transaction configuration
+export type ERC20TransactionConfig = {
+  address: `0x${string}`;
+  abi: typeof erc20Abi;
+  functionName: 'transfer';
+  args: [`0x${string}`, bigint];
+};
+
+// Combined type for all transaction configurations
 export type TransactionConfig =
-  | {
-      to: Address;
-      value: bigint;
-    }
-  | {
-      address: Address;
-      abi: typeof erc20Abi;
-      functionName: 'transfer';
-      args: [Address, bigint];
-      chainId: number;
-    };
+  | NativeTransactionConfig
+  | (ERC20TransactionConfig & { chainId: number });
 
 /**
  * Creates a transaction configuration for sending ERC20 tokens
@@ -22,12 +27,25 @@ export function createTokenTransactionConfig(
   to: Address,
   amount: bigint,
   chainId: number,
-): TransactionConfig {
+): ERC20TransactionConfig & { chainId: number } {
   return {
-    address: tokenAddress,
+    address: tokenAddress as `0x${string}`,
     abi: erc20Abi,
     functionName: 'transfer',
-    args: [to, amount],
+    args: [to as `0x${string}`, amount],
     chainId,
+  };
+}
+
+/**
+ * Creates a transaction configuration for sending native tokens
+ */
+export function createNativeTransactionConfig(
+  to: Address,
+  amount: bigint,
+): NativeTransactionConfig {
+  return {
+    to,
+    value: amount,
   };
 }
