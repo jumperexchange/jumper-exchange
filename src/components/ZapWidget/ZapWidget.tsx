@@ -36,11 +36,8 @@ import {
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
 } from '@biconomy/abstractjs';
-<<<<<<< HEAD
 import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
-=======
 import { useTranslation } from 'react-i18next';
->>>>>>> develop
 
 // Type definitions for better type safety
 interface AbiInput {
