@@ -157,7 +157,6 @@ export function useUserTracking() {
         googleEvent({ action, category, data });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
-        console.log('DATA', data);
         const transactionData = {
           url: window?.location?.href || getSiteUrl(),
           browserFingerprint: fp || 'unknown',
@@ -205,7 +204,6 @@ export function useUserTracking() {
           transactionStatus: data[TrackingEventParameter.TransactionStatus],
           type: data[TrackingEventParameter.Type],
         };
-        console.log('transactionData', transactionData);
         await jumperTrackTransaction(transactionData);
       }
 
