@@ -3,10 +3,7 @@ import { useAccount } from '@lifi/wallet-management';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
 import { isIframeEnvironment } from 'src/utils/iframe';
-import {
-  isRouteDone as isRouteDoneCheck,
-  isRouteFailed as isRouteFailedCheck,
-} from 'src/utils/routes';
+import { isRouteStatus, RouteStatus } from 'src/utils/routes';
 import type { Connector } from 'wagmi';
 
 const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
@@ -44,9 +41,8 @@ export const useMultisig = () => {
   };
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
-    const isRouteDone = isRouteDoneCheck(route);
-
-    const isRouteFailed = isRouteFailedCheck(route);
+    const isRouteDone = isRouteStatus(route, RouteStatus.DONE);
+    const isRouteFailed = isRouteStatus(route, RouteStatus.FAILED);
 
     const multisigRouteStarted = route.steps.some((step) =>
       (step as any).execution?.process.find(

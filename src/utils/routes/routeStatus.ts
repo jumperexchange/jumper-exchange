@@ -1,11 +1,19 @@
 import type { RouteExtended } from '@lifi/sdk';
 
-export const isRouteDone = (route: RouteExtended) => {
-  return route.steps.every((step) => step.execution?.status === 'DONE');
-};
+export enum RouteStatus {
+  DONE = 'DONE',
+  FAILED = 'FAILED',
+}
 
-export const isRouteFailed = (route: RouteExtended) => {
-  return route.steps.some((step) => step.execution?.status === 'FAILED');
+export const isRouteStatus = (route: RouteExtended, status: RouteStatus) => {
+  switch (status) {
+    case RouteStatus.DONE:
+      return route.steps.every((step) => step.execution?.status === 'DONE');
+    case RouteStatus.FAILED:
+      return route.steps.some((step) => step.execution?.status === 'FAILED');
+    default:
+      return false;
+  }
 };
 
 export const getRouteType = (route: RouteExtended) => {
@@ -19,8 +27,8 @@ export const getRouteStatus = (route?: RouteExtended) => {
   if (!route) {
     return 'unknown';
   }
-  const isDone = isRouteDone(route);
-  const isFailed = isRouteFailed(route);
+  const isDone = isRouteStatus(route, RouteStatus.DONE);
+  const isFailed = isRouteStatus(route, RouteStatus.FAILED);
   const alreadyStarted = route.steps.some((step) => step.execution);
   if (alreadyStarted) {
     if (isFailed) {
