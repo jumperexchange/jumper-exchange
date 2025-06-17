@@ -17,7 +17,6 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
-import { useAccount } from '@lifi/wallet-management';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { QuestDataExtended } from 'src/types/merkl';
 import { CampaignBanner } from './CampaignBanner/CampaignBanner';
@@ -53,7 +52,6 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   const { walletAddress, isPublic } = useContext(ProfileContext);
   const { isLoading, points, pdas } = useLoyaltyPass(walletAddress);
   const { traits } = useTraits();
-  const { account } = useAccount();
 
   // const { isEnabled: isABTestEnabled } = useABTest({
   //   feature: 'test_ab_1',
@@ -61,7 +59,7 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   // });
 
   const { pastCampaigns } = useMerklRewards({
-    userAddress: account.address,
+    userAddress: walletAddress,
   });
 
   const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
