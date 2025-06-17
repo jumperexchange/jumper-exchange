@@ -1,22 +1,22 @@
 import { expect, test } from '@playwright/test';
-import values from '../tests/testData/values.json' assert { type: 'json' };
+import {
+  checkSocialNetworkIcons,
+  checkTheNumberOfMenuItems,
+  expectBackgroundColorToHaveCss,
+  openOrCloseMainMenu,
+  openLeaderboardPage,
+  sectionOnTheBlogPage,
+} from './testData/menuFunctions';
 import {
   getElementByText,
   triggerButtonClick,
 } from './testData/commonFunctions';
+import values from '../tests/testData/values.json' assert { type: 'json' };
 import {
   closeWelcomeScreen,
   itemInMenu,
   itemInNavigation,
 } from './testData/landingPageFunctions';
-import {
-  checkSocialNetworkIcons,
-  checkTheNumberOfMenuItems,
-  expectBackgroundColorToHaveCss,
-  openLeaderboardPage,
-  openOrCloseMainMenu,
-  sectionOnTheBlogPage,
-} from './testData/menuFunctions';
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
