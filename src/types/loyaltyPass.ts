@@ -1,6 +1,6 @@
 import type { QuestDetails } from '@/types/questDetails';
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { CampaignData, StrapiMediaData } from './strapi';
+import type { StrapiMediaData } from './strapi';
 
 // PDA Type
 export interface Reward {
@@ -101,7 +101,6 @@ export type QuestAttributes = {
   BannerImage: BannerImageData[];
   quests_platform: QuestsPlatformData;
   tasks_verification: TaskVerification[];
-  campaign?: CampaignData;
 };
 
 export interface TaskVerification {
