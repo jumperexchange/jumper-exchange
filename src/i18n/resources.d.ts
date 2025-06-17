@@ -14,6 +14,7 @@ interface Resources {
       };
       links: {
         exchange: 'Exchange';
+        missions: 'Missions';
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
@@ -34,10 +35,13 @@ interface Resources {
       };
       seeAllWallets: 'See all wallets';
       navbarMenu: {
+        learn: 'Learn';
+        scan: 'Scan';
         brandAssets: 'Brand Assets';
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
+        resources: 'Resources';
         profile: 'Profile';
       };
       walletMenu: {
@@ -56,6 +60,9 @@ interface Resources {
         numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
+        dark: 'Dark';
+        light: 'Light';
+        system: 'System';
         switchToLight: 'Switch to light mode';
         switchToDark: 'Switch to dark mode';
         switchToSystem: 'Switch to system mode';
@@ -182,6 +189,12 @@ interface Resources {
       deposit: 'The displayed token is the token required to deposit into this market.';
       deposited: 'Amount you have deposited into this market.';
       boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
+    };
+    widget: {
+      zap: {
+        sendToAddressName: 'Send to {{name}}';
+        sentToAddressName: 'Sent to {{name}}';
+      };
     };
   };
 }

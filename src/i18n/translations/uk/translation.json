@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Обмін",
+      "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
       "buy": "Купівля"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Бренд ресурси",
       "theme": "Тема",
       "developers": "Розробникам",
       "support": "Підтримка",
-      "profile": "Профіль Jumper",
-      "fest": "Superfest Festival"
+      "resources": "",
+      "profile": "Профіль Jumper"
     },
     "walletMenu": {
       "disconnect": "Від'єднатись",
@@ -50,6 +53,9 @@
       "numberOfChains": "{{numberOfChains}} чейнів"
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Увімкнути світлу тему",
       "switchToDark": "Увімкнути темну тему",
       "switchToSystem": "Увімкнути системну тему",
@@ -169,5 +175,18 @@
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

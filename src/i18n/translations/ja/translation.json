@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "スワップ",
+      "missions": "",
       "dashboard": "ダッシュボード",
       "refuel": "リフューエル",
       "buy": "購入"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "すべてのウォレットを見る",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "ブランドアセット",
       "theme": "テーマ",
       "developers": "開発者",
       "support": "サポート",
-      "profile": "Jumperプロフィール",
-      "fest": ""
+      "resources": "",
+      "profile": "Jumperプロフィール"
     },
     "walletMenu": {
       "disconnect": "接続を解除",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "ライトモード",
       "switchToDark": "ダークモード",
       "switchToSystem": "システム設定に準拠",
@@ -169,5 +175,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

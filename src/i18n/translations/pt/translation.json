@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Conversão",
+      "missions": "",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
       "support": "Suporte",
-      "profile": "Perfil Jumper",
-      "fest": "Festival Superfest"
+      "resources": "",
+      "profile": "Perfil Jumper"
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -50,6 +53,9 @@
       "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
       "switchToSystem": "Alternar para sistema",
@@ -169,5 +175,18 @@
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

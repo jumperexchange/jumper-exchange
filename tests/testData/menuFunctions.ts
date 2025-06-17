@@ -1,8 +1,14 @@
 import { expect } from '@playwright/test';
+import { itemInMenu } from './landingPageFunctions';
+
+export const MAIN_MENU = {
+  BURGER_MENU_BUTTON: '#main-burger-menu-button',
+  MENU: 'xpath=//*[@role="menu"]',
+};
 
 export async function openOrCloseMainMenu(page) {
-  await page.locator('#main-burger-menu-button').click();
-  await expect(page.getByRole('menu')).toBeVisible();
+  await page.locator(MAIN_MENU.BURGER_MENU_BUTTON).click();
+  await expect(page.locator(MAIN_MENU.MENU)).toBeVisible();
 }
 
 export async function openLeaderboardPage(page) {
@@ -42,10 +48,12 @@ export enum Theme {
   Dark = 'Dark',
 }
 export async function switchTheme(page, theme: Theme) {
-  const themeSelector = {
-    [Theme.Light]: '#theme-switch-tabs-0',
-    [Theme.Dark]: '#theme-switch-tabs-1',
-  };
-  await page.locator(themeSelector[theme]).click();
-  await page.locator('#main-burger-menu-button').click();
+  await itemInMenu(page, 'Theme');
+  await itemInMenu(page, theme);
+  // Click the menu button using its coordinates
+  const menuButton = await page.locator(MAIN_MENU.BURGER_MENU_BUTTON);
+  const box = await menuButton.boundingBox();
+  if (box) {
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  }
 }

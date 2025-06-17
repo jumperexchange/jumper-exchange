@@ -80,36 +80,133 @@ class StrapiApi {
   }
 }
 
+type ArticleField =
+  | 'id'
+  | 'Title'
+  | 'Subtitle'
+  | 'Slug'
+  | 'RedirectURL'
+  | 'featured'
+  | 'WordCount'
+  | 'Content'
+  | 'publishedAt'
+  | 'createdAt'
+  | 'updatedAt';
+
+const mainArticleFields: ArticleField[] = [
+  'Title',
+  'Subtitle',
+  'Slug',
+  'RedirectURL',
+  'featured',
+  'WordCount',
+  'publishedAt',
+  'createdAt',
+  'updatedAt',
+] as const;
+
 class ArticleParams {
   private apiUrl: URL;
+
+  private static defaultFields: ArticleField[] = [
+    ...mainArticleFields,
+    'Content',
+  ];
+
+  private static defaultPopulates = [
+    'Image',
+    'tags',
+    'author.Avatar',
+    'faq_items',
+  ];
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
     this.apiUrl.searchParams.set('filters[Slug][$notNull]', 'true');
   }
 
-  addParams(): URL {
-    this.apiUrl.searchParams.set('populate[0]', 'Image');
-    this.apiUrl.searchParams.set('populate[1]', 'tags');
-    this.apiUrl.searchParams.set('populate[2]', 'author.Avatar');
-    this.apiUrl.searchParams.set('populate[3]', 'faq_items');
+  addParams({
+    includeFields,
+    excludeFields,
+    populate = ArticleParams.defaultPopulates,
+  }: {
+    includeFields?: ArticleField[];
+    excludeFields?: ArticleField[];
+    populate?: string[];
+  } = {}): URL {
+    let fields = [...ArticleParams.defaultFields];
+
+    if (includeFields) {
+      fields = fields.filter((f) => includeFields.includes(f));
+    }
+
+    if (excludeFields) {
+      fields = fields.filter((f) => !excludeFields.includes(f));
+    }
+
+    fields.forEach((field, index) => {
+      this.apiUrl.searchParams.set(`fields[${index}]`, field);
+    });
+
+    populate.forEach((relation, index) => {
+      this.apiUrl.searchParams.set(`populate[${index}]`, relation);
+    });
+
     return this.apiUrl;
   }
 }
 
+type TagField = 'Title' | 'BackgroundColor' | 'TextColor';
+
 class TagParams {
   private apiUrl: URL;
+
+  private static defaultFields: TagField[] = [
+    'Title',
+    'BackgroundColor',
+    'TextColor',
+  ];
+
+  private static defaultArticleFields: ArticleField[] = [...mainArticleFields];
+
+  private static defaultArticlePopulates: string[] = ['Image'];
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
   }
 
-  addParams(): URL {
-    // this.apiUrl.searchParams.set('populate[0]', 'Title');
-    // this.apiUrl.searchParams.set('populate[1]', 'BackgroundColor');
-    // this.apiUrl.searchParams.set('populate[2]', 'TextColor');
+  addParams({
+    articleFields = TagParams.defaultArticleFields,
+    articlePopulates = TagParams.defaultArticlePopulates,
+  }: {
+    articleFields?: ArticleField[];
+    articlePopulates?: string[];
+  } = {}): URL {
+    const fields = [...TagParams.defaultFields];
+
+    fields.forEach((field, index) => {
+      this.apiUrl.searchParams.set(`fields[${index}]`, field);
+    });
+
+    // Populate blog_articles
     this.apiUrl.searchParams.set('populate[0]', 'blog_articles');
-    this.apiUrl.searchParams.set('populate[1]', 'blog_articles.Image');
+
+    // Nested populate under blog_articles
+    articlePopulates.forEach((populate, index) => {
+      this.apiUrl.searchParams.set(
+        `populate[blog_articles][populate][${index}]`,
+        populate,
+      );
+    });
+
+    // Blog article fields
+    articleFields.forEach((field, index) => {
+      this.apiUrl.searchParams.set(
+        `populate[blog_articles][fields][${index}]`,
+        field,
+      );
+    });
+
     return this.apiUrl;
   }
 }
@@ -133,10 +230,16 @@ class QuestParams {
 }
 
 class ArticleStrapiApi extends StrapiApi {
-  constructor() {
+  constructor({
+    includeFields,
+    excludeFields,
+  }: {
+    includeFields?: ArticleField[];
+    excludeFields?: ArticleField[];
+  } = {}) {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
     const articleParams = new ArticleParams(this.apiUrl);
-    this.apiUrl = articleParams.addParams();
+    this.apiUrl = articleParams.addParams({ includeFields, excludeFields });
   }
 
   sort(order: 'asc' | 'desc'): this {
@@ -172,8 +275,8 @@ class ArticleStrapiApi extends StrapiApi {
 class TagStrapiApi extends StrapiApi {
   constructor() {
     super({ contentType: 'tags' }); // Set content type to "blog-articles" automatically
-    const articleParams = new TagParams(this.apiUrl);
-    this.apiUrl = articleParams.addParams();
+    const tagParams = new TagParams(this.apiUrl);
+    this.apiUrl = tagParams.addParams();
     this.apiUrl.searchParams.set('filters[blog_articles][$notNull]', 'true');
   }
 

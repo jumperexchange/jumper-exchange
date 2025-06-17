@@ -53,7 +53,8 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
         featuredArticle?.publishedAt || featuredArticle?.createdAt,
       ),
     });
-  const minRead = featuredArticle && readingTime(featuredArticle?.Content);
+
+  const minRead = featuredArticle && readingTime(featuredArticle?.WordCount);
 
   return featuredArticle ? (
     <>

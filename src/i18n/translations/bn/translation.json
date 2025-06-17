@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "ড্যাশবোর্ড",
       "refuel": "গ্যাস",
       "buy": ""
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "থিম",
       "developers": "ডেভেলপারস",
       "support": "সাপোর্ট",
-      "profile": "",
-      "fest": ""
+      "resources": "",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "সংযোগ বিচ্ছিন্ন করুন",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "লাইট মোডে স্যুইচ করুন",
       "switchToDark": "ডার্ক মোডে স্যুইচ করুন",
       "switchToSystem": "",
@@ -169,5 +175,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

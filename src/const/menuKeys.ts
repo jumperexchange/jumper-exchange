@@ -1,6 +1,7 @@
 export const MenuKeys = {
   Main: 'Main',
   Theme: 'Theme',
+  ThemeMode: 'ThemeMode',
   Wallet: 'Wallet',
   Chains: 'Chains',
   Devs: 'Devs',
@@ -11,6 +12,7 @@ export const MenuKeys = {
 export enum MenuKeysEnum {
   Main = 'Main',
   Theme = 'Theme',
+  ThemeMode = 'ThemeMode',
   Wallet = 'Wallet',
   Chains = 'Chains',
   Devs = 'Devs',
@@ -41,6 +43,7 @@ export const MenuMain: MenuMainType = {
 export const MenuSub: MenuSubType = {
   [MenuKeysEnum.Devs]: MenuKeysEnum.Devs,
   [MenuKeysEnum.Theme]: MenuKeysEnum.Theme,
+  [MenuKeysEnum.ThemeMode]: MenuKeysEnum.ThemeMode,
   [MenuKeysEnum.Language]: MenuKeysEnum.Language,
   [MenuKeysEnum.None]: MenuKeysEnum.None,
 };

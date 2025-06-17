@@ -5,7 +5,11 @@ export async function getArticlesByTag(
   excludeId: number,
   tag: number | number[],
 ) {
-  const urlParams = new ArticleStrapiApi().filterByTag(tag).sort('desc');
+  const urlParams = new ArticleStrapiApi({
+    excludeFields: ['Content'],
+  })
+    .filterByTag(tag)
+    .sort('desc');
   const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = urlParams.apiAccessToken;
@@ -22,10 +26,11 @@ export async function getArticlesByTag(
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json().then((output) =>
+  const responseData = await res.json();
+  const data = responseData.data.filter(
     // exclude current article id
-    output.data.filter((el: BlogArticleData) => el.id !== excludeId),
-  ); // Extract data from the response
+    (el: BlogArticleData) => el.id !== excludeId,
+  );
 
   return { data, url: apiBaseUrl }; // Return a plain object
 }

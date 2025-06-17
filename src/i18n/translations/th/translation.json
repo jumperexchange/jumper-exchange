@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "แลกเปลี่ยน",
+      "missions": "",
       "dashboard": "แผงหน้าจอ",
       "refuel": "แก็ส",
       "buy": "ซื้อ"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "ดูกระเป๋าเงินทั้งหมด",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "มูลค่าสินทรัพท์ของแบรนด์",
       "theme": "ธีม",
       "developers": "ผู้พัฒนา",
       "support": "สนับสนุน",
-      "profile": "โปรไฟล์ Jumper",
-      "fest": ""
+      "resources": "",
+      "profile": "โปรไฟล์ Jumper"
     },
     "walletMenu": {
       "disconnect": "ยกเลิกการเชื่อมต่อ",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
       "switchToDark": "เปลี่ยนเป็นธีมมืด",
       "switchToSystem": "เปลี่ยนไปยังระบบ",
@@ -169,5 +175,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

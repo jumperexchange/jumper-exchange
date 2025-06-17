@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "대시보드",
       "refuel": "가스",
       "buy": "매수"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "테마",
       "developers": "개발자",
       "support": "지원",
-      "profile": "",
-      "fest": ""
+      "resources": "",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "연결 해제",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "라이트 모드로 전환",
       "switchToDark": "다크 모드로 전환",
       "switchToSystem": "",
@@ -169,5 +175,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

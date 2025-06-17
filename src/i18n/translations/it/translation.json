@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "",
       "refuel": "",
       "buy": "Acquista"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "Tema",
       "developers": "Sviluppatori",
       "support": "Assistenza",
-      "profile": "",
-      "fest": ""
+      "resources": "",
+      "profile": ""
     },
     "walletMenu": {
       "disconnect": "Disconnetti",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Passa al tema chiaro",
       "switchToDark": "Passa al tema scuro",
       "switchToSystem": "",
@@ -169,5 +175,18 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

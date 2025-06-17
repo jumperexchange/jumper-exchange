@@ -48,6 +48,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     Subtitle: subtitle,
     Title: title,
     Content: content,
+    WordCount: wordCount,
     Slug: slug,
     author,
     publishedAt,
@@ -58,7 +59,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   } = article;
   const baseUrl = getStrapiBaseUrl();
   const id = article.id;
-  const minRead = readingTime(content);
+  const minRead = readingTime(wordCount);
   const { t } = useTranslation();
 
   const mainTag = tags[0];
