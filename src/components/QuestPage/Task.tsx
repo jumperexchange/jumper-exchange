@@ -47,6 +47,7 @@ interface TaskProps {
   index: number;
 }
 
+// TODO: Refactor this component to use Accordion component from mui (and refactor InstructionsAccordionItem.tsx)
 function Task({ task, questId, isValid = false, index }: TaskProps) {
   const [open, setOpen] = useState(false);
   const { account } = useAccount();
