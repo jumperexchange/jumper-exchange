@@ -3,13 +3,19 @@ import { Suspense } from 'react';
 import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
 import { MissionsPage } from 'src/app/ui/missions/MissionsPage';
 import { MissionsPageSkeleton } from 'src/app/ui/missions/MissionsPageSkeleton';
+import { GlobalFeatureFlags } from 'src/const/abtests';
 
 export default async function Page() {
-  const isPageEnabled = await getFeatureFlag('missions_page');
+  const isPageEnabled = await getFeatureFlag(
+    GlobalFeatureFlags.MissionsPage,
+    // Placeholder distinctId required by the API call.
+    // This global feature flag is not tied to any specific user.
+    'distinct-id',
+  );
 
-  //   if (!isPageEnabled) {
-  //     return notFound();
-  //   }
+  if (!isPageEnabled) {
+    return notFound();
+  }
 
   return (
     <Suspense fallback={<MissionsPageSkeleton />}>
