@@ -52,6 +52,8 @@ export const StyledEntityCardImage = styled(Image)(() => ({
   objectFit: 'cover',
   objectPosition: 'center',
   aspectRatio: '2 / 1',
+  height: '100%',
+  width: '100%',
 }));
 
 // Titles & Description
