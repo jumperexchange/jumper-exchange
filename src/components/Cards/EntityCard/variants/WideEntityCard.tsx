@@ -14,6 +14,7 @@ import {
   StyledWideRewardChipContainer,
   StyledRewardsContainer,
   StyledEntityCardLink,
+  BaseSkeleton,
 } from '../EntityCard.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { WideEntityCardSkeleton } from './WideEntityCardSkeleton';
@@ -41,10 +42,30 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
-        maxWidth={ENTITY_CARD_SIZES.WIDE.CARD_WIDTH}
-        height={ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT}
+        sx={{
+          maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
+          width: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
+          height: ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT,
+        }}
       >
-        <StyledEntityCardImage src={imageUrl} alt={`Image for ${title}`} fill />
+        {imageUrl ? (
+          <StyledEntityCardImage
+            src={imageUrl}
+            alt={`Image for ${title}`}
+            // For a next/image we need to set height/width
+            height={ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT}
+            width={ENTITY_CARD_SIZES.WIDE.CARD_WIDTH}
+          />
+        ) : (
+          <BaseSkeleton
+            animation={false}
+            variant="rectangular"
+            sx={{
+              height: '100%',
+              width: '100%',
+            }}
+          />
+        )}
       </StyledEntityCardImageContainer>
       <StyledEntityCardContentContainer sx={{ gap: 3 }}>
         <StyledParticipantsContainer>

@@ -15,59 +15,72 @@ export const CompactEntityCardSkeleton = () => {
   return (
     <StyledEntityCard
       sx={{
-        width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+        maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
     >
       <StyledEntityCardImageContainer
-        width={ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH}
-        height={ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT}
+        sx={{
+          maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+          width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+          height: ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT,
+        }}
       >
         <BaseSkeleton
           animation={false}
           variant="rectangular"
-          width="100%"
-          height="100%"
+          sx={{
+            width: '100%',
+            height: '100%',
+          }}
         />
       </StyledEntityCardImageContainer>
       <StyledEntityCardContentContainer
-        height={ENTITY_CARD_SIZES.COMPACT.CARD_CONTENT_HEIGHT}
+        sx={{
+          height: ENTITY_CARD_SIZES.COMPACT.CARD_CONTENT_HEIGHT,
+        }}
       >
         <StyledParticipantsContainer>
           <StyledAvatarSkeleton
             variant="circular"
             animation="wave"
-            width={40}
-            height={40}
+            sx={{
+              height: 40,
+              width: 40,
+            }}
           />
         </StyledParticipantsContainer>
         <div>
           <StyledContentSkeleton
             variant="text"
-            width="100%"
             animation="wave"
             sx={{
               mb: 1.25,
               mt: 1,
+              width: '100%',
             }}
           />
-          <StyledContentSkeleton variant="text" width="80%" animation="wave" />
+          <StyledContentSkeleton
+            variant="text"
+            animation="wave"
+            sx={{ width: '80%' }}
+          />
         </div>
         <StyledRewardsContainer direction="row">
           {[...Array(2)].map((_, i) => (
             <StyledShapeSkeleton
               key={i}
               variant="rounded"
-              width={64}
-              height={40}
-              sx={{ borderRadius: 5 }}
+              sx={{ borderRadius: 5, height: 40, width: 64 }}
               animation="wave"
             />
           ))}
           <StyledShapeSkeleton
             animation="wave"
             variant="circular"
-            width={40}
-            height={40}
+            sx={{
+              height: 40,
+              width: 40,
+            }}
           />
         </StyledRewardsContainer>
       </StyledEntityCardContentContainer>
