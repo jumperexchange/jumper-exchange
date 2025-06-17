@@ -101,7 +101,7 @@ export type QuestAttributes = {
   BannerImage: BannerImageData[];
   quests_platform: QuestsPlatformData;
   tasks_verification: TaskVerification[];
-  campaign: CampaignData;
+  campaign?: CampaignData;
 };
 
 export interface TaskVerification {
