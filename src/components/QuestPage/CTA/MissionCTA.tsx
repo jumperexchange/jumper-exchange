@@ -72,9 +72,6 @@ export const MissionCTA = ({
       data: {
         [TrackingEventParameter.MissionCtaTitle]: title,
         [TrackingEventParameter.MissionCtaPartnerId]: id,
-        // ...(rewardId && {
-        //   [TrackingEventParameter.MissionCtaRewardId]: rewardId,
-        // }),
         ...(claimingId && {
           [TrackingEventParameter.MissionCtaClaimingId]: claimingId,
         }),
