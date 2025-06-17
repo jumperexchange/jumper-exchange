@@ -1,5 +1,5 @@
 import type { Account } from '@lifi/wallet-management';
-import { getStrapiApiAccessToken, getStrapiBaseUrl } from './strapiHelper';
+import { getStrapiBaseUrl } from './strapiHelper';
 
 interface GetStrapiBaseUrlProps {
   contentType:
@@ -22,13 +22,9 @@ class StrapiApi {
   protected baseUrl: string;
   protected contentType: GetStrapiBaseUrlProps['contentType'];
   protected apiUrl: URL;
-  public apiAccessToken: string;
 
   constructor({ contentType }: GetStrapiBaseUrlProps) {
     this.contentType = contentType;
-
-    // Set up API access token based on environment
-    this.apiAccessToken = getStrapiApiAccessToken();
 
     // Set up base URL
     this.baseUrl = getStrapiBaseUrl();

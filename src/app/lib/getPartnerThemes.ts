@@ -1,12 +1,13 @@
 import type { PartnerThemesData, StrapiResponse } from '@/types/strapi';
 import { PartnerThemeStrapiApi } from '@/utils/strapi/StrapiApi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getPartnerThemes(): Promise<
   StrapiResponse<PartnerThemesData>
 > {
   const urlParams = new PartnerThemeStrapiApi();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {

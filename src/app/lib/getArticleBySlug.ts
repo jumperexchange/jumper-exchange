@@ -1,9 +1,10 @@
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getArticleBySlug(slug: string) {
   const urlParams = new ArticleStrapiApi().filterBySlug(slug);
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
       Authorization: `Bearer ${accessToken}`,

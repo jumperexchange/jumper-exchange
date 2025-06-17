@@ -1,6 +1,7 @@
 import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getQuestsBy(key: string, value: string) {
   const urlParams = new QuestStrapiApi()
@@ -8,7 +9,7 @@ export async function getQuestsBy(key: string, value: string) {
     .populateCampaign()
     .filterByStartAndEndDate();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {

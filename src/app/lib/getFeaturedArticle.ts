@@ -1,5 +1,6 @@
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 import { BlogArticleData, StrapiResponse } from 'src/types/strapi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getFeaturedArticle(): Promise<
   StrapiResponse<BlogArticleData>
@@ -10,7 +11,7 @@ export async function getFeaturedArticle(): Promise<
     .sort('desc')
     .filterByFeatured();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
   try {
     const res = await fetch(decodeURIComponent(apiUrl), {
       headers: {

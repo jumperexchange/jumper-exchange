@@ -1,5 +1,6 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getArticles(
   excludeId?: number,
@@ -15,7 +16,7 @@ export async function getArticles(
       withCount: false,
     });
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
       Authorization: `Bearer ${accessToken}`,

@@ -1,5 +1,6 @@
 import { CampaignStrapiApi } from '@/utils/strapi/StrapiApi';
 import { CampaignData, StrapiResponse } from 'src/types/strapi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getCampaignBySlug(
   slug: string,
@@ -14,7 +15,7 @@ export async function getCampaignBySlug(
     });
 
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
