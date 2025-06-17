@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import { FIVE_MINUTES_MS, TEN_MINUTES_MS } from 'src/const/time';
 import { QuestData, StrapiResponseData } from 'src/types/strapi';
 
 export async function loadMoreMissions(page: number, pageSize: number = 12) {
@@ -40,7 +41,7 @@ export const useMissionsInfinite = (
           pageParams: [1],
         }
       : undefined,
-    staleTime: 5 * 60 * 1000, // @Note need to add a constant
-    gcTime: 10 * 60 * 1000, // @Note need to add a constant
+    staleTime: FIVE_MINUTES_MS, // @Note need to add a constant
+    gcTime: TEN_MINUTES_MS, // @Note need to add a constant
   });
 };
