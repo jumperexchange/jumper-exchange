@@ -1,3 +1,4 @@
+'use client';
 import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_PROFILE_PATH } from 'src/const/urls';
