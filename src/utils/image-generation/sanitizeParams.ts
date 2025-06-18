@@ -23,18 +23,26 @@ export const sanitizeAddress = (address: string): string => {
   const trimmedAddress = address.trim();
   const cleanAddress = trimmedAddress.toLowerCase();
 
-  // Check if it's a valid Ethereum address
-  if (isAddress(cleanAddress)) {
-    return cleanAddress;
+  // First do preliminary format checks for better error messages
+  if (cleanAddress.startsWith('0x')) {
+    if (!isValidEthereumAddress(cleanAddress)) {
+      throw new Error('Invalid Ethereum address format');
+    }
+    // Now do the full validation
+    if (isAddress(cleanAddress)) {
+      return cleanAddress;
+    }
+    throw new Error('Invalid Ethereum address');
   }
 
   // Check if it's a valid Solana address - case sensitive!
-  try {
-    // Use the original trimmed address (not lowercase) for Solana
-    const pubKey = new PublicKey(trimmedAddress);
-    return pubKey.toString();
-  } catch (e) {
-    // Not a valid Solana address
+  if (isValidSolanaAddress(trimmedAddress)) {
+    try {
+      const pubKey = new PublicKey(trimmedAddress);
+      return pubKey.toString();
+    } catch (e) {
+      throw new Error('Invalid Solana address');
+    }
   }
 
   // Check if it's a valid UTXO address
@@ -45,20 +53,6 @@ export const sanitizeAddress = (address: string): string => {
   // Check if it's a valid SUI address
   if (isValidSuiAddress(trimmedAddress)) {
     return trimmedAddress;
-  }
-
-  // Provide more specific error messages for common issues
-  if (isValidEthereumAddress(cleanAddress) && cleanAddress.length !== 42) {
-    // Checks if string has 0x prefix and hex characters but not exactly 42 chars (standard ETH address length)
-    throw new Error('Invalid Ethereum address: incorrect length');
-  }
-
-  if (
-    isValidSolanaAddress(cleanAddress) &&
-    (cleanAddress.length < 32 || cleanAddress.length > 44)
-  ) {
-    // Checks if string has valid Base58 characters but invalid length for Solana addresses
-    throw new Error('Invalid Solana address: incorrect length');
   }
 
   // Generic error for other cases
