@@ -1,8 +1,8 @@
-import { RouteVariant } from 'src/types/routes';
+import { Route, RouteExtended } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import { getDetailInformation } from './routeUtils';
 
-export const getGasAndFeeCosts = (route: RouteVariant) => {
+export const getGasAndFeeCosts = (route: Route | RouteExtended) => {
   // Check if there are any included steps
   const hasIncludedSteps = route.steps?.some(
     (step) => step.includedSteps && step.includedSteps.length > 0,

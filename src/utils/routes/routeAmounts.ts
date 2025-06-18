@@ -1,15 +1,14 @@
-import type { LiFiStepExtended, Route } from '@lifi/sdk';
-import { RouteVariant } from 'src/types/routes';
+import type { LiFiStepExtended, Route, RouteExtended } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import { formatTokenAmount, formatTokenPrice } from '../format';
 
-const getLastStep = (route: RouteVariant): LiFiStepExtended | null => {
+const getLastStep = (route: Route | RouteExtended): LiFiStepExtended | null => {
   return Array.isArray(route.steps) && route.steps.length > 0
     ? (route.steps.findLast((step) => step) as LiFiStepExtended)
     : null;
 };
 
-export const getToAmountData = (route: RouteVariant) => {
+export const getToAmountData = (route: Route | RouteExtended) => {
   const lastStep = getLastStep(route);
   const lastStepExecutionOrRoute = lastStep?.execution || route;
 
