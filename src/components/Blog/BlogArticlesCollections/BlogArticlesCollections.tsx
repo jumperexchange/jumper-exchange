@@ -1,12 +1,15 @@
 'use client';
 
-import type { BlogArticleData } from '@/types/strapi';
-import type { GetTagsResponse } from 'src/app/lib/getTags';
+import type {
+  BlogArticleData,
+  StrapiResponseData,
+  TagAttributes,
+} from '@/types/strapi';
 import { BlogArticlesTabs } from './BlogArticlesTabs';
 
 interface BlogArticlesCollectionsProps {
   data: BlogArticleData[];
-  tags: GetTagsResponse['data'];
+  tags: StrapiResponseData<TagAttributes>;
 }
 
 const pageSize = 6;
