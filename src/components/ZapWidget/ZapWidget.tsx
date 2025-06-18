@@ -1,7 +1,7 @@
 import { WidgetEvents } from '@/components/Widgets';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
+import type { Route, TokenAmount, WidgetConfig } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
@@ -13,27 +13,27 @@ import {
 } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material';
 import { Box, Skeleton } from '@mui/material';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useThemeStore } from 'src/stores/theme';
 import {
-  formatUnits,
-  http,
+  AbiFunction,
   createWalletClient,
   custom,
+  formatUnits,
+  http,
   parseUnits,
-  AbiFunction,
 } from 'viem';
-import { optimism, base, mainnet } from 'viem/chains';
-import { useReadContracts, useAccount } from 'wagmi';
+import { base, mainnet, optimism } from 'viem/chains';
+import { useAccount, useReadContracts } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
 import type { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
 import {
   createMeeClient,
-  toMultichainNexusAccount,
-  runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
+  runtimeERC20BalanceOf,
+  toMultichainNexusAccount,
 } from '@biconomy/abstractjs';
 import { useTranslation } from 'react-i18next';
 
@@ -512,18 +512,26 @@ export function ZapWidget({
         try {
           if (args.method === 'wallet_getCapabilities') {
             // Use the same explorerChainIds that are defined in widgetConfig
-            const mockCapabilities = widgetConfig.explorerUrls ? 
-              Object.keys(widgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
-                const chainId = parseInt(chainIdStr);
-                acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
-                return acc;
-              }, {}) : 
-              {
-                '0x1': { atomic: { status: 'supported' } },  // mainnet
-                '0xa': { atomic: { status: 'supported' } },  // optimism
-                '0x2105': { atomic: { status: 'supported' } }, // base
-                '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
-              };
+            const mockCapabilities = widgetConfig.explorerUrls
+              ? Object.keys(widgetConfig.explorerUrls).reduce(
+                  (
+                    acc: Record<string, { atomic: { status: 'supported' } }>,
+                    chainIdStr,
+                  ) => {
+                    const chainId = parseInt(chainIdStr);
+                    acc[`0x${chainId.toString(16)}`] = {
+                      atomic: { status: 'supported' },
+                    };
+                    return acc;
+                  },
+                  {},
+                )
+              : {
+                  '0x1': { atomic: { status: 'supported' } }, // mainnet
+                  '0xa': { atomic: { status: 'supported' } }, // optimism
+                  '0x2105': { atomic: { status: 'supported' } }, // base
+                  '0x1a4': { atomic: { status: 'supported' } }, // optimism-sepolia
+                };
             return Promise.resolve(mockCapabilities);
           } else if (args.method === 'wallet_sendCalls') {
             return await handleWalletSendCalls(args as WalletSendCallsArgs);

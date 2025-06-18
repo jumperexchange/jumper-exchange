@@ -1,4 +1,5 @@
 'use client';
+import { checkWinningSwap } from '@/components/GoldenTicketModal/utils';
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
 import {
@@ -25,12 +26,13 @@ import type {
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
+import { GoldenTicketModal } from 'src/components/GoldenTicketModal/GoldenTicketModal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
+import { useRouteStore } from 'src/stores/route/RouteStore';
 import type { TransformedRoute } from 'src/types/internal';
 import { calcPriceImpact } from 'src/utils/calcPriceImpact';
 import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
-import { GoldenTicketModal } from 'src/components/GoldenTicketModal/GoldenTicketModal';
-import { checkWinningSwap } from '@/components/GoldenTicketModal/utils';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -50,6 +52,7 @@ export function WidgetEvents() {
   const [setDestinationChain] = useMultisigStore((state) => [
     state.setDestinationChain,
   ]);
+  const setCompletedRoute = useRouteStore((state) => state.setCompletedRoute);
 
   const { account } = useAccount();
 
@@ -63,6 +66,10 @@ export function WidgetEvents() {
     winner: boolean;
     position: number | null;
   }>({ winner: false, position: null });
+
+  const { setContributed, setContributionDisplayed } = useContributionStore(
+    (state) => state,
+  );
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -92,9 +99,10 @@ export function WidgetEvents() {
     };
 
     const onRouteExecutionCompleted = async (route: Route) => {
-      //to do: if route is not lifi then refetch position of destination token??
-
       if (route.id) {
+        // Store the completed route
+        setCompletedRoute(route);
+
         // Refresh portfolio value
         setForceRefresh(true);
 
@@ -370,6 +378,12 @@ export function WidgetEvents() {
     //   });
     // };
 
+    const onPageEntered = async (pageType: any) => {
+      // Reset contribution state when entering a new page
+      setContributed(false);
+      setContributionDisplayed(false);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(
       WidgetEvent.LowAddressActivityConfirmed,
@@ -396,6 +410,7 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       onDestinationChainTokenSelection,
     );
+    widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
     // widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
     // widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
 
@@ -438,6 +453,7 @@ export function WidgetEvents() {
       );
       // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
+      widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
     };
   }, [
     activeTab,
@@ -452,6 +468,9 @@ export function WidgetEvents() {
     trackEvent,
     trackTransaction,
     widgetEvents,
+    setCompletedRoute,
+    setContributed,
+    setContributionDisplayed,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {
