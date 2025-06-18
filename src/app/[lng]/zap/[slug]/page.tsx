@@ -18,13 +18,12 @@ export async function generateMetadata({
 
   try {
     const quest = await getQuestBySlug(slug);
-    const baseUrl = getStrapiBaseUrl();
     const questData = quest?.data;
 
     if (!quest || !questData) {
       throw new Error();
     }
-
+    const baseUrl = getStrapiBaseUrl();
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
       description: `${sliceStrToXChar(questData.Information || 'Zap description', 60)}`,

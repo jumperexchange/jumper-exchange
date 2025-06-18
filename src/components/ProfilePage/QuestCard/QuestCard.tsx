@@ -66,7 +66,6 @@ export interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   rewardRange?: string;
   title?: string;
-  url?: string;
   variableWeeklyAPY?: boolean;
   maxApy?: number;
 }

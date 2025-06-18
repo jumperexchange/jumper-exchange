@@ -29,7 +29,6 @@ export async function generateMetadata({
     }
 
     const quest = await getQuestBySlug(slugResult.data);
-
     if (!quest || !quest.data) {
       throw new Error();
     }
