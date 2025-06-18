@@ -4,7 +4,7 @@ import { getDetailInformation } from './routeUtils';
 
 export const getGasAndFeeCosts = (route: RouteVariant) => {
   // Check if there are any included steps
-  const hasIncludedSteps = route.steps.some(
+  const hasIncludedSteps = route.steps?.some(
     (step) => step.includedSteps && step.includedSteps.length > 0,
   );
 
@@ -86,7 +86,7 @@ export const getGasAndFeeCosts = (route: RouteVariant) => {
     let totalFeeAmount = 0;
     let totalFeeAmountUSD = 0;
 
-    route.steps.forEach((step) => {
+    route.steps?.forEach((step) => {
       const detailInformation = getDetailInformation(step);
 
       // Process gas costs
@@ -117,12 +117,12 @@ export const getGasAndFeeCosts = (route: RouteVariant) => {
     });
 
     // Get decimals from the first token in gas/fee costs for formatting
-    const gasToken = route.steps.find((step) => {
+    const gasToken = route.steps?.find((step) => {
       const detailInformation = getDetailInformation(step);
       return detailInformation.gasCosts?.[0]?.token;
     })?.estimate.gasCosts?.[0]?.token;
 
-    const feeToken = route.steps.find((step) => {
+    const feeToken = route.steps?.find((step) => {
       const detailInformation = getDetailInformation(step);
       return detailInformation.feeCosts?.[0]?.token;
     })?.estimate.feeCosts?.[0]?.token;

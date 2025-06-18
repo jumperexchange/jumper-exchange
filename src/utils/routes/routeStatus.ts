@@ -8,9 +8,9 @@ export enum RouteStatus {
 export const isRouteStatus = (route: RouteExtended, status: RouteStatus) => {
   switch (status) {
     case RouteStatus.DONE:
-      return route.steps.every((step) => step.execution?.status === 'DONE');
+      return route.steps?.every((step) => step.execution?.status === 'DONE');
     case RouteStatus.FAILED:
-      return route.steps.some((step) => step.execution?.status === 'FAILED');
+      return route.steps?.some((step) => step.execution?.status === 'FAILED');
     default:
       return false;
   }
@@ -29,7 +29,7 @@ export const getRouteStatus = (route?: RouteExtended) => {
   }
   const isDone = isRouteStatus(route, RouteStatus.DONE);
   const isFailed = isRouteStatus(route, RouteStatus.FAILED);
-  const alreadyStarted = route.steps.some((step) => step.execution);
+  const alreadyStarted = route.steps?.some((step) => step.execution);
   if (alreadyStarted) {
     if (isFailed) {
       return 'FAILED';

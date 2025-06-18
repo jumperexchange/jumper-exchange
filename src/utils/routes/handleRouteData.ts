@@ -36,7 +36,7 @@ export const handleRouteData = (
   const type = getRouteType(route);
   const isFinal = isRouteStatus(route, RouteStatus.DONE);
   const { toAmount, toAmountUSD, toAmountFormatted } = getToAmountData(route);
-  const duration = route.steps.reduce(
+  const duration = route.steps?.reduce(
     (acc, step) => acc + step.estimate.executionDuration,
     0,
   );
@@ -52,7 +52,6 @@ export const handleRouteData = (
     [TrackingEventParameter.RouteId]: routeId,
     [TrackingEventParameter.Slippage]: priceImpact,
     [TrackingEventParameter.StepIds]: stepIds.join(','),
-    [TrackingEventParameter.Time]: duration,
     [TrackingEventParameter.ToAmount]: toAmount,
     [TrackingEventParameter.ToAmountFormatted]: toAmountFormatted,
     [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
@@ -61,6 +60,7 @@ export const handleRouteData = (
     [TrackingEventParameter.ToToken]: route.toToken.address,
     [TrackingEventParameter.TransactionStatus]: routeStatus || '',
     [TrackingEventParameter.Type]: type,
+    ...(duration && { [TrackingEventParameter.Time]: duration }),
     ...(Array.isArray(route.tags) &&
       route.tags.length > 0 && {
         [TrackingEventParameter.Tags]: route.tags.join(','),

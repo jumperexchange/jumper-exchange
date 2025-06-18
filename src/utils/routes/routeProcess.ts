@@ -24,7 +24,7 @@ export const getProcessInformation = (
   const txLinks: string[] = [];
   const txStatuses: string[] = [];
 
-  route.steps.forEach((step: LiFiStep | LiFiStepExtended) => {
+  route.steps?.forEach((step: LiFiStep | LiFiStepExtended) => {
     const detailInformation = getDetailInformation(step);
 
     if ('process' in detailInformation) {
