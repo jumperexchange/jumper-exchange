@@ -1,122 +1,61 @@
-import { Route, RouteExtended } from '@lifi/sdk';
+import { Estimate, Execution, Route, RouteExtended } from '@lifi/sdk';
 import { formatUnits } from 'viem';
 import { getDetailInformation } from './routeUtils';
 
-export const getGasAndFeeCosts = (route: Route | RouteExtended) => {
-  // Check if there are any included steps
-  const hasIncludedSteps = route.steps?.some(
-    (step) => step.includedSteps && step.includedSteps.length > 0,
-  );
+// Helper function to calculate costs from a single step or included step
+const calculateStepCosts = (step: Estimate | Execution) => {
+  let gasAmount = 0;
+  let gasAmountUSD = 0;
+  let feeAmount = 0;
+  let feeAmountUSD = 0;
 
-  if (hasIncludedSteps) {
-    // Use included costs logic
-    let totalGasAmount = 0;
-    let totalGasAmountUSD = 0;
-    let totalFeeAmount = 0;
-    let totalFeeAmountUSD = 0;
+  // Process gas costs
+  if (Array.isArray(step.gasCosts) && step.gasCosts.length > 0) {
+    gasAmount = step.gasCosts.reduce(
+      (sum, gasCost) => sum + parseFloat(gasCost.amount || '0'),
+      0,
+    );
+    gasAmountUSD = step.gasCosts.reduce(
+      (sum, gasCost) => sum + parseFloat(gasCost.amountUSD || '0'),
+      0,
+    );
+  }
 
-    route.steps.forEach((step) => {
-      if (step.includedSteps && step.includedSteps.length > 0) {
-        step.includedSteps.forEach((includedStep) => {
-          // Process gas costs
-          if (includedStep.estimate.gasCosts) {
-            const gasAmount = includedStep.estimate.gasCosts.reduce(
-              (sum, gasCost) => sum + parseFloat(gasCost.amount || '0'),
-              0,
-            );
-            const gasAmountUSD = includedStep.estimate.gasCosts.reduce(
-              (sum, gasCost) => sum + parseFloat(gasCost.amountUSD || '0'),
-              0,
-            );
-            totalGasAmount += gasAmount;
-            totalGasAmountUSD += gasAmountUSD;
-          }
+  // Process fee costs
+  if (Array.isArray(step.feeCosts) && step.feeCosts.length > 0) {
+    feeAmount = step.feeCosts.reduce(
+      (sum, feeCost) => sum + parseFloat(feeCost.amount || '0'),
+      0,
+    );
+    feeAmountUSD = step.feeCosts.reduce(
+      (sum, feeCost) => sum + parseFloat(feeCost.amountUSD || '0'),
+      0,
+    );
+  }
 
-          // Process fee costs
-          if (includedStep.estimate.feeCosts) {
-            const feeAmount = includedStep.estimate.feeCosts.reduce(
-              (sum, feeCost) => sum + parseFloat(feeCost.amount || '0'),
-              0,
-            );
-            const feeAmountUSD = includedStep.estimate.feeCosts.reduce(
-              (sum, feeCost) => sum + parseFloat(feeCost.amountUSD || '0'),
-              0,
-            );
-            totalFeeAmount += feeAmount;
-            totalFeeAmountUSD += feeAmountUSD;
-          }
-        });
-      }
-    });
+  return { gasAmount, gasAmountUSD, feeAmount, feeAmountUSD };
+};
 
-    // Get decimals from the first token in gas/fee costs for formatting
-    const includedGasToken = route.steps.find((step) =>
+// Helper function to get token for formatting
+const getTokenForFormatting = (
+  route: Route | RouteExtended,
+  isIncludedSteps: boolean,
+) => {
+  if (isIncludedSteps) {
+    const gasToken = route.steps.find((step) =>
       step.includedSteps?.find(
         (included) => included.estimate.gasCosts?.[0]?.token,
       ),
     )?.includedSteps?.[0]?.estimate.gasCosts?.[0]?.token;
 
-    const includedFeeToken = route.steps.find((step) =>
+    const feeToken = route.steps.find((step) =>
       step.includedSteps?.find(
         (included) => included.estimate.feeCosts?.[0]?.token,
       ),
     )?.includedSteps?.[0]?.estimate.feeCosts?.[0]?.token;
 
-    const formattedIncludedGasAmount =
-      includedGasToken &&
-      formatUnits(BigInt(totalGasAmount.toString()), includedGasToken.decimals);
-    const formattedIncludedFeeAmount =
-      includedFeeToken &&
-      formatUnits(BigInt(totalFeeAmount.toString()), includedFeeToken.decimals);
-
-    return {
-      gasCostUSD: totalGasAmountUSD,
-      gasCost: totalGasAmount,
-      gasCostFormatted: formattedIncludedGasAmount,
-      feeCostUSD: totalFeeAmountUSD,
-      feeCost: totalFeeAmount,
-      feeCostFormatted: formattedIncludedFeeAmount,
-    };
-  } else if (
-    route.steps.find((step) => 'execution' in step || 'estimate' in step)
-  ) {
-    // Use regular costs logic
-    let totalGasAmount = 0;
-    let totalGasAmountUSD = 0;
-    let totalFeeAmount = 0;
-    let totalFeeAmountUSD = 0;
-
-    route.steps?.forEach((step) => {
-      const detailInformation = getDetailInformation(step);
-
-      // Process gas costs
-      const gasCosts = detailInformation.gasCosts;
-      if (gasCosts) {
-        const gasAmount = gasCosts.reduce((sum, gasCost) => {
-          return sum + parseFloat(gasCost.amount || '0');
-        }, 0);
-        const gasAmountUSD = gasCosts.reduce((sum, gasCost) => {
-          return sum + parseFloat(gasCost.amountUSD || '0');
-        }, 0);
-        totalGasAmount += gasAmount;
-        totalGasAmountUSD += gasAmountUSD;
-      }
-
-      // Process fee costs
-      const feeCosts = detailInformation.feeCosts;
-      if (feeCosts) {
-        const feeAmount = feeCosts.reduce((sum, feeCost) => {
-          return sum + parseFloat(feeCost.amount || '0');
-        }, 0);
-        const feeAmountUSD = feeCosts.reduce((sum, feeCost) => {
-          return sum + parseFloat(feeCost.amountUSD || '0');
-        }, 0);
-        totalFeeAmount += feeAmount;
-        totalFeeAmountUSD += feeAmountUSD;
-      }
-    });
-
-    // Get decimals from the first token in gas/fee costs for formatting
+    return { gasToken, feeToken };
+  } else {
     const gasToken = route.steps?.find((step) => {
       const detailInformation = getDetailInformation(step);
       return detailInformation.gasCosts?.[0]?.token;
@@ -126,6 +65,30 @@ export const getGasAndFeeCosts = (route: Route | RouteExtended) => {
       const detailInformation = getDetailInformation(step);
       return detailInformation.feeCosts?.[0]?.token;
     })?.estimate.feeCosts?.[0]?.token;
+
+    return { gasToken, feeToken };
+  }
+};
+
+export const getGasAndFeeCosts = (route: Route | RouteExtended) => {
+  // First: Check if execution is in route.steps for most precise data
+  if (route.steps?.find((step) => 'execution' in step)) {
+    // Use regular costs logic for execution steps
+    let totalGasAmount = 0;
+    let totalGasAmountUSD = 0;
+    let totalFeeAmount = 0;
+    let totalFeeAmountUSD = 0;
+
+    route.steps?.forEach((step) => {
+      const detailInformation = getDetailInformation(step);
+      const costs = calculateStepCosts(detailInformation);
+      totalGasAmount += costs.gasAmount;
+      totalGasAmountUSD += costs.gasAmountUSD;
+      totalFeeAmount += costs.feeAmount;
+      totalFeeAmountUSD += costs.feeAmountUSD;
+    });
+
+    const { gasToken, feeToken } = getTokenForFormatting(route, false);
 
     const formattedGasAmount =
       gasToken && formatUnits(BigInt(totalGasAmount), gasToken.decimals);
@@ -140,7 +103,84 @@ export const getGasAndFeeCosts = (route: Route | RouteExtended) => {
       feeCost: totalFeeAmount,
       feeCostFormatted: formattedFeeAmount,
     };
-  } else {
+  }
+  // Second: Check if it has includedSteps
+  else if (
+    route.steps?.some(
+      (step) => step.includedSteps && step.includedSteps.length > 0,
+    )
+  ) {
+    // Use included costs logic
+    let totalGasAmount = 0;
+    let totalGasAmountUSD = 0;
+    let totalFeeAmount = 0;
+    let totalFeeAmountUSD = 0;
+
+    route.steps.forEach((step) => {
+      if (step.includedSteps && step.includedSteps.length > 0) {
+        step.includedSteps.forEach((includedStep) => {
+          const costs = calculateStepCosts(includedStep.estimate);
+          totalGasAmount += costs.gasAmount;
+          totalGasAmountUSD += costs.gasAmountUSD;
+          totalFeeAmount += costs.feeAmount;
+          totalFeeAmountUSD += costs.feeAmountUSD;
+        });
+      }
+    });
+
+    const { gasToken, feeToken } = getTokenForFormatting(route, true);
+
+    const formattedGasAmount =
+      gasToken &&
+      formatUnits(BigInt(totalGasAmount.toString()), gasToken.decimals);
+    const formattedFeeAmount =
+      feeToken &&
+      formatUnits(BigInt(totalFeeAmount.toString()), feeToken.decimals);
+
+    return {
+      gasCostUSD: totalGasAmountUSD,
+      gasCost: totalGasAmount,
+      gasCostFormatted: formattedGasAmount,
+      feeCostUSD: totalFeeAmountUSD,
+      feeCost: totalFeeAmount,
+      feeCostFormatted: formattedFeeAmount,
+    };
+  }
+  // Third: Check if estimate in route.steps
+  else if (route.steps?.find((step) => 'estimate' in step)) {
+    // Use regular costs logic for estimate steps
+    let totalGasAmount = 0;
+    let totalGasAmountUSD = 0;
+    let totalFeeAmount = 0;
+    let totalFeeAmountUSD = 0;
+
+    route.steps?.forEach((step) => {
+      const detailInformation = getDetailInformation(step);
+      const costs = calculateStepCosts(detailInformation);
+      totalGasAmount += costs.gasAmount;
+      totalGasAmountUSD += costs.gasAmountUSD;
+      totalFeeAmount += costs.feeAmount;
+      totalFeeAmountUSD += costs.feeAmountUSD;
+    });
+
+    const { gasToken, feeToken } = getTokenForFormatting(route, false);
+
+    const formattedGasAmount =
+      gasToken && formatUnits(BigInt(totalGasAmount), gasToken.decimals);
+    const formattedFeeAmount =
+      feeToken && formatUnits(BigInt(totalFeeAmount), feeToken.decimals);
+
+    return {
+      gasCostUSD: totalGasAmountUSD,
+      gasCost: totalGasAmount,
+      gasCostFormatted: formattedGasAmount,
+      feeCostUSD: totalFeeAmountUSD,
+      feeCost: totalFeeAmount,
+      feeCostFormatted: formattedFeeAmount,
+    };
+  }
+  // Last: Default fallback
+  else {
     return {
       gasCostUSD: route.gasCostUSD,
     };
