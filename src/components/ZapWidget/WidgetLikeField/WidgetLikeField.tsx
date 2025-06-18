@@ -35,9 +35,8 @@ import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { useToken } from '@/hooks/useToken';
 import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
-import type { AbiFunction } from 'viem';
+import type { AbiFunction, AbiParameter } from 'viem';
 
-// Type definitions for better type safety
 interface WithdrawTrackingData {
   protocol_name: string;
   chain_id: number;
@@ -152,7 +151,7 @@ function WidgetLikeField({
 
     setValue('');
     refetch();
-    
+
     const trackingData = {
       protocol_name: projectData.integrator,
       chain_id: token.chainId,
@@ -162,7 +161,7 @@ function WidgetLikeField({
         parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
       timestamp: new Date().toISOString(),
     };
-    
+
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'zap_withdraw',
@@ -190,21 +189,42 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
+
+      // Generate dynamic args based on ABI inputs
+      const abi = withdrawAbi || {
+        inputs: [{ name: 'amount', type: 'uint256' }],
+        name: 'redeem',
+        outputs: [{ name: '', type: 'uint256' }],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      };
+
+      const dynamicArgs = abi.inputs?.map((input: AbiParameter) => {
+        if (input.type === 'uint256') {
+          return parseUnits(value, writeDecimals);
+        } else if (input.type === 'address') {
+          // Use the user's account address
+          return account?.address as `0x${string}`;
+        }
+      }) || [parseUnits(value, writeDecimals)];
+
       writeContract({
         address: (projectData?.withdrawAddress ||
           projectData?.address) as `0x${string}`,
         chainId: projectData?.chainId,
         functionName: (withdrawAbi?.name || 'redeem') as 'redeem',
-        abi: withdrawAbi ? [withdrawAbi] : [
-          {
-            inputs: [{ name: 'amount', type: 'uint256' }],
-            name: 'redeem',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-        ],
-        args: [parseUnits(value, writeDecimals)],
+        abi: withdrawAbi
+          ? [withdrawAbi]
+          : [
+              {
+                inputs: [{ name: 'amount', type: 'uint256' }],
+                name: 'redeem',
+                outputs: [{ name: '', type: 'uint256' }],
+                stateMutability: 'nonpayable',
+                type: 'function',
+              },
+            ],
+        args: dynamicArgs as unknown as readonly [bigint],
       });
     } catch (e) {
       console.error(e);

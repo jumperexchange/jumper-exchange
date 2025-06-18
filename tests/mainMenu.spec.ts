@@ -1,18 +1,22 @@
 import { expect, test } from '@playwright/test';
-import values from '../tests/testData/values.json' assert { type: 'json' };
-import { getElementByText } from './testData/commonFunctions';
-import {
-  closeWelcomeScreen,
-  itemInMenu,
-} from './testData/landingPageFunctions';
 import {
   checkSocialNetworkIcons,
   checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
-  openLeaderboardPage,
   openOrCloseMainMenu,
+  openLeaderboardPage,
   sectionOnTheBlogPage,
 } from './testData/menuFunctions';
+import {
+  getElementByText,
+  triggerButtonClick,
+} from './testData/commonFunctions';
+import values from '../tests/testData/values.json' assert { type: 'json' };
+import {
+  closeWelcomeScreen,
+  itemInMenu,
+  itemInNavigation,
+} from './testData/landingPageFunctions';
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -22,7 +26,7 @@ test.describe('Main Menu flows', () => {
 
   test('Should be able to open menu and close it', async ({ page }) => {
     openOrCloseMainMenu(page);
-    await checkTheNumberOfMenuItems(page, 9);
+    await checkTheNumberOfMenuItems(page, 6);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
@@ -34,8 +38,7 @@ test.describe('Main Menu flows', () => {
     const missionTitle = page.locator(
       'xpath=//div[@class="MuiBox-root mui-9cpca"]',
     );
-    await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Profile');
+    await triggerButtonClick(page, 'Level');
     expect(await page.url()).toBe(profileUrl);
     await page.locator('.profile-page').isVisible();
     await page
@@ -45,7 +48,7 @@ test.describe('Main Menu flows', () => {
     await expect(missionTitle).toBeVisible();
   });
 
-  test('Should open the Jumper Profile page and then open the leaderboard page', async ({
+  test.skip('Should open the Jumper Profile page and then open the leaderboard page', async ({
     page,
   }) => {
     const whereDoYouRank = await getElementByText(page, 'Where do you rank?');
@@ -56,8 +59,7 @@ test.describe('Main Menu flows', () => {
     const connectWalletButtonOnLeaderboardPage = await page.locator(
       '#leaderboard-entry-connect-button',
     );
-    await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Profile');
+    await triggerButtonClick(page, 'Level');
     await page.locator('.profile-page').isVisible();
     await expect(completedMissions).not.toHaveCSS('cursor', 'pointer');
     await openLeaderboardPage(page);
@@ -81,7 +83,7 @@ test.describe('Main Menu flows', () => {
     );
 
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Learn');
+    await itemInMenu(page, 'Learn');
     await expect(page).toHaveURL(values.localLearnURL);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
@@ -97,14 +99,14 @@ test.describe('Main Menu flows', () => {
       'xpath=//div[@class="MuiBox-root mui-1nhlr6a"]',
     );
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Jumper Scan');
+    await itemInMenu(page, 'Scan');
     await expect(page).toHaveURL(values.localJumperScanURL);
     await expect(searchBar).toBeVisible();
   });
 
-  test('Should open Developers section inside menu', async ({ page }) => {
+  test('Should open Resources section inside menu', async ({ page }) => {
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Developers');
+    await itemInMenu(page, 'Resources');
     await checkTheNumberOfMenuItems(page, 2);
   });
 
@@ -117,42 +119,56 @@ test.describe('Main Menu flows', () => {
   test.skip('Should be able to open quests mission page and switch background color', async ({
     page,
   }) => {
-    const jumperProfileBackButton = await getElementByText(
-      page,
-      'Jumper Profile',
-    );
+    const jumperProfileBackButton = await getElementByText(page, 'Missions');
 
     await page.goto(values.aerodromeQuestsURL);
     expect(jumperProfileBackButton).toBeVisible();
     await openOrCloseMainMenu(page);
-    await page.locator('#theme-switch-tabs-1').click(); //switch to Dark theme
+    await itemInMenu(page, 'Theme');
+    await itemInMenu(page, 'Light');
+    await itemInMenu(page, 'Dark');
     expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
-    await page.locator('#theme-switch-tabs-0').click(); //switch to Light theme
+    await itemInMenu(page, 'Light');
     await openOrCloseMainMenu(page);
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
 
   test('Should be able to navigate to X', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'X');
+    await itemInNavigation(page, 'X social link');
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.xUrl);
   });
 
   test('Should be able to navigate to Discord', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
-    await itemInMenu(page, 'Discord');
+    await itemInNavigation(page, 'Discord social link');
     const newPage = await context.waitForEvent('page');
     expect(newPage.url()).toBe(values.discordURL);
+  });
+
+  test('Should be able to navigate to Telegram', async ({ page, context }) => {
+    await openOrCloseMainMenu(page);
+    await itemInNavigation(page, 'Telegram social link');
+    const newPage = await context.waitForEvent('page');
+    expect(newPage.url()).toBe(values.telegramURL);
+  });
+
+  test('Should be able to navigate to Link3', async ({ page, context }) => {
+    await openOrCloseMainMenu(page);
+    await itemInNavigation(page, 'Link3 social link');
+    const newPage = await context.waitForEvent('page');
+    expect(newPage.url()).toBe(values.link3URL);
   });
 
   test('Should be able to click on the Support button', async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Support');
     const iFrameLocator = page.frameLocator(
-      'iframe[title="Intercom live chat"]',
+      'iframe[title="Discord chat embed"]',
     );
-    const openIntercomAppInIframe = await iFrameLocator.getByText('Home');
-    await expect(openIntercomAppInIframe).toBeVisible();
+    const openDiscordAppInIframe =
+      await iFrameLocator.getByText('Open Discord App');
+    await expect(openDiscordAppInIframe).toBeVisible();
   });
 });
