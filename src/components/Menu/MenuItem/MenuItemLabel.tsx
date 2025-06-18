@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import type { Breakpoint } from '@mui/material';
 import { Typography, useTheme } from '@mui/material';
-import { MenuLabel } from '.';
+import { MenuLabel } from './MenuItem.style';
 
 interface MenuItemLabelProps {
   showMoreIcon?: boolean;

@@ -200,16 +200,6 @@ export const MobileDrawer = styled(Drawer)(() => ({
   zIndex: 1400,
 }));
 
-export const MenuItemLink = styled(Link)(() => ({
-  display: 'flex',
-  alignItems: 'center',
-  height: 48,
-  width: '100%',
-  textDecoration: 'none',
-  color: 'inherit',
-}));
-
-export const MenuItemText = styled('span')({});
 export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
   ({ theme }) => ({
     position: 'sticky',

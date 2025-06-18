@@ -1,5 +1,6 @@
 import type { BlogArticleData } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getArticlesByTag(
   excludeId: number,
@@ -10,9 +11,8 @@ export async function getArticlesByTag(
   })
     .filterByTag(tag)
     .sort('desc');
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -32,5 +32,5 @@ export async function getArticlesByTag(
     (el: BlogArticleData) => el.id !== excludeId,
   );
 
-  return { data, url: apiBaseUrl }; // Return a plain object
+  return { data }; // Return a plain object
 }

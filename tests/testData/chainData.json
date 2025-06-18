@@ -87,7 +87,7 @@
       "tokenSymbol": "BTC",
       "fromToken": "bitcoin",
       "fromChain": "20000000000001",
-      "amount": "1",
+      "amount": "0.01",
       "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       "toTokenSymbol": "USDC",
       "toChain": "998"

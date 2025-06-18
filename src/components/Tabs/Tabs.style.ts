@@ -59,3 +59,66 @@ export const Tab = styled(MuiTab)(({ theme }) => ({
     }),
   },
 }));
+
+export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
+  padding: 0,
+  flex: 1,
+  [theme.breakpoints.up('md')]: {
+    flex: 'unset',
+  },
+  '.MuiTabs-flexContainer': {
+    alignItems: 'center',
+    gap: theme.spacing(1),
+  },
+  '.MuiTabs-indicator': {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    height: 'auto',
+    width: '100%',
+    borderRadius: 24,
+    transform: 'translateX(0) scaleX(0.98)',
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    zIndex: -1,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
+  },
+  '> .MuiTabs-root': {
+    minHeight: 'unset !important',
+  },
+}));
+
+export const HorizontalTab = styled(Tab)(({ theme }) => ({
+  ...theme.typography.bodyMedium,
+  fontWeight: theme.typography.fontWeightBold,
+  textTransform: 'none',
+  borderRadius: 24,
+  width: 'auto',
+  background: 'transparent',
+  padding: theme.spacing(1.75, 2.5),
+  margin: 0,
+  transition: 'all 0.2s ease-in-out',
+  color: `${(theme.vars || theme).palette.white.main} !important`,
+  ...theme.applyStyles('light', {
+    color: `${(theme.vars || theme).palette.text.primary} !important`,
+  }),
+  ':hover': {
+    backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
+    }),
+  },
+  '&.Mui-selected': {
+    boxShadow: theme.shadows[2],
+    backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
+    pointerEvents: 'none',
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.white.main,
+    }),
+  },
+  flex: 1,
+  [theme.breakpoints.up('md')]: {
+    flex: 'unset',
+  },
+}));

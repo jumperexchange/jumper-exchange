@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "兑换",
+      "missions": "",
       "dashboard": "面板",
       "refuel": "兑换燃气费",
       "buy": "购买"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "查看所有支持的钱包",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "品牌资产",
       "theme": "主题",
       "developers": "开发者",
       "support": "技术支持",
+      "resources": "",
       "profile": "Jumper 个人资料"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "切换到浅色主题",
       "switchToDark": "切换到深色主题",
       "switchToSystem": "与系统保持一致",

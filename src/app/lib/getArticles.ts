@@ -1,14 +1,11 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
-
-export interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
-  url: string; // Define the shape of the URL
-}
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getArticles(
   excludeId?: number,
   pageSize?: number,
-): Promise<GetArticlesResponse> {
+): Promise<StrapiResponse<BlogArticleData>> {
   const urlParams = new ArticleStrapiApi({
     excludeFields: ['Content'],
   })
@@ -18,9 +15,8 @@ export async function getArticles(
       pageSize: pageSize || 20,
       withCount: false,
     });
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -42,5 +38,5 @@ export async function getArticles(
     ),
   };
 
-  return { ...data, url: apiBaseUrl }; // Return a plain object
+  return data;
 }

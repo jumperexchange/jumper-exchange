@@ -3,6 +3,8 @@
   "localLearnURL": "http://localhost:3000/learn",
   "xUrl": "https://x.com/JumperExchange",
   "discordURL": "https://discord.com/invite/jumperexchange",
+  "telegramURL": "https://t.me/jumperexchange",
+  "link3URL": "https://link3.to/jumperexchange",
   "exploreFilamentURL": "http://localhost:3000/quests/rewards-from-filament",
   "aerodromeQuestsURL": "http://localhost:3000/quests/rewards-from-aerodrome-on-base"
 }

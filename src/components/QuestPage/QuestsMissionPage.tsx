@@ -4,6 +4,7 @@ import generateKey from 'src/app/lib/generateKey';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { useMissionsAPY } from 'src/hooks/useMissionsAPY';
 import { type Quest } from 'src/types/loyaltyPass';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
 import { MissionCTA } from './CTA/MissionCTA';
@@ -14,17 +15,16 @@ import { StepsBox } from './StepsBox/StepsBox';
 
 interface QuestsMissionPageVar {
   quest: Quest;
-  baseUrl: string;
   activeCampaign?: string;
   path: string;
 }
 
 export const QuestsMissionPage = ({
   quest,
-  baseUrl,
   activeCampaign,
   path,
 }: QuestsMissionPageVar) => {
+  const baseUrl = getStrapiBaseUrl();
   const attributes = quest;
   const CTAs = quest?.CustomInformation?.['CTA'];
   const missionType = quest?.CustomInformation?.['missionType'];

@@ -7,7 +7,10 @@ import {
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
 import type { Account } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
+import {
+  getStrapiApiAccessToken,
+  getStrapiBaseUrl,
+} from 'src/utils/strapi/strapiHelper';
 
 export interface UseStrapiProps<T> {
   data: StrapiResponseData<T>;
@@ -48,10 +51,7 @@ interface ContentTypeProps {
 }
 
 export function getStrapiUrl(contentType: string): URL {
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
   return new URL(`${apiBaseUrl}/api/${contentType}`);
 }
 

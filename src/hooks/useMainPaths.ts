@@ -1,7 +1,7 @@
 import {
   JUMPER_BRIDGE_PATH,
   JUMPER_LEARN_PATH,
-  JUMPER_LOYALTY_PATH,
+  JUMPER_PROFILE_PATH,
   JUMPER_SCAN_PATH,
   JUMPER_SWAP_PATH,
   JUMPER_ZAP_PATH,
@@ -20,7 +20,7 @@ export const useMainPaths = (): useMainPathsProps => {
   //Todo: find better way to check
   const isExchange =
     !pathname?.includes(JUMPER_SWAP_PATH) &&
-    !pathname?.includes(JUMPER_LOYALTY_PATH) &&
+    !pathname?.includes(JUMPER_PROFILE_PATH) &&
     !pathname?.includes(JUMPER_LEARN_PATH) &&
     !pathname?.includes(JUMPER_SCAN_PATH) &&
     !pathname?.includes(JUMPER_ZAP_PATH) &&
