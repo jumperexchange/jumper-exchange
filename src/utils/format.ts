@@ -8,13 +8,12 @@ export const precisionFormatter = new Intl.NumberFormat('en', {
   useGrouping: false,
 });
 
-export function formatTokenAmount(amount: bigint, decimals: number) {
+export function formatTokenAmount(amount: bigint = 0n, decimals: number) {
   const formattedAmount = formatUnits(amount, decimals);
   const parsedAmount = parseFloat(formattedAmount);
   if (parsedAmount === 0 || isNaN(Number(formattedAmount))) {
     return '0';
   }
-
   return precisionFormatter.format(parsedAmount);
 }
 
