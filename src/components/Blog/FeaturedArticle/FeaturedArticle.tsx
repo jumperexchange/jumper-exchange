@@ -11,9 +11,10 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
+import RouterLink from 'next/link';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import useClient from 'src/hooks/useClient';
-import RouterLink from 'next/link';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
@@ -27,17 +28,14 @@ import {
 } from '.';
 
 interface FeaturedArticleProps {
-  url: string | undefined;
   featuredArticle: BlogArticleData;
 }
 
-export const FeaturedArticle = ({
-  featuredArticle,
-  url,
-}: FeaturedArticleProps) => {
+export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const isClient = useClient();
+  const baseUrl = getStrapiBaseUrl();
 
   const handleFeatureCardClick = (featuredArticle: BlogArticleData) => {
     trackEvent({
@@ -76,7 +74,7 @@ export const FeaturedArticle = ({
           height={0}
           sizes="100vw"
           priority
-          src={`${url}${featuredArticle?.Image?.formats?.medium.url || featuredArticle?.Image?.url}`}
+          src={`${baseUrl}${featuredArticle?.Image?.formats?.medium.url || featuredArticle?.Image?.url}`}
           alt={
             featuredArticle?.Image?.alternativeText ?? featuredArticle?.Title
           }

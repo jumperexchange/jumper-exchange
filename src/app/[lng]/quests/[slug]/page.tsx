@@ -5,6 +5,7 @@ import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCamp
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
 
@@ -25,7 +26,7 @@ export async function generateMetadata({
     }
 
     const quest = await getQuestBySlug(slugResult.data);
-
+    const baseUrl = getStrapiBaseUrl();
     if (!quest || !quest.data) {
       throw new Error();
     }
@@ -39,7 +40,7 @@ export async function generateMetadata({
       url: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
       images: [
         {
-          url: `${quest.url}${questData.Image?.url}`,
+          url: `${baseUrl}${questData.Image?.url}`,
           width: 900,
           height: 450,
           alt: 'banner image',
@@ -83,10 +84,10 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  const { data, url } = await getQuestBySlug(slugResult.data);
+  const { data } = await getQuestBySlug(slugResult.data);
   if (!data) {
     return notFound();
   }
 
-  return <QuestPage quest={data} url={url} />;
+  return <QuestPage quest={data} />;
 }
