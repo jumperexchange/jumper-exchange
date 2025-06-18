@@ -1,5 +1,6 @@
 import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { QuestData, StrapiResponse } from 'src/types/strapi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getQuestsWithNoCampaignAttached() {
   const urlParams = new QuestStrapiApi()
@@ -11,7 +12,7 @@ export async function getQuestsWithNoCampaignAttached() {
       withCount: false,
     });
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
