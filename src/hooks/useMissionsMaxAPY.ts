@@ -5,6 +5,7 @@ import {
   MerklOpportunity,
 } from 'src/app/lib/getMerklOpportunities';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
+import { MERKL_CACHE_TIME } from 'src/utils/merkl/merklApi';
 import { sanitizeSearchQuery } from 'src/utils/merkl/merklHelper';
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
@@ -43,7 +44,7 @@ export const useMissionsMaxAPY = (
           }
         },
         enabled: !!searchQuery?.length,
-        refetchInterval: 1000 * 60 * 60, // 1 hour
+        refetchInterval: MERKL_CACHE_TIME,
         retry: 3,
         refetchOnWindowFocus: false,
         refetchOnMount: true,
