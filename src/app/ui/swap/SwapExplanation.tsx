@@ -14,7 +14,7 @@ const SwapExplanationSection = () => {
       Answer: `A swap aggregator in crypto connects to multiple decentralized exchanges (DEXs) to find the best rates for token swaps. It compares prices, fees, liquidity and slippage across platforms in real-time, often splitting trades for optimal results. This ensures users get the most value by saving time, reducing costs and maximizing tokens received in a single transaction.`,
     },
     {
-      Question: 'Why use an aggregrator to do swaps in crypto?',
+      Question: 'Why use an aggregator to do swaps in crypto?',
       Answer: `Using a swap aggregator in crypto ensures you get the best price by comparing rates across multiple swap providers (DEXs). Aggregators find the most efficient route, minimizing slippage and fees. They may split your trade across platforms for better outcomes. This saves time, reduces costs, and enhances liquidity access, offering more transparency and value than using a single provider.`,
     },
     {

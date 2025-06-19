@@ -46,7 +46,7 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
     });
   };
 
-  const formatedDate =
+  const formattedDate =
     featuredArticle &&
     t('format.shortDate', {
       value: new Date(
@@ -92,7 +92,7 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
             <FeaturedArticleMetaContainer>
               {isClient ? (
                 <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
-                  {formatedDate}
+                  {formattedDate}
                 </FeaturedArticleMetaDate>
               ) : (
                 <Skeleton
