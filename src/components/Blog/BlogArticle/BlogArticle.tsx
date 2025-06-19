@@ -33,16 +33,16 @@ import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 
 interface BlogArticleProps {
   article: BlogArticleData;
-  baseUrl?: string;
   id?: number;
 }
 
-export const BlogArticle = ({ article, baseUrl }: BlogArticleProps) => {
+export const BlogArticle = ({ article }: BlogArticleProps) => {
   const theme = useTheme();
   const {
     Subtitle: subtitle,
@@ -57,6 +57,7 @@ export const BlogArticle = ({ article, baseUrl }: BlogArticleProps) => {
     tags,
     Image: image,
   } = article;
+  const baseUrl = getStrapiBaseUrl();
   const id = article.id;
   const minRead = readingTime(wordCount);
   const { t } = useTranslation();
@@ -180,7 +181,7 @@ export const BlogArticle = ({ article, baseUrl }: BlogArticleProps) => {
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <CustomRichBlocks id={id} baseUrl={baseUrl} content={content} />
+            <CustomRichBlocks id={id} content={content} />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}
