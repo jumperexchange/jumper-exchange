@@ -1,5 +1,5 @@
+import * as Sentry from '@sentry/nextjs';
 import { merklApi } from 'src/utils/merkl/merklApi';
-
 type MerklUsersRewardsApiResponse = Awaited<
   ReturnType<ReturnType<typeof merklApi.users>['rewards']['get']>
 >;
@@ -43,6 +43,7 @@ export const getMerklUserRewards = async ({
     }
     return response.data;
   } catch (error) {
+    Sentry.captureException(error);
     console.error('Error fetching max APY for identifiers:', error);
     return [];
   }

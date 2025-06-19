@@ -1,5 +1,5 @@
 import { merklApi } from '@/utils/merkl/merklApi';
-
+import * as Sentry from '@sentry/nextjs';
 // Infer types from the API
 type MerklTokenssApiResponse = Awaited<ReturnType<typeof merklApi.tokens.get>>;
 type MerklTokensResponse = NonNullable<MerklTokenssApiResponse['data']>;
@@ -29,6 +29,8 @@ export async function getMerklTokens({
 
     return tokenArrays || [];
   } catch (error) {
-    throw error;
+    Sentry.captureException(error);
+    console.error(`Error fetching tokens on Chain ${chainId}: ${error}`);
+    return [];
   }
 }
