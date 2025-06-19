@@ -8,7 +8,7 @@ import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestO
 export const metadata: Metadata = {
   title: 'Jumper Loyalty Pass',
   description:
-    'Jumper Loyalty Pass is the page explaining the Loyalty Pass sytem.',
+    'Jumper Loyalty Pass is the page explaining the Loyalty Pass system.',
   alternates: {
     canonical: `${getSiteUrl()}/profile`,
   },
