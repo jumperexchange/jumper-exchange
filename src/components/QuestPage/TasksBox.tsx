@@ -11,7 +11,6 @@ import {
 interface StepsBoxProps {
   tasks: TaskVerificationExtended[];
   documentId: string;
-  // taskOpportunities: Record<string, MerklV4Opportunity[]>;
 }
 
 export const TasksBox = ({
