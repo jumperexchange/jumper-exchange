@@ -5,12 +5,7 @@ import { calcPriceImpact, getToAmountData } from './routeAmounts';
 import { getGasAndFeeCosts } from './routeCosts';
 import { getRouteIdHierarchy } from './routeDataProcessor';
 import { getProcessInformation } from './routeProcess';
-import {
-  getRouteStatus,
-  getRouteType,
-  isRouteStatus,
-  RouteStatus,
-} from './routeStatus';
+import { getRouteStatus, getRouteType } from './routeStatus';
 
 export const handleRouteData = (
   route: Route | RouteExtended,
@@ -34,7 +29,7 @@ export const handleRouteData = (
   } = getGasAndFeeCosts(route);
   const routeStatus = getRouteStatus(route);
   const type = getRouteType(route);
-  const isFinal = isRouteStatus(route, RouteStatus.DONE);
+  const isFinal = routeStatus === 'DONE';
   const { toAmount, toAmountUSD, toAmountFormatted } = getToAmountData(route);
   const duration = route.steps?.reduce(
     (acc, step) => acc + step.estimate.executionDuration,

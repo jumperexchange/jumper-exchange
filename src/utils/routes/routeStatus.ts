@@ -1,21 +1,5 @@
 import type { RouteExtended } from '@lifi/sdk';
 
-export enum RouteStatus {
-  DONE = 'DONE',
-  FAILED = 'FAILED',
-}
-
-export const isRouteStatus = (route: RouteExtended, status: RouteStatus) => {
-  switch (status) {
-    case RouteStatus.DONE:
-      return route.steps?.every((step) => step.execution?.status === 'DONE');
-    case RouteStatus.FAILED:
-      return route.steps?.some((step) => step.execution?.status === 'FAILED');
-    default:
-      return false;
-  }
-};
-
 export const getRouteType = (route: RouteExtended) => {
   if (!route) {
     return 'unknown';
@@ -23,20 +7,36 @@ export const getRouteType = (route: RouteExtended) => {
   return route.fromChainId !== route.toChainId ? 'CROSS_CHAIN' : 'SWAP';
 };
 
+export enum RouteStatus {
+  DONE = 'DONE',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING',
+  UNKNOWN = 'UNKNOWN',
+}
+
 export const getRouteStatus = (route?: RouteExtended) => {
   if (!route) {
-    return 'unknown';
+    return RouteStatus.UNKNOWN;
   }
-  const isDone = isRouteStatus(route, RouteStatus.DONE);
-  const isFailed = isRouteStatus(route, RouteStatus.FAILED);
-  const alreadyStarted = route.steps?.some((step) => step.execution);
-  if (alreadyStarted) {
-    if (isFailed) {
-      return 'FAILED';
-    } else if (isDone) {
-      return 'DONE';
-    } else {
-      return 'PENDING';
+
+  let status = RouteStatus.UNKNOWN;
+  let hasExecution = false;
+
+  for (const step of route.steps || []) {
+    if (step.execution) {
+      hasExecution = true;
+
+      if (step.execution.status === RouteStatus.FAILED) {
+        return RouteStatus.FAILED;
+      }
+
+      if (step.execution.status === RouteStatus.DONE) {
+        status = RouteStatus.DONE;
+      } else {
+        status = RouteStatus.PENDING;
+      }
     }
   }
+
+  return hasExecution ? status : RouteStatus.UNKNOWN;
 };
