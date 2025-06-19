@@ -13,11 +13,7 @@ interface StepsBoxProps {
   documentId: string;
 }
 
-export const TasksBox = ({
-  tasks,
-  documentId,
-  // taskOpportunities,
-}: StepsBoxProps) => {
+export const TasksBox = ({ tasks, documentId }: StepsBoxProps) => {
   const { account } = useAccount();
   const { data: verified } = useGetVerifiedTasks(account?.address);
 
@@ -39,7 +35,6 @@ export const TasksBox = ({
           index={index}
           questId={documentId}
           key={task.uuid}
-          // merklOpportunities={taskOpportunities[task.uuid] || []}
         />
       ))}
     </QuestsPageElementContainer>
