@@ -4,7 +4,6 @@ import {
   closeWelcomeScreen,
   clickOnJumperLogo,
 } from './testData/landingPageFunctions';
-import basicSetup from './wallet-setup/basic.setup';
 import { triggerButtonClick } from './testData/commonFunctions';
 import { 
   connectButton,
@@ -12,6 +11,7 @@ import {
   disconnectWalletButton,
   connectedWalletButton
 } from './testData/connectWalletFunctions';
+import basicSetup from './wallet-setup/basic.setup';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
@@ -54,6 +54,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
         '//button[@aria-label="Transaction history"]',
       );
       await clickOnJumperLogo(page);
+      await closeWelcomeScreen(page);
       await transactionHistoryButton.click();
       await expect(noRecentTransactions).toBeVisible();
     });
