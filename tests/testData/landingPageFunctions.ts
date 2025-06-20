@@ -26,6 +26,10 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
   await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
+export async function clickOnJumperLogo(page: Page) {
+  await page.locator('#jumper-logo').click();
+}
+
 export async function checkRoutesVisibility(
   page: Page,
   options: {
