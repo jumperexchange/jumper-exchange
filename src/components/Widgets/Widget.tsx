@@ -5,7 +5,7 @@ import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type { LanguageKey } from '@/types/i18n';
 import getApiUrl from '@/utils/getApiUrl';
-import { ChainId } from '@lifi/sdk';
+import { ChainId, EVM, Solana, UTXO, Sui } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import type { FormState, WidgetConfig } from '@lifi/widget';
 import {
@@ -207,6 +207,7 @@ export function Widget({
       },
       sdkConfig: {
         apiUrl: getApiUrl(),
+        providers: [EVM(), Solana(), UTXO(), Sui()],
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,
