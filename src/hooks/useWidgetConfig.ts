@@ -1,4 +1,4 @@
-import { EVM } from '@lifi/sdk';
+import { EVM, Solana, UTXO, Sui } from '@lifi/sdk';
 import { useWalletMenu } from '@lifi/wallet-management';
 import type { WidgetTheme } from '@lifi/widget';
 import { HiddenUI, type ChainId, type WidgetConfig } from '@lifi/widget';
@@ -168,6 +168,7 @@ export const useWidgetConfig = ({
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: getApiUrl(),
+        providers: [EVM(), Solana(), UTXO(), Sui()],
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,

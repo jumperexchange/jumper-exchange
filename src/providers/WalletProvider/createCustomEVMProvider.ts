@@ -1,4 +1,6 @@
 import { getWalletClient, switchChain } from '@wagmi/core';
+import { EVM, type EVMProvider } from '@lifi/sdk';
+import { isAddress } from 'viem';
 
 export interface CustomEVMProviderHandlers {
   wagmiConfig: any;
@@ -16,8 +18,9 @@ export function createCustomEVMProvider({
   sendCalls,
   waitForCallsStatus,
   getWagmiConnectorClient,
-}: CustomEVMProviderHandlers) {
-  return {
+}: CustomEVMProviderHandlers): EVMProvider {
+  // Create base EVM provider
+  const baseProvider = EVM({
     getWalletClient: async () => {
       const client = await getWalletClient(wagmiConfig);
       return client.extend((client: any) => ({
@@ -31,5 +34,7 @@ export function createCustomEVMProvider({
       const chain = await switchChain(wagmiConfig, { chainId });
       return getWagmiConnectorClient(wagmiConfig, { chainId: chain.id });
     },
-  };
+  });
+
+  return baseProvider;
 } 

@@ -11,6 +11,8 @@ import {
   RequiredUI,
   useWidgetEvents,
   WidgetEvent,
+  WidgetSubvariant,
+  CustomSubvariant,
 } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material';
 import { Box, Skeleton } from '@mui/material';
@@ -38,6 +40,7 @@ import {
 } from '@biconomy/abstractjs';
 import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 import { useTranslation } from 'react-i18next';
+import { EVM as LiFiEVM, Solana, UTXO, Sui } from '@lifi/sdk';
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -492,8 +495,8 @@ export function ZapWidget({
       },
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
       explorerUrls,
-      subvariant: 'custom',
-      subvariantOptions: { custom: 'deposit' },
+      subvariant: 'custom' as WidgetSubvariant,
+      subvariantOptions: { custom: 'deposit' as CustomSubvariant },
       integrator: projectData.integrator,
       disabledUI: [DisabledUI.ToAddress],
       hiddenUI: [
@@ -522,15 +525,6 @@ export function ZapWidget({
       },
     };
   }, [widgetTheme.config, projectData, openWalletMenu, address]);
-
-  const customEVMProvider = createCustomEVMProvider({
-    wagmiConfig,
-    getCapabilities: async (client, args) => handleGetCapabilities(args),
-    getCallsStatus: async (client, args) => handleWalletGetCallsStatus(args),
-    sendCalls: async (client, args) => handleWalletSendCalls(args),
-    waitForCallsStatus: async (client, args) => { /* your logic */ },
-    getWagmiConnectorClient: (wagmiConfig, args) => { /* your logic */ },
-  });
 
   const handleGetCapabilities = useCallback(
     async (args: WalletCapabilitiesArgs) => {
@@ -594,6 +588,15 @@ export function ZapWidget({
     },
     [meeClient],
   );
+
+  const customEVMProvider = createCustomEVMProvider({
+    wagmiConfig,
+    getCapabilities: async (client, args) => handleGetCapabilities(args),
+    getCallsStatus: async (client, args) => handleWalletGetCallsStatus(args),
+    sendCalls: async (client, args) => handleWalletSendCalls(args),
+    waitForCallsStatus: async (client, args) => { /* your logic */ },
+    getWagmiConnectorClient: (wagmiConfig, args) => { /* your logic */ },
+  });
 
   const analytics = {
     ...(zapData?.analytics || {}), // Provide default empty object
