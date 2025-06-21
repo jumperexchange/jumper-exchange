@@ -1,5 +1,11 @@
 import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
+import {
+  isValidEthereumAddress,
+  isValidSolanaAddress,
+  isValidSuiAddress,
+  isValidUTXOAddress,
+} from '../regex-patterns';
 
 // Helper function to sanitize numeric values
 export function sanitizeNumeric(value: string): string {
@@ -14,39 +20,43 @@ export const sanitizeAddress = (address: string): string => {
   }
 
   // Remove any whitespace and convert to lowercase
-  const cleanAddress = address.trim().toLowerCase();
+  const trimmedAddress = address.trim();
+  const cleanAddress = trimmedAddress.toLowerCase();
 
-  // Check if it's a valid Ethereum address
-  if (isAddress(cleanAddress)) {
-    return cleanAddress;
+  // First do preliminary format checks for better error messages
+  if (cleanAddress.startsWith('0x')) {
+    if (!isValidEthereumAddress(cleanAddress)) {
+      throw new Error('Invalid Ethereum address format');
+    }
+    // Now do the full validation
+    if (isAddress(cleanAddress)) {
+      return cleanAddress;
+    }
+    throw new Error('Invalid Ethereum address');
   }
 
   // Check if it's a valid Solana address - case sensitive!
-  try {
-    // Use the original trimmed address (not lowercase) for Solana
-    const originalTrimmed = address.trim();
-    const pubKey = new PublicKey(originalTrimmed);
-    return pubKey.toString();
-  } catch (e) {
-    // Not a valid Solana address
+  if (isValidSolanaAddress(trimmedAddress)) {
+    try {
+      const pubKey = new PublicKey(trimmedAddress);
+      return pubKey.toString();
+    } catch (e) {
+      throw new Error('Invalid Solana address');
+    }
   }
 
-  // Provide more specific error messages for common issues
-  if (/^0x[a-f0-9]*$/i.test(cleanAddress) && cleanAddress.length !== 42) {
-    // Checks if string has 0x prefix and hex characters but not exactly 42 chars (standard ETH address length)
-    throw new Error('Invalid Ethereum address: incorrect length');
+  // Check if it's a valid UTXO address
+  if (isValidUTXOAddress(trimmedAddress)) {
+    return trimmedAddress;
   }
 
-  if (
-    /^[1-9A-HJ-NP-Za-km-z]*$/.test(cleanAddress) &&
-    (cleanAddress.length < 32 || cleanAddress.length > 44)
-  ) {
-    // Checks if string has valid Base58 characters but invalid length for Solana addresses
-    throw new Error('Invalid Solana address: incorrect length');
+  // Check if it's a valid SUI address
+  if (isValidSuiAddress(trimmedAddress)) {
+    return trimmedAddress;
   }
 
   // Generic error for other cases
   throw new Error(
-    'Invalid address: Must be a valid Ethereum or Solana address',
+    'Invalid address: Must be a valid Ethereum, Solana, UTXO, or SUI address',
   );
 };
