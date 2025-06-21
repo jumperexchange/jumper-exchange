@@ -200,7 +200,7 @@ export const useSocialLinks = () => {
 
   const socialLinkIconStyle = useMemo(
     () => ({
-      color: (theme.vars || theme).palette.alphaLight500.main,
+      color: (theme.vars || theme).palette.alphaLight600.main,
       ...theme.applyStyles('light', {
         color: (theme.vars || theme).palette.alphaDark500.main,
       }),
