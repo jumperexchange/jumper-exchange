@@ -512,18 +512,26 @@ export function ZapWidget({
         try {
           if (args.method === 'wallet_getCapabilities') {
             // Use the same explorerChainIds that are defined in widgetConfig
-            const mockCapabilities = widgetConfig.explorerUrls ? 
-              Object.keys(widgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
-                const chainId = parseInt(chainIdStr);
-                acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
-                return acc;
-              }, {}) : 
-              {
-                '0x1': { atomic: { status: 'supported' } },  // mainnet
-                '0xa': { atomic: { status: 'supported' } },  // optimism
-                '0x2105': { atomic: { status: 'supported' } }, // base
-                '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
-              };
+            const mockCapabilities = widgetConfig.explorerUrls
+              ? Object.keys(widgetConfig.explorerUrls).reduce(
+                  (
+                    acc: Record<string, { atomic: { status: 'supported' } }>,
+                    chainIdStr,
+                  ) => {
+                    const chainId = parseInt(chainIdStr);
+                    acc[`0x${chainId.toString(16)}`] = {
+                      atomic: { status: 'supported' },
+                    };
+                    return acc;
+                  },
+                  {},
+                )
+              : {
+                  '0x1': { atomic: { status: 'supported' } }, // mainnet
+                  '0xa': { atomic: { status: 'supported' } }, // optimism
+                  '0x2105': { atomic: { status: 'supported' } }, // base
+                  '0x1a4': { atomic: { status: 'supported' } }, // optimism-sepolia
+                };
             return Promise.resolve(mockCapabilities);
           } else if (args.method === 'wallet_sendCalls') {
             return await handleWalletSendCalls(args as WalletSendCallsArgs);

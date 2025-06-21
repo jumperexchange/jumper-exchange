@@ -71,17 +71,17 @@
       "toTokenSymbol": "USDC",
       "toChain": "998"
     },
-  "NegativeUSDCtoUSDC": {
-    "tokenSymbol": "USDC",
-    "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-    "fromChain": "42161",
-    "amount": "2",
-    "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-    "toTokenSymbol": "USDC",
-    "toChain": "998"
-  }
+    "NegativeUSDCtoUSDC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "fromChain": "42161",
+      "amount": "2",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "998"
+    }
   },
-  
+
   "BTCtoHypercore": {
     "BTCtoUSDC": {
       "tokenSymbol": "BTC",

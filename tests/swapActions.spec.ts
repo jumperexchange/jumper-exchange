@@ -62,10 +62,10 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
-      
+
       await test.step(`[NEGATIVE] Check  ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.tokenSymbol} to ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.toTokenSymbol} swap pair when amount is less than 5USDC`, async () => {
         const urlParams = buildUlParams(
-          chainData.ArbUSDCtoHypercore.NegativeUSDCtoUSDC
+          chainData.ArbUSDCtoHypercore.NegativeUSDCtoUSDC,
         );
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: false });
@@ -81,7 +81,7 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
         const urlParams = buildUlParams(chainData.BTCtoHypercore.BTCtoUSDC);
         await page.goto(`/${urlParams}`);
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      }); 
+      });
 
       await test.step(`Check ${chainData.SOLtoHypercore.SOLtoUSDC.tokenSymbol} to ${chainData.SOLtoHypercore.SOLtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.SOLtoHypercore.SOLtoUSDC);
