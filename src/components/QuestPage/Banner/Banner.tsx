@@ -3,6 +3,7 @@ import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { checkInclusion } from 'src/components/ProfilePage/checkInclusion';
 import { type Quest } from 'src/types/loyaltyPass';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BadgeMainBox,
   BadgeRelativeBox,
@@ -18,7 +19,6 @@ import { RewardBox } from './Rewards/RewardBox';
 
 interface BannerBoxProps {
   quest: Quest;
-  baseUrl: string;
   pastCampaigns: string[];
   rotatingBadge?: React.JSX.Element;
 }
@@ -30,10 +30,10 @@ export interface Chain {
 
 export const BannerBox = ({
   quest,
-  baseUrl,
   pastCampaigns,
   rotatingBadge,
 }: BannerBoxProps) => {
+  const baseUrl = getStrapiBaseUrl();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -117,7 +117,7 @@ export const BannerBox = ({
                       ]
                 }
                 title={'Jumper XP'}
-                value={`${String(attributes?.Points)}`}
+                value={String(attributes?.Points)}
               />
             ) : undefined}
           </RewardMainBox>

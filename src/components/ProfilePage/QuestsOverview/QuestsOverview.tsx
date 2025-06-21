@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import type { QuestData } from 'src/types/strapi';
+import { QuestDataExtended } from 'src/types/merkl';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { checkInclusion } from '../checkInclusion';
 import { QuestCard } from '../QuestCard/QuestCard';
@@ -9,18 +9,18 @@ import {
 } from './QuestsOverview.style';
 
 interface QuestOverviewProps {
-  quests: QuestData[];
+  quests: QuestDataExtended[];
   pastCampaigns?: string[];
   traits?: string[];
   // traits?: Trait[];
   label?: string;
+  questApys?: Record<string, number>;
 }
 
 export const QuestsOverview = ({
   quests,
   pastCampaigns,
   traits,
-  label,
 }: QuestOverviewProps) => {
   const { t } = useTranslation();
   const baseUrl = getStrapiBaseUrl();
@@ -70,6 +70,7 @@ export const QuestsOverview = ({
           rewards,
           completed,
           claimingIds,
+          rewardsIds,
           variableWeeklyAPY:
             quest.Points && quest?.Points > 0 && rewardType === 'weekly'
               ? true
@@ -78,6 +79,8 @@ export const QuestsOverview = ({
           isTraitsGarded: questTraits && questTraits?.length > 0,
           isUnlocked: isUnlockedForUser,
           hideXPProgressComponents: true,
+          opportunities: quest.opportunities,
+          maxApy: quest.maxApy,
         };
 
         return <QuestCard key={`available-mission-${index}`} data={data} />;
