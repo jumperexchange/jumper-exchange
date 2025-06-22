@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import {
   closeWelcomeScreen,
   navigateToTab,
+  clickOnJumperLogo,
 } from './testData/landingPageFunctions';
 
 test.describe('Landing page and navigation', () => {
@@ -19,7 +20,7 @@ test.describe('Landing page and navigation', () => {
     page,
   }) => {
     const headerText = 'Find the best route';
-    await page.locator('#jumper-logo').click();
+    await clickOnJumperLogo(page);
     await closeWelcomeScreen(page);
     await expect(headerText).toBe('Find the best route');
   });
