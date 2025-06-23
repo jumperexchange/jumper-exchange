@@ -3,7 +3,7 @@ import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
 import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
-import { TaskVerification, type Quest } from 'src/types/loyaltyPass';
+import { TaskVerificationWithApy, type Quest } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
@@ -18,7 +18,7 @@ interface QuestsMissionPageVar {
   activeCampaign?: string;
   path: string;
   merklOpportunities?: MerklOpportunity[];
-  tasksVerification?: TaskVerification[];
+  tasksVerification?: TaskVerificationWithApy[];
 }
 
 export const QuestsMissionPage = ({
