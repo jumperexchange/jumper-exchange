@@ -1,14 +1,15 @@
 'use client';
 import { ProfilePage as ProfilePageComponent } from '@/components/ProfilePage/ProfilePage';
 import { ProfileProvider } from '@/providers/ProfileProvider';
-import type { CampaignData, QuestData } from '@/types/strapi';
+import type { CampaignData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
+import { QuestDataExtended } from 'src/types/merkl';
 
 interface ProfilePageProps {
   walletAddress?: string;
   isPublic?: boolean;
   campaigns?: CampaignData[];
-  quests?: QuestData[];
+  quests?: QuestDataExtended[];
 }
 
 const ProfilePage = ({

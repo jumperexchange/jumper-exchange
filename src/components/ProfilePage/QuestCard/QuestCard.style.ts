@@ -1,18 +1,10 @@
 import type { BoxProps } from '@mui/material';
-import {
-  Box,
-  Button,
-  Skeleton,
-  Typography,
-  alpha,
-  styled,
-} from '@mui/material';
+import { Box, Button, Skeleton, Typography, styled } from '@mui/material';
 import Image from 'next/image';
 
 export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  backgroundColor:
-    alpha(theme.palette.white.main, 0.08),
+  backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
   borderRadius: '24px',
   flexDirection: 'column',
   height: 'auto',
@@ -24,9 +16,9 @@ export const QuestCardMainBox = styled(Box)(({ theme }) => ({
   textAlign: 'center',
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[2],
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.white.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const QuestCardImage = styled(Image)(({ theme }) => ({
@@ -93,16 +85,13 @@ export const QuestPlatformMainBox = styled(Box)<BoxProps>(() => ({
 }));
 
 export interface XPDisplayBoxProps extends BoxProps {
-  active?: boolean;
-  completed?: boolean;
+  variant: 'apy' | 'xp' | 'completed' | 'variableWeeklyAPY';
 }
 
 export const XPDisplayBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'completed' && prop !== 'active',
+  shouldForwardProp: (prop) => prop !== 'variant',
 })<XPDisplayBoxProps>(({ theme }) => ({
   display: 'flex',
-  color: (theme.vars || theme).palette.primary.main,
-  backgroundColor: (theme.vars || theme).palette.background.default,
   height: 32,
   alignItems: 'center',
   borderRadius: '128px',
@@ -111,17 +100,51 @@ export const XPDisplayBox = styled(Box, {
   ':not(last-of-type)': {
     marginRight: theme.spacing(1),
   },
+
   variants: [
     {
-      props: ({ completed }) => completed,
+      props: ({ variant }) => variant === 'completed',
       style: {
         color: '#00B849',
+        backgroundColor: '#D6FFE7',
       },
     },
     {
-      props: ({ completed }) => completed,
+      props: ({ variant }) => variant === 'apy',
       style: {
-        backgroundColor: '#D6FFE7',
+        color: (theme.vars || theme).palette.text.primary,
+        backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+
+        ...theme.applyStyles('light', {
+          backgroundColor: (theme.vars || theme).palette.primary.main,
+          color: (theme.vars || theme).palette.white.main,
+        }),
+      },
+    },
+    {
+      props: ({ variant }) => variant === 'xp',
+      style: {
+        color: (theme.vars || theme).palette.white.main,
+        backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+
+        ...theme.applyStyles('light', {
+          backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+          color: (theme.vars || theme).palette.primary.main,
+        }),
+      },
+    },
+    {
+      props: ({ variant }) => variant === 'variableWeeklyAPY',
+      style: {
+        color: (theme.vars || theme).palette.text.secondary,
+        backgroundColor: (theme.vars || theme).palette.accent1.main,
+        marginRight: theme.spacing(2),
+        height: '32px',
+        minWidth: '88px',
+        ...theme.applyStyles('light', {
+          color: (theme.vars || theme).palette.white.main,
+          backgroundColor: '#653BA3',
+        }),
       },
     },
   ],
@@ -164,10 +187,16 @@ export const QuestCardButtonCta = styled(Button)(({ theme }) => ({
   height: 24,
   color: (theme.vars || theme).palette.text.primary,
   transition: 'background-color 300ms',
-  backgroundColor: alpha(theme.palette.text.primary, 0.04),
+  backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
   '&:hover': {
-    backgroundColor: alpha(theme.palette.text.primary, 0.08),
+    backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+    '&:hover': {
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+    },
+  }),
 }));
 
 export const CompletedBox = styled(Box)(() => ({
