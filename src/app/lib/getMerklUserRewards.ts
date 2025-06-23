@@ -20,11 +20,7 @@ export const getMerklUserRewards = async ({
   chainIds,
   claimableOnly = false,
 }: GetMerklUserRewardsProps): Promise<MerklUserRewardsData[]> => {
-  if (!userAddress) {
-    return [];
-  }
-
-  if (!chainIds) {
+  if (!userAddress || !chainIds) {
     return [];
   }
 
