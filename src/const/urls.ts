@@ -18,7 +18,7 @@ export const JUMPER_TX_PATH = '/tx';
 export const JUMPER_WALLET_PATH = '/wallet';
 export const JUMPER_QUESTS_PATH = '/quests';
 export const JUMPER_CAMPAIGN_PATH = '/campaign';
-
+export const JUMPER_PROFILE_PATH = '/profile';
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
 

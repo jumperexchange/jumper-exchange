@@ -34,6 +34,7 @@ export async function generateMetadata({
 
   const validatedSlug = result.data;
   const article = await getArticleBySlug(validatedSlug);
+  const baseUrl = getStrapiBaseUrl();
 
   if (!article.data || !article.data.data?.[0]) {
     return {
@@ -54,7 +55,7 @@ export async function generateMetadata({
     url: `${getSiteUrl()}/learn/${validatedSlug}`,
     images: [
       {
-        url: `${getStrapiBaseUrl()}${articleData.Image?.url}`,
+        url: `${baseUrl}${articleData.Image?.url}`,
         width: 900,
         height: 450,
         alt: 'banner image',
