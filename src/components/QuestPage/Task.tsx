@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
-import { TaskVerificationExtended } from 'src/types/merkl';
+import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import {
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
@@ -42,7 +42,7 @@ function isVerified(isSuccess: boolean, isValid: boolean) {
 
 interface TaskProps {
   questId: string;
-  task: TaskVerificationExtended;
+  task: TaskVerificationWithApy;
   isValid?: boolean;
   index: number;
 }

@@ -3,7 +3,7 @@ import { useAccount } from '@lifi/wallet-management';
 import generateKey from 'src/app/lib/generateKey';
 import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
-import { type Quest } from 'src/types/loyaltyPass';
+import { TaskVerification, type Quest } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BackButton } from './BackButton/BackButton';
 import { BannerBox } from './Banner/Banner';
@@ -18,6 +18,7 @@ interface QuestsMissionPageVar {
   activeCampaign?: string;
   path: string;
   merklOpportunities?: MerklOpportunity[];
+  tasksVerification?: TaskVerification[];
 }
 
 export const QuestsMissionPage = ({
@@ -25,6 +26,7 @@ export const QuestsMissionPage = ({
   activeCampaign,
   path,
   merklOpportunities = [],
+  tasksVerification = [],
 }: QuestsMissionPageVar) => {
   const baseUrl = getStrapiBaseUrl();
   const attributes = quest;
@@ -66,12 +68,8 @@ export const QuestsMissionPage = ({
           />
         )}
         {/* Steps */}
-        {Array.isArray(attributes?.tasks_verification) &&
-        attributes?.tasks_verification?.length > 0 ? (
-          <TasksBox
-            tasks={attributes?.tasks_verification}
-            documentId={quest.documentId}
-          />
+        {Array.isArray(tasksVerification) && tasksVerification?.length > 0 ? (
+          <TasksBox tasks={tasksVerification} documentId={quest.documentId} />
         ) : attributes?.Steps && attributes?.Steps?.length > 0 ? (
           <StepsBox steps={attributes?.Steps} />
         ) : undefined}

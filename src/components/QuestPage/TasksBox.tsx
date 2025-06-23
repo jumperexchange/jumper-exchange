@@ -1,7 +1,7 @@
 import Task from '@/components/QuestPage/Task';
 import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
 import { useAccount } from '@lifi/wallet-management';
-import { TaskVerificationExtended } from 'src/types/merkl';
+import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { DescriptionTitleTypography } from './DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
@@ -9,7 +9,7 @@ import {
 } from './QuestsMissionPage.style';
 
 interface StepsBoxProps {
-  tasks: TaskVerificationExtended[];
+  tasks: TaskVerificationWithApy[];
   documentId: string;
 }
 

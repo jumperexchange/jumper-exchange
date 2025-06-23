@@ -99,9 +99,15 @@ export default async function Page({ params }: { params: Params }) {
   ).then((el) => filterUniqueByIdentifier(el));
 
   // fetches and add apy to task_verification items:
-  data.tasks_verification = await fetchTaskOpportunities(
+  const tasksVerification = await fetchTaskOpportunities(
     data.tasks_verification,
   );
 
-  return <QuestPage quest={data} merklOpportunities={merklOpportunities} />;
+  return (
+    <QuestPage
+      quest={data}
+      tasksVerification={tasksVerification}
+      merklOpportunities={merklOpportunities}
+    />
+  );
 }

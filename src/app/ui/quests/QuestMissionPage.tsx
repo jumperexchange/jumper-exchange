@@ -2,14 +2,19 @@
 import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import { QuestsMissionPage } from 'src/components/QuestPage/QuestsMissionPage';
 import { JUMPER_CAMPAIGN_PATH, JUMPER_PROFILE_PATH } from 'src/const/urls';
-import { Quest } from 'src/types/loyaltyPass';
+import { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
 
 interface QuestMissionPageProps {
   quest: Quest;
   merklOpportunities: MerklOpportunity[];
+  tasksVerification: TaskVerificationWithApy[];
 }
 
-const QuestPage = ({ quest, merklOpportunities }: QuestMissionPageProps) => {
+const QuestPage = ({
+  quest,
+  merklOpportunities,
+  tasksVerification,
+}: QuestMissionPageProps) => {
   const { campaign } = quest;
 
   const path = campaign?.Slug
@@ -19,6 +24,7 @@ const QuestPage = ({ quest, merklOpportunities }: QuestMissionPageProps) => {
   return (
     <QuestsMissionPage
       quest={quest}
+      tasksVerification={tasksVerification}
       merklOpportunities={merklOpportunities}
       path={path}
       activeCampaign={campaign?.Title}

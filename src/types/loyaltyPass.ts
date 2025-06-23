@@ -115,6 +115,10 @@ export interface TaskVerification {
   hasTask: boolean;
 }
 
+export interface TaskVerificationWithApy extends TaskVerification {
+  maxApy?: number;
+}
+
 export interface Quest extends QuestAttributes {
   id: number;
   documentId: string;
