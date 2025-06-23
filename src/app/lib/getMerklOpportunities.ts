@@ -65,30 +65,27 @@ export async function getMerklOpportunities({
   // Handle campaign-specific query first (highest priority)
   if (campaignId) {
     const opportunities = await fetchOpportunities({ campaignId });
-    allOpportunities.push(...opportunities);
-    return allOpportunities;
+    return opportunities;
   }
 
-  // Handle chain-specific queries with optional search
+  // Handle chain-specific queries
   if (chainIds?.length) {
     for (const chainId of chainIds) {
+      // If search queries exist, combine them with chain queries
       if (searchQueries?.length) {
-        // Fetch opportunities for each chain + search combination
         for (const search of searchQueries) {
           const opportunities = await fetchOpportunities({ chainId, search });
           allOpportunities.push(...opportunities);
         }
       } else {
-        // Fetch all opportunities for the chain
+        // Just fetch chain opportunities
         const opportunities = await fetchOpportunities({ chainId });
         allOpportunities.push(...opportunities);
       }
     }
-    return allOpportunities;
   }
-
-  // Handle search-only queries (when no chainIds or campaignId)
-  if (searchQueries?.length) {
+  // Handle search-only queries if no chains specified
+  else if (searchQueries?.length) {
     for (const search of searchQueries) {
       const opportunities = await fetchOpportunities({ search });
       allOpportunities.push(...opportunities);
