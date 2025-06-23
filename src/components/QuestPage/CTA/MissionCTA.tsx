@@ -62,7 +62,7 @@ export const MissionCTA = ({
     claimingId,
     title,
   }: {
-    claimingId?: string;
+    claimingId: string;
     title: string;
   }) => {
     trackEvent({
@@ -72,9 +72,7 @@ export const MissionCTA = ({
       data: {
         [TrackingEventParameter.MissionCtaTitle]: title,
         [TrackingEventParameter.MissionCtaPartnerId]: id,
-        ...(claimingId && {
-          [TrackingEventParameter.MissionCtaClaimingId]: claimingId,
-        }),
+        [TrackingEventParameter.MissionCtaClaimingId]: claimingId,
         ...(label && { [TrackingEventParameter.MissionCtaLabel]: label }),
         ...(activeCampaign && {
           [TrackingEventParameter.MissionCtaCampaign]: activeCampaign || '',
@@ -112,7 +110,7 @@ export const MissionCTA = ({
       </StartedTitleBox>
       <SeveralCTABox>
         {signature && <SignatureCTA />}
-        {CTAs.map((CTA: MerklOpportunity, i: number) => {
+        {CTAs.map((CTA, i) => {
           return (
             <Link
               key={`cta-mission-${i}`}
