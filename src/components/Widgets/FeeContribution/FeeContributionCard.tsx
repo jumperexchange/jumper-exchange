@@ -40,24 +40,17 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
   onClose,
   onConfirm,
 }) => {
+  // Usage in your onChange handler
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
-    if (contributed) {
-      return;
-    }
+    if (contributed) return;
     const { value } = event.target;
-    // First validate the input value
-    const validatedValue = helper.validateInputAmount(value);
-    const numericValue = Number(validatedValue);
-    if (!isNaN(numericValue)) {
-      if (numericValue > maxUsdAmount) {
-        // Check if maxUsdAmount is bigger than the validated value
-        const formattedMaxUsdAmount = maxUsdAmount.toFixed(2).toString();
-        setAmount(formattedMaxUsdAmount);
-        setInputAmount(formattedMaxUsdAmount);
-      } else {
-        setAmount(validatedValue);
-        setInputAmount(validatedValue);
-      }
+    const inputAmountSchema = helper.createInputAmountSchema(maxUsdAmount);
+    const result = inputAmountSchema.safeParse(value);
+    if (result.success) {
+      setAmount(result.data);
+      setInputAmount(result.data);
+    } else {
+      // handle error, e.g., show result.error.issues[0].message
     }
   }
 
@@ -82,10 +75,8 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
     }
   };
 
-  console.log('FeeContributionCard!!', amount, typeof amount);
-
   return (
-    <ContributionCard className="TEST-CARD">
+    <ContributionCard>
       <ContributionCardTitle>{translations.title}</ContributionCardTitle>
       <Grid
         container

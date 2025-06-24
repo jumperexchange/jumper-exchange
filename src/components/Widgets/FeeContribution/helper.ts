@@ -1,6 +1,6 @@
 import { ChainType, Route, StatusResponse } from '@lifi/sdk';
 import { Account } from '@lifi/wallet-management';
-import { decimalFormatter } from 'src/utils/formatNumbers';
+import { z } from 'zod';
 import { MIN_CONTRIBUTION_USD } from './constants';
 import {
   checkContributionByTxHistory,
@@ -71,55 +71,26 @@ export const isEligibleForContribution = (
 const SHOW_DECIMAL_PLACES = 2;
 
 // Helper function to sanitize input value
-export const sanitizeNumberField = (
-  value: string,
-): { originalValue: string; cleanValue: string } => {
-  const originalValue = value;
-  const cleanValue =
-    value
-      .replace(/[^\d.,]/g, '') // Remove any non-numeric characters except . and ,
-      .replace(/,/g, '.') // Convert commas to dots
-      .replace(/\.{2,}/g, '') // Remove any sequence of 2 or more dots
-      .replace(/^0+(?=\d*\.)|^0+(?=0+$)/g, '0') // Keep only one leading zero
-      .replace(/^0+(?!\.|$)/, '') ||
-    '0' // Handle leading zeros
-      .replace(/(\d*)(\.)(\d*)(\.\d*)*/g, '$1$2$3') // Keep only the first decimal point and its digits
-      .replace(/\.+/g, '.') // Replace multiple dots with a single dot
-      .replace(/^\./, '0.'); // Add leading zero if starts with dot
-
-  return { originalValue, cleanValue };
-};
-
-// Helper function to format a number with commas
-export const formatAmount = (value: number): string => {
-  return decimalFormatter('en', {
-    maximumFractionDigits: SHOW_DECIMAL_PLACES,
-    minimumFractionDigits: 0,
-    useGrouping: true,
-  })(value);
-};
-
-// Add validation function that handles max value check and special cases
-export const validateInputAmount = (
-  value: string,
-  decimals?: number,
-): string => {
-  if (!value) return '';
-
-  // Sanitize the input value
-  const { cleanValue } = sanitizeNumberField(value);
-
-  // For values with a decimal point, handle decimal places
-  if (cleanValue.includes('.')) {
-    const [whole, decimal] = cleanValue.split('.');
-
-    // If we have more decimal places than defined in "decimals" variable, then truncate
-    if (decimal && decimal.length > (decimals || SHOW_DECIMAL_PLACES)) {
-      const truncatedValue = `${whole}.${decimal.slice(0, decimals || SHOW_DECIMAL_PLACES)}`;
-      // Only validate against max when we have a complete number
-      return truncatedValue;
-    }
-  }
-
-  return cleanValue;
-};
+// Create a function that returns the schema with maxUsdAmount parameter
+export const createInputAmountSchema = (maxUsdAmount: number) =>
+  z
+    .string()
+    .transform((val) => val.replace(/[^\d.,]/g, '').replace(/,/g, '.')) // remove non-numeric characters and replace commas with dots
+    .transform((val) => val.replace(/\.+/g, '.')) // replace multiple dots with one dot
+    .transform((val) => val.replace(/^0+(?!\.|$)/, '')) // remove leading zeros
+    .refine((val) => !val || !isNaN(Number(val)), { message: 'Invalid number' }) // check if value is a number
+    .transform((val) => {
+      // Limit to 2 decimal places
+      const [whole, decimal] = val.split('.');
+      if (decimal && decimal.length > SHOW_DECIMAL_PLACES) {
+        return `${whole}.${decimal.slice(0, SHOW_DECIMAL_PLACES)}`;
+      }
+      return val;
+    })
+    // Clamp to maxUsdAmount if exceeded
+    .transform((val) => {
+      const num = Number(val);
+      if (isNaN(num)) return val;
+      if (num > maxUsdAmount) return maxUsdAmount.toString();
+      return val;
+    });

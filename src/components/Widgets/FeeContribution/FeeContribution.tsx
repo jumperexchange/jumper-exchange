@@ -226,7 +226,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // Handle contribution confirmation to sign the tx
   const handleConfirm = async () => {
     if (contributed) {
-      console.log('contributed, set false now', contributed);
       setIsOpen(false);
       return;
     }
@@ -395,8 +394,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     txReceipt?.transactionHash,
     setContributed,
   ]);
-
-  console.log('contributionDisplayed', contributionDisplayed);
 
   if (!contributionDisplayed) {
     return null;
