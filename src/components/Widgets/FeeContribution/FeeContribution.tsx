@@ -1,6 +1,4 @@
 import { useAccount } from '@lifi/wallet-management';
-import CheckIcon from '@mui/icons-material/Check';
-import { CircularProgress, Grid, InputAdornment } from '@mui/material';
 import * as Sentry from '@sentry/nextjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
@@ -24,14 +22,8 @@ import {
   CONTRIBUTION_AB_TEST_PERCENTAGE,
   CONTRIBUTION_AMOUNTS,
 } from './constants';
-import {
-  ContributionButton,
-  ContributionButtonConfirm,
-  ContributionCard,
-  ContributionCardTitle,
-  ContributionCustomInput,
-  ContributionDescription,
-} from './FeeContribution.style';
+import { ContributionWrapper } from './FeeContribution.style';
+import { FeeContributionDrawer } from './FeeContributionDrawer';
 import * as helper from './helper';
 import {
   checkContributionByTxHistory,
@@ -52,6 +44,7 @@ export interface ContributionTranslations {
     invalidTokenPrice: string;
   };
 }
+
 export interface FeeContributionProps {
   translations: ContributionTranslations;
 }
@@ -62,14 +55,17 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   const [contributionOptions, setContributionOptions] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
   );
+  const [isOpen, setIsOpen] = useState(true);
 
   // AB test flag - show contribution for ~10% of users
   const isContributionAbEnabled = useMemo(() => {
     return Math.random() < CONTRIBUTION_AB_TEST_PERCENTAGE;
   }, []);
+
   const [amount, setAmount] = useState<string>('');
   const [inputAmount, setInputAmount] = useState<string>('');
   const [isSending, setIsSending] = useState(false);
+
   const { completedRoute } = useRouteStore((state) => state);
   const {
     contributed,
@@ -77,16 +73,19 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     contributionDisplayed,
     setContributionDisplayed,
   } = useContributionStore((state) => state);
+
   const { data } = useTxHistory(account?.address, completedRoute?.id);
   const { data: tokenBalanceData } = useGetTokenBalance(
     account?.address,
     completedRoute?.toToken,
   );
+
   const {
     data: writeTxHash,
     isPending: isTxPending,
     writeContract,
   } = useWriteContract();
+
   const {
     sendTransaction,
     isSuccess: isNativeTxSuccess,
@@ -155,10 +154,11 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   // Update contribution options when eligible
   useEffect(() => {
-    if (!isEligible || contributed) {
-      setContributionDisplayed(false);
-      return;
-    }
+    // todo: re-enable this
+    // if (!isEligible) {
+    //   setContributionDisplayed(false);
+    //   return;
+    // }
 
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
     setContributionDisplayed(true);
@@ -172,18 +172,19 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
   // - Chain type is EVM
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
-    if (
-      contributed ||
-      !helper.isEligibleForContribution(
-        data,
-        completedRoute,
-        account,
-        isContributionAbEnabled,
-      )
-    ) {
-      setContributionDisplayed(false);
-      return;
-    }
+    // todo: re-enable this
+    // if (
+    //   contributed ||
+    //   !helper.isEligibleForContribution(
+    //     data,
+    //     completedRoute,
+    //     account,
+    //     isContributionAbEnabled,
+    //   )
+    // ) {
+    //   setContributionDisplayed(false);
+    //   return;
+    // }
 
     // If eligible, set contribution amounts based on transaction amount
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
@@ -196,27 +197,6 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     isContributionAbEnabled,
     completedRoute?.toChainId,
   ]);
-
-  function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
-    if (contributed) {
-      return;
-    }
-    const { value } = event.target;
-    // First validate the input value
-    const validatedValue = helper.validateInputAmount(value);
-    const numericValue = Number(validatedValue);
-    if (!isNaN(numericValue)) {
-      if (numericValue > maxUsdAmount) {
-        // Check if maxUsdAmount is bigger than the validated value
-        const formattedMaxUsdAmount = helper.formatAmount(maxUsdAmount);
-        setAmount(formattedMaxUsdAmount);
-        setInputAmount(formattedMaxUsdAmount);
-      } else {
-        setAmount(validatedValue);
-        setInputAmount(validatedValue);
-      }
-    }
-  }
 
   // Track contribution impression
   useEffect(() => {
@@ -241,34 +221,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       });
       hasTrackedImpressionRef.current = true;
     }
-  }, [contributionDisplayed]); // Only depend on showContribution
-
-  // Handle contribution button click
-  const handleButtonClick = (selectedAmount: number) => {
-    if (contributed) {
-      return;
-    }
-    if (!contributed && amount && Number(amount) === selectedAmount) {
-      setAmount('');
-    } else {
-      const amountStr = selectedAmount.toString();
-      setAmount(amountStr);
-    }
-  };
-  // Handle custom contribution amount
-  const handleCustomClick = () => {
-    if (contributed) {
-      return;
-    }
-    if (inputAmount && Number(inputAmount) > 0) {
-      setAmount(inputAmount);
-    }
-  };
+  }, [contributionDisplayed]);
 
   // Handle contribution confirmation to sign the tx
   const handleConfirm = async () => {
     if (contributed) {
-      setContributionDisplayed(false);
+      console.log('contributed, set false now', contributed);
+      setIsOpen(false);
       return;
     }
     if (
@@ -399,7 +358,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
       !contributionOptions.includes(Number(amount)) &&
       Number(amount) > 0
     );
-  }, [amount]);
+  }, [amount, contributionOptions]);
 
   // Move the setContributed logic to useEffect
   useEffect(() => {
@@ -437,81 +396,30 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     setContributed,
   ]);
 
+  console.log('contributionDisplayed', contributionDisplayed);
+
   if (!contributionDisplayed) {
     return null;
   }
 
   return (
-    <ContributionCard>
-      <ContributionCardTitle>{translations.title}</ContributionCardTitle>
-      <Grid
-        container
-        spacing={2}
-        columnSpacing={1}
-        justifyContent={'space-between'}
-      >
-        {contributionOptions.map((contributionAmount) => (
-          <Grid size={3} key={contributionAmount}>
-            <ContributionButton
-              selected={!!amount && Number(amount) === contributionAmount}
-              onClick={() => handleButtonClick(contributionAmount)}
-              size="small"
-            >
-              ${contributionAmount}
-            </ContributionButton>
-          </Grid>
-        ))}
-        <Grid size={3}>
-          <ContributionCustomInput
-            value={inputAmount}
-            aria-autocomplete="none"
-            onChange={onChangeValue}
-            onClick={handleCustomClick}
-            onFocus={handleCustomClick}
-            placeholder={translations.custom}
-            isCustomAmountActive={isCustomAmountActive}
-            hasInputAmount={!!inputAmount}
-            InputProps={{
-              startAdornment: inputAmount ? (
-                <InputAdornment position="start" disableTypography>
-                  $
-                </InputAdornment>
-              ) : null,
-              sx: (theme) => ({
-                input: {
-                  ...(inputAmount && {
-                    width: inputAmount.length * 8 + 'px',
-                    paddingLeft: theme.spacing(0.5),
-                  }),
-                  padding: inputAmount ? '0' : '0 16px',
-                },
-              }),
-            }}
-          />
-        </Grid>
-      </Grid>
-
-      {!!amount || contributed ? (
-        <ContributionButtonConfirm
-          onClick={handleConfirm}
-          isTxConfirmed={contributed}
-          disabled={isTransactionLoading && !contributed}
-        >
-          {contributed ? <CheckIcon /> : null}
-          {isTransactionLoading ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : contributed ? (
-            translations.thankYou
-          ) : (
-            translations.confirm
-          )}
-        </ContributionButtonConfirm>
-      ) : (
-        <ContributionDescription>
-          {translations.description}
-        </ContributionDescription>
-      )}
-    </ContributionCard>
+    <ContributionWrapper showContribution={isOpen}>
+      <FeeContributionDrawer
+        translations={translations}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contributionOptions={contributionOptions}
+        amount={amount}
+        inputAmount={inputAmount}
+        contributed={contributed}
+        isTransactionLoading={isTransactionLoading}
+        maxUsdAmount={maxUsdAmount}
+        isCustomAmountActive={isCustomAmountActive}
+        setAmount={setAmount}
+        setInputAmount={setInputAmount}
+        onConfirm={handleConfirm}
+      />
+    </ContributionWrapper>
   );
 };
 

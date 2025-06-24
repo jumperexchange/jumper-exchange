@@ -1,5 +1,7 @@
 import {
   alpha,
+  Box,
+  BoxProps,
   Button,
   ButtonProps,
   Card,
@@ -10,6 +12,29 @@ import {
   Typography,
 } from '@mui/material';
 
+interface ContributionWrapperProps extends BoxProps {
+  showContribution: boolean;
+}
+
+export const ContributionWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'showContribution',
+})<ContributionWrapperProps>(({ showContribution }) => ({
+  position: 'relative',
+  transition: 'height 250ms',
+  height: showContribution ? '156px' : '0px',
+}));
+
+export const DrawerWrapper = styled(Box)(() => ({
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  top: 0,
+  overflow: 'hidden',
+  borderRadius: '24px',
+  boxShadow: 'none',
+}));
+
 export const ContributionCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -18,7 +43,6 @@ export const ContributionCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(2),
   borderRadius: '16px',
   boxShadow: '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-  marginBottom: theme.spacing(2),
 }));
 
 export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
@@ -77,7 +101,6 @@ export const ContributionCustomInput = styled(TextField, {
           width: `${inputAmount?.length * 8}px`,
           paddingLeft: theme.spacing(0.5),
         }),
-      // padding: hasInputAmount ? '0' : '0 16px',
       padding: 0,
       height: '32px',
       borderRadius: '16px',
@@ -245,5 +268,6 @@ export const ContributionDrawer = styled(Drawer)(({ theme }) => ({
     right: 0,
     width: '100%',
     borderRadius: '24px',
+    boxShadow: 'none',
   },
 }));
