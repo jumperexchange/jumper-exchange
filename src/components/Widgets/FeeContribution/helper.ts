@@ -76,6 +76,14 @@ export const createInputAmountSchema = (maxUsdAmount: number) =>
   z
     .string()
     .transform((val) => val.replace(/[^\d.,]/g, '').replace(/,/g, '.')) // remove non-numeric characters and replace commas with dots
+    .transform((val) => {
+      // Handle case where user enters dot after already having a dot as last character
+      // e.g., "0." + "." should become "0"
+      if (val.endsWith('..')) {
+        return val.slice(0, -2); // Remove both dots
+      }
+      return val;
+    })
     .transform((val) => val.replace(/\.+/g, '.')) // replace multiple dots with one dot
     .transform((val) => val.replace(/^0+(?!\.|$)/, '')) // remove leading zeros
     .refine((val) => !val || !isNaN(Number(val)), { message: 'Invalid number' }) // check if value is a number
