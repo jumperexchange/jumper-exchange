@@ -32,17 +32,7 @@ export const useMerklRewards = ({
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
   // Early return for no user address or non-EVM wallet
-  if (!userAddress) {
-    return {
-      isLoading: false,
-      isSuccess: false,
-      availableRewards: [],
-      pastCampaigns: [],
-    };
-  }
-
-  // Check if userAddress is a valid EVM address
-  if (!isAddress(userAddress)) {
+  if (!userAddress || !isAddress(userAddress)) {
     return {
       isLoading: false,
       isSuccess: false,
