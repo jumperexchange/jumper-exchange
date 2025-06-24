@@ -9,7 +9,6 @@ export const CampaignBannersContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(3),
   borderRadius: '24px',
-  // borderRadius: '32px',
   flexDirection: 'column',
   boxShadow: theme.shadows[1],
 
