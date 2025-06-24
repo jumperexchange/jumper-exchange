@@ -1,15 +1,20 @@
-import { useState } from 'react';
-
+import type { StrapiMediaData } from '@/types/strapi';
 import type { Theme } from '@mui/material';
-import { Skeleton, useMediaQuery, useTheme } from '@mui/material';
+import { Skeleton, useMediaQuery } from '@mui/material';
 import Link from 'next/link';
-
-import type { CampaignData, StrapiMediaData } from '@/types/strapi';
-import { TrackingAction, TrackingCategory, TrackingEventParameter } from 'src/const/trackingKeys';
+import { useState } from 'react';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-
-import { BannerImage, BannerImageBox, CampaignBox } from './CampaignBanner.style';
+import {
+  BannerImage,
+  BannerImageBox,
+  CampaignBox,
+} from './CampaignBanner.style';
 import { CampaignInformation } from './CampaignInformation';
 
 interface CampaignBannerProps {
@@ -33,7 +38,9 @@ export const CampaignBanner = ({
     [key: string]: boolean;
   }>({});
   const { trackEvent } = useUserTracking();
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('md'),
+  );
   const apiBaseUrl = getStrapiBaseUrl();
 
   return (
@@ -82,14 +89,19 @@ export const CampaignBanner = ({
             src={`${apiBaseUrl}${image.url}`}
             width={isMobile ? 320 : 640}
             onLoadingComplete={() =>
-              setLoadingImages(prev => ({
+              setLoadingImages((prev) => ({
                 ...prev,
                 [slug]: false,
               }))
             }
           />
         </BannerImageBox>
-        <CampaignInformation cta={cta} description={description} tag={tag} title={title} />
+        <CampaignInformation
+          cta={cta}
+          description={description}
+          tag={tag}
+          title={title}
+        />
       </CampaignBox>
     </Link>
   );
