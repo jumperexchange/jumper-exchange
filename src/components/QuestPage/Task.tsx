@@ -5,9 +5,7 @@ import {
 } from '@/const/trackingKeys';
 import { useVerifyTask } from '@/hooks/tasksVerification/useVerifyTask';
 import { useUserTracking } from '@/hooks/userTracking';
-import type { TaskVerification } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -24,6 +22,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type MouseEventHandler, useEffect, useState } from 'react';
+import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import {
   InstructionsAccordionItemContainer,
   InstructionsAccordionItemHeader,
@@ -34,23 +33,22 @@ import {
   InstructionsAccordionLinkBox,
   InstructionsAccordionToggle,
 } from '../Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem.style';
+import { APYIcon } from '../illustrations/APYIcon';
+import { XPRewardsInfo } from '../ProfilePage/QuestCard/XPRewardsInfo';
 
 function isVerified(isSuccess: boolean, isValid: boolean) {
   return isSuccess || isValid;
 }
 
-// TODO: Refactor this component to use Accordion component from mui (and refactor InstructionsAccordionItem.tsx)
-function Task({
-  task,
-  questId,
-  isValid = false,
-  index,
-}: {
+interface TaskProps {
   questId: string;
-  task: TaskVerification;
+  task: TaskVerificationWithApy;
   isValid?: boolean;
   index: number;
-}) {
+}
+
+// TODO: Refactor this component to use Accordion component from mui (and refactor InstructionsAccordionItem.tsx)
+function Task({ task, questId, isValid = false, index }: TaskProps) {
   const [open, setOpen] = useState(false);
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
@@ -63,6 +61,7 @@ function Task({
     e.stopPropagation();
     task && setOpen((prev) => !prev);
   };
+
   const handleCTAClick = () => {
     trackEvent({
       category: TrackingCategory.Quests,
@@ -115,13 +114,17 @@ function Task({
           sx={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: 'auto',
           }}
         >
-          <InstructionsAccordionItemHeader>
-            <InstructionsAccordionItemLabel>
+          <InstructionsAccordionItemHeader sx={{ width: '100%' }}>
+            <InstructionsAccordionItemLabel sx={{ width: '100%' }}>
               {task.name}
             </InstructionsAccordionItemLabel>
+            {!!task.maxApy && task.maxApy > 0 && (
+              <XPRewardsInfo variant="apy" label={task.maxApy.toFixed(1)}>
+                <APYIcon size={20} />
+              </XPRewardsInfo>
+            )}
           </InstructionsAccordionItemHeader>
           {task &&
             (isTablet ? (
@@ -181,11 +184,6 @@ function Task({
                     >
                       {task.CTAText}
                     </Typography>
-                    <ArrowForwardIcon
-                      style={{
-                        color: (theme.vars || theme).palette.text.primary,
-                      }}
-                    />
                   </InstructionsAccordionLinkBox>
                 </Link>
               )}

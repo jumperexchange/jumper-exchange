@@ -18,6 +18,7 @@
     "@lifi/sdk": "^3.7.9",
     "@lifi/wallet-management": "^3.11.1",
     "@lifi/widget": "3.23.3",
+    "@merkl/api": "^1.0.39",
     "@metaplex-foundation/mpl-core": "^1.1.1",
     "@metaplex-foundation/umi": "^0.9.2",
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",

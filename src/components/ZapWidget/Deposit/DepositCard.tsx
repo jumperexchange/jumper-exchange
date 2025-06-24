@@ -44,7 +44,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
 }) => {
   const { setFieldValue } = useFieldActions();
 
-  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds);
+  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [chainId]);
   const theme = useTheme();
   const { t } = useTranslation();
 

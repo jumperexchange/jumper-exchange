@@ -9,7 +9,7 @@ export const QuestsOverviewContainer = styled(Box)(({ theme }) => ({
   gridColumnGap: theme.spacing(1),
   gridRowGap: theme.spacing(2),
   backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
-  borderRadius: '32px',
+  borderRadius: '24px',
   padding: theme.spacing(2, 1),
   paddingBottom: theme.spacing(1.25),
   boxShadow: (theme.vars || theme).shadows[1],
@@ -58,17 +58,15 @@ export const SeeAllButtonContainer = styled(Box, {
 
 export const SeeAllButton = styled(ButtonPrimary)(({ theme }) => ({
   color: 'inherit',
-  backgroundColor:
-    (theme.vars || theme).palette.alphaLight400.main,
+  backgroundColor: (theme.vars || theme).palette.alphaLight400.main,
   width: 320,
   '&:hover': {
-    backgroundColor:
-      (theme.vars || theme).palette.alphaLight500.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.alphaDark200.main
-    })
+    backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+    }),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+  }),
 }));

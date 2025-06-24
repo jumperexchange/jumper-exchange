@@ -23,33 +23,46 @@ export interface TrackEventProps {
 }
 
 export interface TrackTransactionDataProps {
-  [TrackingEventParameter.Type]?: string;
-  [TrackingEventParameter.RouteId]?: string;
-  [TrackingEventParameter.Status]?: string;
+  // Required properties (always present)
+  [TrackingEventParameter.FromAmount]: string;
+  [TrackingEventParameter.FromAmountUSD]: string;
+  [TrackingEventParameter.FromChainId]: number;
+  [TrackingEventParameter.FromToken]: string;
+  [TrackingEventParameter.IsFinal]: boolean;
+  [TrackingEventParameter.NbOfSteps]: number;
+  [TrackingEventParameter.RouteId]: string;
+  [TrackingEventParameter.Slippage]: number;
+  [TrackingEventParameter.StepIds]: string;
+  [TrackingEventParameter.Steps]: string;
+  [TrackingEventParameter.Time]: number;
+  [TrackingEventParameter.ToAmount]: string;
+  [TrackingEventParameter.ToAmountFormatted]: string;
+  [TrackingEventParameter.ToAmountMin]: string;
+  [TrackingEventParameter.ToAmountUSD]: number;
+  [TrackingEventParameter.ToChainId]: number;
+  [TrackingEventParameter.ToToken]: string;
+  [TrackingEventParameter.TransactionId]: string;
+  [TrackingEventParameter.TransactionStatus]: string;
+  [TrackingEventParameter.Type]: string;
+
+  // Optional properties (conditionally present) - sorted alphabetically
   [TrackingEventParameter.Action]?: string;
-  [TrackingEventParameter.TransactionId]?: string;
+  [TrackingEventParameter.ErrorCode]?: string;
+  [TrackingEventParameter.ErrorMessage]?: string;
+  [TrackingEventParameter.Exchange]?: string;
+  [TrackingEventParameter.FeeCost]?: number;
+  [TrackingEventParameter.FeeCostFormatted]?: string;
+  [TrackingEventParameter.FeeCostUSD]?: number;
+  [TrackingEventParameter.GasCost]?: number;
+  [TrackingEventParameter.GasCostFormatted]?: string;
+  [TrackingEventParameter.GasCostUSD]?: number;
+  [TrackingEventParameter.Integrator]?: string;
+  [TrackingEventParameter.LastStepAction]?: string;
+  [TrackingEventParameter.Message]?: string;
+  [TrackingEventParameter.Status]?: string;
+  [TrackingEventParameter.Tags]?: string;
   [TrackingEventParameter.TransactionHash]?: string;
   [TrackingEventParameter.TransactionLink]?: string;
-  [TrackingEventParameter.FromChainId]?: number;
-  [TrackingEventParameter.ToChainId]?: number;
-  [TrackingEventParameter.Integrator]?: string;
-  [TrackingEventParameter.TransactionStatus]?: string;
-  [TrackingEventParameter.FromToken]?: string;
-  [TrackingEventParameter.ToToken]?: string;
-  [TrackingEventParameter.Exchange]?: string;
-  [TrackingEventParameter.StepNumber]?: number;
-  [TrackingEventParameter.TxHash]?: string;
-  [TrackingEventParameter.IsFinal]?: boolean;
-  [TrackingEventParameter.GasCost]?: number;
-  [TrackingEventParameter.GasCostUSD]?: string;
-  [TrackingEventParameter.FromAmount]?: string;
-  [TrackingEventParameter.FromAmountUSD]?: string;
-  [TrackingEventParameter.ToAmount]?: string;
-  [TrackingEventParameter.ToAmountMin]?: string;
-  [TrackingEventParameter.ToAmountUSD]?: string;
-  [TrackingEventParameter.ErrorCode]?: string | number;
-  [TrackingEventParameter.ErrorMessage]?: string;
-  [TrackingEventParameter.Message]?: string;
 }
 
 export interface TrackTransactionProps {

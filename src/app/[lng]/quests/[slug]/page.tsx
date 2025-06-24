@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
+import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
+import { filterUniqueByIdentifier } from 'src/utils/merkl/merklHelper';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
@@ -26,12 +29,12 @@ export async function generateMetadata({
     }
 
     const quest = await getQuestBySlug(slugResult.data);
-    const baseUrl = getStrapiBaseUrl();
     if (!quest || !quest.data) {
       throw new Error();
     }
 
     const questData = quest.data;
+    const baseUrl = getStrapiBaseUrl();
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
@@ -89,5 +92,22 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  return <QuestPage quest={data} />;
+  // fetch merkl opportunities if rewardsIds are present
+  const rewardsIds = data.CustomInformation?.['rewardsIds'];
+  const merklOpportunities = await fetchOpportunitiesByRewardsIds(
+    rewardsIds,
+  ).then((el) => filterUniqueByIdentifier(el));
+
+  // fetches and add apy to task_verification items:
+  const tasksVerification = await fetchTaskOpportunities(
+    data.tasks_verification,
+  );
+
+  return (
+    <QuestPage
+      quest={data}
+      tasksVerification={tasksVerification}
+      merklOpportunities={merklOpportunities}
+    />
+  );
 }

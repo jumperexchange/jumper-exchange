@@ -181,6 +181,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             <ReceiptLongIcon sx={{ height: '16px' }} />
           </Button>
           <ButtonSecondary
+            id="disconnect-wallet-button"
             size="small"
             onClick={() => {
               handleDisconnect();
