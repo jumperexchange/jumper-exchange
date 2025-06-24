@@ -19,8 +19,8 @@ import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { QuestDataExtended } from 'src/types/merkl';
-import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
+import { CampaignBanners } from './CampaignBanners/CampaignBanners';
 interface ProfilePageProps {
   campaigns?: CampaignData[];
   quests?: QuestDataExtended[];
@@ -28,7 +28,7 @@ interface ProfilePageProps {
 }
 
 // Type guard to filter campaigns that can be displayed in banners
-interface CampaignWithBanner extends CampaignData {
+export interface CampaignWithBanner extends CampaignData {
   ProfileBannerImage: StrapiMediaData;
   ProfileBannerTitle: string;
   ProfileBannerDescription: string;
@@ -74,9 +74,10 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
           <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
-      {validBannerCampaigns.length > 0 && (
-        <CampaignBanner campaigns={validBannerCampaigns} />
-      )}
+      {Array.isArray(validBannerCampaigns) &&
+        validBannerCampaigns.length > 0 && (
+          <CampaignBanners campaigns={validBannerCampaigns} />
+        )}
       {Array.isArray(quests) && quests?.length > 0 && (
         <QuestsOverview
           quests={quests}
