@@ -151,7 +151,7 @@ function WidgetLikeField({
 
     setValue('');
     refetch();
-    
+
     const trackingData = {
       protocol_name: projectData.integrator,
       chain_id: token.chainId,
@@ -161,7 +161,7 @@ function WidgetLikeField({
         parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
       timestamp: new Date().toISOString(),
     };
-    
+
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'zap_withdraw',
@@ -189,7 +189,7 @@ function WidgetLikeField({
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      
+
       // Generate dynamic args based on ABI inputs
       const abi = withdrawAbi || {
         inputs: [{ name: 'amount', type: 'uint256' }],
@@ -198,7 +198,7 @@ function WidgetLikeField({
         stateMutability: 'nonpayable',
         type: 'function',
       };
-      
+
       const dynamicArgs = abi.inputs?.map((input: AbiParameter) => {
         if (input.type === 'uint256') {
           return parseUnits(value, writeDecimals);
@@ -213,15 +213,17 @@ function WidgetLikeField({
           projectData?.address) as `0x${string}`,
         chainId: projectData?.chainId,
         functionName: (withdrawAbi?.name || 'redeem') as 'redeem',
-        abi: withdrawAbi ? [withdrawAbi] : [
-          {
-            inputs: [{ name: 'amount', type: 'uint256' }],
-            name: 'redeem',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-        ],
+        abi: withdrawAbi
+          ? [withdrawAbi]
+          : [
+              {
+                inputs: [{ name: 'amount', type: 'uint256' }],
+                name: 'redeem',
+                outputs: [{ name: '', type: 'uint256' }],
+                stateMutability: 'nonpayable',
+                type: 'function',
+              },
+            ],
         args: dynamicArgs as unknown as readonly [bigint],
       });
     } catch (e) {
