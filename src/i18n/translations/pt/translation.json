@@ -145,6 +145,7 @@
     "completed": "Missões Concluídas"
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Disponível apenas no Computador",
     "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso.",
     "level": "Nível",
