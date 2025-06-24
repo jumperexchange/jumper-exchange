@@ -30,9 +30,8 @@ import { GoldenTicketModal } from 'src/components/GoldenTicketModal/GoldenTicket
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
-import type { TransformedRoute } from 'src/types/internal';
-import { calcPriceImpact } from 'src/utils/calcPriceImpact';
-import { handleTransactionDetails } from 'src/utils/routesInterpreterUtils';
+import { TransformedRoute } from 'src/types/internal';
+import { handleRouteData } from 'src/utils/routes';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -73,7 +72,7 @@ export function WidgetEvents() {
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
-      const data = handleTransactionDetails(route, {
+      const data = handleRouteData(route, {
         [TrackingEventParameter.Action]: 'execution_start',
         [TrackingEventParameter.TransactionStatus]: 'STARTED',
       });
@@ -98,15 +97,16 @@ export function WidgetEvents() {
       }
     };
 
-    const onRouteExecutionCompleted = async (route: Route) => {
+    const onRouteExecutionCompleted = async (route: RouteExtended) => {
+      //to do: if route is not lifi then refetch position of destination token??
+
       if (route.id) {
         // Store the completed route
         setCompletedRoute(route);
 
         // Refresh portfolio value
         setForceRefresh(true);
-
-        const data = handleTransactionDetails(route, {
+        const data = handleRouteData(route, {
           [TrackingEventParameter.Action]: 'execution_completed',
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
         });
@@ -156,14 +156,11 @@ export function WidgetEvents() {
     };
 
     const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
-      const data = handleTransactionDetails(update.route, {
+      const data = handleRouteData(update.route, {
         [TrackingEventParameter.Action]: 'execution_failed',
         [TrackingEventParameter.TransactionStatus]: 'FAILED',
         [TrackingEventParameter.Message]: update.process.message || '',
-        [TrackingEventParameter.ErrorMessage]:
-          update.process.error?.message || '',
         [TrackingEventParameter.IsFinal]: true,
-        [TrackingEventParameter.ErrorCode]: update.process.error?.code || '',
       });
       // reset ref obj
       previousRoutesRef.current = {};
@@ -293,33 +290,33 @@ export function WidgetEvents() {
         destinationChainToken.tokenAddress
       ) {
         previousRoutesRef.current = newObj;
-        const transformedRoutes = availableRoutes.reduce<
-          Record<number, TransformedRoute>
-        >((acc, route, index) => {
-          const priceImpact = calcPriceImpact(route);
-          acc[index] = {
-            [TrackingEventParameter.NbOfSteps]: route.steps.length,
-            [TrackingEventParameter.Steps]: route.steps.map(
-              (step) => step.tool,
-            ),
-            [TrackingEventParameter.ToAmountUSD]: Number(route.toAmountUSD),
-            [TrackingEventParameter.GasCostUSD]: route.steps.reduce(
-              (acc, step) =>
-                acc +
-                (step.estimate.gasCosts?.reduce(
-                  (sum, gasCost) => sum + parseFloat(gasCost.amountUSD),
-                  0,
-                ) || 0),
-              0,
-            ),
-            [TrackingEventParameter.Time]: route.steps.reduce(
-              (acc, step) => acc + step.estimate.executionDuration,
-              0,
-            ),
-            [TrackingEventParameter.Slippage]: priceImpact,
-          };
-          return acc;
-        }, {});
+
+        // Transform routes to the expected format
+        const transformedRoutes: Record<number, TransformedRoute> =
+          availableRoutes.reduce((acc, route, index) => {
+            const routeData = handleRouteData(route);
+            const transformedRoute: TransformedRoute = {
+              [TrackingEventParameter.NbOfSteps]:
+                routeData[TrackingEventParameter.NbOfSteps] || 0,
+              [TrackingEventParameter.Steps]: {
+                tools: routeData[TrackingEventParameter.Steps],
+              },
+              [TrackingEventParameter.ToAmountUSD]:
+                Number(routeData[TrackingEventParameter.ToAmountUSD]) || 0,
+              [TrackingEventParameter.GasCostUSD]:
+                Number(routeData[TrackingEventParameter.GasCostUSD]) || null,
+              [TrackingEventParameter.Time]:
+                routeData[TrackingEventParameter.Time] || 0,
+              [TrackingEventParameter.Slippage]:
+                routeData[TrackingEventParameter.Slippage] || 0,
+            };
+
+            return {
+              ...acc,
+              [index]: transformedRoute,
+            };
+          }, {});
+
         trackEvent({
           category: TrackingCategory.WidgetEvent,
           action: TrackingAction.OnAvailableRoutes,
@@ -336,47 +333,6 @@ export function WidgetEvents() {
         });
       }
     };
-
-    // const onTokenSearch = async ({ value, tokens }: TokenSearchProps) => {
-    //   const lowercaseValue = value?.toLowerCase();
-    //   const { isValid, addressType } = isValidEvmOrSvmAddress(lowercaseValue);
-    //   const SearchNothingFound = tokens?.length > 0 ? false : true;
-    //   const tokenAddress = tokens?.length > 0 ? tokens?.[0]?.address : '';
-    //   const tokenName = tokens?.length > 0 ? tokens?.[0]?.name : '';
-    //   const tokenSymbol = tokens?.length > 0 ? tokens?.[0]?.symbol : '';
-    //   const tokenChainId = tokens?.length > 0 ? tokens?.[0]?.chainId : '';
-
-    //   trackEvent({
-    //     category: TrackingCategory.WidgetEvent,
-    //     action: TrackingAction.OnTokenSearch,
-    //     label: `token_search`,
-    //     data: {
-    //       [TrackingEventParameter.SearchValue]: lowercaseValue,
-    //       [TrackingEventParameter.SearchIsAddress]: isValid,
-    //       [TrackingEventParameter.SearchAddressType]: addressType as string,
-    //       [TrackingEventParameter.SearchNumberOfResult]: tokens?.length,
-    //       [TrackingEventParameter.SearchNothingFound]: SearchNothingFound,
-    //       [TrackingEventParameter.SearchFirstResultAddress]: tokenAddress,
-    //       [TrackingEventParameter.SearchFirstResultName]: tokenName,
-    //       [TrackingEventParameter.SearchFirstResultSymbol]: tokenSymbol,
-    //       [TrackingEventParameter.SearchFirstResultChainId]: tokenChainId,
-    //     },
-    //   });
-    // };
-
-    // const onRouteSelected = async ({ route, routes }: RouteSelectedProps) => {
-    //   const position = routes.findIndex((elem: Route) => elem.id === route.id);
-    //   const data = handleRouteEventDetails(route, {
-    //     [TrackingEventParameter.RoutePosition]: position,
-    //   });
-
-    //   trackEvent({
-    //     category: TrackingCategory.WidgetEvent,
-    //     action: TrackingAction.OnRouteSelected,
-    //     label: `route_selected`,
-    //     data,
-    //   });
-    // };
 
     const onPageEntered = async (pageType: any) => {
       // Reset contribution state when entering a new page
