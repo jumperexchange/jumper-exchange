@@ -8,6 +8,7 @@ import { AvailableRewardsExtended } from 'src/types/merkl';
 import type { ClaimableRewards, MerklRewardsData } from 'src/types/strapi';
 import { MERKL_CACHE_TIME, MERKL_STALE_TIME } from 'src/utils/merkl/merklApi';
 import { processRewardsData } from 'src/utils/merkl/merklHelper';
+import { isAddress } from 'viem';
 
 interface UseMerklRes {
   isSuccess: boolean;
@@ -30,6 +31,26 @@ export const useMerklRewards = ({
   claimableOnly = false,
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
+  // Early return for no user address or non-EVM wallet
+  if (!userAddress) {
+    return {
+      isLoading: false,
+      isSuccess: false,
+      availableRewards: [],
+      pastCampaigns: [],
+    };
+  }
+
+  // Check if userAddress is a valid EVM address
+  if (!isAddress(userAddress)) {
+    return {
+      isLoading: false,
+      isSuccess: false,
+      availableRewards: [],
+      pastCampaigns: [],
+    };
+  }
+
   // Memoize chain IDs calculation - use Set for O(1) lookup
   const chainIds = useMemo(() => {
     if (!Array.isArray(merklRewards) || merklRewards.length === 0) {
@@ -127,16 +148,6 @@ export const useMerklRewards = ({
       }),
     [rewardsToClaim, tokenAddressMap],
   );
-
-  // Early return for no user address
-  if (!userAddress) {
-    return {
-      isLoading: false,
-      isSuccess: false,
-      availableRewards: [],
-      pastCampaigns: [],
-    };
-  }
 
   return {
     isLoading: positionsIsLoading,
