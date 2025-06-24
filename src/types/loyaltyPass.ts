@@ -1,6 +1,6 @@
 import type { QuestDetails } from '@/types/questDetails';
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { StrapiMediaData } from './strapi';
+import type { CampaignData, StrapiMediaData } from './strapi';
 
 // PDA Type
 export interface Reward {
@@ -70,6 +70,7 @@ type QuestsPlatformData = { id: number } & QuestsPlatformAttributes;
 export interface QuestChains {
   name: string;
   logo: string;
+  chainId?: number;
 }
 
 export interface CustomInformation {
@@ -109,14 +110,19 @@ export interface TaskVerification {
   description: string;
   CTALink?: string;
   CTAText?: string;
+  CampaignId?: string;
   uuid: string;
   hasTask: boolean;
+}
+
+export interface TaskVerificationWithApy extends TaskVerification {
+  maxApy?: number;
 }
 
 export interface Quest extends QuestAttributes {
   id: number;
   documentId: string;
-  // attributes: QuestAttributes;
+  campaign?: CampaignData;
 }
 
 export interface LoyaltyPassProps {

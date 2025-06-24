@@ -3,6 +3,7 @@
 import type { CampaignData } from '@/types/strapi';
 import { useTranslation } from 'react-i18next';
 import { JUMPER_LOYALTY_PATH } from 'src/const/urls';
+import { QuestDataExtended } from 'src/types/merkl';
 import { MerklRewards } from '../ProfilePage/MerklRewards';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import { QuestsOverview } from '../ProfilePage/QuestsOverview/QuestsOverview';
@@ -11,9 +12,10 @@ import { CampaignHeader } from './CampaignHeader/CampaignHeader';
 
 interface CampaignPageProps {
   campaign: CampaignData;
+  quests: QuestDataExtended[];
 }
 
-export const CampaignPage = ({ campaign }: CampaignPageProps) => {
+export const CampaignPage = ({ campaign, quests }: CampaignPageProps) => {
   const { t } = useTranslation();
   return (
     <PageContainer className="profile-page">
@@ -21,10 +23,12 @@ export const CampaignPage = ({ campaign }: CampaignPageProps) => {
         path={JUMPER_LOYALTY_PATH}
         title={t('navbar.navbarMenu.profile') || 'Profile'}
       />
-      <MerklRewards campaign={campaign} />
+      {campaign.merkl_rewards && (
+        <MerklRewards merklRewards={campaign.merkl_rewards} />
+      )}
       <CampaignHeader campaign={campaign} />
       {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (
-        <QuestsOverview quests={campaign.quests} label={campaign.Slug} />
+        <QuestsOverview quests={quests} label={campaign.Slug} />
       )}
     </PageContainer>
   );

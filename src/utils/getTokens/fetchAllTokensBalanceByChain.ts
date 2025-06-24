@@ -1,16 +1,11 @@
 // Constants
 import type {
-  ExtendedChain,
-  Token,
-  TokenAmount,
-  TokensResponse,
-} from '@lifi/sdk';
-import { getTokenBalances as LifiGetTokenBalances } from '@lifi/sdk';
-import type {
   ExtendedTokenAmount,
   ExtendedTokenAmountWithChain,
 } from '@/utils/getTokens/index';
 import { getBalance } from '@/utils/getTokens/utils';
+import type { ExtendedChain, TokenAmount, TokensResponse } from '@lifi/sdk';
+import { getTokenBalances as LifiGetTokenBalances } from '@lifi/sdk';
 
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
@@ -48,12 +43,10 @@ export function fetchAllTokensBalanceByChain(
   // This will store all fetched tokens indexed by their symbol
   const symbolMap: Record<string, ExtendedTokenAmount> = {};
 
-  const tokensByChain: Record<string, Token[]> = Object.keys(tokens).reduce(
-    (acc, chainId) => {
-      acc[chainId] = [...tokens[Number(chainId)]];
-      return acc;
-    },
-    {} as Record<string, Token[]>,
+  const tokensByChain = Object.fromEntries(
+    Object.entries(tokens).filter(([chainId]) =>
+      chains.some((chain) => chain.id === parseInt(chainId)),
+    ),
   );
 
   const fetchTokens = async () => {
