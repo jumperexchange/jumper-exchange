@@ -49,8 +49,6 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
     if (result.success) {
       setAmount(result.data);
       setInputAmount(result.data);
-    } else {
-      // handle error, e.g., show result.error.issues[0].message
     }
   }
 
