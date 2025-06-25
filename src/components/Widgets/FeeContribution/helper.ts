@@ -68,13 +68,13 @@ export const isEligibleForContribution = (
   );
 };
 
-export const SHOW_DECIMAL_PLACES = 2;
+export const NO_DECIMAL_PLACES = 2;
 
 // Intl formatters for display
 const displayFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
   minimumFractionDigits: 0,
-  maximumFractionDigits: SHOW_DECIMAL_PLACES,
+  maximumFractionDigits: NO_DECIMAL_PLACES,
   roundingMode: 'floor',
 });
 
@@ -115,8 +115,8 @@ export const createInputAmountSchema = (maxUsdAmount: number) => {
     .transform((val) => {
       // Limit to 2 decimal places
       const [whole, decimal] = val.split('.');
-      if (decimal && decimal.length > SHOW_DECIMAL_PLACES) {
-        return `${whole}.${decimal.slice(0, SHOW_DECIMAL_PLACES)}`;
+      if (decimal && decimal.length > NO_DECIMAL_PLACES) {
+        return `${whole}.${decimal.slice(0, NO_DECIMAL_PLACES)}`;
       }
       return val;
     })
@@ -124,7 +124,7 @@ export const createInputAmountSchema = (maxUsdAmount: number) => {
     .transform((val) => {
       const num = Number(val);
       if (isNaN(num)) return val;
-      if (num > maxUsdAmount) return maxUsdAmount.toFixed(SHOW_DECIMAL_PLACES);
+      if (num > maxUsdAmount) return maxUsdAmount.toFixed(NO_DECIMAL_PLACES);
       return val;
     });
 

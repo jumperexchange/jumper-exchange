@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { alignItems } from '@mui/system';
 
 interface ContributionWrapperProps extends BoxProps {
   showContribution: boolean;
@@ -55,13 +56,14 @@ interface ContributionCustomInputProps {
   isCustomAmountActive?: boolean;
   hasInputAmount?: boolean;
   inputAmount?: string;
+  value?: string;
 }
 
 export const ContributionCustomInput = styled(TextField, {
   shouldForwardProp: (prop) =>
     !['isCustomAmountActive', 'hasInputAmount'].includes(prop as string),
 })<ContributionCustomInputProps>(
-  ({ theme, isCustomAmountActive, inputAmount, hasInputAmount }) => ({
+  ({ theme, isCustomAmountActive, value, hasInputAmount }) => ({
     width: '100%',
     borderRadius: '24px',
     overflow: 'hidden',
@@ -87,23 +89,27 @@ export const ContributionCustomInput = styled(TextField, {
     '& .MuiInputBase-root': {
       borderRadius: '16px',
       width: '100%',
+      height: '32px',
       justifyContent: 'center',
+      alignItems: 'center',
       flexGrow: 1,
       padding: 0,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
       maxWidth: '100%',
       '& fieldset': {
         border: 'none !important',
       },
     },
     '& .MuiInputBase-input': {
-      ...(hasInputAmount &&
-        inputAmount && {
-          width: `${inputAmount?.length * 8}px`,
-          paddingLeft: theme.spacing(0.5),
-        }),
+      ...(isCustomAmountActive && {
+        width: value ? `${value?.length * 8}px` : '8px',
+        paddingLeft: theme.spacing(0.5),
+      }),
       padding: 0,
-      height: '32px',
-      borderRadius: '16px',
+
+      // borderRadius: '16px',
+      height: 'auto',
       justifyContent: 'center',
       ':focus': {
         padding: '0 12px 0 24px',
@@ -130,7 +136,7 @@ export const ContributionCustomInput = styled(TextField, {
     '& .MuiInputAdornment-root': {
       fontSize: '12px',
       marginRight: 0,
-      lineHeight: '16px',
+      lineHeight: '100%',
       fontWeight: 700,
       color: (theme.vars || theme).palette.text.primary,
       ...(hasInputAmount && {

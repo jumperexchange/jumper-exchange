@@ -287,6 +287,7 @@ export function Widget({
                     ),
                   },
                 }}
+                translationFn={t}
               />
             ),
           }}

@@ -11,20 +11,23 @@ import {
   ContributionDescription,
 } from './FeeContribution.style';
 import * as helper from './helper';
+import { formatInputAmount } from './utils';
+import { USD_CURRENCY_SYMBOL } from './constants';
 
-const { SHOW_DECIMAL_PLACES } = helper;
+const { NO_DECIMAL_PLACES } = helper;
 
 export interface FeeContributionCardProps {
   translations: ContributionTranslations;
   contributionOptions: number[];
-  amount: string;
-  inputAmount: string;
+  customAmount: string;
+  predefinedAmount: string;
   contributed: boolean;
   isTransactionLoading: boolean;
   maxUsdAmount: number;
   isCustomAmountActive: boolean;
-  setAmount: (amount: string) => void;
-  setInputAmount: (inputAmount: string) => void;
+  setCustomAmount: (amount: string) => void;
+  setPredefinedAmount: (amount: string) => void;
+  setIsCustomAmountActive: (isCustomAmountActive: boolean) => void;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -32,63 +35,72 @@ export interface FeeContributionCardProps {
 export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
   translations,
   contributionOptions,
-  amount,
-  inputAmount,
+  customAmount,
+  predefinedAmount,
   contributed,
   isTransactionLoading,
   maxUsdAmount,
   isCustomAmountActive,
-  setAmount,
-  setInputAmount,
+  setCustomAmount,
+  setPredefinedAmount,
+  setIsCustomAmountActive,
   onClose,
   onConfirm,
 }) => {
-  // Create the input handler with both Zod validation and Intl formatting
-  const inputHandler = useMemo(
-    () => helper.createInputAmountSchema(maxUsdAmount),
-    [maxUsdAmount],
-  );
-
-  // Format display value for the input field
-  const displayValue = useMemo(() => {
-    return inputAmount ? inputHandler.formatForDisplay(inputAmount) : '';
-  }, [inputAmount, inputHandler]);
-
-  // Handle input changes
-  function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
-    if (contributed) return;
-
-    const { value } = event.target;
-    // Parse and validate the input
-    const parsedValue = inputHandler.parseInput(value);
-
-    // Update both the raw and display values
-    setAmount(parsedValue);
-    setInputAmount(parsedValue);
-  }
-
   const handleButtonClick = (selectedAmount: number) => {
     if (contributed) {
       onClose();
       return;
     }
 
+    setIsCustomAmountActive(false);
+
     // no change if amount is already set to the selected amount
-    if (!contributed && amount && Number(amount) === selectedAmount) {
+    if (
+      !contributed &&
+      predefinedAmount &&
+      Number(predefinedAmount) === selectedAmount
+    ) {
       return;
     }
 
-    const amountStr = selectedAmount.toFixed(SHOW_DECIMAL_PLACES);
-    setAmount(amountStr);
-    setInputAmount(amountStr);
+    const formattedAmount = formatInputAmount(
+      selectedAmount.toString(),
+      NO_DECIMAL_PLACES,
+    );
+    setPredefinedAmount(formattedAmount);
   };
+
+  // Handle input changes
+  function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
+    if (contributed) return;
+
+    setIsCustomAmountActive(true);
+
+    const { value } = event.target;
+
+    const formattedAmount = formatInputAmount(value, NO_DECIMAL_PLACES);
+    if (formattedAmount && Number(formattedAmount) > maxUsdAmount) {
+      // @TODO: maybe we'll want to not restrict the user as in what value he can type
+      // but show a tooltip/error message and/or disable the Confirm button if there are not enough funds
+      setCustomAmount(maxUsdAmount.toString());
+    } else {
+      setCustomAmount(formattedAmount);
+    }
+  }
 
   const handleCustomClick = () => {
     if (contributed) return;
 
-    if (inputAmount && Number(inputAmount) > 0) {
-      setAmount(inputAmount);
+    setIsCustomAmountActive(true);
+
+    if (customAmount && Number(customAmount) > 0) {
+      setCustomAmount(customAmount);
     }
+  };
+
+  const handleCustomBlur = () => {
+    setIsCustomAmountActive(false);
   };
 
   return (
@@ -103,38 +115,44 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
         {contributionOptions.map((contributionAmount) => (
           <Grid size={3} key={contributionAmount}>
             <ContributionButton
-              selected={!!amount && Number(amount) === contributionAmount}
+              selected={
+                !!predefinedAmount &&
+                !isCustomAmountActive &&
+                Number(predefinedAmount) === contributionAmount
+              }
               onClick={() => handleButtonClick(contributionAmount)}
               size="small"
             >
-              ${contributionAmount}
+              {USD_CURRENCY_SYMBOL}
+              {contributionAmount}
             </ContributionButton>
           </Grid>
         ))}
         <Grid size={3}>
           <ContributionCustomInput
-            value={displayValue}
+            value={customAmount ?? ''}
             aria-autocomplete="none"
             onChange={onChangeValue}
             onClick={handleCustomClick}
-            onFocus={handleCustomClick}
-            placeholder={translations.custom}
+            onBlur={handleCustomBlur}
+            placeholder={!isCustomAmountActive ? translations.custom : ''}
             isCustomAmountActive={isCustomAmountActive}
-            hasInputAmount={!!inputAmount}
+            hasInputAmount={!!customAmount && isCustomAmountActive}
             slotProps={{
               input: {
-                startAdornment: inputAmount ? (
-                  <InputAdornment position="start" disableTypography>
-                    $
-                  </InputAdornment>
-                ) : null,
+                startAdornment:
+                  isCustomAmountActive || customAmount ? (
+                    <InputAdornment position="start" disableTypography>
+                      {USD_CURRENCY_SYMBOL}
+                    </InputAdornment>
+                  ) : null,
                 sx: (theme) => ({
                   input: {
-                    ...(displayValue && {
-                      width: displayValue.length * 8 + 'px',
+                    ...(customAmount && {
+                      width: customAmount.length * 8 + 'px',
                       paddingLeft: theme.spacing(0.5),
                     }),
-                    padding: displayValue ? '0' : '0 16px',
+                    padding: customAmount ? '0' : '0 16px',
                   },
                 }),
               },
@@ -143,7 +161,7 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
         </Grid>
       </Grid>
 
-      {!!amount || contributed ? (
+      {!!(customAmount || predefinedAmount) || contributed ? (
         <ContributionButtonConfirm
           onClick={onConfirm}
           isTxConfirmed={contributed}

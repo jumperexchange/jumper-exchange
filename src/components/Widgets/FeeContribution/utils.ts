@@ -46,3 +46,37 @@ export const getContributionFeeAddress = (
 ): string | undefined => {
   return contributionFeeAddresses[chainId];
 };
+
+export const formatInputAmount = (
+  amount: string,
+  decimals: number | null = null,
+  returnInitial = false,
+) => {
+  if (!amount) {
+    return amount;
+  }
+  let formattedAmount = amount
+    .trim()
+    .replaceAll(',', '.')
+    .replaceAll(/^[^\d.]*$/g, '');
+  if (formattedAmount.startsWith('.')) {
+    formattedAmount = `0${formattedAmount}`;
+  }
+  const parsedAmount = Number.parseFloat(formattedAmount);
+  if (Number.isNaN(Number(formattedAmount)) && !Number.isNaN(parsedAmount)) {
+    return parsedAmount.toString();
+  }
+  if (Number.isNaN(Math.abs(Number(formattedAmount)))) {
+    return '';
+  }
+  if (returnInitial) {
+    return formattedAmount;
+  }
+  let [integer, fraction = ''] = formattedAmount.split('.');
+  if (decimals !== null && fraction.length > decimals) {
+    fraction = fraction.slice(0, decimals);
+  }
+  integer = integer.replace(/^0+|-/, '');
+  fraction = fraction.replace(/(0+)$/, '');
+  return `${integer || (fraction ? '0' : '')}${fraction ? `.${fraction}` : ''}`;
+};

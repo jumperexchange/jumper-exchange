@@ -30,6 +30,8 @@ import {
   getContributionAmounts,
   getContributionFeeAddress,
 } from './utils';
+import { TFunction } from 'i18next';
+import { FeeContributionCard } from './FeeContributionCard';
 
 export interface ContributionTranslations {
   title: string;
@@ -46,10 +48,14 @@ export interface ContributionTranslations {
 }
 
 export interface FeeContributionProps {
+  translationFn: TFunction;
   translations: ContributionTranslations;
 }
 
-const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
+const FeeContribution: React.FC<FeeContributionProps> = ({
+  translationFn,
+  translations,
+}) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
   const [contributionOptions, setContributionOptions] = useState<number[]>(
@@ -62,9 +68,17 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     return Math.random() < CONTRIBUTION_AB_TEST_PERCENTAGE;
   }, []);
 
-  const [amount, setAmount] = useState<string>('');
-  const [inputAmount, setInputAmount] = useState<string>('');
+  const [predefinedAmount, setPredefinedAmount] = useState('');
+  const [customAmount, setCustomAmount] = useState('');
+  const [isCustomAmountActive, setIsCustomAmountActive] = useState(false);
   const [isSending, setIsSending] = useState(false);
+
+  const amount = useMemo(() => {
+    if (isCustomAmountActive) {
+      return customAmount;
+    }
+    return predefinedAmount;
+  }, [isCustomAmountActive, customAmount, predefinedAmount]);
 
   const { completedRoute } = useRouteStore((state) => state);
   const {
@@ -321,43 +335,26 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
     } catch (error) {
       if (error instanceof Error) {
         const errorMessage = error.message;
-        if (
-          errorMessage === translations?.error?.amountTooSmall ||
-          errorMessage === translations?.error?.noFeeAddress ||
-          errorMessage === translations?.error?.invalidTokenPrice
-        ) {
-          errorMessage === translations?.error?.invalidTokenPrice;
-        }
-        {
-          console.error(errorMessage);
-          Sentry.captureException(
-            `${translations.error.errorSending}: ${errorMessage}`,
-            {
-              tags: {
-                component: 'FeeContribution',
-                action: 'handleConfirm',
-              },
-              extra: {
-                tokenAddress: completedRoute?.toToken?.address,
-                chainId: completedRoute?.toChainId,
-                amount,
-              },
+        console.error(errorMessage);
+        Sentry.captureException(
+          `${translations.error.errorSending}: ${errorMessage}`,
+          {
+            tags: {
+              component: 'FeeContribution',
+              action: 'handleConfirm',
             },
-          );
-        }
+            extra: {
+              tokenAddress: completedRoute?.toToken?.address,
+              chainId: completedRoute?.toChainId,
+              amount,
+            },
+          },
+        );
       }
     } finally {
       setIsSending(false);
     }
   };
-
-  const isCustomAmountActive = useMemo(() => {
-    return (
-      !!amount &&
-      !contributionOptions.includes(Number(amount)) &&
-      Number(amount) > 0
-    );
-  }, [amount, contributionOptions]);
 
   // Move the setContributed logic to useEffect
   useEffect(() => {
@@ -401,21 +398,23 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translations }) => {
 
   return (
     <ContributionWrapper showContribution={isOpen}>
-      <FeeContributionDrawer
-        translations={translations}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        contributionOptions={contributionOptions}
-        amount={amount}
-        inputAmount={inputAmount}
-        contributed={contributed}
-        isTransactionLoading={isTransactionLoading}
-        maxUsdAmount={maxUsdAmount}
-        isCustomAmountActive={isCustomAmountActive}
-        setAmount={setAmount}
-        setInputAmount={setInputAmount}
-        onConfirm={handleConfirm}
-      />
+      <FeeContributionDrawer isOpen={isOpen}>
+        <FeeContributionCard
+          translations={translations}
+          contributionOptions={contributionOptions}
+          onClose={() => setIsOpen(false)}
+          setIsCustomAmountActive={setIsCustomAmountActive}
+          contributed={contributed}
+          isTransactionLoading={isTransactionLoading}
+          maxUsdAmount={maxUsdAmount}
+          isCustomAmountActive={isCustomAmountActive}
+          customAmount={customAmount}
+          setCustomAmount={setCustomAmount}
+          predefinedAmount={predefinedAmount}
+          setPredefinedAmount={setPredefinedAmount}
+          onConfirm={handleConfirm}
+        />
+      </FeeContributionDrawer>
     </ContributionWrapper>
   );
 };
