@@ -1,5 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import { CircularProgress, Grid, InputAdornment } from '@mui/material';
+import { useMemo } from 'react';
 import { ContributionTranslations } from './FeeContribution';
 import {
   ContributionButton,
@@ -10,6 +11,8 @@ import {
   ContributionDescription,
 } from './FeeContribution.style';
 import * as helper from './helper';
+
+const { SHOW_DECIMAL_PLACES } = helper;
 
 export interface FeeContributionCardProps {
   translations: ContributionTranslations;
@@ -40,34 +43,49 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
   onClose,
   onConfirm,
 }) => {
-  // Usage in your onChange handler
+  // Create the input handler with both Zod validation and Intl formatting
+  const inputHandler = useMemo(
+    () => helper.createInputAmountSchema(maxUsdAmount),
+    [maxUsdAmount],
+  );
+
+  // Format display value for the input field
+  const displayValue = useMemo(() => {
+    return inputAmount ? inputHandler.formatForDisplay(inputAmount) : '';
+  }, [inputAmount, inputHandler]);
+
+  // Handle input changes
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     if (contributed) return;
+
     const { value } = event.target;
-    const inputAmountSchema = helper.createInputAmountSchema(maxUsdAmount);
-    const result = inputAmountSchema.safeParse(value);
-    if (result.success) {
-      setAmount(result.data);
-      setInputAmount(result.data);
-    }
+    // Parse and validate the input
+    const parsedValue = inputHandler.parseInput(value);
+
+    // Update both the raw and display values
+    setAmount(parsedValue);
+    setInputAmount(parsedValue);
   }
 
   const handleButtonClick = (selectedAmount: number) => {
     if (contributed) {
       onClose();
+      return;
     }
+
+    // no change if amount is already set to the selected amount
     if (!contributed && amount && Number(amount) === selectedAmount) {
-      setAmount('');
-    } else {
-      const amountStr = selectedAmount.toString();
-      setAmount(amountStr);
+      return;
     }
+
+    const amountStr = selectedAmount.toFixed(SHOW_DECIMAL_PLACES);
+    setAmount(amountStr);
+    setInputAmount(amountStr);
   };
 
   const handleCustomClick = () => {
-    if (contributed) {
-      return;
-    }
+    if (contributed) return;
+
     if (inputAmount && Number(inputAmount) > 0) {
       setAmount(inputAmount);
     }
@@ -95,7 +113,7 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
         ))}
         <Grid size={3}>
           <ContributionCustomInput
-            value={inputAmount}
+            value={displayValue}
             aria-autocomplete="none"
             onChange={onChangeValue}
             onClick={handleCustomClick}
@@ -112,11 +130,11 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
                 ) : null,
                 sx: (theme) => ({
                   input: {
-                    ...(inputAmount && {
-                      width: inputAmount.length * 8 + 'px',
+                    ...(displayValue && {
+                      width: displayValue.length * 8 + 'px',
                       paddingLeft: theme.spacing(0.5),
                     }),
-                    padding: inputAmount ? '0' : '0 16px',
+                    padding: displayValue ? '0' : '0 16px',
                   },
                 }),
               },

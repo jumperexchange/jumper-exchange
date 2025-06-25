@@ -68,25 +68,50 @@ export const isEligibleForContribution = (
   );
 };
 
-const SHOW_DECIMAL_PLACES = 2;
+export const SHOW_DECIMAL_PLACES = 2;
 
-// Helper function to sanitize input value
+// Intl formatters for display
+const displayFormatter = new Intl.NumberFormat('en-US', {
+  currency: 'USD',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: SHOW_DECIMAL_PLACES,
+  roundingMode: 'floor',
+});
+
 // Create a function that returns the schema with maxUsdAmount parameter
-export const createInputAmountSchema = (maxUsdAmount: number) =>
-  z
+export const createInputAmountSchema = (maxUsdAmount: number) => {
+  // Create the base schema for input validation
+  const schema = z
     .string()
     .transform((val) => val.replace(/[^\d.,]/g, '').replace(/,/g, '.')) // remove non-numeric characters and replace commas with dots
     .transform((val) => {
-      // Handle case where user enters dot after already having a dot as last character
-      // e.g., "0." + "." should become "0"
+      // Handle dot toggling - if adding a dot at the end when already ends with dot, remove the dot
       if (val.endsWith('..')) {
-        return val.slice(0, -2); // Remove both dots
+        // Only allow toggling if there are no other dots before
+        const beforeDots = val.slice(0, -2);
+        if (!beforeDots.includes('.')) {
+          return beforeDots;
+        }
       }
+
+      // Handle any case with multiple dots
+      const parts = val.split('.');
+      if (parts.length > 2) {
+        // Keep only first dot and first decimal part
+        return parts[0] + (parts[1] ? '.' + parts[1] : '');
+      }
+
       return val;
     })
-    .transform((val) => val.replace(/\.+/g, '.')) // replace multiple dots with one dot
-    .transform((val) => val.replace(/^0+(?!\.|$)/, '')) // remove leading zeros
-    .refine((val) => !val || !isNaN(Number(val)), { message: 'Invalid number' }) // check if value is a number
+    // .transform((val) => val.replace(/^0+(?!\.|$)/, '')) // remove leading zeros
+    .refine(
+      (val) => {
+        // Validate number format: only one decimal point allowed
+        const matches = val.match(/\./g);
+        return !matches || matches.length <= 1;
+      },
+      { message: 'Invalid number format' },
+    )
     .transform((val) => {
       // Limit to 2 decimal places
       const [whole, decimal] = val.split('.');
@@ -99,6 +124,26 @@ export const createInputAmountSchema = (maxUsdAmount: number) =>
     .transform((val) => {
       const num = Number(val);
       if (isNaN(num)) return val;
-      if (num > maxUsdAmount) return maxUsdAmount.toString();
+      if (num > maxUsdAmount) return maxUsdAmount.toFixed(SHOW_DECIMAL_PLACES);
       return val;
     });
+
+  return {
+    // Parse and validate input using Zod
+    parseInput: (value: string): string => {
+      const result = schema.safeParse(value);
+      return result.success ? result.data : value;
+    },
+
+    // Format for display using Intl (with currency symbol)
+    formatForDisplay: (value: string): string => {
+      console.log('formatForDisplay value', value);
+      if (!value || value === '.') return value;
+      // Don't format intermediate decimal inputs
+      if (value === '0.' || value.endsWith('.')) return value;
+      const num = parseFloat(value);
+      if (isNaN(num)) return value;
+      return displayFormatter.format(num);
+    },
+  };
+};
