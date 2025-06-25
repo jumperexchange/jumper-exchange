@@ -152,6 +152,7 @@ interface Resources {
       completed: 'Completed Missions';
     };
     profile_page: {
+      campaigns: 'Campaigns';
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       level: 'Level';
