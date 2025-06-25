@@ -1,4 +1,3 @@
-import { EVM } from '@lifi/sdk';
 import { useWalletMenu } from '@lifi/wallet-management';
 import type { WidgetTheme } from '@lifi/widget';
 import { HiddenUI, type ChainId, type WidgetConfig } from '@lifi/widget';
