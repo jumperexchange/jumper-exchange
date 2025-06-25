@@ -67,7 +67,11 @@ interface WalletMethodArgs {
 
 interface WalletSendCallsArgs extends WalletMethodArgs {
   method: 'wallet_sendCalls';
-  params: [WalletSendCallsParams];
+  account: {
+    address: string;
+    type: string;
+  };
+  calls: WalletCall[];
 }
 
 interface WalletGetCallsStatusArgs extends WalletMethodArgs {
@@ -297,20 +301,13 @@ export function ZapWidget({
       if (!meeClient || !oNexus) {
         throw new Error('MEE client or oNexus not initialized');
       }
-      if (!args.params || !Array.isArray(args.params)) {
-        throw new Error('Invalid args.params structure for wallet_sendCalls');
+      
+      // Handle the new args structure with account and calls directly
+      if (!args.account || !args.calls) {
+        throw new Error('Invalid args structure: Missing account or calls');
       }
-      const paramsObject = args.params[0];
-      if (
-        typeof paramsObject !== 'object' ||
-        paramsObject === null ||
-        !Array.isArray(paramsObject.calls)
-      ) {
-        throw new Error(
-          "Invalid params object structure: Missing or invalid 'calls' array at sendCalls",
-        );
-      }
-      const { calls } = paramsObject;
+      
+      const { calls } = args;
       if (calls.length === 0) {
         throw new Error("'calls' array is empty");
       }
@@ -528,20 +525,9 @@ export function ZapWidget({
 
   const handleGetCapabilities = useCallback(
     async (args: WalletCapabilitiesArgs) => {
-      // Use the same explorerChainIds that are defined in baseWidgetConfig
-      const mockCapabilities = baseWidgetConfig.explorerUrls ? 
-        Object.keys(baseWidgetConfig.explorerUrls).reduce((acc: Record<string, { atomic: { status: 'supported' } }>, chainIdStr) => {
-          const chainId = parseInt(chainIdStr);
-          acc[`0x${chainId.toString(16)}`] = { atomic: { status: 'supported' } };
-          return acc;
-        }, {}) : 
-        {
-          '0x1': { atomic: { status: 'supported' } },  // mainnet
-          '0xa': { atomic: { status: 'supported' } },  // optimism
-          '0x2105': { atomic: { status: 'supported' } }, // base
-          '0x1a4': { atomic: { status: 'supported' } },  // optimism-sepolia
-        };
-      return Promise.resolve(mockCapabilities);      
+      return Promise.resolve({
+        atomic: { status: 'supported' },
+      });      
     },
     [baseWidgetConfig],
   );

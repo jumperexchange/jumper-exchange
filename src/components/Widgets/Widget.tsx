@@ -207,7 +207,6 @@ export function Widget({
       },
       sdkConfig: {
         apiUrl: getApiUrl(),
-        providers: [EVM(), Solana(), UTXO(), Sui()],
         rpcUrls,
         routeOptions: {
           maxPriceImpact: 0.4,

@@ -1,6 +1,5 @@
 import { getWalletClient, switchChain } from '@wagmi/core';
 import { EVM, type EVMProvider } from '@lifi/sdk';
-import { isAddress } from 'viem';
 
 export interface CustomEVMProviderHandlers {
   wagmiConfig: any;
