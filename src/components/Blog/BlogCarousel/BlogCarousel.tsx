@@ -38,10 +38,7 @@ export const BlogCarousel = ({
 
   return (
     <BlogCarouselContainer>
-      <CarouselContainer
-        title={title || t('blog.recentPosts')}
-        trackingCategory={TrackingCategory.BlogCarousel}
-      >
+      <CarouselContainer title={title || t('blog.recentPosts')}>
         {data
           ? data.map((article, index) => (
               <BlogArticleCard

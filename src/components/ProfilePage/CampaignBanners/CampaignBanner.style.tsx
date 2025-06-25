@@ -7,11 +7,12 @@ import { ButtonSecondary } from 'src/components/Button';
 export const CampaignBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(3),
-  backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
+  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
   flexDirection: 'column',
-  boxShadow: theme.shadows[1],
+  boxShadow: theme.shadows[2],
   padding: theme.spacing(2),
+  height: '100%',
 
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
