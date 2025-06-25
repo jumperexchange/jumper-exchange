@@ -1,7 +1,6 @@
 import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
 import {
-  isValidEthereumAddress,
   isValidSolanaAddress,
   isValidSuiAddress,
   isValidUTXOAddress,
@@ -25,14 +24,15 @@ export const sanitizeAddress = (address: string): string => {
 
   // First do preliminary format checks for better error messages
   if (cleanAddress.startsWith('0x')) {
-    if (!isValidEthereumAddress(cleanAddress)) {
-      throw new Error('Invalid Ethereum address format');
+    // Check if it's a valid Ethereum address
+    if (isAddress(trimmedAddress)) {
+      return trimmedAddress;
     }
-    // Now do the full validation
-    if (isAddress(cleanAddress)) {
-      return cleanAddress;
+    // Check if it's a valid SUI address
+    if (isValidSuiAddress(trimmedAddress)) {
+      return trimmedAddress;
     }
-    throw new Error('Invalid Ethereum address');
+    throw new Error('Invalid Ethereum or SUI address');
   }
 
   // Check if it's a valid Solana address - case sensitive!
@@ -47,11 +47,6 @@ export const sanitizeAddress = (address: string): string => {
 
   // Check if it's a valid UTXO address
   if (isValidUTXOAddress(trimmedAddress)) {
-    return trimmedAddress;
-  }
-
-  // Check if it's a valid SUI address
-  if (isValidSuiAddress(trimmedAddress)) {
     return trimmedAddress;
   }
 
