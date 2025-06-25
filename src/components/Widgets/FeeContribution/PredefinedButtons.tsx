@@ -24,7 +24,10 @@ export const PredefinedButtons: React.FC<PredefinedButtonsProps> = ({
 }) => {
   const handleButtonClick = (amount: number) => {
     if (contributed) return;
-
+    if (predefinedAmount === amount.toString()) {
+      setPredefinedAmount('');
+      return;
+    }
     setIsCustomAmountActive(false);
     setPredefinedAmount(amount.toString());
   };
