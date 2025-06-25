@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import { CircularProgress, Grid, InputAdornment } from '@mui/material';
-import { useMemo } from 'react';
+import { USD_CURRENCY_SYMBOL } from './constants';
 import { ContributionTranslations } from './FeeContribution';
 import {
   ContributionButton,
@@ -10,11 +10,7 @@ import {
   ContributionCustomInput,
   ContributionDescription,
 } from './FeeContribution.style';
-import * as helper from './helper';
-import { formatInputAmount } from './utils';
-import { USD_CURRENCY_SYMBOL } from './constants';
-
-const { NO_DECIMAL_PLACES } = helper;
+import { formatInputAmount, NO_DECIMAL_PLACES } from './utils';
 
 export interface FeeContributionCardProps {
   translations: ContributionTranslations;

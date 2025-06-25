@@ -1,5 +1,6 @@
 import { useAccount } from '@lifi/wallet-management';
 import * as Sentry from '@sentry/nextjs';
+import { TFunction } from 'i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
@@ -23,15 +24,16 @@ import {
   CONTRIBUTION_AMOUNTS,
 } from './constants';
 import { ContributionWrapper } from './FeeContribution.style';
+import { FeeContributionCard } from './FeeContributionCard';
 import { FeeContributionDrawer } from './FeeContributionDrawer';
-import * as helper from './helper';
 import {
   checkContributionByTxHistory,
   getContributionAmounts,
   getContributionFeeAddress,
+  hasValidContributionFeeAddress,
+  isEvmChainType,
+  isTransactionAmountEligible,
 } from './utils';
-import { TFunction } from 'i18next';
-import { FeeContributionCard } from './FeeContributionCard';
 
 export interface ContributionTranslations {
   title: string;
@@ -141,9 +143,9 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
     }
 
     return (
-      helper.isEvmChainType(account.chainType) &&
-      helper.isTransactionAmountEligible(completedRoute.toAmountUSD) &&
-      helper.hasValidContributionFeeAddress(completedRoute.toChainId)
+      isEvmChainType(account.chainType) &&
+      isTransactionAmountEligible(completedRoute.toAmountUSD) &&
+      hasValidContributionFeeAddress(completedRoute.toChainId)
     );
   }, [
     account?.chainType,
@@ -189,7 +191,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
     // todo: re-enable this
     // if (
     //   contributed ||
-    //   !helper.isEligibleForContribution(
+    //   !isEligibleForContribution(
     //     data,
     //     completedRoute,
     //     account,
