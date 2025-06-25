@@ -44,6 +44,9 @@ export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   margin: 'auto',
   textWrap: 'nowrap',
   height: 32,
+  [theme.breakpoints.up('sm')]: {
+    height: 40,
+  },
 }));
 
 export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
