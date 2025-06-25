@@ -1,10 +1,10 @@
-import { Grid, InputAdornment } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
+import { FeeContributionCardProps } from './FeeContribution';
 import { ContributionCustomInput } from './FeeContribution.style';
-import { FeeContributionCardProps } from './FeeContributionCard';
 import { USD_CURRENCY_SYMBOL } from './constants';
 import { formatInputAmount, NO_DECIMAL_PLACES } from './utils';
 
-// Create a new interface that only includes the necessary props for CustomInput
 export interface CustomInputProps
   extends Pick<
     FeeContributionCardProps,

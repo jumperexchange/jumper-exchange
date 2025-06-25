@@ -1,9 +1,8 @@
 import Grid from '@mui/material/Grid';
 import { USD_CURRENCY_SYMBOL } from './constants';
+import { FeeContributionCardProps } from './FeeContribution';
 import { ContributionButton } from './FeeContribution.style';
-import { FeeContributionCardProps } from './FeeContributionCard';
 
-// Create a new interface that only includes the properties needed for PredefinedButtons
 export interface PredefinedButtonsProps
   extends Pick<
     FeeContributionCardProps,

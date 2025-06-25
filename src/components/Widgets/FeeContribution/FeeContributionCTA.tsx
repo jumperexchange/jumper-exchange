@@ -1,7 +1,7 @@
 import CheckIcon from '@mui/icons-material/Check';
-import { CircularProgress } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { FeeContributionCardProps } from './FeeContribution';
 import { ContributionButtonConfirm } from './FeeContribution.style';
-import { FeeContributionCardProps } from './FeeContributionCard';
 
 interface FeeContributionCTAProps
   extends Pick<

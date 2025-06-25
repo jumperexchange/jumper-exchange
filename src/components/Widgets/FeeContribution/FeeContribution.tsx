@@ -1,4 +1,5 @@
 import { useAccount } from '@lifi/wallet-management';
+import Grid from '@mui/material/Grid';
 import * as Sentry from '@sentry/nextjs';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -23,9 +24,16 @@ import {
   CONTRIBUTION_AB_TEST_PERCENTAGE,
   CONTRIBUTION_AMOUNTS,
 } from './constants';
-import { ContributionWrapper } from './FeeContribution.style';
-import { FeeContributionCard } from './FeeContributionCard';
+import { CustomInput } from './CustomInput';
+import {
+  ContributionCard,
+  ContributionCardTitle,
+  ContributionDescription,
+  ContributionWrapper,
+} from './FeeContribution.style';
+import { FeeContributionCTA } from './FeeContributionCTA';
 import { FeeContributionDrawer } from './FeeContributionDrawer';
+import { PredefinedButtons } from './PredefinedButtons';
 import {
   checkContributionByTxHistory,
   getContributionAmounts,
@@ -34,6 +42,22 @@ import {
   isEvmChainType,
   isTransactionAmountEligible,
 } from './utils';
+
+export interface FeeContributionCardProps {
+  translations: ContributionTranslations;
+  contributionOptions: number[];
+  customAmount: string;
+  predefinedAmount: string;
+  contributed: boolean;
+  isTransactionLoading: boolean;
+  maxUsdAmount: number;
+  isCustomAmountActive: boolean;
+  setCustomAmount: (amount: string) => void;
+  setPredefinedAmount: (amount: string) => void;
+  setIsCustomAmountActive: (isCustomAmountActive: boolean) => void;
+  onClose: () => void;
+  onConfirm: () => void;
+}
 
 export interface ContributionTranslations {
   title: string;
@@ -401,21 +425,46 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
   return (
     <ContributionWrapper showContribution={isOpen}>
       <FeeContributionDrawer isOpen={isOpen}>
-        <FeeContributionCard
-          translations={translations}
-          contributionOptions={contributionOptions}
-          onClose={() => setIsOpen(false)}
-          setIsCustomAmountActive={setIsCustomAmountActive}
-          contributed={contributed}
-          isTransactionLoading={isTransactionLoading}
-          maxUsdAmount={maxUsdAmount}
-          isCustomAmountActive={isCustomAmountActive}
-          customAmount={customAmount}
-          setCustomAmount={setCustomAmount}
-          predefinedAmount={predefinedAmount}
-          setPredefinedAmount={setPredefinedAmount}
-          onConfirm={handleConfirm}
-        />
+        <ContributionCard>
+          <ContributionCardTitle>{translations.title}</ContributionCardTitle>
+          <Grid
+            container
+            spacing={2}
+            columnSpacing={1}
+            justifyContent={'space-between'}
+          >
+            <PredefinedButtons
+              predefinedAmount={predefinedAmount}
+              contributed={contributed}
+              setPredefinedAmount={setPredefinedAmount}
+              isCustomAmountActive={isCustomAmountActive}
+              setIsCustomAmountActive={setIsCustomAmountActive}
+              contributionOptions={contributionOptions}
+            />
+            <CustomInput
+              contributed={contributed}
+              setIsCustomAmountActive={setIsCustomAmountActive}
+              maxUsdAmount={maxUsdAmount}
+              setCustomAmount={setCustomAmount}
+              customAmount={customAmount}
+              translations={translations}
+              isCustomAmountActive={isCustomAmountActive}
+            />
+          </Grid>
+
+          {!!(customAmount || predefinedAmount) || contributed ? (
+            <FeeContributionCTA
+              translations={translations}
+              contributed={contributed}
+              isTransactionLoading={isTransactionLoading}
+              onConfirm={handleConfirm}
+            />
+          ) : (
+            <ContributionDescription>
+              {translations.description}
+            </ContributionDescription>
+          )}
+        </ContributionCard>
       </FeeContributionDrawer>
     </ContributionWrapper>
   );

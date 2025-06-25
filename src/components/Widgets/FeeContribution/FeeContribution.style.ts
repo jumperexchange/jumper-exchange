@@ -1,17 +1,10 @@
-import {
-  alpha,
-  Box,
-  BoxProps,
-  Button,
-  ButtonProps,
-  Card,
-  darken,
-  Drawer,
-  styled,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { alignItems } from '@mui/system';
+import Box, { BoxProps } from '@mui/material/Box';
+import Button, { ButtonProps } from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Drawer from '@mui/material/Drawer';
+import { alpha, darken, styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 interface ContributionWrapperProps extends BoxProps {
   showContribution: boolean;
