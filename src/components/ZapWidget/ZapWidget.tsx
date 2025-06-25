@@ -5,7 +5,6 @@ import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
-  EVM,
   HiddenUI,
   LiFiWidget,
   RequiredUI,
@@ -40,7 +39,6 @@ import {
 } from '@biconomy/abstractjs';
 import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 import { useTranslation } from 'react-i18next';
-import { EVM as LiFiEVM, Solana, UTXO, Sui } from '@lifi/sdk';
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -53,11 +51,6 @@ interface WalletCall {
   to: `0x${string}`;
   data: `0x${string}`;
   value?: string;
-}
-
-interface WalletSendCallsParams {
-  calls: WalletCall[];
-  chainId?: string;
 }
 
 interface WalletMethodArgs {
@@ -83,12 +76,6 @@ interface WalletCapabilitiesArgs extends WalletMethodArgs {
   method: 'wallet_getCapabilities';
   params?: never;
 }
-
-type EthereumRequestArgs =
-  | WalletSendCallsArgs
-  | WalletGetCallsStatusArgs
-  | WalletCapabilitiesArgs
-  | WalletMethodArgs;
 
 interface ContractComposableConfig {
   address: string;
@@ -295,6 +282,63 @@ export function ZapWidget({
     }
   }, [isSuccess, projectData, zapData]);
 
+  // Create a base config without the provider
+  const baseWidgetConfig = useMemo(() => {
+    const explorerConfig = [{
+      url: 'https://meescan.biconomy.io',
+      txPath: 'details',
+      addressPath: 'address',
+    }];
+    const explorerChainIds = [
+      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146, 10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020, 57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747, 250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689, 7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001, 428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321, 20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312, 11155111, 84532
+    ];
+    const explorerUrls = explorerChainIds.reduce((acc, id) => {
+      acc[String(id)] = explorerConfig;
+      return acc;
+    }, {} as Record<string, typeof explorerConfig>);
+    
+    return {
+      toAddress: {
+        name: 'Smart Account',
+        address: address as `0x${string}` || '0x',
+        chainType: ChainType.EVM,
+      },
+      bridges: {
+        allow: ['across', 'stargateV2', 'symbiosis'],
+      },
+      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      explorerUrls,
+      subvariant: 'custom' as WidgetSubvariant,
+      subvariantOptions: { custom: 'deposit' as CustomSubvariant },
+      integrator: projectData.integrator,
+      disabledUI: [DisabledUI.ToAddress],
+      hiddenUI: [
+        HiddenUI.Appearance,
+        HiddenUI.Language,
+        HiddenUI.PoweredBy,
+        HiddenUI.WalletMenu,
+        HiddenUI.ToAddress,
+        HiddenUI.ReverseTokensButton
+      ],
+      appearance: widgetTheme.config.appearance,
+      theme: {
+        ...widgetTheme.config.theme,
+        container: {
+          maxHeight: 820,
+          maxWidth: 'unset',
+        },
+      },
+      useRecommendedRoute: true,
+      contractCompactComponent: <></>,
+      requiredUI: [RequiredUI.ToAddress],
+      walletConfig: {
+        onConnect() {
+          openWalletMenu();
+        },
+      },
+    };
+  }, [widgetTheme.config, projectData, openWalletMenu, address]);
+
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
     async (args: WalletSendCallsArgs) => {
@@ -466,65 +510,8 @@ export function ZapWidget({
 
   const wagmiConfig = useConfig();
 
-  // Create a base config without the provider
-  const baseWidgetConfig = useMemo(() => {
-    const explorerConfig = [{
-      url: 'https://meescan.biconomy.io',
-      txPath: 'details',
-      addressPath: 'address',
-    }];
-    const explorerChainIds = [
-      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146, 10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020, 57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747, 250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689, 7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001, 428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321, 20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312, 11155111, 84532
-    ];
-    const explorerUrls = explorerChainIds.reduce((acc, id) => {
-      acc[String(id)] = explorerConfig;
-      return acc;
-    }, {} as Record<string, typeof explorerConfig>);
-    
-    return {
-      toAddress: {
-        name: 'Smart Account',
-        address: address as `0x${string}` || '0x',
-        chainType: ChainType.EVM,
-      },
-      bridges: {
-        allow: ['across', 'stargateV2', 'symbiosis'],
-      },
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
-      explorerUrls,
-      subvariant: 'custom' as WidgetSubvariant,
-      subvariantOptions: { custom: 'deposit' as CustomSubvariant },
-      integrator: projectData.integrator,
-      disabledUI: [DisabledUI.ToAddress],
-      hiddenUI: [
-        HiddenUI.Appearance,
-        HiddenUI.Language,
-        HiddenUI.PoweredBy,
-        HiddenUI.WalletMenu,
-        HiddenUI.ToAddress,
-        HiddenUI.ReverseTokensButton
-      ],
-      appearance: widgetTheme.config.appearance,
-      theme: {
-        ...widgetTheme.config.theme,
-        container: {
-          maxHeight: 820,
-          maxWidth: 'unset',
-        },
-      },
-      useRecommendedRoute: true,
-      contractCompactComponent: <></>,
-      requiredUI: [RequiredUI.ToAddress],
-      walletConfig: {
-        onConnect() {
-          openWalletMenu();
-        },
-      },
-    };
-  }, [widgetTheme.config, projectData, openWalletMenu, address]);
-
   const handleGetCapabilities = useCallback(
-    async (args: WalletCapabilitiesArgs) => {
+    async (args: WalletCapabilitiesArgs): Promise<{ atomic: { status: 'supported' | 'ready' | 'unsupported' } }> => {
       return Promise.resolve({
         atomic: { status: 'supported' },
       });      
@@ -580,8 +567,6 @@ export function ZapWidget({
     getCapabilities: async (client, args) => handleGetCapabilities(args),
     getCallsStatus: async (client, args) => handleWalletGetCallsStatus(args),
     sendCalls: async (client, args) => handleWalletSendCalls(args),
-    waitForCallsStatus: async (client, args) => { /* your logic */ },
-    getWagmiConnectorClient: (wagmiConfig, args) => { /* your logic */ },
   });
 
   const analytics = {
