@@ -26,7 +26,7 @@ export const useFormatDisplayMissionData = (
   const chains = CustomInformation?.['chains'];
   const shouldOverrideWithInternalLink =
     !!CustomInformation?.['shouldOverrideWithInternalLink'];
-  const { apy: apyValue } = useMissionsMaxAPY(claimingIds);
+  const { apy: apyValue } = useMissionsMaxAPY(claimingIds, undefined);
 
   const apyRewards = useMemo(() => {
     if (apyValue) {
