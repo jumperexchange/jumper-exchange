@@ -22,9 +22,8 @@ import { JUMPER_PROFILE_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
-import { useEnsName, useAccount } from 'wagmi';
+import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { XPIcon } from '../illustrations/XPIcon';
 import {
   ImageWalletMenuButton,
   SkeletonWalletMenuButton,
@@ -65,6 +64,11 @@ export const WalletButtons = () => {
     [chains, activeAccount?.chainId],
   );
   const { trackEvent } = useUserTracking();
+
+  const walletConnectorIcon = useMemo(
+    () => getConnectorIcon(activeAccount?.connector),
+    [activeAccount?.connector],
+  );
 
   const handleLevelClick = () => {
     router.push(JUMPER_PROFILE_PATH);
@@ -127,7 +131,17 @@ export const WalletButtons = () => {
               <WalletMgmtBadge
                 overlap="circular"
                 className="badge"
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                sx={{
+                  // Use backgroundImage to repeat non-SVG icons in the padding ring; fallback to backgroundColor for SVGs
+                  backgroundImage:
+                    walletConnectorIcon && !walletConnectorIcon.includes('svg')
+                      ? `url(${walletConnectorIcon})`
+                      : 'none',
+                }}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
                 badgeContent={
                   <WalletMgmtChainAvatar
                     src={activeChain?.logoURI || ''}
@@ -137,9 +151,7 @@ export const WalletButtons = () => {
                   </WalletMgmtChainAvatar>
                 }
               >
-                <WalletMgmtWalletAvatar
-                  src={getConnectorIcon(activeAccount?.connector)}
-                />
+                <WalletMgmtWalletAvatar src={walletConnectorIcon} />
               </WalletMgmtBadge>
             ) : null}
             {isDesktop && (
