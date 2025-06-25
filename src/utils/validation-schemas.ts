@@ -3,16 +3,7 @@ import {
   sanitizeAddress,
   sanitizeNumeric,
 } from './image-generation/sanitizeParams';
-import {
-  isValidEthereumAddress,
-  isValidEthereumTransaction,
-  isValidSolanaAddress,
-  isValidSolanaTransaction,
-  isValidSuiAddress,
-  isValidSuiTransaction,
-  isValidUTXOAddress,
-  isValidUTXOTransaction,
-} from './regex-patterns';
+import { isValidAddress, isValidTransaction } from './regex-patterns';
 
 /**
  * Helper function to check if a string contains only alphanumeric characters
@@ -52,12 +43,7 @@ const baseAddressSchema = z
   .string()
   .transform((val) => sanitizeAddress(val))
   .refine((val) => {
-    return (
-      isValidEthereumAddress(val) ||
-      isValidSolanaAddress(val) ||
-      isValidUTXOAddress(val) ||
-      isValidSuiAddress(val)
-    );
+    return isValidAddress(val);
   }, 'Invalid address format. Must be either an Ethereum address (0x...), a Solana address (base58), a UTXO address (1..., 3..., or bc1...), or a SUI address');
 
 /**
@@ -145,12 +131,7 @@ export const transactionHashSchema = z
   .transform((val) => val) // Remove toLowerCase() as Solana signatures are case-sensitive
   .refine(
     (val) => {
-      return (
-        isValidEthereumTransaction(val) ||
-        isValidSolanaTransaction(val) ||
-        isValidUTXOTransaction(val) ||
-        isValidSuiTransaction(val)
-      );
+      return isValidTransaction(val);
     },
     {
       message:
