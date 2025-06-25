@@ -1,7 +1,7 @@
+import { fetchAllTokensBalanceByChain } from '@/utils/getTokens/fetchAllTokensBalanceByChain';
 import type { TokenAmount } from '@lifi/sdk';
 import { getChains, getTokens as LifiGetTokens } from '@lifi/sdk';
 import type { Account } from '@lifi/wallet-management';
-import { fetchAllTokensBalanceByChain } from '@/utils/getTokens/fetchAllTokensBalanceByChain';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;

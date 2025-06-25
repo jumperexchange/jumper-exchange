@@ -1,6 +1,6 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import type { CampaignData, QuestData, StrapiMediaData } from '@/types/strapi';
+import type { CampaignData, StrapiMediaData } from '@/types/strapi';
 import { useContext } from 'react';
 import { useTraits } from 'src/hooks/useTraits';
 import { AddressCard } from './AddressCard/AddressCard';
@@ -18,11 +18,13 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
+import { QuestDataExtended } from 'src/types/merkl';
 import { CampaignBanner } from './CampaignBanner/CampaignBanner';
 
 interface ProfilePageProps {
   campaigns?: CampaignData[];
-  quests?: QuestData[];
+  quests?: QuestDataExtended[];
+  questApys?: Record<string, number>;
 }
 
 // Type guard to filter campaigns that can be displayed in banners

@@ -14,6 +14,7 @@ interface Resources {
       };
       links: {
         exchange: 'Exchange';
+        missions: 'Missions';
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
@@ -34,10 +35,13 @@ interface Resources {
       };
       seeAllWallets: 'See all wallets';
       navbarMenu: {
+        learn: 'Learn';
+        scan: 'Scan';
         brandAssets: 'Brand Assets';
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
+        resources: 'Resources';
         profile: 'Profile';
       };
       walletMenu: {
@@ -56,6 +60,9 @@ interface Resources {
         numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
+        dark: 'Dark';
+        light: 'Light';
+        system: 'System';
         switchToLight: 'Switch to light mode';
         switchToDark: 'Switch to dark mode';
         switchToSystem: 'Switch to system mode';
