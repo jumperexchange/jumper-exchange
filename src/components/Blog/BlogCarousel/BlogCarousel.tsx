@@ -16,14 +16,12 @@ import {
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
-  url: string;
   title?: string;
   data: StrapiResponseData<BlogArticleData> | undefined;
 }
 
 export const BlogCarousel = ({
   data,
-  url,
   title,
   showAllButton,
 }: BlogCarouselProps) => {
@@ -40,15 +38,11 @@ export const BlogCarousel = ({
 
   return (
     <BlogCarouselContainer>
-      <CarouselContainer
-        title={title || t('blog.recentPosts')}
-        trackingCategory={TrackingCategory.BlogCarousel}
-      >
+      <CarouselContainer title={title || t('blog.recentPosts')}>
         {data
           ? data.map((article, index) => (
               <BlogArticleCard
                 article={article}
-                baseUrl={url}
                 key={`blog-article-card-${article.id}-${index}`}
                 trackingCategory={TrackingCategory.BlogCarousel}
               />

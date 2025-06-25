@@ -4,7 +4,11 @@ import { notFound } from 'next/navigation';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
+import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
+import { filterUniqueByIdentifier } from 'src/utils/merkl/merklHelper';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 import QuestPage from '../../../ui/quests/QuestMissionPage';
 
@@ -25,12 +29,12 @@ export async function generateMetadata({
     }
 
     const quest = await getQuestBySlug(slugResult.data);
-
     if (!quest || !quest.data) {
       throw new Error();
     }
 
     const questData = quest.data;
+    const baseUrl = getStrapiBaseUrl();
 
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
@@ -39,7 +43,7 @@ export async function generateMetadata({
       url: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
       images: [
         {
-          url: `${quest.url}${questData.Image?.url}`,
+          url: `${baseUrl}${questData.Image?.url}`,
           width: 900,
           height: 450,
           alt: 'banner image',
@@ -83,10 +87,27 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  const { data, url } = await getQuestBySlug(slugResult.data);
+  const { data } = await getQuestBySlug(slugResult.data);
   if (!data) {
     return notFound();
   }
 
-  return <QuestPage quest={data} url={url} />;
+  // fetch merkl opportunities if rewardsIds are present
+  const rewardsIds = data.CustomInformation?.['rewardsIds'];
+  const merklOpportunities = await fetchOpportunitiesByRewardsIds(
+    rewardsIds,
+  ).then((el) => filterUniqueByIdentifier(el));
+
+  // fetches and add apy to task_verification items:
+  const tasksVerification = await fetchTaskOpportunities(
+    data.tasks_verification,
+  );
+
+  return (
+    <QuestPage
+      quest={data}
+      tasksVerification={tasksVerification}
+      merklOpportunities={merklOpportunities}
+    />
+  );
 }

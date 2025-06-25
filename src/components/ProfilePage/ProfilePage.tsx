@@ -1,6 +1,6 @@
 'use client';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import type { CampaignData, QuestData, StrapiMediaData } from '@/types/strapi';
+import type { CampaignData, StrapiMediaData } from '@/types/strapi';
 import { useContext } from 'react';
 import { useTraits } from 'src/hooks/useTraits';
 import { AddressCard } from './AddressCard/AddressCard';
@@ -18,15 +18,17 @@ import { QuestsOverview } from './QuestsOverview/QuestsOverview';
 import { MerklRewards } from '@/components/ProfilePage/MerklRewards';
 import { ProfileContext } from '@/providers/ProfileProvider';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
-import { CampaignBanner } from './CampaignBanner/CampaignBanner';
+import { QuestDataExtended } from 'src/types/merkl';
 
+import { CampaignBanners } from './CampaignBanners/CampaignBanners';
 interface ProfilePageProps {
   campaigns?: CampaignData[];
-  quests?: QuestData[];
+  quests?: QuestDataExtended[];
+  questApys?: Record<string, number>;
 }
 
 // Type guard to filter campaigns that can be displayed in banners
-interface CampaignWithBanner extends CampaignData {
+export interface CampaignWithBanner extends CampaignData {
   ProfileBannerImage: StrapiMediaData;
   ProfileBannerTitle: string;
   ProfileBannerDescription: string;
@@ -72,9 +74,10 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
           <LeaderboardCard address={walletAddress} />
         </ProfileInfoBox>
       </ProfileHeaderBox>
-      {validBannerCampaigns.length > 0 && (
-        <CampaignBanner campaigns={validBannerCampaigns} />
-      )}
+      {Array.isArray(validBannerCampaigns) &&
+        validBannerCampaigns.length > 0 && (
+          <CampaignBanners campaigns={validBannerCampaigns} />
+        )}
       {Array.isArray(quests) && quests?.length > 0 && (
         <QuestsOverview
           quests={quests}

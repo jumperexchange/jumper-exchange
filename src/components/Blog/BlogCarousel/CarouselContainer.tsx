@@ -20,10 +20,8 @@ interface CarouselContainerProps {
   updateTooltip?: string;
   sx?: CSSObject;
   children: ReactNode | ReactNode[];
-  trackingCategory?: string;
   hidePagination?: boolean;
 }
-const swipeDistance = 420;
 
 export const CarouselContainer = ({
   sx,
@@ -31,7 +29,6 @@ export const CarouselContainer = ({
   updateTitle,
   updateTooltip,
   children,
-  trackingCategory,
   hidePagination = false,
 }: CarouselContainerProps) => {
   const theme = useTheme();
@@ -42,6 +39,11 @@ export const CarouselContainer = ({
   const handleChange = useCallback((direction: 'next' | 'prev') => {
     if (carouselContainerRef.current) {
       const node: HTMLDivElement = carouselContainerRef.current;
+      const children = Array.from(carouselContainerRef.current.children);
+      const swipeDistance =
+        Array.isArray(children) && children.length > 0
+          ? children[0]?.clientWidth
+          : 420;
       const scrollLeftPos = node.scrollLeft;
       const scrollWidth =
         carouselContainerRef.current.scrollWidth -
