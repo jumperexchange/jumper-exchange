@@ -1,15 +1,14 @@
 import CheckIcon from '@mui/icons-material/Check';
-import { CircularProgress, Grid, InputAdornment } from '@mui/material';
-import { USD_CURRENCY_SYMBOL } from './constants';
+import { CircularProgress, Grid } from '@mui/material';
+import { CustomInput } from './CustomInput';
 import { ContributionTranslations } from './FeeContribution';
 import {
-  ContributionButton,
   ContributionButtonConfirm,
   ContributionCard,
   ContributionCardTitle,
-  ContributionCustomInput,
   ContributionDescription,
 } from './FeeContribution.style';
+import { PredefinedButtons } from './PredefinedButtons';
 import { formatInputAmount, NO_DECIMAL_PLACES } from './utils';
 
 export interface FeeContributionCardProps {
@@ -43,30 +42,6 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
   onClose,
   onConfirm,
 }) => {
-  const handleButtonClick = (selectedAmount: number) => {
-    if (contributed) {
-      onClose();
-      return;
-    }
-
-    setIsCustomAmountActive(false);
-
-    // no change if amount is already set to the selected amount
-    if (
-      !contributed &&
-      predefinedAmount &&
-      Number(predefinedAmount) === selectedAmount
-    ) {
-      return;
-    }
-
-    const formattedAmount = formatInputAmount(
-      selectedAmount.toString(),
-      NO_DECIMAL_PLACES,
-    );
-    setPredefinedAmount(formattedAmount);
-  };
-
   // Handle input changes
   function onChangeValue(event: React.ChangeEvent<HTMLInputElement>) {
     if (contributed) return;
@@ -108,53 +83,23 @@ export const FeeContributionCard: React.FC<FeeContributionCardProps> = ({
         columnSpacing={1}
         justifyContent={'space-between'}
       >
-        {contributionOptions.map((contributionAmount) => (
-          <Grid size={3} key={contributionAmount}>
-            <ContributionButton
-              selected={
-                !!predefinedAmount &&
-                !isCustomAmountActive &&
-                Number(predefinedAmount) === contributionAmount
-              }
-              onClick={() => handleButtonClick(contributionAmount)}
-              size="small"
-            >
-              {USD_CURRENCY_SYMBOL}
-              {contributionAmount}
-            </ContributionButton>
-          </Grid>
-        ))}
-        <Grid size={3}>
-          <ContributionCustomInput
-            value={customAmount ?? ''}
-            aria-autocomplete="none"
-            onChange={onChangeValue}
-            onClick={handleCustomClick}
-            onBlur={handleCustomBlur}
-            placeholder={!isCustomAmountActive ? translations.custom : ''}
-            isCustomAmountActive={isCustomAmountActive}
-            hasInputAmount={!!customAmount && isCustomAmountActive}
-            slotProps={{
-              input: {
-                startAdornment:
-                  isCustomAmountActive || customAmount ? (
-                    <InputAdornment position="start" disableTypography>
-                      {USD_CURRENCY_SYMBOL}
-                    </InputAdornment>
-                  ) : null,
-                sx: (theme) => ({
-                  input: {
-                    ...(customAmount && {
-                      width: customAmount.length * 8 + 'px',
-                      paddingLeft: theme.spacing(0.5),
-                    }),
-                    padding: customAmount ? '0' : '0 16px',
-                  },
-                }),
-              },
-            }}
-          />
-        </Grid>
+        <PredefinedButtons
+          predefinedAmount={predefinedAmount}
+          contributed={contributed}
+          setPredefinedAmount={setPredefinedAmount}
+          isCustomAmountActive={isCustomAmountActive}
+          setIsCustomAmountActive={setIsCustomAmountActive}
+          contributionOptions={contributionOptions}
+        />
+        <CustomInput
+          contributed={contributed}
+          setIsCustomAmountActive={setIsCustomAmountActive}
+          maxUsdAmount={maxUsdAmount}
+          setCustomAmount={setCustomAmount}
+          customAmount={customAmount}
+          translations={translations}
+          isCustomAmountActive={isCustomAmountActive}
+        />
       </Grid>
 
       {!!(customAmount || predefinedAmount) || contributed ? (
