@@ -270,26 +270,7 @@ export function Widget({
           config={config}
           formRef={formRef}
           feeConfig={{
-            _vcComponent: () => (
-              <FeeContribution
-                translations={{
-                  title: t('contribution.title'),
-                  thankYou: t('contribution.thankYou'),
-                  description: t('contribution.description'),
-                  custom: t('contribution.custom'),
-                  confirm: t('contribution.confirm'),
-                  error: {
-                    errorSending: t('contribution.error.errorSending'),
-                    amountTooSmall: t('contribution.error.amountTooSmall'),
-                    noFeeAddress: t('contribution.error.noFeeAddress'),
-                    invalidTokenPrice: t(
-                      'contribution.error.invalidTokenPrice',
-                    ),
-                  },
-                }}
-                translationFn={t}
-              />
-            ),
+            _vcComponent: () => <FeeContribution translationFn={t} />,
           }}
         />
       </ClientOnly>

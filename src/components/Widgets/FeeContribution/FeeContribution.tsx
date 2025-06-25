@@ -44,7 +44,7 @@ import {
 } from './utils';
 
 export interface FeeContributionCardProps {
-  translations: ContributionTranslations;
+  translationFn: TFunction;
   contributionOptions: number[];
   customAmount: string;
   predefinedAmount: string;
@@ -75,13 +75,9 @@ export interface ContributionTranslations {
 
 export interface FeeContributionProps {
   translationFn: TFunction;
-  translations: ContributionTranslations;
 }
 
-const FeeContribution: React.FC<FeeContributionProps> = ({
-  translationFn,
-  translations,
-}) => {
+const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
   const [contributionOptions, setContributionOptions] = useState<number[]>(
@@ -290,10 +286,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
       };
       if (!tokenPriceUSD || tokenPriceUSD <= 0) {
         Sentry.captureException(
-          new Error(translations.error.invalidTokenPrice),
+          new Error(translationFn('contribution.error.invalidTokenPrice')),
           sentryHint,
         );
-        throw new Error(translations.error.invalidTokenPrice);
+        throw new Error(translationFn('contribution.error.invalidTokenPrice'));
       }
       const usdAmount = Number(amount);
       // Use token's actual decimals for precision
@@ -304,20 +300,20 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
       // Ensure we have a non-zero amount after conversion
       if (Number(tokenAmount) === 0) {
         Sentry.captureException(
-          new Error(translations.error.amountTooSmall),
+          new Error(translationFn('contribution.error.amountTooSmall')),
           sentryHint,
         );
-        throw new Error(translations.error.amountTooSmall);
+        throw new Error(translationFn('contribution.error.amountTooSmall'));
       }
 
       // Get the contribution fee address for the chain
       const feeAddress = getContributionFeeAddress(completedRoute.toChainId);
       if (!feeAddress) {
         Sentry.captureException(
-          new Error(translations.error.noFeeAddress),
+          new Error(translationFn('contribution.error.noFeeAddress')),
           sentryHint,
         );
-        throw new Error(translations.error.noFeeAddress);
+        throw new Error(translationFn('contribution.error.noFeeAddress'));
       }
 
       // Track click event
@@ -363,7 +359,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
         const errorMessage = error.message;
         console.error(errorMessage);
         Sentry.captureException(
-          `${translations.error.errorSending}: ${errorMessage}`,
+          `${translationFn('contribution.error.errorSending')}: ${errorMessage}`,
           {
             tags: {
               component: 'FeeContribution',
@@ -426,7 +422,9 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
     <ContributionWrapper showContribution={isOpen}>
       <FeeContributionDrawer isOpen={isOpen}>
         <ContributionCard>
-          <ContributionCardTitle>{translations.title}</ContributionCardTitle>
+          <ContributionCardTitle>
+            {translationFn('contribution.title')}
+          </ContributionCardTitle>
           <Grid
             container
             spacing={2}
@@ -447,21 +445,21 @@ const FeeContribution: React.FC<FeeContributionProps> = ({
               maxUsdAmount={maxUsdAmount}
               setCustomAmount={setCustomAmount}
               customAmount={customAmount}
-              translations={translations}
+              translationFn={translationFn}
               isCustomAmountActive={isCustomAmountActive}
             />
           </Grid>
 
           {!!(customAmount || predefinedAmount) || contributed ? (
             <FeeContributionCTA
-              translations={translations}
+              translationFn={translationFn}
               contributed={contributed}
               isTransactionLoading={isTransactionLoading}
               onConfirm={handleConfirm}
             />
           ) : (
             <ContributionDescription>
-              {translations.description}
+              {translationFn('contribution.description')}
             </ContributionDescription>
           )}
         </ContributionCard>

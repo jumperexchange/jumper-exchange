@@ -8,7 +8,7 @@ import { formatInputAmount, NO_DECIMAL_PLACES } from './utils';
 export interface CustomInputProps
   extends Pick<
     FeeContributionCardProps,
-    | 'translations'
+    | 'translationFn'
     | 'customAmount'
     | 'contributed'
     | 'maxUsdAmount'
@@ -18,7 +18,7 @@ export interface CustomInputProps
   > {}
 
 export const CustomInput: React.FC<CustomInputProps> = ({
-  translations,
+  translationFn,
   customAmount,
   contributed,
   maxUsdAmount,
@@ -63,7 +63,9 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         onChange={onChangeValue}
         onClick={handleCustomClick}
         onBlur={handleCustomBlur}
-        placeholder={!isCustomAmountActive ? translations.custom : ''}
+        placeholder={
+          !isCustomAmountActive ? translationFn('contribution.custom') : ''
+        }
         isCustomAmountActive={isCustomAmountActive}
         hasInputAmount={!!customAmount && isCustomAmountActive}
         slotProps={{

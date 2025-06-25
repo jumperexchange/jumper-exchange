@@ -6,11 +6,11 @@ import { ContributionButtonConfirm } from './FeeContribution.style';
 interface FeeContributionCTAProps
   extends Pick<
     FeeContributionCardProps,
-    'translations' | 'contributed' | 'isTransactionLoading' | 'onConfirm'
+    'contributed' | 'isTransactionLoading' | 'onConfirm' | 'translationFn'
   > {}
 
 export const FeeContributionCTA: React.FC<FeeContributionCTAProps> = ({
-  translations,
+  translationFn,
   contributed,
   isTransactionLoading,
   onConfirm,
@@ -25,9 +25,9 @@ export const FeeContributionCTA: React.FC<FeeContributionCTAProps> = ({
       {isTransactionLoading ? (
         <CircularProgress size={20} color="inherit" />
       ) : contributed ? (
-        translations.thankYou
+        translationFn('contribution.thankYou')
       ) : (
-        translations.confirm
+        translationFn('contribution.confirm')
       )}
     </ContributionButtonConfirm>
   );
