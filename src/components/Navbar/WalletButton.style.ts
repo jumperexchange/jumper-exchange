@@ -59,6 +59,7 @@ export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
 
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   padding: theme.spacing(1),
+  minWidth: 48,
   gap: '0.5rem',
   backgroundColor: 'transparent',
   boxShadow: 'none',
