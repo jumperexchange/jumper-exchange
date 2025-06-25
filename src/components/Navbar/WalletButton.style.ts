@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { ButtonTransparent } from '../Button';
-import { avatarMask12 } from '../Mask.style';
 
 export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
   height: 32,
@@ -32,14 +31,12 @@ export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
 export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
   border: '2px solid white',
-  background: (theme.vars || theme).palette.white.main,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundColor: (theme.vars || theme).palette.white.main,
   ...theme.applyStyles('light', {
-    background: (theme.vars || theme).palette.alphaDark900.main,
+    backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
   }),
-  // overflow: 'hidden',
-  '> .MuiAvatar-root': {
-    mask: avatarMask12,
-  },
 }));
 
 export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
@@ -47,6 +44,9 @@ export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   margin: 'auto',
   textWrap: 'nowrap',
   height: 32,
+  [theme.breakpoints.up('sm')]: {
+    height: 40,
+  },
 }));
 
 export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
@@ -59,6 +59,7 @@ export const ConnectButtonLabel = styled(Typography)(({ theme }) => ({
 
 export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   padding: theme.spacing(1),
+  minWidth: 48,
   gap: '0.5rem',
   backgroundColor: 'transparent',
   boxShadow: 'none',
