@@ -31,7 +31,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   setCustomAmount,
   setIsCustomAmountActive,
 }) => {
-  const onChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (contributed) return;
 
     setIsCustomAmountActive(true);
@@ -47,7 +47,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     }
   };
 
-  const handleCustomClick = () => {
+  const handleClick = () => {
     if (contributed) return;
 
     setIsCustomAmountActive(true);
@@ -57,7 +57,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     }
   };
 
-  const handleCustomBlur = () => {
+  const handleBlur = () => {
     setIsCustomAmountActive(false);
   };
 
@@ -66,9 +66,9 @@ export const CustomInput: React.FC<CustomInputProps> = ({
       <ContributionCustomInput
         value={customAmount ?? ''}
         aria-autocomplete="none"
-        onChange={onChangeValue}
-        onClick={handleCustomClick}
-        onBlur={handleCustomBlur}
+        onChange={handleChange}
+        onClick={handleClick}
+        onBlur={handleBlur}
         placeholder={placeholder}
         isCustomAmountActive={isCustomAmountActive}
         hasInputAmount={!!customAmount && isCustomAmountActive}
