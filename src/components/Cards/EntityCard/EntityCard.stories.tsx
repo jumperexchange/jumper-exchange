@@ -90,7 +90,7 @@ const commonProps = {
     label: 'Visit Jumper Exchange',
   },
   onClick: () => console.log('Entity Card Clicked'),
-  badge: <Badge label="Active" />,
+  badge: <Badge label="Active" variant="secondary" />,
 };
 
 export const Compact: Story = {
