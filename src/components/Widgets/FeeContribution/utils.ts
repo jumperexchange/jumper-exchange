@@ -57,30 +57,51 @@ export const formatInputAmount = (
   if (!amount) {
     return amount;
   }
-  let formattedAmount = amount
-    .trim()
-    .replaceAll(',', '.')
-    .replaceAll(/^[^\d.]*$/g, '');
+
+  // First just convert commas to dots
+  let formattedAmount = amount.trim().replaceAll(',', '.');
+
+  // If it's just a decimal point, return it with a leading zero
+  if (formattedAmount === '.') {
+    return '0.';
+  }
+
+  // Remove any non-digit characters except dots
+  formattedAmount = formattedAmount.replace(/[^\d.]/g, '');
+
+  // Handle multiple dots - keep only the first one
+  const parts = formattedAmount.split('.');
+  formattedAmount =
+    parts[0] + (parts.length > 1 ? '.' + parts.slice(1).join('') : '');
+
+  // Only preserve trailing dot if there are no decimal digits yet
+  const endsWithDot = formattedAmount.endsWith('.');
+  if (endsWithDot && parts.length > 1 && parts[1].length > 0) {
+    formattedAmount = formattedAmount.slice(0, -1);
+  }
+
   if (formattedAmount.startsWith('.')) {
     formattedAmount = `0${formattedAmount}`;
   }
-  const parsedAmount = Number.parseFloat(formattedAmount);
-  if (Number.isNaN(Number(formattedAmount)) && !Number.isNaN(parsedAmount)) {
-    return parsedAmount.toString();
-  }
-  if (Number.isNaN(Math.abs(Number(formattedAmount)))) {
-    return '';
-  }
+
   if (returnInitial) {
     return formattedAmount;
   }
-  let [integer, fraction = ''] = formattedAmount.split('.');
-  if (decimals !== null && fraction.length > decimals) {
-    fraction = fraction.slice(0, decimals);
+
+  // Only format decimals if we don't end with a dot
+  if (!formattedAmount.endsWith('.')) {
+    let [integer, fraction = ''] = formattedAmount.split('.');
+    if (decimals !== null && fraction.length > decimals) {
+      fraction = fraction.slice(0, decimals);
+    }
+    integer = integer.replace(/^0+|-/, '') || '0';
+    // Only remove trailing zeros when formatting the final value
+    if (!fraction.includes('.')) {
+      formattedAmount = `${integer}${fraction ? `.${fraction}` : ''}`;
+    }
   }
-  integer = integer.replace(/^0+|-/, '');
-  fraction = fraction.replace(/(0+)$/, '');
-  return `${integer || (fraction ? '0' : '')}${fraction ? `.${fraction}` : ''}`;
+
+  return formattedAmount;
 };
 
 export interface TransferResponse {
@@ -144,12 +165,12 @@ export const isEligibleForContribution = (
   );
 };
 
-export const NO_DECIMAL_PLACES = 2;
+export const NUM_DECIMAL_PLACES = 2;
 
 // Intl formatters for display
-const displayFormatter = new Intl.NumberFormat('en-US', {
+export const displayFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
   minimumFractionDigits: 0,
-  maximumFractionDigits: NO_DECIMAL_PLACES,
+  maximumFractionDigits: NUM_DECIMAL_PLACES,
   roundingMode: 'floor',
 });

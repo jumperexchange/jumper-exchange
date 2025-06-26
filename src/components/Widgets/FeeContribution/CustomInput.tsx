@@ -3,7 +3,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { FeeContributionCardProps } from './FeeContribution';
 import { ContributionCustomInput } from './FeeContribution.style';
 import { USD_CURRENCY_SYMBOL } from './constants';
-import { formatInputAmount, NO_DECIMAL_PLACES } from './utils';
+import {
+  displayFormatter,
+  formatInputAmount,
+  NUM_DECIMAL_PLACES,
+} from './utils';
 
 export interface CustomInputProps
   extends Pick<
@@ -33,9 +37,10 @@ export const CustomInput: React.FC<CustomInputProps> = ({
 
     const { value } = event.target;
 
-    const formattedAmount = formatInputAmount(value, NO_DECIMAL_PLACES);
-    if (formattedAmount && Number(formattedAmount) > maxUsdAmount) {
-      setCustomAmount(maxUsdAmount.toString());
+    const formattedAmount = formatInputAmount(value, NUM_DECIMAL_PLACES);
+    if (formattedAmount && Number(formattedAmount) >= maxUsdAmount) {
+      const formattedMaxUsdAmount = displayFormatter.format(maxUsdAmount);
+      setCustomAmount(formattedMaxUsdAmount);
     } else {
       setCustomAmount(formattedAmount);
     }
