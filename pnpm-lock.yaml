@@ -39,8 +39,8 @@ importers:
         specifier: ^2.2.4
         version: 2.2.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@lifi/explorer':
-        specifier: ^0.3.0
-        version: 0.3.0(7e540f57e27b876dffce70c5a703ab54)
+        specifier: ^0.4.0
+        version: 0.4.0(dcc03ffa1e5129d3dc5820043075a75c)
       '@lifi/sdk':
         specifier: ^3.7.9
         version: 3.7.9(@solana/wallet-adapter-base@0.9.26(@solana/web3.js@1.98.2(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@19.1.8)(bufferutil@4.0.9)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(viem@2.31.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.63))(zod@3.25.63)
@@ -1953,10 +1953,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@lifi/explorer@0.3.0':
-    resolution: {integrity: sha512-KYKiu46FLTk119MtWW89QP7OJVEj7scUZuunYCLINkRs8qhX/LWd+o1o4dqFd8j4DwPVTMFOfl4tQPNsi9uw3Q==}
+  '@lifi/explorer@0.4.0':
+    resolution: {integrity: sha512-koA5p/xlmv9017dfxR9DI6SvwDbVvzhAqvdUvg0rLptLHMCsSyx0DFiPdkM0V+T+PzNLGQjKvXf4nLWoxqhsNA==}
     peerDependencies:
-      '@bigmi/react': ^0.1.1
       '@emotion/react': ^11.11.1
       '@emotion/styled': ^11.11.0
       '@mui/icons-material': ^7.0.2
@@ -10973,9 +10972,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
     optional: true
 
-  '@lifi/explorer@0.3.0(7e540f57e27b876dffce70c5a703ab54)':
+  '@lifi/explorer@0.4.0(dcc03ffa1e5129d3dc5820043075a75c)':
     dependencies:
-      '@bigmi/react': 0.3.1(@tanstack/query-core@5.80.7)(@tanstack/react-query@5.80.7(react@19.1.0))(@types/react@19.1.8)(bs58@5.0.0)(immer@10.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))
       '@emotion/react': 11.14.0(@types/react@19.1.8)(react@19.1.0)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
       '@lifi/sdk': 3.7.9(@solana/wallet-adapter-base@0.9.26(@solana/web3.js@1.98.2(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@19.1.8)(bufferutil@4.0.9)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))(utf-8-validate@5.0.10)(viem@2.31.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.25.63))(zod@3.25.63)
