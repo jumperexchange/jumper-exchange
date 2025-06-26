@@ -35,6 +35,11 @@ export const sanitizeAddress = (address: string): string => {
     throw new Error('Invalid Ethereum or SUI address');
   }
 
+  // Check if it's a valid UTXO address first to catch Bitcoin addresses
+  if (isValidUTXOAddress(trimmedAddress)) {
+    return trimmedAddress;
+  }
+
   // Check if it's a valid Solana address - case sensitive!
   if (isValidSolanaAddress(trimmedAddress)) {
     try {
@@ -43,11 +48,6 @@ export const sanitizeAddress = (address: string): string => {
     } catch (e) {
       throw new Error('Invalid Solana address');
     }
-  }
-
-  // Check if it's a valid UTXO address
-  if (isValidUTXOAddress(trimmedAddress)) {
-    return trimmedAddress;
   }
 
   // Generic error for other cases
