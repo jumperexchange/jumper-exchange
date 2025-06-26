@@ -1,13 +1,21 @@
+import * as Sentry from '@sentry/nextjs';
+import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
+
 import { useAccount } from '@lifi/wallet-management';
 import Grid from '@mui/material/Grid';
 import { TFunction } from 'i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
+import {
+  createNativeTransactionConfig,
+  createTokenTransactionConfig,
+} from 'src/utils/transaction';
+import { parseUnits } from 'viem';
 import {
   useSendTransaction,
   useWaitForTransactionReceipt,
@@ -30,40 +38,11 @@ import { PredefinedButtons } from './PredefinedButtons';
 import {
   checkContributionByTxHistory,
   getContributionAmounts,
+  getContributionFeeAddress,
   hasValidContributionFeeAddress,
   isEvmChainType,
   isTransactionAmountEligible,
 } from './utils';
-
-export interface FeeContributionCardProps {
-  translationFn: TFunction;
-  contributionOptions: number[];
-  customAmount: string;
-  predefinedAmount: string;
-  contributed: boolean;
-  isTransactionLoading: boolean;
-  maxUsdAmount: number;
-  isCustomAmountActive: boolean;
-  setCustomAmount: (amount: string) => void;
-  setPredefinedAmount: (amount: string) => void;
-  setIsCustomAmountActive: (isCustomAmountActive: boolean) => void;
-  onClose: () => void;
-  onConfirm: () => void;
-}
-
-export interface ContributionTranslations {
-  title: string;
-  thankYou: string;
-  description: string;
-  custom: string;
-  confirm: string;
-  error: {
-    amountTooSmall: string;
-    noFeeAddress: string;
-    errorSending: string;
-    invalidTokenPrice: string;
-  };
-}
 
 export interface FeeContributionProps {
   translationFn: TFunction;
@@ -251,6 +230,125 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
     }
   }, [contributionDisplayed]);
 
+  // Handle contribution confirmation to sign the tx
+  const handleClickCTA = async () => {
+    if (contributed) {
+      setIsOpen(false);
+      return;
+    }
+    if (
+      isTxConfirmed ||
+      isNativeTxSuccess ||
+      !amount ||
+      !completedRoute?.toToken ||
+      !account?.address
+    )
+      return;
+
+    setIsSending(true);
+    try {
+      // amount is in USD, convert to token amount
+      const tokenPriceUSD = Number(completedRoute.toToken.priceUSD);
+      const sentryHint = {
+        tags: {
+          component: 'FeeContribution',
+          action: 'handleConfirm',
+        },
+      };
+      if (!tokenPriceUSD || tokenPriceUSD <= 0) {
+        Sentry.captureException(
+          new Error(translationFn('contribution.error.invalidTokenPrice')),
+          sentryHint,
+        );
+        throw new Error(translationFn('contribution.error.invalidTokenPrice'));
+      }
+      const usdAmount = Number(amount);
+      // Use token's actual decimals for precision
+      const tokenAmount = (usdAmount / tokenPriceUSD).toFixed(
+        completedRoute.toToken.decimals,
+      );
+
+      // Ensure we have a non-zero amount after conversion
+      if (Number(tokenAmount) === 0) {
+        Sentry.captureException(
+          new Error(translationFn('contribution.error.amountTooSmall')),
+          sentryHint,
+        );
+        throw new Error(translationFn('contribution.error.amountTooSmall'));
+      }
+
+      // Get the contribution fee address for the chain
+      const feeAddress = getContributionFeeAddress(completedRoute.toChainId);
+      if (!feeAddress) {
+        Sentry.captureException(
+          new Error(translationFn('contribution.error.noFeeAddress')),
+          sentryHint,
+        );
+        throw new Error(translationFn('contribution.error.noFeeAddress'));
+      }
+
+      // Track click event
+      completedRoute &&
+        trackEvent({
+          action: TrackingAction.ClickContribute,
+          category: TrackingCategory.Widget,
+          label: 'click_fee_contribution',
+          data: {
+            ...(account?.address && { donator: account.address }),
+            original_tx_id: completedRoute.id,
+            donation_amount_usd: usdAmount,
+            donation_amount_token: tokenAmount,
+            donation_token_symbol: completedRoute.toToken.symbol,
+            donation_token_address: completedRoute.toToken.address,
+            donation_chain: completedRoute.toChainId,
+          },
+        });
+
+      // Convert to token units with proper precision
+      const amountInTokenUnits = parseUnits(
+        tokenAmount,
+        completedRoute.toToken.decimals,
+      );
+
+      if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
+        const nativeTxConfig = createNativeTransactionConfig(
+          feeAddress as `0x${string}`,
+          amountInTokenUnits,
+        );
+        await sendTransaction(nativeTxConfig);
+      } else {
+        const erc20TxConfig = createTokenTransactionConfig(
+          completedRoute.toToken.address as `0x${string}`,
+          feeAddress as `0x${string}`,
+          amountInTokenUnits,
+          completedRoute.toChainId,
+        );
+        await writeContract(erc20TxConfig);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        console.error(errorMessage);
+        Sentry.captureException(
+          `${translationFn('contribution.error.errorSending')}: ${errorMessage}`,
+          {
+            tags: {
+              component: 'FeeContribution',
+              action: 'handleConfirm',
+            },
+            extra: {
+              tokenAddress: completedRoute?.toToken?.address,
+              chainId: completedRoute?.toChainId,
+              amount,
+            },
+          },
+        );
+      }
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   // Move the setContributed logic to useEffect
   useEffect(() => {
     if (
@@ -305,12 +403,12 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
             justifyContent={'space-between'}
           >
             <PredefinedButtons
-              predefinedAmount={predefinedAmount}
               contributed={contributed}
-              setPredefinedAmount={setPredefinedAmount}
-              isCustomAmountActive={isCustomAmountActive}
-              setIsCustomAmountActive={setIsCustomAmountActive}
               contributionOptions={contributionOptions}
+              currentValue={predefinedAmount}
+              isCustomAmountActive={isCustomAmountActive}
+              setCurrentValue={setPredefinedAmount}
+              setIsCustomAmountActive={setIsCustomAmountActive}
             />
             <CustomInput
               contributed={contributed}
@@ -329,18 +427,10 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
 
           {!!(customAmount || predefinedAmount) || contributed ? (
             <FeeContributionCTA
-              translationFn={translationFn}
               contributed={contributed}
               isTransactionLoading={isTransactionLoading}
-              completedRoute={completedRoute}
-              sendTransaction={sendTransaction}
-              writeContract={writeContract}
-              setIsOpen={setIsOpen}
-              isTxConfirmed={isTxConfirmed}
-              isNativeTxSuccess={isNativeTxSuccess}
-              amount={amount}
-              account={account}
-              setIsSending={setIsSending}
+              handleClick={handleClickCTA}
+              translationFn={translationFn}
             />
           ) : (
             <ContributionDescription>

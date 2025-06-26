@@ -191,13 +191,13 @@ export const ContributionButton = styled(Button, {
   },
 );
 
-interface ContributionButtonConfirmProps extends ButtonProps {
+interface ContributionButtonCTAProps extends ButtonProps {
   isTxConfirmed: boolean;
 }
 
-export const ContributionButtonConfirm = styled(Button, {
+export const ContributionButtonCTA = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'isTxConfirmed',
-})<ContributionButtonConfirmProps>(
+})<ContributionButtonCTAProps>(
   ({ theme }) => ({
     width: '100%',
     fontSize: '14px',

@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
-import { FeeContributionCardProps } from './FeeContribution';
 import { ContributionCustomInput } from './FeeContribution.style';
 import { USD_CURRENCY_SYMBOL } from './constants';
 import {
@@ -9,16 +8,13 @@ import {
   NUM_DECIMAL_PLACES,
 } from './utils';
 
-export interface CustomInputProps
-  extends Pick<
-    FeeContributionCardProps,
-    | 'customAmount'
-    | 'contributed'
-    | 'maxUsdAmount'
-    | 'isCustomAmountActive'
-    | 'setCustomAmount'
-    | 'setIsCustomAmountActive'
-  > {
+interface CustomInputProps {
+  customAmount: string;
+  maxUsdAmount: number;
+  isCustomAmountActive: boolean;
+  contributed: boolean;
+  setCustomAmount: (amount: string) => void;
+  setIsCustomAmountActive: (isActive: boolean) => void;
   placeholder: string;
 }
 

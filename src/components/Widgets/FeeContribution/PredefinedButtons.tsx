@@ -1,44 +1,41 @@
 import Grid from '@mui/material/Grid';
 import { USD_CURRENCY_SYMBOL } from './constants';
-import { FeeContributionCardProps } from './FeeContribution';
 import { ContributionButton } from './FeeContribution.style';
 
-export interface PredefinedButtonsProps
-  extends Pick<
-    FeeContributionCardProps,
-    | 'contributionOptions'
-    | 'predefinedAmount'
-    | 'setPredefinedAmount'
-    | 'isCustomAmountActive'
-    | 'setIsCustomAmountActive'
-    | 'contributed'
-  > {}
+interface PredefinedButtonsProps {
+  contributionOptions: number[];
+  currentValue: string;
+  isCustomAmountActive: boolean;
+  contributed: boolean;
+  setCurrentValue: (amount: string) => void;
+  setIsCustomAmountActive: (isActive: boolean) => void;
+}
 
 export const PredefinedButtons: React.FC<PredefinedButtonsProps> = ({
-  contributionOptions,
-  predefinedAmount,
-  setPredefinedAmount,
-  isCustomAmountActive,
-  setIsCustomAmountActive,
   contributed,
+  contributionOptions,
+  currentValue,
+  isCustomAmountActive,
+  setCurrentValue,
+  setIsCustomAmountActive,
 }) => {
   const handleButtonClick = (amount: number) => {
     if (contributed) return;
-    if (predefinedAmount === amount.toString()) {
-      setPredefinedAmount('');
+    if (currentValue === amount.toString()) {
+      setCurrentValue('');
       return;
     }
     setIsCustomAmountActive(false);
-    setPredefinedAmount(amount.toString());
+    setCurrentValue(amount.toString());
   };
 
   return contributionOptions.map((contributionAmount) => (
     <Grid size={3} key={contributionAmount}>
       <ContributionButton
         selected={
-          !!predefinedAmount &&
+          !!currentValue &&
           !isCustomAmountActive &&
-          Number(predefinedAmount) === contributionAmount
+          Number(currentValue) === contributionAmount
         }
         onClick={() => handleButtonClick(contributionAmount)}
         size="small"
