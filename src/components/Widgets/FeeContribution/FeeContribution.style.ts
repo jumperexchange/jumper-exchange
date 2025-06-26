@@ -97,7 +97,7 @@ export const ContributionCustomInput = styled(TextField, {
       paddingLeft: theme.spacing(0.5),
     }),
 
-    padding: value ? 0 : '0 16px',
+    padding: value || !isFieldActive ? 0 : '0 16px',
 
     // borderRadius: '16px',
     height: 'auto',

@@ -1,25 +1,25 @@
 import Grid from '@mui/material/Grid';
 import { USD_CURRENCY_SYMBOL } from './constants';
 import { ContributionButton } from './FeeContribution.style';
-import { ContributionBaseProps } from './FeeContribution.types';
+import { FeeContributionBaseProps } from './FeeContribution.types';
 
-interface PredefinedButtonsProps extends ContributionBaseProps {
+interface PredefinedOptionsProps extends FeeContributionBaseProps {
   options: number[];
 }
 
-export const PredefinedButtons: React.FC<PredefinedButtonsProps> = ({
+export const PredefinedOptions: React.FC<PredefinedOptionsProps> = ({
   isDisabled,
   options,
   currentValue,
-  isManualValue,
+  isManualValueSelected,
   setCurrentValue,
-  setIsManualValue,
+  setIsManualValueSelected,
 }) => {
   const handleButtonClick = (amount: number) => {
     if (isDisabled) return;
 
-    if (isManualValue) {
-      setIsManualValue(false);
+    if (isManualValueSelected) {
+      setIsManualValueSelected(false);
     }
 
     setCurrentValue(amount.toString());
@@ -29,7 +29,9 @@ export const PredefinedButtons: React.FC<PredefinedButtonsProps> = ({
     <Grid size={3} key={option}>
       <ContributionButton
         selected={
-          !!currentValue && !isManualValue && Number(currentValue) === option
+          !!currentValue &&
+          !isManualValueSelected &&
+          Number(currentValue) === option
         }
         onClick={() => handleButtonClick(option)}
         size="small"

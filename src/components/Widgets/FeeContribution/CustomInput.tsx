@@ -4,9 +4,10 @@ import { ContributionCustomInput } from './FeeContribution.style';
 import { USD_CURRENCY_SYMBOL } from './constants';
 import { formatInputAmount } from './utils';
 import { NUM_DECIMAL_PLACES } from './constants';
-import { ContributionBaseProps } from './FeeContribution.types';
+import { FeeContributionBaseProps } from './FeeContribution.types';
+import { useState } from 'react';
 
-interface CustomInputProps extends ContributionBaseProps {
+interface CustomInputProps extends FeeContributionBaseProps {
   maxValue: number;
   placeholder: string;
 }
@@ -16,15 +17,16 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   isDisabled,
   maxValue,
   placeholder,
-  isManualValue,
+  isManualValueSelected,
   setCurrentValue,
-  setIsManualValue,
+  setIsManualValueSelected,
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isDisabled) return;
 
-    if (!isManualValue) {
-      setIsManualValue(true);
+    if (!isManualValueSelected) {
+      setIsManualValueSelected(true);
     }
 
     const rawValue = event.target.value;
@@ -32,7 +34,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     const numericValue = Number(formattedValue);
 
     const shouldLimitToMax =
-      formattedValue && maxValue && numericValue >= maxValue;
+      formattedValue && maxValue && numericValue > maxValue;
     const finalValue = shouldLimitToMax
       ? maxValue.toFixed(NUM_DECIMAL_PLACES)
       : formattedValue;
@@ -43,8 +45,18 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   const handleClick = () => {
     if (isDisabled) return;
 
-    if (!isManualValue) {
-      setIsManualValue(true);
+    if (!isFocused) {
+      setIsFocused(true);
+    }
+
+    if (!isManualValueSelected) {
+      setIsManualValueSelected(true);
+    }
+  };
+
+  const handleBlur = () => {
+    if (isFocused) {
+      setIsFocused(false);
     }
   };
 
@@ -55,12 +67,13 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         aria-autocomplete="none"
         onChange={handleChange}
         onClick={handleClick}
-        placeholder={placeholder}
-        isFieldActive={isManualValue}
+        onBlur={handleBlur}
+        placeholder={!isFocused ? placeholder : ''}
+        isFieldActive={isFocused}
         slotProps={{
           input: {
             startAdornment:
-              isManualValue || currentValue ? (
+              isFocused || currentValue ? (
                 <InputAdornment position="start" disableTypography>
                   {USD_CURRENCY_SYMBOL}
                 </InputAdornment>
