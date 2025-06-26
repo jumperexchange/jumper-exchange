@@ -1,14 +1,28 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAccount } from '@lifi/wallet-management';
+import * as Sentry from '@sentry/nextjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
+import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
 import { useGetTokenBalance } from 'src/hooks/useGetTokenBalance';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { useTxHistory } from 'src/hooks/useTxHistory';
+import { useContributionAmountContext } from 'src/providers/ContributionAmountProvider';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
+import {
+  createNativeTransactionConfig,
+  createTokenTransactionConfig,
+} from 'src/utils/transaction';
+import { parseUnits } from 'viem';
 import {
   useSendTransaction,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
+import {
+  CONTRIBUTION_AB_TEST_PERCENTAGE,
+  CONTRIBUTION_AMOUNTS,
+} from './constants';
 import {
   checkContributionByTxHistory,
   getContributionAmounts,
@@ -17,20 +31,6 @@ import {
   isEvmChainType,
   isTransactionAmountEligible,
 } from './utils';
-import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
-import { parseUnits } from 'viem';
-import {
-  createNativeTransactionConfig,
-  createTokenTransactionConfig,
-} from 'src/utils/transaction';
-import { useUserTracking } from 'src/hooks/userTracking';
-import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
-import { useContributionStore } from 'src/stores/contribution/ContributionStore';
-import {
-  CONTRIBUTION_AB_TEST_PERCENTAGE,
-  CONTRIBUTION_AMOUNTS,
-} from './constants';
-import { useContributionAmountContext } from 'src/providers/ContributionAmountProvider';
 
 export const useContributionData = () => {
   const [contributionOptions, setContributionOptions] = useState<number[]>(
@@ -93,7 +93,7 @@ export const useContributionData = () => {
       ? Number(tokenBalanceData.amount) /
         Math.pow(10, tokenBalanceData.decimals)
       : 0;
-    return 5.5; //maxTokenAmount * Number(completedRoute?.toToken?.priceUSD);
+    return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD);
   }, [tokenBalanceData, completedRoute?.toToken?.priceUSD]);
 
   // Update contribution options when eligible
