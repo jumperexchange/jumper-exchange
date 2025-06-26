@@ -4,6 +4,7 @@ import type {
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
+  Color,
 } from '@mui/material';
 import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
@@ -74,7 +75,14 @@ declare module '@mui/material/styles' {
     alphaLight700: Palette['primary'];
     alphaLight800: Palette['primary'];
     alphaLight900: Palette['primary'];
+    mint: Pick<Color, 100 | 500>;
+    amber: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    violet: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    blue: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    scarlet: Pick<Color, 100 | 500>;
+    orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
   }
+
   interface PaletteOptions {
     tertiary?: PaletteOptions['primary'];
     white?: PaletteOptions['primary'];
@@ -108,6 +116,12 @@ declare module '@mui/material/styles' {
     alphaLight600?: PaletteOptions['primary'];
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
+    mint?: Pick<Color, 100 | 500>;
+    amber?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    violet?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    blue?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    scarlet?: Pick<Color, 100 | 500>;
+    orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
   }
   interface ButtonPropsColorOverrides {
     tertiary: true;
@@ -141,6 +155,12 @@ declare module '@mui/material/styles' {
     alphaLight700: true;
     alphaLight800: true;
     alphaLight900: true;
+    mint: true;
+    amber: true;
+    violet: true;
+    blue: true;
+    scarlet: true;
+    orchid: true;
   }
 
   interface TypographyVariants {
@@ -516,6 +536,58 @@ const palette = {
     main: '#297EFF',
     light: '#297EFF',
     dark: '#297EFF',
+  },
+  mint: {
+    100: '#D6FFE7',
+    500: '#00B849',
+  },
+  amber: {
+    100: '#FFF7D6',
+    200: '#FFEFAD',
+    300: '#FFDE5C',
+    400: '#F5CC27',
+    500: '#D6AB00',
+    600: '#A38300',
+    700: '#7A6200',
+    800: '#524100',
+    900: '#3D3100',
+  },
+  violet: {
+    100: '#FAEBFF',
+    200: '#F4D6FF',
+    300: '#EFC2FF',
+    400: '#DE85FF',
+    500: '#D35CFF',
+    600: '#8D1AB8',
+    700: '#7C10A3',
+    800: '#6B098F',
+    900: '#59007A',
+  },
+  blue: {
+    100: '#E0E3FF',
+    200: '#D6D9FF',
+    300: '#C2C6FF',
+    400: '#ADB3FF',
+    500: '#5C67FF',
+    600: '#414DEB',
+    700: '#2B37D6',
+    800: '#1723C2',
+    900: '#0713AD',
+  },
+  scarlet: {
+    100: '#FFDED6',
+    500: '#B82500',
+  },
+  orchid: {
+    100: '#FEF5FF',
+    200: '#FCEBFF',
+    300: '#FBE0FF',
+    400: '#FAD6FF',
+    500: '#F7C2FF',
+    600: '#C86FD6',
+    700: '#AA51B8',
+    800: '#702C7A',
+    900: '#37113D',
   },
 };
 
@@ -1036,9 +1108,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#faf5ff',
           },
           surface2: {
-            light: '#FFFFFF',
-            main: '#FFFFFF',
-            dark: '#FFFFFF',
+            light: '#F9F5FF',
+            main: '#F9F5FF',
+            dark: '#F9F5FF',
           },
           surface3: {
             light: '#E5E1EB',
