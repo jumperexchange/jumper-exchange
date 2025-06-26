@@ -1,11 +1,10 @@
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
-import { ContributionCustomInput } from './FeeContribution.style';
-import { USD_CURRENCY_SYMBOL } from './constants';
-import { formatInputAmount } from './utils';
-import { NUM_DECIMAL_PLACES } from './constants';
-import { FeeContributionBaseProps } from './FeeContribution.types';
 import { useState } from 'react';
+import { NUM_DECIMAL_PLACES, USD_CURRENCY_SYMBOL } from './constants';
+import { ContributionCustomInput } from './FeeContribution.style';
+import { FeeContributionBaseProps } from './FeeContribution.types';
+import { formatInputAmount } from './utils';
 
 interface CustomInputProps extends FeeContributionBaseProps {
   maxValue: number;
@@ -61,7 +60,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   };
 
   return (
-    <Grid size={3}>
+    <Grid size={{ xs: 4, sm: 3 }}>
       <ContributionCustomInput
         value={currentValue}
         aria-autocomplete="none"

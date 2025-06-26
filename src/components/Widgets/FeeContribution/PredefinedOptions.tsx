@@ -26,7 +26,7 @@ export const PredefinedOptions: React.FC<PredefinedOptionsProps> = ({
   };
 
   return options.map((option) => (
-    <Grid size={3} key={option}>
+    <Grid key={option} size={{ xs: 2, sm: 3 }}>
       <ContributionButton
         selected={
           !!currentValue &&
