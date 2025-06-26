@@ -77,6 +77,12 @@ interface WalletCapabilitiesArgs extends WalletMethodArgs {
   params?: never;
 }
 
+interface WalletWaitForCallsStatusArgs extends WalletMethodArgs {
+  method: 'wallet_waitForCallsStatus';
+  id: string;
+  timeout?: number;
+}
+
 interface ContractComposableConfig {
   address: string;
   chainId: number;
@@ -84,6 +90,18 @@ interface ContractComposableConfig {
   functionName: string;
   args: unknown[];
   gasLimit?: bigint;
+}
+
+interface CallsStatusResponse {
+  atomic: boolean;
+  chainId?: string;
+  id: string;
+  status: string; // 'success' | 'failed' - string status as expected by LiFi SDK
+  statusCode: number; // 200 | 400 - numeric status code
+  receipts: Array<{
+    transactionHash: `0x${string}`;
+    status: 'success' | 'reverted';
+  }>;
 }
 
 const buildContractComposable = async (
@@ -452,7 +470,7 @@ export function ZapWidget({
       // Only add transferLpInstruction if deposit ABI does NOT have an address input
       const depositHasAddressArg = depositInputs.some(
         (input: AbiInput) => input.type === 'address',
-      );
+      );    
 
       if (!depositHasAddressArg) {
         if (!address) {
@@ -540,23 +558,84 @@ export function ZapWidget({
         hash: hash as `0x${string}`,
       });
 
-      const originalReceipts = receipt?.receipts;
-      originalReceipts[originalReceipts.length - 1].transactionHash =
-        `biconomy:${hash}` as `0x${string}`;
+      const originalReceipts = receipt?.receipts || [];
+      // Ensure the last receipt has the correct transactionHash format
+      if (originalReceipts.length > 0) {
+        originalReceipts[originalReceipts.length - 1].transactionHash =
+          `biconomy:${hash}` as `0x${string}`;
+      }
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
       const hexChainId = chainIdAsNumber
         ? `0x${Number(chainIdAsNumber).toString(16)}`
         : undefined;
 
+      const isSuccess = receipt?.transactionStatus?.toLowerCase().includes('success');
+      const statusCode = isSuccess ? 200 : 400;
+
       return {
         atomic: true,
         chainId: hexChainId,
         id: hash,
-        status: receipt?.transactionStatus?.toLowerCase().includes('success')
-          ? 200
-          : 400,
-        receipts: originalReceipts,
+        status: isSuccess ? 'success' : 'failed', // String status as expected by LiFi SDK
+        statusCode, // Numeric status code
+        receipts: originalReceipts.map(receipt => ({
+          transactionHash: receipt.transactionHash,
+          status: receipt.status || (isSuccess ? 'success' : 'reverted')
+        }))
+      };
+    },
+    [meeClient],
+  );
+
+  // Helper function to handle 'wallet_waitForCallsStatus'
+  const handleWalletWaitForCallsStatus = useCallback(
+    async (args: WalletWaitForCallsStatusArgs) => {
+      if (!meeClient) {
+        throw new Error('MEE client not initialized');
+      }
+      if (!args.id) {
+        throw new Error('Invalid args structure for wallet_waitForCallsStatus: missing id');
+      }
+      
+      const { id, timeout = 60000 } = args;
+      
+      // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
+      // We'll use the timeout to set a maximum wait time
+      const receipt = await Promise.race([
+        meeClient.waitForSupertransactionReceipt({
+          hash: id as `0x${string}`,
+        }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error(`Timed out while waiting for call bundle with id "${id}" to be confirmed.`)), timeout)
+        )
+      ]);
+
+      // Now get the status using the same logic as handleWalletGetCallsStatus
+      const originalReceipts = receipt?.receipts || [];
+      if (originalReceipts.length > 0) {
+        originalReceipts[originalReceipts.length - 1].transactionHash =
+          `biconomy:${id}` as `0x${string}`;
+      }
+
+      const chainIdAsNumber = receipt?.paymentInfo?.chainId;
+      const hexChainId = chainIdAsNumber
+        ? `0x${Number(chainIdAsNumber).toString(16)}`
+        : undefined;
+
+      const isSuccess = receipt?.transactionStatus?.toLowerCase().includes('success');
+      const statusCode = isSuccess ? 200 : 400;
+
+      return {
+        atomic: true,
+        chainId: hexChainId,
+        id: id,
+        status: isSuccess ? 'success' : 'failed',
+        statusCode,
+        receipts: originalReceipts.map(receipt => ({
+          transactionHash: receipt.transactionHash,
+          status: receipt.status || (isSuccess ? 'success' : 'reverted')
+        }))
       };
     },
     [meeClient],
@@ -567,6 +646,7 @@ export function ZapWidget({
     getCapabilities: async (client, args) => handleGetCapabilities(args),
     getCallsStatus: async (client, args) => handleWalletGetCallsStatus(args),
     sendCalls: async (client, args) => handleWalletSendCalls(args),
+    waitForCallsStatus: async (client, args) => handleWalletWaitForCallsStatus(args),
   });
 
   const analytics = {
@@ -577,23 +657,23 @@ export function ZapWidget({
   };
 
   // Create the final widget config with the provider
-  const widgetConfig: WidgetConfig = useMemo(() => {
-    const config = {
-      ...baseWidgetConfig,
-      sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
-        providers: [customEVMProvider],
-      },
-    };
-
-    if (oNexus && config.toAddress) {
-      config.toAddress.address = oNexus.addressOn(
-        projectData.chainId,
-        true,
-      ) as `0x${string}`;
-    }
-    return config;
-  }, [baseWidgetConfig, customEVMProvider, oNexus, projectData.chainId]);
+  const widgetConfig: WidgetConfig = {
+    ...baseWidgetConfig,
+    sdkConfig: {
+      apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+      providers: [customEVMProvider],
+    },
+    toAddress: oNexus 
+      ? {
+          name: 'Smart Account',
+          address: oNexus.addressOn(
+            projectData.chainId,
+            true,
+          ) as `0x${string}`,
+          chainType: ChainType.EVM,
+        }
+      : baseWidgetConfig.toAddress,
+  };
 
   return (
     <Box display="flex" justifyContent="center">
