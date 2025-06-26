@@ -9,6 +9,7 @@ import Stack from '@mui/system/Stack';
 export const NavbarButtonsContainer = styled('div')({
   display: 'flex',
   flex: 1,
+  alignItems: 'center',
   justifySelf: 'self-end',
   justifyContent: 'flex-end',
 });
@@ -18,11 +19,11 @@ export const MenuToggle = styled(ButtonSecondary)<ButtonProps>(({ theme }) => {
     justifyContent: 'center',
     backgroundColor: 'transparent',
     color: (theme.vars || theme).palette.accent1Alt.main,
-    width: 48,
+    width: 40,
     borderRadius: '50%',
-    marginLeft: theme.spacing(1.5),
+    marginLeft: theme.spacing(1),
     minWidth: 'unset',
-    height: 48,
+    height: 40,
     '&[aria-expanded="true"]': {
       backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
     },

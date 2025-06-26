@@ -1,6 +1,6 @@
 import { useColorScheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -40,7 +40,7 @@ export const useThemeModesMenuContent = () => {
   const modeOptions = {
     light: {
       label: t('navbar.themes.light'),
-      prefixIcon: <LightModeIcon />,
+      prefixIcon: <WbSunnyOutlinedIcon />,
     },
     dark: {
       label: t('navbar.themes.dark'),
