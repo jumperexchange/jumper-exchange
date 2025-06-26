@@ -1,8 +1,6 @@
-import Grid from '@mui/material/Grid';
 import { TFunction } from 'i18next';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
-import { CustomInput } from './CustomInput';
 import {
   ContributionCard,
   ContributionCardTitle,
@@ -11,44 +9,29 @@ import {
 } from './FeeContribution.style';
 import { FeeContributionCTA } from './FeeContributionCTA';
 import { FeeContributionDrawer } from './FeeContributionDrawer';
-import { PredefinedOptions } from './PredefinedOptions';
+import { useContributionData, useSendContribution } from './hooks';
 import {
-  useContributionData,
-  useSendContribution,
-  useContributionAmounts,
-} from './hooks';
+  ContributionAmountProvider,
+  useContributionAmountContext,
+} from 'src/providers/ContributionAmountProvider';
+import { FeeAmountSelector } from './FeeAmountSelector';
 
 export interface FeeContributionProps {
   translationFn: TFunction;
 }
 
-const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
+const InnerFeeContribution: React.FC<FeeContributionProps> = ({
+  translationFn,
+}) => {
   const [isOpen, setIsOpen] = useState(true);
-
-  const { contributed, contributionDisplayed } = useContributionStore(
-    (state) => state,
-  );
-
-  const {
-    amount,
-    manualAmount,
-    setManualAmount,
-    predefinedAmount,
-    setPredefinedAmount,
-    isManualValueSelected,
-    setIsManualValueSelected,
-  } = useContributionAmounts();
-
-  const closeContributionDrawer = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
-
-  const { sendContribution, isTransactionLoading } = useSendContribution(
-    amount,
-    closeContributionDrawer,
-  );
-
+  const { contributed, contributionDisplayed } = useContributionStore((s) => s);
   const { maxUsdContribution, contributionOptions } = useContributionData();
+
+  const { isManualValueSelected, amount } = useContributionAmountContext();
+
+  const closeDrawer = useCallback(() => setIsOpen(false), []);
+  const { sendContribution, isTransactionLoading } =
+    useSendContribution(closeDrawer);
 
   if (!contributionDisplayed) {
     return null;
@@ -63,30 +46,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
           <ContributionCardTitle>
             {translationFn('contribution.title')}
           </ContributionCardTitle>
-          <Grid
-            container
-            spacing={2}
-            columnSpacing={1}
-            justifyContent={'space-between'}
-          >
-            <PredefinedOptions
-              isDisabled={contributed}
-              options={contributionOptions}
-              currentValue={predefinedAmount}
-              isManualValueSelected={isManualValueSelected}
-              setCurrentValue={setPredefinedAmount}
-              setIsManualValueSelected={setIsManualValueSelected}
-            />
-            <CustomInput
-              isDisabled={contributed}
-              setIsManualValueSelected={setIsManualValueSelected}
-              maxValue={maxUsdContribution}
-              placeholder={translationFn('contribution.custom')}
-              setCurrentValue={setManualAmount}
-              currentValue={manualAmount}
-              isManualValueSelected={isManualValueSelected}
-            />
-          </Grid>
+
+          <FeeAmountSelector
+            isDisabled={contributed}
+            translationFn={translationFn}
+            maxUsdContribution={maxUsdContribution}
+            contributionOptions={contributionOptions}
+          />
 
           {shouldShowCTA ? (
             <FeeContributionCTA
@@ -103,6 +69,14 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
         </ContributionCard>
       </FeeContributionDrawer>
     </ContributionWrapper>
+  );
+};
+
+const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
+  return (
+    <ContributionAmountProvider>
+      <InnerFeeContribution translationFn={translationFn} />
+    </ContributionAmountProvider>
   );
 };
 
