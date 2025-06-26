@@ -12,20 +12,21 @@ import {
 export interface CustomInputProps
   extends Pick<
     FeeContributionCardProps,
-    | 'translationFn'
     | 'customAmount'
     | 'contributed'
     | 'maxUsdAmount'
     | 'isCustomAmountActive'
     | 'setCustomAmount'
     | 'setIsCustomAmountActive'
-  > {}
+  > {
+  placeholder: string;
+}
 
 export const CustomInput: React.FC<CustomInputProps> = ({
-  translationFn,
   customAmount,
   contributed,
   maxUsdAmount,
+  placeholder,
   isCustomAmountActive,
   setCustomAmount,
   setIsCustomAmountActive,
@@ -68,9 +69,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
         onChange={onChangeValue}
         onClick={handleCustomClick}
         onBlur={handleCustomBlur}
-        placeholder={
-          !isCustomAmountActive ? translationFn('contribution.custom') : ''
-        }
+        placeholder={placeholder}
         isCustomAmountActive={isCustomAmountActive}
         hasInputAmount={!!customAmount && isCustomAmountActive}
         slotProps={{

@@ -316,9 +316,13 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
               contributed={contributed}
               setIsCustomAmountActive={setIsCustomAmountActive}
               maxUsdAmount={maxUsdAmount}
+              placeholder={
+                !isCustomAmountActive
+                  ? translationFn('contribution.custom')
+                  : ''
+              }
               setCustomAmount={setCustomAmount}
               customAmount={customAmount}
-              translationFn={translationFn}
               isCustomAmountActive={isCustomAmountActive}
             />
           </Grid>
