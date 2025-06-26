@@ -22,6 +22,8 @@ export const CONTRIBUTION_AB_TEST_PERCENTAGE = 0.1;
 
 export const USD_CURRENCY_SYMBOL = '$';
 
+export const NUM_DECIMAL_PLACES = 2;
+
 // Contribution fee addresses for different chains
 export const contributionFeeAddresses: Record<number, string> = {
   [ChainId.ETH]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Ethereum

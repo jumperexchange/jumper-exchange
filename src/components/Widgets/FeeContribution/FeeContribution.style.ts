@@ -46,98 +46,95 @@ export const ContributionCardTitle = styled(Typography)(({ theme }) => ({
 }));
 
 interface ContributionCustomInputProps {
-  isCustomAmountActive?: boolean;
-  hasInputAmount?: boolean;
+  isFieldActive?: boolean;
   inputAmount?: string;
   value?: string;
 }
 
 export const ContributionCustomInput = styled(TextField, {
-  shouldForwardProp: (prop) =>
-    !['isCustomAmountActive', 'hasInputAmount'].includes(prop as string),
-})<ContributionCustomInputProps>(
-  ({ theme, isCustomAmountActive, value, hasInputAmount }) => ({
-    width: '100%',
-    borderRadius: '24px',
-    overflow: 'hidden',
-    transition: 'background-color 250ms',
-    backgroundColor: isCustomAmountActive
-      ? 'rgba(101, 59, 163, 0.84)'
-      : `${(theme.vars || theme).palette.grey[200]} !important`,
+  shouldForwardProp: (prop) => !['isFieldActive'].includes(prop as string),
+})<ContributionCustomInputProps>(({ theme, isFieldActive, value }) => ({
+  width: '100%',
+  borderRadius: '24px',
+  overflow: 'hidden',
+  transition: 'background-color 250ms',
+  backgroundColor: isFieldActive
+    ? 'rgba(101, 59, 163, 0.84)'
+    : `${(theme.vars || theme).palette.grey[200]} !important`,
+  '&:hover': {
+    backgroundColor: isFieldActive
+      ? '#653BA3'
+      : `${(theme.vars || theme).palette.grey[300]} !important`,
+  },
+  ...theme.applyStyles('light', {
+    backgroundColor: isFieldActive
+      ? '#F0E5FF'
+      : (theme.vars || theme).palette.grey[100],
     '&:hover': {
-      backgroundColor: isCustomAmountActive
-        ? '#653BA3'
-        : `${(theme.vars || theme).palette.grey[300]} !important`,
-    },
-    ...theme.applyStyles('light', {
-      backgroundColor: isCustomAmountActive
-        ? '#F0E5FF'
-        : (theme.vars || theme).palette.grey[100],
-      '&:hover': {
-        backgroundColor: isCustomAmountActive
-          ? darken('#F0E5FF', 0.08)
-          : (theme.vars || theme).palette.grey[300],
-      },
-    }),
-    '& .MuiInputBase-root': {
-      borderRadius: '16px',
-      width: '100%',
-      height: '32px',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexGrow: 1,
-      padding: 0,
-      paddingLeft: theme.spacing(1),
-      paddingRight: theme.spacing(1),
-      maxWidth: '100%',
-      '& fieldset': {
-        border: 'none !important',
-      },
-    },
-    '& .MuiInputBase-input': {
-      ...(isCustomAmountActive && {
-        width: value ? `${value?.length * 8}px` : '8px',
-        paddingLeft: theme.spacing(0.5),
-      }),
-      padding: 0,
-
-      // borderRadius: '16px',
-      height: 'auto',
-      justifyContent: 'center',
-      ':focus': {
-        padding: '0 12px 0 24px',
-        border: 'none',
-      },
-      fontSize: '12px',
-      lineHeight: '16px',
-      fontWeight: 700,
-      textAlign: 'center',
-      color: (theme.vars || theme).palette.text.primary,
-      backgroundColor: 'transparent !important',
-      '&:hover': {
-        backgroundColor: 'transparent !important',
-      },
-      '&::placeholder': {
-        color: (theme.vars || theme).palette.text.primary,
-        opacity: 1,
-      },
-      '&:focus': {
-        padding: 0,
-        border: 'none',
-      },
-    },
-    '& .MuiInputAdornment-root': {
-      fontSize: '12px',
-      marginRight: 0,
-      lineHeight: '100%',
-      fontWeight: 700,
-      color: (theme.vars || theme).palette.text.primary,
-      ...(hasInputAmount && {
-        padding: 0,
-      }),
+      backgroundColor: isFieldActive
+        ? darken('#F0E5FF', 0.08)
+        : (theme.vars || theme).palette.grey[300],
     },
   }),
-);
+  '& .MuiInputBase-root': {
+    borderRadius: '16px',
+    width: '100%',
+    height: '32px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexGrow: 1,
+    padding: 0,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    maxWidth: '100%',
+    '& fieldset': {
+      border: 'none !important',
+    },
+  },
+  '& .MuiInputBase-input': {
+    ...((isFieldActive || value) && {
+      width: `${(value?.length || 1) * 8}px`,
+      paddingLeft: theme.spacing(0.5),
+    }),
+
+    padding: value ? 0 : '0 16px',
+
+    // borderRadius: '16px',
+    height: 'auto',
+    justifyContent: 'center',
+    ':focus': {
+      padding: '0 12px 0 24px',
+      border: 'none',
+    },
+    fontSize: '12px',
+    lineHeight: '16px',
+    fontWeight: 700,
+    textAlign: 'center',
+    color: (theme.vars || theme).palette.text.primary,
+    backgroundColor: 'transparent !important',
+    '&:hover': {
+      backgroundColor: 'transparent !important',
+    },
+    '&::placeholder': {
+      color: (theme.vars || theme).palette.text.primary,
+      opacity: 1,
+    },
+    '&:focus': {
+      padding: 0,
+      border: 'none',
+    },
+  },
+  '& .MuiInputAdornment-root': {
+    fontSize: '12px',
+    marginRight: 0,
+    lineHeight: '100%',
+    fontWeight: 700,
+    color: (theme.vars || theme).palette.text.primary,
+    ...((isFieldActive || !!value) && {
+      padding: 0,
+    }),
+  },
+}));
 
 interface ContributionButtonProps extends ButtonProps {
   selected: boolean;

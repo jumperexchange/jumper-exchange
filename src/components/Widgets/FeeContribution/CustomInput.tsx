@@ -2,89 +2,69 @@ import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import { ContributionCustomInput } from './FeeContribution.style';
 import { USD_CURRENCY_SYMBOL } from './constants';
-import {
-  displayFormatter,
-  formatInputAmount,
-  NUM_DECIMAL_PLACES,
-} from './utils';
+import { formatInputAmount } from './utils';
+import { NUM_DECIMAL_PLACES } from './constants';
+import { ContributionBaseProps } from './FeeContribution.types';
 
-interface CustomInputProps {
-  customAmount: string;
-  maxUsdAmount: number;
-  isCustomAmountActive: boolean;
-  contributed: boolean;
-  setCustomAmount: (amount: string) => void;
-  setIsCustomAmountActive: (isActive: boolean) => void;
+interface CustomInputProps extends ContributionBaseProps {
+  maxValue: number;
   placeholder: string;
 }
 
 export const CustomInput: React.FC<CustomInputProps> = ({
-  customAmount,
-  contributed,
-  maxUsdAmount,
+  currentValue,
+  isDisabled,
+  maxValue,
   placeholder,
-  isCustomAmountActive,
-  setCustomAmount,
-  setIsCustomAmountActive,
+  isManualValue,
+  setCurrentValue,
+  setIsManualValue,
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (contributed) return;
+    if (isDisabled) return;
 
-    setIsCustomAmountActive(true);
-
-    const { value } = event.target;
-
-    const formattedAmount = formatInputAmount(value, NUM_DECIMAL_PLACES);
-    if (formattedAmount && Number(formattedAmount) >= maxUsdAmount) {
-      const formattedMaxUsdAmount = displayFormatter.format(maxUsdAmount);
-      setCustomAmount(formattedMaxUsdAmount);
-    } else {
-      setCustomAmount(formattedAmount);
+    if (!isManualValue) {
+      setIsManualValue(true);
     }
+
+    const rawValue = event.target.value;
+    const formattedValue = formatInputAmount(rawValue, NUM_DECIMAL_PLACES);
+    const numericValue = Number(formattedValue);
+
+    const shouldLimitToMax =
+      formattedValue && maxValue && numericValue >= maxValue;
+    const finalValue = shouldLimitToMax
+      ? maxValue.toFixed(NUM_DECIMAL_PLACES)
+      : formattedValue;
+
+    setCurrentValue(finalValue);
   };
 
   const handleClick = () => {
-    if (contributed) return;
+    if (isDisabled) return;
 
-    setIsCustomAmountActive(true);
-
-    if (customAmount && Number(customAmount) > 0) {
-      setCustomAmount(customAmount);
+    if (!isManualValue) {
+      setIsManualValue(true);
     }
-  };
-
-  const handleBlur = () => {
-    setIsCustomAmountActive(false);
   };
 
   return (
     <Grid size={3}>
       <ContributionCustomInput
-        value={customAmount ?? ''}
+        value={currentValue}
         aria-autocomplete="none"
         onChange={handleChange}
         onClick={handleClick}
-        onBlur={handleBlur}
         placeholder={placeholder}
-        isCustomAmountActive={isCustomAmountActive}
-        hasInputAmount={!!customAmount && isCustomAmountActive}
+        isFieldActive={isManualValue}
         slotProps={{
           input: {
             startAdornment:
-              isCustomAmountActive || customAmount ? (
+              isManualValue || currentValue ? (
                 <InputAdornment position="start" disableTypography>
                   {USD_CURRENCY_SYMBOL}
                 </InputAdornment>
               ) : null,
-            sx: (theme) => ({
-              input: {
-                ...(customAmount && {
-                  width: customAmount.length * 8 + 'px',
-                  paddingLeft: theme.spacing(0.5),
-                }),
-                padding: customAmount ? '0' : '0 16px',
-              },
-            }),
           },
         }}
       />

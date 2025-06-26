@@ -57,21 +57,22 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   // AB test flag - show contribution for ~10% of users
+  // @TODO: use feature flag from PostHog
   const isContributionAbEnabled = useMemo(() => {
     return Math.random() < CONTRIBUTION_AB_TEST_PERCENTAGE;
   }, []);
 
   const [predefinedAmount, setPredefinedAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
-  const [isCustomAmountActive, setIsCustomAmountActive] = useState(false);
+  const [isManualValue, setIsManualValue] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
   const amount = useMemo(() => {
-    if (isCustomAmountActive) {
+    if (isManualValue) {
       return customAmount;
     }
     return predefinedAmount;
-  }, [isCustomAmountActive, customAmount, predefinedAmount]);
+  }, [isManualValue, customAmount, predefinedAmount]);
 
   const { completedRoute } = useRouteStore((state) => state);
   const {
@@ -124,7 +125,7 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
       ? Number(tokenBalanceData.amount) /
         Math.pow(10, tokenBalanceData.decimals)
       : 0;
-    return 5.5; //maxTokenAmount * Number(completedRoute?.toToken?.priceUSD);
+    return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD);
   }, [tokenBalanceData, completedRoute?.toToken?.priceUSD]);
 
   // Early synchronous eligibility checks
@@ -403,25 +404,23 @@ const FeeContribution: React.FC<FeeContributionProps> = ({ translationFn }) => {
             justifyContent={'space-between'}
           >
             <PredefinedButtons
-              contributed={contributed}
-              contributionOptions={contributionOptions}
+              isDisabled={contributed}
+              options={contributionOptions}
               currentValue={predefinedAmount}
-              isCustomAmountActive={isCustomAmountActive}
+              isManualValue={isManualValue}
               setCurrentValue={setPredefinedAmount}
-              setIsCustomAmountActive={setIsCustomAmountActive}
+              setIsManualValue={setIsManualValue}
             />
             <CustomInput
-              contributed={contributed}
-              setIsCustomAmountActive={setIsCustomAmountActive}
-              maxUsdAmount={maxUsdAmount}
+              isDisabled={contributed}
+              setIsManualValue={setIsManualValue}
+              maxValue={maxUsdAmount}
               placeholder={
-                !isCustomAmountActive
-                  ? translationFn('contribution.custom')
-                  : ''
+                !isManualValue ? translationFn('contribution.custom') : ''
               }
-              setCustomAmount={setCustomAmount}
-              customAmount={customAmount}
-              isCustomAmountActive={isCustomAmountActive}
+              setCurrentValue={setCustomAmount}
+              currentValue={customAmount}
+              isManualValue={isManualValue}
             />
           </Grid>
 

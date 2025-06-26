@@ -1,5 +1,6 @@
 import { getTransactionHistory, TransactionAnalyticsResponse } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import { FIVE_MINUTES_MS, THIRTY_MINUTES_MS } from 'src/const/time';
 
 export interface TxHistoryProps {
   data: TransactionAnalyticsResponse | null;
@@ -26,8 +27,8 @@ export const useTxHistory = (
         toTimestamp,
       }),
     enabled: !!walletAddress,
-    staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
-    gcTime: 30 * 60 * 1000, // Keep data in cache for 30 minutes
+    staleTime: FIVE_MINUTES_MS, // Consider data fresh for 5 minutes
+    gcTime: THIRTY_MINUTES_MS, // Keep data in cache for 30 minutes
   });
 
   return {

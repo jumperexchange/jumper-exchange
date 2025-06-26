@@ -164,13 +164,3 @@ export const isEligibleForContribution = (
     hasValidContributionFeeAddress(completedRoute.toChainId) // check if valid contribution fee address exists for the chain
   );
 };
-
-export const NUM_DECIMAL_PLACES = 2;
-
-// Intl formatters for display
-export const displayFormatter = new Intl.NumberFormat('en-US', {
-  currency: 'USD',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: NUM_DECIMAL_PLACES,
-  roundingMode: 'floor',
-});
