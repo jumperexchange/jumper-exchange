@@ -37,6 +37,13 @@ export const Active: Story = {
   },
 };
 
+export const Loading: Story = {
+  render: Template,
+  args: {
+    isLoading: true,
+  },
+};
+
 export const WithVerifiedStatus: Story = {
   render: Template,
   args: {
