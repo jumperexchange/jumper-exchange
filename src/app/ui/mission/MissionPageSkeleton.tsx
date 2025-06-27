@@ -1,3 +1,14 @@
+'use client';
+
+import { MissionDetailsSkeleton } from './MissionDetailsSkeleton';
+import { MissionPageLayout } from './MissionPageLayout';
+import { MissionWidgetSkeleton } from './MissionWidgetSkeleton';
+
 export const MissionPageSkeleton = () => {
-  return null;
+  return (
+    <MissionPageLayout
+      leftColumn={<MissionDetailsSkeleton />}
+      rightColumn={<MissionWidgetSkeleton />}
+    />
+  );
 };

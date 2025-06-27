@@ -11,6 +11,7 @@ import { Badge } from 'src/components/Badge/Badge';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
 import { AppPaths } from 'src/const/urls';
+import { MissionDetailsContainer } from './MissionDetails.style';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -33,19 +34,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
   };
 
   return (
-    <Box
-      sx={(theme) => ({
-        maxWidth: theme.spacing(83),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 2,
-        p: 3,
-        backgroundColor: (theme.vars || theme).palette.surface2.main,
-        borderRadius: `${theme.shape.cardBorderRadius}px`,
-        boxShadow: theme.shadows[2],
-      })}
-    >
+    <MissionDetailsContainer>
       <Box sx={{ width: '100%' }}>
         <Badge
           label="Missions"
@@ -74,6 +63,6 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
           onClick={() => setActiveTask(task.uuid)}
         />
       ))}
-    </Box>
+    </MissionDetailsContainer>
   );
 };

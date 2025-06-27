@@ -1,6 +1,7 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
 
 export interface MissionTaskContainerProps extends BoxProps {
   isActive?: boolean;
@@ -52,4 +53,9 @@ export const MissionTaskTypeBadge = styled(Typography)(({ theme }) => ({
   ...theme.applyStyles('light', {
     color: (theme.vars || theme).palette.alphaDark100.main,
   }),
+}));
+
+export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.grey[100],
+  transform: 'none',
 }));
