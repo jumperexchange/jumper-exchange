@@ -41,8 +41,8 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
     >
       <StyledEntityCardImageContainer
         sx={{
+          width: '100%',
           maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
-          width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT,
         }}
       >
@@ -89,7 +89,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledCompactEntityCardTitle>{title}</StyledCompactEntityCardTitle>
-        {rewardGroups && (
+        {rewardGroups && !!Object.keys(rewardGroups).length && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;

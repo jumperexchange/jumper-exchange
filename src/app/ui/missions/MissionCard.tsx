@@ -26,7 +26,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
     if (!status) {
       return null;
     }
-    return <Badge label={status} />;
+    return <Badge label={status} variant="secondary" />;
   }, [status]);
 
   const { trackEvent } = useUserTracking();
