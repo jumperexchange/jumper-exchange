@@ -36,6 +36,7 @@ import {
   toMultichainNexusAccount,
   runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
+  type WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
 import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 import { useTranslation } from 'react-i18next';
@@ -556,7 +557,7 @@ export function ZapWidget({
 
       const receipt = await meeClient.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
-      });
+      }) as WaitForSupertransactionReceiptPayload;
 
       const originalReceipts = receipt?.receipts || [];
       // Ensure the last receipt has the correct transactionHash format
@@ -609,7 +610,7 @@ export function ZapWidget({
         new Promise((_, reject) => 
           setTimeout(() => reject(new Error(`Timed out while waiting for call bundle with id "${id}" to be confirmed.`)), timeout)
         )
-      ]);
+      ]) as WaitForSupertransactionReceiptPayload;
 
       // Now get the status using the same logic as handleWalletGetCallsStatus
       const originalReceipts = receipt?.receipts || [];
