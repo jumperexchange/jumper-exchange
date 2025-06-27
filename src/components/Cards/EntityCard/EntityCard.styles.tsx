@@ -82,7 +82,13 @@ export const StyledWideEntityCardTitle = styled(StyledEntityCardTitleBase)(
 export const StyledEntityCardDescription = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodyMedium,
   color: (theme.vars || theme).palette.text.primary,
-  opacity: 0.48,
+  opacity: 0.64,
+  lineHeight: '150%',
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 12,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 }));
 
 // Link
