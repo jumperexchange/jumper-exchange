@@ -13,6 +13,7 @@ import {
   TrackingAction,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
+import { useTranslation } from 'react-i18next';
 
 interface MissionTaskProps {
   task: TaskVerificationWithApy & {
@@ -32,6 +33,8 @@ export const MissionTask: FC<MissionTaskProps> = ({
 }) => {
   const { title, description, isVerified, isActive } =
     useFormatDisplayTaskData(task);
+
+  const { t } = useTranslation();
 
   const { trackEvent } = useUserTracking();
 
@@ -75,17 +78,18 @@ export const MissionTask: FC<MissionTaskProps> = ({
       title={title}
       description={description}
       isActive={isActive}
+      type={t('missions.tasks.type', { type: 'Bridge' })}
       statusBadge={
         task.hasTask ? (
           isSuccess || isVerified ? (
             <Badge
-              label="Verified"
+              label={t('missions.tasks.status.verified')}
               startIcon={<CheckIcon />}
               variant="success"
             />
           ) : (
             <Badge
-              label="Verify"
+              label={t('missions.tasks.status.verify')}
               startIcon={
                 <RefreshIcon
                   sx={{
