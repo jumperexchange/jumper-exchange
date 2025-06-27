@@ -16,26 +16,33 @@ export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
   padding: theme.spacing(0.5),
 }));
 
-export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
+export const WalletMgmtChainAvatar = styled(Avatar)(({ theme }) => ({
   width: 12,
   height: 12,
-  border: '2px solid white',
+  border: '2px solid',
+  borderColor: (theme.vars || theme).palette.surface1.main,
   background: 'transparent',
   left: 2.5,
   top: 1,
   img: {
     borderRadius: '50%',
   },
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
+    borderColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
   borderRadius: '50%',
-  border: '2px solid white',
+  border: '2px solid',
   backgroundPosition: 'center',
   backgroundSize: 'cover',
-  backgroundColor: (theme.vars || theme).palette.white.main,
+  backgroundColor: (theme.vars || theme).palette.black.main,
+  borderColor: (theme.vars || theme).palette.surface1.main,
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
+    borderColor: (theme.vars || theme).palette.white.main,
   }),
 }));
 
@@ -81,7 +88,7 @@ export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
   borderRadius: '100%',
   borderStyle: 'solid',
   borderWidth: '2px',
-  borderColor: alpha(theme.palette.white.main, 0.08),
+  borderColor: (theme.vars || theme).palette.surface1.main,
   ...theme.applyStyles('light', {
     borderColor: (theme.vars || theme).palette.white.main,
   }),
