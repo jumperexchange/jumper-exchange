@@ -12,6 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
 import { AppPaths } from 'src/const/urls';
 import { MissionDetailsContainer } from './MissionDetails.style';
+import { useTranslation } from 'react-i18next';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -22,6 +23,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
   console.log(mission);
   const missionDisplayData = useFormatDisplayMissionData(mission);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { account } = useAccount();
   const { enhancedTasks, setActiveTask } = useEnhancedTasks(
@@ -37,7 +39,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     <MissionDetailsContainer>
       <Box sx={{ width: '100%' }}>
         <Badge
-          label="Missions"
+          label={t('navbar.links.missions')}
           onClick={handleGoBack}
           startIcon={<ArrowBackIcon />}
           size="lg"

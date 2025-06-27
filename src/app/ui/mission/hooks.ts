@@ -106,6 +106,15 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
   };
 };
 
+export enum TaskType {
+  Bridge = 'bridge',
+  Swap = 'swap',
+  Deposit = 'deposit',
+  OnChain = 'on-chain',
+  OffChain = 'off-chain',
+  Zap = 'zap',
+}
+
 export const useFormatDisplayTaskData = (
   task: TaskVerificationWithApy & {
     isVerified: boolean;
