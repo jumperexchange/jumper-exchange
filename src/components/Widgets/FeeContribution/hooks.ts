@@ -293,11 +293,12 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         throw error;
       }
       const usdAmount = Number(amount);
+      const usdAmountScaled = usdAmount * 100;
+      const tokenPriceUSDScaled = tokenPriceUSD * 100;
       // Use token's actual decimals for precision
-      const tokenAmount = (usdAmount / tokenPriceUSD).toFixed(
+      const tokenAmount = (usdAmountScaled / tokenPriceUSDScaled).toFixed(
         completedRoute.toToken.decimals,
       );
-
       // Ensure we have a non-zero amount after conversion
       if (Number(tokenAmount) === 0) {
         const error = new Error(

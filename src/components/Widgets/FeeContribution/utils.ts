@@ -50,60 +50,37 @@ export const getContributionFeeAddress = (
   return contributionFeeAddresses[chainId];
 };
 
-export const formatInputAmount = (
+export function formatInputAmount(
   amount: string,
   decimals: number | null = null,
   returnInitial = false,
-) => {
+) {
   if (!amount) {
     return amount;
   }
-
-  // First just convert commas to dots
   let formattedAmount = amount.trim().replaceAll(',', '.');
-
-  // If it's just a decimal point, return it with a leading zero
-  if (formattedAmount === '.') {
-    return '0.';
-  }
-
-  // Remove any non-digit characters except dots
-  formattedAmount = formattedAmount.replace(/[^\d.]/g, '');
-
-  // Handle multiple dots - keep only the first one
-  const parts = formattedAmount.split('.');
-  formattedAmount =
-    parts[0] + (parts.length > 1 ? '.' + parts.slice(1).join('') : '');
-
-  // Only preserve trailing dot if there are no decimal digits yet
-  const endsWithDot = formattedAmount.endsWith('.');
-  if (endsWithDot && parts.length > 1 && parts[1].length > 0) {
-    formattedAmount = formattedAmount.slice(0, -1);
-  }
-
   if (formattedAmount.startsWith('.')) {
     formattedAmount = `0${formattedAmount}`;
   }
-
+  const parsedAmount = Number.parseFloat(formattedAmount);
+  if (Number.isNaN(Number(formattedAmount)) && !Number.isNaN(parsedAmount)) {
+    return parsedAmount.toString();
+  }
+  if (Number.isNaN(Math.abs(Number(formattedAmount)))) {
+    return '';
+  }
   if (returnInitial) {
     return formattedAmount;
   }
-
-  // Only format decimals if we don't end with a dot
-  if (!formattedAmount.endsWith('.')) {
-    let [integer, fraction = ''] = formattedAmount.split('.');
-    if (decimals !== null && fraction.length > decimals) {
-      fraction = fraction.slice(0, decimals);
-    }
-    integer = integer.replace(/^0+|-/, '') || '0';
-    // Only remove trailing zeros when formatting the final value
-    if (!fraction.includes('.')) {
-      formattedAmount = `${integer}${fraction ? `.${fraction}` : ''}`;
-    }
+  const hasDecimalPoint = formattedAmount.includes('.');
+  let [integer, fraction = ''] = formattedAmount.split('.');
+  if (decimals !== null && fraction.length > decimals) {
+    fraction = fraction.slice(0, decimals);
   }
-
-  return formattedAmount;
-};
+  integer = integer.replace(/^0+|-/, '');
+  fraction = fraction.replace(/(0+)$/, '');
+  return `${integer || '0'}${hasDecimalPoint ? `.${fraction}` : ''}`;
+}
 
 export interface TransferResponse {
   transfers: StatusResponse[];

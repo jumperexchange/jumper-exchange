@@ -23,15 +23,12 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isDisabled) return;
-
     if (!isManualValueSelected) {
       setIsManualValueSelected(true);
     }
-
     const rawValue = event.target.value;
     const formattedValue = formatInputAmount(rawValue, NUM_DECIMAL_PLACES);
     const numericValue = Number(formattedValue);
-
     const shouldLimitToMax =
       formattedValue && maxValue && numericValue > maxValue;
     const finalValue = shouldLimitToMax
