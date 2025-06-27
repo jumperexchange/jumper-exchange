@@ -50,37 +50,49 @@ export const getContributionFeeAddress = (
   return contributionFeeAddresses[chainId];
 };
 
-export function formatInputAmount(
+export const formatInputAmount = (
   amount: string,
-  decimals: number | null = null,
-  returnInitial = false,
-) {
-  if (!amount) {
-    return amount;
+  decimals: number = 2,
+  locale: string = 'en-US',
+): string => {
+  if (!amount) return amount;
+
+  // Replace commas with dots and trim whitespace
+  let normalized = amount.trim().replace(/,/g, '.');
+
+  // Add leading zero if amount starts with a decimal point
+  if (normalized.startsWith('.')) {
+    normalized = '0' + normalized;
   }
-  let formattedAmount = amount.trim().replaceAll(',', '.');
-  if (formattedAmount.startsWith('.')) {
-    formattedAmount = `0${formattedAmount}`;
+
+  const parsed = parseFloat(normalized);
+
+  if (isNaN(parsed)) return '';
+
+  const formatter = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: decimals,
+    useGrouping: false,
+  });
+
+  const formatted = formatter.format(parsed);
+
+  const parts = normalized.split('.');
+  const fraction = parts[1];
+  const decimalCount = parts.length - 1;
+
+  // Preserve trailing decimal if user is still typing
+  if (normalized.endsWith('.') && decimalCount === 1) {
+    return formatted + '.';
   }
-  const parsedAmount = Number.parseFloat(formattedAmount);
-  if (Number.isNaN(Number(formattedAmount)) && !Number.isNaN(parsedAmount)) {
-    return parsedAmount.toString();
+
+  // Preserve leading zeros in the fraction
+  // @Note this will need re-working if we increase the number of decimals
+  if (fraction && Number(fraction) === 0) {
+    return formatted + '.' + '0'.repeat(fraction.length);
   }
-  if (Number.isNaN(Math.abs(Number(formattedAmount)))) {
-    return '';
-  }
-  if (returnInitial) {
-    return formattedAmount;
-  }
-  const hasDecimalPoint = formattedAmount.includes('.');
-  let [integer, fraction = ''] = formattedAmount.split('.');
-  if (decimals !== null && fraction.length > decimals) {
-    fraction = fraction.slice(0, decimals);
-  }
-  integer = integer.replace(/^0+|-/, '');
-  fraction = fraction.replace(/(0+)$/, '');
-  return `${integer || '0'}${hasDecimalPoint ? `.${fraction}` : ''}`;
-}
+
+  return formatted;
+};
 
 export interface TransferResponse {
   transfers: StatusResponse[];
