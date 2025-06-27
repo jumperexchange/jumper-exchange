@@ -79,6 +79,7 @@ declare module '@mui/material/styles' {
     amber: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     violet: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     blue: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    azure: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     scarlet: Pick<Color, 100 | 500>;
     orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
   }
@@ -120,6 +121,7 @@ declare module '@mui/material/styles' {
     amber?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     violet?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     blue?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    azure?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     scarlet?: Pick<Color, 100 | 500>;
     orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
   }
@@ -159,6 +161,7 @@ declare module '@mui/material/styles' {
     amber: true;
     violet: true;
     blue: true;
+    azure: true;
     scarlet: true;
     orchid: true;
   }
@@ -573,6 +576,17 @@ const palette = {
     700: '#2B37D6',
     800: '#1723C2',
     900: '#0713AD',
+  },
+  azure: {
+    100: '#EBF3FF',
+    200: '#C2DAFF',
+    300: '#A3C8FF',
+    400: '#85B6FF',
+    500: '#4791FF',
+    600: '#4285EB',
+    700: '#226AD6',
+    800: '#00317A',
+    900: '#032352',
   },
   scarlet: {
     100: '#FFDED6',
