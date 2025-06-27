@@ -21,8 +21,8 @@ export const WideEntityCardSkeleton = () => {
     >
       <StyledEntityCardImageContainer
         sx={{
+          width: '100%',
           maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
-          width: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT,
         }}
       >
