@@ -33,6 +33,8 @@ export default function ScanPage({ lng }: { lng: string }) {
           borderRadiusSecondary: 900,
           borderRadiusTertiary: 900,
           borderRadius: 12,
+          cardBorderRadius: 24,
+          buttonBorderRadius: 128,
         },
         colorSchemes: {
           light: {
