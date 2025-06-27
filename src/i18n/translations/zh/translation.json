@@ -145,6 +145,7 @@
     "completed": "已完成的任务"
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "仅可在桌面上使用",
     "mobileDescription": "Jumper 个人资料页面尚未在小屏幕上可用。我们正在处理它。",
     "level": "",
