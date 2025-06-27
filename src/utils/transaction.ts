@@ -1,10 +1,11 @@
+import { EVMAddress } from 'src/types/internal';
 import { erc20Abi, type Address } from 'viem';
 
 // Type for ERC20 token transaction configuration
 export type ERC20TransactionConfig = {
   abi: typeof erc20Abi;
-  address: `0x${string}`;
-  args: [`0x${string}`, bigint];
+  address: EVMAddress;
+  args: [EVMAddress, bigint];
   functionName: 'transfer';
 };
 
@@ -19,8 +20,8 @@ export function createTokenTransactionConfig(
 ): ERC20TransactionConfig & { chainId: number } {
   return {
     abi: erc20Abi,
-    address: tokenAddress as `0x${string}`,
-    args: [to as `0x${string}`, amount],
+    address: tokenAddress as EVMAddress,
+    args: [to as EVMAddress, amount],
     chainId,
     functionName: 'transfer',
   };
