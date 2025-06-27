@@ -104,8 +104,8 @@ export const WalletButtons = () => {
               <ImageWalletMenuButton
                 src={imgLink}
                 alt={`${activeAccount?.address} wallet Icon`}
-                width={32}
-                height={32}
+                width={36}
+                height={36}
                 priority={false}
                 unoptimized={true}
               />
