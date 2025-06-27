@@ -10,6 +10,7 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
     id,
     Title,
     Description,
+    Information,
     Slug,
     StartDate,
     EndDate,
@@ -92,6 +93,7 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
     slug: Slug,
     title: Title || '',
     description: Description || '',
+    info: Information || '',
     startDate: StartDate || '',
     endDate: EndDate || '',
     imageUrl: BannerImage?.[0]?.url

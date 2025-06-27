@@ -10,6 +10,7 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
+import { SxProps, Theme } from '@mui/material/styles';
 
 interface BaseAlertProps extends PropsWithChildren {
   title?: string;
@@ -17,6 +18,7 @@ interface BaseAlertProps extends PropsWithChildren {
   headerAppend?: ReactNode;
   headerPrepend?: ReactNode;
   variant?: BaseAlertVariant;
+  sx?: SxProps<Theme>;
 }
 
 export const BaseAlert: FC<BaseAlertProps> = ({
@@ -26,6 +28,7 @@ export const BaseAlert: FC<BaseAlertProps> = ({
   headerPrepend,
   description,
   children,
+  sx,
 }) => {
   const hasTitle = !!title;
   const hasDescription = !!description;
@@ -72,12 +75,18 @@ export const BaseAlert: FC<BaseAlertProps> = ({
   };
 
   return (
-    <StyledBaseAlert variant={variant}>
-      <StyledBaseAlertHeader>
+    <StyledBaseAlert variant={variant} sx={sx}>
+      <StyledBaseAlertHeader
+        sx={{
+          alignItems: !hasTitle && hasDescription ? 'flex-start' : 'center',
+        }}
+      >
         {getHeaderAppend()}
         {hasTitle && <StyledBaseAlertTitle>{title}</StyledBaseAlertTitle>}
         {!hasTitle && hasDescription && (
-          <StyledBaseAlertDescription>{description}</StyledBaseAlertDescription>
+          <StyledBaseAlertDescription sx={{ mt: '2px' }}>
+            {description}
+          </StyledBaseAlertDescription>
         )}
         {headerPrepend}
       </StyledBaseAlertHeader>

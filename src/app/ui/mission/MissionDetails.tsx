@@ -11,8 +11,13 @@ import { Badge } from 'src/components/Badge/Badge';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/navigation';
 import { AppPaths } from 'src/const/urls';
-import { MissionDetailsContainer } from './MissionDetails.style';
+import {
+  MissionDetailsColumnContainer,
+  MissionDetailsCardContainer,
+  MissionDetailsInfoContainer,
+} from './MissionDetails.style';
 import { useTranslation } from 'react-i18next';
+import { BaseAlert } from 'src/components/Alerts/BaseAlert/BaseAlert';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -36,35 +41,48 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
   };
 
   return (
-    <MissionDetailsContainer>
-      <Box sx={{ width: '100%' }}>
-        <Badge
-          label={t('navbar.links.missions')}
-          onClick={handleGoBack}
-          startIcon={<ArrowBackIcon />}
-          size="lg"
-          variant="alpha"
+    <MissionDetailsColumnContainer>
+      <MissionDetailsCardContainer>
+        <Box sx={{ width: '100%' }}>
+          <Badge
+            label={t('navbar.links.missions')}
+            onClick={handleGoBack}
+            startIcon={<ArrowBackIcon />}
+            size="lg"
+            variant="alpha"
+          />
+        </Box>
+        <EntityCard
+          variant="wide"
+          id={missionDisplayData.id}
+          slug={missionDisplayData.slug}
+          title={missionDisplayData.title}
+          description={missionDisplayData.description}
+          participants={missionDisplayData.participants}
+          imageUrl={missionDisplayData.imageUrl}
+          rewardGroups={missionDisplayData.rewardGroups}
         />
-      </Box>
-      <EntityCard
-        variant="wide"
-        id={missionDisplayData.id}
-        slug={missionDisplayData.slug}
-        title={missionDisplayData.title}
-        description={missionDisplayData.description}
-        participants={missionDisplayData.participants}
-        imageUrl={missionDisplayData.imageUrl}
-        rewardGroups={missionDisplayData.rewardGroups}
-      />
-      {enhancedTasks.map((task) => (
-        <MissionTask
-          key={task.uuid}
-          task={task}
-          missionId={mission.documentId}
-          accountAddress={account?.address}
-          onClick={() => setActiveTask(task.uuid)}
-        />
-      ))}
-    </MissionDetailsContainer>
+        {enhancedTasks.map((task) => (
+          <MissionTask
+            key={task.uuid}
+            task={task}
+            missionId={mission.documentId}
+            accountAddress={account?.address}
+            onClick={() => setActiveTask(task.uuid)}
+          />
+        ))}
+      </MissionDetailsCardContainer>
+      {missionDisplayData.info && (
+        <MissionDetailsInfoContainer>
+          <BaseAlert
+            variant="info"
+            description={missionDisplayData.info}
+            sx={(theme) => ({
+              boxShadow: theme.shadows[2],
+            })}
+          />
+        </MissionDetailsInfoContainer>
+      )}
+    </MissionDetailsColumnContainer>
   );
 };
