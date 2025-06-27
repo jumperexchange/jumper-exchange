@@ -25,7 +25,7 @@ export const USD_CURRENCY_SYMBOL = '$';
 export const NUM_DECIMAL_PLACES = 2;
 
 // Contribution fee addresses for different chains
-export const contributionFeeAddresses: Record<number, string> = {
+export const contributionFeeAddresses: Record<number, `0x${string}`> = {
   [ChainId.ETH]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Ethereum
   [ChainId.OPT]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Optimism
   [ChainId.BSC]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // BNB
@@ -46,7 +46,7 @@ export const contributionFeeAddresses: Record<number, string> = {
   [ChainId.SCL]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Scroll
   // [ChainId.ZOR]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Zora --> not supported by SDK
   [ChainId.AUR]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Aurora
-  [ChainId.SOL]: '78rW1rpLE8C4g4hgCn45eJV2KGE1NotGzhWhxDfcrjx7', // Solana
+  // [ChainId.SOL]: '78rW1rpLE8C4g4hgCn45eJV2KGE1NotGzhWhxDfcrjx7', // Solana --> not supported for contribution NON EVM!
   [ChainId.POL]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Polygon
   [ChainId.ERA]: '0xAf1530FD608F4Babb956B3A04Fb1a44BD1B8d2aB', // zkSync
   [ChainId.MOR]: '0x784bBEa6a21c379d597dD5B9640620FAC22737B6', // Moonriver

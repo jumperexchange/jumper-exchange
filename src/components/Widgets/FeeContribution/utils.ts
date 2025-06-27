@@ -45,7 +45,7 @@ export const getContributionAmounts = (volume: number): number[] => {
  */
 export const getContributionFeeAddress = (
   chainId: number,
-): string | undefined => {
+): `0x${string}` | undefined => {
   return contributionFeeAddresses[chainId];
 };
 

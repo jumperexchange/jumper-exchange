@@ -339,16 +339,17 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         completedRoute.toToken.decimals,
       );
 
+      // If the token address is the default wallet address, send a native transaction
       if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
         const nativeTxConfig = createNativeTransactionConfig(
-          feeAddress as `0x${string}`,
+          feeAddress,
           amountInTokenUnits,
         );
         await sendTransaction(nativeTxConfig);
       } else {
         const erc20TxConfig = createTokenTransactionConfig(
           completedRoute.toToken.address as `0x${string}`,
-          feeAddress as `0x${string}`,
+          feeAddress,
           amountInTokenUnits,
           completedRoute.toChainId,
         );
