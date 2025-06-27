@@ -96,7 +96,7 @@ export const WalletButtons = () => {
         <ConnectButton />
       ) : (
         <Stack direction="row" spacing={1}>
-          {isDesktop && !pathname.includes(JUMPER_SCAN_PATH) && (
+          {!pathname.includes(JUMPER_SCAN_PATH) && (
             <WalletMenuButton
               id="wallet-digest-button-xp"
               onClick={handleLevelClick}
@@ -104,23 +104,24 @@ export const WalletButtons = () => {
               <ImageWalletMenuButton
                 src={imgLink}
                 alt={`${activeAccount?.address} wallet Icon`}
-                width={32}
-                height={32}
+                width={36}
+                height={36}
                 priority={false}
                 unoptimized={true}
               />
-              {isLoading ? (
-                <SkeletonWalletMenuButton variant="circular" />
-              ) : (
-                <Typography
-                  variant={'bodyMediumStrong'}
-                  width={'auto'}
-                  marginRight={1.1}
-                  marginLeft={1}
-                >
-                  {`${t('profile_page.level')} ${level ?? 0}`}
-                </Typography>
-              )}
+              {isDesktop &&
+                (isLoading ? (
+                  <SkeletonWalletMenuButton variant="circular" />
+                ) : (
+                  <Typography
+                    variant={'bodyMediumStrong'}
+                    width={'auto'}
+                    marginRight={1.1}
+                    marginLeft={1}
+                  >
+                    {`${t('profile_page.level')} ${level ?? 0}`}
+                  </Typography>
+                ))}
             </WalletMenuButton>
           )}
           <WalletMenuButton
