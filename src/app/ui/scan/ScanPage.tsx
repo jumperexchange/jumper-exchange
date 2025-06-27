@@ -1,17 +1,11 @@
 'use client';
 
 import { ClientOnly } from '@/components/ClientOnly';
-import {
-  alpha,
-  Box,
-  type PaletteMode,
-  useColorScheme,
-  useTheme,
-} from '@mui/material';
+import { JUMPER_SCAN_PATH } from '@/const/urls';
 import { LiFiExplorer } from '@lifi/explorer';
+import { Box, useColorScheme, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { fallbackLng } from 'src/i18n';
-import { JUMPER_SCAN_PATH } from '@/const/urls';
 
 export default function ScanPage({ lng }: { lng: string }) {
   const theme = useTheme();
@@ -21,6 +15,10 @@ export default function ScanPage({ lng }: { lng: string }) {
     success: {
       main: '#d6ffe7',
       dark: '#00b849',
+    },
+    warning: {
+      main: '#FFCC00',
+      dark: '#000000',
     },
   };
 
