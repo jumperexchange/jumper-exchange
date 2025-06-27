@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useGetVerifiedTasks } from 'src/hooks/tasksVerification/useGetVerifiedTasks';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import type { Quest } from 'src/types/loyaltyPass';
+import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 export const useFormatDisplayMissionData = (mission: Quest) => {
@@ -102,5 +103,83 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
     })),
     rewardGroups,
     href: shouldOverrideWithInternalLink ? `/missions/${Slug}` : Link,
+  };
+};
+
+export const useFormatDisplayTaskData = (
+  task: TaskVerificationWithApy & {
+    isVerified: boolean;
+    isActive: boolean;
+  },
+) => {
+  const {
+    id,
+    name,
+    description,
+    CTALink,
+    CTAText,
+    CampaignId,
+    uuid,
+    hasTask,
+    maxApy,
+    isActive,
+    isVerified,
+  } = task;
+
+  return {
+    id: id.toString(),
+    taskId: uuid,
+    title: name || '',
+    description: description || '',
+    campaignId: CampaignId,
+    href: CTALink,
+    linkLabel: CTAText,
+    shouldVerify: hasTask,
+    maxApy,
+    isActive,
+    isVerified,
+  };
+};
+
+export const useEnhancedTasks = (
+  tasks: TaskVerificationWithApy[],
+  accountAddress?: string,
+) => {
+  const { data: verifiedTasks } = useGetVerifiedTasks(accountAddress);
+
+  const verifiedTaskIds = useMemo(() => {
+    return new Set(verifiedTasks?.map((v) => v.stepId));
+  }, [verifiedTasks]);
+
+  const firstUnverifiedTaskId = useMemo(() => {
+    return tasks.find((task) => !verifiedTaskIds.has(task.uuid))?.uuid;
+  }, [tasks, verifiedTaskIds]);
+
+  const [activeTaskId, setActiveTaskId] = useState<string | undefined>(
+    () => firstUnverifiedTaskId,
+  );
+
+  useEffect(() => {
+    if (!activeTaskId && firstUnverifiedTaskId) {
+      setActiveTaskId(firstUnverifiedTaskId);
+    }
+  }, [firstUnverifiedTaskId, activeTaskId]);
+
+  const enhancedTasks = useMemo(() => {
+    return tasks.map((task) => {
+      const isVerified = verifiedTaskIds.has(task.uuid);
+      const isActive = task.uuid === activeTaskId;
+
+      return {
+        ...task,
+        isVerified,
+        isActive,
+      };
+    });
+  }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks), activeTaskId]);
+
+  return {
+    enhancedTasks,
+    setActiveTask: setActiveTaskId,
   };
 };
