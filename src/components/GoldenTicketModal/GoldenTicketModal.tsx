@@ -151,9 +151,9 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
       });
 
       setIsSigning(true);
-
+      
       let signature: string | undefined;
-
+      
       // Handle signing based on the active account's chain type
       if (activeAccount?.chainType === 'SVM') {
         // Solana signing
