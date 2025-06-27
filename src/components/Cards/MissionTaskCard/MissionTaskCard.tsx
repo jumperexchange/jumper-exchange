@@ -13,6 +13,7 @@ interface MissionTaskCardProps {
   isActive?: boolean;
   type?: string;
   statusBadge?: ReactNode;
+  onClick?: () => void;
 }
 
 export const MissionTaskCard: FC<MissionTaskCardProps> = ({
@@ -21,9 +22,10 @@ export const MissionTaskCard: FC<MissionTaskCardProps> = ({
   isActive,
   type = 'Bridge task',
   statusBadge,
+  onClick,
 }) => {
   return (
-    <MissionTaskContainer isActive={isActive}>
+    <MissionTaskContainer isActive={isActive} onClick={onClick}>
       <MissionTaskHeaderContainer>
         <Badge label={type} variant="alpha" />
         {statusBadge}
