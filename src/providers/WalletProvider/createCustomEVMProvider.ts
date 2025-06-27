@@ -1,7 +1,7 @@
-import { getWalletClient } from '@wagmi/core';
 import { EVM, type EVMProvider } from '@lifi/sdk';
-import type { Config } from 'wagmi';
+import { getWalletClient } from '@wagmi/core';
 import type { Client } from 'viem';
+import type { Config } from 'wagmi';
 
 // Types from the ZapWidget component
 interface WalletCall {
@@ -34,6 +34,12 @@ interface WalletCapabilitiesArgs extends WalletMethodArgs {
   params?: never;
 }
 
+interface WalletWaitForCallsStatusArgs extends WalletMethodArgs {
+  method: 'wallet_waitForCallsStatus';
+  id: string;
+  timeout?: number;
+}
+
 // Return types for the handlers
 interface CapabilitiesResponse {
   atomic: { status: 'supported' | 'ready' | 'unsupported' };
@@ -43,7 +49,8 @@ interface CallsStatusResponse {
   atomic: boolean;
   chainId?: string;
   id: string;
-  status: number;
+  status: string; // 'success' | 'failed' - string status as expected by LiFi SDK
+  statusCode: number; // 200 | 400 - numeric status code
   receipts: Array<{
     transactionHash: `0x${string}`;
     status: 'success' | 'reverted';
@@ -53,6 +60,8 @@ interface CallsStatusResponse {
 interface SendCallsResponse {
   id: string;
 }
+
+type WaitForCallsStatusResponse = CallsStatusResponse;
 
 export interface CustomEVMProviderHandlers {
   wagmiConfig: Config;
@@ -68,12 +77,17 @@ export interface CustomEVMProviderHandlers {
     client: Client,
     args: WalletSendCallsArgs,
   ) => Promise<SendCallsResponse>;
+  waitForCallsStatus: (
+    client: Client,
+    args: WalletWaitForCallsStatusArgs,
+  ) => Promise<WaitForCallsStatusResponse>;
 }
 
 export function createCustomEVMProvider({
   wagmiConfig,
   getCapabilities,
   getCallsStatus,
+  waitForCallsStatus,
   sendCalls,
 }: CustomEVMProviderHandlers): EVMProvider {
   // Create base EVM provider
@@ -85,6 +99,8 @@ export function createCustomEVMProvider({
           getCapabilities(client, args),
         getCallsStatus: (args: WalletGetCallsStatusArgs) =>
           getCallsStatus(client, args),
+        waitForCallsStatus: (args: WalletWaitForCallsStatusArgs) =>
+          waitForCallsStatus(client, args),
         sendCalls: (args: WalletSendCallsArgs) => sendCalls(client, args),
       }));
     },
