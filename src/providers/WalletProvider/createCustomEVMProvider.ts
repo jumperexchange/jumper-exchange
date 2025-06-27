@@ -1,7 +1,7 @@
-import { EVM, type EVMProvider } from '@lifi/sdk';
 import { getWalletClient } from '@wagmi/core';
-import type { Client } from 'viem';
+import { EVM, type EVMProvider } from '@lifi/sdk';
 import type { Config } from 'wagmi';
+import type { Client } from 'viem';
 
 // Types from the ZapWidget component
 interface WalletCall {
@@ -65,22 +65,10 @@ type WaitForCallsStatusResponse = CallsStatusResponse;
 
 export interface CustomEVMProviderHandlers {
   wagmiConfig: Config;
-  getCapabilities: (
-    client: Client,
-    args: WalletCapabilitiesArgs,
-  ) => Promise<CapabilitiesResponse>;
-  getCallsStatus: (
-    client: Client,
-    args: WalletGetCallsStatusArgs,
-  ) => Promise<CallsStatusResponse>;
-  sendCalls: (
-    client: Client,
-    args: WalletSendCallsArgs,
-  ) => Promise<SendCallsResponse>;
-  waitForCallsStatus: (
-    client: Client,
-    args: WalletWaitForCallsStatusArgs,
-  ) => Promise<WaitForCallsStatusResponse>;
+  getCapabilities: (client: Client, args: WalletCapabilitiesArgs) => Promise<CapabilitiesResponse>;
+  getCallsStatus: (client: Client, args: WalletGetCallsStatusArgs) => Promise<CallsStatusResponse>;
+  sendCalls: (client: Client, args: WalletSendCallsArgs) => Promise<SendCallsResponse>;
+  waitForCallsStatus: (client: Client, args: WalletWaitForCallsStatusArgs) => Promise<WaitForCallsStatusResponse>;
 }
 
 export function createCustomEVMProvider({
@@ -95,16 +83,13 @@ export function createCustomEVMProvider({
     getWalletClient: async () => {
       const client = await getWalletClient(wagmiConfig);
       return client.extend((client: Client) => ({
-        getCapabilities: (args: WalletCapabilitiesArgs) =>
-          getCapabilities(client, args),
-        getCallsStatus: (args: WalletGetCallsStatusArgs) =>
-          getCallsStatus(client, args),
-        waitForCallsStatus: (args: WalletWaitForCallsStatusArgs) =>
-          waitForCallsStatus(client, args),
+        getCapabilities: (args: WalletCapabilitiesArgs) => getCapabilities(client, args),
+        getCallsStatus: (args: WalletGetCallsStatusArgs) => getCallsStatus(client, args),
+        waitForCallsStatus: (args: WalletWaitForCallsStatusArgs) => waitForCallsStatus(client, args),
         sendCalls: (args: WalletSendCallsArgs) => sendCalls(client, args),
       }));
-    },
+    }
   });
 
   return baseProvider;
-}
+} 
