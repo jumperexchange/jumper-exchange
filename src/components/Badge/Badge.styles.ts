@@ -95,6 +95,7 @@ export const StyledBadge = styled(Box, {
 
   const sizeStyles: Record<BadgeSize, CSSObject> = {
     sm: {
+      padding: theme.spacing(0.5, 1),
       '& > p': {
         fontSize: 10,
         lineHeight: '140%',
@@ -104,6 +105,7 @@ export const StyledBadge = styled(Box, {
       },
     },
     md: {
+      padding: theme.spacing(1, 1),
       '& > p': {
         fontSize: theme.typography.bodyXSmall.fontSize,
         lineHeight: theme.typography.bodyXSmall.lineHeight,
@@ -113,6 +115,7 @@ export const StyledBadge = styled(Box, {
       },
     },
     lg: {
+      padding: theme.spacing(1.25, 1),
       '& > p': {
         fontSize: theme.typography.bodySmall.fontSize,
         lineHeight: theme.typography.bodySmall.lineHeight,
@@ -122,6 +125,7 @@ export const StyledBadge = styled(Box, {
       },
     },
     xl: {
+      padding: theme.spacing(1.75, 1),
       '& > p': {
         fontSize: theme.typography.bodyMedium.fontSize,
         lineHeight: theme.typography.bodyMedium.lineHeight,
@@ -133,8 +137,7 @@ export const StyledBadge = styled(Box, {
   };
 
   return {
-    padding: theme.spacing(0.5, 1),
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: theme.shape.buttonBorderRadius,
     width: 'fit-content',
     display: 'flex',
     alignItems: 'center',
