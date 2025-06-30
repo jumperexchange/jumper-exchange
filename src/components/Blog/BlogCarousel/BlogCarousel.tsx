@@ -1,18 +1,12 @@
 'use client';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
-import { JUMPER_LEARN_PATH } from '@/const/urls';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from '.';
-import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
+import 'react-multi-carousel/lib/styles.css';
+import { Carousel } from 'src/components/Carousel/Carousel';
+import { Container } from 'src/components/Container/Container';
+import { TrackingCategory } from 'src/const/trackingKeys';
+import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
-import {
-  BlogCarouselContainer,
-  SeeAllButton,
-  SeeAllButtonContainer,
-} from './BlogCarousel.style';
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
@@ -20,46 +14,57 @@ interface BlogCarouselProps {
   data: StrapiResponseData<BlogArticleData> | undefined;
 }
 
-export const BlogCarousel = ({
-  data,
-  title,
-  showAllButton,
-}: BlogCarouselProps) => {
-  const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+const responsive = {
+  desktop: {
+    breakpoint: {
+      max: 3000,
+      min: 1328,
+    },
+    items: 3,
+    partialVisibilityGutter: 40,
+  },
+  mobile: {
+    breakpoint: {
+      max: 600,
+      min: 0,
+    },
+    items: 1,
+    partialVisibilityGutter: 30,
+  },
+  tablet: {
+    breakpoint: {
+      max: 1200,
+      min: 600,
+    },
+    items: 1,
+    // partialVisibilityGutter: 30
+  },
+};
 
-  const handleShowAll = () => {
-    trackEvent({
-      category: TrackingCategory.BlogCarousel,
-      action: TrackingAction.SeeAllPosts,
-      label: 'click-see-all-posts',
-    });
-  };
+export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
+  const { t } = useTranslation();
 
   return (
-    <BlogCarouselContainer>
-      <CarouselContainer title={title || t('blog.recentPosts')}>
+    <Container
+      sx={{
+        position: 'relative',
+      }}
+    >
+      <Carousel showDots={true} title="Recent Posts" responsive={responsive}>
         {data
           ? data.map((article, index) => (
-              <BlogArticleCard
-                article={article}
-                key={`blog-article-card-${article.id}-${index}`}
-                trackingCategory={TrackingCategory.BlogCarousel}
-              />
+              <div style={{ width: 'calc(416px + 32px)', margin: '0 16px' }}>
+                <BlogArticleCard
+                  article={article}
+                  key={`blog-article-card-${article.id}-${index}`}
+                  trackingCategory={TrackingCategory.BlogCarousel}
+                />
+              </div>
             ))
           : Array.from({ length: 4 }, () => 42).map((_, idx) => (
               <BlogArticleCardSkeleton key={'article-card-skeleton-' + idx} />
             ))}
-      </CarouselContainer>
-      {showAllButton ? (
-        <SeeAllButtonContainer show={!!data?.length}>
-          <Link href={JUMPER_LEARN_PATH} style={{ color: 'inherit' }}>
-            <SeeAllButton onClick={handleShowAll}>
-              {t('blog.seeAllPosts')}
-            </SeeAllButton>
-          </Link>
-        </SeeAllButtonContainer>
-      ) : null}
-    </BlogCarouselContainer>
+      </Carousel>
+    </Container>
   );
 };

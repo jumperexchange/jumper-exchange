@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
+// import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
 import { AvailableRewardsExtended } from 'src/types/merkl';
-import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 import {
   RewardsCarouselContainer,
-  RewardsCarouselItems,
   RewardsCarouselTitle,
 } from './RewardsCarousel.style';
 
@@ -37,7 +35,7 @@ export const RewardsCarousel = ({
         {t('profile_page.rewards')}
       </RewardsCarouselTitle>
 
-      <CarouselContainer
+      {/* <CarouselContainer
         hidePagination={true}
         sx={{ marginTop: 0, paddingBottom: 0 }}
       >
@@ -50,7 +48,7 @@ export const RewardsCarousel = ({
             />
           ))}
         </RewardsCarouselItems>
-      </CarouselContainer>
+      </CarouselContainer> */}
     </RewardsCarouselContainer>
   );
 };

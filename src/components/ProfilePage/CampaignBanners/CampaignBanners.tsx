@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from 'src/components/Blog';
 import type { CampaignWithBanner } from '../ProfilePage';
 import { CampaignBanner } from './CampaignBanner';
 import { CampaignBannersContainer } from './CampaignBanners.style';
@@ -27,7 +26,7 @@ export function CampaignBanners({
 
   return (
     <CampaignBannersContainer>
-      <CarouselContainer title={t('profile_page.campaigns')}>
+      {/* <CarouselContainer title={t('profile_page.campaigns')}>
         {campaigns.map((campaign, index) => (
           <CampaignBanner
             key={`campaign-banner-${campaign.id}-${index}`}
@@ -39,7 +38,7 @@ export function CampaignBanners({
             title={campaign.ProfileBannerTitle}
           />
         ))}
-      </CarouselContainer>
+      </CarouselContainer> */}
     </CampaignBannersContainer>
   );
 }
