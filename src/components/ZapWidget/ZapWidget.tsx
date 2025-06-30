@@ -244,20 +244,17 @@ export function ZapWidget({
         throw new Error('Ethereum provider not available. Please ensure MetaMask or another wallet is installed and connected.');
       }
 
-      console.log('Creating wallet client...');
-      const walletClient = createWalletClient({
-        chain,
-        transport: custom(global.window.ethereum),
-      });
-      console.log('Wallet client created successfully');
-
       // create multichain nexus account
       // Creates the Biconomy "Multichain Nexus Account", a smart contract account
       // that orchestrates actions across multiple chains.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
       console.log('Creating multichain nexus account...');
       const oNexusInit = await toMultichainNexusAccount({
-        signer: walletClient,
+        signer: createWalletClient({
+          chain,
+          account: address as `0x${string}`,
+          transport: custom(global.window.ethereum),
+        }),
         chains: [mainnet, optimism, base],
         transports: [http(), http(), http()],
       });
@@ -292,7 +289,7 @@ export function ZapWidget({
     } finally {
       setIsInitializing(false);
     }
-  }, [chain, isInitializing]);
+  }, [chain, isInitializing, address]);
 
   // Single initialization effect - only run when chain changes
   useEffect(() => {
