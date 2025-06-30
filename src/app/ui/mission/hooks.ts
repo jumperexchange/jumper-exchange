@@ -25,6 +25,11 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
   const rewardRange = CustomInformation?.['rewardRange'];
   const claimingIds = CustomInformation?.['claimingIds'];
   const chains = CustomInformation?.['chains'];
+  const projectData = CustomInformation?.['projectData'];
+  const projectDataName = projectData?.project;
+  const chainId = projectData?.chainId;
+  const chainName = projectData?.chain;
+  const partnerLinkHref = CustomInformation?.['socials']?.website;
   const shouldOverrideWithInternalLink =
     !!CustomInformation?.['shouldOverrideWithInternalLink'];
   const { apy: apyValue } = useMissionsMaxAPY(claimingIds, undefined);
@@ -105,6 +110,16 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
     })),
     rewardGroups,
     href: shouldOverrideWithInternalLink ? `/missions/${Slug}` : Link,
+    partnerLink: partnerLinkHref
+      ? {
+          url: partnerLinkHref,
+          label: `Discover ${projectDataName}`,
+        }
+      : undefined,
+    chain: {
+      name: chainName,
+      id: chainId,
+    },
   };
 };
 

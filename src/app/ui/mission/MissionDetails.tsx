@@ -25,7 +25,6 @@ interface MissionDetailsProps {
 }
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
-  console.log(mission);
   const missionDisplayData = useFormatDisplayMissionData(mission);
   const router = useRouter();
   const { t } = useTranslation();
@@ -61,6 +60,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
           participants={missionDisplayData.participants}
           imageUrl={missionDisplayData.imageUrl}
           rewardGroups={missionDisplayData.rewardGroups}
+          partnerLink={missionDisplayData.partnerLink}
         />
         {enhancedTasks.map((task) => (
           <MissionTask

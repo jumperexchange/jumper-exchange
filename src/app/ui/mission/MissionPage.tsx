@@ -6,6 +6,7 @@ import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
 import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 import { MissionPageLayout } from './MissionPageLayout';
 import { MissionDetails } from './MissionDetails';
+import { MissionWidget } from './MissionWidget';
 
 interface MissionPageProps {
   slug: string;
@@ -29,7 +30,7 @@ export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
   return (
     <MissionPageLayout
       leftColumn={<MissionDetails mission={data} tasks={taskOpportunities} />}
-      rightColumn={<div>Widget here</div>}
+      rightColumn={<MissionWidget />}
     />
   );
 };
