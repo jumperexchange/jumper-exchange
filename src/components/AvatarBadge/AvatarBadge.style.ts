@@ -32,6 +32,7 @@ interface StyledAvatarProps {
   badgeSize: number;
   badgeOffset?: BadgeOffsetProps;
   badgeGap?: number;
+  maskEnabled?: boolean;
 }
 
 // Styled Avatar component for the badge
@@ -40,17 +41,22 @@ export const StyledAvatar = styled(Avatar, {
     prop !== 'avatarSize' &&
     prop !== 'badgeSize' &&
     prop !== 'badgeOffset' &&
-    prop !== 'badgeGap',
-})<StyledAvatarProps>(({ avatarSize, badgeSize, badgeOffset, badgeGap }) => ({
-  height: avatarSize,
-  width: avatarSize,
-  mask: getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap }), // Apply dynamic mask based on avatar and badge size
-  '> img': {
-    height: '100%',
-    width: '100%',
-    objectFit: 'contain',
-  },
-}));
+    prop !== 'badgeGap' &&
+    prop !== 'maskEnabled',
+})<StyledAvatarProps>(
+  ({ avatarSize, badgeSize, badgeOffset, badgeGap, maskEnabled }) => ({
+    height: avatarSize,
+    width: avatarSize,
+    ...(maskEnabled && {
+      mask: getAvatarMask({ avatarSize, badgeSize, badgeOffset, badgeGap }),
+    }), // Apply dynamic mask based on avatar and badge size
+    '> img': {
+      height: '100%',
+      width: '100%',
+      objectFit: 'contain',
+    },
+  }),
+);
 
 interface StyledBadgeProps {
   badgeOffset?: BadgeOffsetProps;

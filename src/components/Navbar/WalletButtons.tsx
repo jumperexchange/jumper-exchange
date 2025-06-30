@@ -13,8 +13,8 @@ import { getAddressLabel } from '@/utils/getAddressLabel';
 import { walletDigest } from '@/utils/walletDigest';
 import type { Chain } from '@lifi/sdk';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import type { Theme } from '@mui/material';
-import { Stack, Typography, useMediaQuery } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,15 +24,14 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import type { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
+import AvatarBadge from '../AvatarBadge/AvatarBadge';
 import {
-  ImageWalletMenuButton,
   SkeletonWalletMenuButton,
   WalletLabel,
   WalletMenuButton,
-  WalletMgmtBadge,
-  WalletMgmtChainAvatar,
-  WalletMgmtWalletAvatar,
 } from './WalletButton.style';
+import useMediaQuery from '@mui/system/useMediaQuery';
+import type { Theme } from '@mui/material/styles';
 
 export const WalletButtons = () => {
   const { chains } = useChains();
@@ -101,13 +100,18 @@ export const WalletButtons = () => {
               id="wallet-digest-button-xp"
               onClick={handleLevelClick}
             >
-              <ImageWalletMenuButton
-                src={imgLink}
-                alt={`${activeAccount?.address} wallet Icon`}
-                width={36}
-                height={36}
-                priority={false}
-                unoptimized={true}
+              <AvatarBadge
+                avatarSrc={imgLink}
+                alt={`${activeAccount?.address} wallet icon`}
+                avatarSize={32}
+                maskEnabled={false}
+                sx={(theme) => ({
+                  border: '2px solid',
+                  borderColor: (theme.vars || theme).palette.surface1.main,
+                  ...theme.applyStyles('light', {
+                    borderColor: (theme.vars || theme).palette.white.main,
+                  }),
+                })}
               />
               {isDesktop &&
                 (isLoading ? (
@@ -128,33 +132,49 @@ export const WalletButtons = () => {
             id="wallet-digest-button"
             onClick={handleWalletMenuClick}
           >
-            {isSuccess && activeChain ? (
-              <WalletMgmtBadge
-                overlap="circular"
-                className="badge"
-                sx={{
+            {isSuccess && activeChain && (
+              <AvatarBadge
+                avatarSrc={walletConnectorIcon}
+                badgeSrc={activeChain?.logoURI}
+                avatarSize={32}
+                badgeSize={12}
+                badgeGap={4}
+                badgeOffset={{ x: 2.5, y: 2.5 }}
+                alt={'wallet-avatar'}
+                badgeAlt={'chain-avatar'}
+                maskEnabled={false}
+                sxAvatar={(theme) => ({
+                  padding: theme.spacing(0.5),
+                })}
+                sxBadge={(theme) => ({
+                  border: '2px solid',
+                  borderColor: (theme.vars || theme).palette.surface1.main,
+                  background: 'transparent',
+                  ...theme.applyStyles('light', {
+                    backgroundColor: (theme.vars || theme).palette.alphaDark900
+                      .main,
+                    borderColor: (theme.vars || theme).palette.white.main,
+                  }),
+                })}
+                sx={(theme) => ({
+                  border: '2px solid',
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover',
                   // Use backgroundImage to repeat non-SVG icons in the padding ring; fallback to backgroundColor for SVGs
                   backgroundImage:
                     walletConnectorIcon && !walletConnectorIcon.includes('svg')
                       ? `url(${walletConnectorIcon})`
                       : 'none',
-                }}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                badgeContent={
-                  <WalletMgmtChainAvatar
-                    src={activeChain?.logoURI || ''}
-                    alt={'wallet-avatar'}
-                  >
-                    {activeChain.name[0]}
-                  </WalletMgmtChainAvatar>
-                }
-              >
-                <WalletMgmtWalletAvatar src={walletConnectorIcon} />
-              </WalletMgmtBadge>
-            ) : null}
+                  backgroundColor: (theme.vars || theme).palette.black.main,
+                  borderColor: (theme.vars || theme).palette.surface1.main,
+                  ...theme.applyStyles('light', {
+                    backgroundColor: (theme.vars || theme).palette.alphaDark900
+                      .main,
+                    borderColor: (theme.vars || theme).palette.white.main,
+                  }),
+                })}
+              />
+            )}
             {isDesktop && (
               <WalletLabel variant={'bodyMediumStrong'}>
                 {addressLabel ?? walletDigest(activeAccount?.address)}
