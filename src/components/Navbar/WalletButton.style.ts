@@ -1,43 +1,8 @@
 import { ButtonPrimary } from '@/components/Button';
-import {
-  alpha,
-  Avatar,
-  Badge,
-  Skeleton,
-  styled,
-  Typography,
-} from '@mui/material';
-import Image from 'next/image';
+import Typography from '@mui/material/Typography';
+import Skeleton from '@mui/material/Skeleton';
 import { ButtonTransparent } from '../Button';
-
-export const WalletMgmtWalletAvatar = styled(Avatar)(({ theme }) => ({
-  height: 32,
-  width: 32,
-  padding: theme.spacing(0.5),
-}));
-
-export const WalletMgmtChainAvatar = styled(Avatar)(() => ({
-  width: 12,
-  height: 12,
-  border: '2px solid white',
-  background: 'transparent',
-  left: 2.5,
-  top: 1,
-  img: {
-    borderRadius: '50%',
-  },
-}));
-
-export const WalletMgmtBadge = styled(Badge)(({ theme }) => ({
-  borderRadius: '50%',
-  border: '2px solid white',
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  backgroundColor: (theme.vars || theme).palette.white.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
-  }),
-}));
+import { styled } from '@mui/material/styles';
 
 export const ConnectButtonWrapper = styled(ButtonPrimary)(({ theme }) => ({
   padding: theme.spacing(1, 2),
@@ -74,16 +39,6 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
     '&:hover': {
       backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
     },
-  }),
-}));
-
-export const ImageWalletMenuButton = styled(Image)(({ theme }) => ({
-  borderRadius: '100%',
-  borderStyle: 'solid',
-  borderWidth: '2px',
-  borderColor: alpha(theme.palette.white.main, 0.08),
-  ...theme.applyStyles('light', {
-    borderColor: (theme.vars || theme).palette.white.main,
   }),
 }));
 
