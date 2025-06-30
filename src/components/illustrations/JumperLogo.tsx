@@ -41,7 +41,7 @@ export const JumperLogo = () => {
           fillRule="evenodd"
           clipRule="evenodd"
           d="M223 12C229 12 233 16 233 21C233 28 227.098 30.1174 227 30L232 36H224L220 30H213V36H207C207 36 207 22 207 18C207 14 208.796 12 213 12H223ZM213 24H223C226 24 227 22.4645 227 21C227 19.5355 226 18 223 18H213V24Z"
-          fill="main-color"
+          className="main-color"
         />
 
         <style type="text/css">
