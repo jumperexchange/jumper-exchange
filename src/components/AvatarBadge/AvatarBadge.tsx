@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material';
+import { Skeleton, SxProps, Theme } from '@mui/material';
 import React from 'react';
 import {
   BadgeOffsetProps,
@@ -13,9 +13,13 @@ type AvatarBadgeProps = {
   badgeOffset?: BadgeOffsetProps;
   avatarSize: number;
   badgeGap?: number;
-  badgeSize: number;
+  badgeSize?: number;
   alt: string;
-  badgeAlt: string;
+  badgeAlt?: string;
+  maskEnabled?: boolean;
+  sx?: SxProps<Theme>;
+  sxAvatar?: SxProps<Theme>;
+  sxBadge?: SxProps<Theme>;
 };
 
 const AvatarBadge: React.FC<AvatarBadgeProps> = ({
@@ -24,9 +28,13 @@ const AvatarBadge: React.FC<AvatarBadgeProps> = ({
   badgeOffset,
   badgeGap,
   avatarSize,
-  badgeSize,
+  badgeSize = 12,
   alt,
-  badgeAlt,
+  badgeAlt = 'Badge alt',
+  maskEnabled = true,
+  sx,
+  sxAvatar,
+  sxBadge,
 }) => {
   return (
     <StyledBadge
@@ -34,10 +42,18 @@ const AvatarBadge: React.FC<AvatarBadgeProps> = ({
       badgeOffset={badgeOffset}
       // anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       badgeContent={
-        <StyledBadgeAvatar src={badgeSrc} alt={badgeAlt} badgeSize={badgeSize}>
-          <Skeleton variant="circular" width={badgeSize} height={badgeSize} />
-        </StyledBadgeAvatar>
+        badgeSrc && (
+          <StyledBadgeAvatar
+            src={badgeSrc}
+            alt={badgeAlt}
+            badgeSize={badgeSize}
+            sx={sxBadge}
+          >
+            <Skeleton variant="circular" width={badgeSize} height={badgeSize} />
+          </StyledBadgeAvatar>
+        )
       }
+      sx={sx}
     >
       <StyledAvatar
         src={avatarSrc}
@@ -46,6 +62,8 @@ const AvatarBadge: React.FC<AvatarBadgeProps> = ({
         badgeSize={badgeSize}
         badgeOffset={{ x: badgeOffset?.x, y: badgeOffset?.y }}
         badgeGap={badgeGap}
+        maskEnabled={maskEnabled}
+        sx={sxAvatar}
       >
         <Skeleton variant="circular" width={avatarSize} height={avatarSize} />
       </StyledAvatar>
