@@ -1,8 +1,8 @@
 import CheckIcon from '@mui/icons-material/Check';
 import CircularProgress from '@mui/material/CircularProgress';
 import { TFunction } from 'i18next';
-import { ContributionButtonCTA } from './FeeContribution.style';
 import { useMemo } from 'react';
+import { ContributionButtonCTA } from './FeeContribution.style';
 
 interface FeeContributionCTAProps {
   translationFn: TFunction;
@@ -36,7 +36,7 @@ export const FeeContributionCTA: React.FC<FeeContributionCTAProps> = ({
 
   return (
     <ContributionButtonCTA
-      disabled={isTransactionLoading && !contributed}
+      disabled={isTransactionLoading}
       isTxConfirmed={contributed}
       onClick={handleClick}
     >
