@@ -145,6 +145,7 @@
     "completed": "Misiones Completadas"
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Sólo disponible en escritorio",
     "mobileDescription": "La página del perfil de Jumper todavía no está disponible en pantallas pequeñas. Estamos trabajando en ello.",
     "level": "",

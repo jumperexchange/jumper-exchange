@@ -145,6 +145,7 @@
     "completed": "Tamamlanan Görevler"
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
     "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz.",
     "level": "",
