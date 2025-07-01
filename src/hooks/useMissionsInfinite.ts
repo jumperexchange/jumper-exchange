@@ -41,7 +41,7 @@ export const useMissionsInfinite = (
           pageParams: [1],
         }
       : undefined,
-    staleTime: FIVE_MINUTES_MS, // @Note need to add a constant
-    gcTime: TEN_MINUTES_MS, // @Note need to add a constant
+    staleTime: FIVE_MINUTES_MS,
+    gcTime: TEN_MINUTES_MS,
   });
 };
