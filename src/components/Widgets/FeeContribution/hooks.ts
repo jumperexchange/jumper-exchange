@@ -33,6 +33,9 @@ import {
   isTransactionAmountEligible,
 } from './utils';
 
+const ALTTERNATIVE_DEFAULT_ADDRESS =
+  '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
+
 export const useContributionData = () => {
   const [contributionOptions, setContributionOptions] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
@@ -342,7 +345,10 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
       );
 
       // If the token address is the default wallet address, send a native transaction
-      if (completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS) {
+      if (
+        completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS ||
+        completedRoute.toToken.address === ALTTERNATIVE_DEFAULT_ADDRESS
+      ) {
         const nativeTxConfig = createNativeTransactionConfig(
           feeAddress,
           amountInTokenUnits,
