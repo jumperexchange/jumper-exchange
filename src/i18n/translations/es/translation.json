@@ -142,9 +142,20 @@
   },
   "missions": {
     "available": "Misiones Disponibles",
-    "completed": "Misiones Completadas"
+    "completed": "Misiones Completadas",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Sólo disponible en escritorio",
     "mobileDescription": "La página del perfil de Jumper todavía no está disponible en pantallas pequeñas. Estamos trabajando en ello.",
     "level": "",
