@@ -17,6 +17,7 @@ import {
 import { parseUnits } from 'viem';
 import {
   useSendTransaction,
+  useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
@@ -153,12 +154,10 @@ export const useContributionData = () => {
 
 export const useSendContribution = (closeContributionDrawer: () => void) => {
   const [isSending, setIsSending] = useState(false);
-
   const hasTrackedImpressionRef = useRef(false);
   const hasTrackedConfirmationRef = useRef(false);
-
+  const { switchChainAsync } = useSwitchChain();
   const { amount } = useContributionAmountContext();
-
   const { trackEvent } = useUserTracking();
   const { completedRoute } = useRouteStore((state) => state);
   const { account } = useAccount();
@@ -355,6 +354,9 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         );
         await sendTransaction(nativeTxConfig);
       } else {
+        if (account.chainId !== completedRoute.toToken.chainId) {
+          await switchChainAsync({ chainId: completedRoute.toToken.chainId });
+        }
         const erc20TxConfig = createTokenTransactionConfig(
           completedRoute.toToken.address as EVMAddress,
           feeAddress,
