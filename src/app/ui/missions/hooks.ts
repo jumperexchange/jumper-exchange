@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { StrapiResponseData, QuestData } from 'src/types/strapi';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { RewardGroup } from './types';
 
 export const useFormatDisplayMissionData = (
   mission: StrapiResponseData<QuestData>[number],
@@ -74,7 +75,7 @@ export const useFormatDisplayMissionData = (
   }, [rewards]);
 
   const rewardGroups = useMemo(() => {
-    const groups: Record<string, any[]> = {};
+    const groups: Record<string, RewardGroup[]> = {};
     if (apyRewards.length > 0) {
       groups.apy = apyRewards;
     }
