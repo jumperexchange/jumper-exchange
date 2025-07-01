@@ -145,6 +145,7 @@
     "completed": "完了したミッション"
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "デスクトップでのみ利用可能です",
     "mobileDescription": "Jumper プロファイルページは、まだ小さな画面では利用できません。私たちは現在作業中です。",
     "level": "",
