@@ -1,7 +1,11 @@
 'use client';
 
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useEnhancedTasks, useFormatDisplayMissionData } from './hooks';
+import {
+  useEnhancedTasks,
+  useFormatDisplayMissionData,
+  useSetMissionChainFromParticipants,
+} from './hooks';
 import { FC } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';
@@ -26,6 +30,7 @@ interface MissionDetailsProps {
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
   const missionDisplayData = useFormatDisplayMissionData(mission);
+  useSetMissionChainFromParticipants(missionDisplayData.participants);
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -62,13 +67,16 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
           rewardGroups={missionDisplayData.rewardGroups}
           partnerLink={missionDisplayData.partnerLink}
         />
-        {enhancedTasks.map((task) => (
+        {enhancedTasks.map((task, i) => (
           <MissionTask
             key={task.uuid}
             task={task}
             missionId={mission.documentId}
             accountAddress={account?.address}
-            onClick={() => setActiveTask(task.uuid)}
+            // @Note need to replace with task type
+            onClick={() =>
+              setActiveTask(task.uuid, i % 2 === 0 ? 'bridge' : 'zap')
+            }
           />
         ))}
       </MissionDetailsCardContainer>

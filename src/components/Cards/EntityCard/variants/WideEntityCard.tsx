@@ -37,6 +37,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   return (
     <StyledEntityCard
       sx={{
+        width: '100%',
         maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
       }}
       onClick={onClick}

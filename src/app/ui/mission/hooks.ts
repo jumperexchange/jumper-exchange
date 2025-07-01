@@ -1,8 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useGetVerifiedTasks } from 'src/hooks/tasksVerification/useGetVerifiedTasks';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { useMissionStore } from 'src/stores/mission/MissionStore';
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+
+interface ChainParticipant {
+  name: string;
+  logo: string;
+  chainId: number;
+}
 
 export const useFormatDisplayMissionData = (mission: Quest) => {
   const baseStrapiUrl = getStrapiBaseUrl();
@@ -24,7 +31,7 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
   const rewardType = CustomInformation?.['rewardType'];
   const rewardRange = CustomInformation?.['rewardRange'];
   const claimingIds = CustomInformation?.['claimingIds'];
-  const chains = CustomInformation?.['chains'];
+  const chains = (CustomInformation?.['chains'] ?? []) as ChainParticipant[];
   const projectData = CustomInformation?.['projectData'];
   const projectDataName = projectData?.project;
   const chainId = projectData?.chainId;
@@ -93,34 +100,80 @@ export const useFormatDisplayMissionData = (mission: Quest) => {
     return groups;
   }, [apyRewards, xpRewards, coinsRewards]);
 
-  return {
-    id: id.toString(),
-    slug: Slug,
-    title: Title || '',
-    description: Description || '',
-    info: Information || '',
-    startDate: StartDate || '',
-    endDate: EndDate || '',
-    imageUrl: BannerImage?.[0]?.url
-      ? `${baseStrapiUrl}${BannerImage[0].url}`
-      : undefined,
-    participants: chains?.map((chain: any) => ({
-      avatarUrl: chain.logo,
-      label: chain.name,
-    })),
+  // @TODO useMemo
+  return useMemo(() => {
+    return {
+      id: id.toString(),
+      slug: Slug,
+      title: Title || '',
+      description: Description || '',
+      info: Information || '',
+      startDate: StartDate || '',
+      endDate: EndDate || '',
+      imageUrl: BannerImage?.[0]?.url
+        ? `${baseStrapiUrl}${BannerImage[0].url}`
+        : undefined,
+      participants: chains?.map((chain) => ({
+        avatarUrl: chain.logo,
+        label: chain.name,
+        id: chain.chainId,
+      })),
+      rewardGroups,
+      href: shouldOverrideWithInternalLink ? `/missions/${Slug}` : Link,
+      partnerLink: partnerLinkHref
+        ? {
+            url: partnerLinkHref,
+            label: `Discover ${projectDataName}`,
+          }
+        : undefined,
+      chain: {
+        name: chainName,
+        id: chainId,
+      },
+    };
+  }, [
+    id,
+    Slug,
+    Title,
+    Description,
+    Information,
+    StartDate,
+    EndDate,
+    BannerImage,
+    chains,
+    partnerLinkHref,
+    projectDataName,
     rewardGroups,
-    href: shouldOverrideWithInternalLink ? `/missions/${Slug}` : Link,
-    partnerLink: partnerLinkHref
-      ? {
-          url: partnerLinkHref,
-          label: `Discover ${projectDataName}`,
-        }
-      : undefined,
-    chain: {
-      name: chainName,
-      id: chainId,
-    },
-  };
+    chainName,
+    chainId,
+  ]);
+};
+
+export const useSetMissionChainFromParticipants = (
+  participatingChains: ReturnType<
+    typeof useFormatDisplayMissionData
+  >['participants'],
+) => {
+  const { setMissionDefaults } = useMissionStore();
+
+  const participatingChainsIds = useMemo(() => {
+    if (!participatingChains) {
+      return [];
+    }
+    return [
+      ...new Set(
+        participatingChains
+          .map((participatingChain) => participatingChain.id)
+          .filter(Boolean),
+      ),
+    ];
+  }, [participatingChains]);
+
+  useEffect(() => {
+    if (participatingChainsIds) {
+      setMissionDefaults(participatingChainsIds);
+    }
+  }, [participatingChainsIds, setMissionDefaults]);
 };
 
 export enum TaskType {
@@ -177,24 +230,38 @@ export const useEnhancedTasks = (
     return new Set(verifiedTasks?.map((v) => v.stepId));
   }, [verifiedTasks]);
 
-  const firstUnverifiedTaskId = useMemo(() => {
-    return tasks.find((task) => !verifiedTaskIds.has(task.uuid))?.uuid;
+  const firstUnverifiedTask = useMemo(() => {
+    return tasks.find((task) => !verifiedTaskIds.has(task.uuid));
   }, [tasks, verifiedTaskIds]);
 
-  const [activeTaskId, setActiveTaskId] = useState<string | undefined>(
-    () => firstUnverifiedTaskId,
-  );
+  const {
+    isMissionCompleted,
+    setIsMissionCompleted,
+    setCurrentActiveTask,
+    currentActiveTaskId,
+  } = useMissionStore();
 
   useEffect(() => {
-    if (!activeTaskId && firstUnverifiedTaskId) {
-      setActiveTaskId(firstUnverifiedTaskId);
+    if (!currentActiveTaskId && setCurrentActiveTask && firstUnverifiedTask) {
+      // @Note need to replace with task type
+      // @Note for zap might need a different approach
+      setCurrentActiveTask(firstUnverifiedTask?.uuid, TaskType.Bridge);
     }
-  }, [firstUnverifiedTaskId, activeTaskId]);
+  }, [firstUnverifiedTask, currentActiveTaskId, setCurrentActiveTask]);
+
+  // @Note need to check if this check is enough for considering a mission completed
+  const allTasksCompleted = tasks.length === verifiedTasks?.length;
+
+  useEffect(() => {
+    if (allTasksCompleted && !isMissionCompleted) {
+      setIsMissionCompleted(true);
+    }
+  }, [allTasksCompleted, isMissionCompleted, setIsMissionCompleted]);
 
   const enhancedTasks = useMemo(() => {
     return tasks.map((task) => {
       const isVerified = verifiedTaskIds.has(task.uuid);
-      const isActive = task.uuid === activeTaskId;
+      const isActive = task.uuid === currentActiveTaskId;
 
       return {
         ...task,
@@ -202,10 +269,14 @@ export const useEnhancedTasks = (
         isActive,
       };
     });
-  }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks), activeTaskId]);
+  }, [
+    JSON.stringify(tasks),
+    JSON.stringify(verifiedTasks),
+    currentActiveTaskId,
+  ]);
 
   return {
     enhancedTasks,
-    setActiveTask: setActiveTaskId,
+    setActiveTask: setCurrentActiveTask,
   };
 };

@@ -14,7 +14,12 @@ export const MissionPageLayout: FC<MissionPageLayoutProps> = ({
 }) => {
   return (
     <Container
-      sx={{ px: { xl: 0, xs: 4 }, mt: 5.5, mb: 5.5, maxWidth: '1112px' }}
+      sx={{
+        px: { xl: 0, xs: 4 },
+        mt: 5.5,
+        mb: 5.5,
+        maxWidth: '1112px !important',
+      }}
     >
       <Stack
         sx={{

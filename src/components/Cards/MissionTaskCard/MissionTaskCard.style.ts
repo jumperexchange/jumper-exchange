@@ -9,15 +9,18 @@ export interface MissionTaskContainerProps extends BoxProps {
 
 export const MissionTaskContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isActive',
-})<MissionTaskContainerProps>(({ theme, isActive }) => ({
+})<MissionTaskContainerProps>(({ theme, isActive, onClick }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: `1px solid transparent`,
+  cursor: !!onClick ? 'pointer' : 'initial',
   padding: theme.spacing(3),
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1.5),
+  transition: 'all .2s ease-in',
   ...(isActive && {
     border: `1px solid ${(theme.vars || theme).palette.orchid[600]}`,
     backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
