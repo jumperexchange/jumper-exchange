@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from 'src/const/quests';
 import { MissionsList } from './MissionsList';
 import { MissionsPageContainer } from './MissionsPageContainer';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
@@ -5,7 +6,7 @@ import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCamp
 export const MissionsPage = async () => {
   const { data: missionsResponse } = await getQuestsWithNoCampaignAttached({
     page: 1,
-    pageSize: 12,
+    pageSize: PAGE_SIZE,
     withCount: true,
   });
   const missions = missionsResponse.data;
