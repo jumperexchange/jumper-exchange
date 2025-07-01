@@ -50,49 +50,37 @@ export const getContributionFeeAddress = (
   return contributionFeeAddresses[chainId];
 };
 
-export const formatInputAmount = (
+// @todo: Import directly from @lifi/widget once exported with next release
+export function formatInputAmount(
   amount: string,
-  decimals: number = 2,
-  locale: string = 'en-US',
-): string => {
-  if (!amount) return amount;
-
-  // Replace commas with dots and trim whitespace
-  let normalized = amount.trim().replace(/,/g, '.');
-
-  // Add leading zero if amount starts with a decimal point
-  if (normalized.startsWith('.')) {
-    normalized = '0' + normalized;
+  decimals: number | null = null,
+  returnInitial = false,
+) {
+  if (!amount) {
+    return amount;
   }
-
-  const parsed = parseFloat(normalized);
-
-  if (isNaN(parsed)) return '';
-
-  const formatter = new Intl.NumberFormat(locale, {
-    maximumFractionDigits: decimals,
-    useGrouping: false,
-  });
-
-  const formatted = formatter.format(parsed);
-
-  const parts = normalized.split('.');
-  const fraction = parts[1];
-  const decimalCount = parts.length - 1;
-
-  // Preserve trailing decimal if user is still typing
-  if (normalized.endsWith('.') && decimalCount === 1) {
-    return formatted + '.';
+  let formattedAmount = amount.trim().replaceAll(',', '.');
+  if (formattedAmount.startsWith('.')) {
+    formattedAmount = `0${formattedAmount}`;
   }
-
-  // Preserve leading zeros in the fraction
-  // @Note this will need re-working if we increase the number of decimals
-  if (fraction && Number(fraction) === 0) {
-    return formatted + '.' + '0'.repeat(fraction.length);
+  const parsedAmount = Number.parseFloat(formattedAmount);
+  if (Number.isNaN(Number(formattedAmount)) && !Number.isNaN(parsedAmount)) {
+    return parsedAmount.toString();
   }
-
-  return formatted;
-};
+  if (Number.isNaN(Math.abs(Number(formattedAmount)))) {
+    return '';
+  }
+  if (returnInitial) {
+    return formattedAmount;
+  }
+  let [integer, fraction = ''] = formattedAmount.split('.');
+  if (decimals !== null && fraction.length > decimals) {
+    fraction = fraction.slice(0, decimals);
+  }
+  integer = integer.replace(/^0+|-/, '');
+  fraction = fraction.replace(/(0+)$/, '');
+  return `${integer || (fraction ? '0' : '')}${fraction ? `.${fraction}` : ''}`;
+}
 
 export interface TransferResponse {
   transfers: StatusResponse[];

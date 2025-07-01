@@ -27,7 +27,11 @@ export const CustomInput: React.FC<CustomInputProps> = ({
       setIsManualValueSelected(true);
     }
     const rawValue = event.target.value;
-    const formattedValue = formatInputAmount(rawValue, NUM_DECIMAL_PLACES);
+    const formattedValue = formatInputAmount(
+      rawValue,
+      NUM_DECIMAL_PLACES,
+      true,
+    );
     const numericValue = Number(formattedValue);
     const shouldLimitToMax =
       formattedValue && maxValue && numericValue > maxValue;
@@ -50,10 +54,14 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     }
   };
 
-  const handleBlur = () => {
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (isFocused) {
       setIsFocused(false);
     }
+
+    const { value } = event.target;
+    const formattedAmount = formatInputAmount(value, NUM_DECIMAL_PLACES);
+    setCurrentValue(formattedAmount);
   };
 
   return (
