@@ -3,7 +3,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, useMediaQuery, type CSSObject } from '@mui/material';
 import useId from '@mui/utils/useId';
-import type { ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
@@ -21,28 +21,27 @@ interface CarouselProps {
   title?: string;
   headerInfo?: ReactNode;
   sx?: CSSObject;
-  children: ReactNode | ReactNode[];
-  hidePagination?: boolean;
-  showDots?: boolean;
+  hasNavigation?: boolean;
+  hasPagination?: boolean;
   spaceBetween?: number;
   breakpoints?: {
     [width: number]: SwiperOptions;
     [ratio: string]: SwiperOptions;
   };
-  fixedItemWidth?: boolean;
+  fixedSlideWidth?: boolean;
 }
 
-export const Carousel = ({
+export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   sx,
   title,
   headerInfo,
   children,
-  hidePagination = false,
+  hasNavigation = true,
   breakpoints,
   spaceBetween = 32,
-  showDots = false,
-  fixedItemWidth = false,
-}: CarouselProps) => {
+  hasPagination = false,
+  fixedSlideWidth = false,
+}) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const swiperId = useId();
 
@@ -56,8 +55,8 @@ export const Carousel = ({
   return (
     <CarouselContainer
       title={title}
-      showDots={showDots}
-      fixedItemWidth={fixedItemWidth}
+      hasPagination={hasPagination}
+      fixedSlideWidth={fixedSlideWidth}
       sx={sx}
     >
       {title ? (
@@ -83,7 +82,7 @@ export const Carousel = ({
         slidesOffsetAfter={0}
         slidesOffsetBefore={0}
         pagination={
-          showDots
+          hasPagination
             ? {
                 clickable: true,
                 el: `.${classNames.pagination}`,
@@ -108,7 +107,7 @@ export const Carousel = ({
         grabCursor={true}
         cssMode={false}
         className="carousel-swiper"
-        hashNavigation={!hidePagination}
+        hashNavigation={hasNavigation}
         setWrapperSize={false}
         slidesPerView="auto"
         spaceBetween={spaceBetween}
@@ -125,7 +124,7 @@ export const Carousel = ({
           ))}
       </Swiper>
 
-      {!hidePagination && (
+      {!hasNavigation && (
         <CarouselNavigationContainer>
           <CarouselNavigationButton
             aria-label="previous"
@@ -145,7 +144,7 @@ export const Carousel = ({
         </CarouselNavigationContainer>
       )}
 
-      {showDots && (
+      {hasPagination && (
         <Box
           className={`swiper-pagination ${classNames.pagination}`}
           sx={{

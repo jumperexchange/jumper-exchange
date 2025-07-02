@@ -86,7 +86,7 @@ export const QuestsCompletedCarousel = ({
     <CompletedQuestContainer sx={{ position: 'relative' }}>
       <Carousel
         headerInfo={headerInfo}
-        fixedItemWidth={true}
+        fixedSlideWidth={true}
         title={t('missions.completed')}
       >
         {carouselContent}

@@ -47,8 +47,7 @@ export const RewardsCarousel = ({
         {t('profile_page.rewards')}
       </RewardsCarouselTitle>
       <Carousel
-        fixedItemWidth={true}
-        hidePagination={true}
+        fixedSlideWidth={true}
         sx={{
           '.carousel-swiper': {
             marginTop: 0,
