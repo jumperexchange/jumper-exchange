@@ -13,10 +13,10 @@ jobs:
     uses: jumperexchange/github-actions/.github/workflows/build-and-push-multitag.yaml@main
     with:
       registry: europe-docker.pkg.dev/jumper-g-artifacts
-      image-name: 'docker-jumper-backend/backend'
+      image-name: 'docker-jumper-exchange/jumpex'
       is-staging: true
       source-tag: ${{ github.ref_name }}
       commit-sha: ${{ github.sha }}
-      ecr_repository: 'jumper-g-artifacts/docker-jumper-backend/backend'
+      ecr_repository: 'jumper-g-artifacts/docker-jumper-exchange/jumpex'
     secrets:
       deploy_key: ${{ secrets.DEPLOY_SSH }}
