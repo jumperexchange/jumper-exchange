@@ -1,8 +1,12 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useGetVerifiedTasks } from 'src/hooks/tasksVerification/useGetVerifiedTasks';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import {
+  TaskType,
+  type Quest,
+  type TaskVerificationWithApy,
+} from 'src/types/loyaltyPass';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 interface ChainParticipant {
@@ -176,81 +180,103 @@ export const useSetMissionChainFromParticipants = (
   }, [participatingChainsIds, setMissionDefaults]);
 };
 
-export enum TaskType {
-  Bridge = 'bridge',
-  Swap = 'swap',
-  Deposit = 'deposit',
-  OnChain = 'on-chain',
-  OffChain = 'off-chain',
-  Zap = 'zap',
-}
-
 export const useFormatDisplayTaskData = (
   task: TaskVerificationWithApy & {
     isVerified: boolean;
-    isActive: boolean;
+    isRequired: boolean;
   },
 ) => {
-  const {
-    id,
-    name,
-    description,
-    CTALink,
-    CTAText,
-    CampaignId,
-    uuid,
-    hasTask,
-    maxApy,
-    isActive,
-    isVerified,
-  } = task;
+  return useMemo(() => {
+    const {
+      id,
+      name,
+      description,
+      CTALink,
+      CTAText,
+      CampaignId,
+      TaskType,
+      uuid,
+      hasTask,
+      maxApy,
+      isVerified,
+      isRequired,
+    } = task;
 
-  return {
-    id: id.toString(),
-    taskId: uuid,
-    title: name || '',
-    description: description || '',
-    campaignId: CampaignId,
-    href: CTALink,
-    linkLabel: CTAText,
-    shouldVerify: hasTask,
-    maxApy,
-    isActive,
-    isVerified,
-  };
+    return {
+      id: id.toString(),
+      taskId: uuid,
+      title: name || '',
+      description: description || '',
+      campaignId: CampaignId,
+      href: CTALink,
+      linkLabel: CTAText,
+      shouldVerify: hasTask,
+      taskType: TaskType,
+      maxApy,
+      isVerified,
+      isRequired,
+    };
+  }, [JSON.stringify(task ?? {})]);
 };
 
 export const useEnhancedTasks = (
   tasks: TaskVerificationWithApy[],
   accountAddress?: string,
 ) => {
-  const { data: verifiedTasks } = useGetVerifiedTasks(accountAddress);
+  const { data: verifiedTasks = [] } = useGetVerifiedTasks(accountAddress);
 
   const verifiedTaskIds = useMemo(() => {
     return new Set(verifiedTasks?.map((v) => v.stepId));
   }, [verifiedTasks]);
 
   const firstUnverifiedTask = useMemo(() => {
-    return tasks.find((task) => !verifiedTaskIds.has(task.uuid));
+    return (
+      tasks.find((task) => task.hasTask && !verifiedTaskIds.has(task.uuid)) ||
+      tasks[0]
+    );
   }, [tasks, verifiedTaskIds]);
 
   const {
     isMissionCompleted,
     setIsMissionCompleted,
     setCurrentActiveTask,
+    setCurrentTaskWidgetFormParams,
     currentActiveTaskId,
   } = useMissionStore();
 
-  useEffect(() => {
-    if (!currentActiveTaskId && setCurrentActiveTask && firstUnverifiedTask) {
-      // @Note need to replace with task type
-      // @Note for zap might need a different approach
-      setCurrentActiveTask(firstUnverifiedTask?.uuid, TaskType.Bridge);
-    }
-  }, [firstUnverifiedTask, currentActiveTaskId, setCurrentActiveTask]);
+  const handleSetActiveTask = useCallback(
+    (task: TaskVerificationWithApy) => {
+      const taskType = task.TaskType ?? TaskType.Bridge;
+      const widgetFormParams = task.TaskWidgetInformation ?? {};
 
-  // @Note need to check if this check is enough for considering a mission completed
-  const allTasksCompleted = tasks.length === verifiedTasks?.length;
+      setCurrentActiveTask(task.uuid, taskType);
+
+      setCurrentTaskWidgetFormParams({
+        sourceChain: widgetFormParams.sourceChain ?? undefined,
+        sourceToken: widgetFormParams.sourceToken ?? undefined,
+        destinationChain: widgetFormParams.destinationChain ?? undefined,
+        destinationToken: widgetFormParams.destinationToken ?? undefined,
+        toAddress: widgetFormParams.toAddress ?? undefined,
+        fromAmount: widgetFormParams.fromAmount ?? undefined,
+      });
+    },
+    [setCurrentActiveTask, setCurrentTaskWidgetFormParams],
+  );
+
+  useEffect(() => {
+    if (
+      firstUnverifiedTask &&
+      !currentActiveTaskId &&
+      firstUnverifiedTask.uuid
+    ) {
+      handleSetActiveTask(firstUnverifiedTask);
+    }
+  }, [firstUnverifiedTask, currentActiveTaskId, handleSetActiveTask]);
+
+  const allTasksCompleted = useMemo(() => {
+    const requiredTasks = tasks.filter((task) => task.isRequired);
+    return requiredTasks.length === verifiedTasks?.length;
+  }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks)]);
 
   useEffect(() => {
     if (allTasksCompleted && !isMissionCompleted) {
@@ -260,23 +286,19 @@ export const useEnhancedTasks = (
 
   const enhancedTasks = useMemo(() => {
     return tasks.map((task) => {
-      const isVerified = verifiedTaskIds.has(task.uuid);
-      const isActive = task.uuid === currentActiveTaskId;
+      const isVerified = task.hasTask && verifiedTaskIds.has(task.uuid);
+      const isRequired = !!task.isRequired;
 
       return {
         ...task,
         isVerified,
-        isActive,
+        isRequired,
       };
     });
-  }, [
-    JSON.stringify(tasks),
-    JSON.stringify(verifiedTasks),
-    currentActiveTaskId,
-  ]);
+  }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks)]);
 
   return {
     enhancedTasks,
-    setActiveTask: setCurrentActiveTask,
+    setActiveTask: handleSetActiveTask,
   };
 };

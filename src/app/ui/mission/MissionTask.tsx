@@ -14,11 +14,12 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useTranslation } from 'react-i18next';
+import { useMissionStore } from 'src/stores/mission';
 
 interface MissionTaskProps {
   task: TaskVerificationWithApy & {
     isVerified: boolean;
-    isActive: boolean;
+    isRequired: boolean;
   };
   missionId: string;
   accountAddress?: string;
@@ -31,8 +32,10 @@ export const MissionTask: FC<MissionTaskProps> = ({
   accountAddress,
   onClick,
 }) => {
-  const { title, description, isVerified, isActive } =
+  const { taskId, title, taskType, description, isVerified } =
     useFormatDisplayTaskData(task);
+  const { currentActiveTaskId } = useMissionStore();
+  const isActive = currentActiveTaskId === taskId;
 
   const { t } = useTranslation();
 
@@ -78,7 +81,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
       title={title}
       description={description}
       isActive={isActive}
-      type={t('missions.tasks.type', { type: 'Bridge' })}
+      type={t('missions.tasks.type', { type: taskType })}
       statusBadge={
         task.hasTask ? (
           isSuccess || isVerified ? (

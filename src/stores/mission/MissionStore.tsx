@@ -1,18 +1,43 @@
 'use client';
+import {
+  TaskWidgetInformationChainData,
+  TaskWidgetInformationWalletData,
+  TaskWidgetInformationTokenData,
+} from 'src/types/loyaltyPass';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface MissionState {
   currentActiveTaskId?: string;
   currentActiveTaskType?: string;
 
-  destinationChainId?: number;
-  destinationTokenAddress?: string;
+  destinationChain?: TaskWidgetInformationChainData;
+  destinationToken?: TaskWidgetInformationTokenData;
 
-  sourceChainId?: number;
-  sourceTokenAddress?: string;
+  sourceChain?: TaskWidgetInformationChainData;
+  sourceToken?: TaskWidgetInformationTokenData;
+
+  fromAmount?: string;
+
+  toAddress?: TaskWidgetInformationWalletData;
 
   missionChainIds?: number[];
   missionType?: string;
+
+  setCurrentTaskWidgetFormParams: ({
+    destinationChain,
+    destinationToken,
+    sourceChain,
+    sourceToken,
+    fromAmount,
+    toAddress,
+  }: {
+    destinationChain?: TaskWidgetInformationChainData;
+    destinationToken?: TaskWidgetInformationTokenData;
+    sourceChain?: TaskWidgetInformationChainData;
+    sourceToken?: TaskWidgetInformationTokenData;
+    fromAmount?: string;
+    toAddress?: TaskWidgetInformationWalletData;
+  }) => void;
 
   setCurrentActiveTask: (taskId: string, taskType: string) => void;
 
@@ -23,23 +48,32 @@ interface MissionState {
 }
 
 export const useMissionStore = createWithEqualityFn<MissionState>(
-  (set, get) => ({
+  (set) => ({
     currentActiveTaskId: undefined,
     currentActiveTaskType: undefined,
 
-    destinationChainId: undefined,
-    destinationTokenAddress: undefined,
+    destinationChain: undefined,
+    destinationToken: undefined,
 
-    sourceChainId: undefined,
-    sourceTokenAddress: undefined,
+    sourceChain: undefined,
+    sourceToken: undefined,
 
-    missionChainId: undefined,
+    fromAmount: undefined,
+
+    toAddress: undefined,
+
+    missionChainIds: [],
     missionType: undefined,
 
     setCurrentActiveTask: (currentActiveTaskId, currentActiveTaskType) =>
       set({
         currentActiveTaskId,
         currentActiveTaskType,
+      }),
+
+    setCurrentTaskWidgetFormParams: (params) =>
+      set({
+        ...params,
       }),
 
     setMissionDefaults: (missionChainIds, missionType) =>

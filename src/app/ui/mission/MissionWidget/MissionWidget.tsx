@@ -2,11 +2,10 @@
 
 import { ClientOnly } from 'src/components/ClientOnly';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import { TaskType } from '../hooks';
 import { MissionWidgetColumnContainer } from './MissionWidget.style';
 import { ZapWidget } from './variants/ZapWidget/ZapWidget';
 import { BaseWidget } from './variants/BaseWidget/BaseWidget';
-import { CustomInformation } from 'src/types/loyaltyPass';
+import { CustomInformation, TaskType } from 'src/types/loyaltyPass';
 import { FC } from 'react';
 import { MissionWidgetSkeleton } from './MissionWidgetSkeleton';
 import { WalletProviderZap } from 'src/providers/WalletProvider/WalletProviderZap';

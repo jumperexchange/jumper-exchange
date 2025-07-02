@@ -6,6 +6,7 @@ import {
   useSubVariantWidgetConfig,
   useBaseRPCWidgetConfig,
   useBaseFormWidgetConfig,
+  useLanguageResourcesWidgetConfig,
 } from '../../hooks';
 import { LiFiWidget } from '@lifi/widget';
 
@@ -14,6 +15,7 @@ export const BaseWidget = () => {
   const subVariantConfig = useSubVariantWidgetConfig();
   const baseRpcConfig = useBaseRPCWidgetConfig();
   const formConfig = useBaseFormWidgetConfig();
+  const languageConfig = useLanguageResourcesWidgetConfig();
 
   const config = useMemo(() => {
     return {
@@ -21,8 +23,9 @@ export const BaseWidget = () => {
       ...subVariantConfig,
       ...baseRpcConfig,
       ...formConfig,
+      ...languageConfig,
     };
-  }, [baseConfig, subVariantConfig, baseRpcConfig, formConfig]);
+  }, [baseConfig, subVariantConfig, baseRpcConfig, formConfig, languageConfig]);
 
   return <LiFiWidget config={config} integrator={config.integrator} />;
 };

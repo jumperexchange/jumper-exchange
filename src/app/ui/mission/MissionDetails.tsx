@@ -36,7 +36,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
 
   const { account } = useAccount();
   const { enhancedTasks, setActiveTask } = useEnhancedTasks(
-    tasks,
+    tasks ?? [],
     account?.address,
   );
 
@@ -73,10 +73,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             task={task}
             missionId={mission.documentId}
             accountAddress={account?.address}
-            // @Note need to replace with task type
-            onClick={() =>
-              setActiveTask(task.uuid, i % 2 === 0 ? 'bridge' : 'zap')
-            }
+            onClick={() => setActiveTask(task)}
           />
         ))}
       </MissionDetailsCardContainer>

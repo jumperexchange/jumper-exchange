@@ -5,6 +5,7 @@ import { LiFiWidget, Route, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import {
   useBaseFormWidgetConfig,
   useBaseWidgetConfig,
+  useLanguageResourcesWidgetConfig,
   useSubVariantWidgetConfig,
 } from '../../hooks';
 import { useInitializeZapConfig, useZapRPCWidgetConfig } from './hooks';
@@ -42,6 +43,10 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation }) => {
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
   }, [JSON.stringify(zapData)]);
+
+  const languageConfig = useLanguageResourcesWidgetConfig(
+    `Deposit to ${zapData?.meta.name} pool`,
+  );
 
   const zapConfig = useZapRPCWidgetConfig(providers, toAddress);
 
@@ -112,10 +117,19 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation }) => {
     return {
       ...baseConfig,
       ...subVariantConfig,
-      ...zapConfig,
       ...formConfig,
+      ...languageConfig,
+      ...zapConfig,
+      integrator: projectData.integrator,
     };
-  }, [baseConfig, subVariantConfig, zapConfig, formConfig]);
+  }, [
+    baseConfig,
+    subVariantConfig,
+    zapConfig,
+    formConfig,
+    languageConfig,
+    projectData,
+  ]);
 
   return token ? (
     <LiFiWidget

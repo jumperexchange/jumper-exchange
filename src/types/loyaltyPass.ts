@@ -104,6 +104,39 @@ export type QuestAttributes = {
   tasks_verification: TaskVerification[];
 };
 
+export enum TaskType {
+  Bridge = 'Bridge',
+  Swap = 'Swap',
+  Deposit = 'Deposit',
+  OnChain = 'On-chain',
+  OffChain = 'Off-chain',
+  Zap = 'Zap',
+}
+
+export interface TaskWidgetInformationChainData {
+  chainId: string;
+  chainKey: string;
+}
+
+export interface TaskWidgetInformationTokenData {
+  tokenAddress: string;
+  tokenSymbol: string;
+}
+
+export interface TaskWidgetInformationWalletData {
+  walletAddress: string;
+  chainType: string;
+}
+
+export interface TaskWidgetInformationData {
+  sourceChain?: TaskWidgetInformationChainData;
+  sourceToken?: TaskWidgetInformationTokenData;
+  destinationChain?: TaskWidgetInformationChainData;
+  destinationToken?: TaskWidgetInformationTokenData;
+  toAddress?: TaskWidgetInformationWalletData;
+  fromAmount?: string;
+}
+
 export interface TaskVerification {
   id: number;
   name: string;
@@ -113,6 +146,10 @@ export interface TaskVerification {
   CampaignId?: string;
   uuid: string;
   hasTask: boolean;
+  isRequired?: boolean;
+  // @TODO this becomes required once strapi change is pushed
+  TaskType?: TaskType;
+  TaskWidgetInformation?: TaskWidgetInformationData;
 }
 
 export interface TaskVerificationWithApy extends TaskVerification {

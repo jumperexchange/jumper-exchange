@@ -27,10 +27,11 @@ import {
   WalletSendCallsArgs,
   WalletCall,
   AbiInput,
+  ProjectData,
 } from './types';
 
 // Add from quest.CustomInformation.projectData
-export const useInitializeZapConfig = (projectData: any) => {
+export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
@@ -516,18 +517,16 @@ export const useInitializeZapConfig = (projectData: any) => {
   );
 
   const providers = useMemo(() => {
-    return [];
-
-    // return [
-    //   createCustomEVMProvider({
-    //     wagmiConfig,
-    //     getCapabilities: async (_, args) => handleGetCapabilities(args),
-    //     getCallsStatus: async (_, args) => handleWalletGetCallsStatus(args),
-    //     sendCalls: async (_, args) => handleWalletSendCalls(args),
-    //     waitForCallsStatus: async (_, args) =>
-    //       handleWalletWaitForCallsStatus(args),
-    //   } as any), // @Note this will be fixed after rebasing
-    // ];
+    return [
+      createCustomEVMProvider({
+        wagmiConfig,
+        getCapabilities: async (_, args) => handleGetCapabilities(args),
+        getCallsStatus: async (_, args) => handleWalletGetCallsStatus(args),
+        sendCalls: async (_, args) => handleWalletSendCalls(args),
+        waitForCallsStatus: async (_, args) =>
+          handleWalletWaitForCallsStatus(args),
+      }),
+    ];
   }, [
     wagmiConfig,
     handleGetCapabilities,

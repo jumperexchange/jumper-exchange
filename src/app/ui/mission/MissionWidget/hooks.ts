@@ -1,16 +1,18 @@
 import {
+  ChainType,
   HiddenUI,
   RequiredUI,
+  ToAddress,
   WidgetConfig,
   WidgetSubvariant,
 } from '@lifi/widget';
 import { useMemo } from 'react';
 import { useMissionStore } from 'src/stores/mission';
 import { useThemeStore } from 'src/stores/theme';
-import { TaskType } from '../hooks';
 import { useWalletMenu } from '@lifi/wallet-management';
 import { publicRPCList } from 'src/const/rpcList';
 import getApiUrl from 'src/utils/getApiUrl';
+import { TaskType } from 'src/types/loyaltyPass';
 
 export const useBaseWidgetConfig = () => {
   const [widgetTheme] = useThemeStore((state) => [
@@ -20,13 +22,9 @@ export const useBaseWidgetConfig = () => {
 
   const { openWalletMenu } = useWalletMenu();
 
-  //   if (configTheme?.integrator) {
-  //     return configTheme.integrator;
-  //   }
-
   const baseConfig = useMemo(() => {
     return {
-      integrator: 'Test', // @Note this needs to be updated
+      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       appearance: widgetTheme.config.appearance,
       keyPrefix: 'jumper-custom',
       apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
@@ -51,23 +49,12 @@ export const useBaseWidgetConfig = () => {
         container: {
           maxHeight: 820,
           minWidth: 392,
-          maxWidth: 'unset',
+          maxWidth: 392,
           borderRadius: 24,
         },
         header: {
           // @Note this needs a workaround to be able to show title on multiple lines
           whiteSpace: 'break-spaces !important',
-        },
-      },
-      languageResources: {
-        en: {
-          header: {
-            //@Note this needs to be updated based on template {{taskType}} to/from {{tokenSymbol}} on {{chainSymbol}}
-            checkout: 'Bridge from ETH on ARB',
-            exchange: `Deposit to Lisk using Jumper`,
-            deposit: `Deposit to OP Pool on Velodrome`,
-            swap: `Swap to OP on Lisk`,
-          },
         },
       },
     } as WidgetConfig;
@@ -76,18 +63,75 @@ export const useBaseWidgetConfig = () => {
   return baseConfig;
 };
 
+export const useLanguageResourcesWidgetConfig = (overrideHeader?: string) => {
+  const {
+    currentActiveTaskType,
+    destinationChain,
+    destinationToken,
+    sourceChain,
+    sourceToken,
+  } = useMissionStore();
+
+  const config: Partial<WidgetConfig> = useMemo(() => {
+    let sourceDestinationTemplate = '';
+
+    if (destinationToken?.tokenSymbol && destinationChain?.chainKey) {
+      sourceDestinationTemplate = `to ${destinationToken?.tokenSymbol} on ${destinationChain?.chainKey}`;
+    } else if (sourceToken?.tokenSymbol && sourceChain?.chainKey) {
+      sourceDestinationTemplate = `from ${sourceToken?.tokenSymbol} on ${sourceChain?.chainKey}`;
+    } else if (sourceToken?.tokenSymbol && destinationToken?.tokenSymbol) {
+      sourceDestinationTemplate = `from ${sourceToken?.tokenSymbol} to ${destinationToken?.tokenSymbol}`;
+    } else if (sourceToken?.tokenSymbol) {
+      sourceDestinationTemplate = `from ${sourceToken?.tokenSymbol}`;
+    } else if (destinationToken?.tokenSymbol) {
+      sourceDestinationTemplate = `to ${destinationToken?.tokenSymbol}`;
+    } else if (sourceChain?.chainKey) {
+      sourceDestinationTemplate = `from ${sourceChain?.chainKey} chain`;
+    } else if (destinationChain?.chainKey) {
+      sourceDestinationTemplate = `to ${destinationChain?.chainKey} chain`;
+    }
+
+    const translationTemplate =
+      overrideHeader ??
+      `${currentActiveTaskType !== TaskType.Zap ? currentActiveTaskType : 'Deposit'} ${sourceDestinationTemplate}`;
+
+    return {
+      languageResources: {
+        en: {
+          header: {
+            checkout: translationTemplate,
+            exchange: translationTemplate,
+            deposit: translationTemplate,
+            swap: translationTemplate,
+          },
+        },
+      },
+    };
+  }, [
+    currentActiveTaskType,
+    destinationChain?.chainKey,
+    sourceChain?.chainKey,
+    destinationToken?.tokenSymbol,
+    sourceToken?.tokenSymbol,
+  ]);
+
+  return config;
+};
+
 export const useSubVariantWidgetConfig = () => {
   const { currentActiveTaskType } = useMissionStore();
 
-  const config = useMemo(() => {
+  const config: Partial<WidgetConfig> = useMemo(() => {
     const partialConfig: Partial<WidgetConfig> = {
-      subvariant: 'custom' as WidgetSubvariant,
+      subvariant: 'default' as WidgetSubvariant,
+      subvariantOptions: undefined,
     };
 
     if (
       currentActiveTaskType === TaskType.Zap ||
       currentActiveTaskType === TaskType.Deposit
     ) {
+      partialConfig.subvariant = 'custom' as WidgetSubvariant;
       partialConfig.subvariantOptions = {
         custom: 'deposit',
       };
@@ -101,19 +145,32 @@ export const useSubVariantWidgetConfig = () => {
 
 export const useBaseFormWidgetConfig = () => {
   const {
-    destinationChainId,
-    destinationTokenAddress,
-    sourceChainId,
-    sourceTokenAddress,
-    missionChainIds,
+    destinationChain,
+    destinationToken,
+    sourceChain,
+    sourceToken,
+    fromAmount,
+    toAddress,
+    // missionChainIds,
   } = useMissionStore();
 
   const config: Partial<WidgetConfig> = useMemo(() => {
     return {
-      fromChain: sourceChainId,
-      fromToken: sourceTokenAddress,
-      toChain: destinationChainId,
-      toToken: destinationTokenAddress,
+      fromChain: sourceChain?.chainId
+        ? Number(sourceChain?.chainId)
+        : undefined,
+      fromToken: sourceToken?.tokenAddress,
+      toChain: destinationChain?.chainId
+        ? Number(destinationChain?.chainId)
+        : undefined,
+      toToken: destinationToken?.tokenAddress,
+      toAddress: toAddress
+        ? {
+            address: toAddress.walletAddress,
+            chainType: (toAddress.chainType as ChainType) ?? ChainType.EVM,
+          }
+        : undefined,
+      fromAmount,
       // chains: {
       //   from: {
       //     allow: missionChainIds,
@@ -124,11 +181,13 @@ export const useBaseFormWidgetConfig = () => {
       // },
     };
   }, [
-    destinationChainId,
-    destinationTokenAddress,
-    sourceChainId,
-    sourceTokenAddress,
-    missionChainIds,
+    destinationChain?.chainId,
+    destinationToken?.tokenAddress,
+    sourceChain?.chainId,
+    sourceToken?.tokenAddress,
+    fromAmount,
+    toAddress?.walletAddress,
+    // missionChainIds,
   ]);
 
   return config;
