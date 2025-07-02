@@ -23,16 +23,11 @@ import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { Theme, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
-import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { ImageWalletMenuButton } from 'src/components/Navbar/WalletButton.style';
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/system/useMediaQuery';
 
 interface MenuLink {
   url: string;
@@ -280,17 +275,10 @@ export const useSocialLinks = () => {
 export const useMenuItems = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon } = useThemeModesMenuContent();
-  const activeAccount = useActiveAccountByChainType();
-  const { level } = useLoyaltyPass(activeAccount?.address);
-  const levelImageSrc = useWalletAddressImg({
-    userAddress: activeAccount?.address,
-  });
 
   const {
-    handleProfileClick,
     handleLearnClick,
     handleScanClick,
     handleSupportClick,
@@ -322,38 +310,6 @@ export const useMenuItems = () => {
     ),
     [theme],
   );
-
-  const mobileMenuItems: MenuItem[] = useMemo(() => {
-    if (isDesktop) {
-      return [];
-    }
-
-    return [
-      {
-        label: `${t('profile_page.level')} ${level ?? 0}`,
-        prefixIcon: (
-          <ImageWalletMenuButton
-            src={levelImageSrc}
-            alt={`${activeAccount?.address} wallet Icon`}
-            width={24}
-            height={24}
-            priority={false}
-            unoptimized={true}
-          />
-        ),
-        showMoreIcon: false,
-        link: { url: AppPaths.Profile },
-        onClick: handleProfileClick,
-      },
-    ];
-  }, [
-    isDesktop,
-    t,
-    level,
-    levelImageSrc,
-    activeAccount?.address,
-    handleProfileClick,
-  ]);
 
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
@@ -428,11 +384,7 @@ export const useMenuItems = () => {
     handleResourcesClick,
   ]);
 
-  const menuItems: MenuItem[] = useMemo(() => {
-    return [...mobileMenuItems, ...baseMenuItems];
-  }, [mobileMenuItems, baseMenuItems]);
-
-  return { menuItems };
+  return { menuItems: baseMenuItems };
 };
 
 export const useMainMenuContent = () => {

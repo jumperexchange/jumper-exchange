@@ -142,9 +142,20 @@
   },
   "missions": {
     "available": "现有任务",
-    "completed": "已完成的任务"
+    "completed": "已完成的任务",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "仅可在桌面上使用",
     "mobileDescription": "Jumper 个人资料页面尚未在小屏幕上可用。我们正在处理它。",
     "level": "",

@@ -39,7 +39,7 @@ export async function sectionOnTheBlogPage(page, selectors: string[]) {
 }
 
 export async function expectBackgroundColorToHaveCss(page, rgb: string) {
-  const backgroundColor = await page.locator('xpath=/html/body/div[1]');
+  const backgroundColor = await page.locator('#background-root');
   expect(backgroundColor).toHaveCSS('background-color', rgb);
 }
 

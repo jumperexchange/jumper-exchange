@@ -3,11 +3,11 @@
     "welcome": {
       "title": "Encontre a melhor rota",
       "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
-      "cta": "Começar"
+      "cta": "Comece Agora"
     },
     "links": {
       "exchange": "Conversão",
-      "missions": "",
+      "missions": "Missões",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar"
@@ -28,13 +28,13 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
-      "learn": "",
-      "scan": "",
+      "learn": "Aprenda",
+      "scan": "Escanear",
       "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
       "support": "Suporte",
-      "resources": "",
+      "resources": "Recursos",
       "profile": "Perfil Jumper"
     },
     "walletMenu": {
@@ -53,9 +53,9 @@
       "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
-      "dark": "",
-      "light": "",
-      "system": "",
+      "dark": "Escuro",
+      "light": "Claro",
+      "system": "Sistema",
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
       "switchToSystem": "Alternar para sistema",
@@ -142,9 +142,20 @@
   },
   "missions": {
     "available": "Missões Disponíveis",
-    "completed": "Missões Concluídas"
+    "completed": "Missões Concluídas",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "Campanhas",
     "mobileTitle": "Disponível apenas no Computador",
     "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso.",
     "level": "Nível",
@@ -177,16 +188,16 @@
     "shortDate": "{{value, dateExt(month: short)}}"
   },
   "tooltips": {
-    "tvl": "",
-    "apy": "",
-    "deposit": "",
-    "deposited": "",
-    "boostedApy": ""
+    "tvl": "Valor total de ativos cripto depositados neste mercado.",
+    "apy": "Taxa de retorno anual esperada dos tokens investidos.",
+    "deposit": "O token exibido é o token necessário para depositar neste mercado.",
+    "deposited": "Quantia que você depositou neste mercado.",
+    "boostedApy": "APY adicional que você ganha ao participar desta campanha dentro da Jumper. Este APY será pago em {{token}}."
   },
   "widget": {
     "zap": {
-      "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sendToAddressName": "Enviar para {{name}}",
+      "sentToAddressName": "Enviado para {{name}}"
     }
   }
 }
