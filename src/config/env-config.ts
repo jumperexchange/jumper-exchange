@@ -30,6 +30,4 @@ if (typeof window === 'undefined') {
   config = window._env_ || {};
 }
 
-console.log('config', config);
-
 export default config;
