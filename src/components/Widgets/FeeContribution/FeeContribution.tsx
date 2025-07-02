@@ -1,6 +1,11 @@
 import { TFunction } from 'i18next';
 import { useCallback, useState } from 'react';
+import {
+  ContributionAmountProvider,
+  useContributionAmountContext,
+} from 'src/providers/ContributionAmountProvider';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
+import { FeeAmountSelector } from './FeeAmountSelector';
 import {
   ContributionCard,
   ContributionCardTitle,
@@ -10,11 +15,6 @@ import {
 import { FeeContributionCTA } from './FeeContributionCTA';
 import { FeeContributionDrawer } from './FeeContributionDrawer';
 import { useContributionData, useSendContribution } from './hooks';
-import {
-  ContributionAmountProvider,
-  useContributionAmountContext,
-} from 'src/providers/ContributionAmountProvider';
-import { FeeAmountSelector } from './FeeAmountSelector';
 
 export interface FeeContributionProps {
   translationFn: TFunction;
@@ -57,7 +57,8 @@ const InnerFeeContribution: React.FC<FeeContributionProps> = ({
           {shouldShowCTA ? (
             <FeeContributionCTA
               contributed={contributed}
-              isTransactionLoading={isTransactionLoading}
+              isLoading={isTransactionLoading}
+              disabled={isTransactionLoading || !amount}
               handleClick={sendContribution}
               translationFn={translationFn}
             />

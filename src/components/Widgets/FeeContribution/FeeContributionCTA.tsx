@@ -5,20 +5,22 @@ import { useMemo } from 'react';
 import { ContributionButtonCTA } from './FeeContribution.style';
 
 interface FeeContributionCTAProps {
-  translationFn: TFunction;
   contributed: boolean;
-  isTransactionLoading: boolean;
+  disabled: boolean;
   handleClick: () => void;
+  isLoading: boolean;
+  translationFn: TFunction;
 }
 
 export const FeeContributionCTA: React.FC<FeeContributionCTAProps> = ({
-  handleClick,
   translationFn,
+  handleClick,
   contributed,
-  isTransactionLoading,
+  disabled,
+  isLoading,
 }) => {
   const content = useMemo(() => {
-    if (isTransactionLoading) {
+    if (isLoading) {
       return <CircularProgress size={20} color="inherit" />;
     }
 
@@ -32,11 +34,11 @@ export const FeeContributionCTA: React.FC<FeeContributionCTAProps> = ({
     }
 
     return translationFn('contribution.confirm');
-  }, [isTransactionLoading, contributed, translationFn]);
+  }, [contributed, isLoading, translationFn]);
 
   return (
     <ContributionButtonCTA
-      disabled={isTransactionLoading}
+      disabled={disabled}
       isTxConfirmed={contributed}
       onClick={handleClick}
     >
