@@ -26,13 +26,9 @@ import {
   CONTRIBUTION_AMOUNTS,
 } from './constants';
 import {
-  checkContributionByTxHistory,
   getContributionAmounts,
   getContributionFeeAddress,
-  hasValidContributionFeeAddress,
   isEligibleForContribution,
-  isEvmChainType,
-  isTransactionAmountEligible,
 } from './utils';
 
 const ALTTERNATIVE_DEFAULT_ADDRESS =
@@ -62,38 +58,6 @@ export const useContributionData = () => {
     completedRoute?.toToken,
   );
 
-  // Early synchronous eligibility checks
-  const isEligibleBySyncChecks = useMemo(() => {
-    if (!account?.chainType || !completedRoute?.toAmountUSD) {
-      return false;
-    }
-
-    return (
-      isEvmChainType(account.chainType) &&
-      isTransactionAmountEligible(completedRoute.toAmountUSD) &&
-      hasValidContributionFeeAddress(completedRoute.toChainId)
-    );
-  }, [
-    account?.chainType,
-    completedRoute?.toAmountUSD,
-    completedRoute?.toChainId,
-  ]);
-
-  // Async-dependent eligibility check
-  const isEligibleByTxHistory = useMemo(() => {
-    if (!isEligibleBySyncChecks) {
-      return false;
-    }
-    return checkContributionByTxHistory(txHistoryData?.transfers);
-  }, [isEligibleBySyncChecks, txHistoryData?.transfers]);
-
-  // Final eligibility determination
-  const isEligible = useMemo(() => {
-    return (
-      isEligibleBySyncChecks && isEligibleByTxHistory && isContributionAbEnabled
-    );
-  }, [isEligibleBySyncChecks, isEligibleByTxHistory, isContributionAbEnabled]);
-
   const maxUsdAmount = useMemo(() => {
     const maxTokenAmount = tokenBalanceData
       ? Number(tokenBalanceData.amount) /
@@ -101,19 +65,6 @@ export const useContributionData = () => {
       : 0;
     return maxTokenAmount * Number(completedRoute?.toToken?.priceUSD);
   }, [tokenBalanceData, completedRoute?.toToken?.priceUSD]);
-
-  // Update contribution options when eligible
-  useEffect(() => {
-    // todo: re-enable this
-    // if (!isEligible) {
-    //   setContributionDisplayed(false);
-    //   return;
-    // }
-
-    const txUsdAmount = Number(completedRoute?.toAmountUSD);
-    setContributionDisplayed(true);
-    setContributionOptions(getContributionAmounts(txUsdAmount));
-  }, [isEligible, completedRoute?.toAmountUSD]);
 
   // Check if contribution should be shown based on:
   // - Transaction history
@@ -123,7 +74,6 @@ export const useContributionData = () => {
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
     if (
-      // contributed ||
       !isEligibleForContribution(
         txHistoryData,
         completedRoute,
