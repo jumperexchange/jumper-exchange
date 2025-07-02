@@ -45,7 +45,7 @@ export const CarouselContainer = styled(Box, {
 
     '.swiper-pagination-bullet': {
       // border: 'none',
-      background: theme.palette.alphaDark100.main,
+      background: `${(theme.vars || theme).palette.alphaLight700.main} !important`,
       width: '8px',
       height: '8px',
       borderRadius: '50%',
@@ -54,10 +54,13 @@ export const CarouselContainer = styled(Box, {
       cursor: 'pointer',
       transition: 'all 0.3s ease',
       opacity: 1,
+      ...theme.applyStyles('light', {
+        background: `${(theme.vars || theme).palette.alphaDark700.main} !important`,
+      }),
     },
 
     '.swiper-pagination-bullet-active': {
-      backgroundColor: `${theme.palette.primary.main} !important`,
+      backgroundColor: `${(theme.vars || theme).palette.primary.main} !important`,
       border: 'none',
       width: '10px !important',
       height: '10px !important',
