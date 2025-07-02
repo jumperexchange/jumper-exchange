@@ -4,15 +4,6 @@ import type { CampaignWithBanner } from '../ProfilePage';
 import { CampaignBanner } from './CampaignBanner';
 import { CampaignBannersContainer } from './CampaignBanners.style';
 
-const breakpoints = {
-  // when window width is >= n
-  0: {
-    //sm:
-    slidesPerView: 1,
-    spaceBetween: 32,
-  },
-};
-
 export function CampaignBanners({
   campaigns,
 }: {

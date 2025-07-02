@@ -22,13 +22,11 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
       <Carousel showDots={true} title="Recent Posts" fixedItemWidth={true}>
         {data
           ? data.map((article, index) => (
-              // <div style={{ width: 'calc(416px + 32px)', margin: '0 16px' }}>
               <BlogArticleCard
                 article={article}
                 key={`blog-article-card-${article.id}-${index}`}
                 trackingCategory={TrackingCategory.BlogCarousel}
               />
-              // </div>
             ))
           : Array.from({ length: 4 }, () => 42).map((_, idx) => (
               <BlogArticleCardSkeleton key={'article-card-skeleton-' + idx} />

@@ -2,16 +2,12 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, useMediaQuery, type CSSObject } from '@mui/material';
-import type { ReactNode } from 'react';
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper core and required modules
-import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
-// Import Swiper styles
-import 'swiper/css';
-// import 'swiper/css/navigation';
 import useId from '@mui/utils/useId';
+import type { ReactNode } from 'react';
+import 'swiper/css';
 import 'swiper/css/pagination';
+import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
 import { SectionTitle } from '../ProfilePage/ProfilePage.style';
 import {

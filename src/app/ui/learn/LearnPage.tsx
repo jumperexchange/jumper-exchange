@@ -30,7 +30,6 @@ const LearnPage = ({
         />
       )}
       <BlogCarousel data={carouselArticles?.data} />
-      {/* <CarouselTest data={carouselArticles?.data}/> */}
       <JoinDiscordBanner />
       <BlogArticlesCollections tags={tags.data} data={carouselArticles?.data} />
     </div>
