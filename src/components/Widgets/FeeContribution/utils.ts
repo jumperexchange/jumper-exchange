@@ -137,7 +137,7 @@ export const isEligibleForContribution = (
     completedRoute.fromAddress === completedRoute.toAddress && // check if last tx was sent to same wallet
     account?.address === completedRoute.fromAddress && // check if last tx was sent from current wallet
     // isContributionAbEnabled &&
-    isContributionEnabledByTxHistory && // check if last tx was first or every third
+    // isContributionEnabledByTxHistory && // check if last tx was first or every third
     isEvmChainType(account?.chainType) && // check if chain type is EVM
     hasValidContributionFeeAddress(completedRoute.toChainId) // check if valid contribution fee address exists for the chain
   );

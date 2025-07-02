@@ -30,6 +30,7 @@ import {
   getContributionAmounts,
   getContributionFeeAddress,
   hasValidContributionFeeAddress,
+  isEligibleForContribution,
   isEvmChainType,
   isTransactionAmountEligible,
 } from './utils';
@@ -121,23 +122,22 @@ export const useContributionData = () => {
   // - Chain type is EVM
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
-    // todo: re-enable this
-    // if (
-    //   contributed ||
-    //   !isEligibleForContribution(
-    //     data,
-    //     completedRoute,
-    //     account,
-    //     isContributionAbEnabled,
-    //   )
-    // ) {
-    //   setContributionDisplayed(false);
-    //   return;
-    // }
+    if (
+      // contributed ||
+      !isEligibleForContribution(
+        txHistoryData,
+        completedRoute,
+        account,
+        isContributionAbEnabled,
+      )
+    ) {
+      setContributionDisplayed(false);
+      return;
+    }
     // If eligible, set contribution amounts based on transaction amount
-    // const txUsdAmount = Number(completedRoute?.toAmountUSD);
-    // setContributionDisplayed(true);
-    // setContributionOptions(getContributionAmounts(txUsdAmount));
+    const txUsdAmount = Number(completedRoute?.toAmountUSD);
+    setContributionDisplayed(true);
+    setContributionOptions(getContributionAmounts(txUsdAmount));
   }, [
     txHistoryData?.transfers,
     completedRoute?.toAmountUSD,
