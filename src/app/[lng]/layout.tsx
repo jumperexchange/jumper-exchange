@@ -1,22 +1,23 @@
 import initTranslations from '@/app/i18n';
+import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import config from '@/config/env-config';
+import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import { ThemeProvider } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import i18nConfig from 'i18n-config';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import type { ReactNode } from 'react';
+import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { SettingsStoreProvider } from 'src/stores/settings';
 import { description, siteName, title } from '../lib/metadata';
-import { getSiteUrl } from '@/const/urls';
-import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
-import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 
 export const metadata: Metadata = {
   title,
@@ -139,17 +140,18 @@ export default async function RootLayout({
           }
 `}
         </style>
+        <script type="text/javascript" src="/api/env-config.js" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
         />
         <Script id="google-analytics">
           {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
               gtag('js', new Date());
-              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
+              gtag('config', '${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
         </Script>
         <Script id="addressable-tracker">
@@ -163,7 +165,7 @@ export default async function RootLayout({
               };
               var s = d.createElement('script');
               s.async = true;
-              s.src = 'https://tag.adrsbl.io/p.js?tid=${process.env.NEXT_PUBLIC_ADDRESSABLE_TID}';
+              s.src = 'https://tag.adrsbl.io/p.js?tid=${config.NEXT_PUBLIC_ADDRESSABLE_TID}';
               var b = d.getElementsByTagName('script')[0];
               b.parentNode.insertBefore(s, b);
             }(window, document);

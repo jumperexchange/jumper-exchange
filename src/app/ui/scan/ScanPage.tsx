@@ -1,6 +1,7 @@
 'use client';
 
 import { ClientOnly } from '@/components/ClientOnly';
+import config from '@/config/env-config';
 import { JUMPER_SCAN_PATH } from '@/const/urls';
 import { LiFiExplorer } from '@lifi/explorer';
 import { Box, useColorScheme, useTheme } from '@mui/material';
@@ -25,7 +26,7 @@ export default function ScanPage({ lng }: { lng: string }) {
   const explorerConfig = useMemo(
     () => ({
       // appearance: 'light' as PaletteMode, // This controls light and dark mode
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
+      integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
       base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
       theme: {
         // These colors and values correspond to the figma design

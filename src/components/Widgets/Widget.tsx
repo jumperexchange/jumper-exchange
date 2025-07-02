@@ -1,5 +1,6 @@
 'use client';
 import { ClientOnly } from '@/components/ClientOnly';
+import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
@@ -100,14 +101,14 @@ export function Widget({
     }
     // all the trafic from mobile (including "/gas")
     // if (!isDesktop) {
-    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    //   return config.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
-      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
 
-    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+    return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const subvariant = useMemo(() => {
@@ -122,7 +123,7 @@ export function Widget({
     let rpcUrls = {};
     try {
       rpcUrls = {
-        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
         ...publicRPCList,
       };
     } catch (e) {
@@ -194,7 +195,7 @@ export function Widget({
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       languageResources: {
         en: {
           warning: {

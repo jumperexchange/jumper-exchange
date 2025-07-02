@@ -1,3 +1,4 @@
+import config from '@/config/env-config';
 import type { SitemapPage } from '@/types/sitemap';
 
 export const JUMPER_URL = 'https://jumper.exchange';
@@ -28,9 +29,9 @@ export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
 
 export function getSiteUrl() {
-  return process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
-    : process.env.NEXT_PUBLIC_SITE_URL;
+  return config.NEXT_PUBLIC_VERCEL_BRANCH_URL
+    ? `https://${config.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
+    : config.NEXT_PUBLIC_SITE_URL;
 }
 
 // prepare sitemap

@@ -1,13 +1,17 @@
 'use client';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
+import config from '@/config/env-config';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
+import { publicRPCList } from '@/const/rpcList';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking';
+import getApiUrl from '@/utils/getApiUrl';
+import { createConfig, EVM, Solana, Sui, UTXO } from '@lifi/sdk';
 import type {
   WalletConnected,
   WalletManagementConfig,
@@ -20,21 +24,18 @@ import {
 import { type FC, type PropsWithChildren, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
+import { SuiProvider } from './SuiProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
-import { createConfig, EVM, Solana, UTXO, Sui } from '@lifi/sdk';
-import { publicRPCList } from '@/const/rpcList';
-import getApiUrl from '@/utils/getApiUrl';
-import { SuiProvider } from './SuiProvider';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
-    apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+    apiKey: config.NEXT_PUBLIC_LIFI_API_KEY,
     apiUrl: getApiUrl(),
     providers: [EVM(), Solana(), UTXO(), Sui()],
-    integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+    integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR,
     rpcUrls: {
-      ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+      ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? {}),
       ...publicRPCList,
     },
     preloadChains: true,

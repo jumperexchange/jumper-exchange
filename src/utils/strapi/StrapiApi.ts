@@ -1,5 +1,6 @@
 import type { Account } from '@lifi/wallet-management';
 import { getStrapiBaseUrl } from './strapiHelper';
+import config from '@/config/env-config';
 
 interface GetStrapiBaseUrlProps {
   contentType:
@@ -33,7 +34,7 @@ class StrapiApi {
     this.apiUrl = new URL(`${this.baseUrl}/api/${this.contentType}`);
 
     // Show drafts ONLY on development env
-    if (process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
+    if (config.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
       this.apiUrl.searchParams.set('status', 'draft');
     }
   }

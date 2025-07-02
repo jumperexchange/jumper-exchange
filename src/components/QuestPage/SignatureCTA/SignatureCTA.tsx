@@ -2,16 +2,17 @@
 
 import { useAccount } from '@lifi/wallet-management';
 import { Box, Typography } from '@mui/material';
+import { defaultConfig, prepareSignup, signup } from '@turtledev/api';
 import Image from 'next/image';
 import { useState } from 'react';
+import { JUMPER_REFERRAL } from 'src/const/quests';
 import { useTurtleMember } from 'src/hooks/useTurtleMember';
 import { useSignMessage } from 'wagmi';
-import { defaultConfig, prepareSignup, signup } from '@turtledev/api';
 import {
   CTAExplanationBox,
   SeveralMissionCtaContainer,
 } from '../CTA/MissionCTA.style';
-import { JUMPER_REFERRAL } from 'src/const/quests';
+import config from '@/config/env-config';
 
 interface SignatureInt {
   isLive: boolean;
@@ -78,7 +79,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           >
             <CTAExplanationBox>
               <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/turtle_ef319715fe.jpg`}
+                src={`${config.NEXT_PUBLIC_STRAPI_URL}/uploads/turtle_ef319715fe.jpg`}
                 alt={`logo image`}
                 width={48}
                 height={48}
@@ -103,7 +104,7 @@ export const SignatureCTA = ({ signature }: SignatureCtaProps) => {
           <SeveralMissionCtaContainer onClick={handleSignatureClick}>
             <CTAExplanationBox>
               <Image
-                src={`${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/turtle_ef319715fe.jpg`}
+                src={`${config.NEXT_PUBLIC_STRAPI_URL}/uploads/turtle_ef319715fe.jpg`}
                 alt={`logo image`}
                 width={48}
                 height={48}

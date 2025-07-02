@@ -5,6 +5,7 @@ import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
+import config from '@/config/env-config';
 
 export interface UsePersonalizedFeatureCardsProps {
   data: StrapiFeatureCardData[];
@@ -13,7 +14,7 @@ export interface UsePersonalizedFeatureCardsProps {
 }
 
 function getFeatureCardsEndpoint(walletAddress: string): string {
-  return `${process.env.NEXT_PUBLIC_BACKEND_URL}/wallets/${walletAddress}/feature-cards`;
+  return `${config.NEXT_PUBLIC_BACKEND_URL}/wallets/${walletAddress}/feature-cards`;
 }
 
 const STRAPI_CONTENT_TYPE = 'feature-cards';
@@ -51,7 +52,7 @@ export const usePersonalizedFeatureCardsQuery =
       apiUrl.searchParams.set('filters[id][]', id.toString()),
     );
 
-    process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+    config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
       apiUrl.searchParams.set('status', 'draft');
     const apiAccesToken = getStrapiApiAccessToken();
 
