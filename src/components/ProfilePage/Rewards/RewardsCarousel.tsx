@@ -31,15 +31,13 @@ export const RewardsCarousel = ({
     return null;
   }
 
-  const items = availableRewards.length
-    ? Array.from({ length: 10 }, (_, idx) => (
-        <ClaimingBox
-          key={`${idx}-${availableRewards[0].address}-${idx}`}
-          amount={idx + 1}
-          availableReward={availableRewards[0]}
-        />
-      ))
-    : null;
+  const items = rewardsWithAmount.map((availableReward, i) => (
+    <ClaimingBox
+      key={`${i}-${availableReward.address}`}
+      amount={availableReward.amountToClaim}
+      availableReward={availableReward}
+    />
+  ));
 
   return (
     <RewardsCarouselContainer rewardsLength={rewardsWithAmount.length}>

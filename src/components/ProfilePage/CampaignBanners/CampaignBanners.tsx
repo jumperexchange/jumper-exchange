@@ -27,7 +27,7 @@ export function CampaignBanners({
 
   return (
     <CampaignBannersContainer sx={{ position: 'relative' }}>
-      <Carousel title={t('profile_page.campaigns')}>
+      <Carousel title={t('profile_page.campaigns')} hasNavigation={true}>
         {campaigns.map((campaign, index) => (
           <CampaignBanner
             key={`campaign-banner-${campaign.id}-${index}`}

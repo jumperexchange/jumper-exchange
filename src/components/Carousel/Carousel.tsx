@@ -124,7 +124,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
           ))}
       </Swiper>
 
-      {!hasNavigation && (
+      {hasNavigation && (
         <CarouselNavigationContainer>
           <CarouselNavigationButton
             aria-label="previous"
