@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EntityCard } from './EntityCard';
-import { Badge } from '@/components/Badge/Badge';
+import { Badge } from '../../Badge/Badge';
 
 const meta: Meta<typeof EntityCard> = {
   title: 'Components/Cards/Mission cards',

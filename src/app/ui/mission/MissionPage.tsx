@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
 import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
-import { MissionPageLayout } from './MissionPageLayout';
 import { MissionDetails } from './MissionDetails';
 import { MissionWidget } from './MissionWidget/MissionWidget';
+import { TwoColumnLayout } from 'src/components/TwoColumnLayout/TwoColumnLayout';
 
 interface MissionPageProps {
   slug: string;
@@ -26,9 +26,9 @@ export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
   ]);
 
   return (
-    <MissionPageLayout
-      leftColumn={<MissionDetails mission={data} tasks={taskOpportunities} />}
-      rightColumn={<MissionWidget customInformation={data.CustomInformation} />}
+    <TwoColumnLayout
+      mainContent={<MissionDetails mission={data} tasks={taskOpportunities} />}
+      sideContent={<MissionWidget customInformation={data.CustomInformation} />}
     />
   );
 };

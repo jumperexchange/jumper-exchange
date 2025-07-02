@@ -3,7 +3,6 @@ import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 
 export const MissionDetailsColumnContainer = styled(Box)(({ theme }) => ({
-  maxWidth: theme.spacing(83),
   width: '100%',
 }));
 

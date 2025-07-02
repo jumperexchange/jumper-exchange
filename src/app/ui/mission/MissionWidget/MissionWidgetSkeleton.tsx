@@ -6,6 +6,7 @@ export const MissionWidgetSkeleton = () => {
     state.widgetTheme,
     state.configTheme,
   ]);
+
   return (
     <WidgetSkeleton
       config={{
