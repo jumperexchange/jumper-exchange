@@ -6,7 +6,7 @@ import {
   useFormatDisplayMissionData,
   useSetMissionChainFromParticipants,
 } from './hooks';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';
 import { MissionTask } from './MissionTask';
@@ -22,6 +22,7 @@ import {
 } from './MissionDetails.style';
 import { useTranslation } from 'react-i18next';
 import { BaseAlert } from 'src/components/Alerts/BaseAlert/BaseAlert';
+import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -29,6 +30,10 @@ interface MissionDetailsProps {
 }
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
+  const status = useMissionTimeStatus(
+    mission.StartDate ?? '',
+    mission.EndDate ?? '',
+  );
   const missionDisplayData = useFormatDisplayMissionData(mission);
   useSetMissionChainFromParticipants(missionDisplayData.participants);
   const router = useRouter();
@@ -39,6 +44,13 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     tasks ?? [],
     account?.address,
   );
+
+  const badge = useMemo(() => {
+    if (!status) {
+      return null;
+    }
+    return <Badge label={status} variant="secondary" size="lg" />;
+  }, [status]);
 
   const handleGoBack = () => {
     router.push(AppPaths.Missions);
@@ -58,6 +70,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
         </Box>
         <EntityCard
           variant="wide"
+          badge={badge}
           id={missionDisplayData.id}
           slug={missionDisplayData.slug}
           title={missionDisplayData.title}

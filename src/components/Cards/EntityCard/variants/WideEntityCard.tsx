@@ -15,6 +15,7 @@ import {
   StyledRewardsContainer,
   StyledEntityCardLink,
   BaseSkeleton,
+  StyledEntityCardBadgeContainer,
 } from '../EntityCard.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { WideEntityCardSkeleton } from './WideEntityCardSkeleton';
@@ -22,6 +23,7 @@ import { ENTITY_CARD_SIZES } from '../constants';
 
 export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   imageUrl,
+  badge,
   title,
   description,
   rewardGroups,
@@ -49,6 +51,11 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           height: ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT,
         }}
       >
+        {badge && (
+          <StyledEntityCardBadgeContainer>
+            {badge}
+          </StyledEntityCardBadgeContainer>
+        )}
         {imageUrl ? (
           <StyledEntityCardImage
             src={imageUrl}
