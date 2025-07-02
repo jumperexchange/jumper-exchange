@@ -17,7 +17,7 @@ import {
 export const checkContributionByTxHistory = (
   transfers?: StatusResponse[],
 ): boolean => {
-  if (!(Array.isArray(transfers) && transfers.length)) {
+  if (!transfers || !(Array.isArray(transfers) && transfers.length)) {
     return false;
   }
   const transactionCount = transfers.length;
@@ -86,23 +86,23 @@ export interface TransferResponse {
   transfers: StatusResponse[];
 }
 
-export const hasValidTransferData = (
-  data: TransferResponse | null,
-  completedRoute: Route | null,
+export const hasValidRouteData = (
+  completedRoute: Route,
+  account: Account,
 ): boolean => {
-  return !!data?.transfers && !!completedRoute?.toAmountUSD;
+  return (
+    completedRoute.fromAddress === completedRoute.toAddress && // check if last tx was sent to same wallet
+    !!completedRoute.toChainId && // check for valid chain id
+    completedRoute.toAddress === account.address
+  ); // check if last tx was sent to same wallet currently connected
 };
 
-export const hasValidAccountData = (account?: Account): boolean => {
-  return !!account?.chainType;
+export const isEvmChainType = (account?: Account): boolean => {
+  return account?.chainType === ChainType.EVM;
 };
 
-export const isTransactionAmountEligible = (amountUSD?: string): boolean => {
+export const isTransactionAmountEligible = (amountUSD: string): boolean => {
   return Number(amountUSD) >= MIN_CONTRIBUTION_USD;
-};
-
-export const isEvmChainType = (chainType?: ChainType): boolean => {
-  return chainType === ChainType.EVM;
 };
 
 export const hasValidContributionFeeAddress = (chainId: number): boolean => {
@@ -111,34 +111,26 @@ export const hasValidContributionFeeAddress = (chainId: number): boolean => {
 };
 
 export const isEligibleForContribution = (
-  data: TransferResponse | null,
+  txHistoryData: TransferResponse | null,
   completedRoute: Route | null,
   account: Account,
-  isContributionAbEnabled: boolean,
 ): boolean => {
   if (
-    !hasValidTransferData(data, completedRoute) ||
-    !hasValidAccountData(account)
+    !completedRoute ||
+    !hasValidRouteData(completedRoute, account) ||
+    !isEvmChainType(account)
   ) {
     return false;
   }
 
   const isContributionEnabledByTxHistory = checkContributionByTxHistory(
-    data?.transfers,
+    txHistoryData?.transfers,
   );
-
-  if (!completedRoute?.toChainId) {
-    return false;
-  }
 
   return (
     // todo: re-activate AB checks -->
-    isTransactionAmountEligible(completedRoute.toAmountUSD) && // check if transaction amount is eligible with MIN_CONTRIBUTION_USD === 10
-    completedRoute.fromAddress === completedRoute.toAddress && // check if last tx was sent to same wallet
-    account?.address === completedRoute.fromAddress && // check if last tx was sent from current wallet
-    // isContributionAbEnabled &&
     // isContributionEnabledByTxHistory && // check if last tx was first or every third
-    isEvmChainType(account?.chainType) && // check if chain type is EVM
+    // isTransactionAmountEligible(completedRoute.toAmountUSD) && // check if transaction amount is eligible with MIN_CONTRIBUTION_USD === 10
     hasValidContributionFeeAddress(completedRoute.toChainId) // check if valid contribution fee address exists for the chain
   );
 };

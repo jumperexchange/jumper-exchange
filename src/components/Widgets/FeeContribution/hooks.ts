@@ -74,20 +74,17 @@ export const useContributionData = () => {
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
     if (
-      !isEligibleForContribution(
-        txHistoryData,
-        completedRoute,
-        account,
-        isContributionAbEnabled,
-      )
+      // !isContributionAbEnabled || // @todo: re-activate AB test
+      !isEligibleForContribution(txHistoryData, completedRoute, account)
     ) {
       setContributionDisplayed(false);
       return;
     }
     // If eligible, set contribution amounts based on transaction amount
     const txUsdAmount = Number(completedRoute?.toAmountUSD);
+    const contributionAmounts = getContributionAmounts(txUsdAmount);
     setContributionDisplayed(true);
-    setContributionOptions(getContributionAmounts(txUsdAmount));
+    setContributionOptions(contributionAmounts);
   }, [
     txHistoryData?.transfers,
     completedRoute?.toAmountUSD,
