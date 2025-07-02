@@ -150,6 +150,16 @@ interface Resources {
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
+      status: {
+        new: 'New';
+        upcoming: 'Upcoming';
+        minutesLeft_one: '{{count}} minute left';
+        minutesLeft_other: '{{count}} minutes left';
+        hoursLeft_one: '{{count}} hour left';
+        hoursLeft_other: '{{count}} hours left';
+        daysLeft_one: '{{count}} day left';
+        daysLeft_other: '{{count}} days left';
+      };
     };
     profile_page: {
       campaigns: 'Campaigns';

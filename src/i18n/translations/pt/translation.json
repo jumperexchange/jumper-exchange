@@ -142,7 +142,17 @@
   },
   "missions": {
     "available": "Missões Disponíveis",
-    "completed": "Missões Concluídas"
+    "completed": "Missões Concluídas",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
     "campaigns": "Campanhas",
