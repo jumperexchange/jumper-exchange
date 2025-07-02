@@ -9,7 +9,7 @@ export async function GET() {
 
   // Disabled until proper fix
   /*try {
-    const latestCommitSHA = window._env_.NEXT_PUBLIC_LATEST_COMMIT_SHA;
+    const latestCommitSHA = process.env.NEXT_PUBLIC_LATEST_COMMIT_SHA;
     const githubLatestCommitShaResponse = await fetch(
       `https://api.github.com/repos/jumperexchange/jumper-exchange/commits/${latestCommitSHA}/branches-where-head`,
       { next: { revalidate: 3600 } },

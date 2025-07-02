@@ -101,7 +101,7 @@ export function Widget({
     }
     // all the trafic from mobile (including "/gas")
     // if (!isDesktop) {
-    //   return config.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {

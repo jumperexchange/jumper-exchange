@@ -1,3 +1,4 @@
+import envConfig from '@/config/env-config';
 import getApiUrl from '@/utils/getApiUrl';
 import { useWalletMenu } from '@lifi/wallet-management';
 import type { WidgetTheme } from '@lifi/widget';
@@ -18,7 +19,6 @@ import type { StarterVariantType } from 'src/types/internal';
 import { useConfig } from 'wagmi';
 import { useMemelist } from './useMemelist';
 import { useUserTracking } from './userTracking';
-import config from '@/config/env-config';
 
 interface UseWidgetConfigProps {
   fromChain?: ChainId;
@@ -62,14 +62,14 @@ export const useWidgetConfig = ({
     }
     // all the trafic from mobile (including "/gas")
     // if (!isDesktop) {
-    //   return config.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
-      return config.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
 
-    return config.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+    return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
   const { openWalletMenu } = useWalletMenu();
   const partnerName = configTheme?.uid ?? 'default';
@@ -86,7 +86,7 @@ export const useWidgetConfig = ({
     let rpcUrls = {};
     try {
       rpcUrls = {
-        ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
         ...publicRPCList,
       };
     } catch (e) {
@@ -157,7 +157,7 @@ export const useWidgetConfig = ({
       appearance: widgetTheme.config.appearance,
       theme: mergedWidgetTheme,
       keyPrefix: `jumper-${starterVariant}`,
-      apiKey: config.NEXT_PUBLIC_LIFI_API_KEY,
+      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       sdkConfig: {
         apiUrl: getApiUrl(),
         rpcUrls,
