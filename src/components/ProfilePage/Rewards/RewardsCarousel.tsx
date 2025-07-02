@@ -1,11 +1,13 @@
 import { useTranslation } from 'react-i18next';
 // import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
+import { useTheme } from '@mui/material';
+import { Carousel } from 'src/components/Carousel/Carousel';
 import { AvailableRewardsExtended } from 'src/types/merkl';
+import { ClaimingBox } from './ClaimingBox/ClaimingBox';
 import {
   RewardsCarouselContainer,
   RewardsCarouselTitle,
 } from './RewardsCarousel.style';
-
 interface RewardsCarouselProps {
   isMerklSuccess: boolean;
   availableRewards: AvailableRewardsExtended[];
@@ -20,7 +22,7 @@ export const RewardsCarousel = ({
   isMerklSuccess,
 }: RewardsCarouselProps) => {
   const { t } = useTranslation();
-
+  const theme = useTheme();
   const rewardsWithAmount = availableRewards.filter(
     (reward) => reward.amountToClaim > 0 && isMerklSuccess,
   );
@@ -29,26 +31,37 @@ export const RewardsCarousel = ({
     return null;
   }
 
+  const items = availableRewards.length
+    ? Array.from({ length: 10 }, (_, idx) => (
+        <ClaimingBox
+          key={`${idx}-${availableRewards[0].address}-${idx}`}
+          amount={idx + 1}
+          availableReward={availableRewards[0]}
+        />
+      ))
+    : null;
+
   return (
     <RewardsCarouselContainer rewardsLength={rewardsWithAmount.length}>
       <RewardsCarouselTitle variant="titleSmall">
         {t('profile_page.rewards')}
       </RewardsCarouselTitle>
-
-      {/* <CarouselContainer
+      <Carousel
+        fixedItemWidth={true}
         hidePagination={true}
-        sx={{ marginTop: 0, paddingBottom: 0 }}
+        sx={{
+          '.carousel-swiper': {
+            marginTop: 0,
+            paddingBottom: 0,
+          },
+          marginTop: theme.spacing(2),
+          [theme.breakpoints.up('md')]: {
+            marginTop: 0,
+          },
+        }}
       >
-        <RewardsCarouselItems>
-          {rewardsWithAmount.map((availableReward, i) => (
-            <ClaimingBox
-              key={`${i}-${availableReward.address}`}
-              amount={availableReward.amountToClaim}
-              availableReward={availableReward}
-            />
-          ))}
-        </RewardsCarouselItems>
-      </CarouselContainer> */}
+        {items}
+      </Carousel>
     </RewardsCarouselContainer>
   );
 };

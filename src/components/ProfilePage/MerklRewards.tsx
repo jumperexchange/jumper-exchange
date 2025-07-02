@@ -21,7 +21,7 @@ interface MerklRewardsProps {
 export const MerklRewards = ({ merklRewards }: MerklRewardsProps) => {
   const { account } = useAccount();
   const { availableRewards, isSuccess, isLoading } = useMerklRewards({
-    userAddress: account.address,
+    userAddress: '0xb29601eB52a052042FB6c68C69a442BD0AE90082',
     merklRewards,
     includeTokenIcons: true,
     claimableOnly: true,

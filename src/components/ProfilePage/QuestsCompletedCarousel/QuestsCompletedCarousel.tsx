@@ -4,38 +4,13 @@ import type { PDA } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import { useTranslation } from 'react-i18next';
 // import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
+import { Box } from '@mui/material';
 import { Carousel } from 'src/components/Carousel/Carousel';
-import { Container } from 'src/components/Container/Container';
 import { capitalizeString } from 'src/utils/capitalizeString';
+import IconHeader from '../Common/IconHeader';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
-
-const responsive = {
-  desktop: {
-    breakpoint: {
-      max: 3000,
-      min: 1328,
-    },
-    items: 3,
-    partialVisibilityGutter: 40,
-  },
-  mobile: {
-    breakpoint: {
-      max: 600,
-      min: 0,
-    },
-    items: 1,
-    partialVisibilityGutter: 30,
-  },
-  tablet: {
-    breakpoint: {
-      max: 1200,
-      min: 600,
-    },
-    items: 1,
-    // partialVisibilityGutter: 30
-  },
-};
+import { CompletedQuestContainer } from './QuestsCompletedCarousel.style';
 
 interface QuestCompletedListProps {
   pdas?: PDA[];
@@ -81,10 +56,7 @@ export const QuestsCompletedCarousel = ({
       : []),
     // Render void cards
     ...(showVoidCardsAsFewPdas
-      ? Array.from(
-          { length: pdas && pdas?.length > 0 ? 4 - pdas.length : 4 },
-          () => 42,
-        ).map((_, idx) => (
+      ? Array.from({ length: 10 }, () => 42).map((_, idx) => (
           <VoidQuestCard
             key={'void-' + idx}
             // connected={!!account?.address && account?.chainType === 'EVM'}
@@ -93,24 +65,32 @@ export const QuestsCompletedCarousel = ({
       : []),
     // Render loading skeletons
     ...(loading
-      ? Array.from({ length: 4 }, () => 42).map((_, idx) => (
-          <QuestCard key={'skeleton-' + idx} data={{}} />
+      ? Array.from({ length: 8 }, () => 42).map((_, idx) => (
+          <QuestCard key={'skeleton-' + idx} data={{ title: 'test' + idx }} />
         ))
       : []),
   ];
 
-  console.log('carouselContent', carouselContent);
+  const headerInfo = (
+    <Box
+      sx={(theme) => ({ [theme.breakpoints.down('sm')]: { display: 'none' } })}
+    >
+      <IconHeader
+        tooltipKey={`Updated: ${t('format.date', { value: updateDay })}`}
+        title={`Updated: ${t('format.date', { value: updateDay })}`}
+      />
+    </Box>
+  );
 
   return (
-    <Container>
+    <CompletedQuestContainer sx={{ position: 'relative' }}>
       <Carousel
-        responsive={responsive}
-        updateTitle={`Updated: ${t('format.date', { value: updateDay })}`}
+        headerInfo={headerInfo}
+        fixedItemWidth={true}
+        title={t('missions.completed')}
       >
-        {carouselContent.map((item) => (
-          <div style={{ width: '288px', margin: '0 16px' }}>{item}</div>
-        ))}
+        {carouselContent}
       </Carousel>
-    </Container>
+    </CompletedQuestContainer>
   );
 };

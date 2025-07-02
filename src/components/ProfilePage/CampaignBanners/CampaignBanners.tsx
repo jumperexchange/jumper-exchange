@@ -1,7 +1,17 @@
 import { useTranslation } from 'react-i18next';
+import { Carousel } from 'src/components/Carousel/Carousel';
 import type { CampaignWithBanner } from '../ProfilePage';
 import { CampaignBanner } from './CampaignBanner';
 import { CampaignBannersContainer } from './CampaignBanners.style';
+
+const breakpoints = {
+  // when window width is >= n
+  0: {
+    //sm:
+    slidesPerView: 1,
+    spaceBetween: 32,
+  },
+};
 
 export function CampaignBanners({
   campaigns,
@@ -25,8 +35,8 @@ export function CampaignBanners({
   }
 
   return (
-    <CampaignBannersContainer>
-      {/* <CarouselContainer title={t('profile_page.campaigns')}>
+    <CampaignBannersContainer sx={{ position: 'relative' }}>
+      <Carousel title={t('profile_page.campaigns')}>
         {campaigns.map((campaign, index) => (
           <CampaignBanner
             key={`campaign-banner-${campaign.id}-${index}`}
@@ -38,7 +48,7 @@ export function CampaignBanners({
             title={campaign.ProfileBannerTitle}
           />
         ))}
-      </CarouselContainer> */}
+      </Carousel>
     </CampaignBannersContainer>
   );
 }

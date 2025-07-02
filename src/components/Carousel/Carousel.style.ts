@@ -5,57 +5,47 @@ import { Box, styled } from '@mui/material';
 interface CarouselContainerProps extends BoxProps {
   showDots?: boolean;
   title?: string;
+  fixedItemWidth?: boolean;
 }
 
 export const CarouselContainer = styled(Box, {
-  shouldForwardProp: (prop: string) => !['title', 'showDots'].includes(prop),
-})<CarouselContainerProps>(({ theme, showDots, title }) => ({
+  shouldForwardProp: (prop: string) =>
+    !['title', 'showDots', 'fixedItemWidth'].includes(prop),
+})<CarouselContainerProps>(({ theme, showDots, title, fixedItemWidth }) => ({
   ...(title && { position: 'relative' }),
-
-  // Simplified carousel styles to match CarouselTest
-  '.carousel-container': {
-    // overflow: 'hidden',
+  ...(showDots && { marginBottom: theme.spacing(5) }),
+  maxWidth: '100%',
+  '.carousel-swiper': {
+    padding: theme.spacing(0, 4), // Add padding for navigation buttons
     marginTop: theme.spacing(3),
-    paddingTop: theme.spacing(3, 0),
     ...(showDots && { paddingBottom: theme.spacing(6) }),
   },
 
-  // Override the carousel item width to accommodate 416px content
-  '.react-multi-carousel-item': {
-    margin: '0 16px',
-  },
-
-  // Ensure the track can handle the wider items
-  // '.react-multi-carousel-track': {
-  //   gap: '16px', // Add gap between items
-  // },
-
-  // '.carousel-item': {
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   width: '416px', // Set explicit width
-  // },
-
-  '.carousel-button-group': {
+  // Custom pagination styles
+  '.swiper-pagination': {
     position: 'absolute',
-    height: '40px',
-    top: -4,
-  },
-
-  '.custom-dot-list-style': {
-    position: 'absolute',
-    bottom: theme.spacing(1),
+    alignItems: 'center',
+    bottom: `${theme.spacing(-3.5)}!important`,
     display: 'flex',
     justifyContent: 'center',
     width: '100%',
     padding: 0,
     margin: 0,
     listStyle: 'none',
+    left: '50% !important',
+    transform: 'translateX(-50%) !important',
 
-    '& .react-multi-carousel-dot button': {
-      border: 'none !important',
-      background: `${theme.palette.alphaDark100.main} !important`,
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      bottom: `${theme.spacing(-4.5)}!important`,
+    },
+
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      bottom: `${theme.spacing(-5.5)}!important`,
+    },
+
+    '.swiper-pagination-bullet': {
+      // border: 'none',
+      background: theme.palette.alphaDark100.main,
       width: '8px',
       height: '8px',
       borderRadius: '50%',
@@ -63,13 +53,20 @@ export const CarouselContainer = styled(Box, {
       padding: 0,
       cursor: 'pointer',
       transition: 'all 0.3s ease',
+      opacity: 1,
     },
 
-    '& .react-multi-carousel-dot--active button': {
-      backgroundColor: `${theme.palette.alphaDark500.main} !important`,
+    '.swiper-pagination-bullet-active': {
+      backgroundColor: `${theme.palette.primary.main} !important`,
       border: 'none',
-      width: '10px',
-      height: '10px',
+      width: '10px !important',
+      height: '10px !important',
+    },
+  },
+
+  '.carousel-slide': {
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      ...(fixedItemWidth && { width: 'auto !important' }),
     },
   },
 }));
@@ -95,8 +92,8 @@ export const CarouselNavigationContainer = styled(Box, {
 })<CarouselNavigationContainerProps>(({ theme }) => ({
   display: 'flex',
   position: 'absolute',
-  height: '32px',
-  top: 0,
+  height: 40,
+  top: -4,
   right: 0,
   [theme.breakpoints.up('md')]: {
     marginLeft: 3,

@@ -3,10 +3,16 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, useMediaQuery, type CSSObject } from '@mui/material';
 import type { ReactNode } from 'react';
-import MultiCarousel, { ResponsiveType } from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import useClient from 'src/hooks/useClient';
-import IconHeader from '../ProfilePage/Common/IconHeader';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper core and required modules
+import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
+// Import Swiper styles
+import 'swiper/css';
+// import 'swiper/css/navigation';
+import useId from '@mui/utils/useId';
+import 'swiper/css/pagination';
+import { SwiperOptions } from 'swiper/types';
 import { SectionTitle } from '../ProfilePage/ProfilePage.style';
 import {
   CarouselContainer,
@@ -14,143 +20,147 @@ import {
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from './Carousel.style';
-import './styles.css';
-
-const getItemsCount = () => {
-  const containerWidth = window.innerWidth; // Or the carousel's actual width
-  const cardPlusGap = 416 + 24;
-  return Math.floor(containerWidth / cardPlusGap);
-};
 
 interface CarouselProps {
   title?: string;
-  updateTitle?: string;
-  updateTooltip?: string;
+  headerInfo?: ReactNode;
   sx?: CSSObject;
   children: ReactNode | ReactNode[];
   hidePagination?: boolean;
   showDots?: boolean;
-  responsive: ResponsiveType;
+  spaceBetween?: number;
+  breakpoints?: {
+    [width: number]: SwiperOptions;
+    [ratio: string]: SwiperOptions;
+  };
+  fixedItemWidth?: boolean;
 }
 
 export const Carousel = ({
   sx,
   title,
-  updateTitle,
-  updateTooltip,
+  headerInfo,
   children,
   hidePagination = false,
-  responsive,
+  breakpoints,
+  spaceBetween = 32,
   showDots = false,
+  fixedItemWidth = false,
 }: CarouselProps) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const isClient = useClient();
-  console.log('children', children);
-  return (
-    <CarouselContainer title={title} showDots={showDots}>
-      <CarouselHeader>
-        {/* <CarouselLabel> */}
-        {title && <SectionTitle variant="headerMedium">{title}</SectionTitle>}
-        {updateTitle && (
-          <Box>
-            {isClient && (
-              <IconHeader
-                tooltipKey={updateTooltip || ''}
-                title={!isMobile ? updateTitle : undefined}
-              />
-            )}
-          </Box>
-        )}
-        {/* </CarouselLabel> */}
-      </CarouselHeader>
-      <MultiCarousel
-        additionalTransfrom={0}
-        arrows={false}
-        autoPlay={!isMobile}
-        autoPlaySpeed={3000}
-        centerMode={true}
-        className="carousel"
-        focusOnSelect={false}
-        infinite={true}
-        keyBoardControl
-        minimumTouchDrag={80}
-        pauseOnHover
-        renderArrowsWhenDisabled={false}
-        renderDotsOutside={false}
-        responsive={responsive}
-        rewind={false}
-        rewindWithAnimation={false}
-        rtl={false}
-        shouldResetAutoplay
-        showDots={false}
-        sliderClass="carousel-slide"
-        containerClass="carousel-container"
-        customButtonGroup={
-          !hidePagination ? (
-            <CarouselNavigation
-              next={() => {
-                console.log('next');
-              }}
-              previous={() => {
-                console.log('previous');
-              }}
-              goToSlide={() => {
-                console.log('goToSlide');
-              }}
-            />
-          ) : null
-        }
-        dotListClass="custom-dot-list-style"
-        draggable={true}
-        itemClass="carousel-item"
-        partialVisible={false}
-        renderButtonGroupOutside={true}
-        ssr={true}
-        swipeable={true}
-        transitionDuration={500}
-      >
-        {children}
-      </MultiCarousel>
-    </CarouselContainer>
-  );
-};
+  const swiperId = useId();
 
-const CarouselNavigation = ({
-  next,
-  previous,
-  goToSlide,
-  ...rest
-}: {
-  next: () => void;
-  previous: () => void;
-  goToSlide: (slide: number) => void;
-}) => {
-  const {
-    carouselState: { currentSlide },
-  } = rest as { carouselState: { currentSlide: number } };
+  // specify a unique className for each caroussel to avoid triggering non-related carousels
+  const classNames = {
+    navigationPrev: `swiper-button-prev-${swiperId}`,
+    navigationNext: `swiper-button-next-${swiperId}`,
+    pagination: `swiper-pagination-${swiperId}`,
+  };
+
   return (
-    <>
-      <CarouselNavigationContainer className="carousel-button-group">
-        {' '}
-        {/* remember to give it position:absolute
-         */}
-        <CarouselNavigationButton
-          aria-label="previous"
-          onClick={() => previous()}
-          className={currentSlide === 0 ? 'disable' : ''}
-        >
-          <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
-        </CarouselNavigationButton>
-        <CarouselNavigationButton
-          aria-label="next"
-          sx={(theme) => ({
-            marginLeft: theme.spacing(1),
-          })}
-          onClick={() => next()}
-        >
-          <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
-        </CarouselNavigationButton>
-      </CarouselNavigationContainer>
-    </>
+    <CarouselContainer
+      title={title}
+      showDots={showDots}
+      fixedItemWidth={fixedItemWidth}
+      sx={sx}
+    >
+      {title ? (
+        <CarouselHeader>
+          {title && (
+            <SectionTitle
+              variant="headerMedium"
+              sx={{ maxWidth: 'calc(100% - 88px)' }}
+            >
+              {title}
+            </SectionTitle>
+          )}
+          {headerInfo ?? null}
+        </CarouselHeader>
+      ) : null}
+
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay, FreeMode]}
+        navigation={{
+          prevEl: `.${classNames.navigationPrev}`,
+          nextEl: `.${classNames.navigationNext}`,
+        }}
+        slidesOffsetAfter={0}
+        slidesOffsetBefore={0}
+        pagination={
+          showDots
+            ? {
+                clickable: true,
+                el: `.${classNames.pagination}`,
+              }
+            : false
+        }
+        autoplay={
+          !isMobile
+            ? {
+                delay: 3000,
+                disableOnInteraction: true,
+                pauseOnMouseEnter: true,
+              }
+            : false
+        }
+        loop={true}
+        rewind={true}
+        breakpoints={breakpoints}
+        keyboard={{
+          enabled: true,
+        }}
+        grabCursor={true}
+        cssMode={false}
+        className="carousel-swiper"
+        hashNavigation={!hidePagination}
+        setWrapperSize={false}
+        slidesPerView="auto"
+        spaceBetween={spaceBetween}
+        freeMode={true}
+        mousewheel={{
+          releaseOnEdges: true,
+        }}
+      >
+        {Array.isArray(children) &&
+          children.map((child, index) => (
+            <SwiperSlide key={index} className="carousel-slide">
+              {child}
+            </SwiperSlide>
+          ))}
+      </Swiper>
+
+      {!hidePagination && (
+        <CarouselNavigationContainer>
+          <CarouselNavigationButton
+            aria-label="previous"
+            className={classNames.navigationPrev}
+          >
+            <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
+          </CarouselNavigationButton>
+          <CarouselNavigationButton
+            aria-label="next"
+            className={classNames.navigationNext}
+            sx={{
+              marginLeft: 1,
+            }}
+          >
+            <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
+          </CarouselNavigationButton>
+        </CarouselNavigationContainer>
+      )}
+
+      {showDots && (
+        <Box
+          className={`swiper-pagination ${classNames.pagination}`}
+          sx={{
+            position: 'absolute',
+            bottom: 1,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 10,
+          }}
+        />
+      )}
+    </CarouselContainer>
   );
 };

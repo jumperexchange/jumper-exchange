@@ -8,7 +8,6 @@ import type {
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
-import { CarouselHeader } from 'src/components/Carousel/Carousel.style';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
@@ -50,11 +49,9 @@ export function BlogArticlesTabs({
           flexDirection: 'column',
         }}
       >
-        <CarouselHeader>
-          <BlogArticlesCollectionsTitle variant="headerMedium">
-            {tag?.Title}
-          </BlogArticlesCollectionsTitle>
-        </CarouselHeader>
+        <BlogArticlesCollectionsTitle variant="headerMedium">
+          {tag?.Title}
+        </BlogArticlesCollectionsTitle>
         {chunkedPages.map(
           (page, pageIndex) =>
             pageTab === pageIndex && (

@@ -17,7 +17,8 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
   display: 'flex',
   flexDirection: 'column',
-  width: '100%',
+  width: 'auto',
+  maxWidth: 416,
   border: 'unset',
   padding: theme.spacing(2),
   borderRadius: '32px',
@@ -30,11 +31,10 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      (theme.vars || theme).palette.alphaLight300.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: darken(theme.palette.white.main, 0.04)
-    })
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: darken(theme.palette.white.main, 0.04),
+    }),
   },
 }));
 
