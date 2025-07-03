@@ -84,6 +84,9 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     refetch,
   } = useReadContracts({
     contracts: contractsConfig,
+    query: {
+      enabled: !!account.address,
+    },
   });
 
   // Enhanced initialization with retry logic and better error handling
