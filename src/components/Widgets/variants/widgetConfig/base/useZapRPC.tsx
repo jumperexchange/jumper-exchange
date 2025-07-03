@@ -40,7 +40,7 @@ export const useZapRPC = (
       },
       explorerUrls,
       bridges: {
-        allow: ['across', 'stargateV2', 'symbiosis'],
+        allow: ['across', 'relay'],
       },
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,

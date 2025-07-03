@@ -3,12 +3,13 @@ import {
   TaskWidgetInformationChainData,
   TaskWidgetInformationWalletData,
   TaskWidgetInformationTokenData,
+  TaskType,
 } from 'src/types/loyaltyPass';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface MissionState {
   currentActiveTaskId?: string;
-  currentActiveTaskType?: string;
+  currentActiveTaskType?: TaskType;
 
   destinationChain?: TaskWidgetInformationChainData;
   destinationToken?: TaskWidgetInformationTokenData;
@@ -39,7 +40,7 @@ interface MissionState {
     toAddress?: TaskWidgetInformationWalletData;
   }) => void;
 
-  setCurrentActiveTask: (taskId: string, taskType: string) => void;
+  setCurrentActiveTask: (taskId: string, taskType: TaskType) => void;
 
   setMissionDefaults: (chainIds?: number[], missionType?: string) => void;
 

@@ -21,6 +21,7 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation, ctx }) => {
   }, [customInformation?.claimingIds]);
 
   const {
+    isInitialized,
     providers,
     toAddress,
     zapData,
@@ -39,9 +40,12 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation, ctx }) => {
     return {
       ...ctx,
       overrideHeader: `Deposit to ${zapData?.meta.name} pool`,
+      includeZap: true,
       zapProviders: providers,
       zapToAddress: toAddress,
-      integrator: projectData.integrator,
+      baseOverrides: {
+        integrator: projectData.integrator,
+      },
     };
   }, [
     JSON.stringify(ctx),
@@ -116,24 +120,26 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation, ctx }) => {
     [zapData, lpTokenDecimals],
   );
 
-  return token ? (
-    <LiFiWidget
-      key={poolName}
-      contractComponent={
-        <DepositCard
-          poolName={poolName}
-          underlyingToken={zapData?.market?.depositToken}
-          token={token}
-          chainId={zapData?.market?.depositToken.chainId}
-          contractTool={zapData?.meta}
-          analytics={analytics}
-          contractCalls={[]}
-          claimingIds={claimingIds}
-        />
-      }
-      config={widgetConfig}
-      integrator={widgetConfig.integrator}
-    />
+  return token && isInitialized ? (
+    <>
+      <LiFiWidget
+        key={poolName}
+        contractComponent={
+          <DepositCard
+            poolName={poolName}
+            underlyingToken={zapData?.market?.depositToken}
+            token={token}
+            chainId={zapData?.market?.depositToken.chainId}
+            contractTool={zapData?.meta}
+            analytics={analytics}
+            contractCalls={[]}
+            claimingIds={claimingIds}
+          />
+        }
+        config={widgetConfig}
+        integrator={widgetConfig.integrator}
+      />
+    </>
   ) : (
     <WidgetSkeleton />
   );

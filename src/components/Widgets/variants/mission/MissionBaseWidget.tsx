@@ -2,6 +2,7 @@ import { useMissionStore } from 'src/stores/mission/MissionStore';
 import { EntityWidgetProps } from '../base/Widget.types';
 import { FC, useMemo } from 'react';
 import { Widget } from '../base/Widget';
+import { ConfigContext } from '../widgetConfig/types';
 
 interface MissionBaseWidgetProps extends EntityWidgetProps {}
 
@@ -17,7 +18,7 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
     // missionChainIds,
   } = useMissionStore();
 
-  const ctx = useMemo(() => {
+  const ctx: ConfigContext = useMemo(() => {
     return {
       destinationChain,
       destinationToken,
@@ -25,7 +26,7 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
       sourceToken,
       fromAmount,
       toAddress,
-      currentActiveTaskType,
+      taskType: currentActiveTaskType,
     };
   }, [
     destinationChain,

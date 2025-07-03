@@ -3,6 +3,7 @@ import { EntityWidgetProps } from '../base/Widget.types';
 import { FC, useMemo } from 'react';
 import { ZapWidget as BaseZapWidget } from '../base/ZapWidget/ZapWidget';
 import { WalletProviderZap } from 'src/providers/WalletProvider/WalletProviderZap';
+import { ConfigContext } from '../widgetConfig/types';
 
 interface MissionZapWidgetProps extends EntityWidgetProps {}
 
@@ -10,32 +11,32 @@ export const MissionZapWidget: FC<MissionZapWidgetProps> = ({
   customInformation,
 }) => {
   const {
-    destinationChain,
-    destinationToken,
-    sourceChain,
-    sourceToken,
-    fromAmount,
+    // destinationChain,
+    // destinationToken,
+    // sourceChain,
+    // sourceToken,
+    // fromAmount,
     toAddress,
     currentActiveTaskType,
     // missionChainIds,
   } = useMissionStore();
 
-  const ctx = useMemo(() => {
+  const ctx: ConfigContext = useMemo(() => {
     return {
-      destinationChain,
-      destinationToken,
-      sourceChain,
-      sourceToken,
-      fromAmount,
+      // destinationChain,
+      // destinationToken,
+      // sourceChain,
+      // sourceToken,
+      // fromAmount,
       toAddress,
-      currentActiveTaskType,
+      taskType: currentActiveTaskType,
     };
   }, [
-    destinationChain,
-    destinationToken,
-    sourceChain,
-    sourceToken,
-    fromAmount,
+    // destinationChain,
+    // destinationToken,
+    // sourceChain,
+    // sourceToken,
+    // fromAmount,
     toAddress,
     currentActiveTaskType,
   ]);

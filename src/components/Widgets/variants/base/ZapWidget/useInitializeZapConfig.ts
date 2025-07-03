@@ -29,11 +29,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
-
-  const [isInitializing, setIsInitializing] = useState(false);
-  const [initializationError, setInitializationError] = useState<string | null>(
-    null,
-  );
+  const [areClientInitializing, setAreClientInitializing] = useState(false);
 
   const account = useAccount();
   const { address, chain } = account;
@@ -91,94 +87,51 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   });
 
   // Enhanced initialization with retry logic and better error handling
-  const initializeMeeClient = useCallback(async () => {
-    if (!chain) {
-      console.warn('Chain is undefined, skipping MEE client initialization.');
-      setInitializationError('Chain is not available');
-      return;
-    }
+  useEffect(() => {
+    const initMeeClient = async () => {
+      if (!chain) {
+        console.warn('Chain is undefined, skipping MEE client initialization.');
+        return;
+      }
 
-    if (isInitializing) {
-      console.log('Initialization already in progress, skipping...');
-      return;
-    }
+      if (areClientInitializing) {
+        console.warn('Init MEE client.');
+        return;
+      }
 
-    setIsInitializing(true);
-    setInitializationError(null);
-
-    try {
-      console.log('Starting MEE client initialization...');
-      console.log('Chain:', chain);
-      console.log('Ethereum provider available:', !!global?.window?.ethereum);
-
-      // Check if ethereum provider is available
-      if (!global?.window?.ethereum) {
-        throw new Error(
-          'Ethereum provider not available. Please ensure MetaMask or another wallet is installed and connected.',
-        );
+      if (!areClientInitializing && (!oNexus || !meeClient)) {
+        setAreClientInitializing(true);
       }
 
       // create multichain nexus account
       // Creates the Biconomy "Multichain Nexus Account", a smart contract account
       // that orchestrates actions across multiple chains.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
-      console.log('Creating multichain nexus account...');
       const oNexusInit = await toMultichainNexusAccount({
         signer: createWalletClient({
           chain,
-          account: address as `0x${string}`,
-          transport: custom(global.window.ethereum),
+          transport: custom(global?.window?.ethereum ?? ''),
         }),
         chains: [mainnet, optimism, base],
         transports: [http(), http(), http()],
       });
 
-      console.log('oNexus initialized successfully');
-
       // create mee client
       // Initializes the Biconomy "MEE (Modular Execution Environment) Client".
       // This client interacts with Biconomy's backend to manage the orchestration.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#modular-execution-environment-mee
-      console.log('Creating MEE client...');
       const meeClientInit = await createMeeClient({
         account: oNexusInit,
       });
 
-      console.log('MEE client initialized successfully');
+      console.log('MEE client initialized successfully', meeClientInit);
 
       setONexus(oNexusInit);
       setMeeClient(meeClientInit);
-      setInitializationError(null);
-      console.log('Both oNexus and MEE client initialized successfully');
-    } catch (error) {
-      console.error('Failed to initialize MEE client or oNexus:', error);
-      console.error('Error details:', {
-        name: error instanceof Error ? error.name : 'Unknown',
-        message: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
-      setInitializationError(
-        error instanceof Error ? error.message : 'Initialization failed',
-      );
-      setONexus(null);
-      setMeeClient(null);
-    } finally {
-      setIsInitializing(false);
-    }
-  }, [chain, isInitializing, address]);
-
-  // Single initialization effect - only run when chain changes
-  useEffect(() => {
-    if (chain && address) {
-      console.log('Chain and address detected, initializing MEE client...');
-      initializeMeeClient();
-    }
-  }, [chain, address]); // Only depend on chain and address, not the function
-
-  // Check if both clients are ready
-  const areClientsReady = useMemo(() => {
-    return !isInitializing && !initializationError && meeClient && oNexus;
-  }, [isInitializing, initializationError, meeClient, oNexus]);
+      setAreClientInitializing(false);
+    };
+    initMeeClient();
+  }, [chain]);
 
   const wagmiConfig = useConfig();
 
@@ -192,6 +145,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         atomic: { status: 'supported' },
       });
     },
+    // @TODO do we need this?
     // [baseWidgetConfig],
     [],
   );
@@ -199,7 +153,8 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   // Helper function to handle 'wallet_getCallsStatus'
   const handleWalletGetCallsStatus = useCallback(
     async (args: WalletGetCallsStatusArgs) => {
-      if (!areClientsReady) {
+      if (!meeClient) {
+        // oNexus is not directly used here but its initialization is tied to meeClient
         throw new Error('MEE client not initialized');
       }
       if (!args.params || !Array.isArray(args.params)) {
@@ -212,7 +167,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         throw new Error('Missing or invalid hash in params object');
       }
 
-      const receipt = (await meeClient!.waitForSupertransactionReceipt({
+      const receipt = (await meeClient.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
       })) as WaitForSupertransactionReceiptPayload;
 
@@ -245,13 +200,13 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         })),
       };
     },
-    [areClientsReady, meeClient],
+    [meeClient],
   );
 
   // Helper function to handle 'wallet_waitForCallsStatus'
   const handleWalletWaitForCallsStatus = useCallback(
     async (args: WalletWaitForCallsStatusArgs) => {
-      if (!areClientsReady) {
+      if (!meeClient) {
         throw new Error('MEE client not initialized');
       }
       if (!args.id) {
@@ -310,32 +265,15 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         })),
       };
     },
-    [areClientsReady, meeClient],
+    [meeClient],
   );
 
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
     async (args: WalletSendCallsArgs) => {
-      // Wait for clients to be ready before proceeding
-      if (!areClientsReady) {
-        if (isInitializing) {
-          throw new Error(
-            'MEE client and oNexus are still initializing. Please wait a moment and try again.',
-          );
-        }
-        if (initializationError) {
-          throw new Error(
-            `Initialization failed: ${initializationError}. Please refresh the page and try again.`,
-          );
-        }
-        throw new Error(
-          'MEE client or oNexus not initialized. Please ensure wallet is connected and try again.',
-        );
+      if (!meeClient || !oNexus) {
+        throw new Error('MEE client or oNexus not initialized');
       }
-
-      // At this point, we know both meeClient and oNexus are not null
-      const client = meeClient!;
-      const nexus = oNexus!;
 
       // Handle the new args structure with account and calls directly
       if (!args.account || !args.calls) {
@@ -374,7 +312,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
           }
-          return nexus.buildComposable({
+          return oNexus.buildComposable({
             type: 'rawCalldata',
             data: {
               to: call.to,
@@ -392,7 +330,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       ];
 
       // token approval
-      const approveInstruction = await buildContractComposable(nexus, {
+      const approveInstruction = await buildContractComposable(oNexus, {
         address: depositToken,
         chainId: depositChainId,
         abi: integrationData.abi.approve,
@@ -401,7 +339,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         args: [
           depositAddress,
           runtimeERC20BalanceOf({
-            targetAddress: nexus.addressOn(
+            targetAddress: oNexus.addressOn(
               depositChainId,
               true,
             ) as `0x${string}`,
@@ -417,7 +355,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       const depositArgs = depositInputs.map((input: AbiInput) => {
         if (input.type === 'uint256') {
           return runtimeERC20BalanceOf({
-            targetAddress: nexus.addressOn(
+            targetAddress: oNexus.addressOn(
               depositChainId,
               true,
             ) as `0x${string}`,
@@ -430,7 +368,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         }
         throw new Error(`Unsupported deposit input type: ${input.type}`);
       });
-      const depositInstruction = await buildContractComposable(nexus, {
+      const depositInstruction = await buildContractComposable(oNexus, {
         address: depositAddress,
         chainId: depositChainId,
         abi: integrationData.abi.deposit,
@@ -449,7 +387,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         if (!address) {
           throw new Error('User address (EOA) is not available.');
         }
-        const transferLpInstruction = await buildContractComposable(nexus, {
+        const transferLpInstruction = await buildContractComposable(oNexus, {
           address: depositAddress,
           chainId: depositChainId,
           abi: integrationData.abi.transfer,
@@ -458,7 +396,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
           args: [
             address,
             runtimeERC20BalanceOf({
-              targetAddress: nexus.addressOn(
+              targetAddress: oNexus.addressOn(
                 depositChainId,
                 true,
               ) as `0x${string}`,
@@ -470,7 +408,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         instructions.push(transferLpInstruction);
       }
 
-      const quote = await client.getFusionQuote({
+      const quote = await meeClient.getFusionQuote({
         trigger: {
           tokenAddress: currentRoute.fromToken.address as `0x${string}`,
           amount: BigInt(currentRoute.fromAmount),
@@ -490,24 +428,15 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         instructions,
       });
 
-      const { hash } = await meeClient!.executeFusionQuote({
+      console.log('quote', quote);
+
+      const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
 
       return { id: hash };
     },
-    [
-      areClientsReady,
-      isInitializing,
-      initializationError,
-      meeClient,
-      oNexus,
-      chain,
-      currentRoute,
-      zapData,
-      projectData,
-      address,
-    ],
+    [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
   );
 
   const providers = useMemo(() => {
@@ -537,7 +466,11 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     [oNexus, address, projectData.chainId],
   );
 
+  // Check if oNexus and meeClient are initialized before rendering
+  const isInitialized = oNexus && meeClient;
+
   return {
+    isInitialized,
     providers,
     toAddress,
     zapData,
