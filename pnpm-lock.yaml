@@ -48,8 +48,8 @@ importers:
         specifier: ^3.12.0
         version: 3.12.0(965cbd5952b6cb8fbaa5d2c9f0b22428)
       '@lifi/widget':
-        specifier: 3.24.0
-        version: 3.24.0(bc8153ebb610ace34b454de129f03014)
+        specifier: 3.24.1
+        version: 3.24.1(bc8153ebb610ace34b454de129f03014)
       '@merkl/api':
         specifier: ^1.0.96
         version: 1.0.96(exact-mirror@0.1.2(@sinclair/typebox@0.34.37))(file-type@21.0.0)(typescript@5.8.3)
@@ -2164,8 +2164,8 @@ packages:
       react-dom: '>=18'
       wagmi: '>=2.14.0'
 
-  '@lifi/widget@3.24.0':
-    resolution: {integrity: sha512-b2IDaeTBkbpfJK3ei+BsFVGLhMq8JwEZG68VbCtb5fCuOjAqT4up0yguwBe/uQTpI3GPbjGWcSHBvHVQ6G7hYA==}
+  '@lifi/widget@3.24.1':
+    resolution: {integrity: sha512-SOsrOIGSzeP2O6P42fZKLGR4vUilVj8cXnYQ0wOvXIAJu3TiRLLFMvysoFLfgAixBU/tCK2+zFvAc+yCAKPFew==}
     peerDependencies:
       '@bigmi/react': '>=0.4.0'
       '@mysten/dapp-kit': '>=0.16.0'
@@ -11796,7 +11796,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/widget@3.24.0(bc8153ebb610ace34b454de129f03014)':
+  '@lifi/widget@3.24.1(bc8153ebb610ace34b454de129f03014)':
     dependencies:
       '@bigmi/client': 0.4.1(@tanstack/query-core@5.81.5)(@types/react@19.1.8)(bs58@5.0.0)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))
       '@bigmi/core': 0.4.0(@types/react@19.1.8)(bs58@5.0.0)(immer@10.1.1)(react@19.1.0)(typescript@5.8.3)(use-sync-external-store@1.5.0(react@19.1.0))

@@ -13,7 +13,6 @@ import {
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -24,7 +23,6 @@ import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useWidgetSelection } from 'src/hooks/useWidgetSelection';
-import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -42,7 +40,10 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [configTheme] = useThemeStore((state) => [state.configTheme]);
+  const [configTheme, widgetTheme] = useThemeStore((state) => [
+    state.configTheme,
+    state.widgetTheme,
+  ]);
   const formRef = useRef<FormState>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { bridgeConditions } = useWidgetSelection({
@@ -63,20 +64,6 @@ export function Widget({
   });
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
-
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const widgetTheme = useMemo(
-    () =>
-      getWidgetThemeV2(
-        mode === 'system' || !mode
-          ? prefersDarkMode
-            ? 'dark'
-            : 'light'
-          : mode,
-      ),
-    [mode, prefersDarkMode],
-  );
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
