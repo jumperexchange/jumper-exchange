@@ -1,10 +1,10 @@
 'use client';
 import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
 import { Carousel } from 'src/components/Carousel/Carousel';
-import { Container } from 'src/components/Container/Container';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
+import { BlogCarouselContainer } from './BlogCarousel.style';
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
@@ -14,11 +14,7 @@ interface BlogCarouselProps {
 
 export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
   return (
-    <Container
-      sx={{
-        position: 'relative',
-      }}
-    >
+    <BlogCarouselContainer>
       <Carousel hasPagination={true} title={title} fixedSlideWidth={true}>
         {data
           ? data.map((article, index) => (
@@ -32,6 +28,6 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
               <BlogArticleCardSkeleton key={'article-card-skeleton-' + idx} />
             ))}
       </Carousel>
-    </Container>
+    </BlogCarouselContainer>
   );
 };
