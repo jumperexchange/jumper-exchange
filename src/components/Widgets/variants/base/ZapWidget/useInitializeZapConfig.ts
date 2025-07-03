@@ -7,30 +7,24 @@ import {
   greaterThanOrEqualTo,
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
-import {
-  ChainType,
-  type EVMProvider,
-  type Route,
-  type WidgetConfig,
-} from '@lifi/widget';
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import { buildContractComposable } from './utils';
 import { useZaps } from 'src/hooks/useZaps';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { createWalletClient, custom, http, parseUnits } from 'viem';
 import { mainnet, optimism, base } from 'viem/chains';
 import { useAccount, useReadContracts, useConfig } from 'wagmi';
-import { buildContractComposable } from './utils';
 import {
+  ProjectData,
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
   WalletWaitForCallsStatusArgs,
   WalletSendCallsArgs,
   WalletCall,
   AbiInput,
-  ProjectData,
-} from './types';
+} from './ZapWidget.types';
+import { Route } from '@lifi/sdk';
 
-// Add from quest.CustomInformation.projectData
 export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
@@ -553,56 +547,4 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     depositTokenDecimals,
     refetchDepositToken: refetch,
   };
-};
-
-export const useZapRPCWidgetConfig = (
-  providers: EVMProvider[],
-  toAddress: `0x${string}`,
-) => {
-  const config: Partial<WidgetConfig> = useMemo(() => {
-    const explorerConfig = [
-      {
-        url: 'https://meescan.biconomy.io',
-        txPath: 'details',
-        addressPath: 'address',
-      },
-    ];
-    const explorerChainIds = [
-      56, 1399811149, 1, 8453, 42161, 130, 101, 43114, 137, 728126428, 999, 146,
-      10, 49705, 5000, 80094, 531, 369, 2741, 59144, 42220, 100, 81457, 2020,
-      57420037, 480, 25, 57073, 534352, 324, 98866, 1116, 1088, 1284, 169, 747,
-      250, 34443, 1514, 13371, 204, 288, 1285, 50104, 48900, 1923, 153153, 4689,
-      7700, 1480, 88888, 1101, 55244, 33139, 888, 1313161554, 592, 53935, 2001,
-      428962, 122, 2000, 109, 106, 7777777, 42262, 660279, 10000, 54176, 321,
-      20, 246, 666666666, 1996, 24, 4321, 9001, 5112, 57, 10143, 50312,
-      11155111, 84532,
-    ];
-    const explorerUrls = explorerChainIds.reduce(
-      (acc, id) => {
-        acc[String(id)] = explorerConfig;
-        return acc;
-      },
-      {} as Record<string, typeof explorerConfig>,
-    );
-
-    return {
-      toAddress: {
-        name: 'Smart Account',
-        address: toAddress,
-        chainType: ChainType.EVM,
-      },
-      explorerUrls,
-      bridges: {
-        allow: ['across', 'stargateV2', 'symbiosis'],
-      },
-      sdkConfig: {
-        apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
-        providers,
-      },
-      useRecommendedRoute: true,
-      contractCompactComponent: <></>,
-    };
-  }, [providers, toAddress]);
-
-  return config;
 };

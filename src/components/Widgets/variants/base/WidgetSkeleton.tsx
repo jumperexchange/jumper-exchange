@@ -1,14 +1,14 @@
-import { WidgetSkeleton } from '@lifi/widget/skeleton';
+import { WidgetSkeleton as LiFiWidgetSkeleton } from '@lifi/widget/skeleton';
 import { useThemeStore } from 'src/stores/theme/ThemeStore';
 
-export const MissionWidgetSkeleton = () => {
+export const WidgetSkeleton = () => {
   const [widgetTheme] = useThemeStore((state) => [
     state.widgetTheme,
     state.configTheme,
   ]);
 
   return (
-    <WidgetSkeleton
+    <LiFiWidgetSkeleton
       config={{
         variant: 'compact',
         appearance: widgetTheme.config.appearance,

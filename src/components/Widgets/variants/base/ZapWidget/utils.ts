@@ -1,5 +1,5 @@
 import { MultichainSmartAccount } from '@biconomy/abstractjs';
-import { ContractComposableConfig } from './types';
+import { ContractComposableConfig } from './ZapWidget.types';
 
 export const buildContractComposable = async (
   oNexus: MultichainSmartAccount,

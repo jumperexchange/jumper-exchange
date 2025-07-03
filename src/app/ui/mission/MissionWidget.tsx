@@ -2,13 +2,12 @@
 
 import { ClientOnly } from 'src/components/ClientOnly';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import { MissionWidgetColumnContainer } from './MissionWidget.style';
-import { ZapWidget } from './variants/ZapWidget/ZapWidget';
-import { BaseWidget } from './variants/BaseWidget/BaseWidget';
 import { CustomInformation, TaskType } from 'src/types/loyaltyPass';
 import { FC } from 'react';
-import { MissionWidgetSkeleton } from './MissionWidgetSkeleton';
-import { WalletProviderZap } from 'src/providers/WalletProvider/WalletProviderZap';
+import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
+import Box from '@mui/material/Box';
+import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
+import { MissionZapWidget } from 'src/components/Widgets/variants/mission/MissionZapWidget';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -21,20 +20,18 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
   const { currentActiveTaskType } = useMissionStore();
 
   if (currentActiveTaskType === TaskType.Zap && !customInformation) {
-    return <MissionWidgetSkeleton />;
+    return <WidgetSkeleton />;
   }
 
   return (
-    <MissionWidgetColumnContainer>
+    <Box sx={{ width: '100%' }}>
       <ClientOnly>
         {currentActiveTaskType === TaskType.Zap ? (
-          <WalletProviderZap>
-            <ZapWidget customInformation={customInformation} />
-          </WalletProviderZap>
+          <MissionZapWidget customInformation={customInformation} />
         ) : (
-          <BaseWidget />
+          <MissionBaseWidget />
         )}
       </ClientOnly>
-    </MissionWidgetColumnContainer>
+    </Box>
   );
 };

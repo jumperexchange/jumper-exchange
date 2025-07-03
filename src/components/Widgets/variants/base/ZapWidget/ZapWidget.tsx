@@ -2,25 +2,16 @@
 
 import { FC, useEffect, useMemo } from 'react';
 import { LiFiWidget, Route, useWidgetEvents, WidgetEvent } from '@lifi/widget';
-import {
-  useBaseFormWidgetConfig,
-  useBaseWidgetConfig,
-  useLanguageResourcesWidgetConfig,
-  useSubVariantWidgetConfig,
-} from '../../hooks';
-import { useInitializeZapConfig, useZapRPCWidgetConfig } from './hooks';
+import { useInitializeZapConfig } from './useInitializeZapConfig';
 import { formatUnits } from 'viem/utils';
-import { MissionWidgetProps } from '../../MissionWidget';
 import { DepositCard } from 'src/components/ZapWidget/Deposit/DepositCard';
-import { MissionWidgetSkeleton } from '../../MissionWidgetSkeleton';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
+import { WidgetProps } from '../Widget.types';
 
-interface ZapWidgetProps extends MissionWidgetProps {}
+interface ZapWidgetProps extends WidgetProps {}
 
-export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation }) => {
-  const baseConfig = useBaseWidgetConfig();
-  const subVariantConfig = useSubVariantWidgetConfig();
-  const formConfig = useBaseFormWidgetConfig();
-
+export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation, ctx }) => {
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
@@ -44,11 +35,23 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation }) => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
   }, [JSON.stringify(zapData)]);
 
-  const languageConfig = useLanguageResourcesWidgetConfig(
-    `Deposit to ${zapData?.meta.name} pool`,
-  );
+  const enhancedCtx = useMemo(() => {
+    return {
+      ...ctx,
+      overrideHeader: `Deposit to ${zapData?.meta.name} pool`,
+      zapProviders: providers,
+      zapToAddress: toAddress,
+      integrator: projectData.integrator,
+    };
+  }, [
+    JSON.stringify(ctx),
+    poolName,
+    providers,
+    toAddress,
+    projectData.integrator,
+  ]);
 
-  const zapConfig = useZapRPCWidgetConfig(providers, toAddress);
+  const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
@@ -113,26 +116,9 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation }) => {
     [zapData, lpTokenDecimals],
   );
 
-  const config = useMemo(() => {
-    return {
-      ...baseConfig,
-      ...subVariantConfig,
-      ...formConfig,
-      ...languageConfig,
-      ...zapConfig,
-      integrator: projectData.integrator,
-    };
-  }, [
-    baseConfig,
-    subVariantConfig,
-    zapConfig,
-    formConfig,
-    languageConfig,
-    projectData,
-  ]);
-
   return token ? (
     <LiFiWidget
+      key={poolName}
       contractComponent={
         <DepositCard
           poolName={poolName}
@@ -145,10 +131,10 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation }) => {
           claimingIds={claimingIds}
         />
       }
-      config={config}
-      integrator={config.integrator}
+      config={widgetConfig}
+      integrator={widgetConfig.integrator}
     />
   ) : (
-    <MissionWidgetSkeleton />
+    <WidgetSkeleton />
   );
 };
