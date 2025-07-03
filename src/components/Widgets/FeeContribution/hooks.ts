@@ -302,7 +302,6 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
           feeAddress,
           amountInTokenUnits,
         );
-        console.log('nativeTxConfig', nativeTxConfig);
         await sendTransaction(nativeTxConfig);
       } else {
         const erc20TxConfig = createTokenTransactionConfig(
