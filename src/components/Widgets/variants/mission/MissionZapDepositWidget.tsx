@@ -1,13 +1,13 @@
 import { useMissionStore } from 'src/stores/mission/MissionStore';
 import { EntityWidgetProps } from '../base/Widget.types';
 import { FC, useMemo } from 'react';
-import { ZapWidget as BaseZapWidget } from '../base/ZapWidget/ZapWidget';
+import { ZapDepositWidget } from '../base/ZapWidget/ZapDepositWidget';
 import { WalletProviderZap } from 'src/providers/WalletProvider/WalletProviderZap';
 import { ConfigContext } from '../widgetConfig/types';
 
-interface MissionZapWidgetProps extends EntityWidgetProps {}
+interface MissionZapDepositWidgetProps extends EntityWidgetProps {}
 
-export const MissionZapWidget: FC<MissionZapWidgetProps> = ({
+export const MissionZapDepositWidget: FC<MissionZapDepositWidgetProps> = ({
   customInformation,
 }) => {
   const {
@@ -43,7 +43,7 @@ export const MissionZapWidget: FC<MissionZapWidgetProps> = ({
 
   return (
     <WalletProviderZap>
-      <BaseZapWidget ctx={ctx} customInformation={customInformation} />
+      <ZapDepositWidget ctx={ctx} customInformation={customInformation} />
     </WalletProviderZap>
   );
 };

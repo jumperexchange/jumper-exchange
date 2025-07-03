@@ -8,6 +8,7 @@ import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
 
 export interface WithdrawWidgetProps {
+  poolName?: string;
   token: TokenAmount;
   contractCalls?: ContractCall[];
   lpTokenDecimals: number;
@@ -18,6 +19,7 @@ export interface WithdrawWidgetProps {
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
+  poolName,
   token,
   lpTokenDecimals,
   projectData,
@@ -42,7 +44,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
           },
         ]}
         refetch={refetchPosition}
-        label={`Redeem from Pool`}
+        label={`Redeem from ${poolName || 'Pool'}`}
         token={token}
         image={
           token?.logoURI && (

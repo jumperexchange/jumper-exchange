@@ -9,9 +9,12 @@ import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
 import { WidgetProps } from '../Widget.types';
 
-interface ZapWidgetProps extends WidgetProps {}
+interface ZapDepositWidgetProps extends WidgetProps {}
 
-export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation, ctx }) => {
+export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
+  customInformation,
+  ctx,
+}) => {
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
@@ -121,25 +124,23 @@ export const ZapWidget: FC<ZapWidgetProps> = ({ customInformation, ctx }) => {
   );
 
   return token && isInitialized ? (
-    <>
-      <LiFiWidget
-        key={poolName}
-        contractComponent={
-          <DepositCard
-            poolName={poolName}
-            underlyingToken={zapData?.market?.depositToken}
-            token={token}
-            chainId={zapData?.market?.depositToken.chainId}
-            contractTool={zapData?.meta}
-            analytics={analytics}
-            contractCalls={[]}
-            claimingIds={claimingIds}
-          />
-        }
-        config={widgetConfig}
-        integrator={widgetConfig.integrator}
-      />
-    </>
+    <LiFiWidget
+      key={poolName}
+      contractComponent={
+        <DepositCard
+          poolName={poolName}
+          underlyingToken={zapData?.market?.depositToken}
+          token={token}
+          chainId={zapData?.market?.depositToken.chainId}
+          contractTool={zapData?.meta}
+          analytics={analytics}
+          contractCalls={[]}
+          claimingIds={claimingIds}
+        />
+      }
+      config={widgetConfig}
+      integrator={widgetConfig.integrator}
+    />
   ) : (
     <WidgetSkeleton />
   );

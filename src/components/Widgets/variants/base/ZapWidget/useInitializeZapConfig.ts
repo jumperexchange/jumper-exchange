@@ -22,7 +22,7 @@ import {
   WalletSendCallsArgs,
   WalletCall,
   AbiInput,
-} from './ZapWidget.types';
+} from './types';
 import { Route } from '@lifi/sdk';
 
 export const useInitializeZapConfig = (projectData: ProjectData) => {
@@ -478,6 +478,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     setCurrentRoute,
     depositTokenData,
     depositTokenDecimals,
+    isLoadingDepositTokenData,
     refetchDepositToken: refetch,
   };
 };

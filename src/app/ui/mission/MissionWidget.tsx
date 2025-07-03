@@ -7,7 +7,8 @@ import { FC } from 'react';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import Box from '@mui/material/Box';
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
-import { MissionZapWidget } from 'src/components/Widgets/variants/mission/MissionZapWidget';
+import { MissionZapDepositWidget } from 'src/components/Widgets/variants/mission/MissionZapDepositWidget';
+import { MissionZapWithdrawWidget } from 'src/components/Widgets/variants/mission/MissionZapWithdrawWidget';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -27,7 +28,7 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
     <Box sx={{ width: '100%' }}>
       <ClientOnly>
         {currentActiveTaskType === TaskType.Zap ? (
-          <MissionZapWidget customInformation={customInformation} />
+          <MissionZapDepositWidget customInformation={customInformation} />
         ) : (
           <MissionBaseWidget />
         )}
