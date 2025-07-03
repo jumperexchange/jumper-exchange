@@ -212,6 +212,10 @@ class QuestParams {
     });
     return this.apiUrl;
   }
+
+  static getDefaultPopulatesLength() {
+    return QuestParams.defaultPopulates.length;
+  }
 }
 
 class ArticleStrapiApi extends StrapiApi {
@@ -311,7 +315,10 @@ class QuestStrapiApi extends StrapiApi {
   }
 
   populateCampaign(): this {
-    this.apiUrl.searchParams.set('populate[5]', 'campaign');
+    this.apiUrl.searchParams.set(
+      `populate[${QuestParams.getDefaultPopulatesLength()}]`,
+      'campaign',
+    );
     return this;
   }
 }
