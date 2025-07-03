@@ -134,7 +134,7 @@ export function Widget({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     return {
