@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useGetVerifiedTasks } from 'src/hooks/tasksVerification/useGetVerifiedTasks';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
+import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 import {
   TaskType,
   type Quest,
@@ -225,6 +226,7 @@ export const useEnhancedTasks = (
   accountAddress?: string,
 ) => {
   const { data: verifiedTasks = [] } = useGetVerifiedTasks(accountAddress);
+  const { setConfigType, configType } = useSdkConfigStore();
 
   const verifiedTaskIds = useMemo(() => {
     return new Set(verifiedTasks?.map((v) => v.stepId));
@@ -250,6 +252,12 @@ export const useEnhancedTasks = (
       const taskType = task.TaskType ?? TaskType.Bridge;
       const widgetFormParams = task.TaskWidgetInformation ?? {};
 
+      if (taskType === TaskType.Zap && configType !== 'zap') {
+        setConfigType('zap');
+      } else if (taskType !== TaskType.Zap && configType === 'zap') {
+        setConfigType('default');
+      }
+
       setCurrentActiveTask(task.uuid, taskType);
 
       setCurrentTaskWidgetFormParams({
@@ -261,7 +269,12 @@ export const useEnhancedTasks = (
         fromAmount: widgetFormParams.fromAmount ?? undefined,
       });
     },
-    [setCurrentActiveTask, setCurrentTaskWidgetFormParams],
+    [
+      setCurrentActiveTask,
+      setCurrentTaskWidgetFormParams,
+      configType,
+      setConfigType,
+    ],
   );
 
   useEffect(() => {
