@@ -24,7 +24,7 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
                 trackingCategory={TrackingCategory.BlogCarousel}
               />
             ))
-          : Array.from({ length: 4 }, () => 42).map((_, idx) => (
+          : Array.from({ length: 4 }).map((_, idx) => (
               <BlogArticleCardSkeleton key={'article-card-skeleton-' + idx} />
             ))}
       </Carousel>
