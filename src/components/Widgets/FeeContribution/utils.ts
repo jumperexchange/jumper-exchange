@@ -128,7 +128,6 @@ export const isEligibleForContribution = (
   );
 
   return (
-    // todo: re-activate AB checks -->
     isContributionEnabledByTxHistory && // check if last tx was first or every third
     isTransactionAmountEligible(completedRoute.toAmountUSD) && // check if transaction amount is eligible with MIN_CONTRIBUTION_USD === 10
     hasValidContributionFeeAddress(completedRoute.toChainId) // check if valid contribution fee address exists for the chain

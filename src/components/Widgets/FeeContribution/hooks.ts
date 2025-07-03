@@ -71,10 +71,11 @@ export const useContributionData = () => {
   // - AB test
   // - Transaction amount >= $10
   // - Chain type is EVM
+  // - Same wallet tx with fromAddress === toAddress
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
     if (
-      // !isContributionAbEnabled || // @todo: re-activate AB test
+      !isContributionAbEnabled ||
       !isEligibleForContribution(txHistoryData, completedRoute, account)
     ) {
       setContributionDisplayed(false);
