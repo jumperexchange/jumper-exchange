@@ -63,7 +63,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         <CarouselHeader>
           {title && (
             <SectionTitle
-              variant="headerMedium"
+              variant="bodyXLarge"
               sx={{ maxWidth: 'calc(100% - 88px)' }}
             >
               {title}
@@ -72,7 +72,6 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
           {headerInfo ?? null}
         </CarouselHeader>
       ) : null}
-
       <Swiper
         modules={[Navigation, Pagination, Autoplay, FreeMode]}
         navigation={{

@@ -19,11 +19,7 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
         position: 'relative',
       }}
     >
-      <Carousel
-        hasPagination={true}
-        title="Recent Posts"
-        fixedSlideWidth={true}
-      >
+      <Carousel hasPagination={true} title={title} fixedSlideWidth={true}>
         {data
           ? data.map((article, index) => (
               <BlogArticleCard
