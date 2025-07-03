@@ -34,7 +34,7 @@ export const useLanguageResources = (ctx: ConfigContext) => {
 
     const translationTemplate =
       overrideHeader ??
-      `${currentActiveTaskType !== TaskType.Zap ? currentActiveTaskType : 'Deposit'} ${sourceDestinationTemplate}`;
+      `${currentActiveTaskType ?? 'Deposit'} ${sourceDestinationTemplate}`;
 
     return {
       languageResources: {
