@@ -1,3 +1,4 @@
+import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import type {
@@ -6,7 +7,6 @@ import type {
   TagAttributes,
 } from '@/types/strapi';
 import { BlogArticlesCollections } from 'src/components/Blog/BlogArticlesCollections/BlogArticlesCollections';
-import { BlogCarousel } from 'src/components/Blog/BlogCarousel/BlogCarousel';
 
 interface LearnPageProps {
   carouselArticles: StrapiResponse<BlogArticleData>;
