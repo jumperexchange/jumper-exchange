@@ -295,15 +295,16 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         completedRoute.toToken.address === DEFAULT_WALLET_ADDRESS ||
         completedRoute.toToken.address === ALTTERNATIVE_DEFAULT_ADDRESS
       ) {
+        if (account.chainId !== completedRoute.toToken.chainId) {
+          await switchChainAsync({ chainId: completedRoute.toToken.chainId });
+        }
         const nativeTxConfig = createNativeTransactionConfig(
           feeAddress,
           amountInTokenUnits,
         );
+        console.log('nativeTxConfig', nativeTxConfig);
         await sendTransaction(nativeTxConfig);
       } else {
-        if (account.chainId !== completedRoute.toToken.chainId) {
-          await switchChainAsync({ chainId: completedRoute.toToken.chainId });
-        }
         const erc20TxConfig = createTokenTransactionConfig(
           completedRoute.toToken.address as EVMAddress,
           feeAddress,
