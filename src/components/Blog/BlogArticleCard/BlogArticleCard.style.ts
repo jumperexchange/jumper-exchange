@@ -6,7 +6,6 @@ import {
   CardContent,
   Skeleton,
   Typography,
-  darken,
   type Breakpoint,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -33,7 +32,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
     cursor: 'pointer',
     backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
     ...theme.applyStyles('light', {
-      backgroundColor: darken(theme.palette.white.main, 0.04),
+      backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.white.main} 96%, black 4%)`,
     }),
   },
 }));
