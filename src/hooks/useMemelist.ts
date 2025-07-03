@@ -1,7 +1,10 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import type { StrapiTokenInfo } from 'src/types/tokenList';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
+import {
+  getStrapiApiAccessToken,
+  getStrapiBaseUrl,
+} from 'src/utils/strapi/strapiHelper';
 
 export interface UseMemelistProps {
   tokens?: StrapiTokenInfo[];
@@ -14,10 +17,7 @@ export interface UseMemeProps {
 
 const STRAPI_CONTENT_TYPE = 'token-lists';
 export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
   const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
   //filter url
   apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');

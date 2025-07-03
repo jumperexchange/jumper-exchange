@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "スワップ",
+      "missions": "",
       "dashboard": "ダッシュボード",
       "refuel": "リフューエル",
       "buy": "購入"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "すべてのウォレットを見る",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "ブランドアセット",
       "theme": "テーマ",
       "developers": "開発者",
       "support": "サポート",
+      "resources": "",
       "profile": "Jumperプロフィール"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "ライトモード",
       "switchToDark": "ダークモード",
       "switchToSystem": "システム設定に準拠",
@@ -135,9 +142,20 @@
   },
   "missions": {
     "available": "利用可能なミッション",
-    "completed": "完了したミッション"
+    "completed": "完了したミッション",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "デスクトップでのみ利用可能です",
     "mobileDescription": "Jumper プロファイルページは、まだ小さな画面では利用できません。私たちは現在作業中です。",
     "level": "",

@@ -42,6 +42,7 @@ export const InstructionsAccordionItemMain = styled(Box)(() => ({
 
 export const InstructionsAccordionItemHeader = styled(Box)(() => ({
   display: 'flex',
+  alignItems: 'center',
 }));
 
 export const InstructionsAccordionItemMore = styled(Box)(({ theme }) => ({

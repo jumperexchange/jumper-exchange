@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "대시보드",
       "refuel": "가스",
       "buy": "매수"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "테마",
       "developers": "개발자",
       "support": "지원",
+      "resources": "",
       "profile": ""
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "라이트 모드로 전환",
       "switchToDark": "다크 모드로 전환",
       "switchToSystem": "",
@@ -135,9 +142,20 @@
   },
   "missions": {
     "available": "",
-    "completed": ""
+    "completed": "",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "",
     "mobileDescription": "",
     "level": "",

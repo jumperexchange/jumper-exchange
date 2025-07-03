@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Échanger",
+      "missions": "",
       "dashboard": "Tableau de bord",
       "refuel": "Gaz",
       "buy": "Acheter"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "Afficher tous les portefeuilles",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Actifs de marque",
       "theme": "Thème",
       "developers": "Développeurs",
-      "support": "",
+      "support": "Support",
+      "resources": "",
       "profile": "Profil Jumper"
     },
     "walletMenu": {
@@ -46,20 +50,23 @@
       "totalBalance": "Valeur total",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
-      "numberOfChains": ""
+      "numberOfChains": "{{numberOfChains}} chaînes"
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Basculer en mode clair",
       "switchToDark": "Basculer en mode sombre",
       "switchToSystem": "Basculer vers Système",
-      "lightModeDisabled": "",
-      "darkModeDisabled": "",
-      "systemModeDisabled": "",
-      "default": ""
+      "lightModeDisabled": "Le mode clair est désactivé pour ce thème",
+      "darkModeDisabled": "Le mode sombre est désactivé pour ce thème",
+      "systemModeDisabled": "Le mode système est désactivé pour ce thème",
+      "default": "Par défaut"
     },
     "developers": {
-      "github": "",
-      "documentation": ""
+      "github": "GitHub",
+      "documentation": "Documentation"
     }
   },
   "discordBanner": {
@@ -77,7 +84,7 @@
     "similarPosts": "Posts similaires",
     "goToArticle": "Aller à l'article",
     "openApp": "Ouvrir l’application",
-    "faq": "",
+    "faq": "FAQ",
     "jumperCta": "Essayez jumper.exchange",
     "copiedLink": "Lien copié",
     "shareLinkedIn": "Partager l'article sur LinkedIn",
@@ -90,14 +97,14 @@
     "subtitle": "Actuellement, seuls les USDC et USDT peuvent être transférés vers et depuis Solana."
   },
   "seiAlert": {
-    "title": "",
+    "title": "Liaison du portefeuille SEI EVM requise",
     "subtitle": "",
     "buttonText": ""
   },
   "abstractAlert": {
-    "title": "",
+    "title": "Ce portefeuille ne fonctionne que sur Abstract !",
     "subtitle": "",
-    "buttonText": ""
+    "buttonText": "Consulter la documentation"
   },
   "featureCard": {
     "learnMore": "Plus d'info"
@@ -131,31 +138,42 @@
     }
   },
   "promo": {
-    "new": ""
+    "new": "Nouveau"
   },
   "missions": {
     "available": "Missions Disponibles",
-    "completed": "Missions Complétées"
+    "completed": "Missions Complétées",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Disponible uniquement sur le bureau",
     "mobileDescription": "La page du profil de Jumper n'est pas encore disponible sur les petits écrans. Nous y travaillons.",
-    "level": "",
+    "level": "Niveau",
     "rank": "",
     "rankInfo": "",
-    "pointsInfo": "",
+    "pointsInfo": "L'XP est le score que vous obtenez en interagissant avec Jumper. Au fur et à mesure que vous gagnez des points d'XP, votre niveau augmente. L'XP provenant des transactions avec Jumper est mis à jour quotidiennement.",
     "levelInfo": "",
-    "copyAddress": "",
-    "shareProfile": "",
-    "open": "",
-    "rewards": ""
+    "copyAddress": "Copier l'adresse du portefeuille",
+    "shareProfile": "Partager le profil",
+    "open": "Ouvrir {{tool}}",
+    "rewards": "Récompenses gagnées"
   },
   "leaderboard": {
-    "title": "",
-    "description": "",
+    "title": "Classement",
+    "description": "Le classement est mis à jour quotidiennement.",
     "rankCtaConnect": "",
     "updatedLabel": "",
-    "connectWallet": ""
+    "connectWallet": "Connecter un portefeuille"
   },
   "completedMissionsInformation": {
     "title": "",
@@ -170,11 +188,11 @@
     "shortDate": ""
   },
   "tooltips": {
-    "tvl": "",
-    "apy": "",
-    "deposit": "",
-    "deposited": "",
-    "boostedApy": ""
+    "tvl": "Valeur totale des actifs crypto déposés sur ce marché.",
+    "apy": "Taux de rendement annuel attendu des jetons investis.",
+    "deposit": "Le jeton affiché est le jeton requis pour effectuer un dépôt sur ce marché.",
+    "deposited": "Montant que vous avez déposé sur ce marché.",
+    "boostedApy": "APY supplémentaire que vous obtenez en participant à cette campagne avec Jumper. Cet APY sera payé en {{token}}."
   },
   "widget": {
     "zap": {

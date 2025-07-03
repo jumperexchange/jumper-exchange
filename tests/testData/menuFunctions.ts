@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+import { itemInMenu } from './landingPageFunctions';
 
 export const MAIN_MENU = {
   BURGER_MENU_BUTTON: '#main-burger-menu-button',
@@ -10,7 +11,7 @@ export async function openOrCloseMainMenu(page) {
   await expect(page.locator(MAIN_MENU.MENU)).toBeVisible();
 }
 
-export async function openLeaderboardPage(page){
+export async function openLeaderboardPage(page) {
   await page.locator('#leaderboard-button').click();
 }
 
@@ -38,7 +39,7 @@ export async function sectionOnTheBlogPage(page, selectors: string[]) {
 }
 
 export async function expectBackgroundColorToHaveCss(page, rgb: string) {
-  const backgroundColor = await page.locator('xpath=/html/body/div[1]');
+  const backgroundColor = await page.locator('#background-root');
   expect(backgroundColor).toHaveCSS('background-color', rgb);
 }
 
@@ -47,11 +48,8 @@ export enum Theme {
   Dark = 'Dark',
 }
 export async function switchTheme(page, theme: Theme) {
-  const themeSelector = {
-    [Theme.Light]: '#theme-switch-tabs-0',
-    [Theme.Dark]: '#theme-switch-tabs-1',
-  };
-  await page.locator(themeSelector[theme]).click();
+  await itemInMenu(page, 'Theme');
+  await itemInMenu(page, theme);
   // Click the menu button using its coordinates
   const menuButton = await page.locator(MAIN_MENU.BURGER_MENU_BUTTON);
   const box = await menuButton.boundingBox();
@@ -59,4 +57,3 @@ export async function switchTheme(page, theme: Theme) {
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   }
 }
-

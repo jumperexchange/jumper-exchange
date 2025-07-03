@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Hoán đổi",
+      "missions": "",
       "dashboard": "Tổng quan",
       "refuel": "",
       "buy": "Mua"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "Xem tất cả ví",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Tài sản thương hiệu",
       "theme": "Giao diện",
       "developers": "Lập trình viên",
       "support": "Hỗ trợ",
+      "resources": "",
       "profile": "Hồ sơ Jumper"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Đổi sang Chế độ nền sáng",
       "switchToDark": "Chuyển sang Chế độ nền tối",
       "switchToSystem": "Chuyển sang hệ thống",
@@ -135,9 +142,20 @@
   },
   "missions": {
     "available": "Nhiệm vụ có sẵn",
-    "completed": "Nhiệm vụ đã hoàn thành"
+    "completed": "Nhiệm vụ đã hoàn thành",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Chỉ khả dụng trên Máy tính",
     "mobileDescription": "Trang Hồ sơ Jumper chưa có sẵn trên màn hình nhỏ. Chúng tôi đang phát triển.",
     "level": "",

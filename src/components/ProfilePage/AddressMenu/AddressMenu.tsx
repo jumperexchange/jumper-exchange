@@ -1,7 +1,7 @@
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
 import { MenuPaper, MenuPopper } from 'src/components/Menu/Menu.style';
-import { MenuItem } from 'src/components/Menu/MenuItem';
+import { MenuItem } from 'src/components/Menu/MenuItem/MenuItem';
 import { useAddressMenuContent } from '../useAddressMenuContent';
 import { AddressMenuList } from './AdressMenu.style';
 

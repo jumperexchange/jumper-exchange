@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Al-Sat",
+      "missions": "",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
       "buy": "Satın al"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "Tüm cüzdanları göster",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Varlıklar",
       "theme": "Tema",
       "developers": "Geliştiriciler",
       "support": "Destek",
+      "resources": "",
       "profile": "Jumper Profili"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
       "switchToSystem": "Sisteme geçiş yap",
@@ -135,9 +142,20 @@
   },
   "missions": {
     "available": "Mevcut Görevler",
-    "completed": "Tamamlanan Görevler"
+    "completed": "Tamamlanan Görevler",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
     "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz.",
     "level": "",

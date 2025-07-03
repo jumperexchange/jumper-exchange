@@ -17,6 +17,10 @@ export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click();
 }
 
+export async function itemInNavigation(page, option: string) {
+  await page.getByRole('link', { name: option }).click();
+}
+
 export async function tabInHeader(page, tabname1: string, tabname2: string) {
   const gasTab = await page.locator('#tab-key-1');
   const exchangeTab = await page.locator('#tab-key-0');
@@ -26,16 +30,20 @@ export async function tabInHeader(page, tabname1: string, tabname2: string) {
   await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
+export async function clickOnJumperLogo(page: Page) {
+  await page.locator('#jumper-logo').click();
+}
+
 export async function checkRoutesVisibility(
   page: Page,
   options: {
-     bestReturnShouldBeVisible: boolean;
+    bestReturnShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
   },
 ) {
   const { bestReturnShouldBeVisible, checkRelayRoute } = options;
 
-  if ( bestReturnShouldBeVisible) {
+  if (bestReturnShouldBeVisible) {
     const bestReturnLabel = await getElementByText(page, 'Best Return');
     await expect(bestReturnLabel).toBeVisible();
 

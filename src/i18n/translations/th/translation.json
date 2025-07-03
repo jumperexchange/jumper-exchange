@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "แลกเปลี่ยน",
+      "missions": "",
       "dashboard": "แผงหน้าจอ",
       "refuel": "แก็ส",
       "buy": "ซื้อ"
@@ -27,10 +28,13 @@
     },
     "seeAllWallets": "ดูกระเป๋าเงินทั้งหมด",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "มูลค่าสินทรัพท์ของแบรนด์",
       "theme": "ธีม",
       "developers": "ผู้พัฒนา",
       "support": "สนับสนุน",
+      "resources": "",
       "profile": "โปรไฟล์ Jumper"
     },
     "walletMenu": {
@@ -49,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "เปลี่ยนเป็นธีมสว่าง",
       "switchToDark": "เปลี่ยนเป็นธีมมืด",
       "switchToSystem": "เปลี่ยนไปยังระบบ",
@@ -135,9 +142,20 @@
   },
   "missions": {
     "available": "ภารกิจที่มีอยู่",
-    "completed": "ภารกิจที่สำเร็จแล้ว"
+    "completed": "ภารกิจที่สำเร็จแล้ว",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "เฉพาะบนคอมพิวเตอร์เท่านั้น",
     "mobileDescription": "หน้าโปรไฟล์ของ Jumper ยังไม่พร้อมใช้งานบนหน้าจอขนาดเล็ก  เรากำลังพัฒนาอยู่",
     "level": "",
