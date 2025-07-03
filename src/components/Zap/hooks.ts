@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { Quest } from 'src/types/loyaltyPass';
+import { capitalizeString } from 'src/utils/capitalizeString';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 // Move to generic types
@@ -121,7 +122,7 @@ export const useFormatDisplayZapData = (zap: Quest) => {
       partnerLink: partnerLinkHref
         ? {
             url: partnerLinkHref,
-            label: `Discover ${projectDataName}`,
+            label: `Discover ${capitalizeString(projectDataName ?? '')}`,
           }
         : undefined,
       chain: {
