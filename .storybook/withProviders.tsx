@@ -1,6 +1,9 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { ReactQueryProvider } from '../src/providers/ReactQueryProvider';
-import { ThemeProvider } from '../src/providers/ThemeProvider';
+import {
+  DefaultThemeProvider,
+  MUIThemeProvider,
+} from '../src/providers/ThemeProvider';
 import TranslationsProvider from '../src/providers/TranslationProvider';
 import { SettingsStoreProvider } from '../src/stores/settings';
 import initTranslations from '../src/app/i18n';
@@ -46,13 +49,15 @@ export const withProviders = (Story: () => ReactNode, context) => {
         locale={fallbackLng}
         resources={resources}
       >
-        <ThemeProvider themes={mockThemes} activeTheme={activeTheme}>
-          <SettingsStoreProvider>
-            <ThemeBridge theme={activeTheme}>
-              <Story {...context} />
-            </ThemeBridge>
-          </SettingsStoreProvider>
-        </ThemeProvider>
+        <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
+          <MUIThemeProvider>
+            <SettingsStoreProvider>
+              <ThemeBridge theme={activeTheme}>
+                <Story {...context} />
+              </ThemeBridge>
+            </SettingsStoreProvider>
+          </MUIThemeProvider>
+        </DefaultThemeProvider>
       </TranslationsProvider>
     </ReactQueryProvider>
   );
