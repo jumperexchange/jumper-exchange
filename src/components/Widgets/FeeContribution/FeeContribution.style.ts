@@ -107,7 +107,7 @@ export const ContributionCustomInput = styled(TextField, {
       border: 'none',
     },
     fontSize: '12px',
-    lineHeight: '16px',
+    lineHeight: '12px',
     fontWeight: 700,
     textAlign: 'center',
     color: (theme.vars || theme).palette.text.primary,
@@ -126,9 +126,9 @@ export const ContributionCustomInput = styled(TextField, {
   },
   '& .MuiInputAdornment-root': {
     fontSize: '12px',
-    marginRight: 0,
-    lineHeight: '100%',
     fontWeight: 700,
+    lineHeight: '12px',
+    marginRight: 0,
     color: (theme.vars || theme).palette.text.primary,
     ...((isFieldActive || !!value) && {
       padding: 0,
@@ -146,7 +146,7 @@ export const ContributionButton = styled(Button, {
   ({ theme }) => ({
     width: '100%',
     fontSize: '12px',
-    lineHeight: '16px',
+    lineHeight: '12px',
     fontWeight: 700,
     height: '32px',
     transition: 'background-color 250ms',
@@ -197,8 +197,8 @@ export const ContributionButtonCTA = styled(Button, {
 })<ContributionButtonCTAProps>(
   ({ theme }) => ({
     width: '100%',
-    fontSize: '14px',
-    lineHeight: '16px',
+    fontSize: '12px',
+    lineHeight: '12px',
     fontWeight: 700,
     height: '40px',
     gap: '8px',
