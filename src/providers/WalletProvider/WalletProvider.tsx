@@ -26,6 +26,7 @@ import { createConfig, EVM, Solana, UTXO, Sui } from '@lifi/sdk';
 import { publicRPCList } from '@/const/rpcList';
 import getApiUrl from '@/utils/getApiUrl';
 import { SuiProvider } from './SuiProvider';
+import { WalletManagementThemeProvider } from '@/providers/ThemeProvider';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
@@ -45,9 +46,11 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       <UTXOProvider>
         <SVMProvider>
           <SuiProvider>
-            <WalletMenuProvider>
-              <WalletTrackingProvider>{children}</WalletTrackingProvider>
-            </WalletMenuProvider>
+            <WalletManagementThemeProvider>
+              <WalletMenuProvider>
+                <WalletTrackingProvider>{children}</WalletTrackingProvider>
+              </WalletMenuProvider>
+            </WalletManagementThemeProvider>
           </SuiProvider>
         </SVMProvider>
       </UTXOProvider>
