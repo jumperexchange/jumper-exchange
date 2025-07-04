@@ -197,8 +197,8 @@ export const ContributionButtonCTA = styled(Button, {
 })<ContributionButtonCTAProps>(
   ({ theme }) => ({
     width: '100%',
-    fontSize: '12px',
-    lineHeight: '12px',
+    fontSize: '14px',
+    lineHeight: '16px',
     fontWeight: 700,
     height: '40px',
     gap: '8px',
