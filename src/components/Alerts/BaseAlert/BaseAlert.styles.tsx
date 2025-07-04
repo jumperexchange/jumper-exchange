@@ -2,12 +2,13 @@ import { CSSObject, styled } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export type BaseAlertVariant =
-  | 'default'
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'hint';
+export enum BaseAlertVariant {
+  Default = 'default',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
+  Hint = 'hint',
+}
 
 interface StyledBaseAlertProps extends BoxProps {
   variant?: BaseAlertVariant;
@@ -15,7 +16,7 @@ interface StyledBaseAlertProps extends BoxProps {
 
 export const StyledBaseAlert = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'variant',
-})<StyledBaseAlertProps>(({ theme, variant = 'default' }) => {
+})<StyledBaseAlertProps>(({ theme, variant = BaseAlertVariant.Default }) => {
   const variantStyles: Record<BaseAlertVariant, CSSObject> = {
     default: {
       padding: theme.spacing(2),

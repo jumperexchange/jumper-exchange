@@ -5,6 +5,7 @@ import { BaseAlert } from './BaseAlert';
 import EvStationRoundedIcon from '@mui/icons-material/EvStationRounded';
 import Switch from '@mui/material/Switch';
 import { Button } from 'src/components/Button';
+import { BaseAlertVariant } from './BaseAlert.styles';
 
 const meta = {
   component: BaseAlert,
@@ -24,7 +25,7 @@ export const BasicAlert: Story = {
 export const AlertWithTitleOnly: Story = {
   args: {
     title: '3.5% slippage',
-    variant: 'warning',
+    variant: BaseAlertVariant.Warning,
   },
 };
 
@@ -53,7 +54,7 @@ export const AlertWithActionButton: Story = {
   args: {
     description:
       'You’re using custom settings limiting the number of available routes.',
-    variant: 'info',
+    variant: BaseAlertVariant.Info,
     children: (
       <Button
         fullWidth

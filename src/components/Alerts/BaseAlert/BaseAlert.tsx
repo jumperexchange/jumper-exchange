@@ -23,7 +23,7 @@ interface BaseAlertProps extends PropsWithChildren {
 
 export const BaseAlert: FC<BaseAlertProps> = ({
   title,
-  variant = 'default',
+  variant = BaseAlertVariant.Default,
   headerAppend,
   headerPrepend,
   description,
@@ -39,14 +39,14 @@ export const BaseAlert: FC<BaseAlertProps> = ({
     }
 
     switch (variant) {
-      case 'warning': {
+      case BaseAlertVariant.Warning: {
         return <WarningRoundedIcon sx={{ height: 24, width: 24 }} />;
       }
-      case 'error': {
+      case BaseAlertVariant.Error: {
         return <ErrorRoundedIcon sx={{ height: 24, width: 24 }} />;
       }
-      case 'info':
-      case 'hint': {
+      case BaseAlertVariant.Info:
+      case BaseAlertVariant.Hint: {
         return (
           <InfoIcon
             sx={(theme) => ({
