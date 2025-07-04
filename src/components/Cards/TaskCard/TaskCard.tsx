@@ -7,6 +7,7 @@ import {
 } from './TaskCard.styles';
 import { Badge } from 'src/components/Badge/Badge';
 import { TaskCardSkeleton } from './TaskCardSkeleton';
+import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 
 interface TaskCardProps {
   title?: string;
@@ -34,7 +35,7 @@ export const TaskCard: FC<TaskCardProps> = ({
   return (
     <TaskContainer isActive={isActive} onClick={onClick}>
       <TaskHeaderContainer>
-        <Badge label={type} variant="alpha" />
+        <Badge label={type} variant={BadgeVariant.Alpha} />
         {statusBadge}
       </TaskHeaderContainer>
       <TaskTitle>{title}</TaskTitle>

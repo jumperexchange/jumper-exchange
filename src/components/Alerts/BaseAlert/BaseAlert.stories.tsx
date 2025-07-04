@@ -9,6 +9,12 @@ import { BaseAlertVariant } from './BaseAlert.styles';
 
 const meta = {
   component: BaseAlert,
+  argTypes: {
+    variant: {
+      control: { type: 'select' },
+      options: Object.values(BaseAlertVariant),
+    },
+  },
 } satisfies Meta<typeof BaseAlert>;
 
 export default meta;

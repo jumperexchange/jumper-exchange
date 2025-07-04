@@ -2,18 +2,24 @@ import { CSSObject, styled } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export type BadgeVariant =
-  | 'default'
-  | 'success'
-  | 'error'
-  | 'warning'
-  | 'alpha'
-  | 'disabled'
-  | 'primary'
-  | 'secondary'
-  | 'tertiary';
+export enum BadgeVariant {
+  Default = 'default',
+  Success = 'success',
+  Error = 'error',
+  Warning = 'warning',
+  Alpha = 'alpha',
+  Disabled = 'disabled',
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Tertiary = 'tertiary',
+}
 
-export type BadgeSize = 'sm' | 'md' | 'lg' | 'xl';
+export enum BadgeSize {
+  SM = 'sm',
+  MD = 'md',
+  LG = 'lg',
+  XL = 'xl',
+}
 
 interface StyledBadgeProps extends BoxProps {
   variant?: BadgeVariant;
@@ -22,7 +28,12 @@ interface StyledBadgeProps extends BoxProps {
 
 export const StyledBadge = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'size',
-})<StyledBadgeProps>(({ theme, variant = 'default', size = 'sm', onClick }) => {
+})<StyledBadgeProps>(({
+  theme,
+  variant = BadgeVariant.Default,
+  size = BadgeSize.SM,
+  onClick,
+}) => {
   const variantStyles: Record<BadgeVariant, CSSObject> = {
     default: {
       backgroundColor: (theme.vars || theme).palette.surface2.main,

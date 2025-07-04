@@ -5,6 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import React from 'react';
 import Stack from '@mui/material/Stack';
+import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 
 const meta: Meta<typeof TaskCard> = {
   title: 'Components/Cards/Mission task cards',
@@ -48,7 +49,11 @@ export const WithVerifiedStatus: Story = {
     title: 'Task with verified status',
     description: 'You have completed this task successfully.',
     statusBadge: (
-      <Badge label="Verified" variant="success" startIcon={<CheckIcon />} />
+      <Badge
+        label="Verified"
+        variant={BadgeVariant.Success}
+        startIcon={<CheckIcon />}
+      />
     ),
   },
 };
@@ -61,7 +66,7 @@ export const WithVerifyingStatus: Story = {
     statusBadge: (
       <Badge
         label="Verify"
-        variant="disabled"
+        variant={BadgeVariant.Disabled}
         startIcon={
           <RefreshIcon
             sx={{
