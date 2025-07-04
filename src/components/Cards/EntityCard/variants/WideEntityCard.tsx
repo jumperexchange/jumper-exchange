@@ -15,6 +15,7 @@ import {
   StyledRewardsContainer,
   StyledEntityCardLink,
   BaseSkeleton,
+  StyledEntityCardBadgeContainer,
 } from '../EntityCard.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { WideEntityCardSkeleton } from './WideEntityCardSkeleton';
@@ -22,6 +23,7 @@ import { ENTITY_CARD_SIZES } from '../constants';
 
 export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   imageUrl,
+  badge,
   title,
   description,
   rewardGroups,
@@ -37,17 +39,23 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   return (
     <StyledEntityCard
       sx={{
+        width: '100%',
         maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
       }}
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
         sx={{
+          width: '100%',
           maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
-          width: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT,
         }}
       >
+        {badge && (
+          <StyledEntityCardBadgeContainer>
+            {badge}
+          </StyledEntityCardBadgeContainer>
+        )}
         {imageUrl ? (
           <StyledEntityCardImage
             src={imageUrl}
@@ -82,7 +90,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledWideEntityCardTitle mt={2}>{title}</StyledWideEntityCardTitle>
-        {rewardGroups && (
+        {rewardGroups && !!Object.keys(rewardGroups).length && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;
