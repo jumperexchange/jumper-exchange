@@ -58,6 +58,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             // For a next/image we need to set height/width
             height={ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT}
             width={ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH}
+            // @Note need to add priority to the first loaded items as LCP is impacted
           />
         ) : (
           <BaseSkeleton
