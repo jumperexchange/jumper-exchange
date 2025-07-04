@@ -158,6 +158,10 @@ export interface TaskVerification {
   CampaignId?: string;
   uuid: string;
   hasTask: boolean;
+  isRequired?: boolean;
+  // @TODO this becomes required once strapi change is pushed
+  TaskType?: TaskType;
+  TaskWidgetInformation?: TaskWidgetInformationData;
 }
 
 export interface TaskVerificationWithApy extends TaskVerification {

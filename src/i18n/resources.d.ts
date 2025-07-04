@@ -160,6 +160,13 @@ interface Resources {
         daysLeft_one: '{{count}} day left';
         daysLeft_other: '{{count}} days left';
       };
+      tasks: {
+        type: '{{type}} task';
+        status: {
+          verify: 'Verify';
+          verified: 'Verified';
+        };
+      };
     };
     profile_page: {
       campaigns: 'Campaigns';

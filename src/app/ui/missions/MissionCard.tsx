@@ -11,22 +11,23 @@ import {
 import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { QuestData, StrapiResponseData } from 'src/types/strapi';
-import { useFormatDisplayMissionData } from './hooks';
 import { Link } from 'src/components/Link';
+import { BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 
 interface MissionCardProps {
   mission: StrapiResponseData<QuestData>[number];
 }
 
 export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
-  const missionDisplayData = useFormatDisplayMissionData(mission);
+  const missionDisplayData = useFormatDisplayQuestData(mission);
   const status = useMissionTimeStatus(mission.StartDate, mission.EndDate);
 
   const badge = useMemo(() => {
     if (!status) {
       return null;
     }
-    return <Badge label={status} />;
+    return <Badge label={status} variant={BadgeVariant.Alpha} />;
   }, [status]);
 
   const { trackEvent } = useUserTracking();

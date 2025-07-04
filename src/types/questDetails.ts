@@ -42,6 +42,8 @@ export interface QuestDetails {
   partner: { logo: string; name: string }[];
   marketIds?: string[];
   projectData: ProjectData;
+  // To be used in the future to point to local links
+  shouldOverrideWithInternalLink?: boolean;
 }
 
 export interface ExtendedQuest extends Quest {
