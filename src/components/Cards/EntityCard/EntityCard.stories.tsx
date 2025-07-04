@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EntityCard } from './EntityCard';
-import { Badge } from '@/components/Badge/Badge';
+import { Badge } from '../../Badge/Badge';
+import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 
 const meta: Meta<typeof EntityCard> = {
   title: 'Components/Cards/Mission cards',
@@ -90,7 +91,7 @@ const commonProps = {
     label: 'Visit Jumper Exchange',
   },
   onClick: () => console.log('Entity Card Clicked'),
-  badge: <Badge label="Active" />,
+  badge: <Badge label="Active" variant={BadgeVariant.Secondary} />,
 };
 
 export const Compact: Story = {
