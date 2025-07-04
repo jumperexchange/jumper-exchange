@@ -9,15 +9,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
 import { SectionTitle } from '../ProfilePage/ProfilePage.style';
 import { CarouselContainer, CarouselHeader } from './Carousel.style';
-import { DotsPaginationProps } from './DotsPagination';
-import { CarouselNavigationProps } from './Navigation';
+import {
+  CarouselNavigationBase,
+  CarouselPaginationBase,
+} from './Carousel.types';
 
 interface CarouselProps {
   title?: string;
   headerInfo?: ReactNode;
   sx?: CSSObject;
-  CarouselNavigation?: ComponentType<CarouselNavigationProps>;
-  CarouselPagination?: ComponentType<DotsPaginationProps>;
+  CarouselNavigation?: ComponentType<CarouselNavigationBase>;
+  CarouselPagination?: ComponentType<CarouselPaginationBase>;
   spaceBetween?: number;
   breakpoints?: {
     [width: number]: SwiperOptions;

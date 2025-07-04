@@ -1,10 +1,7 @@
 import { Box } from '@mui/material';
+import { CarouselPaginationBase } from './Carousel.types';
 
-export interface DotsPaginationProps {
-  className: string;
-}
-
-export const DotsPagination = ({ className }: DotsPaginationProps) => {
+export const DotsPagination = ({ className }: CarouselPaginationBase) => {
   return (
     <Box
       className={`swiper-pagination ${className}`}

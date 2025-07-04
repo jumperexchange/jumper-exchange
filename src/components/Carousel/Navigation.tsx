@@ -4,16 +4,9 @@ import {
   CarouselNavigationButton,
   CarouselNavigationContainer,
 } from './Carousel.style';
+import { CarouselNavigationBase } from './Carousel.types';
 
-export interface CarouselNavigationProps {
-  classNames: {
-    navigationPrev: string;
-    navigationNext: string;
-  };
-}
-
-export const CarouselNavigation = ({ classNames }: CarouselNavigationProps) => {
-  console.log('classNames', classNames);
+export const CarouselNavigation = ({ classNames }: CarouselNavigationBase) => {
   return (
     <CarouselNavigationContainer>
       <CarouselNavigationButton
