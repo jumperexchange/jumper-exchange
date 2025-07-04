@@ -50,38 +50,6 @@ export const getContributionFeeAddress = (
   return contributionFeeAddresses[chainId];
 };
 
-// @todo: Import directly from @lifi/widget once exported with next release
-export function formatInputAmount(
-  amount: string,
-  decimals: number | null = null,
-  returnInitial = false,
-) {
-  if (!amount) {
-    return amount;
-  }
-  let formattedAmount = amount.trim().replaceAll(',', '.');
-  if (formattedAmount.startsWith('.')) {
-    formattedAmount = `0${formattedAmount}`;
-  }
-  const parsedAmount = Number.parseFloat(formattedAmount);
-  if (Number.isNaN(Number(formattedAmount)) && !Number.isNaN(parsedAmount)) {
-    return parsedAmount.toString();
-  }
-  if (Number.isNaN(Math.abs(Number(formattedAmount)))) {
-    return '';
-  }
-  if (returnInitial) {
-    return formattedAmount;
-  }
-  let [integer, fraction = ''] = formattedAmount.split('.');
-  if (decimals !== null && fraction.length > decimals) {
-    fraction = fraction.slice(0, decimals);
-  }
-  integer = integer.replace(/^0+|-/, '');
-  fraction = fraction.replace(/(0+)$/, '');
-  return `${integer || (fraction ? '0' : '')}${fraction ? `.${fraction}` : ''}`;
-}
-
 export interface TransferResponse {
   transfers: StatusResponse[];
 }

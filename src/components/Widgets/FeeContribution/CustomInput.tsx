@@ -1,10 +1,10 @@
+import { formatInputAmount } from '@lifi/widget';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useState } from 'react';
 import { NUM_DECIMAL_PLACES, USD_CURRENCY_SYMBOL } from './constants';
 import { ContributionCustomInput } from './FeeContribution.style';
 import { FeeContributionBaseProps } from './FeeContribution.types';
-import { formatInputAmount } from './utils';
 
 interface CustomInputProps extends FeeContributionBaseProps {
   maxValue: number;
