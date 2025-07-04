@@ -5,6 +5,7 @@ import {
   MUIThemeProvider,
 } from '../src/providers/ThemeProvider';
 import TranslationsProvider from '../src/providers/TranslationProvider';
+import { WalletProvider } from '../src/providers/WalletProvider/WalletProvider';
 import { SettingsStoreProvider } from '../src/stores/settings';
 import initTranslations from '../src/app/i18n';
 import { defaultNS, fallbackLng, namespaces } from '../src/i18n';
@@ -50,13 +51,15 @@ export const withProviders = (Story: () => ReactNode, context) => {
         resources={resources}
       >
         <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
-          <MUIThemeProvider>
-            <SettingsStoreProvider>
-              <ThemeBridge theme={activeTheme}>
-                <Story {...context} />
-              </ThemeBridge>
-            </SettingsStoreProvider>
-          </MUIThemeProvider>
+          <WalletProvider>
+            <MUIThemeProvider>
+              <SettingsStoreProvider>
+                <ThemeBridge theme={activeTheme}>
+                  <Story {...context} />
+                </ThemeBridge>
+              </SettingsStoreProvider>
+            </MUIThemeProvider>
+          </WalletProvider>
         </DefaultThemeProvider>
       </TranslationsProvider>
     </ReactQueryProvider>
