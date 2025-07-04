@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 // import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
 import { useTheme } from '@mui/material';
+import { useMemo } from 'react';
 import { Carousel } from 'src/components/Carousel/Carousel';
 import { AvailableRewardsExtended } from 'src/types/merkl';
 import { ClaimingBox } from './ClaimingBox/ClaimingBox';
@@ -27,19 +28,21 @@ export const RewardsCarousel = ({
     (reward) => reward.amountToClaim > 0 && isMerklSuccess,
   );
 
-  if (rewardsWithAmount.length === 0) {
-    return null;
-  }
+  const items = useMemo(() => {
+    if (rewardsWithAmount.length === 0) {
+      return null;
+    }
 
-  const items = rewardsWithAmount.map((availableReward, i) => (
-    <ClaimingBox
-      key={`${i}-${availableReward.address}`}
-      amount={availableReward.amountToClaim}
-      availableReward={availableReward}
-    />
-  ));
+    return rewardsWithAmount.map((availableReward, i) => (
+      <ClaimingBox
+        key={`${i}-${availableReward.address}`}
+        amount={availableReward.amountToClaim}
+        availableReward={availableReward}
+      />
+    ));
+  }, []);
 
-  return (
+  return items ? (
     <RewardsCarouselContainer rewardsLength={rewardsWithAmount.length}>
       <RewardsCarouselTitle variant="titleSmall">
         {t('profile_page.rewards')}
@@ -60,5 +63,5 @@ export const RewardsCarousel = ({
         {items}
       </Carousel>
     </RewardsCarouselContainer>
-  );
+  ) : null;
 };
