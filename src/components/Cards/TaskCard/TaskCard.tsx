@@ -21,7 +21,7 @@ interface TaskCardProps {
 export const TaskCard: FC<TaskCardProps> = ({
   title,
   description,
-  isActive,
+  isActive = true,
   type = 'Bridge task',
   statusBadge,
   onClick,
