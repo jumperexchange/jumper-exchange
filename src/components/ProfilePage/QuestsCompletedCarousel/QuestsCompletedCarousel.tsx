@@ -3,11 +3,16 @@
 import type { PDA } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
+// import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
+import { Box } from '@mui/material';
+import { useMemo } from 'react';
+import { Carousel } from 'src/components/Carousel/Carousel';
+import { CarouselNavigation } from 'src/components/Carousel/Navigation';
 import { capitalizeString } from 'src/utils/capitalizeString';
+import IconHeader from '../Common/IconHeader';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
-import { QuestsOverviewContainer } from '../QuestsOverview/QuestsOverview.style';
+import { CompletedQuestContainer } from './QuestsCompletedCarousel.style';
 
 interface QuestCompletedListProps {
   pdas?: PDA[];
@@ -21,10 +26,6 @@ export const QuestsCompletedCarousel = ({
   const { account } = useAccount();
   const { t } = useTranslation();
 
-  const showVoidCardsAsFewPdas =
-    (!loading && pdas && pdas?.length < 6 && account?.address) ||
-    !account?.address;
-
   const today = new Date();
   // to do: activate when PDA were not done on time
   // const lastMonth = new Date(
@@ -34,19 +35,17 @@ export const QuestsCompletedCarousel = ({
   // );
   const updateDay = new Date(today.getFullYear(), today.getMonth(), 2);
 
-  return (
-    <QuestsOverviewContainer>
-      <CarouselContainer
-        title={t('missions.completed')}
-        updateTitle={`Updated: ${t('format.date', { value: updateDay })}`}
-        updateTooltip={t('completedMissionsInformation.description')}
-      >
-        {/** render quests */}
-        {!loading && pdas
-          ? pdas?.map((pda: PDA, index: number) => {
-              if (!pda?.reward) {
-                return null;
-              }
+  const carouselContent = useMemo(() => {
+    const showVoidCardsAsFewPdas =
+      (!loading && pdas && pdas?.length < 6 && account?.address) ||
+      !account?.address;
+
+    return [
+      // Render quests
+      ...(!loading && pdas
+        ? pdas
+            .filter((pda: PDA) => pda?.reward) // Filter out PDAs without rewards
+            .map((pda: PDA, index: number) => {
               const data = {
                 id: pda?.id,
                 completed: true,
@@ -59,24 +58,46 @@ export const QuestsCompletedCarousel = ({
                 <QuestCard key={`completed-mission-${index}`} data={data} />
               );
             })
-          : null}
-        {showVoidCardsAsFewPdas
-          ? Array.from(
-              { length: pdas && pdas?.length > 0 ? 4 - pdas.length : 4 },
-              () => 42,
-            ).map((_, idx) => (
-              <VoidQuestCard
-                key={'void-' + idx}
-                // connected={!!account?.address && account?.chainType === 'EVM'}
-              />
-            ))
-          : null}
-        {loading
-          ? Array.from({ length: 4 }, () => 42).map((_, idx) => (
-              <QuestCard key={'skeleton-' + idx} data={{}} />
-            ))
-          : null}
-      </CarouselContainer>
-    </QuestsOverviewContainer>
+        : []),
+      // Render void cards
+      ...(showVoidCardsAsFewPdas
+        ? Array.from({ length: 10 }, () => 42).map((_, idx) => (
+            <VoidQuestCard
+              key={'void-' + idx}
+              // connected={!!account?.address && account?.chainType === 'EVM'}
+            />
+          ))
+        : []),
+      // Render loading skeletons
+      ...(loading
+        ? Array.from({ length: 8 }, () => 42).map((_, idx) => (
+            <QuestCard key={'skeleton-' + idx} data={{ title: 'test' + idx }} />
+          ))
+        : []),
+    ];
+  }, [pdas, loading]);
+
+  const headerInfo = (
+    <Box
+      sx={(theme) => ({ [theme.breakpoints.down('sm')]: { display: 'none' } })}
+    >
+      <IconHeader
+        tooltipKey={`Updated: ${t('format.date', { value: updateDay })}`}
+        title={`Updated: ${t('format.date', { value: updateDay })}`}
+      />
+    </Box>
+  );
+
+  return (
+    <CompletedQuestContainer sx={{ position: 'relative' }}>
+      <Carousel
+        headerInfo={headerInfo}
+        CarouselNavigation={CarouselNavigation}
+        fixedSlideWidth={true}
+        title={t('missions.completed')}
+      >
+        {carouselContent}
+      </Carousel>
+    </CompletedQuestContainer>
   );
 };
