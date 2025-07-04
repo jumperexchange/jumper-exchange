@@ -22,24 +22,17 @@ import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
-import { createConfig, EVM, Solana, UTXO, Sui } from '@lifi/sdk';
-import { publicRPCList } from '@/const/rpcList';
-import getApiUrl from '@/utils/getApiUrl';
+import { createConfig } from '@lifi/sdk';
 import { SuiProvider } from './SuiProvider';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider';
+import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  createConfig({
-    apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
-    apiUrl: getApiUrl(),
-    providers: [EVM(), Solana(), UTXO(), Sui()],
-    integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-    rpcUrls: {
-      ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
-      ...publicRPCList,
-    },
-    preloadChains: true,
-  });
+  const { config } = useSdkConfigStore();
+
+  useEffect(() => {
+    createConfig(config);
+  }, [config]);
 
   return (
     <EVMProvider>

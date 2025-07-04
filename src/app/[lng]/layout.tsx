@@ -20,6 +20,7 @@ import { getSiteUrl } from '@/const/urls';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
+import { RouteListenerProvider } from 'src/providers/RouteListenerProvider';
 
 export const metadata: Metadata = {
   title,
@@ -190,6 +191,7 @@ export default async function RootLayout({
                 <WalletProvider>
                   <MUIThemeProvider>
                     <SettingsStoreProvider>
+                      <RouteListenerProvider />
                       <NavbarWrapper />
                       {children}
                     </SettingsStoreProvider>
