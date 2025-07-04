@@ -45,7 +45,6 @@ export const RewardsCarousel = ({
         {t('profile_page.rewards')}
       </RewardsCarouselTitle>
       <Carousel
-        hasNavigation={false}
         fixedSlideWidth={true}
         sx={{
           '.carousel-swiper': {

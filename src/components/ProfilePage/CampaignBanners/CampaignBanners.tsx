@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Carousel } from 'src/components/Carousel/Carousel';
+import { CarouselNavigation } from 'src/components/Carousel/Navigation';
 import type { CampaignWithBanner } from '../ProfilePage';
 import { CampaignBanner } from './CampaignBanner';
 import { CampaignBannersContainer } from './CampaignBanners.style';
@@ -27,7 +28,10 @@ export function CampaignBanners({
 
   return (
     <CampaignBannersContainer sx={{ position: 'relative' }}>
-      <Carousel title={t('profile_page.campaigns')} hasNavigation={true}>
+      <Carousel
+        title={t('profile_page.campaigns')}
+        CarouselNavigation={CarouselNavigation}
+      >
         {campaigns.map((campaign, index) => (
           <CampaignBanner
             key={`campaign-banner-${campaign.id}-${index}`}

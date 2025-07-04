@@ -1,6 +1,8 @@
 'use client';
 import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
 import { Carousel } from 'src/components/Carousel/Carousel';
+import { DotsPagination } from 'src/components/Carousel/DotsPagination';
+import { CarouselNavigation } from 'src/components/Carousel/Navigation';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
@@ -15,7 +17,12 @@ interface BlogCarouselProps {
 export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
   return (
     <BlogCarouselContainer>
-      <Carousel hasPagination={true} title={title} fixedSlideWidth={true}>
+      <Carousel
+        title={title}
+        fixedSlideWidth={true}
+        CarouselNavigation={CarouselNavigation}
+        CarouselPagination={DotsPagination}
+      >
         {data
           ? data.map((article, index) => (
               <BlogArticleCard

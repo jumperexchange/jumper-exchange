@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 // import { CarouselContainer } from 'src/components/Blog/BlogCarousel/CarouselContainer';
 import { Box } from '@mui/material';
 import { Carousel } from 'src/components/Carousel/Carousel';
+import { CarouselNavigation } from 'src/components/Carousel/Navigation';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import IconHeader from '../Common/IconHeader';
 import { QuestCard } from '../QuestCard/QuestCard';
@@ -86,6 +87,7 @@ export const QuestsCompletedCarousel = ({
     <CompletedQuestContainer sx={{ position: 'relative' }}>
       <Carousel
         headerInfo={headerInfo}
+        CarouselNavigation={CarouselNavigation}
         fixedSlideWidth={true}
         title={t('missions.completed')}
       >

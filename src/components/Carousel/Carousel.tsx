@@ -1,28 +1,23 @@
 'use client';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box, useMediaQuery, type CSSObject } from '@mui/material';
+import { useMediaQuery, type CSSObject } from '@mui/material';
 import useId from '@mui/utils/useId';
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { ComponentType, PropsWithChildren, ReactNode } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
 import { SectionTitle } from '../ProfilePage/ProfilePage.style';
-import {
-  CarouselContainer,
-  CarouselHeader,
-  CarouselNavigationButton,
-  CarouselNavigationContainer,
-} from './Carousel.style';
+import { CarouselContainer, CarouselHeader } from './Carousel.style';
+import { DotsPaginationProps } from './DotsPagination';
+import { CarouselNavigationProps } from './Navigation';
 
 interface CarouselProps {
   title?: string;
   headerInfo?: ReactNode;
   sx?: CSSObject;
-  hasNavigation?: boolean;
-  hasPagination?: boolean;
+  CarouselNavigation?: ComponentType<CarouselNavigationProps>;
+  CarouselPagination?: ComponentType<DotsPaginationProps>;
   spaceBetween?: number;
   breakpoints?: {
     [width: number]: SwiperOptions;
@@ -36,10 +31,10 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   title,
   headerInfo,
   children,
-  hasNavigation = true,
+  CarouselNavigation,
   breakpoints,
   spaceBetween = 32,
-  hasPagination = false,
+  CarouselPagination,
   fixedSlideWidth = false,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -55,7 +50,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   return (
     <CarouselContainer
       title={title}
-      hasPagination={hasPagination}
+      hasPagination={!!CarouselPagination}
       fixedSlideWidth={fixedSlideWidth}
       sx={sx}
     >
@@ -81,7 +76,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         slidesOffsetAfter={0}
         slidesOffsetBefore={0}
         pagination={
-          hasPagination
+          !!CarouselPagination
             ? {
                 clickable: true,
                 el: `.${classNames.pagination}`,
@@ -106,7 +101,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         grabCursor={true}
         cssMode={false}
         className="carousel-swiper"
-        hashNavigation={hasNavigation}
+        hashNavigation={!!CarouselNavigation}
         setWrapperSize={false}
         slidesPerView="auto"
         spaceBetween={spaceBetween}
@@ -122,39 +117,12 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
             </SwiperSlide>
           ))}
       </Swiper>
-
-      {hasNavigation && (
-        <CarouselNavigationContainer>
-          <CarouselNavigationButton
-            aria-label="previous"
-            className={classNames.navigationPrev}
-          >
-            <ChevronLeftIcon sx={{ width: '24px', height: '24px' }} />
-          </CarouselNavigationButton>
-          <CarouselNavigationButton
-            aria-label="next"
-            className={classNames.navigationNext}
-            sx={{
-              marginLeft: 1,
-            }}
-          >
-            <ChevronRightIcon sx={{ width: '24px', height: '24px' }} />
-          </CarouselNavigationButton>
-        </CarouselNavigationContainer>
-      )}
-
-      {hasPagination && (
-        <Box
-          className={`swiper-pagination ${classNames.pagination}`}
-          sx={{
-            position: 'absolute',
-            bottom: 1,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 10,
-          }}
-        />
-      )}
+      {CarouselNavigation ? (
+        <CarouselNavigation classNames={classNames} />
+      ) : null}
+      {CarouselPagination ? (
+        <CarouselPagination className={classNames.pagination} />
+      ) : null}
     </CarouselContainer>
   );
 };
