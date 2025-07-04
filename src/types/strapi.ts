@@ -290,6 +290,8 @@ interface TaskVerification {
   description: string;
   CTALink: string;
   CTAText: string;
+  TaskType?: string;
+  TaskWidgetInformation?: any;
 }
 
 /* Quest */
