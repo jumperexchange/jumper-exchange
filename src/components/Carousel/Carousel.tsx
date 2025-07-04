@@ -61,7 +61,11 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
           {title && (
             <SectionTitle
               variant="bodyXLarge"
-              sx={{ maxWidth: 'calc(100% - 88px)' }}
+              sx={{
+                ...(!!CarouselNavigation && {
+                  maxWidth: 'calc(100% - 88px)',
+                }),
+              }}
             >
               {title}
             </SectionTitle>
