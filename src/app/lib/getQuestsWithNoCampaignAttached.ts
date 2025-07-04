@@ -1,15 +1,21 @@
-import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
+import { PaginationProps, QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { QuestData, StrapiResponse } from 'src/types/strapi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
-export async function getQuestsWithNoCampaignAttached() {
+export async function getQuestsWithNoCampaignAttached(
+  pagination: PaginationProps = {
+    page: 1,
+    pageSize: 25,
+    withCount: false,
+  },
+) {
   const urlParams = new QuestStrapiApi()
     .filterByNoCampaignAttached()
     .filterByStartAndEndDate()
     .addPaginationParams({
-      page: 1,
-      pageSize: 25,
-      withCount: false,
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      withCount: pagination.withCount,
     });
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();

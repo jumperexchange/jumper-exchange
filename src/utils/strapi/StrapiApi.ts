@@ -12,7 +12,7 @@ interface GetStrapiBaseUrlProps {
     | 'campaigns';
 }
 
-interface PaginationProps {
+export interface PaginationProps {
   page: number;
   pageSize: number;
   withCount?: boolean;
