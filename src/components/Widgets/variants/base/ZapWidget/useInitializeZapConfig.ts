@@ -15,7 +15,6 @@ import { createWalletClient, custom, http, parseUnits } from 'viem';
 import { mainnet, optimism, base } from 'viem/chains';
 import { useAccount, useReadContracts, useConfig } from 'wagmi';
 import {
-  ProjectData,
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
   WalletWaitForCallsStatusArgs,
@@ -24,6 +23,7 @@ import {
   AbiInput,
 } from './types';
 import { Route } from '@lifi/sdk';
+import { ProjectData } from 'src/types/questDetails';
 
 export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);

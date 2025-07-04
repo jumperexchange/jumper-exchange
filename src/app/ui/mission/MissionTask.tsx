@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect } from 'react';
 import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useFormatDisplayTaskData } from './hooks';
 import { useVerifyTask } from 'src/hooks/tasksVerification/useVerifyTask';
 import { MissionTaskCard } from 'src/components/Cards/MissionTaskCard/MissionTaskCard';
 import { Badge } from 'src/components/Badge/Badge';
@@ -15,6 +14,7 @@ import {
 } from 'src/const/trackingKeys';
 import { useTranslation } from 'react-i18next';
 import { useMissionStore } from 'src/stores/mission';
+import { useFormatDisplayTaskData } from 'src/hooks/tasksVerification/useFormatDisplayTaskData';
 
 interface MissionTaskProps {
   task: TaskVerificationWithApy & {

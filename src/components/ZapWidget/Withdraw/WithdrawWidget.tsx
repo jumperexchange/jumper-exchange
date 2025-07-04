@@ -3,9 +3,9 @@ import { type ContractCall, type TokenAmount } from '@lifi/widget';
 import { useTheme } from '@mui/material';
 import { formatUnits } from 'viem';
 import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
-import type { ProjectData } from '../ZapWidget';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
+import { ProjectData } from 'src/types/questDetails';
 
 export interface WithdrawWidgetProps {
   poolName?: string;

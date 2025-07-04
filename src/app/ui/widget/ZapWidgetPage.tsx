@@ -1,5 +1,4 @@
 'use client';
-import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 import { ZapWidget } from 'src/components/ZapWidget/ZapWidget';
 import { useAccount } from '@lifi/wallet-management';
 import type { CustomInformation } from 'src/types/loyaltyPass';

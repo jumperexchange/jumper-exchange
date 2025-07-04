@@ -104,6 +104,18 @@ export type QuestAttributes = {
   tasks_verification: TaskVerification[];
 };
 
+export interface RewardGroup {
+  value: string | number;
+  label: string;
+  avatarUrl?: string;
+}
+
+export interface ParticipantChain {
+  avatarUrl: string;
+  label: string;
+  id: number;
+}
+
 export enum TaskType {
   Bridge = 'Bridge',
   Swap = 'Swap',

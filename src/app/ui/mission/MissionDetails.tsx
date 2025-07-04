@@ -1,11 +1,7 @@
 'use client';
 
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import {
-  useEnhancedTasks,
-  useFormatDisplayMissionData,
-  useSetMissionChainFromParticipants,
-} from './hooks';
+import { useEnhancedTasks, useSetMissionChainFromParticipants } from './hooks';
 import { FC, useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';
@@ -23,6 +19,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { BaseAlert } from 'src/components/Alerts/BaseAlert/BaseAlert';
 import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
+import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -34,8 +31,12 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     mission.StartDate ?? '',
     mission.EndDate ?? '',
   );
-  const missionDisplayData = useFormatDisplayMissionData(mission);
-  useSetMissionChainFromParticipants(missionDisplayData.participants);
+  const missionDisplayData = useFormatDisplayQuestData(mission);
+  const participants = useMemo(
+    () => missionDisplayData.participants,
+    [missionDisplayData.participants],
+  );
+  useSetMissionChainFromParticipants(participants);
   const router = useRouter();
   const { t } = useTranslation();
 

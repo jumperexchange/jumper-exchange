@@ -13,11 +13,11 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 import { EntityCard } from '../Cards/EntityCard/EntityCard';
-import { useFormatDisplayZapData } from './hooks';
 import { BaseAlert } from '../Alerts/BaseAlert/BaseAlert';
+import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 
 interface ZapDetailsProps {
-  market?: Quest;
+  market: Quest;
 }
 
 export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
@@ -25,7 +25,7 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
     market?.StartDate ?? '',
     market?.EndDate ?? '',
   );
-  const zapDisplayData = useFormatDisplayZapData(market as any);
+  const zapDisplayData = useFormatDisplayQuestData(market, true, AppPaths.Zap);
   const { t } = useTranslation();
   const router = useRouter();
 

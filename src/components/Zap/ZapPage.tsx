@@ -3,6 +3,7 @@ import { TwoColumnLayout } from '../TwoColumnLayout/TwoColumnLayout';
 import { ZapDetails } from './ZapDetails';
 import { ZapWidgetTabs } from './ZapWidgetTabs';
 import { ZapWidget } from './ZapWidget';
+import { notFound } from 'next/navigation';
 
 interface ZapPageProps {
   market?: Quest;
@@ -28,6 +29,10 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
   //     });
   //   }
   // }, [isSuccess]);
+
+  if (!market) {
+    return notFound();
+  }
 
   return (
     <TwoColumnLayout

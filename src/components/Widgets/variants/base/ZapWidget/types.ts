@@ -63,13 +63,3 @@ export interface CallsStatusResponse {
     status: 'success' | 'reverted';
   }>;
 }
-
-export interface ProjectData {
-  chain: string;
-  chainId: number;
-  project: string;
-  integrator: string;
-  address: string;
-  withdrawAddress?: string;
-  tokenAddress?: string;
-}
