@@ -1,5 +1,6 @@
+import config from '@/config/env-config';
 const getApiUrl = (): string => {
-  let apiUrl = process.env.NEXT_PUBLIC_LIFI_API_URL;
+  let apiUrl = config.NEXT_PUBLIC_LIFI_API_URL;
   if (typeof window === 'undefined') {
     return apiUrl;
   }

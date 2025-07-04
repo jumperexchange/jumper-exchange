@@ -3,6 +3,7 @@ import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
+import config from '@/config/env-config';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -17,7 +18,7 @@ export async function getLoyaltyPassDataQuery({
 }: {
   queryKey: (string | undefined)[];
 }) {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const walletAddress = queryKey[1];
   const res = await fetch(`${apiBaseUrl}/wallets/${walletAddress}/rewards`);
 

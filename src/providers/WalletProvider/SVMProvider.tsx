@@ -10,6 +10,7 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import { WalletConnectWalletAdapter } from '@walletconnect/solana-adapter';
 import { type FC, type PropsWithChildren } from 'react';
+import config from '@/config/env-config';
 
 const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
 /**
@@ -28,7 +29,7 @@ const wallets: Adapter[] = [
   new WalletConnectWalletAdapter({
     network: WalletAdapterNetwork.Mainnet,
     options: {
-      projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+      projectId: config.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
     },
   }),
   new CoinbaseWalletAdapter(),

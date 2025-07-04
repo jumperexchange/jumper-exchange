@@ -5,6 +5,7 @@ import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
+import config from '@/config/env-config';
 
 export interface UseMemelistProps {
   tokens?: StrapiTokenInfo[];
@@ -21,7 +22,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
   const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
   //filter url
   apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');
-  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken = getStrapiApiAccessToken();
   const { data, isSuccess } = useQuery({

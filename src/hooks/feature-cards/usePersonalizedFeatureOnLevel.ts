@@ -6,6 +6,7 @@ import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
+import config from '@/config/env-config';
 
 export interface UsePersonalizedFeatureOnLevelProps {
   featureCards: StrapiFeatureCardData[] | undefined;
@@ -38,7 +39,7 @@ export const usePersonalizedFeatureOnLevel = ({
   apiUrl.searchParams.set('filters[minlevel][$lte]', String(level));
   apiUrl.searchParams.set('filters[maxLevel][$gte]', String(level));
 
-  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
   const apiAccesToken = getStrapiApiAccessToken();
   const { data, isSuccess } = useQuery({

@@ -5,11 +5,9 @@ import type {
   ComponentsVariants,
   CssVarsTheme,
 } from '@mui/material';
-import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
-import { Channels } from 'node_modules/@mui/material/esm/styles/createPalette';
+import { colorChannel } from '@mui/system';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
@@ -1148,8 +1146,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       },
     },
   });
-
-const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
 
 export const lightTheme = themeCustomized;
 export const darkTheme = themeCustomized;

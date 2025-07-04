@@ -11,6 +11,7 @@ import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
+import config from '@/config/env-config';
 
 export interface UseStrapiProps<T> {
   data: StrapiResponseData<T>;
@@ -178,9 +179,9 @@ export const useStrapi = <T>({
     }
   }
   // show drafts ONLY on development env
-  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
-  process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
+  config.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('pagination[pageSize]', '50');
 
   // use local strapi on develop || prod strapi
