@@ -152,6 +152,13 @@
       "hoursLeft_other": "",
       "daysLeft_one": "",
       "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
     }
   },
   "profile_page": {
