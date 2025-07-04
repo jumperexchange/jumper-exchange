@@ -10,6 +10,7 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking';
+import { WalletManagementThemeProvider } from '@/providers/ThemeProvider/WalletManagementThemeProvider';
 import getApiUrl from '@/utils/getApiUrl';
 import { createConfig, EVM, Solana, Sui, UTXO } from '@lifi/sdk';
 import type {
@@ -46,9 +47,11 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       <UTXOProvider>
         <SVMProvider>
           <SuiProvider>
-            <WalletMenuProvider>
-              <WalletTrackingProvider>{children}</WalletTrackingProvider>
-            </WalletMenuProvider>
+            <WalletManagementThemeProvider>
+              <WalletMenuProvider>
+                <WalletTrackingProvider>{children}</WalletTrackingProvider>
+              </WalletMenuProvider>
+            </WalletManagementThemeProvider>
           </SuiProvider>
         </SVMProvider>
       </UTXOProvider>

@@ -112,7 +112,7 @@ export const useWidgetConfig = ({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     const mergedWidgetTheme = deepmerge(

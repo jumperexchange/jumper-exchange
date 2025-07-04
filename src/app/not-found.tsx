@@ -6,7 +6,10 @@ import { NavbarButtons } from '@/components/Navbar/NavbarButtons';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
 import config from '@/config/env-config';
 import { fonts } from '@/fonts/fonts';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import {
+  MUIThemeProvider,
+  DefaultThemeProvider,
+} from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { Link } from '@mui/material';
@@ -47,26 +50,28 @@ export default async function NotFound() {
       <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <ReactQueryProvider>
-            <ThemeProvider themes={[]}>
-              <TranslationsProvider
-                namespaces={[defaultNS]}
-                locale={fallbackLng}
-                resources={resources}
-              >
-                <SettingsStoreProvider welcomeScreenClosed={true}>
-                  <WalletProvider>
-                    <Background />
-                    <NavbarContainer enableColorOnDark>
-                      <Link component={RouterLink} href="/">
-                        <Logo variant="default" />
-                      </Link>
-                      <NavbarButtons />
-                    </NavbarContainer>
-                    <NotFoundComponent />
-                  </WalletProvider>
-                </SettingsStoreProvider>
-              </TranslationsProvider>
-            </ThemeProvider>
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={fallbackLng}
+              resources={resources}
+            >
+              <DefaultThemeProvider themes={[]}>
+                <WalletProvider>
+                  <MUIThemeProvider>
+                    <SettingsStoreProvider welcomeScreenClosed={true}>
+                      <Background />
+                      <NavbarContainer enableColorOnDark>
+                        <Link component={RouterLink} href="/">
+                          <Logo variant="default" />
+                        </Link>
+                        <NavbarButtons />
+                      </NavbarContainer>
+                      <NotFoundComponent />
+                    </SettingsStoreProvider>
+                  </MUIThemeProvider>
+                </WalletProvider>
+              </DefaultThemeProvider>
+            </TranslationsProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>
       </body>
