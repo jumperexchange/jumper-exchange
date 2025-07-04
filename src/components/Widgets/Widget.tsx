@@ -24,7 +24,9 @@ import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useWidgetSelection } from 'src/hooks/useWidgetSelection';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { themeAllowChains, WidgetWrapper } from '.';
+import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 
 export function Widget({
@@ -53,7 +55,7 @@ export function Widget({
     configThemeChains: configTheme?.chains,
   });
   const router = useRouter();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
 
@@ -62,6 +64,9 @@ export function Widget({
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
+  const contributionDisplayed = useContributionStore(
+    (state) => state.contributionDisplayed,
+  );
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
@@ -244,12 +249,16 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
+      contributionDisplayed={contributionDisplayed}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}
           config={config}
           formRef={formRef}
+          feeConfig={{
+            _vcComponent: () => <FeeContribution translationFn={t} />,
+          }}
         />
       </ClientOnly>
     </WidgetWrapper>
