@@ -1,9 +1,10 @@
 import { WidgetEvents } from '@/components/Widgets';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
+import type { Route, TokenAmount, WidgetConfig } from '@lifi/widget';
 import {
   ChainType,
+  CustomSubvariant,
   DisabledUI,
   HiddenUI,
   LiFiWidget,
@@ -11,34 +12,33 @@ import {
   useWidgetEvents,
   WidgetEvent,
   WidgetSubvariant,
-  CustomSubvariant,
 } from '@lifi/widget';
 import type { Breakpoint } from '@mui/material';
 import { Box, Skeleton } from '@mui/material';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useThemeStore } from 'src/stores/theme';
 import {
-  formatUnits,
-  http,
+  AbiFunction,
   createWalletClient,
   custom,
+  formatUnits,
+  http,
   parseUnits,
-  AbiFunction,
 } from 'viem';
-import { optimism, base, mainnet } from 'viem/chains';
-import { useReadContracts, useAccount, useConfig } from 'wagmi';
+import { base, mainnet, optimism } from 'viem/chains';
+import { useAccount, useConfig, useReadContracts } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
+import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 import type { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
 import {
   createMeeClient,
-  toMultichainNexusAccount,
-  runtimeERC20BalanceOf,
   greaterThanOrEqualTo,
+  runtimeERC20BalanceOf,
+  toMultichainNexusAccount,
   type WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
-import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 import { useTranslation } from 'react-i18next';
 
 // Type definitions for better type safety

@@ -27,6 +27,7 @@ import { publicRPCList } from '@/const/rpcList';
 import getApiUrl from '@/utils/getApiUrl';
 import { SuiProvider } from './SuiProvider';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider';
+import { ClientOnly } from 'src/components/ClientOnly';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
@@ -76,6 +77,17 @@ const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const WalletTrackingProvider: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <>
+      {children}
+      <ClientOnly>
+        <WalletTrackingClient />
+      </ClientOnly>
+    </>
+  );
+};
+
+const WalletTrackingClient = () => {
   const walletManagementEvents = useWalletManagementEvents();
   const { trackEvent } = useUserTracking();
 
@@ -105,5 +117,5 @@ const WalletTrackingProvider: FC<PropsWithChildren> = ({ children }) => {
       );
   }, [trackEvent, walletManagementEvents]);
 
-  return children;
+  return null;
 };
