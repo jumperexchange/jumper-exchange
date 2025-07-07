@@ -72,3 +72,9 @@ export interface TransformedRoute {
   [TrackingEventParameter.Time]: number;
   [TrackingEventParameter.Slippage]: number;
 }
+
+/**
+ * Represents an EVM-compatible hexadecimal address (0x-prefixed)
+ * Used for fee recipient addresses and token contract addresses
+ */
+export type EVMAddress = `0x${string}`;

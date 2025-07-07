@@ -194,6 +194,19 @@ interface Resources {
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
+    contribution: {
+      title: 'Contribute';
+      custom: 'Custom';
+      confirm: 'Confirm';
+      thankYou: 'Thank you!';
+      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
+      error: {
+        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
+        errorSending: 'Error sending contribution:';
+        invalidTokenPrice: 'Invalid token price';
+        noFeeAddress: 'No contribution fee address configured for this chain.';
+      };
+    };
     tooltips: {
       tvl: 'Total value of crypto assets deposited in this market.';
       apy: 'Expected yearly return rate of the tokens invested.';
