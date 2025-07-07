@@ -200,6 +200,7 @@ class QuestParams {
     'tasks_verification.TaskWidgetInformation.destinationChain',
     'tasks_verification.TaskWidgetInformation.destinationToken',
     'tasks_verification.TaskWidgetInformation.toAddress',
+    'tasks_verification.TaskWidgetInformation.inputs',
   ];
 
   constructor(apiUrl: URL) {

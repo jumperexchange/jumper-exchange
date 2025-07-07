@@ -8,8 +8,9 @@ import {
   type TaskVerificationWithApy,
 } from 'src/types/loyaltyPass';
 
-export const useSetMissionChainFromParticipants = (
+export const useSyncMissionDefaultsFromChains = (
   participatingChains?: ParticipantChain[],
+  missionId?: string,
 ) => {
   const { setMissionDefaults } = useMissionStore();
 
@@ -28,9 +29,9 @@ export const useSetMissionChainFromParticipants = (
 
   useEffect(() => {
     if (participatingChainsIds) {
-      setMissionDefaults(participatingChainsIds);
+      setMissionDefaults(participatingChainsIds, missionId);
     }
-  }, [participatingChainsIds, setMissionDefaults]);
+  }, [participatingChainsIds, missionId, setMissionDefaults]);
 };
 
 export const useEnhancedTasks = (
@@ -56,13 +57,14 @@ export const useEnhancedTasks = (
     setIsMissionCompleted,
     setCurrentActiveTask,
     setCurrentTaskWidgetFormParams,
+    setCurrentTaskInstructionParams,
     currentActiveTaskId,
   } = useMissionStore();
 
   const handleSetActiveTask = useCallback(
     (task: TaskVerificationWithApy) => {
       const taskType = task.TaskType ?? TaskType.Bridge;
-      const widgetFormParams = task.TaskWidgetInformation ?? {};
+      const widgetParams = task.TaskWidgetInformation ?? {};
 
       // @TODO enable once the lifi config store is available
       //   if (taskType === TaskType.Zap && configType !== 'zap') {
@@ -74,17 +76,26 @@ export const useEnhancedTasks = (
       setCurrentActiveTask(task.uuid, taskType);
 
       setCurrentTaskWidgetFormParams({
-        sourceChain: widgetFormParams.sourceChain ?? undefined,
-        sourceToken: widgetFormParams.sourceToken ?? undefined,
-        destinationChain: widgetFormParams.destinationChain ?? undefined,
-        destinationToken: widgetFormParams.destinationToken ?? undefined,
-        toAddress: widgetFormParams.toAddress ?? undefined,
-        fromAmount: widgetFormParams.fromAmount ?? undefined,
+        sourceChain: widgetParams.sourceChain ?? undefined,
+        sourceToken: widgetParams.sourceToken ?? undefined,
+        destinationChain: widgetParams.destinationChain ?? undefined,
+        destinationToken: widgetParams.destinationToken ?? undefined,
+        toAddress: widgetParams.toAddress ?? undefined,
+        fromAmount: widgetParams.fromAmount ?? undefined,
+      });
+
+      setCurrentTaskInstructionParams({
+        taskTitle: widgetParams.title ?? undefined,
+        taskDescription: widgetParams.description ?? undefined,
+        taskCTAText: widgetParams.CTAText ?? undefined,
+        taskCTALink: widgetParams.CTALink ?? undefined,
+        taskInputs: widgetParams.inputs ?? undefined,
       });
     },
     [
       setCurrentActiveTask,
       setCurrentTaskWidgetFormParams,
+      setCurrentTaskInstructionParams,
       //   configType,
       //   setConfigType,
     ],

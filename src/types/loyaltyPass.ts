@@ -125,6 +125,11 @@ export enum TaskType {
   Zap = 'Zap',
 }
 
+export interface TaskWidgetInformationInputData {
+  inputId: string;
+  inputPlaceholder: string;
+}
+
 export interface TaskWidgetInformationChainData {
   chainId: string;
   chainKey: string;
@@ -147,6 +152,11 @@ export interface TaskWidgetInformationData {
   destinationToken?: TaskWidgetInformationTokenData;
   toAddress?: TaskWidgetInformationWalletData;
   fromAmount?: string;
+  title?: string;
+  description?: string;
+  CTALink?: string;
+  CTAText?: string;
+  inputs?: TaskWidgetInformationInputData[];
 }
 
 export interface TaskVerification {

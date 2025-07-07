@@ -42,8 +42,6 @@ export const MissionTask: FC<MissionTaskProps> = ({
 
   const { trackEvent } = useUserTracking();
 
-  // @TODO add tracking
-
   const { mutate, isSuccess, isPending, isError, reset } = useVerifyTask();
 
   const handleVerifyTask = useCallback(

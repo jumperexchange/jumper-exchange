@@ -20,6 +20,7 @@ interface ButtonProps {
   children?: ReactNode;
   disabled?: boolean;
   size?: ButtonSize;
+  type?: 'button' | 'reset' | 'submit';
 }
 
 export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -32,6 +33,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   muiVariant,
   disabled,
   size,
+  type = 'button',
 }: ButtonProps) => {
   let output: ReactNode;
 
@@ -46,6 +48,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
           sx={styles}
+          type={type}
         >
           {children}
         </ButtonPrimary>
@@ -61,6 +64,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
           sx={styles}
+          type={type}
         >
           {children}
         </ButtonSecondary>
@@ -76,6 +80,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
           sx={styles}
+          type={type}
         >
           {children}
         </ButtonTransparent>
@@ -91,6 +96,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={onClick}
           variant={muiVariant}
           sx={styles}
+          type={type}
         >
           {children}
         </ButtonPrimary>
