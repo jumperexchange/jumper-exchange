@@ -43,7 +43,7 @@ export const ModalMenuPage = ({
                 marginLeft: 0,
                 color: (theme.vars || theme).palette.text.primary,
                 '&:hover': {
-                  backgroundColor: theme.palette.grey[100],
+                  backgroundColor: (theme.vars || theme).palette.grey[100],
                 },
               })}
               onClick={(event) => {

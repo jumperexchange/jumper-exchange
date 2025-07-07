@@ -44,17 +44,17 @@ export default function WalletHackedStepper({
         sx={(theme) => ({
           ...(showError && {
             '& .MuiStepLabel-iconContainer.Mui-completed': {
-              backgroundColor: theme.palette.white.main,
+              backgroundColor: (theme.vars || theme).palette.white.main,
               svg: {
-                color: theme.palette.grey[400],
+                color: (theme.vars || theme).palette.grey[400],
               },
             },
           }),
           '& .MuiStepLabel-iconContainer:not(.Mui-completed)': {
             ...(!showError && { display: 'none' }),
-            backgroundColor: theme.palette.white.main,
+            backgroundColor: (theme.vars || theme).palette.white.main,
             svg: {
-              color: theme.palette.error.main,
+              color: (theme.vars || theme).palette.error.main,
             },
           },
         })}
