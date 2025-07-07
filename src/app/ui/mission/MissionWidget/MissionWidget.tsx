@@ -9,6 +9,7 @@ import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkele
 import Box from '@mui/material/Box';
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
 import { MissionZapDepositWidget } from 'src/components/Widgets/variants/mission/MissionZapDepositWidget';
+import { MissionComplete } from './MissionComplete';
 // import { MissionZapWithdrawWidget } from 'src/components/Widgets/variants/mission/MissionZapWithdrawWidget';
 
 export interface MissionWidgetProps {
@@ -19,7 +20,11 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
   customInformation,
 }) => {
   // @Note create factory for displaying the mission completed screen instead of the widget
-  const { currentActiveTaskType } = useMissionStore();
+  const { currentActiveTaskType, isMissionCompleted } = useMissionStore();
+
+  if (isMissionCompleted) {
+    return <MissionComplete />;
+  }
 
   if (currentActiveTaskType === TaskType.Zap && !customInformation) {
     return <WidgetSkeleton />;
