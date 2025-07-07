@@ -5,7 +5,7 @@ import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
 import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 import { MissionDetails } from './MissionDetails';
-import { MissionWidget } from './MissionWidget';
+import { MissionWidget } from './MissionWidget/MissionWidget';
 import { TwoColumnLayout } from 'src/components/TwoColumnLayout/TwoColumnLayout';
 
 interface MissionPageProps {
