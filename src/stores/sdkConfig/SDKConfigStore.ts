@@ -39,12 +39,12 @@ const baseConfig: SDKConfig = {
   preloadChains: true,
 };
 
-const zapConfig: Partial<SDKConfig> = {
-  providers: [EVM(), Solana(), UTXO()],
-};
+const defaultConfig: Partial<SDKConfig> = {};
+
+const zapConfig: Partial<SDKConfig> = {};
 
 const partialConfigMap = {
-  [ConfigType.Default]: {},
+  [ConfigType.Default]: defaultConfig,
   [ConfigType.Zap]: zapConfig,
 } as const;
 
