@@ -7,15 +7,12 @@ import type { LanguageKey } from '@/types/i18n';
 import getApiUrl from '@/utils/getApiUrl';
 import { ChainId } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
-  useWidgetEvents,
-  WidgetEvent,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -24,9 +21,8 @@ import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
-import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
+import { useWidgetSelection } from 'src/hooks/useWidgetSelection';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { themeAllowChains, WidgetWrapper } from '.';
 import type { WidgetProps } from './Widget.types';
@@ -44,14 +40,23 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { destinationChainToken, toAddress } = useUrlParams();
-  const widgetEvents = useWidgetEvents();
-  const router = useRouter();
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [configTheme, widgetTheme] = useThemeStore((state) => [
+    state.configTheme,
+    state.widgetTheme,
+  ]);
   const formRef = useRef<FormState>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { bridgeConditions } = useWidgetSelection({
+    formRef,
+    wrapperRef,
+    allowToChains,
+    configThemeChains: configTheme?.chains,
+  });
+  const router = useRouter();
   const { i18n } = useTranslation();
   const { account } = useAccount();
+  const isConnectedAGW = account?.connector?.name === 'Abstract';
+
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
@@ -60,98 +65,10 @@ export function Widget({
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const widgetTheme = useMemo(
-    () =>
-      getWidgetThemeV2(
-        mode === 'system' || !mode
-          ? prefersDarkMode
-            ? 'dark'
-            : 'light'
-          : mode,
-      ),
-    [mode, prefersDarkMode],
-  );
-
-  const isConnectedAGW = account?.connector?.name === 'Abstract';
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
   }, [router]);
-
-  useEffect(() => {
-    // Our partners that want to onboard on pre-filled address can still do it
-    if (
-      !wrapperRef.current ||
-      configTheme?.chains?.to?.allow?.includes(2741) ||
-      allowToChains?.includes(2741)
-    ) {
-      return;
-    }
-    // Clear toAddress URL parameter once the widget is mounted
-    // Uses MutationObserver to detect when the widget content is loaded
-    // since it's rendered dynamically inside WidgetWrapper
-    const observer = new MutationObserver(() => {
-      if (formRef.current && isConnectedAGW) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
-    observer.observe(wrapperRef.current, {
-      childList: true,
-      subtree: true,
-    });
-    return () => observer.disconnect();
-  }, [allowToChains, configTheme?.chains?.to?.allow]);
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (formRef.current) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
-
-    if (
-      configTheme?.integrator === 'abs.jmp.exchange' &&
-      isConnectedAGW &&
-      toAddress === account.address
-    ) {
-      formRef.current?.setFieldValue('toAddress', undefined, {
-        setUrlSearchParam: true,
-      });
-    }
-
-    const handleAGW = async (fieldChange: FormFieldChanged) => {
-      if (
-        isConnectedAGW &&
-        fieldChange?.fieldName === 'toAddress' &&
-        fieldChange?.newValue === account.address
-      ) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
-    };
-
-    widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
-    return () => {
-      widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
-    };
-  }, [
-    account.address,
-    account.chainId,
-    configTheme?.integrator,
-    destinationChainToken,
-    isConnectedAGW,
-    toAddress,
-    widgetEvents,
-  ]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
@@ -217,7 +134,7 @@ export function Widget({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     return {
@@ -238,12 +155,7 @@ export function Widget({
         from: isConnectedAGW
           ? { allow: [ChainId.ABS] }
           : { allow: allowChains || allowedChainsByVariant },
-        to:
-          isConnectedAGW && configTheme?.integrator !== 'abs.jmp.exchange'
-            ? { allow: [ChainId.ABS] }
-            : allowToChains
-              ? { allow: allowToChains }
-              : undefined,
+        to: allowToChains ? { allow: allowToChains } : undefined,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -257,16 +169,15 @@ export function Widget({
       },
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
+        ...(bridgeConditions.shouldHideToAddress ? [HiddenUI.ToAddress] : []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      requiredUI:
-        // if AGW connected and destinationChainToken is NOT ABS, require toAddress
-        isConnectedAGW && destinationChainToken.chainId !== ChainId.ABS
-          ? ['toAddress']
-          : undefined,
+      requiredUI: bridgeConditions.shouldRequireToAddress
+        ? ['toAddress']
+        : undefined,
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
@@ -321,10 +232,10 @@ export function Widget({
     allowToChains,
     i18n.language,
     i18n.languages,
-    destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     integratorStringByType,
+    bridgeConditions,
   ]);
 
   return (

@@ -33,24 +33,22 @@ import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 
 interface BlogArticleProps {
   article: BlogArticleData;
-  baseUrl?: string;
   id?: number;
 }
 
-export const BlogArticle = ({
-  article,
-  baseUrl,
-}: BlogArticleProps) => {
+export const BlogArticle = ({ article }: BlogArticleProps) => {
   const theme = useTheme();
   const {
     Subtitle: subtitle,
     Title: title,
     Content: content,
+    WordCount: wordCount,
     Slug: slug,
     author,
     publishedAt,
@@ -59,8 +57,9 @@ export const BlogArticle = ({
     tags,
     Image: image,
   } = article;
+  const baseUrl = getStrapiBaseUrl();
   const id = article.id;
-  const minRead = readingTime(content);
+  const minRead = readingTime(wordCount);
   const { t } = useTranslation();
 
   const mainTag = tags[0];
@@ -72,7 +71,9 @@ export const BlogArticle = ({
           <BlogArticleTopHeader>
             {tags?.[0]?.Title ? (
               <Tag
-                sx={mainTag?.TextColor ? { color: mainTag.TextColor } : undefined}
+                sx={
+                  mainTag?.TextColor ? { color: mainTag.TextColor } : undefined
+                }
                 backgroundColor={mainTag?.BackgroundColor}
                 component="span"
                 variant="bodyMediumStrong"
@@ -180,11 +181,7 @@ export const BlogArticle = ({
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <CustomRichBlocks
-              id={id}
-              baseUrl={baseUrl}
-              content={content}
-            />
+            <CustomRichBlocks id={id} content={content} />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}

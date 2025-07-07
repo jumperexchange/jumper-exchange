@@ -1,32 +1,19 @@
+import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 import {
   type ContractCall,
   type TokenAmount,
   useFieldActions,
 } from '@lifi/widget';
-import {
-  Avatar as MuiAvatar,
-  Avatar,
-  Badge,
-  Box,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import {
-  DEPOSIT_TOOLTIP,
-  DEPOSITED_TOOLTIP,
-  TVL_TOOLTIP,
-  APY_TOOLTIP,
-} from 'src/components/Berachain/const/title';
 import { useTranslation } from 'react-i18next';
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { ColoredStatBox } from './DepositCard.style';
 import DigitOnlyCard from './Stat/DigitOnlyCard';
 import DigitTextCard from './Stat/DigitTextCard';
-import { ColoredStatBox } from './DepositCard.style';
-import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 
 export interface ItemPriceProps {
+  poolName: string;
   token: TokenAmount;
   underlyingToken: TokenAmount;
   contractCalls?: ContractCall[];
@@ -46,6 +33,7 @@ export interface ItemPriceProps {
 }
 
 export const DepositCard: React.FC<ItemPriceProps> = ({
+  poolName,
   token,
   underlyingToken,
   contractCalls,
@@ -56,7 +44,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
 }) => {
   const { setFieldValue } = useFieldActions();
 
-  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds);
+  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [chainId]);
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -77,14 +65,8 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
   const ANALYTICS_TOOLTIP = useMemo(() => {
     return analytics?.boosted_apy
       ? `${analytics.base_apy}% is the expected yearly return rate of the underlying tokens invested. There is an additional ${analytics.boosted_apy}% in extra rewards paid in other tokens, check the protocol website for more information.`
-      : APY_TOOLTIP;
-  }, [analytics]);
-
-  const BOOSTED_APY_TOOLTIP = useMemo(() => {
-    return boostedAPY
-      ? `Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in ${'LISK'}.`
-      : '';
-  }, [boostedAPY]);
+      : t('tooltips.apy');
+  }, [analytics, t]);
 
   return (
     <Stack spacing={2} padding={2}>
@@ -95,14 +77,16 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           alt={'Protocol'}
         />
         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-          {`${contractTool?.name} ${underlyingToken?.symbol.toUpperCase()} Pool`}
+          {poolName}
         </Typography>
       </Box>
       <Box display="flex" justifyContent="space-between" gap={'16px'}>
         <ColoredStatBox>
           <DigitTextCard
             title={hasDeposited ? 'Position' : 'Deposit'}
-            tooltipText={hasDeposited ? DEPOSITED_TOOLTIP : DEPOSIT_TOOLTIP}
+            tooltipText={
+              hasDeposited ? t('tooltips.deposited') : t('tooltips.deposit')
+            }
             tokenImage={
               hasDeposited ? token?.logoURI : underlyingToken?.logoURI
             }
@@ -120,7 +104,7 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
         <ColoredStatBox>
           <DigitOnlyCard
             title={'TVL'}
-            tooltipText={TVL_TOOLTIP}
+            tooltipText={t('tooltips.tvl')}
             digit={
               analytics?.tvl_usd
                 ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
@@ -148,7 +132,9 @@ export const DepositCard: React.FC<ItemPriceProps> = ({
           <ColoredStatBox>
             <DigitOnlyCard
               title={'APY Boost'}
-              tooltipText={BOOSTED_APY_TOOLTIP}
+              tooltipText={
+                boostedAPY ? t('tooltips.boostedApy', { token: 'LISK' }) : ''
+              }
               digit={analytics?.total_apy ? `${boostedAPY.toFixed(1)}%` : 'N/A'}
             />
           </ColoredStatBox>

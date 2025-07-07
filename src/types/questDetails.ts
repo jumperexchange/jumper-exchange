@@ -1,16 +1,20 @@
 import type { ChainId } from '@lifi/sdk';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import type { FaqProps } from 'src/components/AccordionFAQ';
-import type { Quest } from './loyaltyPass';
-import type { Chain } from '@/components/Superfest/SuperfestPage/Banner/Banner';
-import type { CTALinkInt } from '@/components/Superfest/SuperfestPage/CTA/MissionCTA';
 import type { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
+import type { Quest } from './loyaltyPass';
 
 export interface QuestSocials {
   twitter: string;
   telegram: string;
   website?: string;
 }
-// Define interfaces for the nested structures
+
+export interface Chain {
+  logo: string;
+  name: string;
+  chainId: number;
+}
 export interface QuestDetails {
   type: string;
   socials: QuestSocials;
@@ -23,7 +27,7 @@ export interface QuestDetails {
   rewards: RewardsInterface;
   missionType: string;
   traits: string[];
-  CTA: CTALinkInt[];
+  CTA: MerklOpportunity[];
   partner: { logo: string; name: string }[];
   marketIds?: string[];
 }

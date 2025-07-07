@@ -5,11 +5,10 @@ import type {
   ComponentsVariants,
   CssVarsTheme,
 } from '@mui/material';
-import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
+import { colorChannel } from '@mui/system';
 import { deepmerge } from '@mui/utils';
-import { Channels } from 'node_modules/@mui/material/esm/styles/createPalette';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
@@ -32,6 +31,8 @@ declare module '@mui/material/styles' {
   interface Shape {
     borderRadius: number;
     borderRadiusSecondary: number;
+    cardBorderRadius: number;
+    buttonBorderRadius: number;
   }
 
   interface ThemeOptions {
@@ -62,6 +63,7 @@ declare module '@mui/material/styles' {
     alphaDark600: Palette['primary'];
     alphaDark700: Palette['primary'];
     alphaDark800: Palette['primary'];
+    alphaDark900: Palette['primary'];
     alphaLight100: Palette['primary'];
     alphaLight200: Palette['primary'];
     alphaLight300: Palette['primary'];
@@ -70,6 +72,7 @@ declare module '@mui/material/styles' {
     alphaLight600: Palette['primary'];
     alphaLight700: Palette['primary'];
     alphaLight800: Palette['primary'];
+    alphaLight900: Palette['primary'];
   }
   interface PaletteOptions {
     tertiary?: PaletteOptions['primary'];
@@ -127,6 +130,7 @@ declare module '@mui/material/styles' {
     alphaDark600: true;
     alphaDark700: true;
     alphaDark800: true;
+    alphaDark900: true;
     alphaLight100: true;
     alphaLight200: true;
     alphaLight300: true;
@@ -135,6 +139,7 @@ declare module '@mui/material/styles' {
     alphaLight600: true;
     alphaLight700: true;
     alphaLight800: true;
+    alphaLight900: true;
   }
 
   interface TypographyVariants {
@@ -277,6 +282,8 @@ declare module '@mui/material/Typography' {
 const shape = {
   borderRadius: 12,
   borderRadiusSecondary: 8,
+  cardBorderRadius: 24,
+  buttonBorderRadius: 128,
 };
 
 const themeBase = createTheme({
@@ -428,6 +435,11 @@ const palette = {
     // @ts-ignore
     mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
   },
+  alphaDark900: {
+    main: 'rgba(0, 0, 0, 0.84)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
   alphaLight100: {
     main: 'rgba(255, 255, 255, 0.04)',
     // @ts-ignore
@@ -465,6 +477,11 @@ const palette = {
   },
   alphaLight800: {
     main: 'rgba(255, 255, 255, 0.64)',
+    // @ts-ignore
+    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  },
+  alphaLight900: {
+    main: 'rgba(255, 255, 255, 0.84)',
     // @ts-ignore
     mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
   },

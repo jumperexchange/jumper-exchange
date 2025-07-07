@@ -26,6 +26,8 @@ import { createConfig, EVM, Solana, UTXO, Sui } from '@lifi/sdk';
 import { publicRPCList } from '@/const/rpcList';
 import getApiUrl from '@/utils/getApiUrl';
 import { SuiProvider } from './SuiProvider';
+import { WalletManagementThemeProvider } from '@/providers/ThemeProvider';
+import { ClientOnly } from 'src/components/ClientOnly';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
@@ -45,9 +47,11 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       <UTXOProvider>
         <SVMProvider>
           <SuiProvider>
-            <WalletMenuProvider>
-              <WalletTrackingProvider>{children}</WalletTrackingProvider>
-            </WalletMenuProvider>
+            <WalletManagementThemeProvider>
+              <WalletMenuProvider>
+                <WalletTrackingProvider>{children}</WalletTrackingProvider>
+              </WalletMenuProvider>
+            </WalletManagementThemeProvider>
           </SuiProvider>
         </SVMProvider>
       </UTXOProvider>
@@ -73,6 +77,17 @@ const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const WalletTrackingProvider: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <>
+      {children}
+      <ClientOnly>
+        <WalletTrackingClient />
+      </ClientOnly>
+    </>
+  );
+};
+
+const WalletTrackingClient = () => {
   const walletManagementEvents = useWalletManagementEvents();
   const { trackEvent } = useUserTracking();
 
@@ -102,5 +117,5 @@ const WalletTrackingProvider: FC<PropsWithChildren> = ({ children }) => {
       );
   }, [trackEvent, walletManagementEvents]);
 
-  return children;
+  return null;
 };

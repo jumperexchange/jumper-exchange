@@ -3,11 +3,11 @@
     "welcome": {
       "title": "Encontre a melhor rota",
       "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
-      "cta": "Começar"
+      "cta": "Comece Agora"
     },
-    "poweredByLifi": "<0>Desenvolvido por </0><1>LI.FI</1>",
     "links": {
       "exchange": "Conversão",
+      "missions": "Missões",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar"
@@ -28,12 +28,13 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
+      "learn": "Aprenda",
+      "scan": "Escanear",
       "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
-      "lifiExplorer": "Explorador LI.FI",
-      "aboutLIFI": "Sobre a LI.FI",
       "support": "Suporte",
+      "resources": "Recursos",
       "profile": "Perfil Jumper"
     },
     "walletMenu": {
@@ -45,13 +46,23 @@
       "copiedMsg": "Endereço da carteira copiado",
       "walletNotInstalled": "{{wallet}} não está instalada",
       "connectAnotherWallet": "Conectar outra carteira",
-      "refreshBalances": "",
-      "totalBalance": ""
+      "refreshBalances": "Atualizar saldos",
+      "totalBalance": "Saldo total",
+      "totalBalanceTooltip": "Seu saldo total pode nem sempre estar exato devido a possíveis problemas de indexação. Estamos resolvendo!",
+      "totalBalanceRefresh": "Clique aqui para reiniciar a indexação de seus tokens agora.",
+      "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
+      "dark": "Escuro",
+      "light": "Claro",
+      "system": "Sistema",
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
-      "switchToSystem": "Alternar para sistema"
+      "switchToSystem": "Alternar para sistema",
+      "lightModeDisabled": "Modo claro está desativado para este tema",
+      "darkModeDisabled": "Modo escuro está desativado para este tema",
+      "systemModeDisabled": "Modo sistema está desativado para este tema",
+      "default": "Padrão"
     },
     "developers": {
       "github": "GitHub",
@@ -85,6 +96,16 @@
     "title": "Suporte limitado ao token Solana",
     "subtitle": "No momento, apenas USDC e USDT podem ser enviados para e a partir da rede Solana."
   },
+  "seiAlert": {
+    "title": "Necessário vincular a carteira SEI EVM",
+    "subtitle": "Para usar a SEI EVM, você precisa vincular seu endereço de carteira ao ecossistema SEI.",
+    "buttonText": "Vincular Carteira"
+  },
+  "abstractAlert": {
+    "title": "Esta carteira só funciona na Abstract!",
+    "subtitle": "A Carteira Abstract só existe na Abstract. Não use este endereço em qualquer outra blockchain, você perderá seus fundos.",
+    "buttonText": "Verifique a documentação"
+  },
   "featureCard": {
     "learnMore": "Saiba mais"
   },
@@ -102,22 +123,81 @@
     "transactionInitiated": {
       "title": "São necessárias múltiplas assinaturas",
       "description": "Por favor, notifique os outros participantes da carteira multisig para assinarem antes que a transação expire."
-    },
-    "alert": {
-      "title": "Carteira multisig conectada",
-      "description": "O endereço da carteira de destino é necessário para completar a conversão."
     }
   },
   "questCard": {
     "completed": "Concluído",
-    "join": "Entrar"
+    "join": "Entrar",
+    "xpToEarnDescription": "Complete a barra de progresso por {{action}} para ganhar +{{xpToEarn}} XP adicional este mês.",
+    "earnedXPDescription": "Você desbloqueou {{earnedXP}}XP por {{action}} até agora este mês e foi adicionado ao seu total saldo de XP.",
+    "action": {
+      "chain_oor": "explorando cadeias",
+      "transact_oor": "negociando",
+      "swap_oor": "convertendo",
+      "bridge_oor": "ponte"
+    }
+  },
+  "promo": {
+    "new": "Novo"
   },
   "missions": {
     "available": "Missões Disponíveis",
-    "completed": "Missões Concluídas"
+    "completed": "Missões Concluídas",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "Campanhas",
     "mobileTitle": "Disponível apenas no Computador",
-    "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso."
+    "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso.",
+    "level": "Nível",
+    "rank": "Classificação",
+    "rankInfo": "Rank é sua posição na tabela de classificação. Ganhe XP e suba na tabela de classificação.",
+    "pointsInfo": "XP é sua pontuação por interagir com a Jumper. Enquanto você ganha pontos de XP, seu nível aumenta. XP provenientes das transações Jumper é atualizado diariamente.",
+    "levelInfo": "Um nível mais alto aumenta suas chances de ganhar recompensas de sorteios, vantagens, parceiros, recompensas e mais.",
+    "copyAddress": "Copiar o endereço da carteira",
+    "shareProfile": "Partilhar perfil",
+    "open": "Abre {{tool}}",
+    "rewards": "Recompensas ganhas"
+  },
+  "leaderboard": {
+    "title": "Tabela de Classificação",
+    "description": "A tabela de classificação é atualizada diariamente.",
+    "rankCtaConnect": "Onde você está classificado?",
+    "updatedLabel": "Atualizado: {{date}}",
+    "connectWallet": "Conectar carteira"
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": "Como a Jumper organiza campanhas ad-hoc, as missões são atualizadas mensalmente para criar os gráficos associados. Tenha em mente: XP proveniente de campanhas específicas também será atualizado mensalmente."
+  },
+  "format": {
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "percent": "{{value, percentExt()}}",
+    "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
+    "date": "{{value, dateExt(month: long)}}",
+    "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "tooltips": {
+    "tvl": "Valor total de ativos cripto depositados neste mercado.",
+    "apy": "Taxa de retorno anual esperada dos tokens investidos.",
+    "deposit": "O token exibido é o token necessário para depositar neste mercado.",
+    "deposited": "Quantia que você depositou neste mercado.",
+    "boostedApy": "APY adicional que você ganha ao participar desta campanha dentro da Jumper. Este APY será pago em {{token}}."
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "Enviar para {{name}}",
+      "sentToAddressName": "Enviado para {{name}}"
+    }
   }
 }

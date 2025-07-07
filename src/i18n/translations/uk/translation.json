@@ -5,9 +5,9 @@
       "subtitle": "<0>4x аудитований</0> мульти-чейн агрегатор ліквідності на основі <1>LI.FI</1>",
       "cta": "Почати"
     },
-    "poweredByLifi": "<0>Powered by </0><1>LI.FI</1>",
     "links": {
       "exchange": "Обмін",
+      "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
       "buy": "Купівля"
@@ -28,12 +28,13 @@
     },
     "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Бренд ресурси",
       "theme": "Тема",
       "developers": "Розробникам",
-      "lifiExplorer": "LI.FI Scan",
-      "aboutLIFI": "Про LI.FI",
       "support": "Підтримка",
+      "resources": "",
       "profile": "Профіль Jumper"
     },
     "walletMenu": {
@@ -45,13 +46,23 @@
       "copiedMsg": "Адреса гаманця скопійована",
       "walletNotInstalled": "{{wallet}} не встановлено",
       "connectAnotherWallet": "Під'єднати інший гаманець",
-      "refreshBalances": "",
-      "totalBalance": ""
+      "refreshBalances": "Оновити баланс",
+      "totalBalance": "Загальний баланс",
+      "totalBalanceTooltip": "Ваш загальний баланс не завжди може бути точним через потенційні проблеми з індексацією. Ми працюємо над цим!",
+      "totalBalanceRefresh": "Натисніть тут, щоб перезавантажити індексацію своїх токенів.",
+      "numberOfChains": "{{numberOfChains}} чейнів"
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Увімкнути світлу тему",
       "switchToDark": "Увімкнути темну тему",
-      "switchToSystem": "Увімкнути системну тему"
+      "switchToSystem": "Увімкнути системну тему",
+      "lightModeDisabled": "Світлий режим вимкнений для цієї теми",
+      "darkModeDisabled": "Темний режим вимкнений для цієї теми",
+      "systemModeDisabled": "Системний режим вимкнений для цієї теми",
+      "default": "Стандартна"
     },
     "developers": {
       "github": "GitHub",
@@ -85,6 +96,16 @@
     "title": "Обмежена підтримка токенів Solana",
     "subtitle": "Наразі можна перевести тільки USDT і USDT до та з Solana."
   },
+  "seiAlert": {
+    "title": "Необхідно зв'язати гаманець SEI EVM",
+    "subtitle": "Щоб використовувати SEI EVM, вам потрібно зв'язати адресу свого гаманця з екосистемою SEI.",
+    "buttonText": "Прив'язати гаманець"
+  },
+  "abstractAlert": {
+    "title": "Цей гаманець працює тільки на Abstract!",
+    "subtitle": "Гаманець Abstract існує лише на Abstract чейні. Не використовуйте цю адресу на будь-якому іншому блокчейні, або ви можете втратити ваші кошти.",
+    "buttonText": "Перевірте документацію"
+  },
   "featureCard": {
     "learnMore": "Дізнатися більше"
   },
@@ -102,22 +123,81 @@
     "transactionInitiated": {
       "title": "Потрібні кілька підписів",
       "description": "Будь ласка, повідомте інших учасників multisig гаманця підписати до закінчення терміну транзакції."
-    },
-    "alert": {
-      "title": "Multisig гаманець під'єднано",
-      "description": "Для завершення обміну необхідна адреса гаманця призначення."
     }
   },
   "questCard": {
     "completed": "Завершено",
-    "join": "Приєднатися"
+    "join": "Приєднатися",
+    "xpToEarnDescription": "Завершіть {{action}} щоб заробити +{{xpToEarn}} addtional XP в цьому місяці.",
+    "earnedXPDescription": "Ви розблокували {{earnedXP}}XP від {{action}} цього місяця, і це було додано до вашого загального XP-балансу.",
+    "action": {
+      "chain_oor": "дослідження чейнів",
+      "transact_oor": "торгівля",
+      "swap_oor": "обмін",
+      "bridge_oor": "мости"
+    }
+  },
+  "promo": {
+    "new": "Нове"
   },
   "missions": {
     "available": "Доступні місії",
-    "completed": "Виконані місії"
+    "completed": "Виконані місії",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Доступно лише на комп'ютері",
-    "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим."
+    "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим.",
+    "level": "Рівень",
+    "rank": "Ранг",
+    "rankInfo": "Ранг - це ваша позиція в таблиці. Отримайте XP і рухайтеся вгору в таблиці лідерів.",
+    "pointsInfo": "Досвід ваш результат від взаємодії з Jumper. Коли ви отримуєте XP, ваш рівень піднімається. XP отримані з Jumper транзакцій оновлюються щодня.",
+    "levelInfo": "Вищий рівень збільшує шанси виграти нагороди у розіграшах, отримати привілеї, бонуси від партнерів, винагороди та інше.",
+    "copyAddress": "Копіювати адресу гаманця",
+    "shareProfile": "Поділитися профілем",
+    "open": "Відкрити {{tool}}",
+    "rewards": "Отримані винагороди"
+  },
+  "leaderboard": {
+    "title": "Таблиця лідерів",
+    "description": "Таблиця лідерів оновлюється щоденно.",
+    "rankCtaConnect": "Який у вас ранг?",
+    "updatedLabel": "Оновлено: {{date}}",
+    "connectWallet": "Під'єднати гаманець"
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": "Оскільки Jumper організовує разові кампанії, місії оновлюються щомісяця для створення відповідної графіки. Майте на увазі: досвід (XP), отриманий з конкретних кампаній, також оновлюватиметься щомісяця."
+  },
+  "format": {
+    "currency": "{{value, currencyExt(currency: USD)}}",
+    "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "percent": "{{value, percentExt()}}",
+    "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
+    "date": "{{value, dateExt(month: long)}}",
+    "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

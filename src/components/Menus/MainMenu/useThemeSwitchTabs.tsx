@@ -5,25 +5,25 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useThemeStore } from '@/stores/theme';
+import type { Appearance } from '@lifi/widget';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import { useColorScheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { Appearance } from '@lifi/widget';
 import { useMainPaths } from 'src/hooks/useMainPaths';
-import { useSuperfest } from 'src/hooks/useSuperfest';
 
+/**
+ * @deprecated
+ * @returns
+ */
 export const useThemeSwitchTabs = () => {
   const { mode, setMode } = useColorScheme();
   const { t } = useTranslation();
   // const { setTheme } = useTheme();
   const { trackEvent } = useUserTracking();
-  const { isSuperfest } = useSuperfest();
   const { isMainPaths } = useMainPaths();
-  const [configTheme] = useThemeStore((state) => [
-    state.configTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const handleSwitchMode = (mode: Appearance) => {
     trackEvent({
       category: TrackingCategory.ThemeSection,
@@ -54,7 +54,7 @@ export const useThemeSwitchTabs = () => {
   let darkModeEnabled = false;
   let systemModeEnabled = false;
 
-  if (isSuperfest || isMainPaths) {
+  if (isMainPaths) {
     lightModeEnabled = true;
   } else if (!!configTheme) {
     if (

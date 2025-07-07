@@ -3,6 +3,7 @@ import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { checkInclusion } from 'src/components/ProfilePage/checkInclusion';
 import { type Quest } from 'src/types/loyaltyPass';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BadgeMainBox,
   BadgeRelativeBox,
@@ -16,11 +17,9 @@ import {
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
 
-interface SuperfestMissionPageVar {
+interface BannerBoxProps {
   quest: Quest;
-  baseUrl: string;
   pastCampaigns: string[];
-  activeCampaign?: 'superfest';
   rotatingBadge?: React.JSX.Element;
 }
 
@@ -31,10 +30,10 @@ export interface Chain {
 
 export const BannerBox = ({
   quest,
-  baseUrl,
   pastCampaigns,
   rotatingBadge,
-}: SuperfestMissionPageVar) => {
+}: BannerBoxProps) => {
+  const baseUrl = getStrapiBaseUrl();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -118,11 +117,7 @@ export const BannerBox = ({
                       ]
                 }
                 title={'Jumper XP'}
-                value={
-                  true
-                    ? `${String(attributes?.Points)}`
-                    : String(attributes?.Points)
-                }
+                value={String(attributes?.Points)}
               />
             ) : undefined}
           </RewardMainBox>

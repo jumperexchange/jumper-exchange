@@ -1,5 +1,6 @@
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { CustomRichBlocks } from 'src/components/Blog';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { DescriptionTitleTypography } from '../DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
@@ -8,10 +9,10 @@ import {
 
 interface StepsBoxProps {
   steps?: RootNode[];
-  baseUrl: string;
 }
 
-export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
+export const StepsBox = ({ steps }: StepsBoxProps) => {
+  const baseUrl = getStrapiBaseUrl();
   return (
     <QuestsPageElementContainer>
       <LeftTextBox>
@@ -19,12 +20,7 @@ export const StepsBox = ({ steps, baseUrl }: StepsBoxProps) => {
           Steps to complete the mission
         </DescriptionTitleTypography>
       </LeftTextBox>
-      <CustomRichBlocks
-        id={1}
-        baseUrl={baseUrl}
-        content={steps}
-        variant={'superfest'}
-      />
+      <CustomRichBlocks id={1} baseUrl={baseUrl} content={steps} />
     </QuestsPageElementContainer>
   );
 };

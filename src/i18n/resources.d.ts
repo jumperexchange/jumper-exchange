@@ -14,6 +14,7 @@ interface Resources {
       };
       links: {
         exchange: 'Exchange';
+        missions: 'Missions';
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
@@ -34,12 +35,14 @@ interface Resources {
       };
       seeAllWallets: 'See all wallets';
       navbarMenu: {
+        learn: 'Learn';
+        scan: 'Scan';
         brandAssets: 'Brand Assets';
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
+        resources: 'Resources';
         profile: 'Profile';
-        fest: 'Superfest Festival';
       };
       walletMenu: {
         disconnect: 'Disconnect';
@@ -57,6 +60,9 @@ interface Resources {
         numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
+        dark: 'Dark';
+        light: 'Light';
+        system: 'System';
         switchToLight: 'Switch to light mode';
         switchToDark: 'Switch to dark mode';
         switchToSystem: 'Switch to system mode';
@@ -144,8 +150,19 @@ interface Resources {
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
+      status: {
+        new: 'New';
+        upcoming: 'Upcoming';
+        minutesLeft_one: '{{count}} minute left';
+        minutesLeft_other: '{{count}} minutes left';
+        hoursLeft_one: '{{count}} hour left';
+        hoursLeft_other: '{{count}} hours left';
+        daysLeft_one: '{{count}} day left';
+        daysLeft_other: '{{count}} days left';
+      };
     };
     profile_page: {
+      campaigns: 'Campaigns';
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       level: 'Level';
@@ -225,6 +242,19 @@ interface Resources {
         signingFailed: 'Failed to sign the message. Please try again.';
         noWalletConnected: 'No wallet is connected. Please connect a wallet first.';
         nonEVMWallet: 'Only EVM wallets are supported for XP transfer. Please connect an EVM wallet.';
+      };
+    };
+    tooltips: {
+      tvl: 'Total value of crypto assets deposited in this market.';
+      apy: 'Expected yearly return rate of the tokens invested.';
+      deposit: 'The displayed token is the token required to deposit into this market.';
+      deposited: 'Amount you have deposited into this market.';
+      boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
+    };
+    widget: {
+      zap: {
+        sendToAddressName: 'Send to {{name}}';
+        sentToAddressName: 'Sent to {{name}}';
       };
     };
   };

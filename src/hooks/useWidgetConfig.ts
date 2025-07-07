@@ -1,9 +1,7 @@
-import { EVM } from '@lifi/sdk';
 import { useWalletMenu } from '@lifi/wallet-management';
 import type { WidgetTheme } from '@lifi/widget';
 import { HiddenUI, type ChainId, type WidgetConfig } from '@lifi/widget';
 import { deepmerge } from '@mui/utils';
-import { getWalletClient, switchChain } from '@wagmi/core';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { themeAllowChains } from 'src/components/Widgets';
@@ -11,20 +9,13 @@ import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { TabsMap } from 'src/const/tabsMap';
 import { ThemesMap } from 'src/const/themesMap';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from 'src/const/trackingKeys';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useThemeStore } from 'src/stores/theme';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
 import type { LanguageKey } from 'src/types/i18n';
 import type { StarterVariantType } from 'src/types/internal';
-import { isIframeEnvironment } from 'src/utils/iframe';
 import { useConfig } from 'wagmi';
 import { useMemelist } from './useMemelist';
-import { useMultisig } from './useMultisig';
 import { useUserTracking } from './userTracking';
 import getApiUrl from '@/utils/getApiUrl';
 
@@ -120,7 +111,7 @@ export const useWidgetConfig = ({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     const mergedWidgetTheme = deepmerge(

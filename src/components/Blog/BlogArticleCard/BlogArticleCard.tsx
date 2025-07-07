@@ -9,6 +9,7 @@ import { Skeleton } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import useClient from 'src/hooks/useClient';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -23,19 +24,18 @@ import {
 
 interface BlogArticleCardProps {
   article: BlogArticleData;
-  baseUrl: string;
   trackingCategory: string;
   styles?: CSSObject;
 }
 
 export const BlogArticleCard = ({
   article,
-  baseUrl,
   trackingCategory,
   styles,
 }: BlogArticleCardProps) => {
   const { trackEvent } = useUserTracking();
-  const minRead = readingTime(article?.Content);
+  const baseUrl = getStrapiBaseUrl();
+  const minRead = readingTime(article?.WordCount);
   const { t } = useTranslation();
   const { closeAllMenus } = useMenuStore((state) => state);
   const isClient = useClient();
@@ -61,11 +61,11 @@ export const BlogArticleCard = ({
         onClick={handleClick}
         sx={styles}
       >
-        {article?.Image ? (
+        {article?.Image && baseUrl ? (
           <BlogArticleCardImage
             src={`${baseUrl}${article?.Image?.formats.small.url || article?.Image?.url}`}
             alt={article?.Image?.alternativeText ?? article?.Title}
-            // read the following to udnerstand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
+            // read the following to understand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
             width={0}
             height={0}
             sizes="100vw"

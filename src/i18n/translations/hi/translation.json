@@ -5,9 +5,9 @@
       "subtitle": "",
       "cta": ""
     },
-    "poweredByLifi": "",
     "links": {
       "exchange": "",
+      "missions": "",
       "dashboard": "डैशबोर्ड",
       "refuel": "गैस",
       "buy": ""
@@ -28,12 +28,13 @@
     },
     "seeAllWallets": "",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "",
       "theme": "विषय",
       "developers": "डेवलपर",
-      "lifiExplorer": "",
-      "aboutLIFI": "लिफी के बारे में",
       "support": "सहायता",
+      "resources": "",
       "profile": ""
     },
     "walletMenu": {
@@ -46,12 +47,22 @@
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
-      "totalBalance": ""
+      "totalBalance": "",
+      "totalBalanceTooltip": "",
+      "totalBalanceRefresh": "",
+      "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "",
       "switchToDark": "",
-      "switchToSystem": ""
+      "switchToSystem": "",
+      "lightModeDisabled": "",
+      "darkModeDisabled": "",
+      "systemModeDisabled": "",
+      "default": ""
     },
     "developers": {
       "github": "गिटहब",
@@ -85,6 +96,16 @@
     "title": "",
     "subtitle": ""
   },
+  "seiAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
+  "abstractAlert": {
+    "title": "",
+    "subtitle": "",
+    "buttonText": ""
+  },
   "featureCard": {
     "learnMore": ""
   },
@@ -102,22 +123,81 @@
     "transactionInitiated": {
       "title": "",
       "description": ""
-    },
-    "alert": {
-      "title": "",
-      "description": ""
     }
   },
   "questCard": {
     "completed": "",
-    "join": ""
+    "join": "",
+    "xpToEarnDescription": "",
+    "earnedXPDescription": "",
+    "action": {
+      "chain_oor": "",
+      "transact_oor": "",
+      "swap_oor": "",
+      "bridge_oor": ""
+    }
+  },
+  "promo": {
+    "new": ""
   },
   "missions": {
     "available": "",
-    "completed": ""
+    "completed": "",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "",
-    "mobileDescription": ""
+    "mobileDescription": "",
+    "level": "",
+    "rank": "",
+    "rankInfo": "",
+    "pointsInfo": "",
+    "levelInfo": "",
+    "copyAddress": "",
+    "shareProfile": "",
+    "open": "",
+    "rewards": ""
+  },
+  "leaderboard": {
+    "title": "",
+    "description": "",
+    "rankCtaConnect": "",
+    "updatedLabel": "",
+    "connectWallet": ""
+  },
+  "completedMissionsInformation": {
+    "title": "",
+    "description": ""
+  },
+  "format": {
+    "currency": "",
+    "decimal": "",
+    "percent": "",
+    "decimal2Digit": "",
+    "date": "",
+    "shortDate": ""
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }
