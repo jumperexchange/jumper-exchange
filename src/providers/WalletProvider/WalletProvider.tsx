@@ -22,18 +22,17 @@ import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
-import { createConfig } from '@lifi/sdk';
 import { SuiProvider } from './SuiProvider';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider';
 import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 import { ClientOnly } from 'src/components/ClientOnly';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { config } = useSdkConfigStore();
+  const { initSdk } = useSdkConfigStore();
 
   useEffect(() => {
-    createConfig(config);
-  }, [config]);
+    initSdk();
+  }, []);
 
   return (
     <EVMProvider>

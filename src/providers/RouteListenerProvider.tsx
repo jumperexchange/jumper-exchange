@@ -3,7 +3,10 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { AppPaths } from 'src/const/urls';
-import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
+import {
+  ConfigType,
+  useSdkConfigStore,
+} from 'src/stores/sdkConfig/SDKConfigStore';
 
 export const RouteListenerProvider = () => {
   const pathname = usePathname();
@@ -13,10 +16,13 @@ export const RouteListenerProvider = () => {
   useEffect(() => {
     if (previousPathRef.current === pathname) return;
 
-    if (pathname.includes(AppPaths.Zap) && configType !== 'zap') {
-      setConfigType('zap');
-    } else if (!pathname.includes(AppPaths.Zap) && configType === 'zap') {
-      setConfigType('default');
+    if (pathname.includes(AppPaths.Zap) && configType !== ConfigType.Zap) {
+      setConfigType(ConfigType.Zap);
+    } else if (
+      !pathname.includes(AppPaths.Zap) &&
+      configType === ConfigType.Zap
+    ) {
+      setConfigType(ConfigType.Default);
     }
 
     previousPathRef.current = pathname;

@@ -4,12 +4,12 @@ import { EVMProvider } from './EVMProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { SuiProvider } from './SuiProvider';
-import { useSdkConfigStore } from 'src/stores/sdkConfig';
+import { ConfigType, useSdkConfigStore } from 'src/stores/sdkConfig';
 
 export const WalletProviderZap: FC<PropsWithChildren> = ({ children }) => {
   const { setConfigType } = useSdkConfigStore();
   useEffect(() => {
-    setConfigType('zap');
+    setConfigType(ConfigType.Zap);
   }, []);
 
   return (

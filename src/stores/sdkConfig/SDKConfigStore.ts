@@ -1,24 +1,37 @@
-import { EVM, Solana, UTXO, Sui, SDKConfig } from '@lifi/sdk';
+import {
+  EVM,
+  Solana,
+  UTXO,
+  Sui,
+  SDKConfig,
+  createConfig as lifiSdkCreateConfig,
+  config as lifiSdkConfig,
+} from '@lifi/sdk';
 import { publicRPCList } from 'src/const/rpcList';
 import getApiUrl from 'src/utils/getApiUrl';
 import { create } from 'zustand';
 
-type ConfigType = 'default' | 'zap';
+export enum ConfigType {
+  Default = 'default',
+  Zap = 'zap',
+}
 
 interface SDKConfigState {
   configType: ConfigType;
-  configMap: Record<ConfigType, SDKConfig>;
+  partialConfigMap: Record<ConfigType, Partial<SDKConfig>>;
   config: SDKConfig;
 
+  initSdk: () => void;
   setConfigType: (type: ConfigType) => void;
-  updateConfigForType: (type: ConfigType, partial: Partial<SDKConfig>) => void;
 }
 
-const defaultConfig: SDKConfig = {
+const integrator = process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+
+const baseConfig: SDKConfig = {
   apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
   apiUrl: getApiUrl(),
   providers: [EVM(), Solana(), UTXO(), Sui()],
-  integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+  integrator,
   rpcUrls: {
     ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
     ...publicRPCList,
@@ -26,47 +39,73 @@ const defaultConfig: SDKConfig = {
   preloadChains: true,
 };
 
-const zapConfig: SDKConfig = {
-  apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
-  apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+const zapConfig: Partial<SDKConfig> = {
   providers: [EVM(), Solana(), UTXO()],
-  integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-  rpcUrls: {
-    ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
-    ...publicRPCList,
-  },
-  preloadChains: true,
 };
+
+const partialConfigMap = {
+  [ConfigType.Default]: {},
+  [ConfigType.Zap]: zapConfig,
+} as const;
 
 export const useSdkConfigStore = create<SDKConfigState>((set, get) => ({
-  configType: 'default',
-  configMap: {
-    default: defaultConfig,
-    zap: zapConfig,
+  configType: ConfigType.Default,
+  partialConfigMap: partialConfigMap,
+  config: baseConfig,
+
+  initSdk: () => {
+    const initialConfig = get().config;
+    lifiSdkCreateConfig(initialConfig);
   },
-  config: defaultConfig,
 
   setConfigType: (type) => {
-    const configMap = get().configMap;
-    const nextConfig = configMap[type];
-    if (!nextConfig) throw new Error(`No config defined for type: ${type}`);
+    const { partialConfigMap, configType: prevType } = get();
+    const partialPrevConfig = partialConfigMap[prevType] || {};
+    const partialNextConfig = partialConfigMap[type];
 
-    set({ configType: type, config: nextConfig });
-  },
+    if (!partialNextConfig) {
+      throw new Error(`No config defined for type: ${type}`);
+    }
 
-  updateConfigForType: (type, partial) => {
-    const currentMap = get().configMap;
-    const existing = currentMap[type] || {};
-    const updated = { ...existing, ...partial };
+    if (partialNextConfig.providers) {
+      lifiSdkConfig.setProviders(partialNextConfig.providers);
+      // Reset to base config if the previous config had this field set but the current doesn't
+    } else if (partialPrevConfig.providers && baseConfig.providers) {
+      lifiSdkConfig.setProviders(baseConfig.providers);
+    }
 
-    const currentType = get().configType;
+    if (partialNextConfig.rpcUrls) {
+      lifiSdkConfig.setRPCUrls(partialNextConfig.rpcUrls);
+      // Reset to base config if the previous config had this field set but the current doesn't
+    } else if (partialPrevConfig.rpcUrls && baseConfig.rpcUrls) {
+      lifiSdkConfig.setRPCUrls(baseConfig.rpcUrls);
+    }
 
-    set({
-      configMap: {
-        ...currentMap,
-        [type]: updated,
-      },
-      ...(currentType === type ? { config: updated } : {}),
-    });
+    if (partialNextConfig.chains) {
+      lifiSdkConfig.setChains(partialNextConfig.chains);
+      // Reset to base config if the previous config had this field set but the current doesn't
+    } else if (partialPrevConfig.chains && baseConfig.chains) {
+      lifiSdkConfig.setChains(baseConfig.chains);
+    }
+
+    const shouldOverrideOtherFields =
+      partialNextConfig.apiUrl ||
+      partialNextConfig.apiKey ||
+      partialNextConfig.integrator ||
+      partialNextConfig.preloadChains;
+
+    if (shouldOverrideOtherFields) {
+      lifiSdkConfig.set({
+        apiUrl: partialNextConfig.apiUrl ?? baseConfig.apiUrl,
+        apiKey: partialNextConfig.apiKey ?? baseConfig.apiKey,
+        integrator: partialNextConfig.integrator ?? baseConfig.integrator,
+        preloadChains:
+          partialNextConfig.preloadChains ?? baseConfig.preloadChains,
+      });
+    }
+
+    const fullConfig = { ...baseConfig, ...partialNextConfig };
+
+    set({ configType: type, config: fullConfig });
   },
 }));
