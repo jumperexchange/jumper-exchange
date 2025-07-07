@@ -13,7 +13,6 @@ import {
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -24,9 +23,10 @@ import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useWidgetSelection } from 'src/hooks/useWidgetSelection';
-import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { themeAllowChains, WidgetWrapper } from '.';
+import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 
 export function Widget({
@@ -42,7 +42,10 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [configTheme] = useThemeStore((state) => [state.configTheme]);
+  const [configTheme, widgetTheme] = useThemeStore((state) => [
+    state.configTheme,
+    state.widgetTheme,
+  ]);
   const formRef = useRef<FormState>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { bridgeConditions } = useWidgetSelection({
@@ -52,7 +55,7 @@ export function Widget({
     configThemeChains: configTheme?.chains,
   });
   const router = useRouter();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
 
@@ -61,22 +64,11 @@ export function Widget({
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
+  const contributionDisplayed = useContributionStore(
+    (state) => state.contributionDisplayed,
+  );
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
-
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const widgetTheme = useMemo(
-    () =>
-      getWidgetThemeV2(
-        mode === 'system' || !mode
-          ? prefersDarkMode
-            ? 'dark'
-            : 'light'
-          : mode,
-      ),
-    [mode, prefersDarkMode],
-  );
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
@@ -147,7 +139,7 @@ export function Widget({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     return {
@@ -257,12 +249,16 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
+      contributionDisplayed={contributionDisplayed}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}
           config={config}
           formRef={formRef}
+          feeConfig={{
+            _vcComponent: () => <FeeContribution translationFn={t} />,
+          }}
         />
       </ClientOnly>
     </WidgetWrapper>

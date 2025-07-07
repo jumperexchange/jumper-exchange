@@ -17,3 +17,7 @@ export const AbTestConfig = {
   enabled: isAbTestingEnabled,
   tests: AbTests,
 } as const;
+
+export enum GlobalFeatureFlags {
+  MissionsPage = 'missions_page',
+}
