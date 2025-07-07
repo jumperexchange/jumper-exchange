@@ -5,10 +5,10 @@ import FormControl from '@mui/material/FormControl';
 import { Button } from 'src/components/Button/Button';
 import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
-import { useVerifyTask } from 'src/hooks/tasksVerification/useVerifyTask';
 import { useMissionStore } from 'src/stores/mission';
 import { TaskWidgetInformationInputData } from 'src/types/strapi';
 import { MissionInstructionFormContainer } from './MissionWidget.styles';
+import { useVerifyTaskWithSharedState } from '../hooks';
 
 const buildDynamicSchema = (taskInputs: TaskWidgetInformationInputData[]) => {
   const shape = taskInputs.reduce(
@@ -23,11 +23,20 @@ const buildDynamicSchema = (taskInputs: TaskWidgetInformationInputData[]) => {
 };
 
 export const MissionForm = () => {
-  const { taskCTAText, taskInputs, currentActiveTaskId, missionId } =
-    useMissionStore();
+  const {
+    taskCTAText,
+    taskInputs,
+    currentActiveTaskId,
+    currentActiveTaskName,
+    missionId,
+  } = useMissionStore();
   const [formValues, setFormValues] = useState<Record<string, string>>({});
 
-  const { mutate, isSuccess, isPending, isError, reset } = useVerifyTask();
+  const { handleVerifyTask, isPending } = useVerifyTaskWithSharedState(
+    missionId!,
+    currentActiveTaskId!,
+    currentActiveTaskName,
+  );
 
   const schema = useMemo(
     () => buildDynamicSchema(taskInputs ?? []),
@@ -64,15 +73,11 @@ export const MissionForm = () => {
         return;
       }
 
-      console.log('Form submitted:', values);
-      //   mutate({
-      //     questId: missionId,
-      //     stepId: currentActiveTaskId,
-      //     address: accountAddress,
-      //     ...values,
-      //   });
+      handleVerifyTask({
+        ...result.data,
+      });
     },
-    [schema, mutate],
+    [schema, handleVerifyTask],
   );
 
   return (
