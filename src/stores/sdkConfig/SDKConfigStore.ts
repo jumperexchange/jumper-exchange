@@ -109,3 +109,5 @@ export const useSdkConfigStore = create<SDKConfigState>((set, get) => ({
     set({ configType: type, config: fullConfig });
   },
 }));
+
+useSdkConfigStore.getState().initSdk();

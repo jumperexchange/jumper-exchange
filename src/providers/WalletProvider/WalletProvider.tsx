@@ -24,16 +24,9 @@ import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { SuiProvider } from './SuiProvider';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider';
-import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 import { ClientOnly } from 'src/components/ClientOnly';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { initSdk } = useSdkConfigStore();
-
-  useEffect(() => {
-    initSdk();
-  }, []);
-
   return (
     <EVMProvider>
       <UTXOProvider>
