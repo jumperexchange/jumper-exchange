@@ -1,6 +1,18 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useAccount } from '@lifi/wallet-management';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
 import { useGetVerifiedTasks } from 'src/hooks/tasksVerification/useGetVerifiedTasks';
+import { useVerifyTask } from 'src/hooks/tasksVerification/useVerifyTask';
+import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
+import {
+  TaskVerificationStatus,
+  useTaskVerificationStatusStore,
+} from 'src/stores/taskVerificationStatus/TaskVerificationStatusStore';
 // import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 import {
   ParticipantChain,
@@ -64,6 +76,7 @@ export const useEnhancedTasks = (
   const handleSetActiveTask = useCallback(
     (task: TaskVerificationWithApy) => {
       const taskType = task.TaskType ?? TaskType.Bridge;
+      const taskName = task.name ?? '';
       const widgetParams = task.TaskWidgetInformation ?? {};
 
       // @TODO enable once the lifi config store is available
@@ -73,7 +86,7 @@ export const useEnhancedTasks = (
       //     setConfigType('default');
       //   }
 
-      setCurrentActiveTask(task.uuid, taskType);
+      setCurrentActiveTask(task.uuid, taskType, taskName);
 
       setCurrentTaskWidgetFormParams({
         sourceChain: widgetParams.sourceChain ?? undefined,
@@ -138,5 +151,71 @@ export const useEnhancedTasks = (
   return {
     enhancedTasks,
     setActiveTask: handleSetActiveTask,
+  };
+};
+
+export const useVerifyTaskWithSharedState = (
+  missionId: string,
+  taskId: string,
+  taskName?: string,
+) => {
+  const { account } = useAccount();
+  const { trackEvent } = useUserTracking();
+
+  const accountAddress = account?.address;
+  const { mutate, reset } = useVerifyTask(missionId, taskId);
+  const { getStatus, resetStatus } = useTaskVerificationStatusStore();
+  const taskVerificationStatus = getStatus(missionId, taskId);
+
+  const { isSuccess, isPending, isError } = useMemo(
+    () => ({
+      isSuccess: taskVerificationStatus === TaskVerificationStatus.Success,
+      isPending: taskVerificationStatus === TaskVerificationStatus.Pending,
+      isError: taskVerificationStatus === TaskVerificationStatus.Error,
+    }),
+    [taskVerificationStatus],
+  );
+
+  const handleVerifyTask = useCallback(
+    (extraParams?: { [key: string]: string }) => {
+      trackEvent({
+        category: TrackingCategory.Quests,
+        action: TrackingAction.ClickMissionCtaSteps,
+        label: `click-mission-cta-steps-verify`,
+        data: {
+          [TrackingEventParameter.MissionCtaStepsTitle]: taskName || '',
+          [TrackingEventParameter.MissionCtaStepsTaskStepId]: taskId || '',
+        },
+      });
+      mutate({
+        ...(extraParams || {}),
+        questId: missionId,
+        stepId: taskId,
+        address: accountAddress,
+      });
+    },
+    [missionId, accountAddress],
+  );
+
+  const handleReset = useCallback(() => {
+    resetStatus(missionId, taskId);
+    reset();
+  }, [reset, missionId, taskId]);
+
+  useEffect(() => {
+    if (!isError) {
+      return;
+    }
+    const timeoutId = setTimeout(handleReset, 3_000);
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [isError, handleReset]);
+
+  return {
+    handleVerifyTask,
+    isPending,
+    isError,
+    isSuccess,
   };
 };

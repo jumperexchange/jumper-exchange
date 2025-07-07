@@ -11,6 +11,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 interface MissionState {
   currentActiveTaskId?: string;
   currentActiveTaskType?: TaskType;
+  currentActiveTaskName?: string;
 
   taskTitle?: string;
   taskDescription?: string;
@@ -62,7 +63,11 @@ interface MissionState {
     taskInputs?: TaskWidgetInformationInputData[];
   }) => void;
 
-  setCurrentActiveTask: (taskId: string, taskType: TaskType) => void;
+  setCurrentActiveTask: (
+    taskId: string,
+    taskType: TaskType,
+    taskName: string,
+  ) => void;
 
   setMissionDefaults: (
     chainIds?: number[],
@@ -78,6 +83,7 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
   (set) => ({
     currentActiveTaskId: undefined,
     currentActiveTaskType: undefined,
+    currentActiveTaskName: undefined,
 
     destinationChain: undefined,
     destinationToken: undefined,
@@ -93,10 +99,15 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
     missionId: undefined,
     missionType: undefined,
 
-    setCurrentActiveTask: (currentActiveTaskId, currentActiveTaskType) =>
+    setCurrentActiveTask: (
+      currentActiveTaskId,
+      currentActiveTaskType,
+      currentActiveTaskName,
+    ) =>
       set({
         currentActiveTaskId,
         currentActiveTaskType,
+        currentActiveTaskName,
       }),
 
     setCurrentTaskWidgetFormParams: (params) =>

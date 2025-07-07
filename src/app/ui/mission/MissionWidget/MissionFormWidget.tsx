@@ -24,10 +24,6 @@ export const MissionFormWidget = () => {
   const hasForm = !taskCTALink || !!taskInputs;
 
   const handleClick = () => {
-    if (!taskCTALink) {
-      return;
-    }
-    openInNewTab(taskCTALink);
     trackEvent({
       category: TrackingCategory.Quests,
       action: TrackingAction.ClickMissionCtaSteps,
@@ -38,6 +34,9 @@ export const MissionFormWidget = () => {
         [TrackingEventParameter.MissionCtaStepsCTA]: taskCTAText || '',
       },
     });
+    if (taskCTALink) {
+      openInNewTab(taskCTALink);
+    }
   };
 
   return (
