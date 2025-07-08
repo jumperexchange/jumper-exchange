@@ -1,7 +1,4 @@
-'use client';
-import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
-import { ZapWidget } from 'src/components/ZapWidget/ZapWidget';
-import { useAccount } from '@lifi/wallet-management';
+import { ZapWidget } from 'src/components/Zap/ZapWidget';
 import type { CustomInformation } from 'src/types/loyaltyPass';
 
 interface ZapWidgetPageProps {
@@ -10,16 +7,7 @@ interface ZapWidgetPageProps {
 }
 
 const ZapWidgetPage = ({ customInformation, type }: ZapWidgetPageProps) => {
-  const { account } = useAccount();
-
-  return (
-    <ZapWidget
-      account={account}
-      projectData={customInformation?.projectData}
-      claimingIds={customInformation?.claimingIds}
-      type={type}
-    />
-  );
+  return <ZapWidget customInformation={customInformation} type={type} />;
 };
 
 export default ZapWidgetPage;

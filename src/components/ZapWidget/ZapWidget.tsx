@@ -40,6 +40,7 @@ import {
   type WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
 import { useTranslation } from 'react-i18next';
+import { ProjectData } from 'src/types/questDetails';
 
 // Type definitions for better type safety
 interface AbiInput {
@@ -121,16 +122,6 @@ const buildContractComposable = async (
     },
   });
 };
-
-export interface ProjectData {
-  chain: string;
-  chainId: number;
-  project: string;
-  integrator: string;
-  address: string;
-  withdrawAddress?: string;
-  tokenAddress?: string;
-}
 
 interface CustomWidgetProps {
   account: Account;

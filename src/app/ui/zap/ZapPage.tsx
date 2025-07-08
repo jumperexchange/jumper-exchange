@@ -3,7 +3,7 @@ import { ZapPage as ZapComponentPage } from 'src/components/Zap/ZapPage';
 import type { ExtendedQuest } from 'src/types/questDetails';
 
 interface ZapPageProps {
-  market?: ExtendedQuest;
+  market: ExtendedQuest;
 }
 
 const ZapPage = ({ market }: ZapPageProps) => {
