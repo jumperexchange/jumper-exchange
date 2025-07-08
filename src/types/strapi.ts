@@ -290,8 +290,8 @@ interface TaskVerification {
   description: string;
   CTALink: string;
   CTAText: string;
-  TaskType?: string;
-  TaskWidgetInformation?: any;
+  TaskType?: TaskType;
+  TaskWidgetInformation?: TaskWidgetInformationData;
 }
 
 /* Quest */
@@ -387,4 +387,36 @@ export interface MerklRewardsAttributes {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+}
+
+export interface TaskWidgetInformationChainData {
+  chainId: string;
+  chainKey: string;
+}
+
+export interface TaskWidgetInformationTokenData {
+  tokenAddress: string;
+  tokenSymbol: string;
+}
+
+export interface TaskWidgetInformationWalletData {
+  walletAddress: string;
+  chainType: string;
+}
+
+export interface TaskWidgetInformationData {
+  sourceChain?: TaskWidgetInformationChainData | null;
+  sourceToken?: TaskWidgetInformationTokenData | null;
+  destinationChain?: TaskWidgetInformationChainData | null;
+  destinationToken?: TaskWidgetInformationTokenData | null;
+  toAddress?: TaskWidgetInformationWalletData | null;
+  fromAmount?: string | null;
+}
+export enum TaskType {
+  Bridge = 'Bridge',
+  Swap = 'Swap',
+  Deposit = 'Deposit',
+  OnChain = 'On-chain',
+  OffChain = 'Off-chain',
+  Zap = 'Zap',
 }

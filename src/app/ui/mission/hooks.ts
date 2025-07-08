@@ -4,9 +4,9 @@ import { useMissionStore } from 'src/stores/mission/MissionStore';
 // import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 import {
   ParticipantChain,
-  TaskType,
   type TaskVerificationWithApy,
 } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 
 export const useSetMissionChainFromParticipants = (
   participatingChains?: ParticipantChain[],

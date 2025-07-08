@@ -2,7 +2,8 @@
 
 import { ClientOnly } from 'src/components/ClientOnly';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import { CustomInformation, TaskType } from 'src/types/loyaltyPass';
+import { CustomInformation } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 import { FC } from 'react';
 // import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import Box from '@mui/material/Box';

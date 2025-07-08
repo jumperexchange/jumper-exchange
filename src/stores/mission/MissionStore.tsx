@@ -1,10 +1,10 @@
 'use client';
 import {
+  TaskType,
   TaskWidgetInformationChainData,
   TaskWidgetInformationWalletData,
   TaskWidgetInformationTokenData,
-  TaskType,
-} from 'src/types/loyaltyPass';
+} from 'src/types/strapi';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface MissionState {
