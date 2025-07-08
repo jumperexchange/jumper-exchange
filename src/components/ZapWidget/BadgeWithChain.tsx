@@ -1,7 +1,6 @@
-import { Avatar, Badge } from '@mui/material';
-import TokenImage from '@/components/Portfolio/TokenImage';
 import { useChains } from '@/hooks/useChains';
 import { useMemo } from 'react';
+import AvatarBadge from '../AvatarBadge/AvatarBadge';
 
 interface BadgeWithChainProps {
   logoURI: string;
@@ -18,35 +17,16 @@ function BadgeWithChain({ alt, logoURI, chainId }: BadgeWithChainProps) {
   );
 
   if (!chainMetadata) {
-    return <Avatar alt="Protocol" src={logoURI} />;
+    return <AvatarBadge avatarSize={40} avatarSrc={logoURI} alt="Protocol" />;
   }
 
   return (
-    <Badge
-      overlap="circular"
-      className="badge"
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      badgeContent={
-        <Avatar
-          sx={{
-            width: 16,
-            height: 16,
-          }}
-        >
-          <TokenImage
-            token={{
-              logoURI: chainMetadata?.logoURI,
-              name: chainMetadata?.name ?? '',
-            }}
-          />
-        </Avatar>
-      }
-    >
-      <Avatar alt={alt} src={logoURI} />
-    </Badge>
+    <AvatarBadge
+      avatarSize={40}
+      badgeSrc={chainMetadata?.logoURI}
+      avatarSrc={logoURI}
+      alt={alt}
+    />
   );
 }
 

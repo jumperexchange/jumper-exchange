@@ -20,12 +20,15 @@ export const SelectCardContainer = styled(Box, {
 })<SelectCardContainerProps>(({ theme, isClickable }) => ({
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
-  background: (theme.vars || theme).palette.background.default,
+  background: (theme.vars || theme).palette.surface2.main,
   padding: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
   cursor: isClickable ? 'pointer' : 'initial',
+  ...theme.applyStyles?.('light', {
+    background: (theme.vars || theme).palette.background.default,
+  }),
 }));
 
 export const SelectCardContentContainer = styled(Box)(({ theme }) => ({

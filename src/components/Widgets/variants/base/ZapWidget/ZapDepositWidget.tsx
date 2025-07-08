@@ -23,8 +23,6 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     return customInformation?.claimingIds;
   }, [customInformation?.claimingIds]);
 
-  console.log(customInformation);
-
   const {
     isInitialized,
     providers,
