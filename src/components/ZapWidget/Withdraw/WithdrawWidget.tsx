@@ -1,6 +1,5 @@
 import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 import { type ContractCall, type TokenAmount } from '@lifi/widget';
-import { useTheme } from '@mui/material';
 import { formatUnits } from 'viem';
 import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
@@ -27,8 +26,6 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   refetchPosition,
   withdrawAbi,
 }) => {
-  const theme = useTheme();
-
   return (
     <WithdrawWidgetBox>
       <WidgetLikeField
