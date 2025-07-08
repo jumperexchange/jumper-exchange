@@ -1,4 +1,3 @@
-'use client';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { isArticlePage } from '@/utils/isArticlePage';

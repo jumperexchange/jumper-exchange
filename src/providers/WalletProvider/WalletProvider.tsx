@@ -28,6 +28,7 @@ import { EVMProvider } from './EVMProvider';
 import { SuiProvider } from './SuiProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
+import { ClientOnly } from 'src/components/ClientOnly';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
@@ -77,6 +78,17 @@ const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
 };
 
 const WalletTrackingProvider: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <>
+      {children}
+      <ClientOnly>
+        <WalletTrackingClient />
+      </ClientOnly>
+    </>
+  );
+};
+
+const WalletTrackingClient = () => {
   const walletManagementEvents = useWalletManagementEvents();
   const { trackEvent } = useUserTracking();
 
@@ -106,5 +118,5 @@ const WalletTrackingProvider: FC<PropsWithChildren> = ({ children }) => {
       );
   }, [trackEvent, walletManagementEvents]);
 
-  return children;
+  return null;
 };
