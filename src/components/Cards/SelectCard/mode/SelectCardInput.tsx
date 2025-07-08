@@ -18,6 +18,7 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
   placeholder,
   startAdornment,
   endAdornment,
+  isAmount,
   onChange,
   onFocus,
   onBlur,
@@ -39,6 +40,7 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
             onChange={onChange}
             onBlur={onBlur}
             onFocus={onFocus}
+            isAmount={isAmount}
           />
           {description && (
             <SelectCardDescription variant="bodyXSmall">

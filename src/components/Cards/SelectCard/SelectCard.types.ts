@@ -22,6 +22,7 @@ export interface SelectCardInputProps
   mode: SelectCardMode.Input;
   id: string;
   name: string;
+  isAmount?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
