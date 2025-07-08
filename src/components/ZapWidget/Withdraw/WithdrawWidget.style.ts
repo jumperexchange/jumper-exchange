@@ -11,3 +11,9 @@ export const WithdrawWidgetBox = styled(Box)(({ theme }) => ({
     maxWidth: 'unset',
   },
 }));
+
+export const WithdrawFormContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: theme.spacing(3),
+}));

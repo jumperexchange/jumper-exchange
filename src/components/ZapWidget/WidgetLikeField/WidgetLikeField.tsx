@@ -24,18 +24,17 @@ import {
   useWriteContract,
 } from 'wagmi';
 import WidgetFieldEndAdornment from './WidgetEndAdornment';
-import {
-  WidgetFormHelperText,
-  CustomFormControl,
-} from './WidgetLikeField.style';
+import { WidgetFormHelperText } from './WidgetLikeField.style';
 import { useChains } from '@/hooks/useChains';
 import type { TokenAmount } from '@lifi/sdk';
 import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { useToken } from '@/hooks/useToken';
-import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
 import type { AbiFunction, AbiParameter } from 'viem';
 import { ProjectData } from 'src/types/questDetails';
+import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
+import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
+import { formatInputAmount } from '@lifi/widget';
 
 interface WithdrawTrackingData {
   protocol_name: string;
@@ -90,6 +89,8 @@ interface WidgetLikeFieldProps {
   withdrawAbi?: AbiFunction;
 }
 
+const NUM_DECIMALS = 1;
+
 function WidgetLikeField({
   contractCalls,
   label,
@@ -141,6 +142,9 @@ function WidgetLikeField({
     hash: data,
     confirmations: 5,
     pollingInterval: 1_000,
+    query: {
+      enabled: !!projectData?.chainId && !!data,
+    },
   });
 
   // When the transaction is done, triggering the refetch
@@ -179,11 +183,15 @@ function WidgetLikeField({
   }, [account?.chainId, projectData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    // Only allow numbers and one decimal point
-    if (inputValue === '' || /^\d*\.?\d*$/.test(inputValue)) {
-      setValue(inputValue);
-    }
+    const rawValue = e.target.value;
+    const formattedValue = formatInputAmount(rawValue, NUM_DECIMALS, true);
+    setValue(formattedValue);
+  };
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value;
+    const formattedValue = formatInputAmount(rawValue, NUM_DECIMALS);
+    setValue(formattedValue);
   };
 
   async function onSubmit(e: React.FormEvent) {
@@ -287,66 +295,42 @@ function WidgetLikeField({
               {label}
             </Typography>
           </InputLabel>
-          <CustomFormControl
-            variant="standard"
-            aria-autocomplete="none"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
-            <WidgetFieldStartAdornment
-              tokenUSDAmount={tokenUSDAmount}
-              image={image}
-            />
-            <Stack spacing={2} direction="column">
-              <Input
-                autoComplete="off"
-                id="component"
-                value={value}
-                onChange={handleInputChange}
-                placeholder={placeholder}
-                disabled={isPending || isLoading}
-                aria-describedby="withdraw-component-text"
-                disableUnderline={true}
-              />
-              <FormHelperText
-                id="withdraw-component-text"
-                sx={(theme) => ({
-                  marginLeft: `${theme.spacing(2)}!important`,
-                  marginTop: '0!important', // There's an override of that property into the main theme, !important cannot be removed yet
-                })}
-              >
-                <Typography
-                  variant="bodyXSmall"
-                  color="textSecondary"
-                  component="span"
-                  sx={{
-                    color: '#bbbbbb',
-                  }}
-                >
-                  {tokenUSDAmount
-                    ? Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        notation: 'compact',
-                        currency: 'USD',
-                        useGrouping: true,
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits:
-                          parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
-                      }).format(parseFloat(tokenUSDAmount))
-                    : 'NA'}
-                </Typography>
-              </FormHelperText>
-            </Stack>
-            {!!account?.isConnected && !!balance && parseFloat(balance) > 0 && (
-              <WidgetFieldEndAdornment
-                balance={balance}
-                mainColor={overrideStyle?.mainColor}
-                setValue={setValue}
-              />
-            )}
-          </CustomFormControl>
+
+          {/** @TODO change font size and weight */}
+          <SelectCard
+            id="component"
+            name="component"
+            mode={SelectCardMode.Input}
+            placeholder="0"
+            value={value}
+            description={
+              tokenUSDAmount
+                ? Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    notation: 'compact',
+                    currency: 'USD',
+                    useGrouping: true,
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits:
+                      parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
+                  }).format(parseFloat(tokenUSDAmount))
+                : 'NA'
+            }
+            startAdornment={image}
+            endAdornment={
+              !!account?.isConnected &&
+              !!balance &&
+              parseFloat(balance) > 0 && (
+                <WidgetFieldEndAdornment
+                  balance={'200'}
+                  mainColor={overrideStyle?.mainColor}
+                  setValue={setValue}
+                />
+              )
+            }
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+          />
           {hasErrorText && (
             <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
           )}

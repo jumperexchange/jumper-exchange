@@ -1,4 +1,4 @@
-import { ChangeEventHandler, ReactNode } from 'react';
+import { ChangeEventHandler, FocusEventHandler, ReactNode } from 'react';
 import { SelectCardMode } from './SelectCard.styles';
 
 export interface SelectCardBaseProps {
@@ -6,7 +6,8 @@ export interface SelectCardBaseProps {
   value?: string;
   placeholder: string;
   description?: string;
-  icon?: ReactNode;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
   mode: SelectCardMode;
 }
 
@@ -22,8 +23,8 @@ export interface SelectCardInputProps
   id: string;
   name: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
 export type SelectCardProps = SelectCardDisplayProps | SelectCardInputProps;
