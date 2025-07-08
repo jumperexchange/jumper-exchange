@@ -57,7 +57,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
     <WithdrawWidgetBox>
       <WithdrawForm
         submitLabel={'Redeem'} // This belongs to contractCalls[0].label
-        errorMessage={txError?.message}
+        errorMessage={txError?.name}
         sendWithdrawTx={sendWithdrawTx}
         successDataRef={successDataRef}
         isSubmitDisabled={isWriteContractDataPending}
