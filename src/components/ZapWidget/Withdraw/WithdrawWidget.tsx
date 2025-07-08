@@ -1,10 +1,14 @@
-import BadgeWithChain from '@/components/ZapWidget/BadgeWithChain';
 import { type ContractCall, type TokenAmount } from '@lifi/widget';
 import { formatUnits } from 'viem';
-import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
 import { ProjectData } from 'src/types/questDetails';
+import { WithdrawForm } from './WithdrawForm';
+import { useWithdrawTransaction } from './hooks';
+import { useAccount } from '@lifi/wallet-management';
+import { useChains } from 'src/hooks/useChains';
+import { useMemo } from 'react';
+import { TxConfirmation } from '../Confirmation/TxConfirmation';
 
 export interface WithdrawWidgetProps {
   poolName?: string;
@@ -26,48 +30,69 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   refetchPosition,
   withdrawAbi,
 }) => {
+  const { account } = useAccount();
+  const chains = useChains();
+  const chain = useMemo(
+    () => chains.getChainById(projectData?.chainId),
+    [projectData?.chainId],
+  );
+  const {
+    sendWithdrawTx,
+    successDataRef,
+    txHash,
+    txError,
+    isTransactionReceiptLoading,
+    isTransactionReceiptSuccess,
+    isWriteContractDataError,
+    isWriteContractDataPending,
+    isWriteContractDataSuccess,
+  } = useWithdrawTransaction({
+    projectData,
+    writeDecimals: lpTokenDecimals,
+    withdrawAbi,
+    accountAddress: account.address,
+  });
+
   return (
     <WithdrawWidgetBox>
-      <WidgetLikeField
-        contractCalls={[
-          {
-            data: '0x',
-            type: 'send',
-            label: 'Redeem',
-            // Deprecated
-            onVerify: () => {
-              return Promise.resolve(true);
-            },
-          },
-        ]}
-        refetch={refetchPosition}
-        label={`Redeem from ${poolName || 'Pool'}`}
-        token={token}
-        image={
-          token?.logoURI && (
-            <BadgeWithChain
-              chainId={projectData?.chainId}
-              logoURI={token?.logoURI}
-              alt={token?.name}
-            />
-          )
+      <WithdrawForm
+        submitLabel={'Redeem'} // This belongs to contractCalls[0].label
+        errorMessage={txError?.message}
+        sendWithdrawTx={sendWithdrawTx}
+        successDataRef={successDataRef}
+        isSubmitDisabled={isWriteContractDataPending}
+        isSubmitLoading={
+          isTransactionReceiptLoading || isWriteContractDataPending
         }
-        placeholder="0"
-        helperText={{
-          left: 'Available balance',
-          right: depositTokenData
-            ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
-            : '0.00',
-        }}
+        refetchPosition={refetchPosition}
+        projectData={projectData}
+        token={token}
+        poolName={poolName}
         balance={
           depositTokenData
             ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
             : '0.00'
         }
-        projectData={projectData}
-        writeDecimals={lpTokenDecimals}
-        withdrawAbi={withdrawAbi}
       />
+      {isTransactionReceiptSuccess && (
+        <TxConfirmation
+          s={'Withdraw successful'}
+          link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+          success={
+            !!isWriteContractDataSuccess && !isWriteContractDataPending
+              ? true
+              : false
+          }
+        />
+      )}
+
+      {!isTransactionReceiptSuccess && txHash && (
+        <TxConfirmation
+          s={'Check on explorer'}
+          link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+          success={false}
+        />
+      )}
     </WithdrawWidgetBox>
   );
 };

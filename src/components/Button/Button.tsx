@@ -15,6 +15,7 @@ interface ButtonProps {
   styles?: SxProps<Theme>;
   id?: string;
   fullWidth?: boolean;
+  loading?: boolean;
   muiVariant?: 'text' | 'outlined' | 'contained';
   onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   children?: ReactNode;
@@ -28,6 +29,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   styles,
   id,
   fullWidth,
+  loading,
   onClick,
   children,
   muiVariant,
@@ -49,6 +51,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           variant={muiVariant}
           sx={styles}
           type={type}
+          loading={loading}
         >
           {children}
         </ButtonPrimary>
@@ -65,6 +68,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           variant={muiVariant}
           sx={styles}
           type={type}
+          loading={loading}
         >
           {children}
         </ButtonSecondary>
@@ -81,6 +85,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           variant={muiVariant}
           sx={styles}
           type={type}
+          loading={loading}
         >
           {children}
         </ButtonTransparent>
@@ -97,6 +102,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           variant={muiVariant}
           sx={styles}
           type={type}
+          loading={loading}
         >
           {children}
         </ButtonPrimary>

@@ -14,14 +14,15 @@ export const SelectCardDisplay: FC<SelectCardDisplayProps> = ({
   value,
   placeholder,
   description,
-  icon,
+  startAdornment,
+  endAdornment,
   onClick,
 }) => {
   return (
     <SelectCardContainer onClick={onClick} isClickable>
       {label && <SelectCardLabel>{label}</SelectCardLabel>}
       <SelectCardContentContainer>
-        {icon}
+        {startAdornment}
         <SelectCardValueContainer>
           <SelectCardDisplayValue showPlaceholder={!!placeholder && !value}>
             {value ?? placeholder}
@@ -32,6 +33,7 @@ export const SelectCardDisplay: FC<SelectCardDisplayProps> = ({
             </SelectCardDescription>
           )}
         </SelectCardValueContainer>
+        {endAdornment}
       </SelectCardContentContainer>
     </SelectCardContainer>
   );
