@@ -93,6 +93,7 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
       <SelectCard
         id={name}
         name={name}
+        isAmount
         mode={SelectCardMode.Input}
         placeholder={placeholder}
         value={value}
