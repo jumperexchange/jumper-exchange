@@ -65,3 +65,6 @@ next-env.d.ts
 /blob-report/
 /playwright/.cache/
 test-results.json
+
+*storybook.log
+storybook-static

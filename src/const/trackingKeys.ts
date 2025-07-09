@@ -28,6 +28,9 @@ export enum TrackingAction {
   OnAvailableRoutes = 'action_available_routes',
   OnTokenSearch = 'action_token_search',
   OnLowAddressActivityConfirmed = 'action_on_low_address_activity_confirmed',
+  ClickContribute = 'action_contribute',
+  ContributeImpression = 'action_contribute_impression',
+  ContributeSuccess = 'action_contribute_success',
 
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',

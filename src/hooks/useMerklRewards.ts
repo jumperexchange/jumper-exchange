@@ -31,16 +31,6 @@ export const useMerklRewards = ({
   claimableOnly = false,
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
-  // Early return for no user address or non-EVM wallet
-  if (!userAddress || !isAddress(userAddress)) {
-    return {
-      isLoading: false,
-      isSuccess: false,
-      availableRewards: [],
-      pastCampaigns: [],
-    };
-  }
-
   // Memoize chain IDs calculation - use Set for O(1) lookup
   const chainIds = useMemo(() => {
     if (!Array.isArray(merklRewards) || merklRewards.length === 0) {
@@ -71,7 +61,7 @@ export const useMerklRewards = ({
   } = useQuery({
     queryKey: ['MerklUserRewards', userAddress, chainIds.join(',')],
     queryFn: fetchUserRewards,
-    enabled: !!userAddress && chainIds.length > 0,
+    enabled: !!userAddress && isAddress(userAddress) && chainIds.length > 0,
     refetchInterval: MERKL_CACHE_TIME,
     staleTime: MERKL_STALE_TIME,
     gcTime: MERKL_CACHE_TIME,
@@ -80,7 +70,7 @@ export const useMerklRewards = ({
   // Memoize processed rewards data
   const { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards } =
     useMemo(() => {
-      if (!userRewardsData) {
+      if (!userRewardsData || !userAddress || !isAddress(userAddress)) {
         return {
           rewardsToClaim: [],
           pastCampaigns: [],
@@ -88,7 +78,7 @@ export const useMerklRewards = ({
         };
       }
       return processRewardsData(userRewardsData, merklRewards);
-    }, [userRewardsData, merklRewards]);
+    }, [userRewardsData, merklRewards, userAddress]);
 
   // Get Merkl tokens for chains with claimable rewards using combine method
   const { merklTokensByChain, tokenAddressMap } = useQueries({
@@ -98,7 +88,11 @@ export const useMerklRewards = ({
         const numericChainId = Number(chainId);
         return getMerklTokens({ chainId: numericChainId });
       },
-      enabled: !!userAddress && !!chainId && includeTokenIcons,
+      enabled:
+        !!userAddress &&
+        isAddress(userAddress) &&
+        !!chainId &&
+        includeTokenIcons,
       refetchInterval: MERKL_CACHE_TIME,
       staleTime: MERKL_STALE_TIME,
       gcTime: MERKL_CACHE_TIME,
@@ -138,6 +132,16 @@ export const useMerklRewards = ({
       }),
     [rewardsToClaim, tokenAddressMap],
   );
+
+  // Return early if no valid user address
+  if (!userAddress || !isAddress(userAddress)) {
+    return {
+      isLoading: false,
+      isSuccess: false,
+      availableRewards: [],
+      pastCampaigns: [],
+    };
+  }
 
   return {
     isLoading: positionsIsLoading,

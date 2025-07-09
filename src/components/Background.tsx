@@ -22,7 +22,7 @@ function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
 
   return (
-    <BackgroundContainer>
+    <BackgroundContainer id="background-root">
       {configTheme?.hasBackgroundGradient && (
         <>
           <BackgroundGradientBottomLeft />

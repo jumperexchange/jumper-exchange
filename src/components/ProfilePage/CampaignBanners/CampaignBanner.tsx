@@ -83,7 +83,7 @@ export const CampaignBanner = ({
             />
           )}
           <BannerImage
-            alt={'campaign banner'}
+            alt={`${title} banner`}
             height={isMobile ? 160 : 320}
             isImageLoading={loadingImages[slug]}
             src={`${apiBaseUrl}${image.url}`}

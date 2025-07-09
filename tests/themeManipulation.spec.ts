@@ -28,7 +28,7 @@ test.describe('Switch between dark and light theme and check the background colo
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await itemInMenu(page, 'Theme');
-    await itemInMenu(page, 'Light');
+    await itemInMenu(page, Theme.Light);
     await page.locator('#main-burger-menu-button').click();
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });

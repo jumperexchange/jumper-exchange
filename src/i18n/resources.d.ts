@@ -150,6 +150,16 @@ interface Resources {
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
+      status: {
+        new: 'New';
+        upcoming: 'Upcoming';
+        minutesLeft_one: '{{count}} minute left';
+        minutesLeft_other: '{{count}} minutes left';
+        hoursLeft_one: '{{count}} hour left';
+        hoursLeft_other: '{{count}} hours left';
+        daysLeft_one: '{{count}} day left';
+        daysLeft_other: '{{count}} days left';
+      };
     };
     profile_page: {
       campaigns: 'Campaigns';
@@ -183,6 +193,19 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
+    };
+    contribution: {
+      title: 'Contribute';
+      custom: 'Custom';
+      confirm: 'Confirm';
+      thankYou: 'Thank you!';
+      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
+      error: {
+        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
+        errorSending: 'Error sending contribution:';
+        invalidTokenPrice: 'Invalid token price';
+        noFeeAddress: 'No contribution fee address configured for this chain.';
+      };
     };
     tooltips: {
       tvl: 'Total value of crypto assets deposited in this market.';

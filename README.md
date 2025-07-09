@@ -1,6 +1,6 @@
 <div align="center">
 
-[![license](https://img.shields.io/badge/license-Apache%202-blue)](/LICENSE.md)
+[![license](https://img.shields.io/github/license/jumperexchange/jumper-exchange)](/LICENSE)
 [![Crowdin](https://badges.crowdin.net/jumper-exchange/localized.svg)](https://crowdin.com/project/jumper-exchange)
 [![Follow on Twitter](https://img.shields.io/twitter/follow/JumperExchange.svg?label=follow+Jumper.Exchange)](https://twitter.com/JumperExchange)
 

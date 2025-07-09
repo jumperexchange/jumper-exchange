@@ -142,9 +142,20 @@
   },
   "missions": {
     "available": "",
-    "completed": ""
+    "completed": "",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "",
     "mobileDescription": "",
     "level": "",
@@ -175,6 +186,19 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
   },
   "tooltips": {
     "tvl": "",

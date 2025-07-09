@@ -1,7 +1,10 @@
 import initTranslations from '@/app/i18n';
 import { fonts } from '@/fonts/fonts';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import {
+  MUIThemeProvider,
+  DefaultThemeProvider,
+} from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
@@ -180,17 +183,19 @@ export default async function RootLayout({
               locale={lng}
               resources={resources}
             >
-              <ThemeProvider
+              <DefaultThemeProvider
                 themes={partnerThemes.data}
                 activeTheme={'default'}
               >
-                <SettingsStoreProvider>
-                  <WalletProvider>
-                    <NavbarWrapper />
-                    {children}
-                  </WalletProvider>
-                </SettingsStoreProvider>
-              </ThemeProvider>
+                <WalletProvider>
+                  <MUIThemeProvider>
+                    <SettingsStoreProvider>
+                      <NavbarWrapper />
+                      {children}
+                    </SettingsStoreProvider>
+                  </MUIThemeProvider>
+                </WalletProvider>
+              </DefaultThemeProvider>
             </TranslationsProvider>
           </ReactQueryProvider>
         </AppRouterCacheProvider>
