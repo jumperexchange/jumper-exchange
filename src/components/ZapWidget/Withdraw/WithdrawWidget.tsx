@@ -74,21 +74,18 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
             : '0.00'
         }
       />
+
       {isTransactionReceiptSuccess && (
         <TxConfirmation
-          s={'Withdraw successful'}
+          description={'Withdraw successful'}
           link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
-          success={
-            !!isWriteContractDataSuccess && !isWriteContractDataPending
-              ? true
-              : false
-          }
+          success={!!isWriteContractDataSuccess && !isWriteContractDataPending}
         />
       )}
 
       {!isTransactionReceiptSuccess && txHash && (
         <TxConfirmation
-          s={'Check on explorer'}
+          description={'Check on explorer'}
           link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
           success={false}
         />
