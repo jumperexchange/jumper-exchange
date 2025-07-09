@@ -1,18 +1,18 @@
 import Box from '@mui/material/Box';
-import { MaxButton, MaxValue } from './WidgetLikeField.style';
+import { MaxButton, MaxValue } from './WithdrawWidget.style';
 import type { Dispatch, SetStateAction } from 'react';
 
-interface WidgetFieldEndAdornmentProps {
+interface WithdrawInputEndAdornmentProps {
   balance: string;
   mainColor?: string;
   setValue: Dispatch<SetStateAction<string>>;
 }
 
-function WidgetFieldEndAdornment({
+function WithdrawInputEndAdornment({
   balance,
   mainColor,
   setValue,
-}: WidgetFieldEndAdornmentProps) {
+}: WithdrawInputEndAdornmentProps) {
   return (
     <Box
       sx={{
@@ -42,4 +42,4 @@ function WidgetFieldEndAdornment({
   );
 }
 
-export default WidgetFieldEndAdornment;
+export default WithdrawInputEndAdornment;

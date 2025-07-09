@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { FC, useMemo, ReactNode } from 'react';
 import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
-import { WidgetFormHelperText } from '../WidgetLikeField/WidgetLikeField.style';
+import { WidgetFormHelperText } from './WithdrawWidget.style';
 
 interface WithdrawInputProps {
   label?: string;
