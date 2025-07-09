@@ -129,11 +129,12 @@ export const useEnhancedTasks = (
     return requiredTasks.length === verifiedTasks?.length;
   }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks)]);
 
-  useEffect(() => {
-    if (allTasksCompleted && !isMissionCompleted) {
-      setIsMissionCompleted(true);
-    }
-  }, [allTasksCompleted, isMissionCompleted, setIsMissionCompleted]);
+  // @TODO re-enable this after missions are updated; it might require some changes
+  // useEffect(() => {
+  //   if (allTasksCompleted && !isMissionCompleted) {
+  //     setIsMissionCompleted(true);
+  //   }
+  // }, [allTasksCompleted, isMissionCompleted, setIsMissionCompleted]);
 
   const enhancedTasks = useMemo(() => {
     return tasks.map((task) => {
