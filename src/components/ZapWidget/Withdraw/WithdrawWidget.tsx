@@ -3,11 +3,12 @@ import { type ContractCall, type TokenAmount } from '@lifi/widget';
 import { useTheme } from '@mui/material';
 import { formatUnits } from 'viem';
 import WidgetLikeField from '../WidgetLikeField/WidgetLikeField';
-import type { ProjectData } from '../ZapWidget';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
+import { ProjectData } from 'src/types/questDetails';
 
 export interface WithdrawWidgetProps {
+  poolName?: string;
   token: TokenAmount;
   contractCalls?: ContractCall[];
   lpTokenDecimals: number;
@@ -18,6 +19,7 @@ export interface WithdrawWidgetProps {
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
+  poolName,
   token,
   lpTokenDecimals,
   projectData,
@@ -42,7 +44,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
           },
         ]}
         refetch={refetchPosition}
-        label={`Redeem from Pool`}
+        label={`Redeem from ${poolName || 'Pool'}`}
         token={token}
         image={
           token?.logoURI && (

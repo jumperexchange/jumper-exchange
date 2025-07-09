@@ -187,6 +187,19 @@
     "date": "",
     "shortDate": ""
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "Valeur totale des actifs crypto déposés sur ce marché.",
     "apy": "Taux de rendement annuel attendu des jetons investis.",

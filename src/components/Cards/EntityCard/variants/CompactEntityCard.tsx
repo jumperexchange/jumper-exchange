@@ -35,14 +35,15 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   return (
     <StyledEntityCard
       sx={{
+        width: '100%',
         maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
         sx={{
+          width: '100%',
           maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
-          width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT,
         }}
       >
@@ -58,6 +59,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             // For a next/image we need to set height/width
             height={ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT}
             width={ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH}
+            // @Note need to add priority to the first loaded items as LCP is impacted
           />
         ) : (
           <BaseSkeleton
@@ -88,7 +90,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledCompactEntityCardTitle>{title}</StyledCompactEntityCardTitle>
-        {rewardGroups && (
+        {rewardGroups && !!Object.keys(rewardGroups).length && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;
