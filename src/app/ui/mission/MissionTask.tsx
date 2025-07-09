@@ -33,7 +33,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
   accountAddress,
   onClick,
 }) => {
-  const { taskId, title, taskType, description, isVerified } =
+  const { taskId, title, taskType, description, shouldVerify, isVerified } =
     useFormatDisplayTaskData(task);
   const { currentActiveTaskId } = useMissionStore();
   const isActive = currentActiveTaskId === taskId;
@@ -84,7 +84,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
       isActive={isActive}
       type={t('missions.tasks.type', { type: taskType })}
       statusBadge={
-        task.hasTask ? (
+        shouldVerify ? (
           isSuccess || isVerified ? (
             <Badge
               label={t('missions.tasks.status.verified')}
