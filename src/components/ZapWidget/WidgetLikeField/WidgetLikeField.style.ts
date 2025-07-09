@@ -1,27 +1,30 @@
-import type { Breakpoint } from '@mui/material';
-import {
-  alpha,
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  Input,
-  styled,
-} from '@mui/material';
+import Button, { ButtonProps } from '@mui/material/Button';
+import FormHelperText from '@mui/material/FormHelperText';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+
+interface MaxButtonProps extends ButtonProps {
+  mainColor?: string;
+}
 
 export const MaxButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'mainColor',
-})<any>(({ theme, mainColor }) => ({
-  padding: theme.spacing(0.5, 1, 0.625, 1),
-  lineHeight: 1.0715,
-  fontSize: '0.875rem',
+})<MaxButtonProps>(({ theme, mainColor }) => ({
+  ...theme.typography.bodySmallStrong,
+  fontWeight: 600,
+  padding: theme.spacing(0.5, 1),
   minWidth: 'unset',
   height: 'auto',
-  color: '#fff',
-  backgroundColor: mainColor ?? alpha(theme.palette.primary.main, 0.75),
+  color: (theme.vars || theme).palette.text.primary,
+  backgroundColor: mainColor ?? (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: mainColor ?? theme.palette.primary.main,
+    backgroundColor:
+      mainColor ?? (theme.vars || theme).palette.bgQuaternary.hover,
   },
+}));
+
+export const MaxValue = styled(Typography)(({ theme }) => ({
+  textAlign: 'right',
 }));
 
 export const WidgetFormHelperText = styled(FormHelperText)(({ theme }) => ({
@@ -30,10 +33,10 @@ export const WidgetFormHelperText = styled(FormHelperText)(({ theme }) => ({
   justifyContent: 'space-between',
   marginBottom: 1,
   color: 'red',
-  [theme.breakpoints.down('md' as Breakpoint)]: {
+  [theme.breakpoints.down('md')]: {
     maxWidth: 316,
   },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
+  [theme.breakpoints.up('md')]: {
     maxWidth: '100%',
   },
 }));
