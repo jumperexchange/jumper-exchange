@@ -58,6 +58,7 @@ export const Interactive: Story = {
   },
   args: {
     id: 'username',
+    name: 'username',
     label: 'Username',
     mode: SelectCardMode.Input,
     value: 'x.com/username',
@@ -82,6 +83,7 @@ export const InteractiveNoValue: Story = {
   },
   args: {
     id: 'username',
+    name: 'username',
     label: 'Username',
     mode: SelectCardMode.Input,
     value: '',
@@ -106,6 +108,7 @@ export const InteractiveOnlyValue: Story = {
   },
   args: {
     id: 'username',
+    name: 'username',
     mode: SelectCardMode.Input,
     value: 'x.com/username',
     placeholder: 'eg. x.com/username',
