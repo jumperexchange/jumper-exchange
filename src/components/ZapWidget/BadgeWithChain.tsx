@@ -6,10 +6,18 @@ interface BadgeWithChainProps {
   logoURI: string;
   alt: string;
   chainId?: number;
+  logoSize?: number;
+  badgeSize?: number;
 }
 
 // TODO: Refactorize code to use this function everytime we need to display chain as badge
-function BadgeWithChain({ alt, logoURI, chainId }: BadgeWithChainProps) {
+function BadgeWithChain({
+  alt,
+  logoURI,
+  chainId,
+  logoSize,
+  badgeSize,
+}: BadgeWithChainProps) {
   const { chains, getChainById } = useChains();
   const chainMetadata = useMemo(
     () => chainId && getChainById(chainId),
@@ -22,7 +30,8 @@ function BadgeWithChain({ alt, logoURI, chainId }: BadgeWithChainProps) {
 
   return (
     <AvatarBadge
-      avatarSize={40}
+      avatarSize={logoSize ?? 40}
+      badgeSize={badgeSize}
       badgeSrc={chainMetadata?.logoURI}
       avatarSrc={logoURI}
       alt={alt}

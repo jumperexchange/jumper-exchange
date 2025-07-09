@@ -1,26 +1,31 @@
 'use client';
 
 import { FC } from 'react';
-import { CustomInformation } from 'src/types/loyaltyPass';
 import { ZapWidgetTabs } from './ZapWidgetTabs';
 import { ZapWidget } from './ZapWidget';
+import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
+import { CustomInformation } from 'src/types/loyaltyPass';
+import Box from '@mui/material/Box';
 
 interface ZapWidgetsProps {
   detailInformation?: CustomInformation;
 }
 export const ZapWidgets: FC<ZapWidgetsProps> = ({ detailInformation }) => {
   return (
-    <ZapWidgetTabs
-      renderChildren={(activeTab) => {
-        if (activeTab === 0) {
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <DepositPoolCard customInformation={detailInformation} />
+      <ZapWidgetTabs
+        renderChildren={(activeTab) => {
+          if (activeTab === 0) {
+            return (
+              <ZapWidget customInformation={detailInformation} type="deposit" />
+            );
+          }
           return (
-            <ZapWidget customInformation={detailInformation} type="deposit" />
+            <ZapWidget customInformation={detailInformation} type="withdraw" />
           );
-        }
-        return (
-          <ZapWidget customInformation={detailInformation} type="withdraw" />
-        );
-      }}
-    />
+        }}
+      />
+    </Box>
   );
 };
