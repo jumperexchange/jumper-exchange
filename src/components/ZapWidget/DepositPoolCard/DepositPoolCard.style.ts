@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import InfoIcon from '@mui/icons-material/Info';
+import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 export const DepositPoolCardContainer = styled(Box)(({ theme }) => ({
@@ -58,3 +59,8 @@ export const DepositPoolCardItemValueAppend = styled(Typography)(
     }),
   }),
 );
+
+export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.grey[100],
+  transform: 'none',
+}));

@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { DepositPoolCardItem } from './DepositPoolCardItem';
 import { useTranslation } from 'react-i18next';
+import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -80,6 +81,10 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   const apyValue = useMemo(() => {
     return boostedAPY ? boostedAPY.toFixed(1) : analytics?.base_apy;
   }, [boostedAPY, analytics?.base_apy]);
+
+  if (!zapData || !token) {
+    return <DepositPoolCardSkeleton />;
+  }
 
   return (
     <DepositPoolCardContainer>
