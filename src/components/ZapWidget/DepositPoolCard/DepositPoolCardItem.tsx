@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -7,6 +6,7 @@ import { FC, ReactNode } from 'react';
 import {
   DepositPoolCardItemContentContainer,
   DepositPoolCardItemHeaderContainer,
+  DepositPoolCardItemValue,
   DepositPoolCardItemValueAppend,
   DepositPoolCardItemValuePrepend,
   TooltipIcon,
@@ -43,7 +43,9 @@ export const DepositPoolCardItem: FC<DepositPoolCardItemProps> = ({
             {valuePrepend}
           </DepositPoolCardItemValuePrepend>
         )}
-        <Typography variant="titleSmall">{value}</Typography>
+        <DepositPoolCardItemValue variant="titleSmall">
+          {value}
+        </DepositPoolCardItemValue>
         {valueAppend && (
           <DepositPoolCardItemValueAppend variant="bodyLarge">
             {valueAppend}

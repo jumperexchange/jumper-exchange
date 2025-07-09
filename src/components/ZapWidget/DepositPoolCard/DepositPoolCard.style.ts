@@ -50,6 +50,15 @@ export const TooltipIcon = styled(InfoIcon)(({ theme }) => ({
 
 export const DepositPoolCardItemValuePrepend = styled(Box)(({ theme }) => ({}));
 
+export const DepositPoolCardItemValue = styled(Typography)(({ theme }) => ({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: 'vertical',
+}));
+
 export const DepositPoolCardItemValueAppend = styled(Typography)(
   ({ theme }) => ({
     mb: theme.spacing(0.25),
