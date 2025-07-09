@@ -23,7 +23,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
-import WidgetFieldEndAdornment from './WidgetEndAdornment';
+import WithdrawInputEndAdornment from '../Withdraw/WithdrawInputEndAdornment';
 import { WidgetFormHelperText } from './WidgetLikeField.style';
 import { useChains } from '@/hooks/useChains';
 import type { TokenAmount } from '@lifi/sdk';
@@ -321,7 +321,7 @@ function WidgetLikeField({
               !!account?.isConnected &&
               !!balance &&
               parseFloat(balance) > 0 && (
-                <WidgetFieldEndAdornment
+                <WithdrawInputEndAdornment
                   balance={'200'}
                   mainColor={overrideStyle?.mainColor}
                   setValue={setValue}

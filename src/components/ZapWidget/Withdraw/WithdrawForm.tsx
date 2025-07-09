@@ -14,7 +14,7 @@ import { WithdrawInput } from './WithdrawInput';
 import BadgeWithChain from '../BadgeWithChain';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
-import WidgetFieldEndAdornment from '../WidgetLikeField/WidgetEndAdornment';
+import WithdrawInputEndAdornment from './WithdrawInputEndAdornment';
 import { WithdrawFormProps } from './WithdrawWidget.types';
 
 export const WithdrawForm: FC<WithdrawFormProps> = ({
@@ -99,7 +99,7 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
           !!account.address &&
           !!balance &&
           parseFloat(balance) > 0 && (
-            <WidgetFieldEndAdornment
+            <WithdrawInputEndAdornment
               balance={balance}
               mainColor={overrideStyle?.mainColor}
               setValue={setValue}
