@@ -371,7 +371,7 @@ function WidgetLikeField({
 
           {isSuccess && (
             <TxConfirmation
-              s={'Withdraw successful'}
+              description={'Withdraw successful'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={!!isSuccessWriteContract && !isPending ? true : false}
             />
@@ -379,7 +379,7 @@ function WidgetLikeField({
 
           {!isSuccess && data && (
             <TxConfirmation
-              s={'Check on explorer'}
+              description={'Check on explorer'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={false}
             />

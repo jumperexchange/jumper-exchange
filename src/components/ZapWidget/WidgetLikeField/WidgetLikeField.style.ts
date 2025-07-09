@@ -21,6 +21,9 @@ export const MaxButton = styled(Button, {
     backgroundColor:
       mainColor ?? (theme.vars || theme).palette.bgQuaternary.hover,
   },
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));
 
 export const MaxValue = styled(Typography)(({ theme }) => ({
