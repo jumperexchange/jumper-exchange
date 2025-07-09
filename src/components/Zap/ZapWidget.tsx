@@ -1,12 +1,13 @@
 'use client';
 
 import { ClientOnly } from 'src/components/ClientOnly';
-import { CustomInformation, TaskType } from 'src/types/loyaltyPass';
+import { CustomInformation } from 'src/types/loyaltyPass';
 import { FC, useMemo } from 'react';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import Box from '@mui/material/Box';
 import { ZapDepositWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositWidget';
 import { ZapWithdrawWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapWithdrawWidget';
+import { TaskType } from 'src/types/strapi';
 
 export interface ZapWidgetProps {
   type: 'deposit' | 'withdraw';
