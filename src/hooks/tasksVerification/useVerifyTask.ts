@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import config from '@/config/env-config';
 
 interface VerifyTaskProps {
   questId: string;
@@ -7,7 +8,7 @@ interface VerifyTaskProps {
 }
 
 export async function verifyTaskQuery(props: VerifyTaskProps) {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const res = await fetch(`${apiBaseUrl}/tasks_verification`, {
     method: 'POST',
     headers: {

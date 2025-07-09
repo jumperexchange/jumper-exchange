@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { type AbTestName } from 'src/const/abtests';
 import { useAbTestsStore } from 'src/stores/abTests';
+import config from '@/config/env-config';
 
 export interface UseABTestProps {
   isEnabled: boolean;
@@ -15,7 +16,7 @@ export const useABTest = ({
   address: string;
 }): UseABTestProps => {
   const { activeAbTests, setActiveAbTest } = useAbTestsStore();
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
   const { data, isLoading } = useQuery({
     queryKey: ['abtest', feature, address],

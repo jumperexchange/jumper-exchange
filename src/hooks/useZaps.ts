@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import config from '@/config/env-config';
 
 interface UseZapsProps {
   chain?: string;
@@ -11,7 +12,7 @@ export const useZaps = (input: UseZapsProps) => {
   const address = input?.address;
   const project = input?.project;
 
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
   // get data
   return useQuery({

@@ -1,8 +1,9 @@
+import { description, siteName } from '@/app/lib/metadata';
 import type { WalletConnectParameters } from 'wagmi/connectors';
-import { siteName, description } from '@/app/lib/metadata';
+import config from '@/config/env-config';
 
 export const defaultWalletConnectConfig: WalletConnectParameters = {
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
+  projectId: config.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
   metadata: {
     name: siteName,
     description,
