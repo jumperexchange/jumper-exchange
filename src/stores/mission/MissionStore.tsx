@@ -4,12 +4,19 @@ import {
   TaskWidgetInformationChainData,
   TaskWidgetInformationWalletData,
   TaskWidgetInformationTokenData,
+  TaskWidgetInformationInputData,
 } from 'src/types/strapi';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface MissionState {
   currentActiveTaskId?: string;
   currentActiveTaskType?: TaskType;
+
+  taskTitle?: string;
+  taskDescription?: string;
+  taskCTAText?: string;
+  taskCTALink?: string;
+  taskInputs?: TaskWidgetInformationInputData[];
 
   destinationChain?: TaskWidgetInformationChainData;
   destinationToken?: TaskWidgetInformationTokenData;
@@ -22,6 +29,7 @@ interface MissionState {
   toAddress?: TaskWidgetInformationWalletData;
 
   missionChainIds?: number[];
+  missionId?: string;
   missionType?: string;
 
   setCurrentTaskWidgetFormParams: ({
@@ -40,9 +48,27 @@ interface MissionState {
     toAddress?: TaskWidgetInformationWalletData;
   }) => void;
 
+  setCurrentTaskInstructionParams: ({
+    taskTitle,
+    taskDescription,
+    taskCTALink,
+    taskCTAText,
+    taskInputs,
+  }: {
+    taskTitle?: string;
+    taskDescription?: string;
+    taskCTAText?: string;
+    taskCTALink?: string;
+    taskInputs?: TaskWidgetInformationInputData[];
+  }) => void;
+
   setCurrentActiveTask: (taskId: string, taskType: TaskType) => void;
 
-  setMissionDefaults: (chainIds?: number[], missionType?: string) => void;
+  setMissionDefaults: (
+    chainIds?: number[],
+    missionId?: string,
+    missionType?: string,
+  ) => void;
 
   isMissionCompleted: boolean;
   setIsMissionCompleted: (isCompleted: boolean) => void;
@@ -64,6 +90,7 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
     toAddress: undefined,
 
     missionChainIds: [],
+    missionId: undefined,
     missionType: undefined,
 
     setCurrentActiveTask: (currentActiveTaskId, currentActiveTaskType) =>
@@ -77,9 +104,15 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         ...params,
       }),
 
-    setMissionDefaults: (missionChainIds, missionType) =>
+    setCurrentTaskInstructionParams: (params) =>
+      set({
+        ...params,
+      }),
+
+    setMissionDefaults: (missionChainIds, missionId, missionType) =>
       set({
         missionChainIds,
+        missionId,
         missionType,
       }),
 

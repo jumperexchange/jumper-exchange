@@ -45,3 +45,9 @@ export const MissionWidgetIcon = styled(CheckIcon)(({ theme }) => ({
     color: (theme.vars || theme).palette.mint[500],
   }),
 }));
+
+export const MissionInstructionFormContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(3),
+}));

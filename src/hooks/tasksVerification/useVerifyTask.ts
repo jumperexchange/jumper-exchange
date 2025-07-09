@@ -1,10 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 
-interface VerifyTaskProps {
+interface KnownVerifyTaskProps {
   questId: string;
   stepId: string;
   address?: string;
 }
+
+type VerifyTaskProps = KnownVerifyTaskProps & {
+  [key: string]: string | undefined;
+};
 
 export async function verifyTaskQuery(props: VerifyTaskProps) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;

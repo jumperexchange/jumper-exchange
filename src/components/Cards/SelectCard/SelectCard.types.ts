@@ -20,6 +20,7 @@ export interface SelectCardInputProps
   extends Omit<SelectCardBaseProps, 'mode'> {
   mode: SelectCardMode.Input;
   id: string;
+  name: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: () => void;
   onBlur?: () => void;

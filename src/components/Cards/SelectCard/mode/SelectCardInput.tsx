@@ -11,6 +11,7 @@ import { SelectCardInputProps } from '../SelectCard.types';
 
 export const SelectCardInput: FC<SelectCardInputProps> = ({
   id,
+  name,
   label,
   value,
   description,
@@ -28,6 +29,7 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
         <SelectCardValueContainer>
           <SelectCardInputField
             id={id}
+            name={name}
             value={value}
             placeholder={placeholder}
             type="text"
