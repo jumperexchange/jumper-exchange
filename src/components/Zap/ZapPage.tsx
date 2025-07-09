@@ -3,13 +3,15 @@ import { TwoColumnLayout } from '../TwoColumnLayout/TwoColumnLayout';
 import { ZapDetails } from './ZapDetails';
 import { ZapWidgetTabs } from './ZapWidgetTabs';
 import { ZapWidget } from './ZapWidget';
+import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
+import { ZapWidgets } from './ZapWidgets';
 
 interface ZapPageProps {
   market: Quest;
   detailInformation?: CustomInformation;
 }
 
-export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
+export const ZapPage = async ({ market, detailInformation }: ZapPageProps) => {
   // const { data, isSuccess, refetch } = useZaps(detailInformation?.projectData);
   // const [token, setToken] = useState<TokenAmount>();
 
@@ -29,29 +31,13 @@ export const ZapPage = ({ market, detailInformation }: ZapPageProps) => {
   //   }
   // }, [isSuccess]);
 
+  const tasksVerification = market.tasks_verification;
+  const taskOpportunities = await fetchTaskOpportunities(tasksVerification);
+
   return (
     <TwoColumnLayout
-      mainContent={<ZapDetails market={market} />}
-      sideContent={
-        <ZapWidgetTabs
-          renderChildren={(activeTab) => {
-            if (activeTab === 0) {
-              return (
-                <ZapWidget
-                  customInformation={detailInformation}
-                  type="deposit"
-                />
-              );
-            }
-            return (
-              <ZapWidget
-                customInformation={detailInformation}
-                type="withdraw"
-              />
-            );
-          }}
-        />
-      }
+      mainContent={<ZapDetails market={market} tasks={taskOpportunities} />}
+      sideContent={<ZapWidgets detailInformation={detailInformation} />}
     />
   );
 };

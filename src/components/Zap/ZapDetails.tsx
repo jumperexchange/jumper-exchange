@@ -1,4 +1,6 @@
-import { Quest } from 'src/types/loyaltyPass';
+'use client';
+
+import { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   ZapDetailsColumnContainer,
@@ -19,12 +21,16 @@ import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import { BaseAlertVariant } from '../Alerts/BaseAlert/BaseAlert.styles';
 import { Typography } from '@mui/material';
 import { AccordionFAQ, AccordionHeader } from '../AccordionFAQ';
+import { useAccount } from '@lifi/wallet-management';
+import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
+import { ZapTask } from './ZapTask';
 
 interface ZapDetailsProps {
   market: Quest;
+  tasks: TaskVerificationWithApy[];
 }
 
-export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
+export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
   const status = useMissionTimeStatus(
     market?.StartDate ?? '',
     market?.EndDate ?? '',
@@ -32,6 +38,12 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
   const zapDisplayData = useFormatDisplayQuestData(market, true, AppPaths.Zap);
   const { t } = useTranslation();
   const router = useRouter();
+
+  const { account } = useAccount();
+  const { enhancedTasks, setActiveTask } = useEnhancedTasks(
+    tasks ?? [],
+    account?.address,
+  );
 
   const badge = useMemo(() => {
     if (!status) {
@@ -75,6 +87,14 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
           rewardGroups={zapDisplayData.rewardGroups}
           partnerLink={zapDisplayData.partnerLink}
         />
+        {enhancedTasks.map((task) => (
+          <ZapTask
+            key={task.uuid}
+            task={task}
+            missionId={market.documentId}
+            onClick={() => setActiveTask(task)}
+          />
+        ))}
         {/** @TODO need to check if we still want to show these participation steps */}
         {/* <AccordionFAQ
           showIndex={true}
