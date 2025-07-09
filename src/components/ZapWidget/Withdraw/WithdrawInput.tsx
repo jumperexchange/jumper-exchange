@@ -1,11 +1,10 @@
 import { formatInputAmount } from '@lifi/widget';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
-import { FC, useState, useMemo, ReactNode } from 'react';
+import { FC, useMemo, ReactNode } from 'react';
 import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
 import { WidgetFormHelperText } from '../WidgetLikeField/WidgetLikeField.style';
-import WidgetFieldEndAdornment from '../WidgetLikeField/WidgetEndAdornment';
 
 interface WithdrawInputProps {
   label?: string;
