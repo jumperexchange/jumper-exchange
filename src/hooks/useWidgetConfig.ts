@@ -90,7 +90,7 @@ export const useWidgetConfig = ({
         ...publicRPCList,
       };
     } catch (e) {
-      if (process.env.DEV) {
+      if (envConfig.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
