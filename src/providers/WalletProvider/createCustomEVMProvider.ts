@@ -1,4 +1,4 @@
-import { getWalletClient } from '@wagmi/core';
+import { getWalletClient, switchChain, getConnectorClient } from '@wagmi/core';
 import { EVM, type EVMProvider } from '@lifi/sdk';
 import type { Config } from 'wagmi';
 import type { Client } from 'viem';
@@ -88,7 +88,11 @@ export function createCustomEVMProvider({
         waitForCallsStatus: (args: WalletWaitForCallsStatusArgs) => waitForCallsStatus(client, args),
         sendCalls: (args: WalletSendCallsArgs) => sendCalls(client, args),
       }));
-    }
+    },
+    switchChain: async (chainId: number) => {
+      const chain = await switchChain(wagmiConfig, { chainId });
+      return getConnectorClient(wagmiConfig, { chainId: chain.id });
+    },
   });
 
   return baseProvider;
