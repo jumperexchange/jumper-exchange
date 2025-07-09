@@ -11,9 +11,10 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
 import { useZaps } from 'src/hooks/useZaps';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { createWalletClient, custom, http, parseUnits } from 'viem';
+import { http, parseUnits } from 'viem';
 import { mainnet, optimism, base } from 'viem/chains';
-import { useAccount, useReadContracts, useConfig } from 'wagmi';
+import { useReadContracts, useWalletClient, useConfig } from 'wagmi';
+import { useAccount } from '@lifi/wallet-management';
 import {
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
@@ -31,8 +32,15 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [areClientInitializing, setAreClientInitializing] = useState(false);
 
-  const account = useAccount();
-  const { address, chain } = account;
+  const { account } = useAccount();
+  const { address, chainId } = account;
+  const { data: walletClient } = useWalletClient({
+    chainId: chainId,
+    account: address as `0x${string}`,
+    query: {
+      enabled: !!chainId && !!address,
+    },
+  });
   const { data, isSuccess } = useZaps(projectData);
   const zapData = data?.data;
 
@@ -92,8 +100,15 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   // Enhanced initialization with retry logic and better error handling
   useEffect(() => {
     const initMeeClient = async () => {
-      if (!chain) {
+      if (!chainId) {
         console.warn('Chain is undefined, skipping MEE client initialization.');
+        return;
+      }
+
+      if (!walletClient) {
+        console.warn(
+          'Wallet client is undefined, skipping MEE client initialization.',
+        );
         return;
       }
 
@@ -111,10 +126,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       // that orchestrates actions across multiple chains.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
       const oNexusInit = await toMultichainNexusAccount({
-        signer: createWalletClient({
-          chain,
-          transport: custom(global?.window?.ethereum ?? ''),
-        }),
+        signer: walletClient,
         chains: [mainnet, optimism, base],
         transports: [http(), http(), http()],
       });
@@ -134,7 +146,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       setAreClientInitializing(false);
     };
     initMeeClient();
-  }, [chain]);
+  }, [chainId, walletClient]);
 
   const wagmiConfig = useConfig();
 
@@ -288,10 +300,10 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         throw new Error("'calls' array is empty");
       }
 
-      if (!chain) {
+      if (!chainId) {
         throw new Error('Cannot determine current chain ID from wallet.');
       }
-      const currentChainId = chain.id;
+      const currentChainId = chainId;
 
       if (!currentRoute) {
         throw new Error('Cannot process transaction: Route is undefined.');
@@ -439,7 +451,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
 
       return { id: hash };
     },
-    [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
+    [meeClient, oNexus, chainId, currentRoute, zapData, projectData, address],
   );
 
   const providers = useMemo(() => {
