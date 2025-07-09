@@ -1,3 +1,5 @@
+'use client';
+
 import { useTheme } from '@mui/material/styles';
 import { Tabs, type TabProps } from 'src/components/Tabs';
 import { FC, ReactNode, useState } from 'react';
