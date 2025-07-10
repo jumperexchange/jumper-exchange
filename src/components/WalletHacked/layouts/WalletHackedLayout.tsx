@@ -47,7 +47,6 @@ export const ModalMenuPage = ({
             onClick={(event) => {
               event.stopPropagation();
               setCurrentStep(getPreviousStep(currentStep));
-              console.log('prev button clicked');
             }}
           >
             <ArrowBackIcon />

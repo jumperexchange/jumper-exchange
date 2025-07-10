@@ -1,24 +1,22 @@
 import { useAccount } from '@lifi/wallet-management';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/WalletHacked/layout/WalletHackedLayout';
 import { useWalletSigning } from 'src/hooks/useWalletSigning';
 import { HACKED_WALLET_STEPS } from '../constants';
 import { useWalletHacked } from '../context/WalletHackedContext';
+import { WalletHackedSignature } from '../layouts/WalletHackedSignature';
 
 export const WalletHackedDestinationSign = () => {
   const { t } = useTranslation();
   const { account } = useAccount();
   const {
-    destinationWallet,
     sourceWallet,
+    destinationWallet,
     setDestinationWallet,
     setCurrentStep,
     sourcePoints,
   } = useWalletHacked();
-  const { signWallet, prepareSigningMessage } = useWalletSigning();
-  const isSigningWallet = useRef(false);
-  const hasHandledWalletSignature = useRef(false);
+  const { prepareSigningMessage } = useWalletSigning();
   const title = t('walletHacked.steps.destination.title');
   const description = t('walletHacked.steps.destination.signDescription');
   const buttonLabel = t('walletHacked.actions.sign');
@@ -35,48 +33,20 @@ export const WalletHackedDestinationSign = () => {
     }
   }, [account, destinationWallet, setCurrentStep]);
 
-  const handleSignDestinationWallet = useCallback(
-    async (event?: React.MouseEvent) => {
-      event?.stopPropagation();
-      if (
-        !destinationWallet ||
-        destinationWallet.account?.address === undefined ||
-        !destinationWallet?.signed
-      ) {
-        isSigningWallet.current = true;
-        hasHandledWalletSignature.current = false;
-      }
-      const message = prepareSigningMessage(
-        destinationWallet?.account?.address!,
-        HACKED_WALLET_STEPS.DESTINATION_SIGN,
-        sourcePoints!,
-      ); //todo: replace with actual xp
-      const signature = await signWallet(message);
-      setDestinationWallet({
-        account: destinationWallet?.account,
-        verified: !!destinationWallet?.verified,
-        signed: true,
-        signature,
-        message: message,
-      });
-      hasHandledWalletSignature.current = true;
-    },
-    [
-      destinationWallet,
-      prepareSigningMessage,
-      signWallet,
-      setDestinationWallet,
-    ],
+  const message = prepareSigningMessage(
+    destinationWallet?.account?.address!,
+    HACKED_WALLET_STEPS.DESTINATION_SIGN,
+    sourcePoints!,
   );
 
   return (
-    <ModalMenuPage
+    <WalletHackedSignature
       title={title}
-      text={description}
+      description={description}
       buttonLabel={buttonLabel}
-      showPrevButton={false}
-      onClickAction={handleSignDestinationWallet}
-      disabled={false}
+      message={message}
+      wallet={destinationWallet!}
+      setWallet={setDestinationWallet}
     />
   );
 };

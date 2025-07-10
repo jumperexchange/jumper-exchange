@@ -1,19 +1,20 @@
 import { useAccount } from '@lifi/wallet-management';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/WalletHacked/layout/WalletHackedLayout';
 import { useWalletSigning } from 'src/hooks/useWalletSigning';
 import { HACKED_WALLET_STEPS } from '../constants';
 import { useWalletHacked } from '../context/WalletHackedContext';
+import { WalletHackedSignature } from '../layouts/WalletHackedSignature';
 
 export const WalletHackedSourceSign = () => {
   const { t } = useTranslation();
   const { account } = useAccount();
-  const { sourceWallet, setSourceWallet, setCurrentStep, sourcePoints } =
+  const { sourceWallet, setCurrentStep, setSourceWallet, sourcePoints } =
     useWalletHacked();
-  const { signWallet, prepareSigningMessage } = useWalletSigning();
+  const { prepareSigningMessage } = useWalletSigning();
   const title = t('walletHacked.steps.source.title');
   const description = t('walletHacked.steps.source.signDescription');
+  const buttonLabel = t('walletHacked.actions.sign');
 
   useEffect(() => {
     if (!account?.address) {
@@ -24,8 +25,6 @@ export const WalletHackedSourceSign = () => {
     }
   }, [account, sourceWallet, setCurrentStep]);
 
-  const buttonLabel = t('walletHacked.actions.sign');
-
   const message = useMemo(() => {
     const signingMessage = prepareSigningMessage(
       sourceWallet?.account?.address!,
@@ -35,28 +34,14 @@ export const WalletHackedSourceSign = () => {
     return signingMessage;
   }, [sourceWallet, sourcePoints, prepareSigningMessage]);
 
-  const handleSignSourceWallet = useCallback(
-    async (event?: React.MouseEvent) => {
-      event?.stopPropagation();
-      const signature = await signWallet(message);
-      setSourceWallet({
-        ...sourceWallet,
-        signed: true,
-        signature: signature as `0x${string}`,
-        message,
-      });
-    },
-    [sourceWallet, prepareSigningMessage, signWallet, setSourceWallet],
-  );
-
   return (
-    <ModalMenuPage
+    <WalletHackedSignature
       title={title}
-      text={description}
+      description={description}
       buttonLabel={buttonLabel}
-      showPrevButton={false}
-      onClickAction={handleSignSourceWallet}
-      disabled={false}
+      message={message}
+      wallet={sourceWallet!}
+      setWallet={setSourceWallet}
     />
   );
 };

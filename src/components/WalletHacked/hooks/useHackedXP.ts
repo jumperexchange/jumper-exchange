@@ -19,7 +19,6 @@ export const useHackedXP = (): UseHackedXPType => {
     setCurrentStep,
     setDestinationPoints,
     setSourceWallet,
-    setDestinationWallet,
     setError,
     setSourcePoints,
   } = useWalletHacked();
