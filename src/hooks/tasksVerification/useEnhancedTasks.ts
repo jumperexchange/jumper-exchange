@@ -81,16 +81,22 @@ export const useEnhancedTasks = (
   }, [firstUnverifiedTask, currentActiveTaskId, handleSetActiveTask]);
 
   const allTasksCompleted = useMemo(() => {
-    const requiredTasks = tasks.filter((task) => task.isRequired);
-    return requiredTasks.length === verifiedTasks?.length;
+    const requiredTasks = tasks.filter(
+      // This means that the task can be verified and is required
+      (task) => task.hasTask && task.isRequired,
+    );
+    return (
+      requiredTasks.length > 0 && requiredTasks.length === verifiedTasks?.length
+    );
   }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks)]);
 
   // @TODO re-enable this after missions are updated; it might require some changes
-  // useEffect(() => {
-  //   if (allTasksCompleted && !isMissionCompleted) {
-  //     setIsMissionCompleted(true);
-  //   }
-  // }, [allTasksCompleted, isMissionCompleted, setIsMissionCompleted]);
+  useEffect(() => {
+    if (allTasksCompleted && !isMissionCompleted) {
+      setIsMissionCompleted(true);
+    }
+  }, [allTasksCompleted, isMissionCompleted, setIsMissionCompleted]);
+
   const enhancedTasks = useMemo(() => {
     return tasks.map((task) => {
       const isVerified = task.hasTask && verifiedTaskIds.has(task.uuid);
