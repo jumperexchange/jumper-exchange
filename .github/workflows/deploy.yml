@@ -25,3 +25,4 @@ jobs:
       deploy_key: ${{ secrets.DEPLOY_SSH }}
       GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
       GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      GCP_ENV_PROJECT: ${{ secrets.GCP_ENV_PROJECT }}

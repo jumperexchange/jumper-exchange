@@ -41,6 +41,8 @@ on:
         required: true
       GCP_SERVICE_ACCOUNT:
         required: true
+      GCP_ENV_PROJECT:
+        required: true
 
 # Define environment variables accessible throughout the workflow
 env:
@@ -201,7 +203,7 @@ jobs:
         run: |
           gcloud secrets versions access latest \
             --secret="jumper-exchange-env" \
-            --project="jumper-d-dev" > .env.json
+            --project="${{ secrets.GCP_ENV_PROJECT }}" > .env.json
       - name: Convert JSON .env to key-value format
         run: |
           if [ -f ".env.json" ]; then
