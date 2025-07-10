@@ -8,6 +8,7 @@ import { DepositCard } from 'src/components/ZapWidget/Deposit/DepositCard';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
 import { WidgetProps } from '../Widget.types';
+import { ConfigContext } from '../../widgetConfig/types';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -37,18 +38,24 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData)]);
+  }, [JSON.stringify(zapData ?? {})]);
 
   const enhancedCtx = useMemo(() => {
+    const baseOverrides: ConfigContext['baseOverrides'] = {
+      integrator: projectData.integrator,
+      theme: {
+        header: {
+          display: 'none',
+        },
+      },
+    };
+
     return {
       ...ctx,
-      overrideHeader: `Deposit to ${zapData?.meta.name} pool`,
       includeZap: true,
       zapProviders: providers,
       zapToAddress: toAddress,
-      baseOverrides: {
-        integrator: projectData.integrator,
-      },
+      baseOverrides,
     };
   }, [
     JSON.stringify(ctx),
@@ -123,9 +130,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     [zapData, lpTokenDecimals],
   );
 
-  return token && isInitialized ? (
+  return token && isZapDataSuccess && isInitialized ? (
     <LiFiWidget
-      key={poolName}
       contractComponent={
         <DepositCard
           poolName={poolName}
