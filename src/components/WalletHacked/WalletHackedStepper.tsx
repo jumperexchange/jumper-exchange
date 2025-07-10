@@ -1,7 +1,6 @@
 'use client';
 
 import { memo } from 'react';
-import { useHackedXP } from './hooks/useHackedXP';
 import { useInitializeCurrentStep } from './hooks/useInitializeCurrentStep';
 import {
   WalletHackedContainer,
@@ -10,8 +9,6 @@ import {
 import { WalletHackedStepperProgress } from './WalletHackedStepperProgress';
 
 export const WalletHackedStepper = memo(() => {
-  // useHackedXP needs to be called!
-  const updatePoints = useHackedXP();
   const currentStepComponent = useInitializeCurrentStep();
 
   return (

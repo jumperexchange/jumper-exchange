@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount, useAccountDisconnect } from '@lifi/wallet-management';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletSigning } from 'src/hooks/useWalletSigning';
@@ -11,6 +11,7 @@ export const WalletHackedSourceSign = () => {
   const { account } = useAccount();
   const { sourceWallet, setCurrentStep, setSourceWallet, sourcePoints } =
     useWalletHacked();
+  const disconnectWallet = useAccountDisconnect();
   const { prepareSigningMessage } = useWalletSigning();
   const title = t('walletHacked.steps.source.title');
   const description = t('walletHacked.steps.source.signDescription');
@@ -22,6 +23,7 @@ export const WalletHackedSourceSign = () => {
     }
     if (sourceWallet?.signed) {
       setCurrentStep(HACKED_WALLET_STEPS.DESTINATION_CONNECT);
+      disconnectWallet(account);
     }
   }, [account, sourceWallet, setCurrentStep]);
 

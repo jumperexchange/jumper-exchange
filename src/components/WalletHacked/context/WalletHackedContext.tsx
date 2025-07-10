@@ -1,13 +1,17 @@
 'use client';
 
+import { useAccount, useAccountDisconnect } from '@lifi/wallet-management';
 import {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
-import { HACKED_WALLET_STEPS } from '../constants';
+import { useTranslation } from 'react-i18next';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { HACKED_WALLET_DEFAULT_STATE, HACKED_WALLET_STEPS } from '../constants';
 import { WalletState } from '../types';
 
 interface WalletHackedContextType {
@@ -61,6 +65,82 @@ export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
   >(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
+  const { account } = useAccount();
+  const { t } = useTranslation();
+
+  const {
+    points: sourcePointsFetched,
+    isSuccess: isSourcePointsSuccess,
+    isLoading: isSourcePointsLoading,
+  } = useLoyaltyPass(sourceWallet?.account?.address);
+  const {
+    points: destinationPointsFetched,
+    isSuccess: isDestinationPointsSuccess,
+    isLoading: isDestinationPointsLoading,
+  } = useLoyaltyPass(destinationWallet?.account?.address);
+
+  const disconnectWallet = useAccountDisconnect();
+
+  // Handle source points
+  useEffect(() => {
+    if (
+      !account ||
+      !account.isConnected ||
+      !isSourcePointsSuccess ||
+      isSourcePointsLoading ||
+      sourceWallet?.account?.address !== account.address
+    )
+      return;
+
+    // Only check for positive points on source wallet
+    if (
+      !sourcePointsFetched ||
+      !(typeof sourcePointsFetched === 'number' && sourcePointsFetched > 0)
+    ) {
+      disconnectWallet(account);
+      const noPointsMsg = t('walletHacked.actions.noPoints');
+      const tryDifferentWalletMsg = t(
+        'walletHacked.actions.tryDifferentWallet',
+      );
+      const errorMsg = `${noPointsMsg}. ${tryDifferentWalletMsg}`;
+      setError(errorMsg);
+      setCurrentStep(HACKED_WALLET_STEPS.SOURCE_CONNECT);
+      setSourceWallet(HACKED_WALLET_DEFAULT_STATE);
+      return;
+    } else {
+      setSourcePoints(Number(sourcePointsFetched));
+      // No errors caught above, then go to sign source wallet
+      setError(undefined);
+      setCurrentStep(HACKED_WALLET_STEPS.SOURCE_SIGN);
+    }
+  }, [
+    account?.address,
+    sourceWallet?.account?.address,
+    isSourcePointsSuccess,
+    isSourcePointsLoading,
+  ]);
+
+  // Handle destination points - Always set them when ready, regardless of value
+  useEffect(() => {
+    if (
+      !account ||
+      !account.isConnected ||
+      !isDestinationPointsSuccess ||
+      isDestinationPointsLoading ||
+      typeof destinationPointsFetched !== 'number' ||
+      destinationPointsFetched === undefined ||
+      destinationWallet?.account?.address !== account.address
+    )
+      return;
+
+    // Changed condition here
+    setDestinationPoints(destinationPointsFetched);
+  }, [
+    account?.address,
+    destinationWallet?.account?.address,
+    isDestinationPointsSuccess,
+    isDestinationPointsLoading,
+  ]);
 
   const value = useMemo(
     () => ({
