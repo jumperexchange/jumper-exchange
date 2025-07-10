@@ -6,6 +6,7 @@ import {
   WaitForSupertransactionReceiptPayload,
   greaterThanOrEqualTo,
   runtimeERC20BalanceOf,
+  GetFusionQuoteParams,
 } from '@biconomy/abstractjs';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
@@ -23,7 +24,7 @@ import {
   WalletCall,
   AbiInput,
 } from './types';
-import { Route } from '@lifi/sdk';
+import { getTokenBalance, Route } from '@lifi/sdk';
 import { ProjectData } from 'src/types/questDetails';
 
 export const useInitializeZapConfig = (projectData: ProjectData) => {
@@ -283,6 +284,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     [meeClient],
   );
 
+  // @TODO split this function into smaller units
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
     async (args: WalletSendCallsArgs) => {
@@ -310,6 +312,10 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       }
       if (!zapData) {
         throw new Error('Integration data is not available.');
+      }
+
+      if (!address) {
+        throw new Error('No wallet address available.');
       }
 
       const integrationData = zapData;
@@ -423,10 +429,19 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         instructions.push(transferLpInstruction);
       }
 
-      const quote = await meeClient.getFusionQuote({
+      const currentTokenBalance = await getTokenBalance(
+        address,
+        currentRoute.fromToken,
+      );
+
+      const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
+      console.log(`userBalance`, userBalance);
+      const requestedAmount = BigInt(currentRoute.fromAmount);
+
+      const fusionQuoteParams: GetFusionQuoteParams = {
         trigger: {
           tokenAddress: currentRoute.fromToken.address as `0x${string}`,
-          amount: BigInt(currentRoute.fromAmount),
+          amount: requestedAmount,
           chainId: currentChainId,
         },
         cleanUps: [
@@ -441,7 +456,22 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
           chainId: currentChainId,
         },
         instructions,
-      });
+      };
+
+      // Calculate the percentage of the balance the user wants to use (in basis points)
+      const usageInBasisPoints =
+        userBalance > 0n ? (requestedAmount * 10_000n) / userBalance : 0n;
+
+      // If the user is using ≥ 99.90% of their balance, we assume they intend to use max
+      const isUsingMax = usageInBasisPoints >= 9_990n;
+
+      console.log('usageInBasisPoints', usageInBasisPoints);
+
+      if (isUsingMax) {
+        fusionQuoteParams.trigger.useMaxAvailableFunds = true;
+      }
+
+      const quote = await meeClient.getFusionQuote(fusionQuoteParams);
 
       console.log('quote', quote);
 
