@@ -1,8 +1,6 @@
-import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { SECONDS_IN_AN_HOUR } from 'src/const/time';
 import { useAccount } from '@lifi/wallet-management';
+import { useQuery } from '@tanstack/react-query';
+import { ONE_HOUR_MS } from 'src/const/time';
 
 export interface useOngoingNumericQuestsType {
   isSuccess: boolean;
@@ -28,33 +26,6 @@ export interface OngoingNumericItem extends OngoingNumericItemStats {
 
 export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
   const { account } = useAccount();
-  const {
-    address: storedAddress,
-    timestamp,
-    reset,
-  } = useLoyaltyPassStore((state) => state);
-
-  useEffect(() => {
-    if (!account || !storedAddress) {
-      return;
-    }
-
-    if (account.address === storedAddress) {
-      return;
-    }
-
-    reset();
-  }, [account, reset, storedAddress]);
-
-  // we store the data for 1 hour
-  const t = Date.now() / 1000;
-  const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_AN_HOUR;
-
-  const queryIsEnabled =
-    !!account?.address &&
-    // account?.chainType === 'EVM' &&
-    (storeNeedsRefresh ||
-      account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
   const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -78,21 +49,13 @@ export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
       const { data } = jsonResponse;
       return data;
     },
-    enabled: queryIsEnabled,
-    refetchInterval: 1000 * 60 * 60,
+    enabled: !!account?.address,
+    refetchInterval: ONE_HOUR_MS,
   });
-
-  const returnLocalData = account?.address === storedAddress && !queryIsEnabled;
 
   const errorWhileFetchingData = !data || !account?.address;
 
-  if (returnLocalData) {
-    return {
-      data,
-      isSuccess: true,
-      isLoading: isLoading,
-    };
-  } else if (errorWhileFetchingData) {
+  if (errorWhileFetchingData) {
     return {
       data: [],
       isSuccess: false,
