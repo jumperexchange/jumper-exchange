@@ -12,7 +12,7 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
 import { useZaps } from 'src/hooks/useZaps';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { http, parseUnits } from 'viem';
+import { http, parseUnits, zeroAddress } from 'viem';
 import { mainnet, optimism, base } from 'viem/chains';
 import { useReadContracts, useWalletClient, useConfig } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
@@ -281,6 +281,11 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       if (!depositAddress || !depositToken) {
         throw new Error('Deposit address or token is undefined.');
       }
+
+      // @Note this works only for EVM chains
+      const isNativeSourceToken =
+        currentRoute.fromToken.address === zeroAddress;
+      console.warn('Using native source token:', isNativeSourceToken);
 
       // raw calldata from the widget
       const instructions = await Promise.all(
