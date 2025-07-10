@@ -244,6 +244,10 @@
       "submit": "Submit",
       "done": "Done"
     },
+    "signatureMsg": {
+      "source": "I confirm that I own this wallet and want to transfer my {{points}} XP points to a new wallet.",
+      "destination": "I confirm that I own this wallet and want to receive {{points}} XP points from another wallet."
+    },
     "errors": {
       "sameWalletAsSource": "This wallet is already set as the source wallet. Please use a different wallet for the destination.",
       "sameWalletAsDestination": "This wallet is already set as the destination wallet. Please use a different wallet for the source.",

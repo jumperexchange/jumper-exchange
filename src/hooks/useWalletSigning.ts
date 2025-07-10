@@ -24,8 +24,8 @@ export const useWalletSigning = () => {
       points: number,
     ): string => {
       return type === HACKED_WALLET_STEPS.SOURCE_SIGN
-        ? `I confirm that I own this wallet and want to transfer my ${points} XP points to a new wallet.`
-        : `I confirm that I own this wallet and want to receive ${points} XP points from another wallet.`;
+        ? t('walletHacked.signatureMsg.source', { points })
+        : t('walletHacked.signatureMsg.destination', { points });
     },
     [],
   );
