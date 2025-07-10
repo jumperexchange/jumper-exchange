@@ -12,7 +12,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    uses: jumperexchange/github-actions/.github/workflows/build-and-push-multitag.yaml@main
+    uses: ./.github/workflows/build-and-push-multitag.yaml@main
     with:
       registry: europe-docker.pkg.dev/jumper-g-artifacts
       image-name: 'docker-jumper-exchange/jumpex'
