@@ -189,18 +189,33 @@ class TagParams {
 class QuestParams {
   private apiUrl: URL;
 
+  private static defaultPopulates = [
+    'Image',
+    'quests_platform',
+    'quests_platform.Logo',
+    'BannerImage',
+    'tasks_verification',
+    'tasks_verification.TaskWidgetInformation',
+    'tasks_verification.TaskWidgetInformation.sourceChain',
+    'tasks_verification.TaskWidgetInformation.sourceToken',
+    'tasks_verification.TaskWidgetInformation.destinationChain',
+    'tasks_verification.TaskWidgetInformation.destinationToken',
+    'tasks_verification.TaskWidgetInformation.toAddress',
+  ];
+
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
   }
 
-  addParams(): URL {
-    this.apiUrl.searchParams.set('populate[0]', 'Image');
-    this.apiUrl.searchParams.set('populate[1]', 'quests_platform');
-    this.apiUrl.searchParams.set('populate[2]', 'quests_platform.Logo');
-    this.apiUrl.searchParams.set('populate[3]', 'BannerImage');
-    this.apiUrl.searchParams.set('populate[4]', 'tasks_verification');
-
+  addParams(populate = QuestParams.defaultPopulates): URL {
+    populate.forEach((relation, index) => {
+      this.apiUrl.searchParams.set(`populate[${index}]`, relation);
+    });
     return this.apiUrl;
+  }
+
+  static getDefaultPopulatesLength() {
+    return QuestParams.defaultPopulates.length;
   }
 }
 
@@ -301,7 +316,10 @@ class QuestStrapiApi extends StrapiApi {
   }
 
   populateCampaign(): this {
-    this.apiUrl.searchParams.set('populate[5]', 'campaign');
+    this.apiUrl.searchParams.set(
+      `populate[${QuestParams.getDefaultPopulatesLength()}]`,
+      'campaign',
+    );
     return this;
   }
 }

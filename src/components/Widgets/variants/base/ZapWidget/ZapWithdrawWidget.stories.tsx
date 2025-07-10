@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { ZapWithdrawWidget } from './ZapWithdrawWidget';
-import { TaskType } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 
 const meta = {
   component: ZapWithdrawWidget,
