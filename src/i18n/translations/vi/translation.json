@@ -143,6 +143,12 @@
   "missions": {
     "available": "Nhiệm vụ có sẵn",
     "completed": "Nhiệm vụ đã hoàn thành",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
