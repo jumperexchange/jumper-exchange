@@ -35,3 +35,4 @@ export const connectAnotherWalletButton = (page: Page) => {
 export const disconnectWalletButton = (page: Page) => {
   return page.locator('#disconnect-wallet-button');
 };
+  

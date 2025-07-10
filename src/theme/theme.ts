@@ -1,10 +1,10 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type {
-  Color,
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
+  Color,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -646,83 +646,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             [themeBase.breakpoints.up('lg' as Breakpoint)]: {
               maxWidth: 1280,
             },
-          }),
-        },
-      },
-      MuiStepButton: {
-        styleOverrides: {
-          root: {
-            width: 96,
-          },
-        },
-      },
-      MuiStepper: {
-        styleOverrides: {
-          root: {
-            width: '100%',
-            maxWidth: '100%',
-            margin: 'auto',
-            padding: 0,
-          },
-        },
-      },
-      MuiStep: {
-        styleOverrides: {
-          horizontal: {
-            height: 120,
-          },
-          root: {
-            width: 'auto',
-            paddingRight: 0,
-            paddingLeft: 0,
-          },
-        },
-      },
-      MuiStepIcon: {
-        styleOverrides: {
-          root: ({ theme }: { theme: Theme }) => ({
-            border: `2px solid ${theme.palette.white.main}`,
-            borderRadius: '100%',
-            width: 28,
-            height: 28,
-            paddingRight: 0,
-            '&.Mui-active': {
-              display: 'none',
-            },
-            '&.Mui-completed': {
-              color: '#D6FFE7',
-            },
-          }),
-        },
-      },
-      MuiStepLabel: {
-        styleOverrides: {
-          iconContainer: {
-            position: 'absolute',
-            right: 12,
-            top: 64,
-            backgroundColor: '#00B849',
-            width: 24,
-            borderRadius: '100%',
-          },
-          root: {
-            // backgroundColor: 'yellow',
-            // position: 'absolute',
-            paddingRight: 0,
-            paddingLeft: 0,
-            right: 0,
-            color: 'black',
-          },
-        },
-      },
-      MuiStepConnector: {
-        styleOverrides: {
-          root: ({ theme }: { theme: Theme }) => ({
-            height: 48,
-          }),
-          line: ({ theme }) => ({
-            borderTopWidth: 2,
-            borderColor: theme.palette.primary.main,
           }),
         },
       },

@@ -5,11 +5,11 @@ import {
   clickOnJumperLogo,
 } from './testData/landingPageFunctions';
 import { triggerButtonClick } from './testData/commonFunctions';
-import {
+import { 
   connectButton,
-  connectAnotherWalletButton,
+  connectAnotherWalletButton, 
   disconnectWalletButton,
-  connectedWalletButton,
+  connectedWalletButton
 } from './testData/connectWalletFunctions';
 import basicSetup from './wallet-setup/basic.setup';
 
@@ -32,7 +32,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       const metaMaskWalletOption = page.locator(
         'xpath=//span[normalize-space(text())="MetaMask"]',
       );
-
+      
       await page.goto('/');
       await expect(connectButton(page)).toBeEnabled();
       await connectButton(page).click();
@@ -60,10 +60,11 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
     });
 
     await test.step('Disconnect wallet from the Jumper app ', async () => {
-      await connectedWalletButton(page); // click on the connected wallet icon
+      await connectedWalletButton(page); // click on the connected wallet icon 
       await expect(connectAnotherWalletButton(page)).toBeVisible();
       await disconnectWalletButton(page).click();
       await expect(connectButton(page)).toHaveText('Connect');
     });
+
   });
 });
