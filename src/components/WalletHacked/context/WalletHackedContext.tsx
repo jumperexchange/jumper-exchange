@@ -142,6 +142,23 @@ export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
     isDestinationPointsLoading,
   ]);
 
+  useEffect(() => {
+    if (currentStep === HACKED_WALLET_STEPS.INTRO) {
+      return;
+    }
+    if (!account?.address && !sourceWallet?.account?.address) {
+      setCurrentStep(HACKED_WALLET_STEPS.SOURCE_CONNECT);
+    } else if (!account?.address && !destinationWallet?.account?.address) {
+      setCurrentStep(HACKED_WALLET_STEPS.DESTINATION_CONNECT);
+    }
+    if (sourceWallet?.signed && !destinationWallet?.account?.address) {
+      setCurrentStep(HACKED_WALLET_STEPS.DESTINATION_CONNECT);
+      disconnectWallet(account);
+    } else if (destinationWallet?.signed) {
+      setCurrentStep(HACKED_WALLET_STEPS.SUMMARY);
+    }
+  }, [account, sourceWallet, destinationWallet, setCurrentStep]);
+
   const value = useMemo(
     () => ({
       currentStep,
