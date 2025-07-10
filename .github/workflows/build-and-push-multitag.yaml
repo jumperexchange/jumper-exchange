@@ -37,6 +37,10 @@ on:
     secrets:
       deploy_key:
         required: true
+      GCP_WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      GCP_SERVICE_ACCOUNT:
+        required: true
 
 # Define environment variables accessible throughout the workflow
 env:
