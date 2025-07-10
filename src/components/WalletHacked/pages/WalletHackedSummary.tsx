@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModalMenuPage } from 'src/components/ModalMenu/ModalMenuPage/ModalMenuPage';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from 'src/const/trackingKeys';
+import { useUserTracking } from 'src/hooks/userTracking';
 import { HACKED_WALLET_STEPS } from '../constants';
 import { useWalletHacked } from '../context/WalletHackedContext';
 import { sanitizeAndValidateWallets } from '../utils/validateWallets';
@@ -8,6 +14,8 @@ import { useVerifyWallets } from '../utils/verifyWallets';
 
 export const WalletHackedSummary = () => {
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
+
   const {
     setCurrentStep,
     sourcePoints,
@@ -48,6 +56,30 @@ export const WalletHackedSummary = () => {
     }
     if (isSuccess) {
       setCurrentStep(HACKED_WALLET_STEPS.SUCCESS);
+
+      // if any of the values are not set, don't track the event
+      if (
+        !sourceWallet?.account?.address ||
+        !destinationWallet?.account?.address ||
+        (sourcePoints && isNaN(sourcePoints))
+      )
+        return;
+      trackEvent({
+        category: TrackingCategory.HackedWallet,
+        action: TrackingAction.SubmitHackedWallet,
+        label: 'submit-hacked-wallet',
+        data: {
+          [TrackingEventParameter.SourceWallet]: sourceWallet.account.address!,
+          [TrackingEventParameter.DestinationWallet]:
+            destinationWallet?.account?.address,
+          ...(sourcePoints && {
+            [TrackingEventParameter.SourcePoints]: sourcePoints,
+          }),
+          ...(typeof destinationPoints === 'number' && {
+            [TrackingEventParameter.DestinationPoints]: destinationPoints,
+          }),
+        },
+      });
     }
   }, [isSuccess, setCurrentStep]);
 

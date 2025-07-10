@@ -92,6 +92,8 @@ export enum TrackingAction {
   //Banner
   ClickBanner = 'action_click_banner',
   ClickCampaignBanner = 'action_click_campaign_banner',
+
+  SubmitHackedWallet = 'action_submit_hacked_wallet',
 }
 
 export enum TrackingCategory {
@@ -124,6 +126,7 @@ export enum TrackingCategory {
   Quests = 'cat_quests',
   Banner = 'cat_banner',
   CampaignBanner = 'cat_campaign_banner',
+  HackedWallet = 'cat_hacked_wallet',
 }
 
 // can be used as custom dimensions / metrics
@@ -247,4 +250,10 @@ export enum TrackingEventParameter {
   //Banner
   ActiveCampaign = 'param_banner_campaign',
   ActiveCampaignBanner = 'param_campaign_banner_campaign',
+
+  // Hacked Wallet
+  SourceWallet = 'param_source_wallet',
+  DestinationWallet = 'param_destination_wallet',
+  SourcePoints = 'param_source_points',
+  DestinationPoints = 'param_destination_points',
 }
