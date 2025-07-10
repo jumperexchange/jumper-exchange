@@ -62,7 +62,7 @@ export const WalletHackedStep = ({
           variant="bodyMedium"
           sx={(theme) => ({
             color: (theme.vars || theme).palette.text.secondary,
-            marginBottom: 2,
+            marginBottom: theme.spacing(2),
             padding: '0 24px',
           })}
         >
@@ -75,7 +75,7 @@ export const WalletHackedStep = ({
           variant="bodyMedium"
           sx={(theme) => ({
             color: (theme.vars || theme).palette.error.main,
-            marginBottom: 2,
+            marginBottom: theme.spacing(2),
             padding: '0 24px',
           })}
         >
@@ -83,11 +83,7 @@ export const WalletHackedStep = ({
         </Typography>
       )}
       {buttonLabel && (
-        <ButtonSecondary
-          sx={{ color: '#200052' }}
-          onClick={onClickAction}
-          disabled={disabled}
-        >
+        <ButtonSecondary onClick={onClickAction} disabled={disabled}>
           <Typography
             variant="bodyMediumStrong"
             component="span"
