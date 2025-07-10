@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - LF-14162-3
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
