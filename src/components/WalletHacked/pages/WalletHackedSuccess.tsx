@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
+import { AppPaths } from 'src/const/urls';
 
 export const WalletHackedSuccess = () => {
   const { t } = useTranslation();
@@ -10,7 +11,7 @@ export const WalletHackedSuccess = () => {
   const buttonLabel = t('walletHacked.actions.done');
 
   const handleClick = () => {
-    router.push('/');
+    router.push(AppPaths.Main);
   };
 
   return (

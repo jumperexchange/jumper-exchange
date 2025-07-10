@@ -54,4 +54,5 @@ export enum AppPaths {
   Bridge = JUMPER_BRIDGE_PATH,
   Swap = JUMPER_SWAP_PATH,
   Tx = JUMPER_SCAN_TX_PATH,
+  WalletVerify = JUMPER_WALLET_VERIFY_PATH,
 }
