@@ -20,8 +20,9 @@ export const JUMPER_SCAN_PATH = '/scan';
 export const JUMPER_ZAP_PATH = '/zap';
 export const JUMPER_BRIDGE_PATH = '/bridge';
 export const JUMPER_SWAP_PATH = '/swap';
-export const JUMPER_TX_PATH = '/tx';
-export const JUMPER_WALLET_PATH = '/wallet';
+export const JUMPER_SCAN_TX_PATH = '/scan/tx';
+export const JUMPER_SCAN_WALLET_PATH = '/scan/wallet';
+export const JUMPER_WALLET_VERIFY_PATH = '/wallet/verify';
 export const JUMPER_QUESTS_PATH = '/quests';
 export const JUMPER_CAMPAIGN_PATH = '/campaign';
 
@@ -52,5 +53,5 @@ export enum AppPaths {
   Zap = JUMPER_ZAP_PATH,
   Bridge = JUMPER_BRIDGE_PATH,
   Swap = JUMPER_SWAP_PATH,
-  Tx = JUMPER_TX_PATH,
+  Tx = JUMPER_SCAN_TX_PATH,
 }

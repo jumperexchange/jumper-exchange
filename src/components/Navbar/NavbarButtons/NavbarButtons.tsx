@@ -4,24 +4,22 @@ import { useMenuStore } from '@/stores/menu';
 // import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
 // import useMediaQuery from '@mui/material/useMediaQuery';
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
 import {
   JUMPER_LEARN_PATH,
   JUMPER_SCAN_PATH,
-  JUMPER_TX_PATH,
-  JUMPER_WALLET_PATH,
+  JUMPER_SCAN_TX_PATH,
+  JUMPER_SCAN_WALLET_PATH,
 } from 'src/const/urls';
 import {
-  MenuToggle,
   DotsMenuIcon,
+  MenuToggle,
   NavbarButtonsContainer,
   RedirectToApp,
-  // FloatingLinksContainer,
-  // LinksContainer,
 } from '.';
-import dynamic from 'next/dynamic';
 // import { Links } from './Links';
 
 const WalletButtons = dynamic(
@@ -41,8 +39,8 @@ export const NavbarButtons = () => {
   const redirectToApp =
     pathname?.includes(JUMPER_LEARN_PATH) ||
     pathname?.includes(JUMPER_SCAN_PATH) ||
-    pathname?.includes(JUMPER_TX_PATH) ||
-    pathname?.includes(JUMPER_WALLET_PATH);
+    pathname?.includes(JUMPER_SCAN_TX_PATH) ||
+    pathname?.includes(JUMPER_SCAN_WALLET_PATH);
 
   const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
     state.openedMenu,
