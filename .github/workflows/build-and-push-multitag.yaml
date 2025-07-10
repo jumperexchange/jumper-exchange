@@ -197,6 +197,27 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Get Secret and Save to .env
+        run: |
+          gcloud secrets versions access latest \
+            --secret="jumper-exchange-env" \
+            --project="jumper-d-dev" > .env.json
+      - name: Convert JSON .env to key-value format
+        run: |
+          if [ -f ".env.json" ]; then
+            echo "✅ .env.json file found! Converting to .env format..."
+
+            # Convert JSON to key=value format
+            jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env.json > .env
+
+            echo "✅ Conversion complete! Verifying .env file..."
+            echo "File size: $(wc -c < .env) bytes"
+            echo "Line count: $(wc -l < .env) lines"
+          else
+            echo "❌ Error: .env.json file not found!"
+            exit 1
+          fi
+
       # Step 4: Build and push the Docker image
       - name: Build and push Docker image
         id: build
