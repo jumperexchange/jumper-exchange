@@ -143,6 +143,12 @@
   "missions": {
     "available": "Misi yang tersedia",
     "completed": "Misi yang telah selesai",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
