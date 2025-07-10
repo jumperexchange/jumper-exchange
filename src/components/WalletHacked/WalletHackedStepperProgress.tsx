@@ -14,12 +14,16 @@ export const WalletHackedStepperProgress = () => {
       steps={HACKED_WALLET_STEPS_COUNT}
       position="static"
       activeStep={getCurrentStepIndex(currentStep)}
-      sx={{ width: '100%', flexGrow: 1 }}
+      sx={{
+        width: '100%',
+        flexGrow: 1,
+        backgroundColor: 'transparent',
+      }}
       backButton={<></>}
       nextButton={<></>}
       slotProps={{
         progress: {
-          sx: { width: '100%', flexGrow: 1 },
+          sx: { width: '100%', flexGrow: 1, borderRadius: '2px' },
         },
       }}
     />

@@ -60,10 +60,11 @@ export const WalletHackedStep = ({
       {text && (
         <Typography
           variant="bodyMedium"
-          sx={{
+          sx={(theme) => ({
+            color: (theme.vars || theme).palette.text.secondary,
             marginBottom: 2,
             padding: '0 24px',
-          }}
+          })}
         >
           {text}
         </Typography>
