@@ -143,6 +143,12 @@
   "missions": {
     "available": "Mevcut Görevler",
     "completed": "Tamamlanan Görevler",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
