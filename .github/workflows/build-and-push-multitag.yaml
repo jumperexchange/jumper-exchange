@@ -59,6 +59,9 @@ jobs:
       # Output to indicate whether the image already exists
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Init GCP
         id: build-init
         uses: ./.github/actions/init-gcp
@@ -104,6 +107,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Init GCP
         id: build-init
         uses: ./.github/actions/init-gcp
@@ -227,6 +232,8 @@ jobs:
       - name: Set current date as env variable
         shell: bash
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Init GCP
         id: build-init
