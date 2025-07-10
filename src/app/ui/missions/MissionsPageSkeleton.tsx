@@ -1,11 +1,14 @@
 'use client';
 import { MissionsListSkeleton } from './MissionsListSkeleton';
 import { MissionsPageContainer } from './MissionsPageContainer';
+import { MissionsPageContentContainer } from './MissionsPageContentContainer';
 
 export const MissionsPageSkeleton = () => {
   return (
     <MissionsPageContainer>
-      <MissionsListSkeleton count={5} />
+      <MissionsPageContentContainer>
+        <MissionsListSkeleton count={5} />
+      </MissionsPageContentContainer>
     </MissionsPageContainer>
   );
 };

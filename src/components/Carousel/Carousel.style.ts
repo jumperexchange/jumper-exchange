@@ -1,6 +1,7 @@
 import { IconButtonSecondary } from '@/components/IconButton.style';
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
+import { keyframes } from '@mui/material/styles';
 
 interface CarouselContainerProps extends BoxProps {
   hasPagination?: boolean;
@@ -63,8 +64,8 @@ export const CarouselContainer = styled(Box, {
       '.swiper-pagination-bullet-active': {
         backgroundColor: `${(theme.vars || theme).palette.primary.main} !important`,
         border: 'none',
-        width: '10px !important',
-        height: '10px !important',
+        // width: '10px !important',
+        // height: '10px !important',
       },
     },
 
@@ -100,6 +101,7 @@ export const CarouselNavigationContainer = styled(Box, {
   height: 40,
   top: -4,
   right: 0,
+  zIndex: 10,
   [theme.breakpoints.up('md')]: {
     marginLeft: 3,
   },
@@ -124,3 +126,84 @@ export const CarouselCenteredBox = styled(Box)(() => ({
   alignItems: 'center',
   justifyContent: 'center',
 }));
+
+export const fillBullet = keyframes`
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+`;
+
+interface AnimatedPaginationRootProps {
+  delay?: number;
+}
+
+export const AnimatedPaginationContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'delay',
+})<AnimatedPaginationRootProps>(({ theme }) => ({
+  position: 'absolute',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: 10,
+
+  '&.swiper-pagination': {
+    bottom: `-16px !important`,
+  },
+
+  '&.swiper-pagination .swiper-pagination-bullet': {
+    borderRadius: '4px',
+    transition: 'all 0.3s ease',
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark300.main,
+    }),
+  },
+
+  '&.swiper-pagination .swiper-pagination-bullet-active': {
+    width: '64px !important',
+    borderRadius: '4px !important',
+    position: 'relative',
+    backgroundColor: `${(theme.vars || theme).palette.alphaLight300.main} !important`,
+    ...theme.applyStyles('light', {
+      backgroundColor: `${(theme.vars || theme).palette.alphaDark300.main} !important`,
+    }),
+  },
+
+  '& .swiper-pagination-bullet.swiper-pagination-bullet-active::before': {
+    content: '""',
+    position: 'absolute',
+    borderRadius: '8px',
+    left: 0,
+    top: 0,
+    width: '0%',
+    height: '100%',
+    backgroundColor: (theme.vars || theme).palette.accent1.main,
+    animation: `${fillBullet} 5s linear forwards`,
+  },
+}));
+
+export const FloatingNavigationContainer = styled(CarouselNavigationContainer, {
+  shouldForwardProp: (prop) => prop !== 'hide',
+})<CarouselNavigationContainerProps>(({ theme }) => ({
+  height: 40,
+  width: '100%',
+  position: 'absolute',
+  top: '50%',
+  right: 0,
+  transform: 'translateY(-50%)',
+  zIndex: 10,
+  display: 'flex',
+  justifyContent: 'space-between',
+}));
+
+export const FloatingNavigationButton = styled(IconButtonSecondary)(
+  ({ theme }) => ({
+    width: 40,
+    height: 40,
+    fontSize: 22,
+    border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+  }),
+);

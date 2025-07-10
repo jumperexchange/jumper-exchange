@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { SwiperOptions } from 'swiper/types';
+import { AutoplayOptions, SwiperOptions } from 'swiper/types';
 import { SectionTitle } from '../ProfilePage/ProfilePage.style';
 import { CarouselContainer, CarouselHeader } from './Carousel.style';
 import {
@@ -26,6 +26,7 @@ interface CarouselProps {
     [ratio: string]: SwiperOptions;
   };
   fixedSlideWidth?: boolean;
+  autoplay?: AutoplayOptions;
 }
 
 export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
@@ -38,6 +39,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   spaceBetween = 32,
   CarouselPagination,
   fixedSlideWidth = false,
+  autoplay,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const swiperId = useId();
@@ -48,6 +50,8 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
     navigationNext: `swiper-button-next-${swiperId}`,
     pagination: `swiper-pagination-${swiperId}`,
   };
+
+  const autoplayDelay = !isMobile ? (autoplay?.delay ?? 3000) : 5000;
 
   return (
     <CarouselContainer
@@ -89,15 +93,16 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
               }
             : false
         }
-        autoplay={
-          !isMobile
-            ? {
-                delay: 3000,
-                disableOnInteraction: true,
-                pauseOnMouseEnter: true,
-              }
-            : false
-        }
+        // autoplay={
+        //   !isMobile
+        //     ? {
+        //         delay: autoplayDelay,
+        //         disableOnInteraction: true,
+        //         pauseOnMouseEnter: true,
+        //         ...autoplay,
+        //       }
+        //     : false
+        // }
         loop={true}
         rewind={true}
         breakpoints={breakpoints}
@@ -111,7 +116,11 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         setWrapperSize={false}
         slidesPerView="auto"
         spaceBetween={spaceBetween}
-        freeMode={true}
+        freeMode={{
+          enabled: true,
+          sticky: true,
+          minimumVelocity: 0.1,
+        }}
         mousewheel={{
           releaseOnEdges: true,
         }}
@@ -127,7 +136,10 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         <CarouselNavigation classNames={classNames} />
       ) : null}
       {CarouselPagination ? (
-        <CarouselPagination className={classNames.pagination} />
+        <CarouselPagination
+          className={classNames.pagination}
+          delay={autoplayDelay}
+        />
       ) : null}
     </CarouselContainer>
   );
