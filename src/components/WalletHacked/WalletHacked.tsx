@@ -1,14 +1,14 @@
 'use client';
 
 import { WalletHackedProvider } from './context/WalletHackedContext';
-import { WalletHackedContent } from './WalletHackedContent';
+import { WalletHackedStepper } from './WalletHackedStepper';
 import { WalletManagementEvents } from './WalletManagementEvents';
 
 export const WalletHacked = () => {
   return (
     <>
       <WalletHackedProvider>
-        <WalletHackedContent />
+        <WalletHackedStepper />
         <WalletManagementEvents />
       </WalletHackedProvider>
     </>

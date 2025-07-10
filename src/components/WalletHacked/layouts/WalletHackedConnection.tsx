@@ -1,6 +1,6 @@
 import { useWalletMenu } from '@lifi/wallet-management';
 import { useCallback, useEffect, useRef } from 'react';
-import { ModalMenuPage } from 'src/components/WalletHacked/layouts/WalletHackedLayout';
+import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
 import { useWalletHacked } from '../context/WalletHackedContext';
 import { useDisconnect } from '../hooks/useDisconnect';
 
@@ -36,7 +36,7 @@ export const WalletHackedConnection = ({
   );
 
   return (
-    <ModalMenuPage
+    <WalletHackedStep
       buttonLabel={buttonLabel}
       error={error}
       disabled={false}

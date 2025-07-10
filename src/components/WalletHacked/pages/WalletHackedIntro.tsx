@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/WalletHacked/layouts/WalletHackedLayout';
+import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
 import { HACKED_WALLET_STEPS } from '../constants';
 import { useWalletHacked } from '../context/WalletHackedContext';
 
@@ -15,7 +15,7 @@ export const WalletHackedIntro = () => {
   };
 
   return (
-    <ModalMenuPage
+    <WalletHackedStep
       title={title}
       text={description}
       buttonLabel={buttonLabel}

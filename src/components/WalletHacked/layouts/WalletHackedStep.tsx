@@ -6,9 +6,9 @@ import type { JSX } from 'react';
 import { ButtonSecondary } from 'src/components/Button';
 import { useWalletHacked } from 'src/components/WalletHacked/context/WalletHackedContext';
 import { getPreviousStep } from 'src/components/WalletHacked/utils/stepNavigation';
-import { ModalMenuContent, ModalMenuHeader } from './WalletHackedLayout.style';
+import { ModalMenuContent, ModalMenuHeader } from './WalletHackedStep.style';
 
-export const ModalMenuPage = ({
+export const WalletHackedStep = ({
   title,
   buttonLabel,
   content,

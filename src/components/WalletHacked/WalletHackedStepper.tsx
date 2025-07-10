@@ -6,10 +6,10 @@ import { useInitializeCurrentStep } from './hooks/useInitializeCurrentStep';
 import {
   WalletHackedContainer,
   WalletHackedPaper,
-} from './layouts/WalletHackedLayout.style';
-import { WalletHackedStepperProgress } from './WalletHackedStepper/WalletHackedStepperProgress';
+} from './layouts/WalletHackedStep.style';
+import { WalletHackedStepperProgress } from './WalletHackedStepperProgress';
 
-export const WalletHackedContent = memo(() => {
+export const WalletHackedStepper = memo(() => {
   // useHackedXP needs to be called!
   const updatePoints = useHackedXP();
   const currentStepComponent = useInitializeCurrentStep();
@@ -17,8 +17,8 @@ export const WalletHackedContent = memo(() => {
   return (
     <WalletHackedPaper show={true} sx={{ zIndex: 1200 }}>
       <WalletHackedContainer>
-        {currentStepComponent()}
         <WalletHackedStepperProgress />
+        {currentStepComponent()}
       </WalletHackedContainer>
     </WalletHackedPaper>
   );

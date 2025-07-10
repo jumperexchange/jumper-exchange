@@ -1,9 +1,9 @@
 import MobileStepper from '@mui/material/MobileStepper';
-import { useWalletHacked } from '../context/WalletHackedContext';
+import { useWalletHacked } from './context/WalletHackedContext';
 import {
   getCurrentStepIndex,
   HACKED_WALLET_STEPS_COUNT,
-} from '../utils/stepNavigation';
+} from './utils/stepNavigation';
 
 export const WalletHackedStepperProgress = () => {
   const { currentStep } = useWalletHacked();

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/WalletHacked/layouts/WalletHackedLayout';
+import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
 import {
   TrackingAction,
   TrackingCategory,
@@ -101,7 +101,7 @@ export const WalletHackedSummary = () => {
   }, [sourceWallet, destinationWallet, t]);
 
   return (
-    <ModalMenuPage
+    <WalletHackedStep
       title={title}
       text={description}
       buttonLabel={buttonLabel}

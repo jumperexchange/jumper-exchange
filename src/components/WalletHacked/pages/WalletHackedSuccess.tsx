@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/WalletHacked/layouts/WalletHackedLayout';
+import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
 
 export const WalletHackedSuccess = () => {
   const { t } = useTranslation();
@@ -14,7 +14,7 @@ export const WalletHackedSuccess = () => {
   };
 
   return (
-    <ModalMenuPage
+    <WalletHackedStep
       title={title}
       text={description}
       buttonLabel={buttonLabel}

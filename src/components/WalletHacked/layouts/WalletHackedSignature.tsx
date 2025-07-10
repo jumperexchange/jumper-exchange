@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { ModalMenuPage } from 'src/components/WalletHacked/layouts/WalletHackedLayout';
+import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
 import { useWalletSigning } from 'src/hooks/useWalletSigning';
 import { WalletState } from '../types';
 
@@ -37,7 +37,7 @@ export const WalletHackedSignature = ({
   );
 
   return (
-    <ModalMenuPage
+    <WalletHackedStep
       title={title}
       text={description}
       buttonLabel={buttonLabel}
