@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
+import config from '@/config/env-config';
 
-const LEADERBOARD_ENDPOINT = `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
+const LEADERBOARD_ENDPOINT = `${config.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
 export interface LeaderboardEntryData {
   position: string;

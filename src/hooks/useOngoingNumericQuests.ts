@@ -1,3 +1,4 @@
+import config from '@/config/env-config';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { ONE_HOUR_MS } from 'src/const/time';
@@ -28,7 +29,7 @@ export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
   const { account } = useAccount();
 
   // query
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['ongoing-numeric-quests', account?.address],
     queryFn: async () => {
