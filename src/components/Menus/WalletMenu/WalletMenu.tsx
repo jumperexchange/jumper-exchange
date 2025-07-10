@@ -68,9 +68,9 @@ export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
         >
           <CloseIcon />
         </IconButton>
-        <WalletButton
+        <WalletButton 
           id="connect-another-wallet-button"
-          sx={{ width: 'auto' }}
+          sx={{ width: 'auto' }} 
           onClick={handleOpenWalletMenu}
         >
           <Typography

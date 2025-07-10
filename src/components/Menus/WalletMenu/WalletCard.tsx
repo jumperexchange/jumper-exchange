@@ -157,14 +157,15 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           onClick={() => handleCopyButton()}
           sx={(theme) => ({
             background: 'transparent',
-            ...theme.applyStyles('light', {
-              background: (theme.vars || theme).palette.white.main,
+            ...theme.applyStyles("light", {
+              background: (theme.vars || theme).palette.white.main
             }),
             '&:hover': {
-              background: (theme.vars || theme).palette.alphaLight300.main,
-              ...theme.applyStyles('light', {
-                background: (theme.vars || theme).palette.white.main,
-              }),
+              background:
+              (theme.vars || theme).palette.alphaLight300.main,
+              ...theme.applyStyles("light", {
+                background: (theme.vars || theme).palette.white.main
+              })
             },
           })}
         >
