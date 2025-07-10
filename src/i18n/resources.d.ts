@@ -150,6 +150,12 @@ interface Resources {
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
+      mission: {
+        completed: {
+          title: 'Mission completed';
+          description: 'All tasks in this mission have been verified and completed.';
+        };
+      };
       status: {
         new: 'New';
         upcoming: 'Upcoming';

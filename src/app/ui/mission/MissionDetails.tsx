@@ -1,7 +1,7 @@
 'use client';
 
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useEnhancedTasks, useSetMissionChainFromParticipants } from './hooks';
+import { useEnhancedTasks, useSyncMissionDefaultsFromChains } from './hooks';
 import { FC, useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';
@@ -38,7 +38,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     () => missionDisplayData.participants,
     [missionDisplayData.participants],
   );
-  useSetMissionChainFromParticipants(participants);
+  useSyncMissionDefaultsFromChains(participants, mission.documentId);
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -94,7 +94,6 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             key={task.uuid}
             task={task}
             missionId={mission.documentId}
-            accountAddress={account?.address}
             onClick={() => setActiveTask(task)}
           />
         ))}
