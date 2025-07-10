@@ -12,6 +12,8 @@ import { MissionZapDepositWidget } from 'src/components/Widgets/variants/mission
 // import { MissionZapWithdrawWidget } from 'src/components/Widgets/variants/mission/MissionZapWithdrawWidget';
 import { MissionComplete } from './MissionComplete';
 import { MissionFormWidget } from './MissionFormWidget';
+import { DepositPoolCard } from 'src/components/ZapWidget/DepositPoolCard/DepositPoolCard';
+import { ZapWidgets } from 'src/components/Zap/ZapWidgets';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -41,7 +43,7 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
     <Box sx={{ width: '100%' }}>
       <ClientOnly>
         {currentActiveTaskType === TaskType.Zap ? (
-          <MissionZapDepositWidget customInformation={customInformation} />
+          <ZapWidgets detailInformation={customInformation} />
         ) : (
           <MissionBaseWidget />
         )}
