@@ -795,9 +795,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             zIndex: -1,
             overflow: 'hidden',
             pointerEvents: 'none',
-            backgroundColor: (theme.vars || theme).palette.surface1.main,
+            backgroundColor: (theme.vars || theme).palette.lavenderDark[300],
             ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.bg.main,
+              backgroundColor: (theme.vars || theme).palette.lavenderLight[200],
             }),
             // typed-safe access to the `variant` prop
             [theme.breakpoints.up('sm' as Breakpoint)]: {
