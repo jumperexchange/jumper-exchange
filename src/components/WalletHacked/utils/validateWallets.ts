@@ -34,8 +34,6 @@ const validateWallet = async (
   );
 
   if (!validAddress || !validMessage || !validSignature) {
-    // const invalidFields = [ !validAddress && 'address', !validMessage && 'message', !validSignature && 'signature' ].filter(Boolean)
-    // throw new Error(`Invalid data: ${invalidFields.join(', ')}`);
     return false;
   }
   return {
