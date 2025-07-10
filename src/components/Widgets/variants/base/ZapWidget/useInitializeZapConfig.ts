@@ -471,6 +471,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
 
   return {
     isInitialized,
+    isConnected: account.isConnected && !!address,
     providers,
     toAddress,
     zapData,

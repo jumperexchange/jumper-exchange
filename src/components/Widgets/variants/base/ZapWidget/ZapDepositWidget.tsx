@@ -29,6 +29,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
 
   const {
     isInitialized,
+    isConnected,
     providers,
     toAddress,
     zapData,
@@ -102,7 +103,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setCurrentRoute]);
 
-  return isZapDataSuccess && isInitialized ? (
+  return isZapDataSuccess && (isInitialized || !isConnected) ? (
     <LiFiWidget
       config={widgetConfig}
       integrator={widgetConfig.integrator}
