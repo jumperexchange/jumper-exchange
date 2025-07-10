@@ -29,8 +29,7 @@ on:
       role_to_assume:
         required: false
         type: string
-        default: arn:aws:iam::403372804574:role/github-actions
-        description: '403372804574 - lifi-legacy aws account , default role to assume for the actions '
+        description: 'AWS IAM role ARN to assume for the actions. Provide this value securely via inputs or secrets.'
       dockerfile:
         required: false
         type: string
