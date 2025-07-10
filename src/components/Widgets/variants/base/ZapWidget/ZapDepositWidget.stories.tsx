@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { ZapDepositWidget } from './ZapDepositWidget';
-import { TaskType } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 import { ConnectButton } from 'src/components/ConnectButton';
 
 const meta = {

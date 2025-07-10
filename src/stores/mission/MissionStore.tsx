@@ -1,15 +1,23 @@
 'use client';
 import {
+  TaskType,
   TaskWidgetInformationChainData,
   TaskWidgetInformationWalletData,
   TaskWidgetInformationTokenData,
-  TaskType,
-} from 'src/types/loyaltyPass';
+  TaskWidgetInformationInputData,
+} from 'src/types/strapi';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface MissionState {
   currentActiveTaskId?: string;
   currentActiveTaskType?: TaskType;
+  currentActiveTaskName?: string;
+
+  taskTitle?: string;
+  taskDescription?: string;
+  taskCTAText?: string;
+  taskCTALink?: string;
+  taskInputs?: TaskWidgetInformationInputData[];
 
   destinationChain?: TaskWidgetInformationChainData;
   destinationToken?: TaskWidgetInformationTokenData;
@@ -22,6 +30,7 @@ interface MissionState {
   toAddress?: TaskWidgetInformationWalletData;
 
   missionChainIds?: number[];
+  missionId?: string;
   missionType?: string;
 
   setCurrentTaskWidgetFormParams: ({
@@ -40,9 +49,31 @@ interface MissionState {
     toAddress?: TaskWidgetInformationWalletData;
   }) => void;
 
-  setCurrentActiveTask: (taskId: string, taskType: TaskType) => void;
+  setCurrentTaskInstructionParams: ({
+    taskTitle,
+    taskDescription,
+    taskCTALink,
+    taskCTAText,
+    taskInputs,
+  }: {
+    taskTitle?: string;
+    taskDescription?: string;
+    taskCTAText?: string;
+    taskCTALink?: string;
+    taskInputs?: TaskWidgetInformationInputData[];
+  }) => void;
 
-  setMissionDefaults: (chainIds?: number[], missionType?: string) => void;
+  setCurrentActiveTask: (
+    taskId: string,
+    taskType: TaskType,
+    taskName: string,
+  ) => void;
+
+  setMissionDefaults: (
+    chainIds?: number[],
+    missionId?: string,
+    missionType?: string,
+  ) => void;
 
   isMissionCompleted: boolean;
   setIsMissionCompleted: (isCompleted: boolean) => void;
@@ -52,6 +83,7 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
   (set) => ({
     currentActiveTaskId: undefined,
     currentActiveTaskType: undefined,
+    currentActiveTaskName: undefined,
 
     destinationChain: undefined,
     destinationToken: undefined,
@@ -64,12 +96,18 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
     toAddress: undefined,
 
     missionChainIds: [],
+    missionId: undefined,
     missionType: undefined,
 
-    setCurrentActiveTask: (currentActiveTaskId, currentActiveTaskType) =>
+    setCurrentActiveTask: (
+      currentActiveTaskId,
+      currentActiveTaskType,
+      currentActiveTaskName,
+    ) =>
       set({
         currentActiveTaskId,
         currentActiveTaskType,
+        currentActiveTaskName,
       }),
 
     setCurrentTaskWidgetFormParams: (params) =>
@@ -77,9 +115,15 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         ...params,
       }),
 
-    setMissionDefaults: (missionChainIds, missionType) =>
+    setCurrentTaskInstructionParams: (params) =>
+      set({
+        ...params,
+      }),
+
+    setMissionDefaults: (missionChainIds, missionId, missionType) =>
       set({
         missionChainIds,
+        missionId,
         missionType,
       }),
 

@@ -1,6 +1,6 @@
 import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
-import { TaskType } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 import { ConfigContext } from '../types';
 
 export const useLanguageResources = (ctx: ConfigContext) => {
@@ -34,7 +34,7 @@ export const useLanguageResources = (ctx: ConfigContext) => {
 
     const translationTemplate =
       overrideHeader ??
-      `${currentActiveTaskType ?? 'Deposit'} ${sourceDestinationTemplate}`;
+      `${currentActiveTaskType ?? TaskType.Deposit} ${sourceDestinationTemplate}`;
 
     return {
       languageResources: {

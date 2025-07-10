@@ -150,6 +150,12 @@ interface Resources {
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
+      mission: {
+        completed: {
+          title: 'Mission completed';
+          description: 'All tasks in this mission have been verified and completed.';
+        };
+      };
       status: {
         new: 'New';
         upcoming: 'Upcoming';
@@ -159,6 +165,13 @@ interface Resources {
         hoursLeft_other: '{{count}} hours left';
         daysLeft_one: '{{count}} day left';
         daysLeft_other: '{{count}} days left';
+      };
+      tasks: {
+        type: '{{type}} task';
+        status: {
+          verify: 'Verify';
+          verified: 'Verified';
+        };
       };
     };
     profile_page: {

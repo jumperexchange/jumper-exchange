@@ -1,0 +1,26 @@
+name: 'Prepare GCP build'
+description: 'Auth + gcp login'
+
+inputs:
+  workload_identity_provider:
+    description: 'GCP Workload Identity Provider'
+    required: true
+  service_account:
+    description: 'GCP Service Account'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Authenticate to Google Cloud
+      id: gcpauth
+      uses: google-github-actions/auth@v2
+      with:
+        create_credentials_file: 'true'
+        workload_identity_provider: ${{ inputs.workload_identity_provider }}
+        service_account: ${{ inputs.service_account }}
+
+    - name: login
+      shell: bash
+      run: |-
+        gcloud auth configure-docker europe-docker.pkg.dev
