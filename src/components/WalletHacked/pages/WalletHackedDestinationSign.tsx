@@ -1,7 +1,7 @@
 import { useAccount } from '@lifi/wallet-management';
 import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/ModalMenu/ModalMenuPage/ModalMenuPage';
+import { ModalMenuPage } from 'src/components/WalletHacked/layout/WalletHackedLayout';
 import { useWalletSigning } from 'src/hooks/useWalletSigning';
 import { HACKED_WALLET_STEPS } from '../constants';
 import { useWalletHacked } from '../context/WalletHackedContext';
@@ -74,7 +74,6 @@ export const WalletHackedDestinationSign = () => {
       title={title}
       text={description}
       buttonLabel={buttonLabel}
-      hideClose={true}
       showPrevButton={false}
       onClickAction={handleSignDestinationWallet}
       disabled={false}

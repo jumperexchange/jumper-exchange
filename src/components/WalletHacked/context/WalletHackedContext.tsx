@@ -1,6 +1,12 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { HACKED_WALLET_STEPS } from '../constants';
 import { WalletState } from '../types';
 
@@ -35,12 +41,7 @@ export const useWalletHacked = () => {
   return context;
 };
 
-interface WalletHackedProviderProps {
-  children: React.ReactNode;
-  onClose: () => void;
-}
-
-export const WalletHackedProvider: React.FC<WalletHackedProviderProps> = ({
+export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const [currentStep, setCurrentStep] = useState<

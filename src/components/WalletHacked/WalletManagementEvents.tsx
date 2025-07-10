@@ -8,12 +8,9 @@ import {
 } from '@lifi/wallet-management';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  HACKED_WALLET_DEFAULT_STATE,
-  HACKED_WALLET_STEPS,
-} from '../WalletHacked/constants';
-import { useWalletHacked } from '../WalletHacked/context/WalletHackedContext';
-import { isEvmChainType } from './FeeContribution/utils';
+import { isEvmChainType } from '../Widgets/FeeContribution/utils';
+import { HACKED_WALLET_DEFAULT_STATE, HACKED_WALLET_STEPS } from './constants';
+import { useWalletHacked } from './context/WalletHackedContext';
 
 export function WalletManagementEvents() {
   const walletManagementEvents = useWalletManagementEvents();
@@ -23,22 +20,17 @@ export function WalletManagementEvents() {
 
   const {
     currentStep,
-    destinationPoints,
     destinationWallet,
     setCurrentStep,
     setDestinationPoints,
     setDestinationWallet,
     setError,
     setSourceWallet,
-    sourcePoints,
-    // setSourcePoints,
     sourceWallet,
   } = useWalletHacked();
 
   const isSameWallet = (wallet1: WalletConnected, wallet2: WalletConnected) =>
     wallet1?.address === wallet2?.address;
-
-  // todo: maybe add another useEffect here to listen to the updated points and set the sourcePoints and destinationPoints
 
   useEffect(() => {
     const isSourceWallet = currentStep === HACKED_WALLET_STEPS.SOURCE_CONNECT;
@@ -103,7 +95,6 @@ export function WalletManagementEvents() {
     sourceWallet,
     destinationWallet,
     setDestinationPoints,
-    // setSourcePoints,
     setSourceWallet,
     setDestinationWallet,
     setCurrentStep,

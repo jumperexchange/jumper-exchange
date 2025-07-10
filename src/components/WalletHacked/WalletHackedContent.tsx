@@ -1,12 +1,12 @@
 'use client';
 
-import {
-  ModalMenuContainer,
-  ModalMenuPaper,
-} from '@/components/ModalMenu/ModalMenu.style';
 import { memo } from 'react';
 import { useHackedXP } from './hooks/useHackedXP';
 import { useInitializeCurrentStep } from './hooks/useInitializeCurrentStep';
+import {
+  ModalMenuContainer,
+  ModalMenuPaper,
+} from './layout/WalletHackedLayout.style';
 import { WalletHackedStepperProgress } from './WalletHackedStepper/WalletHackedStepperProgress';
 
 export const WalletHackedContent = memo(() => {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/ModalMenu/ModalMenuPage/ModalMenuPage';
+import { ModalMenuPage } from 'src/components/WalletHacked/layout/WalletHackedLayout';
 import {
   TrackingAction,
   TrackingCategory,
@@ -105,7 +105,6 @@ export const WalletHackedSummary = () => {
       title={title}
       text={description}
       buttonLabel={buttonLabel}
-      hideClose={true}
       showPrevButton={false}
       onClickAction={handleSubmit}
       disabled={isPending}

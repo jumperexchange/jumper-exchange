@@ -1,4 +1,7 @@
-import { Box, styled } from '@mui/material';
+'use client';
+
+import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { MenuPaper } from 'src/components/Menu';
 
 export const ModalMenuPaper = styled(MenuPaper)(({ theme }) => ({
@@ -27,4 +30,17 @@ export const ModalMenuContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(2.5),
   textAlign: 'center',
+}));
+
+export const ModalMenuHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
+
+export const ModalMenuContent = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  gap: 16,
 }));

@@ -6,12 +6,11 @@ export const useDisconnect = () => {
   const disconnectWallet = useAccountDisconnect();
 
   // Disconnect current wallet on first render
-  const disconnectWalletOnMount = useCallback(async () => {
+  const disconnectActiveWallet = useCallback(async () => {
     if (account) {
-      console.log('disconnecting wallet on mount');
       await disconnectWallet(account);
     }
   }, [account, disconnectWallet]);
 
-  return { disconnectWallet, disconnectWalletOnMount };
+  return { disconnectWallet, disconnectActiveWallet };
 };

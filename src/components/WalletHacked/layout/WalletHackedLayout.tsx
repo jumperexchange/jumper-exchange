@@ -6,7 +6,7 @@ import type { JSX } from 'react';
 import { ButtonSecondary } from 'src/components/Button';
 import { useWalletHacked } from 'src/components/WalletHacked/context/WalletHackedContext';
 import { getPreviousStep } from 'src/components/WalletHacked/utils/stepNavigation';
-import { ModalMenuContent, ModalMenuHeader } from './ModalMenuPage.style';
+import { ModalMenuContent, ModalMenuHeader } from './WalletHackedLayout.style';
 
 export const ModalMenuPage = ({
   title,
@@ -15,10 +15,7 @@ export const ModalMenuPage = ({
   text,
   onClickAction,
   error,
-  // index,
   showPrevButton,
-  // setMenuIndex,
-  hideClose = false,
   disabled = false,
 }: {
   title?: string;
@@ -28,7 +25,6 @@ export const ModalMenuPage = ({
   onClickAction: (event: React.MouseEvent) => void;
   error?: string;
   showPrevButton?: boolean;
-  hideClose?: boolean;
   disabled?: boolean;
 }) => {
   const { currentStep, setCurrentStep } = useWalletHacked();

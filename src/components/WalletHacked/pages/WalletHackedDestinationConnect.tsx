@@ -1,12 +1,12 @@
 import { useWalletMenu } from '@lifi/wallet-management';
 import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModalMenuPage } from 'src/components/ModalMenu/ModalMenuPage/ModalMenuPage';
+import { ModalMenuPage } from 'src/components/WalletHacked/layout/WalletHackedLayout';
 import { useWalletHacked } from '../context/WalletHackedContext';
 import { useDisconnect } from '../hooks/useDisconnect';
 
 export const WalletHackedDestinationConnect = () => {
-  const { disconnectWalletOnMount } = useDisconnect();
+  const { disconnectActiveWallet } = useDisconnect();
   const { t } = useTranslation();
   const { error } = useWalletHacked();
   const { openWalletMenu } = useWalletMenu();
@@ -18,7 +18,7 @@ export const WalletHackedDestinationConnect = () => {
   useEffect(() => {
     // disconnect any wallet on mount
     if (!hasHandledWalletConnection.current) {
-      disconnectWalletOnMount();
+      disconnectActiveWallet();
     }
   }, []);
 
@@ -36,7 +36,6 @@ export const WalletHackedDestinationConnect = () => {
       text={description}
       error={error}
       buttonLabel={buttonLabel}
-      hideClose={true}
       showPrevButton={false}
       onClickAction={handleConnectDestinationWallet}
       disabled={false}

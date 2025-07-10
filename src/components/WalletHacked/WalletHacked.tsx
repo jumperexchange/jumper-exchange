@@ -1,17 +1,13 @@
 'use client';
 
-import { WalletManagementEvents } from '../Widgets/WalletManagementEvents';
 import { WalletHackedProvider } from './context/WalletHackedContext';
 import { WalletHackedContent } from './WalletHackedContent';
+import { WalletManagementEvents } from './WalletManagementEvents';
 
-interface WalletHackedProps {
-  onClose?: () => void;
-}
-
-export const WalletHacked = ({ onClose = () => {} }: WalletHackedProps) => {
+export const WalletHacked = () => {
   return (
     <>
-      <WalletHackedProvider onClose={onClose}>
+      <WalletHackedProvider>
         <WalletHackedContent />
         <WalletManagementEvents />
       </WalletHackedProvider>
