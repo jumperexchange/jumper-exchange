@@ -26,12 +26,22 @@ import {
 } from './types';
 import { getTokenBalance, Route } from '@lifi/sdk';
 import { ProjectData } from 'src/types/questDetails';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 
 export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [areClientInitializing, setAreClientInitializing] = useState(false);
+
+  const {
+    zapData,
+    isSuccess: isZapDataSuccess,
+    depositTokenData,
+    depositTokenDecimals,
+    isLoadingDepositTokenData,
+    refetchDepositToken,
+  } = useEnhancedZapData(projectData);
 
   const { account } = useAccount();
   const { address, chainId } = account;
@@ -40,61 +50,6 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     account: address as `0x${string}`,
     query: {
       enabled: !!chainId && !!address,
-    },
-  });
-  const { data, isSuccess } = useZaps(projectData);
-  const zapData = data?.data;
-
-  const contractsConfig = useMemo(() => {
-    return [
-      {
-        address: projectData.address as `0x${string}`,
-        abi: [
-          {
-            inputs: [{ name: 'owner', type: 'address' }],
-            name: 'balanceOf',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ] as const,
-        functionName: 'balanceOf',
-        args: [account.address as `0x${string}`],
-      },
-      {
-        abi: [
-          {
-            inputs: [],
-            name: 'decimals',
-            outputs: [{ name: '', type: 'uint8' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ] as const,
-        address: (projectData.tokenAddress ||
-          projectData.address) as `0x${string}`,
-        chainId: projectData.chainId,
-        functionName: 'decimals',
-      },
-    ];
-  }, [
-    projectData.address,
-    projectData.tokenAddress,
-    projectData.chainId,
-    account.address,
-  ]);
-
-  const {
-    data: [
-      { result: depositTokenData } = {},
-      { result: depositTokenDecimals } = {},
-    ] = [],
-    isLoading: isLoadingDepositTokenData,
-    refetch,
-  } = useReadContracts({
-    contracts: contractsConfig,
-    query: {
-      enabled: !!account.address,
     },
   });
 
@@ -519,11 +474,11 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     providers,
     toAddress,
     zapData,
-    isZapDataSuccess: isSuccess,
+    isZapDataSuccess,
     setCurrentRoute,
     depositTokenData,
     depositTokenDecimals,
     isLoadingDepositTokenData,
-    refetchDepositToken: refetch,
+    refetchDepositToken,
   };
 };
