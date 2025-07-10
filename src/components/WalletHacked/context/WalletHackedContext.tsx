@@ -1,6 +1,12 @@
 'use client';
 
-import { useAccount, useAccountDisconnect } from '@lifi/wallet-management';
+import {
+  useAccount,
+  useAccountDisconnect,
+  useWalletManagementEvents,
+  WalletConnected,
+  WalletManagementEvent,
+} from '@lifi/wallet-management';
 import {
   createContext,
   PropsWithChildren,
@@ -10,6 +16,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isEvmChainType } from 'src/components/Widgets/FeeContribution/utils';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { HACKED_WALLET_DEFAULT_STATE, HACKED_WALLET_STEPS } from '../constants';
 import { WalletState } from '../types';
@@ -66,6 +73,7 @@ export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const { account } = useAccount();
+  const walletManagementEvents = useWalletManagementEvents();
   const { t } = useTranslation();
 
   const {
@@ -151,13 +159,89 @@ export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
     } else if (!account?.address && !destinationWallet?.account?.address) {
       setCurrentStep(HACKED_WALLET_STEPS.DESTINATION_CONNECT);
     }
-    if (sourceWallet?.signed && !destinationWallet?.account?.address) {
+    if (
+      sourceWallet?.signed &&
+      !destinationWallet?.account?.address &&
+      sourceWallet?.account?.address === account?.address
+    ) {
       setCurrentStep(HACKED_WALLET_STEPS.DESTINATION_CONNECT);
       disconnectWallet(account);
     } else if (destinationWallet?.signed) {
       setCurrentStep(HACKED_WALLET_STEPS.SUMMARY);
     }
   }, [account, sourceWallet, destinationWallet, setCurrentStep]);
+
+  const isSameWallet = (wallet1: WalletConnected, wallet2: WalletConnected) =>
+    wallet1?.address === wallet2?.address;
+
+  useEffect(() => {
+    const isSourceWallet = currentStep === HACKED_WALLET_STEPS.SOURCE_CONNECT;
+    const isDestinationWallet =
+      currentStep === HACKED_WALLET_STEPS.DESTINATION_CONNECT;
+
+    const onWalletConnected = async (wallet: WalletConnected) => {
+      // If non-EVM wallet, set error and disconnect
+      const isEvmWallet = isEvmChainType(wallet);
+      if (!isEvmWallet) {
+        setError(t('walletHacked.errors.nonEVMWallet'));
+        return;
+      }
+
+      if (isSourceWallet) {
+        setSourceWallet({
+          ...HACKED_WALLET_DEFAULT_STATE,
+          account: wallet,
+        });
+
+        // If no points on source wallet, set error and disconnect
+        setError(undefined);
+      } else if (isDestinationWallet) {
+        // If no source wallet, go back to source connect first
+        if (!sourceWallet?.account?.address) {
+          setCurrentStep(HACKED_WALLET_STEPS.SOURCE_CONNECT);
+          return;
+        }
+        // If same wallet as source, set error and disconnect
+        if (isSameWallet(sourceWallet?.account, wallet)) {
+          setError(t('walletHacked.errors.sameWalletAsSource'));
+          setDestinationWallet(HACKED_WALLET_DEFAULT_STATE);
+          disconnectWallet(account);
+          return;
+        }
+        // No errors caught above, then set destination wallet and go to destination sign
+        setDestinationWallet({
+          ...HACKED_WALLET_DEFAULT_STATE,
+          account: wallet,
+        });
+        setError(undefined);
+        setCurrentStep(HACKED_WALLET_STEPS.DESTINATION_SIGN);
+      }
+    };
+
+    walletManagementEvents.on(
+      WalletManagementEvent.WalletConnected,
+      onWalletConnected,
+    );
+
+    return () => {
+      walletManagementEvents.off(
+        WalletManagementEvent.WalletConnected,
+        onWalletConnected,
+      );
+    };
+  }, [
+    walletManagementEvents,
+    currentStep,
+    sourceWallet,
+    destinationWallet,
+    setDestinationPoints,
+    setSourceWallet,
+    setDestinationWallet,
+    setCurrentStep,
+    setError,
+    disconnectWallet,
+    account.address,
+  ]);
 
   const value = useMemo(
     () => ({
