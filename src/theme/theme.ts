@@ -1120,9 +1120,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#faf5ff',
           },
           surface2: {
-            light: '#F9F5FF',
-            main: '#F9F5FF',
-            dark: '#F9F5FF',
+            light: '#FFFFFF',
+            main: '#FFFFFF',
+            dark: '#FFFFFF',
           },
           surface3: {
             light: '#E5E1EB',

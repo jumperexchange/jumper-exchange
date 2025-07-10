@@ -36,7 +36,7 @@ export const StyledBadge = styled(Box, {
 }) => {
   const variantStyles: Record<BadgeVariant, CSSObject> = {
     default: {
-      backgroundColor: (theme.vars || theme).palette.surface2.main,
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
       color: (theme.vars || theme).palette.alphaLight900.main,
       ...theme.applyStyles('light', {
         color: (theme.vars || theme).palette.alphaDark900.main,
