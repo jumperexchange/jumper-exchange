@@ -39,6 +39,9 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
         header: {
           display: 'none',
         },
+        container: {
+          paddingTop: '24px',
+        },
       },
     };
 
