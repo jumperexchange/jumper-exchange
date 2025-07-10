@@ -196,7 +196,6 @@ interface Resources {
     };
     walletHacked: {
       title: 'Move your XP to a different wallet';
-      description: 'First, you will have to Connect your old wallet which XP points you want to link to another wallet. After a signature to verify your access, you will be asked to connect a different wallet to repeat those steps for the new wallet. Finally, double check before submitting.';
       steps: {
         intro: {
           title: 'Transfer your XP points to a new wallet';
@@ -221,7 +220,8 @@ interface Resources {
         };
         summary: {
           title: 'Submit';
-          description: 'Move {{points}} XP from {{sourceWallet}} to {{destinationWallet}}';
+          description: 'Move {{points}} XP from {{sourceWallet}} to {{destinationWallet}} for a total of {{sumPoints}} XP.';
+          descriptionShort: 'Move {{points}} XP from {{sourceWallet}} to {{destinationWallet}}.';
         };
         success: {
           title: 'Transfer Request Submitted';
@@ -231,7 +231,9 @@ interface Resources {
       actions: {
         continue: 'Continue';
         connectWallet: 'Connect Wallet';
+        tryDifferentWallet: 'Try a different wallet';
         verifyWallet: 'Verify Wallet';
+        noPoints: "You don't have any points to transfer";
         sign: 'Sign Message';
         submit: 'Submit';
         done: 'Done';
@@ -242,6 +244,7 @@ interface Resources {
         signingFailed: 'Failed to sign the message. Please try again.';
         noWalletConnected: 'No wallet is connected. Please connect a wallet first.';
         nonEVMWallet: 'Only EVM wallets are supported for XP transfer. Please connect an EVM wallet.';
+        failedToSubmit: 'Failed to submit transfer request. Please try again.';
       };
     };
     contribution: {

@@ -1,12 +1,14 @@
 import ErrorIcon from '@mui/icons-material/Error';
-import { StepButton, StepConnector } from '@mui/material';
+import WalletIcon from '@mui/icons-material/Wallet';
+import { StepConnector } from '@mui/material';
 import Box from '@mui/material/Box';
-import Step from '@mui/material/Step';
 import Stepper from '@mui/material/Stepper';
 import { Checked } from 'src/components/illustrations/Checked';
+import { useWalletHacked } from '../context/WalletHackedContext';
 import {
+  WalletHackedStep,
   WalletHackedStepBox,
-  WalletHackedStepImage,
+  WalletHackedStepButton,
   WalletHackedStepText,
 } from './WalletHackedStepper.style';
 
@@ -14,42 +16,62 @@ interface WalletHackedStepperProps {
   step: number;
   maxSteps: number;
   onClick?: () => void;
-  sourceWallet?: string | null;
-  destinationWallet?: string | null;
-  sourceWalletVerified?: boolean;
-  destinationWalletVerified?: boolean;
-  sourceWalletSigned?: boolean;
-  destinationWalletSigned?: boolean;
+  sourceWallet: string | undefined;
+  destinationWallet: string | undefined;
+  sourceWalletVerified: boolean;
+  destinationWalletVerified: boolean;
+  sourceWalletSigned: boolean;
+  destinationWalletSigned: boolean;
   showError?: boolean;
 }
 
-export default function WalletHackedStepper({
-  step,
-  maxSteps,
-  onClick,
-  sourceWallet,
-  destinationWallet,
-  sourceWalletVerified,
-  destinationWalletVerified,
-  sourceWalletSigned,
-  destinationWalletSigned,
-  showError,
-}: WalletHackedStepperProps) {
+export default function WalletHackedStepper() {
+  const {
+    currentStep,
+    setCurrentStep,
+    sourceWallet,
+    destinationWallet,
+    error,
+  } = useWalletHacked();
+
+  const step = 1;
+  const showError = !!error;
+  const sourceWalletVerified = sourceWallet?.verified;
+  const sourceWalletSigned = sourceWallet?.signed;
+  const destinationWalletVerified = destinationWallet?.verified;
+  const destinationWalletSigned = destinationWallet?.signed;
+
   return (
     <Box sx={{ width: '100%' }}>
+      {/* <Divider /> */}
       <Stepper
         nonLinear
         activeStep={step}
-        connector={<StepConnector sx={{ height: '20px' }} />}
+        connector={<StepConnector sx={{ height: 'auto' }} />}
         sx={(theme) => ({
-          ...(showError && {
-            '& .MuiStepLabel-iconContainer.Mui-completed': {
+          margin: theme.spacing(3, 0, 2),
+          // ...(showError && {
+          '& .MuiStepLabel-iconContainer': {
+            paddingRight: 0,
+            width: '16px',
+            right: '20px',
+            top: '28px',
+            '&.MuiStepIcon-root': {
+              height: '100%',
+              width: '100%',
+            },
+            '&.Mui-completed': {
               backgroundColor: (theme.vars || theme).palette.white.main,
+              // height: '8px',
+              // width: '8px',
               svg: {
-                color: (theme.vars || theme).palette.grey[400],
+                ...(showError && {
+                  color: (theme.vars || theme).palette.grey[400],
+                }),
               },
             },
-          }),
+          },
+          // }),
           '& .MuiStepLabel-iconContainer:not(.Mui-completed)': {
             ...(!showError && { display: 'none' }),
             backgroundColor: (theme.vars || theme).palette.white.main,
@@ -60,8 +82,10 @@ export default function WalletHackedStepper({
         })}
       >
         {/* Source Wallet Steps */}
-        <Step completed={sourceWalletVerified || sourceWalletSigned}>
-          <StepButton
+        <WalletHackedStep
+          completed={sourceWalletVerified || sourceWalletSigned}
+        >
+          <WalletHackedStepButton
             disableRipple={true}
             color="inherit"
             disabled={sourceWalletSigned}
@@ -74,33 +98,48 @@ export default function WalletHackedStepper({
             }
           >
             <WalletHackedStepBox>
-              <WalletHackedStepImage
-                src={'/chain-icon-eth.svg'}
-                width={64}
-                height={64}
-                alt="Source wallet"
-              />
-              <WalletHackedStepText variant="bodySmall">
+              <Box
+                sx={(theme) => ({
+                  backgroundColor: (theme.vars || theme).palette.bg.main,
+                  borderRadius: '50%',
+                  padding: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: `1px solid ${(theme.vars || theme).palette.white.main}`,
+                })}
+              >
+                <WalletIcon
+                  sx={(theme) => ({
+                    color: (theme.vars || theme).palette.primary.main,
+                  })}
+                  width={32}
+                  height={32}
+                />
+              </Box>
+              <WalletHackedStepText variant="bodyXSmall">
                 {!sourceWallet
-                  ? 'Connect Source'
+                  ? 'Connect'
                   : !sourceWalletVerified
-                    ? 'Verify Source'
+                    ? 'Verify'
                     : !sourceWalletSigned
-                      ? 'Sign with Source'
-                      : 'Source Complete'}
+                      ? 'Sign'
+                      : 'Complete'}
               </WalletHackedStepText>
-              {sourceWallet && (
-                <WalletHackedStepText variant="bodySmall" sx={{ mt: 1 }}>
-                  {sourceWallet}
+              {/* {sourceWallet && (
+                <WalletHackedStepText variant="bodyXSmall" sx={{ mt: 1 }}>
+                  {sourceWallet?.account?.address}
                 </WalletHackedStepText>
-              )}
+              )} */}
             </WalletHackedStepBox>
-          </StepButton>
-        </Step>
+          </WalletHackedStepButton>
+        </WalletHackedStep>
 
         {/* Destination Wallet Steps */}
-        <Step completed={destinationWalletVerified || destinationWalletSigned}>
-          <StepButton
+        <WalletHackedStep
+          completed={destinationWalletVerified || destinationWalletSigned}
+        >
+          <WalletHackedStepButton
             disableRipple={true}
             color="inherit"
             disabled={destinationWalletSigned}
@@ -113,33 +152,48 @@ export default function WalletHackedStepper({
             }
           >
             <WalletHackedStepBox>
-              <WalletHackedStepImage
-                src={'/chain-icon-sol.svg'}
-                width={64}
-                height={64}
-                alt="Destination wallet"
-              />
-              <WalletHackedStepText variant="bodySmall">
+              <Box
+                sx={(theme) => ({
+                  backgroundColor: '#F3EBFF',
+                  borderRadius: '50%',
+                  padding: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: `1px solid ${(theme.vars || theme).palette.white.main}`,
+                })}
+              >
+                <WalletIcon
+                  sx={(theme) => ({
+                    color: (theme.vars || theme).palette.primary.main,
+                  })}
+                  width={32}
+                  height={32}
+                />
+              </Box>
+              <WalletHackedStepText variant="bodyXSmall">
                 {!destinationWallet
-                  ? 'Connect Destination'
+                  ? 'Connect'
                   : !destinationWalletVerified
-                    ? 'Verify Destination'
+                    ? 'Verify'
                     : !destinationWalletSigned
-                      ? 'Sign with Destination'
-                      : 'Destination Complete'}
+                      ? 'Sign'
+                      : 'Destination'}
               </WalletHackedStepText>
-              {destinationWallet && (
-                <WalletHackedStepText variant="bodySmall" sx={{ mt: 1 }}>
-                  {destinationWallet}
+              {/* {destinationWallet && (
+                <WalletHackedStepText variant="bodyXSmall" sx={{ mt: 1 }}>
+                  {destinationWallet?.account?.address}
                 </WalletHackedStepText>
-              )}
+              )} */}
             </WalletHackedStepBox>
-          </StepButton>
-        </Step>
+          </WalletHackedStepButton>
+        </WalletHackedStep>
 
         {/* Final Verification Step */}
-        <Step completed={sourceWalletVerified && destinationWalletVerified}>
-          <StepButton
+        <WalletHackedStep
+          completed={sourceWalletVerified && destinationWalletVerified}
+        >
+          <WalletHackedStepButton
             disableRipple={true}
             color="inherit"
             icon={
@@ -154,12 +208,12 @@ export default function WalletHackedStepper({
           >
             <WalletHackedStepBox>
               <Checked />
-              <WalletHackedStepText variant="bodySmall">
-                Verify signatures
+              <WalletHackedStepText variant="bodyXSmall">
+                Verify
               </WalletHackedStepText>
             </WalletHackedStepBox>
-          </StepButton>
-        </Step>
+          </WalletHackedStepButton>
+        </WalletHackedStep>
       </Stepper>
     </Box>
   );

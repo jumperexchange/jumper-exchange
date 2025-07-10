@@ -1,5 +1,5 @@
 import { ChainType, Route, StatusResponse } from '@lifi/sdk';
-import { Account } from '@lifi/wallet-management';
+import { Account, WalletConnected } from '@lifi/wallet-management';
 import { EVMAddress } from 'src/types/internal';
 import {
   CONTRIBUTION_AMOUNTS,
@@ -65,7 +65,9 @@ export const hasValidRouteData = (
   ); // check if last tx was sent to same wallet currently connected
 };
 
-export const isEvmChainType = (account?: Account): boolean => {
+export const isEvmChainType = (
+  account?: Account | WalletConnected,
+): boolean => {
   return account?.chainType === ChainType.EVM;
 };
 

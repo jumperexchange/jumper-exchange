@@ -1,12 +1,10 @@
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Step, StepButton, Typography, styled } from '@mui/material';
 
 export const WalletHackedStepBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   gap: theme.spacing(1),
-  padding: theme.spacing(2),
-  minWidth: 200,
 }));
 
 export const WalletHackedStepImage = styled('img')(({ theme }) => ({
@@ -18,7 +16,15 @@ export const WalletHackedStepImage = styled('img')(({ theme }) => ({
 }));
 
 export const WalletHackedStepText = styled(Typography)(({ theme }) => ({
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.text.secondary,
   textAlign: 'center',
   wordBreak: 'break-word',
+}));
+
+export const WalletHackedStepButton = styled(StepButton)(({ theme }) => ({
+  padding: 0,
+}));
+
+export const WalletHackedStep = styled(Step)(({ theme }) => ({
+  height: 'auto',
 }));
