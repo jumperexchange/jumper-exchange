@@ -191,12 +191,12 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 3: Initialize Docker build
-      - name: Init GCP
-        id: build-init
+      - name: Init GCP secrets
+        id: build-init-secrets
         uses: ./.github/actions/init-gcp
         with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
       - name: Get Secret and Save to .env
         run: |
           gcloud secrets versions access latest \
@@ -217,7 +217,12 @@ jobs:
             echo "❌ Error: .env.json file not found!"
             exit 1
           fi
-
+      - name: Init GCP
+        id: build-init
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
       # Step 4: Build and push the Docker image
       - name: Build and push Docker image
         id: build
