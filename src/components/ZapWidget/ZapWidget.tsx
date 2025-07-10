@@ -30,6 +30,7 @@ import { useAccount, useConfig, useReadContracts } from 'wagmi';
 import { DepositCard } from './Deposit/DepositCard';
 import { WithdrawWidget } from './Withdraw/WithdrawWidget';
 
+import envConfig from '@/config/env-config';
 import { createCustomEVMProvider } from '@/providers/WalletProvider/createCustomEVMProvider';
 import type { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
 import {
@@ -337,7 +338,7 @@ export function ZapWidget({
       bridges: {
         allow: ['across', 'relay'],
       },
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       explorerUrls,
       subvariant: 'custom' as WidgetSubvariant,
       subvariantOptions: { custom: 'deposit' as CustomSubvariant },
@@ -694,7 +695,7 @@ export function ZapWidget({
   const widgetConfig: WidgetConfig = {
     ...baseWidgetConfig,
     sdkConfig: {
-      apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
+      apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
       providers: [customEVMProvider],
     },
     toAddress: oNexus
