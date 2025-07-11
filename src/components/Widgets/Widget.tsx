@@ -227,7 +227,7 @@ export function Widget({
             },
           },
           exchanges: {
-            allow: ['squid'], // Replace by hyperbloom when available
+            allow: ['squid'], // TODO: Replace by hyperbloom when available
           },
         },
       ],
