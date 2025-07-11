@@ -213,7 +213,7 @@ export function Widget({
       routeLabels: [
         {
           label: {
-            text: '1.5x points boost',
+            text: '1.5x Hyperbloom points',
             sx: {
               background: 'linear-gradient(90deg, #ff0404, #ff04c8)',
               '@keyframes gradient': {
