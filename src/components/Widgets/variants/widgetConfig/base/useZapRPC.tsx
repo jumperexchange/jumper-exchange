@@ -49,6 +49,9 @@ export const useZapRPC = (
       sdkConfig: {
         apiUrl: process.env.NEXT_PUBLIC_LIFI_API_URL,
         providers,
+        routeOptions: {
+          allowSwitchChain: true,
+        },
       },
       useRecommendedRoute: true,
       contractCompactComponent: <></>,

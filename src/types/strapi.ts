@@ -389,6 +389,11 @@ export interface MerklRewardsAttributes {
   publishedAt?: string;
 }
 
+export interface TaskWidgetInformationInputData {
+  inputId: string;
+  inputPlaceholder: string;
+}
+
 export interface TaskWidgetInformationChainData {
   chainId: string;
   chainKey: string;
@@ -411,7 +416,13 @@ export interface TaskWidgetInformationData {
   destinationToken?: TaskWidgetInformationTokenData | null;
   toAddress?: TaskWidgetInformationWalletData | null;
   fromAmount?: string | null;
+  title?: string | null;
+  description?: string | null;
+  CTALink?: string | null;
+  CTAText?: string | null;
+  inputs?: TaskWidgetInformationInputData[] | null;
 }
+
 export enum TaskType {
   Bridge = 'Bridge',
   Swap = 'Swap',
