@@ -145,25 +145,25 @@
     "completed": "Missões Concluídas",
     "mission": {
       "completed": {
-        "title": "",
-        "description": ""
+        "title": "Missão concluída",
+        "description": "Todas as tarefas desta missão foram verificadas e concluídas."
       }
     },
     "status": {
-      "new": "",
-      "upcoming": "",
-      "minutesLeft_one": "",
-      "minutesLeft_other": "",
-      "hoursLeft_one": "",
-      "hoursLeft_other": "",
-      "daysLeft_one": "",
-      "daysLeft_other": ""
+      "new": "Novo",
+      "upcoming": "Próximas",
+      "minutesLeft_one": "{{count}} minuto restante",
+      "minutesLeft_other": "{{count}} minutos restante",
+      "hoursLeft_one": "{{count}} hora restante",
+      "hoursLeft_other": "{{count}} horas restante",
+      "daysLeft_one": "{{count}} dia restante",
+      "daysLeft_other": "{{count}} dias restante"
     },
     "tasks": {
-      "type": "",
+      "type": "Tarefa {{type}}",
       "status": {
-        "verify": "",
-        "verified": ""
+        "verify": "Verificar",
+        "verified": "Verificada"
       }
     }
   },
@@ -201,16 +201,16 @@
     "shortDate": "{{value, dateExt(month: short)}}"
   },
   "contribution": {
-    "title": "",
-    "custom": "",
-    "confirm": "",
-    "thankYou": "",
-    "description": "",
+    "title": "Contribuir",
+    "custom": "Personalizado",
+    "confirm": "Confirmar",
+    "thankYou": "Obrigado!",
+    "description": "Mostre sua apreciação adicionando uma contribuição. 100% dela vai para melhorar a Jumper.",
     "error": {
-      "amountTooSmall": "",
-      "errorSending": "",
-      "invalidTokenPrice": "",
-      "noFeeAddress": ""
+      "amountTooSmall": "O valor da contribuição é muito pequeno para esse token. Por favor, tente um valor maior.",
+      "errorSending": "Erro ao enviar contribuição:",
+      "invalidTokenPrice": "Preço do token inválido",
+      "noFeeAddress": "Nenhum endereço de taxa de contribuição configurado para essa cadeia."
     }
   },
   "tooltips": {
