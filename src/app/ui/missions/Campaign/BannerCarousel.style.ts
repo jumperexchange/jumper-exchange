@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 
-export const CampaignCarouselContainer = styled(Box)(({ theme }) => ({
+export const CarouselOuterContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
   padding: theme.spacing(3, 0, 4.5),
   borderRadius: theme.shape.cardBorderRadius,
@@ -15,21 +15,21 @@ export const CampaignCarouselContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
-export const CampaignContainer = styled(Box)(({}) => ({}));
+export const BannerSlideContainer = styled(Box)(({}) => ({}));
 
-export const CampaignImageContainer = styled(Box)(({}) => ({
+export const BannerImageWrapper = styled(Box)(({}) => ({
   borderRadius: 16,
   width: '100%',
   overflow: 'hidden',
 }));
 
-interface CampaignImageProps extends ImageProps {
+interface BannerImageProps extends ImageProps {
   isImageLoading: boolean;
 }
 
-export const CampaignImage = styled(Image, {
+export const BannerImage = styled(Image, {
   shouldForwardProp: (prop) => prop !== 'isImageLoading',
-})<CampaignImageProps>(({ isImageLoading }) => ({
+})<BannerImageProps>(({ isImageLoading }) => ({
   position: 'relative',
   objectFit: 'cover',
   borderRadius: 16,
@@ -39,7 +39,7 @@ export const CampaignImage = styled(Image, {
   transition: 'opacity 0.2s ease-in-out',
 }));
 
-export const CampaignContentContainer = styled(Box)(({ theme }) => ({
+export const BannerContentOverlay = styled(Box)(({ theme }) => ({
   position: 'absolute',
   bottom: theme.spacing(4),
   left: '50%',
@@ -53,50 +53,48 @@ export enum InfoCardVariant {
   Inverted = 'inverted',
 }
 
-interface CampaignInfoCardContainerProps {
+interface InfoCardBoxProps {
   variant?: InfoCardVariant;
 }
 
-export const CampaignInfoCardContainer = styled(Box, {
+export const InfoCardBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'variant',
-})<CampaignInfoCardContainerProps>(
-  ({ theme, variant = InfoCardVariant.Default }) => ({
-    position: 'relative',
-    padding: theme.spacing(1, 1.5),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: theme.spacing(1),
-    borderRadius: 16,
-    overflow: 'hidden',
-    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
-    border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
+})<InfoCardBoxProps>(({ theme, variant = InfoCardVariant.Default }) => ({
+  position: 'relative',
+  padding: theme.spacing(1, 1.5),
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+  borderRadius: 16,
+  overflow: 'hidden',
+  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+  border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
 
-    ...(variant === InfoCardVariant.Default && {
-      color: (theme.vars || theme).palette.alphaLight900.main,
-    }),
-
-    ...(variant === InfoCardVariant.Inverted && {
-      color: (theme.vars || theme).palette.alphaDark900.main,
-    }),
-
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-      filter: 'blur(8px)',
-      zIndex: -1,
-    },
+  ...(variant === InfoCardVariant.Default && {
+    color: (theme.vars || theme).palette.alphaLight900.main,
   }),
-);
 
-export const CampaignInfoText = styled(Typography)(({ theme }) => ({}));
+  ...(variant === InfoCardVariant.Inverted && {
+    color: (theme.vars || theme).palette.alphaDark900.main,
+  }),
 
-export const ChainStackContainer = styled(Stack)(({ theme }) => ({}));
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+    filter: 'blur(8px)',
+    zIndex: -1,
+  },
+}));
+
+export const InfoCardText = styled(Typography)(({ theme }) => ({}));
+
+export const ChainAvatarStack = styled(Stack)(({ theme }) => ({}));
 
 // @Note extract this in a separate component
 const BaseAvatar = styled(Avatar)(({ theme }) => ({
@@ -114,7 +112,7 @@ export const ChainAvatar = styled(BaseAvatar)(() => ({
   width: 24,
 }));
 
-export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
+export const CarouselSkeletonBox = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   borderRadius: 16,
 }));

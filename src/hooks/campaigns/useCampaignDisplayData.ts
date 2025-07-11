@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { AppPaths } from 'src/const/urls';
 import { CampaignData } from 'src/types/strapi';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
@@ -18,6 +19,10 @@ export const useCampaignDisplayData = (campaign: CampaignData) => {
       bannerImage: `${apiBaseUrl}${campaign.ProfileBannerImage?.url || ''}`,
       bannerTitle: campaign.ProfileBannerTitle || '',
       bannerDescription: campaign.ProfileBannerDescription || '',
+      link:
+        campaign.ProfileBannerCTA ||
+        `${AppPaths.Campaign}/${campaign.Slug}` ||
+        '',
     };
   }, [apiBaseUrl, campaign]);
 };

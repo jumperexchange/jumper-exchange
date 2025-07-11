@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { ChainAvatar, ChainStackContainer } from './Campaign.style';
+import { ChainAvatar, ChainAvatarStack } from './BannerCarousel.style';
 import { useChains } from 'src/hooks/useChains';
 
 interface ChainStackProps {
@@ -20,7 +20,7 @@ export const ChainStack: FC<ChainStackProps> = ({ chainIds }) => {
   }, [chainIds, getChainById]);
 
   return (
-    <ChainStackContainer direction="row" spacing={-1.25}>
+    <ChainAvatarStack direction="row" spacing={-1.25}>
       {enhancedChains.map((enhancedChain) => (
         <ChainAvatar
           key={enhancedChain.id}
@@ -28,6 +28,6 @@ export const ChainStack: FC<ChainStackProps> = ({ chainIds }) => {
           alt={enhancedChain.name}
         />
       ))}
-    </ChainStackContainer>
+    </ChainAvatarStack>
   );
 };

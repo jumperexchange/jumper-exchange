@@ -1,42 +1,42 @@
-import {
-  BaseStyledSkeleton,
-  CampaignContainer,
-  CampaignContentContainer,
-  CampaignImage,
-  CampaignImageContainer,
-} from './Campaign.style';
+'use client';
+
 import { FC, PropsWithChildren, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+  BannerSlideContainer,
+  BannerContentOverlay,
+  BannerImage,
+  BannerImageWrapper,
+} from './BannerCarousel.style';
 import { IMAGE_SIZES } from './constants';
+import { ResponsiveBannerSkeleton } from './ResponsiveBannerSkeleton';
 
-interface CampaignProps extends PropsWithChildren {
+interface BannerCampaignContentProps extends PropsWithChildren {
   imageSrc: string;
   alt: string;
+  onClick?: () => void;
 }
 
-export const Campaign: FC<CampaignProps> = ({ imageSrc, alt, children }) => {
+export const BannerCampaignContent: FC<BannerCampaignContentProps> = ({
+  imageSrc,
+  alt,
+  onClick,
+  children,
+}) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const [isLoading, setIsLoading] = useState(true);
+
   return (
-    <CampaignContainer>
-      <CampaignImageContainer
+    <BannerSlideContainer onClick={onClick}>
+      <BannerImageWrapper
         sx={{
           height: isMobile
             ? IMAGE_SIZES.MOBILE.HEIGHT
             : IMAGE_SIZES.DESKTOP.HEIGHT,
         }}
       >
-        {isLoading && (
-          <BaseStyledSkeleton
-            variant="rectangular"
-            animation="wave"
-            sx={{
-              height: '100%',
-              width: '100%',
-            }}
-          />
-        )}
-        <CampaignImage
+        {isLoading && <ResponsiveBannerSkeleton />}
+        <BannerImage
           alt={alt}
           height={
             isMobile ? IMAGE_SIZES.MOBILE.HEIGHT : IMAGE_SIZES.DESKTOP.HEIGHT
@@ -48,10 +48,8 @@ export const Campaign: FC<CampaignProps> = ({ imageSrc, alt, children }) => {
           isImageLoading={isLoading}
           onLoadingComplete={() => setIsLoading(false)}
         />
-      </CampaignImageContainer>
-      {children && (
-        <CampaignContentContainer>{children}</CampaignContentContainer>
-      )}
-    </CampaignContainer>
+      </BannerImageWrapper>
+      {children && <BannerContentOverlay>{children}</BannerContentOverlay>}
+    </BannerSlideContainer>
   );
 };

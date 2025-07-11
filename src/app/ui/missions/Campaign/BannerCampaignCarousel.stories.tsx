@@ -1,14 +1,15 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/nextjs-vite';
 import React from 'react';
-import { CampaignCarousel } from './CampaignCarousel';
-import { Campaign } from './Campaign';
-import { CampaignInfoCard } from './CampaignInfoCard';
+import { CarouselShell } from './CarouselShell';
+import { InfoCard } from './InfoCard';
 import { ChainStack } from './ChainStack';
-import { InfoCardVariant } from './Campaign.style';
+import { InfoCardVariant } from './BannerCarousel.style';
+import { BannerCampaignContent } from './BannerCampaignContent';
+import { BannerCampaignSkeleton } from './BannerCampaignSkeleton';
 
-const meta: Meta<typeof CampaignCarousel> = {
+const meta: Meta<typeof CarouselShell> = {
   title: 'Components/Carousel/Mission campaign carousel',
-  component: CampaignCarousel,
+  component: CarouselShell,
   tags: ['autodocs'],
 };
 
@@ -55,22 +56,32 @@ const defaultCampaigns = [
 // These are used only the in stories, but not component
 type CustomStoryArgs = {
   campaigns?: typeof defaultCampaigns;
+  isLoading?: boolean;
 };
 
-// Render template with overrides
-const Template: StoryFn<typeof CampaignCarousel> = (_props, { args }) => {
-  const { campaigns = defaultCampaigns } = args as CustomStoryArgs;
+type Story = StoryObj<typeof CarouselShell> & {
+  args?: CustomStoryArgs;
+};
+
+// For presentation purposes only — this custom template allows us to display components without relying on hooks for data manipulation
+// Renders the carousel with optional prop overrides
+const Template: StoryFn<typeof CarouselShell> = (_props, { args }) => {
+  const { campaigns = defaultCampaigns, isLoading } = args as CustomStoryArgs;
+
+  if (isLoading) {
+    return <BannerCampaignSkeleton />;
+  }
 
   return (
-    <CampaignCarousel isLoading={args.isLoading}>
+    <CarouselShell>
       {campaigns.map((campaign) => (
-        <Campaign
+        <BannerCampaignContent
           key={campaign.slug}
           imageSrc={campaign.bannerImage}
           alt={`${campaign.bannerTitle || campaign.title} banner`}
         >
           {!!campaign.benefitLabel && !!campaign.benefitValue && (
-            <CampaignInfoCard
+            <InfoCard
               title={campaign.benefitLabel}
               description={campaign.benefitValue}
               variant={
@@ -81,7 +92,7 @@ const Template: StoryFn<typeof CampaignCarousel> = (_props, { args }) => {
             />
           )}
           {!!campaign.missionsCount && (
-            <CampaignInfoCard
+            <InfoCard
               title="Missions"
               description={campaign.missionsCount.toString()}
               variant={
@@ -92,7 +103,7 @@ const Template: StoryFn<typeof CampaignCarousel> = (_props, { args }) => {
             />
           )}
           {!!campaign.rewardChainIds?.length && (
-            <CampaignInfoCard
+            <InfoCard
               title="Rewards"
               description={<ChainStack chainIds={campaign.rewardChainIds} />}
               variant={
@@ -102,24 +113,24 @@ const Template: StoryFn<typeof CampaignCarousel> = (_props, { args }) => {
               }
             />
           )}
-        </Campaign>
+        </BannerCampaignContent>
       ))}
-    </CampaignCarousel>
+    </CarouselShell>
   );
 };
 
-export const Default: StoryObj<typeof CampaignCarousel> = {
+export const Default: Story = {
   render: Template,
 };
 
-export const Loading: StoryObj<typeof CampaignCarousel> = {
+export const Loading: Story = {
   render: Template,
   args: {
     isLoading: true,
   },
 };
 
-export const CustomCampaigns: StoryObj<typeof CampaignCarousel> = {
+export const CustomCampaigns: Story = {
   render: Template,
   args: {
     campaigns: [
@@ -136,5 +147,5 @@ export const CustomCampaigns: StoryObj<typeof CampaignCarousel> = {
         isDefaultInfoCard: true,
       },
     ],
-  } as any,
+  },
 };

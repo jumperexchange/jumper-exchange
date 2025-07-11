@@ -129,7 +129,7 @@ export const CarouselCenteredBox = styled(Box)(() => ({
 
 export const fillBullet = keyframes`
   from {
-    width: 0%;
+    width: 5%;
   }
   to {
     width: 100%;
