@@ -143,6 +143,12 @@
   "missions": {
     "available": "Misiones Disponibles",
     "completed": "Misiones Completadas",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",

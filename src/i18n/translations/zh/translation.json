@@ -143,6 +143,12 @@
   "missions": {
     "available": "现有任务",
     "completed": "已完成的任务",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
