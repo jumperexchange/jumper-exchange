@@ -80,7 +80,6 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     }
 
     function onRouteExecutionStarted(route: Route) {
-      console.log(route);
       setCurrentRoute(route);
     }
 

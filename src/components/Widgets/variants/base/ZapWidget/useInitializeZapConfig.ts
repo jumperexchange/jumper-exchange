@@ -395,7 +395,6 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       );
 
       const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
-      console.log(`userBalance`, userBalance);
       const requestedAmount = BigInt(currentRoute.fromAmount);
 
       const fusionQuoteParams: GetFusionQuoteParams = {
@@ -425,15 +424,11 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       // If the user is using ≥ 99.90% of their balance, we assume they intend to use max
       const isUsingMax = usageInBasisPoints >= 9_990n;
 
-      console.log('usageInBasisPoints', usageInBasisPoints);
-
       if (isUsingMax) {
         fusionQuoteParams.trigger.useMaxAvailableFunds = true;
       }
 
       const quote = await meeClient.getFusionQuote(fusionQuoteParams);
-
-      console.log('quote', quote);
 
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
