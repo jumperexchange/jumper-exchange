@@ -210,6 +210,27 @@ export function Widget({
       integrator: integratorStringByType,
       tokens: tokens,
       useRelayerRoutes: true,
+      routeLabels: [
+        {
+          label: {
+            text: '1.5x points boost',
+            sx: {
+              background: 'linear-gradient(90deg, #ff0404, #ff04c8)',
+              '@keyframes gradient': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
+              },
+              animation: 'gradient 3s ease infinite',
+              backgroundSize: '200% 200%',
+              color: '#ffffff',
+            },
+          },
+          exchanges: {
+            allow: ['squid'], // Replace by hyperbloom when available
+          },
+        },
+      ],
     };
   }, [
     configTheme?.fromChain,
