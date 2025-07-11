@@ -1,8 +1,11 @@
 import { CampaignData } from 'src/types/strapi';
 import {
   CampaignContainer,
+  CampaignContentContainer,
   CampaignImage,
   CampaignImageContainer,
+  CampaignInfoItem,
+  CampaignInfoText,
 } from './Campaign.style';
 import { FC } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -30,6 +33,20 @@ export const Campaign: FC<CampaignProps> = ({ campaign }) => {
           isImageLoading={false}
         />
       </CampaignImageContainer>
+      <CampaignContentContainer>
+        <CampaignInfoItem>
+          <CampaignInfoText variant="bodyXSmallStrong">
+            Rewards
+          </CampaignInfoText>
+          <CampaignInfoText variant="titleSmall">12345</CampaignInfoText>
+        </CampaignInfoItem>
+        <CampaignInfoItem>
+          <CampaignInfoText variant="bodyXSmallStrong">
+            Missions
+          </CampaignInfoText>
+          <CampaignInfoText variant="titleSmall">10</CampaignInfoText>
+        </CampaignInfoItem>
+      </CampaignContentContainer>
     </CampaignContainer>
   );
 };
