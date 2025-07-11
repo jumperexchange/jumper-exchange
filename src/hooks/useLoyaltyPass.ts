@@ -1,7 +1,6 @@
 import config from '@/config/env-config';
 import type { PDA } from '@/types/loyaltyPass';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
 export interface UseLoyaltyPassProps {
   isSuccess: boolean;
@@ -44,17 +43,6 @@ export async function getLoyaltyPassDataQuery({
 // TODO: Make this component server friendly by removing the useEffect/state
 // Will enable its usage into /app/api/profile/[walletAddress]/route.tsx
 export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
-  useEffect(() => {
-    if (!walletAddress) {
-      return;
-    }
-  }, [walletAddress]);
-
-  //we store the data during 24hours to avoid querying too much our partner API.
-  const t = Date.now() / 1000;
-
-  const queryIsEnabled = !!walletAddress;
-  // query
   const { data, isSuccess, isLoading, error } = useQuery({
     queryKey: ['loyalty-pass', walletAddress],
     queryFn: async ({ queryKey }) => {
@@ -67,7 +55,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
         pdas: data?.pdas,
       };
     },
-    enabled: queryIsEnabled,
+    enabled: !!walletAddress,
     refetchInterval: 1000 * 60 * 60,
   });
 
