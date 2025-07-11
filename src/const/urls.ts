@@ -48,6 +48,7 @@ export enum AppPaths {
   Learn = JUMPER_LEARN_PATH,
   Profile = JUMPER_PROFILE_PATH,
   Missions = JUMPER_MISSIONS_PATH,
+  Campaign = JUMPER_CAMPAIGN_PATH,
   Scan = JUMPER_SCAN_PATH,
   Zap = JUMPER_ZAP_PATH,
   Bridge = JUMPER_BRIDGE_PATH,
