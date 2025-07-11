@@ -82,8 +82,8 @@ export const QuestsCompletedCarousel = ({
       sx={(theme) => ({ [theme.breakpoints.down('sm')]: { display: 'none' } })}
     >
       <IconHeader
-        tooltipKey={`Updated: ${t('format.date', { value: updateDay })}`}
         title={`Updated: ${t('format.date', { value: updateDay })}`}
+        tooltip={t('completedMissionsInformation.description')}
       />
     </Box>
   );
