@@ -123,6 +123,7 @@ export const NavbarButtons = () => {
         {!isDesktop && (
           <FloatingLinksContainer direction="row">
             <Links />
+            // @Note: Remove left padding once this is enabled
             <MenuToggle
               ref={mainMenuAnchor}
               id="main-burger-menu-button"
