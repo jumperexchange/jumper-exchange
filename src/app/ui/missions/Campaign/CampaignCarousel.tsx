@@ -7,10 +7,20 @@ import { Carousel } from 'src/components/Carousel/Carousel';
 import { CampaignData } from 'src/types/strapi';
 import { FloatingNavigation } from 'src/components/Carousel/FloatingNavigation';
 import { CampaignCarouselContainer } from './Campaign.style';
+import { CampaignCarouselSkeleton } from './CampaignCarouselSkeleton';
 
-interface CampaignCarouselProps extends PropsWithChildren {}
+interface CampaignCarouselProps extends PropsWithChildren {
+  isLoading?: boolean;
+}
 
-export const CampaignCarousel: FC<CampaignCarouselProps> = ({ children }) => {
+export const CampaignCarousel: FC<CampaignCarouselProps> = ({
+  isLoading,
+  children,
+}) => {
+  if (isLoading) {
+    return <CampaignCarouselSkeleton />;
+  }
+
   return (
     <CampaignCarouselContainer>
       <Box sx={{ position: 'relative', paddingX: 3 }}>

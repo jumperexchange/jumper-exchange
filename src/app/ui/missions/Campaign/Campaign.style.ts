@@ -1,5 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -27,7 +28,7 @@ export const CampaignImage = styled(Image, {
 })<CampaignImageProps>(({ isImageLoading }) => ({
   position: 'relative',
   objectFit: 'cover',
-  borderRadius: '16px',
+  borderRadius: 16,
   aspectRatio: '2.2 / 1',
   width: '100%',
   opacity: isImageLoading ? 0 : 1,
@@ -107,4 +108,9 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
 export const ChainAvatar = styled(BaseAvatar)(() => ({
   height: 24,
   width: 24,
+}));
+
+export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  borderRadius: 16,
 }));

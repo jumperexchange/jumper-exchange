@@ -6,6 +6,7 @@ import {
 } from './Campaign.style';
 import { FC, PropsWithChildren } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { IMAGE_SIZES } from './constants';
 
 interface CampaignProps extends PropsWithChildren {
   imageSrc: string;
@@ -19,9 +20,13 @@ export const Campaign: FC<CampaignProps> = ({ imageSrc, alt, children }) => {
       <CampaignImageContainer>
         <CampaignImage
           alt={alt}
-          height={isMobile ? 320 : 470}
+          height={
+            isMobile ? IMAGE_SIZES.MOBILE.HEIGHT : IMAGE_SIZES.DESKTOP.HEIGHT
+          }
           src={imageSrc}
-          width={isMobile ? 704 : 1032}
+          width={
+            isMobile ? IMAGE_SIZES.MOBILE.WIDTH : IMAGE_SIZES.DESKTOP.WIDTH
+          }
           isImageLoading={false}
         />
       </CampaignImageContainer>

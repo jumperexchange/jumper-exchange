@@ -62,7 +62,7 @@ const Template: StoryFn<typeof CampaignCarousel> = (_props, { args }) => {
   const { campaigns = defaultCampaigns } = args as CustomStoryArgs;
 
   return (
-    <CampaignCarousel>
+    <CampaignCarousel isLoading={args.isLoading}>
       {campaigns.map((campaign) => (
         <Campaign
           key={campaign.slug}
@@ -110,6 +110,13 @@ const Template: StoryFn<typeof CampaignCarousel> = (_props, { args }) => {
 
 export const Default: StoryObj<typeof CampaignCarousel> = {
   render: Template,
+};
+
+export const Loading: StoryObj<typeof CampaignCarousel> = {
+  render: Template,
+  args: {
+    isLoading: true,
+  },
 };
 
 export const CustomCampaigns: StoryObj<typeof CampaignCarousel> = {
