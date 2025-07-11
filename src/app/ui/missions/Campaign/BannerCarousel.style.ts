@@ -15,7 +15,11 @@ export const CarouselOuterContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
-export const BannerSlideContainer = styled(Box)(({}) => ({}));
+export const BannerSlideContainer = styled(Box)(({ onClick }) => ({
+  ...(!!onClick && {
+    cursor: 'pointer',
+  }),
+}));
 
 export const BannerImageWrapper = styled(Box)(({}) => ({
   borderRadius: 16,

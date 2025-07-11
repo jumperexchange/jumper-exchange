@@ -7,7 +7,7 @@ export const useCampaignDisplayData = (campaign: CampaignData) => {
   const apiBaseUrl = getStrapiBaseUrl();
   return useMemo(() => {
     return {
-      missionsCount: campaign.quests?.length || 0,
+      missionsCount: campaign.MissionCount || campaign.quests?.length || 0,
       slug: campaign.Slug || '',
       title: campaign.Title || '',
       isDefaultInfoCard: !!campaign.LightMode,

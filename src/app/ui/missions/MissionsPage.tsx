@@ -21,6 +21,7 @@ export const MissionsPage = async () => {
   const hasMoreMissions = totalMissions > missions.length;
 
   const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
+
   return (
     <MissionsPageContainer>
       <BannerCampaignCarousel campaigns={validBannerCampaigns} />

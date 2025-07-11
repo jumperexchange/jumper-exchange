@@ -236,6 +236,7 @@ type CampaignField =
   | 'ProfileBannerBadge'
   | 'ProfileBannerCTA'
   | 'ShowProfileBanner'
+  | 'MissionCount'
   | 'StartDate'
   | 'EndDate'
   | 'createdAt'
@@ -256,6 +257,7 @@ class CampaignParams {
     'updatedAt',
     'BenefitLabel',
     'BenefitValue',
+    'MissionCount',
   ];
 
   private static defaultPopulates = [
