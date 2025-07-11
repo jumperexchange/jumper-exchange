@@ -1,23 +1,32 @@
 import { useMenuStore } from '@/stores/menu';
+import { ChainId } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import LinkIcon from '@mui/icons-material/Link';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { getSiteUrl, JUMPER_SCAN_PATH } from 'src/const/urls';
+import { useChains } from 'src/hooks/useChains';
 import { useUserTracking } from 'src/hooks/userTracking';
 
 export const useAddressMenuContent = () => {
   const { account } = useAccount();
+  const { getChainById } = useChains();
   const { trackEvent } = useUserTracking();
   const { t } = useTranslation();
   const theme = useTheme();
   const closeAllMenus = useMenuStore((state) => state.closeAllMenus);
   const router = useRouter();
   const { setSnackbarState } = useMenuStore((state) => state);
+
+  const blockExplorerUrl = useMemo(() => {
+    const chainInfo = getChainById(account?.chainId as ChainId);
+    return chainInfo?.metamask.blockExplorerUrls[0] || '';
+  }, [account?.chainId]);
 
   const handleCopyButton = (textToCopy: string) => {
     account?.address && navigator.clipboard.writeText(textToCopy);
@@ -66,7 +75,7 @@ export const useAddressMenuContent = () => {
         closeAllMenus();
       },
       link: {
-        url: `https://etherscan.io/address/${account.address}`,
+        url: `${blockExplorerUrl}/address/${account.address}`,
         external: true,
       },
     },
