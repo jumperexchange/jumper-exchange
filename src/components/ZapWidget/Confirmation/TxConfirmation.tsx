@@ -1,71 +1,52 @@
-import CheckIcon from '@mui/icons-material/Check';
-import InfoIcon from '@mui/icons-material/Info';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Typography, useTheme } from '@mui/material';
-import {
-  FlexRowCenterGapBox,
-  RoundedColoredBox,
-  TxConfirmationMainBox,
-} from './TxConfirmation.style';
+import Box from '@mui/material/Box';
+import { FC } from 'react';
+import { BaseAlert } from 'src/components/Alerts/BaseAlert/BaseAlert';
+import { BaseAlertVariant } from 'src/components/Alerts/BaseAlert/BaseAlert.styles';
+import { Link } from 'src/components/Link/Link';
 
-export const TxConfirmation = ({
-  s,
+interface TxConfirmationProps {
+  description: string;
+  link: string;
+  success?: boolean;
+}
+
+export const TxConfirmation: FC<TxConfirmationProps> = ({
+  description,
   link,
   success,
 }: {
-  s: string;
+  description: string;
   link: string;
   success?: boolean;
 }) => {
-  const theme = useTheme();
-
   return (
-    <TxConfirmationMainBox>
-      <FlexRowCenterGapBox>
-        <RoundedColoredBox>
-          {success ? (
-            <CheckIcon
-              sx={{
-                width: '16px',
-                height: '16px',
-                color: theme.palette.text.primary,
-              }}
-            />
-          ) : (
-            <InfoIcon
-              sx={{
-                width: '16px',
-                height: '16px',
-                color: theme.palette.text.primary,
-              }}
-            />
-          )}
-        </RoundedColoredBox>
-        <Typography sx={(theme) => ({ color: theme.palette.text.primary })}>
-          {s}
-        </Typography>
-      </FlexRowCenterGapBox>
-      <a
-        href={link}
-        target="_blank"
-        style={{
-          textDecoration: 'none',
-          color: 'inherit',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-        rel="noreferrer"
-      >
-        <RoundedColoredBox>
-          <OpenInNewIcon
+    <Box sx={(theme) => ({ paddingX: theme.spacing(3) })}>
+      <BaseAlert
+        description={description}
+        headerPrepend={
+          <Link
+            href={link}
+            target="_blank"
+            rel="noreferrer"
             sx={{
-              width: '16px',
-              height: '16px',
-              color: theme.palette.text.primary,
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              alignItems: 'center',
             }}
-          />
-        </RoundedColoredBox>
-      </a>
-    </TxConfirmationMainBox>
+          >
+            <OpenInNewIcon
+              sx={{
+                margin: 0.5,
+                width: '16px',
+                height: '16px',
+              }}
+            />
+          </Link>
+        }
+        variant={success ? BaseAlertVariant.Default : BaseAlertVariant.Info}
+      />
+    </Box>
   );
 };

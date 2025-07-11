@@ -11,7 +11,7 @@ import { useFormatDisplayTaskData } from 'src/hooks/tasksVerification/useFormatD
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
 
-interface MissionTaskProps {
+interface ZapTaskProps {
   task: TaskVerificationWithApy & {
     isVerified: boolean;
     isRequired: boolean;
@@ -20,11 +20,7 @@ interface MissionTaskProps {
   onClick: () => void;
 }
 
-export const MissionTask: FC<MissionTaskProps> = ({
-  task,
-  missionId,
-  onClick,
-}) => {
+export const ZapTask: FC<ZapTaskProps> = ({ task, missionId, onClick }) => {
   const { taskId, title, taskType, description, shouldVerify, isVerified } =
     useFormatDisplayTaskData(task);
   const { currentActiveTaskId } = useMissionStore();
