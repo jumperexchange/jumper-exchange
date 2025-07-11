@@ -46,17 +46,14 @@ export const verifyWallets = async ({
     const verificationId = responseData.data.verification_id;
     return { success: true, verificationId };
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      console.error(errorMessage);
-      Sentry.captureException(`Error verifying wallets: ${errorMessage}`, {
-        ...sentryHint,
-        extra: {
-          originWallet,
-          destinationWallet,
-        },
-      });
-    }
+    console.error(error);
+    Sentry.captureException(`Error verifying wallets: ${error}`, {
+      ...sentryHint,
+      extra: {
+        originWallet,
+        destinationWallet,
+      },
+    });
   }
 };
 
