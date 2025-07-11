@@ -18,7 +18,7 @@ export const WalletHackedStep = ({
   showPrevButton,
   disabled = false,
 }: {
-  title?: string;
+  title: string;
   buttonLabel: string;
   text?: string;
   content?: JSX.Element;
