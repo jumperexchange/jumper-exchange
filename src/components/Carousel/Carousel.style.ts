@@ -138,11 +138,12 @@ export const fillBullet = keyframes`
 
 interface AnimatedPaginationRootProps {
   delay?: number;
+  isPaused?: boolean;
 }
 
 export const AnimatedPaginationContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'delay',
-})<AnimatedPaginationRootProps>(({ theme, delay }) => ({
+  shouldForwardProp: (prop) => prop !== 'delay' && prop !== 'isPaused',
+})<AnimatedPaginationRootProps>(({ theme, delay, isPaused = false }) => ({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
@@ -184,6 +185,7 @@ export const AnimatedPaginationContainer = styled(Box, {
     backgroundColor: (theme.vars || theme).palette.accent1.main,
     animation: `${fillBullet} ${delay ?? 3000}ms linear forwards`,
     animationName: `${fillBullet}`,
+    animationPlayState: isPaused ? 'paused' : 'running',
   },
 }));
 

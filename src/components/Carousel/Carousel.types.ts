@@ -8,4 +8,5 @@ export interface CarouselNavigationBase {
 export interface CarouselPaginationBase {
   className: string;
   delay?: number;
+  isPaused?: boolean;
 }

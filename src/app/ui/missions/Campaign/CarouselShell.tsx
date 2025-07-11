@@ -12,13 +12,12 @@ export const CarouselShell: FC<PropsWithChildren> = ({ children }) => {
     <CarouselOuterContainer>
       <Box sx={{ position: 'relative', paddingX: 3 }}>
         <Carousel
-          CarouselNavigation={
-            children && Array.isArray(children) && children.length > 1
-              ? FloatingNavigation
-              : undefined
-          }
+          CarouselNavigation={FloatingNavigation}
           CarouselPagination={AnimatedPagination}
-          autoplay={{ delay: 5000 }}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
           sx={{
             marginBottom: 1,
             '& .swiper': { marginTop: 0, padding: 0 },
