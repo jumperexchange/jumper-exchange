@@ -142,7 +142,7 @@ interface AnimatedPaginationRootProps {
 
 export const AnimatedPaginationContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'delay',
-})<AnimatedPaginationRootProps>(({ theme }) => ({
+})<AnimatedPaginationRootProps>(({ theme, delay }) => ({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
@@ -180,7 +180,7 @@ export const AnimatedPaginationContainer = styled(Box, {
     width: '0%',
     height: '100%',
     backgroundColor: (theme.vars || theme).palette.accent1.main,
-    animation: `${fillBullet} 5s linear forwards`,
+    animation: `${fillBullet} ${delay}ms linear forwards`,
   },
 }));
 

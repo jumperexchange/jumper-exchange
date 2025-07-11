@@ -1,4 +1,6 @@
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ImageProps } from 'next/image';
@@ -50,27 +52,58 @@ interface CampaignInfoItemProps {
   variant?: CampaignInfoItemVariant;
 }
 
-export const CampaignInfoItem = styled(Box, {
+export const CampaignInfoCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'variant',
 })<CampaignInfoItemProps>(
   ({ theme, variant = CampaignInfoItemVariant.Default }) => ({
+    position: 'relative',
     padding: theme.spacing(1, 1.5),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     gap: theme.spacing(1),
     borderRadius: 16,
+    overflow: 'hidden',
+    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
 
     ...(variant === CampaignInfoItemVariant.Default && {
-      backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
       color: (theme.vars || theme).palette.alphaLight900.main,
-      border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
     }),
 
     ...(variant === CampaignInfoItemVariant.Inverted && {
       color: (theme.vars || theme).palette.text.primary,
     }),
+
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      filter: 'blur(8px)',
+      zIndex: -1,
+    },
   }),
 );
 
 export const CampaignInfoText = styled(Typography)(({ theme }) => ({}));
+
+export const ChainStackContainer = styled(Stack)(({ theme }) => ({}));
+
+// @Note extract this in a separate component
+const BaseAvatar = styled(Avatar)(({ theme }) => ({
+  boxSizing: 'content-box',
+  border: 2,
+  borderStyle: 'solid',
+  borderColor: (theme.vars || theme).palette.background.default,
+  ...theme.applyStyles('light', {
+    borderColor: (theme.vars || theme).palette.white.main,
+  }),
+}));
+
+export const ChainAvatar = styled(BaseAvatar)(() => ({
+  height: 24,
+  width: 24,
+}));

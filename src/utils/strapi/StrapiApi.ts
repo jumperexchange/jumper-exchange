@@ -220,6 +220,121 @@ class QuestParams {
   }
 }
 
+type CampaignField =
+  | 'id'
+  | 'Title'
+  | 'Description'
+  | 'BenefitLabel'
+  | 'BenefitValue'
+  | 'InfoUrl'
+  | 'Slug'
+  | 'XUrl'
+  | 'LightMode'
+  | 'BenefitColor'
+  | 'ProfileBannerTitle'
+  | 'ProfileBannerDescription'
+  | 'ProfileBannerBadge'
+  | 'ProfileBannerCTA'
+  | 'ShowProfileBanner'
+  | 'StartDate'
+  | 'EndDate'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'publishedAt';
+
+class CampaignParams {
+  private apiUrl: URL;
+
+  private static defaultFields: CampaignField[] = [
+    'Title',
+    'Description',
+    'Slug',
+    'StartDate',
+    'EndDate',
+    'ShowProfileBanner',
+    'createdAt',
+    'updatedAt',
+    'BenefitLabel',
+    'BenefitValue',
+  ];
+
+  private static defaultPopulates = [
+    'quests.Image',
+    'Background',
+    'Icon',
+    'ProfileBannerImage',
+    'merkl_rewards',
+  ];
+
+  private static profileBannerFields: CampaignField[] = [
+    'ProfileBannerTitle',
+    'ProfileBannerDescription',
+    'ProfileBannerBadge',
+    'ProfileBannerCTA',
+    'Slug',
+  ];
+
+  constructor(apiUrl: URL) {
+    this.apiUrl = apiUrl;
+    const currentDate = new Date().toISOString();
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
+  }
+
+  addParams({
+    includeFields,
+    excludeFields,
+    populate = CampaignParams.defaultPopulates,
+    baseFields = CampaignParams.defaultFields,
+  }: {
+    includeFields?: CampaignField[];
+    excludeFields?: CampaignField[];
+    populate?: string[];
+    baseFields?: CampaignField[];
+  } = {}): URL {
+    let fields = [...baseFields];
+
+    if (includeFields) {
+      fields = [...new Set([...fields, ...includeFields])];
+    }
+
+    if (excludeFields) {
+      fields = fields.filter((f) => !excludeFields.includes(f));
+    }
+
+    fields.forEach((field, index) => {
+      this.apiUrl.searchParams.set(`fields[${index}]`, field);
+    });
+
+    populate.forEach((relation, index) => {
+      this.apiUrl.searchParams.set(`populate[${index}]`, relation);
+    });
+
+    return this.apiUrl;
+  }
+
+  addProfileBannerParams(options?: {
+    includeFields?: CampaignField[];
+    excludeFields?: CampaignField[];
+    populate?: string[];
+  }): URL {
+    const mergedPopulate = [
+      ...(options?.populate ?? []),
+      'ProfileBannerImage',
+      'merkl_rewards',
+    ];
+
+    const uniquePopulate = [...new Set(mergedPopulate)];
+
+    return this.addParams({
+      includeFields: options?.includeFields ?? CampaignParams.defaultFields,
+      excludeFields: options?.excludeFields,
+      baseFields: CampaignParams.profileBannerFields,
+      populate: uniquePopulate,
+    });
+  }
+}
+
 class ArticleStrapiApi extends StrapiApi {
   constructor({
     includeFields,
@@ -389,40 +504,44 @@ class BlogFaqStrapiApi extends StrapiApi {
 }
 
 class CampaignStrapiApi extends StrapiApi {
+  private campaignParams: CampaignParams;
+
   constructor() {
     super({ contentType: 'campaigns' });
+    this.campaignParams = new CampaignParams(this.apiUrl);
   }
 
-  private addCampaignPageParams(): void {
-    const currentDate = new Date().toISOString();
-    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
-    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
-    this.apiUrl.searchParams.set('populate[0]', 'quests.Image');
-    this.apiUrl.searchParams.set('populate[1]', 'Background');
-    this.apiUrl.searchParams.set('populate[2]', 'Icon');
-    this.apiUrl.searchParams.set('populate[3]', 'ProfileBannerImage');
-    this.apiUrl.searchParams.set('populate[4]', 'merkl_rewards');
-  }
-
-  private addProfileBannerParams(): void {
-    const currentDate = new Date().toISOString();
-    this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
-    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
-    this.apiUrl.searchParams.set('fields[0]', 'ProfileBannerTitle');
-    this.apiUrl.searchParams.set('fields[1]', 'ProfileBannerDescription');
-    this.apiUrl.searchParams.set('fields[2]', 'ProfileBannerBadge');
-    this.apiUrl.searchParams.set('fields[3]', 'ProfileBannerCTA');
-    this.apiUrl.searchParams.set('fields[4]', 'Slug');
-    this.apiUrl.searchParams.set('populate[0]', 'ProfileBannerImage');
-  }
-
-  useCampaignPageParams(): this {
-    this.addCampaignPageParams();
+  useCampaignPageParams({
+    includeFields,
+    excludeFields,
+    populate,
+  }: {
+    includeFields?: CampaignField[];
+    excludeFields?: CampaignField[];
+    populate?: string[];
+  } = {}): this {
+    this.apiUrl = this.campaignParams.addParams({
+      includeFields,
+      excludeFields,
+      populate,
+    });
     return this;
   }
 
-  useCampaignBannerParams(): this {
-    this.addProfileBannerParams();
+  useCampaignBannerParams({
+    includeFields,
+    excludeFields,
+    populate,
+  }: {
+    includeFields?: CampaignField[];
+    excludeFields?: CampaignField[];
+    populate?: string[];
+  } = {}): this {
+    this.apiUrl = this.campaignParams.addProfileBannerParams({
+      includeFields,
+      excludeFields,
+      populate,
+    });
     return this;
   }
 

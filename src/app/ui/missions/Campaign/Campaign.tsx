@@ -1,52 +1,33 @@
-import { CampaignData } from 'src/types/strapi';
 import {
   CampaignContainer,
   CampaignContentContainer,
   CampaignImage,
   CampaignImageContainer,
-  CampaignInfoItem,
-  CampaignInfoText,
 } from './Campaign.style';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
-interface CampaignProps {
-  campaign: CampaignData;
+interface CampaignProps extends PropsWithChildren {
+  imageSrc: string;
+  alt: string;
 }
 
-export const Campaign: FC<CampaignProps> = ({ campaign }) => {
+export const Campaign: FC<CampaignProps> = ({ imageSrc, alt, children }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const apiBaseUrl = getStrapiBaseUrl();
-
-  const missionsTotal = campaign.quests?.length || 0;
-  const slug = campaign.Slug || '';
-  console.log(campaign);
   return (
     <CampaignContainer>
       <CampaignImageContainer>
         <CampaignImage
-          alt={`${campaign.ProfileBannerTitle} banner`}
+          alt={alt}
           height={isMobile ? 320 : 470}
-          src={`${apiBaseUrl}${campaign.ProfileBannerImage?.url}`}
+          src={imageSrc}
           width={isMobile ? 704 : 1032}
           isImageLoading={false}
         />
       </CampaignImageContainer>
-      <CampaignContentContainer>
-        <CampaignInfoItem>
-          <CampaignInfoText variant="bodyXSmallStrong">
-            Rewards
-          </CampaignInfoText>
-          <CampaignInfoText variant="titleSmall">12345</CampaignInfoText>
-        </CampaignInfoItem>
-        <CampaignInfoItem>
-          <CampaignInfoText variant="bodyXSmallStrong">
-            Missions
-          </CampaignInfoText>
-          <CampaignInfoText variant="titleSmall">10</CampaignInfoText>
-        </CampaignInfoItem>
-      </CampaignContentContainer>
+      {children && (
+        <CampaignContentContainer>{children}</CampaignContentContainer>
+      )}
     </CampaignContainer>
   );
 };
