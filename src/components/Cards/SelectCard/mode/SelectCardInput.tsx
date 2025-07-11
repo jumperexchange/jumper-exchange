@@ -16,7 +16,9 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
   value,
   description,
   placeholder,
-  icon,
+  startAdornment,
+  endAdornment,
+  isAmount,
   onChange,
   onFocus,
   onBlur,
@@ -25,7 +27,7 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
     <SelectCardContainer>
       {label && <SelectCardLabel htmlFor={id}>{label}</SelectCardLabel>}
       <SelectCardContentContainer>
-        {icon}
+        {startAdornment}
         <SelectCardValueContainer>
           <SelectCardInputField
             id={id}
@@ -38,6 +40,7 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
             onChange={onChange}
             onBlur={onBlur}
             onFocus={onFocus}
+            isAmount={isAmount}
           />
           {description && (
             <SelectCardDescription variant="bodyXSmall">
@@ -45,6 +48,7 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
             </SelectCardDescription>
           )}
         </SelectCardValueContainer>
+        {endAdornment}
       </SelectCardContentContainer>
     </SelectCardContainer>
   );

@@ -1,10 +1,9 @@
 import Box, { BoxProps } from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
+import InputBase, { InputBaseProps } from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled, Theme } from '@mui/material/styles';
-import { alpha } from '@mui/system';
+import { fontSize, fontWeight } from '@mui/system';
 
 export enum SelectCardMode {
   Display = 'display',
@@ -20,12 +19,15 @@ export const SelectCardContainer = styled(Box, {
 })<SelectCardContainerProps>(({ theme, isClickable }) => ({
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
-  background: (theme.vars || theme).palette.background.default,
+  background: (theme.vars || theme).palette.surface2.main,
   padding: theme.spacing(2),
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
   cursor: isClickable ? 'pointer' : 'initial',
+  ...theme.applyStyles?.('light', {
+    background: (theme.vars || theme).palette.background.default,
+  }),
 }));
 
 export const SelectCardContentContainer = styled(Box)(({ theme }) => ({
@@ -61,7 +63,13 @@ export const getPlaceholderTextStyles = (theme: Theme) => ({
   }),
 });
 
-export const SelectCardInputField = styled(InputBase)(({ theme }) => ({
+interface SelectCardInputFieldProps extends InputBaseProps {
+  isAmount?: boolean;
+}
+
+export const SelectCardInputField = styled(InputBase, {
+  shouldForwardProp: (prop) => prop !== 'isAmount',
+})<SelectCardInputFieldProps>(({ theme, isAmount }) => ({
   '& input': {
     ...theme.typography.bodyLargeStrong,
     paddingTop: 0,
@@ -71,6 +79,12 @@ export const SelectCardInputField = styled(InputBase)(({ theme }) => ({
     opacity: 1,
     ...getPlaceholderTextStyles(theme),
   },
+  ...(isAmount && {
+    '& input, & input::placeholder': {
+      fontSize: 24,
+      fontWeight: 700,
+    },
+  }),
 }));
 
 interface SelectCardDisplayValueProps {

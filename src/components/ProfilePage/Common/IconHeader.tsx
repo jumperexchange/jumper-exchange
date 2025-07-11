@@ -1,18 +1,16 @@
 'use client';
 
 import { Tooltip, useTheme } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { StyledInfoIcon } from '../../TooltipInfo/TooltipInfo.style';
 import { IconHeaderContainer, IconHeaderTitle } from './IconHeader.style';
 
 export interface IconHeaderProps {
-  tooltipKey: string;
+  tooltip: string;
   title?: string;
   icon?: React.ReactNode;
 }
 
-const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
-  const { t } = useTranslation();
+const IconHeader = ({ tooltip, title, icon }: IconHeaderProps) => {
   const theme = useTheme();
   return (
     <IconHeaderContainer>
@@ -21,7 +19,7 @@ const IconHeader = ({ tooltipKey, title, icon }: IconHeaderProps) => {
         <IconHeaderTitle variant="title2XSmall">{title}</IconHeaderTitle>
       )}
       <Tooltip
-        title={t(tooltipKey as any)}
+        title={tooltip}
         sx={{ cursor: 'help', color: theme.palette.text.primary }}
         placement="top"
         enterTouchDelay={0}

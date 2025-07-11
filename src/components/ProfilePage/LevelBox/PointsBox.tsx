@@ -20,7 +20,7 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
     <Box>
       {isClient && (
         <IconHeader
-          tooltipKey="profile_page.pointsInfo"
+          tooltip={t('profile_page.pointsInfo')}
           title={
             !isMobile
               ? `Updated: ${t('format.date', { value: new Date() })}`

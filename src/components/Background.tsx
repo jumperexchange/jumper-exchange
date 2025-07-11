@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
-  BackgroundGradientTopCenter,
 } from './BackgroundGradient';
 
 export interface BackgroundContainerProps {
@@ -27,7 +26,6 @@ function Background() {
         <>
           <BackgroundGradientBottomLeft />
           <BackgroundGradientBottomRight />
-          <BackgroundGradientTopCenter />
         </>
       )}
     </BackgroundContainer>

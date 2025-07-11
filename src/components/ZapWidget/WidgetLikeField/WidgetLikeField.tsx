@@ -17,25 +17,24 @@ import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { TxConfirmation } from 'src/components/ZapWidget/Confirmation/TxConfirmation';
-import type { ProjectData } from 'src/components/ZapWidget/ZapWidget';
 import {
   useConfig,
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
-import WidgetFieldEndAdornment from './WidgetEndAdornment';
-import {
-  WidgetFormHelperText,
-  CustomFormControl,
-} from './WidgetLikeField.style';
+import WithdrawInputEndAdornment from '../Withdraw/WithdrawInputEndAdornment';
+import { WidgetFormHelperText } from './WidgetLikeField.style';
 import { useChains } from '@/hooks/useChains';
 import type { TokenAmount } from '@lifi/sdk';
 import { useUserTracking } from '@/hooks/userTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { useToken } from '@/hooks/useToken';
-import WidgetFieldStartAdornment from '@/components/ZapWidget/WidgetLikeField/WidgetStartAdornment';
 import type { AbiFunction, AbiParameter } from 'viem';
+import { ProjectData } from 'src/types/questDetails';
+import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
+import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
+import { formatInputAmount } from '@lifi/widget';
 
 interface WithdrawTrackingData {
   protocol_name: string;
@@ -90,6 +89,8 @@ interface WidgetLikeFieldProps {
   withdrawAbi?: AbiFunction;
 }
 
+const NUM_DECIMALS = 1;
+
 function WidgetLikeField({
   contractCalls,
   label,
@@ -141,6 +142,9 @@ function WidgetLikeField({
     hash: data,
     confirmations: 5,
     pollingInterval: 1_000,
+    query: {
+      enabled: !!projectData?.chainId && !!data,
+    },
   });
 
   // When the transaction is done, triggering the refetch
@@ -151,7 +155,7 @@ function WidgetLikeField({
 
     setValue('');
     refetch();
-    
+
     const trackingData = {
       protocol_name: projectData.integrator,
       chain_id: token.chainId,
@@ -161,7 +165,7 @@ function WidgetLikeField({
         parseFloat(value ?? '0') * parseFloat(tokenInfo?.priceUSD ?? '0'),
       timestamp: new Date().toISOString(),
     };
-    
+
     trackEvent({
       category: TrackingCategory.WidgetEvent,
       action: 'zap_withdraw',
@@ -179,17 +183,21 @@ function WidgetLikeField({
   }, [account?.chainId, projectData]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    // Only allow numbers and one decimal point
-    if (inputValue === '' || /^\d*\.?\d*$/.test(inputValue)) {
-      setValue(inputValue);
-    }
+    const rawValue = e.target.value;
+    const formattedValue = formatInputAmount(rawValue, NUM_DECIMALS, true);
+    setValue(formattedValue);
+  };
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value;
+    const formattedValue = formatInputAmount(rawValue, NUM_DECIMALS);
+    setValue(formattedValue);
   };
 
   async function onSubmit(e: React.FormEvent) {
     try {
       e.preventDefault();
-      
+
       // Generate dynamic args based on ABI inputs
       const abi = withdrawAbi || {
         inputs: [{ name: 'amount', type: 'uint256' }],
@@ -198,7 +206,7 @@ function WidgetLikeField({
         stateMutability: 'nonpayable',
         type: 'function',
       };
-      
+
       const dynamicArgs = abi.inputs?.map((input: AbiParameter) => {
         if (input.type === 'uint256') {
           return parseUnits(value, writeDecimals);
@@ -213,15 +221,17 @@ function WidgetLikeField({
           projectData?.address) as `0x${string}`,
         chainId: projectData?.chainId,
         functionName: (withdrawAbi?.name || 'redeem') as 'redeem',
-        abi: withdrawAbi ? [withdrawAbi] : [
-          {
-            inputs: [{ name: 'amount', type: 'uint256' }],
-            name: 'redeem',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-        ],
+        abi: withdrawAbi
+          ? [withdrawAbi]
+          : [
+              {
+                inputs: [{ name: 'amount', type: 'uint256' }],
+                name: 'redeem',
+                outputs: [{ name: '', type: 'uint256' }],
+                stateMutability: 'nonpayable',
+                type: 'function',
+              },
+            ],
         args: dynamicArgs as unknown as readonly [bigint],
       });
     } catch (e) {
@@ -285,66 +295,42 @@ function WidgetLikeField({
               {label}
             </Typography>
           </InputLabel>
-          <CustomFormControl
-            variant="standard"
-            aria-autocomplete="none"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
-            <WidgetFieldStartAdornment
-              tokenUSDAmount={tokenUSDAmount}
-              image={image}
-            />
-            <Stack spacing={2} direction="column">
-              <Input
-                autoComplete="off"
-                id="component"
-                value={value}
-                onChange={handleInputChange}
-                placeholder={placeholder}
-                disabled={isPending || isLoading}
-                aria-describedby="withdraw-component-text"
-                disableUnderline={true}
-              />
-              <FormHelperText
-                id="withdraw-component-text"
-                sx={(theme) => ({
-                  marginLeft: `${theme.spacing(2)}!important`,
-                  marginTop: '0!important', // There's an override of that property into the main theme, !important cannot be removed yet
-                })}
-              >
-                <Typography
-                  variant="bodyXSmall"
-                  color="textSecondary"
-                  component="span"
-                  sx={{
-                    color: '#bbbbbb',
-                  }}
-                >
-                  {tokenUSDAmount
-                    ? Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        notation: 'compact',
-                        currency: 'USD',
-                        useGrouping: true,
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits:
-                          parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
-                      }).format(parseFloat(tokenUSDAmount))
-                    : 'NA'}
-                </Typography>
-              </FormHelperText>
-            </Stack>
-            {!!account?.isConnected && !!balance && parseFloat(balance) > 0 && (
-              <WidgetFieldEndAdornment
-                balance={balance}
-                mainColor={overrideStyle?.mainColor}
-                setValue={setValue}
-              />
-            )}
-          </CustomFormControl>
+
+          {/** @TODO change font size and weight */}
+          <SelectCard
+            id="component"
+            name="component"
+            mode={SelectCardMode.Input}
+            placeholder="0"
+            value={value}
+            description={
+              tokenUSDAmount
+                ? Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    notation: 'compact',
+                    currency: 'USD',
+                    useGrouping: true,
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits:
+                      parseFloat(tokenUSDAmount) > 2 ? 2 : 4,
+                  }).format(parseFloat(tokenUSDAmount))
+                : 'NA'
+            }
+            startAdornment={image}
+            endAdornment={
+              !!account?.isConnected &&
+              !!balance &&
+              parseFloat(balance) > 0 && (
+                <WithdrawInputEndAdornment
+                  balance={'200'}
+                  mainColor={overrideStyle?.mainColor}
+                  setValue={setValue}
+                />
+              )
+            }
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
+          />
           {hasErrorText && (
             <WidgetFormHelperText>{hasErrorText}</WidgetFormHelperText>
           )}
@@ -385,7 +371,7 @@ function WidgetLikeField({
 
           {isSuccess && (
             <TxConfirmation
-              s={'Withdraw successful'}
+              description={'Withdraw successful'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={!!isSuccessWriteContract && !isPending ? true : false}
             />
@@ -393,7 +379,7 @@ function WidgetLikeField({
 
           {!isSuccess && data && (
             <TxConfirmation
-              s={'Check on explorer'}
+              description={'Check on explorer'}
               link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${data}`}
               success={false}
             />

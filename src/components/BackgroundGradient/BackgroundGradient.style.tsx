@@ -100,14 +100,15 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-    transform: 'translate(-50%,50%) scale(1.5)',
+    transform: 'translate(-50%, 50%) scale(0.5, 0.75)',
+    transformOrigin: 'center',
     left: 0,
-    opacity: '0.24',
     bottom: 0,
-    background:
-      'radial-gradient(50% 50% at 50% 50%, #BB00FF 0%, rgba(255, 255, 255, 0) 100%)',
+    filter: `blur(240px)`,
+    opacity: 1,
+    background: `rgba(101, 59, 163, 1)`,
     ...theme.applyStyles('light', {
-      opacity: '0.16',
+      background: `rgba(187, 0, 255, 0.12)`,
     }),
   }),
 );
@@ -117,14 +118,15 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-    transform: 'translate(50%,50%) scale(1.5)',
+    transform: 'translate(50%, 50%) scale(0.5, 0.75)',
+    transformOrigin: 'center',
     right: 0,
     bottom: 0,
-    opacity: '0.24',
-    background:
-      'radial-gradient(50% 50% at 50% 50%, #0044FF 0%, rgba(255, 255, 255, 0) 100%)',
+    filter: `blur(240px)`,
+    opacity: 1,
+    background: 'rgba(101, 59, 163, 1)',
     ...theme.applyStyles('light', {
-      opacity: '0.16',
+      background: 'rgba(136, 0, 255, 0.12)',
     }),
   }),
 );
