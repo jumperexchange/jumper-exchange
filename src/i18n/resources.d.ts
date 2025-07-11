@@ -207,6 +207,63 @@ interface Resources {
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
+    walletHacked: {
+      title: 'Move your XP to a different wallet';
+      steps: {
+        intro: {
+          title: 'Transfer your XP points to a new wallet';
+          description: "To transfer your XP points, you'll need to connect both your current wallet (with XP) and your new wallet. Each wallet will require a signature to verify ownership. After verification, your transfer request will be submitted for approval. Note: Only EVM wallets are supported.";
+          buttonLabel: 'Continue';
+        };
+        source: {
+          title: 'Verify your deprecated wallet';
+          description: 'Connect your old wallet to verify ownership and access to the XP points.';
+          connectDescription: 'Please connect your old wallet that contains the XP points you want to transfer.';
+          verifyDescription: 'Please verify that this is the wallet you want to mark as deprecated:';
+          signDescription: 'Please sign this message to verify your ownership of the wallet:';
+          readyDescription: 'Your wallet has been verified and signed. You can now proceed to connect your new wallet.';
+        };
+        destination: {
+          title: 'Verify your new wallet';
+          description: 'Connect your new wallet where you want to transfer the XP points to.';
+          connectDescription: 'Please connect your new wallet where you want to transfer the XP points to.';
+          verifyDescription: 'Please verify that this is the wallet you want to transfer your XP points to:';
+          signDescription: 'Please sign this message to verify your ownership of the new wallet:';
+          readyDescription: 'Your new wallet has been verified and signed. You can now proceed to submit the transfer.';
+        };
+        summary: {
+          title: 'Submit';
+          description: 'Move {{points}} XP from {{sourceWallet}} to {{destinationWallet}} for a total of {{sumPoints}} XP.';
+          descriptionShort: 'Move {{points}} XP from {{sourceWallet}} to {{destinationWallet}}.';
+        };
+        success: {
+          title: 'Transfer Request Submitted';
+          description: 'Your XP transfer request has been submitted successfully. We will process your request shortly.';
+        };
+      };
+      actions: {
+        continue: 'Continue';
+        connectWallet: 'Connect Wallet';
+        tryDifferentWallet: 'Try a different wallet';
+        verifyWallet: 'Verify Wallet';
+        noPoints: "You don't have any points to transfer";
+        sign: 'Sign Message';
+        submit: 'Submit';
+        done: 'Done';
+      };
+      signatureMsg: {
+        source: 'I confirm that I own this wallet and want to transfer my {{points}} XP points to a new wallet.';
+        destination: 'I confirm that I own this wallet and want to receive {{points}} XP points from another wallet.';
+      };
+      errors: {
+        sameWalletAsSource: 'This wallet is already set as the source wallet. Please use a different wallet for the destination.';
+        sameWalletAsDestination: 'This wallet is already set as the destination wallet. Please use a different wallet for the source.';
+        signingFailed: 'Failed to sign the message. Please try again.';
+        noWalletConnected: 'No wallet is connected. Please connect a wallet first.';
+        nonEVMWallet: 'Only EVM wallets are supported for XP transfer. Please connect an EVM wallet.';
+        failedToSubmit: 'Failed to submit transfer request. Please try again.';
+      };
+    };
     contribution: {
       title: 'Contribute';
       custom: 'Custom';

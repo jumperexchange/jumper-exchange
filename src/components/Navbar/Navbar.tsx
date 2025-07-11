@@ -4,8 +4,8 @@ import { usePathname } from 'next/navigation';
 import {
   JUMPER_LEARN_PATH,
   JUMPER_SCAN_PATH,
-  JUMPER_TX_PATH,
-  JUMPER_WALLET_PATH,
+  JUMPER_SCAN_TX_PATH,
+  JUMPER_SCAN_WALLET_PATH,
 } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
@@ -17,8 +17,9 @@ export const Navbar = ({ disableNavbar = false }) => {
   const isLearnPage = pathname?.includes(JUMPER_LEARN_PATH);
   const isScanPage =
     pathname?.includes(JUMPER_SCAN_PATH) ||
-    pathname?.includes(JUMPER_TX_PATH) ||
-    pathname?.includes(JUMPER_WALLET_PATH);
+    pathname?.includes(JUMPER_SCAN_TX_PATH) ||
+    pathname?.includes(JUMPER_SCAN_WALLET_PATH);
+
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const configTheme = useThemeStore((state) => state.configTheme);
 
