@@ -61,11 +61,11 @@ export const CarouselContainer = styled(Box, {
         }),
       },
 
-      '.swiper-pagination-bullet-active': {
+      '.swiper-pagination-bullet.swiper-pagination-bullet-active': {
         backgroundColor: `${(theme.vars || theme).palette.primary.main} !important`,
         border: 'none',
-        // width: '10px !important',
-        // height: '10px !important',
+        width: '10px',
+        height: '10px',
       },
     },
 
@@ -155,21 +155,23 @@ export const AnimatedPaginationContainer = styled(Box, {
   '&.swiper-pagination .swiper-pagination-bullet': {
     borderRadius: '4px',
     transition: 'all 0.3s ease',
-    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.alphaDark300.main,
-    }),
-  },
-
-  '&.swiper-pagination .swiper-pagination-bullet-active': {
-    width: '64px !important',
-    borderRadius: '4px !important',
-    position: 'relative',
+    opacity: `1 !important`,
     backgroundColor: `${(theme.vars || theme).palette.alphaLight300.main} !important`,
     ...theme.applyStyles('light', {
       backgroundColor: `${(theme.vars || theme).palette.alphaDark300.main} !important`,
     }),
   },
+
+  '&.swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active':
+    {
+      width: '64px !important',
+      borderRadius: '6px !important',
+      position: 'relative',
+      backgroundColor: `${(theme.vars || theme).palette.alphaLight300.main} !important`,
+      ...theme.applyStyles('light', {
+        backgroundColor: `${(theme.vars || theme).palette.alphaDark300.main} !important`,
+      }),
+    },
 
   '& .swiper-pagination-bullet.swiper-pagination-bullet-active::before': {
     content: '""',
@@ -180,7 +182,8 @@ export const AnimatedPaginationContainer = styled(Box, {
     width: '0%',
     height: '100%',
     backgroundColor: (theme.vars || theme).palette.accent1.main,
-    animation: `${fillBullet} ${delay}ms linear forwards`,
+    animation: `${fillBullet} ${delay ?? 3000}ms linear forwards`,
+    animationName: `${fillBullet}`,
   },
 }));
 

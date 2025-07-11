@@ -11,7 +11,7 @@ export const CampaignCarouselContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3, 0, 4.5),
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
-  backgroundColor: theme.palette.surface1.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 export const CampaignContainer = styled(Box)(({}) => ({}));
@@ -43,19 +43,19 @@ export const CampaignContentContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export enum CampaignInfoItemVariant {
+export enum InfoCardVariant {
   Default = 'default',
   Inverted = 'inverted',
 }
 
-interface CampaignInfoItemProps {
-  variant?: CampaignInfoItemVariant;
+interface CampaignInfoCardContainerProps {
+  variant?: InfoCardVariant;
 }
 
 export const CampaignInfoCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'variant',
-})<CampaignInfoItemProps>(
-  ({ theme, variant = CampaignInfoItemVariant.Default }) => ({
+})<CampaignInfoCardContainerProps>(
+  ({ theme, variant = InfoCardVariant.Default }) => ({
     position: 'relative',
     padding: theme.spacing(1, 1.5),
     display: 'flex',
@@ -67,12 +67,12 @@ export const CampaignInfoCardContainer = styled(Box, {
     backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
     border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
 
-    ...(variant === CampaignInfoItemVariant.Default && {
+    ...(variant === InfoCardVariant.Default && {
       color: (theme.vars || theme).palette.alphaLight900.main,
     }),
 
-    ...(variant === CampaignInfoItemVariant.Inverted && {
-      color: (theme.vars || theme).palette.text.primary,
+    ...(variant === InfoCardVariant.Inverted && {
+      color: (theme.vars || theme).palette.alphaDark900.main,
     }),
 
     '&::before': {
@@ -82,6 +82,7 @@ export const CampaignInfoCardContainer = styled(Box, {
       left: 0,
       right: 0,
       bottom: 0,
+      backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
       filter: 'blur(8px)',
       zIndex: -1,
     },
