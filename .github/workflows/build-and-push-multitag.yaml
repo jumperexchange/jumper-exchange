@@ -37,6 +37,12 @@ on:
     secrets:
       deploy_key:
         required: true
+      GCP_WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      GCP_SERVICE_ACCOUNT:
+        required: true
+      GCP_ENV_PROJECT:
+        required: true
 
 # Define environment variables accessible throughout the workflow
 env:
@@ -59,6 +65,9 @@ jobs:
       # Output to indicate whether the image already exists
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Init GCP
         id: build-init
         uses: ./.github/actions/init-gcp
@@ -104,6 +113,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Init GCP
         id: build-init
         uses: ./.github/actions/init-gcp
@@ -182,6 +193,32 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 3: Initialize Docker build
+      - name: Init GCP secrets
+        id: build-init-secrets
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
+      - name: Get Secret and Save to .env
+        run: |
+          gcloud secrets versions access latest \
+            --secret="jumper-exchange-env" \
+            --project="${{ secrets.GCP_ENV_PROJECT }}" > .env.json
+      - name: Convert JSON .env to key-value format
+        run: |
+          if [ -f ".env.json" ]; then
+            echo "✅ .env.json file found! Converting to .env format..."
+
+            # Convert JSON to key=value format
+            jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env.json > .env
+
+            echo "✅ Conversion complete! Verifying .env file..."
+            echo "File size: $(wc -c < .env) bytes"
+            echo "Line count: $(wc -l < .env) lines"
+          else
+            echo "❌ Error: .env.json file not found!"
+            exit 1
+          fi
       - name: Init GCP
         id: build-init
         uses: ./.github/actions/init-gcp
@@ -227,6 +264,8 @@ jobs:
       - name: Set current date as env variable
         shell: bash
         run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Init GCP
         id: build-init
