@@ -213,21 +213,40 @@ export function Widget({
       routeLabels: [
         {
           label: {
-            text: '1.5x Hyperbloom points',
+            text: '1.5x points',
             sx: {
-              background: 'linear-gradient(90deg, #ff0404, #ff04c8)',
-              '@keyframes gradient': {
-                '0%': { backgroundPosition: '0% 50%' },
-                '50%': { backgroundPosition: '100% 50%' },
-                '100%': { backgroundPosition: '0% 50%' },
-              },
-              animation: 'gradient 3s ease infinite',
-              backgroundSize: '200% 200%',
+              order: 1,
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              overflow: 'hidden',
+              marginLeft: 'auto',
+              gap: '1px',
+              paddingLeft: '3px',
+              background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
               color: '#ffffff',
+              fontSize: '14px',
+              fontWeight: '600',
+              '&::before': {
+                content: '""',
+                width: '20px',
+                height: '20px',
+                borderRadius: '50%', // Makes the icon circular
+                backgroundImage:
+                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                flexShrink: 0,
+              },
+              '&>p': {
+                alignContent: 'flex-end',
+                paddingLeft: '2px',
+              },
             },
           },
           exchanges: {
-            allow: ['squid'], // Replace by hyperbloom when available
+            allow: ['squid', 'symbiosis', 'stargate', 'across'], // Replace by hyperbloom when available
           },
         },
       ],
