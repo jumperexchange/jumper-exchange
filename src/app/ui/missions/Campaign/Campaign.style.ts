@@ -17,7 +17,11 @@ export const CampaignCarouselContainer = styled(Box)(({ theme }) => ({
 
 export const CampaignContainer = styled(Box)(({}) => ({}));
 
-export const CampaignImageContainer = styled(Box)(({}) => ({}));
+export const CampaignImageContainer = styled(Box)(({}) => ({
+  borderRadius: 16,
+  width: '100%',
+  overflow: 'hidden',
+}));
 
 interface CampaignImageProps extends ImageProps {
   isImageLoading: boolean;
