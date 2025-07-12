@@ -1,11 +1,11 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/nextjs-vite';
 import React from 'react';
 import { CarouselShell } from './CarouselShell';
-import { InfoCard } from './InfoCard';
-import { ChainStack } from './ChainStack';
-import { InfoCardVariant } from './BannerCarousel.style';
 import { BannerCampaignContent } from './BannerCampaignContent';
 import { BannerCampaignSkeleton } from './BannerCampaignSkeleton';
+import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
+import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
 
 const meta: Meta<typeof CarouselShell> = {
   title: 'Components/Carousel/Mission campaign carousel',
@@ -81,35 +81,35 @@ const Template: StoryFn<typeof CarouselShell> = (_props, { args }) => {
           alt={`${campaign.bannerTitle || campaign.title} banner`}
         >
           {!!campaign.benefitLabel && !!campaign.benefitValue && (
-            <InfoCard
+            <MissionHeroStatsCard
               title={campaign.benefitLabel}
               description={campaign.benefitValue}
               variant={
                 campaign.isDefaultInfoCard
-                  ? InfoCardVariant.Default
-                  : InfoCardVariant.Inverted
+                  ? MissionHeroStatsCardVariant.Default
+                  : MissionHeroStatsCardVariant.Inverted
               }
             />
           )}
           {!!campaign.missionsCount && (
-            <InfoCard
+            <MissionHeroStatsCard
               title="Missions"
               description={campaign.missionsCount.toString()}
               variant={
                 campaign.isDefaultInfoCard
-                  ? InfoCardVariant.Default
-                  : InfoCardVariant.Inverted
+                  ? MissionHeroStatsCardVariant.Default
+                  : MissionHeroStatsCardVariant.Inverted
               }
             />
           )}
           {!!campaign.rewardChainIds?.length && (
-            <InfoCard
+            <MissionHeroStatsCard
               title="Rewards"
               description={<ChainStack chainIds={campaign.rewardChainIds} />}
               variant={
                 campaign.isDefaultInfoCard
-                  ? InfoCardVariant.Default
-                  : InfoCardVariant.Inverted
+                  ? MissionHeroStatsCardVariant.Default
+                  : MissionHeroStatsCardVariant.Inverted
               }
             />
           )}

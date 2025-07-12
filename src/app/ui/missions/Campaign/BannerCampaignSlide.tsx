@@ -4,9 +4,9 @@ import { FC, useCallback } from 'react';
 import { CampaignData } from 'src/types/strapi';
 import { BannerCampaignContent } from './BannerCampaignContent';
 import { useCampaignDisplayData } from 'src/hooks/campaigns/useCampaignDisplayData';
-import { InfoCard } from './InfoCard';
-import { ChainStack } from './ChainStack';
 import { useRouter } from 'next/navigation';
+import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
+import { ChainStack } from 'src/components/ChainStack/ChainStack';
 
 interface BannerCampaignSlideProps {
   campaign: CampaignData;
@@ -38,13 +38,16 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
       onClick={onClickHandler}
     >
       {!!benefitLabel && !!benefitValue && (
-        <InfoCard title={benefitLabel} description={benefitValue} />
+        <MissionHeroStatsCard title={benefitLabel} description={benefitValue} />
       )}
       {!!missionsCount && (
-        <InfoCard title={'Missions'} description={missionsCount.toString()} />
+        <MissionHeroStatsCard
+          title={'Missions'}
+          description={missionsCount.toString()}
+        />
       )}
       {!!rewardChainIds?.length && (
-        <InfoCard
+        <MissionHeroStatsCard
           title={'Rewards'}
           description={<ChainStack chainIds={rewardChainIds} />}
         />
