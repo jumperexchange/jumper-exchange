@@ -20,7 +20,7 @@ export const MissionHeroStatsCard: FC<InfoCardProps> = ({
       <MissionHeroStatsText variant="bodyXSmallStrong">
         {title}
       </MissionHeroStatsText>
-      {typeof description === 'string' ? (
+      {typeof description === 'string' || typeof description === 'number' ? (
         <MissionHeroStatsText variant="titleSmall">
           {description}
         </MissionHeroStatsText>
