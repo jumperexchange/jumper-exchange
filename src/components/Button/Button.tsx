@@ -22,6 +22,8 @@ interface ButtonProps {
   disabled?: boolean;
   size?: ButtonSize;
   type?: 'button' | 'reset' | 'submit';
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
 }
 
 export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -36,6 +38,8 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   disabled,
   size,
   type = 'button',
+  startIcon,
+  endIcon,
 }: ButtonProps) => {
   let output: ReactNode;
 
@@ -52,6 +56,8 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonPrimary>
@@ -69,6 +75,8 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonSecondary>
@@ -86,6 +94,8 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonTransparent>
@@ -103,6 +113,8 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonPrimary>

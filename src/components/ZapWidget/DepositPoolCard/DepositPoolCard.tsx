@@ -13,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import { DepositPoolCardItem } from './DepositPoolCardItem';
 import { useTranslation } from 'react-i18next';
 import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
+import { Button } from 'src/components/Button';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import { ProjectData } from 'src/types/questDetails';
+import { openInNewTab } from 'src/utils/openInNewTab';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -22,7 +26,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   customInformation,
 }) => {
   const { t } = useTranslation();
-  const projectData = useMemo(() => {
+  const projectData: ProjectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
@@ -35,6 +39,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     isSuccess: isZapDataSuccess,
     depositTokenData,
     depositTokenDecimals,
+    isLoadingDepositTokenData,
   } = useEnhancedZapData(projectData);
 
   const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
@@ -85,6 +90,19 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   if (!zapData || !token) {
     return <DepositPoolCardSkeleton />;
   }
+
+  const onClickHandler = () => {
+    if (!projectData?.integratorLink) {
+      return;
+    }
+
+    // @TODO add tracking here
+
+    openInNewTab(projectData.integratorLink);
+  };
+
+  const showManagePositionButton =
+    !isLoadingDepositTokenData && depositTokenData;
 
   return (
     <DepositPoolCardContainer>
@@ -141,6 +159,17 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           contentStyles={{ alignItems: 'center' }}
         />
       </Grid>
+      {showManagePositionButton && (
+        <Button
+          variant="transparent"
+          size="medium"
+          endIcon={<OpenInNewRoundedIcon />}
+          disabled={!projectData?.integratorLink}
+          onClick={onClickHandler}
+        >
+          {t('button.manageYourPosition')}
+        </Button>
+      )}
     </DepositPoolCardContainer>
   );
 };
