@@ -14,6 +14,7 @@ import {
 import { useUserTracking } from 'src/hooks/userTracking';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { MissionForm } from './MissionForm';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 export const MissionFormWidget = () => {
   const { taskTitle, taskDescription, taskCTALink, taskCTAText, taskInputs } =
@@ -40,20 +41,22 @@ export const MissionFormWidget = () => {
   };
 
   return (
-    <MissionWidgetContainer>
-      <MissionWidgetContentContainer>
-        <MissionWidgetTitle variant="titleSmall">
-          {taskTitle}
-        </MissionWidgetTitle>
-        <MissionWidgetDescription variant="bodyMedium">
-          {taskDescription}
-        </MissionWidgetDescription>
-      </MissionWidgetContentContainer>
-      {hasForm ? (
-        <MissionForm />
-      ) : (
-        <Button onClick={handleClick}>{taskCTAText}</Button>
-      )}
-    </MissionWidgetContainer>
+    <SectionCardContainer>
+      <MissionWidgetContainer>
+        <MissionWidgetContentContainer>
+          <MissionWidgetTitle variant="titleSmall">
+            {taskTitle}
+          </MissionWidgetTitle>
+          <MissionWidgetDescription variant="bodyMedium">
+            {taskDescription}
+          </MissionWidgetDescription>
+        </MissionWidgetContentContainer>
+        {hasForm ? (
+          <MissionForm />
+        ) : (
+          <Button onClick={handleClick}>{taskCTAText}</Button>
+        )}
+      </MissionWidgetContainer>
+    </SectionCardContainer>
   );
 };

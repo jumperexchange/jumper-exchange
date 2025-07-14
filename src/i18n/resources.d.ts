@@ -150,6 +150,11 @@ interface Resources {
       new: 'New';
     };
     missions: {
+      wrapperCard: {
+        title: 'Missions';
+        explore_one: 'Explore {{count}} mission';
+        explore_other: 'Explore {{count}} missions';
+      };
       available: 'Available Missions';
       completed: 'Completed Missions';
       mission: {

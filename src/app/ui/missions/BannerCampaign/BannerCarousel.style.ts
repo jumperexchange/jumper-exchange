@@ -1,17 +1,12 @@
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 
 export const CarouselOuterContainer = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(4),
-  padding: theme.spacing(3, 0, 4.5),
-  borderRadius: theme.shape.cardBorderRadius,
-  boxShadow: theme.shadows[2],
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  marginBottom: theme.spacing(1.5),
+  position: 'relative',
 }));
 
 export const BannerSlideContainer = styled(Box)(({ onClick }) => ({

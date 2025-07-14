@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { DepositPoolCardItem } from './DepositPoolCardItem';
 import { useTranslation } from 'react-i18next';
 import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import { Button } from 'src/components/Button';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { ProjectData } from 'src/types/questDetails';
@@ -104,76 +105,78 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
 
   return (
-    <DepositPoolCardContainer>
-      <DepositPoolHeaderContainer>
-        <BadgeWithChain
-          logoURI={zapData?.meta?.logoURI}
-          chainId={token?.chainId}
-          alt={`${zapData?.meta?.name} protocol`}
-        />
-        <Typography
-          variant="bodyXLargeStrong"
-          sx={{ fontWeight: 700 }}
-        >{`${zapData?.meta.name} Pool`}</Typography>
-      </DepositPoolHeaderContainer>
-      <Grid container rowSpacing={3} columnSpacing={2}>
-        {apyValue && (
-          <DepositPoolCardItem
-            title={'Base APY'}
-            tooltip={apyTooltip}
-            value={apyValue}
-            valueAppend={apyValue ? '%' : undefined}
+    <SectionCardContainer>
+      <DepositPoolCardContainer>
+        <DepositPoolHeaderContainer>
+          <BadgeWithChain
+            logoURI={zapData?.meta?.logoURI}
+            chainId={token?.chainId}
+            alt={`${zapData?.meta?.name} protocol`}
           />
-        )}
-        {analytics?.tvl_usd && (
-          <DepositPoolCardItem
-            title="TVL"
-            tooltip={t('tooltips.tvl')}
-            value={`$${Number(analytics.tvl_usd).toLocaleString('en-US', {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            })}`}
-          />
-        )}
+          <Typography
+            variant="bodyXLargeStrong"
+            sx={{ fontWeight: 700 }}
+          >{`${zapData?.meta.name} Pool`}</Typography>
+        </DepositPoolHeaderContainer>
+        <Grid container rowSpacing={3} columnSpacing={2}>
+          {apyValue && (
+            <DepositPoolCardItem
+              title={'Base APY'}
+              tooltip={apyTooltip}
+              value={apyValue}
+              valueAppend={apyValue ? '%' : undefined}
+            />
+          )}
+          {analytics?.tvl_usd && (
+            <DepositPoolCardItem
+              title="TVL"
+              tooltip={t('tooltips.tvl')}
+              value={`$${Number(analytics.tvl_usd).toLocaleString('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}`}
+            />
+          )}
 
-        {/** Re-enable this once we know the duration and conditionally render it */}
-        {/* <DepositPoolCardItem
-            title="Lockup period"
-            tooltip=""
-            value="5"
-            valueAppend="months"
-          /> */}
-        {token?.symbol && token?.logoURI && token?.chainId && (
-          <DepositPoolCardItem
-            title="Pool token"
-            tooltip={
-              hasDeposited ? t('tooltips.deposited') : t('tooltips.deposit')
-            }
-            value={token.symbol.toUpperCase()}
-            valuePrepend={
-              <BadgeWithChain
-                logoURI={token.logoURI}
-                chainId={token.chainId}
-                alt={`${zapData?.meta?.name} protocol`}
-                logoSize={24}
-                badgeSize={8}
-              />
-            }
-            contentStyles={{ alignItems: 'center' }}
-          />
+          {/** Re-enable this once we know the duration and conditionally render it */}
+          {/* <DepositPoolCardItem
+              title="Lockup period"
+              tooltip=""
+              value="5"
+              valueAppend="months"
+            /> */}
+          {token?.symbol && token?.logoURI && token?.chainId && (
+            <DepositPoolCardItem
+              title="Pool token"
+              tooltip={
+                hasDeposited ? t('tooltips.deposited') : t('tooltips.deposit')
+              }
+              value={token.symbol.toUpperCase()}
+              valuePrepend={
+                <BadgeWithChain
+                  logoURI={token.logoURI}
+                  chainId={token.chainId}
+                  alt={`${zapData?.meta?.name} protocol`}
+                  logoSize={24}
+                  badgeSize={8}
+                />
+              }
+              contentStyles={{ alignItems: 'center' }}
+            />
+          )}
+        </Grid>
+        {hasDeposited && (
+          <Button
+            variant="transparent"
+            size="medium"
+            endIcon={<OpenInNewRoundedIcon />}
+            disabled={!projectData?.integratorLink}
+            onClick={onClickHandler}
+          >
+            {t('button.manageYourPosition')}
+          </Button>
         )}
-      </Grid>
-      {hasDeposited && (
-        <Button
-          variant="transparent"
-          size="medium"
-          endIcon={<OpenInNewRoundedIcon />}
-          disabled={!projectData?.integratorLink}
-          onClick={onClickHandler}
-        >
-          {t('button.manageYourPosition')}
-        </Button>
-      )}
-    </DepositPoolCardContainer>
+      </DepositPoolCardContainer>
+    </SectionCardContainer>
   );
 };
