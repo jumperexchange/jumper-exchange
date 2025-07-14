@@ -110,7 +110,8 @@
     "learnMore": "Pelajari lebih lanjut"
   },
   "button": {
-    "okay": "Oke"
+    "okay": "Oke",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Ada yang salah. Silakan coba memuat ulang halaman tersebut. Jika masalah terus berlanjut, hubungi dukungan kami."
