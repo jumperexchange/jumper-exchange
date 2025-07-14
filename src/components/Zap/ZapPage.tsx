@@ -38,6 +38,7 @@ export const ZapPage = async ({ market, detailInformation }: ZapPageProps) => {
     <TwoColumnLayout
       mainContent={<ZapDetails market={market} tasks={taskOpportunities} />}
       sideContent={<ZapWidgets detailInformation={detailInformation} />}
+      shouldStretchSideContent
     />
   );
 };
