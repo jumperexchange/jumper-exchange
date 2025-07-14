@@ -110,7 +110,8 @@
     "learnMore": "Daha fazla bilgi edinin"
   },
   "button": {
-    "okay": "Tamam"
+    "okay": "Tamam",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
