@@ -27,23 +27,24 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   participants,
   onClick,
   isLoading,
+  fullWidth,
 }) => {
   if (isLoading) {
-    return <CompactEntityCardSkeleton />;
+    return <CompactEntityCardSkeleton fullWidth={fullWidth} />;
   }
 
   return (
     <StyledEntityCard
       sx={{
         width: '100%',
-        maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+        maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
         sx={{
           width: '100%',
-          maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+          maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT,
         }}
       >

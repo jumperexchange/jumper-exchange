@@ -48,12 +48,16 @@ export const StyledEntityCardImageContainer = styled(Box)(() => ({
   position: 'relative',
 }));
 
-export const StyledEntityCardImage = styled(Image)(() => ({
+export const StyledEntityCardImage = styled(Image)(({ theme }) => ({
   objectFit: 'cover',
   objectPosition: 'center',
   aspectRatio: '2 / 1',
   height: '100%',
   width: '100%',
+  backgroundColor: (theme.vars || theme).palette.background.default,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 // Titles & Description
