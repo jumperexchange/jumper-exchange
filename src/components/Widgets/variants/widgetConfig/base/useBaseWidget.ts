@@ -2,6 +2,7 @@ import { useWalletMenu } from '@lifi/wallet-management';
 import { HiddenUI, RequiredUI, WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import { useThemeStore } from 'src/stores/theme/ThemeStore';
+import envConfig from '@/config/env-config';
 
 export const useBaseWidget = () => {
   const [widgetTheme] = useThemeStore((state) => [
@@ -13,10 +14,10 @@ export const useBaseWidget = () => {
 
   const baseConfig = useMemo(() => {
     return {
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       appearance: widgetTheme.config.appearance,
       keyPrefix: 'jumper-custom',
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       variant: 'compact',
       hiddenUI: [
         HiddenUI.Appearance,
