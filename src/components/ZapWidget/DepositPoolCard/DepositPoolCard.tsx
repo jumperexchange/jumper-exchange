@@ -118,24 +118,25 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
         >{`${zapData?.meta.name} Pool`}</Typography>
       </DepositPoolHeaderContainer>
       <Grid container rowSpacing={3} columnSpacing={2}>
-        <DepositPoolCardItem
-          title={'Base APY'}
-          tooltip={apyTooltip}
-          value={apyValue ?? 'N/A'}
-          valueAppend={apyValue ? '%' : undefined}
-        />
-        <DepositPoolCardItem
-          title="TVL"
-          tooltip={t('tooltips.tvl')}
-          value={
-            analytics?.tvl_usd
-              ? `$${Number(analytics.tvl_usd).toLocaleString('en-US', {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}`
-              : 'N/A'
-          }
-        />
+        {apyValue && (
+          <DepositPoolCardItem
+            title={'Base APY'}
+            tooltip={apyTooltip}
+            value={apyValue}
+            valueAppend={apyValue ? '%' : undefined}
+          />
+        )}
+        {analytics?.tvl_usd && (
+          <DepositPoolCardItem
+            title="TVL"
+            tooltip={t('tooltips.tvl')}
+            value={`$${Number(analytics.tvl_usd).toLocaleString('en-US', {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}`}
+          />
+        )}
+
         {/** Re-enable this once we know the duration */}
         {/* <DepositPoolCardItem
             title="Lockup period"
@@ -143,21 +144,23 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             value="5"
             valueAppend="months"
           /> */}
-        <DepositPoolCardItem
-          title="Pool token"
-          tooltip=""
-          value={token?.symbol?.toUpperCase()}
-          valuePrepend={
-            <BadgeWithChain
-              logoURI={token?.logoURI}
-              chainId={token?.chainId}
-              alt={`${zapData?.meta?.name} protocol`}
-              logoSize={24}
-              badgeSize={8}
-            />
-          }
-          contentStyles={{ alignItems: 'center' }}
-        />
+        {token?.symbol && token?.logoURI && token?.chainId && (
+          <DepositPoolCardItem
+            title="Pool token"
+            tooltip=""
+            value={token.symbol.toUpperCase()}
+            valuePrepend={
+              <BadgeWithChain
+                logoURI={token.logoURI}
+                chainId={token.chainId}
+                alt={`${zapData?.meta?.name} protocol`}
+                logoSize={24}
+                badgeSize={8}
+              />
+            }
+            contentStyles={{ alignItems: 'center' }}
+          />
+        )}
       </Grid>
       {showManagePositionButton && (
         <Button
