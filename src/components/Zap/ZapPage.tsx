@@ -1,10 +1,8 @@
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TwoColumnLayout } from '../TwoColumnLayout/TwoColumnLayout';
 import { ZapDetails } from './ZapDetails';
-import { ZapWidgetTabs } from './ZapWidgetTabs';
-import { ZapWidget } from './ZapWidget';
+import { ZapWidgetStack } from './ZapWidgetStack';
 import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
-import { ZapWidgets } from './ZapWidgets';
 
 interface ZapPageProps {
   market: Quest;
@@ -37,7 +35,7 @@ export const ZapPage = async ({ market, detailInformation }: ZapPageProps) => {
   return (
     <TwoColumnLayout
       mainContent={<ZapDetails market={market} tasks={taskOpportunities} />}
-      sideContent={<ZapWidgets detailInformation={detailInformation} />}
+      sideContent={<ZapWidgetStack customInformation={detailInformation} />}
       shouldStretchSideContent
     />
   );

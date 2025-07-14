@@ -1,4 +1,4 @@
-import { ZapWidget } from 'src/components/Zap/ZapWidget';
+import { ZapWidgetStack } from 'src/components/Zap/ZapWidgetStack';
 import type { CustomInformation } from 'src/types/loyaltyPass';
 
 interface ZapWidgetPageProps {
@@ -7,7 +7,7 @@ interface ZapWidgetPageProps {
 }
 
 const ZapWidgetPage = ({ customInformation, type }: ZapWidgetPageProps) => {
-  return <ZapWidget customInformation={customInformation} type={type} />;
+  return <ZapWidgetStack customInformation={customInformation} />;
 };
 
 export default ZapWidgetPage;
