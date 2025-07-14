@@ -6,11 +6,13 @@ import React, { FC, ReactNode } from 'react';
 interface TwoColumnLayoutProps {
   mainContent: ReactNode;
   sideContent: ReactNode;
+  shouldStretchSideContent?: boolean;
 }
 
 export const TwoColumnLayout: FC<TwoColumnLayoutProps> = ({
   mainContent,
   sideContent,
+  shouldStretchSideContent = false,
 }) => {
   return (
     <Container
@@ -26,7 +28,7 @@ export const TwoColumnLayout: FC<TwoColumnLayoutProps> = ({
           justifyContent: 'center',
           alignItems: {
             xs: 'center',
-            lg: 'flex-start',
+            lg: shouldStretchSideContent ? 'stretch' : 'flex-start',
           },
           flexDirection: {
             xs: 'column',
@@ -42,6 +44,7 @@ export const TwoColumnLayout: FC<TwoColumnLayoutProps> = ({
           sx={{
             maxWidth: { xs: '100%', md: '664px', lg: '416px' },
             width: '100%',
+            flex: shouldStretchSideContent ? 1 : 'auto',
           }}
         >
           {sideContent}
