@@ -110,7 +110,8 @@
     "learnMore": "さらに詳しく"
   },
   "button": {
-    "okay": "OK"
+    "okay": "OK",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "問題が発生しました。ページを再読み込みしてください。問題が解決しない場合はサポートにお問い合わせください。"
