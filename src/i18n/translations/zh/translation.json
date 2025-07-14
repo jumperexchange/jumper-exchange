@@ -110,7 +110,8 @@
     "learnMore": "了解更多"
   },
   "button": {
-    "okay": "确认"
+    "okay": "确认",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "出错了，请尝试刷新页面。如果问题仍然存在，请联系我们。"
