@@ -10,8 +10,8 @@ import Box from '@mui/material/Box';
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
 import { MissionComplete } from './MissionComplete';
 import { MissionFormWidget } from './MissionFormWidget';
-import { ZapWidgets } from 'src/components/Zap/ZapWidgets';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
+import { ZapWidgetStack } from 'src/components/Zap/ZapWidgetStack';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -37,11 +37,7 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
     }
 
     if (currentActiveTaskType === TaskType.Zap) {
-      return (
-        <ClientOnly>
-          <ZapWidgets detailInformation={customInformation} />
-        </ClientOnly>
-      );
+      return <ZapWidgetStack customInformation={customInformation} />;
     }
 
     return (
