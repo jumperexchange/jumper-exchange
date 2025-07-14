@@ -101,8 +101,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     openInNewTab(projectData.integratorLink);
   };
 
-  const showManagePositionButton =
-    !isLoadingDepositTokenData && depositTokenData;
+  const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
 
   return (
     <DepositPoolCardContainer>
@@ -137,7 +136,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           />
         )}
 
-        {/** Re-enable this once we know the duration */}
+        {/** Re-enable this once we know the duration and conditionally render it */}
         {/* <DepositPoolCardItem
             title="Lockup period"
             tooltip=""
@@ -147,7 +146,9 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
         {token?.symbol && token?.logoURI && token?.chainId && (
           <DepositPoolCardItem
             title="Pool token"
-            tooltip=""
+            tooltip={
+              hasDeposited ? t('tooltips.deposited') : t('tooltips.deposit')
+            }
             value={token.symbol.toUpperCase()}
             valuePrepend={
               <BadgeWithChain
@@ -162,7 +163,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           />
         )}
       </Grid>
-      {showManagePositionButton && (
+      {hasDeposited && (
         <Button
           variant="transparent"
           size="medium"
