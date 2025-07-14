@@ -35,3 +35,11 @@ export const Default: Story = {
     sideContent: <PlaceholderBox minHeight={320} />,
   },
 };
+
+export const StretchedSideContent: Story = {
+  args: {
+    mainContent: <PlaceholderBox minHeight={600} />,
+    sideContent: <PlaceholderBox minHeight={320} />,
+    shouldStretchSideContent: true,
+  },
+};

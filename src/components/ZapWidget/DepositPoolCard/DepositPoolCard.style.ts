@@ -9,7 +9,6 @@ export const DepositPoolCardContainer = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.cardBorderRadius,
   display: 'flex',
-  flexGrow: 1,
   flexDirection: 'column',
   gap: theme.spacing(3),
   backgroundColor: (theme.vars || theme).palette.surface1.main,

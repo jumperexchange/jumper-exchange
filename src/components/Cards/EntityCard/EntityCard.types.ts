@@ -30,5 +30,6 @@ export interface EntityCardProps {
   };
   participants?: Participant[];
   rewardGroups?: Partial<Record<RewardGroupKey, Reward[]>>;
+  fullWidth?: boolean;
   onClick?: () => void;
 }
