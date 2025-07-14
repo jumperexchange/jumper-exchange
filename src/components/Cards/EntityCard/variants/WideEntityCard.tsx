@@ -31,23 +31,24 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   partnerLink,
   onClick,
   isLoading,
+  fullWidth,
 }) => {
   if (isLoading) {
-    return <WideEntityCardSkeleton />;
+    return <WideEntityCardSkeleton fullWidth />;
   }
 
   return (
     <StyledEntityCard
       sx={{
         width: '100%',
-        maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
+        maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
       }}
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
         sx={{
           width: '100%',
-          maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
+          maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT,
         }}
       >
