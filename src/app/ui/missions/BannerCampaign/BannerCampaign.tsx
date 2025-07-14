@@ -5,13 +5,11 @@ import { CampaignData } from 'src/types/strapi';
 import { BannerCampaignSlide } from './BannerCampaignSlide';
 import { CarouselShell } from './CarouselShell';
 
-interface BannerCampaignCarouselProps {
+interface BannerCampaignProps {
   campaigns: CampaignData[];
 }
 
-export const BannerCampaignCarousel: FC<BannerCampaignCarouselProps> = ({
-  campaigns,
-}) => {
+export const BannerCampaign: FC<BannerCampaignProps> = ({ campaigns }) => {
   if (campaigns.length === 0) return null;
 
   return (

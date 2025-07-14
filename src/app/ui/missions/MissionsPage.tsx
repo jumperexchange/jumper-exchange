@@ -5,7 +5,7 @@ import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCamp
 import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
 import { MissionsPageContentContainer } from './MissionsPageContentContainer';
 import { isBannerCampaign } from 'src/utils/isBannerCampaign';
-import { BannerCampaignCarousel } from './Campaign/BannerCampaignCarousel';
+import { BannerCampaign } from './BannerCampaign/BannerCampaign';
 
 export const MissionsPage = async () => {
   const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all([
@@ -24,7 +24,7 @@ export const MissionsPage = async () => {
 
   return (
     <MissionsPageContainer>
-      <BannerCampaignCarousel campaigns={validBannerCampaigns} />
+      <BannerCampaign campaigns={validBannerCampaigns} />
       <MissionsPageContentContainer>
         <MissionsList
           initialMissions={missions}

@@ -1,5 +1,5 @@
 'use client';
-import { BannerCampaignSkeleton } from './Campaign/BannerCampaignSkeleton';
+import { BannerCampaignSkeleton } from './BannerCampaign/BannerCampaignSkeleton';
 import { MissionsListSkeleton } from './MissionsListSkeleton';
 import { MissionsPageContainer } from './MissionsPageContainer';
 import { MissionsPageContentContainer } from './MissionsPageContentContainer';
