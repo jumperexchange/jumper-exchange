@@ -18,6 +18,7 @@ import { CampaignHeroCard } from './CampaignHeroCard';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
 import { ChainStack } from 'src/components/ChainStack/ChainStack';
 import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 interface CampaignHeroProps {
   campaign: CampaignData;
@@ -44,68 +45,70 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
   };
 
   return (
-    <CampaignHeroContainer>
-      <Box sx={{ width: '100%' }}>
-        <Badge
-          label={t('navbar.links.back')}
-          onClick={handleGoBack}
-          startIcon={<ArrowBackIcon />}
-          size={BadgeSize.LG}
-          variant={BadgeVariant.Alpha}
-        />
-      </Box>
-      <CampaignHeroCard
-        title={title}
-        description={description}
-        imageSrc={background}
-        alt={`${title} campaign background`}
-      >
-        {icon && (
-          <CampaignHeroCardIcon
-            src={icon}
-            alt={`${title} campaign icon`}
-            width={112}
-            height={112}
-            style={{ objectFit: 'contain', borderRadius: '50%' }}
+    <SectionCardContainer>
+      <CampaignHeroContainer>
+        <Box sx={{ width: '100%' }}>
+          <Badge
+            label={t('navbar.links.back')}
+            onClick={handleGoBack}
+            startIcon={<ArrowBackIcon />}
+            size={BadgeSize.LG}
+            variant={BadgeVariant.Alpha}
           />
-        )}
+        </Box>
+        <CampaignHeroCard
+          title={title}
+          description={description}
+          imageSrc={background}
+          alt={`${title} campaign background`}
+        >
+          {icon && (
+            <CampaignHeroCardIcon
+              src={icon}
+              alt={`${title} campaign icon`}
+              width={112}
+              height={112}
+              style={{ objectFit: 'contain', borderRadius: '50%' }}
+            />
+          )}
 
-        <CampaignHeroStatsWrapper>
-          {!!benefitLabel && !!benefitValue && (
-            <MissionHeroStatsCard
-              title={benefitLabel}
-              description={benefitValue}
-              variant={
-                isDefaultInfoCard
-                  ? MissionHeroStatsCardVariant.Default
-                  : MissionHeroStatsCardVariant.Inverted
-              }
-            />
-          )}
-          {!!missionsCount && (
-            <MissionHeroStatsCard
-              title={'Missions'}
-              description={missionsCount.toString()}
-              variant={
-                isDefaultInfoCard
-                  ? MissionHeroStatsCardVariant.Default
-                  : MissionHeroStatsCardVariant.Inverted
-              }
-            />
-          )}
-          {!!rewardChainIds?.length && (
-            <MissionHeroStatsCard
-              title={'Rewards'}
-              description={<ChainStack chainIds={rewardChainIds} />}
-              variant={
-                isDefaultInfoCard
-                  ? MissionHeroStatsCardVariant.Default
-                  : MissionHeroStatsCardVariant.Inverted
-              }
-            />
-          )}
-        </CampaignHeroStatsWrapper>
-      </CampaignHeroCard>
-    </CampaignHeroContainer>
+          <CampaignHeroStatsWrapper>
+            {!!benefitLabel && !!benefitValue && (
+              <MissionHeroStatsCard
+                title={benefitLabel}
+                description={benefitValue}
+                variant={
+                  isDefaultInfoCard
+                    ? MissionHeroStatsCardVariant.Default
+                    : MissionHeroStatsCardVariant.Inverted
+                }
+              />
+            )}
+            {!!missionsCount && (
+              <MissionHeroStatsCard
+                title={'Missions'}
+                description={missionsCount.toString()}
+                variant={
+                  isDefaultInfoCard
+                    ? MissionHeroStatsCardVariant.Default
+                    : MissionHeroStatsCardVariant.Inverted
+                }
+              />
+            )}
+            {!!rewardChainIds?.length && (
+              <MissionHeroStatsCard
+                title={'Rewards'}
+                description={<ChainStack chainIds={rewardChainIds} />}
+                variant={
+                  isDefaultInfoCard
+                    ? MissionHeroStatsCardVariant.Default
+                    : MissionHeroStatsCardVariant.Inverted
+                }
+              />
+            )}
+          </CampaignHeroStatsWrapper>
+        </CampaignHeroCard>
+      </CampaignHeroContainer>
+    </SectionCardContainer>
   );
 };
