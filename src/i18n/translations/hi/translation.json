@@ -110,7 +110,8 @@
     "learnMore": ""
   },
   "button": {
-    "okay": ""
+    "okay": "",
+    "manageYourPosition": ""
   },
   "error": {
     "message": ""
