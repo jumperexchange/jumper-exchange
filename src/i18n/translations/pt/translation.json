@@ -110,7 +110,8 @@
     "learnMore": "Saiba mais"
   },
   "button": {
-    "okay": "Ok"
+    "okay": "Ok",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -217,7 +218,7 @@
     "tvl": "Valor total de ativos cripto depositados neste mercado.",
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
     "deposit": "O token exibido é o token necessário para depositar neste mercado.",
-    "deposited": "Quantia que você depositou neste mercado.",
+    "deposited": "",
     "boostedApy": "APY adicional que você ganha ao participar desta campanha dentro da Jumper. Este APY será pago em {{token}}."
   },
   "widget": {
