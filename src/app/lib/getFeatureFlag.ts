@@ -1,4 +1,5 @@
-const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+import config from '@/config/env-config';
+const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
 export const getFeatureFlag = async (feature: string, distinctId: string) => {
   const searchParams = new URLSearchParams();

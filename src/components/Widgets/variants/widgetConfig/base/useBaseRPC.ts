@@ -2,6 +2,7 @@ import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import { publicRPCList } from 'src/const/rpcList';
 import getApiUrl from 'src/utils/getApiUrl';
+import envConfig from '@/config/env-config';
 
 export const useBaseRPC = () => {
   const config: Partial<WidgetConfig> = useMemo(() => {
@@ -10,7 +11,7 @@ export const useBaseRPC = () => {
         apiUrl: getApiUrl(),
         useRelayerRoutes: true,
         rpcUrls: {
-          ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
           ...publicRPCList,
         },
         routeOptions: {
