@@ -1,12 +1,23 @@
 'use client';
 import { useMediaQuery, type CSSObject } from '@mui/material';
 import useId from '@mui/utils/useId';
-import type { ComponentType, PropsWithChildren, ReactNode } from 'react';
+import {
+  useCallback,
+  useRef,
+  useState,
+  type ComponentType,
+  type PropsWithChildren,
+  type ReactNode,
+} from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { SwiperOptions } from 'swiper/types';
+import {
+  AutoplayOptions,
+  SwiperOptions,
+  Swiper as SwiperType,
+} from 'swiper/types';
 import { SectionTitle } from '../ProfilePage/ProfilePage.style';
 import { CarouselContainer, CarouselHeader } from './Carousel.style';
 import {
@@ -26,6 +37,7 @@ interface CarouselProps {
     [ratio: string]: SwiperOptions;
   };
   fixedSlideWidth?: boolean;
+  autoplay?: AutoplayOptions;
 }
 
 export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
@@ -38,9 +50,12 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   spaceBetween = 32,
   CarouselPagination,
   fixedSlideWidth = false,
+  autoplay,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const swiperId = useId();
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [isAutoplayPaused, setIsAutoplayPaused] = useState(isMobile);
 
   // specify a unique className for each caroussel to avoid triggering non-related carousels
   const classNames = {
@@ -48,6 +63,28 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
     navigationNext: `swiper-button-next-${swiperId}`,
     pagination: `swiper-pagination-${swiperId}`,
   };
+
+  const autoplayDelay = !isMobile ? (autoplay?.delay ?? 3000) : 5000;
+
+  const handleInitSwipper = useCallback((swiper: SwiperType) => {
+    swiperRef.current = swiper;
+
+    swiper.on('autoplayStop', () => {
+      setIsAutoplayPaused(true);
+    });
+
+    swiper.on('autoplayStart', () => {
+      setIsAutoplayPaused(false);
+    });
+
+    swiper.on('autoplayPause', () => {
+      setIsAutoplayPaused(true);
+    });
+
+    swiper.on('autoplayResume', () => {
+      setIsAutoplayPaused(false);
+    });
+  }, []);
 
   return (
     <CarouselContainer
@@ -74,6 +111,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         </CarouselHeader>
       ) : null}
       <Swiper
+        onSwiper={handleInitSwipper}
         modules={[Navigation, Pagination, Autoplay, FreeMode]}
         navigation={{
           prevEl: `.${classNames.navigationPrev}`,
@@ -92,9 +130,10 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         autoplay={
           !isMobile
             ? {
-                delay: 3000,
+                delay: autoplayDelay,
                 disableOnInteraction: true,
                 pauseOnMouseEnter: true,
+                ...autoplay,
               }
             : false
         }
@@ -111,7 +150,11 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         setWrapperSize={false}
         slidesPerView="auto"
         spaceBetween={spaceBetween}
-        freeMode={true}
+        freeMode={{
+          enabled: true,
+          sticky: true,
+          minimumVelocity: 0.1,
+        }}
         mousewheel={{
           releaseOnEdges: true,
         }}
@@ -127,7 +170,11 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         <CarouselNavigation classNames={classNames} />
       ) : null}
       {CarouselPagination ? (
-        <CarouselPagination className={classNames.pagination} />
+        <CarouselPagination
+          className={classNames.pagination}
+          delay={autoplayDelay}
+          isPaused={isAutoplayPaused}
+        />
       ) : null}
     </CarouselContainer>
   );

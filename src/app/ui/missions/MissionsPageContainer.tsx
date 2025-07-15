@@ -1,5 +1,4 @@
 import { FC, PropsWithChildren } from 'react';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 export const MissionsPageContainer: FC<PropsWithChildren> = ({ children }) => {
@@ -13,15 +12,7 @@ export const MissionsPageContainer: FC<PropsWithChildren> = ({ children }) => {
         position: 'relative',
       }}
     >
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(296px, 1fr))',
-          gap: 4,
-        }}
-      >
-        {children}
-      </Box>
+      {children}
     </Container>
   );
 };
