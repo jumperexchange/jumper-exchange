@@ -149,10 +149,7 @@ export const ImageBackground = styled(Box, {
     top: 0,
     right: 0,
     bottom: 0,
-    background: (theme.vars || theme).palette.alphaLight600.main,
-    ...theme.applyStyles('light', {
-      background: (theme.vars || theme).palette.alphaDark600.main,
-    }),
+    background: (theme.vars || theme).palette.alphaDark600.main,
   },
   variants: [
     {
