@@ -13,7 +13,9 @@ export const RankCardContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(0.75),
   width: '100%',
-  maxWidth: 256,
+  [theme.breakpoints.up('lg')]: {
+    maxWidth: 256,
+  },
 }));
 
 interface RankUserPositionProps extends TypographyProps {
