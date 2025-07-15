@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import { WidgetProps } from '../Widget.types';
 import { useInitializeZapConfig } from './useInitializeZapConfig';
-import { WithdrawWidget } from 'src/components/ZapWidget/Withdraw/WithdrawWidget';
+import { WithdrawWidget } from 'src/components/ZapWidget/WithdrawWidget/WithdrawWidget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 
 interface ZapWithdrawWidgetProps extends WidgetProps {}
