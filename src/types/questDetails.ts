@@ -21,6 +21,7 @@ export interface ProjectData {
   chainId: number;
   project: string;
   integrator: string;
+  integratorLink: string;
   address: string;
   withdrawAddress?: string;
   tokenAddress?: string;
