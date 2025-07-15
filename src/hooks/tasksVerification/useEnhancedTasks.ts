@@ -3,11 +3,15 @@ import { useMissionStore } from 'src/stores/mission';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { useGetVerifiedTasks } from './useGetVerifiedTasks';
+import { useRouter } from 'next/navigation';
+import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 
 export const useEnhancedTasks = (
   tasks: TaskVerificationWithApy[],
   accountAddress?: string,
 ) => {
+  const router = useRouter();
+
   const { data: verifiedTasks = [] } = useGetVerifiedTasks(accountAddress);
   //   const { setConfigType, configType } = useSdkConfigStore();
   const verifiedTaskIds = useMemo(() => {
@@ -31,7 +35,7 @@ export const useEnhancedTasks = (
   } = useMissionStore();
 
   const handleSetActiveTask = useCallback(
-    (task: TaskVerificationWithApy) => {
+    (task: TaskVerificationWithApy, shouldScrollToWidget = true) => {
       const taskType = task.TaskType ?? TaskType.Bridge;
       const taskName = task.name ?? '';
       const widgetParams = task.TaskWidgetInformation ?? {};
@@ -60,11 +64,16 @@ export const useEnhancedTasks = (
         taskCTALink: widgetParams.CTALink ?? undefined,
         taskInputs: widgetParams.inputs ?? undefined,
       });
+
+      if (shouldScrollToWidget) {
+        router.push(`#${MISSION_WIDGET_ELEMENT_ID}`);
+      }
     },
     [
       setCurrentActiveTask,
       setCurrentTaskWidgetFormParams,
       setCurrentTaskInstructionParams,
+      router,
       //   configType,
       //   setConfigType,
     ],
@@ -76,7 +85,7 @@ export const useEnhancedTasks = (
       !currentActiveTaskId &&
       firstUnverifiedTask.uuid
     ) {
-      handleSetActiveTask(firstUnverifiedTask);
+      handleSetActiveTask(firstUnverifiedTask, false);
     }
   }, [firstUnverifiedTask, currentActiveTaskId, handleSetActiveTask]);
 

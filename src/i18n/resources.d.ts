@@ -118,6 +118,7 @@ interface Resources {
     };
     button: {
       okay: 'Okay';
+      manageYourPosition: 'Manage your position';
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
