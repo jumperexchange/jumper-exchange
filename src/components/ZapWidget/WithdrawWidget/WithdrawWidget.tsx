@@ -8,7 +8,7 @@ import { useWithdrawTransaction } from './hooks';
 import { useAccount } from '@lifi/wallet-management';
 import { useChains } from 'src/hooks/useChains';
 import { useMemo } from 'react';
-import { TxConfirmation } from '../Confirmation/TxConfirmation';
+import { TxConfirmation } from '../TxConfirmation/TxConfirmation';
 
 export interface WithdrawWidgetProps {
   poolName?: string;
