@@ -1,5 +1,6 @@
 import Box, { type BoxProps } from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
+import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ImageProps } from 'next/image';
@@ -17,8 +18,9 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   borderRadius: theme.shape.cardBorderRadius,
-  width: '100%',
   boxShadow: (theme.vars || theme).shadows[1],
+  background: (theme.vars || theme).palette.surface1.main,
+  width: '100%',
   minHeight: 212,
   [theme.breakpoints.up('lg')]: {
     maxWidth: 320,
@@ -136,7 +138,6 @@ export const ImageBackground = styled(Box, {
     top: 0,
     right: 0,
     bottom: 0,
-    // filter: 'blur(6px)',
     background: `url(${imgUrl})`,
     backgroundPosition: 'top',
     backgroundSize: 'cover',
@@ -171,4 +172,28 @@ export const ImageBackground = styled(Box, {
       },
     },
   ],
+}));
+
+export const ImageBackgroundPlaceholder = styled(Box)(({ theme }) => ({
+  '&:after': {
+    content: '" "',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    opacity: 0.3,
+    background: (theme.vars || theme).palette.alphaLight600.main,
+    ...theme.applyStyles('light', {
+      background: (theme.vars || theme).palette.alphaDark600.main,
+    }),
+  },
+}));
+
+export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.grey[100],
+}));
+
+export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));

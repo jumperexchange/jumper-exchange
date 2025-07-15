@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { ButtonSecondary } from 'src/components/Button';
@@ -22,6 +23,7 @@ interface RankUserPositionProps extends TypographyProps {
 export const RankUserPosition = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'isGtMillion',
 })<RankUserPositionProps>(({ theme, isGtMillion }) => ({
+  marginTop: theme.spacing(1),
   padding: theme.spacing(0, 1),
   textDecoration: 'none',
   position: 'relative',
@@ -43,4 +45,8 @@ export const RankButton = styled(ButtonSecondary)(({ theme }) => ({
   ...theme.applyStyles('light', {
     color: (theme.vars || theme).palette.primary.main,
   }),
+}));
+
+export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));

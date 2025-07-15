@@ -13,15 +13,21 @@ import { getLevelBasedOnPoints } from '../../utils/getLevelBasedOnPoints';
 import { PointsDisplay } from '../../LevelBox/PointsDisplay';
 import { CardBadgeHeader } from '../CardBadgeHeader/CardBadgeHeader';
 import { useTranslation } from 'react-i18next';
+import { LevelCardSkeleton } from './LevelCardSkeleton';
 
 interface LevelCardProps {}
 
 export const LevelCard: FC<LevelCardProps> = () => {
-  const { walletAddress } = useContext(ProfileContext);
+  const { walletAddress, isLoading: isWalletLoading } =
+    useContext(ProfileContext);
   const { isLoading, points } = useLoyaltyPass(walletAddress);
   const levelData = getLevelBasedOnPoints(points);
   const currentLevel = levelData.level ?? 0;
   const { t } = useTranslation();
+
+  if (isWalletLoading || isLoading) {
+    return <LevelCardSkeleton />;
+  }
 
   return (
     <LevelCardContainer>

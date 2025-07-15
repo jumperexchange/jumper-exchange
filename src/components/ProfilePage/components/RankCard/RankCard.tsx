@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { CardBadgeHeader } from '../CardBadgeHeader/CardBadgeHeader';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,19 +8,17 @@ import {
   RankButton,
 } from './RankCard.styles';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
-import {
-  LeaderboardEntryData,
-  useLeaderboardUser,
-} from 'src/hooks/useLeaderboard';
+import { useLeaderboardUser } from 'src/hooks/useLeaderboard';
 import { AppPaths } from 'src/const/urls';
 import { Link } from 'src/components/Link';
+import { RankCardSkeleton } from './RankCardSkeleton';
+import { ProfileContext } from 'src/providers/ProfileProvider';
 
-interface RankCardProps {
-  address?: string;
-}
+interface RankCardProps {}
 
-export const RankCard: FC<RankCardProps> = ({ address }) => {
-  const { data: leaderboardUserData }: { data: LeaderboardEntryData } =
+export const RankCard: FC<RankCardProps> = () => {
+  const { walletAddress: address, isLoading } = useContext(ProfileContext);
+  const { data: leaderboardUserData, isLoading: isLeaderboardUserDataLoading } =
     useLeaderboardUser(address);
   const { t } = useTranslation();
   const userPage = Math.ceil(
@@ -28,6 +26,10 @@ export const RankCard: FC<RankCardProps> = ({ address }) => {
   );
   const position = leaderboardUserData?.position;
   const isGtMillion = parseInt(position) >= 1000000;
+
+  if (isLoading || isLeaderboardUserDataLoading) {
+    return <RankCardSkeleton />;
+  }
 
   return (
     <RankCardContainer>

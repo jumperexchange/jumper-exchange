@@ -31,7 +31,7 @@ export const CardBadgeHeader: FC<CardBadgeHeaderProps> = ({
           enterTouchDelay={0}
           arrow
         >
-          <StyledInfoIcon size={20} />
+          <StyledInfoIcon size={16} sx={{ marginLeft: 0 }} />
         </Tooltip>
       }
     />

@@ -2,7 +2,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useWalletMenu } from '@lifi/wallet-management';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Typography } from '@mui/material';
-import { useRef, useState } from 'react';
+import { FC, useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useMercleNft } from 'src/hooks/useMercleNft';
@@ -24,12 +24,13 @@ import {
   AddressButtonGroup,
 } from './AddressCard.style';
 import { AddressMenu } from './AddressMenu';
+import { AddressCardSkeleton } from './AddressCardSkeleton';
+import { ProfileContext } from 'src/providers/ProfileProvider';
 
-interface AddressBoxProps {
-  address?: string;
-}
+interface AddressCardProps {}
 
-export const AddressCard = ({ address }: AddressBoxProps) => {
+export const AddressCard: FC<AddressCardProps> = () => {
+  const { walletAddress: address, isLoading } = useContext(ProfileContext);
   const addressButtonRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
@@ -72,6 +73,10 @@ export const AddressCard = ({ address }: AddressBoxProps) => {
     ensName,
     address,
   });
+
+  if (isLoading) {
+    return <AddressCardSkeleton />;
+  }
 
   return (
     <AddressBoxContainer>
