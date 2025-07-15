@@ -10,3 +10,18 @@ export const SectionContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+// @Note this will be replaced with the actual SectionCard component when available
+export const SectionCardContainer = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderRadius: `${theme.shape.cardBorderRadius}px`,
+  boxShadow: theme.shadows[2],
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+  }),
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+}));
