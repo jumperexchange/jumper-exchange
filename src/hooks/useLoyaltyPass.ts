@@ -72,11 +72,10 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
 
   const queryIsEnabled =
-    !storedTier ||
-    (!!walletAddress &&
-      (!storedTier ||
-        storeNeedsRefresh ||
-        walletAddress.toLowerCase() !== storedAddress?.toLowerCase()));
+    !!walletAddress &&
+    (!storedTier ||
+      storeNeedsRefresh ||
+      walletAddress.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
   const { data, isSuccess, isLoading } = useQuery({
