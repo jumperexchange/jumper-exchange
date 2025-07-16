@@ -159,16 +159,6 @@ export const WithCustomStyles: Story = {
   },
 };
 
-export const WithSubLinks: Story = {
-  args: {
-    ...baseArgs,
-    tabs: labelTabData,
-    value: 'stake',
-    size: HorizontalTabSize.LG,
-    tabSx: { width: '600px' },
-  },
-};
-
 const disabledTabData = [
   {
     label: 'Active',
