@@ -218,6 +218,7 @@ export interface BlogArticleAttributes {
   Content: RootNode[];
   Image: StrapiMediaData;
   Slug: string;
+  WordCount: number;
   createdAt: string;
   updatedAt: string;
   tags: TagAttributes[];
@@ -289,6 +290,8 @@ interface TaskVerification {
   description: string;
   CTALink: string;
   CTAText: string;
+  TaskType?: TaskType;
+  TaskWidgetInformation?: TaskWidgetInformationData;
 }
 
 /* Quest */
@@ -368,6 +371,7 @@ export interface CampaignAttributes {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+  MissionCount?: number;
 }
 
 /* MerklRewards */
@@ -384,4 +388,47 @@ export interface MerklRewardsAttributes {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+}
+
+export interface TaskWidgetInformationInputData {
+  inputId: string;
+  inputPlaceholder: string;
+}
+
+export interface TaskWidgetInformationChainData {
+  chainId: string;
+  chainKey: string;
+}
+
+export interface TaskWidgetInformationTokenData {
+  tokenAddress: string;
+  tokenSymbol: string;
+}
+
+export interface TaskWidgetInformationWalletData {
+  walletAddress: string;
+  chainType: string;
+}
+
+export interface TaskWidgetInformationData {
+  sourceChain?: TaskWidgetInformationChainData | null;
+  sourceToken?: TaskWidgetInformationTokenData | null;
+  destinationChain?: TaskWidgetInformationChainData | null;
+  destinationToken?: TaskWidgetInformationTokenData | null;
+  toAddress?: TaskWidgetInformationWalletData | null;
+  fromAmount?: string | null;
+  title?: string | null;
+  description?: string | null;
+  CTALink?: string | null;
+  CTAText?: string | null;
+  inputs?: TaskWidgetInformationInputData[] | null;
+}
+
+export enum TaskType {
+  Bridge = 'Bridge',
+  Swap = 'Swap',
+  Deposit = 'Deposit',
+  OnChain = 'On-chain',
+  OffChain = 'Off-chain',
+  Zap = 'Zap',
 }

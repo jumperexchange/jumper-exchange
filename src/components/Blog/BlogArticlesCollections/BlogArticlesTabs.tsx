@@ -8,11 +8,9 @@ import type {
 import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useState } from 'react';
-import type { GetTagsResponse } from 'src/app/lib/getTags';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
-import { CarouselHeader } from '../BlogCarousel';
 import { Pagination } from '../Pagination/Pagination';
 import {
   BlogArticlesCollectionsContainer,
@@ -51,11 +49,9 @@ export function BlogArticlesTabs({
           flexDirection: 'column',
         }}
       >
-        <CarouselHeader>
-          <BlogArticlesCollectionsTitle variant="headerMedium">
-            {tag?.Title}
-          </BlogArticlesCollectionsTitle>
-        </CarouselHeader>
+        <BlogArticlesCollectionsTitle variant="headerMedium">
+          {tag?.Title}
+        </BlogArticlesCollectionsTitle>
         {chunkedPages.map(
           (page, pageIndex) =>
             pageTab === pageIndex && (
@@ -69,7 +65,6 @@ export function BlogArticlesTabs({
                       },
                     }}
                     article={article}
-                    baseUrl={process.env.NEXT_PUBLIC_STRAPI_URL}
                     key={`blog-articles-collection-${index}-${articleIndex}`}
                     trackingCategory={TrackingCategory.BlogArticlesCollection}
                   />

@@ -14,6 +14,7 @@ interface Resources {
       };
       links: {
         exchange: 'Exchange';
+        missions: 'Missions';
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
@@ -34,10 +35,13 @@ interface Resources {
       };
       seeAllWallets: 'See all wallets';
       navbarMenu: {
+        learn: 'Learn';
+        scan: 'Scan';
         brandAssets: 'Brand Assets';
         theme: 'Theme';
         developers: 'Developers';
         support: 'Support';
+        resources: 'Resources';
         profile: 'Profile';
       };
       walletMenu: {
@@ -56,6 +60,9 @@ interface Resources {
         numberOfChains: '{{numberOfChains}} chains';
       };
       themes: {
+        dark: 'Dark';
+        light: 'Light';
+        system: 'System';
         switchToLight: 'Switch to light mode';
         switchToDark: 'Switch to dark mode';
         switchToSystem: 'Switch to system mode';
@@ -111,6 +118,7 @@ interface Resources {
     };
     button: {
       okay: 'Okay';
+      manageYourPosition: 'Manage your position';
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
@@ -143,8 +151,32 @@ interface Resources {
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';
+      mission: {
+        completed: {
+          title: 'Mission completed';
+          description: 'All tasks in this mission have been verified and completed.';
+        };
+      };
+      status: {
+        new: 'New';
+        upcoming: 'Upcoming';
+        minutesLeft_one: '{{count}} minute left';
+        minutesLeft_other: '{{count}} minutes left';
+        hoursLeft_one: '{{count}} hour left';
+        hoursLeft_other: '{{count}} hours left';
+        daysLeft_one: '{{count}} day left';
+        daysLeft_other: '{{count}} days left';
+      };
+      tasks: {
+        type: '{{type}} task';
+        status: {
+          verify: 'Verify';
+          verified: 'Verified';
+        };
+      };
     };
     profile_page: {
+      campaigns: 'Campaigns';
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       level: 'Level';
@@ -176,12 +208,31 @@ interface Resources {
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
+    contribution: {
+      title: 'Contribute';
+      custom: 'Custom';
+      confirm: 'Confirm';
+      thankYou: 'Thank you!';
+      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
+      error: {
+        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
+        errorSending: 'Error sending contribution:';
+        invalidTokenPrice: 'Invalid token price';
+        noFeeAddress: 'No contribution fee address configured for this chain.';
+      };
+    };
     tooltips: {
       tvl: 'Total value of crypto assets deposited in this market.';
       apy: 'Expected yearly return rate of the tokens invested.';
       deposit: 'The displayed token is the token required to deposit into this market.';
       deposited: 'Amount you have deposited into this market.';
       boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
+    };
+    widget: {
+      zap: {
+        sendToAddressName: 'Send to {{name}}';
+        sentToAddressName: 'Sent to {{name}}';
+      };
     };
   };
 }

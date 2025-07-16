@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Al-Sat",
+      "missions": "",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
       "buy": "Satın al"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "Tüm cüzdanları göster",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Varlıklar",
       "theme": "Tema",
       "developers": "Geliştiriciler",
       "support": "Destek",
-      "profile": "Jumper Profili",
-      "fest": ""
+      "resources": "",
+      "profile": "Jumper Profili"
     },
     "walletMenu": {
       "disconnect": "Bağlantıyı Kes",
@@ -50,6 +53,9 @@
       "numberOfChains": ""
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Açık temaya geç",
       "switchToDark": "Koyu Temaya geç",
       "switchToSystem": "Sisteme geçiş yap",
@@ -136,9 +142,27 @@
   },
   "missions": {
     "available": "Mevcut Görevler",
-    "completed": "Tamamlanan Görevler"
+    "completed": "Tamamlanan Görevler",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Yalnızca Masaüstünde kullanılabilir",
     "mobileDescription": "Jumper Profil sayfası henüz küçük ekranlarda kullanılamıyor. Üzerinde çalışıyoruz.",
     "level": "",
@@ -169,5 +193,31 @@
     "decimal2Digit": "",
     "date": "",
     "shortDate": ""
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

@@ -67,7 +67,7 @@ export async function generateMetadata({
 
 export const revalidate = 86400;
 export const dynamicParams = true; // or false, to 404 on unknown paths
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic'; // otherwise it will block the pod as there will be too many static pages
 
 export async function generateStaticParams() {
   return [];

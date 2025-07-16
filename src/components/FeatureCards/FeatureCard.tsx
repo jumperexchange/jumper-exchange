@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { trackSpindl } from 'src/hooks/feature-cards/spindl/trackSpindl';
 import { isSpindlTrackData, type SpindlCardAttributes } from 'src/types/spindl';
 import { openInNewTab } from 'src/utils/openInNewTab';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   FCard as Card,
   FeatureCardActions,
@@ -94,18 +95,13 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
 
   const imageUrl = useMemo(() => {
     const imageMode = mode || themeMode;
+    const baseUrl = getStrapiBaseUrl();
     if (!data?.BackgroundImageDark?.url || !data?.BackgroundImageLight?.url) {
       return null;
     }
     return imageMode === 'dark'
-      ? new URL(
-          data?.BackgroundImageDark?.url,
-          process.env.NEXT_PUBLIC_STRAPI_URL,
-        )
-      : new URL(
-          data?.BackgroundImageLight?.url,
-          process.env.NEXT_PUBLIC_STRAPI_URL,
-        );
+      ? new URL(data?.BackgroundImageDark?.url, baseUrl)
+      : new URL(data?.BackgroundImageLight?.url, baseUrl);
   }, [
     data?.BackgroundImageDark?.url,
     data?.BackgroundImageLight?.url,

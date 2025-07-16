@@ -1,7 +1,7 @@
 import type { ChainId } from '@lifi/sdk';
+import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
-import { CTALinkInt } from 'src/components/QuestPage/CTA/MissionCTA';
 import type { Quest } from './loyaltyPass';
 
 export interface QuestSocials {
@@ -13,7 +13,20 @@ export interface QuestSocials {
 export interface Chain {
   logo: string;
   name: string;
+  chainId: number;
 }
+
+export interface ProjectData {
+  chain: string;
+  chainId: number;
+  project: string;
+  integrator: string;
+  integratorLink: string;
+  address: string;
+  withdrawAddress?: string;
+  tokenAddress?: string;
+}
+
 export interface QuestDetails {
   type: string;
   socials: QuestSocials;
@@ -26,9 +39,12 @@ export interface QuestDetails {
   rewards: RewardsInterface;
   missionType: string;
   traits: string[];
-  CTA: CTALinkInt[];
+  CTA: MerklOpportunity[];
   partner: { logo: string; name: string }[];
   marketIds?: string[];
+  projectData: ProjectData;
+  // To be used in the future to point to local links
+  shouldOverrideWithInternalLink?: boolean;
 }
 
 export interface ExtendedQuest extends Quest {

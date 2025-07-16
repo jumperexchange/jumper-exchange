@@ -18,7 +18,7 @@ export default async function Page({
 }: {
   searchParams: SearchParams;
 }) {
-  const { page } = searchParams;
+  const { page } = await searchParams;
 
   // Validate and transform page number
   const result = paginationSchema.safeParse(page);

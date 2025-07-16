@@ -1,3 +1,4 @@
+'use client';
 import type { ThemeProps, ThemeState, ThemeStore } from '@/types/theme';
 import type { PropsWithChildren } from 'react';
 import { createContext, useContext, useRef } from 'react';

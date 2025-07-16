@@ -7,7 +7,11 @@ import {
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
 import type { Account } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
+import {
+  getStrapiApiAccessToken,
+  getStrapiBaseUrl,
+} from 'src/utils/strapi/strapiHelper';
+import config from '@/config/env-config';
 
 export interface UseStrapiProps<T> {
   data: StrapiResponseData<T>;
@@ -48,10 +52,7 @@ interface ContentTypeProps {
 }
 
 export function getStrapiUrl(contentType: string): URL {
-  const apiBaseUrl =
-    process.env.NEXT_PUBLIC_STRAPI_DEVELOP === 'true'
-      ? process.env.NEXT_PUBLIC_LOCAL_STRAPI_URL
-      : `${process.env.NEXT_PUBLIC_STRAPI_URL}`;
+  const apiBaseUrl = getStrapiBaseUrl();
   return new URL(`${apiBaseUrl}/api/${contentType}`);
 }
 
@@ -178,9 +179,9 @@ export const useStrapi = <T>({
     }
   }
   // show drafts ONLY on development env
-  process.env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
+  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
-  process.env.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
+  config.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('pagination[pageSize]', '50');
 
   // use local strapi on develop || prod strapi

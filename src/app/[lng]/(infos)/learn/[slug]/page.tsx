@@ -7,6 +7,7 @@ import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 import { learnSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 
@@ -33,6 +34,7 @@ export async function generateMetadata({
 
   const validatedSlug = result.data;
   const article = await getArticleBySlug(validatedSlug);
+  const baseUrl = getStrapiBaseUrl();
 
   if (!article.data || !article.data.data?.[0]) {
     return {
@@ -53,7 +55,7 @@ export async function generateMetadata({
     url: `${getSiteUrl()}/learn/${validatedSlug}`,
     images: [
       {
-        url: `${article.url}${articleData.Image?.url}`,
+        url: `${baseUrl}${articleData.Image?.url}`,
         width: 900,
         height: 450,
         alt: 'banner image',
@@ -98,11 +100,7 @@ export default async function Page({ params }: { params: Params }) {
   const currentTags = articleData?.tags.map((el) => el?.id);
   const relatedArticles = await getArticlesByTag(articleData.id, currentTags);
   return (
-    <LearnArticlePage
-      article={articleData}
-      url={article.url}
-      articles={relatedArticles.data}
-    />
+    <LearnArticlePage article={articleData} articles={relatedArticles.data} />
   );
 }
 

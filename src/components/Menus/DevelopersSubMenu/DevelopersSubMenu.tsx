@@ -10,7 +10,7 @@ export const DevelopersSubmenu = () => {
   const openSubMenu = useMenuStore((state) => state.openSubMenu);
   return (
     <SubMenu
-      label={t('navbar.navbarMenu.developers')}
+      label={t('navbar.navbarMenu.resources')}
       triggerSubMenu={MenuKeysEnum.Devs}
       open={openSubMenu === MenuKeysEnum.Devs}
       prevMenu={MenuKeysEnum.None}

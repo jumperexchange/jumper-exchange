@@ -1,9 +1,10 @@
 import { CampaignStrapiApi } from '@/utils/strapi/StrapiApi';
-import type { GetCampaignsResponse } from './getCampaigns';
+import { CampaignData, StrapiResponse } from 'src/types/strapi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getCampaignBySlug(
   slug: string,
-): Promise<GetCampaignsResponse> {
+): Promise<StrapiResponse<CampaignData>> {
   const urlParams = new CampaignStrapiApi()
     .useCampaignPageParams()
     .filterBySlug(slug)
@@ -13,9 +14,8 @@ export async function getCampaignBySlug(
       withCount: false,
     });
 
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.apiAccessToken;
+  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
@@ -32,5 +32,5 @@ export async function getCampaignBySlug(
 
   const data = await res.json();
 
-  return { ...data, url: apiBaseUrl };
+  return data;
 }

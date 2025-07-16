@@ -1,5 +1,6 @@
 import type { CampaignData, StrapiResponse } from '@/types/strapi';
 import { CampaignStrapiApi } from '@/utils/strapi/StrapiApi';
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export interface GetProfileBannerCampaignsResponse
   extends StrapiResponse<CampaignData> {
@@ -16,9 +17,8 @@ export async function getProfileBannerCampaigns(): Promise<GetProfileBannerCampa
       withCount: false,
     });
 
-  const apiBaseUrl = urlParams.getApiBaseUrl();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
@@ -35,5 +35,5 @@ export async function getProfileBannerCampaigns(): Promise<GetProfileBannerCampa
 
   const data = await res.json();
 
-  return { ...data, url: apiBaseUrl };
+  return { ...data };
 }

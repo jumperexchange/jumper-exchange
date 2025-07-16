@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Обмін",
+      "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
       "buy": "Купівля"
@@ -27,12 +28,14 @@
     },
     "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
+      "learn": "",
+      "scan": "",
       "brandAssets": "Бренд ресурси",
       "theme": "Тема",
       "developers": "Розробникам",
       "support": "Підтримка",
-      "profile": "Профіль Jumper",
-      "fest": "Superfest Festival"
+      "resources": "",
+      "profile": "Профіль Jumper"
     },
     "walletMenu": {
       "disconnect": "Від'єднатись",
@@ -50,6 +53,9 @@
       "numberOfChains": "{{numberOfChains}} чейнів"
     },
     "themes": {
+      "dark": "",
+      "light": "",
+      "system": "",
       "switchToLight": "Увімкнути світлу тему",
       "switchToDark": "Увімкнути темну тему",
       "switchToSystem": "Увімкнути системну тему",
@@ -136,9 +142,27 @@
   },
   "missions": {
     "available": "Доступні місії",
-    "completed": "Виконані місії"
+    "completed": "Виконані місії",
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Доступно лише на комп'ютері",
     "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим.",
     "level": "Рівень",
@@ -169,5 +193,31 @@
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
+  },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
+  "tooltips": {
+    "tvl": "",
+    "apy": "",
+    "deposit": "",
+    "deposited": "",
+    "boostedApy": ""
+  },
+  "widget": {
+    "zap": {
+      "sendToAddressName": "",
+      "sentToAddressName": ""
+    }
   }
 }

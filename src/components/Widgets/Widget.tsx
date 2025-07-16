@@ -1,5 +1,6 @@
 'use client';
 import { ClientOnly } from '@/components/ClientOnly';
+import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
@@ -7,15 +8,12 @@ import type { LanguageKey } from '@/types/i18n';
 import getApiUrl from '@/utils/getApiUrl';
 import { ChainId } from '@lifi/sdk';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormFieldChanged, FormState, WidgetConfig } from '@lifi/widget';
+import type { FormState, WidgetConfig } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
-  useWidgetEvents,
-  WidgetEvent,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery, useTheme } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -24,12 +22,14 @@ import { tokens } from 'src/config/tokens';
 import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { useUrlParams } from 'src/hooks/useUrlParams';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
-import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
+import { useWidgetSelection } from 'src/hooks/useWidgetSelection';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { themeAllowChains, WidgetWrapper } from '.';
+import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
+import { useTheme } from '@mui/material/styles';
 
 export function Widget({
   starterVariant,
@@ -44,114 +44,39 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { destinationChainToken, toAddress } = useUrlParams();
-  const widgetEvents = useWidgetEvents();
-  const router = useRouter();
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
+  const [configTheme, widgetTheme] = useThemeStore((state) => [
+    state.configTheme,
+    state.widgetTheme,
+  ]);
   const formRef = useRef<FormState>(null);
-  const { i18n } = useTranslation();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { bridgeConditions } = useWidgetSelection({
+    formRef,
+    wrapperRef,
+    allowToChains,
+    configThemeChains: configTheme?.chains,
+  });
+  const router = useRouter();
+  const { i18n, t } = useTranslation();
   const { account } = useAccount();
+  const isConnectedAGW = account?.connector?.name === 'Abstract';
+
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
+  const contributionDisplayed = useContributionStore(
+    (state) => state.contributionDisplayed,
+  );
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const widgetTheme = useMemo(
-    () =>
-      getWidgetThemeV2(
-        mode === 'system' || !mode
-          ? prefersDarkMode
-            ? 'dark'
-            : 'light'
-          : mode,
-      ),
-    [mode, prefersDarkMode],
-  );
-
-  const isConnectedAGW = account?.connector?.name === 'Abstract';
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
     router.prefetch('/gas', { kind: PrefetchKind.FULL });
   }, [router]);
-
-  useEffect(() => {
-    // Our partners that want to onboard on pre-filled address can still do it
-    if (
-      !wrapperRef.current ||
-      configTheme?.chains?.to?.allow?.includes(2741) ||
-      allowToChains?.includes(2741)
-    ) {
-      return;
-    }
-    // Clear toAddress URL parameter once the widget is mounted
-    // Uses MutationObserver to detect when the widget content is loaded
-    // since it's rendered dynamically inside WidgetWrapper
-    const observer = new MutationObserver(() => {
-      if (formRef.current && isConnectedAGW) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
-    observer.observe(wrapperRef.current, {
-      childList: true,
-      subtree: true,
-    });
-    return () => observer.disconnect();
-  }, [allowToChains, configTheme?.chains?.to?.allow]);
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (formRef.current) {
-        formRef.current.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-        observer.disconnect();
-      }
-    });
-
-    if (
-      configTheme?.integrator === 'abs.jmp.exchange' &&
-      isConnectedAGW &&
-      toAddress === account.address
-    ) {
-      formRef.current?.setFieldValue('toAddress', undefined, {
-        setUrlSearchParam: true,
-      });
-    }
-
-    const handleAGW = async (fieldChange: FormFieldChanged) => {
-      if (
-        isConnectedAGW &&
-        fieldChange?.fieldName === 'toAddress' &&
-        fieldChange?.newValue === account.address
-      ) {
-        formRef.current?.setFieldValue('toAddress', undefined, {
-          setUrlSearchParam: true,
-        });
-      }
-    };
-
-    widgetEvents.on(WidgetEvent.FormFieldChanged, handleAGW);
-    return () => {
-      widgetEvents.off(WidgetEvent.FormFieldChanged, handleAGW);
-    };
-  }, [
-    account.address,
-    account.chainId,
-    configTheme?.integrator,
-    destinationChainToken,
-    isConnectedAGW,
-    toAddress,
-    widgetEvents,
-  ]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
@@ -170,14 +95,14 @@ export function Widget({
     }
     // all the trafic from mobile (including "/gas")
     // if (!isDesktop) {
-    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
-      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
 
-    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+    return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const subvariant = useMemo(() => {
@@ -192,11 +117,11 @@ export function Widget({
     let rpcUrls = {};
     try {
       rpcUrls = {
-        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
         ...publicRPCList,
       };
     } catch (e) {
-      if (process.env.DEV) {
+      if (envConfig.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -217,7 +142,7 @@ export function Widget({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     return {
@@ -238,12 +163,7 @@ export function Widget({
         from: isConnectedAGW
           ? { allow: [ChainId.ABS] }
           : { allow: allowChains || allowedChainsByVariant },
-        to:
-          isConnectedAGW && configTheme?.integrator !== 'abs.jmp.exchange'
-            ? { allow: [ChainId.ABS] }
-            : allowToChains
-              ? { allow: allowToChains }
-              : undefined,
+        to: allowToChains ? { allow: allowToChains } : undefined,
       },
       bridges: {
         allow: configTheme?.allowedBridges,
@@ -257,20 +177,19 @@ export function Widget({
       },
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
+        ...(bridgeConditions.shouldHideToAddress ? [HiddenUI.ToAddress] : []),
         HiddenUI.Appearance,
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      requiredUI:
-        // if AGW connected and destinationChainToken is NOT ABS, require toAddress
-        isConnectedAGW && destinationChainToken.chainId !== ChainId.ABS
-          ? ['toAddress']
-          : undefined,
+      requiredUI: bridgeConditions.shouldRequireToAddress
+        ? ['toAddress']
+        : undefined,
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       languageResources: {
         en: {
           warning: {
@@ -293,6 +212,51 @@ export function Widget({
       integrator: integratorStringByType,
       tokens: tokens,
       useRelayerRoutes: true,
+      routeLabels: [
+        {
+          label: {
+            text: '1.5x points',
+            sx: {
+              order: 1,
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              overflow: 'hidden',
+              marginLeft: 'auto',
+              gap: theme.spacing(0.5),
+              paddingLeft: theme.spacing(0.5),
+              paddingRight: theme.spacing(0.5),
+              background: `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
+              color: (theme.vars || theme).palette.white.main,
+              ...theme.typography.bodyXSmallStrong,
+              ...theme.applyStyles('light', {
+                // @Note we might adjust to use the theme config
+                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
+              }),
+              '&::before': {
+                content: '""',
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%', // Makes the icon circular
+                backgroundImage:
+                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                flexShrink: 0,
+              },
+              '&>p': {
+                alignContent: 'flex-end',
+                paddingLeft: theme.spacing(0.5),
+                paddingRight: theme.spacing(0.5),
+              },
+            },
+          },
+          exchanges: {
+            allow: ['hyperbloom'], // Replace by hyperbloom when available
+          },
+        },
+      ],
     };
   }, [
     configTheme?.fromChain,
@@ -321,10 +285,11 @@ export function Widget({
     allowToChains,
     i18n.language,
     i18n.languages,
-    destinationChainToken.chainId,
     widgetTheme.config.appearance,
     widgetTheme.config.theme,
     integratorStringByType,
+    bridgeConditions,
+    theme,
   ]);
 
   return (
@@ -333,12 +298,16 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
+      contributionDisplayed={contributionDisplayed}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}
           config={config}
           formRef={formRef}
+          feeConfig={{
+            _vcComponent: () => <FeeContribution translationFn={t} />,
+          }}
         />
       </ClientOnly>
     </WidgetWrapper>

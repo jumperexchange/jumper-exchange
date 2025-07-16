@@ -1,71 +1,40 @@
 'use client';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
-import { JUMPER_LEARN_PATH } from '@/const/urls';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
-import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
-import { CarouselContainer } from '.';
-import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
+import { Carousel } from 'src/components/Carousel/Carousel';
+import { DotsPagination } from 'src/components/Carousel/DotsPagination';
+import { CarouselNavigation } from 'src/components/Carousel/Navigation';
+import { TrackingCategory } from 'src/const/trackingKeys';
+import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
-import {
-  BlogCarouselContainer,
-  SeeAllButton,
-  SeeAllButtonContainer,
-} from './BlogCarousel.style';
+import { BlogCarouselContainer } from './BlogCarousel.style';
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
-  url: string;
   title?: string;
   data: StrapiResponseData<BlogArticleData> | undefined;
 }
 
-export const BlogCarousel = ({
-  data,
-  url,
-  title,
-  showAllButton,
-}: BlogCarouselProps) => {
-  const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
-
-  const handleShowAll = () => {
-    trackEvent({
-      category: TrackingCategory.BlogCarousel,
-      action: TrackingAction.SeeAllPosts,
-      label: 'click-see-all-posts',
-    });
-  };
-
+export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
   return (
     <BlogCarouselContainer>
-      <CarouselContainer
-        title={title || t('blog.recentPosts')}
-        trackingCategory={TrackingCategory.BlogCarousel}
+      <Carousel
+        title={title}
+        fixedSlideWidth={true}
+        CarouselNavigation={CarouselNavigation}
+        CarouselPagination={DotsPagination}
       >
         {data
           ? data.map((article, index) => (
               <BlogArticleCard
                 article={article}
-                baseUrl={url}
                 key={`blog-article-card-${article.id}-${index}`}
                 trackingCategory={TrackingCategory.BlogCarousel}
               />
             ))
-          : Array.from({ length: 4 }, () => 42).map((_, idx) => (
+          : Array.from({ length: 4 }).map((_, idx) => (
               <BlogArticleCardSkeleton key={'article-card-skeleton-' + idx} />
             ))}
-      </CarouselContainer>
-      {showAllButton ? (
-        <SeeAllButtonContainer show={!!data?.length}>
-          <Link href={JUMPER_LEARN_PATH} style={{ color: 'inherit' }}>
-            <SeeAllButton onClick={handleShowAll}>
-              {t('blog.seeAllPosts')}
-            </SeeAllButton>
-          </Link>
-        </SeeAllButtonContainer>
-      ) : null}
+      </Carousel>
     </BlogCarouselContainer>
   );
 };

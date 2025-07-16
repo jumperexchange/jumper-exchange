@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 // `app/ui/learn/page.tsx` is the UI for the `/learn` URL
 export default async function Page() {
   // TODO: make this component client side by removing async, a hook should do the job, will permit us to pre-render the pages
-  const featuredArticle = (await getFeaturedArticle()).data?.data?.[0];
+  const featuredArticle = (await getFeaturedArticle()).data?.[0];
   const carouselArticles = await getArticles(featuredArticle?.id, 5);
   const tags = await getTags();
   return (
@@ -24,7 +24,6 @@ export default async function Page() {
       tags={tags}
       carouselArticles={carouselArticles}
       featuredArticle={featuredArticle}
-      url={carouselArticles.url}
     />
   );
 }

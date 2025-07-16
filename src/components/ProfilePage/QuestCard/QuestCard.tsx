@@ -8,13 +8,11 @@ import { APYIcon } from 'src/components/illustrations/APYIcon';
 import { OptionalLink } from 'src/components/ProfilePage/OptionalLink/OptionalLink';
 import type { Chain } from 'src/components/QuestPage/Banner/Banner';
 import { FlexCenterRowBox } from 'src/components/QuestPage/QuestsMissionPage.style';
-import { PROFILE_CAMPAIGN_FLASHY_APY_COLOR } from 'src/const/partnerRewardsTheme';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { OngoingNumericItemStats } from 'src/hooks/useOngoingNumericQuests';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestChains } from 'src/types/loyaltyPass';
@@ -52,7 +50,6 @@ export interface QuestCardProps {
   action?: string;
   active?: boolean;
   chains?: QuestChains[];
-  claimingIds?: string[];
   completed?: boolean;
   ctaLink?: string;
   hideXPProgressComponents?: boolean;
@@ -69,8 +66,8 @@ export interface QuestCardProps {
   rewardsProgress?: RewardsProgressProps;
   rewardRange?: string;
   title?: string;
-  url?: string;
   variableWeeklyAPY?: boolean;
+  maxApy?: number;
 }
 
 interface QuestCardDataProps {
@@ -82,7 +79,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     action,
     active,
     chains,
-    claimingIds,
     completed,
     ctaLink,
     endDate,
@@ -94,16 +90,15 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
     isUnlocked,
     label,
     points,
-    // rewards,
     rewardsProgress,
     rewardRange,
     startDate,
     title,
     variableWeeklyAPY,
+    maxApy,
   } = data;
 
   const { t } = useTranslation();
-  const { apy } = useMissionsMaxAPY(claimingIds);
   const { trackEvent } = useUserTracking();
   const handleClick = () => {
     trackEvent({
@@ -118,6 +113,7 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
       },
     });
   };
+
   const rewardsQuestCard = rewardsProgress?.earnedXP && !chains;
   let buttonLabel = `${t('questCard.join')}`;
   if (isTraitsGarded && !isUnlocked) {
@@ -164,29 +160,24 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
             <QuestCardInfoBox>
               {!isLoading ? (
                 <>
-                  {
-                    chains && (
-                      <FlexCenterRowBox>
-                        {chains.map((elem: Chain, i: number) => (
-                          <Image
-                            key={elem.name + '-' + i}
-                            src={elem.logo}
-                            style={{
-                              marginLeft: i === 0 ? '' : '-8px',
-                              zIndex: 100 - i,
-                              borderRadius: '50%',
-                            }}
-                            alt={elem.name}
-                            width="32"
-                            height="32"
-                          />
-                        ))}
-                      </FlexCenterRowBox>
-                    )
-                    // : (
-                    //   <JumperIconDark />
-                    // )
-                  }
+                  {chains && (
+                    <FlexCenterRowBox>
+                      {chains.map((elem: Chain, i: number) => (
+                        <Image
+                          key={elem.name + '-' + i}
+                          src={elem.logo}
+                          style={{
+                            marginLeft: i === 0 ? '' : '-8px',
+                            zIndex: 100 - i,
+                            borderRadius: '50%',
+                          }}
+                          alt={elem.name}
+                          width="32"
+                          height="32"
+                        />
+                      ))}
+                    </FlexCenterRowBox>
+                  )}
                 </>
               ) : (
                 <Skeleton variant="circular" width={'32px'} height={'32px'} />
@@ -195,26 +186,40 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
               <RewardsWrapper>
                 {rewardsQuestCard && (
                   <XPRewardsInfo
-                    completed={true}
-                    points={`${rewardsProgress?.earnedXP}`}
+                    variant="completed"
+                    label={`${rewardsProgress?.earnedXP}`}
                     tooltip={t('questCard.earnedXPDescription', {
                       earnedXP: rewardsProgress?.earnedXP,
                       action: action,
                     })}
-                    active={true}
                   >
                     <CheckCircleIcon
                       sx={{ width: '20px', height: '20px', color: 'inherit' }}
                     />
                   </XPRewardsInfo>
                 )}
-                {points || apy > 0 || variableWeeklyAPY ? (
+                {points || variableWeeklyAPY || maxApy ? (
                   <>
-                    {apy > 0 && !variableWeeklyAPY && (
+                    {
+                      // Enable to show XP (points) badge
+                      points && (
+                        <XPRewardsInfo
+                          variant="xp"
+                          label={points.toString()} //points={`${Number(apy).toFixed(1)}%`}
+                          tooltip={
+                            rewardsProgress &&
+                            t('questCard.xpToEarnDescription', {
+                              xpToEarn: points,
+                              action: action,
+                            })
+                          }
+                        />
+                      )
+                    }
+                    {!!maxApy && maxApy > 0 && !variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={false}
-                        completed={false}
-                        points={`${Number(apy).toFixed(1)}%`}
+                        variant="apy"
+                        label={`${Number(maxApy).toFixed(1)}%`} //points={`${Number(apy).toFixed(1)}%`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -228,9 +233,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     )}
                     {variableWeeklyAPY && (
                       <XPRewardsInfo
-                        active={true}
-                        bgColor={PROFILE_CAMPAIGN_FLASHY_APY_COLOR}
-                        points={rewardRange ? rewardRange : `VAR.%`}
+                        variant="variableWeeklyAPY"
+                        label={rewardRange ? rewardRange : `VAR.%`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -244,8 +248,8 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                     )}
                     {!hideXPProgressComponents && (
                       <XPRewardsInfo
-                        completed={completed}
-                        points={`+${points}`}
+                        variant="completed"
+                        label={`+${points}`}
                         tooltip={
                           rewardsProgress &&
                           t('questCard.xpToEarnDescription', {
@@ -253,8 +257,6 @@ export const QuestCard = ({ data }: QuestCardDataProps) => {
                             action: action,
                           })
                         }
-                        active={true}
-                        color={completed ? '#00B849' : undefined}
                       />
                     )}
                   </>

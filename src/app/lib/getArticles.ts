@@ -1,22 +1,22 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
-
-export interface GetArticlesResponse extends StrapiResponse<BlogArticleData> {
-  url: string; // Define the shape of the URL
-}
+import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getArticles(
   excludeId?: number,
   pageSize?: number,
-): Promise<GetArticlesResponse> {
-  const urlParams = new ArticleStrapiApi().sort('desc').addPaginationParams({
-    page: 1,
-    pageSize: pageSize || 20,
-    withCount: false,
-  });
-  const apiBaseUrl = urlParams.getApiBaseUrl();
+): Promise<StrapiResponse<BlogArticleData>> {
+  const urlParams = new ArticleStrapiApi({
+    excludeFields: ['Content'],
+  })
+    .sort('desc')
+    .addPaginationParams({
+      page: 1,
+      pageSize: pageSize || 20,
+      withCount: false,
+    });
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = urlParams.getApiAccessToken();
+  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -30,15 +30,13 @@ export async function getArticles(
     throw new Error('Failed to fetch data');
   }
 
-  const data = await res.json().then((output) =>
-    // filter out given excludeId
-    {
-      return {
-        meta: output.meta,
-        data: output.data.filter((el: BlogArticleData) => el.id !== excludeId),
-      };
-    },
-  ); // Extract data from the response
+  const responseData = await res.json();
+  const data = {
+    meta: responseData.meta,
+    data: responseData.data.filter(
+      (el: BlogArticleData) => el.id !== excludeId,
+    ),
+  };
 
-  return { ...data, url: apiBaseUrl }; // Return a plain object
+  return data;
 }
