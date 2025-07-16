@@ -97,7 +97,7 @@ export const NiceTryLayout = ({
           fontFamily={interTight.style.fontFamily}
           sx={{ textTransform: 'none' }}
         >
-          You were #{position} in line for the golden ticket. Keep trading to
+          You were #{position} in line for the golden route. Keep trading to
           increase your chances of winning next time!
         </StyledTypography>
 
