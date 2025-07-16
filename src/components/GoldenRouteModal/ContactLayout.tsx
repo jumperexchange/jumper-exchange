@@ -200,7 +200,7 @@ export const ContactLayout = ({
             marginTop={'40px'}
             marginLeft={isMobile ? '16px' : '40px'}
           >
-            WOW! it's a golden ticket!
+            WOW! it's a golden route!
           </StyledTypography>
 
           <InputWrapper>
