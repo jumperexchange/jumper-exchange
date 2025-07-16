@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Empty: Story = {
   args: {
     label: 'To',
-    icon: <AvatarBadge avatarSize={40} alt="ETH" />,
+    startAdornment: <AvatarBadge avatarSize={40} alt="ETH" />,
     placeholder: 'Select token',
     mode: SelectCardMode.Display,
     onClick: () => {
@@ -30,7 +30,7 @@ export const Empty: Story = {
 export const Display: Story = {
   args: {
     label: 'To',
-    icon: <AvatarBadge avatarSize={40} alt="ETH" />,
+    startAdornment: <AvatarBadge avatarSize={40} alt="ETH" />,
     value: 'ETH',
     description: 'Arbitrum',
     placeholder: 'Select token',

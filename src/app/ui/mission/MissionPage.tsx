@@ -29,6 +29,7 @@ export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
     <TwoColumnLayout
       mainContent={<MissionDetails mission={data} tasks={taskOpportunities} />}
       sideContent={<MissionWidget customInformation={data.CustomInformation} />}
+      shouldStretchSideContent
     />
   );
 };

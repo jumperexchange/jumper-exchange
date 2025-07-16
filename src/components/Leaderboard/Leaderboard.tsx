@@ -69,7 +69,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
             <LeaderboardUpdateDateBox>
               {isClient && (
                 <IconHeader
-                  tooltipKey={t('leaderboard.description')}
+                  tooltip={t('leaderboard.description')}
                   title={
                     !isMobile
                       ? `Updated: ${t('format.date', { value: new Date() })}`

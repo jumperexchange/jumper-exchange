@@ -1,7 +1,8 @@
 'use client';
 
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useEnhancedTasks, useSyncMissionDefaultsFromChains } from './hooks';
+import { useSyncMissionDefaultsFromChains } from './hooks';
+import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import { FC, useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';

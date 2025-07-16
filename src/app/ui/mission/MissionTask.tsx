@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useMissionStore } from 'src/stores/mission';
 import { useFormatDisplayTaskData } from 'src/hooks/tasksVerification/useFormatDisplayTaskData';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
-import { useVerifyTaskWithSharedState } from './hooks';
+import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
 
 interface MissionTaskProps {
   task: TaskVerificationWithApy & {

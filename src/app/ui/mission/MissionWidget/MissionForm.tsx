@@ -8,7 +8,7 @@ import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.style
 import { useMissionStore } from 'src/stores/mission';
 import { TaskWidgetInformationInputData } from 'src/types/strapi';
 import { MissionInstructionFormContainer } from './MissionWidget.styles';
-import { useVerifyTaskWithSharedState } from '../hooks';
+import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
 
 const buildDynamicSchema = (taskInputs: TaskWidgetInformationInputData[]) => {
   const shape = taskInputs.reduce(

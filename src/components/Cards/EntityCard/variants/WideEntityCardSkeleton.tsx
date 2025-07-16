@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { ENTITY_CARD_SIZES } from '../constants';
 import {
   BaseSkeleton,
@@ -11,19 +12,25 @@ import {
   StyledShapeSkeleton,
   StyledContentSkeletonContainer,
 } from '../EntityCard.styles';
+import { EntityCardProps } from '../EntityCard.types';
 
-export const WideEntityCardSkeleton = () => {
+interface WideEntityCardSkeletonProps
+  extends Pick<EntityCardProps, 'fullWidth'> {}
+
+export const WideEntityCardSkeleton: FC<WideEntityCardSkeletonProps> = ({
+  fullWidth,
+}) => {
   return (
     <StyledEntityCard
       sx={{
         width: '100%',
-        maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
+        maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
       }}
     >
       <StyledEntityCardImageContainer
         sx={{
           width: '100%',
-          maxWidth: ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
+          maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.WIDE.IMAGE_HEIGHT,
         }}
       >
