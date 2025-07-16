@@ -12,7 +12,7 @@ interface KnownVerifyTaskProps {
 }
 
 type VerifyTaskProps = KnownVerifyTaskProps & {
-  [key: string]: string | undefined;
+  additionalFields?: Record<string, string | undefined>;
 };
 
 export async function verifyTaskQuery(props: VerifyTaskProps) {
