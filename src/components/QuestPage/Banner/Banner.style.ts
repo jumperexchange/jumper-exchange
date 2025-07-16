@@ -148,6 +148,24 @@ export const BannerTitleTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
+export const BannerLabelBox = styled(Box)(({ theme }) => ({
+  border: '2px dotted',
+  borderColor: '#000000',
+  borderRadius: '8px',
+  padding: '8px',
+  zindex: 100,
+  backgroundColor: 'red',
+  animation: 'spin 30s linear infinite',
+  '@keyframes spin': {
+    '0%': {
+      transform: 'rotate(360deg)',
+    },
+    '100%': {
+      transform: 'rotate(0deg)',
+    },
+  },
+}));
+
 export const RotatingBox = styled(Box)(() => ({
   animation: 'spin 120s linear infinite',
   '@keyframes spin': {

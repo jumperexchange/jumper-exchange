@@ -1,9 +1,9 @@
 'use client';
 import { MainMenu } from '@/components/Menus/MainMenu';
 import { useMenuStore } from '@/stores/menu';
+// import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
-import Portal from '@mui/material/Portal';
-import useMediaQuery from '@mui/material/useMediaQuery';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
@@ -16,13 +16,11 @@ import {
 } from 'src/const/urls';
 import {
   DotsMenuIcon,
-  FloatingLinksContainer,
-  LinksContainer,
   MenuToggle,
   NavbarButtonsContainer,
   RedirectToApp,
 } from '.';
-import { Links } from './Links';
+// import { Links } from './Links';
 
 const WalletButtons = dynamic(
   () => import('../WalletButtons').then((mod) => mod.WalletButtons),
@@ -33,7 +31,7 @@ const WalletButtons = dynamic(
 
 export const NavbarButtons = () => {
   const mainMenuAnchor = useRef(null);
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  // const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const walletManagementRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
@@ -75,11 +73,11 @@ export const NavbarButtons = () => {
   return (
     <>
       {/* @Note: This will be enabled once the missions page is implemented */}
-      {isDesktop && (
+      {/* {isDesktop && (
         <LinksContainer>
           <Links />
         </LinksContainer>
-      )}
+      )} */}
 
       <NavbarButtonsContainer className="settings">
         {(redirectToApp || !hideConnectButton) && (
@@ -121,11 +119,11 @@ export const NavbarButtons = () => {
       <WalletMenu anchorEl={walletManagementRef.current ?? undefined} />
 
       {/* @Note: This will be enabled once the missions page is implemented */}
-      <Portal>
+      {/* <Portal>
         {!isDesktop && (
           <FloatingLinksContainer direction="row">
             <Links />
-            {/* // @Note: Remove left padding once this is enabled */}
+            // @Note: Remove left padding once this is enabled
             <MenuToggle
               ref={mainMenuAnchor}
               id="main-burger-menu-button"
@@ -139,7 +137,7 @@ export const NavbarButtons = () => {
             </MenuToggle>
           </FloatingLinksContainer>
         )}
-      </Portal>
+      </Portal> */}
     </>
   );
 };
