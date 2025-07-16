@@ -35,7 +35,7 @@ export async function getLoyaltyPassDataQuery({
   return {
     address: walletAddress,
     points: data.sum,
-    level: data.currentLevel,
+    level: data.level,
     pdas: data.walletRewards,
   };
 }
@@ -43,6 +43,10 @@ export async function getLoyaltyPassDataQuery({
 // TODO: Make this component server friendly by removing the useEffect/state
 // Will enable its usage into /app/api/profile/[walletAddress]/route.tsx
 export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
+  //we store the data during 24hours to avoid querying too much our partner API.
+  const t = Date.now() / 1000;
+
+  // query
   const { data, isSuccess, isLoading, error } = useQuery({
     queryKey: ['loyalty-pass', walletAddress],
     queryFn: async ({ queryKey }) => {

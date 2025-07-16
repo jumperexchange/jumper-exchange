@@ -25,6 +25,7 @@ export const JUMPER_SCAN_WALLET_PATH = '/scan/wallet';
 export const JUMPER_WALLET_VERIFY_PATH = '/wallet/verify';
 export const JUMPER_QUESTS_PATH = '/quests';
 export const JUMPER_CAMPAIGN_PATH = '/campaign';
+export const JUMPER_LEADERBOARD_PATH = '/leaderboard';
 
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
@@ -49,10 +50,12 @@ export enum AppPaths {
   Learn = JUMPER_LEARN_PATH,
   Profile = JUMPER_PROFILE_PATH,
   Missions = JUMPER_MISSIONS_PATH,
+  Campaign = JUMPER_CAMPAIGN_PATH,
   Scan = JUMPER_SCAN_PATH,
   Zap = JUMPER_ZAP_PATH,
   Bridge = JUMPER_BRIDGE_PATH,
   Swap = JUMPER_SWAP_PATH,
   Tx = JUMPER_SCAN_TX_PATH,
   WalletVerify = JUMPER_WALLET_VERIFY_PATH,
+  Leaderboard = JUMPER_LEADERBOARD_PATH,
 }

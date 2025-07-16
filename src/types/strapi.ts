@@ -371,6 +371,7 @@ export interface CampaignAttributes {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+  MissionCount?: number;
 }
 
 /* MerklRewards */
