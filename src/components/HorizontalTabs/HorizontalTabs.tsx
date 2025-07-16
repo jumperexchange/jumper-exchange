@@ -13,7 +13,7 @@ export interface HorizontalTabItem {
   disabled?: boolean;
 }
 
-interface HorizontalTabsProps {
+export interface HorizontalTabsProps {
   tabs: HorizontalTabItem[];
   onChange: (event: React.SyntheticEvent, newValue: string) => void;
   onTabClick: (

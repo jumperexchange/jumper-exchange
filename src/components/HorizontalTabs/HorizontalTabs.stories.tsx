@@ -2,9 +2,13 @@ import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { Typography } from '@mui/material';
-import type { Meta, StoryFn, StoryObj } from '@storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { HorizontalTabItem, HorizontalTabs } from './HorizontalTabs';
+import {
+  HorizontalTabItem,
+  HorizontalTabs,
+  HorizontalTabsProps,
+} from './HorizontalTabs';
 import { HorizontalTabSize } from './HorizontalTabs.style';
 
 // Tab data
@@ -43,29 +47,41 @@ const baseArgs = {
 // --- Stories ---
 
 // Interactive example with working state
-export const InteractiveWithState: StoryFn<typeof HorizontalTabs> = () => {
-  const [value, setValue] = useState<string>(tabs[0].value);
+const HorizontalTabsRenderer = (args: HorizontalTabsProps) => {
+  const [value, setValue] = useState<string>(args.value ?? tabs[0].value);
 
-  const onChange = (_: React.SyntheticEvent, newValue: string) => {
+  const onChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    args.onChange?.(event, newValue);
   };
 
   const onTabClick =
-    (value: string) => (event: React.MouseEvent<HTMLDivElement>) => {
+    (val: string) => (event: React.MouseEvent<HTMLDivElement>) => {
       event.preventDefault();
-      setValue(value);
+      setValue(val);
+      args.onTabClick?.(val)?.(event);
     };
 
   return (
     <HorizontalTabs
-      tabs={tabs}
+      {...args}
+      tabs={args.tabs ?? tabs}
       value={value}
       onChange={onChange}
       onTabClick={onTabClick}
-      tabSx={{ width: '160px' }}
-      size={HorizontalTabSize.MD}
     />
   );
+};
+
+export const InteractiveWithState: Story = {
+  render: (args) => <HorizontalTabsRenderer {...args} />,
+  args: {
+    ...baseArgs,
+    tabs,
+    value: tabs[0].value,
+    tabSx: { width: '160px' },
+    size: HorizontalTabSize.MD,
+  },
 };
 
 export const Sizes: Story = {
