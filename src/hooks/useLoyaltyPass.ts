@@ -37,7 +37,7 @@ export async function getLoyaltyPassDataQuery({
   return {
     address: walletAddress,
     points: data.sum,
-    level: data.currentLevel,
+    level: data.level,
     pdas: data.walletRewards,
   };
 }
@@ -72,9 +72,11 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
   const storeNeedsRefresh = t > (timestamp ?? 0) + SECONDS_IN_A_DAY;
 
   const queryIsEnabled =
-    !!walletAddress &&
-    (storeNeedsRefresh ||
-      walletAddress.toLowerCase() !== storedAddress?.toLowerCase());
+    !storedTier ||
+    (!!walletAddress &&
+      (!storedTier ||
+        storeNeedsRefresh ||
+        walletAddress.toLowerCase() !== storedAddress?.toLowerCase()));
 
   // query
   const { data, isSuccess, isLoading } = useQuery({
