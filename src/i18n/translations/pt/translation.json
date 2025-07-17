@@ -183,6 +183,11 @@
     "open": "Abre {{tool}}",
     "rewards": "Recompensas ganhas"
   },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
+  },
   "leaderboard": {
     "title": "Tabela de Classificação",
     "description": "A tabela de classificação é atualizada diariamente.",
