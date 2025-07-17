@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "ダッシュボード",
       "refuel": "リフューエル",
-      "buy": "購入"
+      "buy": "購入",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
