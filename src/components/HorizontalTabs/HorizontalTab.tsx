@@ -25,7 +25,7 @@ export const HorizontalTab = ({
       {!!label && label}
       {!!endAdornment && endAdornment}
     </>
-  ); //@todo: check if icons show correct
+  );
   return (
     <StyledHorizontalTab
       size={size}

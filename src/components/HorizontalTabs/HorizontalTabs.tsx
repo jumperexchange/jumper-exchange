@@ -20,7 +20,7 @@ export interface HorizontalTabsProps {
     value: string,
   ) => (event: React.MouseEvent<HTMLDivElement>) => void;
   value?: string;
-  size?: HorizontalTabSize; //@todo: use enum instead
+  size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
   tabSx?: SxProps<Theme>;
 }
