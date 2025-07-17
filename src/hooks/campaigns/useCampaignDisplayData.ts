@@ -10,12 +10,15 @@ export const useCampaignDisplayData = (campaign: CampaignData) => {
       missionsCount: campaign.MissionCount || campaign.quests?.length || 0,
       slug: campaign.Slug || '',
       title: campaign.Title || '',
+      description: campaign.Description || '',
       isDefaultInfoCard: !!campaign.LightMode,
       benefitLabel: campaign.BenefitLabel,
       benefitValue: campaign.BenefitValue || 0,
       rewardChainIds: campaign.merkl_rewards
         ?.map((reward) => reward.ChainId)
         .filter((rewardChainId) => rewardChainId !== null),
+      background: `${apiBaseUrl}${campaign.Background?.url || ''}`,
+      icon: `${apiBaseUrl}${campaign.Icon?.url || ''}`,
       bannerImage: `${apiBaseUrl}${campaign.ProfileBannerImage?.url || ''}`,
       bannerTitle: campaign.ProfileBannerTitle || '',
       bannerDescription: campaign.ProfileBannerDescription || '',
