@@ -29,6 +29,7 @@ import { useContributionStore } from 'src/stores/contribution/ContributionStore'
 import { themeAllowChains, WidgetWrapper } from '.';
 import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
+import { useTheme } from '@mui/material/styles';
 
 export function Widget({
   starterVariant,
@@ -43,6 +44,7 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
+  const theme = useTheme();
   const [configTheme, widgetTheme] = useThemeStore((state) => [
     state.configTheme,
     state.widgetTheme,
@@ -221,16 +223,20 @@ export function Widget({
               position: 'relative',
               overflow: 'hidden',
               marginLeft: 'auto',
-              gap: '1px',
-              paddingLeft: '3px',
-              background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
-              color: '#ffffff',
-              fontSize: '14px',
-              fontWeight: '600',
+              gap: theme.spacing(0.5),
+              paddingLeft: theme.spacing(0.5),
+              paddingRight: theme.spacing(0.5),
+              background: `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
+              color: (theme.vars || theme).palette.white.main,
+              ...theme.typography.bodyXSmallStrong,
+              ...theme.applyStyles('light', {
+                // @Note we might adjust to use the theme config
+                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
+              }),
               '&::before': {
                 content: '""',
-                width: '20px',
-                height: '20px',
+                width: '16px',
+                height: '16px',
                 borderRadius: '50%', // Makes the icon circular
                 backgroundImage:
                   'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
@@ -241,12 +247,13 @@ export function Widget({
               },
               '&>p': {
                 alignContent: 'flex-end',
-                paddingLeft: '2px',
+                paddingLeft: theme.spacing(0.5),
+                paddingRight: theme.spacing(0.5),
               },
             },
           },
           exchanges: {
-            allow: ['squid', 'symbiosis', 'stargate', 'across'], // Replace by hyperbloom when available
+            allow: ['hyperbloom'], // Replace by hyperbloom when available
           },
         },
       ],
@@ -282,6 +289,7 @@ export function Widget({
     widgetTheme.config.theme,
     integratorStringByType,
     bridgeConditions,
+    theme,
   ]);
 
   return (

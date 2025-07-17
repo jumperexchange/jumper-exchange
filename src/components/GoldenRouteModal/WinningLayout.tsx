@@ -91,7 +91,7 @@ export const WinningLayout = ({
             marginTop={isMobile ? '40px' : '80px'}
             marginLeft={isMobile ? '16px' : '40px'}
           >
-            WOW! it's a golden ticket!
+            WOW! it's a golden route!
           </StyledTypography>
         </TextContainer>
 
@@ -103,12 +103,12 @@ export const WinningLayout = ({
           }}
         >
           <UnicornScene
-            projectId="m4fo5UXVxF5iqkKIweQn?production"
+            projectId="KYcHAuC2qNJRwg7ors66?production"
             scale={0.8}
             dpi={2}
             fps={60}
-            altText="Golden Ticket Animation"
-            ariaLabel="Animated golden ticket scene"
+            altText="Golden Route Animation"
+            ariaLabel="Animated golden route scene"
             lazyLoad={false}
             isMobile={isMobile}
           />

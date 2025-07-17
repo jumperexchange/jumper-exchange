@@ -22,7 +22,7 @@ const Confetti = dynamic(() => import('react-confetti'), {
   ssr: false,
 });
 
-const GoldenTicketModalContainer = styled(Box)(({ theme }) => ({
+const GoldenRouteModalContainer = styled(Box)(({ theme }) => ({
   overflowY: 'auto',
   position: 'absolute',
   top: '8px',
@@ -61,18 +61,18 @@ const GoldenTicketModalContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-interface GoldenTicketModalProps {
+interface GoldenRouteModalProps {
   onClose: () => void;
   isOpen: boolean;
-  ticket: {
+  route: {
     winner: boolean;
     position: number | null;
   };
 }
 
-export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
+export const GoldenRouteModal: React.FC<GoldenRouteModalProps> = ({
   onClose,
-  ticket,
+  route,
   isOpen,
 }) => {
   const theme = useTheme();
@@ -94,10 +94,10 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
     if (hasSigned) {
       return 'final';
     }
-    if (ticket.winner) {
+    if (route.winner) {
       return 'winning';
     }
-    if (!ticket.winner && ticket.position && ticket.position > 1) {
+    if (!route.winner && route.position && route.position > 1) {
       return 'nice-try';
     }
     if (error) {
@@ -110,13 +110,13 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
     if (hasSigned) {
       return setLayout('final');
     }
-    if (ticket.winner) {
+    if (route.winner) {
       return setLayout('winning');
     }
-    if (!ticket.winner && ticket.position && ticket.position > 1) {
+    if (!route.winner && route.position && route.position > 1) {
       return setLayout('nice-try');
     }
-  }, [ticket.position, ticket.winner, hasSigned]);
+  }, [route.position, route.winner, hasSigned]);
 
   const handleCollect = () => {
     setLayout('contact');
@@ -151,9 +151,9 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
       });
 
       setIsSigning(true);
-      
+
       let signature: string | undefined;
-      
+
       // Handle signing based on the active account's chain type
       if (activeAccount?.chainType === 'SVM') {
         // Solana signing
@@ -237,7 +237,7 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <GoldenTicketModalContainer className={isClosing ? 'closing' : ''}>
+      <GoldenRouteModalContainer className={isClosing ? 'closing' : ''}>
         {showConfetti && (
           <Confetti
             width={window.innerWidth}
@@ -270,7 +270,7 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
           onClose={handleClose}
           isMobile={isMobile}
           isDisplay={layout === 'nice-try'}
-          position={ticket.position}
+          position={route.position}
         />
 
         <FinalLayout
@@ -286,7 +286,7 @@ export const GoldenTicketModal: React.FC<GoldenTicketModalProps> = ({
           error={error}
           onRetry={handleRetry}
         />
-      </GoldenTicketModalContainer>
+      </GoldenRouteModalContainer>
     </Modal>
   );
 };
