@@ -190,6 +190,11 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
     };
+    campaign: {
+      missions: {
+        title: 'Missions';
+      };
+    };
     leaderboard: {
       title: 'Leaderboard';
       description: 'The leaderboard is updated on a daily basis.';

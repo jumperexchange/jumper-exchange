@@ -10,10 +10,6 @@ export const CampaignHeroContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   gap: theme.spacing(2),
-  padding: theme.spacing(3),
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderRadius: `${theme.shape.cardBorderRadius}px`,
-  boxShadow: theme.shadows[2],
 }));
 
 export const CampaignHeroStatsWrapper = styled(Box)(({ theme }) => ({
@@ -26,6 +22,10 @@ export const CampaignHeroCardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   overflow: 'hidden',
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
 }));
 
 export const CampaignHeroCardImageWrapper = styled(Box)(({}) => ({
