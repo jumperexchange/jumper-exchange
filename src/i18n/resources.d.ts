@@ -18,6 +18,7 @@ interface Resources {
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
+        back: 'Back';
       };
       statsCards: {
         dexs: 'DEXs';
