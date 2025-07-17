@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
-      "buy": "Купівля"
+      "buy": "Купівля",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEXs",
