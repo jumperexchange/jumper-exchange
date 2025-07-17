@@ -39,9 +39,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       label: 'click-quest-card',
       data: {
         [TrackingEventParameter.QuestCardTitle]: missionDisplayData.title || '',
-        [TrackingEventParameter.QuestCardLabel]: '',
         [TrackingEventParameter.QuestCardId]: missionDisplayData.id || '',
-        // [TrackingEventParameter.QuestCardPlatform]: platformName || '',
       },
     });
   };
