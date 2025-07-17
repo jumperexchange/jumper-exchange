@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
-      "buy": "Satın al"
+      "buy": "Satın al",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX'ler",
