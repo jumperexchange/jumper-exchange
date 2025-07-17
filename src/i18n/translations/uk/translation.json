@@ -183,6 +183,11 @@
     "open": "Відкрити {{tool}}",
     "rewards": "Отримані винагороди"
   },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
+  },
   "leaderboard": {
     "title": "Таблиця лідерів",
     "description": "Таблиця лідерів оновлюється щоденно.",
