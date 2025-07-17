@@ -183,6 +183,11 @@
     "open": "",
     "rewards": ""
   },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
+  },
   "leaderboard": {
     "title": "",
     "description": "",
