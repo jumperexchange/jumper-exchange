@@ -183,6 +183,11 @@
     "open": "Ouvrir {{tool}}",
     "rewards": "Récompenses gagnées"
   },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
+  },
   "leaderboard": {
     "title": "Classement",
     "description": "Le classement est mis à jour quotidiennement.",
