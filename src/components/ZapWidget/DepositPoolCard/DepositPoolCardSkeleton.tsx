@@ -11,7 +11,10 @@ export const DepositPoolCardSkeleton = () => {
     <SectionCardContainer>
       <DepositPoolCardContainer>
         <DepositPoolHeaderContainer>
-          <BaseSkeleton variant="circular" sx={{ height: 40, width: 40 }} />
+          <BaseSkeleton
+            variant="circular"
+            sx={{ height: 40, width: 40, flexShrink: 0 }}
+          />
           <BaseSkeleton variant="rounded" sx={{ height: 32, width: '100%' }} />
         </DepositPoolHeaderContainer>
         <Grid container rowSpacing={3} columnSpacing={2}>

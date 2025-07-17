@@ -78,15 +78,27 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
 
   const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [token?.chainId]);
 
-  const apyTooltip = useMemo(() => {
-    return analytics?.boosted_apy
-      ? `${analytics.base_apy}% is the expected yearly return rate of the underlying tokens invested. There is an additional ${analytics.boosted_apy}% in extra rewards paid in other tokens, check the protocol website for more information.`
-      : t('tooltips.apy');
-  }, [analytics, t]);
-
-  const apyValue = useMemo(() => {
-    return boostedAPY ? boostedAPY.toFixed(1) : analytics?.base_apy;
-  }, [boostedAPY, analytics?.base_apy]);
+  const {
+    tooltip: apyTooltip,
+    value: apyValue,
+    label: apyLabel,
+  } = useMemo(() => {
+    if (analytics?.boosted_apy) {
+      return {
+        tooltip: t('tooltips.boostedApy', {
+          baseApy: analytics.base_apy,
+          boostedApy: analytics.boosted_apy,
+        }),
+        value: boostedAPY.toFixed(1),
+        label: t('widget.depositCard.boostedApy'),
+      };
+    }
+    return {
+      tooltip: t('tooltips.apy'),
+      value: analytics?.base_apy,
+      label: t('widget.depositCard.apy'),
+    };
+  }, [analytics?.boosted_apy, analytics?.base_apy, boostedAPY, t]);
 
   if (!zapData || !token) {
     return <DepositPoolCardSkeleton />;
@@ -121,15 +133,15 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
         <Grid container rowSpacing={3} columnSpacing={2}>
           {apyValue && (
             <DepositPoolCardItem
-              title={'Base APY'}
+              title={apyLabel}
               tooltip={apyTooltip}
               value={apyValue}
-              valueAppend={apyValue ? '%' : undefined}
+              valueAppend={'%'}
             />
           )}
           {analytics?.tvl_usd && (
             <DepositPoolCardItem
-              title="TVL"
+              title={t('widget.depositCard.tvl')}
               tooltip={t('tooltips.tvl')}
               value={`$${Number(analytics.tvl_usd).toLocaleString('en-US', {
                 minimumFractionDigits: 0,
@@ -140,14 +152,14 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
 
           {/** Re-enable this once we know the duration and conditionally render it */}
           {/* <DepositPoolCardItem
-              title="Lockup period"
+              title={t('widget.depositCard.lockupPeriod')}
               tooltip=""
               value="5"
               valueAppend="months"
             /> */}
           {token?.symbol && token?.logoURI && token?.chainId && (
             <DepositPoolCardItem
-              title="Pool token"
+              title={t('widget.depositCard.token')}
               tooltip={
                 hasDeposited ? t('tooltips.deposited') : t('tooltips.deposit')
               }
