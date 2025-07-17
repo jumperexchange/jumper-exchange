@@ -2,8 +2,11 @@ import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import { TaskType } from 'src/types/strapi';
 import { ConfigContext } from '../types';
+import { useTranslation } from 'react-i18next';
+import { LanguageKey } from 'src/types/i18n';
 
 export const useLanguageResources = (ctx: ConfigContext) => {
+  const { i18n } = useTranslation();
   const {
     currentActiveTaskType,
     destinationChain,
@@ -37,6 +40,10 @@ export const useLanguageResources = (ctx: ConfigContext) => {
       `${currentActiveTaskType ?? TaskType.Deposit} ${sourceDestinationTemplate}`;
 
     return {
+      languages: {
+        default: i18n.language as LanguageKey,
+        allow: i18n.languages as LanguageKey[],
+      },
       languageResources: {
         en: {
           header: {
