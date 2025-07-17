@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Panel",
       "refuel": "",
-      "buy": "Comprar"
+      "buy": "Comprar",
+      "back": ""
     },
     "statsCards": {
       "dexs": "",
