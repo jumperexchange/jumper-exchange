@@ -10,7 +10,8 @@
       "missions": "Missions",
       "dashboard": "Dashboard",
       "refuel": "Gas",
-      "buy": "Buy"
+      "buy": "Buy",
+      "back": "Back"
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -181,6 +182,11 @@
     "shareProfile": "Share profile",
     "open": "Open {{tool}}",
     "rewards": "Rewards Earned"
+  },
+  "campaign": {
+    "missions": {
+      "title": "Missions"
+    }
   },
   "leaderboard": {
     "title": "Leaderboard",

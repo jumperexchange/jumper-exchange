@@ -18,6 +18,7 @@ interface Resources {
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
+        back: 'Back';
       };
       statsCards: {
         dexs: 'DEXs';
@@ -188,6 +189,11 @@ interface Resources {
       shareProfile: 'Share profile';
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
+    };
+    campaign: {
+      missions: {
+        title: 'Missions';
+      };
     };
     leaderboard: {
       title: 'Leaderboard';
