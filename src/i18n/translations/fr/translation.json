@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Tableau de bord",
       "refuel": "Gaz",
-      "buy": "Acheter"
+      "buy": "Acheter",
+      "back": ""
     },
     "statsCards": {
       "dexs": "",
