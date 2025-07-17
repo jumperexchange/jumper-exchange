@@ -10,19 +10,15 @@ interface MissionsListSkeletonProps {
 export const MissionsListSkeleton: FC<MissionsListSkeletonProps> = ({
   count = 5,
 }) => {
-  return (
-    <>
-      {Array.from({ length: count }).map((_, index) => (
-        <Box
-          key={index}
-          sx={{
-            alignSelf: 'center',
-            justifySelf: 'center',
-          }}
-        >
-          <CompactEntityCardSkeleton />
-        </Box>
-      ))}
-    </>
-  );
+  return Array.from({ length: count }).map((_, index) => (
+    <Box
+      key={index}
+      sx={{
+        alignSelf: 'center',
+        justifySelf: 'center',
+      }}
+    >
+      <CompactEntityCardSkeleton />
+    </Box>
+  ));
 };
