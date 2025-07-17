@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Tổng quan",
       "refuel": "",
-      "buy": "Mua"
+      "buy": "Mua",
+      "back": ""
     },
     "statsCards": {
       "dexs": "Các Dex",
