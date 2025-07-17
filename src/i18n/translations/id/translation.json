@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Dasbor",
       "refuel": "",
-      "buy": "Beli"
+      "buy": "Beli",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
