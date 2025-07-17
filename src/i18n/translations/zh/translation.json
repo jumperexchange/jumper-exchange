@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "面板",
       "refuel": "兑换燃气费",
-      "buy": "购买"
+      "buy": "购买",
+      "back": ""
     },
     "statsCards": {
       "dexs": "交易所",
