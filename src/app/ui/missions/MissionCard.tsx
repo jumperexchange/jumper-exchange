@@ -51,6 +51,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       href={missionDisplayData.href}
       sx={{
         textDecoration: 'none',
+        width: '100%',
       }}
     >
       <EntityCard

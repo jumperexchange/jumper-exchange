@@ -15,11 +15,14 @@ export const CampaignPage = ({ campaign, quests }: CampaignPageProps) => {
   return (
     <PageContainer>
       <CampaignHero campaign={campaign} />
-      <MissionsSection>
-        <GridContainer>
-          <MissionsList missions={quests} />
-        </GridContainer>
-      </MissionsSection>
+
+      {!!quests.length && (
+        <MissionsSection>
+          <GridContainer>
+            <MissionsList missions={quests} />
+          </GridContainer>
+        </MissionsSection>
+      )}
     </PageContainer>
   );
 };

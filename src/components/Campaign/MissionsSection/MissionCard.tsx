@@ -51,9 +51,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       href={missionDisplayData.href}
       sx={{
         textDecoration: 'none',
-        width: 'fit-content',
-        justifySelf: 'center',
-        alignSelf: 'center',
+        width: '100%',
       }}
     >
       <EntityCard
@@ -66,6 +64,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
         imageUrl={missionDisplayData.imageUrl}
         rewardGroups={missionDisplayData.rewardGroups}
         onClick={handleClick}
+        fullWidth
       />
     </Link>
   );
