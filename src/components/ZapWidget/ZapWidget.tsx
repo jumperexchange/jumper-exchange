@@ -1,7 +1,12 @@
 import { WidgetEvents } from '@/components/Widgets';
 import { useZaps } from '@/hooks/useZaps';
 import { useWalletMenu, type Account } from '@lifi/wallet-management';
-import type { TokenAmount, WidgetConfig, Route } from '@lifi/widget';
+import type {
+  TokenAmount,
+  WidgetConfig,
+  Route,
+  SDKProvider,
+} from '@lifi/widget';
 import {
   ChainType,
   DisabledUI,
