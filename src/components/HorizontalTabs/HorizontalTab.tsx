@@ -1,7 +1,10 @@
 import { SxProps, Theme } from '@mui/material/styles';
 import React from 'react';
 import { HorizontalTabItem } from './HorizontalTabs';
-import { HorizontalTabSize, StyledHorizontalTab } from './HorizontalTabs.style';
+import {
+  HorizontalTabContainer,
+  HorizontalTabSize,
+} from './HorizontalTabs.style';
 
 interface HorizontalTabProps extends HorizontalTabItem {
   size: HorizontalTabSize;
@@ -19,11 +22,16 @@ export const HorizontalTab = ({
   onClick,
   sx,
 }: HorizontalTabProps) => {
-  if (!startAdornment && !label && !endAdornment) {
+  const hasStartAdornment = startAdornment != null && startAdornment !== '';
+  const hasLabel = label != null && label !== '';
+  const hasEndAdornment = endAdornment != null && endAdornment !== '';
+
+  if (!hasStartAdornment && !hasLabel && !hasEndAdornment) {
     return null;
   }
+
   return (
-    <StyledHorizontalTab
+    <HorizontalTabContainer
       size={size}
       onClick={onClick}
       disabled={disabled}
