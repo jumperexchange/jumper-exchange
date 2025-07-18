@@ -8,10 +8,6 @@ export const MissionWidgetContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
-  padding: theme.spacing(3),
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderRadius: `${theme.shape.cardBorderRadius}px`,
-  boxShadow: theme.shadows[2],
 }));
 
 export const MissionWidgetContentContainer = styled(Box)(({ theme }) => ({
