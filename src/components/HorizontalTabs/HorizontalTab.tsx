@@ -19,22 +19,24 @@ export const HorizontalTab = ({
   onClick,
   sx,
 }: HorizontalTabProps) => {
-  const formattedLabel = (
-    <>
-      {!!startAdornment && startAdornment}
-      {!!label && label}
-      {!!endAdornment && endAdornment}
-    </>
-  );
+  if (!startAdornment && !label && !endAdornment) {
+    return null;
+  }
   return (
     <StyledHorizontalTab
       size={size}
       onClick={onClick}
       disabled={disabled}
-      label={formattedLabel}
       value={value}
       disableRipple
       sx={sx}
+      label={
+        <>
+          {startAdornment}
+          {label}
+          {endAdornment}
+        </>
+      }
     />
   );
 };
