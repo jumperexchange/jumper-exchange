@@ -649,8 +649,9 @@ export function ZapWidget({
     getCapabilities: async (client, args) => handleGetCapabilities(args),
     getCallsStatus: async (client, args) => handleWalletGetCallsStatus(args),
     sendCalls: async (client, args) => handleWalletSendCalls(args),
-    waitForCallsStatus: async (client, args) => handleWalletWaitForCallsStatus(args),
-  });
+    waitForCallsStatus: async (client, args) =>
+      handleWalletWaitForCallsStatus(args),
+  }) as SDKProvider;
 
   const analytics = {
     ...(zapData?.analytics || {}), // Provide default empty object
