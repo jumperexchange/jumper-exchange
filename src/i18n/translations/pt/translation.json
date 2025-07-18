@@ -10,7 +10,8 @@
       "missions": "Missões",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
-      "buy": "Comprar"
+      "buy": "Comprar",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -110,7 +111,8 @@
     "learnMore": "Saiba mais"
   },
   "button": {
-    "okay": "Ok"
+    "okay": "Ok",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -143,21 +145,27 @@
   "missions": {
     "available": "Missões Disponíveis",
     "completed": "Missões Concluídas",
+    "mission": {
+      "completed": {
+        "title": "Missão concluída",
+        "description": "Todas as tarefas desta missão foram verificadas e concluídas."
+      }
+    },
     "status": {
-      "new": "",
-      "upcoming": "",
-      "minutesLeft_one": "",
-      "minutesLeft_other": "",
-      "hoursLeft_one": "",
-      "hoursLeft_other": "",
-      "daysLeft_one": "",
-      "daysLeft_other": ""
+      "new": "Novo",
+      "upcoming": "Próximas",
+      "minutesLeft_one": "{{count}} minuto restante",
+      "minutesLeft_other": "{{count}} minutos restante",
+      "hoursLeft_one": "{{count}} hora restante",
+      "hoursLeft_other": "{{count}} horas restante",
+      "daysLeft_one": "{{count}} dia restante",
+      "daysLeft_other": "{{count}} dias restante"
     },
     "tasks": {
-      "type": "",
+      "type": "Tarefa {{type}}",
       "status": {
-        "verify": "",
-        "verified": ""
+        "verify": "Verificar",
+        "verified": "Verificada"
       }
     }
   },
@@ -174,6 +182,11 @@
     "shareProfile": "Partilhar perfil",
     "open": "Abre {{tool}}",
     "rewards": "Recompensas ganhas"
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "Tabela de Classificação",
@@ -195,23 +208,23 @@
     "shortDate": "{{value, dateExt(month: short)}}"
   },
   "contribution": {
-    "title": "",
-    "custom": "",
-    "confirm": "",
-    "thankYou": "",
-    "description": "",
+    "title": "Contribuir",
+    "custom": "Personalizado",
+    "confirm": "Confirmar",
+    "thankYou": "Obrigado!",
+    "description": "Mostre sua apreciação adicionando uma contribuição. 100% dela vai para melhorar a Jumper.",
     "error": {
-      "amountTooSmall": "",
-      "errorSending": "",
-      "invalidTokenPrice": "",
-      "noFeeAddress": ""
+      "amountTooSmall": "O valor da contribuição é muito pequeno para esse token. Por favor, tente um valor maior.",
+      "errorSending": "Erro ao enviar contribuição:",
+      "invalidTokenPrice": "Preço do token inválido",
+      "noFeeAddress": "Nenhum endereço de taxa de contribuição configurado para essa cadeia."
     }
   },
   "tooltips": {
     "tvl": "Valor total de ativos cripto depositados neste mercado.",
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
     "deposit": "O token exibido é o token necessário para depositar neste mercado.",
-    "deposited": "Quantia que você depositou neste mercado.",
+    "deposited": "",
     "boostedApy": "APY adicional que você ganha ao participar desta campanha dentro da Jumper. Este APY será pago em {{token}}."
   },
   "widget": {
