@@ -1,16 +1,16 @@
 import { Skeleton } from '@mui/material';
 import {
   AchievementCardActionArea,
+  AchievementCardContainer,
   AchievementCardContent,
   AchievementCardLabel,
-  AchievementCard as AchievementCardStyled,
 } from './AchievementCard.style';
 
 export const AchievementCardSkeleton = () => {
   return (
-    <AchievementCardStyled>
+    <AchievementCardContainer>
       <AchievementCardActionArea focusRipple={false} disabled>
-        <Skeleton variant="rectangular" width={296} height={320} />
+        <Skeleton variant="rectangular" width={'100%'} height={320} />
         <AchievementCardContent>
           <AchievementCardLabel>
             <Skeleton variant="text" width={100} height={24} />
@@ -26,6 +26,6 @@ export const AchievementCardSkeleton = () => {
           />
         </AchievementCardContent>
       </AchievementCardActionArea>
-    </AchievementCardStyled>
+    </AchievementCardContainer>
   );
 };

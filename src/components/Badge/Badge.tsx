@@ -25,6 +25,7 @@ export const Badge: FC<BadgeProps> = ({
 }) => {
   return (
     <StyledBadge
+      className="badge-container"
       variant={variant}
       size={size}
       onClick={variant !== 'disabled' ? onClick : undefined}

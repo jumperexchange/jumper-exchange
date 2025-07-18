@@ -1,11 +1,11 @@
-import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 import {
   AchievementCardActionArea,
+  AchievementCardContainer,
   AchievementCardContent,
   AchievementCardImage,
   AchievementCardLabel,
-  AchievementCard as AchievementCardStyled,
+  AchievementCardTypography,
 } from './AchievementCard.style';
 interface AchievementCardProps {
   title: string;
@@ -21,29 +21,31 @@ export const AchievementCard = ({
   badge,
 }: AchievementCardProps) => {
   return (
-    <AchievementCardStyled>
-      <AchievementCardActionArea focusRipple={false}>
+    <AchievementCardContainer>
+      <AchievementCardActionArea disableRipple>
         <AchievementCardImage
           src={image}
           alt={`achievement-card-${title}`}
-          width={288}
-          height={288}
+          width={320}
+          height={320}
         />
         <AchievementCardContent>
           <AchievementCardLabel>
-            <Typography variant="bodyLargeStrong">{title}</Typography>
-            <Typography
+            <AchievementCardTypography variant="bodyLargeStrong">
+              {title}
+            </AchievementCardTypography>
+            <AchievementCardTypography
               variant="bodySmall"
               sx={(theme) => ({
                 color: (theme.vars || theme).palette.text.secondary, // @todo: wrong alpha color
               })}
             >
               {description}
-            </Typography>
+            </AchievementCardTypography>
           </AchievementCardLabel>
           {badge}
         </AchievementCardContent>
       </AchievementCardActionArea>
-    </AchievementCardStyled>
+    </AchievementCardContainer>
   );
 };
