@@ -16,13 +16,6 @@ const meta = {
       options: Object.values(BadgeSize),
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ padding: '1rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof Badge>;
 
 export default meta;
