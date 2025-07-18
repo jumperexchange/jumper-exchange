@@ -5,15 +5,11 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 
 export const DepositPoolCardContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3),
-  boxShadow: theme.shadows[2],
-  borderRadius: theme.shape.cardBorderRadius,
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
   [theme.breakpoints.up('md')]: {
-    minWidth: 416,
+    minWidth: '100%',
     maxWidth: 'unset',
   },
 }));

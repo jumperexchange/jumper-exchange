@@ -10,10 +10,6 @@ export const ZapDetailsCardContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   gap: theme.spacing(2),
-  padding: theme.spacing(3),
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderRadius: `${theme.shape.cardBorderRadius}px`,
-  boxShadow: theme.shadows[2],
 }));
 
 export const ZapDetailsInfoContainer = styled(Box)(({ theme }) => ({

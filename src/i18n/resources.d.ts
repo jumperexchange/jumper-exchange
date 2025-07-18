@@ -150,6 +150,11 @@ interface Resources {
       new: 'New';
     };
     missions: {
+      wrapperCard: {
+        title: 'Missions';
+        explore_one: 'Explore {{count}} mission';
+        explore_other: 'Explore {{count}} missions';
+      };
       available: 'Available Missions';
       completed: 'Completed Missions';
       mission: {
@@ -230,11 +235,18 @@ interface Resources {
     tooltips: {
       tvl: 'Total value of crypto assets deposited in this market.';
       apy: 'Expected yearly return rate of the tokens invested.';
-      deposit: 'The displayed token is the token required to deposit into this market.';
-      deposited: 'Amount you have deposited into this market.';
-      boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
+      deposit: 'The displayed token is the token on which the market is defined and yield accrues on.';
+      deposited: 'The token you have deposited into this market.';
+      boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. There is an additional {{boostedApy}}% in extra rewards paid in other tokens, check the protocol website for more information.';
     };
     widget: {
+      depositCard: {
+        apy: 'Base APR';
+        boostedApy: 'Boosted APR';
+        tvl: 'TVL';
+        lockupPeriod: 'Lockup period';
+        token: 'Pool token';
+      };
       zap: {
         sendToAddressName: 'Send to {{name}}';
         sentToAddressName: 'Sent to {{name}}';

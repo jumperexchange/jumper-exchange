@@ -4,8 +4,6 @@ import { Suspense } from 'react';
 import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
-import { MissionsPage } from 'src/app/ui/missions/MissionsPage';
-import { MissionsPageSkeleton } from 'src/app/ui/missions/MissionsPageSkeleton';
 import { siteName } from 'src/app/lib/metadata';
 import { GlobalFeatureFlags } from 'src/const/abtests';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
@@ -31,7 +29,7 @@ export async function generateStaticParams() {
     pageSize: 12,
   });
 
-  return missionsResponse.data.map((mission) => ({ slug: mission.Slug }));
+  return missionsResponse.data.map((mission) => ({ slug: mission.Slug || '' }));
 }
 
 export async function generateMetadata({

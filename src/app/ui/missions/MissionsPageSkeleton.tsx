@@ -1,16 +1,33 @@
 'use client';
+
+import { GridContainer } from 'src/components/Containers/GridContainer';
 import { BannerCampaignSkeleton } from './BannerCampaign/BannerCampaignSkeleton';
 import { MissionsListSkeleton } from './MissionsListSkeleton';
-import { MissionsPageContainer } from './MissionsPageContainer';
-import { MissionsPageContentContainer } from './MissionsPageContentContainer';
+import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
+import {
+  BaseSkeletonBox,
+  MissionSectionContainer,
+} from './MissionsSection.style';
 
 export const MissionsPageSkeleton = () => {
   return (
-    <MissionsPageContainer>
+    <>
       <BannerCampaignSkeleton />
-      <MissionsPageContentContainer>
-        <MissionsListSkeleton count={5} />
-      </MissionsPageContentContainer>
-    </MissionsPageContainer>
+      <SectionCard>
+        <MissionSectionContainer>
+          <BaseSkeletonBox
+            variant="rounded"
+            animation="wave"
+            sx={{
+              width: 136,
+              height: 32,
+            }}
+          />
+          <GridContainer>
+            <MissionsListSkeleton count={5} />
+          </GridContainer>
+        </MissionSectionContainer>
+      </SectionCard>
+    </>
   );
 };

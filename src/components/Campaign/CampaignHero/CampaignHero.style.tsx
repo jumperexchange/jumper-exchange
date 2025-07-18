@@ -22,7 +22,7 @@ export const CampaignHeroCardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   overflow: 'hidden',
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.white.main,
   }),

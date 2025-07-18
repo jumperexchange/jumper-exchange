@@ -1,16 +1,14 @@
 'use client';
 
-import Box from '@mui/material/Box';
 import { CarouselOuterContainer } from './BannerCarousel.style';
 import { ResponsiveBannerSkeleton } from './ResponsiveBannerSkeleton';
+import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 
 export const BannerCampaignSkeleton = () => {
   return (
-    <CarouselOuterContainer>
-      <Box
+    <SectionCard>
+      <CarouselOuterContainer
         sx={{
-          position: 'relative',
-          paddingX: 3,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -18,7 +16,7 @@ export const BannerCampaignSkeleton = () => {
         }}
       >
         <ResponsiveBannerSkeleton />
-      </Box>
-    </CarouselOuterContainer>
+      </CarouselOuterContainer>
+    </SectionCard>
   );
 };
