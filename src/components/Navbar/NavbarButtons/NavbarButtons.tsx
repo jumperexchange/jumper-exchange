@@ -8,12 +8,7 @@ import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
-import {
-  JUMPER_LEARN_PATH,
-  JUMPER_SCAN_PATH,
-  JUMPER_SCAN_TX_PATH,
-  JUMPER_SCAN_WALLET_PATH,
-} from 'src/const/urls';
+import { JUMPER_LEARN_PATH, JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
   DotsMenuIcon,
   MenuToggle,
@@ -37,10 +32,8 @@ export const NavbarButtons = () => {
   const pathname = usePathname();
   const hideConnectButton = pathname?.includes(JUMPER_LEARN_PATH);
   const redirectToApp =
-    pathname?.includes(JUMPER_LEARN_PATH) ||
-    pathname?.includes(JUMPER_SCAN_PATH) ||
-    pathname?.includes(JUMPER_SCAN_TX_PATH) ||
-    pathname?.includes(JUMPER_SCAN_WALLET_PATH);
+    pathname?.startsWith(JUMPER_LEARN_PATH) ||
+    pathname?.startsWith(JUMPER_SCAN_PATH);
 
   const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
     state.openedMenu,
