@@ -1,26 +1,16 @@
+import { Skeleton } from '@mui/material';
 import {
   AchievementCardActionArea,
   AchievementCardContent,
   AchievementCardLabel,
   AchievementCard as AchievementCardStyled,
-  VoidIcon,
 } from './AchievementCard.style';
 
-import { Box, Skeleton } from '@mui/material';
-
-export const AchievementCardSkeleton = ({
-  isVoidCard,
-}: {
-  isVoidCard?: boolean;
-}) => {
+export const AchievementCardSkeleton = () => {
   return (
     <AchievementCardStyled>
       <AchievementCardActionArea focusRipple={false} disabled>
-        {isVoidCard ? (
-          <AchievementCardVoidImage />
-        ) : (
-          <Skeleton variant="rectangular" width={296} height={320} />
-        )}
+        <Skeleton variant="rectangular" width={296} height={320} />
         <AchievementCardContent>
           <AchievementCardLabel>
             <Skeleton variant="text" width={100} height={24} />
@@ -39,19 +29,3 @@ export const AchievementCardSkeleton = ({
     </AchievementCardStyled>
   );
 };
-
-const AchievementCardVoidImage = () => (
-  <Box
-    sx={(theme) => ({
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: (theme.vars || theme).palette.text.primary,
-      opacity: 0.04,
-      height: 320,
-      width: 296,
-    })}
-  >
-    <VoidIcon />
-  </Box>
-);

@@ -98,4 +98,3 @@ export const CampaignWithLargeTitle: Story = {
 };
 
 export const Skeleton = () => <AchievementCardSkeleton />;
-export const SkeletonVoid = () => <AchievementCardSkeleton isVoidCard />;

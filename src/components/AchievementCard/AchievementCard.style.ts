@@ -1,8 +1,7 @@
 'use client';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { Box, Card, CardActionArea, CardContent } from '@mui/material';
 
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 export const AchievementCard = styled(Card)(({ theme }) => ({
@@ -57,22 +56,4 @@ export const AchievementCardImage = styled(Image)(({ theme }) => ({
   aspectRatio: '1/1',
   objectFit: 'cover',
   justifySelf: 'center',
-}));
-
-export const AchievementCardVoidImage = styled(Box)(({ theme }) => ({
-  height: 96,
-  width: 96,
-  color: alpha(theme.palette.grey[400], 0.08),
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.grey[400],
-  }),
-}));
-
-export const VoidIcon = styled(QuestionMarkIcon)(({ theme }) => ({
-  height: 96,
-  width: 96,
-  color: (theme.vars || theme).palette.black.main,
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.white.main,
-  }),
 }));
