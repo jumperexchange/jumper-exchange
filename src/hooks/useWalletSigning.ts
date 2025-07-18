@@ -4,6 +4,7 @@ import { HACKED_WALLET_STEPS } from '@/components/WalletHacked/constants';
 import { useAccount } from '@lifi/wallet-management';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { EVMAddress } from 'src/types/internal';
 import { useSignMessage } from 'wagmi';
 
 export interface Message {
@@ -41,7 +42,7 @@ export const useWalletSigning = () => {
         const messageToSign = message;
 
         const signature = await signMessageAsync({
-          account: account.address as `0x${string}`,
+          account: account.address as EVMAddress,
           message: messageToSign,
         });
 

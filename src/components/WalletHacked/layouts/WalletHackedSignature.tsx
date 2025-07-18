@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { WalletHackedStep } from 'src/components/WalletHacked/layouts/WalletHackedStep';
 import { useWalletSigning } from 'src/hooks/useWalletSigning';
+import { EVMAddress } from 'src/types/internal';
 import { WalletState } from '../types';
 
 interface WalletHackedSignatureProps {
@@ -29,7 +30,7 @@ export const WalletHackedSignature = ({
       setWallet({
         ...wallet,
         signed: true,
-        signature: signature as `0x${string}`,
+        signature: signature as EVMAddress,
         message,
       });
     },
