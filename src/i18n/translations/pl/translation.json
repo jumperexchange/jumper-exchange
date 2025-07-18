@@ -8,8 +8,8 @@
     "links": {
       "exchange": "",
       "missions": "",
-      "dashboard": "ড্যাশবোর্ড",
-      "refuel": "গ্যাস",
+      "dashboard": "",
+      "refuel": "",
       "buy": "",
       "back": ""
     },
@@ -32,19 +32,19 @@
       "learn": "",
       "scan": "",
       "brandAssets": "",
-      "theme": "থিম",
-      "developers": "ডেভেলপারস",
-      "support": "সাপোর্ট",
+      "theme": "",
+      "developers": "",
+      "support": "",
       "resources": "",
       "profile": ""
     },
     "walletMenu": {
-      "disconnect": "সংযোগ বিচ্ছিন্ন করুন",
-      "chains": "চেইন",
-      "switchChain": "চেইন সুইচ করুন",
-      "copy": "কপি",
-      "explore": "অন্বেষণ করুন",
-      "copiedMsg": "ওয়ালেট ঠিকানা কপি করা হয়েছে ৷",
+      "disconnect": "",
+      "chains": "",
+      "switchChain": "",
+      "copy": "",
+      "explore": "",
+      "copiedMsg": "",
       "walletNotInstalled": "",
       "connectAnotherWallet": "",
       "refreshBalances": "",
@@ -57,8 +57,8 @@
       "dark": "",
       "light": "",
       "system": "",
-      "switchToLight": "লাইট মোডে স্যুইচ করুন",
-      "switchToDark": "ডার্ক মোডে স্যুইচ করুন",
+      "switchToLight": "",
+      "switchToDark": "",
       "switchToSystem": "",
       "lightModeDisabled": "",
       "darkModeDisabled": "",
@@ -66,8 +66,8 @@
       "default": ""
     },
     "developers": {
-      "github": "গিটহাব",
-      "documentation": "ডকুমেন্টেশন"
+      "github": "",
+      "documentation": ""
     }
   },
   "discordBanner": {

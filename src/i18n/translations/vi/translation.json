@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Tổng quan",
       "refuel": "",
-      "buy": "Mua"
+      "buy": "Mua",
+      "back": ""
     },
     "statsCards": {
       "dexs": "Các Dex",
@@ -110,7 +111,8 @@
     "learnMore": "Xem thêm"
   },
   "button": {
-    "okay": ""
+    "okay": "",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Đã xảy ra lỗi. Vui lòng thử tải lại trang. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ của chúng tôi."
@@ -143,6 +145,12 @@
   "missions": {
     "available": "Nhiệm vụ có sẵn",
     "completed": "Nhiệm vụ đã hoàn thành",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
