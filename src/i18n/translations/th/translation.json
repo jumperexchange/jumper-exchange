@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "แผงหน้าจอ",
       "refuel": "แก็ส",
-      "buy": "ซื้อ"
+      "buy": "ซื้อ",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
@@ -110,7 +111,8 @@
     "learnMore": "เรียนรู้เพิ่มเติม"
   },
   "button": {
-    "okay": "ตกลง"
+    "okay": "ตกลง",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "เกิดข้อผิดพลาดบางอย่าง โปรดลองโหลดหน้าเว็บใหม่อีกครั้ง หากปัญหายังคงอยู่ กรุณาติดต่อฝ่ายสนับสนุนของเรา"
@@ -143,6 +145,12 @@
   "missions": {
     "available": "ภารกิจที่มีอยู่",
     "completed": "ภารกิจที่สำเร็จแล้ว",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
