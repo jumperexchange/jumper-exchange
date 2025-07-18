@@ -12,7 +12,6 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -243,43 +242,25 @@ export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
     account.address,
   ]);
 
-  const value = useMemo(
-    () => ({
-      currentStep,
-      setCurrentStep,
-      sourceWallet,
-      setSourceWallet,
-      destinationWallet,
-      setDestinationWallet,
-      sourcePoints,
-      setSourcePoints,
-      destinationPoints,
-      setDestinationPoints,
-      loading,
-      setLoading,
-      error,
-      setError,
-    }),
-    [
-      currentStep,
-      setCurrentStep,
-      sourceWallet,
-      setSourceWallet,
-      destinationWallet,
-      setDestinationWallet,
-      sourcePoints,
-      setSourcePoints,
-      destinationPoints,
-      setDestinationPoints,
-      loading,
-      setLoading,
-      error,
-      setError,
-    ],
-  );
+  const data = {
+    currentStep,
+    setCurrentStep,
+    sourceWallet,
+    setSourceWallet,
+    destinationWallet,
+    setDestinationWallet,
+    sourcePoints,
+    setSourcePoints,
+    destinationPoints,
+    setDestinationPoints,
+    loading,
+    setLoading,
+    error,
+    setError,
+  };
 
   return (
-    <WalletHackedContext.Provider value={value}>
+    <WalletHackedContext.Provider value={data}>
       {children}
     </WalletHackedContext.Provider>
   );
