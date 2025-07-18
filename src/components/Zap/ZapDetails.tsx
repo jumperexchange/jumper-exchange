@@ -24,6 +24,7 @@ import { AccordionFAQ, AccordionHeader } from '../AccordionFAQ';
 import { useAccount } from '@lifi/wallet-management';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import { ZapTask } from './ZapTask';
+import { SectionCardContainer } from '../Cards/SectionCard/SectionCard.style';
 
 interface ZapDetailsProps {
   market: Quest;
@@ -64,39 +65,41 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
 
   return (
     <ZapDetailsColumnContainer>
-      <ZapDetailsCardContainer>
-        <Box sx={{ width: '100%' }}>
-          <Badge
-            label={t('navbar.navbarMenu.profile')}
-            onClick={handleGoBack}
-            startIcon={<ArrowBackIcon />}
-            size={BadgeSize.LG}
-            variant={BadgeVariant.Alpha}
-          />
-        </Box>
+      <SectionCardContainer>
+        <ZapDetailsCardContainer>
+          <Box sx={{ width: '100%' }}>
+            <Badge
+              label={t('navbar.navbarMenu.profile')}
+              onClick={handleGoBack}
+              startIcon={<ArrowBackIcon />}
+              size={BadgeSize.LG}
+              variant={BadgeVariant.Alpha}
+            />
+          </Box>
 
-        <EntityCard
-          variant="wide"
-          badge={badge}
-          id={zapDisplayData.id}
-          slug={zapDisplayData.slug}
-          title={zapDisplayData.title}
-          description={zapDisplayData.description}
-          participants={zapDisplayData.participants}
-          imageUrl={zapDisplayData.imageUrl}
-          rewardGroups={zapDisplayData.rewardGroups}
-          partnerLink={zapDisplayData.partnerLink}
-        />
-        {enhancedTasks.map((task) => (
-          <ZapTask
-            key={task.uuid}
-            task={task}
-            missionId={market.documentId}
-            onClick={() => setActiveTask(task)}
+          <EntityCard
+            variant="wide"
+            badge={badge}
+            id={zapDisplayData.id}
+            slug={zapDisplayData.slug}
+            title={zapDisplayData.title}
+            description={zapDisplayData.description}
+            participants={zapDisplayData.participants}
+            imageUrl={zapDisplayData.imageUrl}
+            rewardGroups={zapDisplayData.rewardGroups}
+            partnerLink={zapDisplayData.partnerLink}
+            fullWidth
           />
-        ))}
-        {/** @TODO need to check if we still want to show these participation steps */}
-        {/* <AccordionFAQ
+          {enhancedTasks.map((task) => (
+            <ZapTask
+              key={task.uuid}
+              task={task}
+              missionId={market.documentId}
+              onClick={() => setActiveTask(task)}
+            />
+          ))}
+          {/** @TODO need to check if we still want to show these participation steps */}
+          {/* <AccordionFAQ
           showIndex={true}
           showDivider={true}
           showAnswerDivider={true}
@@ -128,7 +131,8 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
           answerTextTypography="bodyMedium"
           arrowSize={12}
         /> */}
-      </ZapDetailsCardContainer>
+        </ZapDetailsCardContainer>
+      </SectionCardContainer>
       {zapDisplayData.info && (
         <ZapDetailsInfoContainer>
           <BaseAlert

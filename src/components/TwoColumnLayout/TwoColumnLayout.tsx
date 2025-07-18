@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import React, { FC, ReactNode } from 'react';
 
@@ -15,41 +14,37 @@ export const TwoColumnLayout: FC<TwoColumnLayoutProps> = ({
   shouldStretchSideContent = false,
 }) => {
   return (
-    <Container
+    <Stack
       sx={{
-        px: { lg: 0, xs: 4 },
-        mt: 5.5,
-        mb: 5.5,
-        maxWidth: '1112px !important',
+        justifyContent: 'center',
+        alignItems: {
+          xs: 'center',
+          lg: shouldStretchSideContent ? 'stretch' : 'flex-start',
+        },
+        flexDirection: {
+          xs: 'column',
+          lg: 'row',
+        },
+        gap: 4,
       }}
     >
-      <Stack
+      <Box
         sx={{
-          justifyContent: 'center',
-          alignItems: {
-            xs: 'center',
-            lg: shouldStretchSideContent ? 'stretch' : 'flex-start',
-          },
-          flexDirection: {
-            xs: 'column',
-            lg: 'row',
-          },
-          gap: 4,
+          maxWidth: { xs: '100%', md: '664px', lg: '640px' },
+          width: '100%',
         }}
       >
-        <Box sx={{ maxWidth: { xs: '100%', md: '664px' }, width: '100%' }}>
-          {mainContent}
-        </Box>
-        <Box
-          sx={{
-            maxWidth: { xs: '100%', md: '664px', lg: '416px' },
-            width: '100%',
-            flex: shouldStretchSideContent ? 1 : 'auto',
-          }}
-        >
-          {sideContent}
-        </Box>
-      </Stack>
-    </Container>
+        {mainContent}
+      </Box>
+      <Box
+        sx={{
+          maxWidth: { xs: '100%', md: '664px', lg: '408px' },
+          width: '100%',
+          flex: shouldStretchSideContent ? 1 : 'auto',
+        }}
+      >
+        {sideContent}
+      </Box>
+    </Stack>
   );
 };
