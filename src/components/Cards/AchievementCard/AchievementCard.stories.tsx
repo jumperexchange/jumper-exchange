@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { Badge } from '../Badge/Badge';
-import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
+import { Badge } from '../../Badge/Badge';
+import { BadgeSize, BadgeVariant } from '../../Badge/Badge.styles';
 import { AchievementCard } from './AchievementCard';
 import { AchievementCardSkeleton } from './AchievementCardSkeleton';
 
@@ -37,7 +37,7 @@ export const ChainoorWithBadge: Story = {
   },
 };
 
-export const SwapoorWithWarningBadge: Story = {
+export const SwapoorWithBadge: Story = {
   args: {
     title: 'Swap_oor',
     description: 'October 2024',
@@ -70,7 +70,7 @@ export const CampaignWithDisabledBadge: Story = {
             9 XP
           </Typography>
         }
-        variant={BadgeVariant.Alpha}
+        variant={BadgeVariant.Disabled}
         size={BadgeSize.MD}
       />
     ),
