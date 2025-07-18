@@ -1,11 +1,11 @@
 import { PAGE_SIZE } from 'src/const/quests';
 import { MissionsList } from './MissionsList';
-import { MissionsPageContainer } from './MissionsPageContainer';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
-import { MissionsPageContentContainer } from './MissionsPageContentContainer';
 import { isBannerCampaign } from 'src/utils/isBannerCampaign';
 import { BannerCampaign } from './BannerCampaign/BannerCampaign';
+import { GridContainer } from 'src/components/Containers/GridContainer';
+import { MissionsSection } from './MissionsSection';
 
 export const MissionsPage = async () => {
   const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all([
@@ -23,14 +23,16 @@ export const MissionsPage = async () => {
   const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
 
   return (
-    <MissionsPageContainer>
+    <>
       <BannerCampaign campaigns={validBannerCampaigns} />
-      <MissionsPageContentContainer>
-        <MissionsList
-          initialMissions={missions}
-          shouldLoadMore={hasMoreMissions}
-        />
-      </MissionsPageContentContainer>
-    </MissionsPageContainer>
+      <MissionsSection count={totalMissions}>
+        <GridContainer>
+          <MissionsList
+            initialMissions={missions}
+            shouldLoadMore={hasMoreMissions}
+          />
+        </GridContainer>
+      </MissionsSection>
+    </>
   );
 };
