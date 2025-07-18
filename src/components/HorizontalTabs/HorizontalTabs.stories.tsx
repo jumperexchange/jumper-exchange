@@ -21,7 +21,6 @@ const meta = {
   title: 'Navigation/HorizontalTabs',
   component: HorizontalTabs,
   argTypes: {
-    tabSx: { control: 'object' },
     size: {
       control: 'select',
       options: Object.values(HorizontalTabSize),
@@ -79,7 +78,7 @@ export const InteractiveWithState: Story = {
     ...baseArgs,
     tabs,
     value: tabs[0].value,
-    tabSx: { width: '160px' },
+    sx: { '.MuiTab-root': { width: '160px' } },
     size: HorizontalTabSize.MD,
   },
 };
@@ -89,7 +88,7 @@ export const Sizes: Story = {
     ...baseArgs,
     tabs,
     value: tabs[0].value,
-    tabSx: { width: '160px' },
+    sx: { '.MuiTab-root': { width: '160px' } },
   },
 };
 
@@ -105,7 +104,7 @@ export const WithIcons: Story = {
     tabs: iconsTabData,
     value: 'light',
     size: HorizontalTabSize.LG,
-    tabSx: { width: '104px' },
+    sx: { '.MuiTab-root': { width: '104px' } },
   },
 };
 
@@ -138,7 +137,7 @@ export const WithLabels: Story = {
     ...baseArgs,
     tabs: labelTabData,
     value: 'stake',
-    tabSx: { width: '158px' },
+    sx: { '.MuiTab-root': { width: '158px' } },
   },
 };
 
@@ -148,8 +147,8 @@ export const WithCustomStyles: Story = {
     tabs,
     value: tabs[0].value,
     size: HorizontalTabSize.LG,
-    tabSx: { width: '160px' },
     sx: (theme: any) => ({
+      '.MuiTab-root': { width: '160px' },
       backgroundColor: theme.palette.alphaLight100.main,
       ...(theme.applyStyles &&
         theme.applyStyles('light', {
@@ -196,6 +195,6 @@ export const WithDisabledItem: Story = {
     ...baseArgs,
     tabs: disabledTabData,
     value: 'active',
-    tabSx: { width: '200px' },
+    sx: { '.MuiTab-root': { width: '200px' } },
   },
 };

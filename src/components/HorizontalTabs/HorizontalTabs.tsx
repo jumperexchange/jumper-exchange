@@ -22,7 +22,6 @@ export interface HorizontalTabsProps {
   value?: string;
   size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
-  tabSx?: SxProps<Theme>;
 }
 
 export const HorizontalTabs = ({
@@ -32,7 +31,6 @@ export const HorizontalTabs = ({
   value,
   size = HorizontalTabSize.LG,
   sx,
-  tabSx,
 }: HorizontalTabsProps) => {
   return (
     <HorizontalTabsContainer value={value} onChange={onChange} sx={sx}>
@@ -45,7 +43,6 @@ export const HorizontalTabs = ({
           label={tab.label}
           size={size}
           onClick={onTabClick(tab.value)}
-          sx={tabSx}
           disabled={tab.disabled}
         />
       ))}
