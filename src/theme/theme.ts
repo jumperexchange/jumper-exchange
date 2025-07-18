@@ -1,10 +1,10 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type {
+  Color,
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
-  Color,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -1079,7 +1079,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           },
           text: {
             primary: '#000',
-            secondary: alpha(themeBase.palette.black.main, 0.75),
+            secondary: alpha(themeBase.palette.black.main, 0.75), // @todo FIGMA: text.secondary should have alpha 64%
           },
           grey: {
             100: 'rgba(0, 0, 0, 0.04)',
@@ -1135,6 +1135,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#8700B8',
           },
           surface1: {
+            // @todo FIGMA: surface1 should be #FCFAFF
             light: '#faf5ff',
             main: '#faf5ff',
             dark: '#faf5ff',
@@ -1171,7 +1172,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           },
           text: {
             primary: '#fff',
-            secondary: alpha(themeBase.palette.white.main, 0.75),
+            secondary: alpha(themeBase.palette.white.main, 0.75), // @todo FIGMA: text.secondary should have alpha 64%
           },
           grey: {
             100: 'rgba(255, 255, 255, 0.04)',
@@ -1227,6 +1228,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#D35CFF',
           },
           surface1: {
+            // @todo FIGMA: surface1 should be #302B52
             light: '#120F29',
             main: '#120F29',
             dark: '#120F29',

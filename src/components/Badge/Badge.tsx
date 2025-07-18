@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import {
   BadgeSize,
   BadgeVariant,
@@ -9,7 +9,7 @@ import {
 export interface BadgeProps {
   startIcon?: React.ReactElement;
   endIcon?: React.ReactElement;
-  label: string;
+  label: ReactNode;
   variant?: BadgeVariant;
   size?: BadgeSize;
   onClick?: () => void;

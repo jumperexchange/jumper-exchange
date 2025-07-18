@@ -127,16 +127,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
               }
             : false
         }
-        autoplay={
-          !isMobile
-            ? {
-                delay: autoplayDelay,
-                disableOnInteraction: true,
-                pauseOnMouseEnter: true,
-                ...autoplay,
-              }
-            : false
-        }
+        autoplay={false}
         loop={true}
         rewind={true}
         breakpoints={breakpoints}
