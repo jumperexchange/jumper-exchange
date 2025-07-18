@@ -1,7 +1,8 @@
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { Badge } from './Badge';
-import { BadgeVariant, BadgeSize } from './Badge.styles';
+import { BadgeSize, BadgeVariant } from './Badge.styles';
 
 const meta = {
   component: Badge,
@@ -15,13 +16,59 @@ const meta = {
       options: Object.values(BadgeSize),
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '1rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Default: Story = {
   args: {
-    label: 'Badge',
+    label: 'Default Badge',
+    variant: BadgeVariant.Default,
+    size: BadgeSize.MD,
+  },
+};
+
+export const Clickable: Story = {
+  args: {
+    label: 'Click Me',
+    variant: BadgeVariant.Primary,
+    size: BadgeSize.MD,
+    onClick: () => alert('Badge clicked!'),
+  },
+};
+
+export const WithStartIcon: Story = {
+  args: {
+    label: 'Start Icon',
+    variant: BadgeVariant.Alpha,
+    size: BadgeSize.MD,
+    startIcon: <PanoramaFishEyeIcon />,
+  },
+};
+
+export const WithEndIcon: Story = {
+  args: {
+    label: 'End Icon',
+    variant: BadgeVariant.Alpha,
+    size: BadgeSize.MD,
+    endIcon: <PanoramaFishEyeIcon />,
+  },
+};
+
+export const WithBothIcons: Story = {
+  args: {
+    label: 'Both Icons',
+    variant: BadgeVariant.Alpha,
+    size: BadgeSize.MD,
+    startIcon: <PanoramaFishEyeIcon />,
+    endIcon: <PanoramaFishEyeIcon />,
   },
 };
