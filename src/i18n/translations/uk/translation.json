@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
-      "buy": "Купівля"
+      "buy": "Купівля",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -110,7 +111,8 @@
     "learnMore": "Дізнатися більше"
   },
   "button": {
-    "okay": "Добре"
+    "okay": "Добре",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
@@ -143,6 +145,12 @@
   "missions": {
     "available": "Доступні місії",
     "completed": "Виконані місії",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "Поділитися профілем",
     "open": "Відкрити {{tool}}",
     "rewards": "Отримані винагороди"
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "Таблиця лідерів",
