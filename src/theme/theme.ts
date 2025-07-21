@@ -1,10 +1,10 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type {
+  Color,
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
-  Color,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -1153,10 +1153,12 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         // @ts-expect-error
         shadows: [
           'none',
-          '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-          '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-          ...themeBase.shadows.slice(3),
-        ],
+          '0px 2px 8px rgba(0, 0, 0, 0.04)',
+          '0px 2px 8px rgba(0, 0, 0, 0.08)',
+          '0px 4px 12px rgba(0, 0, 0, 0.08)',
+          '0px 4px 24px rgba(0, 0, 0, 0.08)',
+          ...themeBase.shadows.slice(5),
+        ] as Theme['shadows'],
       },
       dark: {
         palette: {
@@ -1245,10 +1247,12 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         // @ts-expect-error
         shadows: [
           'none',
-          '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-          '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
-          ...themeBase.shadows.slice(3),
-        ],
+          '0px 2px 8px rgba(0, 0, 0, 0.04)',
+          '0px 2px 8px rgba(0, 0, 0, 0.08)',
+          '0px 4px 12px rgba(0, 0, 0, 0.08)',
+          '0px 4px 24px rgba(0, 0, 0, 0.08)',
+          ...themeBase.shadows.slice(5),
+        ] as Theme['shadows'],
       },
     },
   });

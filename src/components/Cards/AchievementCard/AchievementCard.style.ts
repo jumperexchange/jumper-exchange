@@ -14,12 +14,12 @@ import { singleLineEllipsis } from 'src/utils/textEllipsis';
 export const AchievementCardContainer = styled(Card)(({ theme }) => ({
   width: 296,
   height: 420,
-  boxShadow: theme.shadows[2],
+  boxShadow: theme.shadows[1],
   borderRadius: theme.shape.borderRadius,
   overflow: 'hidden',
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   '&:hover': {
-    boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4
+    boxShadow: theme.shadows[4],
   },
 }));
 
