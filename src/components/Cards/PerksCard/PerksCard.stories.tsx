@@ -86,9 +86,9 @@ export const NansenPerksCardWithUnlockedBadge: Story = {
 
 export const PerksCardWithLargeTitleAndDescription: Story = {
   args: {
-    title: 'NansenNansenNansenNansenNansenNansenNansenNansenNansenNansen',
+    title: 'This is a very long title that should be truncated',
     description:
-      'Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.',
+      'This is a very long description that should be truncated [lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]',
     imageUrl:
       'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
     badge: (
