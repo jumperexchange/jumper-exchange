@@ -1,11 +1,12 @@
+import { Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { multilineEllipsis, singleLineEllipsis } from 'src/utils/textEllipsis';
 import {
   PerksCardActionArea,
   PerksCardBadgeContainer,
   PerksCardContainer,
   PerksCardContent,
   PerksCardImage,
-  PerksCardTypography,
 } from './PerksCard.style';
 interface PerksCardProps {
   title: string;
@@ -30,18 +31,18 @@ export const PerksCard = ({
           height={192}
         />
         <PerksCardContent>
-          <PerksCardTypography variant="bodyLargeStrong">
+          <Typography variant="bodyLargeStrong" sx={singleLineEllipsis}>
             {title}
-          </PerksCardTypography>
-          <PerksCardTypography
+          </Typography>
+          <Typography
             variant="bodySmall"
             sx={(theme) => ({
-              maxHeight: 60,
-              color: (theme.vars || theme).palette.text.secondary, // @todo: wrong alpha color
+              color: (theme.vars || theme).palette.text.secondary,
+              ...multilineEllipsis(60, 3), // 60px max height, 3 lines
             })}
           >
             {description}
-          </PerksCardTypography>
+          </Typography>
           {badge && <PerksCardBadgeContainer>{badge}</PerksCardBadgeContainer>}
         </PerksCardContent>
       </PerksCardActionArea>

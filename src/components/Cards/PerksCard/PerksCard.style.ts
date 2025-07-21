@@ -1,11 +1,5 @@
 'use client';
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardActionArea, CardContent } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
@@ -48,12 +42,6 @@ export const PerksCardBadgeContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   flex: 'auto',
-}));
-
-export const PerksCardTypography = styled(Typography)(() => ({
-  maxWidth: '100%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
 }));
 
 export const PerksCardActionArea = styled(CardActionArea)(() => ({
