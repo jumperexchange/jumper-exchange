@@ -25,13 +25,13 @@ export const MissionHeroStatsBox = styled(Box, {
     overflow: 'hidden',
 
     ...(variant === MissionHeroStatsCardVariant.Default && {
-      color: (theme.vars || theme).palette.alphaLight900.main,
+      color: (theme.vars || theme).palette.textPrimaryInverted,
       backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
       border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
     }),
 
     ...(variant === MissionHeroStatsCardVariant.Inverted && {
-      color: (theme.vars || theme).palette.alphaDark900.main,
+      color: (theme.vars || theme).palette.textPrimary,
       backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
       border: `1px solid ${(theme.vars || theme).palette.alphaDark200.main}`,
     }),

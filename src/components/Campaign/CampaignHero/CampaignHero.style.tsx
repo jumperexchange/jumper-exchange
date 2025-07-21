@@ -22,10 +22,7 @@ export const CampaignHeroCardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   overflow: 'hidden',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.white.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 export const CampaignHeroCardImageWrapper = styled(Box)(({}) => ({
@@ -77,9 +74,9 @@ export const CampaignHeroCardContentContainer = styled(Box)(({ theme }) => ({
 export const CampaignHeroCardTitle = styled(Typography)(({}) => ({}));
 
 export const CampaignHeroCardDescription = styled(Typography)(({ theme }) => ({
-  color: theme.palette.alphaLight700.main,
+  color: (theme.vars || theme).palette.alpha700.main,
   ...theme.applyStyles('light', {
-    color: theme.palette.alphaDark700.main,
+    color: theme.palette.text.secondary,
   }),
 }));
 

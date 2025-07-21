@@ -22,12 +22,8 @@ export const TaskContainer = styled(Box, {
   gap: theme.spacing(1.5),
   transition: 'all .2s ease-in',
   ...(isActive && {
-    border: `1px solid ${(theme.vars || theme).palette.orchid[600]}`,
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
-    ...theme.applyStyles('light', {
-      border: `1px solid ${(theme.vars || theme).palette.orchid[400]}`,
-      backgroundColor: (theme.vars || theme).palette.orchid[100],
-    }),
+    border: `1px solid ${(theme.vars || theme).palette.borderActive}`,
+    backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
   }),
 }));
 

@@ -197,7 +197,8 @@ export const FloatingNavigationButton = styled(IconButtonSecondary)(
     height: 40,
     fontSize: 22,
     border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
+    backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+    color: (theme.vars || theme).palette.buttonLightAction,
     ':hover': {
       backgroundColor: (theme.vars || theme).palette.alphaLight900.main,
     },

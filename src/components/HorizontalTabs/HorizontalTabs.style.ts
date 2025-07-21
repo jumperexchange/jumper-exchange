@@ -9,7 +9,7 @@ export enum HorizontalTabSize {
 
 export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
   flex: 1,
-  backgroundColor: (theme.vars || theme).palette.surface3.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   padding: theme.spacing(0.5),
   borderRadius: theme.shape.tabBarRadius,
   display: 'inline-flex',
@@ -31,11 +31,8 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     width: '100%',
     borderRadius: 24,
     transform: 'translateX(0) scaleX(0.98)',
-    backgroundColor: (theme.vars || theme).palette.surface2.main, // @todo: adjust color to use surface1 '#302B52'
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
     zIndex: 1,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
-    }),
   },
 }));
 
@@ -45,7 +42,7 @@ interface HorizontalTabProps extends TabProps {
 
 export const HorizontalTabContainer = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<HorizontalTabProps>(({ theme, size = HorizontalTabSize.MD }) => ({
+})<HorizontalTabProps>(({ theme, disabled, size = HorizontalTabSize.MD }) => ({
   ...theme.typography.bodyMedium,
   fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',
@@ -53,9 +50,10 @@ export const HorizontalTabContainer = styled(Tab, {
   width: 'auto',
   background: 'transparent',
   margin: 0,
-  transition: 'all 0.2s ease-in-out',
-  color: `${(theme.vars || theme).palette.text.primary} !important`,
-  opacity: 1,
+  transition: 'all .2s ease-in-out',
+  color: disabled
+    ? `${(theme.vars || theme).palette.text.disabled} !important`
+    : `${(theme.vars || theme).palette.text.primary} !important`,
   zIndex: 1,
   flex: 1,
   [theme.breakpoints.up('md')]: {
@@ -68,14 +66,19 @@ export const HorizontalTabContainer = styled(Tab, {
     zIndex: 2,
     color: 'inherit',
   },
-  ...theme.applyStyles('light', {
-    color: `${(theme.vars || theme).palette.text.primary} !important`,
+  ...(!disabled && {
+    ':hover': {
+      backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+      ...theme.applyStyles('light', {
+        backgroundColor: (theme.vars || theme).palette.buttonAlphaLightBg,
+      }),
+    },
   }),
-  ':hover': {
-    backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
-    }),
+
+  '&.Mui-selected': {
+    boxShadow: theme.shadows[2],
+    pointerEvents: 'none',
+    backgroundColor: 'transparent',
   },
 
   variants: [
