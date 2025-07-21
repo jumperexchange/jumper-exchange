@@ -3,32 +3,53 @@ import {
   AchievementCardActionArea,
   AchievementCardContainer,
   AchievementCardContent,
-  AchievementCardImage,
   AchievementCardLabel,
   AchievementCardTypography,
+  BaseSkeleton,
+  StyledAchievementCardImage,
 } from './AchievementCard.style';
+import { AchievementCardSkeleton } from './AchievementCardSkeleton';
 interface AchievementCardProps {
   title: string;
   description: string;
-  image: string;
+  imageUrl: string;
   badge?: ReactNode;
+  isLoading?: boolean;
 }
 
 export const AchievementCard = ({
   title,
   description,
-  image,
+  imageUrl,
   badge,
+  isLoading,
 }: AchievementCardProps) => {
+  if (isLoading) {
+    return <AchievementCardSkeleton />;
+  }
+
   return (
     <AchievementCardContainer>
-      <AchievementCardActionArea disableRipple>
-        <AchievementCardImage
-          src={image}
-          alt={`achievement-card-${title}`}
-          width={320}
-          height={320}
-        />
+      <AchievementCardActionArea focusRipple={false} disabled>
+        {imageUrl ? (
+          <StyledAchievementCardImage
+            src={imageUrl}
+            alt={`Image for ${title}`}
+            // For a next/image we need to set height/width
+            height={320}
+            width={320}
+            // @Note need to add priority to the first loaded items as LCP is impacted
+          />
+        ) : (
+          <BaseSkeleton
+            animation={false}
+            variant="rectangular"
+            sx={{
+              height: 320,
+              width: '100%',
+            }}
+          />
+        )}
         <AchievementCardContent>
           <AchievementCardLabel>
             <AchievementCardTypography variant="bodyLargeStrong">

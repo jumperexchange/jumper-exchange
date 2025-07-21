@@ -6,7 +6,7 @@ import { AchievementCard } from './AchievementCard';
 import { AchievementCardSkeleton } from './AchievementCardSkeleton';
 
 const meta = {
-  title: 'Components/AchievementCard',
+  title: 'Components/Cards/AchievementCard',
   component: AchievementCard,
   parameters: {
     layout: 'centered',
@@ -21,7 +21,7 @@ export const ChainoorWithBadge: Story = {
   args: {
     title: 'Chain_oor',
     description: 'November 2024',
-    image:
+    imageUrl:
       'https://storage.googleapis.com/jumper-static-assets/upload/chainoor.png',
     badge: (
       <Badge
@@ -41,8 +41,26 @@ export const SwapoorWithBadge: Story = {
   args: {
     title: 'Swap_oor',
     description: 'October 2024',
-    image:
+    imageUrl:
       'https://storage.googleapis.com/jumper-static-assets/upload/swapoor.png',
+    badge: (
+      <Badge
+        label={
+          <Typography component="span" variant="bodySmallStrong">
+            10 XP
+          </Typography>
+        }
+        variant={BadgeVariant.Alpha}
+        size={BadgeSize.MD}
+      />
+    ),
+  },
+};
+
+export const CampaignWithMissingImageUrl: Story = {
+  args: {
+    title: 'Swap_oor',
+    description: 'October 2024',
     badge: (
       <Badge
         label={
@@ -61,7 +79,7 @@ export const CampaignWithDisabledBadge: Story = {
   args: {
     title: 'SuperSeiyan Week',
     description: 'September 2024',
-    image:
+    imageUrl:
       'https://storage.googleapis.com/jumper-static-assets/upload/superseiyan_week.jpg',
     badge: (
       <Badge
@@ -81,7 +99,7 @@ export const CampaignWithLargeTitle: Story = {
   args: {
     title: 'MerryJumperChristmas',
     description: 'December 2024',
-    image:
+    imageUrl:
       'https://storage.googleapis.com/jumper-static-assets/upload/superseiyan_week.jpg',
     badge: (
       <Badge
@@ -97,4 +115,4 @@ export const CampaignWithLargeTitle: Story = {
   },
 };
 
-export const Skeleton = () => <AchievementCardSkeleton />;
+export const Loading = () => <AchievementCardSkeleton />;

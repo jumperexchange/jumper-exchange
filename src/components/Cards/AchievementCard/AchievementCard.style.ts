@@ -4,19 +4,19 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
-export const AchievementCardContainer = styled(Card)(({ theme }) => ({
+export const AchievementCardContainer = styled(Card)(({ theme, onClick }) => ({
+  borderRadius: theme.shape.cardBorderRadius,
+  boxShadow: theme.shadows[2],
   width: 296,
   height: 420,
-  boxShadow: theme.shadows[1],
-  borderRadius: theme.shape.borderRadius,
-  overflow: 'hidden',
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  cursor: onClick ? 'pointer' : 'default',
   '&:hover': {
     boxShadow: theme.shadows[4],
   },
@@ -29,6 +29,10 @@ export const AchievementCardContent = styled(CardContent)(({ theme }) => ({
   padding: theme.spacing(3),
   width: '100%',
   gap: theme.spacing(1),
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
   '.badge-container': {
     flexShrink: 0,
   },
@@ -64,9 +68,31 @@ export const AchievementCardActionArea = styled(CardActionArea)(() => ({
   },
 }));
 
-export const AchievementCardImage = styled(Image)(({ theme }) => ({
-  width: '100%',
-  aspectRatio: '1/1',
+// Image
+
+export const StyledAchievementCardImageContainer = styled(Box)(() => ({
+  display: 'block',
+  position: 'relative',
+}));
+
+export const StyledAchievementCardImage = styled(Image)(({ theme }) => ({
   objectFit: 'cover',
-  justifySelf: 'center',
+  objectPosition: 'center',
+  aspectRatio: '1 / 1',
+  height: '100%',
+  width: '100%',
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.white.main,
+  }),
+}));
+
+// Skeletons
+
+export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.grey[100],
+}));
+
+export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
