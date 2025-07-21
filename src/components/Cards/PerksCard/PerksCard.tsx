@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { ReactNode } from 'react';
-import { multilineEllipsis, singleLineEllipsis } from 'src/utils/textEllipsis';
+import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 import {
   PerksCardActionArea,
   PerksCardBadgeContainer,
@@ -31,14 +31,14 @@ export const PerksCard = ({
           height={192}
         />
         <PerksCardContent>
-          <Typography variant="bodyLargeStrong" sx={singleLineEllipsis}>
+          <Typography variant="bodyLargeStrong" sx={getTextEllipsisStyles(1)}>
             {title}
           </Typography>
           <Typography
             variant="bodySmall"
             sx={(theme) => ({
               color: (theme.vars || theme).palette.text.secondary,
-              ...multilineEllipsis(60, 3), // 60px max height, 3 lines
+              ...getTextEllipsisStyles(60, 3), // 60px max height, 3 lines
             })}
           >
             {description}
