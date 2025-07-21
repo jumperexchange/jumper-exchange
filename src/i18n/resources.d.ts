@@ -179,6 +179,10 @@ interface Resources {
           verify: 'Verify';
           verified: 'Verified';
         };
+        action: {
+          verify: 'Verify';
+          go: 'Go';
+        };
       };
     };
     profile_page: {
