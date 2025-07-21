@@ -184,6 +184,12 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             endIcon={<OpenInNewRoundedIcon />}
             disabled={!projectData?.integratorLink}
             onClick={onClickHandler}
+            styles={(theme) => ({
+              background: (theme.vars || theme).palette.alphaLight100.main,
+              ...theme.applyStyles('light', {
+                background: (theme.vars || theme).palette.alphaDark100.main,
+              }),
+            })}
           >
             {t('button.manageYourPosition')}
           </Button>
