@@ -40,6 +40,7 @@ export const RewardCardContainer = styled(Box)(({ theme }) => ({
   marginRight: theme.spacing(2),
   width: theme.spacing(36),
   maxWidth: theme.spacing(36),
+  boxShadow: theme.shadows[2],
 
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.white.main,

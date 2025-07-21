@@ -12,10 +12,15 @@ export const RewardsCarousel: FC<RewardsCarouselProps> = ({ children }) => {
     <RewardsCarouselContainer>
       <Carousel
         fixedSlideWidth={true}
+        shouldAutoplay={false}
         sx={{
-          '.carousel-swiper': {
-            marginTop: 0,
-            paddingBottom: 0,
+          '.carousel-swiper.swiper': {
+            marginTop: `${theme.spacing(-2)} !important`,
+            marginBottom: `${theme.spacing(-2)} !important`,
+            marginLeft: `${theme.spacing(-0.5)} !important`,
+            paddingBottom: `${theme.spacing(2)} !important`,
+            paddingTop: `${theme.spacing(2)} !important`,
+            paddingLeft: `${theme.spacing(0.5)} !important`,
           },
           '.carousel-swiper .swiper-slide': {
             marginRight: '0 !important',

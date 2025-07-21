@@ -3,7 +3,7 @@
 import { useTranslation } from 'react-i18next';
 import {
   RewardsSectionContentContainer,
-  IntroSectionContainer,
+  RewardsSectionContainer,
 } from './Section.style';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
@@ -12,12 +12,10 @@ import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCard } from '../components/RewardsCarousel/RewardClaimCard';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/RewardClaimCardSkeleton';
-import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 
 export const RewardsSection = () => {
   const { t } = useTranslation();
-  // const { walletAddress: address } = useContext(ProfileContext);
-  const address = '0xb29601eB52a052042FB6c68C69a442BD0AE90082';
+  const { walletAddress: address } = useContext(ProfileContext);
 
   const { availableRewards, isSuccess, isLoading } = useMerklRewards({
     userAddress: address,
@@ -34,7 +32,7 @@ export const RewardsSection = () => {
   }
 
   return (
-    <SectionCard>
+    <RewardsSectionContainer>
       <RewardsSectionContentContainer>
         <Typography variant="titleXSmall" sx={{ flexShrink: 0 }}>
           {t('profile_page.availableRewards')}
@@ -52,6 +50,6 @@ export const RewardsSection = () => {
               ))}
         </RewardsCarousel>
       </RewardsSectionContentContainer>
-    </SectionCard>
+    </RewardsSectionContainer>
   );
 };

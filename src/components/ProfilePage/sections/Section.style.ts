@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 export const IntroSectionContainer = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -10,6 +11,12 @@ export const IntroSectionContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const RewardsSectionContainer = styled(SectionCardContainer)(
+  ({ theme }) => ({
+    overflowX: 'hidden',
+  }),
+);
 
 export const RewardsSectionContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',

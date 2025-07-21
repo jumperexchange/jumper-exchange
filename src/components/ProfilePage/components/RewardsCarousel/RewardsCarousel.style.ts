@@ -3,5 +3,4 @@ import { styled } from '@mui/material/styles';
 
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   width: '100%',
-  overflow: 'hidden',
 }));
