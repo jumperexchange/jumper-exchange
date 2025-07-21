@@ -2,7 +2,7 @@ import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { Badge } from './Badge';
-import { BadgeSize, BadgeVariant } from './Badge.styles';
+import { BadgeVariant, BadgeSize } from './Badge.styles';
 
 const meta = {
   component: Badge,
@@ -21,9 +21,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Primary: Story = {
   args: {
-    label: 'Default Badge',
+    label: 'Badge',
     variant: BadgeVariant.Default,
     size: BadgeSize.MD,
   },
