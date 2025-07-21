@@ -4,7 +4,6 @@ import { useMenuStore } from '@/stores/menu';
 // import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
 // import useMediaQuery from '@mui/material/useMediaQuery';
-import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
@@ -15,11 +14,14 @@ import {
   JUMPER_WALLET_PATH,
 } from 'src/const/urls';
 import {
-  DotsMenuIcon,
   MenuToggle,
+  DotsMenuIcon,
   NavbarButtonsContainer,
   RedirectToApp,
+  // FloatingLinksContainer,
+  // LinksContainer,
 } from '.';
+import dynamic from 'next/dynamic';
 // import { Links } from './Links';
 
 const WalletButtons = dynamic(
