@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "ダッシュボード",
       "refuel": "リフューエル",
-      "buy": "購入"
+      "buy": "購入",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
@@ -110,7 +111,8 @@
     "learnMore": "さらに詳しく"
   },
   "button": {
-    "okay": "OK"
+    "okay": "OK",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "問題が発生しました。ページを再読み込みしてください。問題が解決しない場合はサポートにお問い合わせください。"
@@ -143,6 +145,12 @@
   "missions": {
     "available": "利用可能なミッション",
     "completed": "完了したミッション",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",

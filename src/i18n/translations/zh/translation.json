@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "面板",
       "refuel": "兑换燃气费",
-      "buy": "购买"
+      "buy": "购买",
+      "back": ""
     },
     "statsCards": {
       "dexs": "交易所",
@@ -110,7 +111,8 @@
     "learnMore": "了解更多"
   },
   "button": {
-    "okay": "确认"
+    "okay": "确认",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "出错了，请尝试刷新页面。如果问题仍然存在，请联系我们。"
@@ -143,6 +145,12 @@
   "missions": {
     "available": "现有任务",
     "completed": "已完成的任务",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",

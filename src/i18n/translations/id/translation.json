@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Dasbor",
       "refuel": "",
-      "buy": "Beli"
+      "buy": "Beli",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
@@ -110,7 +111,8 @@
     "learnMore": "Pelajari lebih lanjut"
   },
   "button": {
-    "okay": "Oke"
+    "okay": "Oke",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Ada yang salah. Silakan coba memuat ulang halaman tersebut. Jika masalah terus berlanjut, hubungi dukungan kami."
@@ -143,6 +145,12 @@
   "missions": {
     "available": "Misi yang tersedia",
     "completed": "Misi yang telah selesai",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
