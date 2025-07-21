@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "대시보드",
       "refuel": "가스",
-      "buy": "매수"
+      "buy": "매수",
+      "back": ""
     },
     "statsCards": {
       "dexs": "",
@@ -110,7 +111,8 @@
     "learnMore": ""
   },
   "button": {
-    "okay": ""
+    "okay": "",
+    "manageYourPosition": ""
   },
   "error": {
     "message": ""
@@ -143,6 +145,12 @@
   "missions": {
     "available": "",
     "completed": "",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",

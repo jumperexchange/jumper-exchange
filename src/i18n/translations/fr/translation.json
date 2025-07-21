@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Tableau de bord",
       "refuel": "Gaz",
-      "buy": "Acheter"
+      "buy": "Acheter",
+      "back": ""
     },
     "statsCards": {
       "dexs": "",
@@ -110,7 +111,8 @@
     "learnMore": "Plus d'info"
   },
   "button": {
-    "okay": "Ok"
+    "okay": "Ok",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Une erreur s'est produite. Essayez de recharger la page. Si le problème persiste, contactez notre support."
@@ -143,6 +145,12 @@
   "missions": {
     "available": "Missions Disponibles",
     "completed": "Missions Complétées",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "Partager le profil",
     "open": "Ouvrir {{tool}}",
     "rewards": "Récompenses gagnées"
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "Classement",
@@ -211,7 +224,7 @@
     "tvl": "Valeur totale des actifs crypto déposés sur ce marché.",
     "apy": "Taux de rendement annuel attendu des jetons investis.",
     "deposit": "Le jeton affiché est le jeton requis pour effectuer un dépôt sur ce marché.",
-    "deposited": "Montant que vous avez déposé sur ce marché.",
+    "deposited": "",
     "boostedApy": "APY supplémentaire que vous obtenez en participant à cette campagne avec Jumper. Cet APY sera payé en {{token}}."
   },
   "widget": {

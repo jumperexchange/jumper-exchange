@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Panel",
       "refuel": "",
-      "buy": "Comprar"
+      "buy": "Comprar",
+      "back": ""
     },
     "statsCards": {
       "dexs": "",
@@ -110,7 +111,8 @@
     "learnMore": "Aprende más"
   },
   "button": {
-    "okay": ""
+    "okay": "",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Algo salió mal. Por favor, intente recargar la página. Si el problema persiste, póngase en contacto con nuestro soporte."
@@ -143,6 +145,12 @@
   "missions": {
     "available": "Misiones Disponibles",
     "completed": "Misiones Completadas",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +182,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
