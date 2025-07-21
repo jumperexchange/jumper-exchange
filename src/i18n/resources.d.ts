@@ -194,6 +194,7 @@ interface Resources {
       shareProfile: 'Share profile';
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
+      availableRewards: 'Available Rewards';
     };
     campaign: {
       missions: {
@@ -235,7 +236,7 @@ interface Resources {
     tooltips: {
       tvl: 'Total value of crypto assets deposited in this market.';
       apy: 'Expected yearly return rate of the tokens invested.';
-      deposit: 'The displayed token is the token on which the market is defined and yield accrues on.';
+      deposit: 'The token on which the market is defined and yield accrues on.';
       deposited: 'The token you have deposited into this market.';
       boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. There is an additional {{boostedApy}}% in extra rewards paid in other tokens, check the protocol website for more information.';
     };

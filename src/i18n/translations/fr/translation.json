@@ -143,6 +143,11 @@
     "new": "Nouveau"
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "Missions Disponibles",
     "completed": "Missions Complétées",
     "mission": {
@@ -223,11 +228,18 @@
   "tooltips": {
     "tvl": "Valeur totale des actifs crypto déposés sur ce marché.",
     "apy": "Taux de rendement annuel attendu des jetons investis.",
-    "deposit": "Le jeton affiché est le jeton requis pour effectuer un dépôt sur ce marché.",
+    "deposit": "",
     "deposited": "",
-    "boostedApy": "APY supplémentaire que vous obtenez en participant à cette campagne avec Jumper. Cet APY sera payé en {{token}}."
+    "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""
