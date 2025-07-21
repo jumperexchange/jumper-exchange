@@ -1,10 +1,10 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type {
-  Color,
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
+  Color,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
