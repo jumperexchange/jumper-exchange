@@ -34,18 +34,24 @@ export const HorizontalTabs = ({
 }: HorizontalTabsProps) => {
   return (
     <HorizontalTabsContainer value={value} onChange={onChange} sx={sx}>
-      {tabs.map((tab) => (
-        <HorizontalTab
-          key={tab.value}
-          value={tab.value}
-          startAdornment={tab.startAdornment}
-          endAdornment={tab.endAdornment}
-          label={tab.label}
-          size={size}
-          onClick={onTabClick(tab.value)}
-          disabled={tab.disabled}
-        />
-      ))}
+      {tabs.map((tab) => {
+        if (!tab.label && !tab.startAdornment && !tab.endAdornment) {
+          return null;
+        }
+
+        return (
+          <HorizontalTab
+            key={tab.value}
+            value={tab.value}
+            startAdornment={tab.startAdornment}
+            endAdornment={tab.endAdornment}
+            label={tab.label}
+            size={size}
+            onClick={onTabClick(tab.value)}
+            disabled={tab.disabled}
+          />
+        );
+      })}
     </HorizontalTabsContainer>
   );
 };

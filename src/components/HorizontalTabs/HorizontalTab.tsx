@@ -22,14 +22,6 @@ export const HorizontalTab = ({
   onClick,
   sx,
 }: HorizontalTabProps) => {
-  const hasStartAdornment = startAdornment != null && startAdornment !== '';
-  const hasLabel = label != null && label !== '';
-  const hasEndAdornment = endAdornment != null && endAdornment !== '';
-
-  if (!hasStartAdornment && !hasLabel && !hasEndAdornment) {
-    return null;
-  }
-
   return (
     <HorizontalTabContainer
       size={size}
