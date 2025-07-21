@@ -95,10 +95,11 @@ export const CampaignWithDisabledBadge: Story = {
   },
 };
 
-export const CampaignWithLargeTitle: Story = {
+export const CampaignWithLargeTitleAndDescription: Story = {
   args: {
-    title: 'MerryJumperChristmas',
-    description: 'December 2024',
+    title: 'This is a very long title that should be truncated',
+    description:
+      'This is a very long description that should be truncated [lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]',
     imageUrl:
       'https://storage.googleapis.com/jumper-static-assets/upload/superseiyan_week.jpg',
     badge: (
