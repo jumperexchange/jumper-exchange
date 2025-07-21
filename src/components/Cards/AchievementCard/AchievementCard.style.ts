@@ -9,6 +9,7 @@ import {
 
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
+import { singleLineEllipsis } from 'src/utils/textEllipsis';
 
 export const AchievementCardContainer = styled(Card)(({ theme }) => ({
   width: 296,
@@ -49,9 +50,7 @@ export const AchievementCardLabel = styled(Box)(({ theme }) => ({
 }));
 
 export const AchievementCardTypography = styled(Typography)(() => ({
-  maxWidth: '100%',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  ...singleLineEllipsis,
 }));
 
 export const AchievementCardActionArea = styled(CardActionArea)(() => ({
