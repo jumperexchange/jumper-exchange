@@ -85,8 +85,8 @@ export const AddressCard: FC<AddressCardProps> = () => {
         <ImageForeground
           alt="Blockie Wallet Icon"
           src={nftImageLink || walletAddressImageLink}
-          width={140}
-          height={140}
+          width={128}
+          height={128}
           priority={false}
           unoptimized={true}
         />

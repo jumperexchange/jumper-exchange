@@ -80,8 +80,8 @@ declare module '@mui/material/styles' {
     azure: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     scarlet: Pick<Color, 100 | 500>;
     orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
-    lavenderLight: Pick<Color, 100 | 200 | 300 | 400>;
-    lavenderDark: Pick<Color, 100 | 200 | 300 | 400>;
+    lavenderLight: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    lavenderDark: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
   }
 
   interface PaletteOptions {
@@ -124,8 +124,8 @@ declare module '@mui/material/styles' {
     azure?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     scarlet?: Pick<Color, 100 | 500>;
     orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
-    lavenderLight?: Pick<Color, 100 | 200 | 300 | 400>;
-    lavenderDark?: Pick<Color, 100 | 200 | 300 | 400>;
+    lavenderLight?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    lavenderDark?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
   }
   interface ButtonPropsColorOverrides {
     tertiary: true;

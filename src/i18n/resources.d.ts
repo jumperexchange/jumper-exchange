@@ -198,6 +198,7 @@ interface Resources {
       shareProfile: 'Share profile';
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
+      availableRewards: 'Available Rewards';
     };
     campaign: {
       missions: {
