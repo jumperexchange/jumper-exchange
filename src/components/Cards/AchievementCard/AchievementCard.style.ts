@@ -18,7 +18,7 @@ export const AchievementCardContainer = styled(Card)(({ theme, onClick }) => ({
   height: 420,
   cursor: onClick ? 'pointer' : 'default',
   '&:hover': {
-    boxShadow: theme.shadows[4],
+    boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.08)',
   },
 }));
 
