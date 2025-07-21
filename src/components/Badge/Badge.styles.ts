@@ -173,8 +173,8 @@ export const StyledBadge = styled(Box, {
           backgroundColor: (theme.vars || theme).palette.primary.main,
           color: (theme.vars || theme).palette.accent1Alt.main,
           ...theme.applyStyles('light', {
-            backgroundColor: '#F0E5FF', //@TODO this needs to be aligned based on the lavender color
-            color: '#30007A', //@TODO this needs to be aligned based on the lavender color
+            backgroundColor: (theme.vars || theme).palette.lavenderLight[400],
+            color: (theme.vars || theme).palette.lavenderDark[0],
           }),
         },
       },
