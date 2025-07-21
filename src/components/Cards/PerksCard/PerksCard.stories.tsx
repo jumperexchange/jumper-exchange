@@ -23,7 +23,7 @@ export const NansenPerksCard: Story = {
     title: 'Nansen',
     description:
       'Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.',
-    image:
+    imageUrl:
       'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
     badge: (
       <>
@@ -56,7 +56,7 @@ export const NansenPerksCardWithUnlockedBadge: Story = {
     title: 'Nansen',
     description:
       'Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.',
-    image:
+    imageUrl:
       'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
     badge: (
       <>
@@ -89,7 +89,7 @@ export const PerksCardWithLargeTitleAndDescription: Story = {
     title: 'NansenNansenNansenNansenNansenNansenNansenNansenNansenNansen',
     description:
       'Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.',
-    image:
+    imageUrl:
       'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
     badge: (
       <>

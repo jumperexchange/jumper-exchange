@@ -1,5 +1,11 @@
 'use client';
-import { Box, Card, CardActionArea, CardContent } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Skeleton,
+} from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
@@ -9,8 +15,8 @@ export const PerksCardContainer = styled(Card)(({ theme }) => ({
   height: 396,
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.borderRadius,
+  backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
   overflow: 'hidden',
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
   '&:hover': {
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4
   },
@@ -61,4 +67,14 @@ export const PerksCardImage = styled(Image)(({ theme }) => ({
   aspectRatio: '2/1',
   objectFit: 'cover',
   justifySelf: 'center',
+}));
+
+// Skeletons
+
+export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.grey[100],
+}));
+
+export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
