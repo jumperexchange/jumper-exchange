@@ -36,7 +36,6 @@ export const useVerifyTaskWithSharedState = (
 
   const handleVerifyTask = useCallback(
     (extraParams?: { [key: string]: string }) => {
-      console.log(missionId, taskId, taskName);
       trackEvent({
         category: TrackingCategory.Quests,
         action: TrackingAction.ClickMissionCtaSteps,
