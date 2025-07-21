@@ -5,17 +5,16 @@ import Typography, { TypographyProps } from '@mui/material/Typography';
 import { ButtonSecondary } from 'src/components/Button';
 
 export const RankCardContainer = styled(Box)(({ theme }) => ({
-  borderRadius: theme.shape.cardBorderRadius,
-  boxShadow: (theme.vars || theme).shadows[1],
-  background: (theme.vars || theme).palette.surface1.main,
-  padding: theme.spacing(3),
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(0.75),
   width: '100%',
   [theme.breakpoints.up('lg')]: {
     maxWidth: 256,
   },
+}));
+
+export const RankCardContentContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(0.75),
 }));
 
 interface RankUserPositionProps extends TypographyProps {
@@ -35,7 +34,7 @@ export const RankUserPosition = styled(Typography, {
 }));
 
 export const RankButtonContainer = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(1.5),
+  marginTop: theme.spacing(2),
 }));
 
 export const RankButton = styled(ButtonSecondary)(({ theme }) => ({
