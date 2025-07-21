@@ -38,6 +38,7 @@ interface CarouselProps {
   };
   fixedSlideWidth?: boolean;
   autoplay?: AutoplayOptions;
+  shouldAutoplay?: boolean;
 }
 
 export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
@@ -51,6 +52,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   CarouselPagination,
   fixedSlideWidth = false,
   autoplay,
+  shouldAutoplay,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const swiperId = useId();
@@ -128,7 +130,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
             : false
         }
         autoplay={
-          !isMobile
+          shouldAutoplay && !isMobile
             ? {
                 delay: autoplayDelay,
                 disableOnInteraction: true,
