@@ -7,7 +7,7 @@ import { BadgeSize, BadgeVariant } from '../../Badge/Badge.styles';
 import { PerksCard } from './PerksCard';
 import { PerksCardSkeleton } from './PerksCardSkeleton';
 const meta = {
-  title: 'Components/PerksCard',
+  title: 'Components/Cards/PerksCard',
   component: PerksCard,
   parameters: {
     layout: 'centered',
