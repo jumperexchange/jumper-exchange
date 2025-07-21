@@ -13,6 +13,7 @@ import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
 export const AchievementCardContainer = styled(Card)(({ theme, onClick }) => ({
   borderRadius: theme.shape.cardBorderRadius,
+  backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
   boxShadow: theme.shadows[2],
   width: 296,
   height: 420,
