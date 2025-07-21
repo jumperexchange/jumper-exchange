@@ -70,11 +70,6 @@ export const AchievementCardActionArea = styled(CardActionArea)(() => ({
 
 // Image
 
-export const StyledAchievementCardImageContainer = styled(Box)(() => ({
-  display: 'block',
-  position: 'relative',
-}));
-
 export const StyledAchievementCardImage = styled(Image)(({ theme }) => ({
   objectFit: 'cover',
   objectPosition: 'center',
