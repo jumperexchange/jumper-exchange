@@ -9,6 +9,7 @@ import { useMissionStore } from 'src/stores/mission';
 import { TaskWidgetInformationInputData } from 'src/types/strapi';
 import { MissionInstructionFormContainer } from './MissionWidget.styles';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
+import { useTranslation } from 'react-i18next';
 
 const buildDynamicSchema = (taskInputs: TaskWidgetInformationInputData[]) => {
   const shape = taskInputs.reduce(
@@ -30,6 +31,10 @@ export const MissionForm = () => {
     currentActiveTaskName,
     missionId,
   } = useMissionStore();
+  const { t } = useTranslation();
+  const taskCTATextWithFallback =
+    taskCTAText ?? t('missions.tasks.action.verify');
+
   const [formValues, setFormValues] = useState<Record<string, string>>({});
 
   const { handleVerifyTask, isPending } = useVerifyTaskWithSharedState(
@@ -99,7 +104,7 @@ export const MissionForm = () => {
         variant={isFormValid && !isPending ? 'primary' : 'transparent'}
         type="submit"
       >
-        {taskCTAText}
+        {taskCTATextWithFallback}
       </Button>
     </MissionInstructionFormContainer>
   );

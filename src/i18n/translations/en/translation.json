@@ -171,6 +171,10 @@
       "status": {
         "verify": "Verify",
         "verified": "Verified"
+      },
+      "action": {
+        "verify": "Verify",
+        "go": "Go"
       }
     }
   },
@@ -186,7 +190,8 @@
     "copyAddress": "Copy wallet address",
     "shareProfile": "Share profile",
     "open": "Open {{tool}}",
-    "rewards": "Rewards Earned"
+    "rewards": "Rewards Earned",
+    "availableRewards": "Available Rewards"
   },
   "campaign": {
     "missions": {

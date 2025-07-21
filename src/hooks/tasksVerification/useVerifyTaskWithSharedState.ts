@@ -52,7 +52,7 @@ export const useVerifyTaskWithSharedState = (
         additionalFields: extraParams || {},
       });
     },
-    [missionId, accountAddress],
+    [missionId, taskId, taskName, accountAddress],
   );
 
   const handleReset = useCallback(() => {

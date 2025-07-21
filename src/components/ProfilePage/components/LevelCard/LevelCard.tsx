@@ -3,6 +3,7 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import {
   LevelCardContainer,
+  LevelCardContentContainer,
   LevelGroupContainer,
   LevelProgressContainer,
 } from './LevelCard.style';
@@ -14,13 +15,14 @@ import { PointsDisplay } from '../../LevelBox/PointsDisplay';
 import { CardBadgeHeader } from '../CardBadgeHeader/CardBadgeHeader';
 import { useTranslation } from 'react-i18next';
 import { LevelCardSkeleton } from './LevelCardSkeleton';
+import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 
 interface LevelCardProps {}
 
 export const LevelCard: FC<LevelCardProps> = () => {
   const { walletAddress, isLoading: isWalletLoading } =
     useContext(ProfileContext);
-  const { isLoading, points } = useLoyaltyPass(walletAddress);
+  const { isLoading, points = 0 } = useLoyaltyPass(walletAddress);
   const levelData = getLevelBasedOnPoints(points);
   const currentLevel = levelData.level ?? 0;
   const { t } = useTranslation();
@@ -31,29 +33,33 @@ export const LevelCard: FC<LevelCardProps> = () => {
 
   return (
     <LevelCardContainer>
-      <CardBadgeHeader
-        tooltip={t('profile_page.levelInfo')}
-        label={t('profile_page.level')}
-      />
+      <SectionCard>
+        <LevelCardContentContainer>
+          <CardBadgeHeader
+            tooltip={t('profile_page.levelInfo')}
+            label={t('profile_page.level')}
+          />
 
-      <LevelGroupContainer>
-        <PointsDisplay points={currentLevel} />
-        <PointsDisplay points={currentLevel + 1} />
-      </LevelGroupContainer>
-      <LevelProgressContainer>
-        <ProgressionBar
-          ongoingValue={points}
-          levelData={levelData}
-          loading={isLoading}
-          hideLevelIndicator
-        />
+          <LevelGroupContainer>
+            <PointsDisplay points={currentLevel} />
+            <PointsDisplay points={currentLevel + 1} />
+          </LevelGroupContainer>
+          <LevelProgressContainer>
+            <ProgressionBar
+              ongoingValue={points}
+              levelData={levelData}
+              loading={isLoading}
+              hideLevelIndicator
+            />
 
-        <Badge
-          label={`${points} XP`}
-          variant={BadgeVariant.Secondary}
-          size={BadgeSize.MD}
-        />
-      </LevelProgressContainer>
+            <Badge
+              label={`${points} XP`}
+              variant={BadgeVariant.Secondary}
+              size={BadgeSize.MD}
+            />
+          </LevelProgressContainer>
+        </LevelCardContentContainer>
+      </SectionCard>
     </LevelCardContainer>
   );
 };
