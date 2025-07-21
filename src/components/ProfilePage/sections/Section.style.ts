@@ -15,6 +15,10 @@ export const IntroSectionContainer = styled(Box)(({ theme }) => ({
 export const RewardsSectionContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
     overflowX: 'hidden',
+    backgroundColor: (theme.vars || theme).palette.surface3.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
+    }),
   }),
 );
 
