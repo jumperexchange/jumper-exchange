@@ -170,9 +170,10 @@ const adornmentTabs: HorizontalTabItem[] = [
     endAdornment: <PanoramaFishEyeIcon />,
   },
   { label: 'Tab-4', value: 'tab-4' },
+  { value: 'tab-5' },
 ];
 
-export const WithStartAdornment: Story = {
+export const WithAdornmentVariants: Story = {
   args: {
     ...baseArgs,
     tabs: adornmentTabs,
