@@ -432,3 +432,29 @@ export enum TaskType {
   OffChain = 'Off-chain',
   Zap = 'Zap',
 }
+
+export interface PerksData {
+  data: PerksDataAttributes[];
+}
+
+export interface PerkItemData {
+  Label: string;
+}
+
+export interface PerksDataAttributes {
+  id: number;
+  documentId: string;
+  Title: string;
+  Description: string;
+  Slug: string;
+  UnlockLevel: number;
+  PerkItems: PerkItemData[];
+  Link: string;
+  StartDate: string;
+  EndDate: string;
+  BannerImage?: StrapiMediaData | null;
+  Image?: StrapiMediaData | null;
+  createdAt: string;
+  publishedAt?: string;
+  updatedAt: string;
+}
