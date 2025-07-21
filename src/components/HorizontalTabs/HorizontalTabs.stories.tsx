@@ -1,6 +1,7 @@
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import { Typography } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
@@ -155,6 +156,29 @@ export const WithCustomStyles: Story = {
           backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
         })),
     }),
+  },
+};
+
+// Tab data
+const adornmentTabs: HorizontalTabItem[] = [
+  { label: 'Tab-1', value: 'tab-1', startAdornment: <PanoramaFishEyeIcon /> },
+  { label: 'Tab-2', value: 'tab-2', endAdornment: <PanoramaFishEyeIcon /> },
+  {
+    label: 'Tab-3',
+    value: 'tab-3',
+    startAdornment: <PanoramaFishEyeIcon />,
+    endAdornment: <PanoramaFishEyeIcon />,
+  },
+  { label: 'Tab-4', value: 'tab-4' },
+];
+
+export const WithStartAdornment: Story = {
+  args: {
+    ...baseArgs,
+    tabs: adornmentTabs,
+    value: tabs[0].value,
+    size: HorizontalTabSize.LG,
+    sx: { '.MuiTab-root': { width: '160px' } },
   },
 };
 
