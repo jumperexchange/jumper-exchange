@@ -1,3 +1,13 @@
+import { EVMProvider, Route, getTokenBalance } from '@lifi/sdk';
+import {
+  createContext,
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  SetStateAction,
+  useContext,
+} from 'react';
+import { UseReadContractsReturnType } from 'wagmi';
 import {
   MultichainSmartAccount,
   MeeClient,
@@ -10,11 +20,10 @@ import {
 } from '@biconomy/abstractjs';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
-import { useZaps } from 'src/hooks/useZaps';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { http, parseUnits, zeroAddress } from 'viem';
 import * as chains from 'viem/chains';
-import { useReadContracts, useWalletClient, useConfig } from 'wagmi';
+import { useWalletClient, useConfig } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import {
   WalletCapabilitiesArgs,
@@ -24,11 +33,63 @@ import {
   WalletCall,
   AbiInput,
 } from './types';
-import { getTokenBalance, Route } from '@lifi/sdk';
-import { ProjectData } from 'src/types/questDetails';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
+import { ProjectData } from 'src/types/questDetails';
+import { EVMAddress } from 'src/types/internal';
 
-export const useInitializeZapConfig = (projectData: ProjectData) => {
+interface ZapInitState {
+  isInitialized: boolean;
+  isConnected: boolean;
+  providers: EVMProvider[];
+  toAddress?: EVMAddress;
+  zapData?: any;
+  isZapDataSuccess: boolean;
+  setCurrentRoute: Dispatch<SetStateAction<Route | null>>;
+  depositTokenData: number | bigint | undefined;
+  depositTokenDecimals: number | bigint | undefined;
+  isLoadingDepositTokenData: boolean;
+  refetchDepositToken: UseReadContractsReturnType['refetch'];
+}
+
+export const ZapInitContext = createContext<ZapInitState>({
+  isInitialized: false,
+  isConnected: false,
+  providers: [],
+  toAddress: undefined,
+  zapData: undefined,
+  isZapDataSuccess: false,
+  setCurrentRoute: () => {},
+  depositTokenData: undefined,
+  depositTokenDecimals: undefined,
+  isLoadingDepositTokenData: false,
+  refetchDepositToken: () =>
+    Promise.resolve({
+      result: undefined,
+      error: undefined,
+      status: 'success',
+    } as any),
+});
+
+export const useZapInitContext = () => {
+  const zapInitContext = useContext(ZapInitContext);
+
+  if (!zapInitContext) {
+    throw new Error(
+      'This hook must be used within the "ZapInitContext" provider',
+    );
+  }
+
+  return zapInitContext;
+};
+
+interface ZapInitProviderProps extends PropsWithChildren {
+  projectData: ProjectData;
+}
+
+export const ZapInitProvider: FC<ZapInitProviderProps> = ({
+  children,
+  projectData,
+}) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
@@ -73,7 +134,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         return;
       }
 
-      if (!areClientInitializing && (!oNexus || !meeClient)) {
+      if (!areClientInitializing) {
         setAreClientInitializing(true);
       }
 
@@ -81,20 +142,26 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       // Creates the Biconomy "Multichain Nexus Account", a smart contract account
       // that orchestrates actions across multiple chains.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
-      
+
       // Find the current chain from viem/chains
-      const currentChain = Object.values(chains).find(chain => chain.id === chainId);
-      
+      const currentChain = Object.values(chains).find(
+        (chain) => chain.id === chainId,
+      );
+
       if (!currentChain) {
         throw new Error(`Chain with ID ${chainId} not found in viem/chains`);
       }
 
-      const depositChain = Object.values(chains).find(chain => chain.id === projectData.chainId);
-      
+      const depositChain = Object.values(chains).find(
+        (chain) => chain.id === projectData.chainId,
+      );
+
       if (!depositChain) {
-        throw new Error(`Deposit chain with ID ${projectData.chainId} not found in viem/chains`);
+        throw new Error(
+          `Deposit chain with ID ${projectData.chainId} not found in viem/chains`,
+        );
       }
-      
+
       // it has to be current chain and chain of deposit
       const oNexusInit = await toMultichainNexusAccount({
         signer: walletClient,
@@ -117,7 +184,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       setAreClientInitializing(false);
     };
     initMeeClient();
-  }, [chainId, walletClient]);
+  }, [chainId, walletClient?.account.address]);
 
   const wagmiConfig = useConfig();
 
@@ -156,6 +223,8 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       const receipt = (await meeClient.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
       })) as WaitForSupertransactionReceiptPayload;
+
+      console.log(receipt);
 
       const originalReceipts = receipt?.receipts || [];
       // Ensure the last receipt has the correct transactionHash format
@@ -292,6 +361,10 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       const depositAddress = integrationData.market?.address as `0x${string}`;
       const depositToken = integrationData.market?.depositToken?.address;
       const depositChainId = projectData.chainId;
+
+      if (!depositChainId) {
+        throw new Error('Deposit chain id is undefined.');
+      }
 
       if (!depositAddress || !depositToken) {
         throw new Error('Deposit address or token is undefined.');
@@ -449,6 +522,8 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
 
       const quote = await meeClient.getFusionQuote(fusionQuoteParams);
 
+      console.log(fusionQuoteParams, quote);
+
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
@@ -486,11 +561,26 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   );
 
   // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = oNexus && meeClient;
+  const isInitialized = !!oNexus && !!meeClient;
+  const isConnected = account.isConnected && !!address;
 
-  return {
+  const value = useMemo(() => {
+    return {
+      isInitialized,
+      isConnected,
+      providers,
+      toAddress,
+      zapData,
+      isZapDataSuccess,
+      setCurrentRoute,
+      depositTokenData,
+      depositTokenDecimals,
+      isLoadingDepositTokenData,
+      refetchDepositToken,
+    };
+  }, [
     isInitialized,
-    isConnected: account.isConnected && !!address,
+    isConnected,
     providers,
     toAddress,
     zapData,
@@ -500,5 +590,9 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     depositTokenDecimals,
     isLoadingDepositTokenData,
     refetchDepositToken,
-  };
+  ]);
+
+  return (
+    <ZapInitContext.Provider value={value}>{children}</ZapInitContext.Provider>
+  );
 };
