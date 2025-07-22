@@ -171,6 +171,10 @@
       "status": {
         "verify": "",
         "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
       }
     }
   },
@@ -186,7 +190,8 @@
     "copyAddress": "Копіювати адресу гаманця",
     "shareProfile": "Поділитися профілем",
     "open": "Відкрити {{tool}}",
-    "rewards": "Отримані винагороди"
+    "rewards": "Отримані винагороди",
+    "availableRewards": ""
   },
   "campaign": {
     "missions": {
