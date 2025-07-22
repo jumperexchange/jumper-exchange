@@ -7,6 +7,7 @@ import {
   JUMPER_ANALYTICS_TRANSACTION,
 } from 'src/const/abi/jumperApiUrls';
 import type { TransformedRoute } from 'src/types/internal';
+import config from '@/config/env-config';
 
 export type JumperEventData = {
   [key: string]: string | number | boolean | Record<number, TransformedRoute>;
@@ -31,16 +32,13 @@ interface JumperDataTrackEventProps {
 
 const track = async (data: object, path: string) => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}${path}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+    const response = await fetch(`${config.NEXT_PUBLIC_BACKEND_URL}${path}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(data),
+    });
     if (!response.ok) {
       throw new Error(response.statusText);
     }

@@ -6,6 +6,7 @@ import { getImageResponseOptions } from '@/utils/ImageGeneration/getImageRespons
 import { walletAddressSchema } from '@/utils/validation-schemas';
 import { walletDigest } from '@/utils/walletDigest';
 import { ImageResponse } from 'next/og';
+import config from '@/config/env-config';
 
 const BASE_WIDTH = 800;
 const BASE_HEIGHT = BASE_WIDTH / 1.91;
@@ -22,7 +23,7 @@ export interface UseLoyaltyPassProps {
 async function getLoyaltyPassData(
   walletAddress: string,
 ): Promise<undefined | UseLoyaltyPassProps> {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const res = await fetch(`${apiBaseUrl}/wallets/${walletAddress}/rewards`);
 
   if (!res.ok) {

@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import { WidgetProps } from '../Widget.types';
 import { useInitializeZapConfig } from './useInitializeZapConfig';
-import { WithdrawWidget } from 'src/components/ZapWidget/Withdraw/WithdrawWidget';
+import { WithdrawWidget } from 'src/components/ZapWidget/WithdrawWidget/WithdrawWidget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 
 interface ZapWithdrawWidgetProps extends WidgetProps {}
@@ -14,6 +14,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
+  // @TODO here use the new hook from the deposit card PR
   const {
     zapData,
     isZapDataSuccess,
@@ -25,7 +26,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData)]);
+  }, [JSON.stringify(zapData ?? {})]);
 
   const token = useMemo(
     () =>

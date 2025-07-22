@@ -15,31 +15,47 @@ export const useBaseForm = (ctx: ConfigContext) => {
   } = ctx;
 
   const config: Partial<WidgetConfig> = useMemo(() => {
-    return {
-      fromChain: sourceChain?.chainId
-        ? Number(sourceChain?.chainId)
-        : undefined,
-      fromToken: sourceToken?.tokenAddress,
-      toChain: destinationChain?.chainId
-        ? Number(destinationChain?.chainId)
-        : undefined,
-      toToken: destinationToken?.tokenAddress,
-      toAddress: toAddress
-        ? {
-            address: toAddress.walletAddress,
-            chainType: (toAddress.chainType as ChainType) ?? ChainType.EVM,
-          }
-        : undefined,
-      fromAmount,
-      // chains: {
-      //   from: {
-      //     allow: missionChainIds,
-      //   },
-      //   to: {
-      //     allow: missionChainIds,
-      //   },
-      // },
-    };
+    const partialConfig: Partial<WidgetConfig> = {};
+
+    if (sourceChain?.chainId) {
+      partialConfig.fromChain = Number(sourceChain.chainId);
+    }
+
+    if (sourceToken?.tokenAddress) {
+      partialConfig.fromToken = sourceToken.tokenAddress;
+    }
+
+    if (destinationChain?.chainId) {
+      partialConfig.toChain = Number(destinationChain.chainId);
+    }
+
+    if (destinationToken?.tokenAddress) {
+      partialConfig.toToken = destinationToken.tokenAddress;
+    }
+
+    if (toAddress) {
+      partialConfig.toAddress = {
+        address: toAddress.walletAddress,
+        chainType: (toAddress.chainType as ChainType) ?? ChainType.EVM,
+      };
+    }
+
+    if (fromAmount) {
+      partialConfig.fromAmount = fromAmount;
+    }
+
+    // if (missionChainIds) {
+    //   partialConfig.chains = {
+    //     from: {
+    //       allow: missionChainIds,
+    //     },
+    //     to: {
+    //       allow: missionChainIds,
+    //     },
+    //   };
+    // }
+
+    return partialConfig;
   }, [
     destinationChain?.chainId,
     destinationToken?.tokenAddress,

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { Widget } from './Widget';
-import { TaskType } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 import { ChainId, ChainKey } from '@lifi/sdk';
 
 const meta = {

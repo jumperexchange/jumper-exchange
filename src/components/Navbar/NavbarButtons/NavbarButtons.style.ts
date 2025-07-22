@@ -61,10 +61,14 @@ export const FloatingLinksContainer = styled(Stack)(({ theme }) => ({
   margin: theme.spacing(0, 2),
   padding: theme.spacing(1.25, 1.5),
   justifyContent: 'space-between',
+  alignItems: 'center',
   gap: theme.spacing(1),
-  backgroundColor: (theme.vars || theme).palette.surface3.main,
+  backgroundColor: (theme.vars || theme).palette.background.default,
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
   borderRadius: 64,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.lavenderLight[200],
+  }),
 }));
 
 export const LinksContainer = styled('div')(({ theme }) => ({

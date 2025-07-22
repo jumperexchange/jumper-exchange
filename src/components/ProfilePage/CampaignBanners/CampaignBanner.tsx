@@ -1,3 +1,4 @@
+'use client';
 import type { StrapiMediaData } from '@/types/strapi';
 import type { Theme } from '@mui/material';
 import { Skeleton, useMediaQuery } from '@mui/material';
@@ -16,6 +17,7 @@ import {
   CampaignBox,
 } from './CampaignBanner.style';
 import { CampaignInformation } from './CampaignInformation';
+import config from '@/config/env-config';
 
 interface CampaignBannerProps {
   image: StrapiMediaData;
@@ -46,7 +48,7 @@ export const CampaignBanner = ({
   return (
     <Link
       key={slug}
-      href={`${process.env.NEXT_PUBLIC_SITE_URL}/campaign/${slug}`}
+      href={`${config.NEXT_PUBLIC_SITE_URL}/campaign/${slug}`}
       rel="noreferrer"
       style={{
         textDecoration: 'none',

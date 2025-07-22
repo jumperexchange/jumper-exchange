@@ -16,6 +16,7 @@ import {
   RotatingBox,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
+import config from '@/config/env-config';
 
 interface BannerBoxProps {
   quest: Quest;
@@ -110,10 +111,10 @@ export const BannerBox = ({
                 logos={
                   completed
                     ? [
-                        `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/avatar_checkmark_circle_03172fb9d6.svg`,
+                        `${config.NEXT_PUBLIC_STRAPI_URL}/uploads/avatar_checkmark_circle_03172fb9d6.svg`,
                       ]
                     : [
-                        `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/xp_cfcff186e5.png`,
+                        `${config.NEXT_PUBLIC_STRAPI_URL}/uploads/xp_cfcff186e5.png`,
                       ]
                 }
                 title={'Jumper XP'}

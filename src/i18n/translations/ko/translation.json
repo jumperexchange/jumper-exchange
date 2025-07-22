@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "대시보드",
       "refuel": "가스",
-      "buy": "매수"
+      "buy": "매수",
+      "back": ""
     },
     "statsCards": {
       "dexs": "",
@@ -110,7 +111,8 @@
     "learnMore": ""
   },
   "button": {
-    "okay": ""
+    "okay": "",
+    "manageYourPosition": ""
   },
   "error": {
     "message": ""
@@ -141,8 +143,19 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "",
     "completed": "",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -152,6 +165,13 @@
       "hoursLeft_other": "",
       "daysLeft_one": "",
       "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
     }
   },
   "profile_page": {
@@ -167,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -208,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""

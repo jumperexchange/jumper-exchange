@@ -1,4 +1,4 @@
-import { TaskType } from 'src/types/loyaltyPass';
+import { TaskType } from 'src/types/strapi';
 import { ConfigOverrideHook } from '../types';
 import { useMemo } from 'react';
 

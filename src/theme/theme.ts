@@ -6,11 +6,9 @@ import type {
   CssVarsTheme,
   Color,
 } from '@mui/material';
-import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
-import { Channels } from 'node_modules/@mui/material/esm/styles/createPalette';
+import { colorChannel } from '@mui/system';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
@@ -82,6 +80,8 @@ declare module '@mui/material/styles' {
     azure: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     scarlet: Pick<Color, 100 | 500>;
     orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    lavenderLight: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    lavenderDark: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
   }
 
   interface PaletteOptions {
@@ -124,6 +124,8 @@ declare module '@mui/material/styles' {
     azure?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     scarlet?: Pick<Color, 100 | 500>;
     orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    lavenderLight?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    lavenderDark?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
   }
   interface ButtonPropsColorOverrides {
     tertiary: true;
@@ -164,6 +166,8 @@ declare module '@mui/material/styles' {
     azure: true;
     scarlet: true;
     orchid: true;
+    lavenderLight: true;
+    lavenderDark: true;
   }
 
   interface TypographyVariants {
@@ -603,6 +607,20 @@ const palette = {
     800: '#702C7A',
     900: '#37113D',
   },
+  lavenderLight: {
+    0: '#FCFAFF',
+    100: '#F9F5FF',
+    200: '#F6F0FF',
+    300: '#F3EBFF',
+    400: '#F0E5FF',
+  },
+  lavenderDark: {
+    0: '#30007A',
+    100: '#200052',
+    200: '#18003D',
+    300: '#100029',
+    400: '#0C001F',
+  },
 };
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
@@ -777,9 +795,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             zIndex: -1,
             overflow: 'hidden',
             pointerEvents: 'none',
-            backgroundColor: (theme.vars || theme).palette.surface1.main,
+            backgroundColor: (theme.vars || theme).palette.lavenderDark[300],
             ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.bg.main,
+              backgroundColor: (theme.vars || theme).palette.lavenderLight[200],
             }),
             // typed-safe access to the `variant` prop
             [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -1122,9 +1140,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#faf5ff',
           },
           surface2: {
-            light: '#F9F5FF',
-            main: '#F9F5FF',
-            dark: '#F9F5FF',
+            light: '#FFFFFF',
+            main: '#FFFFFF',
+            dark: '#FFFFFF',
           },
           surface3: {
             light: '#E5E1EB',
@@ -1234,8 +1252,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       },
     },
   });
-
-const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
 
 export const lightTheme = themeCustomized;
 export const darkTheme = themeCustomized;

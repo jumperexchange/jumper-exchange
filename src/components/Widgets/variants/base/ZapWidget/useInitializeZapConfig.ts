@@ -6,14 +6,16 @@ import {
   WaitForSupertransactionReceiptPayload,
   greaterThanOrEqualTo,
   runtimeERC20BalanceOf,
+  GetFusionQuoteParams,
 } from '@biconomy/abstractjs';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
 import { useZaps } from 'src/hooks/useZaps';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { createWalletClient, custom, http, parseUnits } from 'viem';
+import { http, parseUnits, zeroAddress } from 'viem';
 import { mainnet, optimism, base } from 'viem/chains';
-import { useAccount, useReadContracts, useConfig } from 'wagmi';
+import { useReadContracts, useWalletClient, useConfig } from 'wagmi';
+import { useAccount } from '@lifi/wallet-management';
 import {
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
@@ -22,8 +24,9 @@ import {
   WalletCall,
   AbiInput,
 } from './types';
-import { Route } from '@lifi/sdk';
+import { getTokenBalance, Route } from '@lifi/sdk';
 import { ProjectData } from 'src/types/questDetails';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 
 export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
@@ -31,69 +34,37 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [areClientInitializing, setAreClientInitializing] = useState(false);
 
-  const account = useAccount();
-  const { address, chain } = account;
-  const { data, isSuccess } = useZaps(projectData);
-  const zapData = data?.data;
-
-  const contractsConfig = useMemo(() => {
-    return [
-      {
-        address: projectData.address as `0x${string}`,
-        abi: [
-          {
-            inputs: [{ name: 'owner', type: 'address' }],
-            name: 'balanceOf',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ] as const,
-        functionName: 'balanceOf',
-        args: [account.address as `0x${string}`],
-      },
-      {
-        abi: [
-          {
-            inputs: [],
-            name: 'decimals',
-            outputs: [{ name: '', type: 'uint8' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ] as const,
-        address: (projectData.tokenAddress ||
-          projectData.address) as `0x${string}`,
-        chainId: projectData.chainId,
-        functionName: 'decimals',
-      },
-    ];
-  }, [
-    projectData.address,
-    projectData.tokenAddress,
-    projectData.chainId,
-    account.address,
-  ]);
-
   const {
-    data: [
-      { result: depositTokenData } = {},
-      { result: depositTokenDecimals } = {},
-    ] = [],
-    isLoading: isLoadingDepositTokenData,
-    refetch,
-  } = useReadContracts({
-    contracts: contractsConfig,
+    zapData,
+    isSuccess: isZapDataSuccess,
+    depositTokenData,
+    depositTokenDecimals,
+    isLoadingDepositTokenData,
+    refetchDepositToken,
+  } = useEnhancedZapData(projectData);
+
+  const { account } = useAccount();
+  const { address, chainId } = account;
+  const { data: walletClient } = useWalletClient({
+    chainId: chainId,
+    account: address as `0x${string}`,
     query: {
-      enabled: !!account.address,
+      enabled: !!chainId && !!address,
     },
   });
 
   // Enhanced initialization with retry logic and better error handling
   useEffect(() => {
     const initMeeClient = async () => {
-      if (!chain) {
+      if (!chainId) {
         console.warn('Chain is undefined, skipping MEE client initialization.');
+        return;
+      }
+
+      if (!walletClient) {
+        console.warn(
+          'Wallet client is undefined, skipping MEE client initialization.',
+        );
         return;
       }
 
@@ -111,10 +82,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       // that orchestrates actions across multiple chains.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
       const oNexusInit = await toMultichainNexusAccount({
-        signer: createWalletClient({
-          chain,
-          transport: custom(global?.window?.ethereum ?? ''),
-        }),
+        signer: walletClient,
         chains: [mainnet, optimism, base],
         transports: [http(), http(), http()],
       });
@@ -134,7 +102,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       setAreClientInitializing(false);
     };
     initMeeClient();
-  }, [chain]);
+  }, [chainId, walletClient]);
 
   const wagmiConfig = useConfig();
 
@@ -271,6 +239,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
     [meeClient],
   );
 
+  // @TODO split this function into smaller units
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
     async (args: WalletSendCallsArgs) => {
@@ -288,16 +257,20 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         throw new Error("'calls' array is empty");
       }
 
-      if (!chain) {
+      if (!chainId) {
         throw new Error('Cannot determine current chain ID from wallet.');
       }
-      const currentChainId = chain.id;
+      const currentChainId = chainId;
 
       if (!currentRoute) {
         throw new Error('Cannot process transaction: Route is undefined.');
       }
       if (!zapData) {
         throw new Error('Integration data is not available.');
+      }
+
+      if (!address) {
+        throw new Error('No wallet address available.');
       }
 
       const integrationData = zapData;
@@ -308,6 +281,11 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       if (!depositAddress || !depositToken) {
         throw new Error('Deposit address or token is undefined.');
       }
+
+      // @Note this works only for EVM chains
+      const isNativeSourceToken =
+        currentRoute.fromToken.address === zeroAddress;
+      console.warn('Using native source token:', isNativeSourceToken);
 
       // raw calldata from the widget
       const instructions = await Promise.all(
@@ -411,10 +389,18 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         instructions.push(transferLpInstruction);
       }
 
-      const quote = await meeClient.getFusionQuote({
+      const currentTokenBalance = await getTokenBalance(
+        address,
+        currentRoute.fromToken,
+      );
+
+      const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
+      const requestedAmount = BigInt(currentRoute.fromAmount);
+
+      const fusionQuoteParams: GetFusionQuoteParams = {
         trigger: {
           tokenAddress: currentRoute.fromToken.address as `0x${string}`,
-          amount: BigInt(currentRoute.fromAmount),
+          amount: requestedAmount,
           chainId: currentChainId,
         },
         cleanUps: [
@@ -429,9 +415,20 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
           chainId: currentChainId,
         },
         instructions,
-      });
+      };
 
-      console.log('quote', quote);
+      // Calculate the percentage of the balance the user wants to use (in basis points)
+      const usageInBasisPoints =
+        userBalance > 0n ? (requestedAmount * 10_000n) / userBalance : 0n;
+
+      // If the user is using ≥ 99.90% of their balance, we assume they intend to use max
+      const isUsingMax = usageInBasisPoints >= 9_990n;
+
+      if (isUsingMax) {
+        fusionQuoteParams.trigger.useMaxAvailableFunds = true;
+      }
+
+      const quote = await meeClient.getFusionQuote(fusionQuoteParams);
 
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
@@ -439,7 +436,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
 
       return { id: hash };
     },
-    [meeClient, oNexus, chain, currentRoute, zapData, projectData, address],
+    [meeClient, oNexus, chainId, currentRoute, zapData, projectData, address],
   );
 
   const providers = useMemo(() => {
@@ -474,14 +471,15 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
 
   return {
     isInitialized,
+    isConnected: account.isConnected && !!address,
     providers,
     toAddress,
     zapData,
-    isZapDataSuccess: isSuccess,
+    isZapDataSuccess,
     setCurrentRoute,
     depositTokenData,
     depositTokenDecimals,
     isLoadingDepositTokenData,
-    refetchDepositToken: refetch,
+    refetchDepositToken,
   };
 };

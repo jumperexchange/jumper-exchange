@@ -4,7 +4,7 @@ import {
   TaskWidgetInformationChainData,
   TaskWidgetInformationTokenData,
   TaskWidgetInformationWalletData,
-} from 'src/types/loyaltyPass';
+} from 'src/types/strapi';
 
 export type ConfigContext = {
   overrideHeader?: string;
