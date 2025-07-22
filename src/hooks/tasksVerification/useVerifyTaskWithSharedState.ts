@@ -46,13 +46,13 @@ export const useVerifyTaskWithSharedState = (
         },
       });
       mutate({
-        ...(extraParams || {}),
         questId: missionId,
         stepId: taskId,
         address: accountAddress,
+        additionalFields: extraParams || {},
       });
     },
-    [missionId, accountAddress],
+    [missionId, taskId, taskName, accountAddress],
   );
 
   const handleReset = useCallback(() => {

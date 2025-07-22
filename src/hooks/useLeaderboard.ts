@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 import config from '@/config/env-config';
+import { useMemo } from 'react';
 
 const LEADERBOARD_ENDPOINT = `${config.NEXT_PUBLIC_BACKEND_URL}/leaderboard`;
 
@@ -110,12 +111,16 @@ export const useLeaderboardUser = (
     queryKey: ['leaderboard-user', walletAddress],
     queryFn: getLeaderboardUserQuery,
     refetchInterval: 1000 * 60 * 60,
+    enabled: !!walletAddress,
   });
 
-  const userPage =
-    leaderboardUserData?.data &&
-    Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);
-  const data = { ...leaderboardUserData?.data, userPage };
+  const data = useMemo(() => {
+    const userPage =
+      leaderboardUserData?.data &&
+      Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);
+
+    return { ...leaderboardUserData?.data, userPage };
+  }, [JSON.stringify(leaderboardUserData ?? {})]);
 
   return {
     data,

@@ -23,6 +23,7 @@ import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { BaseAlertVariant } from 'src/components/Alerts/BaseAlert/BaseAlert.styles';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -68,37 +69,40 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
 
   return (
     <MissionDetailsColumnContainer>
-      <MissionDetailsCardContainer>
-        <Box sx={{ width: '100%' }}>
-          <Badge
-            label={t('navbar.links.missions')}
-            onClick={handleGoBack}
-            startIcon={<ArrowBackIcon />}
-            size={BadgeSize.LG}
-            variant={BadgeVariant.Alpha}
+      <SectionCardContainer>
+        <MissionDetailsCardContainer>
+          <Box sx={{ width: '100%' }}>
+            <Badge
+              label={t('navbar.links.missions')}
+              onClick={handleGoBack}
+              startIcon={<ArrowBackIcon />}
+              size={BadgeSize.LG}
+              variant={BadgeVariant.Alpha}
+            />
+          </Box>
+          <EntityCard
+            variant="wide"
+            badge={badge}
+            id={missionDisplayData.id}
+            slug={missionDisplayData.slug}
+            title={missionDisplayData.title}
+            description={missionDisplayData.description}
+            participants={missionDisplayData.participants}
+            imageUrl={missionDisplayData.imageUrl}
+            rewardGroups={missionDisplayData.rewardGroups}
+            partnerLink={missionDisplayData.partnerLink}
+            fullWidth
           />
-        </Box>
-        <EntityCard
-          variant="wide"
-          badge={badge}
-          id={missionDisplayData.id}
-          slug={missionDisplayData.slug}
-          title={missionDisplayData.title}
-          description={missionDisplayData.description}
-          participants={missionDisplayData.participants}
-          imageUrl={missionDisplayData.imageUrl}
-          rewardGroups={missionDisplayData.rewardGroups}
-          partnerLink={missionDisplayData.partnerLink}
-        />
-        {enhancedTasks.map((task, i) => (
-          <MissionTask
-            key={task.uuid}
-            task={task}
-            missionId={mission.documentId}
-            onClick={() => setActiveTask(task)}
-          />
-        ))}
-      </MissionDetailsCardContainer>
+          {enhancedTasks.map((task, i) => (
+            <MissionTask
+              key={task.uuid}
+              task={task}
+              missionId={mission.documentId}
+              onClick={() => setActiveTask(task)}
+            />
+          ))}
+        </MissionDetailsCardContainer>
+      </SectionCardContainer>
       {missionDisplayData.info && (
         <MissionDetailsInfoContainer>
           <BaseAlert

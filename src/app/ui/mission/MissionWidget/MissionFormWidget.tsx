@@ -14,14 +14,27 @@ import {
 import { useUserTracking } from 'src/hooks/userTracking';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { MissionForm } from './MissionForm';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import { useTranslation } from 'react-i18next';
 
 export const MissionFormWidget = () => {
-  const { taskTitle, taskDescription, taskCTALink, taskCTAText, taskInputs } =
-    useMissionStore();
+  const { t } = useTranslation();
+  const {
+    taskTitle,
+    taskDescription,
+    taskCTALink,
+    taskCTAText,
+    taskInputs,
+    currentActiveTaskType,
+  } = useMissionStore();
+
+  const taskTitleWithFallback =
+    taskTitle ?? t('missions.tasks.type', { type: currentActiveTaskType });
+  const taskCTATextWithFallback = taskCTAText ?? t('missions.tasks.action.go');
 
   const { trackEvent } = useUserTracking();
 
-  const hasForm = !taskCTALink || !!taskInputs;
+  const hasForm = !taskCTALink || !!(taskInputs && taskInputs.length);
 
   const handleClick = () => {
     trackEvent({
@@ -40,20 +53,22 @@ export const MissionFormWidget = () => {
   };
 
   return (
-    <MissionWidgetContainer>
-      <MissionWidgetContentContainer>
-        <MissionWidgetTitle variant="titleSmall">
-          {taskTitle}
-        </MissionWidgetTitle>
-        <MissionWidgetDescription variant="bodyMedium">
-          {taskDescription}
-        </MissionWidgetDescription>
-      </MissionWidgetContentContainer>
-      {hasForm ? (
-        <MissionForm />
-      ) : (
-        <Button onClick={handleClick}>{taskCTAText}</Button>
-      )}
-    </MissionWidgetContainer>
+    <SectionCardContainer>
+      <MissionWidgetContainer>
+        <MissionWidgetContentContainer>
+          <MissionWidgetTitle variant="titleSmall">
+            {taskTitleWithFallback}
+          </MissionWidgetTitle>
+          <MissionWidgetDescription variant="bodyMedium">
+            {taskDescription}
+          </MissionWidgetDescription>
+        </MissionWidgetContentContainer>
+        {hasForm ? (
+          <MissionForm />
+        ) : (
+          <Button onClick={handleClick}>{taskCTATextWithFallback}</Button>
+        )}
+      </MissionWidgetContainer>
+    </SectionCardContainer>
   );
 };

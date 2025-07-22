@@ -24,6 +24,8 @@ const ProfilePage = ({
     <ProfileProvider
       walletAddress={walletAddress || account?.address || ''}
       isPublic={isPublic}
+      // @Note these flags are not correctly set in @lifi/wallet-management
+      isLoading={account?.isConnecting || account?.isReconnecting}
     >
       <ProfilePageComponent quests={quests} campaigns={campaigns} />
     </ProfileProvider>

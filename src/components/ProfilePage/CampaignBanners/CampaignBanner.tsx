@@ -1,3 +1,4 @@
+'use client';
 import type { StrapiMediaData } from '@/types/strapi';
 import type { Theme } from '@mui/material';
 import { Skeleton, useMediaQuery } from '@mui/material';

@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
-      "buy": "Satın al"
+      "buy": "Satın al",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX'ler",
@@ -110,7 +111,8 @@
     "learnMore": "Daha fazla bilgi edinin"
   },
   "button": {
-    "okay": "Tamam"
+    "okay": "Tamam",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
@@ -141,8 +143,19 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "Mevcut Görevler",
     "completed": "Tamamlanan Görevler",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -174,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -215,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""
