@@ -28,10 +28,6 @@ export const useSwiperAutoplayControl = (shouldAutoplay: boolean) => {
         setIsAutoplayPaused(false);
       });
 
-      swiper.on('slideChangeTransitionEnd', () => {
-        setIsAutoplayPaused(true);
-      });
-
       // In non-Chromium browsers changing the slide is making the autoplay to pause so we need to manually re-trigger it
       swiper.on('slideChangeTransitionStart', () => {
         if (swiper.autoplay?.paused) {
