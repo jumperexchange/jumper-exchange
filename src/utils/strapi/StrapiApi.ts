@@ -238,6 +238,7 @@ type CampaignField =
   | 'ProfileBannerDescription'
   | 'ProfileBannerBadge'
   | 'ProfileBannerCTA'
+  | 'BenefitCardColorMode'
   | 'ShowProfileBanner'
   | 'MissionCount'
   | 'StartDate'
@@ -256,6 +257,7 @@ class CampaignParams {
     'StartDate',
     'EndDate',
     'ShowProfileBanner',
+    'BenefitCardColorMode',
     'createdAt',
     'updatedAt',
     'BenefitLabel',
