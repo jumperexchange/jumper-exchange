@@ -171,6 +171,10 @@
       "status": {
         "verify": "",
         "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
       }
     }
   },
@@ -186,7 +190,8 @@
     "copyAddress": "",
     "shareProfile": "",
     "open": "",
-    "rewards": ""
+    "rewards": "",
+    "availableRewards": ""
   },
   "campaign": {
     "missions": {
