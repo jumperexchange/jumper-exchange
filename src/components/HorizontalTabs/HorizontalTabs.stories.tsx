@@ -41,7 +41,6 @@ const baseArgs = {
   tabs: [],
   value: '',
   onChange: () => {},
-  onTabClick: () => () => {},
 };
 
 // --- Stories ---
@@ -55,20 +54,12 @@ const HorizontalTabsRenderer = (args: HorizontalTabsProps) => {
     args.onChange?.(event, newValue);
   };
 
-  const onTabClick =
-    (val: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      setValue(val);
-      args.onTabClick?.(val)?.(event);
-    };
-
   return (
     <HorizontalTabs
       {...args}
       tabs={args.tabs ?? tabs}
       value={value}
       onChange={onChange}
-      onTabClick={onTabClick}
     />
   );
 };

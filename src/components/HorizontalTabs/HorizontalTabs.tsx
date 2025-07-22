@@ -1,7 +1,7 @@
 import { SxProps, Theme } from '@mui/material/styles';
-import { ReactNode } from 'react';
-import { HorizontalTab } from './HorizontalTab';
+import { ReactNode, useEffect, useState } from 'react';
 import {
+  HorizontalTabContainer,
   HorizontalTabsContainer,
   HorizontalTabSize,
 } from './HorizontalTabs.style';
@@ -16,9 +16,6 @@ export interface HorizontalTabItem {
 export interface HorizontalTabsProps {
   tabs: HorizontalTabItem[];
   onChange: (event: React.SyntheticEvent, newValue: string) => void;
-  onTabClick: (
-    value: string,
-  ) => (event: React.MouseEvent<HTMLDivElement>) => void;
   value?: string;
   size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
@@ -27,28 +24,49 @@ export interface HorizontalTabsProps {
 export const HorizontalTabs = ({
   tabs,
   onChange,
-  onTabClick,
   value,
   size = HorizontalTabSize.LG,
   sx,
 }: HorizontalTabsProps) => {
+  const [internalValue, setInternalValue] = useState(value ?? tabs[0]?.value);
+
+  useEffect(() => {
+    if (value) {
+      setInternalValue(value);
+    }
+  }, [value]);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setInternalValue(newValue);
+    onChange?.(event, newValue);
+  };
+
   return (
-    <HorizontalTabsContainer value={value} onChange={onChange} sx={sx}>
+    <HorizontalTabsContainer
+      value={internalValue}
+      onChange={handleChange}
+      sx={sx}
+    >
       {tabs.map((tab) => {
         if (!tab.label && !tab.startAdornment && !tab.endAdornment) {
           return null;
         }
 
         return (
-          <HorizontalTab
-            key={tab.value}
-            value={tab.value}
-            startAdornment={tab.startAdornment}
-            endAdornment={tab.endAdornment}
-            label={tab.label}
-            size={size}
-            onClick={onTabClick(tab.value)}
+          <HorizontalTabContainer
             disabled={tab.disabled}
+            value={tab.value}
+            key={tab.value}
+            disableRipple
+            sx={sx}
+            label={
+              <>
+                {tab.startAdornment}
+                {tab.label}
+                {tab.endAdornment}
+              </>
+            }
+            size={size}
           />
         );
       })}

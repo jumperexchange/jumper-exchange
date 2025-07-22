@@ -52,18 +52,11 @@ export const Links = () => {
     }
   };
 
-  const onTabClick =
-    (href: string) => (event: React.MouseEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      router.push(href);
-    };
-
   return (
     <HorizontalTabs
       tabs={tabs}
       onChange={onChange}
       value={activeTab?.value}
-      onTabClick={onTabClick}
       sx={{ backgroundColor: 'transparent' }}
       size={HorizontalTabSize.LG}
     />
