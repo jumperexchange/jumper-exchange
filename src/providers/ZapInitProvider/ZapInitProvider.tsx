@@ -63,11 +63,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   depositTokenDecimals: undefined,
   isLoadingDepositTokenData: false,
   refetchDepositToken: () =>
-    Promise.resolve({
-      result: undefined,
-      error: undefined,
-      status: 'success',
-    } as any),
+    Promise.resolve({}) as ReturnType<UseReadContractsReturnType['refetch']>,
 });
 
 export const useZapInitContext = () => {
