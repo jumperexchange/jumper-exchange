@@ -18,6 +18,13 @@ export interface WalletMethodArgs {
   params?: unknown[];
 }
 
+export enum WalletMethods {
+  getCapabilities = 'wallet_getCapabilities',
+  getCallsStatus = 'wallet_getCallsStatus',
+  sendCalls = 'wallet_sendCalls',
+  waitForCallsStatus = 'wallet_waitForCallsStatus',
+}
+
 export interface WalletSendCallsArgs extends WalletMethodArgs {
   method: 'wallet_sendCalls';
   account: {
@@ -63,3 +70,16 @@ export interface CallsStatusResponse {
     status: 'success' | 'reverted';
   }>;
 }
+
+export interface WalletPendingOperation {
+  operation: () => Promise<any>;
+  timestamp: number;
+  resolve?: (value: any) => void;
+  reject?: (error: any) => void;
+}
+
+export type WalletPendingOperations = {
+  [K in WalletMethods]?: WalletPendingOperation;
+} & {
+  [key: string]: never;
+};
