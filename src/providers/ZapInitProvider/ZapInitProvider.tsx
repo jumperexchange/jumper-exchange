@@ -1,3 +1,5 @@
+'use client';
+
 import { EVMProvider, Route, getTokenBalance } from '@lifi/sdk';
 import {
   createContext,
@@ -6,6 +8,7 @@ import {
   PropsWithChildren,
   SetStateAction,
   useContext,
+  useRef,
 } from 'react';
 import { UseReadContractsReturnType } from 'wagmi';
 import {
@@ -39,6 +42,7 @@ import { EVMAddress } from 'src/types/internal';
 
 interface ZapInitState {
   isInitialized: boolean;
+  isInitializedForCurrentChain: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
   toAddress?: EVMAddress;
@@ -53,6 +57,7 @@ interface ZapInitState {
 
 export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
+  isInitializedForCurrentChain: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -63,7 +68,11 @@ export const ZapInitContext = createContext<ZapInitState>({
   depositTokenDecimals: undefined,
   isLoadingDepositTokenData: false,
   refetchDepositToken: () =>
-    Promise.resolve({}) as ReturnType<UseReadContractsReturnType['refetch']>,
+    Promise.resolve({
+      result: undefined,
+      error: undefined,
+      status: 'success',
+    } as any),
 });
 
 export const useZapInitContext = () => {
@@ -91,6 +100,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [areClientInitializing, setAreClientInitializing] = useState(false);
 
+  const lastInitRef = useRef<{ chainId?: number; address?: string }>({});
+  const resetInProgressRef = useRef(false);
+
   const {
     zapData,
     isSuccess: isZapDataSuccess,
@@ -110,77 +122,124 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     },
   });
 
+  // Check if oNexus and meeClient are initialized before rendering
+  const isInitialized = !!oNexus && !!meeClient;
+
+  const isInitializedForCurrentChain = useMemo(() => {
+    return (
+      isInitialized &&
+      lastInitRef.current.chainId === chainId &&
+      lastInitRef.current.address === address
+    );
+  }, [isInitialized, chainId, address]);
+
   // Enhanced initialization with retry logic and better error handling
   useEffect(() => {
-    const initMeeClient = async () => {
-      if (!chainId) {
-        console.warn('Chain is undefined, skipping MEE client initialization.');
-        return;
-      }
+    if (!walletClient) {
+      console.warn(
+        'Wallet client is undefined, skipping MEE client initialization.',
+      );
+      return;
+    }
 
-      if (!walletClient) {
-        console.warn(
-          'Wallet client is undefined, skipping MEE client initialization.',
-        );
-        return;
-      }
+    if (!chainId || !address) {
+      console.warn('Missing chainId or address, skipping initialization');
+      return;
+    }
 
+    // If chain or address changed, reset clients immediately
+    if (
+      lastInitRef.current.chainId !== chainId ||
+      lastInitRef.current.address !== address
+    ) {
+      console.warn(
+        'Chain or address changed, resetting clients',
+        lastInitRef.current,
+        chainId,
+        address,
+      );
+      setAreClientInitializing(true);
+      resetInProgressRef.current = true;
+    }
+
+    if (!resetInProgressRef.current) {
       if (areClientInitializing) {
-        console.warn('Init MEE client.');
+        console.warn('Already initializing, skipping...');
         return;
       }
 
-      if (!areClientInitializing) {
-        setAreClientInitializing(true);
+      if (oNexus && meeClient) {
+        console.warn('Clients already initialized for current chain/address');
+        return;
       }
+    }
 
-      // create multichain nexus account
-      // Creates the Biconomy "Multichain Nexus Account", a smart contract account
-      // that orchestrates actions across multiple chains.
-      // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
+    resetInProgressRef.current = false;
 
-      // Find the current chain from viem/chains
-      const currentChain = Object.values(chains).find(
-        (chain) => chain.id === chainId,
-      );
+    console.warn(
+      'Starting client initialization for chain:',
+      chainId,
+      'address:',
+      address,
+    );
 
-      if (!currentChain) {
-        throw new Error(`Chain with ID ${chainId} not found in viem/chains`);
-      }
+    // Find the current chain from viem/chains
+    const currentChain = Object.values(chains).find(
+      (chain) => chain.id === chainId,
+    );
 
-      const depositChain = Object.values(chains).find(
-        (chain) => chain.id === projectData.chainId,
-      );
-
-      if (!depositChain) {
-        throw new Error(
-          `Deposit chain with ID ${projectData.chainId} not found in viem/chains`,
-        );
-      }
-
-      // it has to be current chain and chain of deposit
-      const oNexusInit = await toMultichainNexusAccount({
-        signer: walletClient,
-        chains: [currentChain, depositChain],
-        transports: [http(), http()],
-      });
-
-      // create mee client
-      // Initializes the Biconomy "MEE (Modular Execution Environment) Client".
-      // This client interacts with Biconomy's backend to manage the orchestration.
-      // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#modular-execution-environment-mee
-      const meeClientInit = await createMeeClient({
-        account: oNexusInit,
-      });
-
-      console.log('MEE client initialized successfully', meeClientInit);
-
-      setONexus(oNexusInit);
-      setMeeClient(meeClientInit);
+    if (!currentChain) {
+      console.error(`Chain with ID ${chainId} not found in viem/chains`);
       setAreClientInitializing(false);
+      return;
+    }
+
+    const depositChain = Object.values(chains).find(
+      (chain) => chain.id === projectData.chainId,
+    );
+
+    if (!depositChain) {
+      console.error(
+        `Deposit chain with ID ${projectData.chainId} not found in viem/chains`,
+      );
+      setAreClientInitializing(false);
+      return;
+    }
+
+    const initMeeClient = async () => {
+      try {
+        console.warn('Initializing oNexus with chains:', [
+          currentChain.id,
+          depositChain.id,
+        ]);
+        const oNexusInit = await toMultichainNexusAccount({
+          signer: walletClient,
+          chains: [currentChain, depositChain],
+          transports: [http(), http()],
+        });
+
+        console.warn('Creating MEE client...');
+        const meeClientInit = await createMeeClient({ account: oNexusInit });
+
+        console.warn('Clients initialized successfully');
+        setONexus(oNexusInit);
+        setMeeClient(meeClientInit);
+        lastInitRef.current = { chainId, address };
+      } catch (error) {
+        console.error('Failed to initialize clients:', error);
+      } finally {
+        setAreClientInitializing(false);
+      }
     };
+
     initMeeClient();
-  }, [chainId, walletClient?.account.address]);
+  }, [
+    chainId,
+    projectData.chainId,
+    address,
+    walletClient,
+    areClientInitializing,
+  ]);
 
   const wagmiConfig = useConfig();
 
@@ -190,20 +249,27 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     ): Promise<{
       atomic: { status: 'supported' | 'ready' | 'unsupported' };
     }> => {
+      if (!isInitializedForCurrentChain) {
+        throw new Error(
+          'Zap clients are not initialized for the current chain/account.',
+        );
+      }
       return Promise.resolve({
         atomic: { status: 'supported' },
       });
     },
-    // @TODO do we need this?
-    // [baseWidgetConfig],
-    [],
+    [isInitializedForCurrentChain],
   );
 
   // Helper function to handle 'wallet_getCallsStatus'
   const handleWalletGetCallsStatus = useCallback(
     async (args: WalletGetCallsStatusArgs) => {
+      if (!isInitializedForCurrentChain) {
+        throw new Error(
+          'Zap clients are not initialized for the current chain/account.',
+        );
+      }
       if (!meeClient) {
-        // oNexus is not directly used here but its initialization is tied to meeClient
         throw new Error('MEE client not initialized');
       }
       if (!args.params || !Array.isArray(args.params)) {
@@ -219,8 +285,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const receipt = (await meeClient.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
       })) as WaitForSupertransactionReceiptPayload;
-
-      console.log(receipt);
 
       const originalReceipts = receipt?.receipts || [];
       // Ensure the last receipt has the correct transactionHash format
@@ -251,12 +315,17 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         })),
       };
     },
-    [meeClient],
+    [meeClient, isInitializedForCurrentChain],
   );
 
   // Helper function to handle 'wallet_waitForCallsStatus'
   const handleWalletWaitForCallsStatus = useCallback(
     async (args: WalletWaitForCallsStatusArgs) => {
+      if (!isInitializedForCurrentChain) {
+        throw new Error(
+          'Zap clients are not initialized for the current chain/account.',
+        );
+      }
       if (!meeClient) {
         throw new Error('MEE client not initialized');
       }
@@ -316,14 +385,19 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         })),
       };
     },
-    [meeClient],
+    [meeClient, isInitializedForCurrentChain],
   );
 
   // @TODO split this function into smaller units
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
     async (args: WalletSendCallsArgs) => {
-      if (!meeClient || !oNexus) {
+      if (!isInitializedForCurrentChain) {
+        throw new Error(
+          'Zap clients are not initialized for the current chain/account.',
+        );
+      }
+      if (!meeClient || !oNexus || areClientInitializing) {
         throw new Error('MEE client or oNexus not initialized');
       }
 
@@ -369,6 +443,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       // @Note this works only for EVM chains
       const isNativeSourceToken =
         currentRoute.fromToken.address === zeroAddress;
+
       console.warn('Using native source token:', isNativeSourceToken);
 
       if (isNativeSourceToken) {
@@ -395,7 +470,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       // constraints
       const depositTokenDecimals = zapData.market?.depositToken.decimals;
       const constraints = [
-        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value by creating balanceNotZeroConstraint logic
+        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value
       ];
 
       // token approval
@@ -518,19 +593,27 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       const quote = await meeClient.getFusionQuote(fusionQuoteParams);
 
-      console.log(fusionQuoteParams, quote);
-
       const { hash } = await meeClient.executeFusionQuote({
         fusionQuote: quote,
       });
 
       return { id: hash };
     },
-    [meeClient, oNexus, chainId, currentRoute, zapData, projectData, address],
+    [
+      meeClient,
+      oNexus,
+      chainId,
+      currentRoute,
+      zapData,
+      projectData,
+      address,
+      areClientInitializing,
+      isInitializedForCurrentChain,
+    ],
   );
 
-  const providers = useMemo(() => {
-    return [
+  const providers = useMemo(
+    () => [
       createCustomEVMProvider({
         wagmiConfig,
         getCapabilities: async (_, args) => handleGetCapabilities(args),
@@ -539,14 +622,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         waitForCallsStatus: async (_, args) =>
           handleWalletWaitForCallsStatus(args),
       }),
-    ];
-  }, [
-    wagmiConfig,
-    handleGetCapabilities,
-    handleWalletGetCallsStatus,
-    handleWalletSendCalls,
-    handleWalletWaitForCallsStatus,
-  ]);
+    ],
+    [],
+  );
 
   const toAddress = useMemo(
     () =>
@@ -556,13 +634,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     [oNexus, address, projectData.chainId],
   );
 
-  // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = !!oNexus && !!meeClient;
   const isConnected = account.isConnected && !!address;
 
   const value = useMemo(() => {
     return {
       isInitialized,
+      isInitializedForCurrentChain,
       isConnected,
       providers,
       toAddress,
@@ -576,6 +653,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     };
   }, [
     isInitialized,
+    isInitializedForCurrentChain,
     isConnected,
     providers,
     toAddress,
