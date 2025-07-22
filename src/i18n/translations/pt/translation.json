@@ -171,6 +171,10 @@
       "status": {
         "verify": "Verificar",
         "verified": "Verificada"
+      },
+      "action": {
+        "verify": "",
+        "go": ""
       }
     }
   },
@@ -186,7 +190,8 @@
     "copyAddress": "Copiar o endereço da carteira",
     "shareProfile": "Partilhar perfil",
     "open": "Abre {{tool}}",
-    "rewards": "Recompensas ganhas"
+    "rewards": "Recompensas ganhas",
+    "availableRewards": ""
   },
   "campaign": {
     "missions": {
