@@ -91,7 +91,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledWideEntityCardTitle mt={2}>{title}</StyledWideEntityCardTitle>
-        {rewardGroups && !!Object.keys(rewardGroups).length && (
+        {!!rewardGroups && !!Object.keys(rewardGroups).length && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;
