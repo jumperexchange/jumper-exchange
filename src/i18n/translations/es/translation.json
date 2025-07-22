@@ -143,6 +143,11 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "Misiones Disponibles",
     "completed": "Misiones Completadas",
     "mission": {
@@ -166,6 +171,10 @@
       "status": {
         "verify": "",
         "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
       }
     }
   },
@@ -181,7 +190,8 @@
     "copyAddress": "",
     "shareProfile": "",
     "open": "",
-    "rewards": ""
+    "rewards": "",
+    "availableRewards": ""
   },
   "campaign": {
     "missions": {
@@ -228,6 +238,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""
