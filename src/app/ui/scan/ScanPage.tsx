@@ -4,7 +4,7 @@ import { ClientOnly } from '@/components/ClientOnly';
 import config from '@/config/env-config';
 import { JUMPER_SCAN_PATH } from '@/const/urls';
 import { LiFiExplorer } from '@lifi/explorer';
-import { Box, useColorScheme, useTheme } from '@mui/material';
+import { Box, Shape, useColorScheme, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { fallbackLng } from 'src/i18n';
 
@@ -36,7 +36,7 @@ export default function ScanPage({ lng }: { lng: string }) {
           borderRadius: 12,
           cardBorderRadius: 24,
           buttonBorderRadius: 128,
-        },
+        } as Shape,
         colorSchemes: {
           light: {
             palette: {
