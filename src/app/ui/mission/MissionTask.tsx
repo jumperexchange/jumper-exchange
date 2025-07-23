@@ -41,7 +41,11 @@ export const MissionTask: FC<MissionTaskProps> = ({
       title={title}
       description={description}
       isActive={isActive}
-      type={t('missions.tasks.type', { type: taskType })}
+      type={
+        taskType
+          ? t('missions.tasks.type', { type: taskType })
+          : t('missions.tasks.typeFallback')
+      }
       statusBadge={
         shouldVerify ? (
           isSuccess || isVerified ? (

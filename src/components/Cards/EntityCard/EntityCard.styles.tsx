@@ -37,7 +37,7 @@ export const StyledEntityCardContentContainer = styled(Box)(({ theme }) => ({
 export const StyledEntityCardBadgeContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
-  right: theme.spacing(2.5),
+  right: theme.spacing(2),
   zIndex: 1,
 }));
 
@@ -118,8 +118,8 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 export const StyledCompactParticipantAvatar = styled(BaseAvatar)(() => ({
-  height: 32,
-  width: 32,
+  height: 40,
+  width: 40,
 }));
 
 export const StyledWideParticipantAvatar = styled(BaseAvatar)(() => ({
@@ -151,7 +151,8 @@ export const StyledRewardsContainer = styled(Stack)(({ theme }) => ({
 export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
   return <Chip {...props} onClick={() => {}} />;
 })(({ theme }) => ({
-  padding: theme.spacing(0.5, 1),
+  padding: theme.spacing(1, 1),
+  height: 40,
   backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
   borderRadius: (theme.vars || theme).shape.buttonBorderRadius,
   '& .MuiChip-label': {
@@ -159,7 +160,6 @@ export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
   },
   '& .MuiChip-avatar': {
     width: 'fit-content',
-    padding: theme.spacing(0, 0.25),
     margin: 0,
   },
   ...theme.applyStyles('light', {
@@ -178,7 +178,7 @@ export const StyledCompactRewardLabel = styled(Typography)(({ theme }) => ({
 }));
 
 export const StyledRewardsAvatarsContainer = styled((props: StackProps) => (
-  <Stack direction="row" spacing={-1.25} alignItems="center" {...props} />
+  <Stack direction="row" spacing={-1.5} alignItems="center" {...props} />
 ))(({ theme }) => ({}));
 
 export const StyledRewardAvatar = styled(BaseAvatar)(({ theme }) => ({

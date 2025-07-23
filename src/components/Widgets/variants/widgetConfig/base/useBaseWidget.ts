@@ -37,7 +37,7 @@ export const useBaseWidget = () => {
       theme: {
         ...widgetTheme.config.theme,
         container: {
-          maxHeight: 820,
+          maxHeight: '100%',
           maxWidth: 'unset',
           borderRadius: 24,
         },

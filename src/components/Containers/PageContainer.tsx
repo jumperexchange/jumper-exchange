@@ -8,8 +8,7 @@ export const PageContainer: FC<PropsWithChildren> = ({ children }) => {
         px: { xl: 0, xs: 4 },
         mt: 6,
         mb: 5.5,
-        // We need to cover a width of 1080px + paddingX
-        maxWidth: '1144px !important',
+        maxWidth: '1080px !important',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',

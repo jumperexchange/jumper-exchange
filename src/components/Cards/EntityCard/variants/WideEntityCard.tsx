@@ -77,7 +77,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           />
         )}
       </StyledEntityCardImageContainer>
-      <StyledEntityCardContentContainer sx={{ gap: 3 }}>
+      <StyledEntityCardContentContainer sx={{ gap: 3, paddingTop: 3 }}>
         <StyledParticipantsContainer>
           {participants?.map((participant, index) => (
             <StyledWideParticipantAvatar

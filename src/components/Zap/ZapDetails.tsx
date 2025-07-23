@@ -138,9 +138,6 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
           <BaseAlert
             variant={BaseAlertVariant.Info}
             description={zapDisplayData.info}
-            sx={(theme) => ({
-              boxShadow: theme.shadows[2],
-            })}
           />
         </ZapDetailsInfoContainer>
       )}

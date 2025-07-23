@@ -60,6 +60,16 @@ export const useFormatDisplayRewardsData = (
           label: rewards.name,
           avatarUrl: rewards.logo ?? undefined,
         },
+        {
+          value: rewards.amount,
+          label: rewards.name,
+          avatarUrl: rewards.logo ?? undefined,
+        },
+        {
+          value: rewards.amount,
+          label: rewards.name,
+          avatarUrl: rewards.logo ?? undefined,
+        },
       ];
     }
     return [];
