@@ -1,0 +1,45 @@
+name: PR Checks
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  pull-requests: write
+jobs:
+  lint-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Restore to pull request target branch
+        run: |
+          git fetch origin
+          git reset ${PR_BASE_SHA}
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      - name: Lint Staged
+        run: |
+          pnpm run lint-staged && git add . && git commit -m "Lint-staged"
+      - name: Check for uncommitted changes after lint-staged
+        run: |
+          if ! git diff --exit-code "${PR_REQUEST_SHA}"; then
+            echo "ERROR: Lint-staged made changes to the code. Please run 'pnpm run lint-staged' and commit the results."
+            git --no-pager diff
+            exit 1
+          fi
+        env:
+          PR_REQUEST_SHA: ${{ github.event.pull_request.base.sha }}
+      # - name: Comment on PR
+      #   uses: marocchino/sticky-pull-request-comment@v2
+      #   with:
+      #     message: |
+      #     comment-id: ${{ github.event.pull_request.id }}
