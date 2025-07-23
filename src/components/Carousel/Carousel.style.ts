@@ -77,7 +77,7 @@ export const CarouselContainer = styled(Box, {
   }),
 );
 
-export const CarouselHeader = styled(Box)(({ theme }) => ({
+export const CarouselHeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   marginTop: theme.spacing(1.5),
