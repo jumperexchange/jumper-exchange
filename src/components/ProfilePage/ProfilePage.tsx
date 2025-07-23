@@ -4,6 +4,8 @@ import { ProfileProvider } from 'src/providers/ProfileProvider';
 import { QuestDataExtended } from 'src/types/merkl';
 import { CampaignData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
+import { IntroSection } from './sections/IntroSection';
+import { RewardsSection } from './sections/RewardsSection';
 
 interface ProfilePageProps {
   walletAddress?: string;
@@ -28,7 +30,8 @@ export const ProfilePage = ({
       isLoading={account?.isConnecting || account?.isReconnecting}
     >
       <PageContainer>
-        <p>this is the new profile page</p>
+        <IntroSection />
+        <RewardsSection />
       </PageContainer>
     </ProfileProvider>
   );
