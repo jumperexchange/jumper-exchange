@@ -27,22 +27,24 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   participants,
   onClick,
   isLoading,
+  fullWidth,
 }) => {
   if (isLoading) {
-    return <CompactEntityCardSkeleton />;
+    return <CompactEntityCardSkeleton fullWidth={fullWidth} />;
   }
 
   return (
     <StyledEntityCard
       sx={{
-        maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+        width: '100%',
+        maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
       onClick={onClick}
     >
       <StyledEntityCardImageContainer
         sx={{
-          maxWidth: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
-          width: ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
+          width: '100%',
+          maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
           height: ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT,
         }}
       >
@@ -58,6 +60,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             // For a next/image we need to set height/width
             height={ENTITY_CARD_SIZES.COMPACT.IMAGE_HEIGHT}
             width={ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH}
+            // @Note need to add priority to the first loaded items as LCP is impacted
           />
         ) : (
           <BaseSkeleton
@@ -88,7 +91,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledCompactEntityCardTitle>{title}</StyledCompactEntityCardTitle>
-        {rewardGroups && (
+        {rewardGroups && !!Object.keys(rewardGroups).length && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;

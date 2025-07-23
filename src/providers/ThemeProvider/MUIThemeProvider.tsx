@@ -1,8 +1,8 @@
 'use client';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { themeCustomized } from 'src/theme/theme';
 import { PropsWithChildren } from 'react';
+import { themeCustomized } from 'src/theme/theme';
 
 /**
  * App's theme provider component.
@@ -10,11 +10,9 @@ import { PropsWithChildren } from 'react';
  */
 export function MUIThemeProvider({ children }: PropsWithChildren) {
   return (
-    <>
+    <ThemeProvider modeStorageKey="jumper-mode" theme={themeCustomized}>
       <CssBaseline enableColorScheme />
-      <ThemeProvider modeStorageKey="jumper-mode" theme={themeCustomized}>
-        {children}
-      </ThemeProvider>
-    </>
+      {children}
+    </ThemeProvider>
   );
 }

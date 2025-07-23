@@ -1,5 +1,5 @@
 'use client';
-import { checkWinningSwap } from '@/components/GoldenTicketModal/utils';
+import { checkWinningSwap } from '@/components/GoldenRouteModal/utils';
 import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
 import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
 import {
@@ -26,8 +26,10 @@ import type {
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
-import { GoldenTicketModal } from 'src/components/GoldenTicketModal/GoldenTicketModal';
+import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteModal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
+import { useRouteStore } from 'src/stores/route/RouteStore';
 import { TransformedRoute } from 'src/types/internal';
 import { handleRouteData } from 'src/utils/routes';
 
@@ -49,6 +51,7 @@ export function WidgetEvents() {
   const [setDestinationChain] = useMultisigStore((state) => [
     state.setDestinationChain,
   ]);
+  const setCompletedRoute = useRouteStore((state) => state.setCompletedRoute);
 
   const { account } = useAccount();
 
@@ -58,10 +61,14 @@ export function WidgetEvents() {
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
   const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
-  const [ticket, setTicket] = useState<{
+  const [route, setRoute] = useState<{
     winner: boolean;
     position: number | null;
   }>({ winner: false, position: null });
+
+  const { setContributed, setContributionDisplayed } = useContributionStore(
+    (state) => state,
+  );
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -94,6 +101,9 @@ export function WidgetEvents() {
       //to do: if route is not lifi then refetch position of destination token??
 
       if (route.id) {
+        // Store the completed route
+        setCompletedRoute(route);
+
         // Refresh portfolio value
         setForceRefresh(true);
         const data = handleRouteData(route, {
@@ -128,7 +138,7 @@ export function WidgetEvents() {
               fromAmount: route.fromAmount,
             });
 
-            setTicket({ winner, position });
+            setRoute({ winner, position });
           }
         }
 
@@ -324,6 +334,12 @@ export function WidgetEvents() {
       }
     };
 
+    const onPageEntered = async (pageType: any) => {
+      // Reset contribution state when entering a new page
+      setContributed(false);
+      setContributionDisplayed(false);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(
       WidgetEvent.LowAddressActivityConfirmed,
@@ -350,6 +366,7 @@ export function WidgetEvents() {
       WidgetEvent.DestinationChainTokenSelected,
       onDestinationChainTokenSelection,
     );
+    widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
     // widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
     // widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
 
@@ -392,6 +409,7 @@ export function WidgetEvents() {
       );
       // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
+      widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
     };
   }, [
     activeTab,
@@ -406,6 +424,9 @@ export function WidgetEvents() {
     trackEvent,
     trackTransaction,
     widgetEvents,
+    setCompletedRoute,
+    setContributed,
+    setContributionDisplayed,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {
@@ -432,13 +453,13 @@ export function WidgetEvents() {
         open={isMultiSigConfirmationModalOpen}
         onClose={onMultiSigConfirmationModalClose}
       />
-      <GoldenTicketModal
+      <GoldenRouteModal
         isOpen={
-          Boolean(ticket.winner) ||
-          Boolean(!ticket.winner && ticket.position && ticket.position > 1)
+          Boolean(route.winner) ||
+          Boolean(!route.winner && route.position && route.position > 1)
         }
-        ticket={ticket}
-        onClose={() => setTicket({ winner: false, position: null })}
+        route={route}
+        onClose={() => setRoute({ winner: false, position: null })}
       />
     </>
   );

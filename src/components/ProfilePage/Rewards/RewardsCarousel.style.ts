@@ -1,10 +1,6 @@
 import type { Breakpoint, IconButtonProps } from '@mui/material';
-import {
-  Box,
-  IconButton as MuiIconButton,
-  Typography,
-  styled,
-} from '@mui/material';
+import { Box, IconButton as MuiIconButton, styled } from '@mui/material';
+import { SectionTitle } from '../ProfilePage.style';
 
 interface RewardsCarouselContainerProps {
   rewardsLength?: number;
@@ -17,17 +13,19 @@ export const RewardsCarouselContainer = styled(Box, {
   backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
   borderRadius: '24px',
   boxShadow: (theme.vars || theme).shadows[1],
-  display: 'flex',
   width: '100%',
+  overflow: 'hidden',
   justifyContent: 'start',
   alignContent: 'center',
   alignItems: 'center',
   marginBottom: theme.spacing(4),
   padding: theme.spacing(3),
-  flexDirection: rewardsLength && rewardsLength < 3 ? 'row' : 'column',
+  flexDirection: 'column',
 
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    display: 'flex',
     paddingLeft: theme.spacing(4),
+    marginTop: 0,
     flexDirection: 'row',
     gap: '32px',
   },
@@ -40,7 +38,7 @@ export const RewardsCarouselItems = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-export const RewardsCarouselTitle = styled(Typography)(({ theme }) => ({
+export const RewardsCarouselTitle = styled(SectionTitle)(({ theme }) => ({
   [theme.breakpoints.up('md' as Breakpoint)]: {
     whiteSpace: 'nowrap',
   },

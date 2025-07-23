@@ -51,5 +51,9 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
 export const BlogArticlesCollectionsTitle = styled(SectionTitle)(
   ({ theme }) => ({
     color: (theme.vars || theme).palette.text.primary,
+    marginTop: theme.spacing(1.5),
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      marginTop: 0,
+    },
   }),
 );

@@ -1,6 +1,7 @@
 import type { Trait } from '@/types/loyaltyPass';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
+import config from '@/config/env-config';
 
 export interface UseTraitsPassProps {
   isSuccess: boolean;
@@ -13,7 +14,7 @@ export const useTraits = (): UseTraitsPassProps => {
   const { account } = useAccount();
 
   // query
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['traits', account?.address],
     queryFn: async () => {

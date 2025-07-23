@@ -1,15 +1,35 @@
-import { FC } from 'react';
-import { StyledBadge, StyledBadgeLabel } from './Badge.styles';
+import { FC, ReactNode } from 'react';
+import {
+  BadgeSize,
+  BadgeVariant,
+  StyledBadge,
+  StyledBadgeLabel,
+} from './Badge.styles';
 
 export interface BadgeProps {
   startIcon?: React.ReactElement;
   endIcon?: React.ReactElement;
-  label: string;
+  label: ReactNode;
+  variant?: BadgeVariant;
+  size?: BadgeSize;
+  onClick?: () => void;
 }
 
-export const Badge: FC<BadgeProps> = ({ label, startIcon, endIcon }) => {
+export const Badge: FC<BadgeProps> = ({
+  label,
+  startIcon,
+  endIcon,
+  variant,
+  size,
+  onClick,
+}) => {
   return (
-    <StyledBadge>
+    <StyledBadge
+      className="badge-container"
+      variant={variant}
+      size={size}
+      onClick={variant !== 'disabled' ? onClick : undefined}
+    >
       {startIcon && <>{startIcon}</>}
       <StyledBadgeLabel>{label}</StyledBadgeLabel>
       {endIcon && <>{endIcon}</>}

@@ -1,6 +1,11 @@
 import type { QuestDetails } from '@/types/questDetails';
 import { type RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
-import type { CampaignData, StrapiMediaData } from './strapi';
+import type {
+  CampaignData,
+  StrapiMediaData,
+  TaskType,
+  TaskWidgetInformationData,
+} from './strapi';
 
 // PDA Type
 export interface Reward {
@@ -104,6 +109,18 @@ export type QuestAttributes = {
   tasks_verification: TaskVerification[];
 };
 
+export interface RewardGroup {
+  value: string | number;
+  label: string;
+  avatarUrl?: string;
+}
+
+export interface ParticipantChain {
+  avatarUrl: string;
+  label: string;
+  id: number;
+}
+
 export interface TaskVerification {
   id: number;
   name: string;
@@ -113,6 +130,10 @@ export interface TaskVerification {
   CampaignId?: string;
   uuid: string;
   hasTask: boolean;
+  isRequired?: boolean;
+  // @TODO this becomes required once strapi change is pushed
+  TaskType?: TaskType;
+  TaskWidgetInformation?: TaskWidgetInformationData;
 }
 
 export interface TaskVerificationWithApy extends TaskVerification {

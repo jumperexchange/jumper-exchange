@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "แผงหน้าจอ",
       "refuel": "แก็ส",
-      "buy": "ซื้อ"
+      "buy": "ซื้อ",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
@@ -110,7 +111,8 @@
     "learnMore": "เรียนรู้เพิ่มเติม"
   },
   "button": {
-    "okay": "ตกลง"
+    "okay": "ตกลง",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "เกิดข้อผิดพลาดบางอย่าง โปรดลองโหลดหน้าเว็บใหม่อีกครั้ง หากปัญหายังคงอยู่ กรุณาติดต่อฝ่ายสนับสนุนของเรา"
@@ -141,8 +143,19 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "ภารกิจที่มีอยู่",
     "completed": "ภารกิจที่สำเร็จแล้ว",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
     "status": {
       "new": "",
       "upcoming": "",
@@ -152,6 +165,13 @@
       "hoursLeft_other": "",
       "daysLeft_one": "",
       "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
     }
   },
   "profile_page": {
@@ -167,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -187,6 +212,19 @@
     "date": "",
     "shortDate": ""
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "",
     "apy": "",
@@ -195,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""

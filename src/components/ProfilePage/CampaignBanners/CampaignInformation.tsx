@@ -46,6 +46,9 @@ export const CampaignInformation = ({
           variant="bodyMedium"
           sx={(theme) => ({
             color: (theme.vars || theme).palette.text.secondary,
+            [theme.breakpoints.down('md')]: {
+              minHeight: '60px',
+            },
           })}
         >
           {description}

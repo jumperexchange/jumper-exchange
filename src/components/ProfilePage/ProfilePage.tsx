@@ -21,6 +21,8 @@ import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { QuestDataExtended } from 'src/types/merkl';
 
 import { CampaignBanners } from './CampaignBanners/CampaignBanners';
+import { IntroSection } from './sections/IntroSection';
+import { RewardsSection } from './sections/RewardsSection';
 interface ProfilePageProps {
   campaigns?: CampaignData[];
   quests?: QuestDataExtended[];
@@ -67,6 +69,8 @@ export const ProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   return (
     <PageContainer className="profile-page">
       {!isPublic && <MerklRewards />}
+      {/* <IntroSection /> */}
+      {/* {!isPublic && <RewardsSection />} */}
       <ProfileHeaderBox>
         <AddressCard address={walletAddress} />
         <ProfileInfoBox sx={{ display: 'flex', flex: 2, gap: 2 }}>

@@ -122,7 +122,7 @@ test.describe('Verify essential mobile flows', () => {
         },
         { timeout: 5000 },
       );
-      await expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
+      await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
     });
   });
 });

@@ -15,6 +15,18 @@ export interface Chain {
   name: string;
   chainId: number;
 }
+
+export interface ProjectData {
+  chain: string;
+  chainId: number;
+  project: string;
+  integrator: string;
+  integratorLink: string;
+  address: string;
+  withdrawAddress?: string;
+  tokenAddress?: string;
+}
+
 export interface QuestDetails {
   type: string;
   socials: QuestSocials;
@@ -30,6 +42,9 @@ export interface QuestDetails {
   CTA: MerklOpportunity[];
   partner: { logo: string; name: string }[];
   marketIds?: string[];
+  projectData: ProjectData;
+  // To be used in the future to point to local links
+  shouldOverrideWithInternalLink?: boolean;
 }
 
 export interface ExtendedQuest extends Quest {
