@@ -13,7 +13,7 @@ import { buildContractComposable } from './utils';
 import { useZaps } from 'src/hooks/useZaps';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { http, parseUnits, zeroAddress } from 'viem';
-import { mainnet, optimism, base } from 'viem/chains';
+import * as chains from 'viem/chains';
 import { useReadContracts, useWalletClient, useConfig } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import {
@@ -81,10 +81,25 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       // Creates the Biconomy "Multichain Nexus Account", a smart contract account
       // that orchestrates actions across multiple chains.
       // See: https://docs.biconomy.io/multichain-orchestration/comprehensive#multichain-nexus-account
+      
+      // Find the current chain from viem/chains
+      const currentChain = Object.values(chains).find(chain => chain.id === chainId);
+      
+      if (!currentChain) {
+        throw new Error(`Chain with ID ${chainId} not found in viem/chains`);
+      }
+
+      const depositChain = Object.values(chains).find(chain => chain.id === projectData.chainId);
+      
+      if (!depositChain) {
+        throw new Error(`Deposit chain with ID ${projectData.chainId} not found in viem/chains`);
+      }
+      
+      // it has to be current chain and chain of deposit
       const oNexusInit = await toMultichainNexusAccount({
         signer: walletClient,
-        chains: [mainnet, optimism, base],
-        transports: [http(), http(), http()],
+        chains: [currentChain, depositChain],
+        transports: [http(), http()],
       });
 
       // create mee client
@@ -287,6 +302,10 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
         currentRoute.fromToken.address === zeroAddress;
       console.warn('Using native source token:', isNativeSourceToken);
 
+      if (isNativeSourceToken) {
+        throw new Error('Native source token is not supported.');
+      }
+
       // raw calldata from the widget
       const instructions = await Promise.all(
         calls.map(async (call: WalletCall) => {
@@ -307,7 +326,7 @@ export const useInitializeZapConfig = (projectData: ProjectData) => {
       // constraints
       const depositTokenDecimals = zapData.market?.depositToken.decimals;
       const constraints = [
-        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value
+        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value by creating balanceNotZeroConstraint logic
       ];
 
       // token approval
