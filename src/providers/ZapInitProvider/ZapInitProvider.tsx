@@ -23,7 +23,10 @@ import {
 } from '@biconomy/abstractjs';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
-import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
+import {
+  createCustomEVMProvider,
+  CustomEVMProviderHandlers,
+} from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { http, parseUnits, zeroAddress } from 'viem';
 import * as chains from 'viem/chains';
 import { useWalletClient, useConfig } from 'wagmi';
@@ -71,11 +74,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   depositTokenDecimals: undefined,
   isLoadingDepositTokenData: false,
   refetchDepositToken: () =>
-    Promise.resolve({
-      result: undefined,
-      error: undefined,
-      status: 'success',
-    } as any),
+    Promise.resolve({}) as ReturnType<UseReadContractsReturnType['refetch']>,
 });
 
 export const useZapInitContext = () => {
@@ -101,12 +100,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
   const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
-  const [areClientInitializing, setAreClientInitializing] = useState(false);
   const [pendingOperations, setPendingOperations] =
     useState<WalletPendingOperations>({});
 
   const lastInitRef = useRef<{ chainId?: number; address?: string }>({});
   const resetInProgressRef = useRef(false);
+  const initInProgressRef = useRef(false);
 
   const {
     zapData,
@@ -130,20 +129,44 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   // Check if oNexus and meeClient are initialized before rendering
   const isInitialized = !!oNexus && !!meeClient;
 
+  const sendCallsExtraParams = useMemo(
+    () => ({
+      chainId,
+      currentRoute,
+      zapData,
+      projectData,
+      address,
+    }),
+    [chainId, currentRoute, zapData, projectData, address],
+  );
+
   const isInitializedForCurrentChain = useMemo(() => {
     return (
       isInitialized &&
-      !areClientInitializing &&
+      !resetInProgressRef.current &&
+      !initInProgressRef.current &&
       lastInitRef.current.chainId === chainId &&
       lastInitRef.current.address === address &&
       currentRoute?.fromAddress === address &&
       currentRoute?.fromChainId === chainId
     );
-  }, [isInitialized, areClientInitializing, chainId, address, currentRoute]);
+  }, [
+    isInitialized,
+    chainId,
+    address,
+    currentRoute,
+    resetInProgressRef.current,
+    initInProgressRef.current,
+    lastInitRef.current,
+  ]);
 
+  // RPC operation queueing
   const queueOperation = useCallback(
-    (operationName: WalletMethods, operation: () => Promise<any>) => {
-      if (!isInitializedForCurrentChain) {
+    (
+      operationName: WalletMethods,
+      operation: WalletPendingOperation['operation'],
+    ) => {
+      if (!isInitializedForCurrentChain || !meeClient || !oNexus) {
         const queuedOperation: WalletPendingOperation = {
           operation,
           timestamp: Date.now(),
@@ -162,39 +185,55 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         });
       }
 
-      return operation();
+      return operation(meeClient, oNexus, sendCallsExtraParams);
     },
-    [isInitializedForCurrentChain],
+    [isInitializedForCurrentChain, meeClient, oNexus, sendCallsExtraParams],
   );
 
   // Execute pending operations when clients are ready
   useEffect(() => {
-    if (
-      isInitializedForCurrentChain &&
-      Object.keys(pendingOperations).length > 0
-    ) {
+    const executePendingOperations = async () => {
       console.warn(
         `Executing ${Object.keys(pendingOperations).length} pending operations`,
       );
 
       // Execute all pending operations
-      Object.entries(pendingOperations).forEach(
-        async ([operationName, pendingOperation]) => {
-          console.warn(`Executing ${operationName}`);
+      for (const [operationName, pendingOperation] of Object.entries(
+        pendingOperations,
+      )) {
+        console.warn(`Executing ${operationName}`, sendCallsExtraParams);
 
-          try {
-            const result = await pendingOperation.operation();
-            pendingOperation.resolve?.(result);
-          } catch (error) {
-            pendingOperation.reject?.(error);
-          }
-        },
-      );
+        try {
+          const result = await pendingOperation.operation(
+            meeClient!,
+            oNexus!,
+            sendCallsExtraParams,
+          );
+          pendingOperation.resolve?.(result);
+        } catch (error) {
+          pendingOperation.reject?.(error);
+        }
+      }
 
       // Clear the queue
       setPendingOperations({});
+    };
+
+    if (
+      isInitializedForCurrentChain &&
+      meeClient &&
+      oNexus &&
+      Object.keys(pendingOperations).length > 0
+    ) {
+      executePendingOperations();
     }
-  }, [isInitializedForCurrentChain, pendingOperations]);
+  }, [
+    isInitializedForCurrentChain,
+    pendingOperations,
+    meeClient,
+    oNexus,
+    sendCallsExtraParams,
+  ]);
 
   // Enhanced initialization with retry logic and better error handling
   useEffect(() => {
@@ -210,6 +249,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       return;
     }
 
+    if (isInitializedForCurrentChain) {
+      console.warn('Clients already initialised for this chain');
+      return;
+    }
+
     // If chain or address changed, reset clients immediately
     if (
       lastInitRef.current.chainId !== chainId ||
@@ -221,23 +265,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         chainId,
         address,
       );
-      setAreClientInitializing(true);
       resetInProgressRef.current = true;
+      initInProgressRef.current = false;
     }
 
-    if (!resetInProgressRef.current) {
-      if (areClientInitializing) {
-        console.warn('Already initializing, skipping...');
-        return;
-      }
-
-      if (oNexus && meeClient) {
-        console.warn('Clients already initialized for current chain/address');
-        return;
-      }
+    if (!resetInProgressRef.current && initInProgressRef.current) {
+      console.warn('Already initializing, skipping...');
+      return;
     }
-
-    resetInProgressRef.current = false;
 
     console.warn(
       'Starting client initialization for chain:',
@@ -250,33 +285,29 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     const currentChain = Object.values(chains).find(
       (chain) => chain.id === chainId,
     );
-
-    if (!currentChain) {
-      console.error(`Chain with ID ${chainId} not found in viem/chains`);
-      setAreClientInitializing(false);
-      return;
-    }
-
     const depositChain = Object.values(chains).find(
       (chain) => chain.id === projectData.chainId,
     );
 
-    if (!depositChain) {
-      console.error(
-        `Deposit chain with ID ${projectData.chainId} not found in viem/chains`,
-      );
-      setAreClientInitializing(false);
+    if (!currentChain || !depositChain) {
+      console.error('Chain not found:', {
+        currentChainId: chainId,
+        depositChainId: projectData.chainId,
+      });
       return;
     }
 
     const initMeeClient = async () => {
       try {
+        resetInProgressRef.current = false;
+        initInProgressRef.current = true;
         console.warn('Initializing oNexus with chains:', [
           currentChain.id,
           depositChain.id,
         ]);
         const oNexusInit = await toMultichainNexusAccount({
           signer: walletClient,
+          accountAddress: walletClient.account.address,
           chains: [currentChain, depositChain],
           transports: [http(), http()],
         });
@@ -291,7 +322,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       } finally {
-        setAreClientInitializing(false);
+        initInProgressRef.current = false;
       }
     };
 
@@ -301,7 +332,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.chainId,
     address,
     walletClient,
-    areClientInitializing,
+    isInitializedForCurrentChain,
   ]);
 
   const wagmiConfig = useConfig();
@@ -309,6 +340,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const handleGetCapabilities = useCallback(
     async (
       args: WalletCapabilitiesArgs,
+      meeClientParam: MeeClient,
+      oNexusParam: MultichainSmartAccount,
     ): Promise<{
       atomic: { status: 'supported' | 'ready' | 'unsupported' };
     }> => {
@@ -321,8 +354,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   // Helper function to handle 'wallet_getCallsStatus'
   const handleWalletGetCallsStatus = useCallback(
-    async (args: WalletGetCallsStatusArgs) => {
-      if (!meeClient) {
+    async (
+      args: WalletGetCallsStatusArgs,
+      meeClientParam: MeeClient,
+      oNexusParam: MultichainSmartAccount,
+    ) => {
+      if (!meeClientParam) {
         throw new Error('MEE client not initialized');
       }
       if (!args.params || !Array.isArray(args.params)) {
@@ -335,7 +372,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error('Missing or invalid hash in params object');
       }
 
-      const receipt = (await meeClient.waitForSupertransactionReceipt({
+      const receipt = (await meeClientParam.waitForSupertransactionReceipt({
         hash: hash as `0x${string}`,
       })) as WaitForSupertransactionReceiptPayload;
 
@@ -368,13 +405,17 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         })),
       };
     },
-    [meeClient],
+    [],
   );
 
   // Helper function to handle 'wallet_waitForCallsStatus'
   const handleWalletWaitForCallsStatus = useCallback(
-    async (args: WalletWaitForCallsStatusArgs) => {
-      if (!meeClient) {
+    async (
+      args: WalletWaitForCallsStatusArgs,
+      meeClientParam: MeeClient,
+      oNexusParam: MultichainSmartAccount,
+    ) => {
+      if (!meeClientParam) {
         throw new Error('MEE client not initialized');
       }
       if (!args.id) {
@@ -388,7 +429,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
       // We'll use the timeout to set a maximum wait time
       const receipt = (await Promise.race([
-        meeClient!.waitForSupertransactionReceipt({
+        meeClientParam!.waitForSupertransactionReceipt({
           hash: id as `0x${string}`,
         }),
         new Promise((_, reject) =>
@@ -433,14 +474,25 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         })),
       };
     },
-    [meeClient],
+    [],
   );
 
   // @TODO split this function into smaller units
   // Helper function to handle 'wallet_sendCalls'
   const handleWalletSendCalls = useCallback(
-    async (args: WalletSendCallsArgs) => {
-      if (!meeClient || !oNexus) {
+    async (
+      args: WalletSendCallsArgs,
+      meeClientParam: MeeClient,
+      oNexusParam: MultichainSmartAccount,
+      sendCallsExtraParams: {
+        chainId: number | undefined;
+        currentRoute: Route | null;
+        zapData: any;
+        projectData: ProjectData;
+        address: string | undefined;
+      },
+    ) => {
+      if (!meeClientParam || !oNexusParam) {
         throw new Error('MEE client or oNexus not initialized');
       }
 
@@ -454,26 +506,32 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error("'calls' array is empty");
       }
 
-      if (!chainId) {
+      if (!sendCallsExtraParams.chainId) {
         throw new Error('Cannot determine current chain ID from wallet.');
       }
-      const currentChainId = chainId;
 
-      if (!currentRoute) {
+      if (!sendCallsExtraParams.currentRoute) {
         throw new Error('Cannot process transaction: Route is undefined.');
       }
-      if (!zapData) {
+      if (!sendCallsExtraParams.zapData) {
         throw new Error('Integration data is not available.');
       }
 
-      if (!address) {
+      if (!sendCallsExtraParams.address) {
         throw new Error('No wallet address available.');
       }
 
-      const integrationData = zapData;
+      const currentChainId = sendCallsExtraParams.chainId;
+      const currentAddress = sendCallsExtraParams.address;
+      const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
+      const currentRouteFromAmount =
+        sendCallsExtraParams.currentRoute.fromAmount;
+      const integrationData = sendCallsExtraParams.zapData;
       const depositAddress = integrationData.market?.address as `0x${string}`;
       const depositToken = integrationData.market?.depositToken?.address;
-      const depositChainId = projectData.chainId;
+      const depositTokenDecimals =
+        integrationData.market?.depositToken.decimals;
+      const depositChainId = sendCallsExtraParams.projectData.chainId;
 
       if (!depositChainId) {
         throw new Error('Deposit chain id is undefined.');
@@ -484,8 +542,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       }
 
       // @Note this works only for EVM chains
-      const isNativeSourceToken =
-        currentRoute.fromToken.address === zeroAddress;
+      const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
       console.warn('Using native source token:', isNativeSourceToken);
 
@@ -499,7 +556,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
           }
-          return oNexus.buildComposable({
+          return oNexusParam.buildComposable({
             type: 'rawCalldata',
             data: {
               to: call.to,
@@ -511,13 +568,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       );
 
       // constraints
-      const depositTokenDecimals = zapData.market?.depositToken.decimals;
       const constraints = [
         greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value
       ];
 
       // token approval
-      const approveInstruction = await buildContractComposable(oNexus, {
+      const approveInstruction = await buildContractComposable(oNexusParam, {
         address: depositToken,
         chainId: depositChainId,
         abi: integrationData.abi.approve,
@@ -526,7 +582,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         args: [
           depositAddress,
           runtimeERC20BalanceOf({
-            targetAddress: oNexus.addressOn(
+            targetAddress: oNexusParam.addressOn(
               depositChainId,
               true,
             ) as `0x${string}`,
@@ -542,7 +598,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const depositArgs = depositInputs.map((input: AbiInput) => {
         if (input.type === 'uint256') {
           return runtimeERC20BalanceOf({
-            targetAddress: oNexus.addressOn(
+            targetAddress: oNexusParam.addressOn(
               depositChainId,
               true,
             ) as `0x${string}`,
@@ -551,11 +607,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           });
         } else if (input.type === 'address') {
           // Use the user's EOA address or another relevant address
-          return address;
+          return currentAddress;
         }
         throw new Error(`Unsupported deposit input type: ${input.type}`);
       });
-      const depositInstruction = await buildContractComposable(oNexus, {
+      const depositInstruction = await buildContractComposable(oNexusParam, {
         address: depositAddress,
         chainId: depositChainId,
         abi: integrationData.abi.deposit,
@@ -571,41 +627,44 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       );
 
       if (!depositHasAddressArg) {
-        if (!address) {
+        if (!currentAddress) {
           throw new Error('User address (EOA) is not available.');
         }
-        const transferLpInstruction = await buildContractComposable(oNexus, {
-          address: depositAddress,
-          chainId: depositChainId,
-          abi: integrationData.abi.transfer,
-          functionName: integrationData.abi.transfer.name,
-          gasLimit: 200000n,
-          args: [
-            address,
-            runtimeERC20BalanceOf({
-              targetAddress: oNexus.addressOn(
-                depositChainId,
-                true,
-              ) as `0x${string}`,
-              tokenAddress: depositAddress,
-              constraints,
-            }),
-          ],
-        });
+        const transferLpInstruction = await buildContractComposable(
+          oNexusParam,
+          {
+            address: depositAddress,
+            chainId: depositChainId,
+            abi: integrationData.abi.transfer,
+            functionName: integrationData.abi.transfer.name,
+            gasLimit: 200000n,
+            args: [
+              address,
+              runtimeERC20BalanceOf({
+                targetAddress: oNexusParam.addressOn(
+                  depositChainId,
+                  true,
+                ) as `0x${string}`,
+                tokenAddress: depositAddress,
+                constraints,
+              }),
+            ],
+          },
+        );
         instructions.push(transferLpInstruction);
       }
 
       const currentTokenBalance = await getTokenBalance(
-        address,
-        currentRoute.fromToken,
+        currentAddress,
+        currentRouteFromToken,
       );
 
       const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
-      const requestedAmount = BigInt(currentRoute.fromAmount);
+      const requestedAmount = BigInt(currentRouteFromAmount);
 
       const fusionQuoteParams: GetFusionQuoteParams = {
         trigger: {
-          tokenAddress: currentRoute.fromToken.address as `0x${string}`,
+          tokenAddress: currentRouteFromToken.address as `0x${string}`,
           amount: requestedAmount,
           chainId: currentChainId,
         },
@@ -613,11 +672,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           {
             tokenAddress: depositToken,
             chainId: depositChainId,
-            recipientAddress: account.address as `0x${string}`,
+            recipientAddress: currentAddress as `0x${string}`,
           },
         ],
         feeToken: {
-          address: currentRoute.fromToken.address as `0x${string}`,
+          address: currentRouteFromToken.address as `0x${string}`,
           chainId: currentChainId,
         },
         instructions,
@@ -634,48 +693,68 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         fusionQuoteParams.trigger.useMaxAvailableFunds = true;
       }
 
-      const quote = await meeClient.getFusionQuote(fusionQuoteParams);
+      const quote = await meeClientParam.getFusionQuote(fusionQuoteParams);
 
-      const { hash } = await meeClient.executeFusionQuote({
+      const { hash } = await meeClientParam.executeFusionQuote({
         fusionQuote: quote,
       });
 
       return { id: hash };
     },
-    [meeClient, oNexus, chainId, currentRoute, zapData, projectData, address],
+    [],
   );
 
-  const providers = useMemo(
-    () => [
+  const providers = useMemo(() => {
+    return [
       createCustomEVMProvider({
         wagmiConfig,
-        getCapabilities: async (_, args) =>
-          queueOperation(WalletMethods.getCapabilities, () =>
-            handleGetCapabilities(args),
-          ),
-        getCallsStatus: async (_, args) =>
-          queueOperation(WalletMethods.getCallsStatus, () =>
-            handleWalletGetCallsStatus(args),
-          ),
-        sendCalls: async (_, args) =>
-          queueOperation(WalletMethods.sendCalls, () =>
-            handleWalletSendCalls(args),
-          ),
-        waitForCallsStatus: async (_, args) =>
-          queueOperation(WalletMethods.waitForCallsStatus, () =>
-            handleWalletWaitForCallsStatus(args),
-          ),
+        getCapabilities: async (_, args) => {
+          console.warn('getCapabilities');
+          return queueOperation(
+            WalletMethods.getCapabilities,
+            (meeClientParam, oNexusParam) =>
+              handleGetCapabilities(args, meeClientParam, oNexusParam),
+          );
+        },
+        getCallsStatus: async (_, args) => {
+          console.warn('getCallsStatus');
+          return queueOperation(
+            WalletMethods.getCallsStatus,
+            (meeClientParam, oNexusParam) =>
+              handleWalletGetCallsStatus(args, meeClientParam, oNexusParam),
+          );
+        },
+        sendCalls: async (_, args) => {
+          console.warn('sendCalls');
+          return queueOperation(
+            WalletMethods.sendCalls,
+            (meeClientParam, oNexusParam, extraParams) =>
+              handleWalletSendCalls(
+                args,
+                meeClientParam,
+                oNexusParam,
+                extraParams!,
+              ),
+          );
+        },
+        waitForCallsStatus: async (_, args) => {
+          console.warn('waitForCallsStatus');
+          return queueOperation(
+            WalletMethods.waitForCallsStatus,
+            (meeClientParam, oNexusParam) =>
+              handleWalletWaitForCallsStatus(args, meeClientParam, oNexusParam),
+          );
+        },
       }),
-    ],
-    [
-      wagmiConfig,
-      queueOperation,
-      handleGetCapabilities,
-      handleWalletGetCallsStatus,
-      handleWalletSendCalls,
-      handleWalletWaitForCallsStatus,
-    ],
-  );
+    ];
+  }, [
+    wagmiConfig,
+    queueOperation,
+    handleGetCapabilities,
+    handleWalletGetCallsStatus,
+    handleWalletSendCalls,
+    handleWalletWaitForCallsStatus,
+  ]);
 
   const toAddress = useMemo(
     () =>
@@ -710,7 +789,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     toAddress,
     zapData,
     isZapDataSuccess,
-    setCurrentRoute,
     depositTokenData,
     depositTokenDecimals,
     isLoadingDepositTokenData,

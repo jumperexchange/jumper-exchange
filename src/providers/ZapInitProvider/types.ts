@@ -1,3 +1,6 @@
+import { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
+import { Route } from '@lifi/sdk';
+import { ProjectData } from 'src/types/questDetails';
 import { AbiFunction } from 'viem';
 
 // Type definitions for better type safety
@@ -72,7 +75,17 @@ export interface CallsStatusResponse {
 }
 
 export interface WalletPendingOperation {
-  operation: () => Promise<any>;
+  operation: (
+    meeClientParam: MeeClient,
+    oNexusParam: MultichainSmartAccount,
+    extraParams?: {
+      chainId: number | undefined;
+      currentRoute: Route | null;
+      zapData: any;
+      projectData: ProjectData;
+      address: string | undefined;
+    },
+  ) => Promise<any>;
   timestamp: number;
   resolve?: (value: any) => void;
   reject?: (error: any) => void;
