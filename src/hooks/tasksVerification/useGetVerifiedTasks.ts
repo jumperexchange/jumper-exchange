@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import config from '@/config/env-config';
 
 interface VerifyTaskResponse {
   id: number;
@@ -12,7 +13,7 @@ export async function getVerifiedTasksQuery({
 }: {
   queryKey: [string, string];
 }) {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const res = await fetch(`${apiBaseUrl}/tasks_verification/verify/${address}`);
 
   if (!res.ok) {

@@ -4,12 +4,11 @@ import type {
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
+  Color,
 } from '@mui/material';
-import { colorChannel } from '@mui/system';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
-import { Channels } from 'node_modules/@mui/material/esm/styles/createPalette';
+import { colorChannel } from '@mui/system';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
@@ -32,6 +31,8 @@ declare module '@mui/material/styles' {
   interface Shape {
     borderRadius: number;
     borderRadiusSecondary: number;
+    cardBorderRadius: number;
+    buttonBorderRadius: number;
   }
 
   interface ThemeOptions {
@@ -72,7 +73,17 @@ declare module '@mui/material/styles' {
     alphaLight700: Palette['primary'];
     alphaLight800: Palette['primary'];
     alphaLight900: Palette['primary'];
+    mint: Pick<Color, 100 | 500>;
+    amber: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    violet: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    blue: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    azure: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    scarlet: Pick<Color, 100 | 500>;
+    orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    lavenderLight: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    lavenderDark: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
   }
+
   interface PaletteOptions {
     tertiary?: PaletteOptions['primary'];
     white?: PaletteOptions['primary'];
@@ -106,6 +117,15 @@ declare module '@mui/material/styles' {
     alphaLight600?: PaletteOptions['primary'];
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
+    mint?: Pick<Color, 100 | 500>;
+    amber?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    violet?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    blue?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    azure?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    scarlet?: Pick<Color, 100 | 500>;
+    orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
+    lavenderLight?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    lavenderDark?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
   }
   interface ButtonPropsColorOverrides {
     tertiary: true;
@@ -139,6 +159,15 @@ declare module '@mui/material/styles' {
     alphaLight700: true;
     alphaLight800: true;
     alphaLight900: true;
+    mint: true;
+    amber: true;
+    violet: true;
+    blue: true;
+    azure: true;
+    scarlet: true;
+    orchid: true;
+    lavenderLight: true;
+    lavenderDark: true;
   }
 
   interface TypographyVariants {
@@ -281,6 +310,8 @@ declare module '@mui/material/Typography' {
 const shape = {
   borderRadius: 12,
   borderRadiusSecondary: 8,
+  cardBorderRadius: 24,
+  buttonBorderRadius: 128,
 };
 
 const themeBase = createTheme({
@@ -513,6 +544,83 @@ const palette = {
     light: '#297EFF',
     dark: '#297EFF',
   },
+  mint: {
+    100: '#D6FFE7',
+    500: '#00B849',
+  },
+  amber: {
+    100: '#FFF7D6',
+    200: '#FFEFAD',
+    300: '#FFDE5C',
+    400: '#F5CC27',
+    500: '#D6AB00',
+    600: '#A38300',
+    700: '#7A6200',
+    800: '#524100',
+    900: '#3D3100',
+  },
+  violet: {
+    100: '#FAEBFF',
+    200: '#F4D6FF',
+    300: '#EFC2FF',
+    400: '#DE85FF',
+    500: '#D35CFF',
+    600: '#8D1AB8',
+    700: '#7C10A3',
+    800: '#6B098F',
+    900: '#59007A',
+  },
+  blue: {
+    100: '#E0E3FF',
+    200: '#D6D9FF',
+    300: '#C2C6FF',
+    400: '#ADB3FF',
+    500: '#5C67FF',
+    600: '#414DEB',
+    700: '#2B37D6',
+    800: '#1723C2',
+    900: '#0713AD',
+  },
+  azure: {
+    100: '#EBF3FF',
+    200: '#C2DAFF',
+    300: '#A3C8FF',
+    400: '#85B6FF',
+    500: '#4791FF',
+    600: '#4285EB',
+    700: '#226AD6',
+    800: '#00317A',
+    900: '#032352',
+  },
+  scarlet: {
+    100: '#FFDED6',
+    500: '#B82500',
+  },
+  orchid: {
+    100: '#FEF5FF',
+    200: '#FCEBFF',
+    300: '#FBE0FF',
+    400: '#FAD6FF',
+    500: '#F7C2FF',
+    600: '#C86FD6',
+    700: '#AA51B8',
+    800: '#702C7A',
+    900: '#37113D',
+  },
+  lavenderLight: {
+    0: '#FCFAFF',
+    100: '#F9F5FF',
+    200: '#F6F0FF',
+    300: '#F3EBFF',
+    400: '#F0E5FF',
+  },
+  lavenderDark: {
+    0: '#30007A',
+    100: '#200052',
+    200: '#18003D',
+    300: '#100029',
+    400: '#0C001F',
+  },
 };
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
@@ -687,9 +795,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             zIndex: -1,
             overflow: 'hidden',
             pointerEvents: 'none',
-            backgroundColor: (theme.vars || theme).palette.surface1.main,
+            backgroundColor: (theme.vars || theme).palette.lavenderDark[300],
             ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.bg.main,
+              backgroundColor: (theme.vars || theme).palette.lavenderLight[200],
             }),
             // typed-safe access to the `variant` prop
             [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -1037,9 +1145,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#FFFFFF',
           },
           surface3: {
-            light: '#F6F0FF',
-            main: '#F6F0FF',
-            dark: '#F6F0FF',
+            light: '#E5E1EB',
+            main: '#E5E1EB',
+            dark: '#E5E1EB',
           },
         },
         // @ts-expect-error
@@ -1129,9 +1237,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#24203D',
           },
           surface3: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: '#302B52',
+            main: '#302B52',
+            dark: '#302B52',
           },
         },
         // @ts-expect-error
@@ -1144,8 +1252,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       },
     },
   });
-
-const themePreset = createTheme(deepmerge(themeBase, themeCustomized));
 
 export const lightTheme = themeCustomized;
 export const darkTheme = themeCustomized;

@@ -3,6 +3,7 @@ import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 
 export const metadata: Metadata = {
   title: 'Jumper Loyalty Pass',
@@ -14,8 +15,15 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { data: campaigns } = await getProfileBannerCampaigns();
-  const { data: questsData } = await getQuestsWithNoCampaignAttached();
+  const [{ data: campaigns }, { data: questsData }] = await Promise.all([
+    getProfileBannerCampaigns(),
+    getQuestsWithNoCampaignAttached(),
+  ]);
 
-  return <ProfilePage quests={questsData.data} campaigns={campaigns} />;
+  // Fetch max APY for all quests and add to quest data
+  const questsExtended = await fetchQuestOpportunitiesByRewardsIds(
+    questsData.data,
+  );
+
+  return <ProfilePage quests={questsExtended} campaigns={campaigns} />;
 }

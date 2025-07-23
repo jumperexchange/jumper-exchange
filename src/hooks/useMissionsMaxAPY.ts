@@ -1,66 +1,77 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import {
-  MERKL_CREATOR_TAG,
-  REWARDS_CHAIN_IDS,
-} from 'src/const/partnerRewardsTheme';
-import type { MerklApyRes } from './useMissionsAPY';
+  getMerklOpportunities,
+  MerklOpportunity,
+} from 'src/app/lib/getMerklOpportunities';
+import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
+import { MERKL_CACHE_TIME } from 'src/utils/merkl/merklApi';
+import { sanitizeSearchQuery } from 'src/utils/merkl/merklHelper';
 
 const ACTIVE_CHAINS = REWARDS_CHAIN_IDS;
-const MERKL_API = 'https://api.merkl.xyz/v3';
-const CREATOR_TAG = MERKL_CREATOR_TAG;
-
 interface useMissionsAPYRes {
   isLoading: boolean;
   isSuccess: boolean;
   apy: number;
+  data: MerklOpportunity[];
 }
 
+// todo: testing of DepositCard.tsx
 export const useMissionsMaxAPY = (
-  claimingIds: string[] | undefined,
+  searchQuery: string[] | undefined,
+  chainIds: number[] | undefined,
 ): useMissionsAPYRes => {
-  const MERKL_CAMPAIGN_API = `${MERKL_API}/campaigns?chainIds=${ACTIVE_CHAINS.join(',')}`; //&creatorTag=${CREATOR_TAG}`;
+  const { opportunities, maxApy, isLoading, isSuccess } = useQueries({
+    queries: (chainIds || ACTIVE_CHAINS).flatMap((chainId) =>
+      (searchQuery || []).map((claimingId) => ({
+        queryKey: [
+          'merklOpportunities',
+          chainId,
+          sanitizeSearchQuery(claimingId),
+        ],
+        queryFn: async () => {
+          try {
+            return await getMerklOpportunities({
+              chainIds: [String(chainId)],
+              searchQueries: [sanitizeSearchQuery(claimingId)],
+            });
+          } catch (err) {
+            console.error(
+              `Error fetching Merkl opportunities for chain ${chainId} and address ${sanitizeSearchQuery(claimingId)}:`,
+              err,
+            );
+            return [];
+          }
+        },
+        enabled: !!searchQuery?.length,
+        refetchInterval: MERKL_CACHE_TIME,
+        retry: 3,
+        refetchOnWindowFocus: false,
+        refetchOnMount: true,
+      })),
+    ),
+    combine: (results) => {
+      const allData = results.flatMap((r) => r.data || []);
 
-  const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['accountCampaignInfo'],
-    queryFn: async () => {
-      try {
-        const response = await fetch(MERKL_CAMPAIGN_API);
-        const result = await response.json();
-        return result;
-      } catch (err) {
-        console.error(err);
-      }
+      const apy = allData.reduce((maxApy, opportunity) => {
+        const matchingBreakdown = opportunity.aprRecord?.breakdowns.find(
+          (breakdown) => searchQuery?.includes(breakdown.identifier),
+        );
+        return Math.max(maxApy, matchingBreakdown?.value || 0);
+      }, 0);
+
+      return {
+        opportunities: allData,
+        maxApy: apy,
+        isLoading: results.some((r) => r.isLoading),
+        isSuccess: results.every((r) => r.isSuccess),
+      };
     },
-    enabled: claimingIds && claimingIds.length > 0,
-    refetchInterval: 1000 * 60 * 60,
   });
 
-  let apy = 0;
-
-  if (claimingIds) {
-    for (const id of claimingIds) {
-      const timestamp = Date.now() / 1000;
-
-      for (const chainId of ACTIVE_CHAINS) {
-        const chainCampaignData = data?.[chainId];
-        if (chainCampaignData && chainCampaignData[id]) {
-          for (const [, data] of Object.entries(chainCampaignData[id]) as [
-            string,
-            MerklApyRes,
-          ][]) {
-            //todo: verify for the quest when several apr
-            if (data?.apr && data.endTimestamp > timestamp && data.apr > apy) {
-              apy = data.apr;
-            }
-          }
-        }
-      }
-    }
-  }
-
   return {
-    apy,
+    apy: maxApy,
+    data: opportunities,
     isLoading,
     isSuccess,
   };

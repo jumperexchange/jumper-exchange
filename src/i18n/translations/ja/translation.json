@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "ダッシュボード",
       "refuel": "リフューエル",
-      "buy": "購入"
+      "buy": "購入",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
@@ -110,7 +111,8 @@
     "learnMore": "さらに詳しく"
   },
   "button": {
-    "okay": "OK"
+    "okay": "OK",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "問題が発生しました。ページを再読み込みしてください。問題が解決しない場合はサポートにお問い合わせください。"
@@ -141,10 +143,39 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "利用可能なミッション",
-    "completed": "完了したミッション"
+    "completed": "完了したミッション",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "デスクトップでのみ利用可能です",
     "mobileDescription": "Jumper プロファイルページは、まだ小さな画面では利用できません。私たちは現在作業中です。",
     "level": "",
@@ -156,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -176,6 +212,19 @@
     "date": "",
     "shortDate": ""
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "",
     "apy": "",
@@ -184,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""

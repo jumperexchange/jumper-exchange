@@ -18,6 +18,7 @@ interface Resources {
         dashboard: 'Dashboard';
         refuel: 'Gas';
         buy: 'Buy';
+        back: 'Back';
       };
       statsCards: {
         dexs: 'DEXs';
@@ -118,6 +119,7 @@ interface Resources {
     };
     button: {
       okay: 'Okay';
+      manageYourPosition: 'Manage your position';
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
@@ -148,10 +150,43 @@ interface Resources {
       new: 'New';
     };
     missions: {
+      wrapperCard: {
+        title: 'Missions';
+        explore_one: 'Explore {{count}} mission';
+        explore_other: 'Explore {{count}} missions';
+      };
       available: 'Available Missions';
       completed: 'Completed Missions';
+      mission: {
+        completed: {
+          title: 'Mission completed';
+          description: 'All tasks in this mission have been verified and completed.';
+        };
+      };
+      status: {
+        new: 'New';
+        upcoming: 'Upcoming';
+        minutesLeft_one: '{{count}} minute left';
+        minutesLeft_other: '{{count}} minutes left';
+        hoursLeft_one: '{{count}} hour left';
+        hoursLeft_other: '{{count}} hours left';
+        daysLeft_one: '{{count}} day left';
+        daysLeft_other: '{{count}} days left';
+      };
+      tasks: {
+        type: '{{type}} task';
+        status: {
+          verify: 'Verify';
+          verified: 'Verified';
+        };
+        action: {
+          verify: 'Verify';
+          go: 'Go';
+        };
+      };
     };
     profile_page: {
+      campaigns: 'Campaigns';
       mobileTitle: 'Only available on Desktop';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       level: 'Level';
@@ -163,6 +198,12 @@ interface Resources {
       shareProfile: 'Share profile';
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
+      availableRewards: 'Available Rewards';
+    };
+    campaign: {
+      missions: {
+        title: 'Missions';
+      };
     };
     leaderboard: {
       title: 'Leaderboard';
@@ -183,14 +224,34 @@ interface Resources {
       date: '{{value, dateExt(month: long)}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
+    contribution: {
+      title: 'Contribute';
+      custom: 'Custom';
+      confirm: 'Confirm';
+      thankYou: 'Thank you!';
+      description: 'Show your appreciation by adding a contribution. 100% of it goes to improve Jumper.';
+      error: {
+        amountTooSmall: 'The contribution amount is too small for this token. Please try a larger amount.';
+        errorSending: 'Error sending contribution:';
+        invalidTokenPrice: 'Invalid token price';
+        noFeeAddress: 'No contribution fee address configured for this chain.';
+      };
+    };
     tooltips: {
       tvl: 'Total value of crypto assets deposited in this market.';
       apy: 'Expected yearly return rate of the tokens invested.';
-      deposit: 'The displayed token is the token required to deposit into this market.';
-      deposited: 'Amount you have deposited into this market.';
-      boostedApy: 'Additional APY you get from participating to this campaign inside Jumper. This APY will be paid in {{token}}.';
+      deposit: 'The token on which the market is defined and yield accrues on.';
+      deposited: 'The token you have deposited into this market.';
+      boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. There is an additional {{boostedApy}}% in extra rewards paid in other tokens, check the protocol website for more information.';
     };
     widget: {
+      depositCard: {
+        apy: 'Base APR';
+        boostedApy: 'Boosted APR';
+        tvl: 'TVL';
+        lockupPeriod: 'Lockup period';
+        token: 'Pool token';
+      };
       zap: {
         sendToAddressName: 'Send to {{name}}';
         sentToAddressName: 'Sent to {{name}}';

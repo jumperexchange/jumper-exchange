@@ -3,6 +3,7 @@ import { useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { checkInclusion } from 'src/components/ProfilePage/checkInclusion';
 import { type Quest } from 'src/types/loyaltyPass';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BadgeMainBox,
   BadgeRelativeBox,
@@ -15,10 +16,10 @@ import {
   RotatingBox,
 } from './Banner.style';
 import { RewardBox } from './Rewards/RewardBox';
+import config from '@/config/env-config';
 
 interface BannerBoxProps {
   quest: Quest;
-  baseUrl: string;
   pastCampaigns: string[];
   rotatingBadge?: React.JSX.Element;
 }
@@ -30,10 +31,10 @@ export interface Chain {
 
 export const BannerBox = ({
   quest,
-  baseUrl,
   pastCampaigns,
   rotatingBadge,
 }: BannerBoxProps) => {
+  const baseUrl = getStrapiBaseUrl();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
@@ -110,14 +111,14 @@ export const BannerBox = ({
                 logos={
                   completed
                     ? [
-                        `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/avatar_checkmark_circle_03172fb9d6.svg`,
+                        `${config.NEXT_PUBLIC_STRAPI_URL}/uploads/avatar_checkmark_circle_03172fb9d6.svg`,
                       ]
                     : [
-                        `${process.env.NEXT_PUBLIC_STRAPI_URL}/uploads/xp_cfcff186e5.png`,
+                        `${config.NEXT_PUBLIC_STRAPI_URL}/uploads/xp_cfcff186e5.png`,
                       ]
                 }
                 title={'Jumper XP'}
-                value={`${String(attributes?.Points)}`}
+                value={String(attributes?.Points)}
               />
             ) : undefined}
           </RewardMainBox>

@@ -1,7 +1,7 @@
 import { WalletButtons } from '../Navbar/WalletButtons';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
-
+import config from '@/config/env-config';
 export interface BlogWidgetProps {
   fromChain?: number;
   fromToken?: string;
@@ -37,7 +37,7 @@ export const BlogWidget = ({
         fromAmount={fromAmount}
         toToken={toToken}
         allowChains={allowChainsArray}
-        widgetIntegrator={process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
+        widgetIntegrator={config.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
       />
     </>
   );

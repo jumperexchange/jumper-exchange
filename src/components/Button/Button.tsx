@@ -15,11 +15,15 @@ interface ButtonProps {
   styles?: SxProps<Theme>;
   id?: string;
   fullWidth?: boolean;
+  loading?: boolean;
   muiVariant?: 'text' | 'outlined' | 'contained';
   onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   children?: ReactNode;
   disabled?: boolean;
   size?: ButtonSize;
+  type?: 'button' | 'reset' | 'submit';
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
 }
 
 export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
@@ -27,11 +31,15 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   styles,
   id,
   fullWidth,
+  loading,
   onClick,
   children,
   muiVariant,
   disabled,
   size,
+  type = 'button',
+  startIcon,
+  endIcon,
 }: ButtonProps) => {
   let output: ReactNode;
 
@@ -46,6 +54,10 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
           sx={styles}
+          type={type}
+          loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonPrimary>
@@ -61,6 +73,10 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
           sx={styles}
+          type={type}
+          loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonSecondary>
@@ -76,6 +92,10 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={(event) => onClick && onClick(event)}
           variant={muiVariant}
           sx={styles}
+          type={type}
+          loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonTransparent>
@@ -91,6 +111,10 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           onClick={onClick}
           variant={muiVariant}
           sx={styles}
+          type={type}
+          loading={loading}
+          startIcon={startIcon}
+          endIcon={endIcon}
         >
           {children}
         </ButtonPrimary>

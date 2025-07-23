@@ -1,4 +1,4 @@
-import { formatUnits } from './formatUnit';
+import { formatUnits } from 'viem';
 
 export const precisionFormatter = new Intl.NumberFormat('en', {
   notation: 'standard',
@@ -9,12 +9,11 @@ export const precisionFormatter = new Intl.NumberFormat('en', {
 });
 
 export function formatTokenAmount(amount: bigint = 0n, decimals: number) {
-  const formattedAmount = amount ? formatUnits(amount, decimals) : '0';
+  const formattedAmount = formatUnits(amount, decimals);
   const parsedAmount = parseFloat(formattedAmount);
   if (parsedAmount === 0 || isNaN(Number(formattedAmount))) {
     return '0';
   }
-
   return precisionFormatter.format(parsedAmount);
 }
 

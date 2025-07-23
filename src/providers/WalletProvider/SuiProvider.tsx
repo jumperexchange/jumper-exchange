@@ -1,11 +1,10 @@
-import { ChainId } from '@lifi/sdk';
 import {
   SuiClientProvider,
   WalletProvider,
   createNetworkConfig,
 } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
-import { type FC, type PropsWithChildren, useMemo } from 'react';
+import { type FC, type PropsWithChildren } from 'react';
 
 const config = createNetworkConfig({
   mainnet: { url: getFullnodeUrl('mainnet') },

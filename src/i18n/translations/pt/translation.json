@@ -3,14 +3,15 @@
     "welcome": {
       "title": "Encontre a melhor rota",
       "subtitle": "Agregador de liquidez multi-cadeias <0>4x auditado</0> fornecido pela <1>LI.FI</1>",
-      "cta": "Começar"
+      "cta": "Comece Agora"
     },
     "links": {
       "exchange": "Conversão",
-      "missions": "",
+      "missions": "Missões",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
-      "buy": "Comprar"
+      "buy": "Comprar",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -28,13 +29,13 @@
     },
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
-      "learn": "",
-      "scan": "",
+      "learn": "Aprenda",
+      "scan": "Escanear",
       "brandAssets": "Ativos da marca",
       "theme": "Tema",
       "developers": "Desenvolvedores",
       "support": "Suporte",
-      "resources": "",
+      "resources": "Recursos",
       "profile": "Perfil Jumper"
     },
     "walletMenu": {
@@ -53,9 +54,9 @@
       "numberOfChains": "{{numberOfChains}} cadeias"
     },
     "themes": {
-      "dark": "",
-      "light": "",
-      "system": "",
+      "dark": "Escuro",
+      "light": "Claro",
+      "system": "Sistema",
       "switchToLight": "Mudar para o Modo Claro",
       "switchToDark": "Mudar para o Modo Escuro",
       "switchToSystem": "Alternar para sistema",
@@ -110,7 +111,8 @@
     "learnMore": "Saiba mais"
   },
   "button": {
-    "okay": "Ok"
+    "okay": "Ok",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -141,10 +143,39 @@
     "new": "Novo"
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "Missões Disponíveis",
-    "completed": "Missões Concluídas"
+    "completed": "Missões Concluídas",
+    "mission": {
+      "completed": {
+        "title": "Missão concluída",
+        "description": "Todas as tarefas desta missão foram verificadas e concluídas."
+      }
+    },
+    "status": {
+      "new": "Novo",
+      "upcoming": "Próximas",
+      "minutesLeft_one": "{{count}} minuto restante",
+      "minutesLeft_other": "{{count}} minutos restante",
+      "hoursLeft_one": "{{count}} hora restante",
+      "hoursLeft_other": "{{count}} horas restante",
+      "daysLeft_one": "{{count}} dia restante",
+      "daysLeft_other": "{{count}} dias restante"
+    },
+    "tasks": {
+      "type": "Tarefa {{type}}",
+      "status": {
+        "verify": "Verificar",
+        "verified": "Verificada"
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "Campanhas",
     "mobileTitle": "Disponível apenas no Computador",
     "mobileDescription": "A página do Perfil Jumper ainda não está disponível em telas pequenas. Estamos trabalhando nisso.",
     "level": "Nível",
@@ -156,6 +187,11 @@
     "shareProfile": "Partilhar perfil",
     "open": "Abre {{tool}}",
     "rewards": "Recompensas ganhas"
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "Tabela de Classificação",
@@ -176,17 +212,37 @@
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
   },
+  "contribution": {
+    "title": "Contribuir",
+    "custom": "Personalizado",
+    "confirm": "Confirmar",
+    "thankYou": "Obrigado!",
+    "description": "Mostre sua apreciação adicionando uma contribuição. 100% dela vai para melhorar a Jumper.",
+    "error": {
+      "amountTooSmall": "O valor da contribuição é muito pequeno para esse token. Por favor, tente um valor maior.",
+      "errorSending": "Erro ao enviar contribuição:",
+      "invalidTokenPrice": "Preço do token inválido",
+      "noFeeAddress": "Nenhum endereço de taxa de contribuição configurado para essa cadeia."
+    }
+  },
   "tooltips": {
-    "tvl": "",
-    "apy": "",
+    "tvl": "Valor total de ativos cripto depositados neste mercado.",
+    "apy": "Taxa de retorno anual esperada dos tokens investidos.",
     "deposit": "",
     "deposited": "",
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
-      "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sendToAddressName": "Enviar para {{name}}",
+      "sentToAddressName": "Enviado para {{name}}"
     }
   }
 }

@@ -52,7 +52,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
           justifyContent="space-between"
           width="100%"
         >
-          {mainMenuSocialLinks.map((socialLink, index) => (
+          {mainMenuSocialLinks.map((socialLink) => (
             <Link
               key={socialLink.label}
               href={socialLink.link.url}

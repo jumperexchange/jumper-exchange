@@ -1,30 +1,27 @@
-'use client';
-
-import type { CampaignData } from '@/types/strapi';
-import { useTranslation } from 'react-i18next';
-import { JUMPER_PROFILE_PATH } from 'src/const/urls';
-import { MerklRewards } from '../ProfilePage/MerklRewards';
-import { PageContainer } from '../ProfilePage/ProfilePage.style';
-import { QuestsOverview } from '../ProfilePage/QuestsOverview/QuestsOverview';
-import { BackButton } from '../QuestPage/BackButton/BackButton';
-import { CampaignHeader } from './CampaignHeader/CampaignHeader';
+import { QuestDataExtended } from 'src/types/merkl';
+import { CampaignData } from 'src/types/strapi';
+import { CampaignHero } from './CampaignHero/CampaignHero';
+import { MissionsSection } from './MissionsSection/MissionsSection';
+import { MissionsList } from './MissionsSection/MissionsList';
+import { GridContainer } from '../Containers/GridContainer';
+import { PageContainer } from '../Containers/PageContainer';
 
 interface CampaignPageProps {
   campaign: CampaignData;
+  quests: QuestDataExtended[];
 }
 
-export const CampaignPage = ({ campaign }: CampaignPageProps) => {
-  const { t } = useTranslation();
+export const CampaignPage = ({ campaign, quests }: CampaignPageProps) => {
   return (
-    <PageContainer className="profile-page">
-      <BackButton
-        path={JUMPER_PROFILE_PATH}
-        title={t('navbar.navbarMenu.profile') || 'Profile'}
-      />
-      <MerklRewards campaign={campaign} />
-      <CampaignHeader campaign={campaign} />
-      {Array.isArray(campaign.quests) && campaign.quests?.length > 0 && (
-        <QuestsOverview quests={campaign.quests} label={campaign.Slug} />
+    <PageContainer>
+      <CampaignHero campaign={campaign} />
+
+      {!!quests.length && (
+        <MissionsSection>
+          <GridContainer>
+            <MissionsList missions={quests} />
+          </GridContainer>
+        </MissionsSection>
       )}
     </PageContainer>
   );

@@ -1,7 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import { MerklDistribABI } from 'src/const/abi/merklABI';
-import type { AvailableRewards } from 'src/hooks/useMerklRewards';
+import { AvailableRewardsExtended } from 'src/types/merkl';
 import {
   useAccount,
   useSwitchChain,
@@ -26,7 +26,7 @@ interface ClaimRewardParams {
 
 interface ClaimingBoxProps {
   amount: number;
-  availableReward: AvailableRewards;
+  availableReward: AvailableRewardsExtended;
 }
 
 export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
@@ -64,13 +64,6 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
           abi: MerklDistribABI,
           functionName: 'claim',
           args: [[address], [rewardToken], [rewardAmountBN], [proof]], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
-          // TESTING
-          // args: [
-          //   [address],
-          //   [TEST_TOKEN],
-          //   [accumulatedAmountForContractBN],
-          //   [proof],
-          // ], //   function claim(address[] calldata users, address[] calldata tokens, uint256[] calldata amounts, bytes32[][] calldata proofs)
         });
       }
     } catch (err) {
@@ -79,7 +72,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
   }
 
   return (
-    <ClaimingBoxContainer marginTop={'8px'} gap={3}>
+    <ClaimingBoxContainer gap={3}>
       <ClaimingDetails
         rewardAmount={amount}
         isConfirmed={isConfirmed}
@@ -90,6 +83,8 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
         <ClaimingButton
           isDisabled={isButtonDisabled}
           disabled={isButtonDisabled}
+          loading={isPending || isConfirming}
+          loadingPosition="start"
           aria-label="Claim"
           size="large"
           onClick={() =>
@@ -103,7 +98,7 @@ export const ClaimingBox = ({ amount, availableReward }: ClaimingBoxProps) => {
             })
           }
         >
-          {isPending || isConfirming ? 'Claiming...' : 'Claim'}
+          {isPending || isConfirming ? 'Claiming' : 'Claim'}
         </ClaimingButton>
       )}
       {hash && isConfirmed ? (

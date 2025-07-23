@@ -1,0 +1,25 @@
+name: Deploy staging
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*.[0-9]*.[0-9]*-staging' # Matches tags like vx.x.x-staging
+
+jobs:
+  build-and-push:
+    permissions:
+      id-token: write
+      contents: read
+    uses: ./.github/workflows/build-and-push-multitag.yaml
+    with:
+      registry: europe-docker.pkg.dev/jumper-g-artifacts
+      image-name: 'docker-jumper-exchange/jumpex'
+      is-staging: true
+      source-tag: ${{ github.ref_name }}
+      commit-sha: ${{ github.sha }}
+      ecr_repository: 'jumper-g-artifacts/docker-jumper-exchange/jumpex'
+    secrets:
+      deploy_key: ${{ secrets.DEPLOY_SSH }}
+      GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      GCP_ENV_PROJECT: ${{ secrets.GCP_ENV_PROJECT }}

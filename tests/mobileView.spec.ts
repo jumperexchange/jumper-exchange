@@ -108,7 +108,7 @@ test.describe('Verify essential mobile flows', () => {
     });
 
     await test.step('check the number of menu items', async () => {
-      await checkTheNumberOfMenuItems(page, 7);
+      await checkTheNumberOfMenuItems(page, 6);
     });
 
     await test.step('switch theme', async () => {
@@ -122,7 +122,7 @@ test.describe('Verify essential mobile flows', () => {
         },
         { timeout: 5000 },
       );
-      await expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
+      await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
     });
   });
 });

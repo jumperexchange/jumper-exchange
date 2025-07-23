@@ -1,17 +1,12 @@
 'use client';
 
 import { ClientOnly } from '@/components/ClientOnly';
-import {
-  alpha,
-  Box,
-  type PaletteMode,
-  useColorScheme,
-  useTheme,
-} from '@mui/material';
+import config from '@/config/env-config';
+import { JUMPER_SCAN_PATH } from '@/const/urls';
 import { LiFiExplorer } from '@lifi/explorer';
+import { Box, useColorScheme, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { fallbackLng } from 'src/i18n';
-import { JUMPER_SCAN_PATH } from '@/const/urls';
 
 export default function ScanPage({ lng }: { lng: string }) {
   const theme = useTheme();
@@ -22,12 +17,16 @@ export default function ScanPage({ lng }: { lng: string }) {
       main: '#d6ffe7',
       dark: '#00b849',
     },
+    warning: {
+      main: '#FFCC00',
+      dark: '#000000',
+    },
   };
 
   const explorerConfig = useMemo(
     () => ({
       // appearance: 'light' as PaletteMode, // This controls light and dark mode
-      integrator: process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
+      integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
       base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
       theme: {
         // These colors and values correspond to the figma design
@@ -35,6 +34,8 @@ export default function ScanPage({ lng }: { lng: string }) {
           borderRadiusSecondary: 900,
           borderRadiusTertiary: 900,
           borderRadius: 12,
+          cardBorderRadius: 24,
+          buttonBorderRadius: 128,
         },
         colorSchemes: {
           light: {

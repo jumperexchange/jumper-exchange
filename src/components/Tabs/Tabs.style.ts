@@ -78,7 +78,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     width: '100%',
     borderRadius: 24,
     transform: 'translateX(0) scaleX(0.98)',
-    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
     zIndex: -1,
     ...theme.applyStyles('light', {
       backgroundColor: (theme.vars || theme).palette.white.main,
@@ -111,11 +111,8 @@ export const HorizontalTab = styled(Tab)(({ theme }) => ({
   },
   '&.Mui-selected': {
     boxShadow: theme.shadows[2],
-    backgroundColor: (theme.vars || theme).palette.alphaLight500.main,
     pointerEvents: 'none',
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.white.main,
-    }),
+    backgroundColor: 'transparent',
   },
   flex: 1,
   [theme.breakpoints.up('md')]: {

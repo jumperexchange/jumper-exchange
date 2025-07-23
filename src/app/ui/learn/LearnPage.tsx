@@ -1,12 +1,12 @@
-import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
+'use client';
+
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
-import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import type {
   BlogArticleData,
   StrapiResponse,
   TagAttributes,
 } from '@/types/strapi';
-import { BlogArticlesCollections } from 'src/components/Blog/BlogArticlesCollections/BlogArticlesCollections';
+import { LearnPageClient } from './LearnPageClient';
 
 interface LearnPageProps {
   carouselArticles: StrapiResponse<BlogArticleData>;
@@ -29,9 +29,7 @@ const LearnPage = ({
           // }
         />
       )}
-      <BlogCarousel data={carouselArticles?.data} />
-      <JoinDiscordBanner />
-      <BlogArticlesCollections tags={tags.data} data={carouselArticles?.data} />
+      <LearnPageClient carouselArticles={carouselArticles} tags={tags} />
     </div>
   );
 };

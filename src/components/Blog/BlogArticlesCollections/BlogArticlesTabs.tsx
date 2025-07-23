@@ -11,7 +11,6 @@ import { useState } from 'react';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import { chunkArray } from 'src/utils/chunkArray';
 import { BlogArticleCard } from '../BlogArticleCard';
-import { CarouselHeader } from '../BlogCarousel';
 import { Pagination } from '../Pagination/Pagination';
 import {
   BlogArticlesCollectionsContainer,
@@ -50,11 +49,9 @@ export function BlogArticlesTabs({
           flexDirection: 'column',
         }}
       >
-        <CarouselHeader>
-          <BlogArticlesCollectionsTitle variant="headerMedium">
-            {tag?.Title}
-          </BlogArticlesCollectionsTitle>
-        </CarouselHeader>
+        <BlogArticlesCollectionsTitle variant="headerMedium">
+          {tag?.Title}
+        </BlogArticlesCollectionsTitle>
         {chunkedPages.map(
           (page, pageIndex) =>
             pageTab === pageIndex && (

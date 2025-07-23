@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "",
       "refuel": "",
-      "buy": "Acquista"
+      "buy": "Acquista",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEX",
@@ -110,7 +111,8 @@
     "learnMore": ""
   },
   "button": {
-    "okay": "Ok"
+    "okay": "Ok",
+    "manageYourPosition": ""
   },
   "error": {
     "message": ""
@@ -141,10 +143,39 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "",
-    "completed": ""
+    "completed": "",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "",
     "mobileDescription": "",
     "level": "",
@@ -156,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -176,6 +212,19 @@
     "date": "",
     "shortDate": ""
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "",
     "apy": "",
@@ -184,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""

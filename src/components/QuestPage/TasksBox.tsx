@@ -1,16 +1,15 @@
+import Task from '@/components/QuestPage/Task';
+import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
+import { useAccount } from '@lifi/wallet-management';
+import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { DescriptionTitleTypography } from './DescriptionBox/DescriptionBox.style';
 import {
   LeftTextBox,
   QuestsPageElementContainer,
 } from './QuestsMissionPage.style';
-import type { Quest } from '@/types/loyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
-import { useGetVerifiedTasks } from '@/hooks/tasksVerification/useGetVerifiedTasks';
-import Task from '@/components/QuestPage/Task';
-import { useEffect } from 'react';
 
 interface StepsBoxProps {
-  tasks: Quest['tasks_verification'];
+  tasks: TaskVerificationWithApy[];
   documentId: string;
 }
 

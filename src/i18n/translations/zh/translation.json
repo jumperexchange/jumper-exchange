@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "面板",
       "refuel": "兑换燃气费",
-      "buy": "购买"
+      "buy": "购买",
+      "back": ""
     },
     "statsCards": {
       "dexs": "交易所",
@@ -110,7 +111,8 @@
     "learnMore": "了解更多"
   },
   "button": {
-    "okay": "确认"
+    "okay": "确认",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "出错了，请尝试刷新页面。如果问题仍然存在，请联系我们。"
@@ -141,10 +143,39 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "现有任务",
-    "completed": "已完成的任务"
+    "completed": "已完成的任务",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "仅可在桌面上使用",
     "mobileDescription": "Jumper 个人资料页面尚未在小屏幕上可用。我们正在处理它。",
     "level": "",
@@ -156,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -176,6 +212,19 @@
     "date": "",
     "shortDate": ""
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "",
     "apy": "",
@@ -184,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""

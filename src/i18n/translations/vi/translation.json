@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Tổng quan",
       "refuel": "",
-      "buy": "Mua"
+      "buy": "Mua",
+      "back": ""
     },
     "statsCards": {
       "dexs": "Các Dex",
@@ -110,7 +111,8 @@
     "learnMore": "Xem thêm"
   },
   "button": {
-    "okay": ""
+    "okay": "",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Đã xảy ra lỗi. Vui lòng thử tải lại trang. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với bộ phận hỗ trợ của chúng tôi."
@@ -141,10 +143,39 @@
     "new": ""
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "Nhiệm vụ có sẵn",
-    "completed": "Nhiệm vụ đã hoàn thành"
+    "completed": "Nhiệm vụ đã hoàn thành",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Chỉ khả dụng trên Máy tính",
     "mobileDescription": "Trang Hồ sơ Jumper chưa có sẵn trên màn hình nhỏ. Chúng tôi đang phát triển.",
     "level": "",
@@ -156,6 +187,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": ""
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "",
@@ -176,6 +212,19 @@
     "date": "",
     "shortDate": ""
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "",
     "apy": "",
@@ -184,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""

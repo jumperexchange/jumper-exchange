@@ -1,0 +1,312 @@
+# Workflow to build and push Docker images
+name: Build & push docker
+
+# Define inputs for the workflow
+on:
+  workflow_call:
+    inputs:
+      registry:
+        required: true
+        type: string
+      image-name:
+        required: true
+        type: string
+      ecr_repository:
+        required: true
+        type: string
+      is-staging:
+        required: false
+        type: boolean
+        default: false
+      source-tag:
+        required: false
+        type: string
+        description: 'Source image tag to reuse for tagging'
+      commit-sha:
+        required: false
+        type: string
+        description: 'Commit SHA of the commit from which tag is created'
+      role_to_assume:
+        required: false
+        type: string
+        description: 'AWS IAM role ARN to assume for the actions. Provide this value securely via inputs or secrets.'
+      dockerfile:
+        required: false
+        type: string
+        default: 'Dockerfile'
+    secrets:
+      deploy_key:
+        required: true
+      GCP_WORKLOAD_IDENTITY_PROVIDER:
+        required: true
+      GCP_SERVICE_ACCOUNT:
+        required: true
+      GCP_ENV_PROJECT:
+        required: true
+
+# Define environment variables accessible throughout the workflow
+env:
+  registry: ${{ inputs.registry }}
+  image-name: ${{ inputs.image-name }}
+  is-staging: ${{ inputs.is-staging }}
+  new_image_tag: ${{ inputs.source-tag }}
+  ecr_repository: ${{ inputs.ecr_repository }}
+  image_tag: ${{ inputs.commit-sha }}
+  role_to_assume: ${{ inputs.role_to_assume }}
+  dockerfile: ${{ inputs.dockerfile }}
+
+# Define all jobs in the workflow
+jobs:
+  # Job to determine if an image exists or needs to be built
+  tag-or-build:
+    runs-on: ubuntu-latest
+    outputs:
+      existing_image: ${{ steps.check-image.outputs.exists }}
+      # Output to indicate whether the image already exists
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Init GCP
+        id: build-init
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      # Step 3: Check if the image with the specified tag already exists in ECR
+      - name: Check if source image exists
+        id: check-image
+        if: inputs.commit-sha != ''
+        env:
+          ecr_registry: ${{ env.registry }}
+          ecr_repository: ${{ env.image-name }}
+          image_tag: ${{ inputs.commit-sha }}
+        run: |
+          IMAGE_URI="${registry}/${ecr_repository}:${image_tag}"
+          if gcloud artifacts docker images describe "${IMAGE_URI}" --quiet 2>/dev/null; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Image ${IMAGE_URI} exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Image ${IMAGE_URI} does not exist"
+          fi
+
+      # Step 4: Output debug information for troubleshooting
+      - name: Debug Check Image
+        env:
+          ecr_registry: ${{ env.registry }}
+          ecr_repository: ${{ env.image-name }}
+          image_tag: ${{ inputs.commit-sha }}
+        run: |
+          echo "GCP Registry: $registry"
+          echo "Repository name: $ecr_repository"
+          echo "Image tag: $image_tag"
+          IMAGE_URI="${registry}/${ecr_repository}:${image_tag}"
+          echo "Full image URI: ${IMAGE_URI}"
+          gcloud artifacts docker images describe "${IMAGE_URI}" --quiet || echo "Image not found or command failed"
+
+  # Job to tag an existing image if it already exists
+  tag-existing:
+    needs: tag-or-build
+    if: needs.tag-or-build.outputs.existing_image == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Init GCP
+        id: build-init
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - name: Set environment variables
+        shell: bash
+        run: |
+          if [ "${{ env.is-staging }}" == "true" ]; then
+            echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}-staging" >> $GITHUB_ENV
+          else
+            echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}-main" >> $GITHUB_ENV
+          fi
+
+      - name: Tag existing image
+        env:
+          ecr_registry: ${{ env.registry }}
+          ecr_repository: ${{ env.image-name }}
+          new_image_tag: ${{ inputs.source-tag }}
+        run: |
+          # Get the source image digest
+          SOURCE_IMAGE="${ecr_registry}/${ecr_repository}:${{ env.image_tag }}"
+
+          # Check if source image exists and get its digest
+          if ! gcloud artifacts docker images describe "${SOURCE_IMAGE}" --format="value(image_summary.digest)" --quiet 2>/dev/null; then
+            echo "Error: Could not find image ${SOURCE_IMAGE}"
+            exit 1
+          fi
+
+          DIGEST=$(gcloud artifacts docker images describe "${SOURCE_IMAGE}" --format="value(image_summary.digest)" --quiet)
+
+          if [ -z "$DIGEST" ]; then
+            echo "Error: Could not retrieve digest for image tag ${{ env.image_tag }}"
+            exit 1
+          fi
+
+          # Save the new image URI
+          NEW_IMAGE="${ecr_registry}/${ecr_repository}:${new_image_tag}"
+          echo "IMAGE_URI=$NEW_IMAGE" >> $GITHUB_ENV
+
+          # Tag the image with the new image tag using the digest
+          SOURCE_IMAGE_WITH_DIGEST="${ecr_registry}/${ecr_repository}@${DIGEST}"
+          gcloud artifacts docker tags add "${SOURCE_IMAGE_WITH_DIGEST}" "${ecr_registry}/${ecr_repository}:${{ env.new_image_tag }}"
+
+          # If UNIQ_ID is set, tag the image with the additional tag
+          if [[ -n "${{ env.UNIQ_ID }}" ]]; then
+            gcloud artifacts docker tags add "${SOURCE_IMAGE_WITH_DIGEST}" "${ecr_registry}/${ecr_repository}:${{ env.UNIQ_ID }}"
+          fi
+
+          # If the env is not staging put the image latest
+          if [ "${{ env.is-staging }}" != "true" ]; then
+            gcloud artifacts docker tags add "${SOURCE_IMAGE_WITH_DIGEST}" "${ecr_registry}/${ecr_repository}:latest"
+          fi
+
+  # Job to build the Docker image if it does not exist
+  build:
+    needs: tag-or-build
+    if: needs.tag-or-build.outputs.existing_image != 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Prepare the environment for the build
+      - name: Prepare
+        run: |
+          platform=${{ matrix.platform }}
+          echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+
+      # Step 2: Checkout the repository for the build context
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 3: Initialize Docker build
+      - name: Init GCP secrets
+        id: build-init-secrets
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: 'projects/800848389157/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'artifact-deployer-secret@jumper-g-management.iam.gserviceaccount.com'
+      - name: Get Secret and Save to .env
+        run: |
+          gcloud secrets versions access latest \
+            --secret="jumper-exchange-env" \
+            --project="${{ secrets.GCP_ENV_PROJECT }}" > .env.json
+      - name: Convert JSON .env to key-value format
+        run: |
+          if [ -f ".env.json" ]; then
+            echo "✅ .env.json file found! Converting to .env format..."
+
+            # Convert JSON to key=value format
+            jq -r 'to_entries | map("\(.key)=\(.value | tostring)") | .[]' .env.json > .env
+
+            echo "✅ Conversion complete! Verifying .env file..."
+            echo "File size: $(wc -c < .env) bytes"
+            echo "Line count: $(wc -l < .env) lines"
+          else
+            echo "❌ Error: .env.json file not found!"
+            exit 1
+          fi
+      - name: Init GCP
+        id: build-init
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      # Step 4: Build and push the Docker image
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          platforms: ${{ matrix.platform }}
+          file: ${{ env.dockerfile }}
+          labels: ${{ steps.build-init.outputs.labels }}
+          outputs: type=image,name=${{ env.registry }}/${{ env.image-name }},name-canonical=true,push=true
+
+      # Step 5: Export the image digest for further processing
+      - name: Export digest
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      # Step 6: Upload the image digest as an artifact
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  # Job to merge image digests and create a manifest list
+  merge:
+    needs: [tag-or-build, build]
+    if: needs.tag-or-build.outputs.existing_image != 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Set the current date as an environment variable
+      - name: Set current date as env variable
+        shell: bash
+        run: echo "UNIQ_ID=$(date +'%y%m%d')-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Init GCP
+        id: build-init
+        uses: ./.github/actions/init-gcp
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      # Step 2: Download image digests uploaded by the build job
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-*
+          merge-multiple: true
+
+      # Step 3: Set up Docker Buildx for multi-platform builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 4: Generate Docker image metadata
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.registry }}/${{ env.image-name }}
+          tags: |
+            type=semver,pattern={{raw}}
+            type=raw,value=${{ env.UNIQ_ID }}-main,enable=${{ startsWith(github.ref, 'refs/tags/v') && !endsWith(github.ref, 'staging')  }}
+            type=raw,value=${{ env.UNIQ_ID }}-staging,enable=${{ env.is-staging == 'true' && 'true' || 'false' }}
+            type=ref,event=branch
+            type=ref,event=branch,prefix=${{ env.UNIQ_ID }}-
+            type=raw,value=${{ env.image_tag }}
+
+      # Step 7: Create and push a manifest list
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+            $(printf '${{ env.registry }}/${{ env.image-name }}@sha256:%s ' *)
+
+      # Step 8: Inspect the final Docker image
+      - name: Inspect image
+        run: |
+          docker buildx imagetools inspect ${{ env.registry }}/${{ env.image-name }}:${{ steps.meta.outputs.version }}

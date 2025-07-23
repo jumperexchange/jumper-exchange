@@ -1,7 +1,8 @@
 import { useMemo, useCallback } from 'react';
 import { Discord } from '@/components/illustrations/Discord';
+import { Telegram } from '@/components/illustrations/Telegram';
+import { X } from '@/components/illustrations/X';
 import { Link3Icon } from '@/components/illustrations/Link3Icon';
-import { XPIcon } from '@/components/illustrations/XPIcon';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import {
   TrackingAction,
@@ -22,18 +23,11 @@ import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import XIcon from '@mui/icons-material/X';
-import { Telegram } from '@mui/icons-material';
-import { Typography, useMediaQuery } from '@mui/material';
-import { Theme, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
-import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { ImageWalletMenuButton } from 'src/components/Navbar/WalletButton.style';
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
+import Typography from '@mui/material/Typography';
 
 interface MenuLink {
   url: string;
@@ -200,7 +194,7 @@ export const useSocialLinks = () => {
 
   const socialLinkIconStyle = useMemo(
     () => ({
-      color: (theme.vars || theme).palette.alphaLight500.main,
+      color: (theme.vars || theme).palette.alphaLight600.main,
       ...theme.applyStyles('light', {
         color: (theme.vars || theme).palette.alphaDark500.main,
       }),
@@ -245,7 +239,7 @@ export const useSocialLinks = () => {
     () => [
       createSocialLink({
         label: SocialLinkLabel.X,
-        icon: <XIcon sx={socialLinkIconStyle} />,
+        icon: <X sx={socialLinkIconStyle} />,
         url: X_URL,
         trackingKey: SocialLinkLabel.X.toLowerCase(),
         action: TrackingAction.ClickXLink,
@@ -281,17 +275,10 @@ export const useSocialLinks = () => {
 export const useMenuItems = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon } = useThemeModesMenuContent();
-  const activeAccount = useActiveAccountByChainType();
-  const { level } = useLoyaltyPass(activeAccount?.address);
-  const levelImageSrc = useWalletAddressImg({
-    userAddress: activeAccount?.address,
-  });
 
   const {
-    handleProfileClick,
     handleLearnClick,
     handleScanClick,
     handleSupportClick,
@@ -323,38 +310,6 @@ export const useMenuItems = () => {
     ),
     [theme],
   );
-
-  const mobileMenuItems: MenuItem[] = useMemo(() => {
-    if (isDesktop) {
-      return [];
-    }
-
-    return [
-      {
-        label: `${t('profile_page.level')} ${level ?? 0}`,
-        prefixIcon: (
-          <ImageWalletMenuButton
-            src={levelImageSrc}
-            alt={`${activeAccount?.address} wallet Icon`}
-            width={24}
-            height={24}
-            priority={false}
-            unoptimized={true}
-          />
-        ),
-        showMoreIcon: false,
-        link: { url: AppPaths.Profile },
-        onClick: handleProfileClick,
-      },
-    ];
-  }, [
-    isDesktop,
-    t,
-    level,
-    levelImageSrc,
-    activeAccount?.address,
-    handleProfileClick,
-  ]);
 
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
@@ -429,11 +384,7 @@ export const useMenuItems = () => {
     handleResourcesClick,
   ]);
 
-  const menuItems: MenuItem[] = useMemo(() => {
-    return [...mobileMenuItems, ...baseMenuItems];
-  }, [mobileMenuItems, baseMenuItems]);
-
-  return { menuItems };
+  return { menuItems: baseMenuItems };
 };
 
 export const useMainMenuContent = () => {

@@ -1,8 +1,9 @@
 import { useLoyaltyPassStore } from '@/stores/loyaltyPass';
+import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SECONDS_IN_AN_HOUR } from 'src/const/time';
-import { useAccount } from '@lifi/wallet-management';
+import config from '@/config/env-config';
 
 export interface useOngoingNumericQuestsType {
   isSuccess: boolean;
@@ -57,7 +58,7 @@ export const useOngoingNumericQuests = (): useOngoingNumericQuestsType => {
       account?.address?.toLowerCase() !== storedAddress?.toLowerCase());
 
   // query
-  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['ongoing-numeric-quests', account?.address],
     queryFn: async () => {

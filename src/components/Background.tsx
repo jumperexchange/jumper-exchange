@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
-  BackgroundGradientTopCenter,
 } from './BackgroundGradient';
 
 export interface BackgroundContainerProps {
@@ -22,12 +21,11 @@ function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
 
   return (
-    <BackgroundContainer>
+    <BackgroundContainer id="background-root">
       {configTheme?.hasBackgroundGradient && (
         <>
           <BackgroundGradientBottomLeft />
           <BackgroundGradientBottomRight />
-          <BackgroundGradientTopCenter />
         </>
       )}
     </BackgroundContainer>

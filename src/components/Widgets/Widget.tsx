@@ -1,5 +1,6 @@
 'use client';
 import { ClientOnly } from '@/components/ClientOnly';
+import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
@@ -13,7 +14,6 @@ import {
   LiFiWidget,
   WidgetSkeleton as LifiWidgetSkeleton,
 } from '@lifi/widget';
-import { useColorScheme, useMediaQuery } from '@mui/material';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -24,10 +24,12 @@ import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useWidgetSelection } from 'src/hooks/useWidgetSelection';
-import { getWidgetThemeV2 } from 'src/providers/ThemeProvider/utils';
 import { useActiveTabStore } from 'src/stores/activeTab';
+import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { themeAllowChains, WidgetWrapper } from '.';
+import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
+import { useTheme } from '@mui/material/styles';
 
 export function Widget({
   starterVariant,
@@ -42,7 +44,11 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const [configTheme] = useThemeStore((state) => [state.configTheme]);
+  const theme = useTheme();
+  const [configTheme, widgetTheme] = useThemeStore((state) => [
+    state.configTheme,
+    state.widgetTheme,
+  ]);
   const formRef = useRef<FormState>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { bridgeConditions } = useWidgetSelection({
@@ -52,7 +58,7 @@ export function Widget({
     configThemeChains: configTheme?.chains,
   });
   const router = useRouter();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
 
@@ -61,22 +67,11 @@ export function Widget({
   const { tokens: memeListTokens } = useMemelist({
     enabled: partnerName === ThemesMap.Memecoins,
   });
+  const contributionDisplayed = useContributionStore(
+    (state) => state.contributionDisplayed,
+  );
   const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
-
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const widgetTheme = useMemo(
-    () =>
-      getWidgetThemeV2(
-        mode === 'system' || !mode
-          ? prefersDarkMode
-            ? 'dark'
-            : 'light'
-          : mode,
-      ),
-    [mode, prefersDarkMode],
-  );
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
@@ -100,14 +95,14 @@ export function Widget({
     }
     // all the trafic from mobile (including "/gas")
     // if (!isDesktop) {
-    //   return process.env.NEXT_PUBLIC_INTEGRATOR_MOBILE;
+    //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
     // all the trafic from web on "/gas"
     if (isGasVariant) {
-      return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
 
-    return process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR;
+    return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const subvariant = useMemo(() => {
@@ -122,11 +117,11 @@ export function Widget({
     let rpcUrls = {};
     try {
       rpcUrls = {
-        ...JSON.parse(process.env.NEXT_PUBLIC_CUSTOM_RPCS),
+        ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
         ...publicRPCList,
       };
     } catch (e) {
-      if (process.env.DEV) {
+      if (envConfig.DEV) {
         console.warn('Parsing custom rpcs failed', e);
       }
     }
@@ -147,7 +142,7 @@ export function Widget({
     }
 
     if (memeListTokens) {
-      tokens.allow.concat(memeListTokens);
+      tokens.allow!.concat(memeListTokens);
     }
 
     return {
@@ -194,7 +189,7 @@ export function Widget({
       appearance: widgetTheme.config.appearance,
       theme: widgetTheme.config.theme,
       keyPrefix: `jumper-${starterVariant}`,
-      apiKey: process.env.NEXT_PUBLIC_LIFI_API_KEY,
+      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       languageResources: {
         en: {
           warning: {
@@ -217,6 +212,51 @@ export function Widget({
       integrator: integratorStringByType,
       tokens: tokens,
       useRelayerRoutes: true,
+      routeLabels: [
+        {
+          label: {
+            text: '1.5x points',
+            sx: {
+              order: 1,
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              overflow: 'hidden',
+              marginLeft: 'auto',
+              gap: theme.spacing(0.5),
+              paddingLeft: theme.spacing(0.5),
+              paddingRight: theme.spacing(0.5),
+              background: `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
+              color: (theme.vars || theme).palette.white.main,
+              ...theme.typography.bodyXSmallStrong,
+              ...theme.applyStyles('light', {
+                // @Note we might adjust to use the theme config
+                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
+              }),
+              '&::before': {
+                content: '""',
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%', // Makes the icon circular
+                backgroundImage:
+                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                flexShrink: 0,
+              },
+              '&>p': {
+                alignContent: 'flex-end',
+                paddingLeft: theme.spacing(0.5),
+                paddingRight: theme.spacing(0.5),
+              },
+            },
+          },
+          exchanges: {
+            allow: ['hyperbloom'], // Replace by hyperbloom when available
+          },
+        },
+      ],
     };
   }, [
     configTheme?.fromChain,
@@ -249,6 +289,7 @@ export function Widget({
     widgetTheme.config.theme,
     integratorStringByType,
     bridgeConditions,
+    theme,
   ]);
 
   return (
@@ -257,12 +298,16 @@ export function Widget({
       className="widget-wrapper"
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
+      contributionDisplayed={contributionDisplayed}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}
           config={config}
           formRef={formRef}
+          feeConfig={{
+            _vcComponent: () => <FeeContribution translationFn={t} />,
+          }}
         />
       </ClientOnly>
     </WidgetWrapper>

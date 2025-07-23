@@ -10,7 +10,8 @@
       "missions": "",
       "dashboard": "Дешборд",
       "refuel": "Газ",
-      "buy": "Купівля"
+      "buy": "Купівля",
+      "back": ""
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -110,7 +111,8 @@
     "learnMore": "Дізнатися більше"
   },
   "button": {
-    "okay": "Добре"
+    "okay": "Добре",
+    "manageYourPosition": ""
   },
   "error": {
     "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
@@ -141,10 +143,39 @@
     "new": "Нове"
   },
   "missions": {
+    "wrapperCard": {
+      "title": "",
+      "explore_one": "",
+      "explore_other": ""
+    },
     "available": "Доступні місії",
-    "completed": "Виконані місії"
+    "completed": "Виконані місії",
+    "mission": {
+      "completed": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "status": {
+      "new": "",
+      "upcoming": "",
+      "minutesLeft_one": "",
+      "minutesLeft_other": "",
+      "hoursLeft_one": "",
+      "hoursLeft_other": "",
+      "daysLeft_one": "",
+      "daysLeft_other": ""
+    },
+    "tasks": {
+      "type": "",
+      "status": {
+        "verify": "",
+        "verified": ""
+      }
+    }
   },
   "profile_page": {
+    "campaigns": "",
     "mobileTitle": "Доступно лише на комп'ютері",
     "mobileDescription": "Сторінка профілю Jumper наразі недоступна на маленьких екранах. Ми працюємо над цим.",
     "level": "Рівень",
@@ -156,6 +187,11 @@
     "shareProfile": "Поділитися профілем",
     "open": "Відкрити {{tool}}",
     "rewards": "Отримані винагороди"
+  },
+  "campaign": {
+    "missions": {
+      "title": ""
+    }
   },
   "leaderboard": {
     "title": "Таблиця лідерів",
@@ -176,6 +212,19 @@
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}"
   },
+  "contribution": {
+    "title": "",
+    "custom": "",
+    "confirm": "",
+    "thankYou": "",
+    "description": "",
+    "error": {
+      "amountTooSmall": "",
+      "errorSending": "",
+      "invalidTokenPrice": "",
+      "noFeeAddress": ""
+    }
+  },
   "tooltips": {
     "tvl": "",
     "apy": "",
@@ -184,6 +233,13 @@
     "boostedApy": ""
   },
   "widget": {
+    "depositCard": {
+      "apy": "",
+      "boostedApy": "",
+      "tvl": "",
+      "lockupPeriod": "",
+      "token": ""
+    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": ""
