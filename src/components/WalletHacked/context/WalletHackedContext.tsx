@@ -16,7 +16,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isEvmChainType } from 'src/components/Widgets/FeeContribution/utils';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
+import { useXp } from 'src/hooks/useXP';
 import { HACKED_WALLET_DEFAULT_STATE, HACKED_WALLET_STEPS } from '../constants';
 import { WalletState } from '../types';
 
@@ -79,12 +79,12 @@ export const WalletHackedProvider: React.FC<PropsWithChildren> = ({
     points: sourcePointsFetched,
     isSuccess: isSourcePointsSuccess,
     isLoading: isSourcePointsLoading,
-  } = useLoyaltyPass(sourceWallet?.account?.address);
+  } = useXp(sourceWallet?.account?.address);
   const {
     points: destinationPointsFetched,
     isSuccess: isDestinationPointsSuccess,
     isLoading: isDestinationPointsLoading,
-  } = useLoyaltyPass(destinationWallet?.account?.address);
+  } = useXp(destinationWallet?.account?.address);
 
   const disconnectWallet = useAccountDisconnect();
 
