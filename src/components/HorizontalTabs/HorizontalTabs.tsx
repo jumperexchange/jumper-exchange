@@ -47,12 +47,9 @@ export const HorizontalTabs = ({
       onChange={handleChange}
       sx={sx}
     >
-      {tabs.map((tab) => {
-        if (!tab.label && !tab.startAdornment && !tab.endAdornment) {
-          return null;
-        }
-
-        return (
+      {tabs
+        .filter((tab) => tab.label || tab.startAdornment || tab.endAdornment)
+        .map((tab) => (
           <HorizontalTabContainer
             disabled={tab.disabled}
             value={tab.value}
@@ -68,8 +65,7 @@ export const HorizontalTabs = ({
             }
             size={size}
           />
-        );
-      })}
+        ))}
     </HorizontalTabsContainer>
   );
 };
