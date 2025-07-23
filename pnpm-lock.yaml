@@ -51,8 +51,8 @@ importers:
         specifier: ^3.25.0-beta.4
         version: 3.25.0-beta.4(efa4ddb75b350235129e6e203037eb17)
       '@merkl/api':
-        specifier: ^1.1.70
-        version: 1.1.70(exact-mirror@0.1.2(@sinclair/typebox@0.34.38))(file-type@21.0.0)(typescript@5.8.3)
+        specifier: 1.1.2
+        version: 1.1.2(exact-mirror@0.1.2(@sinclair/typebox@0.34.38))(file-type@21.0.0)(typescript@5.8.3)
       '@metaplex-foundation/mpl-core':
         specifier: ^1.1.1
         version: 1.4.1(@metaplex-foundation/umi@0.9.2)(@noble/hashes@1.8.0)
@@ -247,8 +247,8 @@ importers:
         specifier: 8.13.0
         version: 8.13.0
       '@next/eslint-plugin-next':
-        specifier: ^14.2.30
-        version: 14.2.30
+        specifier: ^15.4.3
+        version: 15.4.3
       '@playwright/test':
         specifier: ^1.54.1
         version: 1.54.1
@@ -2401,8 +2401,8 @@ packages:
       '@types/react': '>=16'
       react: '>=16'
 
-  '@merkl/api@1.1.70':
-    resolution: {integrity: sha512-2L/AndD8nKGd99D5nh5N8+Hi0eL+kuO+TDlxdqUQt7/pFAYpySVEOBwwJVIHmE1z1TmQ3Aw5qqr9VTRcxoBTcg==}
+  '@merkl/api@1.1.2':
+    resolution: {integrity: sha512-IZD1SFLn1tBF8WWf7pgVRSjz5Hpa3ob7bvlNlE26dNiZIEUsEOlUDghj7QQ8W+DYTtfVwYKJ3WluIrwlnp4dkQ==}
 
   '@metamask/abi-utils@1.2.0':
     resolution: {integrity: sha512-Hf7fnBDM9ptCPDtq/wQffWbw859CdVGMwlpWUEsTH6gLXhXONGrRXHA2piyYPRuia8YYTdJvRC/zSK1/nyLvYg==}
@@ -2789,9 +2789,6 @@ packages:
 
   '@next/env@15.4.3':
     resolution: {integrity: sha512-lKJ9KJAvaWzqurIsz6NWdQOLj96mdhuDMusLSYHw9HBe2On7BjUwU1WeRvq19x7NrEK3iOgMeSBV5qEhVH1cMw==}
-
-  '@next/eslint-plugin-next@14.2.30':
-    resolution: {integrity: sha512-mvVsMIutMxQ4NGZEMZ1kiBNc+la8Xmlk30bKUmCPQz2eFkmsLv54Mha8QZarMaCtSPkkFA1TMD+FIZk0l/PpzA==}
 
   '@next/eslint-plugin-next@15.4.3':
     resolution: {integrity: sha512-wYYbP29uZlm9lqD1C6HDgW9WNNt6AlTogYKYpDyATs0QrKYIv/rPueoIDRH6qttXGCe3zNrb7hxfQx4w8OSkLA==}
@@ -12472,7 +12469,7 @@ snapshots:
       '@types/react': 19.1.8
       react: 19.1.0
 
-  '@merkl/api@1.1.70(exact-mirror@0.1.2(@sinclair/typebox@0.34.38))(file-type@21.0.0)(typescript@5.8.3)':
+  '@merkl/api@1.1.2(exact-mirror@0.1.2(@sinclair/typebox@0.34.38))(file-type@21.0.0)(typescript@5.8.3)':
     dependencies:
       '@elysiajs/eden': 1.3.2(elysia@1.3.5(exact-mirror@0.1.2(@sinclair/typebox@0.34.38))(file-type@21.0.0)(typescript@5.8.3))
       elysia: 1.3.5(exact-mirror@0.1.2(@sinclair/typebox@0.34.38))(file-type@21.0.0)(typescript@5.8.3)
@@ -13041,10 +13038,6 @@ snapshots:
   '@neoconfetti/react@1.0.0': {}
 
   '@next/env@15.4.3': {}
-
-  '@next/eslint-plugin-next@14.2.30':
-    dependencies:
-      glob: 10.3.10
 
   '@next/eslint-plugin-next@15.4.3':
     dependencies:
@@ -21210,7 +21203,7 @@ snapshots:
     dependencies:
       '@adraffy/ens-normalize': 1.11.0
       '@noble/ciphers': 1.3.0
-      '@noble/curves': 1.9.4
+      '@noble/curves': 1.9.2
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
