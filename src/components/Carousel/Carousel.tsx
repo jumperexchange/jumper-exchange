@@ -1,31 +1,29 @@
 'use client';
 import { useMediaQuery, type CSSObject } from '@mui/material';
-import useId from '@mui/utils/useId';
 import {
-  useCallback,
-  useRef,
-  useState,
+  Children,
   type ComponentType,
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Autoplay, FreeMode, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {
-  AutoplayOptions,
-  SwiperOptions,
-  Swiper as SwiperType,
-} from 'swiper/types';
-import { SectionTitle } from '../ProfilePage/ProfilePage.style';
-import { CarouselContainer, CarouselHeader } from './Carousel.style';
+import { AutoplayOptions, SwiperOptions } from 'swiper/types';
+import { CarouselContainer } from './Carousel.style';
 import {
   CarouselNavigationBase,
   CarouselPaginationBase,
 } from './Carousel.types';
+import { useSwiperAutoplayControl, useSwiperScopedClassNames } from './hooks';
+import { CarouselHeader } from './CarouselHeader';
+import {
+  DEFAULT_AUTOPLAY_DELAY,
+  DEFAULT_MOBILE_AUTOPLAY_DELAY,
+  DEFAULT_SWIPER_CONFIG,
+} from './constants';
 
-interface CarouselProps {
+export interface CarouselProps {
   title?: string;
   headerInfo?: ReactNode;
   sx?: CSSObject;
@@ -37,8 +35,9 @@ interface CarouselProps {
     [ratio: string]: SwiperOptions;
   };
   fixedSlideWidth?: boolean;
-  autoplay?: AutoplayOptions;
+  autoplayOptions?: AutoplayOptions;
   shouldAutoplay?: boolean;
+  shouldLoop?: boolean;
 }
 
 export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
@@ -51,42 +50,47 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   spaceBetween = 32,
   CarouselPagination,
   fixedSlideWidth = false,
-  autoplay,
-  shouldAutoplay,
+  autoplayOptions,
+  shouldAutoplay = true,
+  shouldLoop = true,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const swiperId = useId();
-  const swiperRef = useRef<SwiperType | null>(null);
-  const [isAutoplayPaused, setIsAutoplayPaused] = useState(isMobile);
+  const classNames = useSwiperScopedClassNames();
 
-  // specify a unique className for each caroussel to avoid triggering non-related carousels
-  const classNames = {
-    navigationPrev: `swiper-button-prev-${swiperId}`,
-    navigationNext: `swiper-button-next-${swiperId}`,
-    pagination: `swiper-pagination-${swiperId}`,
-  };
+  const autoplayDelay = !isMobile
+    ? (autoplayOptions?.delay ?? DEFAULT_AUTOPLAY_DELAY)
+    : DEFAULT_MOBILE_AUTOPLAY_DELAY;
 
-  const autoplayDelay = !isMobile ? (autoplay?.delay ?? 3000) : 5000;
+  const slides = Children.toArray(children).map((child, index) => (
+    <SwiperSlide key={`carousel-slide-${index}`} className="carousel-slide">
+      {child}
+    </SwiperSlide>
+  ));
+  const showControls = slides.length > 1;
 
-  const handleInitSwipper = useCallback((swiper: SwiperType) => {
-    swiperRef.current = swiper;
+  const autoplay =
+    shouldAutoplay && !isMobile
+      ? {
+          delay: autoplayDelay,
+          disableOnInteraction: true,
+          pauseOnMouseEnter: true,
+          ...autoplayOptions,
+        }
+      : false;
 
-    swiper.on('autoplayStop', () => {
-      setIsAutoplayPaused(true);
-    });
+  const pagination = CarouselPagination
+    ? {
+        clickable: true,
+        el: `.${classNames.pagination}`,
+      }
+    : false;
 
-    swiper.on('autoplayStart', () => {
-      setIsAutoplayPaused(false);
-    });
-
-    swiper.on('autoplayPause', () => {
-      setIsAutoplayPaused(true);
-    });
-
-    swiper.on('autoplayResume', () => {
-      setIsAutoplayPaused(false);
-    });
-  }, []);
+  const {
+    handleInitSwipper,
+    handlePauseAutoplay,
+    handleResumeAutoplay,
+    isAutoplayPaused,
+  } = useSwiperAutoplayControl(shouldAutoplay);
 
   return (
     <CarouselContainer
@@ -94,84 +98,40 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
       hasPagination={!!CarouselPagination}
       fixedSlideWidth={fixedSlideWidth}
       sx={sx}
+      // These handlers are needed as the loop is interfering w/ the autoplay pause/resume on non-Chromium browserss
+      // @Note Might need to remove the loop from all carousels if we get into a weird behavior
+      onMouseEnter={handlePauseAutoplay}
+      onMouseLeave={handleResumeAutoplay}
+      onTouchStart={handlePauseAutoplay}
+      onTouchEnd={handleResumeAutoplay}
     >
       {title ? (
-        <CarouselHeader>
-          {title && (
-            <SectionTitle
-              variant="bodyXLarge"
-              sx={{
-                ...(!!CarouselNavigation && {
-                  maxWidth: 'calc(100% - 88px)',
-                }),
-              }}
-            >
-              {title}
-            </SectionTitle>
-          )}
-          {headerInfo ?? null}
-        </CarouselHeader>
+        <CarouselHeader
+          title={title}
+          headerInfo={headerInfo}
+          hasNavigation={!!CarouselNavigation}
+        />
       ) : null}
       <Swiper
         onSwiper={handleInitSwipper}
-        modules={[Navigation, Pagination, Autoplay, FreeMode]}
         navigation={{
           prevEl: `.${classNames.navigationPrev}`,
           nextEl: `.${classNames.navigationNext}`,
         }}
-        slidesOffsetAfter={0}
-        slidesOffsetBefore={0}
-        pagination={
-          !!CarouselPagination
-            ? {
-                clickable: true,
-                el: `.${classNames.pagination}`,
-              }
-            : false
-        }
-        autoplay={
-          shouldAutoplay && !isMobile
-            ? {
-                delay: autoplayDelay,
-                disableOnInteraction: true,
-                pauseOnMouseEnter: true,
-                ...autoplay,
-              }
-            : false
-        }
-        loop={true}
-        rewind={true}
+        {...DEFAULT_SWIPER_CONFIG}
+        pagination={pagination}
+        autoplay={autoplay}
+        loop={shouldLoop}
         breakpoints={breakpoints}
-        keyboard={{
-          enabled: true,
-        }}
-        grabCursor={true}
-        cssMode={false}
-        className="carousel-swiper"
         hashNavigation={!!CarouselNavigation}
-        setWrapperSize={false}
-        slidesPerView="auto"
         spaceBetween={spaceBetween}
-        freeMode={{
-          enabled: true,
-          sticky: true,
-          minimumVelocity: 0.1,
-        }}
-        mousewheel={{
-          releaseOnEdges: true,
-        }}
       >
-        {Array.isArray(children) &&
-          children.map((child, index) => (
-            <SwiperSlide key={index} className="carousel-slide">
-              {child}
-            </SwiperSlide>
-          ))}
+        {slides}
       </Swiper>
-      {CarouselNavigation ? (
+      {CarouselNavigation && showControls ? (
         <CarouselNavigation classNames={classNames} />
       ) : null}
-      {CarouselPagination ? (
+      {CarouselPagination && showControls ? (
         <CarouselPagination
           className={classNames.pagination}
           delay={autoplayDelay}
