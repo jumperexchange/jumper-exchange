@@ -1,20 +1,20 @@
 import { FC, useContext } from 'react';
-import { CardBadgeHeader } from '../CardBadgeHeader/CardBadgeHeader';
 import { useTranslation } from 'react-i18next';
-import {
-  RankUserPosition,
-  RankCardContainer,
-  RankButtonContainer,
-  RankButton,
-  RankCardContentContainer,
-} from './RankCard.styles';
-import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
-import { useLeaderboardUser } from 'src/hooks/useLeaderboard';
-import { AppPaths } from 'src/const/urls';
-import { Link } from 'src/components/Link';
-import { RankCardSkeleton } from './RankCardSkeleton';
-import { ProfileContext } from 'src/providers/ProfileProvider';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
+import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
+import { Link } from 'src/components/Link';
+import { AppPaths } from 'src/const/urls';
+import { useLeaderboardUser } from 'src/hooks/useLeaderboard';
+import { ProfileContext } from 'src/providers/ProfileProvider';
+import { CardBadgeHeader } from '../CardBadgeHeader/CardBadgeHeader';
+import {
+  RankButton,
+  RankButtonContainer,
+  RankCardContainer,
+  RankCardContentContainer,
+  RankUserPosition,
+} from './RankCard.styles';
+import { RankCardSkeleton } from './RankCardSkeleton';
 
 interface RankCardProps {}
 
@@ -41,11 +41,25 @@ export const RankCard: FC<RankCardProps> = () => {
             tooltip={t('profile_page.rankInfo')}
             label={t('profile_page.rank')}
           />
-          <Link
-            as={position ? 'a' : 'div'}
-            href={`/leaderboard?page=${userPage}`}
-            sx={{ textDecoration: 'none' }}
-          >
+          {position ? (
+            <Link
+              href={`/leaderboard?page=${userPage}`}
+              sx={{ textDecoration: 'none' }}
+            >
+              <RankUserPosition
+                isGtMillion={isGtMillion}
+                variant="headerXLarge"
+                aria-label="Open leaderboard with your position"
+                sx={(theme) => ({
+                  typography: {
+                    xs: theme.typography.titleLarge,
+                  },
+                })}
+              >
+                {t('format.decimal2Digit', { value: position })}
+              </RankUserPosition>
+            </Link>
+          ) : (
             <RankUserPosition
               isGtMillion={isGtMillion}
               variant="headerXLarge"
@@ -54,16 +68,12 @@ export const RankCard: FC<RankCardProps> = () => {
                 typography: {
                   xs: theme.typography.titleLarge,
                 },
-                ...(!position && {
-                  '&:hover:before': { backgroundColor: 'transparent' },
-                }),
+                '&:hover:before': { backgroundColor: 'transparent' },
               })}
             >
-              {position
-                ? t('format.decimal2Digit', { value: position })
-                : 'N/A'}
+              N/A
             </RankUserPosition>
-          </Link>
+          )}
           <RankButtonContainer>
             <RankButton href={AppPaths.Leaderboard}>
               {t('leaderboard.title')}
