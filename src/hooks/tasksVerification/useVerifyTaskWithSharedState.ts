@@ -12,6 +12,7 @@ import {
 import { useUserTracking } from '../userTracking';
 import { useVerifyTask } from './useVerifyTask';
 import { useQueryClient } from '@tanstack/react-query';
+import { updateVerifiedTasksQueryCache } from './useGetVerifiedTasks';
 
 export const useVerifyTaskWithSharedState = (
   missionId: string,
@@ -26,9 +27,11 @@ export const useVerifyTaskWithSharedState = (
   const queryClient = useQueryClient();
 
   const refetchTaskVerificationCache = useCallback(() => {
-    queryClient.refetchQueries({
-      queryKey: ['task_verification', accountAddress],
-    });
+    if (!accountAddress) {
+      return;
+    }
+
+    updateVerifiedTasksQueryCache(queryClient, accountAddress);
   }, [queryClient, accountAddress]);
 
   const { mutate, reset } = useVerifyTask(

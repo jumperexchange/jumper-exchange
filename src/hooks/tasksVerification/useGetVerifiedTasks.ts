@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import { ONE_HOUR_MS } from 'src/const/time';
 
@@ -9,23 +9,13 @@ interface VerifyTaskResponse {
   timestamp: Date;
 }
 
-export async function getVerifiedTasksQuery({
-  queryKey: [, address],
-}: {
-  queryKey: [string, string];
-}) {
+export async function getVerifiedTasksQuery(
+  address: string,
+  shouldBustCache?: boolean,
+) {
   const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const res = await fetch(
-    `${apiBaseUrl}/tasks_verification/verify/${address}`,
-    {
-      cache: 'no-store',
-      next: {
-        revalidate: 60,
-      },
-      headers: {
-        'Cache-Control': 'no-cache, must-revalidate',
-      },
-    },
+    `${apiBaseUrl}/tasks_verification/verify/${address}${shouldBustCache ? `?cacheBust=${Date.now()}` : ''}`,
   );
 
   if (!res.ok) {
@@ -41,10 +31,25 @@ export async function getVerifiedTasksQuery({
   return jsonResponse.data;
 }
 
+export const updateVerifiedTasksQueryCache = async (
+  queryClient: QueryClient,
+  address: string,
+) => {
+  try {
+    // Fetch fresh data with cache-busting
+    const updatedData = await getVerifiedTasksQuery(address, true);
+
+    // Update the React Query cache with fresh data
+    queryClient.setQueryData(['task_verification', address], updatedData);
+  } catch (error) {
+    console.error('Failed to refetch with cache-busting:', error);
+  }
+};
+
 export const useGetVerifiedTasks = (address?: string) => {
   return useQuery({
     queryKey: ['task_verification', address!],
-    queryFn: getVerifiedTasksQuery,
+    queryFn: () => getVerifiedTasksQuery(address!),
     enabled: !!address,
     refetchInterval: ONE_HOUR_MS,
   });
