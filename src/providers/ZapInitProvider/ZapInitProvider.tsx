@@ -590,10 +590,28 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       });
       instructions.push(approveInstruction);
 
+      // Hardcoded version for now - Strategy pattern with dispatch on project would be workable.
+      let minimumMint = -1;
+      if (projectData.project === 'hyperwave') {
+        // See https://swellnetwork.notion.site/hwHLP-Integration-Documentation-External-23011e01a88380bbb72dc73190728fde#23011e01a8838008ae07f9c1538bdcf1:~:text=receive%20hwHLP%20tokens.-,Step%201%3A%20Calculate%20Minimum%20Mint%20Amount,-First%2C%20you%20need
+        const depositAmount = 1;
+        const accountant: unknown = {};
+        const assetAddress = '';
+        minimumMint = 42;
+        // minimumMint =
+        //   (depositAmount * Math.pow(10, depositTokenDecimals)) /
+        //   accountant.getRateInQuoteSafe(assetAddress);
+      }
+
       // Deposit instruction (dynamic ABI-driven args)
       const depositInputs = integrationData.abi.deposit.inputs;
       const depositArgs = depositInputs.map((input: AbiInput) => {
-        if (input.type === 'uint256') {
+        if (input.type == 'uint256' && input.name === 'minimumMint') {
+          if (minimumMint <= 0) {
+            throw new Error('Minimum mint is not set');
+          }
+          return minimumMint;
+        } else if (input.type === 'uint256') {
           return runtimeERC20BalanceOf({
             targetAddress: oNexusParam.addressOn(
               depositChainId,
@@ -619,6 +637,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       instructions.push(depositInstruction);
 
       // Only add transferLpInstruction if deposit ABI does NOT have an address input
+      // TODO: Check if we need Deposit and bridge flow from hwHLP
+      // https://swellnetwork.notion.site/hwHLP-Integration-Documentation-External-23011e01a88380bbb72dc73190728fde#23011e01a8838008ae07f9c1538bdcf1:~:text=2.-,Deposit%20and%20Bridge%20Flow,-(Deposit%20on%20one
       const depositHasAddressArg = depositInputs.some(
         (input: AbiInput) => input.type === 'address',
       );
