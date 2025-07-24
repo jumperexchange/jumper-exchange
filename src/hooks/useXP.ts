@@ -3,7 +3,7 @@ import { getLoyaltyPassDataQuery, UseLoyaltyPassProps } from './useLoyaltyPass';
 
 export const useXp = (walletAddress?: string): UseLoyaltyPassProps => {
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['loyalty-pass', walletAddress],
+    queryKey: ['xp', walletAddress],
     queryFn: async ({ queryKey }) => {
       const walletAddress = queryKey[1];
       const data = await getLoyaltyPassDataQuery({ queryKey });
