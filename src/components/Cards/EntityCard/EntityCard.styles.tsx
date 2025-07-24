@@ -184,6 +184,7 @@ export const StyledRewardsAvatarsContainer = styled((props: StackProps) => (
 export const StyledRewardAvatar = styled(BaseAvatar)(({ theme }) => ({
   height: 24,
   width: 24,
+  padding: '0 !important',
   [theme.breakpoints.up('sm')]: {
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),

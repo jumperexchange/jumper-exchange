@@ -91,9 +91,9 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledCompactEntityCardTitle>{title}</StyledCompactEntityCardTitle>
-        {rewardGroups && !!Object.keys(rewardGroups).length && (
+        {Object.keys(rewardGroups || {}).length > 0 && (
           <StyledRewardsContainer direction="row">
-            {Object.entries(rewardGroups).map(([rewardKey, rewards]) => {
+            {Object.entries(rewardGroups || {}).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;
 
               if (rewardKey !== 'coins') {

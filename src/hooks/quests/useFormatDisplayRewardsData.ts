@@ -1,16 +1,17 @@
 import { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
 import { useMissionsMaxAPY } from '../useMissionsMaxAPY';
 import { useMemo } from 'react';
+import { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 
 export const useFormatDisplayRewardsData = (
   customInformation?: CustomInformation,
   pointsFallback?: number,
 ) => {
-  const { rewards, rewardType, rewardRange, rewardsIds, chains } =
+  const { tokenRewards, rewardType, rewardRange, rewardsIds, chains } =
     useMemo(() => {
       return {
-        rewards: customInformation?.['rewards'],
+        tokenRewards: customInformation?.['tokenRewards'],
         rewardType: customInformation?.['rewardType'],
         rewardRange: customInformation?.['rewardRange'],
         rewardsIds: customInformation?.['rewardsIds'],
@@ -58,17 +59,15 @@ export const useFormatDisplayRewardsData = (
   }, [pointsFallback, rewardType, rewardRange]);
 
   const coinsRewards = useMemo(() => {
-    if (rewards) {
-      return [
-        {
-          value: rewards.amount,
-          label: rewards.name,
-          avatarUrl: rewards.logo ?? undefined,
-        },
-      ];
+    if (tokenRewards) {
+      return tokenRewards.map((tokenReward: RewardsInterface) => ({
+        value: tokenReward.amount,
+        label: tokenReward.name,
+        avatarUrl: tokenReward.logo ?? undefined,
+      }));
     }
     return [];
-  }, [rewards]);
+  }, [tokenRewards]);
 
   const rewardGroups = useMemo(() => {
     const groups: Record<string, RewardGroup[]> = {};
