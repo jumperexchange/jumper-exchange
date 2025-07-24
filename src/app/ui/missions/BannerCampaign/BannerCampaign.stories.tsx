@@ -27,7 +27,7 @@ const defaultCampaigns = [
     missionsCount: 5,
     rewardChainIds: ['1', '10'],
     slug: 'campaign-a',
-    isDefaultInfoCard: true,
+    statsCardVariant: MissionHeroStatsCardVariant.Default,
   },
   {
     bannerImage:
@@ -37,7 +37,7 @@ const defaultCampaigns = [
     benefitLabel: 'Bonus Pool',
     benefitValue: '$200K',
     missionsCount: 8,
-    isDefaultInfoCard: false,
+    statsCardVariant: MissionHeroStatsCardVariant.Inverted,
     rewardChainIds: ['42161'],
     slug: 'campaign-b',
   },
@@ -49,7 +49,7 @@ const defaultCampaigns = [
     missionsCount: 3,
     rewardChainIds: ['10', '137', '8453'],
     slug: 'campaign-c',
-    isDefaultInfoCard: true,
+    statsCardVariant: MissionHeroStatsCardVariant.Default,
   },
 ];
 
@@ -84,33 +84,21 @@ const Template: StoryFn<typeof CarouselShell> = (_props, { args }) => {
             <MissionHeroStatsCard
               title={campaign.benefitLabel}
               description={campaign.benefitValue}
-              variant={
-                campaign.isDefaultInfoCard
-                  ? MissionHeroStatsCardVariant.Default
-                  : MissionHeroStatsCardVariant.Inverted
-              }
+              variant={campaign.statsCardVariant}
             />
           )}
           {!!campaign.missionsCount && (
             <MissionHeroStatsCard
               title="Missions"
               description={campaign.missionsCount.toString()}
-              variant={
-                campaign.isDefaultInfoCard
-                  ? MissionHeroStatsCardVariant.Default
-                  : MissionHeroStatsCardVariant.Inverted
-              }
+              variant={campaign.statsCardVariant}
             />
           )}
           {!!campaign.rewardChainIds?.length && (
             <MissionHeroStatsCard
               title="Rewards"
               description={<ChainStack chainIds={campaign.rewardChainIds} />}
-              variant={
-                campaign.isDefaultInfoCard
-                  ? MissionHeroStatsCardVariant.Default
-                  : MissionHeroStatsCardVariant.Inverted
-              }
+              variant={campaign.statsCardVariant}
             />
           )}
         </BannerCampaignContent>
@@ -144,7 +132,7 @@ export const CustomCampaigns: Story = {
         missionsCount: 2,
         rewardChainIds: ['56'],
         slug: 'custom-campaign',
-        isDefaultInfoCard: true,
+        statsCardVariant: MissionHeroStatsCardVariant.Default,
       },
     ],
   },

@@ -7,6 +7,7 @@ import { useCampaignDisplayData } from 'src/hooks/campaigns/useCampaignDisplayDa
 import { useRouter } from 'next/navigation';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
 import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { useTranslation } from 'react-i18next';
 
 interface BannerCampaignSlideProps {
   campaign: CampaignData;
@@ -25,7 +26,10 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
     rewardChainIds,
     missionsCount,
     link,
+    statsCardVariant,
   } = useCampaignDisplayData(campaign);
+
+  const { t } = useTranslation();
 
   const onClickHandler = useCallback(() => {
     router.push(link);
@@ -38,18 +42,24 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
       onClick={onClickHandler}
     >
       {!!benefitLabel && !!benefitValue && (
-        <MissionHeroStatsCard title={benefitLabel} description={benefitValue} />
+        <MissionHeroStatsCard
+          title={benefitLabel ?? t('campaign.stats.totalRewards')}
+          description={benefitValue}
+          variant={statsCardVariant}
+        />
       )}
       {!!missionsCount && (
         <MissionHeroStatsCard
-          title={'Missions'}
+          title={t('campaign.stats.missions')}
           description={missionsCount.toString()}
+          variant={statsCardVariant}
         />
       )}
       {!!rewardChainIds?.length && (
         <MissionHeroStatsCard
-          title={'Rewards'}
+          title={t('campaign.stats.rewards')}
           description={<ChainStack chainIds={rewardChainIds} />}
+          variant={statsCardVariant}
         />
       )}
     </BannerCampaignContent>
