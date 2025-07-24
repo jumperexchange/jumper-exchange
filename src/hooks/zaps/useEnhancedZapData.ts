@@ -3,6 +3,7 @@ import { ProjectData } from 'src/types/questDetails';
 import { useReadContracts } from 'wagmi';
 import { useZaps } from '../useZaps';
 import { useAccount } from '@lifi/wallet-management';
+import { EVMAddress } from 'src/types/internal';
 
 export const useEnhancedZapData = (projectData: ProjectData) => {
   const { data, isSuccess } = useZaps(projectData);
@@ -13,7 +14,6 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
   const contractsConfig = useMemo(() => {
     return [
       {
-        address: projectData.address as `0x${string}`,
         abi: [
           {
             inputs: [{ name: 'owner', type: 'address' }],
@@ -23,8 +23,10 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
             type: 'function',
           },
         ] as const,
+        address: projectData.address as EVMAddress,
+        chainId: projectData.chainId,
         functionName: 'balanceOf',
-        args: [account.address as `0x${string}`],
+        args: [account.address as EVMAddress],
       },
       {
         abi: [
@@ -37,7 +39,7 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
           },
         ] as const,
         address: (projectData.tokenAddress ||
-          projectData.address) as `0x${string}`,
+          projectData.address) as EVMAddress,
         chainId: projectData.chainId,
         functionName: 'decimals',
       },
