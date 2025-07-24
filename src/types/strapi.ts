@@ -346,6 +346,11 @@ export interface CampaignData extends CampaignAttributes {
   documentId: string;
 }
 
+export enum BenefitCardColorMode {
+  Light = 'light',
+  Dark = 'dark',
+}
+
 export interface CampaignAttributes {
   Title: string;
   Description: string;
@@ -372,6 +377,7 @@ export interface CampaignAttributes {
   updatedAt: string;
   publishedAt?: string;
   MissionCount?: number;
+  BenefitCardColorMode?: BenefitCardColorMode;
 }
 
 /* MerklRewards */
