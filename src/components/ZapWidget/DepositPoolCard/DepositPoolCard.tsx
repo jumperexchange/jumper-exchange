@@ -105,13 +105,13 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   }
 
   const onClickHandler = () => {
-    if (!projectData?.integratorLink) {
+    if (!projectData?.integratorPositionLink) {
       return;
     }
 
     // @TODO add tracking here
 
-    openInNewTab(projectData.integratorLink);
+    openInNewTab(projectData.integratorPositionLink);
   };
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
@@ -182,7 +182,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             variant="transparent"
             size="medium"
             endIcon={<OpenInNewRoundedIcon />}
-            disabled={!projectData?.integratorLink}
+            disabled={!projectData?.integratorPositionLink}
             onClick={onClickHandler}
             styles={(theme) => ({
               background: (theme.vars || theme).palette.alphaLight100.main,
