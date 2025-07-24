@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
 import { WidgetProps } from '../Widget.types';
-import { useInitializeZapConfig } from './useInitializeZapConfig';
 import { WithdrawWidget } from 'src/components/ZapWidget/WithdrawWidget/WithdrawWidget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
+import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 
 interface ZapWithdrawWidgetProps extends WidgetProps {}
 
@@ -22,7 +22,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     depositTokenData,
     depositTokenDecimals,
     refetchDepositToken,
-  } = useInitializeZapConfig(projectData);
+  } = useZapInitContext();
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;

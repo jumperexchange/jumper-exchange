@@ -9,6 +9,7 @@ import { ZapDepositWidget } from 'src/components/Widgets/variants/base/ZapWidget
 import { TaskType } from 'src/types/strapi';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
+import { ZapInitProvider } from 'src/providers/ZapInitProvider/ZapInitProvider';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -27,24 +28,35 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
     };
   }, []);
 
+  const projectData = useMemo(() => {
+    return customInformation?.projectData;
+  }, [customInformation?.projectData]);
+
   return (
-    <Box
-      sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 4 }}
-    >
-      <DepositPoolCard customInformation={customInformation} />
+    <ZapInitProvider projectData={projectData}>
       <Box
-        id={MISSION_WIDGET_ELEMENT_ID}
         sx={{
-          position: { lg: 'sticky' },
-          top: {
-            lg: 124,
-          },
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
         }}
       >
-        <ClientOnly>
-          <ZapDepositWidget ctx={ctx} customInformation={customInformation} />
-        </ClientOnly>
+        <DepositPoolCard customInformation={customInformation} />
+        <Box
+          id={MISSION_WIDGET_ELEMENT_ID}
+          sx={{
+            position: { lg: 'sticky' },
+            top: {
+              lg: 124,
+            },
+          }}
+        >
+          <ClientOnly>
+            <ZapDepositWidget ctx={ctx} customInformation={customInformation} />
+          </ClientOnly>
+        </Box>
       </Box>
-    </Box>
+    </ZapInitProvider>
   );
 };
