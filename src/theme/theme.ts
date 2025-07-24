@@ -1,10 +1,10 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type {
+  Color,
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
-  Color,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -31,6 +31,7 @@ declare module '@mui/material/styles' {
   interface Shape {
     borderRadius: number;
     borderRadiusSecondary: number;
+    tabBarRadius: number;
     cardBorderRadius: number;
     buttonBorderRadius: number;
   }
@@ -186,6 +187,7 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    bodyXXSmallStrong: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
     titleMedium: React.CSSProperties;
@@ -220,6 +222,7 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    bodyXXSmallStrong: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
     titleMedium: React.CSSProperties;
@@ -256,6 +259,7 @@ declare module '@mui/material/Typography' {
     bodySmall: true;
     bodyXSmallStrong: true;
     bodyXSmall: true;
+    bodyXXSmallStrong: true;
     brandHeaderXLarge: true;
     titleSmall: true;
     titleXSmall: true;
@@ -289,6 +293,7 @@ declare module '@mui/material/Typography' {
     bodySmall: true;
     bodyXSmallStrong: true;
     bodyXSmall: true;
+    bodyXXSmallStrong: true;
     brandHeaderXLarge: true;
     titleSmall: true;
     titleMedium: true;
@@ -310,6 +315,7 @@ declare module '@mui/material/Typography' {
 const shape = {
   borderRadius: 12,
   borderRadiusSecondary: 8,
+  tabBarRadius: 128,
   cardBorderRadius: 24,
   buttonBorderRadius: 128,
 };
@@ -650,6 +656,31 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           }),
         },
       },
+      MuiTabs: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            '& .MuiTabs-scroller': {
+              alignSelf: 'center',
+            },
+          }),
+        },
+      },
+      MuiTab: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: theme.spacing(1),
+            minWidth: '56px',
+            minHeight: '40px',
+
+            '& .MuiTab-icon': {
+              marginBottom: 0,
+            },
+          }),
+        },
+      },
       MuiSnackbar: {
         styleOverrides: {
           root: ({ theme }) => ({
@@ -775,6 +806,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bodySmall: 'p',
             bodyXSmallStrong: 'p',
             bodyXSmall: 'p',
+            bodyXXSmallStrong: 'p',
             brandHeaderXLarge: 'h1',
             urbanistTitleLarge: 'p',
             urbanistTitle2XLarge: 'p',
@@ -921,6 +953,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         fontWeight: 500,
         fontSize: '12px',
         lineHeight: '16px',
+        letterSpacing: 0,
+      },
+      bodyXXSmallStrong: {
+        fontStyle: 'normal',
+        fontWeight: 700,
+        fontSize: '10px',
+        lineHeight: '14px',
         letterSpacing: 0,
       },
       brandHeaderXLarge: {
@@ -1135,9 +1174,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#8700B8',
           },
           surface1: {
-            light: '#faf5ff',
-            main: '#faf5ff',
-            dark: '#faf5ff',
+            light: '#faf5ff', // ? #FCFAFF
+            main: '#faf5ff', // ? #FCFAFF
+            dark: '#faf5ff', // ? #FCFAFF
           },
           surface2: {
             light: '#FFFFFF',
@@ -1145,9 +1184,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#FFFFFF',
           },
           surface3: {
-            light: '#E5E1EB',
-            main: '#E5E1EB',
-            dark: '#E5E1EB',
+            light: '#F6F0FF',
+            main: '#F6F0FF',
+            dark: '#F6F0FF',
           },
         },
         // @ts-expect-error
@@ -1237,9 +1276,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#24203D',
           },
           surface3: {
-            light: '#302B52',
-            main: '#302B52',
-            dark: '#302B52',
+            light: '#120F29',
+            main: '#120F29',
+            dark: '#120F29',
           },
         },
         // @ts-expect-error

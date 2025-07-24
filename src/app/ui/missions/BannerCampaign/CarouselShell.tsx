@@ -10,11 +10,15 @@ import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 export const CarouselShell: FC<PropsWithChildren> = ({ children }) => {
   return (
     <SectionCard>
-      <CarouselOuterContainer sx={{ paddingX: 3, marginX: -3 }}>
+      <CarouselOuterContainer
+        sx={{ paddingX: 3, marginX: -3 }}
+        hasPagination={!!Array.isArray(children) && children.length > 1}
+      >
         <Carousel
           CarouselNavigation={FloatingNavigation}
           CarouselPagination={AnimatedPagination}
-          autoplay={{
+          shouldLoop={false}
+          autoplayOptions={{
             delay: 5000,
             disableOnInteraction: false,
           }}
