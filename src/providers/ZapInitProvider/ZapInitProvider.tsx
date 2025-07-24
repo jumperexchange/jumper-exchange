@@ -304,7 +304,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         ]);
         const oNexusInit = await toMultichainNexusAccount({
           signer: walletClient,
-          accountAddress: walletClient.account.address,
+          // accountAddress: walletClient.account.address,
           chains: [currentChain, depositChain],
           transports: [http(), http()],
         });
