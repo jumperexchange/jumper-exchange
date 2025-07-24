@@ -204,6 +204,11 @@ interface Resources {
       missions: {
         title: 'Missions';
       };
+      stats: {
+        missions: 'Missions';
+        rewards: 'Rewards';
+        totalRewards: 'Total rewards';
+      };
     };
     leaderboard: {
       title: 'Leaderboard';
