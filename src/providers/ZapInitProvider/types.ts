@@ -1,3 +1,6 @@
+import { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
+import { Route } from '@lifi/sdk';
+import { ProjectData } from 'src/types/questDetails';
 import { AbiFunction } from 'viem';
 
 // Type definitions for better type safety
@@ -16,6 +19,13 @@ export interface WalletCall {
 export interface WalletMethodArgs {
   method: string;
   params?: unknown[];
+}
+
+export enum WalletMethods {
+  getCapabilities = 'wallet_getCapabilities',
+  getCallsStatus = 'wallet_getCallsStatus',
+  sendCalls = 'wallet_sendCalls',
+  waitForCallsStatus = 'wallet_waitForCallsStatus',
 }
 
 export interface WalletSendCallsArgs extends WalletMethodArgs {
@@ -63,3 +73,26 @@ export interface CallsStatusResponse {
     status: 'success' | 'reverted';
   }>;
 }
+
+export interface WalletPendingOperation {
+  operation: (
+    meeClientParam: MeeClient,
+    oNexusParam: MultichainSmartAccount,
+    extraParams?: {
+      chainId: number | undefined;
+      currentRoute: Route | null;
+      zapData: any;
+      projectData: ProjectData;
+      address: string | undefined;
+    },
+  ) => Promise<any>;
+  timestamp: number;
+  resolve?: (value: any) => void;
+  reject?: (error: any) => void;
+}
+
+export type WalletPendingOperations = {
+  [K in WalletMethods]?: WalletPendingOperation;
+} & {
+  [key: string]: never;
+};
