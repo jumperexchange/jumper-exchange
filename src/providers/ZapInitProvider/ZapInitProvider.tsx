@@ -23,10 +23,7 @@ import {
 } from '@biconomy/abstractjs';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { buildContractComposable } from './utils';
-import {
-  createCustomEVMProvider,
-  CustomEVMProviderHandlers,
-} from 'src/providers/WalletProvider/createCustomEVMProvider';
+import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { http, parseUnits, zeroAddress } from 'viem';
 import * as chains from 'viem/chains';
 import { useWalletClient, useConfig } from 'wagmi';
@@ -120,7 +117,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { address, chainId } = account;
   const { data: walletClient } = useWalletClient({
     chainId: chainId,
-    account: address as `0x${string}`,
+    account: address as EVMAddress,
     query: {
       enabled: !!chainId && !!address,
     },
@@ -373,14 +370,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       }
 
       const receipt = (await meeClientParam.waitForSupertransactionReceipt({
-        hash: hash as `0x${string}`,
+        hash: hash as EVMAddress,
       })) as WaitForSupertransactionReceiptPayload;
 
       const originalReceipts = receipt?.receipts || [];
       // Ensure the last receipt has the correct transactionHash format
       if (originalReceipts.length > 0) {
         originalReceipts[originalReceipts.length - 1].transactionHash =
-          `biconomy:${hash}` as `0x${string}`;
+          `biconomy:${hash}` as EVMAddress;
       }
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
@@ -430,7 +427,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       // We'll use the timeout to set a maximum wait time
       const receipt = (await Promise.race([
         meeClientParam!.waitForSupertransactionReceipt({
-          hash: id as `0x${string}`,
+          hash: id as EVMAddress,
         }),
         new Promise((_, reject) =>
           setTimeout(
@@ -449,7 +446,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const originalReceipts = receipt?.receipts || [];
       if (originalReceipts.length > 0) {
         originalReceipts[originalReceipts.length - 1].transactionHash =
-          `biconomy:${id}` as `0x${string}`;
+          `biconomy:${id}` as EVMAddress;
       }
 
       const chainIdAsNumber = receipt?.paymentInfo?.chainId;
@@ -527,7 +524,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const currentRouteFromAmount =
         sendCallsExtraParams.currentRoute.fromAmount;
       const integrationData = sendCallsExtraParams.zapData;
-      const depositAddress = integrationData.market?.address as `0x${string}`;
+      const depositAddress = integrationData.market?.address as EVMAddress;
       const depositToken = integrationData.market?.depositToken?.address;
       const depositTokenDecimals =
         integrationData.market?.depositToken.decimals;
@@ -585,7 +582,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             targetAddress: oNexusParam.addressOn(
               depositChainId,
               true,
-            ) as `0x${string}`,
+            ) as EVMAddress,
             tokenAddress: depositToken,
             constraints,
           }),
@@ -601,7 +598,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             targetAddress: oNexusParam.addressOn(
               depositChainId,
               true,
-            ) as `0x${string}`,
+            ) as EVMAddress,
             tokenAddress: depositToken,
             constraints,
           });
@@ -644,7 +641,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
                 targetAddress: oNexusParam.addressOn(
                   depositChainId,
                   true,
-                ) as `0x${string}`,
+                ) as EVMAddress,
                 tokenAddress: depositAddress,
                 constraints,
               }),
@@ -664,7 +661,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       const fusionQuoteParams: GetFusionQuoteParams = {
         trigger: {
-          tokenAddress: currentRouteFromToken.address as `0x${string}`,
+          tokenAddress: currentRouteFromToken.address as EVMAddress,
           amount: requestedAmount,
           chainId: currentChainId,
         },
@@ -672,11 +669,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           {
             tokenAddress: depositToken,
             chainId: depositChainId,
-            recipientAddress: currentAddress as `0x${string}`,
+            recipientAddress: currentAddress as EVMAddress,
           },
         ],
         feeToken: {
-          address: currentRouteFromToken.address as `0x${string}`,
+          address: currentRouteFromToken.address as EVMAddress,
           chainId: currentChainId,
         },
         instructions,
@@ -759,8 +756,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const toAddress = useMemo(
     () =>
       oNexus
-        ? (oNexus.addressOn(projectData.chainId, true) as `0x${string}`)
-        : (address as `0x${string}`) || '0x',
+        ? (oNexus.addressOn(projectData.chainId, true) as EVMAddress)
+        : (address as EVMAddress) || '0x',
     [oNexus, address, projectData.chainId],
   );
 
