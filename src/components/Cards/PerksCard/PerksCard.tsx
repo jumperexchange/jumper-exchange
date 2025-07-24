@@ -14,7 +14,8 @@ interface PerksCardProps {
   title: string;
   description: string;
   imageUrl: string;
-  badge?: ReactNode;
+  levelBadge: ReactNode;
+  perksBadge?: ReactNode;
   isLoading?: boolean;
 }
 
@@ -22,7 +23,8 @@ export const PerksCard = ({
   title,
   description,
   imageUrl,
-  badge,
+  levelBadge,
+  perksBadge,
   isLoading,
 }: PerksCardProps) => {
   if (isLoading) {
@@ -55,7 +57,10 @@ export const PerksCard = ({
           >
             {description}
           </Typography>
-          {badge && <PerksCardBadgeContainer>{badge}</PerksCardBadgeContainer>}
+          <PerksCardBadgeContainer>
+            {perksBadge}
+            {levelBadge}
+          </PerksCardBadgeContainer>
         </PerksCardContent>
       </PerksCardActionArea>
     </PerksCardContainer>
