@@ -171,6 +171,10 @@
       "status": {
         "verify": "Verify",
         "verified": "Verified"
+      },
+      "action": {
+        "verify": "Verify",
+        "go": "Go"
       }
     }
   },

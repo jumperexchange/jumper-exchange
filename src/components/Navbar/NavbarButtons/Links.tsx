@@ -1,29 +1,35 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-import { AppPaths } from 'src/const/urls';
-import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
 import {
-  HorizontalTabsContainer,
-  HorizontalTab,
-} from 'src/components/Tabs/Tabs.style';
+  HorizontalTabItem,
+  HorizontalTabs,
+} from '@/components/HorizontalTabs/HorizontalTabs';
+import { usePathname, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { HorizontalTabSize } from 'src/components/HorizontalTabs/HorizontalTabs.style';
+import { AppPaths } from 'src/const/urls';
+
+interface HorizontalTabLinks extends HorizontalTabItem {
+  subLinks?: AppPaths[];
+}
 
 export const Links = () => {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const router = useRouter();
-  const { t } = useTranslation();
 
-  const tabs = useMemo(
+  const tabs: HorizontalTabLinks[] = useMemo(
     () => [
       {
-        href: AppPaths.Main,
+        value: AppPaths.Main,
         label: t('navbar.links.exchange'),
         subLinks: [AppPaths.Gas],
       },
       {
-        href: AppPaths.Missions,
+        value: AppPaths.Missions,
         label: t('navbar.links.missions'),
+        subLinks: [AppPaths.Campaign],
       },
     ],
     [t],
@@ -32,22 +38,27 @@ export const Links = () => {
   const activeTab = useMemo(
     () =>
       tabs.find(
-        ({ href, subLinks }) =>
-          pathname === href ||
+        ({ value, subLinks }) =>
+          pathname === value ||
           subLinks?.some((subLink) => pathname === subLink),
       ),
     [pathname, tabs],
   );
 
-  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
-    router.push(newValue);
+  const onChange = (_: React.SyntheticEvent, newValue: string) => {
+    const tab = tabs.find(({ value }) => value === newValue);
+    if (tab) {
+      router.push(tab.value);
+    }
   };
 
   return (
-    <HorizontalTabsContainer value={activeTab?.href} onChange={handleChange}>
-      {tabs.map(({ href, label }) => (
-        <HorizontalTab key={href} value={href} label={label} disableRipple />
-      ))}
-    </HorizontalTabsContainer>
+    <HorizontalTabs
+      tabs={tabs}
+      onChange={onChange}
+      value={activeTab?.value}
+      sx={{ backgroundColor: 'transparent' }}
+      size={HorizontalTabSize.LG}
+    />
   );
 };
