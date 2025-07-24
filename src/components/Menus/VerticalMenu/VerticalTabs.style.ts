@@ -7,9 +7,9 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   borderRadius: 28,
   padding: 0,
   alignItems: 'center',
-  boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
+  boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @Note Figma elevation 4
   '&.MuiTabs-root': {
-    backgroundColor: alpha(theme.palette.white.main, 0.12),
+    backgroundColor: theme.palette.alphaLight300.main,
     ...theme.applyStyles('light', {
       backgroundColor: (theme.vars || theme).palette.surface3.main,
     }),
