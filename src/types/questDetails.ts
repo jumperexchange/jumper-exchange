@@ -22,6 +22,7 @@ export interface ProjectData {
   project: string;
   integrator: string;
   integratorLink: string;
+  integratorPositionLink: string;
   address: string;
   withdrawAddress?: string;
   tokenAddress?: string;
