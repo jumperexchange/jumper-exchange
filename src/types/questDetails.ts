@@ -38,6 +38,7 @@ export interface QuestDetails {
   rewardRange: string;
   chains: Chain[];
   rewards: RewardsInterface;
+  tokenRewards?: RewardsInterface[];
   missionType: string;
   traits: string[];
   CTA: MerklOpportunity[];
