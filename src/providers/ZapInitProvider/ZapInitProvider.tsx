@@ -1,47 +1,50 @@
 'use client';
 
-import { EVMProvider, Route, getTokenBalance } from '@lifi/sdk';
+import {
+  createMeeClient,
+  GetFusionQuoteParams,
+  greaterThanOrEqualTo,
+  MeeClient,
+  MultichainSmartAccount,
+  runtimeERC20BalanceOf,
+  toMultichainNexusAccount,
+  WaitForSupertransactionReceiptPayload,
+} from '@biconomy/abstractjs';
+import { EVMProvider, getTokenBalance, Route } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
   Dispatch,
   FC,
   PropsWithChildren,
   SetStateAction,
+  useCallback,
   useContext,
+  useEffect,
+  useMemo,
   useRef,
+  useState,
 } from 'react';
-import { UseReadContractsReturnType } from 'wagmi';
-import {
-  MultichainSmartAccount,
-  MeeClient,
-  toMultichainNexusAccount,
-  createMeeClient,
-  WaitForSupertransactionReceiptPayload,
-  greaterThanOrEqualTo,
-  runtimeERC20BalanceOf,
-  GetFusionQuoteParams,
-} from '@biconomy/abstractjs';
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { buildContractComposable } from './utils';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { http, parseUnits, zeroAddress } from 'viem';
-import * as chains from 'viem/chains';
-import { useWalletClient, useConfig } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
+import { EVMAddress } from 'src/types/internal';
+import { ProjectData } from 'src/types/questDetails';
+import { Chain, http, parseUnits, zeroAddress } from 'viem';
+import * as chains_ from 'viem/chains';
+import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
+import * as hyperwave from './hyperwave';
 import {
+  AbiInput,
+  WalletCall,
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
-  WalletWaitForCallsStatusArgs,
-  WalletSendCallsArgs,
-  WalletCall,
-  AbiInput,
+  WalletMethods,
   WalletPendingOperation,
   WalletPendingOperations,
-  WalletMethods,
+  WalletSendCallsArgs,
+  WalletWaitForCallsStatusArgs,
 } from './types';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { ProjectData } from 'src/types/questDetails';
-import { EVMAddress } from 'src/types/internal';
+import { buildContractComposable } from './utils';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -89,6 +92,11 @@ export const useZapInitContext = () => {
 interface ZapInitProviderProps extends PropsWithChildren {
   projectData: ProjectData;
 }
+
+const chains: Record<number, Chain> = {
+  ...chains_,
+  [999]: hyperwave.hyperevm,
+};
 
 export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
@@ -591,16 +599,24 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       instructions.push(approveInstruction);
 
       // Hardcoded version for now - Strategy pattern with dispatch on project would be workable.
-      let minimumMint = -1;
+      let minimumMint: number = -1;
       if (projectData.project === 'hyperwave') {
-        // See https://swellnetwork.notion.site/hwHLP-Integration-Documentation-External-23011e01a88380bbb72dc73190728fde#23011e01a8838008ae07f9c1538bdcf1:~:text=receive%20hwHLP%20tokens.-,Step%201%3A%20Calculate%20Minimum%20Mint%20Amount,-First%2C%20you%20need
-        const depositAmount = 1;
-        const accountant: unknown = {};
-        const assetAddress = '';
-        minimumMint = 42;
-        // minimumMint =
-        //   (depositAmount * Math.pow(10, depositTokenDecimals)) /
-        //   accountant.getRateInQuoteSafe(assetAddress);
+        console.warn(
+          'Getting minimum mint for HyperWave',
+          depositToken,
+          depositTokenData,
+          depositTokenDecimals,
+        );
+        const amount = 4n; // TODO: Find me
+        minimumMint = await hyperwave.getMinimumMint({
+          amount: amount,
+          token: depositToken,
+          tokenDecimals: depositTokenDecimals,
+        });
+
+        if (minimumMint <= 0) {
+          throw new Error('Minimum mint is not set');
+        }
       }
 
       // Deposit instruction (dynamic ABI-driven args)
