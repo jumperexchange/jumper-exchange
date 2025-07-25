@@ -15,7 +15,7 @@ export interface HorizontalTabItem {
 
 export interface HorizontalTabsProps {
   tabs: HorizontalTabItem[];
-  onChange: (event: React.SyntheticEvent, newValue: string) => void;
+  onChange?: (event: React.SyntheticEvent, newValue: string) => void;
   value?: string;
   size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
@@ -58,7 +58,6 @@ export const HorizontalTabs = ({
               value={tab.value}
               key={tab.value}
               disableRipple
-              sx={sx}
               label={
                 <>
                   {tab.startAdornment}

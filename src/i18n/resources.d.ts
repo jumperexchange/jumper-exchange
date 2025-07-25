@@ -200,6 +200,8 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
       availableRewards: 'Available Rewards';
+      perks: 'Perks';
+      achievements: 'Achievements';
     };
     campaign: {
       missions: {
@@ -256,7 +258,7 @@ interface Resources {
         boostedApy: 'Boosted APR';
         tvl: 'TVL';
         lockupPeriod: 'Lockup period';
-        token: 'Pool token';
+        token: 'Asset';
       };
       zap: {
         sendToAddressName: 'Send to {{name}}';

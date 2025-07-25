@@ -4,9 +4,10 @@ import { ProfileProvider } from 'src/providers/ProfileProvider';
 import { QuestDataExtended } from 'src/types/merkl';
 import { CampaignData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
-import { CardsSection } from './CardsSection/CardsSection';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
+import { TabsSection } from './TabsSection/TabsSection';
+import { AvailableTabs } from './TabsSection/constants';
 
 interface ProfilePageProps {
   walletAddress?: string;
@@ -33,7 +34,15 @@ export const ProfilePage = ({
       <PageContainer>
         <IntroSection />
         <RewardsSection />
-        <CardsSection />
+        <TabsSection>
+          {(activeTab: string) => {
+            if (activeTab === AvailableTabs.Achievements) {
+              return <p>Achievements</p>;
+            } else if (activeTab === AvailableTabs.Perks) {
+              return <p>Perks</p>;
+            }
+          }}
+        </TabsSection>
       </PageContainer>
     </ProfileProvider>
   );
