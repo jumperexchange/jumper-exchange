@@ -23,10 +23,8 @@ export const RankCard: FC<RankCardProps> = () => {
   const { data: leaderboardUserData, isLoading: isLeaderboardUserDataLoading } =
     useLeaderboardUser(address);
   const { t } = useTranslation();
-  const userPage = Math.ceil(
-    parseFloat(leaderboardUserData?.position) / LEADERBOARD_LENGTH,
-  );
   const position = leaderboardUserData?.position;
+  const userPage = Math.ceil(parseFloat(position) / LEADERBOARD_LENGTH);
   const isGtMillion = parseInt(position) >= 1000000;
 
   if (isLoading || isLeaderboardUserDataLoading) {
