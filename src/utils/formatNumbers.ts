@@ -53,3 +53,14 @@ export const currencyFormatter = (
     return formatter.format(value);
   };
 };
+
+export const toFixedFractionDigits = (
+  value: number,
+  minFractionDigits: number,
+  maxFractionDigits: number,
+) => {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: minFractionDigits,
+    maximumFractionDigits: maxFractionDigits,
+  }).format(value);
+};

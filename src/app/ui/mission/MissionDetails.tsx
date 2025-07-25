@@ -58,7 +58,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
       <Badge
         label={status}
         variant={BadgeVariant.Secondary}
-        size={BadgeSize.LG}
+        size={BadgeSize.MD}
       />
     );
   }, [status]);
@@ -76,7 +76,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
               label={t('navbar.links.missions')}
               onClick={handleGoBack}
               startIcon={<ArrowBackIcon />}
-              size={BadgeSize.LG}
+              size={BadgeSize.MD}
               variant={BadgeVariant.Alpha}
             />
           </Box>
@@ -108,9 +108,6 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
           <BaseAlert
             variant={BaseAlertVariant.Info}
             description={missionDisplayData.info}
-            sx={(theme) => ({
-              boxShadow: theme.shadows[2],
-            })}
           />
         </MissionDetailsInfoContainer>
       )}

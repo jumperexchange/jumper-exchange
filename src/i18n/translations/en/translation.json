@@ -168,6 +168,7 @@
     },
     "tasks": {
       "type": "{{type}} task",
+      "typeFallback": "Task",
       "status": {
         "verify": "Verify",
         "verified": "Verified"
@@ -248,7 +249,7 @@
       "boostedApy": "Boosted APR",
       "tvl": "TVL",
       "lockupPeriod": "Lockup period",
-      "token": "Pool token"
+      "token": "Asset"
     },
     "zap": {
       "sendToAddressName": "Send to {{name}}",

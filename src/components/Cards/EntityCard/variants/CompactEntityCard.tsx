@@ -114,11 +114,9 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
                 <StyledCompactRewardChipContainer
                   clickable={false}
                   key={rewardKey}
-                  sx={(theme) => ({
+                  sx={{
                     display: 'inline-block',
-                    paddingLeft: theme.spacing(0.5),
-                    paddingRight: theme.spacing(0.5),
-                  })}
+                  }}
                   avatar={
                     <StyledRewardsAvatarsContainer>
                       {rewards

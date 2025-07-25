@@ -175,6 +175,7 @@ interface Resources {
       };
       tasks: {
         type: '{{type}} task';
+        typeFallback: 'Task';
         status: {
           verify: 'Verify';
           verified: 'Verified';

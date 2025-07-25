@@ -94,10 +94,12 @@ export const useEnhancedTasks = (
       // This means that the task can be verified and is required
       (task) => task.hasTask && task.isRequired,
     );
+
     return (
-      requiredTasks.length > 0 && requiredTasks.length === verifiedTasks?.length
+      requiredTasks.length > 0 &&
+      requiredTasks.every((task) => verifiedTaskIds.has(task.uuid))
     );
-  }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks)]);
+  }, [tasks, verifiedTaskIds]);
 
   // @TODO re-enable this after missions are updated; it might require some changes
   useEffect(() => {
