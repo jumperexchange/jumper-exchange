@@ -1,11 +1,6 @@
 'use client';
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import {
-  Link as MuiLink,
-  Typography,
-  useColorScheme,
-  useTheme,
-} from '@mui/material';
+import { Link as MuiLink, Typography, useColorScheme } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
@@ -29,7 +24,6 @@ const SwapStepsExplainerSection = ({
   destinationToken,
   chainName,
 }: SwapStepsExplainerProps) => {
-  const theme = useTheme();
   const { mode } = useColorScheme();
   const resolvedMode = getResolvedMode(mode);
   const steps = [
@@ -47,7 +41,7 @@ const SwapStepsExplainerSection = ({
       title: `Step 2: Make sure to have Funds on ${sourceChain.name} in your wallet`,
       description: `Before you can swap your assets, you need to ensure you have the necessary funds and assets on the ${sourceChain?.name} network.`,
       img: getWidgetImageProps({
-        theme,
+        theme: resolvedMode,
         chainName,
         amount: 1,
         widgetImageProps: {
@@ -67,7 +61,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-selection',
           width: 416,
@@ -95,7 +89,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-quotes',
           width: 856,
@@ -126,7 +120,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-review',
           width: 416,
@@ -160,7 +154,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-success',
           width: 416,

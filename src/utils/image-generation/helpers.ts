@@ -24,7 +24,7 @@ export const getWidth = (type?: string, fullWidth?: boolean) => {
   }
 };
 
-export const getResolvedMode = (mode: Appearance | undefined): ImageTheme => {
+export const getResolvedMode = (mode?: Appearance | undefined): ImageTheme => {
   if (mode === 'dark' || mode === 'light') {
     return mode;
   }

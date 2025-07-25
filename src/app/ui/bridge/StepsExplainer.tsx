@@ -1,12 +1,18 @@
 'use client';
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import { Link as MuiLink, Typography, useTheme } from '@mui/material';
+import {
+  Link as MuiLink,
+  Typography,
+  useColorScheme,
+  useTheme,
+} from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
 import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 import StepDetail from 'src/components/StepDetail/StepDetail';
 import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';
+import { getResolvedMode } from 'src/utils/image-generation/helpers';
 
 interface StepsExplainerProps {
   sourceChain: ExtendedChain;
@@ -22,6 +28,8 @@ const StepsExplainerSection = ({
   destinationToken,
 }: StepsExplainerProps) => {
   const theme = useTheme();
+  const { mode } = useColorScheme();
+  const resolvedMode = getResolvedMode(mode);
 
   const steps = [
     {
@@ -32,7 +40,7 @@ const StepsExplainerSection = ({
         sourceChain,
         destinationToken,
         destinationChain,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-selection',
           width: 416,
@@ -60,7 +68,7 @@ const StepsExplainerSection = ({
         sourceChain,
         destinationToken,
         destinationChain,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-quotes',
           width: 856,
@@ -86,7 +94,7 @@ const StepsExplainerSection = ({
         sourceChain,
         destinationToken,
         destinationChain,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-review',
           width: 416,
@@ -112,7 +120,7 @@ const StepsExplainerSection = ({
         sourceChain,
         destinationToken,
         destinationChain,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-execution',
           width: 416,
@@ -148,7 +156,7 @@ const StepsExplainerSection = ({
         sourceChain,
         destinationToken,
         destinationChain,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-success',
           width: 416,
