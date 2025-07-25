@@ -1,5 +1,4 @@
 import { Route } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
 import { Abi, createPublicClient, getContract, http } from 'viem';
 import { hyperevm } from './hyperwave';
@@ -16,7 +15,7 @@ export interface SendCallsExtraParams {
 export interface ZapperStrategy {
   getApproveAddress: () => `0x${string}`;
   getDepositAddress: () => `0x${string}`;
-  computeMinimumMint: () => Promise<number | null>;
+  computeMinimumMint: () => Promise<bigint | null>;
 }
 
 export class DefaultZapper implements ZapperStrategy {
@@ -32,7 +31,12 @@ export class DefaultZapper implements ZapperStrategy {
     }
 
     if (fct.contract) {
-      const v = this.zapData.market.contract?.[fct.contract];
+      const contracts = this.zapData.market.contracts;
+      if (!contracts) {
+        throw new Error('Contracts not found in market');
+      }
+
+      const v = contracts[fct.contract];
       if (!v) {
         throw new Error(`Contract ${fct.contract} not found in market`);
       }
@@ -49,13 +53,13 @@ export class DefaultZapper implements ZapperStrategy {
     return this.getAbiAddress(this.zapData.abi.deposit);
   };
 
-  computeMinimumMint = async (): Promise<number | null> => {
+  computeMinimumMint = async (): Promise<bigint | null> => {
     return null;
   };
 }
 
 export class HyperwaveZapper extends DefaultZapper {
-  computeMinimumMint = async (): Promise<number | null> => {
+  computeMinimumMint = async (): Promise<bigint | null> => {
     const market = this.zapData.market;
 
     if (!market) {
@@ -91,14 +95,9 @@ export class HyperwaveZapper extends DefaultZapper {
       throw new Error('Failed to get rate');
     }
 
-    // Contrived big number division (10000001 / 10 = 10000000 / 10 + 1 / 10)
-    // TODO: how do we deal with these usually? Decimal.js?
     const numerator = amount * 10n ** BigInt(decimals);
     const denominator = rate;
-
-    const quotient = numerator / denominator;
-    const remainder = numerator % denominator;
-    return Number(quotient) + Number(remainder) / Number(denominator);
+    return numerator / denominator;
   };
 }
 

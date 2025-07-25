@@ -599,16 +599,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       instructions.push(approveInstruction);
 
       // Hardcoded version for now - Strategy pattern with dispatch on project would be workable.
-      let minimumMint: number | null = await zapper.computeMinimumMint();
+      let minimumMint: bigint | null = await zapper.computeMinimumMint();
 
       // Deposit instruction (dynamic ABI-driven args)
       const depositInputs = integrationData.abi.deposit.inputs;
       const depositArgs = depositInputs.map((input: AbiParameter) => {
-        if (
-          input.type == 'uint256' &&
-          input.name === 'minimumMint' &&
-          minimumMint
-        ) {
+        if (input.type == 'uint256' && input.name === 'minimumMint') {
           if (minimumMint === null || minimumMint <= 0) {
             throw new Error('Minimum mint is not set');
           }
