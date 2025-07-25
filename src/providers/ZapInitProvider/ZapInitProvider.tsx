@@ -29,12 +29,11 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { Chain, http, parseUnits, zeroAddress } from 'viem';
+import { AbiParameter, Chain, http, parseUnits, zeroAddress } from 'viem';
 import * as chains_ from 'viem/chains';
 import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
 import * as hyperwave from './hyperwave';
 import {
-  AbiInput,
   WalletCall,
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
@@ -45,6 +44,7 @@ import {
   WalletWaitForCallsStatusArgs,
 } from './types';
 import { buildContractComposable } from './utils';
+import { makeZapper, SendCallsExtraParams } from './Zapper';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -489,13 +489,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletSendCallsArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
-      sendCallsExtraParams: {
-        chainId: number | undefined;
-        currentRoute: Route | null;
-        zapData: any;
-        projectData: ProjectData;
-        address: string | undefined;
-      },
+      sendCallsExtraParams: SendCallsExtraParams,
     ) => {
       if (!meeClientParam || !oNexusParam) {
         throw new Error('MEE client or oNexus not initialized');
@@ -546,6 +540,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error('Deposit address or token is undefined.');
       }
 
+      if (!depositTokenDecimals) {
+        throw new Error('Deposit token decimals is undefined.');
+      }
+
       // @Note this works only for EVM chains
       const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
@@ -554,6 +552,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       if (isNativeSourceToken) {
         throw new Error('Native source token is not supported.');
       }
+
+      const zapper = makeZapper(sendCallsExtraParams);
 
       // raw calldata from the widget
       const instructions = await Promise.all(
@@ -579,7 +579,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       // token approval
       const approveInstruction = await buildContractComposable(oNexusParam, {
-        address: depositToken,
+        address: zapper.getApproveAddress(),
         chainId: depositChainId,
         abi: integrationData.abi.approve,
         functionName: integrationData.abi.approve.name,
@@ -599,31 +599,17 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       instructions.push(approveInstruction);
 
       // Hardcoded version for now - Strategy pattern with dispatch on project would be workable.
-      let minimumMint: number = -1;
-      if (projectData.project === 'hyperwave') {
-        console.warn(
-          'Getting minimum mint for HyperWave',
-          depositToken,
-          depositTokenData,
-          depositTokenDecimals,
-        );
-        const amount = 4n; // TODO: Find me
-        minimumMint = await hyperwave.getMinimumMint({
-          amount: amount,
-          token: depositToken,
-          tokenDecimals: depositTokenDecimals,
-        });
-
-        if (minimumMint <= 0) {
-          throw new Error('Minimum mint is not set');
-        }
-      }
+      let minimumMint: number | null = await zapper.computeMinimumMint();
 
       // Deposit instruction (dynamic ABI-driven args)
       const depositInputs = integrationData.abi.deposit.inputs;
-      const depositArgs = depositInputs.map((input: AbiInput) => {
-        if (input.type == 'uint256' && input.name === 'minimumMint') {
-          if (minimumMint <= 0) {
+      const depositArgs = depositInputs.map((input: AbiParameter) => {
+        if (
+          input.type == 'uint256' &&
+          input.name === 'minimumMint' &&
+          minimumMint
+        ) {
+          if (minimumMint === null || minimumMint <= 0) {
             throw new Error('Minimum mint is not set');
           }
           return minimumMint;
@@ -642,8 +628,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         }
         throw new Error(`Unsupported deposit input type: ${input.type}`);
       });
+
       const depositInstruction = await buildContractComposable(oNexusParam, {
-        address: depositAddress,
+        address: zapper.getDepositAddress(),
         chainId: depositChainId,
         abi: integrationData.abi.deposit,
         functionName: integrationData.abi.deposit.name,
@@ -656,7 +643,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       // TODO: Check if we need Deposit and bridge flow from hwHLP
       // https://swellnetwork.notion.site/hwHLP-Integration-Documentation-External-23011e01a88380bbb72dc73190728fde#23011e01a8838008ae07f9c1538bdcf1:~:text=2.-,Deposit%20and%20Bridge%20Flow,-(Deposit%20on%20one
       const depositHasAddressArg = depositInputs.some(
-        (input: AbiInput) => input.type === 'address',
+        (input: AbiParameter) => input.type === 'address',
       );
 
       if (!depositHasAddressArg) {
