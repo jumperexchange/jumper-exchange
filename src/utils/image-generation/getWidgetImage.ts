@@ -55,7 +55,7 @@ export const getWidgetImageProps = ({
   }
   params.set('amount', (amount ? amount : DEFAUL_WIDGET_AMOUNT).toString());
   params.set('isSwap', (isSwap ? true : false).toString());
-  console.log('#1-theme', theme?.palette.mode);
+
   return {
     imgUrl: `/api/${widgetImageProps.endpoint}?${params.toString()}`,
     width: widgetImageProps.width,
