@@ -28,7 +28,7 @@ export const TabsSection: FC<TabsSectionProps> = ({ children }) => {
   );
 
   return (
-    <SectionCard>
+    <SectionCard sx={{ minHeight: '540px' }}>
       <Box
         sx={(theme) => ({
           display: 'flex',
