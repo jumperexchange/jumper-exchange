@@ -36,15 +36,19 @@ export const ProfilePage = ({
       <PageContainer>
         <IntroSection />
         {isPublic && <RewardsSection />}
-        <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(296px, max-content))">
-          <PerksList initialPerks={perks} shouldLoadMore={hasMorePerks} />
-        </GridContainer>
         <TabsSection>
           {(activeTab: string) => {
             if (activeTab === AvailableTabs.Achievements) {
               return <p>Achievements</p>;
             } else if (activeTab === AvailableTabs.Perks) {
-              return <p>Perks</p>;
+              return (
+                <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(296px, max-content))">
+                  <PerksList
+                    initialPerks={perks}
+                    shouldLoadMore={hasMorePerks}
+                  />
+                </GridContainer>
+              );
             }
           }}
         </TabsSection>
