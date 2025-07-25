@@ -19,12 +19,10 @@ import { BaseAlert } from '../Alerts/BaseAlert/BaseAlert';
 import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import { BaseAlertVariant } from '../Alerts/BaseAlert/BaseAlert.styles';
-import { Typography } from '@mui/material';
-import { AccordionFAQ, AccordionHeader } from '../AccordionFAQ';
 import { useAccount } from '@lifi/wallet-management';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
-import { ZapTask } from './ZapTask';
 import { SectionCardContainer } from '../Cards/SectionCard/SectionCard.style';
+import { MissionTask } from 'src/app/ui/mission/MissionTask';
 
 interface ZapDetailsProps {
   market: Quest;
@@ -91,46 +89,13 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
             fullWidth
           />
           {enhancedTasks.map((task) => (
-            <ZapTask
+            <MissionTask
               key={task.uuid}
               task={task}
               missionId={market.documentId}
               onClick={() => setActiveTask(task)}
             />
           ))}
-          {/** @TODO need to check if we still want to show these participation steps */}
-          {/* <AccordionFAQ
-          showIndex={true}
-          showDivider={true}
-          showAnswerDivider={true}
-          sx={{
-            padding: 0,
-            '& .faq-item': {
-              padding: '0px 8px',
-              backgroundColor: 'transparent',
-              '.MuiAccordionSummary-root': {
-                padding: 0,
-              },
-              '.accordion-items': {
-                gap: '4px',
-              },
-              '.MuiAccordionDetails-root': {
-                padding: '20px 16px 16px',
-              },
-            },
-          }}
-          content={market.CustomInformation?.faqItems ?? []}
-          accordionHeader={
-            <AccordionHeader
-              sx={{ margin: 0, marginBottom: '4px', marginLeft: '8px' }}
-            >
-              <Typography variant="title2XSmall">How to participate</Typography>
-            </AccordionHeader>
-          }
-          questionTextTypography="bodyLarge"
-          answerTextTypography="bodyMedium"
-          arrowSize={12}
-        /> */}
         </ZapDetailsCardContainer>
       </SectionCardContainer>
       {zapDisplayData.info && (
@@ -138,9 +103,6 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
           <BaseAlert
             variant={BaseAlertVariant.Info}
             description={zapDisplayData.info}
-            sx={(theme) => ({
-              boxShadow: theme.shadows[2],
-            })}
           />
         </ZapDetailsInfoContainer>
       )}

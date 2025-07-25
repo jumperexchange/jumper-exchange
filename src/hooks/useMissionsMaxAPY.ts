@@ -17,6 +17,7 @@ interface useMissionsAPYRes {
 }
 
 // todo: testing of DepositCard.tsx
+// @TODO maybe we can group the chainIds together to reduce the number of requests, though this will affect the cache key
 export const useMissionsMaxAPY = (
   searchQuery: string[] | undefined,
   chainIds: number[] | undefined,

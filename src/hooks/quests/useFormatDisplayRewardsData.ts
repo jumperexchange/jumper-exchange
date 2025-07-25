@@ -2,30 +2,34 @@ import { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
 import { useMissionsMaxAPY } from '../useMissionsMaxAPY';
 import { useMemo } from 'react';
 import { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
+import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 
 export const useFormatDisplayRewardsData = (
   customInformation?: CustomInformation,
   pointsFallback?: number,
 ) => {
-  const { tokenRewards, rewardType, rewardRange, claimingIds } = useMemo(() => {
-    return {
-      tokenRewards: customInformation?.['tokenRewards'],
-      rewardType: customInformation?.['rewardType'],
-      rewardRange: customInformation?.['rewardRange'],
-      claimingIds: customInformation?.['claimingIds'],
-    };
-  }, [JSON.stringify(customInformation ?? {})]);
+  const { tokenRewards, rewardType, rewardRange, rewardsIds, chains } =
+    useMemo(() => {
+      return {
+        tokenRewards: customInformation?.['tokenRewards'],
+        rewardType: customInformation?.['rewardType'],
+        rewardRange: customInformation?.['rewardRange'],
+        rewardsIds: customInformation?.['rewardsIds'],
+        chains: customInformation?.['chains'],
+      };
+    }, [JSON.stringify(customInformation ?? {})]);
 
-  //   const chains = customInformation?.['chains'] ?? [];
+  const chainIds = (chains ?? [])
+    .map((chain) => chain.chainId)
+    .filter((chainId) => chainId !== undefined);
 
-  // @TODO maybe need to pass the chainIds
-  const { apy: apyValue } = useMissionsMaxAPY(claimingIds, undefined);
+  const { apy: apyValue } = useMissionsMaxAPY(rewardsIds, chainIds);
 
   const apyRewards = useMemo(() => {
     if (apyValue) {
       return [
         {
-          value: apyValue,
+          value: `${toFixedFractionDigits(apyValue, 0, 2)}%`,
           label: 'APY',
         },
       ];
