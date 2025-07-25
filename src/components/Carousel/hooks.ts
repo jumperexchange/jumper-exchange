@@ -12,6 +12,10 @@ export const useSwiperAutoplayControl = (shouldAutoplay: boolean) => {
 
       if (!shouldAutoplay) return;
 
+      swiper.on('slidesUpdated', () => {
+        setIsAutoplayPaused(false);
+      });
+
       swiper.on('autoplayStop', () => {
         setIsAutoplayPaused(true);
       });
