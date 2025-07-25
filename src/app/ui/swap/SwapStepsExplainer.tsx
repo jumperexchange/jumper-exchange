@@ -32,6 +32,7 @@ const SwapStepsExplainerSection = ({
   const theme = useTheme();
   const { mode } = useColorScheme();
   const resolvedMode = getResolvedMode(mode);
+  console.log('#2-theme', theme?.palette.mode);
   const steps = [
     {
       title: 'Step 1: Prepare Your Wallet',
