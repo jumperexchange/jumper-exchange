@@ -1,3 +1,12 @@
+'use client';
+
+import { PageContainer } from '../Containers/PageContainer';
+import { IntroSectionSkeleton } from './sections/IntroSectionSkeleton';
+
 export const ProfilePageSkeleton = () => {
-  return <div>This is the new profile page skeleton</div>;
+  return (
+    <PageContainer>
+      <IntroSectionSkeleton />
+    </PageContainer>
+  );
 };
