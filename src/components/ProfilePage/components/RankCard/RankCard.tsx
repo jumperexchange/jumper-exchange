@@ -33,6 +33,40 @@ export const RankCard: FC<RankCardProps> = () => {
     return <RankCardSkeleton />;
   }
 
+  const renderRankPosition = () => {
+    const positionElement = (
+      <RankUserPosition
+        isGtMillion={isGtMillion}
+        variant="headerXLarge"
+        aria-label={
+          position
+            ? 'Open leaderboard with your position'
+            : 'Your rank position'
+        }
+        sx={(theme) => ({
+          typography: {
+            xs: theme.typography.titleLarge,
+          },
+        })}
+      >
+        {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
+      </RankUserPosition>
+    );
+
+    if (!position) {
+      return positionElement;
+    }
+
+    return (
+      <Link
+        href={`/leaderboard?page=${userPage}`}
+        sx={{ textDecoration: 'none' }}
+      >
+        {positionElement}
+      </Link>
+    );
+  };
+
   return (
     <RankCardContainer>
       <SectionCard>
@@ -41,39 +75,7 @@ export const RankCard: FC<RankCardProps> = () => {
             tooltip={t('profile_page.rankInfo')}
             label={t('profile_page.rank')}
           />
-          {position ? (
-            <Link
-              href={`/leaderboard?page=${userPage}`}
-              sx={{ textDecoration: 'none' }}
-            >
-              <RankUserPosition
-                isGtMillion={isGtMillion}
-                variant="headerXLarge"
-                aria-label="Open leaderboard with your position"
-                sx={(theme) => ({
-                  typography: {
-                    xs: theme.typography.titleLarge,
-                  },
-                })}
-              >
-                {t('format.decimal2Digit', { value: position })}
-              </RankUserPosition>
-            </Link>
-          ) : (
-            <RankUserPosition
-              isGtMillion={isGtMillion}
-              variant="headerXLarge"
-              aria-label="Open leaderboard with your position"
-              sx={(theme) => ({
-                typography: {
-                  xs: theme.typography.titleLarge,
-                },
-                '&:hover:before': { backgroundColor: 'transparent' },
-              })}
-            >
-              N/A
-            </RankUserPosition>
-          )}
+          {renderRankPosition()}
           <RankButtonContainer>
             <RankButton href={AppPaths.Leaderboard}>
               {t('leaderboard.title')}
