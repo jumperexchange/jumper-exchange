@@ -155,7 +155,7 @@ export const AnimatedPaginationContainer = styled(Box, {
 
   '&.swiper-pagination .swiper-pagination-bullet': {
     borderRadius: '4px',
-    transition: 'all 0.3s ease',
+    transition: 'none',
     opacity: `1 !important`,
     backgroundColor: `${(theme.vars || theme).palette.alphaLight300.main} !important`,
     ...theme.applyStyles('light', {
