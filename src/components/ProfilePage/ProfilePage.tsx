@@ -2,7 +2,7 @@
 
 import { useAccount } from '@lifi/wallet-management';
 import { ProfileProvider } from 'src/providers/ProfileProvider';
-import { PerksData, StrapiResponseData } from 'src/types/strapi';
+import { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
@@ -14,7 +14,7 @@ import { GridContainer } from '../Containers/GridContainer';
 interface ProfilePageProps {
   walletAddress?: string;
   isPublic?: boolean;
-  perks: StrapiResponseData<PerksData>;
+  perks: StrapiResponseData<PerksDataAttributes>;
   hasMorePerks: boolean;
 }
 

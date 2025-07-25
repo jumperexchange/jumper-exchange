@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { PerksData, PerksDataAttributes } from 'src/types/strapi';
+import { PerksDataAttributes } from 'src/types/strapi';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
