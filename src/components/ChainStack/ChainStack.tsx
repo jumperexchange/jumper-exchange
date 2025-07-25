@@ -11,6 +11,7 @@ interface ChainStackProps {
   size?: ChainAvatarSize;
 }
 
+// @TODO use this for the missions cards
 export const ChainStack: FC<ChainStackProps> = ({ chainIds, size }) => {
   const { getChainById } = useChains();
   const enhancedChains = useMemo(() => {
@@ -25,7 +26,7 @@ export const ChainStack: FC<ChainStackProps> = ({ chainIds, size }) => {
   }, [chainIds, getChainById]);
 
   return (
-    <ChainAvatarStack direction="row" spacing={-1.25}>
+    <ChainAvatarStack direction="row" spacing={-1.5}>
       {enhancedChains.map((enhancedChain) => (
         <ChainAvatar
           size={size}
