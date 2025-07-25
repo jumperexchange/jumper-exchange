@@ -19,6 +19,16 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       Slug,
     } = perk;
 
+    let bannerImageUrl = '';
+    if (BannerImage?.url) {
+      bannerImageUrl = `${baseStrapiUrl}${BannerImage?.url}`;
+    }
+
+    let imageUrl = '';
+    if (Image?.url) {
+      imageUrl = `${baseStrapiUrl}${Image?.url}`;
+    }
+
     return {
       id,
       title: Title,
@@ -29,8 +39,8 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       perkItems: PerkItems.map((perkItem) => perkItem.Label),
       unlockLevel: UnlockLevel,
       slug: Slug,
-      bannerImageUrl: `${baseStrapiUrl}${BannerImage?.url}`,
-      imageUrl: `${baseStrapiUrl}${Image?.url}`,
+      bannerImageUrl,
+      imageUrl,
     };
   }, [perk]);
 };

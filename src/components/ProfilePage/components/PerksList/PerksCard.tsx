@@ -49,8 +49,9 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   }, [unlockLevel, level, t]);
 
   const perksBadge = useMemo(() => {
-    return perkItems.map((perkItem) => (
+    return perkItems.map((perkItem, index) => (
       <Badge
+        key={`${perkItem}-${index}`}
         label={
           <Typography component="span" variant="bodySmallStrong">
             {perkItem}
@@ -62,7 +63,17 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     ));
   }, [perkItems]);
 
-  return (
+  const perkCard = (
+    <PerksCardComponent
+      title={title}
+      description={description}
+      imageUrl={imageUrl}
+      levelBadge={levelBadge}
+      perksBadge={perksBadge}
+    />
+  );
+
+  return href ? (
     <Link
       href={href}
       target="_blank"
@@ -71,13 +82,9 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
         width: 'auto',
       }}
     >
-      <PerksCardComponent
-        title={title}
-        description={description}
-        imageUrl={imageUrl}
-        levelBadge={levelBadge}
-        perksBadge={perksBadge}
-      />
+      {perkCard}
     </Link>
+  ) : (
+    perkCard
   );
 };
