@@ -24,7 +24,7 @@ export interface ZapData {
 
 interface MarketEntry {
   address: `0x${string}`; // Identifier for strapi and default contract address
-  contract?: {
+  contracts?: {
     [key: string]: `0x${string}`;
   };
   depositToken: {
