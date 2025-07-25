@@ -168,6 +168,7 @@
     },
     "tasks": {
       "type": "Tarefa {{type}}",
+      "typeFallback": "",
       "status": {
         "verify": "Verificar",
         "verified": "Verificada"
@@ -196,6 +197,11 @@
   "campaign": {
     "missions": {
       "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
     }
   },
   "leaderboard": {
