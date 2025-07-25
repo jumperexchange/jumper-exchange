@@ -23,7 +23,6 @@ export const useFormatDisplayRewardsData = (
     .map((chain) => chain.chainId)
     .filter((chainId) => chainId !== undefined);
 
-  // @TODO maybe need to pass the chainIds
   const { apy: apyValue } = useMissionsMaxAPY(rewardsIds, chainIds);
 
   const apyRewards = useMemo(() => {
