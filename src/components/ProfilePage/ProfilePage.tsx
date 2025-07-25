@@ -4,6 +4,7 @@ import { ProfileProvider } from 'src/providers/ProfileProvider';
 import { QuestDataExtended } from 'src/types/merkl';
 import { CampaignData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
+import { CardsSection } from './CardsSection/CardsSection';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
 
@@ -32,6 +33,7 @@ export const ProfilePage = ({
       <PageContainer>
         <IntroSection />
         <RewardsSection />
+        <CardsSection />
       </PageContainer>
     </ProfileProvider>
   );
