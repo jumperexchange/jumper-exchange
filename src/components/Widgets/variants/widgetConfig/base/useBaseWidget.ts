@@ -37,9 +37,10 @@ export const useBaseWidget = () => {
       theme: {
         ...widgetTheme.config.theme,
         container: {
-          maxHeight: 820,
+          maxHeight: '100%',
           maxWidth: 'unset',
           borderRadius: 24,
+          boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @TODO Figma: elevation 4
         },
         header: {
           // @Note this needs a workaround to be able to show title on multiple lines
