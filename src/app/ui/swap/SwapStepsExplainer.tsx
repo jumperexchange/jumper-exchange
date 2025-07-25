@@ -1,12 +1,13 @@
 'use client';
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import { Link as MuiLink, Typography, useColorScheme, useTheme } from '@mui/material';
+import { Link as MuiLink, Typography, useColorScheme } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { Divider } from 'src/components/Blog';
 import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 import StepDetail from 'src/components/StepDetail/StepDetail';
 import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';
+import { getResolvedMode } from 'src/utils/image-generation/helpers';
 
 interface SwapStepsExplainerProps {
   sourceChain: ExtendedChain;
@@ -23,15 +24,14 @@ const SwapStepsExplainerSection = ({
   destinationToken,
   chainName,
 }: SwapStepsExplainerProps) => {
-  const theme = useTheme();
   const { mode } = useColorScheme();
-
+  const resolvedMode = getResolvedMode(mode);
   const steps = [
     {
       title: 'Step 1: Prepare Your Wallet',
       description: `To swap tokens on ${sourceChain?.name}, you will first need to connect your wallet.`,
       img: {
-        imgUrl: `/widget/widget-connect-wallet-${mode}.png`,
+        imgUrl: `/widget/widget-connect-wallet-${resolvedMode}.png`,
         width: 460,
         height: 338,
         alt: 'Widget connection image',
@@ -41,7 +41,7 @@ const SwapStepsExplainerSection = ({
       title: `Step 2: Make sure to have Funds on ${sourceChain.name} in your wallet`,
       description: `Before you can swap your assets, you need to ensure you have the necessary funds and assets on the ${sourceChain?.name} network.`,
       img: getWidgetImageProps({
-        theme,
+        theme: resolvedMode,
         chainName,
         amount: 1,
         widgetImageProps: {
@@ -61,7 +61,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-selection',
           width: 416,
@@ -89,7 +89,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-quotes',
           width: 856,
@@ -120,7 +120,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-review',
           width: 416,
@@ -154,7 +154,7 @@ const SwapStepsExplainerSection = ({
         sourceChain,
         destinationChain,
         destinationToken,
-        theme,
+        theme: resolvedMode,
         widgetImageProps: {
           endpoint: 'widget-success',
           width: 416,
