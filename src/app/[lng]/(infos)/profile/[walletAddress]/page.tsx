@@ -86,11 +86,7 @@ export default async function Page({ params }: { params: Params }) {
   if (isPageEnabled) {
     return (
       <Suspense fallback={<ProfilePageSkeleton />}>
-        <ProfilePage
-          isPublic={true}
-          campaigns={campaigns}
-          quests={questsExtended}
-        />
+        <ProfilePage campaigns={campaigns} quests={questsExtended} />
       </Suspense>
     );
   }
@@ -100,7 +96,6 @@ export default async function Page({ params }: { params: Params }) {
       quests={questsExtended}
       campaigns={campaigns}
       walletAddress={sanitizedAddress}
-      isPublic={false}
     />
   );
 }
