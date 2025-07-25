@@ -201,6 +201,7 @@ export const FloatingNavigationContainer = styled(CarouselNavigationContainer, {
   zIndex: 10,
   display: 'flex',
   justifyContent: 'space-between',
+  pointerEvents: 'none',
 }));
 
 export const FloatingNavigationButton = styled(IconButtonSecondary)(
@@ -213,5 +214,7 @@ export const FloatingNavigationButton = styled(IconButtonSecondary)(
     ':hover': {
       backgroundColor: (theme.vars || theme).palette.alphaLight900.main,
     },
+    cursor: 'pointer',
+    pointerEvents: 'auto',
   }),
 );
