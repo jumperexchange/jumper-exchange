@@ -19,7 +19,7 @@ export const CarouselShell: FC<PropsWithChildren> = ({ children }) => {
         <Carousel
           CarouselNavigation={FloatingNavigation}
           CarouselPagination={AnimatedPagination}
-          shouldLoop={false}
+          shouldLoop={true}
           spaceBetween={1}
           autoplayOptions={{
             delay: 5000,
