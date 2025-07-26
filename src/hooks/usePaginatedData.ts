@@ -13,6 +13,7 @@ type UsePaginatedDataParams<T> = {
   queryFn: (page: number, pageSize: number) => Promise<T[]>;
   initialData?: T[];
   pageSize?: number;
+  enabled?: boolean;
   staleTime?: number;
   gcTime?: number;
 };
@@ -22,6 +23,7 @@ export function usePaginatedData<T>({
   queryFn,
   initialData,
   pageSize = 12,
+  enabled = true,
   staleTime = FIVE_MINUTES_MS,
   gcTime = TEN_MINUTES_MS,
 }: UsePaginatedDataParams<T>) {
@@ -58,6 +60,7 @@ export function usePaginatedData<T>({
           pageParams: [1],
         }
       : undefined,
+    enabled,
     staleTime,
     gcTime,
   });
