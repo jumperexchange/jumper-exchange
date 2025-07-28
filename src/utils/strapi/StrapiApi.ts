@@ -238,7 +238,8 @@ type CampaignField =
   | 'ProfileBannerDescription'
   | 'ProfileBannerBadge'
   | 'ProfileBannerCTA'
-  | 'BenefitCardColorMode'
+  | 'CarouselBenefitCardColorMode'
+  | 'HeroBenefitCardColorMode'
   | 'ShowProfileBanner'
   | 'MissionCount'
   | 'StartDate'
@@ -257,7 +258,7 @@ class CampaignParams {
     'StartDate',
     'EndDate',
     'ShowProfileBanner',
-    'BenefitCardColorMode',
+    'HeroBenefitCardColorMode',
     'createdAt',
     'updatedAt',
     'BenefitLabel',
@@ -274,6 +275,7 @@ class CampaignParams {
   ];
 
   private static profileBannerFields: CampaignField[] = [
+    'CarouselBenefitCardColorMode',
     'ProfileBannerTitle',
     'ProfileBannerDescription',
     'ProfileBannerBadge',
