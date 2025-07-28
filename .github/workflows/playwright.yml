@@ -14,29 +14,29 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [ 1, 2, 3, 4 , 5 , 6 ]
+        shard: [1, 2, 3, 4, 5, 6]
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-    - name: Install pnpm
-      run: npm install -g pnpm
-    - name: Install dependencies
-      run: pnpm install
-    - name: Install xvfb server
-      run: sudo apt-get install xvfb
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
-    - name: Run Playwright tests
-      run: |
-       pnpm build:cache:ci &
-        pnpm run test:ci:e2e \
-          --shard ${{ matrix.shard }}/${{ strategy.job-total }}
-    - name: Upload blob report to Github Actions Artifacts
-      if: ${{ !cancelled()}}
-      uses: actions/upload-artifact@v4
-      with:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install xvfb server
+        run: sudo apt-get install xvfb
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: |
+          pnpm build:cache:ci &
+           pnpm run test:ci:e2e \
+             --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+      - name: Upload blob report to Github Actions Artifacts
+        if: ${{ !cancelled()}}
+        uses: actions/upload-artifact@v4
+        with:
           name: blob-report-${{ matrix.shard }}
           path: blob-report
           retention-days: 1
@@ -55,17 +55,17 @@ jobs:
         run: npm install -g pnpm
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Download blob reports from GitHub Actions Articfacts
         uses: actions/download-artifact@v4
         with:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
-          
+
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
-        
+
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
