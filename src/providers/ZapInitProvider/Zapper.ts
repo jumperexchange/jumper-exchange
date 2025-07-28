@@ -89,7 +89,23 @@ export class DefaultZapper implements ZapperStrategy {
     oNexus: MultichainSmartAccount,
     sendCallsExtraParams: SendCallsExtraParams,
   ): Promise<any[]> => {
-    // Validation logic (keep this)
+    // Validate parameters
+    this.validateParameters(sendCallsExtraParams);
+
+    const instructions: any[] = [];
+    
+    // Execute each step in sequence using the modular approach
+    for (const step of this.getSteps()) {
+      const stepInstruction = await this.executeStep(step, oNexus, sendCallsExtraParams);
+      if (stepInstruction) {
+        instructions.push(stepInstruction);
+      }
+    }
+    
+    return instructions;
+  };
+
+  protected validateParameters(sendCallsExtraParams: SendCallsExtraParams): void {
     const {
       chainId: currentChainId,
       address: currentAddress,
@@ -127,19 +143,7 @@ export class DefaultZapper implements ZapperStrategy {
     if (isNativeSourceToken) {
       throw new Error('Native source token is not supported.');
     }
-
-    const instructions: any[] = [];
-    
-    // Execute each step in sequence using the modular approach
-    for (const step of this.getSteps()) {
-      const stepInstruction = await this.executeStep(step, oNexus, sendCallsExtraParams);
-      if (stepInstruction) {
-        instructions.push(stepInstruction);
-      }
-    }
-    
-    return instructions;
-  };
+  }
 
   protected async executeStep(
     step: string,
