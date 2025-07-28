@@ -97,12 +97,7 @@ export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const [isPageEnabled, { slug }] = await Promise.all([
-    getFeatureFlag(
-      GlobalFeatureFlags.MissionsPage,
-      // Placeholder distinctId required by the API call.
-      // This global feature flag is not tied to any specific user.
-      'distinct-id',
-    ),
+    getFeatureFlag(GlobalFeatureFlags.MissionsPage),
     params,
   ]);
 

@@ -74,12 +74,7 @@ export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
   const [campaign, isPageEnabled] = await Promise.all([
     getCampaignBySlug(slug),
-    getFeatureFlag(
-      GlobalFeatureFlags.MissionsPage,
-      // Placeholder distinctId required by the API call.
-      // This global feature flag is not tied to any specific user.
-      'distinct-id',
-    ),
+    getFeatureFlag(GlobalFeatureFlags.MissionsPage),
   ]);
 
   if (!campaign || !campaign.data || campaign.data.length === 0) {

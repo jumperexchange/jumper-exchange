@@ -71,12 +71,7 @@ export default async function Page({ params }: { params: Params }) {
     await Promise.all([
       getProfileBannerCampaigns(),
       getQuestsWithNoCampaignAttached(),
-      getFeatureFlag(
-        GlobalFeatureFlags.ProfilePage,
-        // Placeholder distinctId required by the API call.
-        // This global feature flag is not tied to any specific user.
-        'distinct-id',
-      ),
+      getFeatureFlag(GlobalFeatureFlags.ProfilePage),
     ]);
 
   const questsExtended = await fetchQuestOpportunitiesByRewardsIds(
