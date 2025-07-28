@@ -33,9 +33,9 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run Playwright tests
         run: |
-          pnpm build:cache:ci &
-           pnpm run test:ci:e2e \
-             --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+          pnpm build:cache:ci
+          pnpm run test:ci:e2e \
+            --shard ${{ matrix.shard }}/${{ strategy.job-total }}
       - name: Upload blob report to Github Actions Artifacts
         if: ${{ !cancelled()}}
         uses: actions/upload-artifact@v4
