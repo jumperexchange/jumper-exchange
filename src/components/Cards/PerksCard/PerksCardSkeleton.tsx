@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { PERK_CARD_SIZES } from './constants';
 import {
   BaseSkeleton,
@@ -8,9 +9,21 @@ import {
   PerksCardContent,
 } from './PerksCard.style';
 
-export const PerksCardSkeleton = () => {
+interface PerksCardSkeletonProps {
+  fullWidth?: boolean;
+}
+
+export const PerksCardSkeleton: FC<PerksCardSkeletonProps> = ({
+  fullWidth,
+}) => {
   return (
-    <PerksCardContainer>
+    <PerksCardContainer
+      sx={{
+        height: PERK_CARD_SIZES.CARD_HEIGHT,
+        width: '100%',
+        maxWidth: fullWidth ? '100%' : PERK_CARD_SIZES.CARD_WIDTH,
+      }}
+    >
       <PerksCardActionArea focusRipple={false} disabled>
         <BaseSkeleton
           variant="rectangular"

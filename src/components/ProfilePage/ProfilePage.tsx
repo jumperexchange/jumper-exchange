@@ -41,13 +41,13 @@ export const ProfilePage = ({
           {(activeTab: string) => {
             if (activeTab === AvailableTabs.Achievements) {
               return (
-                <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(296px, max-content))">
+                <GridContainer gridTemplateColumns="repeat(auto-fit, minmax(322px, 1fr))">
                   <AchievementsList />
                 </GridContainer>
               );
             } else if (activeTab === AvailableTabs.Perks) {
               return (
-                <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(296px, max-content))">
+                <GridContainer>
                   <PerksList
                     initialPerks={perks}
                     shouldLoadMore={hasMorePerks}

@@ -18,8 +18,6 @@ export const AchievementCardContainer = styled(Card)(({ theme, onClick }) => ({
     backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
   }),
   boxShadow: theme.shadows[2],
-  width: 296,
-  height: 420,
   cursor: onClick ? 'pointer' : 'default',
   '&:hover': {
     boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.08)',
