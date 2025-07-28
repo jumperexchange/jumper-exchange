@@ -1,28 +1,32 @@
 'use client';
 import { createContext, useMemo, type PropsWithChildren } from 'react';
 
-export const ProfileContext = createContext<ProfileProps>({
+interface ProfileContextValue {
+  walletAddress: string;
+  isPublic: boolean;
+  isLoading: boolean;
+}
+
+export const ProfileContext = createContext<ProfileContextValue>({
   walletAddress: '',
   isPublic: false,
   isLoading: true,
 });
 
-interface ProfileProps {
-  walletAddress: string;
-  isPublic?: boolean;
-  isLoading?: boolean;
-}
+type ProfileProps = Pick<ProfileContextValue, 'walletAddress'> &
+  Partial<Pick<ProfileContextValue, 'isPublic' | 'isLoading'>>;
 
-export const ProfileProvider: React.FC<
-  PropsWithChildren<
-    Pick<ProfileProps, 'walletAddress' | 'isPublic' | 'isLoading'>
-  >
-> = ({ children, walletAddress, isPublic, isLoading }) => {
+export const ProfileProvider: React.FC<PropsWithChildren<ProfileProps>> = ({
+  children,
+  walletAddress,
+  isPublic,
+  isLoading,
+}) => {
   const value = useMemo(
     () => ({
       walletAddress,
       isPublic: isPublic ?? false,
-      isLoading,
+      isLoading: isLoading ?? false,
     }),
     [walletAddress, isPublic, isLoading],
   );

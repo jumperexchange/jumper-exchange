@@ -10,6 +10,7 @@ import { TabsSection } from './TabsSection/TabsSection';
 import { AvailableTabs } from './TabsSection/constants';
 import { PerksList } from './components/PerksList/PerksList';
 import { GridContainer } from '../Containers/GridContainer';
+import { AchievementsList } from './components/AchievementsList/AchievementsList';
 
 interface ProfilePageProps {
   walletAddress?: string;
@@ -39,7 +40,11 @@ export const ProfilePage = ({
         <TabsSection>
           {(activeTab: string) => {
             if (activeTab === AvailableTabs.Achievements) {
-              return <p>Achievements</p>;
+              return (
+                <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(296px, max-content))">
+                  <AchievementsList />
+                </GridContainer>
+              );
             } else if (activeTab === AvailableTabs.Perks) {
               return (
                 <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(296px, max-content))">
