@@ -57,3 +57,8 @@ export async function switchTheme(page, theme: Theme) {
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   }
 }
+
+export async function openNewTab(context, url: string) {
+  const newPage = await context.waitForEvent('page');
+  expect(newPage.url()).toBe(url);
+}
