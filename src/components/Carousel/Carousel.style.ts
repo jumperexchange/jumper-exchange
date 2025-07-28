@@ -127,23 +127,13 @@ export const CarouselCenteredBox = styled(Box)(() => ({
   justifyContent: 'center',
 }));
 
-export const fillBullet = keyframes`
-  from {
-    width: 5%;
-  }
-  to {
-    width: 100%;
-  }
-`;
-
 interface AnimatedPaginationRootProps {
-  delay?: number;
-  isPaused?: boolean;
+  progress?: number;
 }
 
 export const AnimatedPaginationContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'delay' && prop !== 'isPaused',
-})<AnimatedPaginationRootProps>(({ theme, delay, isPaused = false }) => ({
+})<AnimatedPaginationRootProps>(({ theme, progress }) => ({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
@@ -180,12 +170,9 @@ export const AnimatedPaginationContainer = styled(Box, {
     borderRadius: '8px',
     left: 0,
     top: 0,
-    width: '0%',
+    width: `${progress}%`,
     height: '100%',
     backgroundColor: (theme.vars || theme).palette.accent1.main,
-    animation: `${fillBullet} ${delay ?? 3000}ms linear forwards`,
-    animationName: `${fillBullet}`,
-    animationPlayState: isPaused ? 'paused' : 'running',
   },
 }));
 

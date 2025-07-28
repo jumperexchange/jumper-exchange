@@ -26,12 +26,13 @@ export const CarouselShell: FC<PropsWithChildren> = ({ children }) => {
             disableOnInteraction: false,
           }}
           sx={{
-            borderRadius: 2,
-            boxShadow: theme.shadows[2],
             marginBottom: 1,
             '& .swiper': {
               marginTop: 0,
               padding: 0,
+              borderRadius: 2,
+              overflow: 'hidden',
+              boxShadow: theme.shadows[2],
             },
           }}
         >
