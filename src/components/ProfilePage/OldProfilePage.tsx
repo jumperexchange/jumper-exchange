@@ -67,8 +67,6 @@ export const OldProfilePage = ({ campaigns, quests }: ProfilePageProps) => {
   return (
     <PageContainer className="profile-page">
       {!isPublic && <MerklRewards />}
-      {/* <IntroSection /> */}
-      {/* {!isPublic && <RewardsSection />} */}
       <ProfileHeaderBox>
         <AddressCard address={walletAddress} />
         <ProfileInfoBox sx={{ display: 'flex', flex: 2, gap: 2 }}>
