@@ -3,6 +3,7 @@ import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
+import { getPerks } from 'src/app/lib/getPerks';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import OldProfilePage from 'src/app/ui/profile/OldProfilePage';
 import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
@@ -20,12 +21,17 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const [{ data: campaigns }, { data: questsData }, isPageEnabled] =
-    await Promise.all([
-      getProfileBannerCampaigns(),
-      getQuestsWithNoCampaignAttached(),
-      getFeatureFlag(GlobalFeatureFlags.ProfilePage),
-    ]);
+  const [
+    { data: campaigns },
+    { data: questsData },
+    { data: perksResponse },
+    isPageEnabled,
+  ] = await Promise.all([
+    getProfileBannerCampaigns(),
+    getQuestsWithNoCampaignAttached(),
+    getPerks(),
+    getFeatureFlag(GlobalFeatureFlags.ProfilePage),
+  ]);
 
   // Fetch max APY for all quests and add to quest data
   const questsExtended = await fetchQuestOpportunitiesByRewardsIds(
@@ -33,12 +39,15 @@ export default async function Page() {
   );
 
   if (isPageEnabled) {
+    const perks = perksResponse.data;
+    const totalPerks = perksResponse.meta.pagination?.total || 0;
+    const hasMorePerks = totalPerks > perks.length;
     return (
       <Suspense fallback={<ProfilePageSkeleton />}>
         <ProfilePage
           isPublic={true}
-          campaigns={campaigns}
-          quests={questsExtended}
+          perks={perks}
+          hasMorePerks={hasMorePerks}
         />
       </Suspense>
     );

@@ -362,6 +362,8 @@ class PerkParams {
     'Slug',
     'StartDate',
     'EndDate',
+    'Link',
+    'UnlockLevel',
     'createdAt',
     'updatedAt',
   ];

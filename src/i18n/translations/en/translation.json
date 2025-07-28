@@ -194,7 +194,9 @@
     "rewards": "Rewards Earned",
     "availableRewards": "Available Rewards",
     "perks": "Perks",
-    "achievements": "Achievements"
+    "achievements": "Achievements",
+    "unlocked": "Unlocked",
+    "levelWithValue": "Level {{level}}"
   },
   "campaign": {
     "missions": {

@@ -202,6 +202,8 @@ interface Resources {
       availableRewards: 'Available Rewards';
       perks: 'Perks';
       achievements: 'Achievements';
+      unlocked: 'Unlocked';
+      levelWithValue: 'Level {{level}}';
     };
     campaign: {
       missions: {

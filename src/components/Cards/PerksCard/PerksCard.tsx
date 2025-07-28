@@ -10,6 +10,7 @@ import {
   PerksCardImage,
 } from './PerksCard.style';
 import { PerksCardSkeleton } from './PerksCardSkeleton';
+import { PERK_CARD_SIZES } from './constants';
 interface PerksCardProps {
   title: string;
   description: string;
@@ -38,11 +39,15 @@ export const PerksCard = ({
           <PerksCardImage
             src={imageUrl}
             alt={`achievement-card-${title}`}
-            width={296}
-            height={192}
+            width={PERK_CARD_SIZES.CARD_WIDTH}
+            height={PERK_CARD_SIZES.IMAGE_HEIGHT}
           />
         ) : (
-          <BaseSkeleton variant="rectangular" width={'100%'} height={320} />
+          <BaseSkeleton
+            variant="rectangular"
+            width={'100%'}
+            height={PERK_CARD_SIZES.IMAGE_HEIGHT}
+          />
         )}
         <PerksCardContent>
           <Typography variant="bodyLargeStrong" sx={getTextEllipsisStyles(1)}>
