@@ -66,6 +66,12 @@ jobs:
           merge-multiple: true
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
+      - name: Merge into JSON Report
+        run: npx playwright merge-reports --reporter json ./all-blob-reports 1>report.json
+      - uses: daun/playwright-report-summary@be9e270edd5ad86038604d3caa84a819a6ff6fed # v3.10.0
+        id: summary
+        with:
+          report-file: ./report.json
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
