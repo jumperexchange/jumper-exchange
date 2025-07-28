@@ -17,11 +17,11 @@ jobs:
         shard: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
       - name: Install xvfb server
@@ -48,24 +48,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-
       - name: Download blob reports from GitHub Actions Articfacts
         uses: actions/download-artifact@v4
         with:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
-
       - name: Merge into HTML Report
         run: npx playwright merge-reports --reporter html ./all-blob-reports
-
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
