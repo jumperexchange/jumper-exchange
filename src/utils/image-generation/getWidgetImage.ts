@@ -1,5 +1,5 @@
 import type { ExtendedChain, Token } from '@lifi/sdk';
-import type { Theme } from '@mui/material';
+import { ImageTheme } from 'src/components/ImageGeneration/ImageGeneration.types';
 
 interface WidgetImageProps {
   endpoint: string;
@@ -16,7 +16,7 @@ interface GetWidgetImageProps {
   destinationToken?: Token;
   destinationChain?: ExtendedChain;
   chainName?: string;
-  theme?: Theme;
+  theme?: ImageTheme;
   amount?: number;
   widgetImageProps: WidgetImageProps;
   isSwap?: boolean;
@@ -48,7 +48,7 @@ export const getWidgetImageProps = ({
     params.set('toChainId', destinationChain.id.toString());
   }
   if (theme) {
-    params.set('theme', theme.palette.mode);
+    params.set('theme', theme);
   }
   if (chainName) {
     params.set('chainName', chainName);

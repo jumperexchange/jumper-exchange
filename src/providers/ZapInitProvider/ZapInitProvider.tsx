@@ -307,6 +307,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           // accountAddress: walletClient.account.address,
           chains: [currentChain, depositChain],
           transports: [http(), http()],
+          factoryAddress: '0x0000006648ED9B2B842552BE63Af870bC74af837', // @Note needed for smart account wallets
+          implementationAddress: '0x00000000383e8cBe298514674Ea60Ee1d1de50ac', // @Note needed for smart account wallets
+          bootStrapAddress: '0x0000003eDf18913c01cBc482C978bBD3D6E8ffA3', // @Note needed for smart account wallets
         });
 
         console.warn('Creating MEE client...');
