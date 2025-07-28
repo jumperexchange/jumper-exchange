@@ -29,7 +29,7 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { AbiParameter, Chain, http, parseUnits, zeroAddress } from 'viem';
+import { Chain, http, zeroAddress } from 'viem';
 import * as chains_ from 'viem/chains';
 import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
 import * as hyperwave from './hyperwave';
@@ -43,7 +43,6 @@ import {
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
 } from './types';
-import { buildContractComposable } from './utils';
 import { makeZapper, SendCallsExtraParams } from './Zapper';
 
 interface ZapInitState {
@@ -526,22 +525,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const currentRouteFromAmount =
         sendCallsExtraParams.currentRoute.fromAmount;
       const integrationData = sendCallsExtraParams.zapData;
-      const depositAddress = integrationData.market?.address as EVMAddress;
       const depositToken = integrationData.market?.depositToken?.address;
-      const depositTokenDecimals =
-        integrationData.market?.depositToken.decimals;
       const depositChainId = sendCallsExtraParams.projectData.chainId;
 
       if (!depositChainId) {
         throw new Error('Deposit chain id is undefined.');
       }
 
-      if (!depositAddress || !depositToken) {
-        throw new Error('Deposit address or token is undefined.');
-      }
-
-      if (!depositTokenDecimals) {
-        throw new Error('Deposit token decimals is undefined.');
+      if (!depositToken) {
+        throw new Error('Deposit token is undefined.');
       }
 
       // @Note this works only for EVM chains
@@ -553,10 +545,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error('Native source token is not supported.');
       }
 
+      // Create zapper instance based on project type
+      // This allows for project-specific contract instruction building logic
       const zapper = makeZapper(sendCallsExtraParams);
 
-      // raw calldata from the widget
-      const instructions = await Promise.all(
+      // Build raw calldata instructions (general flow)
+      const rawInstructions = await Promise.all(
         calls.map(async (call: WalletCall) => {
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
@@ -572,103 +566,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         }),
       );
 
-      // constraints
-      const constraints = [
-        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value
-      ];
-
-      // token approval
-      const approveInstruction = await buildContractComposable(oNexusParam, {
-        address: zapper.getApproveAddress(),
-        chainId: depositChainId,
-        abi: integrationData.abi.approve,
-        functionName: integrationData.abi.approve.name,
-        gasLimit: 100000n,
-        args: [
-          depositAddress,
-          runtimeERC20BalanceOf({
-            targetAddress: oNexusParam.addressOn(
-              depositChainId,
-              true,
-            ) as EVMAddress,
-            tokenAddress: depositToken,
-            constraints,
-          }),
-        ],
-      });
-      instructions.push(approveInstruction);
-
-      // Hardcoded version for now - Strategy pattern with dispatch on project would be workable.
-      let minimumMint: bigint | null = await zapper.computeMinimumMint();
-
-      // Deposit instruction (dynamic ABI-driven args)
-      const depositInputs = integrationData.abi.deposit.inputs;
-      const depositArgs = depositInputs.map((input: AbiParameter) => {
-        if (input.type == 'uint256' && input.name === 'minimumMint') {
-          if (minimumMint === null || minimumMint <= 0) {
-            throw new Error('Minimum mint is not set');
-          }
-          return minimumMint;
-        } else if (input.type === 'uint256') {
-          return runtimeERC20BalanceOf({
-            targetAddress: oNexusParam.addressOn(
-              depositChainId,
-              true,
-            ) as EVMAddress,
-            tokenAddress: depositToken,
-            constraints,
-          });
-        } else if (input.type === 'address') {
-          // Use the user's EOA address or another relevant address
-          return currentAddress;
-        }
-        throw new Error(`Unsupported deposit input type: ${input.type}`);
-      });
-
-      const depositInstruction = await buildContractComposable(oNexusParam, {
-        address: zapper.getDepositAddress(),
-        chainId: depositChainId,
-        abi: integrationData.abi.deposit,
-        functionName: integrationData.abi.deposit.name,
-        gasLimit: 1000000n,
-        args: depositArgs,
-      });
-      instructions.push(depositInstruction);
-
-      // Only add transferLpInstruction if deposit ABI does NOT have an address input
-      // TODO: Check if we need Deposit and bridge flow from hwHLP
-      // https://swellnetwork.notion.site/hwHLP-Integration-Documentation-External-23011e01a88380bbb72dc73190728fde#23011e01a8838008ae07f9c1538bdcf1:~:text=2.-,Deposit%20and%20Bridge%20Flow,-(Deposit%20on%20one
-      const depositHasAddressArg = depositInputs.some(
-        (input: AbiParameter) => input.type === 'address',
+      // Build project-specific contract instructions (approve, deposit, transfer)
+      const contractInstructions = await zapper.buildContractInstructions(
+        oNexusParam,
+        sendCallsExtraParams,
       );
 
-      if (!depositHasAddressArg) {
-        if (!currentAddress) {
-          throw new Error('User address (EOA) is not available.');
-        }
-        const transferLpInstruction = await buildContractComposable(
-          oNexusParam,
-          {
-            address: depositAddress,
-            chainId: depositChainId,
-            abi: integrationData.abi.transfer,
-            functionName: integrationData.abi.transfer.name,
-            gasLimit: 200000n,
-            args: [
-              address,
-              runtimeERC20BalanceOf({
-                targetAddress: oNexusParam.addressOn(
-                  depositChainId,
-                  true,
-                ) as EVMAddress,
-                tokenAddress: depositAddress,
-                constraints,
-              }),
-            ],
-          },
-        );
-        instructions.push(transferLpInstruction);
-      }
+      // Combine all instructions
+      const instructions = [...rawInstructions, ...contractInstructions];
 
       const currentTokenBalance = await getTokenBalance(
         currentAddress,
