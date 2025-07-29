@@ -25,6 +25,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
   },
   '.MuiTabs-scroller': {
     width: 'auto',
+    overflow: 'unset !important',
   },
   '.MuiTabs-indicator': {
     position: 'absolute',
@@ -34,6 +35,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     width: '100%',
     borderRadius: 24,
     transform: 'translateX(0) scaleX(0.98)',
+    boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface2.main,
     ...theme.applyStyles('light', {
       backgroundColor: (theme.vars || theme).palette.surface1.main,
@@ -49,7 +51,6 @@ interface HorizontalTabProps extends TabProps {
 export const HorizontalTabContainer = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'size',
 })<HorizontalTabProps>(({ theme, disabled }) => ({
-  ...theme.typography.bodyMedium,
   fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',
   borderRadius: 24,
@@ -93,7 +94,7 @@ export const HorizontalTabContainer = styled(Tab, {
       style: {
         height: 40,
         padding: theme.spacing(1, 2),
-        typography: theme.typography.bodySmallStrong,
+        ...theme.typography.bodySmallStrong,
       },
     },
     {
@@ -101,7 +102,7 @@ export const HorizontalTabContainer = styled(Tab, {
       style: {
         height: 48,
         padding: theme.spacing(1.5, 2.5),
-        typography: theme.typography.bodyMediumStrong,
+        ...theme.typography.bodyMediumStrong,
       },
     },
   ],
