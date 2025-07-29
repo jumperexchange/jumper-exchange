@@ -20,6 +20,9 @@ export interface HorizontalTabsProps {
   size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
   renderContent?: (currentValue: string) => ReactNode;
+  autoSelectFirst?: boolean;
+  // This is used to sync the value with the parent component, even if the value is undefined
+  syncWithValue?: boolean;
 }
 
 export const HorizontalTabs = ({
@@ -29,14 +32,23 @@ export const HorizontalTabs = ({
   size = HorizontalTabSize.LG,
   sx,
   renderContent,
+  autoSelectFirst = true,
+  syncWithValue = false,
 }: HorizontalTabsProps) => {
-  const [internalValue, setInternalValue] = useState(value ?? tabs[0]?.value);
+  const initialValue = value
+    ? value
+    : autoSelectFirst
+      ? tabs[0]?.value
+      : undefined;
+  const [internalValue, setInternalValue] = useState<string | undefined>(
+    initialValue,
+  );
 
   useEffect(() => {
-    if (value) {
+    if (value || syncWithValue) {
       setInternalValue(value);
     }
-  }, [value]);
+  }, [value, syncWithValue]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setInternalValue(newValue);
@@ -69,7 +81,7 @@ export const HorizontalTabs = ({
             />
           ))}
       </HorizontalTabsContainer>
-      {!!renderContent && renderContent(internalValue)}
+      {!!renderContent && renderContent(internalValue ?? '')}
     </>
   );
 };

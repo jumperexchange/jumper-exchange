@@ -1,4 +1,2 @@
-export * from './Logo';
-export * from './Navbar';
+export * from './ClientNavbar';
 export * from './Navbar.style';
-export * from './NavbarButtons';
