@@ -16,6 +16,7 @@ export const MissionsListSkeleton: FC<MissionsListSkeletonProps> = ({
       sx={{
         alignSelf: 'center',
         justifySelf: 'center',
+        width: '100%',
       }}
     >
       <CompactEntityCardSkeleton fullWidth />
