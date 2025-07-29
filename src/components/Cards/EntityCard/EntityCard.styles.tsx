@@ -103,6 +103,10 @@ export const StyledEntityCardLink = styled(Link)(({ theme }) => ({
   '&:hover': {
     color: (theme.vars || theme).palette.primary.main,
   },
+  '& svg': {
+    width: 20,
+    height: 20,
+  },
 }));
 
 // Avatars

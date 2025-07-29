@@ -18,6 +18,8 @@ interface MissionState {
 
   taskTitle?: string;
   taskDescription?: string;
+  taskDescriptionCTAText?: string;
+  taskDescriptionCTALink?: string;
   taskCTAText?: string;
   taskCTALink?: string;
   taskInputs?: TaskWidgetInformationInputData[];
@@ -55,12 +57,16 @@ interface MissionState {
   setCurrentTaskInstructionParams: ({
     taskTitle,
     taskDescription,
+    taskDescriptionCTALink,
+    taskDescriptionCTAText,
     taskCTALink,
     taskCTAText,
     taskInputs,
   }: {
     taskTitle?: string;
     taskDescription?: string;
+    taskDescriptionCTALink?: string;
+    taskDescriptionCTAText?: string;
     taskCTAText?: string;
     taskCTALink?: string;
     taskInputs?: TaskWidgetInformationInputData[];

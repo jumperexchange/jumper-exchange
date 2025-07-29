@@ -69,6 +69,8 @@ export const useEnhancedTasks = (
       setCurrentTaskInstructionParams({
         taskTitle: widgetParams.title ?? undefined,
         taskDescription: widgetParams.description ?? undefined,
+        taskDescriptionCTALink: widgetParams.descriptionCTALink ?? undefined,
+        taskDescriptionCTAText: widgetParams.descriptionCTAText ?? undefined,
         taskCTAText: widgetParams.CTAText ?? undefined,
         taskCTALink: widgetParams.CTALink ?? undefined,
         taskInputs: widgetParams.inputs ?? undefined,
