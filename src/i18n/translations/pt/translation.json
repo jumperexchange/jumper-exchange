@@ -192,7 +192,11 @@
     "shareProfile": "Partilhar perfil",
     "open": "Abre {{tool}}",
     "rewards": "Recompensas ganhas",
-    "availableRewards": "Prêmios Disponíveis"
+    "availableRewards": "Prêmios Disponíveis",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": ""
   },
   "campaign": {
     "missions": {
