@@ -31,9 +31,12 @@ jobs:
         run: sudo apt-get install xvfb
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
-      - name: Run Playwright tests
+      - name: Setup Playwright Cache
         run: |
           pnpm build:cache:ci
+      - name: Run Playwright tests
+        if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
+        run: |
           pnpm run test:ci:e2e \
             --shard ${{ matrix.shard }}/${{ strategy.job-total }}
       - name: Upload blob report to Github Actions Artifacts
