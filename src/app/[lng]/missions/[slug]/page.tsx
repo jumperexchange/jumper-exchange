@@ -12,6 +12,7 @@ import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
 import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
 import { MissionPage } from 'src/app/ui/mission/MissionPage';
+import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 
 type Params = Promise<{ slug: string }>;
 
@@ -24,10 +25,13 @@ const getPageTitle = (title: string) => {
 const formatSlugToTitle = (slug: string) => slug.replaceAll('-', ' ');
 
 export async function generateStaticParams() {
-  const { data: missionsResponse } = await getQuestsWithNoCampaignAttached({
-    page: 1,
-    pageSize: 12,
-  });
+  const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
+    {
+      page: 1,
+      pageSize: 12,
+    },
+    UPCOMING_DAYS_AHEAD,
+  );
 
   return missionsResponse.data.map((mission) => ({ slug: mission.Slug || '' }));
 }

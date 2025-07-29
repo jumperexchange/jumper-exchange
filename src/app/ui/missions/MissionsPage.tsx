@@ -1,4 +1,4 @@
-import { PAGE_SIZE } from 'src/const/quests';
+import { PAGE_SIZE, UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import { MissionsList } from './MissionsList';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
@@ -10,11 +10,14 @@ import { MissionsSection } from './MissionsSection';
 export const MissionsPage = async () => {
   const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all([
     getProfileBannerCampaigns(),
-    getQuestsWithNoCampaignAttached({
-      page: 1,
-      pageSize: PAGE_SIZE,
-      withCount: true,
-    }),
+    getQuestsWithNoCampaignAttached(
+      {
+        page: 1,
+        pageSize: PAGE_SIZE,
+        withCount: true,
+      },
+      UPCOMING_DAYS_AHEAD,
+    ),
   ]);
   const missions = missionsResponse.data;
   const totalMissions = missionsResponse.meta.pagination?.total || 0;
