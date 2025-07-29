@@ -83,7 +83,6 @@ export const HorizontalTabContainer = styled(Tab, {
   }),
 
   '&.Mui-selected': {
-    boxShadow: theme.shadows[2],
     pointerEvents: 'none',
     backgroundColor: 'transparent',
   },
