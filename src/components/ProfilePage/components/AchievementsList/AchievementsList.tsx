@@ -19,8 +19,9 @@ export const AchievementsList = () => {
   const pdas = data?.pages.flatMap((page) => page.data) || [];
 
   if (!pdas.length) {
-    const entityTranslation = (
-      t('profile_page.achievements') || 'Achievements'
+    const entityTranslation = t(
+      'profile_page.achievements',
+      'Achievements',
     ).toLowerCase();
     return (
       <NoDataPlaceholder

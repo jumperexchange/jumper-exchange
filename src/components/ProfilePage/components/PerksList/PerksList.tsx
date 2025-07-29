@@ -20,9 +20,7 @@ export const PerksList = ({ initialPerks }: PerksListProps) => {
   const perks = data?.pages.flatMap((page) => page.data) || initialPerks;
 
   if (!perks.length) {
-    const entityTranslation = (
-      t('profile_page.perks') || 'Perks'
-    ).toLowerCase();
+    const entityTranslation = t('profile_page.perks', 'Perks').toLowerCase();
     return (
       <NoDataPlaceholder
         description={t('profile_page.noData.description', {
