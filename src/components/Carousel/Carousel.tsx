@@ -85,12 +85,10 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
       }
     : false;
 
-  const {
-    handleInitSwipper,
-    handlePauseAutoplay,
-    handleResumeAutoplay,
-    isAutoplayPaused,
-  } = useSwiperAutoplayControl(shouldAutoplay);
+  const { handleInitSwipper, currentTimeLeft } = useSwiperAutoplayControl(
+    shouldAutoplay,
+    autoplayDelay,
+  );
 
   return (
     <CarouselContainer
@@ -98,12 +96,6 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
       hasPagination={!!CarouselPagination}
       fixedSlideWidth={fixedSlideWidth}
       sx={sx}
-      // These handlers are needed as the loop is interfering w/ the autoplay pause/resume on non-Chromium browserss
-      // @Note Might need to remove the loop from all carousels if we get into a weird behavior
-      onMouseEnter={handlePauseAutoplay}
-      onMouseLeave={handleResumeAutoplay}
-      onTouchStart={handlePauseAutoplay}
-      onTouchEnd={handleResumeAutoplay}
     >
       {title ? (
         <CarouselHeader
@@ -135,7 +127,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         <CarouselPagination
           className={classNames.pagination}
           delay={autoplayDelay}
-          isPaused={isAutoplayPaused}
+          currentTimeLeft={currentTimeLeft}
         />
       ) : null}
     </CarouselContainer>
