@@ -3,6 +3,7 @@ import {
   checkSocialNetworkIcons,
   checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
+  openNewTab,
   openOrCloseMainMenu,
   openLeaderboardPage,
   sectionOnTheBlogPage,
@@ -104,10 +105,12 @@ test.describe('Main Menu flows', () => {
     await expect(searchBar).toBeVisible();
   });
 
-  test('Should open Resources section inside menu', async ({ page }) => {
+  test('Should open Resources section inside menu', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Resources');
     await checkTheNumberOfMenuItems(page, 2);
+    await itemInMenu(page, 'Github');
+    await openNewTab(context, values.githubURL);
   });
 
   test('Should open Language section inside menu', async ({ page }) => {
@@ -136,29 +139,25 @@ test.describe('Main Menu flows', () => {
   test('Should be able to navigate to X', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'X social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.xUrl);
+    await openNewTab(context, values.xUrl);
   });
 
   test('Should be able to navigate to Discord', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Discord social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.discordURL);
+    await openNewTab(context, values.discordURL);
   });
 
   test('Should be able to navigate to Telegram', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Telegram social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.telegramURL);
+    await openNewTab(context, values.telegramURL);
   });
 
   test('Should be able to navigate to Link3', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Link3 social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.link3URL);
+    await openNewTab(context, values.link3URL);
   });
 
   test('Should be able to click on the Support button', async ({ page }) => {

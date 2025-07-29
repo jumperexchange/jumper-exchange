@@ -9,4 +9,5 @@ export interface CarouselPaginationBase {
   className: string;
   delay?: number;
   isPaused?: boolean;
+  currentTimeLeft?: number;
 }

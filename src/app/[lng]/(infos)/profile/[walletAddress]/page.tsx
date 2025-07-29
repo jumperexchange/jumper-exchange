@@ -1,10 +1,17 @@
-import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 import { walletAddressSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
+import { getPerks } from 'src/app/lib/getPerks';
 import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import OldProfilePage from 'src/app/ui/profile/OldProfilePage';
+import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
+import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkeleton';
+import { GlobalFeatureFlags } from 'src/const/abtests';
+import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 
 type Params = Promise<{ walletAddress: string }>;
 
@@ -61,14 +68,39 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   const sanitizedAddress = result.data;
-  const { data: campaigns } = await getProfileBannerCampaigns();
-  const { data: questsData } = await getQuestsWithNoCampaignAttached();
+  const [
+    { data: campaigns },
+    { data: questsData },
+    { data: perksResponse },
+    isPageEnabled,
+  ] = await Promise.all([
+    getProfileBannerCampaigns(),
+    getQuestsWithNoCampaignAttached(),
+    getPerks(),
+    getFeatureFlag(GlobalFeatureFlags.ProfilePage),
+  ]);
+
+  const questsExtended = await fetchQuestOpportunitiesByRewardsIds(
+    questsData.data,
+  );
+
+  if (isPageEnabled) {
+    const perks = perksResponse.data;
+    const totalPerks = perksResponse.meta.pagination?.total || 0;
+    const hasMorePerks = totalPerks > perks.length;
+
+    return (
+      <Suspense fallback={<ProfilePageSkeleton />}>
+        <ProfilePage perks={perks} hasMorePerks={hasMorePerks} />
+      </Suspense>
+    );
+  }
+
   return (
-    <ProfilePage
-      quests={questsData.data}
+    <OldProfilePage
+      quests={questsExtended}
       campaigns={campaigns}
       walletAddress={sanitizedAddress}
-      isPublic
     />
   );
 }

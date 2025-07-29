@@ -23,15 +23,17 @@ export const MissionHeroStatsBox = styled(Box, {
     gap: theme.spacing(1),
     borderRadius: 16,
     overflow: 'hidden',
-    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
-    border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
 
     ...(variant === MissionHeroStatsCardVariant.Default && {
       color: (theme.vars || theme).palette.alphaLight900.main,
+      backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+      border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
     }),
 
     ...(variant === MissionHeroStatsCardVariant.Inverted && {
       color: (theme.vars || theme).palette.alphaDark900.main,
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+      border: `1px solid ${(theme.vars || theme).palette.alphaDark200.main}`,
     }),
 
     '&::before': {
@@ -41,9 +43,8 @@ export const MissionHeroStatsBox = styled(Box, {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-      backdropFilter: 'blur(4px)',
-      WebkitBackdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(6px)',
+      WebkitBackdropFilter: 'blur(6px)',
       zIndex: -1,
     },
   }),

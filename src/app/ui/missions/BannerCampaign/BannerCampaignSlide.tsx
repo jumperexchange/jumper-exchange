@@ -26,7 +26,7 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
     rewardChainIds,
     missionsCount,
     link,
-    statsCardVariant,
+    bannerStatsCardVariant,
   } = useCampaignDisplayData(campaign);
 
   const { t } = useTranslation();
@@ -45,21 +45,21 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
         <MissionHeroStatsCard
           title={benefitLabel ?? t('campaign.stats.totalRewards')}
           description={benefitValue}
-          variant={statsCardVariant}
+          variant={bannerStatsCardVariant}
         />
       )}
       {!!missionsCount && (
         <MissionHeroStatsCard
           title={t('campaign.stats.missions')}
           description={missionsCount.toString()}
-          variant={statsCardVariant}
+          variant={bannerStatsCardVariant}
         />
       )}
       {!!rewardChainIds?.length && (
         <MissionHeroStatsCard
           title={t('campaign.stats.rewards')}
           description={<ChainStack chainIds={rewardChainIds} />}
-          variant={statsCardVariant}
+          variant={bannerStatsCardVariant}
         />
       )}
     </BannerCampaignContent>

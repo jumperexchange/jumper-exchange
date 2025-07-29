@@ -2,9 +2,12 @@ import useId from '@mui/utils/useId';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Swiper as SwiperType } from 'swiper/types';
 
-export const useSwiperAutoplayControl = (shouldAutoplay: boolean) => {
+export const useSwiperAutoplayControl = (
+  shouldAutoplay: boolean,
+  autoplayDelay: number,
+) => {
   const swiperRef = useRef<SwiperType | null>(null);
-  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
+  const [currentTimeLeft, setCurrentTimeLeft] = useState<number>(autoplayDelay);
 
   const handleInitSwipper = useCallback(
     (swiper: SwiperType) => {
@@ -12,55 +15,17 @@ export const useSwiperAutoplayControl = (shouldAutoplay: boolean) => {
 
       if (!shouldAutoplay) return;
 
-      swiper.on('autoplayStop', () => {
-        setIsAutoplayPaused(true);
-      });
-
-      swiper.on('autoplayStart', () => {
-        setIsAutoplayPaused(false);
-      });
-
-      swiper.on('autoplayPause', () => {
-        setIsAutoplayPaused(true);
-      });
-
-      swiper.on('autoplayResume', () => {
-        setIsAutoplayPaused(false);
-      });
-
-      // In non-Chromium browsers changing the slide is making the autoplay to pause so we need to manually re-trigger it
-      swiper.on('slideChangeTransitionStart', () => {
-        if (swiper.autoplay?.paused) {
-          swiper.autoplay.resume();
-        }
-        setIsAutoplayPaused(false);
+      swiper.on('autoplayTimeLeft', (_, timeLeft) => {
+        setCurrentTimeLeft(timeLeft);
       });
     },
     [shouldAutoplay],
   );
 
-  const handlePauseAutoplay = useCallback(() => {
-    if (!shouldAutoplay) return;
-    const swiper = swiperRef.current;
-    if (swiper?.autoplay?.running) {
-      swiper.autoplay.pause();
-    }
-  }, [shouldAutoplay]);
-
-  const handleResumeAutoplay = useCallback(() => {
-    if (!shouldAutoplay) return;
-    const swiper = swiperRef.current;
-    if (swiper?.autoplay?.paused) {
-      swiper.autoplay.resume();
-    }
-  }, [shouldAutoplay]);
-
   return {
     swiperRef,
     handleInitSwipper,
-    handlePauseAutoplay,
-    handleResumeAutoplay,
-    isAutoplayPaused,
+    currentTimeLeft,
   };
 };
 

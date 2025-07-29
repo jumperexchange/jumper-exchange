@@ -15,10 +15,11 @@ export interface HorizontalTabItem {
 
 export interface HorizontalTabsProps {
   tabs: HorizontalTabItem[];
-  onChange: (event: React.SyntheticEvent, newValue: string) => void;
+  onChange?: (event: React.SyntheticEvent, newValue: string) => void;
   value?: string;
   size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
+  renderContent?: (currentValue: string) => ReactNode;
 }
 
 export const HorizontalTabs = ({
@@ -27,6 +28,7 @@ export const HorizontalTabs = ({
   value,
   size = HorizontalTabSize.LG,
   sx,
+  renderContent,
 }: HorizontalTabsProps) => {
   const [internalValue, setInternalValue] = useState(value ?? tabs[0]?.value);
 
@@ -42,30 +44,32 @@ export const HorizontalTabs = ({
   };
 
   return (
-    <HorizontalTabsContainer
-      value={internalValue}
-      onChange={handleChange}
-      sx={sx}
-    >
-      {tabs
-        .filter((tab) => tab.label || tab.startAdornment || tab.endAdornment)
-        .map((tab) => (
-          <HorizontalTabContainer
-            disabled={tab.disabled}
-            value={tab.value}
-            key={tab.value}
-            disableRipple
-            sx={sx}
-            label={
-              <>
-                {tab.startAdornment}
-                {tab.label}
-                {tab.endAdornment}
-              </>
-            }
-            size={size}
-          />
-        ))}
-    </HorizontalTabsContainer>
+    <>
+      <HorizontalTabsContainer
+        value={internalValue}
+        onChange={handleChange}
+        sx={sx}
+      >
+        {tabs
+          .filter((tab) => tab.label || tab.startAdornment || tab.endAdornment)
+          .map((tab) => (
+            <HorizontalTabContainer
+              disabled={tab.disabled}
+              value={tab.value}
+              key={tab.value}
+              disableRipple
+              label={
+                <>
+                  {tab.startAdornment}
+                  {tab.label}
+                  {tab.endAdornment}
+                </>
+              }
+              size={size}
+            />
+          ))}
+      </HorizontalTabsContainer>
+      {!!renderContent && renderContent(internalValue)}
+    </>
   );
 };

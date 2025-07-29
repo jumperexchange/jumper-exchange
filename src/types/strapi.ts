@@ -377,7 +377,8 @@ export interface CampaignAttributes {
   updatedAt: string;
   publishedAt?: string;
   MissionCount?: number;
-  BenefitCardColorMode?: BenefitCardColorMode;
+  HeroBenefitCardColorMode?: BenefitCardColorMode;
+  CarouselBenefitCardColorMode?: BenefitCardColorMode;
 }
 
 /* MerklRewards */
