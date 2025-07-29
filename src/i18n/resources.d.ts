@@ -184,6 +184,10 @@ interface Resources {
           verify: 'Verify';
           go: 'Go';
         };
+        completed: {
+          title: 'Task completed';
+          description: 'This task has been verified and completed.';
+        };
       };
     };
     profile_page: {
