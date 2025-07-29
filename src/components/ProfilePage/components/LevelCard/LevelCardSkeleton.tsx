@@ -16,7 +16,7 @@ export const LevelCardSkeleton = () => {
             variant="rounded"
             animation="wave"
             sx={{
-              height: 34,
+              height: 32,
               width: 96,
               borderRadius: 16,
             }}
@@ -55,7 +55,7 @@ export const LevelCardSkeleton = () => {
               variant="rounded"
               animation="wave"
               sx={{
-                height: 34,
+                height: 32,
                 width: 96,
                 borderRadius: 16,
               }}

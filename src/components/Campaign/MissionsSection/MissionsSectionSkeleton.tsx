@@ -35,9 +35,10 @@ export const MissionsSectionSkeleton: FC<MissionsSectionSkeletonProps> = ({
               sx={{
                 alignSelf: 'center',
                 justifySelf: 'center',
+                width: '100%',
               }}
             >
-              <CompactEntityCardSkeleton />
+              <CompactEntityCardSkeleton fullWidth />
             </Box>
           ))}
         </GridContainer>

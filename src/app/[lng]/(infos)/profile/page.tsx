@@ -1,8 +1,14 @@
 import { getProfileBannerCampaigns } from '@/app/lib/getProfileBannerCampaigns';
-import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
+import { getPerks } from 'src/app/lib/getPerks';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import OldProfilePage from 'src/app/ui/profile/OldProfilePage';
+import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
+import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkeleton';
+import { GlobalFeatureFlags } from 'src/const/abtests';
 import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 
 export const metadata: Metadata = {
@@ -15,9 +21,16 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const [{ data: campaigns }, { data: questsData }] = await Promise.all([
+  const [
+    { data: campaigns },
+    { data: questsData },
+    { data: perksResponse },
+    isPageEnabled,
+  ] = await Promise.all([
     getProfileBannerCampaigns(),
     getQuestsWithNoCampaignAttached(),
+    getPerks(),
+    getFeatureFlag(GlobalFeatureFlags.ProfilePage),
   ]);
 
   // Fetch max APY for all quests and add to quest data
@@ -25,5 +38,26 @@ export default async function Page() {
     questsData.data,
   );
 
-  return <ProfilePage quests={questsExtended} campaigns={campaigns} />;
+  if (isPageEnabled) {
+    const perks = perksResponse.data;
+    const totalPerks = perksResponse.meta.pagination?.total || 0;
+    const hasMorePerks = totalPerks > perks.length;
+    return (
+      <Suspense fallback={<ProfilePageSkeleton />}>
+        <ProfilePage
+          isPublic={true}
+          perks={perks}
+          hasMorePerks={hasMorePerks}
+        />
+      </Suspense>
+    );
+  }
+
+  return (
+    <OldProfilePage
+      isPublic={false}
+      quests={questsExtended}
+      campaigns={campaigns}
+    />
+  );
 }

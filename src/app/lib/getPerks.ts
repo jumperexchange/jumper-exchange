@@ -1,4 +1,4 @@
-import type { PerksData, StrapiResponse } from '@/types/strapi';
+import type { PerksDataAttributes, StrapiResponse } from '@/types/strapi';
 import { PaginationProps, PerkStrapiApi } from '@/utils/strapi/StrapiApi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
@@ -33,7 +33,7 @@ export async function getPerks(
     throw new Error('Failed to fetch perks data');
   }
 
-  const data: StrapiResponse<PerksData> = await res.json();
+  const data: StrapiResponse<PerksDataAttributes> = await res.json();
 
   return { data };
 }

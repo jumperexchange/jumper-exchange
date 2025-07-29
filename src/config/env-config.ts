@@ -13,6 +13,18 @@ declare global {
 let config: RuntimeConfig;
 
 export function getEnvVars(): RuntimeConfig {
+  if (typeof window !== 'undefined') {
+    throw new Error('getEnvVars is not available on the client');
+  }
+
+  return process.env as RuntimeConfig;
+}
+
+export function getPublicEnvVars(): RuntimeConfig {
+  if (typeof window !== 'undefined') {
+    throw new Error('getPublicEnvVars is not available on the client');
+  }
+
   return Object.keys(process.env)
     .filter((key) => key.startsWith('NEXT_PUBLIC_'))
     .reduce<RuntimeConfig>((acc, key) => {

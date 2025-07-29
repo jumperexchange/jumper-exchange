@@ -9,19 +9,14 @@ import { getSiteUrl, AppPaths } from 'src/const/urls';
 
 export const metadata: Metadata = {
   title: 'Jumper Missions',
-  description: 'Jumper Missions is the reward area of Jumper Exchange.',
+  description: `Discover, interact, and grow in DeFi with Jumper's missions and ecosystem campaigns.`,
   alternates: {
     canonical: `${getSiteUrl()}${AppPaths.Missions}`,
   },
 };
 
 export default async function Page() {
-  const isPageEnabled = await getFeatureFlag(
-    GlobalFeatureFlags.MissionsPage,
-    // Placeholder distinctId required by the API call.
-    // This global feature flag is not tied to any specific user.
-    'distinct-id',
-  );
+  const isPageEnabled = await getFeatureFlag(GlobalFeatureFlags.MissionsPage);
 
   if (!isPageEnabled) {
     return notFound();

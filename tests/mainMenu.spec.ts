@@ -3,6 +3,7 @@ import {
   checkSocialNetworkIcons,
   checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
+  openNewTabAndVerifyUrl,
   openOrCloseMainMenu,
   openLeaderboardPage,
   sectionOnTheBlogPage,
@@ -104,7 +105,7 @@ test.describe('Main Menu flows', () => {
     await expect(searchBar).toBeVisible();
   });
 
-  test('Should open Resources section inside menu', async ({ page }) => {
+  test('Should open Resources section inside menu', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Resources');
     await checkTheNumberOfMenuItems(page, 2);
@@ -133,32 +134,35 @@ test.describe('Main Menu flows', () => {
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
 
+  test('Should open Github page inside Resources section', async ({ page, context }) => {
+    await openOrCloseMainMenu(page);
+    await itemInMenu(page, 'Resources');
+    await itemInMenu(page, 'Github');
+    await openNewTabAndVerifyUrl(context, values.githubURL);
+  });
+
   test('Should be able to navigate to X', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'X social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.xUrl);
+    await openNewTabAndVerifyUrl(context, values.xUrl);
   });
 
   test('Should be able to navigate to Discord', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Discord social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.discordURL);
+    await openNewTabAndVerifyUrl(context, values.discordURL);
   });
 
   test('Should be able to navigate to Telegram', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Telegram social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.telegramURL);
+    await openNewTabAndVerifyUrl(context, values.telegramURL);
   });
 
   test('Should be able to navigate to Link3', async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Link3 social link');
-    const newPage = await context.waitForEvent('page');
-    expect(newPage.url()).toBe(values.link3URL);
+    await openNewTabAndVerifyUrl(context, values.link3URL);
   });
 
   test('Should be able to click on the Support button', async ({ page }) => {

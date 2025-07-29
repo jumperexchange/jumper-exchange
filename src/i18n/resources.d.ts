@@ -175,6 +175,7 @@ interface Resources {
       };
       tasks: {
         type: '{{type}} task';
+        typeFallback: 'Task';
         status: {
           verify: 'Verify';
           verified: 'Verified';
@@ -199,10 +200,23 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
       availableRewards: 'Available Rewards';
+      perks: 'Perks';
+      achievements: 'Achievements';
+      unlocked: 'Unlocked';
+      levelWithValue: 'Level {{level}}';
+      noData: {
+        description: 'There are no {{entity}} available at your current Jumper Loyalty Pass Level';
+        caption: 'Keep bridging, swapping and participating to missions on Jumper to unlock {{entity}}.';
+      };
     };
     campaign: {
       missions: {
         title: 'Missions';
+      };
+      stats: {
+        missions: 'Missions';
+        rewards: 'Rewards';
+        totalRewards: 'Total rewards';
       };
     };
     leaderboard: {
@@ -250,7 +264,7 @@ interface Resources {
         boostedApy: 'Boosted APR';
         tvl: 'TVL';
         lockupPeriod: 'Lockup period';
-        token: 'Pool token';
+        token: 'Asset';
       };
       zap: {
         sendToAddressName: 'Send to {{name}}';

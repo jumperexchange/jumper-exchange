@@ -41,10 +41,11 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.SM,
         style: {
           height: 24,
-          padding: theme.spacing(0.5, 1),
+          padding: theme.spacing(0.5),
           '& > p': {
-            fontSize: 10,
-            lineHeight: '140%',
+            fontSize: theme.typography.bodyXXSmallStrong.fontSize,
+            lineHeight: theme.typography.bodyXXSmallStrong.lineHeight,
+            padding: theme.spacing(0.1, 0.5),
           },
           '& > svg': {
             fontSize: 12,
@@ -55,10 +56,11 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.MD,
         style: {
           height: 32,
-          padding: theme.spacing(1, 1),
+          padding: theme.spacing(0.5, 0.75),
           '& > p': {
-            fontSize: theme.typography.bodyXSmall.fontSize,
-            lineHeight: theme.typography.bodyXSmall.lineHeight,
+            fontSize: theme.typography.bodyXSmallStrong.fontSize,
+            lineHeight: theme.typography.bodyXSmallStrong.lineHeight,
+            padding: theme.spacing(0.5),
           },
           '& > svg': {
             fontSize: 16,
@@ -69,10 +71,11 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.LG,
         style: {
           height: 40,
-          padding: theme.spacing(1.25, 1),
+          padding: theme.spacing(0.5, 1),
           '& > p': {
-            fontSize: theme.typography.bodySmall.fontSize,
-            lineHeight: theme.typography.bodySmall.lineHeight,
+            fontSize: theme.typography.bodySmallStrong.fontSize,
+            lineHeight: theme.typography.bodySmallStrong.lineHeight,
+            padding: theme.spacing(0.875, 0.75),
           },
           '& > svg': {
             fontSize: 20,
@@ -83,13 +86,14 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.XL,
         style: {
           height: 48,
-          padding: theme.spacing(1.75, 1),
+          padding: theme.spacing(0.5, 1),
           '& > p': {
-            fontSize: theme.typography.bodyMedium.fontSize,
-            lineHeight: theme.typography.bodyMedium.lineHeight,
+            fontSize: theme.typography.bodyMediumStrong.fontSize,
+            lineHeight: theme.typography.bodyMediumStrong.lineHeight,
+            padding: theme.spacing(1.25, 1),
           },
           '& > svg': {
-            fontSize: 28,
+            fontSize: 24,
           },
         },
       },
@@ -195,5 +199,4 @@ export const StyledBadge = styled(Box, {
 
 export const StyledBadgeLabel = styled(Typography)(({ theme }) => ({
   fontWeight: theme.typography.fontWeightBold,
-  padding: theme.spacing(0.1, 0.5),
 }));

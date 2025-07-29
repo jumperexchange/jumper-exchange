@@ -19,8 +19,8 @@ export const Badge: FC<BadgeProps> = ({
   label,
   startIcon,
   endIcon,
-  variant,
-  size,
+  variant = BadgeVariant.Default,
+  size = BadgeSize.SM,
   onClick,
 }) => {
   return (

@@ -1,17 +1,23 @@
 import { useMemo } from 'react';
+import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
 import { AppPaths } from 'src/const/urls';
-import { CampaignData } from 'src/types/strapi';
+import { BenefitCardColorMode, CampaignData } from 'src/types/strapi';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 
 export const useCampaignDisplayData = (campaign: CampaignData) => {
-  const apiBaseUrl = getStrapiBaseUrl();
   return useMemo(() => {
+    const apiBaseUrl = getStrapiBaseUrl();
+
+    const getStatsCardVariant = (colorMode?: BenefitCardColorMode) =>
+      colorMode === BenefitCardColorMode.Dark
+        ? MissionHeroStatsCardVariant.Inverted
+        : MissionHeroStatsCardVariant.Default;
+
     return {
       missionsCount: campaign.MissionCount || campaign.quests?.length || 0,
       slug: campaign.Slug || '',
       title: campaign.Title || '',
       description: campaign.Description || '',
-      isDefaultInfoCard: !!campaign.LightMode,
       benefitLabel: campaign.BenefitLabel,
       benefitValue: campaign.BenefitValue || 0,
       rewardChainIds: campaign.merkl_rewards
@@ -26,6 +32,12 @@ export const useCampaignDisplayData = (campaign: CampaignData) => {
         campaign.ProfileBannerCTA ||
         `${AppPaths.Campaign}/${campaign.Slug}` ||
         '',
+      bannerStatsCardVariant: getStatsCardVariant(
+        campaign.CarouselBenefitCardColorMode,
+      ),
+      heroStatsCardVariant: getStatsCardVariant(
+        campaign.HeroBenefitCardColorMode,
+      ),
     };
-  }, [apiBaseUrl, campaign]);
+  }, [campaign]);
 };

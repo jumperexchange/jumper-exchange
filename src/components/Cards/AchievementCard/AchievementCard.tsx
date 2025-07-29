@@ -9,6 +9,7 @@ import {
   StyledAchievementCardImage,
 } from './AchievementCard.style';
 import { AchievementCardSkeleton } from './AchievementCardSkeleton';
+import { ACHIEVEMENT_CARD_SIZES } from './constants';
 interface AchievementCardProps {
   title: string;
   description: string;
@@ -29,15 +30,20 @@ export const AchievementCard = ({
   }
 
   return (
-    <AchievementCardContainer>
+    <AchievementCardContainer
+      sx={{
+        width: ACHIEVEMENT_CARD_SIZES.CARD_WIDTH,
+        height: ACHIEVEMENT_CARD_SIZES.CARD_HEIGHT,
+      }}
+    >
       <AchievementCardActionArea focusRipple={false} disabled>
         {imageUrl ? (
           <StyledAchievementCardImage
             src={imageUrl}
             alt={`Image for ${title}`}
             // For a next/image we need to set height/width
-            height={320}
-            width={320}
+            height={ACHIEVEMENT_CARD_SIZES.IMAGE_HEIGHT}
+            width={ACHIEVEMENT_CARD_SIZES.CARD_WIDTH}
             // @Note need to add priority to the first loaded items as LCP is impacted
           />
         ) : (
@@ -45,7 +51,7 @@ export const AchievementCard = ({
             animation={false}
             variant="rectangular"
             sx={{
-              height: 320,
+              height: ACHIEVEMENT_CARD_SIZES.IMAGE_HEIGHT,
               width: '100%',
             }}
           />

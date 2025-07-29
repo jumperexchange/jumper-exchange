@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Carousel } from 'src/components/Carousel/Carousel';
 import { CarouselNavigation } from 'src/components/Carousel/Navigation';
-import type { CampaignWithBanner } from '../ProfilePage';
+import { CampaignWithBanner } from '../OldProfilePage';
 import { CampaignBanner } from './CampaignBanner';
 import { CampaignBannersContainer } from './CampaignBanners.style';
 

@@ -22,6 +22,7 @@ export interface ProjectData {
   project: string;
   integrator: string;
   integratorLink: string;
+  integratorPositionLink: string;
   address: string;
   withdrawAddress?: string;
   tokenAddress?: string;
@@ -37,6 +38,7 @@ export interface QuestDetails {
   rewardRange: string;
   chains: Chain[];
   rewards: RewardsInterface;
+  tokenRewards?: RewardsInterface[];
   missionType: string;
   traits: string[];
   CTA: MerklOpportunity[];

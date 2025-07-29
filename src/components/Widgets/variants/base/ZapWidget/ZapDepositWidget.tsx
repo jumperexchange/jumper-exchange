@@ -1,21 +1,13 @@
 'use client';
 
 import { FC, useEffect, useMemo } from 'react';
-import {
-  type ContractCall,
-  LiFiWidget,
-  Route,
-  useFieldActions,
-  useWidgetEvents,
-  WidgetEvent,
-} from '@lifi/widget';
-import { useInitializeZapConfig } from './useInitializeZapConfig';
-import { formatUnits } from 'viem/utils';
+import { LiFiWidget, Route, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
 import { WidgetProps } from '../Widget.types';
 import { ConfigContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
+import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -36,7 +28,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     isZapDataSuccess,
     refetchDepositToken,
     setCurrentRoute,
-  } = useInitializeZapConfig(projectData);
+  } = useZapInitContext();
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;

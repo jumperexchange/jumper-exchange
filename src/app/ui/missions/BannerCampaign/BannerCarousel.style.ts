@@ -1,11 +1,17 @@
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 
-export const CarouselOuterContainer = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(1.5),
+interface CarouselOuterContainerProps extends BoxProps {
+  hasPagination?: boolean;
+}
+
+export const CarouselOuterContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasPagination',
+})<CarouselOuterContainerProps>(({ theme, hasPagination }) => ({
+  marginBottom: hasPagination ? theme.spacing(1.5) : 0,
   position: 'relative',
 }));
 
@@ -15,10 +21,10 @@ export const BannerSlideContainer = styled(Box)(({ onClick }) => ({
   }),
 }));
 
-export const BannerImageWrapper = styled(Box)(({}) => ({
-  borderRadius: 16,
+export const BannerImageWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   overflow: 'hidden',
+  borderRadius: 24,
 }));
 
 interface BannerImageProps extends ImageProps {
@@ -30,7 +36,6 @@ export const BannerImage = styled(Image, {
 })<BannerImageProps>(({ isImageLoading }) => ({
   position: 'relative',
   objectFit: 'cover',
-  borderRadius: 16,
   aspectRatio: '2.2 / 1',
   width: '100%',
   opacity: isImageLoading ? 0 : 1,

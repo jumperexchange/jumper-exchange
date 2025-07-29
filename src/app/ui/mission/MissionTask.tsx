@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskCard } from 'src/components/Cards/TaskCard/TaskCard';
 import { Badge } from 'src/components/Badge/Badge';
@@ -29,11 +29,49 @@ export const MissionTask: FC<MissionTaskProps> = ({
     useFormatDisplayTaskData(task);
   const { currentActiveTaskId } = useMissionStore();
   const isActive = currentActiveTaskId === taskId;
+  const shouldAnimationRun = useRef(false);
 
   const { handleVerifyTask, isError, isPending, isSuccess } =
     useVerifyTaskWithSharedState(missionId, taskId, title);
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (isPending) {
+      shouldAnimationRun.current = true;
+    } else if (shouldAnimationRun.current) {
+      timeout = setTimeout(() => {
+        shouldAnimationRun.current = false;
+      }, 1000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [isPending]);
+
+  const getVariant = () => {
+    if (isSuccess || isVerified) return BadgeVariant.Success;
+    if (isPending) return BadgeVariant.Disabled;
+    if (isError) return BadgeVariant.Error;
+    return BadgeVariant.Secondary;
+  };
+
+  const getIcon = () => {
+    if (isSuccess || isVerified) return <CheckIcon />;
+    return (
+      <RefreshIcon
+        sx={{
+          animation: 'spin 1s linear infinite',
+          animationPlayState: shouldAnimationRun.current ? 'running' : 'paused',
+          '@keyframes spin': {
+            from: { transform: 'rotate(0deg)' },
+            to: { transform: 'rotate(360deg)' },
+          },
+        }}
+      />
+    );
+  };
 
   return (
     <TaskCard
@@ -41,40 +79,26 @@ export const MissionTask: FC<MissionTaskProps> = ({
       title={title}
       description={description}
       isActive={isActive}
-      type={t('missions.tasks.type', { type: taskType })}
+      type={
+        taskType
+          ? t('missions.tasks.type', { type: taskType })
+          : t('missions.tasks.typeFallback')
+      }
       statusBadge={
-        shouldVerify ? (
-          isSuccess || isVerified ? (
-            <Badge
-              label={t('missions.tasks.status.verified')}
-              startIcon={<CheckIcon />}
-              variant={BadgeVariant.Success}
-            />
-          ) : (
-            <Badge
-              label={t('missions.tasks.status.verify')}
-              startIcon={
-                <RefreshIcon
-                  sx={{
-                    animation: isPending ? 'spin 1s linear infinite' : 'none',
-                    '@keyframes spin': {
-                      from: { transform: 'rotate(0deg)' },
-                      to: { transform: 'rotate(360deg)' },
-                    },
-                  }}
-                />
-              }
-              variant={
-                isPending
-                  ? BadgeVariant.Disabled
-                  : isError
-                    ? BadgeVariant.Error
-                    : BadgeVariant.Secondary
-              }
-              onClick={() => handleVerifyTask()}
-            />
-          )
-        ) : null
+        shouldVerify && (
+          <Badge
+            label={t(
+              isSuccess || isVerified
+                ? 'missions.tasks.status.verified'
+                : 'missions.tasks.status.verify',
+            )}
+            startIcon={getIcon()}
+            variant={getVariant()}
+            onClick={
+              !isSuccess && !isVerified ? () => handleVerifyTask() : undefined
+            }
+          />
+        )
       }
     />
   );
