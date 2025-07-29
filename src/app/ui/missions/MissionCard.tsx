@@ -57,7 +57,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       participants={missionDisplayData.participants}
       imageUrl={missionDisplayData.imageUrl}
       rewardGroups={missionDisplayData.rewardGroups}
-      onClick={handleClick}
+      onClick={!isDisabled ? handleClick : undefined}
       fullWidth
     />
   );
