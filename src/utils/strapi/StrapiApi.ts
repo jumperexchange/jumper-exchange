@@ -1,6 +1,7 @@
 import type { Account } from '@lifi/wallet-management';
 import { getStrapiBaseUrl } from './strapiHelper';
 import config from '@/config/env-config';
+import { addDays, format, startOfToday } from 'date-fns';
 
 interface GetStrapiBaseUrlProps {
   contentType:
@@ -15,6 +16,28 @@ interface GetStrapiBaseUrlProps {
 }
 
 type SortOrder = 'asc' | 'desc';
+
+type StrapiFilterOperator =
+  | '$eq'
+  | '$ne'
+  | '$lt'
+  | '$lte'
+  | '$gt'
+  | '$gte'
+  | '$contains'
+  | '$notContains'
+  | '$in'
+  | '$notIn'
+  | '$null'
+  | '$notNull';
+
+type StrapiFilterCondition = {
+  [key in StrapiFilterOperator]?: string | number | boolean;
+};
+
+type StrapiOrFilter = {
+  [field: string]: StrapiFilterCondition;
+};
 
 export interface PaginationProps {
   page: number;
@@ -505,6 +528,39 @@ class QuestStrapiApi extends StrapiApi {
 
   filterBy(key: string, value: string): this {
     this.apiUrl.searchParams.set(`filters[${key}][$eq]`, value);
+    return this;
+  }
+
+  filterByStartAndEndDateIncludingUpcoming(daysAhead: number = 0): this {
+    const today = startOfToday();
+    const future = addDays(today, daysAhead);
+
+    const todayStr = format(today, 'yyyy-MM-dd');
+    const futureStr = format(future, 'yyyy-MM-dd');
+
+    const orFilters: StrapiOrFilter[] = [
+      {
+        StartDate: { $lte: todayStr },
+        EndDate: { $gte: todayStr },
+      },
+      {
+        StartDate: { $gte: todayStr, $lte: futureStr },
+      },
+    ];
+
+    orFilters.forEach((filter, i) => {
+      Object.entries(filter).forEach(([field, conditions]) => {
+        if (typeof conditions === 'object') {
+          Object.entries(conditions).forEach(([operator, value]) => {
+            this.apiUrl.searchParams.set(
+              `filters[$or][${i}][${field}][${operator}]`,
+              value.toString(),
+            );
+          });
+        }
+      });
+    });
+
     return this;
   }
 
