@@ -39,7 +39,11 @@ export async function verifyTaskQuery(props: VerifyTaskProps) {
   return jsonResponse;
 }
 
-export const useVerifyTask = (missionId?: string, taskId?: string) => {
+export const useVerifyTask = (
+  missionId?: string,
+  taskId?: string,
+  refetchTaskVerificationCache?: () => void,
+) => {
   const { setStatus } = useTaskVerificationStatusStore();
   return useMutation({
     mutationKey: ['verify-task', missionId, taskId],
@@ -51,6 +55,7 @@ export const useVerifyTask = (missionId?: string, taskId?: string) => {
     },
     onSuccess: () => {
       setStatus(missionId ?? '', taskId ?? '', TaskVerificationStatus.Success);
+      refetchTaskVerificationCache?.();
     },
     onError: () => {
       setStatus(missionId ?? '', taskId ?? '', TaskVerificationStatus.Error);

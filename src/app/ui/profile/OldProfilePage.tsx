@@ -1,8 +1,8 @@
 'use client';
-import { ProfilePage as ProfilePageComponent } from '@/components/ProfilePage/ProfilePage';
 import { ProfileProvider } from '@/providers/ProfileProvider';
 import type { CampaignData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
+import { OldProfilePage as ProfilePageComponent } from 'src/components/ProfilePage/OldProfilePage';
 import { QuestDataExtended } from 'src/types/merkl';
 
 interface ProfilePageProps {
@@ -12,7 +12,7 @@ interface ProfilePageProps {
   quests?: QuestDataExtended[];
 }
 
-const ProfilePage = ({
+const OldProfilePage = ({
   walletAddress,
   isPublic,
   campaigns,
@@ -32,4 +32,4 @@ const ProfilePage = ({
   );
 };
 
-export default ProfilePage;
+export default OldProfilePage;

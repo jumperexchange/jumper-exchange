@@ -168,6 +168,7 @@
     },
     "tasks": {
       "type": "{{type}} task",
+      "typeFallback": "Task",
       "status": {
         "verify": "Verify",
         "verified": "Verified"
@@ -191,7 +192,11 @@
     "shareProfile": "Share profile",
     "open": "Open {{tool}}",
     "rewards": "Rewards Earned",
-    "availableRewards": "Available Rewards"
+    "availableRewards": "Available Rewards",
+    "perks": "Perks",
+    "achievements": "Achievements",
+    "unlocked": "Unlocked",
+    "levelWithValue": "Level {{level}}"
   },
   "campaign": {
     "missions": {
@@ -248,7 +253,7 @@
       "boostedApy": "Boosted APR",
       "tvl": "TVL",
       "lockupPeriod": "Lockup period",
-      "token": "Pool token"
+      "token": "Asset"
     },
     "zap": {
       "sendToAddressName": "Send to {{name}}",

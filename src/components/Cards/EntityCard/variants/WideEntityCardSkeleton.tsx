@@ -43,7 +43,7 @@ export const WideEntityCardSkeleton: FC<WideEntityCardSkeletonProps> = ({
           }}
         />
       </StyledEntityCardImageContainer>
-      <StyledEntityCardContentContainer sx={{ gap: 3 }}>
+      <StyledEntityCardContentContainer sx={{ gap: 3, paddingTop: 3 }}>
         <StyledParticipantsContainer>
           <StyledAvatarSkeleton
             variant="circular"

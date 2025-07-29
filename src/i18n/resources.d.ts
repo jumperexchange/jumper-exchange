@@ -175,6 +175,7 @@ interface Resources {
       };
       tasks: {
         type: '{{type}} task';
+        typeFallback: 'Task';
         status: {
           verify: 'Verify';
           verified: 'Verified';
@@ -199,6 +200,10 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
       availableRewards: 'Available Rewards';
+      perks: 'Perks';
+      achievements: 'Achievements';
+      unlocked: 'Unlocked';
+      levelWithValue: 'Level {{level}}';
     };
     campaign: {
       missions: {
@@ -255,7 +260,7 @@ interface Resources {
         boostedApy: 'Boosted APR';
         tvl: 'TVL';
         lockupPeriod: 'Lockup period';
-        token: 'Pool token';
+        token: 'Asset';
       };
       zap: {
         sendToAddressName: 'Send to {{name}}';

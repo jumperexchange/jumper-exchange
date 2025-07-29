@@ -1,3 +1,4 @@
+import { PERK_CARD_SIZES } from './constants';
 import {
   BaseSkeleton,
   BaseStyledSkeleton,
@@ -11,7 +12,11 @@ export const PerksCardSkeleton = () => {
   return (
     <PerksCardContainer>
       <PerksCardActionArea focusRipple={false} disabled>
-        <BaseSkeleton variant="rectangular" width={'100%'} height={320} />
+        <BaseSkeleton
+          variant="rectangular"
+          width={'100%'}
+          height={PERK_CARD_SIZES.IMAGE_HEIGHT}
+        />
         <PerksCardContent>
           <BaseStyledSkeleton
             variant="text"
@@ -21,7 +26,7 @@ export const PerksCardSkeleton = () => {
           />
           <BaseStyledSkeleton
             variant="text"
-            width={192}
+            width={PERK_CARD_SIZES.CARD_WIDTH}
             height={20}
             animation="wave"
           />
