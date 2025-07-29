@@ -16,7 +16,7 @@ export const MissionDetailsSkeleton = () => {
           <Box sx={{ width: '100%' }}>
             <BaseSkeleton variant="rounded" sx={{ width: 120, height: 36 }} />
           </Box>
-          <WideEntityCardSkeleton />
+          <WideEntityCardSkeleton fullWidth />
           {Array.from({ length: 3 }).map((_, index) => (
             <TaskCardSkeleton key={index} />
           ))}

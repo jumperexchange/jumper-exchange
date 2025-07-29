@@ -55,45 +55,45 @@ export const StyledBadge = styled(Box, {
       {
         props: ({ size }) => size === BadgeSize.MD,
         style: {
-          height: 40,
-          padding: theme.spacing(1, 1),
+          height: 32,
+          padding: theme.spacing(0.5, 0.75),
           '& > p': {
-            fontSize: theme.typography.bodySmall.fontSize,
-            lineHeight: theme.typography.bodySmall.lineHeight,
-            padding: theme.spacing(0.5, 1),
+            fontSize: theme.typography.bodyXSmallStrong.fontSize,
+            lineHeight: theme.typography.bodyXSmallStrong.lineHeight,
+            padding: theme.spacing(0.5),
           },
           '& > svg': {
-            fontSize: 22,
+            fontSize: 16,
           },
         },
       },
       {
         props: ({ size }) => size === BadgeSize.LG,
         style: {
-          height: 48,
-          padding: theme.spacing(1.25, 1),
+          height: 40,
+          padding: theme.spacing(0.5, 1),
           '& > p': {
-            fontSize: theme.typography.bodyMedium.fontSize,
-            lineHeight: theme.typography.bodyMedium.lineHeight,
-            padding: theme.spacing(0.5, 1.5),
+            fontSize: theme.typography.bodySmallStrong.fontSize,
+            lineHeight: theme.typography.bodySmallStrong.lineHeight,
+            padding: theme.spacing(0.875, 0.75),
           },
           '& > svg': {
-            fontSize: 24,
+            fontSize: 20,
           },
         },
       },
       {
         props: ({ size }) => size === BadgeSize.XL,
         style: {
-          height: 56,
-          padding: theme.spacing(1.75, 1),
+          height: 48,
+          padding: theme.spacing(0.5, 1),
           '& > p': {
-            fontSize: theme.typography.bodyLarge.fontSize,
-            lineHeight: theme.typography.bodyLarge.lineHeight,
-            padding: theme.spacing(0.5, 1.5),
+            fontSize: theme.typography.bodyMediumStrong.fontSize,
+            lineHeight: theme.typography.bodyMediumStrong.lineHeight,
+            padding: theme.spacing(1.25, 1),
           },
           '& > svg': {
-            fontSize: 28,
+            fontSize: 24,
           },
         },
       },

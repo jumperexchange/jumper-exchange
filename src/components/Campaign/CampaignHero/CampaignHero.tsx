@@ -36,7 +36,7 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
     benefitValue,
     rewardChainIds,
     missionsCount,
-    statsCardVariant,
+    heroStatsCardVariant,
   } = useCampaignDisplayData(campaign);
 
   const handleGoBack = () => {
@@ -76,21 +76,21 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
               <MissionHeroStatsCard
                 title={benefitLabel ?? t('campaign.stats.totalRewards')}
                 description={benefitValue}
-                variant={statsCardVariant}
+                variant={heroStatsCardVariant}
               />
             )}
             {!!missionsCount && (
               <MissionHeroStatsCard
                 title={t('campaign.stats.missions')}
                 description={missionsCount.toString()}
-                variant={statsCardVariant}
+                variant={heroStatsCardVariant}
               />
             )}
             {!!rewardChainIds?.length && (
               <MissionHeroStatsCard
                 title={t('campaign.stats.rewards')}
                 description={<ChainStack chainIds={rewardChainIds} />}
-                variant={statsCardVariant}
+                variant={heroStatsCardVariant}
               />
             )}
           </CampaignHeroStatsWrapper>
