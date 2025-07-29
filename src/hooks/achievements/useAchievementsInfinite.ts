@@ -13,7 +13,7 @@ export const useAchievementsInfinite = (
   const { pdas, isLoading } = useLoyaltyPass(walletAddress);
 
   return usePaginatedData({
-    queryKey: ['achievements', walletAddress, pageSize],
+    queryKey: ['achievements', !isLoading && walletAddress, pageSize],
     queryFn: async (page: number, pageSize: number) => {
       // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 250));

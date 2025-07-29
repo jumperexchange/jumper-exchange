@@ -9,6 +9,6 @@ export const PerksListSkeleton: FC<PerksListSkeletonProps> = ({
   count = 2,
 }) => {
   return Array.from({ length: count }, (_, index) => (
-    <PerksCardSkeleton key={index} />
+    <PerksCardSkeleton key={index} fullWidth />
   ));
 };

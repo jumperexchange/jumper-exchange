@@ -70,6 +70,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       imageUrl={imageUrl}
       levelBadge={levelBadge}
       perksBadge={perksBadge}
+      fullWidth
     />
   );
 

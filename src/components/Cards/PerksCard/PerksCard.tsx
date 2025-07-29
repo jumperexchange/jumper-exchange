@@ -18,6 +18,7 @@ interface PerksCardProps {
   levelBadge: ReactNode;
   perksBadge?: ReactNode;
   isLoading?: boolean;
+  fullWidth?: boolean;
 }
 
 export const PerksCard = ({
@@ -27,13 +28,20 @@ export const PerksCard = ({
   levelBadge,
   perksBadge,
   isLoading,
+  fullWidth,
 }: PerksCardProps) => {
   if (isLoading) {
-    return <PerksCardSkeleton />;
+    return <PerksCardSkeleton fullWidth={fullWidth} />;
   }
 
   return (
-    <PerksCardContainer>
+    <PerksCardContainer
+      sx={{
+        height: PERK_CARD_SIZES.CARD_HEIGHT,
+        width: '100%',
+        maxWidth: fullWidth ? '100%' : PERK_CARD_SIZES.CARD_WIDTH,
+      }}
+    >
       <PerksCardActionArea disableRipple>
         {imageUrl ? (
           <PerksCardImage
@@ -41,6 +49,9 @@ export const PerksCard = ({
             alt={`achievement-card-${title}`}
             width={PERK_CARD_SIZES.CARD_WIDTH}
             height={PERK_CARD_SIZES.IMAGE_HEIGHT}
+            sx={{
+              maxWidth: fullWidth ? '100%' : PERK_CARD_SIZES.CARD_WIDTH,
+            }}
           />
         ) : (
           <BaseSkeleton

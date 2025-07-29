@@ -11,8 +11,6 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
 export const PerksCardContainer = styled(Card)(({ theme }) => ({
-  width: 296,
-  height: 396,
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.borderRadius,
   backgroundColor: (theme.vars || theme).palette.surface3.main,
