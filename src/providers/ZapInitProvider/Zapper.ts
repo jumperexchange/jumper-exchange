@@ -51,6 +51,8 @@ export const approve: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
+  console.log('approve address', zapper.getApproveAddress());
+
   return await buildContractComposable(oNexus, {
     address: zapper.getApproveAddress(),
     chainId: depositChainId,
@@ -134,16 +136,26 @@ export const hyperwaveDeposit: ZapInstruction = async (
     throw new Error('Deposit token or decimals are undefined');
   }
 
+  const constraints = [
+    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+  ];
+
   let minimumMint: bigint | null = await zapper.computeMinimumMint();
   const depositInputs = integrationData.abi.deposit.inputs;
   const depositArgs = depositInputs.map((input: AbiParameter) => {
-    if (input.type == 'uint256' && input.name === 'minimumMint') {
+    if (input.name === 'minimumMint') {
       if (minimumMint === null || minimumMint <= 0) {
         throw new Error('Minimum mint is not set');
       }
       return minimumMint;
-    } else if (input.type === 'address') {
-      return currentAddress;
+    } else if (input.name === 'depositAsset') {
+      return depositToken;
+    } else if (input.type === 'uint256') {
+      return runtimeERC20BalanceOf({
+        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        tokenAddress: depositToken,
+        constraints,
+      });
     }
     throw new Error(`Unsupported deposit input type: ${input.type}`);
   });
@@ -288,6 +300,7 @@ export class DefaultZapper implements ZapperStrategy {
   }
 
   getApproveAddress = (): `0x${string}` => {
+    console.log('this.zapData.abi', this.zapData.abi);
     return this.getAbiAddress(this.zapData.abi.approve);
   };
 
