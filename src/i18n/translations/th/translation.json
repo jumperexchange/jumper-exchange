@@ -192,7 +192,11 @@
     "shareProfile": "",
     "open": "",
     "rewards": "",
-    "availableRewards": ""
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": ""
   },
   "campaign": {
     "missions": {
