@@ -3,7 +3,7 @@ import { ProjectData } from 'src/types/questDetails';
 import { Abi, createPublicClient, getContract, http } from 'viem';
 import { hyperevm } from './hyperwave';
 import { AbiEntry, ZapDataResponse } from './zap.interface';
-import { MultichainSmartAccount } from '@biconomy/abstractjs';
+import { Instruction, MultichainSmartAccount } from '@biconomy/abstractjs';
 import { buildContractComposable } from './utils';
 import { AbiParameter, parseUnits, zeroAddress } from 'viem';
 import { EVMAddress } from 'src/types/internal';
@@ -20,246 +20,225 @@ export interface SendCallsExtraParams {
   address: string | undefined;
 }
 
-export interface InstructionCommand {
-  buildInstruction(
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-    zapper: ZapperStrategy,
-  ): Promise<any | null>;
-}
+export type ZapInstruction = (
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: ZapperStrategy,
+) => Promise<Instruction[] | null>;
 
-export class ApproveCommand implements InstructionCommand {
-  async buildInstruction(
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-    zapper: ZapperStrategy,
-  ): Promise<any | null> {
-    // Build approve instruction
-    const {
-      address: currentAddress,
-      zapData: integrationData,
-      projectData,
-    } = sendCallsExtraParams;
+export const approve: ZapInstruction = async (
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: ZapperStrategy,
+) => {
+  // Build approve instruction
+  const {
+    address: currentAddress,
+    zapData: integrationData,
+    projectData,
+  } = sendCallsExtraParams;
 
-    const depositAddress = integrationData.market?.address as EVMAddress;
-    const depositToken = integrationData.market?.depositToken?.address;
-    const depositTokenDecimals = integrationData.market?.depositToken.decimals;
-    const depositChainId = projectData.chainId;
+  const depositAddress = integrationData.market?.address as EVMAddress;
+  const depositToken = integrationData.market?.depositToken?.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
 
-    if (!depositToken || !depositTokenDecimals) {
-      throw new Error('Deposit token or decimals are undefined');
+  if (!depositToken || !depositTokenDecimals) {
+    throw new Error('Deposit token or decimals are undefined');
+  }
+
+  const constraints = [
+    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+  ];
+
+  return await buildContractComposable(oNexus, {
+    address: zapper.getApproveAddress(),
+    chainId: depositChainId,
+    abi: integrationData.abi.approve,
+    functionName: integrationData.abi.approve.name,
+    gasLimit: 100000n,
+    args: [
+      depositAddress,
+      runtimeERC20BalanceOf({
+        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        tokenAddress: depositToken,
+        constraints,
+      }),
+    ],
+  });
+};
+
+export const deposit: ZapInstruction = async (
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: ZapperStrategy,
+) => {
+  const {
+    address: currentAddress,
+    zapData: integrationData,
+    projectData,
+  } = sendCallsExtraParams;
+
+  const depositToken = integrationData.market?.depositToken?.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
+
+  if (!depositToken || !depositTokenDecimals) {
+    throw new Error('Deposit token or decimals are undefined');
+  }
+
+  const constraints = [
+    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+  ];
+
+  const depositInputs = integrationData.abi.deposit.inputs;
+  const depositArgs = depositInputs.map((input: AbiParameter) => {
+    if (input.type === 'uint256') {
+      return runtimeERC20BalanceOf({
+        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        tokenAddress: depositToken,
+        constraints,
+      });
+    } else if (input.type === 'address') {
+      return currentAddress;
     }
+    throw new Error(`Unsupported deposit input type: ${input.type}`);
+  });
 
-    const constraints = [
-      greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
-    ];
+  return await buildContractComposable(oNexus, {
+    address: zapper.getDepositAddress(),
+    chainId: depositChainId,
+    abi: integrationData.abi.deposit,
+    functionName: integrationData.abi.deposit.name,
+    gasLimit: 1000000n,
+    args: depositArgs,
+  });
+};
 
+export const hyperwaveDeposit: ZapInstruction = async (
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: ZapperStrategy,
+) => {
+  const {
+    address: currentAddress,
+    zapData: integrationData,
+    projectData,
+  } = sendCallsExtraParams;
+
+  const depositToken = integrationData.market?.depositToken?.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
+
+  if (!depositToken || !depositTokenDecimals) {
+    throw new Error('Deposit token or decimals are undefined');
+  }
+
+  let minimumMint: bigint | null = await zapper.computeMinimumMint();
+  const depositInputs = integrationData.abi.deposit.inputs;
+  const depositArgs = depositInputs.map((input: AbiParameter) => {
+    if (input.type == 'uint256' && input.name === 'minimumMint') {
+      if (minimumMint === null || minimumMint <= 0) {
+        throw new Error('Minimum mint is not set');
+      }
+      return minimumMint;
+    } else if (input.type === 'address') {
+      return currentAddress;
+    }
+    throw new Error(`Unsupported deposit input type: ${input.type}`);
+  });
+
+  return await buildContractComposable(oNexus, {
+    address: zapper.getDepositAddress(),
+    chainId: depositChainId,
+    abi: integrationData.abi.deposit,
+    functionName: integrationData.abi.deposit.name,
+    gasLimit: 1000000n,
+    args: depositArgs,
+  });
+};
+
+export const transfer: ZapInstruction = async (
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: ZapperStrategy,
+) => {
+  const {
+    address: currentAddress,
+    zapData: integrationData,
+    projectData,
+  } = sendCallsExtraParams;
+
+  const depositAddress = integrationData.market?.address as EVMAddress;
+  const depositToken = integrationData.market?.depositToken?.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
+
+  if (!depositToken || !depositTokenDecimals) {
+    throw new Error('Deposit token or decimals are undefined');
+  }
+
+  const constraints = [
+    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+  ];
+
+  const depositInputs = integrationData.abi.deposit.inputs;
+  const depositHasAddressArg = depositInputs.some(
+    (input: AbiParameter) => input.type === 'address',
+  );
+
+  if (!depositHasAddressArg) {
     return await buildContractComposable(oNexus, {
-      address: zapper.getApproveAddress(),
+      address: depositAddress,
       chainId: depositChainId,
-      abi: integrationData.abi.approve,
-      functionName: integrationData.abi.approve.name,
-      gasLimit: 100000n,
+      abi: integrationData.abi.transfer,
+      functionName: integrationData.abi.transfer.name,
+      gasLimit: 200000n,
       args: [
-        depositAddress,
+        currentAddress,
         runtimeERC20BalanceOf({
           targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
-          tokenAddress: depositToken,
+          tokenAddress: depositAddress,
           constraints,
         }),
       ],
     });
   }
-}
+  return null;
+};
 
-export class DepositCommand implements InstructionCommand {
-  async buildInstruction(
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-    zapper: ZapperStrategy,
-  ): Promise<any | null> {
-    const {
-      address: currentAddress,
-      zapData: integrationData,
-      projectData,
-    } = sendCallsExtraParams;
-
-    const depositToken = integrationData.market?.depositToken?.address;
-    const depositTokenDecimals = integrationData.market?.depositToken.decimals;
-    const depositChainId = projectData.chainId;
-
-    if (!depositToken || !depositTokenDecimals) {
-      throw new Error('Deposit token or decimals are undefined');
-    }
-
-    const constraints = [
-      greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
-    ];
-
-    const depositInputs = integrationData.abi.deposit.inputs;
-    const depositArgs = depositInputs.map((input: AbiParameter) => {
-      if (input.type === 'uint256') {
-        return runtimeERC20BalanceOf({
-          targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
-          tokenAddress: depositToken,
-          constraints,
-        });
-      } else if (input.type === 'address') {
-        return currentAddress;
-      }
-      throw new Error(`Unsupported deposit input type: ${input.type}`);
-    });
-
-    return await buildContractComposable(oNexus, {
-      address: zapper.getDepositAddress(),
-      chainId: depositChainId,
-      abi: integrationData.abi.deposit,
-      functionName: integrationData.abi.deposit.name,
-      gasLimit: 1000000n,
-      args: depositArgs,
-    });
+export const buildInstruction = async (
+  step: string,
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: ZapperStrategy,
+  commands: Record<string, ZapInstruction>,
+) => {
+  const command = commands[step];
+  if (!command) {
+    throw new Error(`Unknown step: ${step}`);
   }
-}
 
-export class HyperwaveDepositCommand implements InstructionCommand {
-  async buildInstruction(
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-    zapper: ZapperStrategy,
-  ): Promise<any | null> {
-    const {
-      address: currentAddress,
-      zapData: integrationData,
-      projectData,
-    } = sendCallsExtraParams;
+  return await command(oNexus, sendCallsExtraParams, zapper);
+};
 
-    const depositToken = integrationData.market?.depositToken?.address;
-    const depositTokenDecimals = integrationData.market?.depositToken.decimals;
-    const depositChainId = projectData.chainId;
+export const defaultCommands: Record<string, ZapInstruction> = {
+  approve,
+  deposit,
+  transfer,
+};
 
-    if (!depositToken || !depositTokenDecimals) {
-      throw new Error('Deposit token or decimals are undefined');
-    }
-
-    let minimumMint: bigint | null = await zapper.computeMinimumMint();
-    const depositInputs = integrationData.abi.deposit.inputs;
-    const depositArgs = depositInputs.map((input: AbiParameter) => {
-      if (input.type == 'uint256' && input.name === 'minimumMint') {
-        if (minimumMint === null || minimumMint <= 0) {
-          throw new Error('Minimum mint is not set');
-        }
-        return minimumMint;
-      } else if (input.type === 'address') {
-        return currentAddress;
-      }
-      throw new Error(`Unsupported deposit input type: ${input.type}`);
-    });
-
-    return await buildContractComposable(oNexus, {
-      address: zapper.getDepositAddress(),
-      chainId: depositChainId,
-      abi: integrationData.abi.deposit,
-      functionName: integrationData.abi.deposit.name,
-      gasLimit: 1000000n,
-      args: depositArgs,
-    });
-  }
-}
-
-export class TransferCommand implements InstructionCommand {
-  async buildInstruction(
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-    zapper: ZapperStrategy,
-  ): Promise<any | null> {
-    const {
-      address: currentAddress,
-      zapData: integrationData,
-      projectData,
-    } = sendCallsExtraParams;
-
-    const depositAddress = integrationData.market?.address as EVMAddress;
-    const depositToken = integrationData.market?.depositToken?.address;
-    const depositTokenDecimals = integrationData.market?.depositToken.decimals;
-    const depositChainId = projectData.chainId;
-
-    if (!depositToken || !depositTokenDecimals) {
-      throw new Error('Deposit token or decimals are undefined');
-    }
-
-    const constraints = [
-      greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
-    ];
-
-    const depositInputs = integrationData.abi.deposit.inputs;
-    const depositHasAddressArg = depositInputs.some(
-      (input: AbiParameter) => input.type === 'address',
-    );
-
-    if (!depositHasAddressArg) {
-      return await buildContractComposable(oNexus, {
-        address: depositAddress,
-        chainId: depositChainId,
-        abi: integrationData.abi.transfer,
-        functionName: integrationData.abi.transfer.name,
-        gasLimit: 200000n,
-        args: [
-          currentAddress,
-          runtimeERC20BalanceOf({
-            targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
-            tokenAddress: depositAddress,
-            constraints,
-          }),
-        ],
-      });
-    }
-    return null;
-  }
-}
-
-export class InstructionBuilder {
-  constructor(private commands: Record<string, InstructionCommand>) {}
-
-  async buildInstruction(
-    step: string,
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-    zapper: ZapperStrategy,
-  ): Promise<any | null> {
-    const command = this.commands[step];
-    if (!command) {
-      throw new Error(`Unknown step: ${step}`);
-    }
-
-    return await command.buildInstruction(oNexus, sendCallsExtraParams, zapper);
-  }
-}
-
-export class DefaultCommandSet {
-  static create(): Record<string, InstructionCommand> {
-    return {
-      approve: new ApproveCommand(),
-      deposit: new DepositCommand(),
-      transfer: new TransferCommand(),
-    };
-  }
-}
-
-export class HyperwaveCommandSet {
-  static create(): Record<string, InstructionCommand> {
-    return {
-      approve: new ApproveCommand(),
-      deposit: new HyperwaveDepositCommand(),
-      transfer: new TransferCommand(),
-    };
-  }
-}
+export const hyperwaveCommands: Record<string, ZapInstruction> = {
+  approve,
+  deposit: hyperwaveDeposit,
+  transfer,
+};
 
 export interface ZapperStrategy {
   getApproveAddress: () => `0x${string}`;
   getDepositAddress: () => `0x${string}`;
   computeMinimumMint: () => Promise<bigint | null>;
-  getInstructionBuilder: () => InstructionBuilder;
+  getCommands: () => Record<string, ZapInstruction>;
   /**
    * Build project-specific contract instructions.
    * This method builds the contract-specific instructions (approve, deposit, transfer)
@@ -324,27 +303,28 @@ export class DefaultZapper implements ZapperStrategy {
     return ['approve', 'deposit', 'transfer'];
   };
 
-  getInstructionBuilder = (): InstructionBuilder => {
-    return new InstructionBuilder(DefaultCommandSet.create());
+  getCommands = (): Record<string, ZapInstruction> => {
+    return defaultCommands;
   };
 
   buildContractInstructions = async (
     oNexus: MultichainSmartAccount,
     sendCallsExtraParams: SendCallsExtraParams,
-  ): Promise<any[]> => {
+  ): Promise<Instruction[]> => {
     // Validate parameters
     this.validateParameters(sendCallsExtraParams);
 
     const instructions: any[] = [];
-    const instructionBuilder = this.getInstructionBuilder();
+    const commands = this.getCommands();
 
     // Execute each step using the instruction builder
     for (const step of this.getSteps()) {
-      const stepInstruction = await instructionBuilder.buildInstruction(
+      const stepInstruction = await buildInstruction(
         step,
         oNexus,
         sendCallsExtraParams,
         this,
+        commands,
       );
 
       if (stepInstruction) {
@@ -446,8 +426,8 @@ export class HyperwaveZapper extends DefaultZapper {
   //   return ['approve', 'deposit', 'transfer', 'customExtraStep'];
   // };
 
-  getInstructionBuilder = (): InstructionBuilder => {
-    return new InstructionBuilder(HyperwaveCommandSet.create());
+  getCommands = (): Record<string, ZapInstruction> => {
+    return hyperwaveCommands;
   };
 }
 
@@ -458,17 +438,17 @@ export class HyperwaveZapper extends DefaultZapper {
  * The general flow (raw calldata) remains in ZapInitProvider, while
  * project-specific contract instructions are handled by the zapper classes.
  *
- * MODULAR STEP SYSTEM:
+ * MODULAR FUNCTION SYSTEM:
  * - Each project defines its steps via getSteps()
- * - Each step is executed via executeStep()
+ * - Each step is executed via a ZapInstruction function
  * - Projects can override getSteps() to add/remove/reorder steps
- * - Projects can override executeStep() to customize step behavior
+ * - Projects can override getCommands() to customize step behavior with different functions
  *
  * To add a new project:
  * 1. Create a new class extending DefaultZapper
  * 2. Override getSteps() to define your step sequence
- * 3. Override executeStep() to handle custom steps
- * 4. Add a case in this switch statement
+ * 3. Create project-specific ZapInstruction functions if needed
+ * 4. Override getCommands() to provide custom ZapInstruction functions
  *
  * Example:
  * ```typescript
