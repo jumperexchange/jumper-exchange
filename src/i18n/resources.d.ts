@@ -184,6 +184,10 @@ interface Resources {
           verify: 'Verify';
           go: 'Go';
         };
+        completed: {
+          title: 'Task completed';
+          description: 'This task has been verified and completed.';
+        };
       };
     };
     profile_page: {
@@ -204,6 +208,10 @@ interface Resources {
       achievements: 'Achievements';
       unlocked: 'Unlocked';
       levelWithValue: 'Level {{level}}';
+      noData: {
+        description: 'There are no {{entity}} available at your current Jumper Loyalty Pass Level';
+        caption: 'Keep bridging, swapping and participating to missions on Jumper to unlock {{entity}}.';
+      };
     };
     campaign: {
       missions: {

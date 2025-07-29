@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import CheckIcon from '@mui/icons-material/Check';
+import { Link } from 'src/components/Link';
 
 export const MissionWidgetContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -46,4 +47,22 @@ export const MissionInstructionFormContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
+}));
+
+export const MissionDescriptionLink = styled(Link)(({ theme }) => ({
+  color: (theme.vars || theme).palette.text.primary,
+  ...theme.typography.bodyMediumStrong,
+  textDecoration: 'none',
+  display: 'inline-flex',
+  width: 'fit-content',
+  alignItems: 'center',
+  gap: theme.spacing(0.75),
+  transition: 'color 0.3s ease',
+  '&:hover': {
+    color: (theme.vars || theme).palette.primary.main,
+  },
+  '& svg': {
+    width: 20,
+    height: 20,
+  },
 }));
