@@ -67,10 +67,10 @@ jobs:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
-      - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports
-      - name: Merge into JSON Report
-        run: npx playwright merge-reports --reporter json ./all-blob-reports 1>report.json
+      - name: Merge into HTML and JSON Reports
+        run: npx playwright merge-reports --reporter=html,json ./all-blob-reports
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: report.json
       - uses: daun/playwright-report-summary@be9e270edd5ad86038604d3caa84a819a6ff6fed # v3.10.0
         id: summary
         with:
