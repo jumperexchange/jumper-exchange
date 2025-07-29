@@ -17,12 +17,12 @@ export const TabsSection: FC<TabsSectionProps> = ({ children }) => {
   const tabs = useMemo(
     () => [
       {
-        label: t('profile_page.achievements'),
-        value: AvailableTabs.Achievements,
-      },
-      {
         label: t('profile_page.perks'),
         value: AvailableTabs.Perks,
+      },
+      {
+        label: t('profile_page.achievements'),
+        value: AvailableTabs.Achievements,
       },
     ],
     [t],
