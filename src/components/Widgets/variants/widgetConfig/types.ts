@@ -13,6 +13,7 @@ export type ConfigContext = {
   includeZap?: boolean;
   zapToAddress?: `0x${string}`;
   zapProviders?: EVMProvider[];
+  zapPoolName?: string;
 
   taskType?: TaskType;
 

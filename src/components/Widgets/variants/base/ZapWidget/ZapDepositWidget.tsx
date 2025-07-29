@@ -57,6 +57,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       includeZap: true,
       zapProviders: providers,
       zapToAddress: toAddress,
+      zapPoolName: poolName,
       baseOverrides,
     };
   }, [
