@@ -26,13 +26,20 @@ export const useEnhancedTasks = (
   }, [tasks, verifiedTaskIds]);
 
   const {
-    isMissionCompleted,
-    setIsMissionCompleted,
     setCurrentActiveTask,
+    setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
     currentActiveTaskId,
+    isCurrentActiveTaskCompleted,
   } = useMissionStore();
+
+  const checkIsTaskVerified = useCallback(
+    (task: TaskVerificationWithApy) => {
+      return task && task.hasTask && verifiedTaskIds.has(task.uuid);
+    },
+    [JSON.stringify(verifiedTasks)],
+  );
 
   const handleSetActiveTask = useCallback(
     (task: TaskVerificationWithApy, shouldScrollToWidget = true) => {
@@ -47,6 +54,8 @@ export const useEnhancedTasks = (
       //     setConfigType('default');
       //   }
       setCurrentActiveTask(task.uuid, taskType, taskName);
+      const isTaskVerified = checkIsTaskVerified(task);
+      setIsCurrentActiveTaskCompleted(isTaskVerified);
 
       setCurrentTaskWidgetFormParams({
         sourceChain: widgetParams.sourceChain ?? undefined,
@@ -73,6 +82,7 @@ export const useEnhancedTasks = (
       setCurrentActiveTask,
       setCurrentTaskWidgetFormParams,
       setCurrentTaskInstructionParams,
+      checkIsTaskVerified,
       router,
       //   configType,
       //   setConfigType,
@@ -89,28 +99,30 @@ export const useEnhancedTasks = (
     }
   }, [firstUnverifiedTask, currentActiveTaskId, handleSetActiveTask]);
 
-  const allTasksCompleted = useMemo(() => {
-    const requiredTasks = tasks.filter(
-      // This means that the task can be verified and is required
-      (task) => task.hasTask && task.isRequired,
-    );
-
-    return (
-      requiredTasks.length > 0 &&
-      requiredTasks.every((task) => verifiedTaskIds.has(task.uuid))
-    );
-  }, [tasks, verifiedTaskIds]);
-
-  // @TODO re-enable this after missions are updated; it might require some changes
   useEffect(() => {
-    if (allTasksCompleted && !isMissionCompleted) {
-      setIsMissionCompleted(true);
+    const currentActiveTask = tasks.find(
+      (task) => task.uuid === currentActiveTaskId,
+    );
+
+    if (!currentActiveTask) {
+      return;
     }
-  }, [allTasksCompleted, isMissionCompleted, setIsMissionCompleted]);
+
+    const isTaskVerified = checkIsTaskVerified(currentActiveTask);
+
+    if (isTaskVerified && !isCurrentActiveTaskCompleted) {
+      setIsCurrentActiveTaskCompleted(true);
+    }
+  }, [
+    checkIsTaskVerified,
+    JSON.stringify(tasks),
+    currentActiveTaskId,
+    isCurrentActiveTaskCompleted,
+  ]);
 
   const enhancedTasks = useMemo(() => {
     return tasks.map((task) => {
-      const isVerified = task.hasTask && verifiedTaskIds.has(task.uuid);
+      const isVerified = checkIsTaskVerified(task);
       const isRequired = !!task.isRequired;
 
       return {
@@ -119,7 +131,7 @@ export const useEnhancedTasks = (
         isRequired,
       };
     });
-  }, [JSON.stringify(tasks), JSON.stringify(verifiedTasks)]);
+  }, [checkIsTaskVerified, JSON.stringify(tasks)]);
 
   return {
     enhancedTasks,

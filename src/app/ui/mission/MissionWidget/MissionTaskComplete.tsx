@@ -11,17 +11,17 @@ import {
 } from './MissionWidget.styles';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
-export const MissionComplete = () => {
+export const MissionTaskComplete = () => {
   const { t } = useTranslation();
   return (
     <SectionCardContainer>
       <MissionWidgetContainer>
         <MissionWidgetContentContainer>
           <MissionWidgetTitle variant="titleSmall">
-            {t('missions.mission.completed.title')}
+            {t('missions.tasks.completed.title')}
           </MissionWidgetTitle>
           <MissionWidgetDescription variant="bodyMedium">
-            {t('missions.mission.completed.description')}
+            {t('missions.tasks.completed.description')}
           </MissionWidgetDescription>
         </MissionWidgetContentContainer>
         <MissionWidgetIconContainer>
