@@ -48,7 +48,7 @@ interface HorizontalTabProps extends TabProps {
 
 export const HorizontalTabContainer = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<HorizontalTabProps>(({ theme, disabled, size = HorizontalTabSize.MD }) => ({
+})<HorizontalTabProps>(({ theme, disabled }) => ({
   ...theme.typography.bodyMedium,
   fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',

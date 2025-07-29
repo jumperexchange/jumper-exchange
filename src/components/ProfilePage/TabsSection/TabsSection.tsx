@@ -6,6 +6,7 @@ import { FC, ReactNode, useMemo } from 'react';
 import { HorizontalTabs } from 'src/components/HorizontalTabs/HorizontalTabs';
 import { AvailableTabs } from './constants';
 import Box from '@mui/material/Box';
+import { HorizontalTabSize } from 'src/components/HorizontalTabs/HorizontalTabs.style';
 
 interface TabsSectionProps {
   children: (activeTab: string) => ReactNode;
@@ -39,7 +40,15 @@ export const TabsSection: FC<TabsSectionProps> = ({ children }) => {
         <HorizontalTabs
           tabs={tabs}
           renderContent={children}
-          sx={{ width: 'fit-content', background: 'transparent', p: 0 }}
+          sx={(theme) => ({
+            width: 'fit-content',
+            background: 'transparent',
+            p: 0,
+            '& button:not(.Mui-selected)': {
+              color: `${(theme.vars || theme).palette.text.secondary} !important`,
+            },
+          })}
+          size={HorizontalTabSize.MD}
         />
       </Box>
     </SectionCard>
