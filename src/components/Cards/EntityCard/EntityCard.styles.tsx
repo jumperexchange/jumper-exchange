@@ -30,7 +30,7 @@ export const StyledEntityCardContentContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   position: 'relative',
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 }));
 
@@ -56,7 +56,7 @@ export const StyledEntityCardImage = styled(Image)(({ theme }) => ({
   width: '100%',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 }));
 
@@ -85,8 +85,7 @@ export const StyledWideEntityCardTitle = styled(StyledEntityCardTitleBase)(
 
 export const StyledEntityCardDescription = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodyMedium,
-  color: (theme.vars || theme).palette.text.primary,
-  opacity: 0.48,
+  color: (theme.vars || theme).palette.text.secondary,
 }));
 
 // Link
@@ -115,9 +114,11 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
   boxSizing: 'content-box',
   border: 2,
   borderStyle: 'solid',
-  borderColor: (theme.vars || theme).palette.background.default,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  borderColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
-    borderColor: (theme.vars || theme).palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+    borderColor: (theme.vars || theme).palette.surface1.main,
   }),
 }));
 
@@ -157,7 +158,7 @@ export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
 })(({ theme }) => ({
   padding: theme.spacing(1, 1),
   height: 40,
-  backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+  backgroundColor: (theme.vars || theme).palette.badgeAlphaBg,
   borderRadius: (theme.vars || theme).shape.buttonBorderRadius,
   '& .MuiChip-label': {
     padding: theme.spacing(0, 0.75),
@@ -166,9 +167,6 @@ export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
     width: 'fit-content',
     margin: 0,
   },
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-  }),
 }));
 
 export const StyledWideRewardChipContainer = styled(

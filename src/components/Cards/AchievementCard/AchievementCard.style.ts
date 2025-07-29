@@ -15,7 +15,7 @@ export const AchievementCardContainer = styled(Card)(({ theme, onClick }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
   boxShadow: theme.shadows[2],
   cursor: onClick ? 'pointer' : 'default',
@@ -33,7 +33,7 @@ export const AchievementCardContent = styled(CardContent)(({ theme }) => ({
   gap: theme.spacing(1),
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
   '.badge-container': {
     flexShrink: 0,

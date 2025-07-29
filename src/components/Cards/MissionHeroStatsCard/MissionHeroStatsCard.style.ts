@@ -17,9 +17,11 @@ export const MissionHeroStatsBox = styled(Box, {
   ({ theme, variant = MissionHeroStatsCardVariant.Default }) => ({
     position: 'relative',
     padding: theme.spacing(1, 1.5),
+    alignSelf: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: theme.spacing(1),
     borderRadius: 16,
     overflow: 'hidden',
@@ -28,12 +30,20 @@ export const MissionHeroStatsBox = styled(Box, {
       color: (theme.vars || theme).palette.alphaLight900.main,
       backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
       border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
+
+      '& .MuiAvatar-root': {
+        borderColor: (theme.vars || theme).palette.lavenderLight[0],
+      },
     }),
 
     ...(variant === MissionHeroStatsCardVariant.Inverted && {
       color: (theme.vars || theme).palette.alphaDark900.main,
-      backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+      backgroundColor: (theme.vars || theme).palette.alphaDark300.main,
       border: `1px solid ${(theme.vars || theme).palette.alphaDark200.main}`,
+
+      '& .MuiAvatar-root': {
+        borderColor: (theme.vars || theme).palette.alphaDark900.main,
+      },
     }),
 
     '&::before': {
@@ -50,4 +60,6 @@ export const MissionHeroStatsBox = styled(Box, {
   }),
 );
 
-export const MissionHeroStatsText = styled(Typography)(({ theme }) => ({}));
+export const MissionHeroStatsText = styled(Typography)(({ theme }) => ({
+  textAlign: 'center',
+}));

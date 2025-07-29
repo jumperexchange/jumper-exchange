@@ -37,10 +37,7 @@ export const TooltipIcon = styled(InfoIcon)(({ theme }) => ({
   height: '16px',
   width: '16px',
   cursor: 'help',
-  color: (theme.vars || theme).palette.alphaLight600.main,
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.alphaDark600.main,
-  }),
+  color: (theme.vars || theme).palette.iconHint,
 }));
 
 export const DepositPoolCardItemValuePrepend = styled(Box)(({ theme }) => ({}));

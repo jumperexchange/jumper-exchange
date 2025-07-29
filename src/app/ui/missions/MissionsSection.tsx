@@ -6,7 +6,6 @@ import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import {
   MissionSectionContainer,
   MissionSectionHeaderContainer,
-  MissionSectionHeaderInfo,
 } from './MissionsSection.style';
 import { FC, PropsWithChildren } from 'react';
 
@@ -26,9 +25,9 @@ export const MissionsSection: FC<MissionsSectionProps> = ({
           <Typography variant="titleSmall">
             {t('missions.wrapperCard.title')}
           </Typography>
-          <MissionSectionHeaderInfo variant="title2XSmall">
+          <Typography variant="title2XSmall" color="textSecondary">
             {t('missions.wrapperCard.explore', { count })}
-          </MissionSectionHeaderInfo>
+          </Typography>
         </MissionSectionHeaderContainer>
         {children}
       </MissionSectionContainer>

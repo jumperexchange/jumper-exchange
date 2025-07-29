@@ -6,8 +6,14 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   display: 'none',
   borderRadius: 28,
   padding: 0,
-  backgroundColor: alpha(theme.palette.white.main, 0.12),
   alignItems: 'center',
+  boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @Note Figma elevation 4
+  '&.MuiTabs-root': {
+    backgroundColor: theme.palette.alphaLight300.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface3.main,
+    }),
+  },
   '.MuiTabs-flexContainer': {
     alignItems: 'center',
   },
@@ -22,7 +28,7 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
     backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
     zIndex: '-1',
     ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.white.main,
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
     }),
   },
   '> .MuiTabs-root': {
@@ -67,7 +73,7 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
     }),
   },
   ':not(.Mui-selected) > svg': {
-    opacity: 0.5,
+    opacity: 0.64,
   },
   '> svg': {
     margin: 0,
