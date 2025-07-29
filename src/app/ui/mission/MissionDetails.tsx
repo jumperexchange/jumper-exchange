@@ -31,7 +31,7 @@ interface MissionDetailsProps {
 }
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
-  const status = useMissionTimeStatus(
+  const { status } = useMissionTimeStatus(
     mission.StartDate ?? '',
     mission.EndDate ?? '',
   );
