@@ -68,6 +68,7 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
               width={112}
               height={112}
               style={{ objectFit: 'contain', borderRadius: '50%' }}
+              variant={heroStatsCardVariant}
             />
           )}
 

@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
+import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
 
 export const CampaignHeroContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -46,12 +47,23 @@ export const CampaignHeroCardImage = styled(Image, {
   transition: 'opacity 0.2s ease-in-out',
 }));
 
-export const CampaignHeroCardIcon = styled(Image)(({ theme }) => ({
+interface CampaignHeroCardIconProps {
+  variant?: MissionHeroStatsCardVariant;
+}
+
+export const CampaignHeroCardIcon = styled(Image, {
+  shouldForwardProp: (prop) => prop !== 'variant',
+})<CampaignHeroCardIconProps>(({ theme, variant }) => ({
   position: 'relative',
   objectFit: 'contain',
   borderRadius: '50%',
   border: '2px solid',
-  borderColor: (theme.vars || theme).palette.surface1.main,
+  ...(variant === MissionHeroStatsCardVariant.Default && {
+    borderColor: (theme.vars || theme).palette.lavenderLight[0],
+  }),
+  ...(variant === MissionHeroStatsCardVariant.Inverted && {
+    borderColor: (theme.vars || theme).palette.alphaDark900.main,
+  }),
 }));
 
 export const CampaignHeroCardOverlay = styled(Box)(({ theme }) => ({
