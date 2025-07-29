@@ -9,7 +9,7 @@ import { getSiteUrl, AppPaths } from 'src/const/urls';
 
 export const metadata: Metadata = {
   title: 'Jumper Missions',
-  description: 'Jumper Missions is the reward area of Jumper Exchange.',
+  description: `Discover, interact, and grow in DeFi with Jumper's missions and ecosystem campaigns.`,
   alternates: {
     canonical: `${getSiteUrl()}${AppPaths.Missions}`,
   },
