@@ -18,7 +18,7 @@ export const MissionsListSkeleton: FC<MissionsListSkeletonProps> = ({
         justifySelf: 'center',
       }}
     >
-      <CompactEntityCardSkeleton />
+      <CompactEntityCardSkeleton fullWidth />
     </Box>
   ));
 };
