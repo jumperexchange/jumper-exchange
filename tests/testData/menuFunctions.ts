@@ -58,7 +58,7 @@ export async function switchTheme(page, theme: Theme) {
   }
 }
 
-export async function openNewTab(context, url: string) {
+export async function openNewTabAndVerifyUrl(context, url: string) {
   const newPage = await context.waitForEvent('page');
   expect(newPage.url()).toBe(url);
 }
