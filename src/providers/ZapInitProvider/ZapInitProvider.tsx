@@ -33,6 +33,7 @@ import { Chain, http, zeroAddress } from 'viem';
 import * as chains_ from 'viem/chains';
 import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
 import * as hyperwave from './hyperwave';
+import * as katana from './katana';
 import {
   WalletCall,
   WalletCapabilitiesArgs,
@@ -95,6 +96,7 @@ interface ZapInitProviderProps extends PropsWithChildren {
 const chains: Record<number, Chain> = {
   ...chains_,
   [999]: hyperwave.hyperevm,
+  [747474]: katana.katana,
 };
 
 export const ZapInitProvider: FC<ZapInitProviderProps> = ({
