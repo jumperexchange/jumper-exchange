@@ -51,10 +51,8 @@ export const approve: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  console.log('approve address', zapper.getApproveAddress());
-
   return await buildContractComposable(oNexus, {
-    address: zapper.getApproveAddress(),
+    address: depositToken,
     chainId: depositChainId,
     abi: integrationData.abi.approve,
     functionName: integrationData.abi.approve.name,
@@ -247,7 +245,6 @@ export const hyperwaveCommands: Record<string, ZapInstruction> = {
 };
 
 export interface ZapperStrategy {
-  getApproveAddress: () => `0x${string}`;
   getDepositAddress: () => `0x${string}`;
   computeMinimumMint: () => Promise<bigint | null>;
   getCommands: () => Record<string, ZapInstruction>;
@@ -298,11 +295,6 @@ export class DefaultZapper implements ZapperStrategy {
     }
     return this.zapData.market.address;
   }
-
-  getApproveAddress = (): `0x${string}` => {
-    console.log('this.zapData.abi', this.zapData.abi);
-    return this.getAbiAddress(this.zapData.abi.approve);
-  };
 
   getDepositAddress = (): `0x${string}` => {
     return this.getAbiAddress(this.zapData.abi.deposit);
