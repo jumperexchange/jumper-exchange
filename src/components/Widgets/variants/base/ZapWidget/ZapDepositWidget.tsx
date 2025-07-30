@@ -42,9 +42,14 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     return zapData?.market?.depositToken.chainId;
   }, [JSON.stringify(zapData ?? {})]);
 
+  const minFromAmountUSD = useMemo(() => {
+    return Number(projectData?.minFromAmountUSD ?? '0');
+  }, [projectData?.minFromAmountUSD]);
+
   const enhancedCtx = useMemo(() => {
     const baseOverrides: ConfigContext['baseOverrides'] = {
       integrator: projectData.integrator,
+      minFromAmountUSD,
     };
 
     return {
@@ -52,6 +57,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       includeZap: true,
       zapProviders: providers,
       zapToAddress: toAddress,
+      zapPoolName: poolName,
       baseOverrides,
     };
   }, [
@@ -60,6 +66,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     providers,
     toAddress,
     projectData.integrator,
+    minFromAmountUSD,
   ]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
