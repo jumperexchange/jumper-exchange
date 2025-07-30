@@ -176,6 +176,10 @@
       "action": {
         "verify": "Verificar",
         "go": "Ir"
+      },
+      "completed": {
+        "title": "",
+        "description": ""
       }
     }
   },
@@ -196,7 +200,11 @@
     "perks": "",
     "achievements": "",
     "unlocked": "",
-    "levelWithValue": ""
+    "levelWithValue": "",
+    "noData": {
+      "description": "",
+      "caption": ""
+    }
   },
   "campaign": {
     "missions": {
