@@ -6,7 +6,7 @@ import {
   differenceInMinutes,
   isBefore,
 } from 'date-fns';
-const { useTranslation } = require('react-i18next');
+import { useTranslation } from 'react-i18next';
 
 export const useMissionTimeStatus = (
   publishedAt: string,
@@ -15,19 +15,25 @@ export const useMissionTimeStatus = (
 ) => {
   const { t } = useTranslation();
 
-  const missionTimeStatus = useMemo(() => {
+  return useMemo(() => {
     const now = new Date();
     const publishedDate = parseISO(publishedAt);
     const endsDate = parseISO(endsAt);
 
     if (isBefore(now, publishedDate)) {
-      return t('missions.status.upcoming');
+      return {
+        status: t('missions.status.upcoming'),
+        isDisabled: true,
+      };
     }
 
     const daysSincePublished = differenceInDays(now, publishedDate);
 
     if (daysSincePublished < sensitivity) {
-      return t('missions.status.new');
+      return {
+        status: t('missions.status.new'),
+        isDisabled: false,
+      };
     }
 
     if (isBefore(now, endsDate)) {
@@ -36,14 +42,26 @@ export const useMissionTimeStatus = (
       const minutesLeft = differenceInMinutes(endsDate, now);
 
       if (minutesLeft < 60) {
-        return t('missions.status.minutesLeft', { count: minutesLeft });
+        return {
+          status: t('missions.status.minutesLeft', { count: minutesLeft }),
+          isDisabled: false,
+        };
       } else if (hoursLeft < 24) {
-        return t('missions.status.hoursLeft', { count: hoursLeft });
+        return {
+          status: t('missions.status.hoursLeft', { count: hoursLeft }),
+          isDisabled: false,
+        };
       } else if (daysLeft <= sensitivity) {
-        return t('missions.status.daysLeft', { count: daysLeft });
+        return {
+          status: t('missions.status.daysLeft', { count: daysLeft }),
+          isDisabled: false,
+        };
       }
     }
-  }, [t, publishedAt, endsAt, sensitivity]);
 
-  return missionTimeStatus;
+    return {
+      status: undefined,
+      isDisabled: false,
+    };
+  }, [t, publishedAt, endsAt, sensitivity]);
 };

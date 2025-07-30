@@ -27,7 +27,7 @@ const defaultCampaigns = [
     missionsCount: 5,
     rewardChainIds: ['1', '10'],
     slug: 'campaign-a',
-    statsCardVariant: MissionHeroStatsCardVariant.Default,
+    heroStatsCardVariant: MissionHeroStatsCardVariant.Default,
   },
   {
     bannerImage:
@@ -37,7 +37,7 @@ const defaultCampaigns = [
     benefitLabel: 'Bonus Pool',
     benefitValue: '$200K',
     missionsCount: 8,
-    statsCardVariant: MissionHeroStatsCardVariant.Inverted,
+    heroStatsCardVariant: MissionHeroStatsCardVariant.Inverted,
     rewardChainIds: ['42161'],
     slug: 'campaign-b',
   },
@@ -49,7 +49,7 @@ const defaultCampaigns = [
     missionsCount: 3,
     rewardChainIds: ['10', '137', '8453'],
     slug: 'campaign-c',
-    statsCardVariant: MissionHeroStatsCardVariant.Default,
+    heroStatsCardVariant: MissionHeroStatsCardVariant.Default,
   },
 ];
 
@@ -84,21 +84,21 @@ const Template: StoryFn<typeof CarouselShell> = (_props, { args }) => {
             <MissionHeroStatsCard
               title={campaign.benefitLabel}
               description={campaign.benefitValue}
-              variant={campaign.statsCardVariant}
+              variant={campaign.heroStatsCardVariant}
             />
           )}
           {!!campaign.missionsCount && (
             <MissionHeroStatsCard
               title="Missions"
               description={campaign.missionsCount.toString()}
-              variant={campaign.statsCardVariant}
+              variant={campaign.heroStatsCardVariant}
             />
           )}
           {!!campaign.rewardChainIds?.length && (
             <MissionHeroStatsCard
               title="Rewards"
               description={<ChainStack chainIds={campaign.rewardChainIds} />}
-              variant={campaign.statsCardVariant}
+              variant={campaign.heroStatsCardVariant}
             />
           )}
         </BannerCampaignContent>
@@ -132,7 +132,7 @@ export const CustomCampaigns: Story = {
         missionsCount: 2,
         rewardChainIds: ['56'],
         slug: 'custom-campaign',
-        statsCardVariant: MissionHeroStatsCardVariant.Default,
+        heroStatsCardVariant: MissionHeroStatsCardVariant.Default,
       },
     ],
   },

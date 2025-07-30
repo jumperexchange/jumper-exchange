@@ -67,7 +67,7 @@ export const FloatingLinksContainer = styled(Stack)(({ theme }) => ({
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)',
   borderRadius: 64,
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.lavenderLight[200],
+    backgroundColor: (theme.vars || theme).palette.surface3.main,
   }),
 }));
 

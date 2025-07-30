@@ -1,4 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/nextjs-vite';
+import { ComponentProps } from 'react';
 
 import { CampaignHeroCard } from './CampaignHeroCard';
 import { CampaignHeroCardSkeleton } from './CampaignHeroCardSkeletion';
@@ -10,10 +11,20 @@ import {
   CampaignHeroStatsWrapper,
 } from './CampaignHero.style';
 
+type CampaignHeroCardStoryProps = ComponentProps<typeof CampaignHeroCard> & {
+  heroStatsCardVariant?: MissionHeroStatsCardVariant;
+};
+
 const meta = {
   component: CampaignHeroCard,
   title: 'Campaigns/Hero Card',
-} satisfies Meta<typeof CampaignHeroCard>;
+  argTypes: {
+    heroStatsCardVariant: {
+      control: { type: 'select' },
+      options: Object.values(MissionHeroStatsCardVariant),
+    },
+  },
+} satisfies Meta<CampaignHeroCardStoryProps>;
 
 export default meta;
 type CustomStoryArgs = {
@@ -23,15 +34,16 @@ type CustomStoryArgs = {
   benefitValue?: string;
   missionsCount?: number;
   rewardChainIds?: string[];
+  heroStatsCardVariant?: MissionHeroStatsCardVariant;
 };
 
-type Story = StoryObj<typeof CampaignHeroCard> & {
+type Story = StoryObj<CampaignHeroCardStoryProps> & {
   args?: CustomStoryArgs;
 };
 
 // For presentation purposes only — this custom template allows us to display components without relying on hooks for data manipulation
 // Renders the campaign card with optional prop overrides
-const Template: StoryFn<typeof CampaignHeroCard> = (_props, { args }) => {
+const Template: StoryFn<CampaignHeroCardStoryProps> = (_props, { args }) => {
   const {
     isLoading,
     icon,
@@ -39,6 +51,7 @@ const Template: StoryFn<typeof CampaignHeroCard> = (_props, { args }) => {
     benefitValue,
     missionsCount,
     rewardChainIds,
+    heroStatsCardVariant,
   } = args as CustomStoryArgs;
 
   if (isLoading) {
@@ -62,21 +75,21 @@ const Template: StoryFn<typeof CampaignHeroCard> = (_props, { args }) => {
           <MissionHeroStatsCard
             title={benefitLabel}
             description={benefitValue}
-            variant={MissionHeroStatsCardVariant.Default}
+            variant={heroStatsCardVariant}
           />
         )}
         {!!missionsCount && (
           <MissionHeroStatsCard
             title="Missions"
             description={missionsCount}
-            variant={MissionHeroStatsCardVariant.Default}
+            variant={heroStatsCardVariant}
           />
         )}
         {!!rewardChainIds?.length && (
           <MissionHeroStatsCard
             title="Rewards"
             description={<ChainStack chainIds={rewardChainIds} />}
-            variant={MissionHeroStatsCardVariant.Default}
+            variant={heroStatsCardVariant}
           />
         )}
       </CampaignHeroStatsWrapper>
@@ -98,5 +111,6 @@ export const Default: Story = {
     benefitValue: '$100K',
     missionsCount: 5,
     rewardChainIds: ['1', '10'],
+    heroStatsCardVariant: MissionHeroStatsCardVariant.Default,
   },
 };

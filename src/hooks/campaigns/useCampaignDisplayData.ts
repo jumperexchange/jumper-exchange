@@ -7,6 +7,12 @@ import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 export const useCampaignDisplayData = (campaign: CampaignData) => {
   return useMemo(() => {
     const apiBaseUrl = getStrapiBaseUrl();
+
+    const getStatsCardVariant = (colorMode?: BenefitCardColorMode) =>
+      colorMode === BenefitCardColorMode.Dark
+        ? MissionHeroStatsCardVariant.Inverted
+        : MissionHeroStatsCardVariant.Default;
+
     return {
       missionsCount: campaign.MissionCount || campaign.quests?.length || 0,
       slug: campaign.Slug || '',
@@ -26,10 +32,12 @@ export const useCampaignDisplayData = (campaign: CampaignData) => {
         campaign.ProfileBannerCTA ||
         `${AppPaths.Campaign}/${campaign.Slug}` ||
         '',
-      statsCardVariant:
-        campaign.BenefitCardColorMode === BenefitCardColorMode.Dark
-          ? MissionHeroStatsCardVariant.Inverted
-          : MissionHeroStatsCardVariant.Default,
+      bannerStatsCardVariant: getStatsCardVariant(
+        campaign.CarouselBenefitCardColorMode,
+      ),
+      heroStatsCardVariant: getStatsCardVariant(
+        campaign.HeroBenefitCardColorMode,
+      ),
     };
   }, [campaign]);
 };

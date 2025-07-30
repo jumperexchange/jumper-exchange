@@ -30,7 +30,7 @@ interface ZapDetailsProps {
 }
 
 export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
-  const status = useMissionTimeStatus(
+  const { status } = useMissionTimeStatus(
     market?.StartDate ?? '',
     market?.EndDate ?? '',
   );

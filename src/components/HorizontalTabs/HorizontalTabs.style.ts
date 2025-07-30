@@ -10,6 +10,9 @@ export enum HorizontalTabSize {
 export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
   flex: 1,
   backgroundColor: (theme.vars || theme).palette.surface3.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+  }),
   padding: theme.spacing(0.5),
   borderRadius: theme.shape.tabBarRadius,
   display: 'inline-flex',
@@ -22,6 +25,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
   },
   '.MuiTabs-scroller': {
     width: 'auto',
+    overflow: 'unset !important',
   },
   '.MuiTabs-indicator': {
     position: 'absolute',
@@ -31,11 +35,12 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     width: '100%',
     borderRadius: 24,
     transform: 'translateX(0) scaleX(0.98)',
-    backgroundColor: (theme.vars || theme).palette.surface2.main, // @todo: adjust color to use surface1 '#302B52'
-    zIndex: 1,
+    boxShadow: theme.shadows[2],
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
     ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
     }),
+    zIndex: 1,
   },
 }));
 
@@ -45,17 +50,17 @@ interface HorizontalTabProps extends TabProps {
 
 export const HorizontalTabContainer = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<HorizontalTabProps>(({ theme, size = HorizontalTabSize.MD }) => ({
-  ...theme.typography.bodyMedium,
+})<HorizontalTabProps>(({ theme, disabled }) => ({
   fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',
   borderRadius: 24,
   width: 'auto',
   background: 'transparent',
   margin: 0,
-  transition: 'all 0.2s ease-in-out',
-  color: `${(theme.vars || theme).palette.text.primary} !important`,
-  opacity: 1,
+  transition: 'all .2s ease-in-out',
+  color: disabled
+    ? `${(theme.vars || theme).palette.text.disabled} !important`
+    : `${(theme.vars || theme).palette.text.primary} !important`,
   zIndex: 1,
   flex: 1,
   [theme.breakpoints.up('md')]: {
@@ -68,14 +73,18 @@ export const HorizontalTabContainer = styled(Tab, {
     zIndex: 2,
     color: 'inherit',
   },
-  ...theme.applyStyles('light', {
-    color: `${(theme.vars || theme).palette.text.primary} !important`,
+  ...(!disabled && {
+    ':hover': {
+      backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+      ...theme.applyStyles('light', {
+        backgroundColor: (theme.vars || theme).palette.buttonAlphaLightBg,
+      }),
+    },
   }),
-  ':hover': {
-    backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
-    }),
+
+  '&.Mui-selected': {
+    pointerEvents: 'none',
+    backgroundColor: 'transparent',
   },
 
   variants: [
@@ -84,7 +93,7 @@ export const HorizontalTabContainer = styled(Tab, {
       style: {
         height: 40,
         padding: theme.spacing(1, 2),
-        typography: theme.typography.bodySmallStrong,
+        ...theme.typography.bodySmallStrong,
       },
     },
     {
@@ -92,7 +101,7 @@ export const HorizontalTabContainer = styled(Tab, {
       style: {
         height: 48,
         padding: theme.spacing(1.5, 2.5),
-        typography: theme.typography.bodyMediumStrong,
+        ...theme.typography.bodyMediumStrong,
       },
     },
   ],

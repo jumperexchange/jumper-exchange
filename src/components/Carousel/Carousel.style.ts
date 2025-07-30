@@ -127,23 +127,13 @@ export const CarouselCenteredBox = styled(Box)(() => ({
   justifyContent: 'center',
 }));
 
-export const fillBullet = keyframes`
-  from {
-    width: 5%;
-  }
-  to {
-    width: 100%;
-  }
-`;
-
 interface AnimatedPaginationRootProps {
-  delay?: number;
-  isPaused?: boolean;
+  progress?: number;
 }
 
 export const AnimatedPaginationContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'delay' && prop !== 'isPaused',
-})<AnimatedPaginationRootProps>(({ theme, delay, isPaused = false }) => ({
+})<AnimatedPaginationRootProps>(({ theme, progress }) => ({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
@@ -155,7 +145,7 @@ export const AnimatedPaginationContainer = styled(Box, {
 
   '&.swiper-pagination .swiper-pagination-bullet': {
     borderRadius: '4px',
-    transition: 'all 0.3s ease',
+    transition: 'none',
     opacity: `1 !important`,
     backgroundColor: `${(theme.vars || theme).palette.alphaLight300.main} !important`,
     ...theme.applyStyles('light', {
@@ -180,12 +170,9 @@ export const AnimatedPaginationContainer = styled(Box, {
     borderRadius: '8px',
     left: 0,
     top: 0,
-    width: '0%',
+    width: `${progress}%`,
     height: '100%',
     backgroundColor: (theme.vars || theme).palette.accent1.main,
-    animation: `${fillBullet} ${delay ?? 3000}ms linear forwards`,
-    animationName: `${fillBullet}`,
-    animationPlayState: isPaused ? 'paused' : 'running',
   },
 }));
 
@@ -201,17 +188,30 @@ export const FloatingNavigationContainer = styled(CarouselNavigationContainer, {
   zIndex: 10,
   display: 'flex',
   justifyContent: 'space-between',
+  pointerEvents: 'none',
 }));
 
 export const FloatingNavigationButton = styled(IconButtonSecondary)(
   ({ theme }) => ({
+    cursor: 'pointer',
+    pointerEvents: 'auto',
     width: 40,
     height: 40,
     fontSize: 22,
-    border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
+    border: '2px solid',
+    borderColor: (theme.vars || theme).palette.surface1.main,
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    color: (theme.vars || theme).palette.text.primary,
     ':hover': {
-      backgroundColor: (theme.vars || theme).palette.alphaLight900.main,
+      backgroundColor: (theme.vars || theme).palette.surface2.main,
     },
+    ...theme.applyStyles('light', {
+      borderColor: (theme.vars || theme).palette.surface2.main,
+      backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+      color: (theme.vars || theme).palette.buttonLightAction,
+      ':hover': {
+        backgroundColor: (theme.vars || theme).palette.alphaLight900.main,
+      },
+    }),
   }),
 );

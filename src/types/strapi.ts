@@ -377,7 +377,8 @@ export interface CampaignAttributes {
   updatedAt: string;
   publishedAt?: string;
   MissionCount?: number;
-  BenefitCardColorMode?: BenefitCardColorMode;
+  HeroBenefitCardColorMode?: BenefitCardColorMode;
+  CarouselBenefitCardColorMode?: BenefitCardColorMode;
 }
 
 /* MerklRewards */
@@ -427,6 +428,8 @@ export interface TaskWidgetInformationData {
   description?: string | null;
   CTALink?: string | null;
   CTAText?: string | null;
+  descriptionCTALink?: string;
+  descriptionCTAText?: string;
   inputs?: TaskWidgetInformationInputData[] | null;
 }
 

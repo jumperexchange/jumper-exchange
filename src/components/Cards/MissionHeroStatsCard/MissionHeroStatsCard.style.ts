@@ -17,21 +17,33 @@ export const MissionHeroStatsBox = styled(Box, {
   ({ theme, variant = MissionHeroStatsCardVariant.Default }) => ({
     position: 'relative',
     padding: theme.spacing(1, 1.5),
+    alignSelf: 'stretch',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: theme.spacing(1),
     borderRadius: 16,
     overflow: 'hidden',
-    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
-    border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
 
     ...(variant === MissionHeroStatsCardVariant.Default && {
       color: (theme.vars || theme).palette.alphaLight900.main,
+      backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+      border: `1px solid ${(theme.vars || theme).palette.alphaLight200.main}`,
+
+      '& .MuiAvatar-root': {
+        borderColor: (theme.vars || theme).palette.lavenderLight[0],
+      },
     }),
 
     ...(variant === MissionHeroStatsCardVariant.Inverted && {
       color: (theme.vars || theme).palette.alphaDark900.main,
+      backgroundColor: (theme.vars || theme).palette.alphaDark300.main,
+      border: `1px solid ${(theme.vars || theme).palette.alphaDark200.main}`,
+
+      '& .MuiAvatar-root': {
+        borderColor: (theme.vars || theme).palette.alphaDark900.main,
+      },
     }),
 
     '&::before': {
@@ -41,12 +53,13 @@ export const MissionHeroStatsBox = styled(Box, {
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-      backdropFilter: 'blur(4px)',
-      WebkitBackdropFilter: 'blur(4px)',
+      backdropFilter: 'blur(6px)',
+      WebkitBackdropFilter: 'blur(6px)',
       zIndex: -1,
     },
   }),
 );
 
-export const MissionHeroStatsText = styled(Typography)(({ theme }) => ({}));
+export const MissionHeroStatsText = styled(Typography)(({ theme }) => ({
+  textAlign: 'center',
+}));

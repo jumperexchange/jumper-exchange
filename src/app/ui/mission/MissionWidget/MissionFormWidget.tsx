@@ -1,9 +1,11 @@
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useMissionStore } from 'src/stores/mission';
 import {
   MissionWidgetContainer,
   MissionWidgetContentContainer,
   MissionWidgetTitle,
   MissionWidgetDescription,
+  MissionDescriptionLink,
 } from './MissionWidget.styles';
 import { Button } from 'src/components/Button';
 import {
@@ -22,6 +24,8 @@ export const MissionFormWidget = () => {
   const {
     taskTitle,
     taskDescription,
+    taskDescriptionCTALink,
+    taskDescriptionCTAText,
     taskCTALink,
     taskCTAText,
     taskInputs,
@@ -63,6 +67,12 @@ export const MissionFormWidget = () => {
             {taskDescription}
           </MissionWidgetDescription>
         </MissionWidgetContentContainer>
+        {!!taskDescriptionCTALink && !!taskDescriptionCTAText && (
+          <MissionDescriptionLink target="_blank" href={taskDescriptionCTALink}>
+            {taskDescriptionCTAText}
+            <ArrowForwardIcon />
+          </MissionDescriptionLink>
+        )}
         {hasForm ? (
           <MissionForm />
         ) : (
