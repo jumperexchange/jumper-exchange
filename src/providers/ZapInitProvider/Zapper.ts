@@ -384,21 +384,24 @@ export class DefaultZapper implements ZapperStrategy {
     oNexus: MultichainSmartAccount,
     sendCallsExtraParams: SendCallsExtraParams,
   ): Promise<Instruction[]> => {
-    const instructions: any[] = [];
+    const instructions: Instruction[] = [];
     const commands = this.getCommands();
 
     // Execute each step using the instruction builder
     for (const step of this.getSteps()) {
-      const stepInstruction = await buildInstruction(
-        step,
+      const command = commands[step];
+      if (!command) {
+        throw new Error(`Missing command for step: ${step}`);
+      }
+
+      const stepInstructions = await command(
         oNexus,
         sendCallsExtraParams,
         this,
-        commands,
       );
 
-      if (stepInstruction) {
-        instructions.push(stepInstruction);
+      if (stepInstructions) {
+        instructions.push(...stepInstructions);
       }
     }
 
