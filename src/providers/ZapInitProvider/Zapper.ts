@@ -29,6 +29,9 @@ export interface SendCallsExtraParams {
 }
 
 export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
+  // This structure is what you can be sure of by the end of isValidParams.
+  // Later we might want to implement runtime validation using something like zod
+  // to simplify our code.
   chainId: number;
   currentRoute: Route;
   zapData: ZapDataResponse & {
@@ -44,16 +47,26 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   address: string;
 }
 
+export interface ZapData extends ValidatedSendCallsExtraParams {
+  getAbiAddress: (fct: AbiEntry) => `0x${string}`;
+  getDepositAddress: () => `0x${string}`;
+}
+
+interface ZapDefinition {
+  commands: {
+    [key: string]: ZapInstruction;
+  };
+  steps: string[];
+}
+
 export type ZapInstruction = (
   oNexus: MultichainSmartAccount,
-  params: ValidatedSendCallsExtraParams,
-  zapper: ZapData,
+  params: ZapData,
 ) => Promise<Instruction[] | null>;
 
 export const approve: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ValidatedSendCallsExtraParams,
-  zapper: ZapData,
+  params: ZapData,
 ) => {
   const { zapData: integrationData, projectData } = params;
 
@@ -85,8 +98,7 @@ export const approve: ZapInstruction = async (
 
 export const deposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ValidatedSendCallsExtraParams,
-  zapper: ZapData,
+  params: ZapData,
 ) => {
   const {
     address: currentAddress,
@@ -117,7 +129,7 @@ export const deposit: ZapInstruction = async (
   });
 
   return buildContractComposable(oNexus, {
-    address: zapper.getDepositAddress(),
+    address: params.getDepositAddress(),
     chainId: depositChainId,
     abi: integrationData.abi.deposit,
     functionName: integrationData.abi.deposit.name,
@@ -171,8 +183,7 @@ const computeHyperwaveMinimumMint = async (
 
 export const hyperwaveDeposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ValidatedSendCallsExtraParams,
-  zapper: ZapData,
+  params: ZapData,
 ) => {
   const { zapData: integrationData, projectData } = params;
 
@@ -184,7 +195,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  let minimumMint: bigint | null = await computeHyperwaveMinimumMint(zapper);
+  let minimumMint: bigint | null = await computeHyperwaveMinimumMint(params);
   const depositInputs = integrationData.abi.deposit.inputs;
   const depositArgs = depositInputs.map((input: AbiParameter) => {
     if (input.name === 'minimumMint') {
@@ -205,7 +216,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
   });
 
   return buildContractComposable(oNexus, {
-    address: zapper.getDepositAddress(),
+    address: params.getDepositAddress(),
     chainId: depositChainId,
     abi: integrationData.abi.deposit,
     functionName: integrationData.abi.deposit.name,
@@ -216,8 +227,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
 
 export const transfer: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ValidatedSendCallsExtraParams,
-  zapper: ZapData,
+  params: ZapData,
 ) => {
   const {
     address: currentAddress,
@@ -259,46 +269,15 @@ export const transfer: ZapInstruction = async (
   return null;
 };
 
-interface ZapDefinition {
-  commands: {
-    [key: string]: ZapInstruction;
-  };
-  steps: string[];
-}
+const intoZapData = (params: ValidatedSendCallsExtraParams): ZapData => {
+  const market = params.zapData.market;
+  if (!market) {
+    throw new Error('Market not found in zap data');
+  }
 
-export const defaultZap: ZapDefinition = {
-  commands: {
-    approve,
-    deposit,
-    transfer,
-  },
-  steps: ['approve', 'deposit', 'transfer'],
-};
-
-export const hyperwaveZap: ZapDefinition = {
-  commands: {
-    approve,
-    deposit: hyperwaveDeposit,
-    transfer,
-  },
-  steps: ['approve', 'deposit', 'transfer'],
-};
-
-export class ZapData {
-  constructor(
-    public readonly projectData: ProjectData,
-    public readonly zapData: ZapDataResponse,
-    public readonly currentRoute: Route,
-    public readonly definition: ZapDefinition,
-  ) {}
-
-  public getAbiAddress(fct: AbiEntry): `0x${string}` {
-    if (!this.zapData.market) {
-      throw new Error('Market not found in zap data');
-    }
-
+  const getAbiAddress = (fct: AbiEntry) => {
     if (fct.contract) {
-      const contracts = this.zapData.market.contracts;
+      const contracts = market.contracts;
       if (!contracts) {
         throw new Error('Contracts not found in market');
       }
@@ -309,13 +288,19 @@ export class ZapData {
       }
       return v;
     }
-    return this.zapData.market.address;
-  }
-
-  getDepositAddress = (): `0x${string}` => {
-    return this.getAbiAddress(this.zapData.abi.deposit);
+    return market.address;
   };
-}
+
+  const getDepositAddress = () => {
+    return getAbiAddress(params.zapData.abi.deposit);
+  };
+
+  return {
+    ...params,
+    getAbiAddress,
+    getDepositAddress,
+  };
+};
 
 const isValidParams = (
   sendCallsExtraParams: SendCallsExtraParams,
@@ -364,17 +349,30 @@ const isValidParams = (
   return true;
 };
 
+export const defaultZap: ZapDefinition = {
+  commands: {
+    approve,
+    deposit,
+    transfer,
+  },
+  steps: ['approve', 'deposit', 'transfer'],
+};
+
+export const hyperwaveZap: ZapDefinition = {
+  commands: {
+    approve,
+    deposit: hyperwaveDeposit,
+    transfer,
+  },
+  steps: ['approve', 'deposit', 'transfer'],
+};
+
 const buildContractInstructionsInternal = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: ValidatedSendCallsExtraParams,
   definition: ZapDefinition,
 ): Promise<Instruction[]> => {
-  const zapper = new ZapData(
-    sendCallsExtraParams.projectData,
-    sendCallsExtraParams.zapData,
-    sendCallsExtraParams.currentRoute,
-    definition,
-  );
+  const zapData = intoZapData(sendCallsExtraParams);
 
   const instructions: Instruction[] = [];
   const commands = definition.commands;
@@ -386,11 +384,7 @@ const buildContractInstructionsInternal = async (
       throw new Error(`Missing command for step: ${step}`);
     }
 
-    const stepInstructions = await command(
-      oNexus,
-      sendCallsExtraParams,
-      zapper,
-    );
+    const stepInstructions = await command(oNexus, zapData);
 
     if (stepInstructions) {
       instructions.push(...stepInstructions);
