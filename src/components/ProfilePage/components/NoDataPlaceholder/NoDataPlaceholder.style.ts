@@ -34,7 +34,7 @@ export const NoDataPlaceholderDescriptionContainer = styled(Box)(
 
 export const NoDataPlaceholderCta = styled(ButtonPrimary)(({ theme }) => ({
   width: '100%',
-  paddingX: theme.spacing(3),
+  padding: theme.spacing(1.75, 2.75),
   [theme.breakpoints.up('md')]: {
     width: 'fit-content',
   },
