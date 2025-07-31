@@ -3,14 +3,12 @@
 import {
   createMeeClient,
   GetFusionQuoteParams,
-  greaterThanOrEqualTo,
   MeeClient,
   MultichainSmartAccount,
-  runtimeERC20BalanceOf,
   toMultichainNexusAccount,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
-import { EVMProvider, getTokenBalance, Route } from '@lifi/sdk';
+import { EVMProvider, getTokenBalance, Route, Token } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
@@ -60,6 +58,10 @@ interface ZapInitState {
   isLoadingDepositTokenData: boolean;
   refetchDepositToken: UseReadContractsReturnType['refetch'];
 }
+
+const isSameToken = (a: Token, b: Token) => {
+  return a.address === b.address && a.chainId === b.chainId;
+};
 
 export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
@@ -550,13 +552,19 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error('Native source token is not supported.');
       }
 
+      const isSameTokenDeposit = isSameToken(
+        sendCallsExtraParams.currentRoute.fromToken,
+        sendCallsExtraParams.currentRoute.toToken,
+      );
+      const baseCalls = isSameTokenDeposit ? [] : calls;
+
       // Create zapper instance based on project type
       // This allows for project-specific contract instruction building logic
       const zapper = makeZapper(sendCallsExtraParams);
 
       // Build raw calldata instructions (general flow)
       const rawInstructions = await Promise.all(
-        calls.map(async (call: WalletCall) => {
+        baseCalls.map(async (call: WalletCall) => {
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
           }
