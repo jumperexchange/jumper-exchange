@@ -10,9 +10,12 @@ export const NoDataPlaceholderCard = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(4),
   padding: theme.spacing(3),
-  borderRadius: theme.shape.cardBorderRadius,
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
   boxShadow: theme.shadows[2],
+  borderRadius: theme.shape.cardBorderRadius,
+  backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+  }),
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row',
   },
