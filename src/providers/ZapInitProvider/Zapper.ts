@@ -23,13 +23,13 @@ export interface SendCallsExtraParams {
 export type ZapInstruction = (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: ZapperStrategy,
+  zapper: DefaultZapper,
 ) => Promise<Instruction[] | null>;
 
 export const approve: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: ZapperStrategy,
+  zapper: DefaultZapper,
 ) => {
   // Build approve instruction
   const {
@@ -71,7 +71,7 @@ export const approve: ZapInstruction = async (
 export const deposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: ZapperStrategy,
+  zapper: DefaultZapper,
 ) => {
   const {
     address: currentAddress,
@@ -115,10 +115,53 @@ export const deposit: ZapInstruction = async (
   });
 };
 
+const computeHyperwaveMinimumMint = async (
+  zapper: DefaultZapper,
+): Promise<bigint | null> => {
+  const market = zapper.zapData.market;
+
+  if (!market) {
+    // TODO: we rely should retype this to get rid of the nulls.
+    throw new Error('Market not found in zap data');
+  }
+
+  const decimals = market.depositToken.decimals;
+  const token = market.depositToken.address;
+  const amount = BigInt(zapper.currentRoute.fromAmount);
+
+  const getRateInQuoteSafe = zapper.zapData.abi.getRateInQuoteSafe;
+
+  if (!getRateInQuoteSafe) {
+    throw new Error('getRateInQuoteSafe not found in abi');
+  }
+
+  const client = createPublicClient({
+    chain: hyperevm,
+    transport: http(),
+  });
+
+  const abi: Abi = [getRateInQuoteSafe];
+  const contract = getContract({
+    address: zapper.getAbiAddress(getRateInQuoteSafe),
+    abi,
+    client,
+  });
+
+  const rate = await contract.read.getRateInQuoteSafe([token]);
+
+  if (!rate || typeof rate !== 'bigint') {
+    throw new Error('Failed to get rate');
+  }
+
+  const numerator = amount * 10n ** BigInt(decimals);
+  const denominator = rate;
+  return numerator / denominator;
+};
+
 export const hyperwaveDeposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: ZapperStrategy,
+  zapper: DefaultZapper,
 ) => {
   const {
     address: currentAddress,
@@ -138,7 +181,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  let minimumMint: bigint | null = await zapper.computeMinimumMint();
+  let minimumMint: bigint | null = await computeHyperwaveMinimumMint(zapper);
   const depositInputs = integrationData.abi.deposit.inputs;
   const depositArgs = depositInputs.map((input: AbiParameter) => {
     if (input.name === 'minimumMint') {
@@ -221,7 +264,7 @@ export const buildInstruction = async (
   step: string,
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: ZapperStrategy,
+  zapper: DefaultZapper,
   commands: Record<string, ZapInstruction>,
 ) => {
   const command = commands[step];
@@ -259,7 +302,6 @@ export const hyperwaveZap: ZapDefinition = {
 
 export interface ZapperStrategy {
   getDepositAddress: () => `0x${string}`;
-  computeMinimumMint: () => Promise<bigint | null>;
   getCommands: () => Record<string, ZapInstruction>;
   /**
    * Build project-specific contract instructions.
@@ -284,13 +326,13 @@ export interface ZapperStrategy {
 
 export class DefaultZapper implements ZapperStrategy {
   constructor(
-    protected readonly projectData: ProjectData,
-    protected readonly zapData: ZapDataResponse,
-    protected readonly currentRoute: Route,
-    protected readonly definition: ZapDefinition,
+    public readonly projectData: ProjectData,
+    public readonly zapData: ZapDataResponse,
+    public readonly currentRoute: Route,
+    public readonly definition: ZapDefinition,
   ) {}
 
-  protected getAbiAddress(fct: AbiEntry): `0x${string}` {
+  public getAbiAddress(fct: AbiEntry): `0x${string}` {
     if (!this.zapData.market) {
       throw new Error('Market not found in zap data');
     }
@@ -312,10 +354,6 @@ export class DefaultZapper implements ZapperStrategy {
 
   getDepositAddress = (): `0x${string}` => {
     return this.getAbiAddress(this.zapData.abi.deposit);
-  };
-
-  computeMinimumMint = async (): Promise<bigint | null> => {
-    return null;
   };
 
   getSteps = (): string[] => {
@@ -397,48 +435,7 @@ export class DefaultZapper implements ZapperStrategy {
   }
 }
 
-export class HyperwaveZapper extends DefaultZapper {
-  computeMinimumMint = async (): Promise<bigint | null> => {
-    const market = this.zapData.market;
-
-    if (!market) {
-      // TODO: we rely should retype this to get rid of the nulls.
-      throw new Error('Market not found in zap data');
-    }
-
-    const decimals = market.depositToken.decimals;
-    const token = market.depositToken.address;
-    const amount = BigInt(this.currentRoute.fromAmount);
-
-    const getRateInQuoteSafe = this.zapData.abi.getRateInQuoteSafe;
-
-    if (!getRateInQuoteSafe) {
-      throw new Error('getRateInQuoteSafe not found in abi');
-    }
-
-    const client = createPublicClient({
-      chain: hyperevm,
-      transport: http(),
-    });
-
-    const abi: Abi = [getRateInQuoteSafe];
-    const contract = getContract({
-      address: this.getAbiAddress(getRateInQuoteSafe),
-      abi,
-      client,
-    });
-
-    const rate = await contract.read.getRateInQuoteSafe([token]);
-
-    if (!rate || typeof rate !== 'bigint') {
-      throw new Error('Failed to get rate');
-    }
-
-    const numerator = amount * 10n ** BigInt(decimals);
-    const denominator = rate;
-    return numerator / denominator;
-  };
-}
+export class HyperwaveZapper extends DefaultZapper {}
 
 /**
  * Factory function to create project-specific zapper instances.
