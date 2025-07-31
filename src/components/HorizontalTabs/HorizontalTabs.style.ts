@@ -72,6 +72,8 @@ export const HorizontalTabContainer = styled(Tab, {
   '&.MuiButtonBase-root': {
     zIndex: 2,
     color: 'inherit',
+    maxWidth: 'fit-content',
+    width: 'fit-content',
   },
   ...(!disabled && {
     ':hover': {
