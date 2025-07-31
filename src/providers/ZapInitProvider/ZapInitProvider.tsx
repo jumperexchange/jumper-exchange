@@ -33,6 +33,7 @@ import * as chains_ from 'viem/chains';
 import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
 import * as hyperwave from './hyperwave';
 import * as katana from './katana';
+import { buildContractInstructions, SendCallsExtraParams } from './ModularZaps';
 import {
   WalletCall,
   WalletCapabilitiesArgs,
@@ -43,7 +44,6 @@ import {
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
 } from './types';
-import { buildContractInstructions, SendCallsExtraParams } from './Zapper';
 
 interface ZapInitState {
   isInitialized: boolean;
