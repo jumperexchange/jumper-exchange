@@ -16,10 +16,10 @@ const buildContractInstructionsInternal = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: ValidatedSendCallsExtraParams,
   definition: ZapDefinition,
-): Promise<Instruction[]> => {
+): Promise<Instruction[][]> => {
   const context = makeZapExecutionContext(sendCallsExtraParams);
 
-  const instructions: Instruction[] = [];
+  const instructions: Instruction[][] = [];
   const commands = definition.commands;
 
   // Execute each step using the instruction builder
@@ -32,7 +32,7 @@ const buildContractInstructionsInternal = async (
     const stepInstructions = await command(oNexus, context);
 
     if (stepInstructions) {
-      instructions.push(...stepInstructions);
+      instructions.push(stepInstructions);
     }
   }
 
@@ -61,7 +61,7 @@ const buildContractInstructionsInternal = async (
 export const buildContractInstructions = (
   oNexusParam: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-) => {
+): Promise<Instruction[][]> => {
   if (!isValidParams(sendCallsExtraParams)) {
     throw new Error('Invalid parameters');
   }
