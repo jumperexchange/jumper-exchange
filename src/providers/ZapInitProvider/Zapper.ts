@@ -232,16 +232,29 @@ export const buildInstruction = async (
   return await command(oNexus, sendCallsExtraParams, zapper);
 };
 
-export const defaultCommands: Record<string, ZapInstruction> = {
-  approve,
-  deposit,
-  transfer,
+interface ZapDefinition {
+  commands: {
+    [key: string]: ZapInstruction;
+  };
+  steps: string[];
+}
+
+export const defaultZap: ZapDefinition = {
+  commands: {
+    approve,
+    deposit,
+    transfer,
+  },
+  steps: ['approve', 'deposit', 'transfer'],
 };
 
-export const hyperwaveCommands: Record<string, ZapInstruction> = {
-  approve,
-  deposit: hyperwaveDeposit,
-  transfer,
+export const hyperwaveZap: ZapDefinition = {
+  commands: {
+    approve,
+    deposit: hyperwaveDeposit,
+    transfer,
+  },
+  steps: ['approve', 'deposit', 'transfer'],
 };
 
 export interface ZapperStrategy {
@@ -274,6 +287,7 @@ export class DefaultZapper implements ZapperStrategy {
     protected readonly projectData: ProjectData,
     protected readonly zapData: ZapDataResponse,
     protected readonly currentRoute: Route,
+    protected readonly definition: ZapDefinition,
   ) {}
 
   protected getAbiAddress(fct: AbiEntry): `0x${string}` {
@@ -305,11 +319,11 @@ export class DefaultZapper implements ZapperStrategy {
   };
 
   getSteps = (): string[] => {
-    return ['approve', 'deposit', 'transfer'];
+    return this.definition.steps;
   };
 
   getCommands = (): Record<string, ZapInstruction> => {
-    return defaultCommands;
+    return this.definition.commands;
   };
 
   buildContractInstructions = async (
@@ -424,16 +438,6 @@ export class HyperwaveZapper extends DefaultZapper {
     const denominator = rate;
     return numerator / denominator;
   };
-
-  // Override getSteps to add Hyperwave-specific steps
-  // @Note We should execute the steps in the correct order
-  // getSteps = (): string[] => {
-  //   return ['approve', 'deposit', 'transfer', 'customExtraStep'];
-  // };
-
-  getCommands = (): Record<string, ZapInstruction> => {
-    return hyperwaveCommands;
-  };
 }
 
 /**
@@ -479,12 +483,14 @@ export const makeZapper = (sendCallsExtraParams: SendCallsExtraParams) => {
         sendCallsExtraParams.projectData,
         sendCallsExtraParams.zapData,
         sendCallsExtraParams.currentRoute,
+        hyperwaveZap,
       );
     default:
       return new DefaultZapper(
         sendCallsExtraParams.projectData,
         sendCallsExtraParams.zapData,
         sendCallsExtraParams.currentRoute,
+        defaultZap,
       );
   }
 };
