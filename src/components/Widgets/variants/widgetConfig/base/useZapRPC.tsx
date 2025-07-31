@@ -45,7 +45,7 @@ export const useZapRPC = (
       },
       explorerUrls,
       bridges: {
-        allow: ['across', 'relay', 'gasZipBridge'],
+        allow: ['across', 'relay'],
       },
       sdkConfig: {
         apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
