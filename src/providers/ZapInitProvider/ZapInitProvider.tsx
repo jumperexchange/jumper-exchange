@@ -27,6 +27,7 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
+import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 import { Chain, http, zeroAddress } from 'viem';
 import * as chains_ from 'viem/chains';
 import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
@@ -42,11 +43,7 @@ import {
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
 } from './types';
-import { makeZapper, SendCallsExtraParams } from './Zapper';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { ProjectData } from 'src/types/questDetails';
-import { EVMAddress } from 'src/types/internal';
-import { retryWithBackoff } from 'src/utils/retryWithBackoff';
+import { buildContractInstructions, SendCallsExtraParams } from './Zapper';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -565,10 +562,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       );
       const baseCalls = isSameTokenDeposit ? [] : calls;
 
-      // Create zapper instance based on project type
-      // This allows for project-specific contract instruction building logic
-      const zapper = makeZapper(sendCallsExtraParams);
-
       // Build raw calldata instructions (general flow)
       const rawInstructions = await Promise.all(
         baseCalls.map(async (call: WalletCall) => {
@@ -587,7 +580,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       );
 
       // Build project-specific contract instructions (approve, deposit, transfer)
-      const contractInstructions = await zapper.buildContractInstructions(
+      const contractInstructions = await buildContractInstructions(
         oNexusParam,
         sendCallsExtraParams,
       );

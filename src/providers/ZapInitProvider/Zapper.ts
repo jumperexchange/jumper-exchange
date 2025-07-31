@@ -277,21 +277,6 @@ export const transfer: ZapInstruction = async (
   return null;
 };
 
-export const buildInstruction = async (
-  step: string,
-  oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
-  zapper: DefaultZapper,
-  commands: Record<string, ZapInstruction>,
-) => {
-  const command = commands[step];
-  if (!command) {
-    throw new Error(`Unknown step: ${step}`);
-  }
-
-  return await command(oNexus, sendCallsExtraParams, zapper);
-};
-
 interface ZapDefinition {
   commands: {
     [key: string]: ZapInstruction;
@@ -320,20 +305,6 @@ export const hyperwaveZap: ZapDefinition = {
 export interface ZapperStrategy {
   getDepositAddress: () => `0x${string}`;
   getCommands: () => Record<string, ZapInstruction>;
-  /**
-   * Build project-specific contract instructions.
-   * This method builds the contract-specific instructions (approve, deposit, transfer)
-   * while the general flow (raw calldata) remains in ZapInitProvider.
-   *
-   * @param oNexus - The multichain smart account instance
-   * @param sendCallsExtraParams - Additional parameters for the transaction
-   * @returns Array of contract instructions to be executed
-   */
-  buildContractInstructions: (
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-  ) => Promise<any[]>;
-
   /**
    * Get the steps to execute for this project.
    * Each project can define its own sequence of steps.
@@ -379,34 +350,6 @@ export class DefaultZapper implements ZapperStrategy {
 
   getCommands = (): Record<string, ZapInstruction> => {
     return this.definition.commands;
-  };
-
-  buildContractInstructions = async (
-    oNexus: MultichainSmartAccount,
-    sendCallsExtraParams: SendCallsExtraParams,
-  ): Promise<Instruction[]> => {
-    const instructions: Instruction[] = [];
-    const commands = this.getCommands();
-
-    // Execute each step using the instruction builder
-    for (const step of this.getSteps()) {
-      const command = commands[step];
-      if (!command) {
-        throw new Error(`Missing command for step: ${step}`);
-      }
-
-      const stepInstructions = await command(
-        oNexus,
-        sendCallsExtraParams,
-        this,
-      );
-
-      if (stepInstructions) {
-        instructions.push(...stepInstructions);
-      }
-    }
-
-    return instructions;
   };
 }
 
@@ -457,6 +400,35 @@ const isValidParams = (
   return true;
 };
 
+const buildContractInstructionsInternal = async (
+  oNexus: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+  zapper: DefaultZapper,
+): Promise<Instruction[]> => {
+  const instructions: Instruction[] = [];
+  const commands = zapper.getCommands();
+
+  // Execute each step using the instruction builder
+  for (const step of zapper.getSteps()) {
+    const command = commands[step];
+    if (!command) {
+      throw new Error(`Missing command for step: ${step}`);
+    }
+
+    const stepInstructions = await command(
+      oNexus,
+      sendCallsExtraParams,
+      zapper,
+    );
+
+    if (stepInstructions) {
+      instructions.push(...stepInstructions);
+    }
+  }
+
+  return instructions;
+};
+
 /**
  * Factory function to create project-specific zapper instances.
  * Each project can have its own custom contract instruction building logic.
@@ -489,25 +461,36 @@ const isValidParams = (
  * @param sendCallsExtraParams - Parameters containing project data and route information
  * @returns A zapper instance configured for the specific project
  */
-export const makeZapper = (sendCallsExtraParams: SendCallsExtraParams) => {
+export const buildContractInstructions = (
+  oNexusParam: MultichainSmartAccount,
+  sendCallsExtraParams: SendCallsExtraParams,
+) => {
   if (!isValidParams(sendCallsExtraParams)) {
     throw new Error('Invalid parameters');
   }
 
   switch (sendCallsExtraParams.projectData.project) {
     case 'hyperwave':
-      return new DefaultZapper(
-        sendCallsExtraParams.projectData,
-        sendCallsExtraParams.zapData,
-        sendCallsExtraParams.currentRoute,
-        hyperwaveZap,
+      return buildContractInstructionsInternal(
+        oNexusParam,
+        sendCallsExtraParams,
+        new DefaultZapper(
+          sendCallsExtraParams.projectData,
+          sendCallsExtraParams.zapData,
+          sendCallsExtraParams.currentRoute,
+          hyperwaveZap,
+        ),
       );
     default:
-      return new DefaultZapper(
-        sendCallsExtraParams.projectData,
-        sendCallsExtraParams.zapData,
-        sendCallsExtraParams.currentRoute,
-        defaultZap,
+      return buildContractInstructionsInternal(
+        oNexusParam,
+        sendCallsExtraParams,
+        new DefaultZapper(
+          sendCallsExtraParams.projectData,
+          sendCallsExtraParams.zapData,
+          sendCallsExtraParams.currentRoute,
+          defaultZap,
+        ),
       );
   }
 };
