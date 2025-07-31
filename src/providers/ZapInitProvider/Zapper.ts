@@ -31,37 +31,36 @@ export interface SendCallsExtraParams {
 export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   chainId: number;
   currentRoute: Route;
-  zapData: ZapDataResponse;
+  zapData: ZapDataResponse & {
+    market: {
+      address: `0x${string}`;
+      depositToken: {
+        address: `0x${string}`;
+        decimals: number;
+      };
+    };
+  };
   projectData: ProjectData;
   address: string;
 }
 
 export type ZapInstruction = (
   oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
+  params: ValidatedSendCallsExtraParams,
   zapper: ZapData,
 ) => Promise<Instruction[] | null>;
 
 export const approve: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
+  params: ValidatedSendCallsExtraParams,
   zapper: ZapData,
 ) => {
-  // Build approve instruction
-  const {
-    address: currentAddress,
-    zapData: integrationData,
-    projectData,
-  } = sendCallsExtraParams;
+  const { zapData: integrationData, projectData } = params;
 
-  const depositAddress = integrationData.market?.address as EVMAddress;
-  const depositToken = integrationData.market?.depositToken?.address;
-  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositAddress = integrationData.market.address;
+  const depositToken = integrationData.market.depositToken.address;
+  const depositTokenDecimals = integrationData.market.depositToken.decimals;
   const depositChainId = projectData.chainId;
-
-  if (!depositToken || !depositTokenDecimals) {
-    throw new Error('Deposit token or decimals are undefined');
-  }
 
   const constraints = [
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
@@ -86,22 +85,18 @@ export const approve: ZapInstruction = async (
 
 export const deposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
+  params: ValidatedSendCallsExtraParams,
   zapper: ZapData,
 ) => {
   const {
     address: currentAddress,
     zapData: integrationData,
     projectData,
-  } = sendCallsExtraParams;
+  } = params;
 
-  const depositToken = integrationData.market?.depositToken?.address;
-  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositToken = integrationData.market.depositToken.address;
+  const depositTokenDecimals = integrationData.market.depositToken.decimals;
   const depositChainId = projectData.chainId;
-
-  if (!depositToken || !depositTokenDecimals) {
-    throw new Error('Deposit token or decimals are undefined');
-  }
 
   const constraints = [
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
@@ -176,22 +171,14 @@ const computeHyperwaveMinimumMint = async (
 
 export const hyperwaveDeposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
+  params: ValidatedSendCallsExtraParams,
   zapper: ZapData,
 ) => {
-  const {
-    address: currentAddress,
-    zapData: integrationData,
-    projectData,
-  } = sendCallsExtraParams;
+  const { zapData: integrationData, projectData } = params;
 
-  const depositToken = integrationData.market?.depositToken?.address;
-  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositToken = integrationData.market.depositToken.address;
+  const depositTokenDecimals = integrationData.market.depositToken.decimals;
   const depositChainId = projectData.chainId;
-
-  if (!depositToken || !depositTokenDecimals) {
-    throw new Error('Deposit token or decimals are undefined');
-  }
 
   const constraints = [
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
@@ -229,23 +216,18 @@ export const hyperwaveDeposit: ZapInstruction = async (
 
 export const transfer: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
+  params: ValidatedSendCallsExtraParams,
   zapper: ZapData,
 ) => {
   const {
     address: currentAddress,
     zapData: integrationData,
     projectData,
-  } = sendCallsExtraParams;
+  } = params;
 
-  const depositAddress = integrationData.market?.address as EVMAddress;
-  const depositToken = integrationData.market?.depositToken?.address;
+  const depositAddress = integrationData.market.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
   const depositChainId = projectData.chainId;
-
-  if (!depositToken || !depositTokenDecimals) {
-    throw new Error('Deposit token or decimals are undefined');
-  }
 
   const constraints = [
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
