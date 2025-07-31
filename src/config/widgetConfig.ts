@@ -99,7 +99,7 @@ export const getDefaultWidgetThemeV2 = (
     >;
   }
   copiedTheme.colorSchemes.light.palette.grey[300] =
-    themeCustomized.palette.surface2.main;
+    themeCustomized.palette.surface4.main;
   copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
 
   const config = {
