@@ -11,7 +11,7 @@ export const NoDataPlaceholderCard = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4),
   padding: theme.spacing(3),
   borderRadius: theme.shape.cardBorderRadius,
-  backgroundColor: theme.palette.surface1.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   boxShadow: theme.shadows[2],
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row',
