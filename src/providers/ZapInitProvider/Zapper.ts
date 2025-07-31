@@ -67,7 +67,7 @@ export const approve: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  return await buildContractComposable(oNexus, {
+  return buildContractComposable(oNexus, {
     address: depositToken,
     chainId: depositChainId,
     abi: integrationData.abi.approve,
@@ -121,7 +121,7 @@ export const deposit: ZapInstruction = async (
     throw new Error(`Unsupported deposit input type: ${input.type}`);
   });
 
-  return await buildContractComposable(oNexus, {
+  return buildContractComposable(oNexus, {
     address: zapper.getDepositAddress(),
     chainId: depositChainId,
     abi: integrationData.abi.deposit,
@@ -217,7 +217,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
     throw new Error(`Unsupported deposit input type: ${input.type}`);
   });
 
-  return await buildContractComposable(oNexus, {
+  return buildContractComposable(oNexus, {
     address: zapper.getDepositAddress(),
     chainId: depositChainId,
     abi: integrationData.abi.deposit,
@@ -257,7 +257,7 @@ export const transfer: ZapInstruction = async (
   );
 
   if (!depositHasAddressArg) {
-    return await buildContractComposable(oNexus, {
+    return buildContractComposable(oNexus, {
       address: depositAddress,
       chainId: depositChainId,
       abi: integrationData.abi.transfer,
@@ -273,6 +273,7 @@ export const transfer: ZapInstruction = async (
       ],
     });
   }
+
   return null;
 };
 
