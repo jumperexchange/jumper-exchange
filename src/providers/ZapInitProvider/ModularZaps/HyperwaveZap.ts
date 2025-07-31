@@ -15,7 +15,7 @@ import {
 import { hyperevm } from '../hyperwave';
 import { buildContractComposable } from '../utils';
 import { approve, transfer } from './DefaultZap';
-import { ZapExecutionContext, ZapDefinition, ZapInstruction } from './base';
+import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
 
 const computeHyperwaveMinimumMint = async (
   zapper: ZapExecutionContext,
@@ -62,9 +62,9 @@ const computeHyperwaveMinimumMint = async (
 
 export const hyperwaveDeposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ZapExecutionContext,
+  context: ZapExecutionContext,
 ) => {
-  const { zapData: integrationData, projectData } = params;
+  const { zapData: integrationData, projectData } = context;
 
   const depositToken = integrationData.market.depositToken.address;
   const depositTokenDecimals = integrationData.market.depositToken.decimals;
@@ -74,7 +74,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  let minimumMint: bigint | null = await computeHyperwaveMinimumMint(params);
+  let minimumMint: bigint | null = await computeHyperwaveMinimumMint(context);
   const depositInputs = integrationData.abi.deposit.inputs;
   const depositArgs = depositInputs.map((input: AbiParameter) => {
     if (input.name === 'minimumMint') {
@@ -95,7 +95,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
   });
 
   return buildContractComposable(oNexus, {
-    address: params.getDepositAddress(),
+    address: context.getDepositAddress(),
     chainId: depositChainId,
     abi: integrationData.abi.deposit,
     functionName: integrationData.abi.deposit.name,

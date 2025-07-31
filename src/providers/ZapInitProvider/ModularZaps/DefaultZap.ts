@@ -10,9 +10,9 @@ import { ZapExecutionContext, ZapDefinition, ZapInstruction } from './base';
 
 export const approve: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ZapExecutionContext,
+  context: ZapExecutionContext,
 ) => {
-  const { zapData: integrationData, projectData } = params;
+  const { zapData: integrationData, projectData } = context;
 
   const depositAddress = integrationData.market.address;
   const depositToken = integrationData.market.depositToken.address;
@@ -42,13 +42,13 @@ export const approve: ZapInstruction = async (
 
 export const deposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ZapExecutionContext,
+  context: ZapExecutionContext,
 ) => {
   const {
     address: currentAddress,
     zapData: integrationData,
     projectData,
-  } = params;
+  } = context;
 
   const depositToken = integrationData.market.depositToken.address;
   const depositTokenDecimals = integrationData.market.depositToken.decimals;
@@ -73,7 +73,7 @@ export const deposit: ZapInstruction = async (
   });
 
   return buildContractComposable(oNexus, {
-    address: params.getDepositAddress(),
+    address: context.getDepositAddress(),
     chainId: depositChainId,
     abi: integrationData.abi.deposit,
     functionName: integrationData.abi.deposit.name,
@@ -84,13 +84,13 @@ export const deposit: ZapInstruction = async (
 
 export const transfer: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
-  params: ZapExecutionContext,
+  context: ZapExecutionContext,
 ) => {
   const {
     address: currentAddress,
     zapData: integrationData,
     projectData,
-  } = params;
+  } = context;
 
   const depositAddress = integrationData.market.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
