@@ -315,14 +315,6 @@ export class ZapData {
   getDepositAddress = (): `0x${string}` => {
     return this.getAbiAddress(this.zapData.abi.deposit);
   };
-
-  getSteps = (): string[] => {
-    return this.definition.steps;
-  };
-
-  getCommands = (): Record<string, ZapInstruction> => {
-    return this.definition.commands;
-  };
 }
 
 const isValidParams = (
@@ -385,10 +377,10 @@ const buildContractInstructionsInternal = async (
   );
 
   const instructions: Instruction[] = [];
-  const commands = zapper.getCommands();
+  const commands = definition.commands;
 
   // Execute each step using the instruction builder
-  for (const step of zapper.getSteps()) {
+  for (const step of definition.steps) {
     const command = commands[step];
     if (!command) {
       throw new Error(`Missing command for step: ${step}`);
