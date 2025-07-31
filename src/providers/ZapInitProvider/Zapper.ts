@@ -20,6 +20,14 @@ export interface SendCallsExtraParams {
   address: string | undefined;
 }
 
+export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
+  chainId: number;
+  currentRoute: Route;
+  zapData: ZapDataResponse;
+  projectData: ProjectData;
+  address: string;
+}
+
 export type ZapInstruction = (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
@@ -368,9 +376,6 @@ export class DefaultZapper implements ZapperStrategy {
     oNexus: MultichainSmartAccount,
     sendCallsExtraParams: SendCallsExtraParams,
   ): Promise<Instruction[]> => {
-    // Validate parameters
-    this.validateParameters(sendCallsExtraParams);
-
     const instructions: any[] = [];
     const commands = this.getCommands();
 
@@ -391,51 +396,54 @@ export class DefaultZapper implements ZapperStrategy {
 
     return instructions;
   };
-
-  protected validateParameters(
-    sendCallsExtraParams: SendCallsExtraParams,
-  ): void {
-    const {
-      chainId: currentChainId,
-      address: currentAddress,
-      zapData: integrationData,
-      projectData,
-    } = sendCallsExtraParams;
-
-    if (!currentChainId || !currentAddress) {
-      throw new Error('Missing chainId or address');
-    }
-
-    const currentRouteFromToken = this.currentRoute.fromToken;
-    const depositAddress = integrationData.market?.address as EVMAddress;
-    const depositToken = integrationData.market?.depositToken?.address;
-    const depositTokenDecimals = integrationData.market?.depositToken.decimals;
-    const depositChainId = projectData.chainId;
-
-    if (!depositChainId) {
-      throw new Error('Deposit chain id is undefined.');
-    }
-
-    if (!depositAddress || !depositToken) {
-      throw new Error('Deposit address or token is undefined.');
-    }
-
-    if (!depositTokenDecimals) {
-      throw new Error('Deposit token decimals is undefined.');
-    }
-
-    // @Note this works only for EVM chains
-    const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
-
-    console.warn('Using native source token:', isNativeSourceToken);
-
-    if (isNativeSourceToken) {
-      throw new Error('Native source token is not supported.');
-    }
-  }
 }
 
-export class HyperwaveZapper extends DefaultZapper {}
+const isValidParams = (
+  sendCallsExtraParams: SendCallsExtraParams,
+): sendCallsExtraParams is ValidatedSendCallsExtraParams => {
+  if (!sendCallsExtraParams.currentRoute) {
+    throw new Error('Current route is not set');
+  }
+
+  const {
+    chainId: currentChainId,
+    address: currentAddress,
+    zapData: integrationData,
+    projectData,
+  } = sendCallsExtraParams;
+
+  if (!currentChainId || !currentAddress) {
+    throw new Error('Missing chainId or address');
+  }
+
+  const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
+  const depositAddress = integrationData.market?.address as EVMAddress;
+  const depositToken = integrationData.market?.depositToken?.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
+
+  if (!depositChainId) {
+    throw new Error('Deposit chain id is undefined.');
+  }
+
+  if (!depositAddress || !depositToken) {
+    throw new Error('Deposit address or token is undefined.');
+  }
+
+  if (!depositTokenDecimals) {
+    throw new Error('Deposit token decimals is undefined.');
+  }
+
+  // @Note this works only for EVM chains
+  const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
+  console.warn('Using native source token:', isNativeSourceToken);
+
+  if (isNativeSourceToken) {
+    throw new Error('Native source token is not supported.');
+  }
+
+  return true;
+};
 
 /**
  * Factory function to create project-specific zapper instances.
@@ -470,13 +478,13 @@ export class HyperwaveZapper extends DefaultZapper {}
  * @returns A zapper instance configured for the specific project
  */
 export const makeZapper = (sendCallsExtraParams: SendCallsExtraParams) => {
-  if (!sendCallsExtraParams.currentRoute) {
-    throw new Error('Current route is not set');
+  if (!isValidParams(sendCallsExtraParams)) {
+    throw new Error('Invalid parameters');
   }
 
   switch (sendCallsExtraParams.projectData.project) {
     case 'hyperwave':
-      return new HyperwaveZapper(
+      return new DefaultZapper(
         sendCallsExtraParams.projectData,
         sendCallsExtraParams.zapData,
         sendCallsExtraParams.currentRoute,
