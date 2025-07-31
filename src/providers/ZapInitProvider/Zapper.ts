@@ -39,13 +39,13 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
 export type ZapInstruction = (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: DefaultZapper,
+  zapper: ZapData,
 ) => Promise<Instruction[] | null>;
 
 export const approve: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: DefaultZapper,
+  zapper: ZapData,
 ) => {
   // Build approve instruction
   const {
@@ -87,7 +87,7 @@ export const approve: ZapInstruction = async (
 export const deposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: DefaultZapper,
+  zapper: ZapData,
 ) => {
   const {
     address: currentAddress,
@@ -132,7 +132,7 @@ export const deposit: ZapInstruction = async (
 };
 
 const computeHyperwaveMinimumMint = async (
-  zapper: DefaultZapper,
+  zapper: ZapData,
 ): Promise<bigint | null> => {
   const market = zapper.zapData.market;
 
@@ -177,7 +177,7 @@ const computeHyperwaveMinimumMint = async (
 export const hyperwaveDeposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: DefaultZapper,
+  zapper: ZapData,
 ) => {
   const {
     address: currentAddress,
@@ -230,7 +230,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
 export const transfer: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   sendCallsExtraParams: SendCallsExtraParams,
-  zapper: ZapperStrategy,
+  zapper: ZapData,
 ) => {
   const {
     address: currentAddress,
@@ -302,17 +302,7 @@ export const hyperwaveZap: ZapDefinition = {
   steps: ['approve', 'deposit', 'transfer'],
 };
 
-export interface ZapperStrategy {
-  getDepositAddress: () => `0x${string}`;
-  getCommands: () => Record<string, ZapInstruction>;
-  /**
-   * Get the steps to execute for this project.
-   * Each project can define its own sequence of steps.
-   */
-  getSteps: () => string[];
-}
-
-export class DefaultZapper implements ZapperStrategy {
+export class ZapData {
   constructor(
     public readonly projectData: ProjectData,
     public readonly zapData: ZapDataResponse,
@@ -402,9 +392,16 @@ const isValidParams = (
 
 const buildContractInstructionsInternal = async (
   oNexus: MultichainSmartAccount,
-  sendCallsExtraParams: SendCallsExtraParams,
-  zapper: DefaultZapper,
+  sendCallsExtraParams: ValidatedSendCallsExtraParams,
+  definition: ZapDefinition,
 ): Promise<Instruction[]> => {
+  const zapper = new ZapData(
+    sendCallsExtraParams.projectData,
+    sendCallsExtraParams.zapData,
+    sendCallsExtraParams.currentRoute,
+    definition,
+  );
+
   const instructions: Instruction[] = [];
   const commands = zapper.getCommands();
 
@@ -474,23 +471,13 @@ export const buildContractInstructions = (
       return buildContractInstructionsInternal(
         oNexusParam,
         sendCallsExtraParams,
-        new DefaultZapper(
-          sendCallsExtraParams.projectData,
-          sendCallsExtraParams.zapData,
-          sendCallsExtraParams.currentRoute,
-          hyperwaveZap,
-        ),
+        hyperwaveZap,
       );
     default:
       return buildContractInstructionsInternal(
         oNexusParam,
         sendCallsExtraParams,
-        new DefaultZapper(
-          sendCallsExtraParams.projectData,
-          sendCallsExtraParams.zapData,
-          sendCallsExtraParams.currentRoute,
-          defaultZap,
-        ),
+        defaultZap,
       );
   }
 };
