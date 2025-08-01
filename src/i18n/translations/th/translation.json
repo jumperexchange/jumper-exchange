@@ -203,7 +203,8 @@
     "levelWithValue": "",
     "noData": {
       "description": "",
-      "caption": ""
+      "caption": "",
+      "cta": ""
     }
   },
   "campaign": {
