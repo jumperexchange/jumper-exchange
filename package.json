@@ -176,7 +176,7 @@
     "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "lint-staged": {
-    "**/*.(ts|tsx|js)": [
+    "**/*.(ts|tsx|js|mjs)": [
       "bash -c tsc --noEmit",
       "pnpm eslint --fix",
       "pnpm prettier --write"
