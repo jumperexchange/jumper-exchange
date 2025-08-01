@@ -55,6 +55,7 @@ declare module '@mui/material/styles' {
     surface1: Palette['primary'];
     surface2: Palette['primary'];
     surface3: Palette['primary'];
+    surface4: Palette['primary'];
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
@@ -102,6 +103,7 @@ declare module '@mui/material/styles' {
     surface1?: PaletteOptions['primary'];
     surface2?: PaletteOptions['primary'];
     surface3?: PaletteOptions['primary'];
+    surface4?: PaletteOptions['primary'];
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
@@ -146,6 +148,7 @@ declare module '@mui/material/styles' {
     surface1: true;
     surface2: true;
     surface3: true;
+    surface4: true;
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
@@ -407,6 +410,11 @@ const palette = {
     light: paletteLight.surface3,
     main: paletteLight.surface3,
     dark: paletteLight.surface3,
+  },
+  surface4: {
+    light: paletteLight.surface4,
+    main: paletteLight.surface4,
+    dark: paletteLight.surface4,
   },
 };
 
@@ -976,6 +984,11 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             main: paletteLight.surface3,
             dark: paletteLight.surface3,
           },
+          surface4: {
+            light: paletteLight.surface4,
+            main: paletteLight.surface4,
+            dark: paletteLight.surface4,
+          },
         },
         // @ts-expect-error
         shadows: [
@@ -1069,6 +1082,11 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             light: '#120F29',
             main: '#120F29',
             dark: '#120F29',
+          },
+          surface4: {
+            light: paletteDark.surface4,
+            main: paletteDark.surface4,
+            dark: paletteDark.surface4,
           },
         },
         // @ts-expect-error
