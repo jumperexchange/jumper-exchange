@@ -202,8 +202,9 @@
     "unlocked": "Unlocked",
     "levelWithValue": "Level {{level}}",
     "noData": {
-      "description": "There are no {{entity}} available at your current Jumper Loyalty Pass Level",
-      "caption": "Keep bridging, swapping and participating to missions on Jumper to unlock {{entity}}."
+      "description": "No {{entity}} yet? Let's change that!",
+      "caption": "Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.",
+      "cta": "Start swapping"
     }
   },
   "campaign": {

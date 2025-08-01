@@ -26,9 +26,8 @@ export const PerksList = ({ initialPerks }: PerksListProps) => {
         description={t('profile_page.noData.description', {
           entity: entityTranslation,
         })}
-        caption={t('profile_page.noData.caption', {
-          entity: entityTranslation,
-        })}
+        caption={t('profile_page.noData.caption')}
+        ctaText={t('profile_page.noData.cta')}
       />
     );
   }

@@ -29,12 +29,13 @@ export const TabsSection: FC<TabsSectionProps> = ({ children }) => {
   );
 
   return (
-    <SectionCard sx={{ minHeight: '540px' }}>
+    <SectionCard sx={{ minHeight: '540px', display: 'flex' }}>
       <Box
         sx={(theme) => ({
           display: 'flex',
           flexDirection: 'column',
           gap: theme.spacing(4),
+          flexGrow: 1,
         })}
       >
         <HorizontalTabs
