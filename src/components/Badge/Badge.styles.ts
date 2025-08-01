@@ -101,96 +101,65 @@ export const StyledBadge = styled(Box, {
         props: ({ variant }) => variant === BadgeVariant.Default,
         style: {
           pointerEvents: 'none',
-          backgroundColor: (theme.vars || theme).palette.surface1.main,
-          color: (theme.vars || theme).palette.alphaLight900.main,
-          ...theme.applyStyles('light', {
-            color: (theme.vars || theme).palette.alphaDark900.main,
-          }),
+          backgroundColor: (theme.vars || theme).palette.badgeDefaultBg,
+          color: (theme.vars || theme).palette.badgeDefaultFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Success,
         style: {
-          backgroundColor: (theme.vars || theme).palette.mint[500],
-          color: (theme.vars || theme).palette.mint[100],
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.mint[100],
-            color: (theme.vars || theme).palette.mint[500],
-          }),
+          backgroundColor: (theme.vars || theme).palette.statusSuccessBg,
+          color: (theme.vars || theme).palette.statusSuccessFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Error,
         style: {
-          backgroundColor: (theme.vars || theme).palette.scarlet[500],
-          color: (theme.vars || theme).palette.scarlet[100],
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.scarlet[100],
-            color: (theme.vars || theme).palette.scarlet[500],
-          }),
+          backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+          color: (theme.vars || theme).palette.statusErrorFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Warning,
         style: {
-          backgroundColor: (theme.vars || theme).palette.amber[800],
-          color: (theme.vars || theme).palette.amber[600],
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.amber[100],
-            color: (theme.vars || theme).palette.amber[500],
-          }),
+          backgroundColor: (theme.vars || theme).palette.statusWarningBg,
+          color: (theme.vars || theme).palette.statusWarningFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Alpha,
         style: {
-          backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-          color: (theme.vars || theme).palette.alphaLight900.main,
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-            color: (theme.vars || theme).palette.alphaDark900.main,
-          }),
+          backgroundColor: (theme.vars || theme).palette.badgeAlphaBg,
+          color: (theme.vars || theme).palette.badgeAlphaFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Disabled,
         style: {
           cursor: 'default',
-          backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-          color: (theme.vars || theme).palette.alphaLight600.main,
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-            color: (theme.vars || theme).palette.alphaDark600.main,
-          }),
+          backgroundColor: (theme.vars || theme).palette.badgeDisabledBg,
+          color: (theme.vars || theme).palette.badgeDisabledFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Primary,
         style: {
-          backgroundColor: (theme.vars || theme).palette.accent1Alt.main,
-          color: (theme.vars || theme).palette.white.main,
+          backgroundColor: (theme.vars || theme).palette.badgeAccent1Bg,
+          color: (theme.vars || theme).palette.badgeAccent1Fg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Secondary,
         style: {
-          backgroundColor: (theme.vars || theme).palette.primary.main,
-          color: (theme.vars || theme).palette.accent1Alt.main,
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.lavenderLight[400],
-            color: (theme.vars || theme).palette.lavenderDark[0],
-          }),
+          backgroundColor: (theme.vars || theme).palette.badgeAccent1MutedBg,
+          color: (theme.vars || theme).palette.badgeAccent1MutedFg,
         },
       },
       {
         props: ({ variant }) => variant === BadgeVariant.Tertiary,
         style: {
-          backgroundColor: (theme.vars || theme).palette.accent2.main, //@TODO this needs to be updated in the designs
-          color: (theme.vars || theme).palette.accent2.main,
-          ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.orchid[200],
-            color: (theme.vars || theme).palette.orchid[800],
-          }),
+          backgroundColor: (theme.vars || theme).palette.surfaceAccent2Bg,
+          color: (theme.vars || theme).palette.surfaceAccent2Fg,
         },
       },
     ],

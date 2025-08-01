@@ -83,6 +83,23 @@ export const getDefaultWidgetThemeV2 = (
       typeof copiedTheme.colorSchemes.dark.palette.grey
     >;
   }
+  if (!copiedTheme.colorSchemes.light) {
+    copiedTheme.colorSchemes.light = {} as NonNullable<
+      typeof copiedTheme.colorSchemes.light
+    >;
+  }
+  if (!copiedTheme.colorSchemes.light.palette) {
+    copiedTheme.colorSchemes.light.palette = {} as NonNullable<
+      typeof copiedTheme.colorSchemes.light.palette
+    >;
+  }
+  if (!copiedTheme.colorSchemes.light.palette.grey) {
+    copiedTheme.colorSchemes.light.palette.grey = {} as NonNullable<
+      typeof copiedTheme.colorSchemes.light.palette.grey
+    >;
+  }
+  copiedTheme.colorSchemes.light.palette.grey[300] =
+    themeCustomized.palette.surface2.main;
   copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
 
   const config = {
@@ -116,7 +133,7 @@ export const getDefaultWidgetThemeV2 = (
           },
           dark: {
             ...copiedTheme.colorSchemes.dark,
-            palette: formatWidgetPalette(copiedTheme.colorSchemes.dark),
+            palette: formatWidgetPalette(copiedTheme.colorSchemes.dark, 'dark'),
           },
         },
         components: {
@@ -132,18 +149,32 @@ export const getDefaultWidgetThemeV2 = (
   return config;
 };
 
-function formatWidgetPalette(colorScheme?: ColorSystem): Partial<Palette> {
+function formatWidgetPalette(
+  colorScheme?: ColorSystem,
+  mode?: string,
+): Partial<Palette> {
   if (!colorScheme) {
     return {};
   }
 
   return {
-    background: {
-      paper: colorScheme.palette.surface2.main,
-      default: colorScheme.palette.surface1.main,
-    },
+    background:
+      mode === 'dark'
+        ? {
+            paper: colorScheme.palette.surface2.main,
+            default: colorScheme.palette.surface1.main,
+          }
+        : {
+            paper: colorScheme.palette.surface1.main,
+            default: colorScheme.palette.surface2.main,
+          },
     primary: colorScheme.palette.accent1,
     secondary: colorScheme.palette.accent2,
     grey: colorScheme.palette.grey,
+    text: {
+      primary: colorScheme.palette.text.primary,
+      secondary: colorScheme.palette.text.secondary,
+      disabled: colorScheme.palette.text.disabled,
+    },
   };
 }

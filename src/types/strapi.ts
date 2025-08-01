@@ -428,6 +428,8 @@ export interface TaskWidgetInformationData {
   description?: string | null;
   CTALink?: string | null;
   CTAText?: string | null;
+  descriptionCTALink?: string;
+  descriptionCTAText?: string;
   inputs?: TaskWidgetInformationInputData[] | null;
 }
 

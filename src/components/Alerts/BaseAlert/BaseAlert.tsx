@@ -52,10 +52,7 @@ export const BaseAlert: FC<BaseAlertProps> = ({
             sx={(theme) => ({
               height: 24,
               width: 24,
-              color: (theme.vars || theme).palette.alphaLight700.main,
-              ...theme.applyStyles('light', {
-                color: (theme.vars || theme).palette.alphaDark700.main,
-              }),
+              color: (theme.vars || theme).palette.textHint,
             })}
           />
         );

@@ -184,6 +184,10 @@ interface Resources {
           verify: 'Verify';
           go: 'Go';
         };
+        completed: {
+          title: 'Task completed';
+          description: 'This task has been verified and completed.';
+        };
       };
     };
     profile_page: {
@@ -204,6 +208,11 @@ interface Resources {
       achievements: 'Achievements';
       unlocked: 'Unlocked';
       levelWithValue: 'Level {{level}}';
+      noData: {
+        description: "No {{entity}} yet? Let's change that!";
+        caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
+        cta: 'Start swapping';
+      };
     };
     campaign: {
       missions: {

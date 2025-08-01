@@ -29,7 +29,7 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   backgroundColor: 'transparent',
   boxShadow: 'none',
   '&:hover': {
-    backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
+    backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
   },
   '&:hover:before': {
     backgroundColor: 'transparent',
@@ -37,7 +37,7 @@ export const WalletMenuButton = styled(ButtonTransparent)(({ theme }) => ({
   ...theme.applyStyles('light', {
     backgroundColor: 'transparent',
     '&:hover': {
-      backgroundColor: (theme.vars || theme).palette.alphaLight600.main,
+      backgroundColor: (theme.vars || theme).palette.buttonAlphaLightBg,
     },
   }),
 }));

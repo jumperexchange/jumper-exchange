@@ -193,15 +193,25 @@ export const FloatingNavigationContainer = styled(CarouselNavigationContainer, {
 
 export const FloatingNavigationButton = styled(IconButtonSecondary)(
   ({ theme }) => ({
+    cursor: 'pointer',
+    pointerEvents: 'auto',
     width: 40,
     height: 40,
     fontSize: 22,
-    border: `2px solid ${(theme.vars || theme).palette.surface2.main}`,
+    border: '2px solid',
+    borderColor: (theme.vars || theme).palette.surface1.main,
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    color: (theme.vars || theme).palette.text.primary,
     ':hover': {
-      backgroundColor: (theme.vars || theme).palette.alphaLight900.main,
+      backgroundColor: (theme.vars || theme).palette.surface2.main,
     },
-    cursor: 'pointer',
-    pointerEvents: 'auto',
+    ...theme.applyStyles('light', {
+      borderColor: (theme.vars || theme).palette.surface2.main,
+      backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+      color: (theme.vars || theme).palette.buttonLightAction,
+      ':hover': {
+        backgroundColor: (theme.vars || theme).palette.alphaLight900.main,
+      },
+    }),
   }),
 );

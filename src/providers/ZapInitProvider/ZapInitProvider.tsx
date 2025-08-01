@@ -42,6 +42,7 @@ import {
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { ProjectData } from 'src/types/questDetails';
 import { EVMAddress } from 'src/types/internal';
+import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -298,27 +299,30 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       try {
         resetInProgressRef.current = false;
         initInProgressRef.current = true;
-        console.warn('Initializing oNexus with chains:', [
-          currentChain.id,
-          depositChain.id,
-        ]);
-        const oNexusInit = await toMultichainNexusAccount({
-          signer: walletClient,
-          // accountAddress: walletClient.account.address,
-          chains: [currentChain, depositChain],
-          transports: [http(), http()],
-          factoryAddress: '0x0000006648ED9B2B842552BE63Af870bC74af837', // @Note needed for smart account wallets
-          implementationAddress: '0x00000000383e8cBe298514674Ea60Ee1d1de50ac', // @Note needed for smart account wallets
-          bootStrapAddress: '0x0000003eDf18913c01cBc482C978bBD3D6E8ffA3', // @Note needed for smart account wallets
+
+        await retryWithBackoff(async () => {
+          console.warn('Initializing oNexus with chains:', [
+            currentChain.id,
+            depositChain.id,
+          ]);
+          const oNexusInit = await toMultichainNexusAccount({
+            signer: walletClient,
+            // accountAddress: walletClient.account.address,
+            chains: [currentChain, depositChain],
+            transports: [http(), http()],
+            factoryAddress: '0x0000006648ED9B2B842552BE63Af870bC74af837', // @Note needed for smart account wallets
+            implementationAddress: '0x00000000383e8cBe298514674Ea60Ee1d1de50ac', // @Note needed for smart account wallets
+            bootStrapAddress: '0x0000003eDf18913c01cBc482C978bBD3D6E8ffA3', // @Note needed for smart account wallets
+          });
+
+          console.warn('Creating MEE client...');
+          const meeClientInit = await createMeeClient({ account: oNexusInit });
+
+          console.warn('Clients initialized successfully');
+          setONexus(oNexusInit);
+          setMeeClient(meeClientInit);
+          lastInitRef.current = { chainId, address };
         });
-
-        console.warn('Creating MEE client...');
-        const meeClientInit = await createMeeClient({ account: oNexusInit });
-
-        console.warn('Clients initialized successfully');
-        setONexus(oNexusInit);
-        setMeeClient(meeClientInit);
-        lastInitRef.current = { chainId, address };
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       } finally {

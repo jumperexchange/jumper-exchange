@@ -1,0 +1,5 @@
+export const ACHIEVEMENT_CARD_SIZES = {
+  CARD_HEIGHT: 420,
+  CARD_WIDTH: 323,
+  IMAGE_HEIGHT: 320,
+} as const;

@@ -20,12 +20,8 @@ export const StyledBaseAlert = styled(Box, {
   const variantStyles: Record<BaseAlertVariant, CSSObject> = {
     default: {
       padding: theme.spacing(2),
-      backgroundColor: (theme.vars || theme).palette.azure[800],
-      color: (theme.vars || theme).palette.azure[400],
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.azure[100],
-        color: (theme.vars || theme).palette.azure[500],
-      }),
+      backgroundColor: (theme.vars || theme).palette.statusInfoBg,
+      color: (theme.vars || theme).palette.statusInfoFg,
     },
     info: {
       padding: theme.spacing(2),
@@ -37,21 +33,13 @@ export const StyledBaseAlert = styled(Box, {
     },
     error: {
       padding: theme.spacing(2),
-      backgroundColor: (theme.vars || theme).palette.scarlet[500],
-      color: (theme.vars || theme).palette.scarlet[100],
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.scarlet[100],
-        color: (theme.vars || theme).palette.scarlet[500],
-      }),
+      backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+      color: (theme.vars || theme).palette.statusErrorFg,
     },
     warning: {
       padding: theme.spacing(2),
-      backgroundColor: (theme.vars || theme).palette.amber[800],
-      color: (theme.vars || theme).palette.amber[600],
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.amber[100],
-        color: (theme.vars || theme).palette.amber[500],
-      }),
+      backgroundColor: (theme.vars || theme).palette.statusWarningBg,
+      color: (theme.vars || theme).palette.statusWarningFg,
     },
     hint: {
       color: (theme.vars || theme).palette.alphaLight800.main,
