@@ -12,6 +12,7 @@ export const GridContainer: FC<GridContainerProps> = ({
   return (
     <Box
       sx={{
+        height: '100%',
         display: 'grid',
         gridTemplateColumns,
         gap: 4,
