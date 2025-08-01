@@ -21,9 +21,9 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   currentRoute: Route;
   zapData: ZapDataResponse & {
     market: {
-      address: `0x${string}`;
+      address: EVMAddress;
       depositToken: {
-        address: `0x${string}`;
+        address: EVMAddress;
         decimals: number;
       };
     };
@@ -33,8 +33,8 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
 }
 
 export interface ZapExecutionContext extends ValidatedSendCallsExtraParams {
-  getAbiAddress: (fct: AbiEntry) => `0x${string}`;
-  getDepositAddress: () => `0x${string}`;
+  getAbiAddress: (fct: AbiEntry) => EVMAddress;
+  getDepositAddress: () => EVMAddress;
 }
 
 export interface ZapDefinition {
@@ -57,7 +57,7 @@ export const makeZapExecutionContext = (
     throw new Error('Market not found in zap data');
   }
 
-  const getAbiAddress = (fct: AbiEntry) => {
+  const getAbiAddress = (fct: AbiEntry): EVMAddress => {
     if (fct.contract) {
       const contracts = market.contracts;
       if (!contracts) {
@@ -73,7 +73,7 @@ export const makeZapExecutionContext = (
     return market.address;
   };
 
-  const getDepositAddress = () => {
+  const getDepositAddress = (): EVMAddress => {
     return getAbiAddress(params.zapData.abi.deposit);
   };
 
