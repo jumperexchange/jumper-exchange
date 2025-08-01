@@ -6,37 +6,44 @@ permissions:
   checks: write
   pull-requests: write
   contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
-    continue-on-error: true
+    continue-on-error: false # Instead we use fail-fast to forward the failure state to subsequent jobs
     timeout-minutes: 20
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [ 1, 2, 3, 4 , 5 , 6 ]
+        shard: [1, 2, 3, 4, 5, 6]
+      fail-fast: false
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-    - name: Install pnpm
-      run: npm install -g pnpm
-    - name: Install dependencies
-      run: pnpm install
-    - name: Install xvfb server
-      run: sudo apt-get install xvfb
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
-    - name: Run Playwright tests
-      run: |
-       pnpm build:cache:ci &
-        pnpm run test:ci:e2e \
-          --shard ${{ matrix.shard }}/${{ strategy.job-total }}
-    - name: Upload blob report to Github Actions Artifacts
-      if: ${{ !cancelled()}}
-      uses: actions/upload-artifact@v4
-      with:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install xvfb server
+        run: sudo apt-get install xvfb
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Setup Playwright Cache
+        run: |
+          pnpm build:cache:ci
+      - name: Run Playwright tests
+        if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
+        run: |
+          pnpm run test:ci:e2e \
+            --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+      - name: Upload blob report to Github Actions Artifacts
+        if: ${{ !cancelled()}}
+        uses: actions/upload-artifact@v4
+        with:
           name: blob-report-${{ matrix.shard }}
           path: blob-report
           retention-days: 1
@@ -48,24 +55,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Install pnpm
-        run: npm install -g pnpm
+          cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      
       - name: Download blob reports from GitHub Actions Articfacts
         uses: actions/download-artifact@v4
         with:
           path: all-blob-reports
           pattern: blob-report-*
           merge-multiple: true
-          
-      - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports
-        
+      - name: Merge into HTML and JSON Reports
+        run: npx playwright merge-reports --reporter=html,json ./all-blob-reports
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: report.json
+      - uses: daun/playwright-report-summary@be9e270edd5ad86038604d3caa84a819a6ff6fed # v3.10.0
+        id: summary
+        with:
+          report-file: ./report.json
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
