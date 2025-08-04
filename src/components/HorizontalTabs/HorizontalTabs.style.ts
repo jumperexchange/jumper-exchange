@@ -7,9 +7,7 @@ export enum HorizontalTabSize {
   LG = 'large',
 }
 
-export const HorizontalTabsContainer = styled(Tabs, {
-  shouldForwardProp: (prop) => prop !== 'id',
-})<{ id?: string }>(({ theme }) => ({
+export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
   flex: 1,
   backgroundColor: (theme.vars || theme).palette.surface3.main,
   ...theme.applyStyles('light', {
@@ -48,12 +46,11 @@ export const HorizontalTabsContainer = styled(Tabs, {
 
 interface HorizontalTabProps extends TabProps {
   size?: HorizontalTabSize;
-  id?: string;
 }
 
 export const HorizontalTabContainer = styled(Tab, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<HorizontalTabProps & { id?: string }>(({ theme, disabled }) => ({
+})<HorizontalTabProps>(({ theme, disabled }) => ({
   fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',
   borderRadius: 24,
