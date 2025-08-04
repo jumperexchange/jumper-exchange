@@ -44,6 +44,7 @@ import {
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
 } from './types';
+import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -113,7 +114,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     useState<WalletPendingOperations>({});
 
   const lastInitRef = useRef<{ chainId?: number; address?: string }>({});
-  const resetInProgressRef = useRef(false);
+  const { hasProjectClients, hasWalletClients, getClients } =
+    useBiconomyClientsStore();
+
   const initInProgressRef = useRef(false);
 
   const {
@@ -136,37 +139,39 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   });
 
   // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = !!oNexus && !!meeClient;
+  const isInitialized = hasProjectClients(
+    projectData.address as EVMAddress | undefined,
+    projectData.chainId,
+  );
 
   const sendCallsExtraParams = useMemo(
     () => ({
+      address,
       chainId,
       currentRoute,
       zapData,
       projectData,
-      address,
     }),
     [chainId, currentRoute, zapData, projectData, address],
   );
 
   const isInitializedForCurrentChain = useMemo(() => {
     return (
-      isInitialized &&
-      !resetInProgressRef.current &&
-      !initInProgressRef.current &&
-      lastInitRef.current.chainId === chainId &&
-      lastInitRef.current.address === address &&
+      hasWalletClients(
+        projectData.address as EVMAddress | undefined,
+        projectData.chainId,
+        address as EVMAddress | undefined,
+        chainId,
+      ) &&
       currentRoute?.fromAddress === address &&
       currentRoute?.fromChainId === chainId
     );
   }, [
-    isInitialized,
     chainId,
     address,
     currentRoute,
-    resetInProgressRef.current,
-    initInProgressRef.current,
-    lastInitRef.current,
+    projectData.address,
+    projectData.chainId,
   ]);
 
   // RPC operation queueing
@@ -246,39 +251,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   // Enhanced initialization with retry logic and better error handling
   useEffect(() => {
-    if (!walletClient) {
-      console.warn(
-        'Wallet client is undefined, skipping MEE client initialization.',
-      );
-      return;
-    }
-
-    if (!chainId || !address) {
-      console.warn('Missing chainId or address, skipping initialization');
-      return;
-    }
-
     if (isInitializedForCurrentChain) {
       console.warn('Clients already initialised for this chain');
       return;
     }
 
-    // If chain or address changed, reset clients immediately
-    if (
-      lastInitRef.current.chainId !== chainId ||
-      lastInitRef.current.address !== address
-    ) {
-      console.warn(
-        'Chain or address changed, resetting clients',
-        lastInitRef.current,
-        chainId,
-        address,
-      );
-      resetInProgressRef.current = true;
-      initInProgressRef.current = false;
-    }
-
-    if (!resetInProgressRef.current && initInProgressRef.current) {
+    if (initInProgressRef.current) {
       console.warn('Already initializing, skipping...');
       return;
     }
@@ -290,50 +268,24 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       address,
     );
 
-    // Find the current chain from viem/chains
-    const currentChain = Object.values(chains).find(
-      (chain) => chain.id === chainId,
-    );
-    const depositChain = Object.values(chains).find(
-      (chain) => chain.id === projectData.chainId,
-    );
-
-    if (!currentChain || !depositChain) {
-      console.error('Chain not found:', {
-        currentChainId: chainId,
-        depositChainId: projectData.chainId,
-      });
-      return;
-    }
-
     const initMeeClient = async () => {
       try {
-        resetInProgressRef.current = false;
         initInProgressRef.current = true;
 
-        await retryWithBackoff(async () => {
-          console.warn('Initializing oNexus with chains:', [
-            currentChain.id,
-            depositChain.id,
-          ]);
-          const oNexusInit = await toMultichainNexusAccount({
-            signer: walletClient,
-            // accountAddress: walletClient.account.address,
-            chains: [currentChain, depositChain],
-            transports: [http(), http()],
-            factoryAddress: '0x0000006648ED9B2B842552BE63Af870bC74af837', // @Note needed for smart account wallets
-            implementationAddress: '0x00000000383e8cBe298514674Ea60Ee1d1de50ac', // @Note needed for smart account wallets
-            bootStrapAddress: '0x0000003eDf18913c01cBc482C978bBD3D6E8ffA3', // @Note needed for smart account wallets
-          });
+        const biconomyClients = await getClients(
+          projectData.address as EVMAddress,
+          chainId,
+          projectData.chainId,
+          walletClient,
+        );
 
-          console.warn('Creating MEE client...');
-          const meeClientInit = await createMeeClient({ account: oNexusInit });
+        if (!biconomyClients) {
+          console.warn('Failed to get biconomy clients');
+          return;
+        }
 
-          console.warn('Clients initialized successfully');
-          setONexus(oNexusInit);
-          setMeeClient(meeClientInit);
-          lastInitRef.current = { chainId, address };
-        });
+        setONexus(biconomyClients.oNexus);
+        setMeeClient(biconomyClients.meeClient);
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       } finally {
@@ -348,6 +300,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     address,
     walletClient,
     isInitializedForCurrentChain,
+    getClients,
   ]);
 
   const wagmiConfig = useConfig();
