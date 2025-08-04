@@ -109,7 +109,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   projectData,
 }) => {
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
-  // @TODO might need to handle the persisted pending operations a bit differently,
+  // @Note: Might need to handle the persisted pending operations a bit differently
   // but it depends on the route execution logic which currently handles a single active route at a time
   const {
     pendingOperations,
@@ -180,7 +180,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   ]);
 
   // RPC operation queueing
-  // @TODO persist the pending operations
   const queueOperation = useCallback(
     async <T extends WalletMethods>(
       operationName: T,
@@ -202,7 +201,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       );
 
       if (!isInitializedForCurrentChain || !biconomyClients) {
-        const operationId = `${operationName}-${Date.now()}-${Math.random()}`;
+        const operationId = `${operationName}-${sendCallsExtraParams.currentRoute?.id}`;
 
         console.warn(
           'Queued operation:',
@@ -256,6 +255,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       // Execute all pending operations
       for (const pendingOp of pendingOps) {
+        if (
+          !pendingOp.id.endsWith(sendCallsExtraParams.currentRoute?.id ?? '')
+        ) {
+          console.warn(
+            `Skipping operation ${pendingOp.id} because it's not the current route: ${sendCallsExtraParams.currentRoute?.id}`,
+          );
+          continue;
+        }
+
         console.warn(
           `Executing ${pendingOp.operationName}`,
           sendCallsExtraParams,
