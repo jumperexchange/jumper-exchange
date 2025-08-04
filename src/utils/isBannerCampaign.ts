@@ -1,5 +1,13 @@
-import { CampaignWithBanner } from 'src/components/ProfilePage';
-import { CampaignData } from 'src/types/strapi';
+import { CampaignData, StrapiMediaData } from 'src/types/strapi';
+
+export interface CampaignWithBanner extends CampaignData {
+  ProfileBannerImage: StrapiMediaData;
+  ProfileBannerTitle: string;
+  ProfileBannerDescription: string;
+  ProfileBannerBadge: string;
+  ProfileBannerCTA?: string;
+  Slug: string;
+}
 
 export const isBannerCampaign = (
   campaign: CampaignData,
