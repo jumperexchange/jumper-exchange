@@ -13,6 +13,7 @@ import IconHeader from '../Common/IconHeader';
 import { QuestCard } from '../QuestCard/QuestCard';
 import { VoidQuestCard } from '../QuestCard/VoidQuestCard';
 import { CompletedQuestContainer } from './QuestsCompletedCarousel.style';
+import { startOfMonth } from 'date-fns';
 
 interface QuestCompletedListProps {
   pdas?: PDA[];
@@ -33,7 +34,7 @@ export const QuestsCompletedCarousel = ({
   //   today.getMonth() - 1,
   //   today.getDate(),
   // );
-  const updateDay = new Date(today.getFullYear(), today.getMonth(), 2);
+  const updateDay = startOfMonth(today);
 
   const carouselContent = useMemo(() => {
     const showVoidCardsAsFewPdas =
