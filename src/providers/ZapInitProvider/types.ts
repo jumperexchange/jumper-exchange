@@ -62,6 +62,14 @@ export interface ContractComposableConfig {
   gasLimit?: bigint;
 }
 
+export interface CapabilitiesResponse {
+  atomic: { status: 'supported' | 'ready' | 'unsupported' };
+}
+
+export interface SendCallsResponse {
+  id: string;
+}
+
 export interface CallsStatusResponse {
   atomic: boolean;
   chainId?: string;
@@ -74,25 +82,56 @@ export interface CallsStatusResponse {
   }>;
 }
 
-export interface WalletPendingOperation {
-  operation: (
-    meeClientParam: MeeClient,
-    oNexusParam: MultichainSmartAccount,
-    extraParams?: {
-      chainId: number | undefined;
-      currentRoute: Route | null;
-      zapData: any;
-      projectData: ProjectData;
-      address: string | undefined;
-    },
-  ) => Promise<any>;
+export interface ExtraParams {
+  chainId: number | undefined;
+  currentRoute: Route | null;
+  zapData: any;
+  projectData: ProjectData;
+  address: string | undefined;
+}
+
+export interface WalletPendingOperation<T extends WalletMethods> {
+  operation: WalletMethodsRef[T];
+  originalArgs: WalletMethodArgsType<T>;
   timestamp: number;
   resolve?: (value: any) => void;
   reject?: (error: any) => void;
 }
 
-export type WalletPendingOperations = {
-  [K in WalletMethods]?: WalletPendingOperation;
-} & {
-  [key: string]: never;
-};
+export type WalletPendingOperations = Partial<
+  Record<WalletMethods, WalletPendingOperation<WalletMethods>>
+>;
+
+export type WalletMethodDefinition<TArgs, TResult> = (
+  args: TArgs,
+  meeClient: MeeClient,
+  oNexus: MultichainSmartAccount,
+  extraParams: ExtraParams,
+) => Promise<TResult>;
+
+export interface WalletMethodsRef {
+  [WalletMethods.getCapabilities]: WalletMethodDefinition<
+    WalletCapabilitiesArgs,
+    CapabilitiesResponse
+  >;
+  [WalletMethods.getCallsStatus]: WalletMethodDefinition<
+    WalletGetCallsStatusArgs,
+    CallsStatusResponse
+  >;
+  [WalletMethods.waitForCallsStatus]: WalletMethodDefinition<
+    WalletWaitForCallsStatusArgs,
+    CallsStatusResponse
+  >;
+  [WalletMethods.sendCalls]: WalletMethodDefinition<
+    WalletSendCallsArgs,
+    SendCallsResponse
+  >;
+}
+
+export type WalletMethodArgsType<T extends WalletMethods> = Parameters<
+  WalletMethodsRef[T]
+>[0];
+
+export type WalletMethodReturnType<T extends WalletMethods> = ReturnType<
+  WalletMethodsRef[T]
+>;

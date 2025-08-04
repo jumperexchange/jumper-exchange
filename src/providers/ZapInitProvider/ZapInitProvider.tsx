@@ -43,6 +43,9 @@ import {
   WalletPendingOperations,
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
+  WalletMethodsRef,
+  WalletMethodArgsType,
+  ExtraParams,
 } from './types';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 
@@ -107,8 +110,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
   projectData,
 }) => {
-  const [oNexus, setONexus] = useState<MultichainSmartAccount | null>(null);
-  const [meeClient, setMeeClient] = useState<MeeClient | null>(null);
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   const [pendingOperations, setPendingOperations] =
     useState<WalletPendingOperations>({});
@@ -117,6 +118,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     useBiconomyClientsStore();
 
   const initInProgressRef = useRef(false);
+  const walletMethodsRef = useRef<WalletMethodsRef | null>(null);
 
   const {
     zapData,
@@ -176,13 +178,29 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   // RPC operation queueing
   // @TODO persist the pending operations
   const queueOperation = useCallback(
-    (
-      operationName: WalletMethods,
-      operation: WalletPendingOperation['operation'],
-    ) => {
-      if (!isInitializedForCurrentChain || !meeClient || !oNexus) {
-        const queuedOperation: WalletPendingOperation = {
+    async <T extends WalletMethods>(
+      operationName: T,
+      args: WalletMethodArgsType<T>,
+    ): Promise<ReturnType<WalletMethodsRef[T]>> => {
+      const operation = walletMethodsRef.current?.[operationName] as
+        | WalletMethodsRef[T]
+        | undefined;
+
+      if (!operation) {
+        throw new Error(`Operation ${operationName} not found`);
+      }
+
+      const biconomyClients = await getClients(
+        sendCallsExtraParams.projectData.address as EVMAddress,
+        sendCallsExtraParams.chainId,
+        sendCallsExtraParams.projectData.chainId,
+        walletClient,
+      );
+
+      if (!isInitializedForCurrentChain || !biconomyClients) {
+        const queuedOperation: WalletPendingOperation<T> = {
           operation,
+          originalArgs: args,
           timestamp: Date.now(),
         };
         setPendingOperations((prev) => {
@@ -193,15 +211,27 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
         console.warn('Queued operation:', operationName);
 
-        return new Promise((resolve, reject) => {
-          queuedOperation.resolve = resolve;
-          queuedOperation.reject = reject;
-        });
+        return new Promise<Awaited<ReturnType<WalletMethodsRef[T]>>>(
+          (resolve, reject) => {
+            queuedOperation.resolve = resolve;
+            queuedOperation.reject = reject;
+          },
+        );
       }
 
-      return operation(meeClient, oNexus, sendCallsExtraParams);
+      return operation(
+        args as any,
+        biconomyClients.meeClient,
+        biconomyClients.oNexus,
+        sendCallsExtraParams,
+      ) as Promise<ReturnType<WalletMethodsRef[T]>>;
     },
-    [isInitializedForCurrentChain, meeClient, oNexus, sendCallsExtraParams],
+    [
+      isInitializedForCurrentChain,
+      sendCallsExtraParams,
+      walletClient,
+      getClients,
+    ],
   );
 
   // Execute pending operations when clients are ready
@@ -211,6 +241,17 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         `Executing ${Object.keys(pendingOperations).length} pending operations`,
       );
 
+      const biconomyClients = await getClients(
+        sendCallsExtraParams.projectData.address as EVMAddress,
+        sendCallsExtraParams.chainId,
+        sendCallsExtraParams.projectData.chainId,
+        walletClient,
+      );
+
+      if (!biconomyClients) {
+        throw new Error('Failed to get biconomy clients');
+      }
+
       // Execute all pending operations
       for (const [operationName, pendingOperation] of Object.entries(
         pendingOperations,
@@ -219,8 +260,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
         try {
           const result = await pendingOperation.operation(
-            meeClient!,
-            oNexus!,
+            pendingOperation.originalArgs as any,
+            biconomyClients.meeClient,
+            biconomyClients.oNexus,
             sendCallsExtraParams,
           );
           pendingOperation.resolve?.(result);
@@ -235,8 +277,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
     if (
       isInitializedForCurrentChain &&
-      meeClient &&
-      oNexus &&
+      walletClient &&
       Object.keys(pendingOperations).length > 0
     ) {
       executePendingOperations();
@@ -244,9 +285,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [
     isInitializedForCurrentChain,
     pendingOperations,
-    meeClient,
-    oNexus,
     sendCallsExtraParams,
+    walletClient,
+    getClients,
   ]);
 
   // Enhanced initialization with retry logic and better error handling
@@ -283,9 +324,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           console.warn('Failed to get biconomy clients');
           return;
         }
-
-        setONexus(biconomyClients.oNexus);
-        setMeeClient(biconomyClients.meeClient);
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       } finally {
@@ -310,6 +348,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletCapabilitiesArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
+      extraParams: ExtraParams,
     ): Promise<{
       atomic: { status: 'supported' | 'ready' | 'unsupported' };
     }> => {
@@ -326,6 +365,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletGetCallsStatusArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
+      extraParams: ExtraParams,
     ) => {
       if (!meeClientParam) {
         throw new Error('MEE client not initialized');
@@ -382,6 +422,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletWaitForCallsStatusArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
+      extraParams: ExtraParams,
     ) => {
       if (!meeClientParam) {
         throw new Error('MEE client not initialized');
@@ -598,46 +639,32 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         wagmiConfig,
         getCapabilities: async (_, args) => {
           console.warn('getCapabilities');
-          return queueOperation(
-            WalletMethods.getCapabilities,
-            (meeClientParam, oNexusParam) =>
-              handleGetCapabilities(args, meeClientParam, oNexusParam),
-          );
+          return queueOperation(WalletMethods.getCapabilities, args);
         },
         getCallsStatus: async (_, args) => {
           console.warn('getCallsStatus');
-          return queueOperation(
-            WalletMethods.getCallsStatus,
-            (meeClientParam, oNexusParam) =>
-              handleWalletGetCallsStatus(args, meeClientParam, oNexusParam),
-          );
+          return queueOperation(WalletMethods.getCallsStatus, args);
         },
         sendCalls: async (_, args) => {
           console.warn('sendCalls');
-          return queueOperation(
-            WalletMethods.sendCalls,
-            (meeClientParam, oNexusParam, extraParams) =>
-              handleWalletSendCalls(
-                args,
-                meeClientParam,
-                oNexusParam,
-                extraParams!,
-              ),
-          );
+          return queueOperation(WalletMethods.sendCalls, args);
         },
         waitForCallsStatus: async (_, args) => {
           console.warn('waitForCallsStatus');
-          return queueOperation(
-            WalletMethods.waitForCallsStatus,
-            (meeClientParam, oNexusParam) =>
-              handleWalletWaitForCallsStatus(args, meeClientParam, oNexusParam),
-          );
+          return queueOperation(WalletMethods.waitForCallsStatus, args);
         },
       }),
     ];
+  }, [wagmiConfig, queueOperation, isInitializedForCurrentChain]);
+
+  useEffect(() => {
+    walletMethodsRef.current = {
+      [WalletMethods.getCapabilities]: handleGetCapabilities,
+      [WalletMethods.getCallsStatus]: handleWalletGetCallsStatus,
+      [WalletMethods.sendCalls]: handleWalletSendCalls,
+      [WalletMethods.waitForCallsStatus]: handleWalletWaitForCallsStatus,
+    };
   }, [
-    wagmiConfig,
-    queueOperation,
     handleGetCapabilities,
     handleWalletGetCallsStatus,
     handleWalletSendCalls,
