@@ -258,16 +258,24 @@ export const useBiconomyClientsStore =
           const clients = { meeClient, oNexus };
 
           set((state) => {
+            // Create new Map to ensure state change detection
+            const newClientsMap = new Map(state.clientsMap);
+
             // Ensure project map exists
-            if (!state.clientsMap.has(projectKey)) {
-              state.clientsMap.set(projectKey, new Map());
+            if (!newClientsMap.has(projectKey)) {
+              newClientsMap.set(projectKey, new Map());
             }
 
             // Add wallet clients to project
-            const projectMap = state.clientsMap.get(projectKey)!;
-            projectMap.set(walletKey, clients);
+            const projectMap = newClientsMap.get(projectKey)!;
+            const newProjectMap = new Map(projectMap);
+            newProjectMap.set(walletKey, clients);
+            newClientsMap.set(projectKey, newProjectMap);
 
-            return state;
+            return {
+              ...state,
+              clientsMap: newClientsMap,
+            };
           });
 
           return clients;
