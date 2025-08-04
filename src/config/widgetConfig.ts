@@ -83,23 +83,6 @@ export const getDefaultWidgetThemeV2 = (
       typeof copiedTheme.colorSchemes.dark.palette.grey
     >;
   }
-  if (!copiedTheme.colorSchemes.light) {
-    copiedTheme.colorSchemes.light = {} as NonNullable<
-      typeof copiedTheme.colorSchemes.light
-    >;
-  }
-  if (!copiedTheme.colorSchemes.light.palette) {
-    copiedTheme.colorSchemes.light.palette = {} as NonNullable<
-      typeof copiedTheme.colorSchemes.light.palette
-    >;
-  }
-  if (!copiedTheme.colorSchemes.light.palette.grey) {
-    copiedTheme.colorSchemes.light.palette.grey = {} as NonNullable<
-      typeof copiedTheme.colorSchemes.light.palette.grey
-    >;
-  }
-  copiedTheme.colorSchemes.light.palette.grey[300] =
-    themeCustomized.palette.surface2.main;
   copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
 
   const config = {

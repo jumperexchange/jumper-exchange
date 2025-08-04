@@ -28,6 +28,7 @@ export const useBaseWidget = () => {
         HiddenUI.ReverseTokensButton,
         HiddenUI.History,
       ],
+      defaultUI: { navigationHeaderTitleNoWrap: false },
       requiredUI: [RequiredUI.ToAddress],
       walletConfig: {
         onConnect() {
