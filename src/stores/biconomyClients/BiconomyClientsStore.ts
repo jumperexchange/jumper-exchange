@@ -46,6 +46,12 @@ interface BiconomyClientsState {
     destinationChainId?: number,
     walletClient?: UseWalletClientReturnType['data'],
   ) => Promise<BiconomyClients | null>;
+  getToAddress: (
+    projectAddress?: EVMAddress,
+    sourceChainId?: number,
+    destinationChainId?: number,
+    walletAddress?: EVMAddress,
+  ) => EVMAddress;
 }
 
 const getProjectKey = (
@@ -137,6 +143,47 @@ export const useBiconomyClientsStore =
         const walletKey = getWalletKey(walletAddress!, currentChainId!);
         const projectClients = get().clientsMap.get(projectKey);
         return projectClients?.has(walletKey) ?? false;
+      },
+
+      getToAddress: (
+        projectAddress?: EVMAddress,
+        sourceChainId?: number,
+        destinationChainId?: number,
+        walletAddress?: EVMAddress,
+      ) => {
+        const fallbackAddress = walletAddress || '0x';
+        if (
+          !get().validateProject({
+            projectAddress,
+            projectChainId: destinationChainId,
+          })
+        ) {
+          return fallbackAddress;
+        }
+        if (
+          !get().validateWallet({
+            currentChainId: sourceChainId,
+            walletAddress,
+          })
+        ) {
+          return fallbackAddress;
+        }
+
+        const projectKey = getProjectKey(projectAddress!, destinationChainId!);
+        const walletKey = getWalletKey(walletAddress!, sourceChainId!);
+
+        // Get existing clients without initialization
+        const projectClients = get().clientsMap.get(projectKey);
+        const existingClients = projectClients?.get(walletKey);
+
+        if (!existingClients) {
+          return fallbackAddress;
+        }
+
+        return existingClients.oNexus.addressOn(
+          destinationChainId!,
+          true,
+        ) as EVMAddress;
       },
 
       getClients: async (

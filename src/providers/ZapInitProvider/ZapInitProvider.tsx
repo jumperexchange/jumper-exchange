@@ -54,7 +54,7 @@ interface ZapInitState {
   toAddress?: EVMAddress;
   zapData?: any;
   isZapDataSuccess: boolean;
-  setCurrentRoute: Dispatch<SetStateAction<Route | null>>;
+  setCurrentRoute: (route: Route | null) => void;
   depositTokenData: number | bigint | undefined;
   depositTokenDecimals: number | bigint | undefined;
   isLoadingDepositTokenData: boolean;
@@ -113,8 +113,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const [pendingOperations, setPendingOperations] =
     useState<WalletPendingOperations>({});
 
-  const lastInitRef = useRef<{ chainId?: number; address?: string }>({});
-  const { hasProjectClients, hasWalletClients, getClients } =
+  const { hasProjectClients, hasWalletClients, getClients, getToAddress } =
     useBiconomyClientsStore();
 
   const initInProgressRef = useRef(false);
@@ -138,12 +137,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     },
   });
 
-  // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = hasProjectClients(
-    projectData.address as EVMAddress | undefined,
-    projectData.chainId,
-  );
-
   const sendCallsExtraParams = useMemo(
     () => ({
       address,
@@ -153,6 +146,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       projectData,
     }),
     [chainId, currentRoute, zapData, projectData, address],
+  );
+
+  // Check if oNexus and meeClient are initialized before rendering
+  const isInitialized = hasProjectClients(
+    projectData.address as EVMAddress | undefined,
+    projectData.chainId,
   );
 
   const isInitializedForCurrentChain = useMemo(() => {
@@ -175,6 +174,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   ]);
 
   // RPC operation queueing
+  // @TODO persist the pending operations
   const queueOperation = useCallback(
     (
       operationName: WalletMethods,
@@ -483,6 +483,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error('No wallet address available.');
       }
 
+      console.warn(
+        'sendCallsExtraParams.currentRoute',
+        sendCallsExtraParams.currentRoute,
+      );
+
       const currentChainId = sendCallsExtraParams.chainId;
       const currentAddress = sendCallsExtraParams.address;
       const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
@@ -641,10 +646,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   const toAddress = useMemo(
     () =>
-      oNexus
-        ? (oNexus.addressOn(projectData.chainId, true) as EVMAddress)
-        : (address as EVMAddress) || '0x',
-    [oNexus, address, projectData.chainId],
+      getToAddress(
+        projectData.address as EVMAddress | undefined,
+        chainId,
+        projectData.chainId,
+        address as EVMAddress | undefined,
+      ),
+    [chainId, address, projectData.chainId, projectData.address, getToAddress],
   );
 
   const isConnected = account.isConnected && !!address;
