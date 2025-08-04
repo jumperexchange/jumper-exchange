@@ -20,6 +20,7 @@ export interface HorizontalTabsProps {
   size?: HorizontalTabSize;
   sx?: SxProps<Theme>;
   renderContent?: (currentValue: string) => ReactNode;
+  id?: string;
 }
 
 export const HorizontalTabs = ({
@@ -29,6 +30,7 @@ export const HorizontalTabs = ({
   size = HorizontalTabSize.LG,
   sx,
   renderContent,
+  id,
 }: HorizontalTabsProps) => {
   const [internalValue, setInternalValue] = useState(value ?? tabs[0]?.value);
 
@@ -49,6 +51,7 @@ export const HorizontalTabs = ({
         value={internalValue}
         onChange={handleChange}
         sx={sx}
+        id={id}
       >
         {tabs
           .filter((tab) => tab.label || tab.startAdornment || tab.endAdornment)
@@ -66,6 +69,7 @@ export const HorizontalTabs = ({
                 </>
               }
               size={size}
+              id={id ? `${id}-tab-${tab.value}` : undefined}
             />
           ))}
       </HorizontalTabsContainer>

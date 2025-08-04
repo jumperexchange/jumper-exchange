@@ -46,6 +46,19 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await page.locator('.profile-page').isVisible();
     });
 
+    await test.step('Check Perks and Achievements tabs', async () => {
+      const perksTab = await page.locator('#profile-tabs-tab-perks');
+      const achievementsTab = await page.locator('#profile-tabs-tab-achievements');
+      const startSwappingButton = await page.getByRole('link', { name: 'Start swapping' });
+      await expect(achievementsTab).toBeVisible();
+      await achievementsTab.click();
+      await expect(startSwappingButton).not.toBeVisible();
+      await perksTab.click();
+      const perksContainer = page.locator('xpath=//div[@class="MuiBox-root mui-prph5i"]');
+      const perkCards = perksContainer.locator('a');
+      await expect(perkCards).toHaveCount(5);
+    });
+
     await test.step('Check transaction history', async () => {
       const noRecentTransactions = page.locator(
         'xpath=//p[normalize-space(text())="No recent transactions"]',
@@ -54,7 +67,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
         '//button[@aria-label="Transaction history"]',
       );
       await clickOnJumperLogo(page);
-      await closeWelcomeScreen(page);
+      // await closeWelcomeScreen(page);
       await transactionHistoryButton.click();
       await expect(noRecentTransactions).toBeVisible();
     });

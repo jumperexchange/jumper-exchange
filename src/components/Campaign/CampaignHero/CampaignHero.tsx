@@ -53,6 +53,8 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
             startIcon={<ArrowBackIcon />}
             size={BadgeSize.LG}
             variant={BadgeVariant.Alpha}
+            data-testid="campaign-back-button"
+
           />
         </Box>
         <CampaignHeroCard
