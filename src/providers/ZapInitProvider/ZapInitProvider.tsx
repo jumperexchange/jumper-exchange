@@ -12,10 +12,8 @@ import { EVMProvider, getTokenBalance, Route, Token } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
-  Dispatch,
   FC,
   PropsWithChildren,
-  SetStateAction,
   useCallback,
   useContext,
   useEffect,
@@ -39,15 +37,15 @@ import {
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
   WalletMethods,
-  WalletPendingOperation,
-  WalletPendingOperations,
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
   WalletMethodsRef,
   WalletMethodArgsType,
   ExtraParams,
+  WalletMethodReturnType,
 } from './types';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
+import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/ZapPendingOperationsStore';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -111,8 +109,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   projectData,
 }) => {
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
-  const [pendingOperations, setPendingOperations] =
-    useState<WalletPendingOperations>({});
+  // @TODO might need to handle the persisted pending operations a bit differently,
+  // but it depends on the route execution logic which currently handles a single active route at a time
+  const {
+    pendingOperations,
+    addPendingOperation,
+    removePendingOperation,
+    getPromiseResolversForOperation,
+  } = useZapPendingOperationsStore();
 
   const { hasProjectClients, hasWalletClients, getClients, getToAddress } =
     useBiconomyClientsStore();
@@ -198,25 +202,24 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       );
 
       if (!isInitializedForCurrentChain || !biconomyClients) {
-        const queuedOperation: WalletPendingOperation<T> = {
-          operation,
-          originalArgs: args,
-          timestamp: Date.now(),
-        };
-        setPendingOperations((prev) => {
-          const newOperations = { ...prev };
-          newOperations[operationName] = queuedOperation;
-          return newOperations;
-        });
+        const operationId = `${operationName}-${Date.now()}-${Math.random()}`;
 
-        console.warn('Queued operation:', operationName);
-
-        return new Promise<Awaited<ReturnType<WalletMethodsRef[T]>>>(
-          (resolve, reject) => {
-            queuedOperation.resolve = resolve;
-            queuedOperation.reject = reject;
-          },
+        console.warn(
+          'Queued operation:',
+          operationName,
+          'with id:',
+          operationId,
         );
+
+        return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
+          addPendingOperation(
+            operationId,
+            operationName,
+            args,
+            resolve,
+            reject,
+          );
+        });
       }
 
       return operation(
@@ -224,7 +227,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         biconomyClients.meeClient,
         biconomyClients.oNexus,
         sendCallsExtraParams,
-      ) as Promise<ReturnType<WalletMethodsRef[T]>>;
+      ) as Promise<WalletMethodReturnType<T>>;
     },
     [
       isInitializedForCurrentChain,
@@ -237,9 +240,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   // Execute pending operations when clients are ready
   useEffect(() => {
     const executePendingOperations = async () => {
-      console.warn(
-        `Executing ${Object.keys(pendingOperations).length} pending operations`,
-      );
+      const pendingOps = Object.values(pendingOperations);
+      console.warn(`Executing ${pendingOps.length} pending operations`);
 
       const biconomyClients = await getClients(
         sendCallsExtraParams.projectData.address as EVMAddress,
@@ -253,26 +255,52 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       }
 
       // Execute all pending operations
-      for (const [operationName, pendingOperation] of Object.entries(
-        pendingOperations,
-      )) {
-        console.warn(`Executing ${operationName}`, sendCallsExtraParams);
+      for (const pendingOp of pendingOps) {
+        console.warn(
+          `Executing ${pendingOp.operationName}`,
+          sendCallsExtraParams,
+        );
+
+        const resolvers = getPromiseResolversForOperation(pendingOp.id);
 
         try {
-          const result = await pendingOperation.operation(
-            pendingOperation.originalArgs as any,
+          const operation = walletMethodsRef.current?.[pendingOp.operationName];
+          if (!operation) {
+            console.warn(`Operation ${pendingOp.operationName} not found`);
+            continue;
+          }
+
+          const result = await operation(
+            pendingOp.args as any,
             biconomyClients.meeClient,
             biconomyClients.oNexus,
             sendCallsExtraParams,
           );
-          pendingOperation.resolve?.(result);
+
+          if (resolvers?.resolve) {
+            resolvers.resolve(
+              result as unknown as WalletMethodReturnType<
+                typeof pendingOp.operationName
+              >,
+            );
+          }
+
+          // Remove the operation from store
+          removePendingOperation(pendingOp.id);
         } catch (error) {
-          pendingOperation.reject?.(error);
+          console.error(
+            `Failed to execute operation ${pendingOp.operationName}:`,
+            error,
+          );
+
+          if (resolvers?.reject) {
+            resolvers.reject(error as Error);
+          }
+
+          // Remove the operation from store
+          removePendingOperation(pendingOp.id);
         }
       }
-
-      // Clear the queue
-      setPendingOperations({});
     };
 
     if (
@@ -288,6 +316,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     sendCallsExtraParams,
     walletClient,
     getClients,
+    getPromiseResolversForOperation,
+    removePendingOperation,
   ]);
 
   // Enhanced initialization with retry logic and better error handling

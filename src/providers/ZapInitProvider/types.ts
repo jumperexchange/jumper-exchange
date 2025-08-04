@@ -90,18 +90,6 @@ export interface ExtraParams {
   address: string | undefined;
 }
 
-export interface WalletPendingOperation<T extends WalletMethods> {
-  operation: WalletMethodsRef[T];
-  originalArgs: WalletMethodArgsType<T>;
-  timestamp: number;
-  resolve?: (value: any) => void;
-  reject?: (error: any) => void;
-}
-
-export type WalletPendingOperations = Partial<
-  Record<WalletMethods, WalletPendingOperation<WalletMethods>>
->;
-
 export type WalletMethodDefinition<TArgs, TResult> = (
   args: TArgs,
   meeClient: MeeClient,
