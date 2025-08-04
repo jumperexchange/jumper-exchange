@@ -2,6 +2,7 @@ import { EVMProvider, ChainType } from '@lifi/sdk';
 import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import envConfig from '@/config/env-config';
+import { publicRPCList } from 'src/const/rpcList';
 
 export const useZapRPC = (
   providers: EVMProvider[],
@@ -50,6 +51,10 @@ export const useZapRPC = (
       sdkConfig: {
         apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
         providers,
+        rpcUrls: {
+          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
+          ...publicRPCList,
+        },
         routeOptions: {
           allowSwitchChain: true,
         },
