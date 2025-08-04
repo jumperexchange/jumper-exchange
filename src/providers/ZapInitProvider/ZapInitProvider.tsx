@@ -12,9 +12,11 @@ import { EVMProvider, getTokenBalance, Route, Token } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
+  Dispatch,
   FC,
   PropsWithChildren,
   useCallback,
+  SetStateAction,
   useContext,
   useEffect,
   useMemo,
@@ -55,7 +57,7 @@ interface ZapInitState {
   toAddress?: EVMAddress;
   zapData?: any;
   isZapDataSuccess: boolean;
-  setCurrentRoute: (route: Route | null) => void;
+  setCurrentRoute: Dispatch<SetStateAction<Route | null>>;
   depositTokenData: number | bigint | undefined;
   depositTokenDecimals: number | bigint | undefined;
   isLoadingDepositTokenData: boolean;
