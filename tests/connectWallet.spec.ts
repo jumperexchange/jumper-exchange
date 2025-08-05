@@ -1,5 +1,5 @@
-import { testWithSynpress } from '@synthetixio/synpress-core';
-import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import {
   closeWelcomeScreen,
   clickOnJumperLogo,
