@@ -138,24 +138,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.chainId,
   );
 
-  const isInitializedForCurrentChain = useMemo(() => {
-    return (
-      hasWalletClients(
-        projectData.address as EVMAddress | undefined,
-        projectData.chainId,
-        address as EVMAddress | undefined,
-        chainId,
-      ) &&
-      currentRoute?.fromAddress === address &&
-      currentRoute?.fromChainId === chainId
-    );
-  }, [
-    chainId,
-    address,
-    currentRoute,
-    projectData.address,
-    projectData.chainId,
-  ]);
+  const isInitializedForCurrentChain =
+    hasWalletClients(
+      projectData.address as EVMAddress | undefined,
+      projectData.chainId,
+      address as EVMAddress | undefined,
+      chainId,
+    ) &&
+    currentRoute?.fromAddress === address &&
+    currentRoute?.fromChainId === chainId;
 
   const handleSetCurrentRoute = useCallback((newRoute: Route) => {
     setCurrentRoute((prevRoute) => {
@@ -322,11 +313,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   // Enhanced initialization with retry logic and better error handling
   useEffect(() => {
-    if (isInitializedForCurrentChain) {
-      console.warn('Clients already initialised for this chain');
-      return;
-    }
-
     if (initInProgressRef.current) {
       console.warn('Already initializing, skipping...');
       return;
@@ -367,13 +353,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     };
 
     initMeeClient();
-  }, [
-    chainId,
-    projectData.chainId,
-    address,
-    isInitializedForCurrentChain,
-    initializeClients,
-  ]);
+  }, [chainId, projectData.chainId, address, initializeClients]);
 
   const providers = useMemo(() => {
     return [

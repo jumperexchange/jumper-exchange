@@ -147,10 +147,15 @@ export const sendCalls = async (
   // @Note this works only for EVM chains
   const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
+  console.warn('currentRouteFromToken', currentRouteFromToken);
+
   const isSameTokenDeposit = isSameToken(
     sendCallsExtraParams.currentRoute.fromToken,
     sendCallsExtraParams.currentRoute.toToken,
   );
+
+  console.warn('isSameTokenDeposit', isSameTokenDeposit);
+
   const baseCalls = isSameTokenDeposit ? [] : calls;
 
   // Build raw calldata instructions (general flow)

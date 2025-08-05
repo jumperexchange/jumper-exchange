@@ -257,6 +257,8 @@ export const useBiconomyClientsStore =
 
           const clients = { meeClient, oNexus };
 
+          console.log('Initialised Biconomy clients, setting state');
+
           set((state) => {
             // Create new Map to ensure state change detection
             const newClientsMap = new Map(state.clientsMap);
