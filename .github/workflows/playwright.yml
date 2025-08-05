@@ -165,8 +165,6 @@ jobs:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: |
-            📊 **Test Results Summary**
-            
             ${{ needs.merge-reports.outputs.summary }}
             
             ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}
