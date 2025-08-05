@@ -168,9 +168,18 @@
     },
     "tasks": {
       "type": "",
+      "typeFallback": "",
       "status": {
         "verify": "",
         "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
+      },
+      "completed": {
+        "title": "",
+        "description": ""
       }
     }
   },
@@ -186,11 +195,26 @@
     "copyAddress": "",
     "shareProfile": "",
     "open": "",
-    "rewards": ""
+    "rewards": "",
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
   },
   "campaign": {
     "missions": {
       "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
     }
   },
   "leaderboard": {
