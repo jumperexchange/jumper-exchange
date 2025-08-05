@@ -5,6 +5,7 @@ import {
   HiddenUI,
   LiFiWidget,
   Route,
+  RouteExecutionUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
@@ -86,10 +87,24 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     }
 
     function onRouteExecutionStarted(route: Route) {
+      console.warn('onRouteExecutionStarted', route.id);
       setCurrentRoute(route);
     }
 
+    function onRouteExecutionUpdated(
+      routeExecutionUpdate: RouteExecutionUpdate,
+    ) {
+      if (routeExecutionUpdate.process.status === 'STARTED') {
+        console.warn(
+          'onRouteExecutionUpdated - STARTED',
+          routeExecutionUpdate.route.id,
+        );
+        setCurrentRoute(routeExecutionUpdate.route);
+      }
+    }
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
+    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
 
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -100,6 +115,10 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       widgetEvents.off(
         WidgetEvent.RouteExecutionStarted,
         onRouteExecutionStarted,
+      );
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionUpdated,
+        onRouteExecutionUpdated,
       );
       widgetEvents.off(
         WidgetEvent.RouteExecutionCompleted,

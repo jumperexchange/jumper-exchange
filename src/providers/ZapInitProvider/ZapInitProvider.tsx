@@ -43,7 +43,7 @@ interface ZapInitState {
   toAddress?: EVMAddress;
   zapData?: any;
   isZapDataSuccess: boolean;
-  setCurrentRoute: Dispatch<SetStateAction<Route | null>>;
+  setCurrentRoute: (newRoute: Route) => void;
   depositTokenData: number | bigint | undefined;
   depositTokenDecimals: number | bigint | undefined;
   isLoadingDepositTokenData: boolean;
@@ -161,6 +161,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.address,
     projectData.chainId,
   ]);
+
+  const handleSetCurrentRoute = useCallback((newRoute: Route) => {
+    setCurrentRoute((prevRoute) => {
+      if (newRoute.id === prevRoute?.id) {
+        return prevRoute;
+      }
+      return newRoute;
+    });
+  }, []);
 
   // RPC operation queueing
   const queueOperation = useCallback(
@@ -400,7 +409,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       toAddress,
       zapData,
       isZapDataSuccess,
-      setCurrentRoute,
+      setCurrentRoute: handleSetCurrentRoute,
       depositTokenData,
       depositTokenDecimals,
       isLoadingDepositTokenData,
@@ -418,6 +427,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     depositTokenDecimals,
     isLoadingDepositTokenData,
     refetchDepositToken,
+    handleSetCurrentRoute,
   ]);
 
   return (
