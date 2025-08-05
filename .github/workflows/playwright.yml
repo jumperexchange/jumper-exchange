@@ -164,7 +164,6 @@ jobs:
     steps:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
-          recreate: true
           message: |
             📊 **Test Results Summary**
             
