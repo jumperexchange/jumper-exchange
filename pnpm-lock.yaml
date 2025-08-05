@@ -186,7 +186,7 @@ dependencies:
     version: 4.17.21
   next:
     specifier: ^15.4.4
-    version: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1)
+    version: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1)
   next-i18n-router:
     specifier: ^5.5.3
     version: 5.5.3
@@ -256,14 +256,14 @@ devDependencies:
     specifier: ^9.32.0
     version: 9.32.0
   '@metamask/test-dapp':
-    specifier: 8.13.0
+    specifier: ^8.13.0
     version: 8.13.0
   '@next/eslint-plugin-next':
     specifier: ^15.4.4
     version: 15.4.5
   '@playwright/test':
-    specifier: 1.48.2
-    version: 1.48.2
+    specifier: ^1.52.0
+    version: 1.54.2
   '@rainbow-me/rainbowkit':
     specifier: ^2.2.6
     version: 2.2.8(@tanstack/react-query@5.84.1)(@types/react@19.1.9)(react-dom@19.1.1)(react@19.1.1)(typescript@5.9.2)(viem@2.33.2)(wagmi@2.16.1)
@@ -284,7 +284,7 @@ devDependencies:
     version: 9.0.18(@babel/core@7.28.0)(next@15.4.5)(react-dom@19.1.1)(react@19.1.1)(rollup@4.46.2)(storybook@9.1.1)(typescript@5.9.2)(vite@7.0.6)
   '@synthetixio/synpress':
     specifier: 4.1.0
-    version: 4.1.0(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.48.2)(ethers@6.15.0)(playwright-core@1.48.2)(typescript@5.9.2)(zod@3.25.76)
+    version: 4.1.0(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.54.2)(ethers@6.15.0)(playwright-core@1.48.2)(typescript@5.9.2)(zod@3.25.76)
   '@types/gtag.js':
     specifier: ^0.0.20
     version: 0.0.20
@@ -308,7 +308,7 @@ devDependencies:
     version: 8.38.0(@typescript-eslint/parser@8.38.0)(eslint@9.32.0)(typescript@5.9.2)
   '@vitest/browser':
     specifier: ^3.2.3
-    version: 3.2.4(playwright@1.48.2)(vite@7.0.6)(vitest@3.2.4)
+    version: 3.2.4(playwright@1.54.2)(vite@7.0.6)(vitest@3.2.4)
   '@vitest/coverage-v8':
     specifier: ^3.2.3
     version: 3.2.4(@vitest/browser@3.2.4)(vitest@3.2.4)
@@ -358,8 +358,8 @@ devDependencies:
     specifier: ^16.1.0
     version: 16.1.4
   playwright:
-    specifier: 1.48.2
-    version: 1.48.2
+    specifier: ^1.52.0
+    version: 1.54.2
   prettier:
     specifier: ^3.6.2
     version: 3.6.2
@@ -4483,7 +4483,7 @@ packages:
       '@emotion/cache': 11.14.0
       '@emotion/react': 11.14.0(@types/react@19.1.9)(react@19.1.1)
       '@types/react': 19.1.9
-      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1)
       react: 19.1.1
     dev: false
 
@@ -4811,7 +4811,7 @@ packages:
       next: ^13.0.0 || ^14.0.0 || ^15.0.0
       react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
     dependencies:
-      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1)
       react: 19.1.1
       third-party-capital: 1.0.20
     dev: false
@@ -5367,12 +5367,12 @@ packages:
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dev: true
 
-  /@playwright/test@1.48.2:
-    resolution: {integrity: sha512-54w1xCWfXuax7dz4W2M9uw0gDyh+ti/0K/MxcCUxChFh37kkdxPdfZDw5QBbuPUJHr1CiHJ1hXgSs+GgeQc5Zw==}
+  /@playwright/test@1.54.2:
+    resolution: {integrity: sha512-A+znathYxPf+72riFd1r1ovOLqsIIB0jKIoPjyK2kqEIe30/6jF6BC7QNluHuwUmsD2tv1XZVugN8GqfTMOxsA==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      playwright: 1.48.2
+      playwright: 1.54.2
 
   /@polka/url@1.0.0-next.29:
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -7578,7 +7578,7 @@ packages:
       '@sentry/vercel-edge': 9.44.1(@opentelemetry/context-async-hooks@2.0.1)(@opentelemetry/core@2.0.1)(@opentelemetry/sdk-trace-base@2.0.1)
       '@sentry/webpack-plugin': 3.6.1(webpack@5.101.0)
       chalk: 3.0.0
-      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1)
       resolve: 1.22.8
       rollup: 4.46.2
       stacktrace-parser: 0.1.11
@@ -8188,7 +8188,7 @@ packages:
     dependencies:
       '@storybook/global': 5.0.0
       '@storybook/icons': 1.4.0(react-dom@19.1.1)(react@19.1.1)
-      '@vitest/browser': 3.2.4(playwright@1.48.2)(vite@7.0.6)(vitest@3.2.4)
+      '@vitest/browser': 3.2.4(playwright@1.54.2)(vite@7.0.6)(vitest@3.2.4)
       prompts: 2.4.2
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)(vite@7.0.6)
       ts-dedent: 2.2.0
@@ -8260,7 +8260,7 @@ packages:
       '@storybook/builder-vite': 9.0.18(storybook@9.1.1)(vite@7.0.6)
       '@storybook/react': 9.0.18(react-dom@19.1.1)(react@19.1.1)(storybook@9.1.1)(typescript@5.9.2)
       '@storybook/react-vite': 9.0.18(react-dom@19.1.1)(react@19.1.1)(rollup@4.46.2)(storybook@9.1.1)(typescript@5.9.2)(vite@7.0.6)
-      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1)
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)(vite@7.0.6)
@@ -8368,7 +8368,7 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /@synthetixio/ethereum-wallet-mock@0.0.12(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.48.2)(ethers@6.15.0)(typescript@5.9.2)(zod@3.25.76):
+  /@synthetixio/ethereum-wallet-mock@0.0.12(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.54.2)(ethers@6.15.0)(typescript@5.9.2)(zod@3.25.76):
     resolution: {integrity: sha512-n1b59v61cPBRA1ryJIqBZ2VybArkRN+7/Hjl24A51J0nKFUED646/EzHRxl3qvLN7Xv3lcmjcmXX0KOcRozFXg==}
     peerDependencies:
       '@playwright/test': '*'
@@ -8376,8 +8376,8 @@ packages:
       '@depay/web3-client': 10.18.6(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(ethers@6.15.0)
       '@depay/web3-mock': 14.19.1
       '@depay/web3-mock-evm': 14.19.1
-      '@playwright/test': 1.48.2
-      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.48.2)
+      '@playwright/test': 1.54.2
+      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.54.2)
       viem: 2.9.9(typescript@5.9.2)(zod@3.25.76)
     transitivePeerDependencies:
       - '@depay/solana-web3.js'
@@ -8418,22 +8418,22 @@ packages:
       - typescript
     dev: true
 
-  /@synthetixio/synpress-core@0.0.12(@playwright/test@1.48.2):
+  /@synthetixio/synpress-core@0.0.12(@playwright/test@1.54.2):
     resolution: {integrity: sha512-OBJDWP/6Hf2olJD98IDeOMxrIJ8pGtnADmxBf0WTUHZiXOwysEnHWksOCaAI3Hef5X4I+MUTCRx2ea4AmvRG5g==}
     peerDependencies:
       '@playwright/test': '*'
     dependencies:
-      '@playwright/test': 1.48.2
+      '@playwright/test': 1.54.2
     dev: true
 
-  /@synthetixio/synpress-metamask@0.0.12(@playwright/test@1.48.2)(playwright-core@1.48.2)(typescript@5.9.2):
+  /@synthetixio/synpress-metamask@0.0.12(@playwright/test@1.54.2)(playwright-core@1.48.2)(typescript@5.9.2):
     resolution: {integrity: sha512-OHJq8r10+yLzsqUgF7c42xT0jTQASzapdFvGxa7Pz3GTCXz3k9VQVYjULXcVckM9rqr5FYhjhcb1MgovkDQHNw==}
     peerDependencies:
       '@playwright/test': '*'
     dependencies:
-      '@playwright/test': 1.48.2
+      '@playwright/test': 1.54.2
       '@synthetixio/synpress-cache': 0.0.12(playwright-core@1.48.2)(typescript@5.9.2)
-      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.48.2)
+      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.54.2)
       '@viem/anvil': 0.0.7
       fs-extra: 11.2.0
       zod: 3.22.4
@@ -8450,14 +8450,14 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@synthetixio/synpress-phantom@0.0.12(@playwright/test@1.48.2)(playwright-core@1.48.2)(typescript@5.9.2):
+  /@synthetixio/synpress-phantom@0.0.12(@playwright/test@1.54.2)(playwright-core@1.48.2)(typescript@5.9.2):
     resolution: {integrity: sha512-HJLeIllxFaasm8vHvFyHF6modwYjM/uoKCCSpSsD1khvLrSMwJey3p0ZwAlEEiaRMfqALvHDwTpKE3qSvnVLvg==}
     peerDependencies:
       '@playwright/test': 1.48.2
     dependencies:
-      '@playwright/test': 1.48.2
+      '@playwright/test': 1.54.2
       '@synthetixio/synpress-cache': 0.0.12(playwright-core@1.48.2)(typescript@5.9.2)
-      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.48.2)
+      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.54.2)
       '@viem/anvil': 0.0.7
       fs-extra: 11.2.0
       zod: 3.22.4
@@ -8474,18 +8474,18 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@synthetixio/synpress@4.1.0(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.48.2)(ethers@6.15.0)(playwright-core@1.48.2)(typescript@5.9.2)(zod@3.25.76):
+  /@synthetixio/synpress@4.1.0(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.54.2)(ethers@6.15.0)(playwright-core@1.48.2)(typescript@5.9.2)(zod@3.25.76):
     resolution: {integrity: sha512-gjfIrFtwJhIJ3fJtKu0OSUrObP7fGWlGRfGCaMFysqhAv2sRc4TQQ8Fxih3Jix7e+oPYyR1vGfsyGpgMrY46oQ==}
     hasBin: true
     peerDependencies:
       '@playwright/test': '*'
     dependencies:
-      '@playwright/test': 1.48.2
-      '@synthetixio/ethereum-wallet-mock': 0.0.12(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.48.2)(ethers@6.15.0)(typescript@5.9.2)(zod@3.25.76)
+      '@playwright/test': 1.54.2
+      '@synthetixio/ethereum-wallet-mock': 0.0.12(@depay/solana-web3.js@1.98.3)(@depay/web3-blockchains@9.8.6)(@playwright/test@1.54.2)(ethers@6.15.0)(typescript@5.9.2)(zod@3.25.76)
       '@synthetixio/synpress-cache': 0.0.12(playwright-core@1.48.2)(typescript@5.9.2)
-      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.48.2)
-      '@synthetixio/synpress-metamask': 0.0.12(@playwright/test@1.48.2)(playwright-core@1.48.2)(typescript@5.9.2)
-      '@synthetixio/synpress-phantom': 0.0.12(@playwright/test@1.48.2)(playwright-core@1.48.2)(typescript@5.9.2)
+      '@synthetixio/synpress-core': 0.0.12(@playwright/test@1.54.2)
+      '@synthetixio/synpress-metamask': 0.0.12(@playwright/test@1.54.2)(playwright-core@1.48.2)(typescript@5.9.2)
+      '@synthetixio/synpress-phantom': 0.0.12(@playwright/test@1.54.2)(playwright-core@1.48.2)(typescript@5.9.2)
     transitivePeerDependencies:
       - '@depay/solana-web3.js'
       - '@depay/web3-blockchains'
@@ -9369,7 +9369,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@vitest/browser@3.2.4(playwright@1.48.2)(vite@7.0.6)(vitest@3.2.4):
+  /@vitest/browser@3.2.4(playwright@1.54.2)(vite@7.0.6)(vitest@3.2.4):
     resolution: {integrity: sha512-tJxiPrWmzH8a+w9nLKlQMzAKX/7VjFs50MWgcAj7p9XQ7AQ9/35fByFYptgPELyLw+0aixTnC4pUWV+APcZ/kw==}
     peerDependencies:
       playwright: '*'
@@ -9389,7 +9389,7 @@ packages:
       '@vitest/mocker': 3.2.4(vite@7.0.6)
       '@vitest/utils': 3.2.4
       magic-string: 0.30.17
-      playwright: 1.48.2
+      playwright: 1.54.2
       sirv: 3.0.1
       tinyrainbow: 2.0.0
       vitest: 3.2.4(@types/node@24.2.0)(@vitest/browser@3.2.4)
@@ -9412,7 +9412,7 @@ packages:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
-      '@vitest/browser': 3.2.4(playwright@1.48.2)(vite@7.0.6)(vitest@3.2.4)
+      '@vitest/browser': 3.2.4(playwright@1.54.2)(vite@7.0.6)(vitest@3.2.4)
       ast-v8-to-istanbul: 0.3.4
       debug: 4.4.1
       istanbul-lib-coverage: 3.2.2
@@ -16012,7 +16012,7 @@ packages:
       negotiator: 0.6.4
     dev: false
 
-  /next@15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1):
+  /next@15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1):
     resolution: {integrity: sha512-nJ4v+IO9CPmbmcvsPebIoX3Q+S7f6Fu08/dEWu0Ttfa+wVwQRh9epcmsyCPjmL2b8MxC+CkBR97jgDhUUztI3g==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
@@ -16035,7 +16035,7 @@ packages:
     dependencies:
       '@next/env': 15.4.5
       '@opentelemetry/api': 1.9.0
-      '@playwright/test': 1.48.2
+      '@playwright/test': 1.54.2
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001731
       postcss: 8.4.31
@@ -16631,13 +16631,19 @@ packages:
     resolution: {integrity: sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==}
     engines: {node: '>=18'}
     hasBin: true
+    dev: true
 
-  /playwright@1.48.2:
-    resolution: {integrity: sha512-NjYvYgp4BPmiwfe31j4gHLa3J7bD2WiBz8Lk2RoSsmX38SVIARZ18VYjxLjAcDsAhA+F4iSEXTSGgjua0rrlgQ==}
+  /playwright-core@1.54.2:
+    resolution: {integrity: sha512-n5r4HFbMmWsB4twG7tJLDN9gmBUeSPcsBZiWSE4DnYz9mJMAFqr2ID7+eGC9kpEnxExJ1epttwR59LEWCk8mtA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  /playwright@1.54.2:
+    resolution: {integrity: sha512-Hu/BMoA1NAdRUuulyvQC0pEqZ4vQbGfn8f7wPXcnqQmM+zct9UliKxsIkLNmz/ku7LElUNqmaiv1TG/aL5ACsw==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
-      playwright-core: 1.48.2
+      playwright-core: 1.54.2
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -19277,7 +19283,7 @@ packages:
       image-size: 2.0.2
       magic-string: 0.30.17
       module-alias: 2.2.3
-      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.2)(react-dom@19.1.1)(react@19.1.1)
+      next: 15.4.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.54.2)(react-dom@19.1.1)(react@19.1.1)
       storybook: 9.1.1(@testing-library/dom@10.4.1)(prettier@3.6.2)(vite@7.0.6)
       ts-dedent: 2.2.0
       vite: 7.0.6(@types/node@24.2.0)
@@ -19385,7 +19391,7 @@ packages:
     dependencies:
       '@types/chai': 5.2.2
       '@types/node': 24.2.0
-      '@vitest/browser': 3.2.4(playwright@1.48.2)(vite@7.0.6)(vitest@3.2.4)
+      '@vitest/browser': 3.2.4(playwright@1.54.2)(vite@7.0.6)(vitest@3.2.4)
       '@vitest/expect': 3.2.4
       '@vitest/mocker': 3.2.4(vite@7.0.6)
       '@vitest/pretty-format': 3.2.4
