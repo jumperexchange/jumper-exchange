@@ -4,11 +4,9 @@ import { EVMProvider, Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
-  Dispatch,
   FC,
   PropsWithChildren,
   useCallback,
-  SetStateAction,
   useContext,
   useEffect,
   useMemo,
@@ -19,7 +17,7 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
+import { useConfig, UseReadContractsReturnType } from 'wagmi';
 import {
   WalletMethods,
   WalletMethodsRef,
@@ -34,6 +32,7 @@ import {
   sendCalls,
   waitForCallsStatus,
 } from './WalletClient/methods';
+import { useWalletClientInitialization } from './WalletClient/hooks';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -86,6 +85,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
   projectData,
 }) => {
+  const wagmiConfig = useConfig();
   const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   // @Note: Might need to handle the persisted pending operations a bit differently
   // but it depends on the route execution logic which currently handles a single active route at a time
@@ -96,8 +96,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     getPromiseResolversForOperation,
   } = useZapPendingOperationsStore();
 
-  const { hasProjectClients, hasWalletClients, getClients, getToAddress } =
+  const { hasProjectClients, hasWalletClients, getToAddress } =
     useBiconomyClientsStore();
+
+  const { initializeClients } = useWalletClientInitialization();
 
   const initInProgressRef = useRef(false);
   const walletMethodsRef = useRef<WalletMethodsRef>({
@@ -118,13 +120,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   const { account } = useAccount();
   const { address, chainId } = account;
-  const { data: walletClient } = useWalletClient({
-    chainId: chainId,
-    account: address as EVMAddress,
-    query: {
-      enabled: !!chainId && !!address,
-    },
-  });
 
   const sendCallsExtraParams = useMemo(
     () => ({
@@ -185,12 +180,20 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error(`Operation ${operationName} not found`);
       }
 
-      const biconomyClients = await getClients(
-        sendCallsExtraParams.projectData.address as EVMAddress,
-        sendCallsExtraParams.chainId,
-        sendCallsExtraParams.projectData.chainId,
-        walletClient,
-      );
+      if (!sendCallsExtraParams.currentRoute) {
+        throw new Error('No current route');
+      }
+
+      if (!sendCallsExtraParams.chainId) {
+        throw new Error('No chain id');
+      }
+
+      const { biconomyClients } = await initializeClients({
+        address: sendCallsExtraParams.currentRoute.fromAddress as EVMAddress,
+        chainId: sendCallsExtraParams.chainId,
+        projectAddress: sendCallsExtraParams.projectData.address as EVMAddress,
+        projectChainId: sendCallsExtraParams.projectData.chainId,
+      });
 
       if (!biconomyClients) {
         const operationId = `${operationName}-${sendCallsExtraParams.currentRoute?.id}`;
@@ -220,7 +223,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         sendCallsExtraParams,
       ) as Promise<WalletMethodReturnType<T>>;
     },
-    [sendCallsExtraParams, walletClient, getClients],
+    [sendCallsExtraParams, initializeClients],
   );
 
   // Execute pending operations when clients are ready
@@ -229,12 +232,20 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const pendingOps = Object.values(pendingOperations);
       console.warn(`Executing ${pendingOps.length} pending operations`);
 
-      const biconomyClients = await getClients(
-        sendCallsExtraParams.projectData.address as EVMAddress,
-        sendCallsExtraParams.chainId,
-        sendCallsExtraParams.projectData.chainId,
-        walletClient,
-      );
+      if (!sendCallsExtraParams.currentRoute) {
+        throw new Error('No current route');
+      }
+
+      if (!sendCallsExtraParams.chainId) {
+        throw new Error('No chain id');
+      }
+
+      const { biconomyClients } = await initializeClients({
+        address: sendCallsExtraParams.currentRoute.fromAddress as EVMAddress,
+        chainId: sendCallsExtraParams.chainId,
+        projectAddress: sendCallsExtraParams.projectData.address as EVMAddress,
+        projectChainId: sendCallsExtraParams.projectData.chainId,
+      });
 
       if (!biconomyClients) {
         throw new Error('Failed to get biconomy clients');
@@ -298,14 +309,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       }
     };
 
-    if (walletClient && Object.keys(pendingOperations).length > 0) {
+    if (Object.keys(pendingOperations).length > 0) {
       executePendingOperations();
     }
   }, [
     pendingOperations,
     sendCallsExtraParams,
-    walletClient,
-    getClients,
+    initializeClients,
     getPromiseResolversForOperation,
     removePendingOperation,
   ]);
@@ -322,6 +332,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       return;
     }
 
+    if (!chainId || !address) {
+      console.warn('No chain id or address, skipping...');
+      return;
+    }
+
     console.warn(
       'Starting client initialization for chain:',
       chainId,
@@ -333,12 +348,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       try {
         initInProgressRef.current = true;
 
-        const biconomyClients = await getClients(
-          projectData.address as EVMAddress,
+        const { biconomyClients } = await initializeClients({
+          address: address as EVMAddress,
           chainId,
-          projectData.chainId,
-          walletClient,
-        );
+          projectAddress: projectData.address as EVMAddress,
+          projectChainId: projectData.chainId,
+        });
 
         if (!biconomyClients) {
           console.warn('Failed to get biconomy clients');
@@ -356,12 +371,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     chainId,
     projectData.chainId,
     address,
-    walletClient,
     isInitializedForCurrentChain,
-    getClients,
+    initializeClients,
   ]);
-
-  const wagmiConfig = useConfig();
 
   const providers = useMemo(() => {
     return [
