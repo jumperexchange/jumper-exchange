@@ -168,9 +168,18 @@
     },
     "tasks": {
       "type": "",
+      "typeFallback": "",
       "status": {
         "verify": "",
         "verified": ""
+      },
+      "action": {
+        "verify": "",
+        "go": ""
+      },
+      "completed": {
+        "title": "",
+        "description": ""
       }
     }
   },
@@ -186,11 +195,26 @@
     "copyAddress": "Копіювати адресу гаманця",
     "shareProfile": "Поділитися профілем",
     "open": "Відкрити {{tool}}",
-    "rewards": "Отримані винагороди"
+    "rewards": "Отримані винагороди",
+    "availableRewards": "",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
   },
   "campaign": {
     "missions": {
       "title": ""
+    },
+    "stats": {
+      "missions": "",
+      "rewards": "",
+      "totalRewards": ""
     }
   },
   "leaderboard": {

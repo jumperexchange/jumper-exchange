@@ -20,5 +20,4 @@ export const AbTestConfig = {
 
 export enum GlobalFeatureFlags {
   MissionsPage = 'missions_page',
-  ProfilePage = 'profile_page',
 }
