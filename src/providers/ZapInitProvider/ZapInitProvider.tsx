@@ -27,12 +27,8 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { retryWithBackoff } from 'src/utils/retryWithBackoff';
-import { Chain, http, zeroAddress } from 'viem';
-import * as chains_ from 'viem/chains';
+import { zeroAddress } from 'viem';
 import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
-import * as hyperwave from './hyperwave';
-import * as katana from './katana';
 import { buildContractInstructions, SendCallsExtraParams } from './ModularZaps';
 import {
   WalletCall,
@@ -43,7 +39,6 @@ import {
   WalletWaitForCallsStatusArgs,
   WalletMethodsRef,
   WalletMethodArgsType,
-  ExtraParams,
   WalletMethodReturnType,
 } from './types';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
@@ -99,12 +94,6 @@ export const useZapInitContext = () => {
 interface ZapInitProviderProps extends PropsWithChildren {
   projectData: ProjectData;
 }
-
-const chains: Record<number, Chain> = {
-  ...chains_,
-  [999]: hyperwave.hyperevm,
-  [747474]: katana.katana,
-};
 
 export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
@@ -388,7 +377,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletCapabilitiesArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
-      extraParams: ExtraParams,
+      extraParams: SendCallsExtraParams,
     ): Promise<{
       atomic: { status: 'supported' | 'ready' | 'unsupported' };
     }> => {
@@ -405,7 +394,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletGetCallsStatusArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
-      extraParams: ExtraParams,
+      extraParams: SendCallsExtraParams,
     ) => {
       if (!meeClientParam) {
         throw new Error('MEE client not initialized');
@@ -462,7 +451,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletWaitForCallsStatusArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
-      extraParams: ExtraParams,
+      extraParams: SendCallsExtraParams,
     ) => {
       if (!meeClientParam) {
         throw new Error('MEE client not initialized');

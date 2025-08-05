@@ -2,6 +2,7 @@ import { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
 import { Route } from '@lifi/sdk';
 import { ProjectData } from 'src/types/questDetails';
 import { AbiFunction } from 'viem';
+import { SendCallsExtraParams } from './ModularZaps/base';
 
 // Type definitions for better type safety
 export interface AbiInput {
@@ -82,19 +83,11 @@ export interface CallsStatusResponse {
   }>;
 }
 
-export interface ExtraParams {
-  chainId: number | undefined;
-  currentRoute: Route | null;
-  zapData: any;
-  projectData: ProjectData;
-  address: string | undefined;
-}
-
 export type WalletMethodDefinition<TArgs, TResult> = (
   args: TArgs,
   meeClient: MeeClient,
   oNexus: MultichainSmartAccount,
-  extraParams: ExtraParams,
+  extraParams: SendCallsExtraParams,
 ) => Promise<TResult>;
 
 export interface WalletMethodsRef {

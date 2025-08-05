@@ -6,7 +6,7 @@ import {
   toMultichainNexusAccount,
 } from '@biconomy/abstractjs';
 import { http } from 'viem';
-import * as chains from 'viem/chains';
+import { chains } from '../../const/chains/chains';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 import { UseWalletClientReturnType } from 'wagmi';
