@@ -23,8 +23,8 @@ import { isSameToken } from '../utils';
 // Helper function to handle 'wallet_getCapabilities'
 export const getCapabilities = async (
   args: WalletCapabilitiesArgs,
-  meeClientParam: MeeClient,
-  oNexusParam: MultichainSmartAccount,
+  meeClientParam: MeeClient | undefined,
+  oNexusParam: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
 ): Promise<{
   atomic: { status: 'supported' | 'ready' | 'unsupported' };
@@ -37,8 +37,8 @@ export const getCapabilities = async (
 // Helper function to handle 'wallet_getCallsStatus'
 export const getCallsStatus = async (
   args: WalletGetCallsStatusArgs,
-  meeClientParam: MeeClient,
-  oNexusParam: MultichainSmartAccount,
+  meeClientParam: MeeClient | undefined,
+  oNexusParam: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
 ) => {
   if (!meeClientParam) {
@@ -90,8 +90,8 @@ export const getCallsStatus = async (
 // Helper function to handle 'wallet_sendCalls'
 export const sendCalls = async (
   args: WalletSendCallsArgs,
-  meeClientParam: MeeClient,
-  oNexusParam: MultichainSmartAccount,
+  meeClientParam: MeeClient | undefined,
+  oNexusParam: MultichainSmartAccount | undefined,
   sendCallsExtraParams: SendCallsExtraParams,
 ) => {
   if (!meeClientParam || !oNexusParam) {
@@ -237,8 +237,8 @@ export const sendCalls = async (
 // Helper function to handle 'wallet_waitForCallsStatus'
 export const waitForCallsStatus = async (
   args: WalletWaitForCallsStatusArgs,
-  meeClientParam: MeeClient,
-  oNexusParam: MultichainSmartAccount,
+  meeClientParam: MeeClient | undefined,
+  oNexusParam: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
 ) => {
   if (!meeClientParam) {

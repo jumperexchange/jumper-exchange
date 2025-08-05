@@ -85,8 +85,8 @@ export interface CallsStatusResponse {
 
 export type WalletMethodDefinition<TArgs, TResult> = (
   args: TArgs,
-  meeClient: MeeClient,
-  oNexus: MultichainSmartAccount,
+  meeClient: MeeClient | undefined,
+  oNexus: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
 ) => Promise<TResult>;
 

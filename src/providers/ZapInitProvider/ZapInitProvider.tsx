@@ -36,6 +36,8 @@ import {
   waitForCallsStatus,
 } from './WalletClient/methods';
 import { useWalletClientInitialization } from './WalletClient/hooks';
+import { SendCallsExtraParams } from './ModularZaps';
+import { NO_DEPS_METHODS, NO_ROUTE_ID_SUFFIX } from './constants';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -124,16 +126,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { account } = useAccount();
   const { address, chainId } = account;
 
-  const sendCallsExtraParams = useMemo(
-    () => ({
-      address,
-      chainId,
-      currentRoute,
-      zapData,
-      projectData,
-    }),
-    [chainId, currentRoute, zapData, projectData, address],
-  );
+  const sendCallsExtraParams = {
+    address,
+    chainId,
+    currentRoute,
+    zapData,
+    projectData,
+  };
 
   // Check if oNexus and meeClient are initialized before rendering
   const isInitialized = hasProjectClients(
@@ -165,6 +164,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     async <T extends WalletMethods>(
       operationName: T,
       args: WalletMethodArgsType<T>,
+      extraParams: SendCallsExtraParams,
     ): Promise<ReturnType<WalletMethodsRef[T]>> => {
       const operation = walletMethodsRef.current?.[operationName] as
         | WalletMethodsRef[T]
@@ -177,24 +177,22 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       let biconomyClients: BiconomyClients | null = null;
 
       try {
-        if (sendCallsExtraParams.currentRoute && sendCallsExtraParams.chainId) {
-          const clients = await initializeClients({
-            address: sendCallsExtraParams.currentRoute
-              .fromAddress as EVMAddress,
-            chainId: sendCallsExtraParams.chainId,
-            projectAddress: sendCallsExtraParams.projectData
-              .address as EVMAddress,
-            projectChainId: sendCallsExtraParams.projectData.chainId,
-          });
+        const clients = await initializeClients({
+          address: extraParams.currentRoute?.fromAddress as EVMAddress,
+          chainId: extraParams.chainId,
+          projectAddress: extraParams.projectData.address as EVMAddress,
+          projectChainId: extraParams.projectData.chainId,
+        });
 
-          biconomyClients = clients.biconomyClients;
-        }
+        biconomyClients = clients.biconomyClients;
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       }
 
-      if (!biconomyClients) {
-        const operationId = `${operationName}-${sendCallsExtraParams.currentRoute?.id}`;
+      const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
+
+      if (!biconomyClients && isMethodWithDeps) {
+        const operationId = `${operationName}-${extraParams.currentRoute?.id ?? NO_ROUTE_ID_SUFFIX}`;
 
         console.warn(
           `Queued operation: ${operationName} with id: ${operationId}`,
@@ -213,12 +211,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       return operation(
         args as any,
-        biconomyClients.meeClient,
-        biconomyClients.oNexus,
-        sendCallsExtraParams,
+        biconomyClients?.meeClient,
+        biconomyClients?.oNexus,
+        extraParams,
       ) as Promise<WalletMethodReturnType<T>>;
     },
-    [sendCallsExtraParams, initializeClients],
+    [initializeClients],
   );
 
   // Execute pending operations when clients are ready
@@ -227,41 +225,46 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const pendingOps = Object.values(pendingOperations);
       const filteredPendingOps = pendingOps.filter(
         (pendingOp) =>
-          pendingOp.id.endsWith('undefined') ||
-          pendingOp.id.endsWith(sendCallsExtraParams.currentRoute?.id ?? ''),
+          pendingOp.id.endsWith(NO_ROUTE_ID_SUFFIX) ||
+          (sendCallsExtraParams.currentRoute?.id &&
+            pendingOp.id.endsWith(sendCallsExtraParams.currentRoute?.id)),
       );
       console.warn(
         `Preparing to execute ${filteredPendingOps.length}/${pendingOps.length} pending operations`,
       );
 
-      console.warn('sendCallsExtraParams', sendCallsExtraParams);
-
       let biconomyClients: BiconomyClients | null = null;
 
       try {
-        if (sendCallsExtraParams.currentRoute && sendCallsExtraParams.chainId) {
-          const clients = await initializeClients({
-            address: sendCallsExtraParams.currentRoute
-              .fromAddress as EVMAddress,
-            chainId: sendCallsExtraParams.chainId,
-            projectAddress: sendCallsExtraParams.projectData
-              .address as EVMAddress,
-            projectChainId: sendCallsExtraParams.projectData.chainId,
-          });
+        const clients = await initializeClients({
+          address: sendCallsExtraParams.currentRoute?.fromAddress as EVMAddress,
+          chainId: sendCallsExtraParams.chainId,
+          projectAddress: sendCallsExtraParams.projectData
+            .address as EVMAddress,
+          projectChainId: sendCallsExtraParams.projectData.chainId,
+        });
 
-          console.warn('Biconomy clients:', clients);
+        console.warn('Biconomy clients:', clients);
 
-          biconomyClients = clients.biconomyClients;
-        }
+        biconomyClients = clients.biconomyClients;
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       }
 
       // Execute all pending operations
       for (const pendingOp of filteredPendingOps) {
-        if (!biconomyClients) {
+        const isMethodWithDeps = !NO_DEPS_METHODS.has(pendingOp.operationName);
+
+        if (isMethodWithDeps && !sendCallsExtraParams.currentRoute) {
           console.warn(
-            `No biconomy clients, skipping ${pendingOp.operationName}...`,
+            `No current route, skipping executing pending operation: ${pendingOp.operationName}`,
+          );
+          continue;
+        }
+
+        if (isMethodWithDeps && !biconomyClients) {
+          console.warn(
+            `No biconomy clients, skipping executing pending operation: ${pendingOp.operationName}`,
           );
           continue;
         }
@@ -282,8 +285,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
           const result = await operation(
             pendingOp.args as any,
-            biconomyClients.meeClient,
-            biconomyClients.oNexus,
+            biconomyClients?.meeClient,
+            biconomyClients?.oNexus,
             sendCallsExtraParams,
           );
 
@@ -318,7 +321,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }
   }, [
     pendingOperations,
-    sendCallsExtraParams,
+    JSON.stringify(sendCallsExtraParams),
     isInitializedForCurrentChain,
     initializeClients,
     getPromiseResolversForOperation,
@@ -375,19 +378,35 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         wagmiConfig,
         getCapabilities: async (_, args) => {
           console.warn('getCapabilities');
-          return queueOperation(WalletMethods.getCapabilities, args);
+          return queueOperation(
+            WalletMethods.getCapabilities,
+            args,
+            sendCallsExtraParams,
+          );
         },
         getCallsStatus: async (_, args) => {
           console.warn('getCallsStatus');
-          return queueOperation(WalletMethods.getCallsStatus, args);
+          return queueOperation(
+            WalletMethods.getCallsStatus,
+            args,
+            sendCallsExtraParams,
+          );
         },
         sendCalls: async (_, args) => {
           console.warn('sendCalls');
-          return queueOperation(WalletMethods.sendCalls, args);
+          return queueOperation(
+            WalletMethods.sendCalls,
+            args,
+            sendCallsExtraParams,
+          );
         },
         waitForCallsStatus: async (_, args) => {
           console.warn('waitForCallsStatus');
-          return queueOperation(WalletMethods.waitForCallsStatus, args);
+          return queueOperation(
+            WalletMethods.waitForCallsStatus,
+            args,
+            sendCallsExtraParams,
+          );
         },
       }),
     ];
@@ -396,6 +415,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     queueOperation,
     isInitialized,
     isInitializedForCurrentChain,
+    JSON.stringify(sendCallsExtraParams),
   ]);
 
   const toAddress = useMemo(
