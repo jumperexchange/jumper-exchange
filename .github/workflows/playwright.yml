@@ -118,24 +118,12 @@ jobs:
         path: blob-report
         retention-days: 1
 
-  post-comment:
-    needs: [create-qase-run, test]
-    if: ${{ !cancelled() && github.event_name == 'pull_request' && needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          recreate: true
-          message: |
-            📊 **Qase Test Report**
-            
-            [View Test Results](${{ needs.create-qase-run.outputs.public_link }})
-            
-
   merge-reports:
     if: ${{ !cancelled() }}
     needs: [test]
     timeout-minutes: 3
+    outputs:
+      summary: ${{ steps.summary.outputs.summary }}
 
     runs-on: ubuntu-latest
     steps:
@@ -161,9 +149,25 @@ jobs:
         id: summary
         with:
           report-file: ./report.json
+          create-comment: false
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
           name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
           retention-days: 2
+
+  post-comment:
+    needs: [create-qase-run, merge-reports]
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          message: |
+            📊 **Test Results Summary**
+            
+            ${{ needs.merge-reports.outputs.summary }}
+            
+            ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}
