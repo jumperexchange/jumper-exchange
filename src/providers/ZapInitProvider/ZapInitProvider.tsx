@@ -24,7 +24,10 @@ import {
   WalletMethodArgsType,
   WalletMethodReturnType,
 } from './types';
-import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
+import {
+  BiconomyClients,
+  useBiconomyClientsStore,
+} from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/ZapPendingOperationsStore';
 import {
   getCapabilities,
@@ -171,29 +174,30 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error(`Operation ${operationName} not found`);
       }
 
-      if (!sendCallsExtraParams.currentRoute) {
-        throw new Error('No current route');
-      }
+      let biconomyClients: BiconomyClients | null = null;
 
-      if (!sendCallsExtraParams.chainId) {
-        throw new Error('No chain id');
-      }
+      try {
+        if (sendCallsExtraParams.currentRoute && sendCallsExtraParams.chainId) {
+          const clients = await initializeClients({
+            address: sendCallsExtraParams.currentRoute
+              .fromAddress as EVMAddress,
+            chainId: sendCallsExtraParams.chainId,
+            projectAddress: sendCallsExtraParams.projectData
+              .address as EVMAddress,
+            projectChainId: sendCallsExtraParams.projectData.chainId,
+          });
 
-      const { biconomyClients } = await initializeClients({
-        address: sendCallsExtraParams.currentRoute.fromAddress as EVMAddress,
-        chainId: sendCallsExtraParams.chainId,
-        projectAddress: sendCallsExtraParams.projectData.address as EVMAddress,
-        projectChainId: sendCallsExtraParams.projectData.chainId,
-      });
+          biconomyClients = clients.biconomyClients;
+        }
+      } catch (error) {
+        console.error('Failed to initialize clients:', error);
+      }
 
       if (!biconomyClients) {
         const operationId = `${operationName}-${sendCallsExtraParams.currentRoute?.id}`;
 
         console.warn(
-          'Queued operation:',
-          operationName,
-          'with id:',
-          operationId,
+          `Queued operation: ${operationName} with id: ${operationId}`,
         );
 
         return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
@@ -221,34 +225,43 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   useEffect(() => {
     const executePendingOperations = async () => {
       const pendingOps = Object.values(pendingOperations);
-      console.warn(`Executing ${pendingOps.length} pending operations`);
+      const filteredPendingOps = pendingOps.filter(
+        (pendingOp) =>
+          pendingOp.id.endsWith('undefined') ||
+          pendingOp.id.endsWith(sendCallsExtraParams.currentRoute?.id ?? ''),
+      );
+      console.warn(
+        `Preparing to execute ${filteredPendingOps.length}/${pendingOps.length} pending operations`,
+      );
 
-      if (!sendCallsExtraParams.currentRoute) {
-        throw new Error('No current route');
-      }
+      console.warn('sendCallsExtraParams', sendCallsExtraParams);
 
-      if (!sendCallsExtraParams.chainId) {
-        throw new Error('No chain id');
-      }
+      let biconomyClients: BiconomyClients | null = null;
 
-      const { biconomyClients } = await initializeClients({
-        address: sendCallsExtraParams.currentRoute.fromAddress as EVMAddress,
-        chainId: sendCallsExtraParams.chainId,
-        projectAddress: sendCallsExtraParams.projectData.address as EVMAddress,
-        projectChainId: sendCallsExtraParams.projectData.chainId,
-      });
+      try {
+        if (sendCallsExtraParams.currentRoute && sendCallsExtraParams.chainId) {
+          const clients = await initializeClients({
+            address: sendCallsExtraParams.currentRoute
+              .fromAddress as EVMAddress,
+            chainId: sendCallsExtraParams.chainId,
+            projectAddress: sendCallsExtraParams.projectData
+              .address as EVMAddress,
+            projectChainId: sendCallsExtraParams.projectData.chainId,
+          });
 
-      if (!biconomyClients) {
-        throw new Error('Failed to get biconomy clients');
+          console.warn('Biconomy clients:', clients);
+
+          biconomyClients = clients.biconomyClients;
+        }
+      } catch (error) {
+        console.error('Failed to initialize clients:', error);
       }
 
       // Execute all pending operations
-      for (const pendingOp of pendingOps) {
-        if (
-          !pendingOp.id.endsWith(sendCallsExtraParams.currentRoute?.id ?? '')
-        ) {
+      for (const pendingOp of filteredPendingOps) {
+        if (!biconomyClients) {
           console.warn(
-            `Skipping operation ${pendingOp.id} because it's not the current route: ${sendCallsExtraParams.currentRoute?.id}`,
+            `No biconomy clients, skipping ${pendingOp.operationName}...`,
           );
           continue;
         }
@@ -306,6 +319,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [
     pendingOperations,
     sendCallsExtraParams,
+    isInitializedForCurrentChain,
     initializeClients,
     getPromiseResolversForOperation,
     removePendingOperation,
@@ -377,7 +391,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         },
       }),
     ];
-  }, [wagmiConfig, queueOperation, isInitializedForCurrentChain]);
+  }, [
+    wagmiConfig,
+    queueOperation,
+    isInitialized,
+    isInitializedForCurrentChain,
+  ]);
 
   const toAddress = useMemo(
     () =>

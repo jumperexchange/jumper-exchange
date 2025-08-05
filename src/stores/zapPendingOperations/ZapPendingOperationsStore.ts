@@ -18,6 +18,69 @@ interface PromiseResolver<T extends WalletMethods> {
   reject: (error: Error) => void;
 }
 
+const serializeWithTypes = (obj: any): any => {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(serializeWithTypes);
+  }
+
+  const result: any = {};
+  const typeInfo: Record<string, string> = {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === 'bigint') {
+      result[key] = value.toString();
+      typeInfo[key] = 'bigint';
+    } else if (typeof value === 'object' && value !== null) {
+      result[key] = serializeWithTypes(value);
+    } else {
+      result[key] = value;
+    }
+  }
+
+  // Only add type info if we have BigInt fields
+  if (Object.keys(typeInfo).length > 0) {
+    result.__types = typeInfo;
+  }
+
+  return result;
+};
+
+const deserializeWithTypes = <T>(obj: any): T => {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(deserializeWithTypes) as T;
+  }
+
+  const result: Record<string, unknown> = {};
+  const typeInfo = obj.__types || {};
+
+  for (const [key, value] of Object.entries(obj)) {
+    // Skip the type metadata field
+    if (key === '__types') {
+      continue;
+    }
+
+    const fieldType = typeInfo[key];
+
+    if (fieldType === 'bigint' && typeof value === 'string') {
+      result[key] = BigInt(value);
+    } else if (typeof value === 'object' && value !== null) {
+      result[key] = deserializeWithTypes(value);
+    } else {
+      result[key] = value;
+    }
+  }
+
+  return result as T;
+};
+
 interface PendingOperationsState<T extends WalletMethods> {
   pendingOperations: Record<string, PendingOperationData<T>>;
   promiseResolvers: Map<string, PromiseResolver<T>>;
@@ -93,7 +156,32 @@ export const useZapPendingOperationsStore = create<
     {
       name: 'zap-pending-operations-storage',
       // Only persist the pendingOperations, not the promiseResolvers
-      partialize: (state) => ({ pendingOperations: state.pendingOperations }),
+      partialize: (state) => {
+        const serializedPendingOperations: Record<string, any> = {};
+
+        for (const [id, operation] of Object.entries(state.pendingOperations)) {
+          serializedPendingOperations[id] = {
+            ...operation,
+            args: serializeWithTypes(operation.args),
+          };
+        }
+
+        return { pendingOperations: serializedPendingOperations };
+      },
+      onRehydrateStorage: () => {
+        return (state) => {
+          if (state?.pendingOperations) {
+            // Deserialize each pending operation's args
+            for (const [id, operation] of Object.entries(
+              state.pendingOperations,
+            )) {
+              if (operation.args) {
+                operation.args = deserializeWithTypes(operation.args);
+              }
+            }
+          }
+        };
+      },
     },
   ),
 );

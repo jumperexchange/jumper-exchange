@@ -12,7 +12,7 @@ import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 import { UseWalletClientReturnType } from 'wagmi';
 import { EVMAddress } from 'src/types/internal';
 
-type BiconomyClients = {
+export type BiconomyClients = {
   meeClient: MeeClient;
   oNexus: MultichainSmartAccount;
 };
