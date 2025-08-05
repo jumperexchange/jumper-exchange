@@ -14,6 +14,7 @@ jobs:
     name: Create Qase Run
     runs-on: ubuntu-latest
     continue-on-error: true
+    timeout-minutes: 3
     outputs:
       run_id: ${{ steps.create-run.outputs.run_id }}
       public_link: ${{ steps.create-public-link.outputs.public_link }}
@@ -67,6 +68,7 @@ jobs:
           echo "public_link=$public_link" >> "$GITHUB_OUTPUT"
           echo "Public link: $public_link"
   test:
+    needs: [create-qase-run]
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: false # Instead we use fail-fast to forward the failure state to subsequent jobs
     timeout-minutes: 20
@@ -99,22 +101,22 @@ jobs:
         QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
       if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
       run: |
-      if [ -n "${{ secrets.QASE_TOKEN }}" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
+        if [ -n "${{ secrets.QASE_TOKEN }}" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
           echo "Running tests with Qase reporting (Run ID: $QASE_TESTOPS_RUN_ID)"
-        pnpm run test:ci:e2e:qase \
-          --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+          pnpm run test:ci:e2e:qase \
+            --shard ${{ matrix.shard }}/${{ strategy.job-total }}
         else
           echo "Running tests without Qase reporting (API token or run ID not available)"
           pnpm run test:ci:e2e \
-           --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+            --shard ${{ matrix.shard }}/${{ strategy.job-total }}
         fi
     - name: Upload blob report to Github Actions Artifacts
-      if: ${{ !cancelled()}}
+      if: ${{ !cancelled() }}
       uses: actions/upload-artifact@v4
       with:
-          name: blob-report-${{ matrix.shard }}
-          path: blob-report
-          retention-days: 1
+        name: blob-report-${{ matrix.shard }}
+        path: blob-report
+        retention-days: 1
 
   post-comment:
     needs: [create-qase-run, test]
@@ -128,11 +130,12 @@ jobs:
             --body "📊 [Qase Test Report](${{ needs.create-qase-run.outputs.public_link }}) is available."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}          
+          PR_NUMBER: ${{ github.event.pull_request.number }}
 
   merge-reports:
     if: ${{ !cancelled() }}
     needs: [test]
+    timeout-minutes: 3
 
     runs-on: ubuntu-latest
     steps:
