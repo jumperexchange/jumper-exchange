@@ -123,14 +123,13 @@ jobs:
     if: ${{ !cancelled() && github.event_name == 'pull_request' && needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Post comment to PR with public link
-        run: |
-          gh pr comment "$PR_NUMBER" \
-            --body "📊 [Qase Test Report](${{ needs.create-qase-run.outputs.public_link }}) is available."
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            📊 **Qase Test Report**
+            
+            [View Test Results](${{ needs.create-qase-run.outputs.public_link }})
+            
 
   merge-reports:
     if: ${{ !cancelled() }}
