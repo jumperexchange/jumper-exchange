@@ -1,4 +1,4 @@
-import { PerksData, QuestData, StrapiResponseData } from 'src/types/strapi';
+import { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
 import { usePaginatedData } from '../usePaginatedData';
 import { PAGE_SIZE } from 'src/const/quests';
 import { getPerks } from 'src/app/lib/getPerks';
@@ -14,7 +14,7 @@ export async function fetchPerksData(page: number, pageSize: number = 12) {
 }
 
 export const usePerksInfinite = (
-  initialData?: StrapiResponseData<PerksData>,
+  initialData?: StrapiResponseData<PerksDataAttributes>,
   pageSize: number = PAGE_SIZE,
 ) => {
   return usePaginatedData({

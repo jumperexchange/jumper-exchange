@@ -1,21 +1,13 @@
 'use client';
 
 import { FC, useEffect, useMemo } from 'react';
-import {
-  type ContractCall,
-  LiFiWidget,
-  Route,
-  useFieldActions,
-  useWidgetEvents,
-  WidgetEvent,
-} from '@lifi/widget';
-import { useInitializeZapConfig } from './useInitializeZapConfig';
-import { formatUnits } from 'viem/utils';
+import { LiFiWidget, Route, useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
 import { WidgetProps } from '../Widget.types';
 import { ConfigContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
+import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -36,7 +28,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     isZapDataSuccess,
     refetchDepositToken,
     setCurrentRoute,
-  } = useInitializeZapConfig(projectData);
+  } = useZapInitContext();
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
@@ -50,9 +42,14 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     return zapData?.market?.depositToken.chainId;
   }, [JSON.stringify(zapData ?? {})]);
 
+  const minFromAmountUSD = useMemo(() => {
+    return Number(projectData?.minFromAmountUSD ?? '0');
+  }, [projectData?.minFromAmountUSD]);
+
   const enhancedCtx = useMemo(() => {
     const baseOverrides: ConfigContext['baseOverrides'] = {
       integrator: projectData.integrator,
+      minFromAmountUSD,
     };
 
     return {
@@ -60,6 +57,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       includeZap: true,
       zapProviders: providers,
       zapToAddress: toAddress,
+      zapPoolName: poolName,
       baseOverrides,
     };
   }, [
@@ -68,6 +66,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     providers,
     toAddress,
     projectData.integrator,
+    minFromAmountUSD,
   ]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);

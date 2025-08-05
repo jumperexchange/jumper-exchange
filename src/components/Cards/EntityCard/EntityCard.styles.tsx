@@ -30,14 +30,14 @@ export const StyledEntityCardContentContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   position: 'relative',
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 }));
 
 export const StyledEntityCardBadgeContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
-  right: theme.spacing(2.5),
+  right: theme.spacing(2),
   zIndex: 1,
 }));
 
@@ -56,7 +56,7 @@ export const StyledEntityCardImage = styled(Image)(({ theme }) => ({
   width: '100%',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 }));
 
@@ -85,8 +85,7 @@ export const StyledWideEntityCardTitle = styled(StyledEntityCardTitleBase)(
 
 export const StyledEntityCardDescription = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodyMedium,
-  color: (theme.vars || theme).palette.text.primary,
-  opacity: 0.48,
+  color: (theme.vars || theme).palette.text.secondary,
 }));
 
 // Link
@@ -103,6 +102,10 @@ export const StyledEntityCardLink = styled(Link)(({ theme }) => ({
   '&:hover': {
     color: (theme.vars || theme).palette.primary.main,
   },
+  '& svg': {
+    width: 20,
+    height: 20,
+  },
 }));
 
 // Avatars
@@ -111,15 +114,17 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
   boxSizing: 'content-box',
   border: 2,
   borderStyle: 'solid',
-  borderColor: (theme.vars || theme).palette.background.default,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  borderColor: (theme.vars || theme).palette.surface2.main,
   ...theme.applyStyles('light', {
-    borderColor: (theme.vars || theme).palette.white.main,
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+    borderColor: (theme.vars || theme).palette.surface1.main,
   }),
 }));
 
 export const StyledCompactParticipantAvatar = styled(BaseAvatar)(() => ({
-  height: 32,
-  width: 32,
+  height: 40,
+  width: 40,
 }));
 
 export const StyledWideParticipantAvatar = styled(BaseAvatar)(() => ({
@@ -151,20 +156,17 @@ export const StyledRewardsContainer = styled(Stack)(({ theme }) => ({
 export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
   return <Chip {...props} onClick={() => {}} />;
 })(({ theme }) => ({
-  padding: theme.spacing(0.5, 1),
-  backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+  padding: theme.spacing(1, 1),
+  height: 40,
+  backgroundColor: (theme.vars || theme).palette.badgeAlphaBg,
   borderRadius: (theme.vars || theme).shape.buttonBorderRadius,
   '& .MuiChip-label': {
     padding: theme.spacing(0, 0.75),
   },
   '& .MuiChip-avatar': {
     width: 'fit-content',
-    padding: theme.spacing(0, 0.25),
     margin: 0,
   },
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-  }),
 }));
 
 export const StyledWideRewardChipContainer = styled(
@@ -178,12 +180,13 @@ export const StyledCompactRewardLabel = styled(Typography)(({ theme }) => ({
 }));
 
 export const StyledRewardsAvatarsContainer = styled((props: StackProps) => (
-  <Stack direction="row" spacing={-1.25} alignItems="center" {...props} />
+  <Stack direction="row" spacing={-1.5} alignItems="center" {...props} />
 ))(({ theme }) => ({}));
 
 export const StyledRewardAvatar = styled(BaseAvatar)(({ theme }) => ({
   height: 24,
   width: 24,
+  padding: '0 !important',
   [theme.breakpoints.up('sm')]: {
     marginTop: theme.spacing(0.5),
     marginBottom: theme.spacing(0.5),

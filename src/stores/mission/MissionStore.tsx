@@ -13,8 +13,13 @@ interface MissionState {
   currentActiveTaskType?: TaskType;
   currentActiveTaskName?: string;
 
+  isCurrentActiveTaskCompleted: boolean;
+  setIsCurrentActiveTaskCompleted: (isCompleted: boolean) => void;
+
   taskTitle?: string;
   taskDescription?: string;
+  taskDescriptionCTAText?: string;
+  taskDescriptionCTALink?: string;
   taskCTAText?: string;
   taskCTALink?: string;
   taskInputs?: TaskWidgetInformationInputData[];
@@ -52,12 +57,16 @@ interface MissionState {
   setCurrentTaskInstructionParams: ({
     taskTitle,
     taskDescription,
+    taskDescriptionCTALink,
+    taskDescriptionCTAText,
     taskCTALink,
     taskCTAText,
     taskInputs,
   }: {
     taskTitle?: string;
     taskDescription?: string;
+    taskDescriptionCTALink?: string;
+    taskDescriptionCTAText?: string;
     taskCTAText?: string;
     taskCTALink?: string;
     taskInputs?: TaskWidgetInformationInputData[];
@@ -74,9 +83,6 @@ interface MissionState {
     missionId?: string,
     missionType?: string,
   ) => void;
-
-  isMissionCompleted: boolean;
-  setIsMissionCompleted: (isCompleted: boolean) => void;
 }
 
 export const useMissionStore = createWithEqualityFn<MissionState>(
@@ -84,6 +90,10 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
     currentActiveTaskId: undefined,
     currentActiveTaskType: undefined,
     currentActiveTaskName: undefined,
+
+    isCurrentActiveTaskCompleted: false,
+    setIsCurrentActiveTaskCompleted: (isCurrentActiveTaskCompleted) =>
+      set({ isCurrentActiveTaskCompleted }),
 
     destinationChain: undefined,
     destinationToken: undefined,
@@ -126,9 +136,6 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         missionId,
         missionType,
       }),
-
-    isMissionCompleted: false,
-    setIsMissionCompleted: (isMissionCompleted) => set({ isMissionCompleted }),
   }),
   Object.is,
 );

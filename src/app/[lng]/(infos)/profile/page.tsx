@@ -1,9 +1,9 @@
-import { getProfileBannerCampaigns } from '@/app/lib/getProfileBannerCampaigns';
-import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
-import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
-import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
+import { Suspense } from 'react';
+import { getPerks } from 'src/app/lib/getPerks';
+import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
+import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkeleton';
 
 export const metadata: Metadata = {
   title: 'Jumper Loyalty Pass',
@@ -15,15 +15,14 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const [{ data: campaigns }, { data: questsData }] = await Promise.all([
-    getProfileBannerCampaigns(),
-    getQuestsWithNoCampaignAttached(),
-  ]);
+  const { data: perksResponse } = await getPerks();
 
-  // Fetch max APY for all quests and add to quest data
-  const questsExtended = await fetchQuestOpportunitiesByRewardsIds(
-    questsData.data,
+  const perks = perksResponse.data;
+  const totalPerks = perksResponse.meta.pagination?.total || 0;
+  const hasMorePerks = totalPerks > perks.length;
+  return (
+    <Suspense fallback={<ProfilePageSkeleton />}>
+      <ProfilePage isPublic={true} perks={perks} hasMorePerks={hasMorePerks} />
+    </Suspense>
   );
-
-  return <ProfilePage quests={questsExtended} campaigns={campaigns} />;
 }

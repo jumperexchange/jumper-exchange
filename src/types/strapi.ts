@@ -346,6 +346,11 @@ export interface CampaignData extends CampaignAttributes {
   documentId: string;
 }
 
+export enum BenefitCardColorMode {
+  Light = 'light',
+  Dark = 'dark',
+}
+
 export interface CampaignAttributes {
   Title: string;
   Description: string;
@@ -372,6 +377,8 @@ export interface CampaignAttributes {
   updatedAt: string;
   publishedAt?: string;
   MissionCount?: number;
+  HeroBenefitCardColorMode?: BenefitCardColorMode;
+  CarouselBenefitCardColorMode?: BenefitCardColorMode;
 }
 
 /* MerklRewards */
@@ -421,6 +428,8 @@ export interface TaskWidgetInformationData {
   description?: string | null;
   CTALink?: string | null;
   CTAText?: string | null;
+  descriptionCTALink?: string;
+  descriptionCTAText?: string;
   inputs?: TaskWidgetInformationInputData[] | null;
 }
 

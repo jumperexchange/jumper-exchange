@@ -1,10 +1,10 @@
 'use client';
 import type { BackgroundContainerProps } from '@/components/Background';
 import type {
+  Color,
   ComponentsOverrides,
   ComponentsVariants,
   CssVarsTheme,
-  Color,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
 import { alpha, createTheme, extendTheme } from '@mui/material/styles';
@@ -13,6 +13,9 @@ import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
 import type {} from '@mui/material/themeCssVarsAugmentation';
+import { paletteLight } from './paletteLight';
+import { paletteDark } from './paletteDark';
+import { baseColors } from './baseColors';
 
 declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
@@ -31,6 +34,7 @@ declare module '@mui/material/styles' {
   interface Shape {
     borderRadius: number;
     borderRadiusSecondary: number;
+    tabBarRadius: number;
     cardBorderRadius: number;
     buttonBorderRadius: number;
   }
@@ -38,7 +42,10 @@ declare module '@mui/material/styles' {
   interface ThemeOptions {
     shape?: Partial<Shape>;
   }
-  interface Palette {
+
+  type SemanticPalette = typeof paletteLight;
+
+  interface Palette extends SemanticPalette {
     tertiary: Palette['primary'];
     white: Palette['primary'];
     black: Palette['primary'];
@@ -48,6 +55,7 @@ declare module '@mui/material/styles' {
     surface1: Palette['primary'];
     surface2: Palette['primary'];
     surface3: Palette['primary'];
+    surface4: Palette['primary'];
     bg: Palette['primary'];
     bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
@@ -82,9 +90,10 @@ declare module '@mui/material/styles' {
     orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     lavenderLight: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
     lavenderDark: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    semanticPalette: SemanticPalette;
   }
 
-  interface PaletteOptions {
+  interface PaletteOptions extends Partial<SemanticPalette> {
     tertiary?: PaletteOptions['primary'];
     white?: PaletteOptions['primary'];
     black?: PaletteOptions['primary'];
@@ -94,6 +103,7 @@ declare module '@mui/material/styles' {
     surface1?: PaletteOptions['primary'];
     surface2?: PaletteOptions['primary'];
     surface3?: PaletteOptions['primary'];
+    surface4?: PaletteOptions['primary'];
     bg?: PaletteOptions['primary'];
     bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
@@ -126,6 +136,7 @@ declare module '@mui/material/styles' {
     orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     lavenderLight?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
     lavenderDark?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    semanticPalette?: SemanticPalette;
   }
   interface ButtonPropsColorOverrides {
     tertiary: true;
@@ -137,6 +148,7 @@ declare module '@mui/material/styles' {
     surface1: true;
     surface2: true;
     surface3: true;
+    surface4: true;
     bg: true;
     bgSecondary: true;
     bgTertiary: true;
@@ -186,6 +198,7 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    bodyXXSmallStrong: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
     titleMedium: React.CSSProperties;
@@ -220,6 +233,7 @@ declare module '@mui/material/styles' {
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
+    bodyXXSmallStrong: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
     titleMedium: React.CSSProperties;
@@ -256,6 +270,7 @@ declare module '@mui/material/Typography' {
     bodySmall: true;
     bodyXSmallStrong: true;
     bodyXSmall: true;
+    bodyXXSmallStrong: true;
     brandHeaderXLarge: true;
     titleSmall: true;
     titleXSmall: true;
@@ -289,6 +304,7 @@ declare module '@mui/material/Typography' {
     bodySmall: true;
     bodyXSmallStrong: true;
     bodyXSmall: true;
+    bodyXXSmallStrong: true;
     brandHeaderXLarge: true;
     titleSmall: true;
     titleMedium: true;
@@ -310,318 +326,101 @@ declare module '@mui/material/Typography' {
 const shape = {
   borderRadius: 12,
   borderRadiusSecondary: 8,
+  tabBarRadius: 128,
   cardBorderRadius: 24,
   buttonBorderRadius: 128,
 };
 
-const themeBase = createTheme({
-  // colorSchemes: { light: true, dark: true },
-  // cssVariables: false,
-  palette: {
-    white: {
-      main: '#FFFFFF',
-      light: '#FFFFFF',
-      dark: '#FFFFFF',
-    },
-    black: {
-      main: '#000000',
-      light: '#000000',
-      dark: '#000000',
-    },
-
-    alphaDark100: {
-      main: 'rgba(0, 0, 0, 0.04)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark200: {
-      main: 'rgba(0, 0, 0, 0.08)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark300: {
-      main: 'rgba(0, 0, 0, 0.12)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark400: {
-      main: 'rgba(0, 0, 0, 0.16)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark500: {
-      main: 'rgba(0, 0, 0, 0.24)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark600: {
-      main: 'rgba(0, 0, 0, 0.32)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark700: {
-      main: 'rgba(0, 0, 0, 0.48)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaDark800: {
-      main: 'rgba(0, 0, 0, 0.64)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight100: {
-      main: 'rgba(255, 255, 255, 0.04)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight200: {
-      main: 'rgba(255, 255, 255, 0.08)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight300: {
-      main: 'rgba(255, 255, 255, 0.12)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight400: {
-      main: 'rgba(255, 255, 255, 0.16)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight500: {
-      main: 'rgba(255, 255, 255, 0.24)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight600: {
-      main: 'rgba(255, 255, 255, 0.32)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight700: {
-      main: 'rgba(255, 255, 255, 0.48)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-    alphaLight800: {
-      main: 'rgba(255, 255, 255, 0.64)',
-      // @ts-ignore
-      mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-    },
-  },
-});
-
 const palette = {
-  white: {
-    main: '#FFFFFF',
-    light: '#FFFFFF',
-    dark: '#FFFFFF',
+  ...paletteLight,
+  ...baseColors,
+  background: {
+    default: paletteLight.lavenderLight[0],
   },
-  black: {
-    main: '#000000',
-    light: '#000000',
-    dark: '#000000',
-  },
-  alphaDark100: {
-    main: 'rgba(0, 0, 0, 0.04)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark200: {
-    main: 'rgba(0, 0, 0, 0.08)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark300: {
-    main: 'rgba(0, 0, 0, 0.12)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark400: {
-    main: 'rgba(0, 0, 0, 0.16)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark500: {
-    main: 'rgba(0, 0, 0, 0.24)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark600: {
-    main: 'rgba(0, 0, 0, 0.32)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark700: {
-    main: 'rgba(0, 0, 0, 0.48)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark800: {
-    main: 'rgba(0, 0, 0, 0.64)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaDark900: {
-    main: 'rgba(0, 0, 0, 0.84)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight100: {
-    main: 'rgba(255, 255, 255, 0.04)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight200: {
-    main: 'rgba(255, 255, 255, 0.08)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight300: {
-    main: 'rgba(255, 255, 255, 0.12)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight400: {
-    main: 'rgba(255, 255, 255, 0.16)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight500: {
-    main: 'rgba(255, 255, 255, 0.24)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight600: {
-    main: 'rgba(255, 255, 255, 0.32)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight700: {
-    main: 'rgba(255, 255, 255, 0.48)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight800: {
-    main: 'rgba(255, 255, 255, 0.64)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
-  },
-  alphaLight900: {
-    main: 'rgba(255, 255, 255, 0.84)',
-    // @ts-ignore
-    mainChannel: colorChannel('rgba(0, 0, 0, 0.04)'),
+  text: {
+    primary: paletteLight.textPrimary,
+    secondary: paletteLight.textSecondary,
+    disabled: paletteLight.textDisabled,
   },
   grey: {
-    100: '#F6F5FA',
-    200: '#ECEBF0',
-    300: '#DDDCE0',
-    400: '#C9C8CC',
-    500: '#9DA1A3',
-    600: '#8A8D8F',
-    700: '#70767A',
-    800: '#4B4F52',
-    900: '#000000',
+    100: paletteLight.alpha100.main,
+    200: paletteLight.alpha200.main,
+    300: paletteLight.alpha300.main,
+    400: paletteLight.alpha400.main,
+    500: paletteLight.alpha500.main,
+    600: paletteLight.alpha600.main,
+    700: paletteLight.alpha700.main,
+    800: paletteLight.alpha800.main,
+    900: paletteLight.alpha900.main,
   },
-  success: {
-    main: '#0AA65B',
-    light: '#0AA65B',
-    dark: '#0AA65B',
+  bg: {
+    main: paletteLight.bg,
   },
-  error: {
-    main: '#E5452F',
-    light: '#E5452F',
-    dark: '#E5452F',
+  bgSecondary: {
+    main: alpha(paletteLight.white.main, 0.48),
   },
-  warning: {
-    main: '#FFCC00',
-    light: '#FFCC00',
-    dark: '#EBC942',
+  bgTertiary: {
+    main: paletteLight.white.main,
   },
-  info: {
-    main: '#297EFF',
-    light: '#297EFF',
-    dark: '#297EFF',
+  bgQuaternary: {
+    hover: alpha('#653BA3', 0.12),
+    main: alpha('#31007A', 0.08),
   },
-  mint: {
-    100: '#D6FFE7',
-    500: '#00B849',
+  primary: {
+    light: '#31007A',
+    main: '#31007A',
+    dark: '#290066',
   },
-  amber: {
-    100: '#FFF7D6',
-    200: '#FFEFAD',
-    300: '#FFDE5C',
-    400: '#F5CC27',
-    500: '#D6AB00',
-    600: '#A38300',
-    700: '#7A6200',
-    800: '#524100',
-    900: '#3D3100',
+  secondary: {
+    light: '#E9E1F5',
+    main: '#E9E1F5',
+    dark: '#E9E1F5',
   },
-  violet: {
-    100: '#FAEBFF',
-    200: '#F4D6FF',
-    300: '#EFC2FF',
-    400: '#DE85FF',
-    500: '#D35CFF',
-    600: '#8D1AB8',
-    700: '#7C10A3',
-    800: '#6B098F',
-    900: '#59007A',
+  tertiary: {
+    light: '#FCEBFF',
+    main: '#FCEBFF',
+    dark: '#FCEBFF',
   },
-  blue: {
-    100: '#E0E3FF',
-    200: '#D6D9FF',
-    300: '#C2C6FF',
-    400: '#ADB3FF',
-    500: '#5C67FF',
-    600: '#414DEB',
-    700: '#2B37D6',
-    800: '#1723C2',
-    900: '#0713AD',
+  accent1: {
+    light: paletteLight.accent1,
+    main: paletteLight.accent1,
+    dark: paletteLight.accent1,
   },
-  azure: {
-    100: '#EBF3FF',
-    200: '#C2DAFF',
-    300: '#A3C8FF',
-    400: '#85B6FF',
-    500: '#4791FF',
-    600: '#4285EB',
-    700: '#226AD6',
-    800: '#00317A',
-    900: '#032352',
+  accent1Alt: {
+    light: paletteLight.accent1Alt,
+    main: paletteLight.accent1Alt,
+    dark: paletteLight.accent1Alt,
   },
-  scarlet: {
-    100: '#FFDED6',
-    500: '#B82500',
+  accent2: {
+    light: paletteLight.accent2,
+    main: paletteLight.accent2,
+    dark: paletteLight.accent2,
   },
-  orchid: {
-    100: '#FEF5FF',
-    200: '#FCEBFF',
-    300: '#FBE0FF',
-    400: '#FAD6FF',
-    500: '#F7C2FF',
-    600: '#C86FD6',
-    700: '#AA51B8',
-    800: '#702C7A',
-    900: '#37113D',
+  surface1: {
+    light: paletteLight.surface1,
+    main: paletteLight.surface1,
+    dark: paletteLight.surface1,
   },
-  lavenderLight: {
-    0: '#FCFAFF',
-    100: '#F9F5FF',
-    200: '#F6F0FF',
-    300: '#F3EBFF',
-    400: '#F0E5FF',
+  surface2: {
+    light: paletteLight.surface2,
+    main: paletteLight.surface2,
+    dark: paletteLight.surface2,
   },
-  lavenderDark: {
-    0: '#30007A',
-    100: '#200052',
-    200: '#18003D',
-    300: '#100029',
-    400: '#0C001F',
+  surface3: {
+    light: paletteLight.surface3,
+    main: paletteLight.surface3,
+    dark: paletteLight.surface3,
+  },
+  surface4: {
+    light: paletteLight.surface4,
+    main: paletteLight.surface4,
+    dark: paletteLight.surface4,
   },
 };
+
+const themeBase = createTheme({
+  palette,
+});
 
 // in a separate 'createTheme' to allow listening to breakpoints set above
 export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
@@ -647,6 +446,31 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             },
             boxShadow: 'unset',
             margin: 0,
+          }),
+        },
+      },
+      MuiTabs: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            '& .MuiTabs-scroller': {
+              alignSelf: 'center',
+            },
+          }),
+        },
+      },
+      MuiTab: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: theme.spacing(1),
+            minWidth: '56px',
+            minHeight: '40px',
+
+            '& .MuiTab-icon': {
+              marginBottom: 0,
+            },
           }),
         },
       },
@@ -775,6 +599,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bodySmall: 'p',
             bodyXSmallStrong: 'p',
             bodyXSmall: 'p',
+            bodyXXSmallStrong: 'p',
             brandHeaderXLarge: 'h1',
             urbanistTitleLarge: 'p',
             urbanistTitle2XLarge: 'p',
@@ -921,6 +746,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         fontWeight: 500,
         fontSize: '12px',
         lineHeight: '16px',
+        letterSpacing: 0,
+      },
+      bodyXXSmallStrong: {
+        fontStyle: 'normal',
+        fontWeight: 700,
+        fontSize: '10px',
+        lineHeight: '14px',
         letterSpacing: 0,
       },
       brandHeaderXLarge: {
@@ -1072,27 +904,30 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
     colorSchemes: {
       light: {
         palette: {
-          ...palette,
+          ...paletteLight,
+          semanticPalette: paletteLight,
           mode: 'light',
           background: {
-            default: '#FCFAFF',
+            default: paletteLight.lavenderLight[0],
           },
           text: {
-            primary: '#000',
-            secondary: alpha(themeBase.palette.black.main, 0.75),
+            primary: paletteLight.textPrimary,
+            secondary: paletteLight.textSecondary,
+            disabled: paletteLight.textDisabled,
           },
           grey: {
-            100: 'rgba(0, 0, 0, 0.04)',
-            200: 'rgba(0, 0, 0, 0.08)',
-            300: 'rgba(0, 0, 0, 0.12)',
-            400: 'rgba(0, 0, 0, 0.16)',
-            500: 'rgba(0, 0, 0, 0.24)',
-            600: 'rgba(0, 0, 0, 0.32)',
-            700: 'rgba(0, 0, 0, 0.48)',
-            800: 'rgba(0, 0, 0, 0.64)',
+            100: paletteLight.alpha100.main,
+            200: paletteLight.alpha200.main,
+            300: paletteLight.alpha300.main,
+            400: paletteLight.alpha400.main,
+            500: paletteLight.alpha500.main,
+            600: paletteLight.alpha600.main,
+            700: paletteLight.alpha700.main,
+            800: paletteLight.alpha800.main,
+            900: paletteLight.alpha900.main,
           },
           bg: {
-            main: '#F3EBFF',
+            main: paletteLight.bg,
           },
           bgSecondary: {
             main: alpha(themeBase.palette.white.main, 0.48),
@@ -1120,34 +955,39 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#FCEBFF',
           },
           accent1: {
-            light: '#31007A',
-            main: '#31007A',
-            dark: '#31007A',
+            light: paletteLight.accent1,
+            main: paletteLight.accent1,
+            dark: paletteLight.accent1,
           },
           accent1Alt: {
-            light: '#BEA0EB',
-            main: '#BEA0EB',
-            dark: '#BEA0EB',
+            light: paletteLight.accent1Alt,
+            main: paletteLight.accent1Alt,
+            dark: paletteLight.accent1Alt,
           },
           accent2: {
-            light: '#8700B8',
-            main: '#8700B8',
-            dark: '#8700B8',
+            light: paletteLight.accent2,
+            main: paletteLight.accent2,
+            dark: paletteLight.accent2,
           },
           surface1: {
-            light: '#faf5ff',
-            main: '#faf5ff',
-            dark: '#faf5ff',
+            light: paletteLight.surface1,
+            main: paletteLight.surface1,
+            dark: paletteLight.surface1,
           },
           surface2: {
-            light: '#FFFFFF',
-            main: '#FFFFFF',
-            dark: '#FFFFFF',
+            light: paletteLight.surface2,
+            main: paletteLight.surface2,
+            dark: paletteLight.surface2,
           },
           surface3: {
-            light: '#E5E1EB',
-            main: '#E5E1EB',
-            dark: '#E5E1EB',
+            light: paletteLight.surface3,
+            main: paletteLight.surface3,
+            dark: paletteLight.surface3,
+          },
+          surface4: {
+            light: paletteLight.surface4,
+            main: paletteLight.surface4,
+            dark: paletteLight.surface4,
           },
         },
         // @ts-expect-error
@@ -1160,7 +1000,8 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       },
       dark: {
         palette: {
-          ...palette,
+          ...paletteDark,
+          semanticPalette: paletteDark,
           mode: 'dark',
           Tooltip: {
             bg: themeBase.palette.black.main,
@@ -1170,18 +1011,19 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             paper: '#24203d', //'#241D52',
           },
           text: {
-            primary: '#fff',
+            primary: themeBase.palette.white.main,
             secondary: alpha(themeBase.palette.white.main, 0.75),
           },
           grey: {
-            100: 'rgba(255, 255, 255, 0.04)',
-            200: 'rgba(255, 255, 255, 0.08)',
-            300: 'rgba(255, 255, 255, 0.12)',
-            400: 'rgba(255, 255, 255, 0.16)',
-            500: 'rgba(255, 255, 255, 0.24)',
-            600: 'rgba(255, 255, 255, 0.32)',
-            700: 'rgba(255, 255, 255, 0.48)',
-            800: 'rgba(255, 255, 255, 0.64)',
+            100: paletteDark.alpha100.main,
+            200: paletteDark.alpha200.main,
+            300: paletteDark.alpha300.main,
+            400: paletteDark.alpha400.main,
+            500: paletteDark.alpha500.main,
+            600: paletteDark.alpha600.main,
+            700: paletteDark.alpha700.main,
+            800: paletteDark.alpha800.main,
+            900: paletteDark.alpha900.main,
           },
           bg: {
             main: '#120F29',
@@ -1237,9 +1079,14 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#24203D',
           },
           surface3: {
-            light: '#302B52',
-            main: '#302B52',
-            dark: '#302B52',
+            light: '#120F29',
+            main: '#120F29',
+            dark: '#120F29',
+          },
+          surface4: {
+            light: paletteDark.surface4,
+            main: paletteDark.surface4,
+            dark: paletteDark.surface4,
           },
         },
         // @ts-expect-error

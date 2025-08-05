@@ -21,7 +21,10 @@ interface MissionCardProps {
 
 export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
   const missionDisplayData = useFormatDisplayQuestData(mission, false);
-  const status = useMissionTimeStatus(mission.StartDate, mission.EndDate);
+  const { status, isDisabled } = useMissionTimeStatus(
+    mission.StartDate,
+    mission.EndDate,
+  );
 
   const badge = useMemo(() => {
     if (!status) {
@@ -43,8 +46,22 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       },
     });
   };
+  const missionCard = (
+    <EntityCard
+      variant="compact"
+      badge={badge}
+      id={missionDisplayData.id}
+      slug={missionDisplayData.slug}
+      title={missionDisplayData.title}
+      participants={missionDisplayData.participants}
+      imageUrl={missionDisplayData.imageUrl}
+      rewardGroups={missionDisplayData.rewardGroups}
+      onClick={!isDisabled ? handleClick : undefined}
+      fullWidth
+    />
+  );
 
-  return (
+  return !isDisabled ? (
     <Link
       href={missionDisplayData.href}
       sx={{
@@ -52,18 +69,9 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
         width: '100%',
       }}
     >
-      <EntityCard
-        variant="compact"
-        badge={badge}
-        id={missionDisplayData.id}
-        slug={missionDisplayData.slug}
-        title={missionDisplayData.title}
-        participants={missionDisplayData.participants}
-        imageUrl={missionDisplayData.imageUrl}
-        rewardGroups={missionDisplayData.rewardGroups}
-        onClick={handleClick}
-        fullWidth
-      />
+      {missionCard}
     </Link>
+  ) : (
+    missionCard
   );
 };

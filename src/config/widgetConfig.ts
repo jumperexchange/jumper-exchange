@@ -116,7 +116,7 @@ export const getDefaultWidgetThemeV2 = (
           },
           dark: {
             ...copiedTheme.colorSchemes.dark,
-            palette: formatWidgetPalette(copiedTheme.colorSchemes.dark),
+            palette: formatWidgetPalette(copiedTheme.colorSchemes.dark, 'dark'),
           },
         },
         components: {
@@ -132,18 +132,32 @@ export const getDefaultWidgetThemeV2 = (
   return config;
 };
 
-function formatWidgetPalette(colorScheme?: ColorSystem): Partial<Palette> {
+function formatWidgetPalette(
+  colorScheme?: ColorSystem,
+  mode?: string,
+): Partial<Palette> {
   if (!colorScheme) {
     return {};
   }
 
   return {
-    background: {
-      paper: colorScheme.palette.surface2.main,
-      default: colorScheme.palette.surface1.main,
-    },
+    background:
+      mode === 'dark'
+        ? {
+            paper: colorScheme.palette.surface2.main,
+            default: colorScheme.palette.surface1.main,
+          }
+        : {
+            paper: colorScheme.palette.surface1.main,
+            default: colorScheme.palette.surface2.main,
+          },
     primary: colorScheme.palette.accent1,
     secondary: colorScheme.palette.accent2,
     grey: colorScheme.palette.grey,
+    text: {
+      primary: colorScheme.palette.text.primary,
+      secondary: colorScheme.palette.text.secondary,
+      disabled: colorScheme.palette.text.disabled,
+    },
   };
 }

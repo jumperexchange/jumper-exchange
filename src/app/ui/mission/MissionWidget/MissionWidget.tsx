@@ -8,7 +8,7 @@ import { FC, ReactNode } from 'react';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import Box from '@mui/material/Box';
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
-import { MissionComplete } from './MissionComplete';
+import { MissionTaskComplete } from './MissionTaskComplete';
 import { MissionFormWidget } from './MissionFormWidget';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { ZapWidgetStack } from 'src/components/Zap/ZapWidgetStack';
@@ -20,10 +20,11 @@ export interface MissionWidgetProps {
 export const MissionWidget: FC<MissionWidgetProps> = ({
   customInformation,
 }) => {
-  const { currentActiveTaskType, isMissionCompleted } = useMissionStore();
+  const { currentActiveTaskType, isCurrentActiveTaskCompleted } =
+    useMissionStore();
 
   const renderContent = (): ReactNode => {
-    if (isMissionCompleted) return <MissionComplete />;
+    if (isCurrentActiveTaskCompleted) return <MissionTaskComplete />;
 
     if (
       currentActiveTaskType === TaskType.OnChain ||
@@ -50,7 +51,7 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
   const content = renderContent();
 
   const shouldWrapContent =
-    isMissionCompleted || currentActiveTaskType !== TaskType.Zap;
+    isCurrentActiveTaskCompleted || currentActiveTaskType !== TaskType.Zap;
 
   return shouldWrapContent ? (
     <Box

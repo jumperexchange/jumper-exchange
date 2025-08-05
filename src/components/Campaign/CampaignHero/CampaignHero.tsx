@@ -17,7 +17,6 @@ import { useCampaignDisplayData } from 'src/hooks/campaigns/useCampaignDisplayDa
 import { CampaignHeroCard } from './CampaignHeroCard';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
 import { ChainStack } from 'src/components/ChainStack/ChainStack';
-import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 interface CampaignHeroProps {
@@ -37,7 +36,7 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
     benefitValue,
     rewardChainIds,
     missionsCount,
-    isDefaultInfoCard,
+    heroStatsCardVariant,
   } = useCampaignDisplayData(campaign);
 
   const handleGoBack = () => {
@@ -69,41 +68,30 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
               width={112}
               height={112}
               style={{ objectFit: 'contain', borderRadius: '50%' }}
+              variant={heroStatsCardVariant}
             />
           )}
 
           <CampaignHeroStatsWrapper>
             {!!benefitLabel && !!benefitValue && (
               <MissionHeroStatsCard
-                title={benefitLabel}
+                title={benefitLabel ?? t('campaign.stats.totalRewards')}
                 description={benefitValue}
-                variant={
-                  isDefaultInfoCard
-                    ? MissionHeroStatsCardVariant.Default
-                    : MissionHeroStatsCardVariant.Inverted
-                }
+                variant={heroStatsCardVariant}
               />
             )}
             {!!missionsCount && (
               <MissionHeroStatsCard
-                title={'Missions'}
+                title={t('campaign.stats.missions')}
                 description={missionsCount.toString()}
-                variant={
-                  isDefaultInfoCard
-                    ? MissionHeroStatsCardVariant.Default
-                    : MissionHeroStatsCardVariant.Inverted
-                }
+                variant={heroStatsCardVariant}
               />
             )}
             {!!rewardChainIds?.length && (
               <MissionHeroStatsCard
-                title={'Rewards'}
+                title={t('campaign.stats.rewards')}
                 description={<ChainStack chainIds={rewardChainIds} />}
-                variant={
-                  isDefaultInfoCard
-                    ? MissionHeroStatsCardVariant.Default
-                    : MissionHeroStatsCardVariant.Inverted
-                }
+                variant={heroStatsCardVariant}
               />
             )}
           </CampaignHeroStatsWrapper>

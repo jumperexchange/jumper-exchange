@@ -175,6 +175,7 @@ interface Resources {
       };
       tasks: {
         type: '{{type}} task';
+        typeFallback: 'Task';
         status: {
           verify: 'Verify';
           verified: 'Verified';
@@ -182,6 +183,10 @@ interface Resources {
         action: {
           verify: 'Verify';
           go: 'Go';
+        };
+        completed: {
+          title: 'Task completed';
+          description: 'This task has been verified and completed.';
         };
       };
     };
@@ -199,10 +204,24 @@ interface Resources {
       open: 'Open {{tool}}';
       rewards: 'Rewards Earned';
       availableRewards: 'Available Rewards';
+      perks: 'Perks';
+      achievements: 'Achievements';
+      unlocked: 'Unlocked';
+      levelWithValue: 'Level {{level}}';
+      noData: {
+        description: "No {{entity}} yet? Let's change that!";
+        caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
+        cta: 'Start swapping';
+      };
     };
     campaign: {
       missions: {
         title: 'Missions';
+      };
+      stats: {
+        missions: 'Missions';
+        rewards: 'Rewards';
+        totalRewards: 'Total rewards';
       };
     };
     leaderboard: {
@@ -250,7 +269,7 @@ interface Resources {
         boostedApy: 'Boosted APR';
         tvl: 'TVL';
         lockupPeriod: 'Lockup period';
-        token: 'Pool token';
+        token: 'Asset';
       };
       zap: {
         sendToAddressName: 'Send to {{name}}';

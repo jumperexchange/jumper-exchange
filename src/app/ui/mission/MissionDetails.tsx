@@ -31,7 +31,7 @@ interface MissionDetailsProps {
 }
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
-  const status = useMissionTimeStatus(
+  const { status } = useMissionTimeStatus(
     mission.StartDate ?? '',
     mission.EndDate ?? '',
   );
@@ -108,9 +108,6 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
           <BaseAlert
             variant={BaseAlertVariant.Info}
             description={missionDisplayData.info}
-            sx={(theme) => ({
-              boxShadow: theme.shadows[2],
-            })}
           />
         </MissionDetailsInfoContainer>
       )}

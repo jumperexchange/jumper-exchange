@@ -1,3 +1,6 @@
+import { Appearance } from '@lifi/widget';
+import { ImageTheme } from 'src/components/ImageGeneration/ImageGeneration.types';
+
 export const getOffset = (type?: string, extendedHeight?: boolean) => {
   if (type === 'amount') {
     return 46;
@@ -19,4 +22,17 @@ export const getWidth = (type?: string, fullWidth?: boolean) => {
   } else {
     return 174;
   }
+};
+
+export const getResolvedMode = (mode?: Appearance | undefined): ImageTheme => {
+  if (mode === 'dark' || mode === 'light') {
+    return mode;
+  }
+  if (mode === 'system' && typeof window !== 'undefined') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  }
+  // fallback for undefined or unexpected values
+  return 'light';
 };

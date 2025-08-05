@@ -1,10 +1,11 @@
-import ProfilePage from '@/app/ui/profile/ProfilePage';
 import { getSiteUrl } from '@/const/urls';
 import { walletAddressSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
-import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import { Suspense } from 'react';
+import { getPerks } from 'src/app/lib/getPerks';
+import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
+import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkeleton';
 
 type Params = Promise<{ walletAddress: string }>;
 
@@ -61,14 +62,19 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   const sanitizedAddress = result.data;
-  const { data: campaigns } = await getProfileBannerCampaigns();
-  const { data: questsData } = await getQuestsWithNoCampaignAttached();
+  const { data: perksResponse } = await getPerks();
+
+  const perks = perksResponse.data;
+  const totalPerks = perksResponse.meta.pagination?.total || 0;
+  const hasMorePerks = totalPerks > perks.length;
+
   return (
-    <ProfilePage
-      quests={questsData.data}
-      campaigns={campaigns}
-      walletAddress={sanitizedAddress}
-      isPublic
-    />
+    <Suspense fallback={<ProfilePageSkeleton />}>
+      <ProfilePage
+        walletAddress={sanitizedAddress}
+        perks={perks}
+        hasMorePerks={hasMorePerks}
+      />
+    </Suspense>
   );
 }

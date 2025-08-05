@@ -53,6 +53,7 @@ const BackgroundGradient = styled('span')(() => ({
   width: '100vh',
   height: '100vh',
   opacity: '0.12',
+  borderRadius: '50%',
 }));
 
 export const BackgroundGradients = styled('span')(({ theme }) => ({
@@ -104,12 +105,9 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
     transformOrigin: 'center',
     left: 0,
     bottom: 0,
-    filter: `blur(240px)`,
+    filter: `blur(calc(100vw * 0.067))`,
     opacity: 1,
-    background: `rgba(101, 59, 163, 1)`,
-    ...theme.applyStyles('light', {
-      background: `rgba(187, 0, 255, 0.12)`,
-    }),
+    background: (theme.vars || theme).palette.bgGlow2,
   }),
 );
 
@@ -122,12 +120,9 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
     transformOrigin: 'center',
     right: 0,
     bottom: 0,
-    filter: `blur(240px)`,
+    filter: `blur(calc(100vw * 0.067))`,
     opacity: 1,
-    background: 'rgba(101, 59, 163, 1)',
-    ...theme.applyStyles('light', {
-      background: 'rgba(136, 0, 255, 0.12)',
-    }),
+    background: (theme.vars || theme).palette.bgGlow2,
   }),
 );
 
