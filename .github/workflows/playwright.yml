@@ -125,6 +125,7 @@ jobs:
     steps:
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
+          recreate: true
           message: |
             📊 **Qase Test Report**
             
