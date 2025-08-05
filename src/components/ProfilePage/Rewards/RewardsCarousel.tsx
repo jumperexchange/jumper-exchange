@@ -28,21 +28,7 @@ export const RewardsCarousel = ({
     (reward) => reward.amountToClaim > 0 && isMerklSuccess,
   );
 
-  const items = useMemo(() => {
-    if (rewardsWithAmount.length === 0) {
-      return null;
-    }
-
-    return rewardsWithAmount.map((availableReward, i) => (
-      <ClaimingBox
-        key={`${i}-${availableReward.address}`}
-        amount={availableReward.amountToClaim}
-        availableReward={availableReward}
-      />
-    ));
-  }, []);
-
-  return items ? (
+  return rewardsWithAmount.length ? (
     <RewardsCarouselContainer rewardsLength={rewardsWithAmount.length}>
       <RewardsCarouselTitle variant="titleSmall">
         {t('profile_page.rewards')}
@@ -60,7 +46,13 @@ export const RewardsCarousel = ({
           },
         }}
       >
-        {items}
+        {rewardsWithAmount.map((availableReward, i) => (
+          <ClaimingBox
+            key={`${i}-${availableReward.address}`}
+            amount={availableReward.amountToClaim}
+            availableReward={availableReward}
+          />
+        ))}
       </Carousel>
     </RewardsCarouselContainer>
   ) : null;
