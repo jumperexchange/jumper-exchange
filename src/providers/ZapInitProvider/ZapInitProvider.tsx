@@ -1,48 +1,49 @@
 'use client';
 
-import { EVMProvider, Route, getTokenBalance } from '@lifi/sdk';
+import {
+  createMeeClient,
+  GetFusionQuoteParams,
+  MeeClient,
+  MultichainSmartAccount,
+  toMultichainNexusAccount,
+  WaitForSupertransactionReceiptPayload,
+} from '@biconomy/abstractjs';
+import { EVMProvider, getTokenBalance, Route, Token } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
   Dispatch,
   FC,
   PropsWithChildren,
   SetStateAction,
+  useCallback,
   useContext,
+  useEffect,
+  useMemo,
   useRef,
+  useState,
 } from 'react';
-import { UseReadContractsReturnType } from 'wagmi';
-import {
-  MultichainSmartAccount,
-  MeeClient,
-  toMultichainNexusAccount,
-  createMeeClient,
-  WaitForSupertransactionReceiptPayload,
-  greaterThanOrEqualTo,
-  runtimeERC20BalanceOf,
-  GetFusionQuoteParams,
-} from '@biconomy/abstractjs';
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { buildContractComposable } from './utils';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { http, parseUnits, zeroAddress } from 'viem';
-import * as chains from 'viem/chains';
-import { useWalletClient, useConfig } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
+import { EVMAddress } from 'src/types/internal';
+import { ProjectData } from 'src/types/questDetails';
+import { retryWithBackoff } from 'src/utils/retryWithBackoff';
+import { Chain, http, zeroAddress } from 'viem';
+import * as chains_ from 'viem/chains';
+import { useConfig, UseReadContractsReturnType, useWalletClient } from 'wagmi';
+import * as hyperwave from './hyperwave';
+import * as katana from './katana';
+import { buildContractInstructions, SendCallsExtraParams } from './ModularZaps';
 import {
+  WalletCall,
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
-  WalletWaitForCallsStatusArgs,
-  WalletSendCallsArgs,
-  WalletCall,
-  AbiInput,
+  WalletMethods,
   WalletPendingOperation,
   WalletPendingOperations,
-  WalletMethods,
+  WalletSendCallsArgs,
+  WalletWaitForCallsStatusArgs,
 } from './types';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { ProjectData } from 'src/types/questDetails';
-import { EVMAddress } from 'src/types/internal';
-import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -58,6 +59,10 @@ interface ZapInitState {
   isLoadingDepositTokenData: boolean;
   refetchDepositToken: UseReadContractsReturnType['refetch'];
 }
+
+const isSameToken = (a: Token, b: Token) => {
+  return a.address === b.address && a.chainId === b.chainId;
+};
 
 export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
@@ -90,6 +95,12 @@ export const useZapInitContext = () => {
 interface ZapInitProviderProps extends PropsWithChildren {
   projectData: ProjectData;
 }
+
+const chains: Record<number, Chain> = {
+  ...chains_,
+  [999]: hyperwave.hyperevm,
+  [747474]: katana.katana,
+};
 
 export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
@@ -488,13 +499,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletSendCallsArgs,
       meeClientParam: MeeClient,
       oNexusParam: MultichainSmartAccount,
-      sendCallsExtraParams: {
-        chainId: number | undefined;
-        currentRoute: Route | null;
-        zapData: any;
-        projectData: ProjectData;
-        address: string | undefined;
-      },
+      sendCallsExtraParams: SendCallsExtraParams,
     ) => {
       if (!meeClientParam || !oNexusParam) {
         throw new Error('MEE client or oNexus not initialized');
@@ -531,18 +536,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       const currentRouteFromAmount =
         sendCallsExtraParams.currentRoute.fromAmount;
       const integrationData = sendCallsExtraParams.zapData;
-      const depositAddress = integrationData.market?.address as EVMAddress;
       const depositToken = integrationData.market?.depositToken?.address;
-      const depositTokenDecimals =
-        integrationData.market?.depositToken.decimals;
       const depositChainId = sendCallsExtraParams.projectData.chainId;
 
       if (!depositChainId) {
         throw new Error('Deposit chain id is undefined.');
       }
 
-      if (!depositAddress || !depositToken) {
-        throw new Error('Deposit address or token is undefined.');
+      if (!depositToken) {
+        throw new Error('Deposit token is undefined.');
       }
 
       // @Note this works only for EVM chains
@@ -554,9 +556,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         throw new Error('Native source token is not supported.');
       }
 
-      // raw calldata from the widget
-      const instructions = await Promise.all(
-        calls.map(async (call: WalletCall) => {
+      const isSameTokenDeposit = isSameToken(
+        sendCallsExtraParams.currentRoute.fromToken,
+        sendCallsExtraParams.currentRoute.toToken,
+      );
+      const baseCalls = isSameTokenDeposit ? [] : calls;
+
+      // Build raw calldata instructions (general flow)
+      const rawInstructions = await Promise.all(
+        baseCalls.map(async (call: WalletCall) => {
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
           }
@@ -571,92 +579,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         }),
       );
 
-      // constraints
-      const constraints = [
-        greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)), // TODO: Remove hardcoded value
-      ];
-
-      // token approval
-      const approveInstruction = await buildContractComposable(oNexusParam, {
-        address: depositToken,
-        chainId: depositChainId,
-        abi: integrationData.abi.approve,
-        functionName: integrationData.abi.approve.name,
-        gasLimit: 100000n,
-        args: [
-          depositAddress,
-          runtimeERC20BalanceOf({
-            targetAddress: oNexusParam.addressOn(
-              depositChainId,
-              true,
-            ) as EVMAddress,
-            tokenAddress: depositToken,
-            constraints,
-          }),
-        ],
-      });
-      instructions.push(approveInstruction);
-
-      // Deposit instruction (dynamic ABI-driven args)
-      const depositInputs = integrationData.abi.deposit.inputs;
-      const depositArgs = depositInputs.map((input: AbiInput) => {
-        if (input.type === 'uint256') {
-          return runtimeERC20BalanceOf({
-            targetAddress: oNexusParam.addressOn(
-              depositChainId,
-              true,
-            ) as EVMAddress,
-            tokenAddress: depositToken,
-            constraints,
-          });
-        } else if (input.type === 'address') {
-          // Use the user's EOA address or another relevant address
-          return currentAddress;
-        }
-        throw new Error(`Unsupported deposit input type: ${input.type}`);
-      });
-      const depositInstruction = await buildContractComposable(oNexusParam, {
-        address: depositAddress,
-        chainId: depositChainId,
-        abi: integrationData.abi.deposit,
-        functionName: integrationData.abi.deposit.name,
-        gasLimit: 1000000n,
-        args: depositArgs,
-      });
-      instructions.push(depositInstruction);
-
-      // Only add transferLpInstruction if deposit ABI does NOT have an address input
-      const depositHasAddressArg = depositInputs.some(
-        (input: AbiInput) => input.type === 'address',
+      // Build project-specific contract instructions (approve, deposit, transfer)
+      const contractInstructions = await buildContractInstructions(
+        oNexusParam,
+        sendCallsExtraParams,
       );
 
-      if (!depositHasAddressArg) {
-        if (!currentAddress) {
-          throw new Error('User address (EOA) is not available.');
-        }
-        const transferLpInstruction = await buildContractComposable(
-          oNexusParam,
-          {
-            address: depositAddress,
-            chainId: depositChainId,
-            abi: integrationData.abi.transfer,
-            functionName: integrationData.abi.transfer.name,
-            gasLimit: 200000n,
-            args: [
-              address,
-              runtimeERC20BalanceOf({
-                targetAddress: oNexusParam.addressOn(
-                  depositChainId,
-                  true,
-                ) as EVMAddress,
-                tokenAddress: depositAddress,
-                constraints,
-              }),
-            ],
-          },
-        );
-        instructions.push(transferLpInstruction);
-      }
+      // Combine all instructions
+      const instructions = [...rawInstructions, ...contractInstructions];
 
       const currentTokenBalance = await getTokenBalance(
         currentAddress,

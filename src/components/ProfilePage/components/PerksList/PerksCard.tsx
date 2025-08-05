@@ -24,10 +24,14 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   const { t } = useTranslation();
   const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
 
+  const isLocked = useMemo(() => {
+    const currentLevel = Number(level ?? 0);
+    return unlockLevel > currentLevel;
+  }, [unlockLevel, level]);
+
   // @TODO show loading badge if isLoading is true
   const levelBadge = useMemo(() => {
-    const currentLevel = Number(level ?? 0);
-    if (unlockLevel > currentLevel) {
+    if (isLocked) {
       return (
         <Badge
           startIcon={<LockIcon />}
@@ -46,7 +50,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
         size={BadgeSize.LG}
       />
     );
-  }, [unlockLevel, level, t]);
+  }, [unlockLevel, isLocked, t]);
 
   const perksBadge = useMemo(() => {
     return perkItems.map((perkItem, index) => (
@@ -71,10 +75,11 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       levelBadge={levelBadge}
       perksBadge={perksBadge}
       fullWidth
+      isDisabled={isLocked}
     />
   );
 
-  return href ? (
+  return href && !isLocked ? (
     <Link
       href={href}
       target="_blank"
