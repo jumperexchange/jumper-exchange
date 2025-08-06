@@ -1,20 +1,20 @@
 import { shallow } from 'zustand/shallow';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import {
-  WalletMethods,
+  WalletMethod,
   WalletMethodArgsType,
   WalletMethodReturnType,
 } from 'src/providers/ZapInitProvider/types';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-interface PendingOperationData<T extends WalletMethods> {
+interface PendingOperationData<T extends WalletMethod> {
   operationName: T;
   args: WalletMethodArgsType<T>;
   timestamp: number;
   id: string;
 }
 
-interface PromiseResolver<T extends WalletMethods> {
+interface PromiseResolver<T extends WalletMethod> {
   resolve: (value: WalletMethodReturnType<T>) => void;
   reject: (error: Error) => void;
 }
@@ -89,12 +89,12 @@ const deserializeWithTypes = <T>(obj: any): T => {
   return obj as T;
 };
 
-interface PendingOperationsState<T extends WalletMethods> {
+interface PendingOperationsState<T extends WalletMethod> {
   pendingOperations: Record<string, PendingOperationData<T>>;
   promiseResolvers: Map<string, PromiseResolver<T>>;
 
   // Actions
-  addPendingOperation: <K extends WalletMethods>(
+  addPendingOperation: <K extends WalletMethod>(
     id: string,
     operationName: K,
     args: WalletMethodArgsType<K>,
@@ -112,7 +112,7 @@ interface PendingOperationsState<T extends WalletMethods> {
 }
 
 export const useZapPendingOperationsStore = createWithEqualityFn<
-  PendingOperationsState<WalletMethods>
+  PendingOperationsState<WalletMethod>
 >()(
   persist(
     (set, get) => ({
@@ -135,7 +135,7 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
         // Store promise resolvers in memory (not persisted)
         get().promiseResolvers.set(id, {
           resolve: resolve as (
-            value: WalletMethodReturnType<WalletMethods>,
+            value: WalletMethodReturnType<WalletMethod>,
           ) => void,
           reject,
         });

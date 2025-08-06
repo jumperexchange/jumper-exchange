@@ -18,18 +18,13 @@ export interface WalletCall {
 }
 
 export interface WalletMethodArgs {
-  method: string;
+  method: WalletMethod;
   params?: unknown[];
 }
 
-export enum WalletMethods {
-  getCapabilities = 'wallet_getCapabilities',
-  getCallsStatus = 'wallet_getCallsStatus',
-  sendCalls = 'wallet_sendCalls',
-  waitForCallsStatus = 'wallet_waitForCallsStatus',
-}
+export type WalletMethod = keyof WalletMethodsRef;
 
-export interface WalletSendCallsArgs extends WalletMethodArgs {
+export interface SendCallsArgs extends WalletMethodArgs {
   method: 'wallet_sendCalls';
   account: {
     address: string;
@@ -38,17 +33,17 @@ export interface WalletSendCallsArgs extends WalletMethodArgs {
   calls: WalletCall[];
 }
 
-export interface WalletGetCallsStatusArgs extends WalletMethodArgs {
+export interface GetCallsStatusArgs extends WalletMethodArgs {
   method: 'wallet_getCallsStatus';
   params: [string]; // hash
 }
 
-export interface WalletCapabilitiesArgs extends WalletMethodArgs {
+export interface GetCapabilitiesArgs extends WalletMethodArgs {
   method: 'wallet_getCapabilities';
   params?: never;
 }
 
-export interface WalletWaitForCallsStatusArgs extends WalletMethodArgs {
+export interface WaitCallsStatusArgs extends WalletMethodArgs {
   method: 'wallet_waitForCallsStatus';
   id: string;
   timeout?: number;
@@ -63,7 +58,7 @@ export interface ContractComposableConfig {
   gasLimit?: bigint;
 }
 
-export interface CapabilitiesResponse {
+export interface GetCapabilitiesResponse {
   atomic: { status: 'supported' | 'ready' | 'unsupported' };
 }
 
@@ -71,7 +66,7 @@ export interface SendCallsResponse {
   id: string;
 }
 
-export interface CallsStatusResponse {
+export interface CommonCallsStatusResponse {
   atomic: boolean;
   chainId?: string;
   id: string;
@@ -83,6 +78,10 @@ export interface CallsStatusResponse {
   }>;
 }
 
+export interface GetCallsStatusResponse extends CommonCallsStatusResponse {}
+
+export interface WaitCallsStatusResponse extends CommonCallsStatusResponse {}
+
 export type WalletMethodDefinition<TArgs, TResult> = (
   args: TArgs,
   meeClient: MeeClient | undefined,
@@ -91,28 +90,25 @@ export type WalletMethodDefinition<TArgs, TResult> = (
 ) => Promise<TResult>;
 
 export interface WalletMethodsRef {
-  [WalletMethods.getCapabilities]: WalletMethodDefinition<
-    WalletCapabilitiesArgs,
-    CapabilitiesResponse
+  wallet_getCapabilities: WalletMethodDefinition<
+    GetCapabilitiesArgs,
+    GetCapabilitiesResponse
   >;
-  [WalletMethods.getCallsStatus]: WalletMethodDefinition<
-    WalletGetCallsStatusArgs,
-    CallsStatusResponse
+  wallet_getCallsStatus: WalletMethodDefinition<
+    GetCallsStatusArgs,
+    GetCallsStatusResponse
   >;
-  [WalletMethods.waitForCallsStatus]: WalletMethodDefinition<
-    WalletWaitForCallsStatusArgs,
-    CallsStatusResponse
+  wallet_waitForCallsStatus: WalletMethodDefinition<
+    WaitCallsStatusArgs,
+    WaitCallsStatusResponse
   >;
-  [WalletMethods.sendCalls]: WalletMethodDefinition<
-    WalletSendCallsArgs,
-    SendCallsResponse
-  >;
+  wallet_sendCalls: WalletMethodDefinition<SendCallsArgs, SendCallsResponse>;
 }
 
-export type WalletMethodArgsType<T extends WalletMethods> = Parameters<
+export type WalletMethodArgsType<T extends WalletMethod> = Parameters<
   WalletMethodsRef[T]
 >[0];
 
-export type WalletMethodReturnType<T extends WalletMethods> = ReturnType<
+export type WalletMethodReturnType<T extends WalletMethod> = ReturnType<
   WalletMethodsRef[T]
 >;

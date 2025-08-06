@@ -6,12 +6,12 @@ import {
 } from '@biconomy/abstractjs';
 import {
   WalletCall,
-  WalletCapabilitiesArgs,
-  WalletGetCallsStatusArgs,
-  WalletMethods,
+  GetCapabilitiesArgs,
+  GetCallsStatusArgs,
+  WalletMethod,
   WalletMethodsRef,
-  WalletSendCallsArgs,
-  WalletWaitForCallsStatusArgs,
+  SendCallsArgs,
+  WaitCallsStatusArgs,
 } from '../types';
 import {
   buildContractInstructions,
@@ -24,7 +24,7 @@ import { isSameToken } from '../utils';
 
 // Helper function to handle 'wallet_getCapabilities'
 export const getCapabilities = async (
-  args: WalletCapabilitiesArgs,
+  args: GetCapabilitiesArgs,
   meeClientParam: MeeClient | undefined,
   oNexusParam: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
@@ -38,7 +38,7 @@ export const getCapabilities = async (
 
 // Helper function to handle 'wallet_getCallsStatus'
 export const getCallsStatus = async (
-  args: WalletGetCallsStatusArgs,
+  args: GetCallsStatusArgs,
   meeClientParam: MeeClient | undefined,
   oNexusParam: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
@@ -91,7 +91,7 @@ export const getCallsStatus = async (
 // @TODO split this function into smaller units
 // Helper function to handle 'wallet_sendCalls'
 export const sendCalls = async (
-  args: WalletSendCallsArgs,
+  args: SendCallsArgs,
   meeClientParam: MeeClient | undefined,
   oNexusParam: MultichainSmartAccount | undefined,
   sendCallsExtraParams: SendCallsExtraParams,
@@ -238,7 +238,7 @@ export const sendCalls = async (
 
 // Helper function to handle 'wallet_waitForCallsStatus'
 export const waitForCallsStatus = async (
-  args: WalletWaitForCallsStatusArgs,
+  args: WaitCallsStatusArgs,
   meeClientParam: MeeClient | undefined,
   oNexusParam: MultichainSmartAccount | undefined,
   extraParams: SendCallsExtraParams,
@@ -304,8 +304,8 @@ export const waitForCallsStatus = async (
 };
 
 export const walletMethods: WalletMethodsRef = {
-  [WalletMethods.getCapabilities]: getCapabilities,
-  [WalletMethods.getCallsStatus]: getCallsStatus,
-  [WalletMethods.sendCalls]: sendCalls,
-  [WalletMethods.waitForCallsStatus]: waitForCallsStatus,
+  wallet_getCapabilities: getCapabilities,
+  wallet_getCallsStatus: getCallsStatus,
+  wallet_sendCalls: sendCalls,
+  wallet_waitForCallsStatus: waitForCallsStatus,
 };

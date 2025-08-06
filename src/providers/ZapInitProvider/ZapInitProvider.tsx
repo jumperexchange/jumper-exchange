@@ -19,7 +19,7 @@ import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
 import { useConfig, UseReadContractsReturnType } from 'wagmi';
 import {
-  WalletMethods,
+  WalletMethod,
   WalletMethodsRef,
   WalletMethodArgsType,
   WalletMethodReturnType,
@@ -150,7 +150,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   // RPC operation queueing
   const queueOperation = useCallback(
-    async <T extends WalletMethods>(
+    async <T extends WalletMethod>(
       operationName: T,
       args: WalletMethodArgsType<T>,
       extraParams: SendCallsExtraParams,
@@ -352,7 +352,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         getCapabilities: async (_, args) => {
           console.warn('getCapabilities');
           return queueOperation(
-            WalletMethods.getCapabilities,
+            'wallet_getCapabilities',
             args,
             sendCallsExtraParams,
           );
@@ -360,23 +360,19 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         getCallsStatus: async (_, args) => {
           console.warn('getCallsStatus');
           return queueOperation(
-            WalletMethods.getCallsStatus,
+            'wallet_getCallsStatus',
             args,
             sendCallsExtraParams,
           );
         },
         sendCalls: async (_, args) => {
           console.warn('sendCalls');
-          return queueOperation(
-            WalletMethods.sendCalls,
-            args,
-            sendCallsExtraParams,
-          );
+          return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
         },
         waitForCallsStatus: async (_, args) => {
           console.warn('waitForCallsStatus');
           return queueOperation(
-            WalletMethods.waitForCallsStatus,
+            'wallet_waitForCallsStatus',
             args,
             sendCallsExtraParams,
           );
