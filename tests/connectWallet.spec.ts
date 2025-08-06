@@ -47,8 +47,8 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await page.locator('.profile-page').isVisible();
     });
     await test.step('Check Perks and Achievements tabs', async () => {
-      const perksTab = await page.locator('#profile-tabs-tab-perks');
-      const achievementsTab = await page.locator('#profile-tabs-tab-achievements');
+      const perksTab = await page.locator('#profile-tabs-perks');
+      const achievementsTab = await page.locator('#profile-tabs-achievements');
       const startSwappingButton = await page.getByRole('link', { name: 'Start swapping' });
       await expect(achievementsTab).toBeVisible();
       await achievementsTab.click();
