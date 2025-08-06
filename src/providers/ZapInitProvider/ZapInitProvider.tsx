@@ -191,7 +191,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
 
-      if (!biconomyClients && isMethodWithDeps) {
+      // Skip this for wallet_getCapabilities method
+      // Queue the operation if either the biconomy clients are not initialized or the current route is not set
+      if (isMethodWithDeps && (!biconomyClients || !extraParams.currentRoute)) {
         const operationId = `${operationName}-${extraParams.currentRoute?.id ?? NO_ROUTE_ID_SUFFIX}`;
 
         console.warn(
@@ -244,34 +246,27 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           projectChainId: sendCallsExtraParams.projectData.chainId,
         });
 
-        console.warn('Biconomy clients:', clients);
-
         biconomyClients = clients.biconomyClients;
       } catch (error) {
         console.error('Failed to initialize clients:', error);
       }
 
-      // Execute all pending operations
+      // Execute all pending operations sequentially
       for (const pendingOp of filteredPendingOps) {
         const isMethodWithDeps = !NO_DEPS_METHODS.has(pendingOp.operationName);
 
-        if (isMethodWithDeps && !sendCallsExtraParams.currentRoute) {
+        if (
+          isMethodWithDeps &&
+          (!biconomyClients || !sendCallsExtraParams.currentRoute)
+        ) {
           console.warn(
-            `No current route, skipping executing pending operation: ${pendingOp.operationName}`,
-          );
-          continue;
-        }
-
-        if (isMethodWithDeps && !biconomyClients) {
-          console.warn(
-            `No biconomy clients, skipping executing pending operation: ${pendingOp.operationName}`,
+            `Skipping executing pending operation: ${pendingOp.operationName}`,
           );
           continue;
         }
 
         console.warn(
-          `Executing ${pendingOp.operationName}`,
-          sendCallsExtraParams,
+          `Executing ${pendingOp.operationName} with id: ${pendingOp.id}`,
         );
 
         const resolvers = getPromiseResolversForOperation(pendingOp.id);
@@ -297,9 +292,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
               >,
             );
           }
-
-          // Remove the operation from store
-          removePendingOperation(pendingOp.id);
         } catch (error) {
           console.error(
             `Failed to execute operation ${pendingOp.operationName}:`,
@@ -309,8 +301,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           if (resolvers?.reject) {
             resolvers.reject(error as Error);
           }
-
-          // Remove the operation from store
+        } finally {
           removePendingOperation(pendingOp.id);
         }
       }
@@ -339,13 +330,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       console.warn('No chain id or address, skipping...');
       return;
     }
-
-    console.warn(
-      'Starting client initialization for chain:',
-      chainId,
-      'address:',
-      address,
-    );
 
     const initMeeClient = async () => {
       try {
