@@ -23,6 +23,7 @@ export interface HorizontalTabsProps {
   autoSelectFirst?: boolean;
   // This is used to sync the value with the parent component, even if the value is undefined
   syncWithValue?: boolean;
+  id?: string;
 }
 
 export const HorizontalTabs = ({
@@ -34,6 +35,7 @@ export const HorizontalTabs = ({
   renderContent,
   autoSelectFirst = true,
   syncWithValue = false,
+  id,
 }: HorizontalTabsProps) => {
   const initialValue = value
     ? value
@@ -61,6 +63,7 @@ export const HorizontalTabs = ({
         value={internalValue}
         onChange={handleChange}
         sx={sx}
+        id={id}
       >
         {tabs
           .filter((tab) => tab.label || tab.startAdornment || tab.endAdornment)
@@ -78,6 +81,7 @@ export const HorizontalTabs = ({
                 </>
               }
               size={size}
+              id={`${id}-${tab.value}`}
             />
           ))}
       </HorizontalTabsContainer>

@@ -58,7 +58,7 @@
       "amount": "1",
       "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       "toTokenSymbol": "USDC",
-      "toChain": "998"
+      "toChain": "1337"
     }
   },
   "ArbUSDCtoHypercore": {
@@ -69,7 +69,7 @@
       "amount": "5",
       "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       "toTokenSymbol": "USDC",
-      "toChain": "998"
+      "toChain": "1337"
     },
   "NegativeUSDCtoUSDC": {
     "tokenSymbol": "USDC",
@@ -78,7 +78,7 @@
     "amount": "2",
     "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
     "toTokenSymbol": "USDC",
-    "toChain": "998"
+    "toChain": "1337"
   }
   },
   
@@ -90,7 +90,7 @@
       "amount": "0.01",
       "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       "toTokenSymbol": "USDC",
-      "toChain": "998"
+      "toChain": "1337"
     }
   },
   "SOLtoHypercore": {
@@ -101,7 +101,7 @@
       "amount": "2",
       "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       "toTokenSymbol": "USDC",
-      "toChain": "998"
+      "toChain": "1337"
     }
   },
   "SUItoHypercore": {
@@ -112,7 +112,7 @@
       "amount": "4",
       "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
       "toTokenSymbol": "USDC",
-      "toChain": "998"
+      "toChain": "1337"
     }
   }
 }
