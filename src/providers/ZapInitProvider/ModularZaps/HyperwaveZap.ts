@@ -29,7 +29,7 @@ const computeHyperwaveMinimumMint = async (
 
   const decimals = market.depositToken.decimals;
   const token = market.depositToken.address;
-  const amount = BigInt(zapper.currentRoute.fromAmount);
+  const amount = BigInt(zapper.currentRoute.toAmount);
 
   const getRateInQuoteSafe = zapper.zapData.abi.getRateInQuoteSafe;
 
