@@ -51,11 +51,12 @@ export async function switchTheme(page, theme: Theme) {
   await itemInMenu(page, 'Theme');
   await itemInMenu(page, theme);
   // Click the menu button using its coordinates
-  const menuButton = await page.locator(MAIN_MENU.BURGER_MENU_BUTTON);
-  const box = await menuButton.boundingBox();
-  if (box) {
-    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  }
+  // @Note disabling this because the burger menu button is covered by the menu on mobile view
+  // const menuButton = await page.locator(MAIN_MENU.BURGER_MENU_BUTTON);
+  // const box = await menuButton.boundingBox();
+  // if (box) {
+  //   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  // }
 }
 
 export async function openNewTabAndVerifyUrl(context, url: string) {
