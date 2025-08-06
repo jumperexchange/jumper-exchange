@@ -1,10 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { shallow } from 'zustand/shallow';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import {
   WalletMethods,
   WalletMethodArgsType,
   WalletMethodReturnType,
 } from 'src/providers/ZapInitProvider/types';
+import { createWithEqualityFn } from 'zustand/traditional';
 
 interface PendingOperationData<T extends WalletMethods> {
   operationName: T;
@@ -20,65 +21,72 @@ interface PromiseResolver<T extends WalletMethods> {
 
 const serializeWithTypes = (obj: any): any => {
   if (typeof obj !== 'object' || obj === null) {
-    return obj;
+    return {
+      value: obj,
+      type: typeof obj,
+    };
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(serializeWithTypes);
+    return {
+      value: obj.map(serializeWithTypes),
+      type: 'array',
+    };
   }
 
   const result: any = {};
-  const typeInfo: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(obj)) {
     if (typeof value === 'bigint') {
-      result[key] = value.toString();
-      typeInfo[key] = 'bigint';
+      result[key] = {
+        value: value.toString(),
+        type: 'bigint',
+      };
     } else if (typeof value === 'object' && value !== null) {
       result[key] = serializeWithTypes(value);
     } else {
-      result[key] = value;
+      result[key] = {
+        value: value,
+        type: typeof value,
+      };
     }
-  }
-
-  // Only add type info if we have BigInt fields
-  if (Object.keys(typeInfo).length > 0) {
-    result.__types = typeInfo;
   }
 
   return result;
 };
 
 const deserializeWithTypes = <T>(obj: any): T => {
-  if (typeof obj !== 'object' || obj === null) {
-    return obj as T;
-  }
+  // Check if this is a typed value object
+  if (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'value' in obj &&
+    'type' in obj
+  ) {
+    const typedValue = obj as { value: any; type: string };
 
-  if (Array.isArray(obj)) {
-    return obj.map(deserializeWithTypes) as T;
-  }
-
-  const result: Record<string, unknown> = {};
-  const typeInfo = obj.__types || {};
-
-  for (const [key, value] of Object.entries(obj)) {
-    // Skip the type metadata field
-    if (key === '__types') {
-      continue;
-    }
-
-    const fieldType = typeInfo[key];
-
-    if (fieldType === 'bigint' && typeof value === 'string') {
-      result[key] = BigInt(value);
-    } else if (typeof value === 'object' && value !== null) {
-      result[key] = deserializeWithTypes(value);
+    if (typedValue.type === 'bigint') {
+      return BigInt(typedValue.value) as T;
+    } else if (typedValue.type === 'array') {
+      return typedValue.value.map(deserializeWithTypes) as T;
     } else {
-      result[key] = value;
+      // For primitive types, just return the value
+      return typedValue.value as T;
     }
   }
 
-  return result as T;
+  // If it's not a typed object, it might be a plain object (shouldn't happen with new structure)
+  if (typeof obj === 'object' && obj !== null) {
+    const result: Record<string, unknown> = {};
+
+    for (const [key, value] of Object.entries(obj)) {
+      result[key] = deserializeWithTypes(value);
+    }
+
+    return result as T;
+  }
+
+  return obj as T;
 };
 
 interface PendingOperationsState<T extends WalletMethods> {
@@ -103,7 +111,7 @@ interface PendingOperationsState<T extends WalletMethods> {
   clearAll: () => void;
 }
 
-export const useZapPendingOperationsStore = create<
+export const useZapPendingOperationsStore = createWithEqualityFn<
   PendingOperationsState<WalletMethods>
 >()(
   persist(
@@ -155,6 +163,8 @@ export const useZapPendingOperationsStore = create<
     }),
     {
       name: 'zap-pending-operations-storage',
+      version: 1,
+      storage: createJSONStorage(() => localStorage),
       // Only persist the pendingOperations, not the promiseResolvers
       partialize: (state) => {
         const serializedPendingOperations: Record<string, any> = {};
@@ -162,6 +172,7 @@ export const useZapPendingOperationsStore = create<
         for (const [id, operation] of Object.entries(state.pendingOperations)) {
           serializedPendingOperations[id] = {
             ...operation,
+            // Only serialize the args with { value, type } structure
             args: serializeWithTypes(operation.args),
           };
         }
@@ -171,7 +182,7 @@ export const useZapPendingOperationsStore = create<
       onRehydrateStorage: () => {
         return (state) => {
           if (state?.pendingOperations) {
-            // Deserialize each pending operation's args
+            // Only deserialize the args field
             for (const [id, operation] of Object.entries(
               state.pendingOperations,
             )) {
@@ -184,4 +195,5 @@ export const useZapPendingOperationsStore = create<
       },
     },
   ),
+  shallow,
 );
