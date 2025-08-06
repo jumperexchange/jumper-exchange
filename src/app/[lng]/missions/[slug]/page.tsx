@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next/types';
 import { Suspense } from 'react';
+import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
+import { GlobalFeatureFlags } from 'src/const/abtests';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { questSlugSchema } from 'src/utils/validation-schemas';
@@ -98,9 +100,12 @@ export const dynamicParams = true;
 export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
-  const { slug } = await params;
+  const [isPageEnabled, { slug }] = await Promise.all([
+    getFeatureFlag(GlobalFeatureFlags.MissionsPage),
+    params,
+  ]);
 
-  if (!slug) {
+  if (!isPageEnabled || !slug) {
     return notFound();
   }
 
