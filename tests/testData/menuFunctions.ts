@@ -50,15 +50,19 @@ export enum Theme {
 export async function switchTheme(page, theme: Theme) {
   await itemInMenu(page, 'Theme');
   await itemInMenu(page, theme);
-  // Click the menu button using its coordinates
-  const menuButton = await page.locator(MAIN_MENU.BURGER_MENU_BUTTON);
-  const box = await menuButton.boundingBox();
-  if (box) {
-    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  }
+  await closeMainMenuOnMobileView(page);
 }
 
 export async function openNewTabAndVerifyUrl(context, url: string) {
   const newPage = await context.waitForEvent('page');
   expect(newPage.url()).toBe(url);
+}
+
+export async function closeMainMenuOnMobileView(page) {
+  // Click outside the menu using its coordinates
+  const mainMenuContainer = await page.locator(MAIN_MENU.MENU);
+  const box = await mainMenuContainer.boundingBox();
+  if (box) {
+    await page.mouse.click(box.width / 2, box.y - 20);
+  }
 }

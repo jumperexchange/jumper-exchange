@@ -1,5 +1,5 @@
-import { ConnectButtonLabel, ConnectButtonWrapper } from './WalletButton.style';
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import { ConnectNavbarButtonLabel, ConnectNavbarButton } from './Buttons.style';
+import { useWalletMenu } from '@lifi/wallet-management';
 import { useTranslation } from 'react-i18next';
 
 function ConnectButton() {
@@ -7,7 +7,7 @@ function ConnectButton() {
   const { openWalletMenu } = useWalletMenu();
 
   return (
-    <ConnectButtonWrapper
+    <ConnectNavbarButton
       // Used in the widget
       id="connect-wallet-button"
       onClick={(event) => {
@@ -15,7 +15,7 @@ function ConnectButton() {
         openWalletMenu();
       }}
     >
-      <ConnectButtonLabel
+      <ConnectNavbarButtonLabel
         sx={{
           typography: {
             xs: 'bodyXSmallStrong',
@@ -24,8 +24,8 @@ function ConnectButton() {
         }}
       >
         {t('navbar.connect')}
-      </ConnectButtonLabel>
-    </ConnectButtonWrapper>
+      </ConnectNavbarButtonLabel>
+    </ConnectNavbarButton>
   );
 }
 

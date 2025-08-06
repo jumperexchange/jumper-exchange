@@ -1,23 +1,18 @@
 'use client';
-import { useTheme } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { AppPaths } from 'src/const/urls';
 import {
-  RedirectAppButton,
-  RedirectAppIcon,
+  RedirectAppNavbarButton,
   RedirectAppLabel,
-} from './RedirectToApp.style';
+  RedirectAppIcon,
+} from './Buttons.style';
 
-interface RedirectToAppProps {
-  hideConnectButton: boolean;
-}
-
-export const RedirectToApp = ({ hideConnectButton }: RedirectToAppProps) => {
+export const RedirectToApp = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
 
   const handleOpenApp = () => {
     trackEvent({
@@ -28,16 +23,22 @@ export const RedirectToApp = ({ hideConnectButton }: RedirectToAppProps) => {
   };
 
   return (
-    <RedirectAppButton
+    <RedirectAppNavbarButton
       component={Link}
-      href={'/'}
+      href={AppPaths.Main}
       onClick={handleOpenApp}
-      sx={[!hideConnectButton && { marginRight: theme.spacing(1) }]}
     >
       <RedirectAppIcon />
-      <RedirectAppLabel variant={'bodyMediumStrong'}>
+      <RedirectAppLabel
+        sx={{
+          typography: {
+            xs: 'bodyXSmallStrong',
+            sm: 'bodySmallStrong',
+          },
+        }}
+      >
         {t('blog.openApp')}
       </RedirectAppLabel>
-    </RedirectAppButton>
+    </RedirectAppNavbarButton>
   );
 };
