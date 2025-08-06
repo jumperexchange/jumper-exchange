@@ -23,6 +23,7 @@ import {
   WalletMethodsRef,
   WalletMethodArgsType,
   WalletMethodReturnType,
+  WalletMethodDefinition,
 } from './types';
 import {
   BiconomyClients,
@@ -200,12 +201,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         });
       }
 
-      return operation(
-        args as any,
-        biconomyClients?.meeClient,
-        biconomyClients?.oNexus,
-        extraParams,
-      ) as Promise<WalletMethodReturnType<T>>;
+      return (
+        operation as WalletMethodDefinition<
+          WalletMethodArgsType<T>,
+          Awaited<WalletMethodReturnType<T>>
+        >
+      )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, extraParams);
     },
     [initializeClients],
   );
