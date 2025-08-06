@@ -1,7 +1,13 @@
 'use client';
 
 import { FC, useEffect, useMemo } from 'react';
-import { LiFiWidget, Route, useWidgetEvents, WidgetEvent } from '@lifi/widget';
+import {
+  HiddenUI,
+  LiFiWidget,
+  Route,
+  useWidgetEvents,
+  WidgetEvent,
+} from '@lifi/widget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
 import { WidgetProps } from '../Widget.types';
@@ -50,6 +56,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     const baseOverrides: ConfigContext['baseOverrides'] = {
       integrator: projectData.integrator,
       minFromAmountUSD,
+      hiddenUI: [HiddenUI.LowAddressActivityConfirmation],
     };
 
     return {
