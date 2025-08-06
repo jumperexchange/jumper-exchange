@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { EVMAddress } from 'src/types/internal';
-import { getWalletClient } from '@wagmi/core';
+// import { getWalletClient } from '@wagmi/core';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useAccount } from '@lifi/wallet-management';
@@ -36,14 +36,19 @@ export const useWalletClientInitialization = () => {
         let walletClient = fallbackWalletClient;
 
         if (
-          address &&
-          chainId &&
-          fallbackWalletClient?.account.address !== address
+          !address ||
+          !chainId ||
+          fallbackWalletClient?.account.address !== address ||
+          fallbackWalletClient?.chain?.id !== chainId
         ) {
-          walletClient = await getWalletClient(wagmiConfig, {
-            account: address,
-            chainId,
-          });
+          throw new Error(
+            'Wallet client is not initialized or is not on the correct chain',
+          );
+          // @Note: We need to update the sendParams to use only the route chainId and address for this to work
+          // walletClient = await getWalletClient(wagmiConfig, {
+          //   account: address,
+          //   chainId,
+          // });
         }
 
         // Note: getClients would need to be passed as parameter or imported

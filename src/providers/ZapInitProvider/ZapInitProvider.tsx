@@ -169,7 +169,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       try {
         const clients = await initializeClients({
           address: extraParams.currentRoute?.fromAddress as EVMAddress,
-          chainId: extraParams.chainId,
+          chainId: extraParams.currentRoute?.fromChainId,
           projectAddress: extraParams.projectData.address as EVMAddress,
           projectChainId: extraParams.projectData.chainId,
         });
