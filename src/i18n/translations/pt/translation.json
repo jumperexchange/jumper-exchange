@@ -11,7 +11,7 @@
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar",
-      "back": ""
+      "back": "Voltar"
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -112,7 +112,7 @@
   },
   "button": {
     "okay": "Ok",
-    "manageYourPosition": ""
+    "manageYourPosition": "Gerencie sua posição"
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -144,9 +144,9 @@
   },
   "missions": {
     "wrapperCard": {
-      "title": "",
-      "explore_one": "",
-      "explore_other": ""
+      "title": "Missões",
+      "explore_one": "Explorar missão {{count}}",
+      "explore_other": "Explorar missões {{count}}"
     },
     "available": "Missões Disponíveis",
     "completed": "Missões Concluídas",
@@ -168,9 +168,18 @@
     },
     "tasks": {
       "type": "Tarefa {{type}}",
+      "typeFallback": "Tarefa",
       "status": {
         "verify": "Verificar",
         "verified": "Verificada"
+      },
+      "action": {
+        "verify": "Verificar",
+        "go": "Ir"
+      },
+      "completed": {
+        "title": "",
+        "description": ""
       }
     }
   },
@@ -186,11 +195,26 @@
     "copyAddress": "Copiar o endereço da carteira",
     "shareProfile": "Partilhar perfil",
     "open": "Abre {{tool}}",
-    "rewards": "Recompensas ganhas"
+    "rewards": "Recompensas ganhas",
+    "availableRewards": "Prêmios Disponíveis",
+    "perks": "",
+    "achievements": "",
+    "unlocked": "",
+    "levelWithValue": "",
+    "noData": {
+      "description": "",
+      "caption": "",
+      "cta": ""
+    }
   },
   "campaign": {
     "missions": {
-      "title": ""
+      "title": "Missões"
+    },
+    "stats": {
+      "missions": "Missões",
+      "rewards": "Recompensas",
+      "totalRewards": "Total em recompensas"
     }
   },
   "leaderboard": {
@@ -228,17 +252,17 @@
   "tooltips": {
     "tvl": "Valor total de ativos cripto depositados neste mercado.",
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
-    "deposit": "",
-    "deposited": "",
-    "boostedApy": ""
+    "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
+    "deposited": "O token que você depositou neste mercado.",
+    "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. Há um adicional de {{boostedApy}}% em recompensas extras pagas em outros tokens, verifique o site do protocolo para mais informações."
   },
   "widget": {
     "depositCard": {
-      "apy": "",
-      "boostedApy": "",
-      "tvl": "",
-      "lockupPeriod": "",
-      "token": ""
+      "apy": "APR Base",
+      "boostedApy": "APR otimizado",
+      "tvl": "TVL — Valor Total Bloqueado",
+      "lockupPeriod": "Período de bloqueio",
+      "token": "Ativo"
     },
     "zap": {
       "sendToAddressName": "Enviar para {{name}}",

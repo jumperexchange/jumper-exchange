@@ -18,6 +18,7 @@ interface PerksCardProps {
   levelBadge: ReactNode;
   perksBadge?: ReactNode;
   isLoading?: boolean;
+  isDisabled?: boolean;
   fullWidth?: boolean;
 }
 
@@ -28,6 +29,7 @@ export const PerksCard = ({
   levelBadge,
   perksBadge,
   isLoading,
+  isDisabled = false,
   fullWidth,
 }: PerksCardProps) => {
   if (isLoading) {
@@ -42,7 +44,7 @@ export const PerksCard = ({
         maxWidth: fullWidth ? '100%' : PERK_CARD_SIZES.CARD_WIDTH,
       }}
     >
-      <PerksCardActionArea disableRipple>
+      <PerksCardActionArea disableRipple disabled={isDisabled}>
         {imageUrl ? (
           <PerksCardImage
             src={imageUrl}
