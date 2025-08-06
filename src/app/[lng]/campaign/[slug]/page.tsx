@@ -3,9 +3,12 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { getCampaigns } from 'src/app/lib/getCampaigns';
 import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
+import { getFeatureFlag } from 'src/app/lib/getFeatureFlag';
 import { siteName } from 'src/app/lib/metadata';
 import { CampaignPage } from 'src/components/Campaign/CampaignPage';
 import { CampaignPageSkeleton } from 'src/components/Campaign/CampaignPageSkeleton';
+import { OldCampaignPage } from 'src/components/Campaign/OldCampaignPage';
+import { GlobalFeatureFlags } from 'src/const/abtests';
 import { getSiteUrl } from 'src/const/urls';
 import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
@@ -69,7 +72,10 @@ type Params = Promise<{ slug: string }>;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
-  const campaign = await getCampaignBySlug(slug);
+  const [campaign, isPageEnabled] = await Promise.all([
+    getCampaignBySlug(slug),
+    getFeatureFlag(GlobalFeatureFlags.MissionsPage),
+  ]);
 
   if (!campaign || !campaign.data || campaign.data.length === 0) {
     notFound();
@@ -79,9 +85,15 @@ export default async function Page({ params }: { params: Params }) {
     campaign.data[0].quests,
   );
 
+  if (isPageEnabled) {
+    return (
+      <Suspense fallback={<CampaignPageSkeleton />}>
+        <CampaignPage campaign={campaign.data[0]} quests={extendedQuests} />
+      </Suspense>
+    );
+  }
+
   return (
-    <Suspense fallback={<CampaignPageSkeleton />}>
-      <CampaignPage campaign={campaign.data[0]} quests={extendedQuests} />
-    </Suspense>
+    <OldCampaignPage campaign={campaign.data[0]} quests={extendedQuests} />
   );
 }

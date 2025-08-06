@@ -1,12 +1,16 @@
 import { questSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
-import { redirect, RedirectType } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
-import { AppPaths, getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
+import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
+import { filterUniqueByIdentifier } from 'src/utils/merkl/merklHelper';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { getQuestBySlug } from '../../../lib/getQuestBySlug';
+import QuestPage from '../../../ui/quests/QuestMissionPage';
 
 type Params = Promise<{ slug: string }>;
 
@@ -77,5 +81,33 @@ export const revalidate = 300;
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  redirect(`${AppPaths.Missions}/${slug}`, RedirectType.replace);
+  // Validate slug
+  const slugResult = questSlugSchema.safeParse(slug);
+  if (!slugResult.success) {
+    return notFound();
+  }
+
+  const { data } = await getQuestBySlug(slugResult.data);
+  if (!data) {
+    return notFound();
+  }
+
+  // fetch merkl opportunities if rewardsIds are present
+  const rewardsIds = data.CustomInformation?.['rewardsIds'];
+  const merklOpportunities = await fetchOpportunitiesByRewardsIds(
+    rewardsIds,
+  ).then((el) => filterUniqueByIdentifier(el));
+
+  // fetches and add apy to task_verification items:
+  const tasksVerification = await fetchTaskOpportunities(
+    data.tasks_verification,
+  );
+
+  return (
+    <QuestPage
+      quest={data}
+      tasksVerification={tasksVerification}
+      merklOpportunities={merklOpportunities}
+    />
+  );
 }
