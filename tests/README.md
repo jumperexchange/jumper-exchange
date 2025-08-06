@@ -22,25 +22,74 @@ pnpm install
 After installing dependencies, install the necessary browsers:
 
 ```sh
-pnpm exec playwright install
+pnpm test:install
 ```
+
 ## Run the local env
 ```sh
 pnpm dev  
 ```
 
-## Running Tests
-```sh 
- npx playwright test --headed 
+## Building Cache
+
+Build the Synpress cache for wallet setup (required for some tests):
+
+```sh
+pnpm build:cache
 ```
 
+## Qase Test Management Integration
+
+This project integrates with [Qase TestOps](https://qase.io/) for enhanced test reporting and management. To use Qase features, you need to set up your API token.
+
+### Setting up Qase API Token
+
+#### Permanent Setup (Recommended)
+
+**For zsh:**
+```sh
+echo 'export QASE_TESTOPS_API_TOKEN="your-api-token-here"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**For bash:**
+```sh
+echo 'export QASE_TESTOPS_API_TOKEN="your-api-token-here"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+#### Local Setup (Current Session Only)
+
+```sh
+export QASE_TESTOPS_API_TOKEN="your-api-token-here"
+```
+
+### Getting Your Qase API Token
+
+The Qase API token can be found in our 1Password Manager. If you don't have access to it, please contact the QA department for access.
+
+## Running Tests
+
+### Run all tests
+```sh
+pnpm test
+```
+
+### Run tests with headed browser (visible)
+```sh
+pnpm test:e2e-real
+```
+
+### Run tests with Qase reporting
+```sh
+pnpm test:qase
+```
 
 ### Run a Specific Test File
 
 ```sh
-pnpm playwright test <path_to_test_file>
+pnpm test <path_to_test_file>
 ```
-
 
 ## Generating and Viewing Reports
 

@@ -12,12 +12,13 @@ import {
   connectedWalletButton
 } from './testData/connectWalletFunctions';
 import basicSetup from './wallet-setup/basic.setup';
+import { qase } from 'playwright-qase-reporter';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
 
 test.describe('Connect/disconnect Metamask with Jumper app and open /profile page', () => {
-  test('Complete wallet connection and disconnection flow', async ({
+  test(qase(95, 'Complete wallet connection and disconnection flow'), async ({
     context,
     page,
     extensionId,
