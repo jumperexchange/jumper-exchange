@@ -6,7 +6,6 @@ const SEED_PHRASE =
   'test test test test test test test test test test test junk';
 const PASSWORD = 'SynpressIsAwesomeNow!!!';
 
-// @ts-ignore - Playwright version compatibility issue
 export default defineWalletSetup(
   PASSWORD,
   async (context: BrowserContext, walletPage: Page) => {

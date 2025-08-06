@@ -67,7 +67,6 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
         '//button[@aria-label="Transaction history"]',
       );
       await clickOnJumperLogo(page);
-      // await closeWelcomeScreen(page);
       await transactionHistoryButton.click();
       await expect(noRecentTransactions).toBeVisible();
     });
