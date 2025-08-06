@@ -2,7 +2,6 @@ import { Instruction, MultichainSmartAccount } from '@biconomy/abstractjs';
 import { Route } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { zeroAddress } from 'viem';
 import { AbiEntry, ZapDataResponse } from './zap.jumper-backend';
 
 export interface SendCallsExtraParams {
@@ -102,7 +101,6 @@ export const isValidParams = (
     throw new Error('Missing chainId or address');
   }
 
-  const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
   const depositAddress = integrationData.market?.address as EVMAddress;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
@@ -118,14 +116,6 @@ export const isValidParams = (
 
   if (!depositTokenDecimals) {
     throw new Error('Deposit token decimals is undefined.');
-  }
-
-  // @Note this works only for EVM chains
-  const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
-  console.warn('Using native source token:', isNativeSourceToken);
-
-  if (isNativeSourceToken) {
-    throw new Error('Native source token is not supported.');
   }
 
   return true;
