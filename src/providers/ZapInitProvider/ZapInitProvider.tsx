@@ -568,7 +568,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             chainId: currentChainId,
             value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
           }
-          console.log('data', data);
           return oNexusParam.buildComposable({
             type: 'rawCalldata',
             data,
