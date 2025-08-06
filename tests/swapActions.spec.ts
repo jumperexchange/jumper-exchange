@@ -6,6 +6,7 @@ import {
   closeWelcomeScreen,
 } from './testData/landingPageFunctions';
 import { clickItemInSettingsMenu } from './testData/settingsFunctions';
+import { qase } from 'playwright-qase-reporter';
 
 [
   { name: 'Mobile', size: { width: 375, height: 812 } },
@@ -19,7 +20,7 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
       await closeWelcomeScreen(page);
     });
 
-    test('ETH chain swap pair', async ({ page }) => {
+    test(qase(name === 'Mobile' ? 109 : 113, 'ETH chain swap pair'), async ({ page }) => {
       await test.step('Check if the Relay fallback route is shown', async () => {
         await page.getByRole('button', { name: 'Settings' }).click();
         await clickItemInSettingsMenu(page, 'Bridges');
@@ -35,7 +36,7 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
       });
     });
 
-    test('ARB chain swap pairs', async ({ page }) => {
+    test(qase(name === 'Mobile' ? 110 : 114, 'ARB chain swap pairs'), async ({ page }) => {
       await test.step(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.ARBtoARB.ETHtoUSDT);
         await page.goto(`/${urlParams}`);
@@ -49,7 +50,7 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
       // });
     });
 
-    test('Hyperliquid chain swap pairs', async ({ page }) => {
+    test(qase(name === 'Mobile' ? 117 : 118, 'Hyperliquid chain swap pairs'), async ({ page }) => {
       await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.EVMtoHypercore.ETHtoUSDC);
         await page.goto(`/${urlParams}`);

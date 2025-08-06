@@ -9,6 +9,7 @@ import {
   switchTheme,
 } from './testData/menuFunctions';
 import { expectBackgroundColorToHaveCss } from './testData/menuFunctions';
+import { qase } from 'playwright-qase-reporter';
 
 test.describe('Switch between dark and light theme and check the background color', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,7 +17,7 @@ test.describe('Switch between dark and light theme and check the background colo
   });
 
   test.use({ colorScheme: 'dark' });
-  test('Should able to change the theme color to Dark', async ({ page }) => {
+  test(qase(115, 'Should able to change the theme color to Dark'), async ({ page }) => {
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);
     await switchTheme(page, Theme.Dark);
@@ -24,7 +25,7 @@ test.describe('Switch between dark and light theme and check the background colo
   });
 
   test.use({ colorScheme: 'light' });
-  test('Should able to change the theme color to Light', async ({ page }) => {
+  test(qase(116, 'Should able to change the theme color to Light'), async ({ page }) => {
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await itemInMenu(page, 'Theme');

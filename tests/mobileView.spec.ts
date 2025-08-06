@@ -13,6 +13,7 @@ import {
   Theme,
 } from './testData/menuFunctions';
 import { LANDING_PAGE } from './testData/landingPageFunctions';
+import { qase } from 'playwright-qase-reporter';
 
 test.describe('Verify essential mobile flows', () => {
   test.use({ viewport: { width: 375, height: 812 } });
@@ -22,7 +23,7 @@ test.describe('Verify essential mobile flows', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('Page fits the mobile viewport width correctly', async ({ page }) => {
+  test(qase(104, 'Page fits the mobile viewport width correctly'), async ({ page }) => {
     const viewport = page.viewportSize();
     if (!viewport) throw new Error('Viewport size not available');
 
@@ -55,7 +56,7 @@ test.describe('Verify essential mobile flows', () => {
     expect(result.hasHorizontalScroll).toBeFalsy();
   });
 
-  test('Verify welcome page elements are visible in mobile view', async ({
+  test(qase(105, 'Verify welcome page elements are visible in mobile view'), async ({
     page,
   }) => {
     await test.step('check if elements are within the mobile viewport', async () => {
@@ -98,7 +99,7 @@ test.describe('Verify essential mobile flows', () => {
     });
   });
 
-  test('Verify items in the menu', async ({ page }) => {
+  test(qase(106, 'Verify items in the menu'), async ({ page }) => {
     await test.step('close the welcome screen', async () => {
       await closeWelcomeScreen(page);
     });

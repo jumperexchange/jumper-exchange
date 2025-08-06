@@ -1,5 +1,5 @@
-import { testWithSynpress } from '@synthetixio/synpress-core';
-import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import {
   closeWelcomeScreen,
   clickOnJumperLogo,
@@ -12,12 +12,13 @@ import {
   connectedWalletButton
 } from './testData/connectWalletFunctions';
 import basicSetup from './wallet-setup/basic.setup';
+import { qase } from 'playwright-qase-reporter';
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
 
 test.describe('Connect/disconnect Metamask with Jumper app and open /profile page', () => {
-  test('Complete wallet connection and disconnection flow', async ({
+  test(qase(95, 'Complete wallet connection and disconnection flow'), async ({
     context,
     page,
     extensionId,
@@ -45,6 +46,18 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await triggerButtonClick(page, 'Level');
       await page.locator('.profile-page').isVisible();
     });
+    await test.step('Check Perks and Achievements tabs', async () => {
+      const perksTab = await page.locator('#profile-tabs-perks');
+      const achievementsTab = await page.locator('#profile-tabs-achievements');
+      const startSwappingButton = await page.getByRole('link', { name: 'Start swapping' });
+      await expect(achievementsTab).toBeVisible();
+      await achievementsTab.click();
+      await expect(startSwappingButton).not.toBeVisible();
+      await perksTab.click();
+      const perksContainer = page.locator('xpath=//div[@class="MuiBox-root mui-prph5i"]');
+      const perkCards = perksContainer.locator('.MuiCard-root');
+      await expect(perkCards).toHaveCount(5);
+    });
 
     await test.step('Check transaction history', async () => {
       const noRecentTransactions = page.locator(
@@ -54,7 +67,6 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
         '//button[@aria-label="Transaction history"]',
       );
       await clickOnJumperLogo(page);
-      await closeWelcomeScreen(page);
       await transactionHistoryButton.click();
       await expect(noRecentTransactions).toBeVisible();
     });
