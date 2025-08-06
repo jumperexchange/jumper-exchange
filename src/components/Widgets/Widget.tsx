@@ -155,6 +155,9 @@ export function Widget({
             ? 'compact'
             : 'wide',
       subvariant,
+      subvariantOptions: {
+        wide: { enableChainSidebar: true },
+      },
       walletConfig: {
         onConnect: openWalletMenu,
       },
