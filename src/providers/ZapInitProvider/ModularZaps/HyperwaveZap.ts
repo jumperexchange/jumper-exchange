@@ -17,6 +17,13 @@ import { buildContractComposable } from '../utils';
 import { approve, transfer } from './DefaultZap';
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
 
+const MINT_SLIPPAGE_PERCENT = 2;
+
+const withSlippage = (amount: bigint, slippagePercent: number) => {
+  const slippageAmount = (amount * BigInt(slippagePercent)) / 100n;
+  return amount - slippageAmount;
+};
+
 const computeHyperwaveMinimumMint = async (
   zapper: ZapExecutionContext,
 ): Promise<bigint> => {
@@ -74,7 +81,11 @@ export const hyperwaveDeposit: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  const minimumMint: bigint = await computeHyperwaveMinimumMint(context);
+  const minimumMint: bigint = withSlippage(
+    await computeHyperwaveMinimumMint(context),
+    MINT_SLIPPAGE_PERCENT,
+  );
+
   const depositInputs = integrationData.abi.deposit.inputs;
 
   const depositArgs = depositInputs.map((input: AbiParameter) => {
