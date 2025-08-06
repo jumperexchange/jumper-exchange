@@ -54,8 +54,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await achievementsTab.click();
       await expect(startSwappingButton).not.toBeVisible();
       await perksTab.click();
-      const perksContainer = page.locator('xpath=//div[@class="MuiBox-root mui-prph5i"]');
-      const perkCards = perksContainer.locator('.MuiCard-root');
+      const perkCards = page.locator('[data-testid="perks-card"]');
       await expect(perkCards).toHaveCount(5);
     });
 
