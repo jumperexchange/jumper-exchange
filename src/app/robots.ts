@@ -4,7 +4,6 @@ import { isProduction } from '@/utils/isProduction';
 import type { MetadataRoute } from 'next';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 86400;
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   // Cannot have a sitemap index yet with app router, so we need to generate the sitemaps here
