@@ -163,7 +163,6 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
     }),
     {
       name: 'zap-pending-operations-storage',
-      version: 1,
       storage: createJSONStorage(() => localStorage),
       // Only persist the pendingOperations, not the promiseResolvers
       partialize: (state) => {
