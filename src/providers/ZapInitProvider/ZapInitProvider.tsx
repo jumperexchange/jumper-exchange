@@ -29,12 +29,7 @@ import {
   useBiconomyClientsStore,
 } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/ZapPendingOperationsStore';
-import {
-  getCapabilities,
-  getCallsStatus,
-  sendCalls,
-  waitForCallsStatus,
-} from './WalletClient/methods';
+import { walletMethods } from './WalletClient/methods';
 import { useWalletClientInitialization } from './WalletClient/hooks';
 import { SendCallsExtraParams } from './ModularZaps';
 import { NO_DEPS_METHODS, NO_ROUTE_ID_SUFFIX } from './constants';
@@ -107,12 +102,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { initializeClients } = useWalletClientInitialization();
 
   const initInProgressRef = useRef(false);
-  const walletMethodsRef = useRef<WalletMethodsRef>({
-    [WalletMethods.getCapabilities]: getCapabilities,
-    [WalletMethods.getCallsStatus]: getCallsStatus,
-    [WalletMethods.sendCalls]: sendCalls,
-    [WalletMethods.waitForCallsStatus]: waitForCallsStatus,
-  });
 
   const {
     zapData,
@@ -166,7 +155,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       args: WalletMethodArgsType<T>,
       extraParams: SendCallsExtraParams,
     ): Promise<ReturnType<WalletMethodsRef[T]>> => {
-      const operation = walletMethodsRef.current?.[operationName] as
+      const operation = walletMethods[operationName] as
         | WalletMethodsRef[T]
         | undefined;
 
@@ -272,7 +261,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         const resolvers = getPromiseResolversForOperation(pendingOp.id);
 
         try {
-          const operation = walletMethodsRef.current?.[pendingOp.operationName];
+          const operation = walletMethods[pendingOp.operationName];
           if (!operation) {
             console.warn(`Operation ${pendingOp.operationName} not found`);
             continue;

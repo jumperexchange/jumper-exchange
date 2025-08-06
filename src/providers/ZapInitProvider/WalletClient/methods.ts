@@ -8,6 +8,8 @@ import {
   WalletCall,
   WalletCapabilitiesArgs,
   WalletGetCallsStatusArgs,
+  WalletMethods,
+  WalletMethodsRef,
   WalletSendCallsArgs,
   WalletWaitForCallsStatusArgs,
 } from '../types';
@@ -299,4 +301,11 @@ export const waitForCallsStatus = async (
       status: receipt.status || (isSuccess ? 'success' : 'reverted'),
     })),
   };
+};
+
+export const walletMethods: WalletMethodsRef = {
+  [WalletMethods.getCapabilities]: getCapabilities,
+  [WalletMethods.getCallsStatus]: getCallsStatus,
+  [WalletMethods.sendCalls]: sendCalls,
+  [WalletMethods.waitForCallsStatus]: waitForCallsStatus,
 };
