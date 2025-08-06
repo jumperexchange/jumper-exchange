@@ -550,12 +550,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       // @Note this works only for EVM chains
       const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
-      console.warn('Using native source token:', isNativeSourceToken);
-
-      if (isNativeSourceToken) {
-        throw new Error('Native source token is not supported.');
-      }
-
       const isSameTokenDeposit = isSameToken(
         sendCallsExtraParams.currentRoute.fromToken,
         sendCallsExtraParams.currentRoute.toToken,
@@ -568,13 +562,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           if (!call.to || !call.data) {
             throw new Error('Invalid call structure: Missing to or data field');
           }
+          const data = {
+            to: call.to,
+            calldata: call.data,
+            chainId: currentChainId,
+            value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
+          }
           return oNexusParam.buildComposable({
             type: 'rawCalldata',
-            data: {
-              to: call.to,
-              calldata: call.data,
-              chainId: currentChainId,
-            },
+            data,
           });
         }),
       );
