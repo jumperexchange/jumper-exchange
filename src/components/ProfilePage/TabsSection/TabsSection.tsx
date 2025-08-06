@@ -50,6 +50,7 @@ export const TabsSection: FC<TabsSectionProps> = ({ children }) => {
             },
           })}
           size={HorizontalTabSize.MD}
+          id="profile-tabs"
         />
       </Box>
     </SectionCard>
