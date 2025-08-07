@@ -146,9 +146,8 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
         };
       },
       storage: createJSONStorage(() => localStorage, {
-        // @ts-ignore: this is MDN's recommended way to implement JSON in cases like bigint.
-        reviver: (_key, value, context) => {
-          return superjson.parse(context.source as string);
+        reviver: (_key, value) => {
+          return superjson.parse(value as string);
         },
         replacer: (_key, value) => {
           return superjson.stringify(value);
