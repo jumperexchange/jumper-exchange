@@ -8,7 +8,6 @@ import { useChains } from '@/hooks/useChains';
 import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { DataItem } from '@/types/internal';
-import { sortByName } from '@/utils/sortByName';
 import type { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToolCardsContainer as Container, ToolCard } from '.';
@@ -51,7 +50,7 @@ export const ToolCards = ({
     {
       title: t('navbar.statsCards.chains'),
       number: chains?.length.toString() || '0',
-      data: sortByName(chains),
+      data: chains,
       open: openChainsToolModal,
       setOpen: setOpenChainsToolModal,
       handleOnClick: (e) => {
@@ -69,7 +68,7 @@ export const ToolCards = ({
     {
       title: t('navbar.statsCards.bridges'),
       number: bridges?.length || 0,
-      data: sortByName(bridges),
+      data: bridges,
       open: openBridgesToolModal,
       setOpen: setOpenBridgesToolModal,
       handleOnClick: (e) => {
@@ -87,7 +86,7 @@ export const ToolCards = ({
     {
       title: t('navbar.statsCards.dexs'),
       number: exchanges?.length || 0,
-      data: sortByName(exchanges),
+      data: exchanges,
       open: openDexsToolModal,
       setOpen: setOpenDexsToolModal,
       handleOnClick: (e) => {
