@@ -64,7 +64,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       ...ctx,
       includeZap: true,
       zapProviders: providers,
-      zapToAddress: toAddress,
+      zapToAddress: toAddress ?? '0x',
       zapPoolName: poolName,
       baseOverrides,
     };
@@ -122,7 +122,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setCurrentRoute]);
 
-  return isZapDataSuccess && (isInitialized || !isConnected) ? (
+  return isZapDataSuccess &&
+    ((isInitialized && !!toAddress) || !isConnected) ? (
     <LiFiWidget
       config={widgetConfig}
       integrator={widgetConfig.integrator}

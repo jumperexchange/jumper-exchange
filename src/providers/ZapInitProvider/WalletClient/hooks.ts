@@ -50,9 +50,9 @@ export const useWalletClientInitialization = () => {
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
           projectAddress,
-          chainId,
           projectChainId,
           walletClient,
+          chainId,
         );
 
         return { walletClient, biconomyClients };

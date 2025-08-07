@@ -105,8 +105,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     (state) => state.currentRoute,
   );
 
-  const { hasProjectClients, hasWalletClients, getToAddress } =
-    useBiconomyClientsStore();
+  const { hasWalletClients, getToAddress } = useBiconomyClientsStore();
 
   const { initializeClients } = useWalletClientInitialization();
 
@@ -133,9 +132,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   );
 
   // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = hasProjectClients(
+  const isInitialized = hasWalletClients(
     projectData.address as EVMAddress | undefined,
     projectData.chainId,
+    address as EVMAddress | undefined,
+    chainId,
   );
 
   const isInitializedForCurrentChain =
@@ -386,9 +387,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   const toAddress = getToAddress(
     projectData.address as EVMAddress | undefined,
-    chainId ?? currentRoute?.fromChainId,
     projectData.chainId,
-    (address ?? currentRoute?.fromAddress) as EVMAddress | undefined,
+    address as EVMAddress | undefined,
+    chainId,
   );
 
   const isConnected = account.isConnected && !!address;

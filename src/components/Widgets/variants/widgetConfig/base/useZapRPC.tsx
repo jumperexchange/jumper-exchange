@@ -3,10 +3,11 @@ import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import envConfig from '@/config/env-config';
 import { publicRPCList } from 'src/const/rpcList';
+import { EVMAddress } from 'src/types/internal';
 
 export const useZapRPC = (
   providers: EVMProvider[],
-  toAddress: `0x${string}`,
+  toAddress: EVMAddress,
   enabled?: boolean,
 ) => {
   if (!enabled) {

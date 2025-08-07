@@ -42,16 +42,16 @@ interface BiconomyClientsState {
   ) => boolean;
   getClients: (
     projectAddress?: EVMAddress,
-    sourceChainId?: number,
     destinationChainId?: number,
     walletClient?: UseWalletClientReturnType['data'],
+    currentChainId?: number,
   ) => Promise<BiconomyClients | null>;
   getToAddress: (
     projectAddress?: EVMAddress,
-    sourceChainId?: number,
     destinationChainId?: number,
     walletAddress?: EVMAddress,
-  ) => EVMAddress;
+    currentChainId?: number,
+  ) => EVMAddress | undefined;
 }
 
 const getProjectKey = (
@@ -146,50 +146,50 @@ export const useBiconomyClientsStore =
 
       getToAddress: (
         projectAddress?: EVMAddress,
-        sourceChainId?: number,
-        destinationChainId?: number,
+        projectChainId?: number,
         walletAddress?: EVMAddress,
+        currentChainId?: number,
       ) => {
         const fallbackAddress = walletAddress || '0x';
         if (
           !get().validateProject({
             projectAddress,
-            projectChainId: destinationChainId,
+            projectChainId,
           })
         ) {
-          return fallbackAddress;
+          return;
         }
         if (
           !get().validateWallet({
-            currentChainId: sourceChainId,
+            currentChainId,
             walletAddress,
           })
         ) {
-          return fallbackAddress;
+          return;
         }
 
-        const projectKey = getProjectKey(projectAddress!, destinationChainId!);
-        const walletKey = getWalletKey(walletAddress!, sourceChainId!);
+        const projectKey = getProjectKey(projectAddress!, projectChainId!);
+        const walletKey = getWalletKey(walletAddress!, currentChainId!);
 
         // Get existing clients without initialization
         const projectClients = get().clientsMap.get(projectKey);
         const existingClients = projectClients?.get(walletKey);
 
         if (!existingClients) {
-          return fallbackAddress;
+          return;
         }
 
         return existingClients.oNexus.addressOn(
-          destinationChainId!,
+          projectChainId!,
           true,
         ) as EVMAddress;
       },
 
       getClients: async (
         projectAddress,
-        sourceChainId,
-        destinationChainId,
+        projectChainId,
         walletClient,
+        currentChainId,
       ) => {
         if (!walletClient) {
           console.warn('Wallet client is undefined, skipping initialization');
@@ -199,14 +199,14 @@ export const useBiconomyClientsStore =
         if (
           !get().validateProject({
             projectAddress,
-            projectChainId: destinationChainId,
+            projectChainId,
           })
         ) {
           return null;
         }
         if (
           !get().validateWallet({
-            currentChainId: sourceChainId,
+            currentChainId,
             walletAddress: walletClient?.account?.address,
           })
         ) {
@@ -214,8 +214,8 @@ export const useBiconomyClientsStore =
         }
 
         const walletAddress = walletClient.account.address;
-        const projectKey = getProjectKey(projectAddress!, destinationChainId!);
-        const walletKey = getWalletKey(walletAddress!, sourceChainId!);
+        const projectKey = getProjectKey(projectAddress!, projectChainId!);
+        const walletKey = getWalletKey(walletAddress!, currentChainId!);
 
         // Check if clients already exist
         const projectClients = get().clientsMap.get(projectKey);
@@ -225,13 +225,13 @@ export const useBiconomyClientsStore =
         }
 
         // Find chains
-        const currentChain = findChain(sourceChainId!);
-        const depositChain = findChain(destinationChainId!);
+        const currentChain = findChain(currentChainId!);
+        const depositChain = findChain(projectChainId!);
 
         if (!currentChain || !depositChain) {
           console.error('Chain not found', {
-            sourceChainId,
-            destinationChainId,
+            currentChainId,
+            projectChainId,
           });
           return null;
         }
