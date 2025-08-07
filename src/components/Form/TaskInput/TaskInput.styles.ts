@@ -9,6 +9,7 @@ export const TaskInputField = styled(InputBase)(({ theme }) => ({
     verticalAlign: 'middle',
     padding: theme.spacing(1.5, 2),
     border: `1px solid`,
+    transition: 'border-color 0.2s ease-in-out',
     borderColor: (theme.vars || theme).palette.grey[100],
     borderRadius: theme.shape.inputTextBorderRadius,
     backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
