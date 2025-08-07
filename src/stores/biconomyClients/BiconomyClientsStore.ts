@@ -74,8 +74,7 @@ const BICONOMY_CONFIG = {
 } as const;
 
 const MEE_CLIENT_CONFIG = {
-  // @TODO: add api key
-  // apiKey: process.env.NEXT_PUBLIC_BICONOMY_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_BICONOMY_API_KEY,
 } as const;
 
 export const useBiconomyClientsStore =
