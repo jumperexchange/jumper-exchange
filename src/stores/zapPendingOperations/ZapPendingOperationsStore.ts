@@ -10,6 +10,7 @@ import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 export const NO_ROUTE_ID_SUFFIX = 'no-route';
+
 interface PendingOperationData<T extends WalletMethod> {
   operationName: T;
   args: WalletMethodArgsType<T>;
