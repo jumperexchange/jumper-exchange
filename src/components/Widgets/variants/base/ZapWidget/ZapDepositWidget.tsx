@@ -64,6 +64,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       ...ctx,
       includeZap: true,
       zapProviders: providers,
+      // @Note: This is needed to make the zap hook work when the toAddress is not set
       zapToAddress: toAddress ?? '0x',
       zapPoolName: poolName,
       baseOverrides,
