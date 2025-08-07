@@ -11,7 +11,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
@@ -33,7 +32,7 @@ import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/Za
 import { walletMethods } from './WalletClient/methods';
 import { useWalletClientInitialization } from './WalletClient/hooks';
 import { SendCallsExtraParams } from './ModularZaps';
-import { NO_DEPS_METHODS, NO_ROUTE_ID_SUFFIX } from './constants';
+import { NO_DEPS_METHODS } from './constants';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -87,15 +86,24 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   projectData,
 }) => {
   const wagmiConfig = useConfig();
-  const [currentRoute, setCurrentRoute] = useState<Route | null>(null);
   // @Note: Might need to handle the persisted pending operations a bit differently
   // but it depends on the route execution logic which currently handles a single active route at a time
   const {
-    pendingOperations,
+    setCurrentRoute,
+    getCurrentRoute,
     addPendingOperation,
     removePendingOperation,
+    getPendingOperationsForFromValues,
     getPromiseResolversForOperation,
   } = useZapPendingOperationsStore();
+
+  const pendingOperationsLength = useZapPendingOperationsStore(
+    (state) => Object.keys(state.pendingOperations).length,
+  );
+
+  const currentRoute = useZapPendingOperationsStore(
+    (state) => state.currentRoute,
+  );
 
   const { hasProjectClients, hasWalletClients, getToAddress } =
     useBiconomyClientsStore();
@@ -117,9 +125,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { address, chainId } = account;
 
   const sendCallsExtraParams = {
-    address,
-    chainId,
-    currentRoute,
     zapData,
     projectData,
   };
@@ -140,21 +145,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     currentRoute?.fromAddress === address &&
     currentRoute?.fromChainId === chainId;
 
-  const handleSetCurrentRoute = useCallback((newRoute: Route) => {
-    setCurrentRoute((prevRoute) => {
-      if (newRoute.id === prevRoute?.id) {
-        return prevRoute;
-      }
-      return newRoute;
-    });
-  }, []);
-
   // RPC operation queueing
   const queueOperation = useCallback(
     async <T extends WalletMethod>(
       operationName: T,
       args: WalletMethodArgsType<T>,
-      extraParams: SendCallsExtraParams,
+      extraParams: Omit<
+        SendCallsExtraParams,
+        'currentRoute' | 'address' | 'chainId'
+      >,
     ): Promise<ReturnType<WalletMethodsRef[T]>> => {
       const operation = walletMethods[operationName] as
         | WalletMethodsRef[T]
@@ -165,11 +164,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       }
 
       let biconomyClients: BiconomyClients | null = null;
+      const actualCurrentRoute = getCurrentRoute();
 
       try {
         const clients = await initializeClients({
-          address: extraParams.currentRoute?.fromAddress as EVMAddress,
-          chainId: extraParams.currentRoute?.fromChainId,
+          address: actualCurrentRoute?.fromAddress as EVMAddress,
+          chainId: actualCurrentRoute?.fromChainId,
           projectAddress: extraParams.projectData.address as EVMAddress,
           projectChainId: extraParams.projectData.chainId,
         });
@@ -183,21 +183,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
       // Skip this for wallet_getCapabilities method
       // Queue the operation if either the biconomy clients are not initialized or the current route is not set
-      if (isMethodWithDeps && (!biconomyClients || !extraParams.currentRoute)) {
-        const operationId = `${operationName}-${extraParams.currentRoute?.id ?? NO_ROUTE_ID_SUFFIX}`;
-
-        console.warn(
-          `Queued operation: ${operationName} with id: ${operationId}`,
-        );
-
+      if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
         return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
-          addPendingOperation(
-            operationId,
-            operationName,
-            args,
-            resolve,
-            reject,
-          );
+          addPendingOperation(operationName, args, resolve, reject);
         });
       }
 
@@ -206,31 +194,35 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           WalletMethodArgsType<T>,
           Awaited<WalletMethodReturnType<T>>
         >
-      )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, extraParams);
+      )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
+        ...extraParams,
+        currentRoute: actualCurrentRoute,
+        address: actualCurrentRoute?.fromAddress,
+        chainId: actualCurrentRoute?.fromChainId,
+      });
     },
-    [initializeClients],
+    [initializeClients, getCurrentRoute],
   );
 
   // Execute pending operations when clients are ready
   useEffect(() => {
     const executePendingOperations = async () => {
-      const pendingOps = Object.values(pendingOperations);
-      const filteredPendingOps = pendingOps.filter(
-        (pendingOp) =>
-          pendingOp.id.endsWith(NO_ROUTE_ID_SUFFIX) ||
-          (sendCallsExtraParams.currentRoute?.id &&
-            pendingOp.id.endsWith(sendCallsExtraParams.currentRoute?.id)),
+      const actualCurrentRoute = getCurrentRoute();
+      const filteredPendingOps = getPendingOperationsForFromValues(
+        actualCurrentRoute?.fromAddress,
+        actualCurrentRoute?.fromChainId,
       );
+
       console.warn(
-        `Preparing to execute ${filteredPendingOps.length}/${pendingOps.length} pending operations`,
+        `Preparing to execute ${filteredPendingOps.length}/${pendingOperationsLength} pending operations`,
       );
 
       let biconomyClients: BiconomyClients | null = null;
 
       try {
         const clients = await initializeClients({
-          address: sendCallsExtraParams.currentRoute?.fromAddress as EVMAddress,
-          chainId: sendCallsExtraParams.chainId,
+          address: actualCurrentRoute?.fromAddress as EVMAddress,
+          chainId: actualCurrentRoute?.fromChainId,
           projectAddress: sendCallsExtraParams.projectData
             .address as EVMAddress,
           projectChainId: sendCallsExtraParams.projectData.chainId,
@@ -245,10 +237,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       for (const pendingOp of filteredPendingOps) {
         const isMethodWithDeps = !NO_DEPS_METHODS.has(pendingOp.operationName);
 
-        if (
-          isMethodWithDeps &&
-          (!biconomyClients || !sendCallsExtraParams.currentRoute)
-        ) {
+        if (isMethodWithDeps && (!biconomyClients || !pendingOp.routeContext)) {
           console.warn(
             `Skipping executing pending operation: ${pendingOp.operationName}`,
           );
@@ -272,7 +261,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             pendingOp.args as any,
             biconomyClients?.meeClient,
             biconomyClients?.oNexus,
-            sendCallsExtraParams,
+            {
+              ...sendCallsExtraParams,
+              currentRoute: pendingOp.routeContext,
+              address: pendingOp.routeContext?.fromAddress,
+              chainId: pendingOp.routeContext?.fromChainId,
+            },
           );
 
           if (resolvers?.resolve) {
@@ -297,11 +291,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       }
     };
 
-    if (Object.keys(pendingOperations).length > 0) {
+    if (pendingOperationsLength > 0) {
       executePendingOperations();
     }
   }, [
-    pendingOperations,
+    pendingOperationsLength,
+    getPendingOperationsForFromValues,
     JSON.stringify(sendCallsExtraParams),
     isInitializedForCurrentChain,
     initializeClients,
@@ -344,7 +339,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     };
 
     initMeeClient();
-  }, [chainId, projectData.chainId, address, initializeClients]);
+  }, [
+    chainId,
+    address,
+    projectData.chainId,
+    projectData.address,
+    initializeClients,
+  ]);
 
   const providers = useMemo(() => {
     return [
@@ -410,7 +411,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       toAddress,
       zapData,
       isZapDataSuccess,
-      setCurrentRoute: handleSetCurrentRoute,
+      setCurrentRoute,
       depositTokenData,
       depositTokenDecimals,
       isLoadingDepositTokenData,
@@ -428,7 +429,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     depositTokenDecimals,
     isLoadingDepositTokenData,
     refetchDepositToken,
-    handleSetCurrentRoute,
+    setCurrentRoute,
   ]);
 
   return (

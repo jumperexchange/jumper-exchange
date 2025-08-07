@@ -4,5 +4,3 @@ import { WalletMethod } from './types';
 export const NO_DEPS_METHODS = new Set<WalletMethod>([
   'wallet_getCapabilities',
 ]);
-
-export const NO_ROUTE_ID_SUFFIX = 'no-route';

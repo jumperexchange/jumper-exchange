@@ -6,12 +6,16 @@ import {
   WalletMethodReturnType,
 } from 'src/providers/ZapInitProvider/types';
 import { createWithEqualityFn } from 'zustand/traditional';
+import { Route } from '@lifi/sdk';
+
+export const NO_ROUTE_ID_SUFFIX = 'no-route';
 
 interface PendingOperationData<T extends WalletMethod> {
   operationName: T;
   args: WalletMethodArgsType<T>;
   timestamp: number;
   id: string;
+  routeContext: Route | null;
 }
 
 interface PromiseResolver<T extends WalletMethod> {
@@ -92,10 +96,10 @@ const deserializeWithTypes = <T>(obj: any): T => {
 interface PendingOperationsState<T extends WalletMethod> {
   pendingOperations: Record<string, PendingOperationData<T>>;
   promiseResolvers: Map<string, PromiseResolver<T>>;
+  currentRoute: Route | null; // Add current route to store
 
   // Actions
   addPendingOperation: <K extends WalletMethod>(
-    id: string,
     operationName: K,
     args: WalletMethodArgsType<K>,
     resolve: PromiseResolver<K>['resolve'],
@@ -104,9 +108,17 @@ interface PendingOperationsState<T extends WalletMethod> {
 
   removePendingOperation: (id: string) => void;
 
+  getPendingOperationsForFromValues: (
+    fromAddress: string | undefined,
+    fromChainId: number | undefined,
+  ) => PendingOperationData<T>[];
+
   getPromiseResolversForOperation: (
     id: string,
   ) => PromiseResolver<T> | undefined;
+
+  setCurrentRoute: (route: Route | null) => void; // Add setter
+  getCurrentRoute: () => Route | null; // Add getter
 
   clearAll: () => void;
 }
@@ -118,8 +130,12 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
     (set, get) => ({
       pendingOperations: {},
       promiseResolvers: new Map(),
+      currentRoute: null, // Initialize current route
 
-      addPendingOperation: (id, operationName, args, resolve, reject) => {
+      addPendingOperation: (operationName, args, resolve, reject) => {
+        const currentRoute = get().currentRoute;
+        const id = `${operationName}-${currentRoute?.id ?? NO_ROUTE_ID_SUFFIX}`;
+        console.warn(`Queued operation: ${operationName} with id: ${id}`);
         set((state) => ({
           pendingOperations: {
             ...state.pendingOperations,
@@ -128,6 +144,7 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
               args,
               timestamp: Date.now(),
               id,
+              routeContext: currentRoute,
             },
           },
         }));
@@ -152,12 +169,38 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
         get().promiseResolvers.delete(id);
       },
 
+      getPendingOperationsForFromValues: (fromAddress, fromChainId) => {
+        const pendingOps = Object.values(get().pendingOperations);
+
+        return pendingOps.filter((pendingOp) => {
+          // For operations without route context (like getCapabilities), execute them
+          if (pendingOp.id.endsWith(NO_ROUTE_ID_SUFFIX)) {
+            return true;
+          }
+
+          // For operations with route context, check if it matches current wallet context
+          const routeContext = pendingOp.routeContext;
+          return (
+            routeContext?.fromAddress === fromAddress &&
+            routeContext?.fromChainId === fromChainId
+          );
+        });
+      },
+
       getPromiseResolversForOperation: (id) => {
         return get().promiseResolvers.get(id);
       },
 
+      setCurrentRoute: (route) => {
+        set({ currentRoute: route });
+      },
+
+      getCurrentRoute: () => {
+        return get().currentRoute;
+      },
+
       clearAll: () => {
-        set({ pendingOperations: {} });
+        set({ pendingOperations: {}, currentRoute: null });
         get().promiseResolvers.clear();
       },
     }),

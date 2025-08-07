@@ -94,13 +94,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     function onRouteExecutionUpdated(
       routeExecutionUpdate: RouteExecutionUpdate,
     ) {
-      if (routeExecutionUpdate.process.status === 'STARTED') {
-        console.warn(
-          'onRouteExecutionUpdated - STARTED',
-          routeExecutionUpdate.route.id,
-        );
-        setCurrentRoute(routeExecutionUpdate.route);
-      }
+      console.warn('onRouteExecutionUpdated', routeExecutionUpdate.route.id);
+      setCurrentRoute(routeExecutionUpdate.route);
     }
 
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
