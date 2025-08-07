@@ -1,6 +1,4 @@
 import { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
-import { Route } from '@lifi/sdk';
-import { ProjectData } from 'src/types/questDetails';
 import { AbiFunction } from 'viem';
 import { SendCallsExtraParams } from './ModularZaps/base';
 

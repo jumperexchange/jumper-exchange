@@ -109,20 +109,17 @@ export const sendCalls = async (
   if (calls.length === 0) {
     throw new Error("'calls' array is empty");
   }
-
-  if (!sendCallsExtraParams.chainId) {
-    throw new Error('Cannot determine current chain ID from wallet.');
-  }
-
   if (!sendCallsExtraParams.currentRoute) {
     throw new Error('Cannot process transaction: Route is undefined.');
   }
+  if (!sendCallsExtraParams.currentRoute.fromAddress) {
+    throw new Error('No wallet address available.');
+  }
+  if (!sendCallsExtraParams.currentRoute.fromChainId) {
+    throw new Error('Cannot determine current chain ID from wallet.');
+  }
   if (!sendCallsExtraParams.zapData) {
     throw new Error('Integration data is not available.');
-  }
-
-  if (!sendCallsExtraParams.address) {
-    throw new Error('No wallet address available.');
   }
 
   console.warn(
@@ -130,8 +127,8 @@ export const sendCalls = async (
     sendCallsExtraParams.currentRoute,
   );
 
-  const currentChainId = sendCallsExtraParams.chainId;
-  const currentAddress = sendCallsExtraParams.address;
+  const currentChainId = sendCallsExtraParams.currentRoute.fromChainId;
+  const currentAddress = sendCallsExtraParams.currentRoute.fromAddress;
   const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
   const currentRouteFromAmount = sendCallsExtraParams.currentRoute.fromAmount;
   const integrationData = sendCallsExtraParams.zapData;
