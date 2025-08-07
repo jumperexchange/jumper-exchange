@@ -15,7 +15,8 @@ export async function getChainsQuery() {
   const chains = await getChains({
     chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
   });
-  return { chains };
+  console.log('chains', chains, { chains });
+  return chains;
 }
 
 export const useChains = (): ChainProps => {
@@ -27,12 +28,12 @@ export const useChains = (): ChainProps => {
   });
 
   const getChainById = (id: ChainId) => {
-    return getChainByIdHelper(data?.chains ?? [], id);
+    return getChainByIdHelper(data ?? [], id);
   };
 
   return {
     getChainById,
-    chains: data?.chains || ([] as ExtendedChain[]),
+    chains: data || ([] as ExtendedChain[]),
     isSuccess,
   };
 };
