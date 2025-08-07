@@ -22,6 +22,7 @@ type WalletKey = `${EVMAddress}-${number}`;
 
 interface BiconomyClientsState {
   clientsMap: Map<ProjectKey, Map<WalletKey, BiconomyClients>>;
+  toAddressMap: Map<ProjectKey, EVMAddress>;
   validateProject: (params: {
     projectAddress?: EVMAddress;
     projectChainId?: number;
@@ -49,8 +50,6 @@ interface BiconomyClientsState {
   getToAddress: (
     projectAddress?: EVMAddress,
     destinationChainId?: number,
-    walletAddress?: EVMAddress,
-    currentChainId?: number,
   ) => EVMAddress | undefined;
 }
 
@@ -81,6 +80,7 @@ export const useBiconomyClientsStore =
   createWithEqualityFn<BiconomyClientsState>(
     (set, get) => ({
       clientsMap: new Map(),
+      toAddressMap: new Map(),
 
       validateProject: (params: {
         projectAddress?: EVMAddress;
@@ -144,13 +144,7 @@ export const useBiconomyClientsStore =
         return projectClients?.has(walletKey) ?? false;
       },
 
-      getToAddress: (
-        projectAddress?: EVMAddress,
-        projectChainId?: number,
-        walletAddress?: EVMAddress,
-        currentChainId?: number,
-      ) => {
-        const fallbackAddress = walletAddress || '0x';
+      getToAddress: (projectAddress?: EVMAddress, projectChainId?: number) => {
         if (
           !get().validateProject({
             projectAddress,
@@ -159,30 +153,15 @@ export const useBiconomyClientsStore =
         ) {
           return;
         }
-        if (
-          !get().validateWallet({
-            currentChainId,
-            walletAddress,
-          })
-        ) {
-          return;
-        }
 
         const projectKey = getProjectKey(projectAddress!, projectChainId!);
-        const walletKey = getWalletKey(walletAddress!, currentChainId!);
+        const toAddress = get().toAddressMap.get(projectKey);
 
-        // Get existing clients without initialization
-        const projectClients = get().clientsMap.get(projectKey);
-        const existingClients = projectClients?.get(walletKey);
-
-        if (!existingClients) {
-          return;
+        if (toAddress) {
+          return toAddress;
         }
 
-        return existingClients.oNexus.addressOn(
-          projectChainId!,
-          true,
-        ) as EVMAddress;
+        return;
       },
 
       getClients: async (
@@ -273,9 +252,19 @@ export const useBiconomyClientsStore =
             newProjectMap.set(walletKey, clients);
             newClientsMap.set(projectKey, newProjectMap);
 
+            const newToAddressMap = new Map(state.toAddressMap);
+            // Add to address to map
+            if (!newToAddressMap.has(projectKey)) {
+              newToAddressMap.set(
+                projectKey,
+                clients.oNexus.addressOn(projectChainId!, true) as EVMAddress,
+              );
+            }
+
             return {
               ...state,
               clientsMap: newClientsMap,
+              toAddressMap: newToAddressMap,
             };
           });
 
