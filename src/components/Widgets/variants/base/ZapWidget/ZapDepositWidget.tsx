@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useMemo } from 'react';
 import {
+  ChainType,
   HiddenUI,
   LiFiWidget,
   Route,
@@ -63,22 +64,29 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     return {
       ...ctx,
       includeZap: true,
-      zapProviders: providers,
-      // @Note: This is needed to make the zap hook work when the toAddress is not set
-      zapToAddress: toAddress ?? '0x',
       zapPoolName: poolName,
       baseOverrides,
     };
-  }, [
-    JSON.stringify(ctx),
-    poolName,
-    providers,
-    toAddress,
-    projectData.integrator,
-    minFromAmountUSD,
-  ]);
+  }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+
+  // @Note: we want to ensure that the toAddress is set in the widget config without any delay
+  if (toAddress) {
+    widgetConfig.toAddress = {
+      name: 'Smart Account',
+      address: toAddress,
+      chainType: ChainType.EVM,
+    };
+  }
+
+  // @Note: we want to ensure that the providers are set in the widget config without any delay
+  if (providers) {
+    widgetConfig.sdkConfig = {
+      ...(widgetConfig.sdkConfig ?? {}),
+      providers,
+    };
+  }
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance

@@ -1,18 +1,9 @@
-import { EVMProvider, ChainType } from '@lifi/sdk';
 import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import envConfig from '@/config/env-config';
 import { publicRPCList } from 'src/const/rpcList';
-import { EVMAddress } from 'src/types/internal';
 
-export const useZapRPC = (
-  providers: EVMProvider[],
-  toAddress: EVMAddress,
-  enabled?: boolean,
-) => {
-  if (!enabled) {
-    return {};
-  }
+export const useZapRPC = () => {
   const config: Partial<WidgetConfig> = useMemo(() => {
     const explorerConfig = [
       {
@@ -40,18 +31,12 @@ export const useZapRPC = (
     );
 
     return {
-      toAddress: {
-        name: 'Smart Account',
-        address: toAddress,
-        chainType: ChainType.EVM,
-      },
       explorerUrls,
       bridges: {
         allow: ['across', 'relay'],
       },
       sdkConfig: {
         apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
-        providers,
         rpcUrls: {
           ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
           ...publicRPCList,
@@ -63,7 +48,7 @@ export const useZapRPC = (
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
     };
-  }, [providers, toAddress]);
+  }, []);
 
   return config;
 };

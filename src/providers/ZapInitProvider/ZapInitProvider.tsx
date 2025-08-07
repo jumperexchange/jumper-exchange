@@ -105,9 +105,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     (state) => state.currentRoute,
   );
 
-  const { hasProjectClients, hasWalletClients, getToAddress } =
-    useBiconomyClientsStore();
-
   const { initializeClients } = useWalletClientInitialization();
 
   const initInProgressRef = useRef(false);
@@ -132,20 +129,41 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     [zapData, projectData],
   );
 
-  // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = hasProjectClients(
-    projectData.address as EVMAddress | undefined,
-    projectData.chainId,
-  );
+  const isConnected = account.isConnected && !!address;
 
-  const isInitializedForCurrentChain =
-    (isInitialized && !currentRoute) ||
-    hasWalletClients(
+  // Check if oNexus and meeClient are initialized before rendering
+  const isInitialized = useBiconomyClientsStore((state) => {
+    console.warn('🔍 isInitialized selector running');
+    return (
+      isConnected &&
+      state.hasProjectClients(
+        projectData.address as EVMAddress | undefined,
+        projectData.chainId,
+      )
+    );
+  });
+
+  const isInitializedForCurrentChain = useBiconomyClientsStore((state) => {
+    console.warn('🔍 isInitializedForCurrentChain selector running');
+    return (
+      (isInitialized && !currentRoute) ||
+      state.hasWalletClients(
+        projectData.address as EVMAddress | undefined,
+        projectData.chainId,
+        currentRoute?.fromAddress as EVMAddress | undefined,
+        currentRoute?.fromChainId,
+      )
+    );
+  });
+
+  const toAddress = useBiconomyClientsStore((state) => {
+    console.warn('🔍 toAddress selector running');
+    return state.getToAddress(
       projectData.address as EVMAddress | undefined,
       projectData.chainId,
-      currentRoute?.fromAddress as EVMAddress | undefined,
-      currentRoute?.fromChainId,
+      address as EVMAddress | undefined,
     );
+  });
 
   // RPC operation queueing
   const queueOperation = useCallback(
@@ -342,54 +360,39 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     initializeClients,
   ]);
 
-  const providers = useMemo(() => {
-    return [
-      createCustomEVMProvider({
-        wagmiConfig,
-        getCapabilities: async (_, args) => {
-          console.warn('getCapabilities');
-          return queueOperation(
-            'wallet_getCapabilities',
-            args,
-            sendCallsExtraParams,
-          );
-        },
-        getCallsStatus: async (_, args) => {
-          console.warn('getCallsStatus');
-          return queueOperation(
-            'wallet_getCallsStatus',
-            args,
-            sendCallsExtraParams,
-          );
-        },
-        sendCalls: async (_, args) => {
-          console.warn('sendCalls');
-          return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
-        },
-        waitForCallsStatus: async (_, args) => {
-          console.warn('waitForCallsStatus');
-          return queueOperation(
-            'wallet_waitForCallsStatus',
-            args,
-            sendCallsExtraParams,
-          );
-        },
-      }),
-    ];
-  }, [
-    wagmiConfig,
-    queueOperation,
-    isInitialized,
-    isInitializedForCurrentChain,
-    sendCallsExtraParams,
-  ]);
-
-  const toAddress = getToAddress(
-    projectData.address as EVMAddress | undefined,
-    projectData.chainId,
-  );
-
-  const isConnected = account.isConnected && !!address;
+  const providers = [
+    createCustomEVMProvider({
+      wagmiConfig,
+      getCapabilities: async (_, args) => {
+        console.warn('getCapabilities');
+        return queueOperation(
+          'wallet_getCapabilities',
+          args,
+          sendCallsExtraParams,
+        );
+      },
+      getCallsStatus: async (_, args) => {
+        console.warn('getCallsStatus');
+        return queueOperation(
+          'wallet_getCallsStatus',
+          args,
+          sendCallsExtraParams,
+        );
+      },
+      sendCalls: async (_, args) => {
+        console.warn('sendCalls');
+        return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
+      },
+      waitForCallsStatus: async (_, args) => {
+        console.warn('waitForCallsStatus');
+        return queueOperation(
+          'wallet_waitForCallsStatus',
+          args,
+          sendCallsExtraParams,
+        );
+      },
+    }),
+  ];
 
   const value = useMemo(() => {
     return {
@@ -407,11 +410,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       refetchDepositToken,
     };
   }, [
+    providers,
+    toAddress,
     isInitialized,
     isInitializedForCurrentChain,
     isConnected,
-    providers,
-    toAddress,
     zapData,
     isZapDataSuccess,
     depositTokenData,

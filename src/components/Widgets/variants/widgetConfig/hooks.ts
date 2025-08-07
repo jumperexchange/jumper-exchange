@@ -24,7 +24,7 @@ registerOverrideHook('zap', useZapOverride);
 
 function getOverrideNamesForContext(ctx: ConfigContext): string[] {
   const names = ['languageResources', 'subvariant', 'form'];
-  if (ctx.includeZap && ctx.zapToAddress && ctx.zapProviders) {
+  if (ctx.includeZap) {
     names.push('zap');
   } else {
     names.push('rpc');
