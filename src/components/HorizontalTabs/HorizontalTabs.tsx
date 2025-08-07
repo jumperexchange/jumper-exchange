@@ -37,18 +37,14 @@ export const HorizontalTabs = ({
   syncWithValue = false,
   id,
 }: HorizontalTabsProps) => {
-  const initialValue = value
-    ? value
-    : autoSelectFirst
-      ? tabs[0]?.value
-      : undefined;
-  const [internalValue, setInternalValue] = useState<string | undefined>(
+  const initialValue = value ? value : autoSelectFirst ? tabs[0]?.value : false;
+  const [internalValue, setInternalValue] = useState<string | false>(
     initialValue,
   );
 
   useEffect(() => {
     if (value || syncWithValue) {
-      setInternalValue(value);
+      setInternalValue(value ?? false);
     }
   }, [value, syncWithValue]);
 
@@ -85,7 +81,7 @@ export const HorizontalTabs = ({
             />
           ))}
       </HorizontalTabsContainer>
-      {!!renderContent && renderContent(internalValue ?? '')}
+      {!!renderContent && renderContent(internalValue ? internalValue : '')}
     </>
   );
 };
