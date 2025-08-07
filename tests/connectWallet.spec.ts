@@ -56,7 +56,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await perksTab.click();
       const perksContainer = page.locator('xpath=//div[@class="MuiBox-root mui-prph5i"]');
       const perkCards = perksContainer.locator('.MuiCard-root');
-      await expect(perkCards).toHaveCount(5);
+      await expect(perkCards).toHaveCount(6);
     });
 
     await test.step('Check transaction history', async () => {
