@@ -124,10 +124,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { account } = useAccount();
   const { address, chainId } = account;
 
-  const sendCallsExtraParams = {
-    zapData,
-    projectData,
-  };
+  const sendCallsExtraParams = useMemo(
+    () => ({
+      zapData,
+      projectData,
+    }),
+    [zapData, projectData],
+  );
 
   // Check if oNexus and meeClient are initialized before rendering
   const isInitialized = hasProjectClients(
@@ -136,14 +139,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   );
 
   const isInitializedForCurrentChain =
+    (isInitialized && !currentRoute) ||
     hasWalletClients(
       projectData.address as EVMAddress | undefined,
       projectData.chainId,
-      address as EVMAddress | undefined,
-      chainId,
-    ) &&
-    currentRoute?.fromAddress === address &&
-    currentRoute?.fromChainId === chainId;
+      currentRoute?.fromAddress as EVMAddress | undefined,
+      currentRoute?.fromChainId,
+    );
 
   // RPC operation queueing
   const queueOperation = useCallback(
@@ -290,7 +292,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [
     pendingOperationsLength,
     getPendingOperationsForFromValues,
-    JSON.stringify(sendCallsExtraParams),
+    sendCallsExtraParams,
     isInitializedForCurrentChain,
     initializeClients,
     getPromiseResolversForOperation,
@@ -379,18 +381,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     queueOperation,
     isInitialized,
     isInitializedForCurrentChain,
-    JSON.stringify(sendCallsExtraParams),
+    sendCallsExtraParams,
   ]);
 
-  const toAddress = useMemo(
-    () =>
-      getToAddress(
-        projectData.address as EVMAddress | undefined,
-        chainId,
-        projectData.chainId,
-        address as EVMAddress | undefined,
-      ),
-    [chainId, address, projectData.chainId, projectData.address, getToAddress],
+  const toAddress = getToAddress(
+    projectData.address as EVMAddress | undefined,
+    chainId ?? currentRoute?.fromChainId,
+    projectData.chainId,
+    (address ?? currentRoute?.fromAddress) as EVMAddress | undefined,
   );
 
   const isConnected = account.isConnected && !!address;
