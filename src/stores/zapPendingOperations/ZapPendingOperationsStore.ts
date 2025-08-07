@@ -1,15 +1,15 @@
-import { shallow } from 'zustand/shallow';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { Route } from '@lifi/sdk';
 import {
   WalletMethod,
   WalletMethodArgsType,
   WalletMethodReturnType,
 } from 'src/providers/ZapInitProvider/types';
+import superjson from 'superjson';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import { Route } from '@lifi/sdk';
 
 export const NO_ROUTE_ID_SUFFIX = 'no-route';
-
 interface PendingOperationData<T extends WalletMethod> {
   operationName: T;
   args: WalletMethodArgsType<T>;
@@ -22,76 +22,6 @@ interface PromiseResolver<T extends WalletMethod> {
   resolve: (value: WalletMethodReturnType<T>) => void;
   reject: (error: Error) => void;
 }
-
-const serializeWithTypes = (obj: any): any => {
-  if (typeof obj !== 'object' || obj === null) {
-    return {
-      value: obj,
-      type: typeof obj,
-    };
-  }
-
-  if (Array.isArray(obj)) {
-    return {
-      value: obj.map(serializeWithTypes),
-      type: 'array',
-    };
-  }
-
-  const result: any = {};
-
-  for (const [key, value] of Object.entries(obj)) {
-    if (typeof value === 'bigint') {
-      result[key] = {
-        value: value.toString(),
-        type: 'bigint',
-      };
-    } else if (typeof value === 'object' && value !== null) {
-      result[key] = serializeWithTypes(value);
-    } else {
-      result[key] = {
-        value: value,
-        type: typeof value,
-      };
-    }
-  }
-
-  return result;
-};
-
-const deserializeWithTypes = <T>(obj: any): T => {
-  // Check if this is a typed value object
-  if (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'value' in obj &&
-    'type' in obj
-  ) {
-    const typedValue = obj as { value: any; type: string };
-
-    if (typedValue.type === 'bigint') {
-      return BigInt(typedValue.value) as T;
-    } else if (typedValue.type === 'array') {
-      return typedValue.value.map(deserializeWithTypes) as T;
-    } else {
-      // For primitive types, just return the value
-      return typedValue.value as T;
-    }
-  }
-
-  // If it's not a typed object, it might be a plain object (shouldn't happen with new structure)
-  if (typeof obj === 'object' && obj !== null) {
-    const result: Record<string, unknown> = {};
-
-    for (const [key, value] of Object.entries(obj)) {
-      result[key] = deserializeWithTypes(value);
-    }
-
-    return result as T;
-  }
-
-  return obj as T;
-};
 
 interface PendingOperationsState<T extends WalletMethod> {
   pendingOperations: Record<string, PendingOperationData<T>>;
@@ -206,35 +136,21 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
     }),
     {
       name: 'zap-pending-operations-storage',
-      storage: createJSONStorage(() => localStorage),
-      // Only persist the pendingOperations, not the promiseResolvers
       partialize: (state) => {
-        const serializedPendingOperations: Record<string, any> = {};
-
-        for (const [id, operation] of Object.entries(state.pendingOperations)) {
-          serializedPendingOperations[id] = {
-            ...operation,
-            // Only serialize the args with { value, type } structure
-            args: serializeWithTypes(operation.args),
-          };
-        }
-
-        return { pendingOperations: serializedPendingOperations };
-      },
-      onRehydrateStorage: () => {
-        return (state) => {
-          if (state?.pendingOperations) {
-            // Only deserialize the args field
-            for (const [id, operation] of Object.entries(
-              state.pendingOperations,
-            )) {
-              if (operation.args) {
-                operation.args = deserializeWithTypes(operation.args);
-              }
-            }
-          }
+        // Only persist the pendingOperations, not the promiseResolvers
+        return {
+          pendingOperations: state.pendingOperations,
         };
       },
+      storage: createJSONStorage(() => localStorage, {
+        // @ts-ignore: this is MDN's recommended way to implement JSON in cases like bigint.
+        reviver: (_key, value, context) => {
+          return superjson.parse(context.source as string);
+        },
+        replacer: (_key, value) => {
+          return superjson.stringify(value);
+        },
+      }),
     },
   ),
   shallow,
