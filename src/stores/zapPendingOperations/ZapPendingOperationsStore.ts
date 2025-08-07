@@ -25,7 +25,6 @@ interface PromiseResolver<T extends WalletMethod> {
 
 interface PendingOperationsState<T extends WalletMethod> {
   pendingOperations: Record<string, PendingOperationData<T>>;
-  promiseResolvers: Map<string, PromiseResolver<T>>;
   currentRoute: Route | null; // Add current route to store
 
   // Actions
@@ -57,83 +56,86 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
   PendingOperationsState<WalletMethod>
 >()(
   persist(
-    (set, get) => ({
-      pendingOperations: {},
-      promiseResolvers: new Map(),
-      currentRoute: null, // Initialize current route
+    (set, get) => {
+      // Store promise resolvers in memory (not persisted)
+      const promiseResolvers = new Map<string, PromiseResolver<WalletMethod>>();
 
-      addPendingOperation: (operationName, args, resolve, reject) => {
-        const currentRoute = get().currentRoute;
-        const id = `${operationName}-${currentRoute?.id ?? NO_ROUTE_ID_SUFFIX}`;
-        console.warn(`Queued operation: ${operationName} with id: ${id}`);
-        set((state) => ({
-          pendingOperations: {
-            ...state.pendingOperations,
-            [id]: {
-              operationName,
-              args,
-              timestamp: Date.now(),
-              id,
-              routeContext: currentRoute,
+      return {
+        pendingOperations: {},
+        currentRoute: null, // Initialize current route
+
+        addPendingOperation: (operationName, args, resolve, reject) => {
+          const currentRoute = get().currentRoute;
+          const id = `${operationName}-${currentRoute?.id ?? NO_ROUTE_ID_SUFFIX}`;
+          console.warn(`Queued operation: ${operationName} with id: ${id}`);
+
+          set((state) => ({
+            pendingOperations: {
+              ...state.pendingOperations,
+              [id]: {
+                operationName,
+                args,
+                timestamp: Date.now(),
+                id,
+                routeContext: currentRoute,
+              },
             },
-          },
-        }));
+          }));
 
-        // Store promise resolvers in memory (not persisted)
-        get().promiseResolvers.set(id, {
-          resolve: resolve as (
-            value: WalletMethodReturnType<WalletMethod>,
-          ) => void,
-          reject,
-        });
-      },
+          promiseResolvers.set(id, {
+            resolve: resolve as (
+              value: WalletMethodReturnType<WalletMethod>,
+            ) => void,
+            reject,
+          });
+        },
 
-      removePendingOperation: (id) => {
-        set((state) => {
-          const newPendingOperations = { ...state.pendingOperations };
-          delete newPendingOperations[id];
-          return { pendingOperations: newPendingOperations };
-        });
+        removePendingOperation: (id) => {
+          set((state) => {
+            const newPendingOperations = { ...state.pendingOperations };
+            delete newPendingOperations[id];
+            return { pendingOperations: newPendingOperations };
+          });
 
-        // Remove promise resolvers from memory
-        get().promiseResolvers.delete(id);
-      },
+          promiseResolvers.delete(id);
+        },
 
-      getPendingOperationsForFromValues: (fromAddress, fromChainId) => {
-        const pendingOps = Object.values(get().pendingOperations);
+        getPendingOperationsForFromValues: (fromAddress, fromChainId) => {
+          const pendingOps = Object.values(get().pendingOperations);
 
-        return pendingOps.filter((pendingOp) => {
-          // For operations without route context (like getCapabilities), execute them
-          if (pendingOp.id.endsWith(NO_ROUTE_ID_SUFFIX)) {
-            return true;
-          }
+          return pendingOps.filter((pendingOp) => {
+            // For operations without route context (like getCapabilities), execute them
+            if (pendingOp.id.endsWith(NO_ROUTE_ID_SUFFIX)) {
+              return true;
+            }
 
-          // For operations with route context, check if it matches current wallet context
-          const routeContext = pendingOp.routeContext;
-          return (
-            routeContext?.fromAddress === fromAddress &&
-            routeContext?.fromChainId === fromChainId
-          );
-        });
-      },
+            // For operations with route context, check if it matches current wallet context
+            const routeContext = pendingOp.routeContext;
+            return (
+              routeContext?.fromAddress === fromAddress &&
+              routeContext?.fromChainId === fromChainId
+            );
+          });
+        },
 
-      getPromiseResolversForOperation: (id) => {
-        return get().promiseResolvers.get(id);
-      },
+        getPromiseResolversForOperation: (id) => {
+          return promiseResolvers.get(id);
+        },
 
-      setCurrentRoute: (route) => {
-        set({ currentRoute: route });
-      },
+        setCurrentRoute: (route) => {
+          set({ currentRoute: route });
+        },
 
-      getCurrentRoute: () => {
-        return get().currentRoute;
-      },
+        getCurrentRoute: () => {
+          return get().currentRoute;
+        },
 
-      clearAll: () => {
-        set({ pendingOperations: {}, currentRoute: null });
-        get().promiseResolvers.clear();
-      },
-    }),
+        clearAll: () => {
+          set({ pendingOperations: {}, currentRoute: null });
+          promiseResolvers.clear();
+        },
+      };
+    },
     {
       name: 'zap-pending-operations-storage',
       partialize: (state) => {
