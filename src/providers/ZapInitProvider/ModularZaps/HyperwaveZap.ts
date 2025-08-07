@@ -17,9 +17,16 @@ import { buildContractComposable } from '../utils';
 import { approve, transfer } from './DefaultZap';
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
 
+const MINT_SLIPPAGE_PERCENT = 2;
+
+const withSlippage = (amount: bigint, slippagePercent: number) => {
+  const slippageAmount = (amount * BigInt(slippagePercent)) / 100n;
+  return amount - slippageAmount;
+};
+
 const computeHyperwaveMinimumMint = async (
   zapper: ZapExecutionContext,
-): Promise<bigint | null> => {
+): Promise<bigint> => {
   const market = zapper.zapData.market;
 
   if (!market) {
@@ -29,7 +36,7 @@ const computeHyperwaveMinimumMint = async (
 
   const decimals = market.depositToken.decimals;
   const token = market.depositToken.address;
-  const amount = BigInt(zapper.currentRoute.fromAmount);
+  const amount = BigInt(zapper.currentRoute.toAmount);
 
   const getRateInQuoteSafe = zapper.zapData.abi.getRateInQuoteSafe;
 
@@ -74,13 +81,15 @@ export const hyperwaveDeposit: ZapInstruction = async (
     greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
   ];
 
-  let minimumMint: bigint | null = await computeHyperwaveMinimumMint(context);
+  const minimumMint: bigint = withSlippage(
+    await computeHyperwaveMinimumMint(context),
+    MINT_SLIPPAGE_PERCENT,
+  );
+
   const depositInputs = integrationData.abi.deposit.inputs;
+
   const depositArgs = depositInputs.map((input: AbiParameter) => {
     if (input.name === 'minimumMint') {
-      if (minimumMint === null || minimumMint <= 0) {
-        throw new Error('Minimum mint is not set');
-      }
       return minimumMint;
     } else if (input.name === 'depositAsset') {
       return depositToken;
