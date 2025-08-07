@@ -150,10 +150,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     async <T extends WalletMethod>(
       operationName: T,
       args: WalletMethodArgsType<T>,
-      extraParams: Omit<
-        SendCallsExtraParams,
-        'currentRoute' | 'address' | 'chainId'
-      >,
+      extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
     ): Promise<ReturnType<WalletMethodsRef[T]>> => {
       const operation = walletMethods[operationName] as
         | WalletMethodsRef[T]
@@ -197,8 +194,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
         ...extraParams,
         currentRoute: actualCurrentRoute,
-        address: actualCurrentRoute?.fromAddress,
-        chainId: actualCurrentRoute?.fromChainId,
       });
     },
     [initializeClients, getCurrentRoute],
@@ -264,8 +259,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             {
               ...sendCallsExtraParams,
               currentRoute: pendingOp.routeContext,
-              address: pendingOp.routeContext?.fromAddress,
-              chainId: pendingOp.routeContext?.fromChainId,
             },
           );
 
