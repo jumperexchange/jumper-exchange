@@ -23,6 +23,10 @@ import { EVMAddress } from 'src/types/internal';
 import { WalletCallReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
 import { chains } from 'src/const/chains/chains';
+import {
+  BICONOMY_EXPLORER_TX_PATH,
+  BICONOMY_EXPLORER_URL,
+} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
 
@@ -297,14 +301,14 @@ export const waitForCallsStatus = async (
 
     if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
       (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
-        `${fromChainBlockExplorerUrl}/tx/${originalReceipts[0].transactionHash}`;
+        `${fromChainBlockExplorerUrl}/tx/${id}`;
     }
   } catch {
     originalReceipts = [
       {
         transactionHash:
           `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress,
-        transactionLink: `https://meescan.biconomy.io/details/${id}`,
+        transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${id}`,
         status: 'failed',
       },
     ];
