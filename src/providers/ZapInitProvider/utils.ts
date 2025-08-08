@@ -1,4 +1,5 @@
 import { MultichainSmartAccount } from '@biconomy/abstractjs';
+import { Token } from '@lifi/sdk';
 import { ContractComposableConfig } from './types';
 
 export const buildContractComposable = async (
@@ -16,4 +17,8 @@ export const buildContractComposable = async (
       args: contractConfig.args,
     },
   });
+};
+
+export const isSameToken = (a: Token, b: Token) => {
+  return a.address === b.address && a.chainId === b.chainId;
 };

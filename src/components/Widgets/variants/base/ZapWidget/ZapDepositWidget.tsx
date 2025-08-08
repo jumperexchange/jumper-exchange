@@ -2,9 +2,11 @@
 
 import { FC, useEffect, useMemo } from 'react';
 import {
+  ChainType,
   HiddenUI,
   LiFiWidget,
   Route,
+  RouteExecutionUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
@@ -62,21 +64,29 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     return {
       ...ctx,
       includeZap: true,
-      zapProviders: providers,
-      zapToAddress: toAddress,
       zapPoolName: poolName,
       baseOverrides,
     };
-  }, [
-    JSON.stringify(ctx),
-    poolName,
-    providers,
-    toAddress,
-    projectData.integrator,
-    minFromAmountUSD,
-  ]);
+  }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+
+  // @Note: we want to ensure that the toAddress is set in the widget config without any delay
+  if (toAddress) {
+    widgetConfig.toAddress = {
+      name: 'Smart Account',
+      address: toAddress,
+      chainType: ChainType.EVM,
+    };
+  }
+
+  // @Note: we want to ensure that the providers are set in the widget config without any delay
+  if (providers) {
+    widgetConfig.sdkConfig = {
+      ...(widgetConfig.sdkConfig ?? {}),
+      providers,
+    };
+  }
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
@@ -86,10 +96,19 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     }
 
     function onRouteExecutionStarted(route: Route) {
+      console.warn('onRouteExecutionStarted', route.id);
       setCurrentRoute(route);
     }
 
+    function onRouteExecutionUpdated(
+      routeExecutionUpdate: RouteExecutionUpdate,
+    ) {
+      console.warn('onRouteExecutionUpdated', routeExecutionUpdate.route.id);
+      setCurrentRoute(routeExecutionUpdate.route);
+    }
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
+    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
 
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
@@ -102,13 +121,18 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
         onRouteExecutionStarted,
       );
       widgetEvents.off(
+        WidgetEvent.RouteExecutionUpdated,
+        onRouteExecutionUpdated,
+      );
+      widgetEvents.off(
         WidgetEvent.RouteExecutionCompleted,
         onRouteExecutionCompleted,
       );
     };
   }, [widgetEvents, refetchDepositToken, setCurrentRoute]);
 
-  return isZapDataSuccess && (isInitialized || !isConnected) ? (
+  return isZapDataSuccess &&
+    ((isInitialized && !!toAddress) || !isConnected) ? (
     <LiFiWidget
       config={widgetConfig}
       integrator={widgetConfig.integrator}

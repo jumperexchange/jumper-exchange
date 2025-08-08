@@ -44,12 +44,9 @@ export const deposit: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   context: ZapExecutionContext,
 ) => {
-  const {
-    address: currentAddress,
-    zapData: integrationData,
-    projectData,
-  } = context;
+  const { zapData: integrationData, projectData, currentRoute } = context;
 
+  const currentAddress = currentRoute.fromAddress;
   const depositToken = integrationData.market.depositToken.address;
   const depositTokenDecimals = integrationData.market.depositToken.decimals;
   const depositChainId = projectData.chainId;
@@ -86,12 +83,9 @@ export const transfer: ZapInstruction = async (
   oNexus: MultichainSmartAccount,
   context: ZapExecutionContext,
 ) => {
-  const {
-    address: currentAddress,
-    zapData: integrationData,
-    projectData,
-  } = context;
+  const { zapData: integrationData, projectData, currentRoute } = context;
 
+  const currentAddress = currentRoute.fromAddress;
   const depositAddress = integrationData.market.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
   const depositChainId = projectData.chainId;
