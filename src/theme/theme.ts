@@ -37,6 +37,7 @@ declare module '@mui/material/styles' {
     tabBarRadius: number;
     cardBorderRadius: number;
     buttonBorderRadius: number;
+    inputTextBorderRadius: number;
   }
 
   interface ThemeOptions {
@@ -329,6 +330,7 @@ const shape = {
   tabBarRadius: 128,
   cardBorderRadius: 24,
   buttonBorderRadius: 128,
+  inputTextBorderRadius: 24,
 };
 
 const palette = {

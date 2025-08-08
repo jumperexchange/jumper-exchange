@@ -3,13 +3,12 @@ import z from 'zod';
 import FormControl from '@mui/material/FormControl';
 
 import { Button } from 'src/components/Button/Button';
-import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
-import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
 import { useMissionStore } from 'src/stores/mission';
 import { TaskWidgetInformationInputData } from 'src/types/strapi';
 import { MissionInstructionFormContainer } from './MissionWidget.styles';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
 import { useTranslation } from 'react-i18next';
+import { TaskInput } from 'src/components/Form/TaskInput/TaskInput';
 
 const buildDynamicSchema = (taskInputs: TaskWidgetInformationInputData[]) => {
   const shape = taskInputs.reduce(
@@ -89,12 +88,21 @@ export const MissionForm = () => {
     <MissionInstructionFormContainer as="form" onSubmit={handleSubmit}>
       {taskInputs?.map((taskInput) => (
         <FormControl key={taskInput.inputId} sx={{ width: '100%' }}>
-          <SelectCard
-            mode={SelectCardMode.Input}
+          <TaskInput
             id={taskInput.inputId}
             name={taskInput.inputId}
             placeholder={taskInput.inputPlaceholder}
             onChange={handleChange}
+            sx={{
+              '& input': {
+                borderColor: (theme) => {
+                  const hasValue = !!formValues[taskInput.inputId]?.trim();
+                  return hasValue
+                    ? 'transparent'
+                    : (theme.vars || theme).palette.grey[100];
+                },
+              },
+            }}
           />
         </FormControl>
       ))}

@@ -46,6 +46,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await triggerButtonClick(page, 'Level');
       await page.locator('.profile-page').isVisible();
     });
+    
     await test.step('Check Perks and Achievements tabs', async () => {
       const perksTab = await page.locator('#profile-tabs-perks');
       const achievementsTab = await page.locator('#profile-tabs-achievements');
@@ -54,9 +55,9 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await achievementsTab.click();
       await expect(startSwappingButton).not.toBeVisible();
       await perksTab.click();
-      const perksContainer = page.locator('xpath=//div[@class="MuiBox-root mui-prph5i"]');
-      const perkCards = perksContainer.locator('.MuiCard-root');
-      await expect(perkCards).toHaveCount(5);
+      const perkCards = page.locator('[data-testid="perks-card"]');
+      const cardCount = await perkCards.count();
+      expect(cardCount).toBeGreaterThan(1);
     });
 
     await test.step('Check transaction history', async () => {

@@ -8,6 +8,7 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@storybook/addon-a11y',
     '@storybook/addon-vitest',
+    'storybook-addon-pseudo-states',
   ],
   framework: {
     name: '@storybook/nextjs-vite',
