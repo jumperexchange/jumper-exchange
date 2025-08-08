@@ -61,7 +61,10 @@ export default function ScanPage({ lng }: { lng: string }) {
       <Box
         sx={{
           p: 4,
-          paddingBottom: 8,
+          paddingBottom: {
+            xs: 12,
+            md: 8,
+          },
         }}
       >
         <LiFiExplorer config={explorerConfig} />
