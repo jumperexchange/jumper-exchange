@@ -9,7 +9,6 @@ import {
 import type { ButtonProps } from '@mui/material';
 
 import MuiMoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 import { styled } from '@mui/material/styles';
 
@@ -138,31 +137,4 @@ export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) => ({
   ...theme.applyStyles('light', {
     color: theme.palette.black.main,
   }),
-}));
-
-export const RedirectAppNavbarButton = styled(ConnectNavbarButton)(
-  ({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      width: 48,
-      minWidth: 48,
-    },
-  }),
-);
-
-export const RedirectAppLabel = styled(Typography)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('md')]: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    display: '-webkit-box',
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: 'vertical',
-  },
-}));
-
-export const RedirectAppIcon = styled(SwapHorizIcon)(({ theme }) => ({
-  display: 'block',
-  [theme.breakpoints.up('md')]: {
-    display: 'none',
-  },
 }));

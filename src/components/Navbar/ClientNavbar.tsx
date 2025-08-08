@@ -16,7 +16,6 @@ export const ClientNavbar = () => {
   const pathname = usePathname();
   const isLearnPage = checkIsLearnPage(pathname);
   const isScanPage = checkIsScanPage(pathname);
-  const isNotMainApp = isLearnPage || isScanPage;
 
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const configTheme = useThemeStore((state) => state.configTheme);
@@ -47,7 +46,7 @@ export const ClientNavbar = () => {
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLinkWrapper>
-      <Layout hideConnectButton={isLearnPage} isNotMainApp={isNotMainApp} />
+      <Layout hideConnectButton={isLearnPage} />
     </NavbarContainer>
   );
 };
