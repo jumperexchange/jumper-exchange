@@ -1,4 +1,5 @@
 import {
+  getChain,
   GetFusionQuoteParams,
   MeeClient,
   MultichainSmartAccount,
@@ -19,8 +20,11 @@ import {
 } from '../ModularZaps';
 import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
-import { zeroAddress } from 'viem';
+import { WalletCallReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
+import { chains } from 'src/const/chains/chains';
+
+const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
 
 // Helper function to handle 'wallet_getCapabilities'
 export const getCapabilities = async (
@@ -62,7 +66,7 @@ export const getCallsStatus = async (
   // Ensure the last receipt has the correct transactionHash format
   if (originalReceipts.length > 0) {
     originalReceipts[originalReceipts.length - 1].transactionHash =
-      `biconomy:${hash}` as EVMAddress;
+      `${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
   }
 
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
@@ -251,30 +255,59 @@ export const waitForCallsStatus = async (
 
   const { id, timeout = 60000 } = args;
 
-  // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
-  // We'll use the timeout to set a maximum wait time
-  const receipt = (await Promise.race([
-    meeClientParam!.waitForSupertransactionReceipt({
-      hash: id as EVMAddress,
-    }),
-    new Promise((_, reject) =>
-      setTimeout(
-        () =>
-          reject(
-            new Error(
-              `Timed out while waiting for call bundle with id "${id}" to be confirmed.`,
-            ),
-          ),
-        timeout,
-      ),
-    ),
-  ])) as WaitForSupertransactionReceiptPayload;
+  let receipt;
+  let originalReceipts: any[] = [];
 
-  // Now get the status using the same logic as handleWalletGetCallsStatus
-  const originalReceipts = receipt?.receipts || [];
-  if (originalReceipts.length > 0) {
-    originalReceipts[originalReceipts.length - 1].transactionHash =
-      `biconomy:${id}` as EVMAddress;
+  try {
+    // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
+    // We'll use the timeout to set a maximum wait time
+    receipt = (await Promise.race([
+      meeClientParam!.waitForSupertransactionReceipt({
+        hash: id as EVMAddress,
+      }),
+      new Promise((_, reject) =>
+        setTimeout(
+          () =>
+            reject(
+              new Error(
+                `Timed out while waiting for call bundle with id "${id}" to be confirmed.`,
+              ),
+            ),
+          timeout,
+        ),
+      ),
+    ])) as WaitForSupertransactionReceiptPayload;
+
+    let fromChain;
+    let fromChainBlockExplorerUrl;
+    if (extraParams.currentRoute?.fromChainId) {
+      fromChain = chains[extraParams.currentRoute?.fromChainId];
+    }
+
+    if (fromChain) {
+      fromChainBlockExplorerUrl = fromChain.blockExplorers?.default.url;
+    }
+
+    // Now get the status using the same logic as handleWalletGetCallsStatus
+    originalReceipts = receipt?.receipts || [];
+    if (originalReceipts.length > 0) {
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
+    }
+
+    if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
+      (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
+        `${fromChainBlockExplorerUrl}/tx/${originalReceipts[0].transactionHash}`;
+    }
+  } catch {
+    originalReceipts = [
+      {
+        transactionHash:
+          `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress,
+        transactionLink: `https://meescan.biconomy.io/details/${id}`,
+        status: 'failed',
+      },
+    ];
   }
 
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
@@ -295,6 +328,7 @@ export const waitForCallsStatus = async (
     statusCode,
     receipts: originalReceipts.map((receipt) => ({
       transactionHash: receipt.transactionHash,
+      transactionLink: (receipt as any).transactionLink,
       status: receipt.status || (isSuccess ? 'success' : 'reverted'),
     })),
   };
