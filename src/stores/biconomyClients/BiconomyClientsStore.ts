@@ -19,9 +19,11 @@ export type BiconomyClients = {
 
 type ProjectKey = `${EVMAddress}-${number}`;
 type WalletKey = `${EVMAddress}-${number}`;
+type ToAddressKey = `${EVMAddress}-${number}-${EVMAddress}`;
 
 interface BiconomyClientsState {
   clientsMap: Map<ProjectKey, Map<WalletKey, BiconomyClients>>;
+  toAddressMap: Map<ToAddressKey, EVMAddress>;
   validateProject: (params: {
     projectAddress?: EVMAddress;
     projectChainId?: number;
@@ -42,16 +44,15 @@ interface BiconomyClientsState {
   ) => boolean;
   getClients: (
     projectAddress?: EVMAddress,
-    sourceChainId?: number,
     destinationChainId?: number,
     walletClient?: UseWalletClientReturnType['data'],
+    currentChainId?: number,
   ) => Promise<BiconomyClients | null>;
   getToAddress: (
     projectAddress?: EVMAddress,
-    sourceChainId?: number,
     destinationChainId?: number,
     walletAddress?: EVMAddress,
-  ) => EVMAddress;
+  ) => EVMAddress | undefined;
 }
 
 const getProjectKey = (
@@ -63,6 +64,12 @@ const getWalletKey = (
   walletAddress: EVMAddress,
   currentChainId: number,
 ): WalletKey => `${walletAddress}-${currentChainId}`;
+
+const getToAddressKey = (
+  projectAddress: EVMAddress,
+  projectChainId: number,
+  walletAddress: EVMAddress,
+): ToAddressKey => `${projectAddress}-${projectChainId}-${walletAddress}`;
 
 const findChain = (chainId: number) =>
   Object.values(chains).find((chain) => chain.id === chainId);
@@ -81,6 +88,7 @@ export const useBiconomyClientsStore =
   createWithEqualityFn<BiconomyClientsState>(
     (set, get) => ({
       clientsMap: new Map(),
+      toAddressMap: new Map(),
 
       validateProject: (params: {
         projectAddress?: EVMAddress;
@@ -146,50 +154,42 @@ export const useBiconomyClientsStore =
 
       getToAddress: (
         projectAddress?: EVMAddress,
-        sourceChainId?: number,
-        destinationChainId?: number,
+        projectChainId?: number,
         walletAddress?: EVMAddress,
       ) => {
-        const fallbackAddress = walletAddress || '0x';
         if (
           !get().validateProject({
             projectAddress,
-            projectChainId: destinationChainId,
+            projectChainId,
           })
         ) {
-          return fallbackAddress;
-        }
-        if (
-          !get().validateWallet({
-            currentChainId: sourceChainId,
-            walletAddress,
-          })
-        ) {
-          return fallbackAddress;
+          return;
         }
 
-        const projectKey = getProjectKey(projectAddress!, destinationChainId!);
-        const walletKey = getWalletKey(walletAddress!, sourceChainId!);
-
-        // Get existing clients without initialization
-        const projectClients = get().clientsMap.get(projectKey);
-        const existingClients = projectClients?.get(walletKey);
-
-        if (!existingClients) {
-          return fallbackAddress;
+        if (!walletAddress) {
+          return;
         }
 
-        return existingClients.oNexus.addressOn(
-          destinationChainId!,
-          true,
-        ) as EVMAddress;
+        const toAddressKey = getToAddressKey(
+          projectAddress!,
+          projectChainId!,
+          walletAddress!,
+        );
+
+        const toAddress = get().toAddressMap.get(toAddressKey);
+
+        if (toAddress) {
+          return toAddress;
+        }
+
+        return;
       },
 
       getClients: async (
         projectAddress,
-        sourceChainId,
-        destinationChainId,
+        projectChainId,
         walletClient,
+        currentChainId,
       ) => {
         if (!walletClient) {
           console.warn('Wallet client is undefined, skipping initialization');
@@ -199,14 +199,14 @@ export const useBiconomyClientsStore =
         if (
           !get().validateProject({
             projectAddress,
-            projectChainId: destinationChainId,
+            projectChainId,
           })
         ) {
           return null;
         }
         if (
           !get().validateWallet({
-            currentChainId: sourceChainId,
+            currentChainId,
             walletAddress: walletClient?.account?.address,
           })
         ) {
@@ -214,8 +214,8 @@ export const useBiconomyClientsStore =
         }
 
         const walletAddress = walletClient.account.address;
-        const projectKey = getProjectKey(projectAddress!, destinationChainId!);
-        const walletKey = getWalletKey(walletAddress!, sourceChainId!);
+        const projectKey = getProjectKey(projectAddress!, projectChainId!);
+        const walletKey = getWalletKey(walletAddress!, currentChainId!);
 
         // Check if clients already exist
         const projectClients = get().clientsMap.get(projectKey);
@@ -225,13 +225,13 @@ export const useBiconomyClientsStore =
         }
 
         // Find chains
-        const currentChain = findChain(sourceChainId!);
-        const depositChain = findChain(destinationChainId!);
+        const currentChain = findChain(currentChainId!);
+        const depositChain = findChain(projectChainId!);
 
         if (!currentChain || !depositChain) {
           console.error('Chain not found', {
-            sourceChainId,
-            destinationChainId,
+            currentChainId,
+            projectChainId,
           });
           return null;
         }
@@ -273,9 +273,24 @@ export const useBiconomyClientsStore =
             newProjectMap.set(walletKey, clients);
             newClientsMap.set(projectKey, newProjectMap);
 
+            const newToAddressMap = new Map(state.toAddressMap);
+            const toAddressKey = getToAddressKey(
+              projectAddress!,
+              projectChainId!,
+              walletAddress!,
+            );
+            // Add to address to map
+            if (!newToAddressMap.has(toAddressKey)) {
+              newToAddressMap.set(
+                toAddressKey,
+                clients.oNexus.addressOn(projectChainId!, true) as EVMAddress,
+              );
+            }
+
             return {
               ...state,
               clientsMap: newClientsMap,
+              toAddressMap: newToAddressMap,
             };
           });
 

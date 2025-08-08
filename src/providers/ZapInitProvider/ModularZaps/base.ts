@@ -14,7 +14,9 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   // This structure is what you can be sure of by the end of isValidParams.
   // Later we might want to implement runtime validation using something like zod
   // to simplify our code.
-  currentRoute: Route;
+  currentRoute: Route & {
+    fromAddress: EVMAddress;
+  };
   zapData: ZapDataResponse & {
     market: {
       address: EVMAddress;

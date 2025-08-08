@@ -105,9 +105,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     (state) => state.currentRoute,
   );
 
-  const { hasProjectClients, hasWalletClients, getToAddress } =
-    useBiconomyClientsStore();
-
   const { initializeClients } = useWalletClientInitialization();
 
   const initInProgressRef = useRef(false);
@@ -124,26 +121,49 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { account } = useAccount();
   const { address, chainId } = account;
 
-  const sendCallsExtraParams = {
-    zapData,
-    projectData,
-  };
-
-  // Check if oNexus and meeClient are initialized before rendering
-  const isInitialized = hasProjectClients(
-    projectData.address as EVMAddress | undefined,
-    projectData.chainId,
+  const sendCallsExtraParams = useMemo(
+    () => ({
+      zapData,
+      projectData,
+    }),
+    [zapData, projectData],
   );
 
-  const isInitializedForCurrentChain =
-    hasWalletClients(
+  const isConnected = account.isConnected && !!address;
+
+  // Check if oNexus and meeClient are initialized before rendering
+  const isInitialized = useBiconomyClientsStore((state) => {
+    console.warn('🔍 isInitialized selector running');
+    return (
+      isConnected &&
+      state.hasProjectClients(
+        projectData.address as EVMAddress | undefined,
+        projectData.chainId,
+      )
+    );
+  });
+
+  const isInitializedForCurrentChain = useBiconomyClientsStore((state) => {
+    console.warn('🔍 isInitializedForCurrentChain selector running');
+    return (
+      (isInitialized && !currentRoute) ||
+      state.hasWalletClients(
+        projectData.address as EVMAddress | undefined,
+        projectData.chainId,
+        currentRoute?.fromAddress as EVMAddress | undefined,
+        currentRoute?.fromChainId,
+      )
+    );
+  });
+
+  const toAddress = useBiconomyClientsStore((state) => {
+    console.warn('🔍 toAddress selector running');
+    return state.getToAddress(
       projectData.address as EVMAddress | undefined,
       projectData.chainId,
       address as EVMAddress | undefined,
-      chainId,
-    ) &&
-    currentRoute?.fromAddress === address &&
-    currentRoute?.fromChainId === chainId;
+    );
+  });
 
   // RPC operation queueing
   const queueOperation = useCallback(
@@ -290,7 +310,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [
     pendingOperationsLength,
     getPendingOperationsForFromValues,
-    JSON.stringify(sendCallsExtraParams),
+    sendCallsExtraParams,
     isInitializedForCurrentChain,
     initializeClients,
     getPromiseResolversForOperation,
@@ -340,60 +360,55 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     initializeClients,
   ]);
 
-  const providers = useMemo(() => {
-    return [
-      createCustomEVMProvider({
-        wagmiConfig,
-        getCapabilities: async (_, args) => {
-          console.warn('getCapabilities');
-          return queueOperation(
-            'wallet_getCapabilities',
-            args,
-            sendCallsExtraParams,
-          );
-        },
-        getCallsStatus: async (_, args) => {
-          console.warn('getCallsStatus');
-          return queueOperation(
-            'wallet_getCallsStatus',
-            args,
-            sendCallsExtraParams,
-          );
-        },
-        sendCalls: async (_, args) => {
-          console.warn('sendCalls');
-          return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
-        },
-        waitForCallsStatus: async (_, args) => {
-          console.warn('waitForCallsStatus');
-          return queueOperation(
-            'wallet_waitForCallsStatus',
-            args,
-            sendCallsExtraParams,
-          );
-        },
-      }),
-    ];
-  }, [
-    wagmiConfig,
-    queueOperation,
-    isInitialized,
-    isInitializedForCurrentChain,
-    JSON.stringify(sendCallsExtraParams),
-  ]);
+  useEffect(() => {
+    if (!isConnected) {
+      useZapPendingOperationsStore.setState({
+        currentRoute: null,
+      });
+    }
+  }, [isConnected]);
 
-  const toAddress = useMemo(
-    () =>
-      getToAddress(
-        projectData.address as EVMAddress | undefined,
-        chainId,
-        projectData.chainId,
-        address as EVMAddress | undefined,
-      ),
-    [chainId, address, projectData.chainId, projectData.address, getToAddress],
-  );
+  useEffect(() => {
+    return () => {
+      useZapPendingOperationsStore.setState({
+        currentRoute: null,
+      });
+    };
+  }, []);
 
-  const isConnected = account.isConnected && !!address;
+  const providers = [
+    createCustomEVMProvider({
+      wagmiConfig,
+      getCapabilities: async (_, args) => {
+        console.warn('getCapabilities');
+        return queueOperation(
+          'wallet_getCapabilities',
+          args,
+          sendCallsExtraParams,
+        );
+      },
+      getCallsStatus: async (_, args) => {
+        console.warn('getCallsStatus');
+        return queueOperation(
+          'wallet_getCallsStatus',
+          args,
+          sendCallsExtraParams,
+        );
+      },
+      sendCalls: async (_, args) => {
+        console.warn('sendCalls');
+        return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
+      },
+      waitForCallsStatus: async (_, args) => {
+        console.warn('waitForCallsStatus');
+        return queueOperation(
+          'wallet_waitForCallsStatus',
+          args,
+          sendCallsExtraParams,
+        );
+      },
+    }),
+  ];
 
   const value = useMemo(() => {
     return {
@@ -411,11 +426,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       refetchDepositToken,
     };
   }, [
+    providers,
+    toAddress,
     isInitialized,
     isInitializedForCurrentChain,
     isConnected,
-    providers,
-    toAddress,
     zapData,
     isZapDataSuccess,
     depositTokenData,

@@ -34,6 +34,16 @@ export const useWalletClientInitialization = () => {
     }: WalletClientParams) => {
       try {
         let walletClient = fallbackWalletClient;
+        let currentChainId = fallbackWalletClient?.chain?.id;
+
+        console.warn(
+          'initializeClients based on these wallet client values',
+          address,
+          chainId,
+          fallbackWalletClient?.chain?.id,
+          fallbackWalletClient?.account.address,
+          fallbackWalletClient,
+        );
 
         if (
           address &&
@@ -41,6 +51,7 @@ export const useWalletClientInitialization = () => {
           (fallbackWalletClient?.account.address !== address ||
             fallbackWalletClient?.chain?.id !== chainId)
         ) {
+          currentChainId = chainId;
           walletClient = await getWalletClient(wagmiConfig, {
             account: address,
             chainId,
@@ -50,9 +61,9 @@ export const useWalletClientInitialization = () => {
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
           projectAddress,
-          chainId,
           projectChainId,
           walletClient,
+          currentChainId,
         );
 
         return { walletClient, biconomyClients };
@@ -61,7 +72,11 @@ export const useWalletClientInitialization = () => {
         return { walletClient: null, biconomyClients: null };
       }
     },
-    [wagmiConfig, fallbackWalletClient],
+    [
+      wagmiConfig,
+      fallbackWalletClient?.account.address,
+      fallbackWalletClient?.chain?.id,
+    ],
   );
 
   return { initializeClients };
