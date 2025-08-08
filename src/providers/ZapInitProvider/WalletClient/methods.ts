@@ -22,6 +22,7 @@ import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
 import { WalletCallReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
+import { chains } from 'src/const/chains/chains';
 
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
 
@@ -280,7 +281,7 @@ export const waitForCallsStatus = async (
     let fromChain;
     let fromChainBlockExplorerUrl;
     if (extraParams.currentRoute?.fromChainId) {
-      fromChain = getChain(extraParams.currentRoute?.fromChainId);
+      fromChain = chains[extraParams.currentRoute?.fromChainId];
     }
 
     if (fromChain) {
