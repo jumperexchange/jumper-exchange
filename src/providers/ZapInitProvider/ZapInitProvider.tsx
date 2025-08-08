@@ -33,6 +33,12 @@ import { walletMethods } from './WalletClient/methods';
 import { useWalletClientInitialization } from './WalletClient/hooks';
 import { SendCallsExtraParams } from './ModularZaps';
 import { NO_DEPS_METHODS } from './constants';
+import { openInNewTab } from 'src/utils/openInNewTab';
+import { chains } from 'src/const/chains/chains';
+import {
+  BICONOMY_EXPLORER_ADDRESS_PATH,
+  BICONOMY_EXPLORER_URL,
+} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -359,6 +365,41 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.address,
     initializeClients,
   ]);
+
+  // @Note: This is a hack to fix the broken address link; will be removed
+  useEffect(() => {
+    const explorerUrl = projectData.chainId
+      ? chains[projectData.chainId]?.blockExplorers?.default.url
+      : undefined;
+
+    if (!explorerUrl) {
+      return;
+    }
+
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const link = target.closest('a');
+
+      if (
+        link?.href.includes(
+          `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_ADDRESS_PATH}`,
+        )
+      ) {
+        event.preventDefault();
+        const linkWalletAddress = link.href
+          .split(`/${BICONOMY_EXPLORER_ADDRESS_PATH}/`)
+          .pop();
+        if (linkWalletAddress) {
+          openInNewTab(
+            `${explorerUrl}/${BICONOMY_EXPLORER_ADDRESS_PATH}/${linkWalletAddress}`,
+          );
+        }
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, [projectData.chainId]);
 
   useEffect(() => {
     if (!isConnected) {
