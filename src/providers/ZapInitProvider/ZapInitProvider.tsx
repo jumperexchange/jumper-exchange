@@ -360,6 +360,22 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     initializeClients,
   ]);
 
+  useEffect(() => {
+    if (!isConnected) {
+      useZapPendingOperationsStore.setState({
+        currentRoute: null,
+      });
+    }
+  }, [isConnected]);
+
+  useEffect(() => {
+    return () => {
+      useZapPendingOperationsStore.setState({
+        currentRoute: null,
+      });
+    };
+  }, []);
+
   const providers = [
     createCustomEVMProvider({
       wagmiConfig,
