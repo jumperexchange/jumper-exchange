@@ -18,7 +18,4 @@ export const AbTestConfig = {
   tests: AbTests,
 } as const;
 
-export enum GlobalFeatureFlags {
-  MissionsPage = 'missions_page',
-  ProfilePage = 'profile_page',
-}
+export enum GlobalFeatureFlags {}
