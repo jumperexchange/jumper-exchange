@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { EVMAddress } from 'src/types/internal';
-import { getWalletClient } from '@wagmi/core';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useAccount } from '@lifi/wallet-management';
@@ -17,7 +16,7 @@ export const useWalletClientInitialization = () => {
   const { getClients } = useBiconomyClientsStore();
   const { account } = useAccount();
   const { address, chainId } = account;
-  const { data: fallbackWalletClient } = useWalletClient({
+  const { data: walletClient } = useWalletClient({
     account: address as EVMAddress,
     chainId,
     query: {
@@ -33,29 +32,21 @@ export const useWalletClientInitialization = () => {
       projectChainId,
     }: WalletClientParams) => {
       try {
-        let walletClient = fallbackWalletClient;
-        let currentChainId = fallbackWalletClient?.chain?.id;
-
         console.warn(
           'initializeClients based on these wallet client values',
-          address,
-          chainId,
-          fallbackWalletClient?.chain?.id,
-          fallbackWalletClient?.account.address,
-          fallbackWalletClient,
+          walletClient?.chain?.id,
+          walletClient?.account.address,
         );
 
         if (
           address &&
           chainId &&
-          (fallbackWalletClient?.account.address !== address ||
-            fallbackWalletClient?.chain?.id !== chainId)
+          (walletClient?.account.address !== address ||
+            walletClient?.chain?.id !== chainId)
         ) {
-          currentChainId = chainId;
-          walletClient = await getWalletClient(wagmiConfig, {
-            account: address,
-            chainId,
-          });
+          throw new Error(
+            'Current wallet client is initialized on different chain or address',
+          );
         }
 
         // Note: getClients would need to be passed as parameter or imported
@@ -63,7 +54,7 @@ export const useWalletClientInitialization = () => {
           projectAddress,
           projectChainId,
           walletClient,
-          currentChainId,
+          chainId,
         );
 
         return { walletClient, biconomyClients };
@@ -72,11 +63,7 @@ export const useWalletClientInitialization = () => {
         return { walletClient: null, biconomyClients: null };
       }
     },
-    [
-      wagmiConfig,
-      fallbackWalletClient?.account.address,
-      fallbackWalletClient?.chain?.id,
-    ],
+    [wagmiConfig, walletClient?.account.address, walletClient?.chain?.id],
   );
 
   return { initializeClients };
