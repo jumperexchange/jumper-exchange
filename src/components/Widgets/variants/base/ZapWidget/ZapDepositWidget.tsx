@@ -35,6 +35,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     toAddress,
     zapData,
     isZapDataSuccess,
+    allowedChains,
     refetchDepositToken,
     setCurrentRoute,
   } = useZapInitContext();
@@ -90,6 +91,13 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     widgetConfig.sdkConfig = {
       ...(widgetConfig.sdkConfig ?? {}),
       providers,
+    };
+  }
+
+  // @Note: we want to ensure that the chains are set in the widget config without any delay
+  if (allowedChains) {
+    widgetConfig.chains = {
+      allow: allowedChains,
     };
   }
 
