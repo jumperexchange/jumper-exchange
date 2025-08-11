@@ -148,9 +148,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     console.warn('🔍 isInitialized selector running');
     return (
       isConnected &&
-      state.hasProjectClients(
+      state.hasClient(
         projectData.address as EVMAddress | undefined,
         projectData.chainId,
+        address as EVMAddress | undefined,
       )
     );
   });
@@ -159,7 +160,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     console.warn('🔍 isInitializedForCurrentChain selector running');
     return (
       (isInitialized && !currentRoute) ||
-      state.hasWalletClients(
+      state.hasChainClients(
         projectData.address as EVMAddress | undefined,
         projectData.chainId,
         currentRoute?.fromAddress as EVMAddress | undefined,
@@ -408,12 +409,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [projectData.chainId]);
 
   useEffect(() => {
-    if (!isConnected) {
-      useZapPendingOperationsStore.setState({
-        currentRoute: null,
-      });
-    }
-  }, [isConnected]);
+    useZapPendingOperationsStore.setState({
+      currentRoute: null,
+    });
+  }, [address]);
 
   useEffect(() => {
     return () => {

@@ -17,26 +17,31 @@ export type BiconomyClients = {
   oNexus: MultichainSmartAccount;
 };
 
-type ProjectKey = `${EVMAddress}-${number}`;
 type WalletKey = `${EVMAddress}-${number}`;
-type ToAddressKey = `${EVMAddress}-${number}-${EVMAddress}`;
+type ClientKey = `${EVMAddress}-${number}-${EVMAddress}`;
+type ChainKey = `${number}`;
 
 interface BiconomyClientsState {
-  clientsMap: Map<ProjectKey, Map<WalletKey, BiconomyClients>>;
-  toAddressMap: Map<ToAddressKey, EVMAddress>;
-  validateProject: (params: {
+  clientsMap: Map<ClientKey, Map<ChainKey, BiconomyClients>>;
+  toAddressMap: Map<ClientKey, EVMAddress>;
+  validateClient: (params: {
     projectAddress?: EVMAddress;
     projectChainId?: number;
-  }) => params is { projectAddress: EVMAddress; projectChainId: number };
-  validateWallet: (params: {
-    currentChainId?: number;
     walletAddress?: EVMAddress;
-  }) => params is { currentChainId: number; walletAddress: EVMAddress };
-  hasProjectClients: (
+  }) => params is {
+    projectAddress: EVMAddress;
+    projectChainId: number;
+    walletAddress: EVMAddress;
+  };
+  validateChain: (params: {
+    currentChainId?: number;
+  }) => params is { currentChainId: number };
+  hasClient: (
     projectAddress?: EVMAddress,
     projectChainId?: number,
+    walletAddress?: EVMAddress,
   ) => boolean;
-  hasWalletClients: (
+  hasChainClients: (
     projectAddress?: EVMAddress,
     projectChainId?: number,
     walletAddress?: EVMAddress,
@@ -55,21 +60,13 @@ interface BiconomyClientsState {
   ) => EVMAddress | undefined;
 }
 
-const getProjectKey = (
-  projectAddress: EVMAddress,
-  projectChainId: number,
-): ProjectKey => `${projectAddress}-${projectChainId}`;
-
-const getWalletKey = (
-  walletAddress: EVMAddress,
-  currentChainId: number,
-): WalletKey => `${walletAddress}-${currentChainId}`;
-
-const getToAddressKey = (
+const getClientKey = (
   projectAddress: EVMAddress,
   projectChainId: number,
   walletAddress: EVMAddress,
-): ToAddressKey => `${projectAddress}-${projectChainId}-${walletAddress}`;
+): ClientKey => `${projectAddress}-${projectChainId}-${walletAddress}`;
+
+const getChainKey = (currentChainId: number): ChainKey => `${currentChainId}`;
 
 const findChain = (chainId: number) =>
   Object.values(chains).find((chain) => chain.id === chainId);
@@ -90,10 +87,15 @@ export const useBiconomyClientsStore =
       clientsMap: new Map(),
       toAddressMap: new Map(),
 
-      validateProject: (params: {
+      validateClient: (params: {
         projectAddress?: EVMAddress;
         projectChainId?: number;
-      }): params is { projectAddress: EVMAddress; projectChainId: number } => {
+        walletAddress?: EVMAddress;
+      }): params is {
+        projectAddress: EVMAddress;
+        projectChainId: number;
+        walletAddress: EVMAddress;
+      } => {
         if (!params.projectAddress) {
           console.warn('Missing projectAddress, skipping initialization');
           return false;
@@ -104,18 +106,17 @@ export const useBiconomyClientsStore =
           return false;
         }
 
-        return true;
-      },
-
-      validateWallet: (params: {
-        currentChainId?: number;
-        walletAddress?: EVMAddress;
-      }): params is { currentChainId: number; walletAddress: EVMAddress } => {
         if (!params.walletAddress) {
           console.warn('Missing walletAddress, skipping initialization');
           return false;
         }
 
+        return true;
+      },
+
+      validateChain: (params: {
+        currentChainId?: number;
+      }): params is { currentChainId: number } => {
         if (!params.currentChainId) {
           console.warn('Missing currentChainId, skipping initialization');
           return false;
@@ -124,32 +125,52 @@ export const useBiconomyClientsStore =
         return true;
       },
 
-      hasProjectClients: (projectAddress, projectChainId) => {
-        if (!get().validateProject({ projectAddress, projectChainId })) {
+      hasClient: (projectAddress, projectChainId, walletAddress) => {
+        if (
+          !get().validateClient({
+            projectAddress,
+            projectChainId,
+            walletAddress,
+          })
+        ) {
           return false;
         }
 
-        const projectKey = getProjectKey(projectAddress!, projectChainId!);
-        return get().clientsMap.has(projectKey);
+        const clientKey = getClientKey(
+          projectAddress!,
+          projectChainId!,
+          walletAddress!,
+        );
+        return get().clientsMap.has(clientKey);
       },
 
-      hasWalletClients: (
+      hasChainClients: (
         projectAddress,
         projectChainId,
         walletAddress,
         currentChainId,
       ) => {
-        if (!get().validateProject({ projectAddress, projectChainId })) {
+        if (
+          !get().validateClient({
+            projectAddress,
+            projectChainId,
+            walletAddress,
+          })
+        ) {
           return false;
         }
-        if (!get().validateWallet({ currentChainId, walletAddress })) {
+        if (!get().validateChain({ currentChainId })) {
           return false;
         }
 
-        const projectKey = getProjectKey(projectAddress!, projectChainId!);
-        const walletKey = getWalletKey(walletAddress!, currentChainId!);
-        const projectClients = get().clientsMap.get(projectKey);
-        return projectClients?.has(walletKey) ?? false;
+        const clientKey = getClientKey(
+          projectAddress!,
+          projectChainId!,
+          walletAddress!,
+        );
+        const chainKey = getChainKey(currentChainId!);
+        const projectClients = get().clientsMap.get(clientKey);
+        return projectClients?.has(chainKey) ?? false;
       },
 
       getToAddress: (
@@ -158,19 +179,16 @@ export const useBiconomyClientsStore =
         walletAddress?: EVMAddress,
       ) => {
         if (
-          !get().validateProject({
+          !get().validateClient({
             projectAddress,
             projectChainId,
+            walletAddress,
           })
         ) {
           return;
         }
 
-        if (!walletAddress) {
-          return;
-        }
-
-        const toAddressKey = getToAddressKey(
+        const toAddressKey = getClientKey(
           projectAddress!,
           projectChainId!,
           walletAddress!,
@@ -197,29 +215,33 @@ export const useBiconomyClientsStore =
         }
 
         if (
-          !get().validateProject({
+          !get().validateClient({
             projectAddress,
             projectChainId,
+            walletAddress: walletClient?.account?.address,
           })
         ) {
           return null;
         }
         if (
-          !get().validateWallet({
+          !get().validateChain({
             currentChainId,
-            walletAddress: walletClient?.account?.address,
           })
         ) {
           return null;
         }
 
         const walletAddress = walletClient.account.address;
-        const projectKey = getProjectKey(projectAddress!, projectChainId!);
-        const walletKey = getWalletKey(walletAddress!, currentChainId!);
+        const clientKey = getClientKey(
+          projectAddress!,
+          projectChainId!,
+          walletAddress!,
+        );
+        const chainKey = getChainKey(currentChainId!);
 
         // Check if clients already exist
-        const projectClients = get().clientsMap.get(projectKey);
-        const existingClients = projectClients?.get(walletKey);
+        const clientClients = get().clientsMap.get(clientKey);
+        const existingClients = clientClients?.get(chainKey);
         if (existingClients) {
           return existingClients;
         }
@@ -263,18 +285,18 @@ export const useBiconomyClientsStore =
             const newClientsMap = new Map(state.clientsMap);
 
             // Ensure project map exists
-            if (!newClientsMap.has(projectKey)) {
-              newClientsMap.set(projectKey, new Map());
+            if (!newClientsMap.has(clientKey)) {
+              newClientsMap.set(clientKey, new Map());
             }
 
             // Add wallet clients to project
-            const projectMap = newClientsMap.get(projectKey)!;
-            const newProjectMap = new Map(projectMap);
-            newProjectMap.set(walletKey, clients);
-            newClientsMap.set(projectKey, newProjectMap);
+            const clientMap = newClientsMap.get(clientKey)!;
+            const newClientMap = new Map(clientMap);
+            newClientMap.set(chainKey, clients);
+            newClientsMap.set(clientKey, newClientMap);
 
             const newToAddressMap = new Map(state.toAddressMap);
-            const toAddressKey = getToAddressKey(
+            const toAddressKey = getClientKey(
               projectAddress!,
               projectChainId!,
               walletAddress!,
