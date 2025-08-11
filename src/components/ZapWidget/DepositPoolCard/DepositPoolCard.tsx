@@ -123,6 +123,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           <BadgeWithChain
             logoURI={zapData?.meta?.logoURI}
             chainId={token?.chainId}
+            badgeSize={15}
             alt={`${zapData?.meta?.name} protocol`}
           />
           <Typography
@@ -170,7 +171,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
                   chainId={token.chainId}
                   alt={`${zapData?.meta?.name} protocol`}
                   logoSize={24}
-                  badgeSize={8}
+                  badgeSize={9}
                 />
               }
               contentStyles={{ alignItems: 'center' }}
