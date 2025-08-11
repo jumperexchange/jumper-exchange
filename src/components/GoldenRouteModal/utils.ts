@@ -1,6 +1,7 @@
 import { keyframes } from '@mui/material';
 import { Inter_Tight } from 'next/font/google';
 import { Bagel_Fat_One } from 'next/font/google';
+import config from '@/config/env-config';
 
 interface CheckWinningSwapParams {
   txHash: string;
@@ -88,6 +89,8 @@ export const bagelFatOne = Bagel_Fat_One({
   weight: ['400'],
 });
 
+const GOLDENTICKET_BASE_URL = config.NEXT_PUBLIC_GOLDENTICKET_BASE_URL;
+
 export async function checkWinningSwap({
   txHash,
   userAddress,
@@ -99,7 +102,7 @@ export async function checkWinningSwap({
 }: CheckWinningSwapParams): Promise<CheckWinningSwapResponse> {
   try {
     const response = await fetch(
-      `https://jumper.goldenticket.builtby.dad/golden-ticket/verify-transaction`,
+      `${GOLDENTICKET_BASE_URL}/golden-ticket/verify-transaction`,
       {
         method: 'POST',
         headers: {
@@ -140,7 +143,7 @@ export async function submitContact({
 }: SubmitContactParams): Promise<SubmitContactResponse> {
   try {
     const response = await fetch(
-      `https://jumper.goldenticket.builtby.dad/golden-ticket/submit-contact`,
+      `${GOLDENTICKET_BASE_URL}/golden-ticket/submit-contact`,
       {
         method: 'POST',
         headers: {
