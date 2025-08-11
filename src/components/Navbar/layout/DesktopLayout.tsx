@@ -6,18 +6,26 @@ import { useMainLinks } from '../hooks';
 import { LabelButton } from '../components/Buttons/LabelButton';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import { LayoutVariantProps } from './Layout.types';
+import { AppPaths } from '@/const/urls';
 
 export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();
 
+  const getDataTestId = (linkValue: string) => {
+    if (linkValue === AppPaths.Main) return 'navbar-exchange-button';
+    if (linkValue === AppPaths.Missions) return 'navbar-missions-button';
+    return undefined;
+  };
+
   return (
-    <>
+    <>s
       <MainLinksContainer sx={{ width: '100%', mr: 1 }}>
         {links.map((link) => (
           <LabelButton
             isActive={activeLink?.value === link.value}
             key={link.value}
             href={link.value}
+            data-testid={getDataTestId(link.value)}
             label={
               <Box component="span" sx={{ paddingX: 1.5 }}>
                 {link.label}
