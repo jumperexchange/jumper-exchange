@@ -20,7 +20,7 @@ import {
 } from '../ModularZaps';
 import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
-import { WalletCallReceipt, zeroAddress } from 'viem';
+import { TransactionReceipt, WalletCallReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
 import {
   BICONOMY_EXPLORER_TX_PATH,
@@ -29,6 +29,9 @@ import {
 import { findChain } from 'src/utils/chains/findChain';
 
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
+
+const getFormattedTransactionHash = (hash: string) =>
+  `${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
 
 // Helper function to handle 'wallet_getCapabilities'
 export const getCapabilities = async (
@@ -70,7 +73,7 @@ export const getCallsStatus = async (
   // Ensure the last receipt has the correct transactionHash format
   if (originalReceipts.length > 0) {
     originalReceipts[originalReceipts.length - 1].transactionHash =
-      `${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
+      getFormattedTransactionHash(hash);
   }
 
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
@@ -86,7 +89,7 @@ export const getCallsStatus = async (
   return {
     atomic: true,
     chainId: hexChainId,
-    id: hash,
+    id: getFormattedTransactionHash(hash),
     status: isSuccess ? 'success' : 'failed', // String status as expected by LiFi SDK
     statusCode, // Numeric status code
     receipts: originalReceipts.map((receipt) => ({
@@ -238,8 +241,17 @@ export const sendCalls = async (
     fusionQuote: quote,
   });
 
-  return { id: hash };
+  console.warn('🔍 sendCalls response', {
+    id: getFormattedTransactionHash(hash),
+  });
+
+  return { id: getFormattedTransactionHash(hash) };
 };
+
+type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
+  Pick<TransactionReceipt, 'status' | 'transactionHash'> & {
+    transactionLink?: string;
+  };
 
 // Helper function to handle 'wallet_waitForCallsStatus'
 export const waitForCallsStatus = async (
@@ -260,27 +272,35 @@ export const waitForCallsStatus = async (
   const { id, timeout = 60000 } = args;
 
   let receipt;
-  let originalReceipts: any[] = [];
+  let originalReceipts: ExtendedTransactionReceipt[] = [];
+  const tamperedId = id as EVMAddress;
+  const originalId = id.replace(
+    BICONOMY_TRANSACTION_HASH_SUFFIX,
+    '',
+  ) as EVMAddress;
 
   try {
     // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
     // We'll use the timeout to set a maximum wait time
     receipt = (await Promise.race([
       meeClientParam!.waitForSupertransactionReceipt({
-        hash: id as EVMAddress,
+        hash: originalId,
       }),
       new Promise((_, reject) =>
         setTimeout(
           () =>
             reject(
               new Error(
-                `Timed out while waiting for call bundle with id "${id}" to be confirmed.`,
+                `Timed out while waiting for call bundle with id "${originalId}" to be confirmed.`,
               ),
             ),
           timeout,
         ),
       ),
     ])) as WaitForSupertransactionReceiptPayload;
+
+    // Now get the status using the same logic as handleWalletGetCallsStatus
+    originalReceipts = receipt?.receipts || [];
 
     let fromChain;
     let fromChainBlockExplorerUrl;
@@ -292,13 +312,6 @@ export const waitForCallsStatus = async (
       fromChainBlockExplorerUrl = fromChain.blockExplorers?.default.url;
     }
 
-    // Now get the status using the same logic as handleWalletGetCallsStatus
-    originalReceipts = receipt?.receipts || [];
-    if (originalReceipts.length > 0) {
-      originalReceipts[originalReceipts.length - 1].transactionHash =
-        `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
-    }
-
     console.warn(
       `fromChainBlockExplorerUrl ${fromChainBlockExplorerUrl} for chain ${fromChain}`,
       extraParams.currentRoute,
@@ -306,15 +319,20 @@ export const waitForCallsStatus = async (
 
     if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
       (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
-        `${fromChainBlockExplorerUrl}/tx/${id}`;
+        `${fromChainBlockExplorerUrl}/tx/${originalReceipts[0].transactionHash}`;
     }
-  } catch {
+
+    if (originalReceipts.length > 0) {
+      originalReceipts[originalReceipts.length - 1].transactionHash =
+        tamperedId;
+    }
+  } catch (error) {
+    console.error('🔍 waitForCallsStatus error for id', originalId, error);
     originalReceipts = [
       {
-        transactionHash:
-          `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress,
-        transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${id}`,
-        status: 'failed',
+        transactionHash: tamperedId,
+        transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${originalId}`,
+        status: 'reverted',
       },
     ];
   }
@@ -329,10 +347,23 @@ export const waitForCallsStatus = async (
     .includes('success');
   const statusCode = isSuccess ? 200 : 400;
 
+  console.warn('🔍 waitForCallsStatus response', {
+    atomic: true,
+    chainId: hexChainId,
+    id: tamperedId,
+    status: isSuccess ? 'success' : 'failed',
+    statusCode,
+    receipts: originalReceipts.map((receipt) => ({
+      transactionHash: receipt.transactionHash,
+      transactionLink: (receipt as any).transactionLink,
+      status: receipt.status || (isSuccess ? 'success' : 'reverted'),
+    })),
+  });
+
   return {
     atomic: true,
     chainId: hexChainId,
-    id: id,
+    id: tamperedId,
     status: isSuccess ? 'success' : 'failed',
     statusCode,
     receipts: originalReceipts.map((receipt) => ({
