@@ -1,4 +1,4 @@
-import { ChainId, WidgetConfig } from '@lifi/widget';
+import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
 import envConfig from '@/config/env-config';
 import { publicRPCList } from 'src/const/rpcList';
@@ -115,27 +115,6 @@ export const useZapRPC = () => {
       explorerUrls,
       bridges: {
         allow: ['across', 'relay'],
-      },
-      chains: {
-        allow: [
-          ChainId.ETH,
-          ChainId.BAS,
-          ChainId.POL,
-          ChainId.ARB,
-          ChainId.OPT,
-          ChainId.BSC,
-          ChainId.SON,
-          ChainId.SCL,
-          ChainId.DAI,
-          ChainId.AVA,
-          ChainId.APE,
-          ChainId.HYP,
-          ChainId.SEI,
-          ChainId.UNI,
-          ChainId.KAT,
-          ChainId.LSK,
-          ChainId.WCC,
-        ],
       },
       sdkConfig: {
         apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
