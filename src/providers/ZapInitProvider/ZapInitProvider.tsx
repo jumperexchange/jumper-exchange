@@ -402,12 +402,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [projectData.chainId]);
 
   useEffect(() => {
-    if (!isConnected) {
-      useZapPendingOperationsStore.setState({
-        currentRoute: null,
-      });
-    }
-  }, [isConnected]);
+    useZapPendingOperationsStore.setState({
+      currentRoute: null,
+    });
+  }, [address]);
 
   useEffect(() => {
     return () => {
