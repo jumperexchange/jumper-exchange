@@ -67,6 +67,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       hiddenUI: [
         HiddenUI.LowAddressActivityConfirmation,
         HiddenUI.GasRefuelMessage,
+        HiddenUI.IntegratorStepDetails,
       ],
     };
 
