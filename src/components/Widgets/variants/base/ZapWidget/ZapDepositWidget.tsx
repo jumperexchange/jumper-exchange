@@ -64,7 +64,10 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     const baseOverrides: ConfigContext['baseOverrides'] = {
       integrator: projectData.integrator,
       minFromAmountUSD,
-      hiddenUI: [HiddenUI.LowAddressActivityConfirmation],
+      hiddenUI: [
+        HiddenUI.LowAddressActivityConfirmation,
+        HiddenUI.GasRefuelMessage,
+      ],
     };
 
     return {
