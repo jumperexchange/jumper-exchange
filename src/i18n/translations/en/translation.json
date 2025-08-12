@@ -265,8 +265,8 @@
       "token": "Asset"
     },
     "zap": {
-      "sendToAddressName": "Send to {{name}}",
-      "sentToAddressName": "Sent to {{name}}"
+      "sendToAddressName": "Deposit into {{name}}",
+      "sentToAddressName": "Deposited into {{name}}"
     }
   }
 }

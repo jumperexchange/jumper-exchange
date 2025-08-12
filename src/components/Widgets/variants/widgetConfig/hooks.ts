@@ -41,6 +41,11 @@ export function useLiFiWidgetConfig(ctx: ConfigContext = {}): WidgetConfig {
   const overrides = overrideHooks.map((hook) => hook(ctx));
 
   return useMemo(() => {
-    return merge({}, base, ...overrides, ctx.baseOverrides);
+    return merge({}, base, ...overrides, ctx.baseOverrides, {
+      hiddenUI: [
+        ...(base.hiddenUI ?? []),
+        ...(ctx.baseOverrides?.hiddenUI ?? []),
+      ],
+    });
   }, [base, overrides, ctx.baseOverrides]);
 }
