@@ -79,11 +79,13 @@ export const useMainLinks = () => {
         value: AppPaths.Main,
         label: t('navbar.links.exchange'),
         subLinks: [AppPaths.Gas],
+        testId: 'navbar-exchange-button',
       },
       {
         value: AppPaths.Missions,
         label: t('navbar.links.missions'),
         subLinks: [AppPaths.Campaign],
+        testId: 'navbar-missions-button',
       },
     ];
   }, [t]);
