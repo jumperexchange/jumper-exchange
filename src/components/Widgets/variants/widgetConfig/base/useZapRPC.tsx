@@ -38,7 +38,7 @@ export const useZapRPC = () => {
           ...publicRPCList,
         },
         routeOptions: {
-          allowSwitchChain: true,
+          allowSwitchChain: false,
         },
       },
       useRecommendedRoute: true,
