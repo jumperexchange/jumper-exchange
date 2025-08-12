@@ -16,6 +16,7 @@ import { WidgetProps } from '../Widget.types';
 import { ConfigContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
+import { useMenuStore } from 'src/stores/menu/MenuStore';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -34,9 +35,14 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     toAddress,
     zapData,
     isZapDataSuccess,
+    allowedChains,
     refetchDepositToken,
     setCurrentRoute,
   } = useZapInitContext();
+
+  const [setSupportModalState] = useMenuStore((state) => [
+    state.setSupportModalState,
+  ]);
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
@@ -58,7 +64,10 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     const baseOverrides: ConfigContext['baseOverrides'] = {
       integrator: projectData.integrator,
       minFromAmountUSD,
-      hiddenUI: [HiddenUI.LowAddressActivityConfirmation],
+      hiddenUI: [
+        HiddenUI.LowAddressActivityConfirmation,
+        HiddenUI.GasRefuelMessage,
+      ],
     };
 
     return {
@@ -88,6 +97,13 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     };
   }
 
+  // @Note: we want to ensure that the chains are set in the widget config without any delay
+  if (allowedChains) {
+    widgetConfig.chains = {
+      allow: allowedChains,
+    };
+  }
+
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
   useEffect(() => {
@@ -107,6 +123,10 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       setCurrentRoute(routeExecutionUpdate.route);
     }
 
+    const onRouteContactSupport = () => {
+      setSupportModalState(true);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
 
@@ -114,6 +134,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       WidgetEvent.RouteExecutionCompleted,
       onRouteExecutionCompleted,
     );
+
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
 
     return () => {
       widgetEvents.off(
@@ -128,8 +150,14 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
         WidgetEvent.RouteExecutionCompleted,
         onRouteExecutionCompleted,
       );
+      widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
     };
-  }, [widgetEvents, refetchDepositToken, setCurrentRoute]);
+  }, [
+    widgetEvents,
+    refetchDepositToken,
+    setCurrentRoute,
+    setSupportModalState,
+  ]);
 
   return isZapDataSuccess &&
     ((isInitialized && !!toAddress) || !isConnected) ? (

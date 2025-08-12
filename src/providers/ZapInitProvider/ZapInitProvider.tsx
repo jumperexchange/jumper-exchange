@@ -1,6 +1,6 @@
 'use client';
 
-import { EVMProvider, Route } from '@lifi/sdk';
+import { ChainId, EVMProvider, Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
@@ -39,6 +39,7 @@ import {
   BICONOMY_EXPLORER_URL,
 } from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 import { findChain } from 'src/utils/chains/findChain';
+import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -53,6 +54,7 @@ interface ZapInitState {
   depositTokenDecimals: number | bigint | undefined;
   isLoadingDepositTokenData: boolean;
   refetchDepositToken: UseReadContractsReturnType['refetch'];
+  allowedChains: ChainId[];
 }
 
 export const ZapInitContext = createContext<ZapInitState>({
@@ -69,6 +71,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   isLoadingDepositTokenData: false,
   refetchDepositToken: () =>
     Promise.resolve({}) as ReturnType<UseReadContractsReturnType['refetch']>,
+  allowedChains: [],
 });
 
 export const useZapInitContext = () => {
@@ -92,6 +95,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   projectData,
 }) => {
   const wagmiConfig = useConfig();
+
+  const { data: zapSupportedChains } = useZapSupportedChains();
+
   // @Note: Might need to handle the persisted pending operations a bit differently
   // but it depends on the route execution logic which currently handles a single active route at a time
   const {
@@ -142,9 +148,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     console.warn('🔍 isInitialized selector running');
     return (
       isConnected &&
-      state.hasProjectClients(
+      state.hasClient(
         projectData.address as EVMAddress | undefined,
         projectData.chainId,
+        address as EVMAddress | undefined,
       )
     );
   });
@@ -153,7 +160,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     console.warn('🔍 isInitializedForCurrentChain selector running');
     return (
       (isInitialized && !currentRoute) ||
-      state.hasWalletClients(
+      state.hasChainClients(
         projectData.address as EVMAddress | undefined,
         projectData.chainId,
         currentRoute?.fromAddress as EVMAddress | undefined,
@@ -402,12 +409,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   }, [projectData.chainId]);
 
   useEffect(() => {
-    if (!isConnected) {
-      useZapPendingOperationsStore.setState({
-        currentRoute: null,
-      });
-    }
-  }, [isConnected]);
+    useZapPendingOperationsStore.setState({
+      currentRoute: null,
+    });
+  }, [address]);
 
   useEffect(() => {
     return () => {
@@ -451,6 +456,41 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }),
   ];
 
+  const allowedChains = useMemo(() => {
+    // @Note: This is a fallback for when the zap supported chains are not loaded yet
+    if (!zapSupportedChains) {
+      return [
+        ChainId.ETH,
+        ChainId.BSC,
+        ChainId.ARB,
+        ChainId.BAS,
+        ChainId.AVA,
+        ChainId.POL,
+        ChainId.SCL,
+        ChainId.OPT,
+        ChainId.DAI,
+        ChainId.UNI,
+        ChainId.SEI,
+        ChainId.SON,
+        ChainId.APE,
+        ChainId.WCC,
+        ChainId.HYP,
+        // @Note: Even though docs say they are supported, they are not retrieved from the API
+        // https://docs.biconomy.io/supportedNetworks#-supported-chains
+        // ChainId.KAT,
+        // ChainId.LSK,
+      ];
+    }
+
+    const zapSupportedChainsIds = zapSupportedChains.map(
+      (chain) => chain.chainId,
+    );
+
+    return Object.values(ChainId).filter((chainId): chainId is ChainId =>
+      zapSupportedChainsIds?.includes(chainId.toString()),
+    );
+  }, [zapSupportedChains]);
+
   const value = useMemo(() => {
     return {
       isInitialized,
@@ -465,6 +505,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       depositTokenDecimals,
       isLoadingDepositTokenData,
       refetchDepositToken,
+      allowedChains,
     };
   }, [
     providers,
@@ -479,6 +520,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     isLoadingDepositTokenData,
     refetchDepositToken,
     setCurrentRoute,
+    allowedChains,
   ]);
 
   return (
