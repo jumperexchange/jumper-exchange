@@ -3,13 +3,17 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { HeaderHeight } from 'src/const/headerHeight';
-import { DEFAULT_WELCOME_SCREEN_HEIGHT } from '../WelcomeScreen';
+import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen';
 
 const DEFAULT_WIDGET_HEIGHT = 686;
 // used on welcome-screen to prepare hover-animation
 const DEFAULT_WIDGET_TOP_HOVER_OFFSET = 24;
-// mid viewheight - ≈ 2/3 of widget height
-const DEFAULT_WIDGET_TOP_OFFSET_VAR = `${DEFAULT_WELCOME_SCREEN_HEIGHT} - ${DEFAULT_WIDGET_HEIGHT}px / 2.75`;
+// Widget top offset - centers widget within welcome screen height
+const DEFAULT_WIDGET_TOP_OFFSET_VARS = {
+  xs: `${DEFAULT_WELCOME_SCREEN_HEIGHTS.xs} - ${DEFAULT_WIDGET_HEIGHT}px / 2`, // ≈ 1/2 widget height
+  md: `${DEFAULT_WELCOME_SCREEN_HEIGHTS.md} - ${DEFAULT_WIDGET_HEIGHT}px / 2.75`, // ≈ 1/3 widget height
+};
+
 export interface WidgetWrapperProps extends BoxProps {
   welcomeScreenClosed?: boolean;
   autoHeight?: boolean;
@@ -120,16 +124,16 @@ export const WidgetWrapper = styled(Box, {
             },
             // positioning of widget on mobile-screens from 700px height
             [`@media screen and (min-height: 700px)`]: {
-              marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.XS}px )`,
+              marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.xs} - ${HeaderHeight.XS}px )`,
               '&:hover': {
-                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.XS}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.xs} - ${HeaderHeight.XS}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
               },
             },
             // positioning of widget on mobile-screens from 900px height
             [`@media screen and (min-height: 900px)`]: {
-              marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px)`,
+              marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - ${HeaderHeight.MD}px)`,
               '&:hover': {
-                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - ${HeaderHeight.MD}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
               },
             },
           },
@@ -139,8 +143,9 @@ export const WidgetWrapper = styled(Box, {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
           '& > div:not(.alert)': {
+            marginTop: DEFAULT_WIDGET_TOP_OFFSET_VARS.xs,
             [theme.breakpoints.up('sm' as Breakpoint)]: {
-              marginTop: DEFAULT_WIDGET_TOP_OFFSET_VAR,
+              marginTop: DEFAULT_WIDGET_TOP_OFFSET_VARS.md,
             },
           },
         },
@@ -164,7 +169,7 @@ export const WidgetWrapper = styled(Box, {
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               [`@media screen and (min-height: 700px)`]: {
                 // (mid viewheight - ≈ 2/3 of widget height - navbar height )
-                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - 40px )`,
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - 40px )`,
               },
             },
           },
@@ -177,7 +182,7 @@ export const WidgetWrapper = styled(Box, {
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               [`@media screen and (min-height: 900px)`]: {
                 // (mid viewheight - ≈ 2/3 of widget height - ( navbar height + additional spacing) )
-                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VAR} - ${HeaderHeight.MD}px )`,
+                marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - ${HeaderHeight.MD}px )`,
               },
             },
           },

@@ -24,7 +24,7 @@ registerOverrideHook('zap', useZapOverride);
 
 function getOverrideNamesForContext(ctx: ConfigContext): string[] {
   const names = ['languageResources', 'subvariant', 'form'];
-  if (ctx.includeZap && ctx.zapToAddress && ctx.zapProviders) {
+  if (ctx.includeZap) {
     names.push('zap');
   } else {
     names.push('rpc');
@@ -41,6 +41,11 @@ export function useLiFiWidgetConfig(ctx: ConfigContext = {}): WidgetConfig {
   const overrides = overrideHooks.map((hook) => hook(ctx));
 
   return useMemo(() => {
-    return merge({}, base, ...overrides, ctx.baseOverrides);
+    return merge({}, base, ...overrides, ctx.baseOverrides, {
+      hiddenUI: [
+        ...(base.hiddenUI ?? []),
+        ...(ctx.baseOverrides?.hiddenUI ?? []),
+      ],
+    });
   }, [base, overrides, ctx.baseOverrides]);
 }

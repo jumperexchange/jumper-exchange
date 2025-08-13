@@ -38,6 +38,7 @@ export const PerksCard = ({
 
   return (
     <PerksCardContainer
+      data-testid="perks-card"
       sx={{
         height: PERK_CARD_SIZES.CARD_HEIGHT,
         width: '100%',

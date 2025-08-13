@@ -2,23 +2,21 @@ import { Instruction, MultichainSmartAccount } from '@biconomy/abstractjs';
 import { Route } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { zeroAddress } from 'viem';
 import { AbiEntry, ZapDataResponse } from './zap.jumper-backend';
 
 export interface SendCallsExtraParams {
-  chainId: number | undefined;
   currentRoute: Route | null;
   zapData: ZapDataResponse;
   projectData: ProjectData;
-  address: string | undefined;
 }
 
 export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   // This structure is what you can be sure of by the end of isValidParams.
   // Later we might want to implement runtime validation using something like zod
   // to simplify our code.
-  chainId: number;
-  currentRoute: Route;
+  currentRoute: Route & {
+    fromAddress: EVMAddress;
+  };
   zapData: ZapDataResponse & {
     market: {
       address: EVMAddress;
@@ -29,7 +27,6 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
     };
   };
   projectData: ProjectData;
-  address: string;
 }
 
 export interface ZapExecutionContext extends ValidatedSendCallsExtraParams {
@@ -92,17 +89,15 @@ export const isValidParams = (
   }
 
   const {
-    chainId: currentChainId,
-    address: currentAddress,
     zapData: integrationData,
     projectData,
+    currentRoute,
   } = sendCallsExtraParams;
 
-  if (!currentChainId || !currentAddress) {
+  if (!currentRoute.fromChainId || !currentRoute.fromAddress) {
     throw new Error('Missing chainId or address');
   }
 
-  const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
   const depositAddress = integrationData.market?.address as EVMAddress;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
@@ -118,14 +113,6 @@ export const isValidParams = (
 
   if (!depositTokenDecimals) {
     throw new Error('Deposit token decimals is undefined.');
-  }
-
-  // @Note this works only for EVM chains
-  const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
-  console.warn('Using native source token:', isNativeSourceToken);
-
-  if (isNativeSourceToken) {
-    throw new Error('Native source token is not supported.');
   }
 
   return true;

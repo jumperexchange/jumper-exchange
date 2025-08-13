@@ -1,7 +1,6 @@
 import { MeeClient, MultichainSmartAccount } from '@biconomy/abstractjs';
-import { Route } from '@lifi/sdk';
-import { ProjectData } from 'src/types/questDetails';
 import { AbiFunction } from 'viem';
+import { SendCallsExtraParams } from './ModularZaps/base';
 
 // Type definitions for better type safety
 export interface AbiInput {
@@ -17,18 +16,13 @@ export interface WalletCall {
 }
 
 export interface WalletMethodArgs {
-  method: string;
+  method: WalletMethod;
   params?: unknown[];
 }
 
-export enum WalletMethods {
-  getCapabilities = 'wallet_getCapabilities',
-  getCallsStatus = 'wallet_getCallsStatus',
-  sendCalls = 'wallet_sendCalls',
-  waitForCallsStatus = 'wallet_waitForCallsStatus',
-}
+export type WalletMethod = keyof WalletMethodsRef;
 
-export interface WalletSendCallsArgs extends WalletMethodArgs {
+export interface SendCallsArgs extends WalletMethodArgs {
   method: 'wallet_sendCalls';
   account: {
     address: string;
@@ -37,17 +31,17 @@ export interface WalletSendCallsArgs extends WalletMethodArgs {
   calls: WalletCall[];
 }
 
-export interface WalletGetCallsStatusArgs extends WalletMethodArgs {
+export interface GetCallsStatusArgs extends WalletMethodArgs {
   method: 'wallet_getCallsStatus';
   params: [string]; // hash
 }
 
-export interface WalletCapabilitiesArgs extends WalletMethodArgs {
+export interface GetCapabilitiesArgs extends WalletMethodArgs {
   method: 'wallet_getCapabilities';
   params?: never;
 }
 
-export interface WalletWaitForCallsStatusArgs extends WalletMethodArgs {
+export interface WaitCallsStatusArgs extends WalletMethodArgs {
   method: 'wallet_waitForCallsStatus';
   id: string;
   timeout?: number;
@@ -62,7 +56,15 @@ export interface ContractComposableConfig {
   gasLimit?: bigint;
 }
 
-export interface CallsStatusResponse {
+export interface GetCapabilitiesResponse {
+  atomic: { status: 'supported' | 'ready' | 'unsupported' };
+}
+
+export interface SendCallsResponse {
+  id: string;
+}
+
+export interface CommonCallsStatusResponse {
   atomic: boolean;
   chainId?: string;
   id: string;
@@ -74,25 +76,37 @@ export interface CallsStatusResponse {
   }>;
 }
 
-export interface WalletPendingOperation {
-  operation: (
-    meeClientParam: MeeClient,
-    oNexusParam: MultichainSmartAccount,
-    extraParams?: {
-      chainId: number | undefined;
-      currentRoute: Route | null;
-      zapData: any;
-      projectData: ProjectData;
-      address: string | undefined;
-    },
-  ) => Promise<any>;
-  timestamp: number;
-  resolve?: (value: any) => void;
-  reject?: (error: any) => void;
+export interface GetCallsStatusResponse extends CommonCallsStatusResponse {}
+
+export interface WaitCallsStatusResponse extends CommonCallsStatusResponse {}
+
+export type WalletMethodDefinition<TArgs, TResult> = (
+  args: TArgs,
+  meeClient: MeeClient | undefined,
+  oNexus: MultichainSmartAccount | undefined,
+  extraParams: SendCallsExtraParams,
+) => Promise<TResult>;
+
+export interface WalletMethodsRef {
+  wallet_getCapabilities: WalletMethodDefinition<
+    GetCapabilitiesArgs,
+    GetCapabilitiesResponse
+  >;
+  wallet_getCallsStatus: WalletMethodDefinition<
+    GetCallsStatusArgs,
+    GetCallsStatusResponse
+  >;
+  wallet_waitForCallsStatus: WalletMethodDefinition<
+    WaitCallsStatusArgs,
+    WaitCallsStatusResponse
+  >;
+  wallet_sendCalls: WalletMethodDefinition<SendCallsArgs, SendCallsResponse>;
 }
 
-export type WalletPendingOperations = {
-  [K in WalletMethods]?: WalletPendingOperation;
-} & {
-  [key: string]: never;
-};
+export type WalletMethodArgsType<T extends WalletMethod> = Parameters<
+  WalletMethodsRef[T]
+>[0];
+
+export type WalletMethodReturnType<T extends WalletMethod> = ReturnType<
+  WalletMethodsRef[T]
+>;

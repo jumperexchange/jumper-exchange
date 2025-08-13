@@ -34,6 +34,22 @@ export const getDefaultWidgetTheme = (
             boxShadow: theme.shadows[1],
           },
         },
+        chainSidebarContainer: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 256,
+            minWidth: 256,
+            boxShadow: theme.shadows[1],
+          },
+        },
+        routesContainer: {
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 436,
+            minWidth: 436,
+            boxShadow: theme.shadows[1],
+          },
+        },
         shape: {
           borderRadius: 12,
           borderRadiusSecondary: 24,
@@ -102,6 +118,22 @@ export const getDefaultWidgetThemeV2 = (
             borderRadius: '24px',
             maxWidth: 416,
             minWidth: 416,
+            boxShadow: copiedTheme.shadows[1],
+          },
+        },
+        chainSidebarContainer: {
+          [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 256,
+            minWidth: 256,
+            boxShadow: copiedTheme.shadows[1],
+          },
+        },
+        routesContainer: {
+          [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
+            borderRadius: '12px',
+            maxWidth: 436,
+            minWidth: 436,
             boxShadow: copiedTheme.shadows[1],
           },
         },
