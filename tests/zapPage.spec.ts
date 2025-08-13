@@ -19,7 +19,7 @@ test.describe('Zap Morpho Katana Page', () => {
         await page.waitForLoadState('networkidle');
     });
 
-    test(qase(119,'Should verify bridge selection list has exactly 2 bridges'), async ({ page }) => {
+    test(qase(121,'Should verify bridge selection list has exactly 2 bridges'), async ({ page }) => {
         await page.getByRole('button', { name: SETTINGS_MENU.TITLE }).click();
         await clickItemInSettingsMenu(page, SETTINGS_MENU.BRIDGES.LABEL);
         await verifyBridgesCount(page, 2);
@@ -31,7 +31,7 @@ test.describe('Zap Morpho Katana Page', () => {
         await expect(discoverMorphoLink).toHaveAttribute('href', values.morphoURL);
       });
       
-      await test.step(qase(121,'Verify that Missions and Exchange tabs are visible in the header of the page'), async () => {
+      await test.step(('Verify that Missions and Exchange tabs are visible in the header of the page'), async () => {
         await checkTabsInHeader(page);
       });
     });
