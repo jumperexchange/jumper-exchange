@@ -11,6 +11,7 @@ import {
 } from './PerksCard.style';
 import { PerksCardSkeleton } from './PerksCardSkeleton';
 import { PERK_CARD_SIZES } from './constants';
+
 interface PerksCardProps {
   title: string;
   description: string;
@@ -39,6 +40,7 @@ export const PerksCard = ({
   return (
     <PerksCardContainer
       data-testid="perks-card"
+      disabled={isDisabled}
       sx={{
         height: PERK_CARD_SIZES.CARD_HEIGHT,
         width: '100%',
