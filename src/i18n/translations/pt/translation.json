@@ -265,8 +265,8 @@
       "token": "Ativo"
     },
     "zap": {
-      "sendToAddressName": "Enviar para {{name}}",
-      "sentToAddressName": "Enviado para {{name}}"
+      "sendToAddressName": "",
+      "sentToAddressName": ""
     }
   }
 }
