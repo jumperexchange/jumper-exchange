@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { EVMAddress } from 'src/types/internal';
-import { useConfig, useWalletClient } from 'wagmi';
+import { Connector, useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useAccount } from '@lifi/wallet-management';
 
@@ -14,13 +14,17 @@ interface WalletClientParams {
 export const useWalletClientInitialization = () => {
   const wagmiConfig = useConfig();
   const { getClients } = useBiconomyClientsStore();
-  const { account } = useAccount();
-  const { address, chainId } = account;
-  const { data: walletClient } = useWalletClient({
+  const { account, ...rest } = useAccount();
+  console.error('rest', rest, account);
+  const { address, chainId, connector: activeConnector } = account;
+  const { data: walletClient, refetch } = useWalletClient({
     account: address as EVMAddress,
     chainId,
+    connector: activeConnector as Connector,
     query: {
       enabled: !!address && !!chainId,
+      refetchOnMount: 'always',
+      refetchOnWindowFocus: 'always',
     },
   });
 
@@ -44,6 +48,7 @@ export const useWalletClientInitialization = () => {
           (walletClient?.account.address !== address ||
             walletClient?.chain?.id !== chainId)
         ) {
+          await refetch();
           throw new Error(
             'Current wallet client is initialized on different chain or address',
           );
@@ -63,7 +68,12 @@ export const useWalletClientInitialization = () => {
         return { walletClient: null, biconomyClients: null };
       }
     },
-    [wagmiConfig, walletClient?.account.address, walletClient?.chain?.id],
+    [
+      wagmiConfig,
+      walletClient?.account.address,
+      walletClient?.chain?.id,
+      refetch,
+    ],
   );
 
   return { initializeClients };
