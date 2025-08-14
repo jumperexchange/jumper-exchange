@@ -208,6 +208,9 @@ interface Resources {
       achievements: 'Achievements';
       unlocked: 'Unlocked';
       levelWithValue: 'Level {{level}}';
+      tooltips: {
+        unlockAtLevel: 'Unlocked at Level {{level}}';
+      };
       noData: {
         description: "No {{entity}} yet? Let's change that!";
         caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
@@ -272,8 +275,8 @@ interface Resources {
         token: 'Asset';
       };
       zap: {
-        sendToAddressName: 'Send to {{name}}';
-        sentToAddressName: 'Sent to {{name}}';
+        sendToAddressName: 'Deposit into {{name}}';
+        sentToAddressName: 'Deposited into {{name}}';
       };
     };
   };
