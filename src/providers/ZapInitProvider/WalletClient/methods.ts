@@ -38,27 +38,26 @@ type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
 
 const getFormattedTransactionHash = (hash: string) =>
-  `${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
+  hash.includes(BICONOMY_TRANSACTION_HASH_SUFFIX)
+    ? (hash as EVMAddress)
+    : (`${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress);
 
 // Helper function used for both getCallsStatus and waitForCallsStatus
 const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
   hash: string,
   extraParams: SendCallsExtraParams,
-  isError: boolean = false,
 ) => {
-  if (isError || !receipt) {
-    // Fallback receipt for errors/timeouts
+  if (!receipt) {
     return {
       atomic: true,
       id: getFormattedTransactionHash(hash),
       status: 'failed',
-      statusCode: 400,
+      statusCode: 500,
       receipts: [
         {
           transactionHash: getFormattedTransactionHash(hash),
           transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${hash}`,
-          status: 'reverted',
         } as ExtendedTransactionReceipt,
       ],
     };
@@ -67,11 +66,10 @@ const processTransactionReceipt = (
   const originalReceipts: ExtendedTransactionReceipt[] =
     receipt?.receipts || [];
 
-  // Ensure the last receipt has the correct transactionHash format
-  if (originalReceipts.length > 0) {
-    originalReceipts[originalReceipts.length - 1].transactionHash =
-      getFormattedTransactionHash(hash);
-  }
+  console.warn('🔍 processTransactionReceipt originalReceipts', {
+    hash,
+    originalReceipts,
+  });
 
   // Add transaction links and chain info
   let fromChain;
@@ -86,8 +84,19 @@ const processTransactionReceipt = (
 
   if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
     (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
-      `${fromChainBlockExplorerUrl}/tx/${originalReceipts[0].transactionHash}`;
+      `${fromChainBlockExplorerUrl}/tx/${originalReceipts[1].transactionHash}`;
   }
+
+  // Ensure the last receipt has the correct transactionHash format
+  if (originalReceipts.length > 0) {
+    originalReceipts[originalReceipts.length - 1].transactionHash =
+      getFormattedTransactionHash(hash);
+  }
+
+  console.warn('🔍 processTransactionReceipt originalReceipts after', {
+    hash,
+    originalReceipts,
+  });
 
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
   const hexChainId = chainIdAsNumber
@@ -98,6 +107,19 @@ const processTransactionReceipt = (
     ?.toLowerCase()
     .includes('success');
   const statusCode = isSuccess ? 200 : 400;
+
+  console.warn('🔍 processTransactionReceipt final', {
+    atomic: true,
+    chainId: hexChainId,
+    id: getFormattedTransactionHash(hash),
+    status: 'success',
+    statusCode,
+    receipts: originalReceipts.map((receipt) => ({
+      transactionHash: receipt.transactionHash,
+      transactionLink: (receipt as any).transactionLink,
+      status: receipt.status || (isSuccess ? 'success' : 'reverted'),
+    })),
+  });
 
   return {
     atomic: true,
@@ -313,13 +335,13 @@ export const getCallsStatus = async (
         ...receipt,
         receipts: receipt.receipts || [],
       },
-      hash,
+      originalHash,
       extraParams,
     );
   } catch (error) {
-    console.error('🔍 getCallsStatus error for hash', hash, error);
+    console.error('🔍 getCallsStatus error for hash', originalHash, error);
 
-    return processTransactionReceipt(null, hash, extraParams, true);
+    return processTransactionReceipt(null, originalHash, extraParams);
   }
 };
 
@@ -339,12 +361,18 @@ export const waitForCallsStatus = async (
     );
   }
 
+  console.warn('🔍 waitForCallsStatus args', args);
+
   const { id, timeout = 60000 } = args;
 
   const originalId = id.replace(
     BICONOMY_TRANSACTION_HASH_SUFFIX,
     '',
   ) as EVMAddress;
+
+  console.warn(
+    `🔍 waitForCallsStatus was called with ${id} id and will process supertx with hash ${originalId}`,
+  );
 
   try {
     // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
@@ -366,10 +394,12 @@ export const waitForCallsStatus = async (
       ),
     ])) as WaitForSupertransactionReceiptPayload;
 
-    return processTransactionReceipt(receipt, id, extraParams);
+    console.warn('🔍 waitForCallsStatus receipt', receipt);
+
+    return processTransactionReceipt(receipt, originalId, extraParams);
   } catch (error) {
     console.error('🔍 waitForCallsStatus error for id', id, error);
-    return processTransactionReceipt(null, id, extraParams, true);
+    return processTransactionReceipt(null, originalId, extraParams);
   }
 };
 
