@@ -45,7 +45,7 @@ export const NavbarContainer = styled(AppBar, {
   ],
 }));
 
-export const LogoLinkWrapper = styled(Link)(() => ({
+export const LogoLink = styled(Link)(({ theme }) => ({
   cursor: 'pointer',
   display: 'flex',
   height: '32px',

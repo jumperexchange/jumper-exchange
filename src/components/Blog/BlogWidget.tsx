@@ -1,4 +1,4 @@
-import { WalletButtons } from '../Navbar/components/Buttons/WalletButtons';
+import { WalletButtons } from '../Navbar/WalletButtons';
 import { Widget } from '../Widgets/Widget';
 import { BlogWidgetHeader } from './BlogWidget.style';
 import config from '@/config/env-config';

@@ -7,7 +7,6 @@ import {
   openOrCloseMainMenu,
   openLeaderboardPage,
   sectionOnTheBlogPage,
-  checkTabsInHeader,
 } from './testData/menuFunctions';
 import {
   getElementByText,
@@ -90,7 +89,6 @@ test.describe('Main Menu flows', () => {
     await expect(page).toHaveURL(values.localLearnURL);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
-    await checkTabsInHeader(page);
     sectionOnTheBlogPage(page, sectionName);
     await blogArticle.click();
     await page.waitForLoadState('load');
@@ -117,7 +115,6 @@ test.describe('Main Menu flows', () => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Scan');
     await expect(page).toHaveURL(values.localJumperScanURL);
-    await checkTabsInHeader(page);
     await expect(searchBar).toBeVisible();
   });
 

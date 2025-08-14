@@ -1,8 +1,8 @@
 import { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
 import { useMissionsMaxAPY } from '../useMissionsMaxAPY';
 import { useMemo } from 'react';
+import { RewardsInterface } from 'src/components/ProfilePage/QuestCard/QuestCard';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { RewardsInterface } from 'src/types/questDetails';
 
 export const useFormatDisplayRewardsData = (
   customInformation?: CustomInformation,

@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef } from 'react';
+import { FC, useMemo } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
@@ -12,7 +12,6 @@ import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainTy
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
 
 interface PerksCardProps {
   perk: PerksDataAttributes;
@@ -24,42 +23,34 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   const activeAccount = useActiveAccountByChainType();
   const { t } = useTranslation();
   const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
-  const levelBadgeRef = useRef<HTMLElement>(null);
 
   const isLocked = useMemo(() => {
     const currentLevel = Number(level ?? 0);
     return unlockLevel > currentLevel;
   }, [unlockLevel, level]);
 
-  const levelBadgeProps = useMemo(() => {
-    if (isLocked) {
-      return {
-        startIcon: <LockIcon />,
-        label: t('profile_page.levelWithValue', { level: unlockLevel }),
-        variant: BadgeVariant.Alpha,
-      };
-    }
-
-    return {
-      startIcon: <LockOpenIcon />,
-      label: t('profile_page.unlocked'),
-      variant: BadgeVariant.Success,
-    };
-  }, [unlockLevel, isLocked, t]);
-
   // @TODO show loading badge if isLoading is true
   const levelBadge = useMemo(() => {
-    return (
-      <span ref={levelBadgeRef}>
+    if (isLocked) {
+      return (
         <Badge
-          startIcon={levelBadgeProps.startIcon}
-          label={levelBadgeProps.label}
-          variant={levelBadgeProps.variant}
+          startIcon={<LockIcon />}
+          label={t('profile_page.levelWithValue', { level: unlockLevel })}
+          variant={BadgeVariant.Alpha}
           size={BadgeSize.LG}
         />
-      </span>
+      );
+    }
+
+    return (
+      <Badge
+        startIcon={<LockOpenIcon />}
+        label={t('profile_page.unlocked')}
+        variant={BadgeVariant.Success}
+        size={BadgeSize.LG}
+      />
     );
-  }, [levelBadgeProps]);
+  }, [unlockLevel, isLocked, t]);
 
   const perksBadge = useMemo(() => {
     return perkItems.map((perkItem, index) => (
@@ -88,49 +79,18 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     />
   );
 
-  if (href && !isLocked) {
-    return (
-      <Link
-        href={href}
-        target="_blank"
-        sx={{
-          textDecoration: 'none',
-          width: 'auto',
-        }}
-      >
-        {perkCard}
-      </Link>
-    );
-  }
-
-  // @Note if it's a recurring use case of having the tooltip on disabled state, we can move it to the PerksCard component
-  return (
-    <Tooltip
-      title={t('profile_page.tooltips.unlockAtLevel', {
-        level: unlockLevel,
-      })}
-      arrow
-      placement="top"
-      enterDelay={100}
-      disableTouchListener={false}
-      enterTouchDelay={0}
-      leaveTouchDelay={2000}
-      slotProps={{
-        popper: {
-          anchorEl: levelBadgeRef.current,
-        },
-        tooltip: {
-          sx: {
-            color: (theme) => (theme.vars || theme).palette.textPrimaryInverted,
-            backgroundColor: (theme) => (theme.vars || theme).palette.grey[900],
-            '& .MuiTooltip-arrow': {
-              color: (theme) => (theme.vars || theme).palette.grey[900],
-            },
-          },
-        },
+  return href && !isLocked ? (
+    <Link
+      href={href}
+      target="_blank"
+      sx={{
+        textDecoration: 'none',
+        width: 'auto',
       }}
     >
-      <span>{perkCard}</span>
-    </Tooltip>
+      {perkCard}
+    </Link>
+  ) : (
+    perkCard
   );
 };
