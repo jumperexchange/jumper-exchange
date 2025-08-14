@@ -16,7 +16,6 @@ interface LabelButtonProps {
   isActive?: boolean;
   isLoading?: boolean;
   id?: string;
-  'data-testid'?: string;
 }
 
 export const LabelButton: FC<LabelButtonProps> = ({
@@ -28,10 +27,9 @@ export const LabelButton: FC<LabelButtonProps> = ({
   isLoading,
   id,
   onClick,
-  'data-testid': dataTestId,
 }) => {
   const button = (
-    <NavbarButton isActive={isActive} id={id} onClick={onClick} data-testid={dataTestId}>
+    <NavbarButton isActive={isActive} id={id} onClick={onClick}>
       <NavbarButtonContentContainer>
         {icon}
         {isLoading ? (

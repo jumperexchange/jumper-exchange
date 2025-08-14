@@ -30,12 +30,6 @@ export async function checkSocialNetworkIcons(page, networks: string[]) {
     await expect(socialNetworkIcon).toBeEnabled();
   }
 }
-export async function checkTabsInHeader(page) {
-  const missionTab = await page.locator('data-testid=navbar-missions-button');
-  const exchangeTab = await page.locator('data-testid=navbar-exchange-button');
-  expect(missionTab).toBeVisible();
-  expect(exchangeTab).toBeVisible();
-}
 
 export async function sectionOnTheBlogPage(page, selectors: string[]) {
   for (const selector of selectors) {

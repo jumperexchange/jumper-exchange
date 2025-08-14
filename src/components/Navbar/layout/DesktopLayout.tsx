@@ -6,7 +6,6 @@ import { useMainLinks } from '../hooks';
 import { LabelButton } from '../components/Buttons/LabelButton';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import { LayoutVariantProps } from './Layout.types';
-import { AppPaths } from '@/const/urls';
 
 export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();
@@ -19,7 +18,6 @@ export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
             isActive={activeLink?.value === link.value}
             key={link.value}
             href={link.value}
-            data-testid={link.testId}
             label={
               <Box component="span" sx={{ paddingX: 1.5 }}>
                 {link.label}
