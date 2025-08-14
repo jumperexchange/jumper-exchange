@@ -6,12 +6,6 @@ import { AchievementsCard } from './AchievementsCard';
 import { useAchievementsInfinite } from 'src/hooks/achievements/useAchievementsInfinite';
 import { NoDataPlaceholder } from '../NoDataPlaceholder/NoDataPlaceholder';
 import { useTranslation } from 'react-i18next';
-import { PDA } from 'src/types/loyaltyPass';
-
-const hasValidReward = (
-  pda: any,
-): pda is PDA & { reward: NonNullable<PDA['reward']> } =>
-  pda != null && pda.reward != null;
 
 export const AchievementsList = () => {
   const { walletAddress, isLoading: isWalletLoading } =
@@ -22,8 +16,7 @@ export const AchievementsList = () => {
 
   const { t } = useTranslation();
 
-  const pdas =
-    data?.pages.flatMap((page) => page.data).filter(hasValidReward) || [];
+  const pdas = data?.pages.flatMap((page) => page.data) || [];
 
   if (!pdas.length) {
     const entityTranslation = t(
