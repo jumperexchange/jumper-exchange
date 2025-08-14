@@ -117,6 +117,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       leaveTouchDelay={2000}
       slotProps={{
         popper: {
+          disablePortal: true,
           anchorEl: levelBadgeRef.current,
         },
         tooltip: {
