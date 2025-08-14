@@ -27,7 +27,9 @@ export const MissionTask: FC<MissionTaskProps> = ({
 }) => {
   const { taskId, title, taskType, description, shouldVerify, isVerified } =
     useFormatDisplayTaskData(task);
-  const { currentActiveTaskId } = useMissionStore();
+  const currentActiveTaskId = useMissionStore(
+    (state) => state.currentActiveTaskId,
+  );
   const isActive = currentActiveTaskId === taskId;
   const shouldAnimationRun = useRef(false);
 
