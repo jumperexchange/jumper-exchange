@@ -55,6 +55,5 @@ export enum AppPaths {
   Bridge = JUMPER_BRIDGE_PATH,
   Swap = JUMPER_SWAP_PATH,
   Tx = JUMPER_TX_PATH,
-  Wallet = JUMPER_WALLET_PATH,
   Leaderboard = JUMPER_LEADERBOARD_PATH,
 }

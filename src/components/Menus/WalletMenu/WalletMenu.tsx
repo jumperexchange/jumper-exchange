@@ -10,7 +10,11 @@ import { CustomDrawer } from '.';
 import { WalletCard } from './WalletCard';
 import { WalletButton } from './WalletMenu.style';
 
-export const WalletMenu = () => {
+interface WalletMenuProps {
+  anchorEl?: HTMLAnchorElement;
+}
+
+export const WalletMenu = ({ anchorEl }: WalletMenuProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { accounts } = useAccount();
@@ -64,9 +68,9 @@ export const WalletMenu = () => {
         >
           <CloseIcon />
         </IconButton>
-        <WalletButton
+        <WalletButton 
           id="connect-another-wallet-button"
-          sx={{ width: 'auto' }}
+          sx={{ width: 'auto' }} 
           onClick={handleOpenWalletMenu}
         >
           <Typography
