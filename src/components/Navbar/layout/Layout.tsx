@@ -11,12 +11,16 @@ import { MobileLayout } from './MobileLayout';
 import { WalletMenu } from 'src/components/Menus/WalletMenu';
 import { WalletButtons } from '../components/Buttons/WalletButtons';
 
-export const Layout = () => {
+interface LayoutProps {
+  hideConnectButton: boolean;
+}
+
+export const Layout = ({ hideConnectButton }: LayoutProps) => {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-  const secondaryButtons = (
+  const secondaryButtons = !hideConnectButton && (
     <Box display="flex" flexDirection="row" gap={1}>
-      <WalletButtons />
+      {!hideConnectButton && <WalletButtons />}
     </Box>
   );
 
