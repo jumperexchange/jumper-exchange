@@ -5,7 +5,7 @@ import {
   MultichainSmartAccount,
   toMultichainNexusAccount,
 } from '@biconomy/abstractjs';
-import { createWalletClient, custom, http } from 'viem';
+import { createWalletClient, custom, http, publicActions } from 'viem';
 import { chains } from '../../const/chains/chains';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { retryWithBackoff } from 'src/utils/retryWithBackoff';
@@ -270,11 +270,16 @@ export const useBiconomyClientsStore =
                 transport: custom(provider, { key: 'jumper-custom-zap' }),
               }),
               chains: [currentChain, depositChain],
-              transports: [
-                custom(provider, { key: 'jumper-custom-zap' }),
-                custom(provider, { key: 'jumper-custom-zap' }),
-              ],
+              transports: [http(), http()],
               ...BICONOMY_CONFIG,
+            });
+
+            oNexusInit.deployments.forEach((deployment) => {
+              deployment.walletClient = createWalletClient({
+                account: deployment.walletClient.account.address as EVMAddress,
+                chain: deployment.walletClient.chain,
+                transport: custom(provider, { key: 'jumper-custom-zap' }),
+              }).extend(publicActions);
             });
 
             const meeClientInit = await createMeeClient({
