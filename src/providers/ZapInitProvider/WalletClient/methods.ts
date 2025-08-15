@@ -339,7 +339,7 @@ export const waitForCallsStatus = async (
     );
   }
 
-  const { id, timeout = 60000 } = args;
+  const { id, timeout = 300000 } = args;
 
   const originalId = id.replace(
     BICONOMY_TRANSACTION_HASH_SUFFIX,
@@ -349,6 +349,7 @@ export const waitForCallsStatus = async (
   try {
     // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
     // We'll use the timeout to set a maximum wait time
+    console.warn('Waiting for calls status with id', originalId);
     const receipt = (await Promise.race([
       meeClientParam!.waitForSupertransactionReceipt({
         hash: originalId,
@@ -366,6 +367,7 @@ export const waitForCallsStatus = async (
       ),
     ])) as WaitForSupertransactionReceiptPayload;
 
+    console.warn('receipt received:', receipt);
     return processTransactionReceipt(receipt, id, extraParams);
   } catch (error) {
     console.error('🔍 waitForCallsStatus error for id', id, error);
