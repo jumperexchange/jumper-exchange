@@ -7,6 +7,7 @@ import type {
   TagAttributes,
 } from '@/types/strapi';
 import { LearnPageClient } from './LearnPageClient';
+import Box from '@mui/material/Box';
 
 interface LearnPageProps {
   carouselArticles: StrapiResponse<BlogArticleData>;
@@ -20,7 +21,15 @@ const LearnPage = ({
   tags,
 }: LearnPageProps) => {
   return (
-    <div className="learn-page">
+    <Box
+      className="learn-page"
+      sx={{
+        paddingBottom: {
+          xs: 12,
+          md: 0,
+        },
+      }}
+    >
       {featuredArticle && (
         <FeaturedArticle
           featuredArticle={featuredArticle}
@@ -30,7 +39,7 @@ const LearnPage = ({
         />
       )}
       <LearnPageClient carouselArticles={carouselArticles} tags={tags} />
-    </div>
+    </Box>
   );
 };
 
