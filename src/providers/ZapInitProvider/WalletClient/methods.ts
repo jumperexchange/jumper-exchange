@@ -1,6 +1,7 @@
 import {
   getChain,
   GetFusionQuoteParams,
+  getMeeScanLink,
   GetSupertransactionReceiptPayload,
   MeeClient,
   MultichainSmartAccount,
@@ -24,10 +25,6 @@ import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
 import { TransactionReceipt, WalletCallReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
-import {
-  BICONOMY_EXPLORER_TX_PATH,
-  BICONOMY_EXPLORER_URL,
-} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 import { findChain } from 'src/utils/chains/findChain';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
@@ -45,7 +42,7 @@ const getFormattedTransactionHash = (hash: string) =>
 // Helper function used for both getCallsStatus and waitForCallsStatus
 const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
-  hash: string,
+  hash: EVMAddress,
   extraParams: SendCallsExtraParams,
 ) => {
   if (!receipt) {
@@ -57,7 +54,7 @@ const processTransactionReceipt = (
       receipts: [
         {
           transactionHash: getFormattedTransactionHash(hash),
-          transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${hash}`,
+          transactionLink: getMeeScanLink(hash),
         } as ExtendedTransactionReceipt,
       ],
     };
