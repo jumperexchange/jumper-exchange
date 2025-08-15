@@ -201,6 +201,9 @@
     "achievements": "",
     "unlocked": "",
     "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
       "description": "",
       "caption": "",
