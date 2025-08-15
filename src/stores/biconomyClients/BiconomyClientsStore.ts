@@ -245,6 +245,9 @@ export const useBiconomyClientsStore =
         const clientClients = get().clientsMap.get(clientKey);
         const existingClients = clientClients?.get(chainKey);
         if (existingClients) {
+          console.log(
+            `Existing clients found, returning them for ${clientKey}-${chainKey}`,
+          );
           return existingClients;
         }
 
@@ -292,7 +295,9 @@ export const useBiconomyClientsStore =
 
           const clients = { meeClient, oNexus };
 
-          console.log('Initialised Biconomy clients, setting state');
+          console.log(
+            `Initialised Biconomy clients, setting state for ${clientKey}-${chainKey}`,
+          );
 
           set((state) => {
             // Create new Map to ensure state change detection

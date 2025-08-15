@@ -216,58 +216,58 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   });
 
   // RPC operation queueing
-  const queueOperation = useCallback(
-    async <T extends WalletMethod>(
-      operationName: T,
-      args: WalletMethodArgsType<T>,
-      extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
-    ): Promise<ReturnType<WalletMethodsRef[T]>> => {
-      const operation = walletMethods[operationName] as
-        | WalletMethodsRef[T]
-        | undefined;
+  const queueOperation = async <T extends WalletMethod>(
+    operationName: T,
+    args: WalletMethodArgsType<T>,
+    extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
+  ): Promise<ReturnType<WalletMethodsRef[T]>> => {
+    const operation = walletMethods[operationName] as
+      | WalletMethodsRef[T]
+      | undefined;
 
-      if (!operation) {
-        throw new Error(`Operation ${operationName} not found`);
-      }
+    if (!operation) {
+      throw new Error(`Operation ${operationName} not found`);
+    }
 
-      let biconomyClients: BiconomyClients | null = null;
-      const actualCurrentRoute = getCurrentRoute();
+    let biconomyClients: BiconomyClients | null = null;
+    const actualCurrentRoute = getCurrentRoute();
 
-      try {
-        const clients = await initializeClients({
-          address: actualCurrentRoute?.fromAddress as EVMAddress,
-          chainId: actualCurrentRoute?.fromChainId,
-          projectAddress: extraParams.projectData.address as EVMAddress,
-          projectChainId: extraParams.projectData.chainId,
-        });
-
-        biconomyClients = clients.biconomyClients;
-      } catch (error) {
-        console.error('Failed to initialize clients:', error);
-      }
-
-      const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
-
-      // Skip this for wallet_getCapabilities method
-      // Queue the operation if either the biconomy clients are not initialized or the current route is not set
-      if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
-        return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
-          addPendingOperation(operationName, args, resolve, reject);
-        });
-      }
-
-      return (
-        operation as WalletMethodDefinition<
-          WalletMethodArgsType<T>,
-          Awaited<WalletMethodReturnType<T>>
-        >
-      )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
-        ...extraParams,
-        currentRoute: actualCurrentRoute,
+    try {
+      const clients = await initializeClients({
+        address: actualCurrentRoute?.fromAddress as EVMAddress,
+        chainId: actualCurrentRoute?.fromChainId,
+        projectAddress: extraParams.projectData.address as EVMAddress,
+        projectChainId: extraParams.projectData.chainId,
       });
-    },
-    [initializeClients, getCurrentRoute],
-  );
+
+      biconomyClients = clients.biconomyClients;
+    } catch (error) {
+      console.error(
+        'Failed to initialize clients inside queueOperation:',
+        error,
+      );
+    }
+
+    const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
+
+    // Skip this for wallet_getCapabilities method
+    // Queue the operation if either the biconomy clients are not initialized or the current route is not set
+    if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
+      return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
+        addPendingOperation(operationName, args, resolve, reject);
+      });
+    }
+
+    return (
+      operation as WalletMethodDefinition<
+        WalletMethodArgsType<T>,
+        Awaited<WalletMethodReturnType<T>>
+      >
+    )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
+      ...extraParams,
+      currentRoute: actualCurrentRoute,
+    });
+  };
 
   // Execute pending operations when clients are ready
   useEffect(() => {
@@ -295,7 +295,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
         biconomyClients = clients.biconomyClients;
       } catch (error) {
-        console.error('Failed to initialize clients:', error);
+        console.error(
+          'Failed to initialize clients inside executePendingOperations:',
+          error,
+        );
       }
 
       // Execute all pending operations sequentially
