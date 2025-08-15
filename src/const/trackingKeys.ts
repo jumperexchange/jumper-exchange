@@ -32,6 +32,13 @@ export enum TrackingAction {
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
 
+  // Zap Widget
+  OnSourceChainAndTokenSelectionZap = 'action_on_source_selection_zap',
+  OnAvailableRoutesZap = 'action_available_routes_zap',
+  OnRouteExecutionStartedZap = 'action_on_route_exec_started_zap',
+  OnRouteExecutionCompletedZap = 'action_on_route_exec_completed_zap',
+  OnRouteExecutionFailedZap = 'action_on_route_exec_failed_zap',
+
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
