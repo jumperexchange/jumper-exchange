@@ -47,20 +47,6 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     };
   }, [unlockLevel, isLocked, t]);
 
-  // @TODO show loading badge if isLoading is true
-  const levelBadge = useMemo(() => {
-    return (
-      <span ref={levelBadgeRef}>
-        <Badge
-          startIcon={levelBadgeProps.startIcon}
-          label={levelBadgeProps.label}
-          variant={levelBadgeProps.variant}
-          size={BadgeSize.LG}
-        />
-      </span>
-    );
-  }, [levelBadgeProps]);
-
   const perksBadge = useMemo(() => {
     return perkItems.map((perkItem, index) => (
       <Badge
@@ -81,7 +67,16 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       title={title}
       description={description}
       imageUrl={imageUrl}
-      levelBadge={levelBadge}
+      levelBadge={
+        <span ref={levelBadgeRef}>
+          <Badge
+            startIcon={levelBadgeProps.startIcon}
+            label={levelBadgeProps.label}
+            variant={levelBadgeProps.variant}
+            size={BadgeSize.LG}
+          />
+        </span>
+      }
       perksBadge={perksBadge}
       fullWidth
       isDisabled={isLocked}
