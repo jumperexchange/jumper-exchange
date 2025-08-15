@@ -201,6 +201,9 @@
     "achievements": "Achievements",
     "unlocked": "Unlocked",
     "levelWithValue": "Level {{level}}",
+    "tooltips": {
+      "unlockAtLevel": "Unlocked at Level {{level}}"
+    },
     "noData": {
       "description": "No {{entity}} yet? Let's change that!",
       "caption": "Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.",
