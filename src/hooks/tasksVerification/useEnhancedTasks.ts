@@ -30,9 +30,14 @@ export const useEnhancedTasks = (
     setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
-    currentActiveTaskId,
-    isCurrentActiveTaskCompleted,
   } = useMissionStore();
+
+  const currentActiveTaskId = useMissionStore(
+    (state) => state.currentActiveTaskId,
+  );
+  const isCurrentActiveTaskCompleted = useMissionStore(
+    (state) => state.isCurrentActiveTaskCompleted,
+  );
 
   const checkIsTaskVerified = useCallback(
     (task: TaskVerificationWithApy) => {
