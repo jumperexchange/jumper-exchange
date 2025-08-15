@@ -46,7 +46,7 @@ export const ClientNavbar = () => {
           variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
         />
       </LogoLinkWrapper>
-      <Layout hideConnectButton={isLearnPage} />
+      <Layout />
     </NavbarContainer>
   );
 };

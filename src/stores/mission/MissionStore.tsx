@@ -83,6 +83,8 @@ interface MissionState {
     missionId?: string,
     missionType?: string,
   ) => void;
+
+  resetCurrentActiveTask: () => void;
 }
 
 export const useMissionStore = createWithEqualityFn<MissionState>(
@@ -135,6 +137,14 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         missionChainIds,
         missionId,
         missionType,
+      }),
+
+    resetCurrentActiveTask: () =>
+      set({
+        currentActiveTaskId: undefined,
+        currentActiveTaskType: undefined,
+        currentActiveTaskName: undefined,
+        isCurrentActiveTaskCompleted: false,
       }),
   }),
   Object.is,
