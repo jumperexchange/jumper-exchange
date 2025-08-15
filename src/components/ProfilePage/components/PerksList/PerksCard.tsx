@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef } from 'react';
+import { FC, useMemo, useState } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
@@ -24,7 +24,8 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   const activeAccount = useActiveAccountByChainType();
   const { t } = useTranslation();
   const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
-  const levelBadgeRef = useRef<HTMLElement>(null);
+  const [levelBadgeElement, setLevelBadgeElement] =
+    useState<HTMLSpanElement | null>(null);
 
   const isLocked = useMemo(() => {
     const currentLevel = Number(level ?? 0);
@@ -68,7 +69,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       description={description}
       imageUrl={imageUrl}
       levelBadge={
-        <span ref={levelBadgeRef}>
+        <span ref={setLevelBadgeElement}>
           <Badge
             startIcon={levelBadgeProps.startIcon}
             label={levelBadgeProps.label}
@@ -112,7 +113,10 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       leaveTouchDelay={2000}
       slotProps={{
         popper: {
-          anchorEl: levelBadgeRef.current,
+          anchorEl: levelBadgeElement,
+          sx: {
+            marginBottom: '-11px !important',
+          },
         },
         tooltip: {
           sx: {
