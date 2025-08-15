@@ -3,7 +3,7 @@ import { EVMAddress } from 'src/types/internal';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { Account, useAccount } from '@lifi/wallet-management';
-import { ChainType } from '@lifi/sdk';
+import { ChainId, ChainType } from '@lifi/sdk';
 
 interface WalletClientParams {
   address?: EVMAddress;
@@ -23,7 +23,7 @@ const validateAccountChainType = (account: Account) => {
   return !account.chainType || account.chainType === ChainType.EVM;
 };
 
-export const useWalletClientInitialization = () => {
+export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const wagmiConfig = useConfig();
   const { getClients } = useBiconomyClientsStore();
   const { account } = useAccount();
@@ -46,6 +46,10 @@ export const useWalletClientInitialization = () => {
       try {
         if (!validateAccountChainType(account)) {
           throw new Error('Account is not an EVM account');
+        }
+
+        if (chainId && !allowedChains.includes(chainId)) {
+          throw new Error('Chain is not allowed');
         }
 
         console.warn(
@@ -93,6 +97,7 @@ export const useWalletClientInitialization = () => {
       walletClient?.account.address,
       walletClient?.chain?.id,
       account,
+      allowedChains,
     ],
   );
 
