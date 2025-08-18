@@ -349,7 +349,7 @@ export const waitForCallsStatus = async (
   try {
     // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
     // We'll use the timeout to set a maximum wait time
-    console.warn('Waiting for calls status with id', originalId);
+    console.log('Waiting for calls status with id', originalId);
     const receipt = (await Promise.race([
       meeClientParam!.waitForSupertransactionReceipt({
         hash: originalId,
