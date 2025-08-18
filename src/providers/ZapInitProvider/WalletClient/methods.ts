@@ -367,7 +367,7 @@ export const waitForCallsStatus = async (
       ),
     ])) as WaitForSupertransactionReceiptPayload;
 
-    console.warn('receipt received:', receipt);
+    console.log('receipt received:', receipt);
     return processTransactionReceipt(receipt, id, extraParams);
   } catch (error) {
     console.error('🔍 waitForCallsStatus error for id', id, error);
