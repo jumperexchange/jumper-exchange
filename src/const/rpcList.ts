@@ -30,3 +30,8 @@ export const publicRPCList = {
   '42161': shuffleArray(arbRPCList),
   '8453': shuffleArray(basRPCList),
 };
+
+export const mergedRPCList = {
+  ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? {}),
+  ...publicRPCList,
+};
