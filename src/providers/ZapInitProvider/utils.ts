@@ -1,11 +1,38 @@
 import { MultichainSmartAccount } from '@biconomy/abstractjs';
-import { Token } from '@lifi/sdk';
+import { ChainId, Token } from '@lifi/sdk';
 import { ContractComposableConfig } from './types';
+import { EVMAddress } from 'src/types/internal';
+import { AbiFunction, encodeFunctionData } from 'viem';
+import { abiNumericTypes } from './constants';
 
 export const buildContractComposable = async (
   oNexus: MultichainSmartAccount,
   contractConfig: ContractComposableConfig,
 ) => {
+  let usedGasLimit = contractConfig.gasLimit;
+
+  try {
+    usedGasLimit = await getGasLimitEstimate({
+      oNexus,
+      chainId: contractConfig.chainId,
+      to: contractConfig.address as EVMAddress,
+      abiFunction: contractConfig.abi,
+      functionName: contractConfig.functionName,
+      args: contractConfig.abi.inputs.map((abiInput, index) => {
+        // Due to the runtimeERC20BalanceOf function, the args are objects
+        // We need to convert them to 0n
+        if (
+          abiNumericTypes.includes(abiInput.type) &&
+          typeof contractConfig.args[index] === 'object'
+        ) {
+          return 0n;
+        }
+        return contractConfig.args[index];
+      }),
+    });
+    console.warn('Using estimated gas limit', usedGasLimit);
+  } catch {}
+
   return oNexus.buildComposable({
     type: 'default',
     data: {
@@ -13,7 +40,7 @@ export const buildContractComposable = async (
       to: contractConfig.address as `0x${string}`,
       chainId: contractConfig.chainId,
       functionName: contractConfig.functionName,
-      gasLimit: contractConfig.gasLimit,
+      gasLimit: usedGasLimit,
       args: contractConfig.args,
     },
   });
@@ -21,4 +48,37 @@ export const buildContractComposable = async (
 
 export const isSameToken = (a: Token, b: Token) => {
   return a.address === b.address && a.chainId === b.chainId;
+};
+
+export const getGasLimitEstimate = async ({
+  oNexus,
+  to,
+  chainId,
+  args,
+  abiFunction,
+  functionName,
+}: {
+  oNexus: MultichainSmartAccount;
+  to: EVMAddress;
+  chainId: ChainId;
+  abiFunction: AbiFunction;
+  functionName: string;
+  args: any[];
+}) => {
+  const deployment = oNexus.deploymentOn(chainId, true);
+  const data = encodeFunctionData({
+    abi: [abiFunction],
+    functionName,
+    args,
+  });
+  const gasLimit = await deployment.publicClient.estimateGas({
+    account: oNexus.addressOn(chainId, true) as EVMAddress,
+    to,
+    data,
+  });
+
+  // Add 20% buffer to the gas limit
+  const gasLimitWithBuffer = (gasLimit * 120n) / 100n;
+
+  return gasLimitWithBuffer;
 };
