@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import { EVMAddress } from 'src/types/internal';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
-import { useAccount } from '@lifi/wallet-management';
+import { Account, useAccount } from '@lifi/wallet-management';
+import { ChainId, ChainType } from '@lifi/sdk';
 
 interface WalletClientParams {
   address?: EVMAddress;
@@ -11,7 +12,18 @@ interface WalletClientParams {
   projectChainId: number;
 }
 
-export const useWalletClientInitialization = () => {
+const getEVMProvider = async (connector: any) => {
+  if (connector && 'getProvider' in connector) {
+    return await connector.getProvider();
+  }
+  return window.ethereum;
+};
+
+const validateAccountChainType = (account: Account) => {
+  return !account.chainType || account.chainType === ChainType.EVM;
+};
+
+export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const wagmiConfig = useConfig();
   const { getClients } = useBiconomyClientsStore();
   const { account } = useAccount();
@@ -32,10 +44,24 @@ export const useWalletClientInitialization = () => {
       projectChainId,
     }: WalletClientParams) => {
       try {
+        if (!validateAccountChainType(account)) {
+          throw new Error('Account is not an EVM account');
+        }
+
+        if (chainId && !allowedChains.includes(chainId)) {
+          throw new Error('Chain is not allowed');
+        }
+
         console.warn(
           'initializeClients based on these wallet client values',
+          'walletClient chain:',
           walletClient?.chain?.id,
+          'walletClient address:',
           walletClient?.account.address,
+          'priority address:',
+          address,
+          'priority chainId:',
+          chainId,
         );
 
         if (
@@ -49,11 +75,14 @@ export const useWalletClientInitialization = () => {
           );
         }
 
+        const provider = await getEVMProvider(account.connector);
+
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
           projectAddress,
           projectChainId,
           walletClient,
+          provider,
           chainId,
         );
 
@@ -63,7 +92,13 @@ export const useWalletClientInitialization = () => {
         return { walletClient: null, biconomyClients: null };
       }
     },
-    [wagmiConfig, walletClient?.account.address, walletClient?.chain?.id],
+    [
+      wagmiConfig,
+      walletClient?.account.address,
+      walletClient?.chain?.id,
+      account,
+      allowedChains,
+    ],
   );
 
   return { initializeClients };

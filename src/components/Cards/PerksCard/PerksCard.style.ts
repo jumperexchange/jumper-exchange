@@ -30,7 +30,6 @@ export const PerksCardContainer = styled(Card, {
       style: {
         opacity: 0.5,
         cursor: 'not-allowed !important',
-        pointerEvents: 'none',
       },
     },
   ],
