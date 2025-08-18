@@ -232,19 +232,29 @@ export const sendCalls = async (
   const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
   const requestedAmount = BigInt(currentRouteFromAmount);
 
+  const cleanUps = [
+    {
+      tokenAddress: depositToken,
+      chainId: depositChainId,
+      recipientAddress: currentAddress as EVMAddress,
+    },
+  ];
+
+  if (!isSameTokenDeposit) {
+    cleanUps.unshift({
+      tokenAddress: currentRouteFromToken.address as EVMAddress,
+      chainId: currentChainId,
+      recipientAddress: currentAddress as EVMAddress,
+    });
+  }
+
   const fusionQuoteParams: GetFusionQuoteParams = {
     trigger: {
       tokenAddress: currentRouteFromToken.address as EVMAddress,
       amount: requestedAmount,
       chainId: currentChainId,
     },
-    cleanUps: [
-      {
-        tokenAddress: depositToken,
-        chainId: depositChainId,
-        recipientAddress: currentAddress as EVMAddress,
-      },
-    ],
+    cleanUps,
     feeToken: {
       address: currentRouteFromToken.address as EVMAddress,
       chainId: currentChainId,
