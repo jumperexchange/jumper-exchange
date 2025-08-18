@@ -84,7 +84,7 @@ export const useMainLinks = () => {
       {
         value: AppPaths.Missions,
         label: t('navbar.links.missions'),
-        subLinks: [AppPaths.Campaign],
+        subLinks: [AppPaths.Missions, AppPaths.Campaign, AppPaths.Zap],
         testId: 'navbar-missions-button',
       },
     ];
