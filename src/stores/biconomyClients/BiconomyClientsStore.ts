@@ -11,7 +11,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 import { UseWalletClientReturnType } from 'wagmi';
 import { EVMAddress } from 'src/types/internal';
-import { mergedRPCList } from 'src/const/rpcList';
+import { getShuffledRPCForChain } from 'src/utils/rpc/getShuffledRPCForChain';
 
 export type BiconomyClients = {
   meeClient: MeeClient;
@@ -267,15 +267,16 @@ export const useBiconomyClientsStore =
         // Initialize new clients
         try {
           const usedChains = [currentChain, depositChain];
-
-          const chainsConfig = {
-            chains: usedChains,
-            transports: usedChains.map((chain) =>
-              http(mergedRPCList[chain.id]?.[0]),
-            ),
-          };
-
           const { oNexus, meeClient } = await retryWithBackoff(async () => {
+            const chainsConfig = {
+              chains: usedChains,
+              transports: usedChains.map((chain) => {
+                const rpcUrl = getShuffledRPCForChain(chain.id);
+                console.warn(`Using RPC ${rpcUrl} for chain ${chain.id}`);
+                return http(rpcUrl || undefined);
+              }),
+            };
+
             const oNexusInit = await toMultichainNexusAccount({
               signer: createWalletClient({
                 account: walletClient.account.address as EVMAddress,
