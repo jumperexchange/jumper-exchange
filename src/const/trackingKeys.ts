@@ -101,6 +101,15 @@ export enum TrackingAction {
   ClickCampaignBanner = 'action_click_campaign_banner',
 }
 
+export enum TrackingEventDataAction {
+  ExecutionStart = 'execution_start',
+  ExecutionCompleted = 'execution_completed',
+  ExecutionFailed = 'execution_failed',
+  ExecutionStartZap = 'execution_start_zap',
+  ExecutionCompletedZap = 'execution_completed_zap',
+  ExecutionFailedZap = 'execution_failed_zap',
+}
+
 export enum TrackingCategory {
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',

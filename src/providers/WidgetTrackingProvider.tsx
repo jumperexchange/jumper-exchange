@@ -19,6 +19,7 @@ import {
   TrackingCategory,
   TrackingAction,
   TrackingEventParameter,
+  TrackingEventDataAction,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { TransformedRoute } from 'src/types/internal';
@@ -54,6 +55,11 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionCompleted: TrackingAction;
     routeExecutionFailed: TrackingAction;
   };
+  trackingDataActionKeys?: {
+    routeExecutionStarted: TrackingEventDataAction;
+    routeExecutionCompleted: TrackingEventDataAction;
+    routeExecutionFailed: TrackingEventDataAction;
+  };
 }
 
 export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
@@ -65,6 +71,11 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
     routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
     routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
+  },
+  trackingDataActionKeys = {
+    routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
+    routeExecutionCompleted: TrackingEventDataAction.ExecutionCompletedZap,
+    routeExecutionFailed: TrackingEventDataAction.ExecutionFailedZap,
   },
 }) => {
   const { trackTransaction, trackEvent } = useUserTracking();
@@ -162,14 +173,19 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           action: trackingActionKeys.routeExecutionStarted,
           label: 'execution_start',
           data: handleRouteData(route, {
-            [TrackingEventParameter.Action]: 'execution_start',
+            [TrackingEventParameter.Action]:
+              trackingDataActionKeys.routeExecutionStarted,
             [TrackingEventParameter.TransactionStatus]: 'STARTED',
           }),
           enableAddressable: true,
         });
       }
     },
-    [trackTransaction, trackingActionKeys.routeExecutionStarted],
+    [
+      trackTransaction,
+      trackingActionKeys.routeExecutionStarted,
+      trackingDataActionKeys.routeExecutionStarted,
+    ],
   );
 
   const trackRouteExecutionCompleted = useCallback(
@@ -179,14 +195,19 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         action: trackingActionKeys.routeExecutionCompleted,
         label: 'execution_success',
         data: handleRouteData(route, {
-          [TrackingEventParameter.Action]: 'execution_completed',
+          [TrackingEventParameter.Action]:
+            trackingDataActionKeys.routeExecutionCompleted,
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
         }),
         enableAddressable: true,
         isConversion: true,
       });
     },
-    [trackTransaction, trackingActionKeys.routeExecutionCompleted],
+    [
+      trackTransaction,
+      trackingActionKeys.routeExecutionCompleted,
+      trackingDataActionKeys.routeExecutionCompleted,
+    ],
   );
 
   const trackRouteExecutionFailed = useCallback(
@@ -196,7 +217,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         action: trackingActionKeys.routeExecutionFailed,
         label: 'execution_error',
         data: handleRouteData(update.route, {
-          [TrackingEventParameter.Action]: 'execution_failed',
+          [TrackingEventParameter.Action]:
+            trackingDataActionKeys.routeExecutionFailed,
           [TrackingEventParameter.TransactionStatus]: 'FAILED',
           [TrackingEventParameter.Message]: update.process.message || '',
           [TrackingEventParameter.IsFinal]: true,
@@ -204,7 +226,11 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         enableAddressable: true,
       });
     },
-    [trackTransaction, trackingActionKeys.routeExecutionFailed],
+    [
+      trackTransaction,
+      trackingActionKeys.routeExecutionFailed,
+      trackingDataActionKeys.routeExecutionFailed,
+    ],
   );
 
   const setDestinationChainTokenForTracking = useCallback(
