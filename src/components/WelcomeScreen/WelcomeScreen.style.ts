@@ -7,7 +7,11 @@ import { ButtonPrimary } from '../Button';
  * more welcome-screen styles to be found in Widget.style.tsx + Widgets.style.tsx
  */
 
-export const DEFAULT_WELCOME_SCREEN_HEIGHT = '50vh';
+export const DEFAULT_WELCOME_SCREEN_HEIGHT = '55vh';
+export const DEFAULT_WELCOME_SCREEN_HEIGHTS = {
+  xs: '55vh',
+  md: '50vh',
+};
 
 export interface ContentWrapperProps extends BoxProps {
   showWelcome?: boolean;
@@ -27,26 +31,27 @@ export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
     pointerEvents: 'none',
     left: 0,
     right: 0,
-    background:
-      'linear-gradient(to top, #1A1033 0%, transparent 100%)',
+    background: 'linear-gradient(to top, #1A1033 0%, transparent 100%)',
     zIndex: '1000',
-    ...theme.applyStyles("light", {
-      background: 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)'
-    })
+    ...theme.applyStyles('light', {
+      background: 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
+    }),
   },
-  ...theme.applyStyles("light", {
-    background: '#F3EBFF'
-  })
+  ...theme.applyStyles('light', {
+    background: '#F3EBFF',
+  }),
 }));
 
-export const WelcomeContent = styled(Box)(() => ({
-  minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
+export const WelcomeContent = styled(Box)(({ theme }) => ({
+  minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.xs,
+  [theme.breakpoints.up('sm' as Breakpoint)]: {
+    minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,
+  },
 }));
 
 export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
   marginTop: 2,
-  color:
-    (theme.vars || theme).palette.accent1Alt.main,
+  color: (theme.vars || theme).palette.accent1Alt.main,
   '& > .link-jumper': {
     fontWeight: 700,
     color: 'inherit',
@@ -57,9 +62,9 @@ export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
     fontWeight: 400,
     lineHeight: '32px',
   },
-  ...theme.applyStyles("light", {
-    color: (theme.vars || theme).palette.primary.main
-  })
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.primary.main,
+  }),
 }));
 
 export const WelcomeScreenButton = styled(ButtonPrimary)(({ theme }) => ({

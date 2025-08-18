@@ -16,7 +16,7 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
-import { useConfig, UseReadContractsReturnType } from 'wagmi';
+import { useConfig, UseReadContractsReturnType, useSwitchChain } from 'wagmi';
 import {
   WalletMethod,
   WalletMethodsRef,
@@ -117,7 +117,42 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     (state) => state.currentRoute,
   );
 
-  const { initializeClients } = useWalletClientInitialization();
+  const allowedChains = useMemo(() => {
+    // @Note: This is a fallback for when the zap supported chains are not loaded yet
+    if (!zapSupportedChains) {
+      return [
+        ChainId.ETH,
+        ChainId.BSC,
+        ChainId.ARB,
+        ChainId.BAS,
+        ChainId.AVA,
+        ChainId.POL,
+        ChainId.SCL,
+        ChainId.OPT,
+        ChainId.DAI,
+        ChainId.UNI,
+        ChainId.SEI,
+        ChainId.SON,
+        ChainId.APE,
+        ChainId.WCC,
+        ChainId.HYP,
+        // @Note: Even though docs say they are supported, they are not retrieved from the API
+        // https://docs.biconomy.io/supportedNetworks#-supported-chains
+        // ChainId.KAT,
+        // ChainId.LSK,
+      ];
+    }
+
+    const zapSupportedChainsIds = zapSupportedChains.map(
+      (chain) => chain.chainId,
+    );
+
+    return Object.values(ChainId).filter((chainId): chainId is ChainId =>
+      zapSupportedChainsIds?.includes(chainId.toString()),
+    );
+  }, [zapSupportedChains]);
+
+  const { initializeClients } = useWalletClientInitialization(allowedChains);
 
   const initInProgressRef = useRef(false);
 
@@ -132,6 +167,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   const { account } = useAccount();
   const { address, chainId } = account;
+
+  const { switchChainAsync } = useSwitchChain();
 
   const sendCallsExtraParams = useMemo(
     () => ({
@@ -179,58 +216,58 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   });
 
   // RPC operation queueing
-  const queueOperation = useCallback(
-    async <T extends WalletMethod>(
-      operationName: T,
-      args: WalletMethodArgsType<T>,
-      extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
-    ): Promise<ReturnType<WalletMethodsRef[T]>> => {
-      const operation = walletMethods[operationName] as
-        | WalletMethodsRef[T]
-        | undefined;
+  const queueOperation = async <T extends WalletMethod>(
+    operationName: T,
+    args: WalletMethodArgsType<T>,
+    extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
+  ): Promise<ReturnType<WalletMethodsRef[T]>> => {
+    const operation = walletMethods[operationName] as
+      | WalletMethodsRef[T]
+      | undefined;
 
-      if (!operation) {
-        throw new Error(`Operation ${operationName} not found`);
-      }
+    if (!operation) {
+      throw new Error(`Operation ${operationName} not found`);
+    }
 
-      let biconomyClients: BiconomyClients | null = null;
-      const actualCurrentRoute = getCurrentRoute();
+    let biconomyClients: BiconomyClients | null = null;
+    const actualCurrentRoute = getCurrentRoute();
 
-      try {
-        const clients = await initializeClients({
-          address: actualCurrentRoute?.fromAddress as EVMAddress,
-          chainId: actualCurrentRoute?.fromChainId,
-          projectAddress: extraParams.projectData.address as EVMAddress,
-          projectChainId: extraParams.projectData.chainId,
-        });
-
-        biconomyClients = clients.biconomyClients;
-      } catch (error) {
-        console.error('Failed to initialize clients:', error);
-      }
-
-      const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
-
-      // Skip this for wallet_getCapabilities method
-      // Queue the operation if either the biconomy clients are not initialized or the current route is not set
-      if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
-        return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
-          addPendingOperation(operationName, args, resolve, reject);
-        });
-      }
-
-      return (
-        operation as WalletMethodDefinition<
-          WalletMethodArgsType<T>,
-          Awaited<WalletMethodReturnType<T>>
-        >
-      )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
-        ...extraParams,
-        currentRoute: actualCurrentRoute,
+    try {
+      const clients = await initializeClients({
+        address: actualCurrentRoute?.fromAddress as EVMAddress,
+        chainId: actualCurrentRoute?.fromChainId,
+        projectAddress: extraParams.projectData.address as EVMAddress,
+        projectChainId: extraParams.projectData.chainId,
       });
-    },
-    [initializeClients, getCurrentRoute],
-  );
+
+      biconomyClients = clients.biconomyClients;
+    } catch (error) {
+      console.error(
+        'Failed to initialize clients inside queueOperation:',
+        error,
+      );
+    }
+
+    const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
+
+    // Skip this for wallet_getCapabilities method
+    // Queue the operation if either the biconomy clients are not initialized or the current route is not set
+    if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
+      return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
+        addPendingOperation(operationName, args, resolve, reject);
+      });
+    }
+
+    return (
+      operation as WalletMethodDefinition<
+        WalletMethodArgsType<T>,
+        Awaited<WalletMethodReturnType<T>>
+      >
+    )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
+      ...extraParams,
+      currentRoute: actualCurrentRoute,
+    });
+  };
 
   // Execute pending operations when clients are ready
   useEffect(() => {
@@ -258,7 +295,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
         biconomyClients = clients.biconomyClients;
       } catch (error) {
-        console.error('Failed to initialize clients:', error);
+        console.error(
+          'Failed to initialize clients inside executePendingOperations:',
+          error,
+        );
       }
 
       // Execute all pending operations sequentially
@@ -456,40 +496,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }),
   ];
 
-  const allowedChains = useMemo(() => {
-    // @Note: This is a fallback for when the zap supported chains are not loaded yet
-    if (!zapSupportedChains) {
-      return [
-        ChainId.ETH,
-        ChainId.BSC,
-        ChainId.ARB,
-        ChainId.BAS,
-        ChainId.AVA,
-        ChainId.POL,
-        ChainId.SCL,
-        ChainId.OPT,
-        ChainId.DAI,
-        ChainId.UNI,
-        ChainId.SEI,
-        ChainId.SON,
-        ChainId.APE,
-        ChainId.WCC,
-        ChainId.HYP,
-        // @Note: Even though docs say they are supported, they are not retrieved from the API
-        // https://docs.biconomy.io/supportedNetworks#-supported-chains
-        // ChainId.KAT,
-        // ChainId.LSK,
-      ];
+  useEffect(() => {
+    if (chainId && !allowedChains.includes(chainId)) {
+      switchChainAsync({ chainId: ChainId.ETH });
     }
-
-    const zapSupportedChainsIds = zapSupportedChains.map(
-      (chain) => chain.chainId,
-    );
-
-    return Object.values(ChainId).filter((chainId): chainId is ChainId =>
-      zapSupportedChainsIds?.includes(chainId.toString()),
-    );
-  }, [zapSupportedChains]);
+  }, [chainId, allowedChains, switchChainAsync]);
 
   const value = useMemo(() => {
     return {

@@ -1,8 +1,5 @@
 import initTranslations from '@/app/i18n';
 import Background from '@/components/Background';
-import { Logo } from '@/components/Navbar/Logo/Logo';
-import { NavbarContainer } from '@/components/Navbar/Navbar.style';
-import { NavbarButtons } from '@/components/Navbar/NavbarButtons';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
 import config from '@/config/env-config';
 import { fonts } from '@/fonts/fonts';
@@ -12,13 +9,12 @@ import {
 } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
-import { Link } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import RouterLink from 'next/link';
 import Script from 'next/script';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
 import { SettingsStoreProvider } from 'src/stores/settings/SettingsStore';
+import { ServerNavbar } from 'src/components/Navbar/ServerNavbar';
 
 export default async function NotFound() {
   const { resources } = await initTranslations(fallbackLng, namespaces);
@@ -60,12 +56,7 @@ export default async function NotFound() {
                   <MUIThemeProvider>
                     <SettingsStoreProvider welcomeScreenClosed={true}>
                       <Background />
-                      <NavbarContainer enableColorOnDark>
-                        <Link component={RouterLink} href="/">
-                          <Logo variant="default" />
-                        </Link>
-                        <NavbarButtons />
-                      </NavbarContainer>
+                      <ServerNavbar />
                       <NotFoundComponent />
                     </SettingsStoreProvider>
                   </MUIThemeProvider>

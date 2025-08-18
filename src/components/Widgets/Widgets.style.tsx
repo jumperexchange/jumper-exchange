@@ -3,9 +3,14 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 import Image from 'next/image';
-import { DEFAULT_WELCOME_SCREEN_HEIGHT, WelcomeScreen } from '../WelcomeScreen';
+import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen';
 
-const GLOW_EFFECT_TOP_POSITION = '50%';
+const GLOW_EFFECT_TOP_POSITIONS = {
+  xs: '40%',
+  md: '50%',
+} as const;
+
+const GLOW_EFFECT_TOP_POSITION = '40%';
 const GLOW_EFFECT_TOP_OFFSET_POSITION = '5%';
 
 export interface WidgetContainerProps {
@@ -50,11 +55,14 @@ export const WidgetContainer = styled(Box, {
       transform: 'translate(-50%, -50%)',
       left: '50%',
       // default top position of glow-effect
-      top: GLOW_EFFECT_TOP_POSITION,
+      top: GLOW_EFFECT_TOP_POSITIONS.xs,
       opacity: !welcomeScreenClosed ? 0.24 : 0,
       ...theme.applyStyles('light', {
         opacity: !welcomeScreenClosed ? 0.12 : 0,
       }),
+      [theme.breakpoints.up('md' as Breakpoint)]: {
+        top: GLOW_EFFECT_TOP_POSITIONS.md,
+      },
       [theme.breakpoints.up('lg' as Breakpoint)]: {
         // using vh here as well to make it a circle-ish glow
         maxWidth: '90vh',
@@ -71,8 +79,12 @@ export const WidgetContainer = styled(Box, {
       {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
-          minHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
-          maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHT,
+          minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.xs,
+          maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.xs,
+          [theme.breakpoints.up('sm' as Breakpoint)]: {
+            minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,
+            maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,
+          },
         },
       },
       {
@@ -102,7 +114,10 @@ export const WidgetContainer = styled(Box, {
               opacity: 0.34,
             }),
             // adjusting top position of glow-effect while hovering for "spot-light" effect
-            top: `calc( ${GLOW_EFFECT_TOP_POSITION} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
+            top: `calc( ${GLOW_EFFECT_TOP_POSITIONS.xs} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
+            [theme.breakpoints.up('md')]: {
+              top: `calc( ${GLOW_EFFECT_TOP_POSITIONS.md} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
+            },
           },
         },
       },

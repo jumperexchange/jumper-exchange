@@ -1,26 +1,38 @@
 'use client';
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Skeleton,
-} from '@mui/material';
-
+import Box from '@mui/material/Box';
+import Card, { CardProps } from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardContent from '@mui/material/CardContent';
+import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
-export const PerksCardContainer = styled(Card)(({ theme }) => ({
+interface PerksCardContainerProps extends CardProps {
+  disabled?: boolean;
+}
+
+export const PerksCardContainer = styled(Card, {
+  shouldForwardProp: (prop) => prop !== 'disabled',
+})<PerksCardContainerProps>(({ theme }) => ({
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.borderRadius,
   backgroundColor: (theme.vars || theme).palette.surface3.main,
   overflow: 'hidden',
-  '&:hover': {
-    boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4
-  },
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
   }),
+  '&:hover': {
+    boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4
+  },
+  variants: [
+    {
+      props: ({ disabled }) => !!disabled,
+      style: {
+        opacity: 0.5,
+        cursor: 'not-allowed !important',
+      },
+    },
+  ],
 }));
 
 export const PerksCardContent = styled(CardContent)(({ theme }) => ({
