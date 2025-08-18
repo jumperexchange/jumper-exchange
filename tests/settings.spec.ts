@@ -8,39 +8,8 @@ import {
   checkNoneSelected,
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
+import { SETTINGS_MENU } from './testData/testConstants';
 import { qase } from 'playwright-qase-reporter';
-
-// Settings menu constants
-const SETTINGS_MENU = {
-  TITLE: 'Settings',
-  ROUTE_PRIORITY: {
-    LABEL: 'Route priority',
-    BEST_RETURN: 'Best Return',
-    FASTEST: 'Fastest',
-  },
-  GAS_PRICE: {
-    LABEL: 'Gas price',
-    SLOW: 'Slow',
-    FAST: 'Fast',
-    NORMAL: 'Normal',
-  },
-  SLIPPAGE: {
-    LABEL: 'Max. slippage',
-    AUTO: 'Auto',
-    WARNING_MESSAGE:
-      'Low slippage tolerance may cause transaction delays or failures.',
-  },
-  BRIDGES: {
-    LABEL: 'Bridges',
-  },
-  EXCHANGES: {
-    LABEL: 'Exchanges',
-  },
-  RESET: {
-    BUTTON: 'Reset settings',
-    DIALOG_CONFIRM_BUTTON: 'Reset',
-  },
-};
 
 for (const { name, size } of [
   { name: 'Mobile', size: { width: 375, height: 812 } },

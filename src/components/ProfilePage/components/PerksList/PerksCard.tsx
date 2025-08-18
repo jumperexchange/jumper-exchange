@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef } from 'react';
+import { FC, useMemo, useState } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
@@ -24,7 +24,8 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   const activeAccount = useActiveAccountByChainType();
   const { t } = useTranslation();
   const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
-  const levelBadgeRef = useRef<HTMLElement>(null);
+  const [levelBadgeElement, setLevelBadgeElement] =
+    useState<HTMLSpanElement | null>(null);
 
   const isLocked = useMemo(() => {
     const currentLevel = Number(level ?? 0);
@@ -47,20 +48,6 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     };
   }, [unlockLevel, isLocked, t]);
 
-  // @TODO show loading badge if isLoading is true
-  const levelBadge = useMemo(() => {
-    return (
-      <span ref={levelBadgeRef}>
-        <Badge
-          startIcon={levelBadgeProps.startIcon}
-          label={levelBadgeProps.label}
-          variant={levelBadgeProps.variant}
-          size={BadgeSize.LG}
-        />
-      </span>
-    );
-  }, [levelBadgeProps]);
-
   const perksBadge = useMemo(() => {
     return perkItems.map((perkItem, index) => (
       <Badge
@@ -81,7 +68,16 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       title={title}
       description={description}
       imageUrl={imageUrl}
-      levelBadge={levelBadge}
+      levelBadge={
+        <span ref={setLevelBadgeElement}>
+          <Badge
+            startIcon={levelBadgeProps.startIcon}
+            label={levelBadgeProps.label}
+            variant={levelBadgeProps.variant}
+            size={BadgeSize.LG}
+          />
+        </span>
+      }
       perksBadge={perksBadge}
       fullWidth
       isDisabled={isLocked}
@@ -117,7 +113,10 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       leaveTouchDelay={2000}
       slotProps={{
         popper: {
-          anchorEl: levelBadgeRef.current,
+          anchorEl: levelBadgeElement,
+          sx: {
+            marginBottom: '-11px !important',
+          },
         },
         tooltip: {
           sx: {
