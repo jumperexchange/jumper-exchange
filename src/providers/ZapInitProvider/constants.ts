@@ -4,3 +4,18 @@ import { WalletMethod } from './types';
 export const NO_DEPS_METHODS = new Set<WalletMethod>([
   'wallet_getCapabilities',
 ]);
+
+export const abiNumericTypes = [
+  'uint256',
+  'uint128',
+  'uint64',
+  'uint32',
+  'uint16',
+  'uint8',
+  'int256',
+  'int128',
+  'int64',
+  'int32',
+  'int16',
+  'int8',
+];

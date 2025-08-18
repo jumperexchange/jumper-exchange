@@ -47,6 +47,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
           <DepositPoolCard customInformation={customInformation} />
           <Box
             id={MISSION_WIDGET_ELEMENT_ID}
+            data-testid="zap-widget-container"
             sx={{
               position: { lg: 'sticky' },
               top: {
