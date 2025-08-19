@@ -43,6 +43,7 @@
     "@strapi/blocks-react-renderer": "^1.0.2",
     "@tanstack/react-query": "^5.85.0",
     "@turtledev/api": "1.4.5",
+    "@vitejs/plugin-react": "^5.0.1",
     "@wagmi/core": "^2.19.0",
     "@walletconnect/solana-adapter": "^0.0.8",
     "@widgetbot/react-embed": "^1.9.0",
@@ -153,10 +154,13 @@
     "test:e2e-real": "npx playwright test --headed",
     "test:ci:e2e": "xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' npx playwright test",
     "test:ci:e2e:qase": "QASE_MODE=testops xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' npx playwright test",
+    "test:unit": "vitest run --project=unit",
+    "test:storybook": "vitest run --project=storybook",
     "build:cache": "synpress --force tests/wallet-setup/ --headless",
     "build:cache:ci": "xvfb-run synpress --force tests/wallet-setup/",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "lint-staged": {
     "**/*.(ts|tsx|js)": [
