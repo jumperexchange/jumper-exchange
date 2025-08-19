@@ -1,10 +1,12 @@
 import {
+  BaseGetSupertransactionReceiptPayload,
   getChain,
   GetFusionQuoteParams,
   getMeeScanLink,
   GetSupertransactionReceiptPayload,
   MeeClient,
   MultichainSmartAccount,
+  parseTransactionStatus,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
 import {
@@ -44,19 +46,15 @@ const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
   hash: EVMAddress,
   extraParams: SendCallsExtraParams,
+  hasFailedCleanUpUserOps?: boolean,
 ) => {
   if (!receipt) {
     return {
       atomic: true,
       id: getFormattedTransactionHash(hash),
-      status: 'failed',
-      statusCode: 500,
-      receipts: [
-        {
-          transactionHash: getFormattedTransactionHash(hash),
-          transactionLink: getMeeScanLink(hash),
-        } as ExtendedTransactionReceipt,
-      ],
+      status: hasFailedCleanUpUserOps ? 'failed' : 'success',
+      statusCode: hasFailedCleanUpUserOps ? 500 : 200,
+      receipts: [],
     };
   }
 
@@ -368,46 +366,78 @@ export const waitForCallsStatus = async (
     );
   }
 
-  console.warn('🔍 waitForCallsStatus args', args);
-
   const { id, timeout = 60000 } = args;
-
+  const startTime = Date.now();
   const originalId = id.replace(
     BICONOMY_TRANSACTION_HASH_SUFFIX,
     '',
   ) as EVMAddress;
 
-  console.warn(
-    `🔍 waitForCallsStatus was called with ${id} id and will process supertx with hash ${originalId}`,
-  );
+  let cleanUpUserOps;
 
-  try {
-    // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
-    // We'll use the timeout to set a maximum wait time
-    const receipt = (await Promise.race([
-      meeClientParam!.waitForSupertransactionReceipt({
+  do {
+    try {
+      const receipt = await meeClientParam.waitForSupertransactionReceipt({
         hash: originalId,
-      }),
-      new Promise((_, reject) =>
-        setTimeout(
-          () =>
-            reject(
-              new Error(
-                `Timed out while waiting for call bundle with id "${originalId}" to be confirmed.`,
-              ),
-            ),
-          timeout,
-        ),
-      ),
-    ])) as WaitForSupertransactionReceiptPayload;
+      });
+      return processTransactionReceipt(receipt, originalId, extraParams);
+    } catch (error) {
+      console.error('🔍 waitForSupertransactionReceipt failed:', error);
 
-    console.warn('🔍 waitForCallsStatus receipt', receipt);
+      // Check if timeout has passed
+      if (Date.now() - startTime >= timeout) {
+        console.warn('🔍 Timeout exceeded, stopping retries');
+        break;
+      }
 
-    return processTransactionReceipt(receipt, originalId, extraParams);
-  } catch (error) {
-    console.error('🔍 waitForCallsStatus error for id', id, error);
-    return processTransactionReceipt(null, originalId, extraParams);
-  }
+      // Check explorer status to see if we should retry
+      try {
+        const explorerResponse =
+          await meeClientParam.request<BaseGetSupertransactionReceiptPayload>({
+            path: `explorer/${originalId}`,
+            method: 'GET',
+          });
+
+        cleanUpUserOps = explorerResponse.userOps.filter(
+          (userOp) => userOp.isCleanUpUserOp,
+        );
+
+        const metaStatus = await parseTransactionStatus(
+          explorerResponse.userOps,
+        );
+
+        // Only stop retrying if transaction has clearly failed
+        if (['FAILED', 'MINED_FAIL'].includes(metaStatus.status)) {
+          console.warn(
+            'Transaction failed, no retry needed:',
+            metaStatus.status,
+          );
+          break;
+        }
+
+        console.warn(
+          '🔍 Transaction still processing or receipts not ready, retrying...',
+        );
+      } catch (explorerError) {
+        console.error('🔍 Explorer check failed:', explorerError);
+        // Continue retrying even if explorer check fails
+      }
+    }
+  } while (true);
+
+  const hasFailedCleanUpUserOps =
+    !cleanUpUserOps ||
+    !cleanUpUserOps.length ||
+    cleanUpUserOps.some((userOp) =>
+      ['FAILED', 'MINED_FAIL'].includes(userOp.executionStatus),
+    );
+
+  return processTransactionReceipt(
+    null,
+    originalId,
+    extraParams,
+    hasFailedCleanUpUserOps,
+  );
 };
 
 export const walletMethods: WalletMethodsRef = {
