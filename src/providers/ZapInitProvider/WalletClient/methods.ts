@@ -1,9 +1,6 @@
 import {
   BaseGetSupertransactionReceiptPayload,
-  getChain,
   GetFusionQuoteParams,
-  getMeeScanLink,
-  GetSupertransactionReceiptPayload,
   MeeClient,
   MultichainSmartAccount,
   parseTransactionStatus,
@@ -13,7 +10,6 @@ import {
   WalletCall,
   GetCapabilitiesArgs,
   GetCallsStatusArgs,
-  WalletMethod,
   WalletMethodsRef,
   SendCallsArgs,
   WaitCallsStatusArgs,
@@ -25,7 +21,7 @@ import {
 } from '../ModularZaps';
 import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
-import { TransactionReceipt, WalletCallReceipt, zeroAddress } from 'viem';
+import { TransactionReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
 import { findChain } from 'src/utils/chains/findChain';
 
