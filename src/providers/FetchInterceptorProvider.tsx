@@ -10,17 +10,16 @@ export function FetchInterceptorProvider() {
     const interceptor = new FetchInterceptor();
     interceptor.apply();
 
-    const sessionData = sessionStorage.getItem(
-      ZAP_QUEST_ID_SESSION_STORAGE_KEY,
-    );
-
     interceptor.on('request', ({ request }) => {
-      console.log(request.method, request.url);
+      const zapQuestId = sessionStorage.getItem(
+        ZAP_QUEST_ID_SESSION_STORAGE_KEY,
+      );
+      console.log(request.method, request.url, zapQuestId);
       if (
         request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) &&
         request.url.includes('routes')
       ) {
-        request.headers.append('x-zap-quest-id', sessionData || '');
+        request.headers.append('x-zap-quest-id', zapQuestId || '');
       }
     });
 
