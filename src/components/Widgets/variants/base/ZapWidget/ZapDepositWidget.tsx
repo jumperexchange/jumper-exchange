@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useMemo } from 'react';
 import {
+  ChainTokenSelected,
   ChainType,
   HiddenUI,
   LiFiWidget,
@@ -17,6 +18,7 @@ import { ConfigContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
+import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -39,6 +41,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     refetchDepositToken,
     setCurrentRoute,
   } = useZapInitContext();
+
+  const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
 
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
@@ -103,6 +107,13 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       allow: allowedChains,
     };
   }
+
+  useEffect(() => {
+    setDestinationChainTokenForTracking({
+      chainId: toChain,
+      tokenAddress: toToken,
+    });
+  }, [toChain, toToken, setDestinationChainTokenForTracking]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
