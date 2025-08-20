@@ -32,6 +32,13 @@ export enum TrackingAction {
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
 
+  // Zap Widget
+  OnSourceChainAndTokenSelectionZap = 'action_on_source_selection_zap',
+  OnAvailableRoutesZap = 'action_available_routes_zap',
+  OnRouteExecutionStartedZap = 'action_on_route_exec_started_zap',
+  OnRouteExecutionCompletedZap = 'action_on_route_exec_completed_zap',
+  OnRouteExecutionFailedZap = 'action_on_route_exec_failed_zap',
+
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
@@ -92,6 +99,15 @@ export enum TrackingAction {
   //Banner
   ClickBanner = 'action_click_banner',
   ClickCampaignBanner = 'action_click_campaign_banner',
+}
+
+export enum TrackingEventDataAction {
+  ExecutionStart = 'execution_start',
+  ExecutionCompleted = 'execution_completed',
+  ExecutionFailed = 'execution_failed',
+  ExecutionStartZap = 'execution_start_zap',
+  ExecutionCompletedZap = 'execution_completed_zap',
+  ExecutionFailedZap = 'execution_failed_zap',
 }
 
 export enum TrackingCategory {
