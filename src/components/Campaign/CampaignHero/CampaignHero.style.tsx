@@ -75,10 +75,10 @@ export const CampaignHeroCardIcon = styled(Image, {
 export const CampaignHeroCardOverlay = styled(Box)(({ theme }) => ({
   position: 'absolute',
   left: '50%',
-  top: '50%',
-  transform: 'translate(-50%, -50%)',
+  top: 40,
+  transform: 'translateX(-50%)',
   display: 'flex',
-  gap: theme.spacing(3.25),
+  gap: theme.spacing(5),
   alignItems: 'center',
   justifyContent: 'flex-end',
   flexDirection: 'column',
@@ -87,6 +87,9 @@ export const CampaignHeroCardOverlay = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
   },
 }));
 

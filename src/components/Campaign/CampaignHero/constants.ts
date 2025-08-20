@@ -11,8 +11,8 @@ export const IMAGE_SIZES = {
 
 export const ICON_SIZES = {
   MOBILE: {
-    WIDTH: 96,
-    HEIGHT: 96,
+    WIDTH: 88,
+    HEIGHT: 88,
   },
   DESKTOP: {
     WIDTH: 112,
