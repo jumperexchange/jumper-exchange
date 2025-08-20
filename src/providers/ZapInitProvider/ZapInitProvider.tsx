@@ -107,6 +107,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     removePendingOperation,
     getPendingOperationsForFromValues,
     getPromiseResolversForOperation,
+    setProcessingPendingOperation,
   } = useZapPendingOperationsStore();
 
   const pendingOperationsLength = useZapPendingOperationsStore(
@@ -278,6 +279,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         actualCurrentRoute?.fromChainId,
       );
 
+      if (filteredPendingOps.length === 0) {
+        return;
+      }
+
       console.warn(
         `Preparing to execute ${filteredPendingOps.length}/${pendingOperationsLength} pending operations`,
       );
@@ -325,6 +330,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             continue;
           }
 
+          setProcessingPendingOperation(pendingOp.id);
+
           const result = await operation(
             pendingOp.args as any,
             biconomyClients?.meeClient,
@@ -368,6 +375,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     initializeClients,
     getPromiseResolversForOperation,
     removePendingOperation,
+    setProcessingPendingOperation,
   ]);
 
   // Enhanced initialization with retry logic and better error handling
