@@ -3,12 +3,8 @@
 import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 
-interface EarnOpportunitiesSearch {
-  filter: EarnOpportunityFilter;
-}
-
-export const EarnOpportunitiesSearch = () => {
-  const filter = {
+export const EarnOpportunitiesAll = () => {
+  const filter: EarnOpportunityFilter = {
     chainId: 42,
   };
   const { data, isLoading, error, isError } = useEarnFilterOpportunities({
