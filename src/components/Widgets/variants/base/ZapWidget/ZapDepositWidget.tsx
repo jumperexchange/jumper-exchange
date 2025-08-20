@@ -87,6 +87,14 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
 
+  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
+  const lpToken = zapData?.market?.lpToken;
+  if (lpToken) {
+    widgetConfig.tokens = widgetConfig.tokens ?? {};
+    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
+    widgetConfig.tokens.deny.push(lpToken);
+  }
+
   // @Note: we want to ensure that the toAddress is set in the widget config without any delay
   if (toAddress) {
     widgetConfig.toAddress = {
