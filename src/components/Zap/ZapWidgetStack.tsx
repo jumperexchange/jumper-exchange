@@ -10,6 +10,7 @@ import { TaskType } from 'src/types/strapi';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 import { ZapInitProvider } from 'src/providers/ZapInitProvider/ZapInitProvider';
+import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -33,31 +34,36 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   }, [customInformation?.projectData]);
 
   return (
-    <ZapInitProvider projectData={projectData}>
-      <Box
-        sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 4,
-        }}
-      >
-        <DepositPoolCard customInformation={customInformation} />
+    <WidgetTrackingProvider>
+      <ZapInitProvider projectData={projectData}>
         <Box
-          id={MISSION_WIDGET_ELEMENT_ID}
-          data-testid="zap-widget-container"
           sx={{
-            position: { lg: 'sticky' },
-            top: {
-              lg: 124,
-            },
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
           }}
         >
-          <ClientOnly>
-            <ZapDepositWidget ctx={ctx} customInformation={customInformation} />
-          </ClientOnly>
+          <DepositPoolCard customInformation={customInformation} />
+          <Box
+            id={MISSION_WIDGET_ELEMENT_ID}
+            data-testid="zap-widget-container"
+            sx={{
+              position: { lg: 'sticky' },
+              top: {
+                lg: 124,
+              },
+            }}
+          >
+            <ClientOnly>
+              <ZapDepositWidget
+                ctx={ctx}
+                customInformation={customInformation}
+              />
+            </ClientOnly>
+          </Box>
         </Box>
-      </Box>
-    </ZapInitProvider>
+      </ZapInitProvider>
+    </WidgetTrackingProvider>
   );
 };
