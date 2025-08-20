@@ -20,16 +20,22 @@ export const CampaignHeroStatsWrapper = styled(Box)(({ theme }) => ({
 }));
 
 export const CampaignHeroCardContainer = styled(Box)(({ theme }) => ({
-  borderRadius: theme.shape.cardBorderRadius,
-  boxShadow: theme.shadows[2],
   overflow: 'hidden',
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  [theme.breakpoints.up('sm')]: {
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+    borderRadius: theme.shape.cardBorderRadius,
+    boxShadow: theme.shadows[2],
+  },
 }));
 
-export const CampaignHeroCardImageWrapper = styled(Box)(({}) => ({
+export const CampaignHeroCardImageWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   overflow: 'hidden',
   position: 'relative',
+  borderRadius: theme.shape.cardBorderRadius,
+  [theme.breakpoints.up('sm')]: {
+    borderRadius: 0,
+  },
 }));
 
 interface CampaignHeroCardImageProps extends ImageProps {
@@ -72,15 +78,26 @@ export const CampaignHeroCardOverlay = styled(Box)(({ theme }) => ({
   top: '50%',
   transform: 'translate(-50%, -50%)',
   display: 'flex',
-  gap: theme.spacing(4),
+  gap: theme.spacing(3.25),
   alignItems: 'center',
+  justifyContent: 'flex-end',
+  flexDirection: 'column',
+  [theme.breakpoints.up('sm')]: {
+    gap: theme.spacing(4),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export const CampaignHeroCardContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),
-  padding: theme.spacing(4, 3),
+  padding: theme.spacing(2, 0, 0, 0),
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(4, 3),
+  },
 }));
 
 export const CampaignHeroCardTitle = styled(Typography)(({}) => ({}));
