@@ -50,8 +50,8 @@ export const BackgroundGradientContainer = styled('div', {
 const BackgroundGradient = styled('span')(() => ({
   content: '" "',
   position: 'absolute',
-  width: '100vh',
-  height: '100vh',
+  width: 480,
+  height: 480,
   opacity: '0.12',
   borderRadius: '50%',
 }));
@@ -101,11 +101,12 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-    transform: 'translate(-50%, 50%) scale(0.5, 0.75)',
+
+    transform: 'translate(-50%, 50%)',
     transformOrigin: 'center',
     left: 0,
     bottom: 0,
-    filter: `blur(calc(100vw * 0.067))`,
+    filter: `blur(200px)`,
     opacity: 1,
     background: (theme.vars || theme).palette.bgGlow2,
   }),
@@ -116,11 +117,11 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-    transform: 'translate(50%, 50%) scale(0.5, 0.75)',
+    transform: 'translate(50%, 50%)',
     transformOrigin: 'center',
     right: 0,
     bottom: 0,
-    filter: `blur(calc(100vw * 0.067))`,
+    filter: `blur(200px)`,
     opacity: 1,
     background: (theme.vars || theme).palette.bgGlow2,
   }),
