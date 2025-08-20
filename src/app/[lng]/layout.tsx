@@ -10,6 +10,7 @@ import {
 } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
+import { FetchInterceptorProvider } from '@/providers/FetchInterceptorProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import i18nConfig from 'i18n-config';
@@ -177,6 +178,7 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
+        <FetchInterceptorProvider />
         <InitColorSchemeScript attribute="class" defaultMode="system" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
