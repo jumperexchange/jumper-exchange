@@ -4,6 +4,7 @@ import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { Account, useAccount } from '@lifi/wallet-management';
 import { ChainId, ChainType } from '@lifi/sdk';
+import { isIframeEnvironment } from 'src/utils/iframe';
 
 interface WalletClientParams {
   address?: EVMAddress;
@@ -28,6 +29,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const { getClients } = useBiconomyClientsStore();
   const { account } = useAccount();
   const { address, chainId } = account;
+  const isEmbeddedWallet = useIsEmbeddedWallet();
   const { data: walletClient } = useWalletClient({
     account: address as EVMAddress,
     chainId,
@@ -35,6 +37,8 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
       enabled: !!address && !!chainId,
     },
   });
+
+  console.warn('🔍 isEmbeddedWallet', isEmbeddedWallet);
 
   const initializeClients = useCallback(
     async ({
@@ -102,4 +106,53 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   );
 
   return { initializeClients };
+};
+
+const EMBEDDED_WALLETS = [
+  'magic',
+  'privy',
+  'dynamic',
+  'thirdweb',
+  'particle',
+  'web3auth',
+  'fireblocks',
+  'fortmatic',
+  'torus',
+  'capsule',
+  'turnkey',
+  'dfns',
+];
+
+export const useIsEmbeddedWallet = (): boolean => {
+  const { account } = useAccount();
+
+  console.warn('🔍 account.connector', account.connector);
+
+  if (isIframeEnvironment()) return true;
+
+  if (!account?.connector) return false;
+
+  const connector = account.connector as any;
+
+  // Check explicit flags first
+  if (
+    connector.isEmbedded === true ||
+    connector.custodial === true ||
+    connector.options?.isEmbedded === true
+  ) {
+    return true;
+  }
+
+  // If explicitly injected, it's external
+  if (connector.isInjected === true || connector.type === 'injected') {
+    return false;
+  }
+
+  // Check by wallet name/id
+  const name = (connector.name || '').toLowerCase();
+  const id = (connector.id || '').toLowerCase();
+
+  return EMBEDDED_WALLETS.some(
+    (wallet) => name.includes(wallet) || id.includes(wallet),
+  );
 };
