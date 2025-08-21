@@ -56,6 +56,7 @@ interface BiconomyClientsState {
     destinationChainId?: number,
     walletClient?: UseWalletClientReturnType['data'],
     provider?: any,
+    isEmbeddedWallet?: boolean,
     currentChainId?: number,
   ) => Promise<BiconomyClients | null>;
   getToAddress: (
@@ -207,6 +208,7 @@ export const useBiconomyClientsStore =
         projectChainId,
         walletClient,
         provider,
+        isEmbeddedWallet,
         currentChainId,
       ) => {
         if (!walletClient) {
@@ -281,6 +283,9 @@ export const useBiconomyClientsStore =
                 chain: walletClient.chain,
                 transport: custom(provider, { key: 'jumper-custom-zap' }),
               }),
+              accountAddress: isEmbeddedWallet
+                ? walletClient.account.address
+                : undefined,
               chainConfigurations,
             });
 
