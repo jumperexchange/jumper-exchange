@@ -1,6 +1,27 @@
 'use client';
 import type { Breakpoint } from '@mui/material/styles';
-import { alpha, darken, styled } from '@mui/material/styles';
+import { alpha, darken, keyframes, styled } from '@mui/material/styles';
+
+const organicPulse = keyframes`
+  0% {
+    filter: blur(0px) brightness(1);
+  }
+  20% {
+    filter: blur(40px) brightness(1.2);
+  }
+  40% {
+    filter: blur(20px) brightness(0.85);
+  }
+  60% {
+    filter: blur(60px) brightness(1.15);
+  }
+  80% {
+    filter: blur(10px) brightness(0.95);
+  }
+  100% {
+    filter: blur(0px) brightness(1);
+  }
+`;
 
 export interface BackgroundGradientContainerProps {
   backgroundImageUrl?: URL;
@@ -54,6 +75,14 @@ const BackgroundGradient = styled('span')(() => ({
   height: 480,
   opacity: '0.12',
   borderRadius: '50%',
+
+  // Performance optimizations
+  willChange: 'filter',
+  backfaceVisibility: 'hidden',
+
+  // Browser optimization
+  contain: 'layout style paint',
+  isolation: 'isolate',
 }));
 
 export const BackgroundGradients = styled('span')(({ theme }) => ({
@@ -100,13 +129,24 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
   ({ theme }) => ({
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
+      animation: 'none',
     },
+    transformOrigin: 'center center',
     transform: 'translate(-50%, 50%)',
-    transformOrigin: 'center',
+    position: 'fixed',
     left: 0,
     bottom: 0,
     opacity: 1,
     background: `radial-gradient(50% 50% at 50% 50%, ${(theme.vars || theme).palette.bgGlow2} 0%, rgba(255, 255, 255, 0) 100%)`,
+
+    animation: `${organicPulse} 6s ease-in-out infinite`,
+    animationDelay: '0s',
+
+    // Accessibility: Respect reduced motion
+    '@media (prefers-reduced-motion: reduce)': {
+      animation: 'none',
+      filter: 'blur(0)',
+    },
   }),
 );
 
@@ -114,13 +154,24 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
   ({ theme }) => ({
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
+      animation: 'none',
     },
+    transformOrigin: 'center center',
     transform: 'translate(50%, 50%)',
-    transformOrigin: 'center',
+    position: 'fixed',
     right: 0,
     bottom: 0,
     opacity: 1,
     background: `radial-gradient(50% 50% at 50% 50%, ${(theme.vars || theme).palette.bgGlow2} 0%, rgba(255, 255, 255, 0) 100%)`,
+
+    animation: `${organicPulse} 6s ease-in-out infinite`,
+    animationDelay: '0s',
+
+    // Accessibility: Respect reduced motion
+    '@media (prefers-reduced-motion: reduce)': {
+      animation: 'none',
+      filter: 'blur(0)',
+    },
   }),
 );
 
