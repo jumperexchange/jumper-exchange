@@ -18,8 +18,8 @@ importers:
         specifier: ^1.8.8
         version: 1.8.8(6a0ca9600e820957575f8baa02ec0839)
       '@biconomy/abstractjs':
-        specifier: 1.1.0
-        version: 1.1.0(@metamask/delegation-toolkit@0.11.0(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(@rhinestone/module-sdk@0.2.7(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(typescript@5.9.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))
+        specifier: 1.1.1
+        version: 1.1.1(@metamask/delegation-toolkit@0.11.0(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(@rhinestone/module-sdk@0.2.7(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(typescript@5.9.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))
       '@bigmi/react':
         specifier: ^0.4.3
         version: 0.4.3(@tanstack/query-core@5.83.1)(@tanstack/react-query@5.85.0(react@19.1.1))(@types/react@19.1.10)(bs58@5.0.0)(immer@10.1.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(typescript@5.9.2)(use-sync-external-store@1.4.0(react@19.1.1))
@@ -1225,8 +1225,8 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@biconomy/abstractjs@1.1.0':
-    resolution: {integrity: sha512-7I7Auhdz7o49c4QJ0M+JGNFaa/pLH01+hybccyvvd9+nbi+LyaObneBmxVL7WoQcRJYtaSPjX88RbxN54wV0FA==}
+  '@biconomy/abstractjs@1.1.1':
+    resolution: {integrity: sha512-gqPbjK0VXFMAkR2k/xzeHdun3cDspPknnxcgqSuJs9LBFgDcEfo9vrzEHFDufkUu0dn5qhZvfeLv5r76MWluFA==}
     peerDependencies:
       '@metamask/delegation-toolkit': ^0.11.0
       '@rhinestone/module-sdk': 0.2.7
@@ -7281,8 +7281,8 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
-  libphonenumber-js@1.12.12:
-    resolution: {integrity: sha512-aWVR6xXYYRvnK0v/uIwkf5Lthq9Jpn0N8TISW/oDTWlYB2sOimuiLn9Q26aUw4KxkJoiT8ACdiw44Y8VwKFIfQ==}
+  libphonenumber-js@1.12.13:
+    resolution: {integrity: sha512-QZXnR/OGiDcBjF4hGk0wwVrPcZvbSSyzlvkjXv5LFfktj7O2VZDrt4Xs8SgR/vOFco+qk1i8J43ikMXZoTrtPw==}
 
   lie@3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
@@ -11300,7 +11300,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@biconomy/abstractjs@1.1.0(@metamask/delegation-toolkit@0.11.0(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(@rhinestone/module-sdk@0.2.7(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(typescript@5.9.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))':
+  '@biconomy/abstractjs@1.1.1(@metamask/delegation-toolkit@0.11.0(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(@rhinestone/module-sdk@0.2.7(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))(typescript@5.9.2)(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))':
     dependencies:
       '@metamask/delegation-toolkit': 0.11.0(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))
       '@rhinestone/module-sdk': 0.2.7(viem@2.33.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76))
@@ -13591,7 +13591,7 @@ snapshots:
       fetch-retry: 6.0.0
       jose: 4.15.9
       js-cookie: 3.0.5
-      libphonenumber-js: 1.12.12
+      libphonenumber-js: 1.12.13
       set-cookie-parser: 2.7.1
       uuid: 9.0.1
     optionalDependencies:
@@ -13605,7 +13605,7 @@ snapshots:
     dependencies:
       '@privy-io/api-base': 1.5.2
       bs58: 5.0.0
-      libphonenumber-js: 1.12.12
+      libphonenumber-js: 1.12.13
       viem: 2.34.0(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)
       zod: 3.25.76
     transitivePeerDependencies:
@@ -20718,7 +20718,7 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  libphonenumber-js@1.12.12: {}
+  libphonenumber-js@1.12.13: {}
 
   lie@3.3.0:
     dependencies:
