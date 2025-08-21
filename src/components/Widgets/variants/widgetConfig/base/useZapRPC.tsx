@@ -29,7 +29,7 @@ export const useZapRPC = () => {
       explorerUrls,
       keyPrefix: 'jumper-custom-zap',
       bridges: {
-        allow: ['across', 'relay', 'gasZipBridge'],
+        allow: ['across', 'relay'],
       },
       sdkConfig: {
         apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
