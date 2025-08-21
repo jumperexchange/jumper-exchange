@@ -101,14 +101,12 @@ export const BackgroundGradientBottomLeft = styled(BackgroundGradient)(
     [theme.breakpoints.down('sm' as Breakpoint)]: {
       display: 'none',
     },
-
     transform: 'translate(-50%, 50%)',
     transformOrigin: 'center',
     left: 0,
     bottom: 0,
-    filter: `blur(200px)`,
     opacity: 1,
-    background: (theme.vars || theme).palette.bgGlow2,
+    background: `radial-gradient(50% 50% at 50% 50%, ${(theme.vars || theme).palette.bgGlow2} 0%, rgba(255, 255, 255, 0) 100%)`,
   }),
 );
 
@@ -121,9 +119,8 @@ export const BackgroundGradientBottomRight = styled(BackgroundGradient)(
     transformOrigin: 'center',
     right: 0,
     bottom: 0,
-    filter: `blur(200px)`,
     opacity: 1,
-    background: (theme.vars || theme).palette.bgGlow2,
+    background: `radial-gradient(50% 50% at 50% 50%, ${(theme.vars || theme).palette.bgGlow2} 0%, rgba(255, 255, 255, 0) 100%)`,
   }),
 );
 
