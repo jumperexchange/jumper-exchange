@@ -4,7 +4,6 @@ import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { Account, useAccount } from '@lifi/wallet-management';
 import { ChainId, ChainType } from '@lifi/sdk';
-import { isIframeEnvironment } from 'src/utils/iframe';
 
 interface WalletClientParams {
   address?: EVMAddress;
@@ -25,8 +24,6 @@ const validateAccountChainType = (account: Account) => {
 };
 
 const checkIsEmbeddedWallet = (account: Account) => {
-  if (isIframeEnvironment()) return true;
-
   if (!account?.connector) return false;
 
   const connector = account.connector as any;

@@ -283,9 +283,9 @@ export const useBiconomyClientsStore =
                 chain: walletClient.chain,
                 transport: custom(provider, { key: 'jumper-custom-zap' }),
               }),
-              // accountAddress: isEmbeddedWallet
-              //   ? walletClient.account.address
-              //   : undefined,
+              accountAddress: isEmbeddedWallet
+                ? walletClient.account.address
+                : undefined,
               chainConfigurations,
             });
 
