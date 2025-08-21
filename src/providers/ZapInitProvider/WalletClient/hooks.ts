@@ -104,6 +104,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
         }
 
         const provider = await getEVMProvider(account.connector);
+        console.warn('account.connector', account.connector);
         const isEmbeddedWallet = checkIsEmbeddedWallet(account);
 
         console.warn('🔍 isEmbeddedWallet', isEmbeddedWallet);
