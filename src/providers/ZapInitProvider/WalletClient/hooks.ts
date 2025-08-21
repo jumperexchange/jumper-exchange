@@ -149,5 +149,4 @@ const EMBEDDED_WALLETS = [
   'capsule',
   'turnkey',
   'dfns',
-  'safe',
 ];
