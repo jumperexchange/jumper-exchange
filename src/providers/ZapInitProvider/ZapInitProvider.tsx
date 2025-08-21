@@ -208,12 +208,15 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   });
 
   const toAddress = useBiconomyClientsStore((state) => {
-    console.warn('🔍 toAddress selector running');
-    return state.getToAddress(
+    const valueFromStore = state.getToAddress(
       projectData.address as EVMAddress | undefined,
       projectData.chainId,
       address as EVMAddress | undefined,
     );
+
+    console.warn('🔍 toAddress selector running', valueFromStore);
+
+    return valueFromStore;
   });
 
   // RPC operation queueing
