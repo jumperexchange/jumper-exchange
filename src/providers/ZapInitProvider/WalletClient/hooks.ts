@@ -24,12 +24,41 @@ const validateAccountChainType = (account: Account) => {
   return !account.chainType || account.chainType === ChainType.EVM;
 };
 
+const checkIsEmbeddedWallet = (account: Account) => {
+  if (isIframeEnvironment()) return true;
+
+  if (!account?.connector) return false;
+
+  const connector = account.connector as any;
+
+  // Check explicit flags first
+  if (
+    connector.isEmbedded === true ||
+    connector.custodial === true ||
+    connector.options?.isEmbedded === true
+  ) {
+    return true;
+  }
+
+  // If explicitly injected, it's external
+  if (connector.isInjected === true || connector.type === 'injected') {
+    return false;
+  }
+
+  // Check by wallet name/id
+  const name = (connector.name || '').toLowerCase();
+  const id = (connector.id || '').toLowerCase();
+
+  return EMBEDDED_WALLETS.some(
+    (wallet) => name.includes(wallet) || id.includes(wallet),
+  );
+};
+
 export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const wagmiConfig = useConfig();
   const { getClients } = useBiconomyClientsStore();
   const { account } = useAccount();
   const { address, chainId } = account;
-  const isEmbeddedWallet = useIsEmbeddedWallet();
   const { data: walletClient } = useWalletClient({
     account: address as EVMAddress,
     chainId,
@@ -37,8 +66,6 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
       enabled: !!address && !!chainId,
     },
   });
-
-  console.warn('🔍 isEmbeddedWallet', isEmbeddedWallet);
 
   const initializeClients = useCallback(
     async ({
@@ -80,6 +107,9 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
         }
 
         const provider = await getEVMProvider(account.connector);
+        const isEmbeddedWallet = checkIsEmbeddedWallet(account);
+
+        console.warn('🔍 isEmbeddedWallet', isEmbeddedWallet);
 
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
@@ -87,6 +117,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
           projectChainId,
           walletClient,
           provider,
+          isEmbeddedWallet,
           chainId,
         );
 
@@ -121,38 +152,5 @@ const EMBEDDED_WALLETS = [
   'capsule',
   'turnkey',
   'dfns',
+  'safe',
 ];
-
-export const useIsEmbeddedWallet = (): boolean => {
-  const { account } = useAccount();
-
-  console.warn('🔍 account.connector', account.connector);
-
-  if (isIframeEnvironment()) return true;
-
-  if (!account?.connector) return false;
-
-  const connector = account.connector as any;
-
-  // Check explicit flags first
-  if (
-    connector.isEmbedded === true ||
-    connector.custodial === true ||
-    connector.options?.isEmbedded === true
-  ) {
-    return true;
-  }
-
-  // If explicitly injected, it's external
-  if (connector.isInjected === true || connector.type === 'injected') {
-    return false;
-  }
-
-  // Check by wallet name/id
-  const name = (connector.name || '').toLowerCase();
-  const id = (connector.id || '').toLowerCase();
-
-  return EMBEDDED_WALLETS.some(
-    (wallet) => name.includes(wallet) || id.includes(wallet),
-  );
-};
