@@ -156,6 +156,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const { initializeClients } = useWalletClientInitialization(allowedChains);
 
   const initInProgressRef = useRef(false);
+  const isExecutingPendingOpsInProgressRef = useRef(false);
 
   const {
     zapData,
@@ -273,94 +274,112 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   // Execute pending operations when clients are ready
   useEffect(() => {
     const executePendingOperations = async () => {
-      const actualCurrentRoute = getCurrentRoute();
-      const filteredPendingOps = getPendingOperationsForFromValues(
-        actualCurrentRoute?.fromAddress,
-        actualCurrentRoute?.fromChainId,
-      );
-
-      if (filteredPendingOps.length === 0) {
+      if (isExecutingPendingOpsInProgressRef.current) {
+        console.warn('Already executing pending operations, skipping...');
         return;
       }
 
-      console.warn(
-        `Preparing to execute ${filteredPendingOps.length}/${pendingOperationsLength} pending operations`,
-      );
-
-      let biconomyClients: BiconomyClients | null = null;
+      isExecutingPendingOpsInProgressRef.current = true;
 
       try {
-        const clients = await initializeClients({
-          address: actualCurrentRoute?.fromAddress as EVMAddress,
-          chainId: actualCurrentRoute?.fromChainId,
-          projectAddress: sendCallsExtraParams.projectData
-            .address as EVMAddress,
-          projectChainId: sendCallsExtraParams.projectData.chainId,
-        });
-
-        biconomyClients = clients.biconomyClients;
-      } catch (error) {
-        console.error(
-          'Failed to initialize clients inside executePendingOperations:',
-          error,
+        const actualCurrentRoute = getCurrentRoute();
+        const filteredPendingOps = getPendingOperationsForFromValues(
+          actualCurrentRoute?.fromAddress,
+          actualCurrentRoute?.fromChainId,
         );
-      }
 
-      // Execute all pending operations sequentially
-      for (const pendingOp of filteredPendingOps) {
-        const isMethodWithDeps = !NO_DEPS_METHODS.has(pendingOp.operationName);
-
-        if (isMethodWithDeps && (!biconomyClients || !pendingOp.routeContext)) {
-          console.warn(
-            `Skipping executing pending operation: ${pendingOp.operationName}`,
-          );
-          continue;
+        if (filteredPendingOps.length === 0) {
+          return;
         }
 
         console.warn(
-          `Executing ${pendingOp.operationName} with id: ${pendingOp.id}`,
+          `Preparing to execute ${filteredPendingOps.length}/${pendingOperationsLength} pending operations`,
         );
 
-        const resolvers = getPromiseResolversForOperation(pendingOp.id);
+        let biconomyClients: BiconomyClients | null = null;
 
         try {
-          const operation = walletMethods[pendingOp.operationName];
-          if (!operation) {
-            console.warn(`Operation ${pendingOp.operationName} not found`);
+          const clients = await initializeClients({
+            address: actualCurrentRoute?.fromAddress as EVMAddress,
+            chainId: actualCurrentRoute?.fromChainId,
+            projectAddress: sendCallsExtraParams.projectData
+              .address as EVMAddress,
+            projectChainId: sendCallsExtraParams.projectData.chainId,
+          });
+
+          biconomyClients = clients.biconomyClients;
+        } catch (error) {
+          console.error(
+            'Failed to initialize clients inside executePendingOperations:',
+            error,
+          );
+        }
+
+        // Execute all pending operations sequentially
+        for (const pendingOp of filteredPendingOps) {
+          const isMethodWithDeps = !NO_DEPS_METHODS.has(
+            pendingOp.operationName,
+          );
+
+          if (
+            isMethodWithDeps &&
+            (!biconomyClients || !pendingOp.routeContext)
+          ) {
+            console.warn(
+              `Skipping executing pending operation: ${pendingOp.operationName}`,
+            );
             continue;
           }
 
-          setProcessingPendingOperation(pendingOp.id);
-
-          const result = await operation(
-            pendingOp.args as any,
-            biconomyClients?.meeClient,
-            biconomyClients?.oNexus,
-            {
-              ...sendCallsExtraParams,
-              currentRoute: pendingOp.routeContext,
-            },
+          console.warn(
+            `Executing ${pendingOp.operationName} with id: ${pendingOp.id}`,
           );
 
-          if (resolvers?.resolve) {
-            resolvers.resolve(
-              result as unknown as WalletMethodReturnType<
-                typeof pendingOp.operationName
-              >,
+          const resolvers = getPromiseResolversForOperation(pendingOp.id);
+
+          try {
+            const operation = walletMethods[pendingOp.operationName];
+            if (!operation) {
+              console.warn(`Operation ${pendingOp.operationName} not found`);
+              continue;
+            }
+
+            setProcessingPendingOperation(pendingOp.id);
+
+            const result = await operation(
+              pendingOp.args as any,
+              biconomyClients?.meeClient,
+              biconomyClients?.oNexus,
+              {
+                ...sendCallsExtraParams,
+                currentRoute: pendingOp.routeContext,
+              },
             );
-          }
-        } catch (error) {
-          console.error(
-            `Failed to execute operation ${pendingOp.operationName}:`,
-            error,
-          );
 
-          if (resolvers?.reject) {
-            resolvers.reject(error as Error);
+            if (resolvers?.resolve) {
+              resolvers.resolve(
+                result as unknown as WalletMethodReturnType<
+                  typeof pendingOp.operationName
+                >,
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Failed to execute operation ${pendingOp.operationName}:`,
+              error,
+            );
+
+            if (resolvers?.reject) {
+              resolvers.reject(error as Error);
+            }
+          } finally {
+            removePendingOperation(pendingOp.id);
           }
-        } finally {
-          removePendingOperation(pendingOp.id);
         }
+      } catch (error) {
+        console.error('Failed to execute pending operations:', error);
+      } finally {
+        isExecutingPendingOpsInProgressRef.current = false;
       }
     };
 
