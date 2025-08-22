@@ -11,6 +11,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
@@ -40,10 +41,12 @@ import {
 } from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 import { findChain } from 'src/utils/chains/findChain';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
+import { useMultisig } from 'src/hooks/useMultisig';
 
 interface ZapInitState {
   isInitialized: boolean;
   isInitializedForCurrentChain: boolean;
+  isMultisigEnvironment: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
   toAddress?: EVMAddress;
@@ -60,6 +63,7 @@ interface ZapInitState {
 export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
   isInitializedForCurrentChain: false,
+  isMultisigEnvironment: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -109,6 +113,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     getPromiseResolversForOperation,
     setProcessingPendingOperation,
   } = useZapPendingOperationsStore();
+
+  const { checkMultisigEnvironment } = useMultisig();
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
 
   const pendingOperationsLength = useZapPendingOperationsStore(
     (state) => Object.keys(state.pendingOperations).length,
@@ -382,6 +389,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   ]);
 
   // Enhanced initialization with retry logic and better error handling
+  // @Note this is needed for the initial clients initialization
   useEffect(() => {
     if (initInProgressRef.current) {
       console.warn('Already initializing, skipping...');
@@ -394,6 +402,13 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }
 
     const initMeeClient = async () => {
+      const isMultisig = await checkMultisigEnvironment();
+      if (isMultisig) {
+        console.log('Skipping client initialization in multisig environment');
+        setIsMultisigEnvironment(true);
+        return;
+      }
+
       try {
         initInProgressRef.current = true;
 
@@ -422,6 +437,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.chainId,
     projectData.address,
     initializeClients,
+    checkMultisigEnvironment,
   ]);
 
   // @Note: This is a hack to fix the broken address link; will be removed
@@ -463,6 +479,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     useZapPendingOperationsStore.setState({
       currentRoute: null,
     });
+
+    return () => {
+      setIsMultisigEnvironment(false);
+    };
   }, [address]);
 
   useEffect(() => {
@@ -517,6 +537,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     return {
       isInitialized,
       isInitializedForCurrentChain,
+      isMultisigEnvironment,
       isConnected,
       providers,
       toAddress,
@@ -534,6 +555,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     toAddress,
     isInitialized,
     isInitializedForCurrentChain,
+    isMultisigEnvironment,
     isConnected,
     zapData,
     isZapDataSuccess,
