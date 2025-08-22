@@ -120,6 +120,7 @@ interface Resources {
     button: {
       okay: 'Okay';
       manageYourPosition: 'Manage your position';
+      goBack: 'Go back';
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
