@@ -259,7 +259,7 @@ export enum TrackingEventParameter {
   MissionCtaStepsTaskStepId = 'param_mission_cta_steps_task_step_id',
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
-  MissionTaskInputPrepend = 'param_mission_task_input_',
+  MissionTaskInputPrepend = 'param_mission_task_input_field_',
 
   // Search
   SearchValue = 'param_search_value',
