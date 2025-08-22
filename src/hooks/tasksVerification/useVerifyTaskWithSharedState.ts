@@ -55,11 +55,20 @@ export const useVerifyTaskWithSharedState = (
     (extraParams?: { [key: string]: string }) => {
       trackEvent({
         category: TrackingCategory.Quests,
-        action: TrackingAction.ClickMissionCtaSteps,
-        label: `click-mission-cta-steps-verify`,
+        action: TrackingAction.ClickMissionVerify,
+        label: `click-mission-task-verify`,
         data: {
+          [TrackingEventParameter.QuestCardId]: missionId || '',
           [TrackingEventParameter.MissionCtaStepsTitle]: taskName || '',
           [TrackingEventParameter.MissionCtaStepsTaskStepId]: taskId || '',
+          [TrackingEventParameter.WalletAddress]: accountAddress || '',
+          ...Object.entries(extraParams || {}).reduce(
+            (acc, [key, value]) => {
+              acc[TrackingEventParameter.MissionTaskInputPrepend + key] = value;
+              return acc;
+            },
+            {} as Record<string, string>,
+          ),
         },
       });
       mutate({

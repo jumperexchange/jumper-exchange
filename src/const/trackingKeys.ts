@@ -87,6 +87,7 @@ export enum TrackingAction {
   ClickQuestCard = 'action_click_quest_card',
   ClickMissionCta = 'action_click_mission_cta',
   ClickMissionCtaSteps = 'action_click_mission_cta_steps',
+  ClickMissionVerify = 'action_click_mission_task_verify',
 
   // Pagination
   ClickPagination = 'action_click_pagination',
@@ -248,6 +249,7 @@ export enum TrackingEventParameter {
   MissionCtaStepsTaskStepId = 'param_mission_cta_steps_task_step_id',
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
+  MissionTaskInputPrepend = 'param_mission_task_input_',
 
   // Search
   SearchValue = 'param_search_value',
