@@ -12,6 +12,11 @@ import { MissionTaskComplete } from './MissionTaskComplete';
 import { MissionFormWidget } from './MissionFormWidget';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { ZapWidgetStack } from 'src/components/Zap/ZapWidgetStack';
+import {
+  TrackingAction,
+  TrackingEventDataAction,
+} from 'src/const/trackingKeys';
+import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -43,7 +48,23 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
 
     return (
       <ClientOnly>
-        <MissionBaseWidget />
+        <WidgetTrackingProvider
+          trackingActionKeys={{
+            sourceChainAndTokenSelection:
+              TrackingAction.OnSourceChainAndTokenSelection,
+            availableRoutes: TrackingAction.OnAvailableRoutes,
+            routeExecutionStarted: TrackingAction.OnRouteExecutionStarted,
+            routeExecutionCompleted: TrackingAction.OnRouteExecutionCompleted,
+            routeExecutionFailed: TrackingAction.OnRouteExecutionFailed,
+          }}
+          trackingDataActionKeys={{
+            routeExecutionStarted: TrackingEventDataAction.ExecutionStart,
+            routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
+            routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
+          }}
+        >
+          <MissionBaseWidget />
+        </WidgetTrackingProvider>
       </ClientOnly>
     );
   };
