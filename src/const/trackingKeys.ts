@@ -32,6 +32,13 @@ export enum TrackingAction {
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
 
+  // Mission Widget
+  OnSourceChainAndTokenSelectionMission = 'action_on_source_selection_mission',
+  OnAvailableRoutesMission = 'action_available_routes_mission',
+  OnRouteExecutionStartedMission = 'action_on_route_exec_started_mission',
+  OnRouteExecutionCompletedMission = 'action_on_route_exec_completed_mission',
+  OnRouteExecutionFailedMission = 'action_on_route_exec_failed_mission',
+
   // Zap Widget
   OnSourceChainAndTokenSelectionZap = 'action_on_source_selection_zap',
   OnAvailableRoutesZap = 'action_available_routes_zap',
@@ -109,6 +116,9 @@ export enum TrackingEventDataAction {
   ExecutionStartZap = 'execution_start_zap',
   ExecutionCompletedZap = 'execution_completed_zap',
   ExecutionFailedZap = 'execution_failed_zap',
+  ExecutionStartMission = 'execution_start_mission',
+  ExecutionCompletedMission = 'execution_completed_mission',
+  ExecutionFailedMission = 'execution_failed_mission',
 }
 
 export enum TrackingCategory {

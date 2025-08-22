@@ -51,16 +51,21 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
         <WidgetTrackingProvider
           trackingActionKeys={{
             sourceChainAndTokenSelection:
-              TrackingAction.OnSourceChainAndTokenSelection,
-            availableRoutes: TrackingAction.OnAvailableRoutes,
-            routeExecutionStarted: TrackingAction.OnRouteExecutionStarted,
-            routeExecutionCompleted: TrackingAction.OnRouteExecutionCompleted,
-            routeExecutionFailed: TrackingAction.OnRouteExecutionFailed,
+              TrackingAction.OnSourceChainAndTokenSelectionMission,
+            availableRoutes: TrackingAction.OnAvailableRoutesMission,
+            routeExecutionStarted:
+              TrackingAction.OnRouteExecutionStartedMission,
+            routeExecutionCompleted:
+              TrackingAction.OnRouteExecutionCompletedMission,
+            routeExecutionFailed: TrackingAction.OnRouteExecutionFailedMission,
           }}
           trackingDataActionKeys={{
-            routeExecutionStarted: TrackingEventDataAction.ExecutionStart,
-            routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
-            routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
+            routeExecutionStarted:
+              TrackingEventDataAction.ExecutionStartMission,
+            routeExecutionCompleted:
+              TrackingEventDataAction.ExecutionCompletedMission,
+            routeExecutionFailed:
+              TrackingEventDataAction.ExecutionFailedMission,
           }}
         >
           <MissionBaseWidget />
