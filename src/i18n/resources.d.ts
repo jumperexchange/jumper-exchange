@@ -121,6 +121,7 @@ interface Resources {
       okay: 'Okay';
       manageYourPosition: 'Manage your position';
       goBack: 'Go back';
+      connectAnotherWallet: 'Connect another wallet';
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
