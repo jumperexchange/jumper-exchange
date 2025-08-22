@@ -31,6 +31,7 @@ describe('waitForCallsStatus', () => {
     } as any,
     zapData: {} as any,
     projectData: {} as any,
+    isEmbeddedWallet: false,
   };
 
   const mockReceipts = [

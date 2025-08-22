@@ -119,10 +119,14 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
           chainId,
         );
 
-        return { walletClient, biconomyClients };
+        return { walletClient, biconomyClients, isEmbeddedWallet };
       } catch (error) {
         console.error('Failed to initialize clients:', error);
-        return { walletClient: null, biconomyClients: null };
+        return {
+          walletClient: null,
+          biconomyClients: null,
+          isEmbeddedWallet: false,
+        };
       }
     },
     [

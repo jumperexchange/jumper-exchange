@@ -224,7 +224,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   const queueOperation = async <T extends WalletMethod>(
     operationName: T,
     args: WalletMethodArgsType<T>,
-    extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
+    extraParams: Omit<
+      SendCallsExtraParams,
+      'currentRoute' | 'isEmbeddedWallet'
+    >,
   ): Promise<ReturnType<WalletMethodsRef[T]>> => {
     const operation = walletMethods[operationName] as
       | WalletMethodsRef[T]
@@ -235,6 +238,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }
 
     let biconomyClients: BiconomyClients | null = null;
+    let isEmbeddedWallet: boolean = false;
     const actualCurrentRoute = getCurrentRoute();
 
     try {
@@ -246,6 +250,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       });
 
       biconomyClients = clients.biconomyClients;
+      isEmbeddedWallet = clients.isEmbeddedWallet;
     } catch (error) {
       console.error(
         'Failed to initialize clients inside queueOperation:',
@@ -271,6 +276,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
       ...extraParams,
       currentRoute: actualCurrentRoute,
+      isEmbeddedWallet,
     });
   };
 
@@ -300,6 +306,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
 
         let biconomyClients: BiconomyClients | null = null;
+        let isEmbeddedWallet: boolean = false;
 
         try {
           const clients = await initializeClients({
@@ -311,6 +318,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           });
 
           biconomyClients = clients.biconomyClients;
+          isEmbeddedWallet = clients.isEmbeddedWallet;
         } catch (error) {
           console.error(
             'Failed to initialize clients inside executePendingOperations:',
@@ -356,6 +364,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
               {
                 ...sendCallsExtraParams,
                 currentRoute: pendingOp.routeContext,
+                isEmbeddedWallet,
               },
             );
 
