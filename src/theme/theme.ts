@@ -58,7 +58,6 @@ declare module '@mui/material/styles' {
     surface3: Palette['primary'];
     surface4: Palette['primary'];
     bg: Palette['primary'];
-    bgSecondary: Palette['primary'];
     bgTertiary: Palette['primary'];
     bgQuaternary: {
       main: string;
@@ -106,7 +105,6 @@ declare module '@mui/material/styles' {
     surface3?: PaletteOptions['primary'];
     surface4?: PaletteOptions['primary'];
     bg?: PaletteOptions['primary'];
-    bgSecondary?: PaletteOptions['primary'];
     bgTertiary?: PaletteOptions['primary'];
     bgQuaternary?: {
       main: string;
@@ -151,7 +149,6 @@ declare module '@mui/material/styles' {
     surface3: true;
     surface4: true;
     bg: true;
-    bgSecondary: true;
     bgTertiary: true;
     bgQuaternary: true;
     alphaDark100: true;
@@ -357,9 +354,6 @@ const palette = {
   },
   bg: {
     main: paletteLight.bg,
-  },
-  bgSecondary: {
-    main: alpha(paletteLight.white.main, 0.48),
   },
   bgTertiary: {
     main: paletteLight.white.main,
@@ -931,9 +925,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           bg: {
             main: paletteLight.bg,
           },
-          bgSecondary: {
-            main: alpha(themeBase.palette.white.main, 0.48),
-          },
           bgTertiary: {
             main: themeBase.palette.white.main,
           },
@@ -1029,9 +1020,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           },
           bg: {
             main: '#120F29',
-          },
-          bgSecondary: {
-            main: alpha(themeBase.palette.white.main, 0.12),
           },
           bgTertiary: {
             main: themeBase.palette.alphaLight200.main,

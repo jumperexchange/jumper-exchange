@@ -7,7 +7,7 @@ export const CardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   borderRadius: '16px',
   width: '100%',
   padding: theme.spacing(2),

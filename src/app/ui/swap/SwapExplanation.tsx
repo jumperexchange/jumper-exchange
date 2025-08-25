@@ -37,8 +37,8 @@ const SwapExplanationSection = () => {
         content={faqData}
         questionTextTypography="bodyLargeStrong"
         itemSx={(theme) => ({
-          background: theme.palette.bgSecondary.main,
           boxShadow: theme.shadows[1],
+          backgroundColor: (theme.vars || theme).palette.surface2.main,
           '&:hover': {
             background: (theme.vars || theme).palette.alphaLight400.main,
             ...theme.applyStyles('light', {

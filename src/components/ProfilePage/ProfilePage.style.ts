@@ -40,21 +40,6 @@ export const ProfileHeaderBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const ProfileInfoBox = styled(Box)(({ theme }) => ({
-  gab: theme.spacing(2),
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
-  borderRadius: '24px',
-  flexDirection: 'column',
-  boxShadow: (theme.vars || theme).shadows[1],
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(3),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    flexDirection: 'row',
-  },
-}));
-
 export const NoSelectTypographyTitle = styled(Typography)(({ theme }) => ({
   userSelect: 'none',
   color: (theme.vars || theme).palette.text.primary,
