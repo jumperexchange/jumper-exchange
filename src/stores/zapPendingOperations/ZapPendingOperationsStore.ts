@@ -13,6 +13,7 @@ interface PendingOperationData<T extends WalletMethod> {
   operationName: T;
   args: WalletMethodArgsType<T>;
   timestamp: number;
+  isProcessing?: boolean;
   id: string;
   routeContext: Route | null;
 }
@@ -33,6 +34,8 @@ interface PendingOperationsState<T extends WalletMethod> {
     resolve: PromiseResolver<K>['resolve'],
     reject: PromiseResolver<K>['reject'],
   ) => void;
+
+  setProcessingPendingOperation: (id: string) => void;
 
   removePendingOperation: (id: string) => void;
 
@@ -75,6 +78,7 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
             timestamp: Date.now(),
             id,
             routeContext: currentRoute,
+            isProcessing: false,
           },
         },
       }));
@@ -85,6 +89,18 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
         ) => void,
         reject,
       });
+    },
+
+    setProcessingPendingOperation: (id) => {
+      set((state) => ({
+        pendingOperations: {
+          ...state.pendingOperations,
+          [id]: {
+            ...state.pendingOperations[id],
+            isProcessing: true,
+          },
+        },
+      }));
     },
 
     removePendingOperation: (id) => {
@@ -101,6 +117,11 @@ export const useZapPendingOperationsStore = createWithEqualityFn<
       const pendingOps = Object.values(get().pendingOperations);
 
       return pendingOps.filter((pendingOp) => {
+        // Skip operations that are already being processed
+        if (pendingOp.isProcessing) {
+          return false;
+        }
+
         // For operations without route context (like getCapabilities), execute them
         if (pendingOp.id.endsWith(NO_ROUTE_ID_SUFFIX)) {
           return true;

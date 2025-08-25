@@ -1,16 +1,15 @@
 import {
-  getChain,
+  BaseGetSupertransactionReceiptPayload,
   GetFusionQuoteParams,
-  GetSupertransactionReceiptPayload,
   MeeClient,
   MultichainSmartAccount,
+  parseTransactionStatus,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
 import {
   WalletCall,
   GetCapabilitiesArgs,
   GetCallsStatusArgs,
-  WalletMethod,
   WalletMethodsRef,
   SendCallsArgs,
   WaitCallsStatusArgs,
@@ -22,12 +21,8 @@ import {
 } from '../ModularZaps';
 import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
-import { TransactionReceipt, WalletCallReceipt, zeroAddress } from 'viem';
+import { TransactionReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
-import {
-  BICONOMY_EXPLORER_TX_PATH,
-  BICONOMY_EXPLORER_URL,
-} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 import { findChain } from 'src/utils/chains/findChain';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
@@ -38,40 +33,34 @@ type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
 
 const getFormattedTransactionHash = (hash: string) =>
-  `${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
+  hash.includes(BICONOMY_TRANSACTION_HASH_SUFFIX)
+    ? (hash as EVMAddress)
+    : (`${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress);
 
 // Helper function used for both getCallsStatus and waitForCallsStatus
 const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
-  hash: string,
+  hash: EVMAddress,
   extraParams: SendCallsExtraParams,
-  isError: boolean = false,
+  hasFailedCleanUpUserOps?: boolean,
 ) => {
-  if (isError || !receipt) {
-    // Fallback receipt for errors/timeouts
+  if (!receipt) {
     return {
       atomic: true,
       id: getFormattedTransactionHash(hash),
-      status: 'failed',
-      statusCode: 400,
-      receipts: [
-        {
-          transactionHash: getFormattedTransactionHash(hash),
-          transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${hash}`,
-          status: 'reverted',
-        } as ExtendedTransactionReceipt,
-      ],
+      status: hasFailedCleanUpUserOps ? 'failed' : 'success',
+      statusCode: hasFailedCleanUpUserOps ? 500 : 200,
+      receipts: [],
     };
   }
 
   const originalReceipts: ExtendedTransactionReceipt[] =
     receipt?.receipts || [];
 
-  // Ensure the last receipt has the correct transactionHash format
-  if (originalReceipts.length > 0) {
-    originalReceipts[originalReceipts.length - 1].transactionHash =
-      getFormattedTransactionHash(hash);
-  }
+  console.warn('🔍 processTransactionReceipt originalReceipts', {
+    hash,
+    originalReceipts,
+  });
 
   // Add transaction links and chain info
   let fromChain;
@@ -86,8 +75,19 @@ const processTransactionReceipt = (
 
   if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
     (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
-      `${fromChainBlockExplorerUrl}/tx/${originalReceipts[0].transactionHash}`;
+      `${fromChainBlockExplorerUrl}/tx/${originalReceipts[1].transactionHash}`;
   }
+
+  // Ensure the last receipt has the correct transactionHash format
+  if (originalReceipts.length > 0) {
+    originalReceipts[originalReceipts.length - 1].transactionHash =
+      getFormattedTransactionHash(hash);
+  }
+
+  console.warn('🔍 processTransactionReceipt originalReceipts after', {
+    hash,
+    originalReceipts,
+  });
 
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
   const hexChainId = chainIdAsNumber
@@ -98,6 +98,19 @@ const processTransactionReceipt = (
     ?.toLowerCase()
     .includes('success');
   const statusCode = isSuccess ? 200 : 400;
+
+  console.warn('🔍 processTransactionReceipt final', {
+    atomic: true,
+    chainId: hexChainId,
+    id: getFormattedTransactionHash(hash),
+    status: 'success',
+    statusCode,
+    receipts: originalReceipts.map((receipt) => ({
+      transactionHash: receipt.transactionHash,
+      transactionLink: (receipt as any).transactionLink,
+      status: receipt.status || (isSuccess ? 'success' : 'reverted'),
+    })),
+  });
 
   return {
     atomic: true,
@@ -323,13 +336,13 @@ export const getCallsStatus = async (
         ...receipt,
         receipts: receipt.receipts || [],
       },
-      hash,
+      originalHash,
       extraParams,
     );
   } catch (error) {
-    console.error('🔍 getCallsStatus error for hash', hash, error);
+    console.error('🔍 getCallsStatus error for hash', originalHash, error);
 
-    return processTransactionReceipt(null, hash, extraParams, true);
+    return processTransactionReceipt(null, originalHash, extraParams);
   }
 };
 
@@ -350,37 +363,77 @@ export const waitForCallsStatus = async (
   }
 
   const { id, timeout = 60000 } = args;
-
+  const startTime = Date.now();
   const originalId = id.replace(
     BICONOMY_TRANSACTION_HASH_SUFFIX,
     '',
   ) as EVMAddress;
 
-  try {
-    // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
-    // We'll use the timeout to set a maximum wait time
-    const receipt = (await Promise.race([
-      meeClientParam!.waitForSupertransactionReceipt({
-        hash: originalId,
-      }),
-      new Promise((_, reject) =>
-        setTimeout(
-          () =>
-            reject(
-              new Error(
-                `Timed out while waiting for call bundle with id "${originalId}" to be confirmed.`,
-              ),
-            ),
-          timeout,
-        ),
-      ),
-    ])) as WaitForSupertransactionReceiptPayload;
+  let cleanUpUserOps;
 
-    return processTransactionReceipt(receipt, id, extraParams);
-  } catch (error) {
-    console.error('🔍 waitForCallsStatus error for id', id, error);
-    return processTransactionReceipt(null, id, extraParams, true);
-  }
+  do {
+    try {
+      const receipt = await meeClientParam.waitForSupertransactionReceipt({
+        hash: originalId,
+      });
+      return processTransactionReceipt(receipt, originalId, extraParams);
+    } catch (error) {
+      console.error('🔍 waitForSupertransactionReceipt failed:', error);
+
+      // Check if timeout has passed
+      if (Date.now() - startTime >= timeout) {
+        console.warn('🔍 Timeout exceeded, stopping retries');
+        break;
+      }
+
+      // Check explorer status to see if we should retry
+      try {
+        const explorerResponse =
+          await meeClientParam.request<BaseGetSupertransactionReceiptPayload>({
+            path: `explorer/${originalId}`,
+            method: 'GET',
+          });
+
+        cleanUpUserOps = explorerResponse.userOps.filter(
+          (userOp) => userOp.isCleanUpUserOp,
+        );
+
+        const metaStatus = await parseTransactionStatus(
+          explorerResponse.userOps,
+        );
+
+        // Only stop retrying if transaction has clearly failed
+        if (['FAILED', 'MINED_FAIL'].includes(metaStatus.status)) {
+          console.warn(
+            'Transaction failed, no retry needed:',
+            metaStatus.status,
+          );
+          break;
+        }
+
+        console.warn(
+          '🔍 Transaction still processing or receipts not ready, retrying...',
+        );
+      } catch (explorerError) {
+        console.error('🔍 Explorer check failed:', explorerError);
+        // Continue retrying even if explorer check fails
+      }
+    }
+  } while (true);
+
+  const hasFailedCleanUpUserOps =
+    !cleanUpUserOps ||
+    !cleanUpUserOps.length ||
+    cleanUpUserOps.some((userOp) =>
+      ['FAILED', 'MINED_FAIL'].includes(userOp.executionStatus),
+    );
+
+  return processTransactionReceipt(
+    null,
+    originalId,
+    extraParams,
+    hasFailedCleanUpUserOps,
+  );
 };
 
 export const walletMethods: WalletMethodsRef = {

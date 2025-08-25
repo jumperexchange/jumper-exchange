@@ -23,6 +23,7 @@ export const PerksList = ({ initialPerks }: PerksListProps) => {
     const entityTranslation = t('profile_page.perks', 'Perks').toLowerCase();
     return (
       <NoDataPlaceholder
+        imageUrl="/perks-empty-state.png"
         description={t('profile_page.noData.description', {
           entity: entityTranslation,
         })}

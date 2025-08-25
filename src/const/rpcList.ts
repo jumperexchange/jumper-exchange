@@ -18,15 +18,22 @@ const arbRPCList = [
 ];
 
 const basRPCList = [
+  'https://base.llamarpc.com',
   'https://mainnet.base.org/',
-  'https://base.meowrpc.com',
+  // 'https://base.meowrpc.com',
   // 'https://base.drpc.org',
   `https://lb.drpc.org/ogrpc?network=base&dkey=${config.NEXT_PUBLIC_DKEY}`,
   'https://base-pokt.nodies.app',
+  'https://base-rpc.publicnode.com',
 ];
 
 export const publicRPCList = {
   '10': shuffleArray(optRPCList),
   '42161': shuffleArray(arbRPCList),
   '8453': shuffleArray(basRPCList),
+};
+
+export const mergedRPCList = {
+  ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? {}),
+  ...publicRPCList,
 };

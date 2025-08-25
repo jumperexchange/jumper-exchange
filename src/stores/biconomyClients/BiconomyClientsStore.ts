@@ -1,7 +1,9 @@
 'use client';
 import {
   createMeeClient,
+  getMEEVersion,
   MeeClient,
+  MEEVersion,
   MultichainSmartAccount,
   toMultichainNexusAccount,
 } from '@biconomy/abstractjs';
@@ -11,6 +13,8 @@ import { createWithEqualityFn } from 'zustand/traditional';
 import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 import { UseWalletClientReturnType } from 'wagmi';
 import { EVMAddress } from 'src/types/internal';
+import { getShuffledRPCForChain } from 'src/utils/rpc/getShuffledRPCForChain';
+import envConfig from 'src/config/env-config';
 
 export type BiconomyClients = {
   meeClient: MeeClient;
@@ -72,14 +76,8 @@ const getChainKey = (currentChainId: number): ChainKey => `${currentChainId}`;
 const findChain = (chainId: number) =>
   Object.values(chains).find((chain) => chain.id === chainId);
 
-const BICONOMY_CONFIG = {
-  factoryAddress: '0x0000006648ED9B2B842552BE63Af870bC74af837',
-  implementationAddress: '0x00000000383e8cBe298514674Ea60Ee1d1de50ac',
-  bootStrapAddress: '0x0000003eDf18913c01cBc482C978bBD3D6E8ffA3',
-} as const;
-
 const MEE_CLIENT_CONFIG = {
-  apiKey: process.env.NEXT_PUBLIC_BICONOMY_API_KEY,
+  apiKey: envConfig.NEXT_PUBLIC_BICONOMY_API_KEY,
 } as const;
 
 export const useBiconomyClientsStore =
@@ -265,16 +263,25 @@ export const useBiconomyClientsStore =
 
         // Initialize new clients
         try {
+          const usedChains = [currentChain, depositChain];
           const { oNexus, meeClient } = await retryWithBackoff(async () => {
+            const chainConfigurations = usedChains.map((chain) => {
+              const rpcUrl = getShuffledRPCForChain(chain.id);
+              console.warn(`Using RPC ${rpcUrl} for chain ${chain.id}`);
+              return {
+                chain: chain,
+                transport: http(rpcUrl || undefined),
+                version: getMEEVersion(MEEVersion.V2_1_0),
+              };
+            });
+
             const oNexusInit = await toMultichainNexusAccount({
               signer: createWalletClient({
                 account: walletClient.account.address as EVMAddress,
                 chain: walletClient.chain,
                 transport: custom(provider, { key: 'jumper-custom-zap' }),
               }),
-              chains: [currentChain, depositChain],
-              transports: [http(), http()],
-              ...BICONOMY_CONFIG,
+              chainConfigurations,
             });
 
             oNexusInit.deployments.forEach((deployment) => {
