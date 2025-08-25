@@ -58,7 +58,6 @@ declare module '@mui/material/styles' {
     surface3: Palette['primary'];
     surface4: Palette['primary'];
     bg: Palette['primary'];
-    bgTertiary: Palette['primary'];
     bgQuaternary: {
       main: string;
       hover: string;
@@ -105,7 +104,6 @@ declare module '@mui/material/styles' {
     surface3?: PaletteOptions['primary'];
     surface4?: PaletteOptions['primary'];
     bg?: PaletteOptions['primary'];
-    bgTertiary?: PaletteOptions['primary'];
     bgQuaternary?: {
       main: string;
       hover: string;
@@ -149,7 +147,6 @@ declare module '@mui/material/styles' {
     surface3: true;
     surface4: true;
     bg: true;
-    bgTertiary: true;
     bgQuaternary: true;
     alphaDark100: true;
     alphaDark200: true;
@@ -354,9 +351,6 @@ const palette = {
   },
   bg: {
     main: paletteLight.bg,
-  },
-  bgTertiary: {
-    main: paletteLight.white.main,
   },
   bgQuaternary: {
     hover: alpha('#653BA3', 0.12),
@@ -925,9 +919,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           bg: {
             main: paletteLight.bg,
           },
-          bgTertiary: {
-            main: themeBase.palette.white.main,
-          },
           bgQuaternary: {
             hover: alpha('#653BA3', 0.12),
             main: alpha('#31007A', 0.08),
@@ -1021,9 +1012,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           bg: {
             main: '#120F29',
           },
-          bgTertiary: {
-            main: themeBase.palette.alphaLight200.main,
-          },
           bgQuaternary: {
             hover: alpha('#653BA3', 0.56),
             main: alpha('#653BA3', 0.42),
@@ -1069,9 +1057,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: paletteDark.surface2,
           },
           surface3: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: paletteDark.surface3,
+            main: paletteDark.surface3,
+            dark: paletteDark.surface3,
           },
           surface4: {
             light: paletteDark.surface4,
