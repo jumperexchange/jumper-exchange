@@ -29,6 +29,7 @@ import { SuiProvider } from './SuiProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { ClientOnly } from 'src/components/ClientOnly';
+import { walletEcosystemsOrder } from './constants';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
@@ -68,6 +69,7 @@ const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
       metaMask: defaultMetaMaskConfig,
       coinbase: defaultCoinbaseConfig,
       walletConnect: defaultWalletConnectConfig,
+      walletEcosystemsOrder: walletEcosystemsOrder,
     };
   }, [i18n.resolvedLanguage]);
   return (
