@@ -32,6 +32,7 @@ export const AchievementsList = () => {
     ).toLowerCase();
     return (
       <NoDataPlaceholder
+        imageUrl="/achievements-empty-state.png"
         description={t('profile_page.noData.description', {
           entity: entityTranslation,
         })}

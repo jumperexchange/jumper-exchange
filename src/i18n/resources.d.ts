@@ -120,6 +120,8 @@ interface Resources {
     button: {
       okay: 'Okay';
       manageYourPosition: 'Manage your position';
+      goBack: 'Go back';
+      connectAnotherWallet: 'Connect another wallet';
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
@@ -277,6 +279,10 @@ interface Resources {
       zap: {
         sendToAddressName: 'Deposit into {{name}}';
         sentToAddressName: 'Deposited into {{name}}';
+        placeholder: {
+          title: 'Your wallet is currently not supported';
+          description: 'We are working on adding support for embedded and smart contract wallets. In the mean time please use a different wallet to complete this mission.';
+        };
       };
     };
   };

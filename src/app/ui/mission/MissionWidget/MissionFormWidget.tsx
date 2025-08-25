@@ -22,6 +22,9 @@ import { useTranslation } from 'react-i18next';
 export const MissionFormWidget = () => {
   const { t } = useTranslation();
   const {
+    missionId,
+    currentActiveTaskId,
+    currentActiveTaskName,
     taskTitle,
     taskDescription,
     taskDescriptionCTALink,
@@ -46,9 +49,14 @@ export const MissionFormWidget = () => {
       action: TrackingAction.ClickMissionCtaSteps,
       label: `click-mission-cta-steps`,
       data: {
-        [TrackingEventParameter.MissionCtaStepsTitle]: taskTitle || '',
+        [TrackingEventParameter.QuestCardId]: missionId || '',
+        [TrackingEventParameter.MissionCtaStepsTaskStepId]:
+          currentActiveTaskId || '',
+        [TrackingEventParameter.MissionCtaStepsTitle]:
+          currentActiveTaskName || '',
         [TrackingEventParameter.MissionCtaStepsLink]: taskCTALink || '',
-        [TrackingEventParameter.MissionCtaStepsCTA]: taskCTAText || '',
+        [TrackingEventParameter.MissionCtaStepsCTA]:
+          taskCTATextWithFallback || '',
       },
     });
     if (taskCTALink) {
