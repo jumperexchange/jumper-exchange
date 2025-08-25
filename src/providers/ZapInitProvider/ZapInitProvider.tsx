@@ -11,6 +11,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
@@ -40,10 +41,13 @@ import {
 } from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 import { findChain } from 'src/utils/chains/findChain';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
+import { useMultisig } from 'src/hooks/useMultisig';
 
 interface ZapInitState {
   isInitialized: boolean;
   isInitializedForCurrentChain: boolean;
+  isMultisigEnvironment: boolean;
+  isEmbeddedWallet: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
   toAddress?: EVMAddress;
@@ -60,6 +64,8 @@ interface ZapInitState {
 export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
   isInitializedForCurrentChain: false,
+  isMultisigEnvironment: false,
+  isEmbeddedWallet: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -109,6 +115,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     getPromiseResolversForOperation,
     setProcessingPendingOperation,
   } = useZapPendingOperationsStore();
+
+  const { checkMultisigEnvironment } = useMultisig();
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const [isEmbeddedWallet, setIsEmbeddedWallet] = useState(false);
 
   const pendingOperationsLength = useZapPendingOperationsStore(
     (state) => Object.keys(state.pendingOperations).length,
@@ -209,19 +219,25 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   });
 
   const toAddress = useBiconomyClientsStore((state) => {
-    console.warn('🔍 toAddress selector running');
-    return state.getToAddress(
+    const valueFromStore = state.getToAddress(
       projectData.address as EVMAddress | undefined,
       projectData.chainId,
       address as EVMAddress | undefined,
     );
+
+    console.warn('🔍 toAddress selector running', valueFromStore);
+
+    return valueFromStore;
   });
 
   // RPC operation queueing
   const queueOperation = async <T extends WalletMethod>(
     operationName: T,
     args: WalletMethodArgsType<T>,
-    extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
+    extraParams: Omit<
+      SendCallsExtraParams,
+      'currentRoute' | 'isEmbeddedWallet'
+    >,
   ): Promise<ReturnType<WalletMethodsRef[T]>> => {
     const operation = walletMethods[operationName] as
       | WalletMethodsRef[T]
@@ -232,6 +248,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }
 
     let biconomyClients: BiconomyClients | null = null;
+    let isCurrentEmbeddedWallet: boolean = false;
     const actualCurrentRoute = getCurrentRoute();
 
     try {
@@ -243,6 +260,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       });
 
       biconomyClients = clients.biconomyClients;
+      isCurrentEmbeddedWallet = clients.isEmbeddedWallet;
     } catch (error) {
       console.error(
         'Failed to initialize clients inside queueOperation:',
@@ -268,6 +286,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
       ...extraParams,
       currentRoute: actualCurrentRoute,
+      isEmbeddedWallet: isCurrentEmbeddedWallet,
     });
   };
 
@@ -297,6 +316,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
 
         let biconomyClients: BiconomyClients | null = null;
+        let isCurrentEmbeddedWallet: boolean = false;
 
         try {
           const clients = await initializeClients({
@@ -308,6 +328,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           });
 
           biconomyClients = clients.biconomyClients;
+          isCurrentEmbeddedWallet = clients.isEmbeddedWallet;
         } catch (error) {
           console.error(
             'Failed to initialize clients inside executePendingOperations:',
@@ -353,6 +374,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
               {
                 ...sendCallsExtraParams,
                 currentRoute: pendingOp.routeContext,
+                isEmbeddedWallet: isCurrentEmbeddedWallet,
               },
             );
 
@@ -398,6 +420,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   ]);
 
   // Enhanced initialization with retry logic and better error handling
+  // @Note this is needed for the initial clients initialization
   useEffect(() => {
     if (initInProgressRef.current) {
       console.warn('Already initializing, skipping...');
@@ -410,17 +433,30 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }
 
     const initMeeClient = async () => {
+      const isMultisig = await checkMultisigEnvironment();
+      if (isMultisig) {
+        console.log('Skipping client initialization in multisig environment');
+        setIsMultisigEnvironment(true);
+        return;
+      }
+
       try {
         initInProgressRef.current = true;
 
-        const { biconomyClients } = await initializeClients({
+        const clients = await initializeClients({
           address: address as EVMAddress,
           chainId,
           projectAddress: projectData.address as EVMAddress,
           projectChainId: projectData.chainId,
         });
 
-        if (!biconomyClients) {
+        if (clients.isEmbeddedWallet) {
+          console.warn('Embedded wallet detected');
+          setIsEmbeddedWallet(true);
+          return;
+        }
+
+        if (!clients.biconomyClients) {
           console.warn('Failed to get biconomy clients');
           return;
         }
@@ -438,6 +474,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.chainId,
     projectData.address,
     initializeClients,
+    checkMultisigEnvironment,
   ]);
 
   // @Note: This is a hack to fix the broken address link; will be removed
@@ -479,6 +516,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     useZapPendingOperationsStore.setState({
       currentRoute: null,
     });
+
+    return () => {
+      setIsMultisigEnvironment(false);
+      setIsEmbeddedWallet(false);
+    };
   }, [address]);
 
   useEffect(() => {
@@ -533,6 +575,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     return {
       isInitialized,
       isInitializedForCurrentChain,
+      isMultisigEnvironment,
+      isEmbeddedWallet,
       isConnected,
       providers,
       toAddress,
@@ -550,6 +594,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     toAddress,
     isInitialized,
     isInitializedForCurrentChain,
+    isMultisigEnvironment,
+    isEmbeddedWallet,
     isConnected,
     zapData,
     isZapDataSuccess,

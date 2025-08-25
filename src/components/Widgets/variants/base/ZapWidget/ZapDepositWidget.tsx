@@ -19,6 +19,7 @@ import { ZapDepositSettings } from './ZapDepositSettings';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -33,6 +34,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   const {
     isInitialized,
     isConnected,
+    isMultisigEnvironment,
+    isEmbeddedWallet,
     providers,
     toAddress,
     zapData,
@@ -169,6 +172,10 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     setCurrentRoute,
     setSupportModalState,
   ]);
+
+  if (isMultisigEnvironment || isEmbeddedWallet) {
+    return <ZapPlaceholderWidget />;
+  }
 
   return isZapDataSuccess &&
     ((isInitialized && !!toAddress) || !isConnected) ? (
