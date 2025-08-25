@@ -1064,9 +1064,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#120F29',
           },
           surface2: {
-            light: '#24203D',
-            main: '#24203D',
-            dark: '#24203D',
+            light: paletteDark.surface2,
+            main: paletteDark.surface2,
+            dark: paletteDark.surface2,
           },
           surface3: {
             light: '#120F29',
