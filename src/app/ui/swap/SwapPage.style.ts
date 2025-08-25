@@ -9,7 +9,7 @@ export const BridgePageContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   position: 'relative',
   borderRadius: 32,
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[1],
   display: 'flex',

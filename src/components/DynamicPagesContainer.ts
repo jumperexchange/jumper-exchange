@@ -7,7 +7,7 @@ export const DynamicPagesContainer = styled(Box)<BoxProps>(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,
   position: 'relative',
   borderRadius: 32,
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[1],
   display: 'flex',
