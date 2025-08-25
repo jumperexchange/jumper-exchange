@@ -11,7 +11,7 @@ import { Button } from 'src/components/Button/Button';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 
-export const ZapMultisigPlaceholderWidget = () => {
+export const ZapPlaceholderWidget = () => {
   const { t } = useTranslation();
   const { openWalletMenu } = useWalletMenu();
 
@@ -29,13 +29,9 @@ export const ZapMultisigPlaceholderWidget = () => {
         />
         <Stack sx={{ gap: 0.5 }}>
           <Typography variant="bodyLargeStrong">
-            Your wallet is currently not supported
+            {t('widget.zap.placeholder.title')}
           </Typography>
-          <Typography>
-            We are working on adding support for embedded and smart contract
-            wallets. In the mean time please use a different wallet to complete
-            this mission.
-          </Typography>
+          <Typography>{t('widget.zap.placeholder.description')}</Typography>
         </Stack>
         <Button fullWidth size="medium" onClick={handleOpenWalletMenu}>
           {t('button.connectAnotherWallet')}

@@ -19,7 +19,7 @@ import { ZapDepositSettings } from './ZapDepositSettings';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
-import { ZapMultisigPlaceholderWidget } from './ZapMultisigPlaceholderWidget';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -174,7 +174,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   ]);
 
   if (isMultisigEnvironment || isEmbeddedWallet) {
-    return <ZapMultisigPlaceholderWidget />;
+    return <ZapPlaceholderWidget />;
   }
 
   return isZapDataSuccess &&
