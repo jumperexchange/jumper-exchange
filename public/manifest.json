@@ -4,11 +4,6 @@
   "description": "Multi-Chain Bridging & Swapping",
   "icons": [
     {
-      "src": "logo-16x16.svg",
-      "sizes": "16x16",
-      "type": "image/svg+xml"
-    },
-    {
       "src": "logo-24x24.svg",
       "sizes": "24x24",
       "type": "image/svg+xml"
@@ -28,6 +23,18 @@
       "sizes": "144x144",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -39,7 +46,7 @@
       "icons": [
         {
           "src": "/shortcut-icon.png",
-          "sizes": "97x96"
+          "sizes": "96x96"
         }
       ]
     },
@@ -51,7 +58,7 @@
       "icons": [
         {
           "src": "/shortcut-icon.png",
-          "sizes": "97x96"
+          "sizes": "96x96"
         }
       ]
     },
@@ -63,7 +70,7 @@
       "icons": [
         {
           "src": "/shortcut-icon.png",
-          "sizes": "97x96"
+          "sizes": "96x96"
         }
       ]
     }
