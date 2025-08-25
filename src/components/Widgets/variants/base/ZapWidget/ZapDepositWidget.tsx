@@ -35,6 +35,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     isInitialized,
     isConnected,
     isMultisigEnvironment,
+    isEmbeddedWallet,
     providers,
     toAddress,
     zapData,
@@ -172,7 +173,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     setSupportModalState,
   ]);
 
-  if (isMultisigEnvironment) {
+  if (isMultisigEnvironment || isEmbeddedWallet) {
     return <ZapMultisigPlaceholderWidget />;
   }
 

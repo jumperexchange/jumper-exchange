@@ -47,6 +47,7 @@ interface ZapInitState {
   isInitialized: boolean;
   isInitializedForCurrentChain: boolean;
   isMultisigEnvironment: boolean;
+  isEmbeddedWallet: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
   toAddress?: EVMAddress;
@@ -64,6 +65,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
   isInitializedForCurrentChain: false,
   isMultisigEnvironment: false,
+  isEmbeddedWallet: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -116,6 +118,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   const { checkMultisigEnvironment } = useMultisig();
   const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const [isEmbeddedWallet, setIsEmbeddedWallet] = useState(false);
 
   const pendingOperationsLength = useZapPendingOperationsStore(
     (state) => Object.keys(state.pendingOperations).length,
@@ -245,7 +248,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }
 
     let biconomyClients: BiconomyClients | null = null;
-    let isEmbeddedWallet: boolean = false;
+    let isCurrentEmbeddedWallet: boolean = false;
     const actualCurrentRoute = getCurrentRoute();
 
     try {
@@ -257,7 +260,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       });
 
       biconomyClients = clients.biconomyClients;
-      isEmbeddedWallet = clients.isEmbeddedWallet;
+      isCurrentEmbeddedWallet = clients.isEmbeddedWallet;
     } catch (error) {
       console.error(
         'Failed to initialize clients inside queueOperation:',
@@ -283,7 +286,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
       ...extraParams,
       currentRoute: actualCurrentRoute,
-      isEmbeddedWallet,
+      isEmbeddedWallet: isCurrentEmbeddedWallet,
     });
   };
 
@@ -313,7 +316,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
 
         let biconomyClients: BiconomyClients | null = null;
-        let isEmbeddedWallet: boolean = false;
+        let isCurrentEmbeddedWallet: boolean = false;
 
         try {
           const clients = await initializeClients({
@@ -325,7 +328,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
           });
 
           biconomyClients = clients.biconomyClients;
-          isEmbeddedWallet = clients.isEmbeddedWallet;
+          isCurrentEmbeddedWallet = clients.isEmbeddedWallet;
         } catch (error) {
           console.error(
             'Failed to initialize clients inside executePendingOperations:',
@@ -371,7 +374,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
               {
                 ...sendCallsExtraParams,
                 currentRoute: pendingOp.routeContext,
-                isEmbeddedWallet,
+                isEmbeddedWallet: isCurrentEmbeddedWallet,
               },
             );
 
@@ -440,14 +443,20 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       try {
         initInProgressRef.current = true;
 
-        const { biconomyClients } = await initializeClients({
+        const clients = await initializeClients({
           address: address as EVMAddress,
           chainId,
           projectAddress: projectData.address as EVMAddress,
           projectChainId: projectData.chainId,
         });
 
-        if (!biconomyClients) {
+        if (clients.isEmbeddedWallet) {
+          console.warn('Embedded wallet detected');
+          setIsEmbeddedWallet(true);
+          return;
+        }
+
+        if (!clients.biconomyClients) {
           console.warn('Failed to get biconomy clients');
           return;
         }
@@ -510,6 +519,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
     return () => {
       setIsMultisigEnvironment(false);
+      setIsEmbeddedWallet(false);
     };
   }, [address]);
 
@@ -566,6 +576,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       isInitialized,
       isInitializedForCurrentChain,
       isMultisigEnvironment,
+      isEmbeddedWallet,
       isConnected,
       providers,
       toAddress,
@@ -584,6 +595,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     isInitialized,
     isInitializedForCurrentChain,
     isMultisigEnvironment,
+    isEmbeddedWallet,
     isConnected,
     zapData,
     isZapDataSuccess,
