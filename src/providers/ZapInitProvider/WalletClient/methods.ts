@@ -1,7 +1,5 @@
 import {
   BaseGetSupertransactionReceiptPayload,
-  GetFusionQuoteParams,
-  GetQuoteParams,
   MeeClient,
   MultichainSmartAccount,
   parseTransactionStatus,
@@ -14,7 +12,6 @@ import {
   WalletMethodsRef,
   SendCallsArgs,
   WaitCallsStatusArgs,
-  GetCallsStatusResponse,
 } from '../types';
 import {
   buildContractInstructions,
@@ -22,41 +19,10 @@ import {
 } from '../ModularZaps';
 import { getTokenBalance } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
-import {
-  createWalletClient,
-  http,
-  TransactionReceipt,
-  WalletClient,
-  zeroAddress,
-} from 'viem';
+import { TransactionReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
 import { findChain } from 'src/utils/chains/findChain';
-
-const NEXUS_V120 = '0x000000004F43C49e93C970E84001853a70923B03';
-
-// This will not actually work for json-rpc wallets
-// We need to use privateKeyToAccount to create a wallet client
-// and then use that to sign the authorization, otherwise it will throw an error
-// https://docs.biconomy.io/new/getting-started/enable-mee-eoa-7702
-const createEIP7702Authorization = async (
-  walletClient: WalletClient | undefined,
-  currentChainId: number,
-) => {
-  if (!walletClient?.account) {
-    throw new Error('No wallet client or account available');
-  }
-
-  const authorization = await createWalletClient({
-    transport: http(),
-    chain: walletClient.chain,
-    account: walletClient.account,
-  }).signAuthorization({
-    chainId: currentChainId,
-    address: NEXUS_V120,
-  });
-
-  return authorization;
-};
+import { executeQuoteStrategy } from './quotes';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
   Pick<TransactionReceipt, 'status' | 'transactionHash'> & {
@@ -294,77 +260,19 @@ export const sendCalls = async (
     });
   }
 
-  let hash;
-
-  if (sendCallsExtraParams.isEmbeddedWallet) {
-    const currentChainNexusDeployment =
-      oNexusParam.deploymentOn(currentChainId);
-
-    const currentChainAuthorization = await createEIP7702Authorization(
-      currentChainNexusDeployment?.walletClient,
-      currentChainId,
-    );
-
-    const depositChainNexusDeployment =
-      oNexusParam.deploymentOn(depositChainId);
-
-    const depositChainAuthorization = await createEIP7702Authorization(
-      depositChainNexusDeployment?.walletClient,
-      depositChainId,
-    );
-
-    const quoteParams: GetQuoteParams = {
-      authorizations: [currentChainAuthorization, depositChainAuthorization],
-      delegate: true,
-      cleanUps,
-      feeToken: {
-        address: currentRouteFromToken.address as EVMAddress,
-        chainId: currentChainId,
-      },
-      instructions,
-    };
-
-    const quote = await meeClientParam.getQuote(quoteParams);
-
-    const quoteExecution = await meeClientParam.executeQuote({
-      quote,
-    });
-
-    hash = quoteExecution.hash;
-  } else {
-    const fusionQuoteParams: GetFusionQuoteParams = {
-      trigger: {
-        tokenAddress: currentRouteFromToken.address as EVMAddress,
-        amount: requestedAmount,
-        chainId: currentChainId,
-      },
-      cleanUps,
-      feeToken: {
-        address: currentRouteFromToken.address as EVMAddress,
-        chainId: currentChainId,
-      },
-      instructions,
-    };
-
-    // Calculate the percentage of the balance the user wants to use (in basis points)
-    const usageInBasisPoints =
-      userBalance > 0n ? (requestedAmount * 10_000n) / userBalance : 0n;
-
-    // If the user is using ≥ 99.90% of their balance, we assume they intend to use max
-    const isUsingMax = usageInBasisPoints >= 9_990n;
-
-    if (isUsingMax) {
-      fusionQuoteParams.trigger.useMaxAvailableFunds = true;
-    }
-
-    const quote = await meeClientParam.getFusionQuote(fusionQuoteParams);
-
-    const fusionQuoteExecution = await meeClientParam.executeFusionQuote({
-      fusionQuote: quote,
-    });
-
-    hash = fusionQuoteExecution.hash;
-  }
+  const hash = await executeQuoteStrategy({
+    meeClientParam,
+    oNexusParam,
+    currentChainId,
+    depositChainId,
+    currentRouteFromToken,
+    currentRouteFromAmount,
+    cleanUps,
+    instructions,
+    userBalance,
+    requestedAmount,
+    isEmbeddedWallet: sendCallsExtraParams.isEmbeddedWallet,
+  });
 
   console.warn('🔍 sendCalls response', {
     id: getFormattedTransactionHash(hash),
