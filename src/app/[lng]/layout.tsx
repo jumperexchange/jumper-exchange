@@ -54,40 +54,20 @@ export const metadata: Metadata = {
     // Icons metadata
     icon: [
       {
-        url: '/favicon_DT.svg',
-        sizes: 'any',
-        media: '(prefers-color-scheme: dark)',
-      },
-      { url: '/favicon_DT.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/favicon_DT.ico', media: '(prefers-color-scheme: dark)' },
-      {
         url: '/favicon.svg',
         sizes: 'any',
-        media: '(prefers-color-scheme: light)',
       },
-      { url: '/favicon.png', media: '(prefers-color-scheme: light)' },
-      { url: '/favicon.ico', media: '(prefers-color-scheme: light)' },
+      { url: '/favicon.png' },
+      { url: '/favicon.ico' },
     ],
     shortcut: [
       {
         url: '/apple-touch-icon-57x57.png',
         sizes: '57x57',
-        media: '(prefers-color-scheme: light)',
       },
       {
         url: '/apple-touch-icon-180x180.png',
         sizes: '180x180',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/apple-touch-icon-57x57_DT.png',
-        sizes: '57x57',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/apple-touch-icon-180x180_DT.png',
-        sizes: '180x180',
-        media: '(prefers-color-scheme: dark)',
       },
     ],
   },
