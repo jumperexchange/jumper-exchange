@@ -8,6 +8,7 @@ export interface SendCallsExtraParams {
   currentRoute: Route | null;
   zapData: ZapDataResponse;
   projectData: ProjectData;
+  isEmbeddedWallet: boolean;
 }
 
 export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {

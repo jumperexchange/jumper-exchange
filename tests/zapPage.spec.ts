@@ -15,7 +15,7 @@ import { checkTabsInHeader } from './testData/menuFunctions';
 
 test.describe('Zap Morpho Katana Page', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('/missions/morpho-katana-usdc');
+        await page.goto('/missions/morpho-katana-gauntlet-usdc');
         await page.waitForLoadState('networkidle');
     });
 
