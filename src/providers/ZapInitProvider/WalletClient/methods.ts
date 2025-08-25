@@ -1,6 +1,5 @@
 import {
   BaseGetSupertransactionReceiptPayload,
-  GetFusionQuoteParams,
   MeeClient,
   MultichainSmartAccount,
   parseTransactionStatus,
@@ -13,7 +12,6 @@ import {
   WalletMethodsRef,
   SendCallsArgs,
   WaitCallsStatusArgs,
-  GetCallsStatusResponse,
 } from '../types';
 import {
   buildContractInstructions,
@@ -24,6 +22,7 @@ import { EVMAddress } from 'src/types/internal';
 import { TransactionReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
 import { findChain } from 'src/utils/chains/findChain';
+import { executeQuoteStrategy } from './quotes';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
   Pick<TransactionReceipt, 'status' | 'transactionHash'> & {
@@ -261,35 +260,18 @@ export const sendCalls = async (
     });
   }
 
-  const fusionQuoteParams: GetFusionQuoteParams = {
-    trigger: {
-      tokenAddress: currentRouteFromToken.address as EVMAddress,
-      amount: requestedAmount,
-      chainId: currentChainId,
-    },
+  const hash = await executeQuoteStrategy({
+    meeClientParam,
+    oNexusParam,
+    currentChainId,
+    depositChainId,
+    currentRouteFromToken,
+    currentRouteFromAmount,
     cleanUps,
-    feeToken: {
-      address: currentRouteFromToken.address as EVMAddress,
-      chainId: currentChainId,
-    },
     instructions,
-  };
-
-  // Calculate the percentage of the balance the user wants to use (in basis points)
-  const usageInBasisPoints =
-    userBalance > 0n ? (requestedAmount * 10_000n) / userBalance : 0n;
-
-  // If the user is using ≥ 99.90% of their balance, we assume they intend to use max
-  const isUsingMax = usageInBasisPoints >= 9_990n;
-
-  if (isUsingMax) {
-    fusionQuoteParams.trigger.useMaxAvailableFunds = true;
-  }
-
-  const quote = await meeClientParam.getFusionQuote(fusionQuoteParams);
-
-  const { hash } = await meeClientParam.executeFusionQuote({
-    fusionQuote: quote,
+    userBalance,
+    requestedAmount,
+    isEmbeddedWallet: sendCallsExtraParams.isEmbeddedWallet,
   });
 
   console.warn('🔍 sendCalls response', {
