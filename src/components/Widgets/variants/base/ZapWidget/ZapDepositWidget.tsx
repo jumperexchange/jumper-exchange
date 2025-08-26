@@ -1,8 +1,6 @@
 'use client';
 
-import { FC, useEffect, useMemo } from 'react';
 import {
-  ChainTokenSelected,
   ChainType,
   HiddenUI,
   LiFiWidget,
@@ -11,14 +9,16 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { WidgetSkeleton } from '../WidgetSkeleton';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { WidgetProps } from '../Widget.types';
-import { ConfigContext } from '../../widgetConfig/types';
-import { ZapDepositSettings } from './ZapDepositSettings';
+import uniqBy from 'lodash/uniqBy';
+import { FC, useEffect, useMemo } from 'react';
+import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
+import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
+import { ConfigContext } from '../../widgetConfig/types';
+import { WidgetProps } from '../Widget.types';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
@@ -86,6 +86,17 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+
+  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
+  const lpToken = zapData?.market?.lpToken;
+  if (lpToken) {
+    const currentDenyList = widgetConfig.tokens?.deny ?? [];
+    const newDenyList = uniqBy([...currentDenyList, lpToken], 'address');
+
+    widgetConfig.tokens = widgetConfig.tokens ?? {};
+    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
+    widgetConfig.tokens.deny = newDenyList;
+  }
 
   // @Note: we want to ensure that the toAddress is set in the widget config without any delay
   if (toAddress) {
