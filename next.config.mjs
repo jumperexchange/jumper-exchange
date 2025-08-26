@@ -162,7 +162,7 @@ export default withSentryConfig(
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
     // Cannot use `isProduction` here, as this file is not supporting ts
-    enabled: process.env.ENV_NAME === 'prod',
+    enabled: process.env.NEXT_PUBLIC_ENVIRONMENT === 'production',
     // Suppresses source map uploading logs during build
     silent: true,
     org: 'jumper-exchange',
@@ -196,5 +196,8 @@ export default withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
     bundlePagesRouterDependencies: true,
+    reactComponentAnnotation: {
+      enabled: true,
+    },
   },
 );

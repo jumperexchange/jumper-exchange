@@ -131,7 +131,7 @@
     "xvfb": "^0.4.0"
   },
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbopack",
     "dev:local": "dotenv -e .env.localhost next dev",
     "dev:staging": "dotenv -e .env.staging next dev",
     "dev:production": "dotenv -e .env.production next dev",
