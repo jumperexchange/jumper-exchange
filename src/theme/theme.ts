@@ -1001,19 +1001,19 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#321D52',
           },
           accent1: {
-            light: '#653BA3',
-            main: '#653BA3',
-            dark: '#653BA3',
+            light: paletteDark.accent1,
+            main: paletteDark.accent1,
+            dark: paletteDark.accent1,
           },
           accent1Alt: {
-            light: '#BEA0EB',
-            main: '#BEA0EB',
-            dark: '#BEA0EB',
+            light: paletteDark.accent1Alt,
+            main: paletteDark.accent1Alt,
+            dark: paletteDark.accent1Alt,
           },
           accent2: {
-            light: '#D35CFF',
-            main: '#D35CFF',
-            dark: '#D35CFF',
+            light: paletteDark.accent2,
+            main: paletteDark.accent2,
+            dark: paletteDark.accent2,
           },
           surface1: {
             light: paletteDark.surface1,
