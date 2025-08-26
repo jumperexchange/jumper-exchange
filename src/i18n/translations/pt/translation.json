@@ -112,7 +112,9 @@
   },
   "button": {
     "okay": "Ok",
-    "manageYourPosition": "Gerencie sua posição"
+    "manageYourPosition": "Gerencie sua posição",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -269,7 +271,11 @@
     },
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
-      "sentToAddressName": "Depositado em {{name}}"
+      "sentToAddressName": "Depositado em {{name}}",
+      "placeholder": {
+        "title": "",
+        "description": ""
+      }
     }
   }
 }
