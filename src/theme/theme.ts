@@ -58,10 +58,6 @@ declare module '@mui/material/styles' {
     surface3: Palette['primary'];
     surface4: Palette['primary'];
     bg: Palette['primary'];
-    bgQuaternary: {
-      main: string;
-      hover: string;
-    };
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -104,10 +100,6 @@ declare module '@mui/material/styles' {
     surface3?: PaletteOptions['primary'];
     surface4?: PaletteOptions['primary'];
     bg?: PaletteOptions['primary'];
-    bgQuaternary?: {
-      main: string;
-      hover: string;
-    };
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -351,10 +343,6 @@ const palette = {
   },
   bg: {
     main: paletteLight.bg,
-  },
-  bgQuaternary: {
-    hover: alpha('#653BA3', 0.12),
-    main: alpha('#31007A', 0.08),
   },
   primary: {
     light: '#31007A',
@@ -919,10 +907,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           bg: {
             main: paletteLight.bg,
           },
-          bgQuaternary: {
-            hover: alpha('#653BA3', 0.12),
-            main: alpha('#31007A', 0.08),
-          },
           primary: {
             light: '#31007A',
             main: '#31007A',
@@ -1011,10 +995,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           },
           bg: {
             main: '#120F29',
-          },
-          bgQuaternary: {
-            hover: alpha('#653BA3', 0.56),
-            main: alpha('#653BA3', 0.42),
           },
           primary: {
             light: '#653BA3',

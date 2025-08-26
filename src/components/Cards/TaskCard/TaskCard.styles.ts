@@ -26,10 +26,7 @@ export const TaskContainer = styled(Box, {
   transition: 'all .2s ease-in',
   ...(isActive && {
     borderColor: (theme.vars || theme).palette.borderActive,
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
   }),
 }));
 
