@@ -112,7 +112,9 @@
   },
   "button": {
     "okay": "Ok",
-    "manageYourPosition": ""
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "Une erreur s'est produite. Essayez de recharger la page. Si le problème persiste, contactez notre support."
@@ -201,6 +203,9 @@
     "achievements": "",
     "unlocked": "",
     "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
       "description": "",
       "caption": "",
@@ -266,7 +271,11 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "placeholder": {
+        "title": "",
+        "description": ""
+      }
     }
   }
 }

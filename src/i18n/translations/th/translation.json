@@ -112,7 +112,9 @@
   },
   "button": {
     "okay": "ตกลง",
-    "manageYourPosition": ""
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "เกิดข้อผิดพลาดบางอย่าง โปรดลองโหลดหน้าเว็บใหม่อีกครั้ง หากปัญหายังคงอยู่ กรุณาติดต่อฝ่ายสนับสนุนของเรา"
@@ -201,6 +203,9 @@
     "achievements": "",
     "unlocked": "",
     "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
       "description": "",
       "caption": "",
@@ -266,7 +271,11 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "placeholder": {
+        "title": "",
+        "description": ""
+      }
     }
   }
 }
