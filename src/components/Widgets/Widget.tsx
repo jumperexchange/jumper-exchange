@@ -303,6 +303,14 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
+      <button
+        type="button"
+        onClick={() => {
+          throw new Error('Sentry Test Error');
+        }}
+      >
+        Break the world
+      </button>
       <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
         <LiFiWidget
           integrator={config.integrator}
