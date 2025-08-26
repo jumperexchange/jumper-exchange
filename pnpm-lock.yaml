@@ -265,7 +265,7 @@ devDependencies:
     specifier: ^15.4.6
     version: 15.4.6
   '@playwright/test':
-    specifier: ^1.54.2
+    specifier: ^1.48.2
     version: 1.54.2
   '@rainbow-me/rainbowkit':
     specifier: ^2.2.6
@@ -361,7 +361,7 @@ devDependencies:
     specifier: ^16.1.5
     version: 16.1.5
   playwright:
-    specifier: ^1.54.2
+    specifier: ^1.48.2
     version: 1.54.2
   playwright-qase-reporter:
     specifier: ^2.1.5
