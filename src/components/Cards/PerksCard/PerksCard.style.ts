@@ -16,11 +16,8 @@ export const PerksCardContainer = styled(Card, {
 })<PerksCardContainerProps>(({ theme }) => ({
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: (theme.vars || theme).palette.surface3.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   overflow: 'hidden',
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
-  }),
   '&:hover': {
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4
   },
