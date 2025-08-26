@@ -5,7 +5,13 @@ import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
-export async function generateStaticParams(): Promise<void> {}
+export const dynamicParams = true;
+export const revalidate = 300;
+
+export async function generateStaticParams(): Promise<Params[]> {
+  // TODO: LF-14853: list available opportunities
+  return [];
+}
 
 export async function generateMetadata({
   params,
@@ -18,9 +24,6 @@ export async function generateMetadata({
     description: 'Jumper Earn',
   };
 }
-
-export const dynamicParams = true;
-export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;

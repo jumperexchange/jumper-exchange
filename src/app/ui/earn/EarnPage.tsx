@@ -8,8 +8,8 @@ interface EarnPageProps {
 
 export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   // TODO: LF-14853: Opportunity Details
-  const { data } = await getOpportunityBySlug(slug);
-  if (!data) {
+  const { data, error } = await getOpportunityBySlug(slug);
+  if (error || !data) {
     return notFound();
   }
 
