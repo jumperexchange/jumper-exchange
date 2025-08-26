@@ -4,14 +4,13 @@ import {
 } from '@/app/lib/getOpportunitiesFiltered';
 import { EarnOpportunity } from '@/types/jumper-backend';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { FIVE_MINUTES_MS } from 'src/const/time';
 
 export interface Props {
   filter: EarnOpportunityFilter;
 }
 
 export type Result = UseQueryResult<EarnOpportunity[], unknown>;
-
-const FIVE_MINUTES_IN_MS = 1000 * 60 * 5;
 
 export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
   // TODO: LF-14980: Deal with favorites & refetching
@@ -25,6 +24,6 @@ export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
       }
       return result.data;
     },
-    refetchInterval: FIVE_MINUTES_IN_MS,
+    refetchInterval: FIVE_MINUTES_MS,
   });
 };
