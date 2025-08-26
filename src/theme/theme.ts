@@ -7,8 +7,7 @@ import type {
   CssVarsTheme,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, createTheme, extendTheme } from '@mui/material/styles';
-import { colorChannel } from '@mui/system';
+import { alpha, darken, createTheme, extendTheme } from '@mui/material/styles';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
@@ -908,19 +907,14 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             main: paletteLight.bg,
           },
           primary: {
-            light: '#31007A',
-            main: '#31007A',
-            dark: '#290066',
+            light: paletteLight.accent1,
+            main: paletteLight.accent1,
+            dark: darken(paletteLight.accent1, 0.1),
           },
           secondary: {
             light: '#E9E1F5',
             main: '#E9E1F5',
             dark: '#E9E1F5',
-          },
-          tertiary: {
-            light: '#FCEBFF',
-            main: '#FCEBFF',
-            dark: '#FCEBFF',
           },
           accent1: {
             light: paletteLight.accent1,
@@ -997,19 +991,14 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             main: '#120F29',
           },
           primary: {
-            light: '#653BA3',
-            main: '#653BA3',
-            dark: '#543188',
+            light: paletteDark.accent1,
+            main: paletteDark.accent1,
+            dark: darken(paletteDark.accent1, 0.1),
           },
           secondary: {
             light: '#321D52',
             main: '#321D52',
             dark: '#321D52',
-          },
-          tertiary: {
-            light: '#33163D',
-            main: '#33163D',
-            dark: '#33163D',
           },
           accent1: {
             light: '#653BA3',
