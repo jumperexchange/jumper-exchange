@@ -112,7 +112,9 @@
   },
   "button": {
     "okay": "Ok",
-    "manageYourPosition": "Gerencie sua posição"
+    "manageYourPosition": "Gerencie sua posição",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -178,8 +180,8 @@
         "go": "Ir"
       },
       "completed": {
-        "title": "",
-        "description": ""
+        "title": "Tarefa concluída",
+        "description": "Esta tarefa foi verificada e concluída."
       }
     }
   },
@@ -197,14 +199,17 @@
     "open": "Abre {{tool}}",
     "rewards": "Recompensas ganhas",
     "availableRewards": "Prêmios Disponíveis",
-    "perks": "",
-    "achievements": "",
-    "unlocked": "",
-    "levelWithValue": "",
+    "perks": "Vantagens",
+    "achievements": "Conquistas",
+    "unlocked": "Desbloqueado",
+    "levelWithValue": "Nível {{level}}",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
-      "description": "",
-      "caption": "",
-      "cta": ""
+      "description": "Ainda não {{entity}}? Vamos mudar isso!",
+      "caption": "Comece sua jornada completando missões, convertendo tokens e fazendo pontes entre cadeias para desbloquear conquistas únicas e ganhar XP.",
+      "cta": "Iniciar conversão"
     }
   },
   "campaign": {
@@ -265,8 +270,12 @@
       "token": "Ativo"
     },
     "zap": {
-      "sendToAddressName": "Enviar para {{name}}",
-      "sentToAddressName": "Enviado para {{name}}"
+      "sendToAddressName": "Depositar em {{name}}",
+      "sentToAddressName": "Depositado em {{name}}",
+      "placeholder": {
+        "title": "",
+        "description": ""
+      }
     }
   }
 }
