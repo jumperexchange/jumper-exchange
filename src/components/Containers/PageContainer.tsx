@@ -5,7 +5,7 @@ export const PageContainer: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Container
       sx={{
-        px: { xs: 4 },
+        px: { xs: 2, md: 4 },
         mt: 6,
         mb: { xs: 12, md: 5.5 },
         // We need to cover a width of 1080px + paddingX
