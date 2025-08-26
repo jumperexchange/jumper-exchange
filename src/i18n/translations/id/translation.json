@@ -112,7 +112,9 @@
   },
   "button": {
     "okay": "Oke",
-    "manageYourPosition": ""
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "Ada yang salah. Silakan coba memuat ulang halaman tersebut. Jika masalah terus berlanjut, hubungi dukungan kami."
@@ -201,6 +203,9 @@
     "achievements": "",
     "unlocked": "",
     "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
       "description": "",
       "caption": "",
@@ -266,7 +271,11 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "placeholder": {
+        "title": "",
+        "description": ""
+      }
     }
   }
 }
