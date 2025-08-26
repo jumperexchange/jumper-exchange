@@ -3,6 +3,7 @@ import { Route } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
 import { AbiEntry, ZapDataResponse } from './zap.jumper-backend';
+import { parseUnits } from 'viem';
 
 export interface SendCallsExtraParams {
   currentRoute: Route | null;
@@ -33,6 +34,7 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
 export interface ZapExecutionContext extends ValidatedSendCallsExtraParams {
   getAbiAddress: (fct: AbiEntry) => EVMAddress;
   getDepositAddress: () => EVMAddress;
+  getMinConstraintValue: (decimals: number) => bigint;
 }
 
 export interface ZapDefinition {
@@ -75,10 +77,30 @@ export const makeZapExecutionContext = (
     return getAbiAddress(params.zapData.abi.deposit);
   };
 
+  const getMinConstraintValue = (decimals: number) => {
+    if (
+      !params.projectData.minFromAmountUSD ||
+      !params.currentRoute.toAmountUSD ||
+      !params.currentRoute.toAmount
+    ) {
+      return parseUnits('0.001', decimals);
+    }
+
+    const tokenRateUSD =
+      Number(params.currentRoute.toAmountUSD) /
+      Number(params.currentRoute.toAmount);
+
+    const minTokenAmount =
+      Number(params.projectData.minFromAmountUSD) / tokenRateUSD;
+    const halfMinTokenAmount = minTokenAmount / 2;
+    return BigInt(Math.floor(halfMinTokenAmount));
+  };
+
   return {
     ...params,
     getAbiAddress,
     getDepositAddress,
+    getMinConstraintValue,
   };
 };
 

@@ -78,7 +78,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
   const depositChainId = projectData.chainId;
 
   const constraints = [
-    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
   ];
 
   const minimumMint: bigint = withSlippage(
