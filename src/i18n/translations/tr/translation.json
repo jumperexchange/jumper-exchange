@@ -112,7 +112,9 @@
   },
   "button": {
     "okay": "Tamam",
-    "manageYourPosition": ""
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "Bir şeyler yanlış gitti. Lütfen sayfayı yenilemeyi deneyin. Sorun devam ederse desteğimizle iletişime geçebilirsiniz."
@@ -269,7 +271,11 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "placeholder": {
+        "title": "",
+        "description": ""
+      }
     }
   }
 }
