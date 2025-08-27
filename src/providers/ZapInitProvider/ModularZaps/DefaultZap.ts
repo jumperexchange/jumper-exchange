@@ -4,7 +4,7 @@ import {
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
 import { EVMAddress } from 'src/types/internal';
-import { AbiParameter, parseUnits } from 'viem';
+import { AbiParameter } from 'viem';
 import { buildContractComposable } from '../utils';
 import { ZapExecutionContext, ZapDefinition, ZapInstruction } from './base';
 
