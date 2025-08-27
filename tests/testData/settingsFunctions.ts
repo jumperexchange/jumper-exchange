@@ -124,6 +124,6 @@ export async function checkDeselectedAmount(page: Page, category: string, desele
  */
 export async function checkNoneSelected(page: Page, category: string): Promise<void> {
   const fractionLocator = getFractionLocator(page, category);
-  const { numerator, denominator } = await getNumeratorDenominator(fractionLocator);
+  const { numerator } = await getNumeratorDenominator(fractionLocator);
   await expect(numerator).toBe(0);
 }
