@@ -80,20 +80,21 @@ export const makeZapExecutionContext = (
   const getMinConstraintValue = (decimals: number) => {
     if (
       !params.projectData.minFromAmountUSD ||
-      !params.currentRoute.toAmountUSD ||
-      !params.currentRoute.toAmount
+      !params.currentRoute.toToken.priceUSD
     ) {
       return parseUnits('0.001', decimals);
     }
 
-    const tokenRateUSD =
-      Number(params.currentRoute.toAmountUSD) /
-      Number(params.currentRoute.toAmount);
-
+    // @Note: Alternatively we could use the toAmountUSD and toAmount to calculate the token rate.
+    // (Number(params.currentRoute.toAmountUSD) / Number(params.currentRoute.toAmount)) * 10**decimals
+    const tokenRateUSD = Number(params.currentRoute.toToken.priceUSD);
     const minTokenAmount =
       Number(params.projectData.minFromAmountUSD) / tokenRateUSD;
+
+    // @Note: We divide by 2 as the final amount might get some loss due to gas payments.
     const halfMinTokenAmount = minTokenAmount / 2;
-    return BigInt(Math.floor(halfMinTokenAmount));
+
+    return parseUnits(halfMinTokenAmount.toString(), decimals);
   };
 
   return {
