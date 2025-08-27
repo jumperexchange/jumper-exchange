@@ -158,15 +158,13 @@ const nextConfig = {
 
 export default withSentryConfig(nextConfig, {
   // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
-  // Cannot use `isProduction` here, as this file is not supporting ts
-  enabled: process.env.NEXT_PUBLIC_ENVIRONMENT === 'production',
-  // Suppresses source map uploading logs during build
-  silent: true,
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/build/
+
   org: 'jumper-exchange',
   project: 'jumper-front',
-  // For all available options, see:
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  // Suppresses source map uploading logs during build
+  silent: true,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
