@@ -6,6 +6,8 @@ import {
   checkFractionsEqual,
   checkDeselectedAmount,
   checkNoneSelected,
+  deselectAll,
+  selectAll,
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
 import { SETTINGS_MENU } from './testData/testConstants';
@@ -151,16 +153,14 @@ for (const { name, size } of [
         await expect(
           page.getByText(SETTINGS_MENU.EXCHANGES.LABEL, { exact: true }),
         ).toBeVisible();
-        const deselectAllButton = page.locator('xpath=//span[@aria-label="Deselect all"]');
-        await deselectAllButton.click();
+        await deselectAll(page);
         // Return to Settings Menu
         await page.getByTestId('ArrowBackIcon').first().click();
         // Verify that 1 exchange was deselected
         await checkNoneSelected(page, SETTINGS_MENU.EXCHANGES.LABEL);
         // Select all exchanges
         await clickItemInSettingsMenu(page, SETTINGS_MENU.EXCHANGES.LABEL);
-        const selectAllButton = page.locator('#select-all');
-        await selectAllButton.click();
+        await selectAll(page);
         // Return to Settings Menu
         await page.getByTestId('ArrowBackIcon').first().click();
         // Verify that all exchanges are selected
