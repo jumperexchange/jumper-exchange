@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
 import { ChainStack } from 'src/components/ChainStack/ChainStack';
 import { useTranslation } from 'react-i18next';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { ChainAvatarSize } from 'src/components/ChainStack/ChainStack.style';
 
 interface BannerCampaignSlideProps {
   campaign: CampaignData;
@@ -17,6 +19,7 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
   campaign,
 }) => {
   const router = useRouter();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const {
     bannerImage,
     bannerTitle,
@@ -58,7 +61,12 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
       {!!rewardChainIds?.length && (
         <MissionHeroStatsCard
           title={t('campaign.stats.rewards')}
-          description={<ChainStack chainIds={rewardChainIds} />}
+          description={
+            <ChainStack
+              chainIds={rewardChainIds}
+              size={isMobile ? ChainAvatarSize.XS : ChainAvatarSize.MD}
+            />
+          }
           variant={bannerStatsCardVariant}
         />
       )}
