@@ -6,7 +6,6 @@ import {
   createContext,
   FC,
   PropsWithChildren,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -42,6 +41,7 @@ import {
 import { findChain } from 'src/utils/chains/findChain';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
 import { useMultisig } from 'src/hooks/useMultisig';
+import { useZapQuestIdStorage } from '../hooks';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -100,6 +100,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
   projectData,
 }) => {
+  useZapQuestIdStorage();
   const wagmiConfig = useConfig();
 
   const { data: zapSupportedChains } = useZapSupportedChains();
