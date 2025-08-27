@@ -15,6 +15,7 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
     fromAmount,
     toAddress,
     currentActiveTaskType,
+    taskTitle,
     // missionChainIds,
   } = useMissionStore();
 
@@ -27,6 +28,7 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
       fromAmount,
       toAddress,
       taskType: currentActiveTaskType,
+      overrideHeader: taskTitle,
     };
   }, [
     destinationChain,
@@ -36,6 +38,7 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
     fromAmount,
     toAddress,
     currentActiveTaskType,
+    taskTitle,
   ]);
 
   return <Widget ctx={ctx} />;

@@ -12,7 +12,7 @@ type EnglishLanguageResource = NonNullable<
 export const useLanguageResources = (ctx: ConfigContext) => {
   const { i18n, t } = useTranslation();
   const {
-    currentActiveTaskType,
+    taskType,
     destinationChain,
     destinationToken,
     sourceChain,
@@ -42,7 +42,7 @@ export const useLanguageResources = (ctx: ConfigContext) => {
 
     const translationTemplate =
       overrideHeader ??
-      `${currentActiveTaskType ?? TaskType.Deposit} ${sourceDestinationTemplate}`;
+      `${taskType ?? TaskType.Deposit} ${sourceDestinationTemplate}`;
 
     const languageResourcesEN: EnglishLanguageResource = {
       header: {
@@ -76,7 +76,7 @@ export const useLanguageResources = (ctx: ConfigContext) => {
   }, [
     i18n,
     t,
-    currentActiveTaskType,
+    taskType,
     destinationChain?.chainKey,
     sourceChain?.chainKey,
     destinationToken?.tokenSymbol,
