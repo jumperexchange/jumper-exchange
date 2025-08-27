@@ -80,7 +80,8 @@ export const makeZapExecutionContext = (
   const getMinConstraintValue = (decimals: number) => {
     if (
       !params.projectData.minFromAmountUSD ||
-      !params.currentRoute.toToken.priceUSD
+      !params.currentRoute.toToken.priceUSD ||
+      isNaN(Number(params.currentRoute.toToken.priceUSD))
     ) {
       return parseUnits('0.001', decimals);
     }
