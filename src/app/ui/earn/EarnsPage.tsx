@@ -10,7 +10,7 @@ export const EarnsPage: FC<EarnsPageProps> = async () => {
     <div>
       <h1>EarnsPage</h1>
       <EarnTopOpportunities />
-      <EarnOpportunitiesAll />;
+      <EarnOpportunitiesAll />
     </div>
   );
 };
