@@ -5,7 +5,7 @@ import {
   checkRoutesVisibility,
   closeWelcomeScreen,
 } from './testData/landingPageFunctions';
-import { clickItemInSettingsMenu } from './testData/settingsFunctions';
+import { clickItemInSettingsMenu, deselectAll  } from './testData/settingsFunctions';
 import { qase } from 'playwright-qase-reporter';
 
 [
@@ -24,8 +24,7 @@ import { qase } from 'playwright-qase-reporter';
       await test.step('Check if the Relay fallback route is shown', async () => {
         await page.getByRole('button', { name: 'Settings' }).click();
         await clickItemInSettingsMenu(page, 'Bridges');
-        const deselectAllButton = page.getByTestId('CheckBoxOutlinedIcon'); // Deselect all bridges
-        await deselectAllButton.click();
+        await deselectAll(page);
         await page.getByTestId('ArrowBackIcon').first().click();
         const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoETH);
         await page.goto(`/${urlParams}`);

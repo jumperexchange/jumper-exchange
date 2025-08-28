@@ -91,7 +91,7 @@ jobs:
     - name: Install xvfb server
       run: sudo apt-get install xvfb
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
+      run: pnpm exec playwright install --with-deps chromium
     - name: Setup Playwright Cache
       run: |
         pnpm build:cache:ci

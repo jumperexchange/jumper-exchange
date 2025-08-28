@@ -6,6 +6,8 @@ import {
   checkFractionsEqual,
   checkDeselectedAmount,
   checkNoneSelected,
+  deselectAll,
+  selectAll,
 } from './testData/settingsFunctions';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
 import { SETTINGS_MENU } from './testData/testConstants';
@@ -16,7 +18,8 @@ for (const { name, size } of [
   { name: 'Desktop', size: { width: 1920, height: 1080 } },
 ]) {
   test.describe(`Settings menu [Viewport: ${name}]`, () => {
-    test.use({ viewport: { width: size.width, height: size.height } });
+    test.use({ viewport: { width: size.width, height: size.height } }
+    );
 
     test.beforeEach(async ({ page }) => {
       await page.goto('/');
@@ -123,15 +126,14 @@ for (const { name, size } of [
         await expect(
           page.getByText(SETTINGS_MENU.BRIDGES.LABEL, { exact: true }),
         ).toBeVisible();
-        const bridgeListItem = page.getByTestId('CheckIcon');
-        const bridgeName = (await bridgeListItem
-          .locator('..')
-          .locator('span')
-          .first()
-          .textContent()) as string;
+        // Get the first bridge list item and extract the bridge name
+        const bridgeListItem = page.getByTestId('bridges-list');
+        const firstBridgeItem = bridgeListItem.locator('xpath=(//div[@role="button"])[1]');
+        const bridgeName = (await firstBridgeItem.textContent()) as string;
 
-        // Deselect 1 bridge
-        await bridgeListItem.first().click();
+        // Deselect 1 bridge by clicking on the first bridge's checkbox specifically
+        const firstBridgeCheckbox = firstBridgeItem.locator('[data-testid="CheckBoxIcon"]').first();
+        await firstBridgeCheckbox.click();
         // Return to Settings Menu
         await page.getByTestId('ArrowBackIcon').first().click();
         // Verify that 1 bridge was deselected
@@ -151,18 +153,14 @@ for (const { name, size } of [
         await expect(
           page.getByText(SETTINGS_MENU.EXCHANGES.LABEL, { exact: true }),
         ).toBeVisible();
-        const deselectAllButton = page.getByTestId('CheckBoxOutlinedIcon');
-        await deselectAllButton.click();
+        await deselectAll(page);
         // Return to Settings Menu
         await page.getByTestId('ArrowBackIcon').first().click();
         // Verify that 1 exchange was deselected
         await checkNoneSelected(page, SETTINGS_MENU.EXCHANGES.LABEL);
         // Select all exchanges
         await clickItemInSettingsMenu(page, SETTINGS_MENU.EXCHANGES.LABEL);
-        const selectAllButton = page.getByTestId(
-          'IndeterminateCheckBoxOutlinedIcon',
-        );
-        await selectAllButton.click();
+        await selectAll(page);
         // Return to Settings Menu
         await page.getByTestId('ArrowBackIcon').first().click();
         // Verify that all exchanges are selected
