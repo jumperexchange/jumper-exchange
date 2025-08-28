@@ -17,11 +17,23 @@ export const MissionHeroStatsCard: FC<InfoCardProps> = ({
 }) => {
   return (
     <MissionHeroStatsBox variant={variant}>
-      <MissionHeroStatsText variant="bodyXSmallStrong">
+      <MissionHeroStatsText
+        sx={{
+          typography: {
+            xs: 'bodyXXSmallStrong',
+            sm: 'bodyXSmallStrong',
+          },
+        }}
+      >
         {title}
       </MissionHeroStatsText>
       {typeof description === 'string' || typeof description === 'number' ? (
-        <MissionHeroStatsText variant="titleSmall">
+        <MissionHeroStatsText
+          typography={{
+            xs: 'titleXSmall',
+            sm: 'titleSmall',
+          }}
+        >
           {description}
         </MissionHeroStatsText>
       ) : (

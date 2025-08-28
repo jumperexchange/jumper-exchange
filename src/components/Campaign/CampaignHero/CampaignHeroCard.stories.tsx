@@ -10,6 +10,9 @@ import {
   CampaignHeroCardIcon,
   CampaignHeroStatsWrapper,
 } from './CampaignHero.style';
+import { ChainAvatarSize } from 'src/components/ChainStack/ChainStack.style';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { ICON_SIZES } from './constants';
 
 type CampaignHeroCardStoryProps = ComponentProps<typeof CampaignHeroCard> & {
   heroStatsCardVariant?: MissionHeroStatsCardVariant;
@@ -53,6 +56,7 @@ const Template: StoryFn<CampaignHeroCardStoryProps> = (_props, { args }) => {
     rewardChainIds,
     heroStatsCardVariant,
   } = args as CustomStoryArgs;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   if (isLoading) {
     return <CampaignHeroCardSkeleton />;
@@ -64,8 +68,10 @@ const Template: StoryFn<CampaignHeroCardStoryProps> = (_props, { args }) => {
         <CampaignHeroCardIcon
           src={icon}
           alt={`${args.title} campaign icon`}
-          width={112}
-          height={112}
+          width={isMobile ? ICON_SIZES.MOBILE.WIDTH : ICON_SIZES.DESKTOP.WIDTH}
+          height={
+            isMobile ? ICON_SIZES.MOBILE.HEIGHT : ICON_SIZES.DESKTOP.HEIGHT
+          }
           style={{ objectFit: 'contain', borderRadius: '50%' }}
         />
       )}
@@ -88,7 +94,12 @@ const Template: StoryFn<CampaignHeroCardStoryProps> = (_props, { args }) => {
         {!!rewardChainIds?.length && (
           <MissionHeroStatsCard
             title="Rewards"
-            description={<ChainStack chainIds={rewardChainIds} />}
+            description={
+              <ChainStack
+                chainIds={rewardChainIds}
+                size={isMobile ? ChainAvatarSize.XS : ChainAvatarSize.MD}
+              />
+            }
             variant={heroStatsCardVariant}
           />
         )}

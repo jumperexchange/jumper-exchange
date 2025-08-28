@@ -4,14 +4,7 @@ import {
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
 import { EVMAddress } from 'src/types/internal';
-import {
-  Abi,
-  AbiParameter,
-  createPublicClient,
-  getContract,
-  http,
-  parseUnits,
-} from 'viem';
+import { Abi, AbiParameter, createPublicClient, getContract, http } from 'viem';
 import { hyperevm } from 'src/const/chains/hyperwave';
 import { buildContractComposable } from '../utils';
 import { approve, transfer } from './DefaultZap';
@@ -78,7 +71,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
   const depositChainId = projectData.chainId;
 
   const constraints = [
-    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
   ];
 
   const minimumMint: bigint = withSlippage(
