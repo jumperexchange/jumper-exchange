@@ -42,7 +42,7 @@ export const useLanguageResources = (ctx: ConfigContext) => {
 
     const translationTemplate =
       overrideHeader ??
-      `${taskType ?? TaskType.Deposit} ${sourceDestinationTemplate}`;
+      `${!taskType || taskType === TaskType.Zap ? TaskType.Deposit : taskType} ${sourceDestinationTemplate}`;
 
     const languageResourcesEN: EnglishLanguageResource = {
       header: {
