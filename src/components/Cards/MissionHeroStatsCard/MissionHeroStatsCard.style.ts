@@ -62,4 +62,8 @@ export const MissionHeroStatsBox = styled(Box, {
 
 export const MissionHeroStatsText = styled(Typography)(({ theme }) => ({
   textAlign: 'center',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  maxWidth: 120,
 }));

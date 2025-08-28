@@ -3,6 +3,7 @@ import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 
 export enum ChainAvatarSize {
+  XS = 'xs',
   SM = 'sm',
   MD = 'md',
   LG = 'lg',
@@ -28,6 +29,10 @@ interface ChainAvatarProps {
 export const ChainAvatar = styled(BaseAvatar, {
   shouldForwardProp: (prop) => prop !== 'size',
 })<ChainAvatarProps>(({ size = ChainAvatarSize.MD }) => ({
+  ...(size === ChainAvatarSize.XS && {
+    width: 16,
+    height: 16,
+  }),
   ...(size === ChainAvatarSize.SM && {
     // @Note this might need to be updated
     width: 20,
