@@ -208,38 +208,34 @@ export const sendCalls = async (
 
   const baseCalls = isSameTokenDeposit ? [] : calls;
 
-  // Build raw calldata instructions (general flow)
-  const rawInstructions = await Promise.all(
-    baseCalls.map(async (call: WalletCall) => {
-      if (!call.to || !call.data) {
-        throw new Error('Invalid call structure: Missing to or data field');
-      }
-      const data = {
-        to: call.to,
-        calldata: call.data,
-        chainId: call.chainId ?? currentChainId,
-        value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
-      };
-      return oNexusParam.buildComposable({
-        type: 'rawCalldata',
-        data,
-      });
-    }),
-  );
-
-  // Build project-specific contract instructions (approve, deposit, transfer)
-  const contractInstructions = await buildContractInstructions(
-    oNexusParam,
-    sendCallsExtraParams,
-  );
+  const [rawInstructions, contractInstructions, currentTokenBalance] =
+    await Promise.all([
+      // Build raw calldata instructions (general flow)
+      baseCalls.map(async (call: WalletCall) => {
+        if (!call.to || !call.data) {
+          throw new Error('Invalid call structure: Missing to or data field');
+        }
+        const data = {
+          to: call.to,
+          calldata: call.data,
+          chainId: call.chainId ?? currentChainId,
+          value: isNativeSourceToken
+            ? BigInt(currentRouteFromAmount)
+            : undefined,
+        };
+        return oNexusParam.buildComposable({
+          type: 'rawCalldata',
+          data,
+        });
+      }),
+      // Build project-specific contract instructions (approve, deposit, transfer)
+      buildContractInstructions(oNexusParam, sendCallsExtraParams),
+      // Get current token balance
+      getTokenBalance(currentAddress, currentRouteFromToken),
+    ]);
 
   // Combine all instructions
   const instructions = [...rawInstructions, ...contractInstructions];
-
-  const currentTokenBalance = await getTokenBalance(
-    currentAddress,
-    currentRouteFromToken,
-  );
 
   const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
   const requestedAmount = BigInt(currentRouteFromAmount);
