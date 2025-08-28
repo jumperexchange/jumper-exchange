@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { getPerks } from 'src/app/lib/getPerks';
 import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
 import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkeleton';
+import { PAGE_SIZE } from 'src/const/perks';
 
 export const metadata: Metadata = {
   title: 'Jumper Loyalty Pass',
@@ -15,7 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { data: perksResponse } = await getPerks();
+  const { data: perksResponse } = await getPerks({
+    page: 1,
+    pageSize: PAGE_SIZE,
+    withCount: true,
+  });
 
   const perks = perksResponse.data;
   const totalPerks = perksResponse.meta.pagination?.total || 0;

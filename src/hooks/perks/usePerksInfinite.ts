@@ -1,7 +1,7 @@
 import { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
 import { usePaginatedData } from '../usePaginatedData';
-import { PAGE_SIZE } from 'src/const/quests';
 import { getPerks } from 'src/app/lib/getPerks';
+import { PAGE_SIZE } from 'src/const/perks';
 
 export async function fetchPerksData(page: number, pageSize: number = 12) {
   const { data: perksResponse } = await getPerks({
