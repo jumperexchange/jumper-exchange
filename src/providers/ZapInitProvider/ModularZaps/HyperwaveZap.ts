@@ -106,11 +106,43 @@ export const hyperwaveDeposit: ZapInstruction = async (
   });
 };
 
+export const hyperwaveTransfer: ZapInstruction = async (
+  oNexus: MultichainSmartAccount,
+  context: ZapExecutionContext,
+) => {
+  const { zapData: integrationData, projectData, currentRoute } = context;
+
+  const currentAddress = currentRoute.fromAddress;
+  const depositAddress = integrationData.market.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
+
+  const constraints = [
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
+  ];
+
+  return buildContractComposable(oNexus, {
+    address: depositAddress,
+    chainId: depositChainId,
+    abi: integrationData.abi.transfer,
+    functionName: integrationData.abi.transfer.name,
+    gasLimit: 200000n,
+    args: [
+      currentAddress,
+      runtimeERC20BalanceOf({
+        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        tokenAddress: depositAddress,
+        constraints,
+      }),
+    ],
+  });
+};
+
 export const hyperwaveZap: ZapDefinition = {
   commands: {
     approve,
     deposit: hyperwaveDeposit,
-    transfer,
+    transfer: hyperwaveTransfer,
   },
   steps: ['approve', 'deposit', 'transfer'],
 };
