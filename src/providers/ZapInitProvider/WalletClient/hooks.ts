@@ -4,6 +4,7 @@ import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { Account, useAccount } from '@lifi/wallet-management';
 import { ChainId, ChainType } from '@lifi/sdk';
+import * as Sentry from '@sentry/nextjs';
 
 interface WalletClientParams {
   address?: EVMAddress;
@@ -122,6 +123,16 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
         return { walletClient, biconomyClients, isEmbeddedWallet };
       } catch (error) {
         console.error('Failed to initialize clients:', error);
+        Sentry.captureException(error, {
+          tags: {
+            requestWalletAddress: address,
+            requestWalletChainId: chainId,
+            vaultAddress: projectAddress,
+            vaultChainId: projectChainId,
+            walletClientChainId: walletClient?.chain?.id,
+            walletClientAddress: walletClient?.account.address,
+          },
+        });
         return {
           walletClient: null,
           biconomyClients: null,
