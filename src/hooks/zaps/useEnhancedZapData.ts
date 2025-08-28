@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ProjectData } from 'src/types/questDetails';
 import { useReadContracts } from 'wagmi';
 import { useZaps } from '../useZaps';
 import { useAccount } from '@lifi/wallet-management';
 import { EVMAddress } from 'src/types/internal';
+import { retryWithBackoff } from 'src/utils/retryWithBackoff';
 
 export const useEnhancedZapData = (projectData: ProjectData) => {
   const { data, isSuccess } = useZaps(projectData);
@@ -62,8 +63,27 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
     contracts: contractsConfig,
     query: {
       enabled: !!account.address,
+      refetchOnMount: 'always',
     },
   });
+
+  const refetchWithBalanceRetry = useCallback(async () => {
+    return retryWithBackoff(
+      async () => {
+        const result = await refetchDepositToken();
+        const balance = result.data?.[0]?.result;
+
+        // If there is no balance, we trigger a retry
+        if (!balance) {
+          throw new Error('Balance is 0, retrying...');
+        }
+
+        return result;
+      },
+      5,
+      2000,
+    );
+  }, [refetchDepositToken]);
 
   return {
     zapData,
@@ -71,6 +91,6 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
     depositTokenData,
     depositTokenDecimals,
     isLoadingDepositTokenData,
-    refetchDepositToken,
+    refetchDepositToken: refetchWithBalanceRetry,
   };
 };
