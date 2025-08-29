@@ -6,12 +6,13 @@ import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { useFormatDisplayRewardsData } from './useFormatDisplayRewardsData';
 import { QuestData } from 'src/types/strapi';
 import { Chain } from 'src/types/questDetails';
+import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 interface DisplayQuestData {
   id: string;
   slug: string;
   title: string;
-  description: string;
+  description: RootNode[];
   info: string;
   startDate: string;
   endDate: string;
@@ -95,7 +96,7 @@ export function useFormatDisplayQuestData(
       id: id.toString(),
       slug: Slug,
       title: Title || '',
-      description: Description || '',
+      description: Description || [],
       info: Information || '',
       startDate: StartDate || '',
       endDate: EndDate || '',

@@ -6,7 +6,6 @@ import {
   StyledEntityCardImage,
   StyledEntityCardImageContainer,
   StyledWideEntityCardTitle,
-  StyledEntityCardDescription,
   StyledWideParticipantAvatar,
   StyledParticipantsContainer,
   StyledRewardAvatar,
@@ -20,6 +19,7 @@ import {
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { WideEntityCardSkeleton } from './WideEntityCardSkeleton';
 import { ENTITY_CARD_SIZES } from '../constants';
+import { RichBlocks } from 'src/components/RichBlocks/RichBlocks';
 
 export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   imageUrl,
@@ -123,7 +123,15 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             })}
           </StyledRewardsContainer>
         )}
-        <StyledEntityCardDescription>{description}</StyledEntityCardDescription>
+        <RichBlocks
+          content={description}
+          blockSx={{
+            paragraph: (theme) => ({
+              ...theme.typography.bodyMedium,
+              color: (theme.vars || theme).palette.text.secondary,
+            }),
+          }}
+        />
         {partnerLink && (
           <StyledEntityCardLink target="_blank" href={partnerLink.url}>
             {partnerLink.label}

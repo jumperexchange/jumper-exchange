@@ -83,11 +83,6 @@ export const StyledWideEntityCardTitle = styled(StyledEntityCardTitleBase)(
   }),
 );
 
-export const StyledEntityCardDescription = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyMedium,
-  color: (theme.vars || theme).palette.text.secondary,
-}));
-
 // Link
 
 export const StyledEntityCardLink = styled(Link)(({ theme }) => ({
