@@ -13,6 +13,7 @@ export interface WalletCall {
   to: `0x${string}`;
   data: `0x${string}`;
   value?: string;
+  chainId: number;
 }
 
 export interface WalletMethodArgs {

@@ -217,7 +217,7 @@ export const sendCalls = async (
       const data = {
         to: call.to,
         calldata: call.data,
-        chainId: currentChainId,
+        chainId: call.chainId ?? currentChainId,
         value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
       };
       return oNexusParam.buildComposable({
