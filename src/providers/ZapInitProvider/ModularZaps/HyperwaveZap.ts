@@ -3,6 +3,7 @@ import {
   MultichainSmartAccount,
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
+import { hyperevm } from 'src/const/chains/hyperwave';
 import { EVMAddress } from 'src/types/internal';
 import {
   Abi,
@@ -12,7 +13,6 @@ import {
   http,
   parseUnits,
 } from 'viem';
-import { hyperevm } from 'src/const/chains/hyperwave';
 import { buildContractComposable } from '../utils';
 import { approve, transfer } from './DefaultZap';
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';

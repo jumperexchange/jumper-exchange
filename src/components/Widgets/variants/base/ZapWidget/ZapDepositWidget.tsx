@@ -1,8 +1,6 @@
 'use client';
 
-import { FC, useEffect, useMemo } from 'react';
 import {
-  ChainTokenSelected,
   ChainType,
   HiddenUI,
   LiFiWidget,
@@ -11,14 +9,15 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { WidgetSkeleton } from '../WidgetSkeleton';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { WidgetProps } from '../Widget.types';
-import { ConfigContext } from '../../widgetConfig/types';
-import { ZapDepositSettings } from './ZapDepositSettings';
+import { FC, useEffect, useMemo } from 'react';
+import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
+import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
+import { ConfigContext } from '../../widgetConfig/types';
+import { WidgetProps } from '../Widget.types';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
@@ -176,6 +175,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   if (isMultisigEnvironment || isEmbeddedWallet) {
     return <ZapPlaceholderWidget />;
   }
+
+  console.log('data', customInformation, widgetConfig, toChain, toToken);
 
   return isZapDataSuccess &&
     ((isInitialized && !!toAddress) || !isConnected) ? (

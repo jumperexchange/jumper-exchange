@@ -7,14 +7,14 @@ import {
   MultichainSmartAccount,
   toMultichainNexusAccount,
 } from '@biconomy/abstractjs';
-import { createWalletClient, custom, http, publicActions } from 'viem';
-import { chains } from '../../const/chains/chains';
-import { createWithEqualityFn } from 'zustand/traditional';
-import { retryWithBackoff } from 'src/utils/retryWithBackoff';
-import { UseWalletClientReturnType } from 'wagmi';
-import { EVMAddress } from 'src/types/internal';
-import { getShuffledRPCForChain } from 'src/utils/rpc/getShuffledRPCForChain';
 import envConfig from 'src/config/env-config';
+import { EVMAddress } from 'src/types/internal';
+import { retryWithBackoff } from 'src/utils/retryWithBackoff';
+import { getShuffledRPCForChain } from 'src/utils/rpc/getShuffledRPCForChain';
+import { createWalletClient, custom, http, publicActions } from 'viem';
+import { UseWalletClientReturnType } from 'wagmi';
+import { createWithEqualityFn } from 'zustand/traditional';
+import { chains } from '../../const/chains/chains';
 
 export type BiconomyClients = {
   meeClient: MeeClient;

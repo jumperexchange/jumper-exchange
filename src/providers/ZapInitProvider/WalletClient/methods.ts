@@ -157,6 +157,7 @@ export const sendCalls = async (
   }
 
   const { calls } = args;
+  console.log('LOGGING CALLS', calls);
   if (calls.length === 0) {
     throw new Error("'calls' array is empty");
   }
@@ -181,6 +182,7 @@ export const sendCalls = async (
   const currentChainId = sendCallsExtraParams.currentRoute.fromChainId;
   const currentAddress = sendCallsExtraParams.currentRoute.fromAddress;
   const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
+  const currentRouteToToken = sendCallsExtraParams.currentRoute.toToken;
   const currentRouteFromAmount = sendCallsExtraParams.currentRoute.fromAmount;
   const integrationData = sendCallsExtraParams.zapData;
   const depositToken = integrationData.market?.depositToken?.address;
