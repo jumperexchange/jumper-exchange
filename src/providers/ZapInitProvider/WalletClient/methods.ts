@@ -208,26 +208,28 @@ export const sendCalls = async (
 
   const baseCalls = isSameTokenDeposit ? [] : calls;
 
+  // Build raw calldata instructions (general flow)
+  const rawInstructionsPromises = Promise.all(
+    baseCalls.map(async (call: WalletCall) => {
+      if (!call.to || !call.data) {
+        throw new Error('Invalid call structure: Missing to or data field');
+      }
+      const data = {
+        to: call.to,
+        calldata: call.data,
+        chainId: call.chainId ?? currentChainId,
+        value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
+      };
+      return oNexusParam.buildComposable({
+        type: 'rawCalldata',
+        data,
+      });
+    }),
+  );
+
   const [rawInstructions, contractInstructions, currentTokenBalance] =
     await Promise.all([
-      // Build raw calldata instructions (general flow)
-      baseCalls.map(async (call: WalletCall) => {
-        if (!call.to || !call.data) {
-          throw new Error('Invalid call structure: Missing to or data field');
-        }
-        const data = {
-          to: call.to,
-          calldata: call.data,
-          chainId: call.chainId ?? currentChainId,
-          value: isNativeSourceToken
-            ? BigInt(currentRouteFromAmount)
-            : undefined,
-        };
-        return oNexusParam.buildComposable({
-          type: 'rawCalldata',
-          data,
-        });
-      }),
+      rawInstructionsPromises,
       // Build project-specific contract instructions (approve, deposit, transfer)
       buildContractInstructions(oNexusParam, sendCallsExtraParams),
       // Get current token balance
