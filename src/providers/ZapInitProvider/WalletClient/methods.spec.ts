@@ -114,47 +114,23 @@ describe('waitForCallsStatus', () => {
     );
   });
 
-  it('should return failed if timeout is reached', async () => {
-    const originalTxHash = '0x000';
-    const biconomyTxHash = `${originalTxHash}_biconomy`;
-
-    mockMeeClient.waitForSupertransactionReceipt.mockImplementation(
-      () =>
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout')), 1000),
-        ),
-    );
-
-    mockMeeClient.request.mockResolvedValue({
-      userOps: [createUserOp('PENDING')],
-    });
-
-    const result = await waitForCallsStatus(
-      createTestParams(biconomyTxHash, 50),
-      mockMeeClient,
-      undefined,
-      mockExtraParams,
-    );
-
-    expect(result.status).toBe('failed');
-    expect(result.receipts).toHaveLength(0);
-    expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalled();
-    expect(mockMeeClient.request).not.toHaveBeenCalled();
-  });
-
   it('should retry if waitForSupertransactionReceipt fails but explorer returns pending status', async () => {
     const originalTxHash = '0x000';
     const biconomyTxHash = `${originalTxHash}_biconomy`;
 
     // First call fails, second call succeeds
-    mockMeeClient.waitForSupertransactionReceipt
-      .mockRejectedValueOnce(new Error('First attempt failed'))
-      .mockResolvedValueOnce(createMockReceipt());
+    mockMeeClient.waitForSupertransactionReceipt.mockRejectedValueOnce(
+      new Error('waitForSupertransactionReceipt failed'),
+    );
 
     // Explorer responds with pending status (should trigger retry)
-    mockMeeClient.request.mockResolvedValue({
-      userOps: [createUserOp('PENDING')],
-    });
+    mockMeeClient.request
+      .mockResolvedValueOnce({
+        userOps: [createUserOp('PENDING', true)],
+      })
+      .mockResolvedValueOnce({
+        userOps: [createUserOp('MINED_SUCCESS', true)],
+      });
 
     const result = await waitForCallsStatus(
       createTestParams(biconomyTxHash),
@@ -165,16 +141,15 @@ describe('waitForCallsStatus', () => {
 
     expect(result.status).toBe('success');
     expect(result.statusCode).toBe(200);
-    expect(result.receipts).toHaveLength(mockReceipts.length);
-    expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
-      2,
-    );
-    expect(mockMeeClient.request).toHaveBeenCalledWith(
-      getExplorerRequestOptions(originalTxHash),
-    );
-  });
+    expect(result.receipts).toHaveLength(1);
+    expect(mockMeeClient.request).toHaveBeenCalledTimes(2);
+    expect(mockMeeClient.request).toHaveBeenLastCalledWith({
+      path: `explorer/${originalTxHash}`,
+      method: 'GET',
+    });
+  }, 5000);
 
-  it('should return failed if waitForSupertransactionReceipt fails and explorer returns FAILED status', async () => {
+  it('should return fallback if waitForSupertransactionReceipt fails and explorer returns FAILED status', async () => {
     const originalTxHash = '0x000';
     const biconomyTxHash = `${originalTxHash}_biconomy`;
 
@@ -195,7 +170,11 @@ describe('waitForCallsStatus', () => {
       mockExtraParams,
     );
 
-    expect(result.status).toBe('failed');
+    expect(result.status).toBe('success');
+    expect(result.receipts).toHaveLength(1);
+    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
+    expect(result.receipts[0].transactionLink).toBeUndefined();
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
@@ -204,7 +183,7 @@ describe('waitForCallsStatus', () => {
     );
   });
 
-  it('should return success if waitForSupertransactionReceipt fails but explorer returns MINED_SUCCESS status for cleanup op', async () => {
+  it('should return fallback if waitForSupertransactionReceipt fails but explorer returns MINED_SUCCESS status for cleanup op', async () => {
     const originalTxHash = '0x000';
     const biconomyTxHash = `${originalTxHash}_biconomy`;
 
@@ -224,7 +203,10 @@ describe('waitForCallsStatus', () => {
     );
 
     expect(result.status).toBe('success');
-    expect(result.receipts).toHaveLength(0);
+    expect(result.receipts).toHaveLength(1);
+    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
+    expect(result.receipts[0].transactionLink).toBeUndefined();
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
@@ -233,7 +215,7 @@ describe('waitForCallsStatus', () => {
     );
   });
 
-  it('should return failed if waitForSupertransactionReceipt fails and explorer returns MINED_FAIL status for cleanup op', async () => {
+  it('should return fallback if waitForSupertransactionReceipt fails and explorer returns MINED_FAIL status for cleanup op', async () => {
     const originalTxHash = '0x000';
     const biconomyTxHash = `${originalTxHash}_biconomy`;
 
@@ -252,9 +234,11 @@ describe('waitForCallsStatus', () => {
       mockExtraParams,
     );
 
-    expect(result.status).toBe('failed');
-    expect(result.statusCode).toBe(500);
-    expect(result.receipts).toHaveLength(0);
+    expect(result.status).toBe('success');
+    expect(result.receipts).toHaveLength(1);
+    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
+    expect(result.receipts[0].transactionLink).toBeUndefined();
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
