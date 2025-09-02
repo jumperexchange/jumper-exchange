@@ -89,6 +89,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             slug={missionDisplayData.slug}
             title={missionDisplayData.title}
             description={missionDisplayData.description}
+            descriptionRichText={missionDisplayData.descriptionRichText}
             participants={missionDisplayData.participants}
             imageUrl={missionDisplayData.imageUrl}
             rewardGroups={missionDisplayData.rewardGroups}

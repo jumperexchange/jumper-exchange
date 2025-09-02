@@ -300,6 +300,7 @@ export interface QuestData {
   documentId: string;
   UID: string;
   Title: string;
+  DescriptionRichText: RootNode[];
   Description: string;
   Link: string;
   Image?: StrapiMediaData;
@@ -310,7 +311,6 @@ export interface QuestData {
   StartDate: string;
   Slug: string;
   Label: string;
-  Steps: RootNode[];
   Information: string | null;
   CustomInformation: any;
   BannerImage?: StrapiMediaData;

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 test.describe('API env-config.js', () => {
-  test(qase(92, 'should only expose NEXT_PUBLIC variables'), async ({
+  test(qase(29, 'should only expose NEXT_PUBLIC variables'), async ({
     baseURL,
     page,
   }) => {

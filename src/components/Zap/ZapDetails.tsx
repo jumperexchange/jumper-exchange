@@ -84,6 +84,7 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
             slug={zapDisplayData.slug}
             title={zapDisplayData.title}
             description={zapDisplayData.description}
+            descriptionRichText={zapDisplayData.descriptionRichText}
             participants={zapDisplayData.participants}
             imageUrl={zapDisplayData.imageUrl}
             rewardGroups={zapDisplayData.rewardGroups}
