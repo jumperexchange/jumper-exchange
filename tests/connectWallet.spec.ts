@@ -19,7 +19,7 @@ const { expect } = test;
 
 test.describe('Connect/disconnect Metamask with Jumper app and open /profile page', () => {
   test(
-    qase(95, 'Complete wallet connection and disconnection flow'),
+    qase(3, 'Complete wallet connection and disconnection flow'),
     async ({ context, page, extensionId }) => {
       await test.step('Connect Metamask wallet to Jumper', async () => {
         const metamask = new MetaMask(

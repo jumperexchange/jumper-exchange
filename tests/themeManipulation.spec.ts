@@ -17,7 +17,7 @@ test.describe('Switch between dark and light theme and check the background colo
   });
 
   test.use({ colorScheme: 'dark' });
-  test(qase(115, 'Should able to change the theme color to Dark'), async ({ page }) => {
+  test(qase(30, 'Should able to change the theme color to Dark'), async ({ page }) => {
     await closeWelcomeScreen(page);
     await openOrCloseMainMenu(page);
     await switchTheme(page, Theme.Dark);
@@ -25,7 +25,7 @@ test.describe('Switch between dark and light theme and check the background colo
   });
 
   test.use({ colorScheme: 'light' });
-  test(qase(116, 'Should able to change the theme color to Light'), async ({ page }) => {
+  test(qase(31, 'Should able to change the theme color to Light'), async ({ page }) => {
     await closeWelcomeScreen(page);
     await page.locator('#main-burger-menu-button').click();
     await itemInMenu(page, 'Theme');

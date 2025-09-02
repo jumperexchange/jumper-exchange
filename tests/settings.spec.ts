@@ -26,7 +26,7 @@ for (const { name, size } of [
       await closeWelcomeScreen(page);
     });
 
-    test(qase(name === 'Mobile' ? 107 : 108, 'Should verify all settings menu functionality'), async ({ page }) => {
+    test(qase(name === 'Mobile' ? 7 : 8, 'Should verify all settings menu functionality'), async ({ page }) => {
       // Step 1: Open settings menu and verify title
       await test.step('Open settings menu', async () => {
         await page.getByRole('button', { name: SETTINGS_MENU.TITLE }).click();
