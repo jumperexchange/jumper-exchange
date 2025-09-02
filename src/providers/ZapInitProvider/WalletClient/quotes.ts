@@ -7,6 +7,8 @@ import {
 import { createEIP7702Authorization } from './utils';
 import { Token } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
+import { TIMEOUT_IN_MINUTES } from '../constants';
+import { minutesToSeconds } from 'date-fns';
 
 interface QuoteExecutionParams {
   meeClientParam: MeeClient;
@@ -21,7 +23,6 @@ interface QuoteExecutionParams {
   requestedAmount: bigint;
 }
 
-const minutesToSeconds = (input: number) => input * 60;
 const millisecondsToSeconds = (input: number) => input / 1000;
 
 const executeEmbeddedWalletQuote = async (
@@ -96,7 +97,7 @@ const executeRegularWalletQuote = async (
     },
     instructions,
     lowerBoundTimestamp: now,
-    upperBoundTimestamp: now + minutesToSeconds(2),
+    upperBoundTimestamp: now + minutesToSeconds(TIMEOUT_IN_MINUTES),
   };
 
   const usageInBasisPoints =
