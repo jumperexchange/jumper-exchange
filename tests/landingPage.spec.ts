@@ -12,12 +12,12 @@ test.describe('Landing page and navigation', () => {
     await closeWelcomeScreen(page);
   });
 
-  test(qase(111, 'Should navigate to the homepage and change tabs'), async ({ page }) => {
+  test(qase(2, 'Should navigate to the homepage and change tabs'), async ({ page }) => {
     await navigateToTab(page, 1, 'Gas');
     await navigateToTab(page, 0, 'Exchange');
   });
 
-  test(qase(93, 'Should show again welcome screen when clicking jumper logo'), async ({
+  test(qase(1, 'Should show again welcome screen when clicking jumper logo'), async ({
     page,
   }) => {
     const headerText = 'Find the best route';
