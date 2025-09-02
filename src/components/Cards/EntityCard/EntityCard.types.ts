@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { QuestData } from 'src/types/strapi';
 
 export type Reward = {
   value: string;
@@ -20,7 +21,8 @@ export interface EntityCardProps {
   slug?: string;
   title?: string;
   isLoading?: boolean;
-  description?: string;
+  description?: QuestData['Description'];
+  descriptionRichText?: QuestData['DescriptionRichText'];
   imageUrl?: string;
   variant?: EntityCardVariant;
   badge?: ReactNode;

@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EntityCard } from './EntityCard';
 import { Badge } from '../../Badge/Badge';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { QuestData } from 'src/types/strapi';
 
 const meta: Meta<typeof EntityCard> = {
   title: 'Components/Cards/Mission cards',
@@ -72,12 +73,50 @@ const participants = [
   },
 ];
 
+const descriptionRichText = [
+  {
+    type: 'paragraph',
+    children: [
+      {
+        type: 'text',
+        text: 'Aerodrome is a decentralized exchange where you can execute ',
+      },
+      {
+        type: 'text',
+        text: 'low-fee swaps, ',
+        bold: true,
+      },
+      {
+        type: 'text',
+        text: 'deposit tokens to ',
+      },
+      {
+        type: 'text',
+        text: 'earn rewards',
+        bold: true,
+      },
+      {
+        type: 'text',
+        text: ', and ',
+      },
+      {
+        type: 'text',
+        text: '<span style="color: var(--jumper-palette-textAccent2)">actively participate</span> ',
+        bold: true,
+      },
+      {
+        type: 'text',
+        text: 'in the onchain economy.',
+      },
+    ],
+  },
+] as QuestData['DescriptionRichText'];
+
 const commonProps = {
   id: 'example-card',
   slug: 'example-entity-card',
   title: 'Explore Aerodrome on multiple chains',
-  description:
-    'Aerodrome is a decentralized exchange where you can execute low-fee swaps, deposit tokens to earn rewards, and actively participate in the onchain economy.',
+  descriptionRichText,
   imageUrl:
     'https://strapi.jumper.exchange/uploads/AI_Memecoins_and_Crypto_f98c61b932.png',
   participants,

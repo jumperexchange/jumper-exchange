@@ -55,6 +55,7 @@
     "framer-motion": "^11.18.2",
     "graphql": "^16.11.0",
     "graphql-request": "^7.2.0",
+    "html-react-parser": "^5.2.6",
     "i18next": "^25.3.4",
     "i18next-resources-for-ts": "^1.6.0",
     "i18next-resources-to-backend": "^1.2.1",
