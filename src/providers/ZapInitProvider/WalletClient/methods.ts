@@ -59,7 +59,7 @@ const processTransactionReceipt = (
       return {
         atomic: true,
         id: getFormattedTransactionHash(hash),
-        status: 'failed',
+        status: 'failure',
         statusCode: 400,
         receipts: [
           {
@@ -79,7 +79,7 @@ const processTransactionReceipt = (
       receipts: [
         {
           transactionHash: getFormattedTransactionHash(hash),
-          transactionLink: undefined,
+          transactionLink: getMeeScanLink(hash),
           status: 'success' as const,
         },
       ],

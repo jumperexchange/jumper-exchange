@@ -178,7 +178,7 @@ describe('waitForCallsStatus', () => {
     expect(result.receipts).toHaveLength(1);
     expect(result.receipts[0].status).toBe('success');
     expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
-    expect(result.receipts[0].transactionLink).toBeUndefined();
+    expect(result.receipts[0].transactionLink).toContain(originalTxHash);
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
