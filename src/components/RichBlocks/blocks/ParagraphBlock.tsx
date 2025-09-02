@@ -24,6 +24,11 @@ export const ParagraphBlock: FC<ParagraphBlockProps> = ({
   if (!Array.isArray(children)) {
     return null;
   }
+
+  if (children.length === 1 && children[0].props.text === '') {
+    return null;
+  }
+
   const paragraphChildren = children as Array<{ props: ParagraphProps }>;
 
   if (

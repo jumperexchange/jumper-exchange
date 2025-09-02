@@ -22,6 +22,7 @@ export interface EntityCardProps {
   title?: string;
   isLoading?: boolean;
   description?: QuestData['Description'];
+  descriptionRichText?: QuestData['DescriptionRichText'];
   imageUrl?: string;
   variant?: EntityCardVariant;
   badge?: ReactNode;

@@ -12,7 +12,8 @@ interface DisplayQuestData {
   id: string;
   slug: string;
   title: string;
-  description: RootNode[];
+  description: string;
+  descriptionRichText: RootNode[];
   info: string;
   startDate: string;
   endDate: string;
@@ -61,6 +62,7 @@ export function useFormatDisplayQuestData(
       id,
       Title,
       Description,
+      DescriptionRichText,
       Information,
       Slug,
       StartDate,
@@ -96,7 +98,8 @@ export function useFormatDisplayQuestData(
       id: id.toString(),
       slug: Slug,
       title: Title || '',
-      description: Description || [],
+      description: Description || '',
+      descriptionRichText: DescriptionRichText || [],
       info: Information || '',
       startDate: StartDate || '',
       endDate: EndDate || '',

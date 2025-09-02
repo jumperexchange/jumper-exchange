@@ -30,6 +30,7 @@ export const RichBlocks: FC<RichBlocksProps> = ({
   if (!content) {
     return null;
   }
+
   return (
     <BlocksRenderer
       content={content}

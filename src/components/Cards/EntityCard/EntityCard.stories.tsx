@@ -73,7 +73,7 @@ const participants = [
   },
 ];
 
-const description = [
+const descriptionRichText = [
   {
     type: 'paragraph',
     children: [
@@ -110,13 +110,13 @@ const description = [
       },
     ],
   },
-] as QuestData['Description'];
+] as QuestData['DescriptionRichText'];
 
 const commonProps = {
   id: 'example-card',
   slug: 'example-entity-card',
   title: 'Explore Aerodrome on multiple chains',
-  description,
+  descriptionRichText,
   imageUrl:
     'https://strapi.jumper.exchange/uploads/AI_Memecoins_and_Crypto_f98c61b932.png',
   participants,
