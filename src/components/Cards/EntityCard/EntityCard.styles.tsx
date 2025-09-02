@@ -88,6 +88,14 @@ export const StyledEntityCardDescription = styled(Typography)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.secondary,
 }));
 
+export const StyledWideEntityCardDescriptionWrapper = styled(Box)(
+  ({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
+  }),
+);
+
 // Link
 
 export const StyledEntityCardLink = styled(Link)(({ theme }) => ({

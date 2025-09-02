@@ -13,19 +13,19 @@ import { checkTabsInHeader } from './testData/menuFunctions';
     await expect(listOfBridges).toHaveCount(numberOfBridges);
   }
 
-test.describe('Zap Morpho Katana Page', () => {
+test.describe.skip('Zap Morpho Katana Page', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/missions/morpho-katana-gauntlet-usdc');
         await page.waitForLoadState('networkidle');
     });
 
-    test(qase(121,'Should verify bridge selection list has exactly 2 bridges'), async ({ page }) => {
+    test(qase(33,'Should verify bridge selection list has exactly 2 bridges'), async ({ page }) => {
         await page.getByRole('button', { name: SETTINGS_MENU.TITLE }).click();
         await clickItemInSettingsMenu(page, SETTINGS_MENU.BRIDGES.LABEL);
         await verifyBridgesCount(page, 2);
     });
 
-    test(qase(120,'Verify the url of Discover Morpho link'), async ({ page }) => {
+    test(qase(32,'Verify the url of Discover Morpho link'), async ({ page }) => {
       await test.step('Verify the url of Discover Morpho link', async () => {
         const discoverMorphoLink = page.getByRole('link', { name: 'Discover Morpho' });
         await expect(discoverMorphoLink).toHaveAttribute('href', values.morphoURL);

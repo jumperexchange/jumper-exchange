@@ -42,7 +42,7 @@ jobs:
             '{title: $title, description: $description}')
 
           response=$(curl --silent --fail --show-error --request POST \
-            --url https://api.qase.io/v1/run/FE \
+            --url https://api.qase.io/v1/run/WJ \
             --header "Token: ${{ secrets.QASE_TOKEN }}" \
             --header 'accept: application/json' \
             --header 'content-type: application/json' \
@@ -58,7 +58,7 @@ jobs:
         id: create-public-link
         run: |
           public_link=$(curl --silent --fail --show-error --request PATCH \
-            --url "https://api.qase.io/v1/run/FE/${{ steps.create-run.outputs.run_id }}/public" \
+            --url "https://api.qase.io/v1/run/WJ/${{ steps.create-run.outputs.run_id }}/public" \
             --header "Token: ${{ secrets.QASE_TOKEN }}" \
             --header 'accept: application/json' \
             --header 'content-type: application/json' \

@@ -26,7 +26,7 @@ const qaseReporter = [
       api: {
         token: process.env.QASE_TESTOPS_API_TOKEN,
       },
-      project: 'FE',
+      project: 'WJ',
       uploadAttachments: true,
       run: {
         complete: true,
