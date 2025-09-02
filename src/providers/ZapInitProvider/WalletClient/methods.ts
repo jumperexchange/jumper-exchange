@@ -1,5 +1,6 @@
 import {
   BaseGetSupertransactionReceiptPayload,
+  getMeeScanLink,
   MeeClient,
   MeeFilledUserOpDetails,
   MultichainSmartAccount,
@@ -51,8 +52,25 @@ const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
   hash: EVMAddress,
   extraParams: SendCallsExtraParams,
+  hasFailedNonCleanUpUserOps?: boolean,
 ) => {
   if (!receipt) {
+    if (hasFailedNonCleanUpUserOps) {
+      return {
+        atomic: true,
+        id: getFormattedTransactionHash(hash),
+        status: 'failed',
+        statusCode: 400,
+        receipts: [
+          {
+            transactionHash: getFormattedTransactionHash(hash),
+            transactionLink: getMeeScanLink(hash),
+            status: 'reverted' as const,
+          },
+        ],
+      };
+    }
+
     return {
       atomic: true,
       id: getFormattedTransactionHash(hash),
@@ -364,6 +382,8 @@ export const waitForCallsStatus = async (
     '',
   ) as EVMAddress;
 
+  let nonCleanUpUserOps: (MeeFilledUserOpDetails & UserOpStatus)[] = [];
+
   try {
     const receipt = await meeClientParam.waitForSupertransactionReceipt({
       hash: originalId,
@@ -380,6 +400,10 @@ export const waitForCallsStatus = async (
             path: `explorer/${originalId}`,
             method: 'GET',
           });
+
+        nonCleanUpUserOps = explorerResponse.userOps.filter(
+          (userOp) => !userOp.isCleanUpUserOp,
+        );
 
         const hasPendingOps = explorerResponse.userOps.some((userOp) =>
           hasPendingStatus(userOp.executionStatus),
@@ -399,7 +423,16 @@ export const waitForCallsStatus = async (
     }
   }
 
-  return processTransactionReceipt(null, originalId, extraParams);
+  const hasFailedNonCleanUpUserOps = nonCleanUpUserOps
+    ?.slice(0, 2)
+    .some((userOp) => hasFailedStatus(userOp.executionStatus));
+
+  return processTransactionReceipt(
+    null,
+    originalId,
+    extraParams,
+    hasFailedNonCleanUpUserOps,
+  );
 };
 
 export const walletMethods: WalletMethodsRef = {

@@ -149,6 +149,44 @@ describe('waitForCallsStatus', () => {
     });
   }, 5000);
 
+  it('should return fallback if waitForSupertransactionReceipt fails and explorer returns FAILED status for destination chain', async () => {
+    const originalTxHash = '0x000';
+    const biconomyTxHash = `${originalTxHash}_biconomy`;
+
+    // First call fails
+    mockMeeClient.waitForSupertransactionReceipt.mockRejectedValueOnce(
+      new Error('First attempt failed'),
+    );
+
+    // Explorer responds with FAILED status (should stop retry)
+    mockMeeClient.request.mockResolvedValue({
+      userOps: [
+        createUserOp('MINED_SUCCESS'),
+        createUserOp('MINED_SUCCESS'),
+        createUserOp('FAILED'),
+      ],
+    });
+
+    const result = await waitForCallsStatus(
+      createTestParams(biconomyTxHash),
+      mockMeeClient,
+      undefined,
+      mockExtraParams,
+    );
+
+    expect(result.status).toBe('success');
+    expect(result.receipts).toHaveLength(1);
+    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
+    expect(result.receipts[0].transactionLink).toBeUndefined();
+    expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
+      1,
+    );
+    expect(mockMeeClient.request).toHaveBeenCalledWith(
+      getExplorerRequestOptions(originalTxHash),
+    );
+  });
+
   it('should return fallback if waitForSupertransactionReceipt fails and explorer returns FAILED status', async () => {
     const originalTxHash = '0x000';
     const biconomyTxHash = `${originalTxHash}_biconomy`;
@@ -170,11 +208,11 @@ describe('waitForCallsStatus', () => {
       mockExtraParams,
     );
 
-    expect(result.status).toBe('success');
+    expect(result.status).toBe('failed');
     expect(result.receipts).toHaveLength(1);
-    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].status).toBe('reverted');
     expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
-    expect(result.receipts[0].transactionLink).toBeUndefined();
+    expect(result.receipts[0].transactionLink).toContain(originalTxHash);
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
@@ -202,11 +240,11 @@ describe('waitForCallsStatus', () => {
       mockExtraParams,
     );
 
-    expect(result.status).toBe('success');
+    expect(result.status).toBe('failed');
     expect(result.receipts).toHaveLength(1);
-    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].status).toBe('reverted');
     expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
-    expect(result.receipts[0].transactionLink).toBeUndefined();
+    expect(result.receipts[0].transactionLink).toContain(originalTxHash);
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
@@ -234,11 +272,11 @@ describe('waitForCallsStatus', () => {
       mockExtraParams,
     );
 
-    expect(result.status).toBe('success');
+    expect(result.status).toBe('failed');
     expect(result.receipts).toHaveLength(1);
-    expect(result.receipts[0].status).toBe('success');
+    expect(result.receipts[0].status).toBe('reverted');
     expect(result.receipts[0].transactionHash).toBe(biconomyTxHash);
-    expect(result.receipts[0].transactionLink).toBeUndefined();
+    expect(result.receipts[0].transactionLink).toContain(originalTxHash);
     expect(mockMeeClient.waitForSupertransactionReceipt).toHaveBeenCalledTimes(
       1,
     );
