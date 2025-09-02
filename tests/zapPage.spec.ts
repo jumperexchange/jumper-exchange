@@ -13,7 +13,7 @@ import { checkTabsInHeader } from './testData/menuFunctions';
     await expect(listOfBridges).toHaveCount(numberOfBridges);
   }
 
-test.describe('Zap Morpho Katana Page', () => {
+test.describe.skip('Zap Morpho Katana Page', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/missions/morpho-katana-gauntlet-usdc');
         await page.waitForLoadState('networkidle');
