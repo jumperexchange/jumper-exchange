@@ -1,4 +1,5 @@
 import type { Chain, ChainId, ExtendedChain, TokensResponse } from '@lifi/sdk';
+import { zeroAddress } from 'viem';
 
 export const getChainById = (chains: ExtendedChain[], id: ChainId) => {
   if (!chains.length || !id) {
@@ -65,4 +66,16 @@ export const getTokenByName = (
     .filter((el) => {
       return el.name.toLowerCase() === name.toLowerCase();
     });
+};
+
+// @Note: this works only for EVM chains
+export const getNativeTokenForChain = (
+  tokens: TokensResponse['tokens'],
+  chainId: number,
+) => {
+  const chainTokens = tokens[chainId];
+  if (!chainTokens) {
+    return;
+  }
+  return chainTokens.find((token) => token.address === zeroAddress);
 };

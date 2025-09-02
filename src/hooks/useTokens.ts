@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   getTokenBySymbol as getTokenBySymbolHelper,
   getTokenByName as getTokenByNameHelper,
+  getNativeTokenForChain as getNativeTokenForChainHelper,
 } from '@/utils/tokenAndChain';
 
 export const queryKey = ['tokenStats'];
@@ -36,10 +37,17 @@ export const useTokens = () => {
     }
     return getTokenByNameHelper(data?.tokens, name);
   };
+  const getNativeTokenForChain = (chainId: number) => {
+    if (!data?.tokens) {
+      return;
+    }
+    return getNativeTokenForChainHelper(data?.tokens, chainId);
+  };
 
   return {
     getTokenBySymbol,
     getTokenByName,
+    getNativeTokenForChain,
     tokens: data || ({} as TokensResponse),
     isSuccess,
   };
