@@ -20,6 +20,7 @@ import { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
+import { useTokens } from 'src/hooks/useTokens';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -30,6 +31,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
+
+  const { getNativeTokenForChain } = useTokens();
 
   const {
     isInitialized,
@@ -85,6 +88,12 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     };
   }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
+  const nativeTokens = useMemo(() => {
+    return allowedChains
+      .map((chain) => getNativeTokenForChain(chain))
+      .filter((token) => token !== undefined);
+  }, [allowedChains]);
+
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
 
   // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
@@ -119,6 +128,13 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   if (allowedChains) {
     widgetConfig.chains = {
       allow: allowedChains,
+    };
+  }
+
+  // @Note: disable native tokens for now
+  if (nativeTokens) {
+    widgetConfig.tokens = {
+      deny: nativeTokens,
     };
   }
 
