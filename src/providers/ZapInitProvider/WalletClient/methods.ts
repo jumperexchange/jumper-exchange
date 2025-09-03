@@ -230,6 +230,10 @@ export const sendCalls = async (
   // @Note this works only for EVM chains
   const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
+  if (isNativeSourceToken) {
+    throw new Error('Native source token is not yet supported.');
+  }
+
   console.warn('currentRouteFromToken', currentRouteFromToken);
 
   const isSameTokenDeposit = isSameToken(
