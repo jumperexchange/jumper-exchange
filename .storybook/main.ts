@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
-import { getPublicEnvVars } from '../src/config/env-config';
+import { getPublicEnvVars } from '../src/config/env-config.ts';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
