@@ -25,4 +25,5 @@ export const katana = defineChain({
       blockCreated: 1898013,
     },
   },
+  testnet: false,
 });
