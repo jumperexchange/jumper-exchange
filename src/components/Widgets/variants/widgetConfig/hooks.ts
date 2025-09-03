@@ -56,6 +56,7 @@ export function useLiFiWidgetConfig(ctx: ConfigContext = {}): WidgetConfig {
         ...(base.hiddenUI ?? []),
         ...(ctx.baseOverrides?.hiddenUI ?? []),
       ],
+      theme: merge({}, base.theme ?? {}, ctx.theme ?? {}),
     });
   }, [base, overrides, ctx.baseOverrides]);
 }
