@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
-import { getEnvVars } from '../src/config/env-config';
+import { getPublicEnvVars } from '../src/config/env-config';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -16,12 +16,12 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ['../public'],
-  viteFinal(config, { configType }) {
-    console.log('viteFinal is called', getEnvVars());
+  viteFinal(config) {
+    console.log('viteFinal is called', getPublicEnvVars());
 
     config.define = {
-      ...config.define,
-      'process.env': {},
+      ...(config.define || {}),
+      'process.env': getPublicEnvVars(),
     };
 
     return config;
