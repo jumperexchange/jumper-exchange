@@ -51,8 +51,6 @@ export const WidgetRenderer: FC<WidgetRendererProps> = ({ text }) => {
     .map((el) => parseInt(el))
     .filter((num) => !isNaN(num));
 
-  console.log(config);
-
   return (
     <>
       <WidgetHeader>

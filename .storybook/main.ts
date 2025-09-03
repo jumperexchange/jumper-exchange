@@ -17,8 +17,6 @@ const config: StorybookConfig = {
   },
   staticDirs: ['../public'],
   viteFinal(config) {
-    console.log('viteFinal is called', getPublicEnvVars());
-
     config.define = {
       ...(config.define || {}),
       'process.env': getPublicEnvVars(),
