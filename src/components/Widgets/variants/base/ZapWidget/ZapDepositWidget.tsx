@@ -39,6 +39,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     isConnected,
     isMultisigEnvironment,
     isEmbeddedWallet,
+    isEvmWallet,
     providers,
     toAddress,
     zapData,
@@ -187,8 +188,21 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     setSupportModalState,
   ]);
 
-  if (isMultisigEnvironment || isEmbeddedWallet) {
-    return <ZapPlaceholderWidget />;
+  if (isMultisigEnvironment || isEmbeddedWallet || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+      />
+    );
   }
 
   return isZapDataSuccess &&

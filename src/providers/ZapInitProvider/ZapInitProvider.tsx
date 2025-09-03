@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId, EVMProvider, Route } from '@lifi/sdk';
+import { ChainId, ChainType, EVMProvider, Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
@@ -48,6 +48,7 @@ interface ZapInitState {
   isInitializedForCurrentChain: boolean;
   isMultisigEnvironment: boolean;
   isEmbeddedWallet: boolean;
+  isEvmWallet: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
   toAddress?: EVMAddress;
@@ -66,6 +67,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   isInitializedForCurrentChain: false,
   isMultisigEnvironment: false,
   isEmbeddedWallet: false,
+  isEvmWallet: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -178,7 +180,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   } = useEnhancedZapData(projectData);
 
   const { account } = useAccount();
-  const { address, chainId } = account;
+  const { address, chainId, chainType } = account;
+  const isEvmWallet = chainType === ChainType.EVM;
 
   const { switchChainAsync } = useSwitchChain();
 
@@ -577,6 +580,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       isInitializedForCurrentChain,
       isMultisigEnvironment,
       isEmbeddedWallet,
+      isEvmWallet,
       isConnected,
       providers,
       toAddress,
@@ -596,6 +600,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     isInitializedForCurrentChain,
     isMultisigEnvironment,
     isEmbeddedWallet,
+    isEvmWallet,
     isConnected,
     zapData,
     isZapDataSuccess,
