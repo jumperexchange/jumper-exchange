@@ -15,5 +15,13 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ['../public'],
+  viteFinal(config, { configType }) {
+    config.define = {
+      ...config.define,
+      'process.env': {},
+    };
+
+    return config;
+  },
 };
 export default config;

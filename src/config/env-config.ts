@@ -13,7 +13,7 @@ declare global {
 let config: RuntimeConfig;
 
 export function getEnvVars(): RuntimeConfig {
-  console.log('getEnvVars is called');
+  console.log('getEnvVars is called', process.env, (import.meta as any).env);
   if (typeof window !== 'undefined') {
     throw new Error('getEnvVars is not available on the client');
   }
