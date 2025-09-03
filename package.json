@@ -137,6 +137,7 @@
     "dev:staging": "dotenv -e .env.staging next dev",
     "dev:production": "dotenv -e .env.production next dev",
     "build": "NODE_OPTIONS=--max-old-space-size=6144 next build",
+    "api": "./gen-api.sh",
     "start": "next start",
     "lint": "next lint",
     "lint_es": "eslint . --ext .ts,.tsx,.js,.jsx",
