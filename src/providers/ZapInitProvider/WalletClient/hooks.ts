@@ -81,18 +81,6 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
           throw new Error('Chain is not allowed');
         }
 
-        console.warn(
-          'initializeClients based on these wallet client values',
-          'walletClient chain:',
-          walletClient?.chain?.id,
-          'walletClient address:',
-          walletClient?.account.address,
-          'priority address:',
-          address,
-          'priority chainId:',
-          chainId,
-        );
-
         if (
           address &&
           chainId &&
@@ -105,10 +93,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
         }
 
         const provider = await getEVMProvider(account.connector);
-        console.warn('account.connector', account.connector);
         const isEmbeddedWallet = checkIsEmbeddedWallet(account);
-
-        console.warn('🔍 isEmbeddedWallet', isEmbeddedWallet);
 
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
@@ -122,7 +107,6 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
 
         return { walletClient, biconomyClients, isEmbeddedWallet };
       } catch (error) {
-        console.error('Failed to initialize clients:', error);
         Sentry.captureException(error, {
           tags: {
             requestWalletAddress: address,

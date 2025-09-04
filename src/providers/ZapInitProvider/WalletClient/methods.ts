@@ -89,11 +89,6 @@ const processTransactionReceipt = (
   const originalReceipts: ExtendedTransactionReceipt[] =
     receipt?.receipts || [];
 
-  console.warn('🔍 processTransactionReceipt originalReceipts', {
-    hash,
-    originalReceipts,
-  });
-
   // Add transaction links and chain info
   let fromChain;
   let fromChainBlockExplorerUrl;
@@ -116,11 +111,6 @@ const processTransactionReceipt = (
       getFormattedTransactionHash(hash);
   }
 
-  console.warn('🔍 processTransactionReceipt originalReceipts after', {
-    hash,
-    originalReceipts,
-  });
-
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
   const hexChainId = chainIdAsNumber
     ? `0x${Number(chainIdAsNumber).toString(16)}`
@@ -130,19 +120,6 @@ const processTransactionReceipt = (
     ?.toLowerCase()
     .includes('success');
   const statusCode = isSuccess ? 200 : 400;
-
-  console.warn('🔍 processTransactionReceipt final', {
-    atomic: true,
-    chainId: hexChainId,
-    id: getFormattedTransactionHash(hash),
-    status: 'success',
-    statusCode,
-    receipts: originalReceipts.map((receipt) => ({
-      transactionHash: receipt.transactionHash,
-      transactionLink: (receipt as any).transactionLink,
-      status: receipt.status || (isSuccess ? 'success' : 'reverted'),
-    })),
-  });
 
   return {
     atomic: true,
@@ -206,15 +183,11 @@ export const sendCalls = async (
     throw new Error('Integration data is not available.');
   }
 
-  console.warn(
-    'sendCallsExtraParams.currentRoute',
-    sendCallsExtraParams.currentRoute,
-  );
-
   const currentChainId = sendCallsExtraParams.currentRoute.fromChainId;
   const currentAddress = sendCallsExtraParams.currentRoute.fromAddress;
   const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
   const currentRouteFromAmount = sendCallsExtraParams.currentRoute.fromAmount;
+  const currentRouteFromAmountFormatted = BigInt(currentRouteFromAmount);
   const integrationData = sendCallsExtraParams.zapData;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositChainId = sendCallsExtraParams.projectData.chainId;
@@ -230,14 +203,10 @@ export const sendCalls = async (
   // @Note this works only for EVM chains
   const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
-  console.warn('currentRouteFromToken', currentRouteFromToken);
-
   const isSameTokenDeposit = isSameToken(
     sendCallsExtraParams.currentRoute.fromToken,
     sendCallsExtraParams.currentRoute.toToken,
   );
-
-  console.warn('isSameTokenDeposit', isSameTokenDeposit);
 
   const baseCalls = isSameTokenDeposit ? [] : calls;
 
@@ -251,7 +220,7 @@ export const sendCalls = async (
         to: call.to,
         calldata: call.data,
         chainId: call.chainId ?? currentChainId,
-        value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
+        value: isNativeSourceToken ? currentRouteFromAmountFormatted : undefined,
       };
       return oNexusParam.buildComposable({
         type: 'rawCalldata',
@@ -273,23 +242,36 @@ export const sendCalls = async (
   const instructions = [...rawInstructions, ...contractInstructions];
 
   const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
-  const requestedAmount = BigInt(currentRouteFromAmount);
+  const requestedAmount = currentRouteFromAmountFormatted;
 
-  const cleanUps = [
-    {
-      tokenAddress: depositToken,
-      chainId: depositChainId,
-      recipientAddress: currentAddress as EVMAddress,
-    },
-  ];
+  const cleanUps = [];
 
+  // Add source token cleanup (only if not same token deposit)
   if (!isSameTokenDeposit) {
-    cleanUps.unshift({
+    const sourceTokenCleanup: {
+      tokenAddress: EVMAddress;
+      chainId: number;
+      recipientAddress: EVMAddress;
+      amount?: bigint;
+    } = {
       tokenAddress: currentRouteFromToken.address as EVMAddress,
       chainId: currentChainId,
       recipientAddress: currentAddress as EVMAddress,
-    });
+    };
+
+    if (isNativeSourceToken) {
+      sourceTokenCleanup.amount = currentRouteFromAmountFormatted;
+    }
+
+    cleanUps.push(sourceTokenCleanup);
   }
+
+  // Add deposit token cleanup
+  cleanUps.push({
+    tokenAddress: depositToken,
+    chainId: depositChainId,
+    recipientAddress: currentAddress as EVMAddress,
+  });
 
   const hash = await executeQuoteStrategy({
     meeClientParam,
@@ -303,10 +285,6 @@ export const sendCalls = async (
     userBalance,
     requestedAmount,
     isEmbeddedWallet: sendCallsExtraParams.isEmbeddedWallet,
-  });
-
-  console.warn('🔍 sendCalls response', {
-    id: getFormattedTransactionHash(hash),
   });
 
   return { id: getFormattedTransactionHash(hash) };
