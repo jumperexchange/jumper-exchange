@@ -405,11 +405,12 @@ export const waitForCallsStatus = async (
           (userOp) => !userOp.isCleanUpUserOp,
         );
 
-        const hasPendingOps = explorerResponse.userOps.some((userOp) =>
+        const hasPendingNonCleanUpUserOps = nonCleanUpUserOps.some((userOp) =>
           hasPendingStatus(userOp.executionStatus),
         );
 
-        if (hasPendingOps) {
+        // @Note: if waitForSupertransactionReceipt fails, but the main transactions are still processing, we should retry
+        if (hasPendingNonCleanUpUserOps) {
           throw new Error('Transaction still processing, retrying...');
         }
 
