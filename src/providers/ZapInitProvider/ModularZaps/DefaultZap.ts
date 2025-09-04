@@ -4,7 +4,7 @@ import {
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
 import { EVMAddress } from 'src/types/internal';
-import { AbiParameter, parseUnits } from 'viem';
+import { AbiParameter } from 'viem';
 import { buildContractComposable } from '../utils';
 import { ZapExecutionContext, ZapDefinition, ZapInstruction } from './base';
 
@@ -20,7 +20,7 @@ export const approve: ZapInstruction = async (
   const depositChainId = projectData.chainId;
 
   const constraints = [
-    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
   ];
 
   return buildContractComposable(oNexus, {
@@ -52,7 +52,7 @@ export const deposit: ZapInstruction = async (
   const depositChainId = projectData.chainId;
 
   const constraints = [
-    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
   ];
 
   const depositInputs = integrationData.abi.deposit.inputs;
@@ -91,7 +91,7 @@ export const transfer: ZapInstruction = async (
   const depositChainId = projectData.chainId;
 
   const constraints = [
-    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
   ];
 
   const depositInputs = integrationData.abi.deposit.inputs;

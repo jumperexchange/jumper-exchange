@@ -1,8 +1,10 @@
 import {
   BaseGetSupertransactionReceiptPayload,
+  getMeeScanLink,
   MeeClient,
+  MeeFilledUserOpDetails,
   MultichainSmartAccount,
-  parseTransactionStatus,
+  UserOpStatus,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
 import { getTokenBalance } from '@lifi/sdk';
@@ -23,6 +25,10 @@ import {
 } from '../types';
 import { isSameToken } from '../utils';
 import { executeQuoteStrategy } from './quotes';
+import { minutesToMilliseconds } from 'date-fns';
+import { TIMEOUT_IN_MINUTES } from '../constants';
+import { retryWithTimeout } from 'src/utils/retryWithTimeout';
+import { RetryStoppedError } from 'src/utils/errors';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
   Pick<TransactionReceipt, 'status' | 'transactionHash'> & {
@@ -30,6 +36,11 @@ type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
   };
 
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
+
+const hasPendingStatus = (status: string) => status === 'PENDING';
+
+const hasFailedStatus = (status: string) =>
+  ['FAILED', 'MINED_FAIL'].includes(status);
 
 const getFormattedTransactionHash = (hash: string) =>
   hash.includes(BICONOMY_TRANSACTION_HASH_SUFFIX)
@@ -41,25 +52,42 @@ const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
   hash: EVMAddress,
   extraParams: SendCallsExtraParams,
-  hasFailedCleanUpUserOps?: boolean,
+  hasFailedNonCleanUpUserOps?: boolean,
 ) => {
   if (!receipt) {
+    if (hasFailedNonCleanUpUserOps) {
+      return {
+        atomic: true,
+        id: getFormattedTransactionHash(hash),
+        status: 'failure',
+        statusCode: 400,
+        receipts: [
+          {
+            transactionHash: getFormattedTransactionHash(hash),
+            transactionLink: getMeeScanLink(hash),
+            status: 'reverted' as const,
+          },
+        ],
+      };
+    }
+
     return {
       atomic: true,
       id: getFormattedTransactionHash(hash),
-      status: hasFailedCleanUpUserOps ? 'failed' : 'success',
-      statusCode: hasFailedCleanUpUserOps ? 500 : 200,
-      receipts: [],
+      status: 'success',
+      statusCode: 200,
+      receipts: [
+        {
+          transactionHash: getFormattedTransactionHash(hash),
+          transactionLink: getMeeScanLink(hash),
+          status: 'success' as const,
+        },
+      ],
     };
   }
 
   const originalReceipts: ExtendedTransactionReceipt[] =
     receipt?.receipts || [];
-
-  console.warn('🔍 processTransactionReceipt originalReceipts', {
-    hash,
-    originalReceipts,
-  });
 
   // Add transaction links and chain info
   let fromChain;
@@ -83,11 +111,6 @@ const processTransactionReceipt = (
       getFormattedTransactionHash(hash);
   }
 
-  console.warn('🔍 processTransactionReceipt originalReceipts after', {
-    hash,
-    originalReceipts,
-  });
-
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
   const hexChainId = chainIdAsNumber
     ? `0x${Number(chainIdAsNumber).toString(16)}`
@@ -97,19 +120,6 @@ const processTransactionReceipt = (
     ?.toLowerCase()
     .includes('success');
   const statusCode = isSuccess ? 200 : 400;
-
-  console.warn('🔍 processTransactionReceipt final', {
-    atomic: true,
-    chainId: hexChainId,
-    id: getFormattedTransactionHash(hash),
-    status: 'success',
-    statusCode,
-    receipts: originalReceipts.map((receipt) => ({
-      transactionHash: receipt.transactionHash,
-      transactionLink: (receipt as any).transactionLink,
-      status: receipt.status || (isSuccess ? 'success' : 'reverted'),
-    })),
-  });
 
   return {
     atomic: true,
@@ -174,16 +184,12 @@ export const sendCalls = async (
     throw new Error('Integration data is not available.');
   }
 
-  console.warn(
-    'sendCallsExtraParams.currentRoute',
-    sendCallsExtraParams.currentRoute,
-  );
-
   const currentChainId = sendCallsExtraParams.currentRoute.fromChainId;
   const currentAddress = sendCallsExtraParams.currentRoute.fromAddress;
   const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
   const currentRouteToToken = sendCallsExtraParams.currentRoute.toToken;
   const currentRouteFromAmount = sendCallsExtraParams.currentRoute.fromAmount;
+  const currentRouteFromAmountFormatted = BigInt(currentRouteFromAmount);
   const integrationData = sendCallsExtraParams.zapData;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositChainId = sendCallsExtraParams.projectData.chainId;
@@ -199,19 +205,15 @@ export const sendCalls = async (
   // @Note this works only for EVM chains
   const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
-  console.warn('currentRouteFromToken', currentRouteFromToken);
-
   const isSameTokenDeposit = isSameToken(
     sendCallsExtraParams.currentRoute.fromToken,
     sendCallsExtraParams.currentRoute.toToken,
   );
 
-  console.warn('isSameTokenDeposit', isSameTokenDeposit);
-
   const baseCalls = isSameTokenDeposit ? [] : calls;
 
   // Build raw calldata instructions (general flow)
-  const rawInstructions = await Promise.all(
+  const rawInstructionsPromises = Promise.all(
     baseCalls.map(async (call: WalletCall) => {
       console.warn('CALL', call);
       if (!call.to || !call.data) {
@@ -220,8 +222,8 @@ export const sendCalls = async (
       const data = {
         to: call.to,
         calldata: call.data,
-        chainId: currentChainId,
-        value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
+        chainId: call.chainId ?? currentChainId,
+        value: isNativeSourceToken ? currentRouteFromAmountFormatted : undefined,
       };
 
       console.warn('computing', data);
@@ -232,38 +234,49 @@ export const sendCalls = async (
     }),
   );
 
-  // Build project-specific contract instructions (approve, deposit, transfer)
-  const contractInstructions = await buildContractInstructions(
-    oNexusParam,
-    sendCallsExtraParams,
-  );
+  const [rawInstructions, contractInstructions, currentTokenBalance] =
+    await Promise.all([
+      rawInstructionsPromises,
+      // Build project-specific contract instructions (approve, deposit, transfer)
+      buildContractInstructions(oNexusParam, sendCallsExtraParams),
+      // Get current token balance
+      getTokenBalance(currentAddress, currentRouteFromToken),
+    ]);
 
   // Combine all instructions
   const instructions = [...rawInstructions, ...contractInstructions];
 
-  const currentTokenBalance = await getTokenBalance(
-    currentAddress,
-    currentRouteFromToken,
-  );
-
   const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
-  const requestedAmount = BigInt(currentRouteFromAmount);
+  const requestedAmount = currentRouteFromAmountFormatted;
 
-  const cleanUps = [
-    {
-      tokenAddress: depositToken,
-      chainId: depositChainId,
-      recipientAddress: currentAddress as EVMAddress,
-    },
-  ];
+  const cleanUps = [];
 
+  // Add source token cleanup (only if not same token deposit)
   if (!isSameTokenDeposit) {
-    cleanUps.unshift({
+    const sourceTokenCleanup: {
+      tokenAddress: EVMAddress;
+      chainId: number;
+      recipientAddress: EVMAddress;
+      amount?: bigint;
+    } = {
       tokenAddress: currentRouteFromToken.address as EVMAddress,
       chainId: currentChainId,
       recipientAddress: currentAddress as EVMAddress,
-    });
+    };
+
+    if (isNativeSourceToken) {
+      sourceTokenCleanup.amount = currentRouteFromAmountFormatted;
+    }
+
+    cleanUps.push(sourceTokenCleanup);
   }
+
+  // Add deposit token cleanup
+  cleanUps.push({
+    tokenAddress: depositToken,
+    chainId: depositChainId,
+    recipientAddress: currentAddress as EVMAddress,
+  });
 
   const hash = await executeQuoteStrategy({
     meeClientParam,
@@ -277,10 +290,6 @@ export const sendCalls = async (
     userBalance,
     requestedAmount,
     isEmbeddedWallet: sendCallsExtraParams.isEmbeddedWallet,
-  });
-
-  console.warn('🔍 sendCalls response', {
-    id: getFormattedTransactionHash(hash),
   });
 
   return { id: getFormattedTransactionHash(hash) };
@@ -349,77 +358,64 @@ export const waitForCallsStatus = async (
     );
   }
 
-  const { id, timeout = 60000 } = args;
-  const startTime = Date.now();
+  const { id } = args;
+  const timeout = minutesToMilliseconds(TIMEOUT_IN_MINUTES);
   const originalId = id.replace(
     BICONOMY_TRANSACTION_HASH_SUFFIX,
     '',
   ) as EVMAddress;
 
-  let cleanUpUserOps;
+  let nonCleanUpUserOps: (MeeFilledUserOpDetails & UserOpStatus)[] = [];
 
-  do {
+  try {
+    const receipt = await meeClientParam.waitForSupertransactionReceipt({
+      hash: originalId,
+    });
+    return processTransactionReceipt(receipt, originalId, extraParams);
+  } catch (error) {
+    console.error('🔍 waitForSupertransactionReceipt failed:', error);
+
     try {
-      const receipt = await meeClientParam.waitForSupertransactionReceipt({
-        hash: originalId,
-      });
-      return processTransactionReceipt(receipt, originalId, extraParams);
-    } catch (error) {
-      console.error('🔍 waitForSupertransactionReceipt failed:', error);
-
-      // Check if timeout has passed
-      if (Date.now() - startTime >= timeout) {
-        console.warn('🔍 Timeout exceeded, stopping retries');
-        break;
-      }
-
-      // Check explorer status to see if we should retry
-      try {
+      await retryWithTimeout(async () => {
+        // Check explorer status to see if we should retry
         const explorerResponse =
           await meeClientParam.request<BaseGetSupertransactionReceiptPayload>({
             path: `explorer/${originalId}`,
             method: 'GET',
           });
 
-        cleanUpUserOps = explorerResponse.userOps.filter(
-          (userOp) => userOp.isCleanUpUserOp,
+        nonCleanUpUserOps = explorerResponse.userOps.filter(
+          (userOp) => !userOp.isCleanUpUserOp,
         );
 
-        const metaStatus = await parseTransactionStatus(
-          explorerResponse.userOps,
+        const hasPendingNonCleanUpUserOps = nonCleanUpUserOps.some((userOp) =>
+          hasPendingStatus(userOp.executionStatus),
         );
 
-        // Only stop retrying if transaction has clearly failed
-        if (['FAILED', 'MINED_FAIL'].includes(metaStatus.status)) {
-          console.warn(
-            'Transaction failed, no retry needed:',
-            metaStatus.status,
-          );
-          break;
+        // @Note: if waitForSupertransactionReceipt fails, but the main transactions are still processing, we should retry
+        if (hasPendingNonCleanUpUserOps) {
+          throw new Error('Transaction still processing, retrying...');
         }
 
-        console.warn(
-          '🔍 Transaction still processing or receipts not ready, retrying...',
+        throw new RetryStoppedError(
+          'Transaction has final status, no retry needed',
         );
-      } catch (explorerError) {
-        console.error('🔍 Explorer check failed:', explorerError);
-        // Continue retrying even if explorer check fails
-      }
+      }, timeout);
+    } catch (explorerError) {
+      console.error('🔍 Explorer check failed:', explorerError);
+      // Continue retrying even if explorer check fails
     }
-  } while (true);
+  }
 
-  const hasFailedCleanUpUserOps =
-    !cleanUpUserOps ||
-    !cleanUpUserOps.length ||
-    cleanUpUserOps.some((userOp) =>
-      ['FAILED', 'MINED_FAIL'].includes(userOp.executionStatus),
-    );
+  const hasFailedNonCleanUpUserOps = nonCleanUpUserOps
+    ?.slice(0, 2)
+    .some((userOp) => hasFailedStatus(userOp.executionStatus));
 
   return processTransactionReceipt(
     null,
     originalId,
     extraParams,
-    hasFailedCleanUpUserOps,
+    hasFailedNonCleanUpUserOps,
   );
 };
 

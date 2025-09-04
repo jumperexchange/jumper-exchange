@@ -19,3 +19,5 @@ export const abiNumericTypes = [
   'int16',
   'int8',
 ];
+
+export const TIMEOUT_IN_MINUTES = 2;

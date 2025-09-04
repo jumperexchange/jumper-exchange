@@ -7,6 +7,8 @@ import {
 import { createEIP7702Authorization } from './utils';
 import { Token } from '@lifi/sdk';
 import { EVMAddress } from 'src/types/internal';
+import { TIMEOUT_IN_MINUTES } from '../constants';
+import { minutesToSeconds } from 'date-fns';
 
 interface QuoteExecutionParams {
   meeClientParam: MeeClient;
@@ -20,6 +22,8 @@ interface QuoteExecutionParams {
   userBalance: bigint;
   requestedAmount: bigint;
 }
+
+const millisecondsToSeconds = (input: number) => input / 1000;
 
 const executeEmbeddedWalletQuote = async (
   params: QuoteExecutionParams,
@@ -77,6 +81,9 @@ const executeRegularWalletQuote = async (
     userBalance,
   } = params;
 
+  // The biconomy sdk requires the timestamp to be in seconds and throws an error if not using integer
+  const now = Math.ceil(millisecondsToSeconds(Date.now()));
+
   const fusionQuoteParams: GetFusionQuoteParams = {
     trigger: {
       tokenAddress: currentRouteFromToken.address as EVMAddress,
@@ -89,6 +96,8 @@ const executeRegularWalletQuote = async (
       chainId: currentChainId,
     },
     instructions,
+    lowerBoundTimestamp: now,
+    upperBoundTimestamp: now + minutesToSeconds(TIMEOUT_IN_MINUTES),
   };
 
   const usageInBasisPoints =

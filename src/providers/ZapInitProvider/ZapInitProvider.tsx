@@ -1,6 +1,6 @@
 'use client';
 
-import { ChainId, EVMProvider, Route } from '@lifi/sdk';
+import { ChainId, ChainType, EVMProvider, Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import {
   createContext,
@@ -48,6 +48,7 @@ interface ZapInitState {
   isInitializedForCurrentChain: boolean;
   isMultisigEnvironment: boolean;
   isEmbeddedWallet: boolean;
+  isEvmWallet: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
   toAddress?: EVMAddress;
@@ -66,6 +67,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   isInitializedForCurrentChain: false,
   isMultisigEnvironment: false,
   isEmbeddedWallet: false,
+  isEvmWallet: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -179,7 +181,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   } = useEnhancedZapData(projectData);
 
   const { account } = useAccount();
-  const { address, chainId } = account;
+  const { address, chainId, chainType } = account;
+  const isEvmWallet = chainType === ChainType.EVM;
 
   const { switchChainAsync } = useSwitchChain();
 
@@ -195,7 +198,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   // Check if oNexus and meeClient are initialized before rendering
   const isInitialized = useBiconomyClientsStore((state) => {
-    console.warn('🔍 isInitialized selector running');
     return (
       isConnected &&
       state.hasClient(
@@ -207,7 +209,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   });
 
   const isInitializedForCurrentChain = useBiconomyClientsStore((state) => {
-    console.warn('🔍 isInitializedForCurrentChain selector running');
     return (
       (isInitialized && !currentRoute) ||
       state.hasChainClients(
@@ -225,9 +226,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       projectData.chainId,
       address as EVMAddress | undefined,
     );
-
-    console.warn('🔍 toAddress selector running', valueFromStore);
-
     return valueFromStore;
   });
 
@@ -296,7 +294,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   useEffect(() => {
     const executePendingOperations = async () => {
       if (isExecutingPendingOpsInProgressRef.current) {
-        console.warn('Already executing pending operations, skipping...');
         return;
       }
 
@@ -312,10 +309,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         if (filteredPendingOps.length === 0) {
           return;
         }
-
-        console.warn(
-          `Preparing to execute ${filteredPendingOps.length}/${pendingOperationsLength} pending operations`,
-        );
 
         let biconomyClients: BiconomyClients | null = null;
         let isCurrentEmbeddedWallet: boolean = false;
@@ -348,22 +341,14 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
             isMethodWithDeps &&
             (!biconomyClients || !pendingOp.routeContext)
           ) {
-            console.warn(
-              `Skipping executing pending operation: ${pendingOp.operationName}`,
-            );
             continue;
           }
-
-          console.warn(
-            `Executing ${pendingOp.operationName} with id: ${pendingOp.id}`,
-          );
 
           const resolvers = getPromiseResolversForOperation(pendingOp.id);
 
           try {
             const operation = walletMethods[pendingOp.operationName];
             if (!operation) {
-              console.warn(`Operation ${pendingOp.operationName} not found`);
               continue;
             }
 
@@ -425,19 +410,16 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   // @Note this is needed for the initial clients initialization
   useEffect(() => {
     if (initInProgressRef.current) {
-      console.warn('Already initializing, skipping...');
       return;
     }
 
     if (!chainId || !address) {
-      console.warn('No chain id or address, skipping...');
       return;
     }
 
     const initMeeClient = async () => {
       const isMultisig = await checkMultisigEnvironment();
       if (isMultisig) {
-        console.log('Skipping client initialization in multisig environment');
         setIsMultisigEnvironment(true);
         return;
       }
@@ -453,13 +435,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         });
 
         if (clients.isEmbeddedWallet) {
-          console.warn('Embedded wallet detected');
           setIsEmbeddedWallet(true);
           return;
         }
 
         if (!clients.biconomyClients) {
-          console.warn('Failed to get biconomy clients');
           return;
         }
       } catch (error) {
@@ -537,7 +517,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     createCustomEVMProvider({
       wagmiConfig,
       getCapabilities: async (_, args) => {
-        console.warn('getCapabilities');
         return queueOperation(
           'wallet_getCapabilities',
           args,
@@ -545,7 +524,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
       },
       getCallsStatus: async (_, args) => {
-        console.warn('getCallsStatus');
         return queueOperation(
           'wallet_getCallsStatus',
           args,
@@ -553,11 +531,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
       },
       sendCalls: async (_, args) => {
-        console.warn('sendCalls');
         return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
       },
       waitForCallsStatus: async (_, args) => {
-        console.warn('waitForCallsStatus');
         return queueOperation(
           'wallet_waitForCallsStatus',
           args,
@@ -579,6 +555,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       isInitializedForCurrentChain,
       isMultisigEnvironment,
       isEmbeddedWallet,
+      isEvmWallet,
       isConnected,
       providers,
       toAddress,
@@ -598,6 +575,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     isInitializedForCurrentChain,
     isMultisigEnvironment,
     isEmbeddedWallet,
+    isEvmWallet,
     isConnected,
     zapData,
     isZapDataSuccess,

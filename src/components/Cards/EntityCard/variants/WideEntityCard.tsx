@@ -6,7 +6,6 @@ import {
   StyledEntityCardImage,
   StyledEntityCardImageContainer,
   StyledWideEntityCardTitle,
-  StyledEntityCardDescription,
   StyledWideParticipantAvatar,
   StyledParticipantsContainer,
   StyledRewardAvatar,
@@ -16,16 +15,20 @@ import {
   StyledEntityCardLink,
   BaseSkeleton,
   StyledEntityCardBadgeContainer,
+  StyledWideEntityCardDescriptionWrapper,
+  StyledEntityCardDescription,
 } from '../EntityCard.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { WideEntityCardSkeleton } from './WideEntityCardSkeleton';
 import { ENTITY_CARD_SIZES } from '../constants';
+import { RichBlocks } from 'src/components/RichBlocks/RichBlocks';
 
 export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   imageUrl,
   badge,
   title,
   description,
+  descriptionRichText,
   rewardGroups,
   participants,
   partnerLink,
@@ -36,6 +39,22 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   if (isLoading) {
     return <WideEntityCardSkeleton fullWidth />;
   }
+
+  const renderDescription = !!description ? (
+    <StyledEntityCardDescription>{description}</StyledEntityCardDescription>
+  ) : !!descriptionRichText ? (
+    <StyledWideEntityCardDescriptionWrapper>
+      <RichBlocks
+        content={descriptionRichText}
+        blockSx={{
+          paragraph: (theme) => ({
+            ...theme.typography.bodyMedium,
+            color: (theme.vars || theme).palette.text.secondary,
+          }),
+        }}
+      />
+    </StyledWideEntityCardDescriptionWrapper>
+  ) : null;
 
   return (
     <StyledEntityCard
@@ -123,7 +142,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             })}
           </StyledRewardsContainer>
         )}
-        <StyledEntityCardDescription>{description}</StyledEntityCardDescription>
+        {renderDescription}
         {partnerLink && (
           <StyledEntityCardLink target="_blank" href={partnerLink.url}>
             {partnerLink.label}

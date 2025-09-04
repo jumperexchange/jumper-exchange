@@ -70,8 +70,11 @@ export default async function Page({ params }: { params: Params }) {
       return notFound();
     }
 
-    const { chains } = await getChainsQuery();
-    const { tokens } = await getTokensQuery();
+    const [{ chains }, { tokens }] = await Promise.all([
+      getChainsQuery(),
+      getTokensQuery(),
+    ]);
+
     const sourceChain = getChainByName(chains, result.data);
 
     if (!sourceChain) {

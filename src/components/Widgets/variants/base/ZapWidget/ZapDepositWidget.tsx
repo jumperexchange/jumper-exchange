@@ -9,6 +9,7 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
+import uniqBy from 'lodash/uniqBy';
 import { FC, useEffect, useMemo } from 'react';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
@@ -19,6 +20,7 @@ import { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
+import { useTokens } from 'src/hooks/useTokens';
 
 interface ZapDepositWidgetProps extends WidgetProps {}
 
@@ -30,11 +32,14 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
+  const { getNativeTokenForChain } = useTokens();
+
   const {
     isInitialized,
     isConnected,
     isMultisigEnvironment,
     isEmbeddedWallet,
+    isEvmWallet,
     providers,
     toAddress,
     zapData,
@@ -85,6 +90,17 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+
+  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
+  const lpToken = zapData?.market?.lpToken;
+  if (lpToken) {
+    const currentDenyList = widgetConfig.tokens?.deny ?? [];
+    const newDenyList = uniqBy([...currentDenyList, lpToken], 'address');
+
+    widgetConfig.tokens = widgetConfig.tokens ?? {};
+    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
+    widgetConfig.tokens.deny = newDenyList;
+  }
 
   // @Note: we want to ensure that the toAddress is set in the widget config without any delay
   if (toAddress) {
@@ -172,8 +188,21 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     setSupportModalState,
   ]);
 
-  if (isMultisigEnvironment || isEmbeddedWallet) {
-    return <ZapPlaceholderWidget />;
+  if (isMultisigEnvironment || isEmbeddedWallet || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+      />
+    );
   }
 
   console.log('data', customInformation, widgetConfig, toChain, toToken);

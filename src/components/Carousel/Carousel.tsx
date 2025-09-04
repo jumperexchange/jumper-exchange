@@ -17,11 +17,7 @@ import {
 } from './Carousel.types';
 import { useSwiperAutoplayControl, useSwiperScopedClassNames } from './hooks';
 import { CarouselHeader } from './CarouselHeader';
-import {
-  DEFAULT_AUTOPLAY_DELAY,
-  DEFAULT_MOBILE_AUTOPLAY_DELAY,
-  DEFAULT_SWIPER_CONFIG,
-} from './constants';
+import { DEFAULT_AUTOPLAY_DELAY, DEFAULT_SWIPER_CONFIG } from './constants';
 
 export interface CarouselProps {
   title?: string;
@@ -54,12 +50,9 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   shouldAutoplay = true,
   shouldLoop = true,
 }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const classNames = useSwiperScopedClassNames();
 
-  const autoplayDelay = !isMobile
-    ? (autoplayOptions?.delay ?? DEFAULT_AUTOPLAY_DELAY)
-    : DEFAULT_MOBILE_AUTOPLAY_DELAY;
+  const autoplayDelay = autoplayOptions?.delay ?? DEFAULT_AUTOPLAY_DELAY;
 
   const slides = Children.toArray(children).map((child, index) => (
     <SwiperSlide key={`carousel-slide-${index}`} className="carousel-slide">
@@ -68,15 +61,14 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   ));
   const showControls = slides.length > 1;
 
-  const autoplay =
-    shouldAutoplay && !isMobile
-      ? {
-          delay: autoplayDelay,
-          disableOnInteraction: true,
-          pauseOnMouseEnter: true,
-          ...autoplayOptions,
-        }
-      : false;
+  const autoplay = shouldAutoplay
+    ? {
+        delay: autoplayDelay,
+        disableOnInteraction: true,
+        pauseOnMouseEnter: true,
+        ...autoplayOptions,
+      }
+    : false;
 
   const pagination = CarouselPagination
     ? {
