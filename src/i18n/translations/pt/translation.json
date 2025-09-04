@@ -113,8 +113,8 @@
   "button": {
     "okay": "Ok",
     "manageYourPosition": "Gerencie sua posição",
-    "goBack": "",
-    "connectAnotherWallet": ""
+    "goBack": "Retroceder",
+    "connectAnotherWallet": "Conectar outra carteira"
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -204,7 +204,7 @@
     "unlocked": "Desbloqueado",
     "levelWithValue": "Nível {{level}}",
     "tooltips": {
-      "unlockAtLevel": ""
+      "unlockAtLevel": "Desbloqueado no nível {{level}}"
     },
     "noData": {
       "description": "Ainda não {{entity}}? Vamos mudar isso!",
@@ -273,8 +273,15 @@
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
       "placeholder": {
-        "title": "",
-        "description": ""
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
       }
     }
   }
