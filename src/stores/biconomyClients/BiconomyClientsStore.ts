@@ -97,17 +97,14 @@ export const useBiconomyClientsStore =
         walletAddress: EVMAddress;
       } => {
         if (!params.projectAddress) {
-          console.warn('Missing projectAddress, skipping initialization');
           return false;
         }
 
         if (!params.projectChainId) {
-          console.warn('Missing projectChainId, skipping initialization');
           return false;
         }
 
         if (!params.walletAddress) {
-          console.warn('Missing walletAddress, skipping initialization');
           return false;
         }
 
@@ -118,7 +115,6 @@ export const useBiconomyClientsStore =
         currentChainId?: number;
       }): params is { currentChainId: number } => {
         if (!params.currentChainId) {
-          console.warn('Missing currentChainId, skipping initialization');
           return false;
         }
 
@@ -212,7 +208,6 @@ export const useBiconomyClientsStore =
         currentChainId,
       ) => {
         if (!walletClient) {
-          console.warn('Wallet client is undefined, skipping initialization');
           return null;
         }
 
@@ -245,9 +240,6 @@ export const useBiconomyClientsStore =
         const clientClients = get().clientsMap.get(clientKey);
         const existingClients = clientClients?.get(chainKey);
         if (existingClients) {
-          console.log(
-            `Existing clients found, returning them for ${clientKey}-${chainKey}`,
-          );
           return existingClients;
         }
 
@@ -269,7 +261,6 @@ export const useBiconomyClientsStore =
           const { oNexus, meeClient } = await retryWithBackoff(async () => {
             const chainConfigurations = usedChains.map((chain) => {
               const rpcUrl = getShuffledRPCForChain(chain.id);
-              console.warn(`Using RPC ${rpcUrl} for chain ${chain.id}`);
               return {
                 chain: chain,
                 transport: http(rpcUrl || undefined),
@@ -306,10 +297,6 @@ export const useBiconomyClientsStore =
           });
 
           const clients = { meeClient, oNexus };
-
-          console.log(
-            `Initialised Biconomy clients, setting state for ${clientKey}-${chainKey}`,
-          );
 
           set((state) => {
             // Create new Map to ensure state change detection
