@@ -15,7 +15,7 @@ import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
-  market: Quest;
+  market?: Quest;
 }
 
 export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
@@ -38,13 +38,34 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
 
   return (
     <WidgetTrackingProvider>
-      {market.UID === 'morpho-katana-backend' ? (
-        <ClientOnly>
-          <ZapDepositBackendWidget
-            ctx={ctx}
-            customInformation={customInformation}
-          />
-        </ClientOnly>
+      {market?.UID === 'morpho-katana-backend' ? (
+        <Box
+          sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
+          }}
+        >
+          <DepositPoolCard customInformation={customInformation} />
+          <Box
+            id={MISSION_WIDGET_ELEMENT_ID}
+            data-testid="zap-widget-container"
+            sx={{
+              position: { lg: 'sticky' },
+              top: {
+                lg: 124,
+              },
+            }}
+          >
+            <ClientOnly>
+              <ZapDepositBackendWidget
+                ctx={ctx}
+                customInformation={customInformation}
+              />
+            </ClientOnly>
+          </Box>
+        </Box>
       ) : (
         <ZapInitProvider projectData={projectData}>
           <Box
