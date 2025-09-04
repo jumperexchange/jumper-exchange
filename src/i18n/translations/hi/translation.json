@@ -273,8 +273,15 @@
       "sendToAddressName": "",
       "sentToAddressName": "",
       "placeholder": {
-        "title": "",
-        "description": ""
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
       }
     }
   }
