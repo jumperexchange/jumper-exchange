@@ -5,23 +5,23 @@ import {
   parseTransactionStatus,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
-import {
-  WalletCall,
-  GetCapabilitiesArgs,
-  GetCallsStatusArgs,
-  WalletMethodsRef,
-  SendCallsArgs,
-  WaitCallsStatusArgs,
-} from '../types';
+import { getTokenBalance } from '@lifi/sdk';
+import { EVMAddress } from 'src/types/internal';
+import { findChain } from 'src/utils/chains/findChain';
+import { TransactionReceipt, zeroAddress } from 'viem';
 import {
   buildContractInstructions,
   SendCallsExtraParams,
 } from '../ModularZaps';
-import { getTokenBalance } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
-import { TransactionReceipt, zeroAddress } from 'viem';
+import {
+  GetCallsStatusArgs,
+  GetCapabilitiesArgs,
+  SendCallsArgs,
+  WaitCallsStatusArgs,
+  WalletCall,
+  WalletMethodsRef,
+} from '../types';
 import { isSameToken } from '../utils';
-import { findChain } from 'src/utils/chains/findChain';
 import { executeQuoteStrategy } from './quotes';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
@@ -157,7 +157,7 @@ export const sendCalls = async (
   }
 
   const { calls } = args;
-  console.log('LOGGING CALLS', calls);
+  console.log('LOGGING CALLS', calls, sendCallsExtraParams);
   if (calls.length === 0) {
     throw new Error("'calls' array is empty");
   }
@@ -213,6 +213,7 @@ export const sendCalls = async (
   // Build raw calldata instructions (general flow)
   const rawInstructions = await Promise.all(
     baseCalls.map(async (call: WalletCall) => {
+      console.warn('CALL', call);
       if (!call.to || !call.data) {
         throw new Error('Invalid call structure: Missing to or data field');
       }
@@ -222,6 +223,8 @@ export const sendCalls = async (
         chainId: currentChainId,
         value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
       };
+
+      console.warn('computing', data);
       return oNexusParam.buildComposable({
         type: 'rawCalldata',
         data,

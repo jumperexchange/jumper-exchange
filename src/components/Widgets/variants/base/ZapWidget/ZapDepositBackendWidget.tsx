@@ -3,6 +3,7 @@
 import { HiddenUI, LiFiWidget } from '@lifi/widget';
 import { FC, useMemo } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
+import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
@@ -16,6 +17,8 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   customInformation,
   ctx,
 }) => {
+  useZapQuestIdStorage();
+
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);

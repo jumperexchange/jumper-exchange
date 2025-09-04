@@ -12,36 +12,36 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { EVMAddress } from 'src/types/internal';
-import { ProjectData } from 'src/types/questDetails';
-import { useConfig, UseReadContractsReturnType, useSwitchChain } from 'wagmi';
 import {
-  WalletMethod,
-  WalletMethodsRef,
-  WalletMethodArgsType,
-  WalletMethodReturnType,
-  WalletMethodDefinition,
-} from './types';
+  BICONOMY_EXPLORER_ADDRESS_PATH,
+  BICONOMY_EXPLORER_URL,
+} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
+import { useMultisig } from 'src/hooks/useMultisig';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
+import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
+import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
 import {
   BiconomyClients,
   useBiconomyClientsStore,
 } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/ZapPendingOperationsStore';
-import { walletMethods } from './WalletClient/methods';
-import { useWalletClientInitialization } from './WalletClient/hooks';
-import { SendCallsExtraParams } from './ModularZaps';
-import { NO_DEPS_METHODS } from './constants';
-import { openInNewTab } from 'src/utils/openInNewTab';
-import {
-  BICONOMY_EXPLORER_ADDRESS_PATH,
-  BICONOMY_EXPLORER_URL,
-} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
+import { EVMAddress } from 'src/types/internal';
+import { ProjectData } from 'src/types/questDetails';
 import { findChain } from 'src/utils/chains/findChain';
-import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
-import { useMultisig } from 'src/hooks/useMultisig';
+import { openInNewTab } from 'src/utils/openInNewTab';
+import { useConfig, UseReadContractsReturnType, useSwitchChain } from 'wagmi';
 import { useZapQuestIdStorage } from '../hooks';
+import { SendCallsExtraParams } from './ModularZaps';
+import { useWalletClientInitialization } from './WalletClient/hooks';
+import { walletMethods } from './WalletClient/methods';
+import { NO_DEPS_METHODS } from './constants';
+import {
+  WalletMethod,
+  WalletMethodArgsType,
+  WalletMethodDefinition,
+  WalletMethodReturnType,
+  WalletMethodsRef,
+} from './types';
 
 interface ZapInitState {
   isInitialized: boolean;
@@ -240,6 +240,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       'currentRoute' | 'isEmbeddedWallet'
     >,
   ): Promise<ReturnType<WalletMethodsRef[T]>> => {
+    console.warn('EXTRAPARAMS', extraParams);
     const operation = walletMethods[operationName] as
       | WalletMethodsRef[T]
       | undefined;
