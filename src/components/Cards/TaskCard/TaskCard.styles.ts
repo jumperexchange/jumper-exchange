@@ -12,10 +12,7 @@ export const TaskContainer = styled(Box, {
 })<TaskContainerProps>(({ theme, isActive, onClick }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   border: `1px solid transparent`,
   cursor: !!onClick ? 'pointer' : 'initial',
   padding: theme.spacing(3),
@@ -26,10 +23,7 @@ export const TaskContainer = styled(Box, {
   transition: 'all .2s ease-in',
   ...(isActive && {
     borderColor: (theme.vars || theme).palette.borderActive,
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
   }),
 }));
 

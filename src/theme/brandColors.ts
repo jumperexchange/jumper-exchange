@@ -23,7 +23,7 @@ export const brandColors = {
     surfaceActiveAccent: 'rgba(101, 59, 163, 0.08)',
     surfaceActive: baseColors.alphaLight200,
     accent1: '#BEA0EB',
-    accent1Alt: '#653BA3',
+    accent1Alt: '#BEA0EB',
     accent2: '#D35CFF',
     accent2Alt: '#662C7A',
     borderAccent1: 'rgba(101, 59, 163, 0.08)',

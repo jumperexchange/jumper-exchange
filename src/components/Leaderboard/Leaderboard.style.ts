@@ -35,7 +35,7 @@ export const LeaderboardUpdateDateBox = styled(Box)(() => ({
 }));
 
 export const LeaderboardEntryStack = styled(Stack)(({ theme }) => ({
-  background: (theme.vars || theme).palette.bgTertiary.main,
+  background: (theme.vars || theme).palette.surface1.main,
   padding: theme.spacing(0, 1),
   borderRadius: '24px',
   marginTop: theme.spacing(3),

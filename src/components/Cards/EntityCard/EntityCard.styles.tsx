@@ -27,11 +27,8 @@ export const StyledEntityCardContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   position: 'relative',
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
 }));
 
 export const StyledEntityCardBadgeContainer = styled(Box)(({ theme }) => ({
@@ -54,10 +51,7 @@ export const StyledEntityCardImage = styled(Image)(({ theme }) => ({
   aspectRatio: '2 / 1',
   height: '100%',
   width: '100%',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 // Titles & Description
@@ -122,12 +116,8 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
   boxSizing: 'content-box',
   border: 2,
   borderStyle: 'solid',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-    borderColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  borderColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 export const StyledCompactParticipantAvatar = styled(BaseAvatar)(() => ({

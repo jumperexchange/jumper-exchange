@@ -7,8 +7,7 @@ import type {
   CssVarsTheme,
 } from '@mui/material';
 import type { Breakpoint, Theme } from '@mui/material/styles';
-import { alpha, createTheme, extendTheme } from '@mui/material/styles';
-import { colorChannel } from '@mui/system';
+import { alpha, darken, createTheme, extendTheme } from '@mui/material/styles';
 import type React from 'react';
 import { inter, urbanist } from 'src/fonts/fonts';
 
@@ -58,11 +57,6 @@ declare module '@mui/material/styles' {
     surface3: Palette['primary'];
     surface4: Palette['primary'];
     bg: Palette['primary'];
-    bgTertiary: Palette['primary'];
-    bgQuaternary: {
-      main: string;
-      hover: string;
-    };
     alphaDark100: Palette['primary'];
     alphaDark200: Palette['primary'];
     alphaDark300: Palette['primary'];
@@ -105,11 +99,6 @@ declare module '@mui/material/styles' {
     surface3?: PaletteOptions['primary'];
     surface4?: PaletteOptions['primary'];
     bg?: PaletteOptions['primary'];
-    bgTertiary?: PaletteOptions['primary'];
-    bgQuaternary?: {
-      main: string;
-      hover: string;
-    };
     alphaDark100?: PaletteOptions['primary'];
     alphaDark200?: PaletteOptions['primary'];
     alphaDark300?: PaletteOptions['primary'];
@@ -149,7 +138,6 @@ declare module '@mui/material/styles' {
     surface3: true;
     surface4: true;
     bg: true;
-    bgTertiary: true;
     bgQuaternary: true;
     alphaDark100: true;
     alphaDark200: true;
@@ -354,13 +342,6 @@ const palette = {
   },
   bg: {
     main: paletteLight.bg,
-  },
-  bgTertiary: {
-    main: paletteLight.white.main,
-  },
-  bgQuaternary: {
-    hover: alpha('#653BA3', 0.12),
-    main: alpha('#31007A', 0.08),
   },
   primary: {
     light: '#31007A',
@@ -925,27 +906,15 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           bg: {
             main: paletteLight.bg,
           },
-          bgTertiary: {
-            main: themeBase.palette.white.main,
-          },
-          bgQuaternary: {
-            hover: alpha('#653BA3', 0.12),
-            main: alpha('#31007A', 0.08),
-          },
           primary: {
-            light: '#31007A',
-            main: '#31007A',
-            dark: '#290066',
+            light: paletteLight.accent1,
+            main: paletteLight.accent1,
+            dark: darken(paletteLight.accent1, 0.1),
           },
           secondary: {
             light: '#E9E1F5',
             main: '#E9E1F5',
             dark: '#E9E1F5',
-          },
-          tertiary: {
-            light: '#FCEBFF',
-            main: '#FCEBFF',
-            dark: '#FCEBFF',
           },
           accent1: {
             light: paletteLight.accent1,
@@ -1021,47 +990,35 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           bg: {
             main: '#120F29',
           },
-          bgTertiary: {
-            main: themeBase.palette.alphaLight200.main,
-          },
-          bgQuaternary: {
-            hover: alpha('#653BA3', 0.56),
-            main: alpha('#653BA3', 0.42),
-          },
           primary: {
-            light: '#653BA3',
-            main: '#653BA3',
-            dark: '#543188',
+            light: paletteDark.accent1,
+            main: paletteDark.accent1,
+            dark: darken(paletteDark.accent1, 0.1),
           },
           secondary: {
             light: '#321D52',
             main: '#321D52',
             dark: '#321D52',
           },
-          tertiary: {
-            light: '#33163D',
-            main: '#33163D',
-            dark: '#33163D',
-          },
           accent1: {
-            light: '#653BA3',
-            main: '#653BA3',
-            dark: '#653BA3',
+            light: paletteDark.accent1,
+            main: paletteDark.accent1,
+            dark: paletteDark.accent1,
           },
           accent1Alt: {
-            light: '#BEA0EB',
-            main: '#BEA0EB',
-            dark: '#BEA0EB',
+            light: paletteDark.accent1Alt,
+            main: paletteDark.accent1Alt,
+            dark: paletteDark.accent1Alt,
           },
           accent2: {
-            light: '#D35CFF',
-            main: '#D35CFF',
-            dark: '#D35CFF',
+            light: paletteDark.accent2,
+            main: paletteDark.accent2,
+            dark: paletteDark.accent2,
           },
           surface1: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: paletteDark.surface1,
+            main: paletteDark.surface1,
+            dark: paletteDark.surface1,
           },
           surface2: {
             light: paletteDark.surface2,
@@ -1069,9 +1026,9 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: paletteDark.surface2,
           },
           surface3: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: paletteDark.surface3,
+            main: paletteDark.surface3,
+            dark: paletteDark.surface3,
           },
           surface4: {
             light: paletteDark.surface4,

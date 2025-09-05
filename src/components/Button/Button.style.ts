@@ -29,9 +29,9 @@ export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.buttonSecondaryBg,
   '&:hover': {
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
+    backgroundColor: alpha(theme.palette.accent1Alt.main, 0.12),
   },
 }));
 

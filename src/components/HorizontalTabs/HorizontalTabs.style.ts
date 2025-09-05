@@ -9,10 +9,7 @@ export enum HorizontalTabSize {
 
 export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
   flex: 1,
-  backgroundColor: (theme.vars || theme).palette.surface3.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   padding: theme.spacing(0.5),
   borderRadius: theme.shape.tabBarRadius,
   display: 'inline-flex',
@@ -36,10 +33,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     borderRadius: 24,
     transform: 'translateX(0) scaleX(0.98)',
     boxShadow: theme.shadows[2],
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1.main,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
     zIndex: 1,
   },
 }));
