@@ -21,7 +21,7 @@ interface QuoteExecutionParams {
   instructions: any[];
   userBalance: bigint;
   requestedAmount: bigint;
-  eoaWallet: EVMAddress;
+  eoaWallet: Hex;
 }
 
 const millisecondsToSeconds = (input: number) => input / 1000;
