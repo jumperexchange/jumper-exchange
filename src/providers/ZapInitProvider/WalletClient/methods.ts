@@ -20,8 +20,7 @@ import {
   SendCallsExtraParams,
 } from '../ModularZaps';
 import { getTokenBalance } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
-import { TransactionReceipt, zeroAddress } from 'viem';
+import { Hex, TransactionReceipt, zeroAddress } from 'viem';
 import { isSameToken } from '../utils';
 import { findChain } from 'src/utils/chains/findChain';
 import { executeQuoteStrategy } from './quotes';
@@ -44,13 +43,13 @@ const hasFailedStatus = (status: string) =>
 
 const getFormattedTransactionHash = (hash: string) =>
   hash.includes(BICONOMY_TRANSACTION_HASH_SUFFIX)
-    ? (hash as EVMAddress)
-    : (`${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress);
+    ? (hash as Hex)
+    : (`${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as Hex);
 
 // Helper function used for both getCallsStatus and waitForCallsStatus
 const processTransactionReceipt = (
   receipt: WaitForSupertransactionReceiptPayload | null,
-  hash: EVMAddress,
+  hash: Hex,
   extraParams: SendCallsExtraParams,
   hasFailedNonCleanUpUserOps?: boolean,
 ) => {
@@ -220,7 +219,9 @@ export const sendCalls = async (
         to: call.to,
         calldata: call.data,
         chainId: call.chainId ?? currentChainId,
-        value: isNativeSourceToken ? currentRouteFromAmountFormatted : undefined,
+        value: isNativeSourceToken
+          ? currentRouteFromAmountFormatted
+          : undefined,
       };
       return oNexusParam.buildComposable({
         type: 'rawCalldata',
@@ -249,14 +250,14 @@ export const sendCalls = async (
   // Add source token cleanup (only if not same token deposit)
   if (!isSameTokenDeposit) {
     const sourceTokenCleanup: {
-      tokenAddress: EVMAddress;
+      tokenAddress: Hex;
       chainId: number;
-      recipientAddress: EVMAddress;
+      recipientAddress: Hex;
       amount?: bigint;
     } = {
-      tokenAddress: currentRouteFromToken.address as EVMAddress,
+      tokenAddress: currentRouteFromToken.address as Hex,
       chainId: currentChainId,
-      recipientAddress: currentAddress as EVMAddress,
+      recipientAddress: currentAddress as Hex,
     };
 
     if (isNativeSourceToken) {
@@ -270,7 +271,7 @@ export const sendCalls = async (
   cleanUps.push({
     tokenAddress: depositToken,
     chainId: depositChainId,
-    recipientAddress: currentAddress as EVMAddress,
+    recipientAddress: currentAddress as Hex,
   });
 
   const hash = await executeQuoteStrategy({
@@ -311,7 +312,7 @@ export const getCallsStatus = async (
   const originalHash = hash.replace(
     BICONOMY_TRANSACTION_HASH_SUFFIX,
     '',
-  ) as EVMAddress;
+  ) as Hex;
 
   try {
     const receipt = await meeClientParam.getSupertransactionReceipt({
@@ -355,10 +356,7 @@ export const waitForCallsStatus = async (
 
   const { id } = args;
   const timeout = minutesToMilliseconds(TIMEOUT_IN_MINUTES);
-  const originalId = id.replace(
-    BICONOMY_TRANSACTION_HASH_SUFFIX,
-    '',
-  ) as EVMAddress;
+  const originalId = id.replace(BICONOMY_TRANSACTION_HASH_SUFFIX, '') as Hex;
 
   let nonCleanUpUserOps: (MeeFilledUserOpDetails & UserOpStatus)[] = [];
 

@@ -9,12 +9,11 @@ import { useTxHistory } from 'src/hooks/useTxHistory';
 import { useContributionAmountContext } from 'src/providers/ContributionAmountProvider';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
-import { EVMAddress } from 'src/types/internal';
 import {
   createNativeTransactionConfig,
   createTokenTransactionConfig,
 } from 'src/utils/transaction';
-import { parseUnits } from 'viem';
+import { Hex, parseUnits } from 'viem';
 import {
   useSendTransaction,
   useSwitchChain,
@@ -306,7 +305,7 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         await sendTransaction(nativeTxConfig);
       } else {
         const erc20TxConfig = createTokenTransactionConfig(
-          completedRoute.toToken.address as EVMAddress,
+          completedRoute.toToken.address as Hex,
           feeAddress,
           amountInTokenUnits,
           completedRoute.toChainId,

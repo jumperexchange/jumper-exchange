@@ -1,11 +1,11 @@
 import { EarnOpportunity, HttpResponse } from '@/types/jumper-backend';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 import { makeClient } from './client';
 
 export type GetOpportunityTopResult = HttpResponse<EarnOpportunity[], unknown>;
 
 export async function getOpportunitiesTop(
-  address: EVMAddress,
+  address: Hex,
 ): Promise<GetOpportunityTopResult> {
   const client = makeClient();
   const opportunity = await client.v1.earnControllerGetTopsV1({ address });

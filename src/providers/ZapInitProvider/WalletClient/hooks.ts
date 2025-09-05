@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { Account, useAccount } from '@lifi/wallet-management';
@@ -7,9 +7,9 @@ import { ChainId, ChainType } from '@lifi/sdk';
 import * as Sentry from '@sentry/nextjs';
 
 interface WalletClientParams {
-  address?: EVMAddress;
+  address?: Hex;
   chainId?: number;
-  projectAddress: EVMAddress;
+  projectAddress: Hex;
   projectChainId: number;
 }
 
@@ -58,7 +58,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const { account } = useAccount();
   const { address, chainId } = account;
   const { data: walletClient } = useWalletClient({
-    account: address as EVMAddress,
+    account: address as Hex,
     chainId,
     query: {
       enabled: !!address && !!chainId,
