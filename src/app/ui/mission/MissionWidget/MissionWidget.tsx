@@ -58,6 +58,7 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
             routeExecutionCompleted:
               TrackingAction.OnRouteExecutionCompletedMission,
             routeExecutionFailed: TrackingAction.OnRouteExecutionFailedMission,
+            changeSettings: TrackingAction.OnChangeSettingsMission,
           }}
           trackingDataActionKeys={{
             routeExecutionStarted:

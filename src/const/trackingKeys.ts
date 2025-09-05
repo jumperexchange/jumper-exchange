@@ -28,6 +28,7 @@ export enum TrackingAction {
   OnAvailableRoutes = 'action_available_routes',
   OnTokenSearch = 'action_token_search',
   OnLowAddressActivityConfirmed = 'action_on_low_address_activity_confirmed',
+  OnChangeSettings = 'action_change_settings',
   ClickContribute = 'action_contribute',
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
@@ -38,6 +39,7 @@ export enum TrackingAction {
   OnRouteExecutionStartedMission = 'action_on_route_exec_started_mission',
   OnRouteExecutionCompletedMission = 'action_on_route_exec_completed_mission',
   OnRouteExecutionFailedMission = 'action_on_route_exec_failed_mission',
+  OnChangeSettingsMission = 'action_change_settings_mission',
 
   // Zap Widget
   OnSourceChainAndTokenSelectionZap = 'action_on_source_selection_zap',
@@ -45,6 +47,7 @@ export enum TrackingAction {
   OnRouteExecutionStartedZap = 'action_on_route_exec_started_zap',
   OnRouteExecutionCompletedZap = 'action_on_route_exec_completed_zap',
   OnRouteExecutionFailedZap = 'action_on_route_exec_failed_zap',
+  OnChangeSettingsZap = 'action_change_settings_zap',
 
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
@@ -176,6 +179,18 @@ export enum TrackingEventParameter {
   SourceTokenSelection = 'param_source_token',
   DestinationChainSelection = 'param_destination_chain',
   DestinationTokenSelection = 'param_destination_token',
+  GasPriceSettings = 'param_gas_price',
+  SlippageLevelSettings = 'param_slippage_level',
+  SlippageStatusSettings = 'param_slippage_status',
+  RoutePrioritySettings = 'param_route_priority',
+  EnableAutoRefuelSettings = 'param_enable_auto_refuel',
+  EnabledBridgesSettings = 'param_enabled_bridges',
+  EnabledExchangesSettings = 'param_enabled_exchanges',
+  DisabledBridgesSettings = 'param_disabled_bridges',
+  DisabledExchangesSettings = 'param_disabled_exchanges',
+  UpdatedSetting = 'param_updated_setting',
+  NewSettingValue = 'param_new_setting_value',
+  PreviousSettingValue = 'param_previous_setting_value',
 
   // Pageload:
   PageloadSource = 'param_pageload_source',
