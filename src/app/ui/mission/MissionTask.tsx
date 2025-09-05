@@ -25,8 +25,15 @@ export const MissionTask: FC<MissionTaskProps> = ({
   missionId,
   onClick,
 }) => {
-  const { taskId, title, taskType, description, shouldVerify, isVerified } =
-    useFormatDisplayTaskData(task);
+  const {
+    taskId,
+    title,
+    taskType,
+    description,
+    shouldVerify,
+    isVerified,
+    isRequired,
+  } = useFormatDisplayTaskData(task);
   const currentActiveTaskId = useMissionStore(
     (state) => state.currentActiveTaskId,
   );
@@ -82,9 +89,11 @@ export const MissionTask: FC<MissionTaskProps> = ({
       description={description}
       isActive={isActive}
       type={
-        taskType
-          ? t('missions.tasks.type', { type: taskType })
-          : t('missions.tasks.typeFallback')
+        !isRequired
+          ? t('missions.tasks.typeOptional')
+          : taskType
+            ? t('missions.tasks.type', { type: taskType })
+            : t('missions.tasks.typeFallback')
       }
       statusBadge={
         shouldVerify && (

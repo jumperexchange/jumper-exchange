@@ -122,6 +122,7 @@ interface Resources {
         };
         type: '{{type}} task';
         typeFallback: 'Task';
+        typeOptional: 'Optional task';
       };
       wrapperCard: {
         explore_one: 'Explore {{count}} mission';
