@@ -2,9 +2,9 @@
 import {
   TaskType,
   TaskWidgetInformationChainData,
-  TaskWidgetInformationWalletData,
-  TaskWidgetInformationTokenData,
   TaskWidgetInformationInputData,
+  TaskWidgetInformationTokenData,
+  TaskWidgetInformationWalletData,
 } from 'src/types/strapi';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -30,6 +30,9 @@ interface MissionState {
   sourceChain?: TaskWidgetInformationChainData;
   sourceToken?: TaskWidgetInformationTokenData;
 
+  allowBridge?: string | null;
+  allowExchange?: string | null;
+
   fromAmount?: string;
 
   toAddress?: TaskWidgetInformationWalletData;
@@ -39,6 +42,8 @@ interface MissionState {
   missionType?: string;
 
   setCurrentTaskWidgetFormParams: ({
+    allowBridge,
+    allowExchange,
     destinationChain,
     destinationToken,
     sourceChain,
@@ -46,6 +51,8 @@ interface MissionState {
     fromAmount,
     toAddress,
   }: {
+    allowBridge?: string | null;
+    allowExchange?: string | null;
     destinationChain?: TaskWidgetInformationChainData;
     destinationToken?: TaskWidgetInformationTokenData;
     sourceChain?: TaskWidgetInformationChainData;
@@ -102,6 +109,9 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
 
     sourceChain: undefined,
     sourceToken: undefined,
+
+    allowBridge: undefined,
+    allowExchange: undefined,
 
     fromAmount: undefined,
 

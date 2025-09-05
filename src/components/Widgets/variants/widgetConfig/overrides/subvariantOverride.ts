@@ -1,6 +1,6 @@
+import { useMemo } from 'react';
 import { TaskType } from 'src/types/strapi';
 import { ConfigOverrideHook } from '../types';
-import { useMemo } from 'react';
 
 export const useSubvariantOverride: ConfigOverrideHook = (ctx) => {
   return useMemo(() => {
