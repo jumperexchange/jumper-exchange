@@ -259,7 +259,8 @@
     "apy": "Очікувана річна ставка токенів що вкладені.",
     "deposit": "",
     "deposited": "",
-    "boostedApy": ""
+    "boostedApy": "",
+    "lockupPeriod": ""
   },
   "widget": {
     "depositCard": {
