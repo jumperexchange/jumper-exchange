@@ -30,6 +30,7 @@ export const useEnhancedTasks = (
     setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
+    setTaskFormState,
   } = useMissionStore();
 
   const currentActiveTaskId = useMissionStore(
@@ -61,6 +62,7 @@ export const useEnhancedTasks = (
       setCurrentActiveTask(task.uuid, taskType, taskName);
       const isTaskVerified = checkIsTaskVerified(task);
       setIsCurrentActiveTaskCompleted(isTaskVerified);
+      setTaskFormState(task.uuid, !!widgetParams.inputs?.length, false);
 
       setCurrentTaskWidgetFormParams({
         allowBridge: widgetParams.allowBridge ?? undefined,
@@ -89,6 +91,7 @@ export const useEnhancedTasks = (
     },
     [
       setCurrentActiveTask,
+      setTaskFormState,
       setCurrentTaskWidgetFormParams,
       setCurrentTaskInstructionParams,
       checkIsTaskVerified,
