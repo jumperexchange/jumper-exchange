@@ -58,9 +58,18 @@ export const toFixedFractionDigits = (
   value: number,
   minFractionDigits: number,
   maxFractionDigits: number,
+  notation: 'standard' | 'compact' = 'compact',
 ) => {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: minFractionDigits,
     maximumFractionDigits: maxFractionDigits,
+    notation: notation,
+  }).format(value);
+};
+
+export const toCompactValue = (value: number) => {
+  return new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short',
   }).format(value);
 };
