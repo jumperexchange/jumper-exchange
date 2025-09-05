@@ -46,7 +46,6 @@ declare module '@mui/material/styles' {
   type SemanticPalette = typeof paletteLight;
 
   interface Palette extends SemanticPalette {
-    tertiary: Palette['primary'];
     white: Palette['primary'];
     black: Palette['primary'];
     accent1: Palette['primary'];
@@ -88,7 +87,6 @@ declare module '@mui/material/styles' {
   }
 
   interface PaletteOptions extends Partial<SemanticPalette> {
-    tertiary?: PaletteOptions['primary'];
     white?: PaletteOptions['primary'];
     black?: PaletteOptions['primary'];
     accent1?: PaletteOptions['primary'];
@@ -127,7 +125,6 @@ declare module '@mui/material/styles' {
     semanticPalette?: SemanticPalette;
   }
   interface ButtonPropsColorOverrides {
-    tertiary: true;
     white: true;
     black: true;
     accent1: true;
@@ -138,7 +135,6 @@ declare module '@mui/material/styles' {
     surface3: true;
     surface4: true;
     bg: true;
-    bgQuaternary: true;
     alphaDark100: true;
     alphaDark200: true;
     alphaDark300: true;
@@ -352,11 +348,6 @@ const palette = {
     light: '#E9E1F5',
     main: '#E9E1F5',
     dark: '#E9E1F5',
-  },
-  tertiary: {
-    light: '#FCEBFF',
-    main: '#FCEBFF',
-    dark: '#FCEBFF',
   },
   accent1: {
     light: paletteLight.accent1,
