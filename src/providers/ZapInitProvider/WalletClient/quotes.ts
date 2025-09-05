@@ -6,7 +6,7 @@ import {
 } from '@biconomy/abstractjs';
 import { createEIP7702Authorization } from './utils';
 import { Token } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 import { TIMEOUT_IN_MINUTES } from '../constants';
 import { minutesToSeconds } from 'date-fns';
 
@@ -56,7 +56,7 @@ const executeEmbeddedWalletQuote = async (
     delegate: true,
     cleanUps,
     feeToken: {
-      address: currentRouteFromToken.address as EVMAddress,
+      address: currentRouteFromToken.address as Hex,
       chainId: currentChainId,
     },
     instructions,
@@ -86,13 +86,13 @@ const executeRegularWalletQuote = async (
 
   const fusionQuoteParams: GetFusionQuoteParams = {
     trigger: {
-      tokenAddress: currentRouteFromToken.address as EVMAddress,
+      tokenAddress: currentRouteFromToken.address as Hex,
       amount: requestedAmount,
       chainId: currentChainId,
     },
     cleanUps,
     feeToken: {
-      address: currentRouteFromToken.address as EVMAddress,
+      address: currentRouteFromToken.address as Hex,
       chainId: currentChainId,
     },
     instructions,

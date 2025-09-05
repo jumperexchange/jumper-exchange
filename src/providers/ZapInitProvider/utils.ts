@@ -1,8 +1,7 @@
 import { MultichainSmartAccount } from '@biconomy/abstractjs';
 import { ChainId, Token } from '@lifi/sdk';
 import { ContractComposableConfig } from './types';
-import { EVMAddress } from 'src/types/internal';
-import { AbiFunction, encodeFunctionData } from 'viem';
+import { AbiFunction, encodeFunctionData, Hex } from 'viem';
 import { abiNumericTypes } from './constants';
 
 export const buildContractComposable = async (
@@ -15,7 +14,7 @@ export const buildContractComposable = async (
   //   usedGasLimit = await getGasLimitEstimate({
   //     oNexus,
   //     chainId: contractConfig.chainId,
-  //     to: contractConfig.address as EVMAddress,
+  //     to: contractConfig.address as Hex,
   //     abiFunction: contractConfig.abi,
   //     functionName: contractConfig.functionName,
   //     args: contractConfig.abi.inputs.map((abiInput, index) => {
@@ -59,7 +58,7 @@ export const getGasLimitEstimate = async ({
   functionName,
 }: {
   oNexus: MultichainSmartAccount;
-  to: EVMAddress;
+  to: Hex;
   chainId: ChainId;
   abiFunction: AbiFunction;
   functionName: string;
@@ -72,7 +71,7 @@ export const getGasLimitEstimate = async ({
     args,
   });
   const gasLimit = await deployment.publicClient.estimateGas({
-    account: oNexus.addressOn(chainId, true) as EVMAddress,
+    account: oNexus.addressOn(chainId, true) as Hex,
     to,
     data,
   });

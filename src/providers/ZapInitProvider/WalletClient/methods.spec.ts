@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, MockInstance } from 'vitest';
 
 import { waitForCallsStatus } from './methods';
 import { MeeClient } from '@biconomy/abstractjs';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 
 describe('waitForCallsStatus', () => {
   const mockMeeClient = {

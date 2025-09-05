@@ -1,11 +1,11 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { getOpportunitiesTop } from 'src/app/lib/getOpportunitiesTop';
 import { FIVE_MINUTES_MS } from 'src/const/time';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 import { EarnOpportunity } from 'src/types/jumper-backend';
 
 export interface Props {
-  address: EVMAddress;
+  address: Hex;
 }
 
 export type Result = UseQueryResult<EarnOpportunity[], unknown>;

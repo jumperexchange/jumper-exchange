@@ -1,9 +1,8 @@
 import { Instruction, MultichainSmartAccount } from '@biconomy/abstractjs';
 import { Route } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
 import { AbiEntry, ZapDataResponse } from './zap.jumper-backend';
-import { parseUnits } from 'viem';
+import { Hex, parseUnits } from 'viem';
 
 export interface SendCallsExtraParams {
   currentRoute: Route | null;
@@ -17,13 +16,13 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   // Later we might want to implement runtime validation using something like zod
   // to simplify our code.
   currentRoute: Route & {
-    fromAddress: EVMAddress;
+    fromAddress: Hex;
   };
   zapData: ZapDataResponse & {
     market: {
-      address: EVMAddress;
+      address: Hex;
       depositToken: {
-        address: EVMAddress;
+        address: Hex;
         decimals: number;
       };
     };
@@ -32,8 +31,8 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
 }
 
 export interface ZapExecutionContext extends ValidatedSendCallsExtraParams {
-  getAbiAddress: (fct: AbiEntry) => EVMAddress;
-  getDepositAddress: () => EVMAddress;
+  getAbiAddress: (fct: AbiEntry) => Hex;
+  getDepositAddress: () => Hex;
   getMinConstraintValue: (decimals: number) => bigint;
 }
 
@@ -57,7 +56,7 @@ export const makeZapExecutionContext = (
     throw new Error('Market not found in zap data');
   }
 
-  const getAbiAddress = (fct: AbiEntry): EVMAddress => {
+  const getAbiAddress = (fct: AbiEntry): Hex => {
     if (fct.contract) {
       const contracts = market.contracts;
       if (!contracts) {
@@ -73,7 +72,7 @@ export const makeZapExecutionContext = (
     return market.address;
   };
 
-  const getDepositAddress = (): EVMAddress => {
+  const getDepositAddress = (): Hex => {
     return getAbiAddress(params.zapData.abi.deposit);
   };
 
@@ -123,7 +122,7 @@ export const isValidParams = (
     throw new Error('Missing chainId or address');
   }
 
-  const depositAddress = integrationData.market?.address as EVMAddress;
+  const depositAddress = integrationData.market?.address as Hex;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
   const depositChainId = projectData.chainId;
