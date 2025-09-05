@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button, { ButtonProps } from '@mui/material/Button';
 import FormHelperText from '@mui/material/FormHelperText';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 
 export const WithdrawWidgetBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -34,10 +34,9 @@ export const MaxButton = styled(Button, {
   minWidth: 'unset',
   height: 'auto',
   color: (theme.vars || theme).palette.text.primary,
-  backgroundColor: mainColor ?? (theme.vars || theme).palette.bgQuaternary.main,
+  backgroundColor: mainColor ?? (theme.vars || theme).palette.buttonSecondaryBg,
   '&:hover': {
-    backgroundColor:
-      mainColor ?? (theme.vars || theme).palette.bgQuaternary.hover,
+    backgroundColor: alpha(theme.palette.accent1Alt.main, 0.12),
   },
   ...theme.applyStyles('light', {
     color: (theme.vars || theme).palette.primary.main,

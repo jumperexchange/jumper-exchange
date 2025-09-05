@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { ButtonSecondary } from 'src/components/Button';
 import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
@@ -53,9 +53,9 @@ export const ExplorerLinkButton = styled(IconButton)<IconButtonProps>(
     transition: 'background 0.3s',
     width: theme.spacing(6),
     height: theme.spacing(6),
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
+    backgroundColor: (theme.vars || theme).palette.buttonSecondaryBg,
     '&:hover': {
-      backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
+      backgroundColor: alpha(theme.palette.accent1Alt.main, 0.12),
     },
   }),
 );
