@@ -259,7 +259,8 @@
     "apy": "Taux de rendement annuel attendu des jetons investis.",
     "deposit": "",
     "deposited": "",
-    "boostedApy": ""
+    "boostedApy": "",
+    "lockupPeriod": ""
   },
   "widget": {
     "depositCard": {
