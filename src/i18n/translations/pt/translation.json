@@ -259,7 +259,8 @@
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
-    "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. Há um adicional de {{boostedApy}}% em recompensas extras pagas em outros tokens, verifique o site do protocolo para mais informações."
+    "boostedApy": "",
+    "lockupPeriod": ""
   },
   "widget": {
     "depositCard": {
