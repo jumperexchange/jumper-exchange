@@ -259,8 +259,8 @@
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
-    "boostedApy": "",
-    "lockupPeriod": ""
+    "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
+    "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos."
   },
   "widget": {
     "depositCard": {
@@ -274,14 +274,14 @@
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
       "placeholder": {
-        "comingSoon": "",
+        "comingSoon": "Em breve",
         "embedded-multisig": {
-          "title": "",
-          "description": ""
+          "title": "Sua carteira não é suportada atualmente",
+          "description": "Estamos trabalhando para adicionar suporte para carteiras incorporadas e de contrato inteligente. Por enquanto, por favor use uma carteira diferente para completar esta missão."
         },
         "non-evm": {
-          "title": "",
-          "description": ""
+          "title": "Sua carteira não é suportada atualmente",
+          "description": "Estamos trabalhando para adicionar suporte para carteiras não-EVM. Por enquanto, por favor use uma carteira diferente para completar esta missão."
         }
       }
     }
