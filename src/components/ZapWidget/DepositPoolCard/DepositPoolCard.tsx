@@ -16,9 +16,11 @@ import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import { Button } from 'src/components/Button';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { ProjectData } from 'src/types/questDetails';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import { useSweepTokens } from 'src/hooks/zaps/useSweepTokens';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -82,6 +84,8 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     analytics?.lockup_period ?? 0,
   );
 
+  const { isSweeping, sweepError, sweepTokens } = useSweepTokens();
+
   const {
     tooltip: apyTooltip,
     value: apyValue,
@@ -119,6 +123,14 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     // @TODO add tracking here
 
     openInNewTab(projectData.integratorPositionLink);
+  };
+
+  const onClaimHandler = async () => {
+    try {
+      await sweepTokens();
+    } catch (error) {
+      console.error('Sweep failed:', error);
+    }
   };
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
@@ -205,6 +217,26 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             {t('button.manageYourPosition')}
           </Button>
         )}
+          <Button
+            variant="transparent"
+            size="medium"
+            endIcon={<AutorenewIcon />}
+            disabled={isSweeping}
+            onClick={onClaimHandler}
+            styles={(theme) => ({
+              background: (theme.vars || theme).palette.alphaLight100.main,
+              ...theme.applyStyles('light', {
+                background: (theme.vars || theme).palette.alphaDark100.main,
+              }),
+            })}
+          >
+            {isSweeping ? 'Sweeping...' : 'Sweep'}
+          </Button>
+          {sweepError && (
+            <Typography variant="bodySmall" color="error" sx={{ mt: 1 }}>
+              {sweepError}
+            </Typography>
+          )}
       </DepositPoolCardContainer>
     </SectionCardContainer>
   );
