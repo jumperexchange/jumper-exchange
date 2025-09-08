@@ -56,14 +56,14 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   const enhancedCtx = useMemo(() => {
     const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: projectData.integrator,
+      integrator: 'zbkd.morpho',
       minFromAmountUSD: customInformation?.projectData?.minFromAmountUSD,
       hiddenUI: [
         HiddenUI.LowAddressActivityConfirmation,
         HiddenUI.GasRefuelMessage,
       ],
       variant: 'wide',
-      keyPrefix: 'zap.backend',
+      keyPrefix: 'zbkd.backend',
     };
 
     return {
