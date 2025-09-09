@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskCard } from 'src/components/Cards/TaskCard/TaskCard';
 import { Badge } from 'src/components/Badge/Badge';
@@ -52,6 +52,16 @@ export const MissionTask: FC<MissionTaskProps> = ({
     return () => clearTimeout(timeout);
   }, [isPending]);
 
+  const onTaskVerificationClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onClick();
+      handleVerifyTask();
+    },
+    [onClick, handleVerifyTask],
+  );
+
   const getVariant = () => {
     if (isSuccess || isVerified) return BadgeVariant.Success;
     if (isPending) return BadgeVariant.Disabled;
@@ -97,7 +107,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
             startIcon={getIcon()}
             variant={getVariant()}
             onClick={
-              !isSuccess && !isVerified ? () => handleVerifyTask() : undefined
+              !isSuccess && !isVerified ? onTaskVerificationClick : undefined
             }
           />
         )

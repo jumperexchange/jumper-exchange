@@ -24,6 +24,8 @@ export type ConfigContext = {
   sourceToken?: TaskWidgetInformationTokenData;
   fromAmount?: string;
   toAddress?: TaskWidgetInformationWalletData;
+  allowBridge?: string | null;
+  allowExchange?: string | null;
 
   [key: string]: any;
 };

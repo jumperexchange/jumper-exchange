@@ -1,5 +1,5 @@
 import { ChainId } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 
 // Constants for contribution amounts based on transaction volume
 export const CONTRIBUTION_AMOUNTS = {
@@ -26,7 +26,7 @@ export const USD_CURRENCY_SYMBOL = '$';
 export const NUM_DECIMAL_PLACES = 2;
 
 // Contribution fee addresses for different chains
-export const contributionFeeAddresses: Record<number, EVMAddress> = {
+export const contributionFeeAddresses: Record<number, Hex> = {
   [ChainId.ETH]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Ethereum
   [ChainId.OPT]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // Optimism
   [ChainId.BSC]: '0x3610486BD4975F5C3dC838A36E897bF97fAE15DD', // BNB

@@ -3,7 +3,7 @@ import { ProjectData } from 'src/types/questDetails';
 import { useReadContracts } from 'wagmi';
 import { useZaps } from '../useZaps';
 import { useAccount } from '@lifi/wallet-management';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 
 export const useEnhancedZapData = (projectData: ProjectData) => {
   const { data, isSuccess } = useZaps(projectData);
@@ -23,10 +23,10 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
             type: 'function',
           },
         ] as const,
-        address: projectData.address as EVMAddress,
+        address: projectData.address as Hex,
         chainId: projectData.chainId,
         functionName: 'balanceOf',
-        args: [account.address as EVMAddress],
+        args: [account.address as Hex],
       },
       {
         abi: [
@@ -38,8 +38,7 @@ export const useEnhancedZapData = (projectData: ProjectData) => {
             type: 'function',
           },
         ] as const,
-        address: (projectData.tokenAddress ||
-          projectData.address) as EVMAddress,
+        address: (projectData.tokenAddress || projectData.address) as Hex,
         chainId: projectData.chainId,
         functionName: 'decimals',
       },

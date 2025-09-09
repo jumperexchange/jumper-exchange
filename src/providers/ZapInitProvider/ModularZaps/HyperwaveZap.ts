@@ -3,9 +3,15 @@ import {
   MultichainSmartAccount,
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
+import {
+  Abi,
+  AbiParameter,
+  createPublicClient,
+  getContract,
+  Hex,
+  http,
+} from 'viem';
 import { hyperevm } from 'src/const/chains/hyperwave';
-import { EVMAddress } from 'src/types/internal';
-import { Abi, AbiParameter, createPublicClient, getContract, http } from 'viem';
 import { buildContractComposable } from '../utils';
 import { approve } from './DefaultZap';
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
@@ -88,7 +94,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
       return depositToken;
     } else if (input.type === 'uint256') {
       return runtimeERC20BalanceOf({
-        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        targetAddress: oNexus.addressOn(depositChainId, true) as Hex,
         tokenAddress: depositToken,
         constraints,
       });
@@ -130,7 +136,7 @@ export const hyperwaveTransfer: ZapInstruction = async (
     args: [
       currentAddress,
       runtimeERC20BalanceOf({
-        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        targetAddress: oNexus.addressOn(depositChainId, true) as Hex,
         tokenAddress: depositAddress,
         constraints,
       }),

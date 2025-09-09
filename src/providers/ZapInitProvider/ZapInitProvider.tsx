@@ -25,10 +25,10 @@ import {
   useBiconomyClientsStore,
 } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/ZapPendingOperationsStore';
-import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
 import { findChain } from 'src/utils/chains/findChain';
 import { openInNewTab } from 'src/utils/openInNewTab';
+import { Hex } from 'viem';
 import { useConfig, UseReadContractsReturnType, useSwitchChain } from 'wagmi';
 import { useZapQuestIdStorage } from '../hooks';
 import { SendCallsExtraParams } from './ModularZaps';
@@ -51,7 +51,7 @@ interface ZapInitState {
   isEvmWallet: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
-  toAddress?: EVMAddress;
+  toAddress?: Hex;
   zapData?: any;
   isZapDataSuccess: boolean;
   setCurrentRoute: (newRoute: Route) => void;
@@ -201,9 +201,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     return (
       isConnected &&
       state.hasClient(
-        projectData.address as EVMAddress | undefined,
+        projectData.address as Hex | undefined,
         projectData.chainId,
-        address as EVMAddress | undefined,
+        address as Hex | undefined,
       )
     );
   });
@@ -212,9 +212,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     return (
       (isInitialized && !currentRoute) ||
       state.hasChainClients(
-        projectData.address as EVMAddress | undefined,
+        projectData.address as Hex | undefined,
         projectData.chainId,
-        currentRoute?.fromAddress as EVMAddress | undefined,
+        currentRoute?.fromAddress as Hex | undefined,
         currentRoute?.fromChainId,
       )
     );
@@ -222,9 +222,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   const toAddress = useBiconomyClientsStore((state) => {
     const valueFromStore = state.getToAddress(
-      projectData.address as EVMAddress | undefined,
+      projectData.address as Hex | undefined,
       projectData.chainId,
-      address as EVMAddress | undefined,
+      address as Hex | undefined,
     );
     return valueFromStore;
   });
@@ -253,9 +253,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
     try {
       const clients = await initializeClients({
-        address: actualCurrentRoute?.fromAddress as EVMAddress,
+        address: actualCurrentRoute?.fromAddress as Hex,
         chainId: actualCurrentRoute?.fromChainId,
-        projectAddress: extraParams.projectData.address as EVMAddress,
+        projectAddress: extraParams.projectData.address as Hex,
         projectChainId: extraParams.projectData.chainId,
       });
 
@@ -315,10 +315,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
         try {
           const clients = await initializeClients({
-            address: actualCurrentRoute?.fromAddress as EVMAddress,
+            address: actualCurrentRoute?.fromAddress as Hex,
             chainId: actualCurrentRoute?.fromChainId,
-            projectAddress: sendCallsExtraParams.projectData
-              .address as EVMAddress,
+            projectAddress: sendCallsExtraParams.projectData.address as Hex,
             projectChainId: sendCallsExtraParams.projectData.chainId,
           });
 
@@ -428,9 +427,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         initInProgressRef.current = true;
 
         const clients = await initializeClients({
-          address: address as EVMAddress,
+          address: address as Hex,
           chainId,
-          projectAddress: projectData.address as EVMAddress,
+          projectAddress: projectData.address as Hex,
           projectChainId: projectData.chainId,
         });
 

@@ -1,6 +1,6 @@
 import { ChainType, Route, StatusResponse } from '@lifi/sdk';
 import { Account } from '@lifi/wallet-management';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 import {
   CONTRIBUTION_AMOUNTS,
   MIN_CONTRIBUTION_USD,
@@ -44,9 +44,7 @@ export const getContributionAmounts = (volume: number): number[] => {
  * Gets the contribution fee address for a given chain ID
  * Returns undefined if no specific address is configured for the chain
  */
-export const getContributionFeeAddress = (
-  chainId: number,
-): EVMAddress | undefined => {
+export const getContributionFeeAddress = (chainId: number): Hex | undefined => {
   return contributionFeeAddresses[chainId];
 };
 

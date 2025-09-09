@@ -16,11 +16,15 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
     toAddress,
     currentActiveTaskType,
     taskTitle,
+    allowBridge,
+    allowExchange,
     // missionChainIds,
   } = useMissionStore();
 
   const ctx: ConfigContext = useMemo(() => {
     return {
+      allowBridge,
+      allowExchange,
       destinationChain,
       destinationToken,
       sourceChain,

@@ -418,6 +418,8 @@ export interface TaskWidgetInformationWalletData {
 }
 
 export interface TaskWidgetInformationData {
+  allowBridge?: string | null;
+  allowExchange?: string | null;
   sourceChain?: TaskWidgetInformationChainData | null;
   sourceToken?: TaskWidgetInformationTokenData | null;
   destinationChain?: TaskWidgetInformationChainData | null;

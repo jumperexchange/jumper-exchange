@@ -12,7 +12,7 @@ export interface BadgeProps {
   label: ReactNode;
   variant?: BadgeVariant;
   size?: BadgeSize;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const Badge: FC<BadgeProps> = ({

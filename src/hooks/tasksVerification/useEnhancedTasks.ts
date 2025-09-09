@@ -1,10 +1,10 @@
-import { useMemo, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
+import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { useMissionStore } from 'src/stores/mission';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { useGetVerifiedTasks } from './useGetVerifiedTasks';
-import { useRouter } from 'next/navigation';
-import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 
 export const useEnhancedTasks = (
   tasks: TaskVerificationWithApy[],
@@ -30,6 +30,7 @@ export const useEnhancedTasks = (
     setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
+    setTaskFormState,
   } = useMissionStore();
 
   const currentActiveTaskId = useMissionStore(
@@ -61,8 +62,11 @@ export const useEnhancedTasks = (
       setCurrentActiveTask(task.uuid, taskType, taskName);
       const isTaskVerified = checkIsTaskVerified(task);
       setIsCurrentActiveTaskCompleted(isTaskVerified);
+      setTaskFormState(task.uuid, !!widgetParams.inputs?.length, false);
 
       setCurrentTaskWidgetFormParams({
+        allowBridge: widgetParams.allowBridge ?? undefined,
+        allowExchange: widgetParams.allowExchange ?? undefined,
         sourceChain: widgetParams.sourceChain ?? undefined,
         sourceToken: widgetParams.sourceToken ?? undefined,
         destinationChain: widgetParams.destinationChain ?? undefined,
@@ -87,6 +91,7 @@ export const useEnhancedTasks = (
     },
     [
       setCurrentActiveTask,
+      setTaskFormState,
       setCurrentTaskWidgetFormParams,
       setCurrentTaskInstructionParams,
       checkIsTaskVerified,
