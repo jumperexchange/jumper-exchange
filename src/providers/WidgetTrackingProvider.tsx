@@ -2,6 +2,7 @@ import {
   ChainTokenSelected,
   Route,
   RouteExecutionUpdate,
+  SettingUpdated,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
@@ -24,6 +25,7 @@ import {
 import { useUserTracking } from 'src/hooks/userTracking';
 import { TransformedRoute } from 'src/types/internal';
 import { handleRouteData } from 'src/utils/routes';
+import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
 
 interface WidgetTrackingState {
   setDestinationChainTokenForTracking: (
@@ -54,6 +56,7 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionStarted: TrackingAction;
     routeExecutionCompleted: TrackingAction;
     routeExecutionFailed: TrackingAction;
+    changeSettings: TrackingAction;
   };
   trackingDataActionKeys?: {
     routeExecutionStarted: TrackingEventDataAction;
@@ -71,6 +74,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
     routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
     routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
+    changeSettings: TrackingAction.OnChangeSettingsZap,
   },
   trackingDataActionKeys = {
     routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
@@ -233,6 +237,19 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     ],
   );
 
+  const trackChangeSettings = useCallback(
+    (settings: SettingUpdated) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.changeSettings,
+        label: 'change_settings',
+        enableAddressable: true,
+        data: parseWidgetSettingsToTrackingData(settings),
+      });
+    },
+    [trackEvent, trackingActionKeys.changeSettings],
+  );
+
   const setDestinationChainTokenForTracking = useCallback(
     (destinationToken: ChainTokenSelected) => {
       destinationChainToken.current = destinationToken;
@@ -279,6 +296,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       onRouteExecutionCompleted,
     );
 
+    widgetEvents.on(WidgetEvent.SettingUpdated, trackChangeSettings);
+
     return () => {
       widgetEvents.off(
         WidgetEvent.SourceChainTokenSelected,
@@ -297,6 +316,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         WidgetEvent.RouteExecutionFailed,
         onRouteExecutionFailed,
       );
+      widgetEvents.off(WidgetEvent.SettingUpdated, trackChangeSettings);
     };
   }, [
     widgetEvents,
@@ -305,6 +325,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     trackRouteExecutionStarted,
     trackRouteExecutionCompleted,
     trackRouteExecutionFailed,
+    trackChangeSettings,
   ]);
 
   const value = useMemo(

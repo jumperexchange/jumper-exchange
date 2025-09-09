@@ -286,6 +286,7 @@ export const sendCalls = async (
     userBalance,
     requestedAmount,
     isEmbeddedWallet: sendCallsExtraParams.isEmbeddedWallet,
+    eoaWallet: currentAddress as Hex,
   });
 
   return { id: getFormattedTransactionHash(hash) };

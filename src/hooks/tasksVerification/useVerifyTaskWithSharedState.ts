@@ -13,6 +13,7 @@ import { useUserTracking } from '../userTracking';
 import { useVerifyTask } from './useVerifyTask';
 import { useQueryClient } from '@tanstack/react-query';
 import { updateVerifiedTasksQueryCache } from './useGetVerifiedTasks';
+import { useMissionStore } from 'src/stores/mission';
 
 export const useVerifyTaskWithSharedState = (
   missionId: string,
@@ -21,6 +22,7 @@ export const useVerifyTaskWithSharedState = (
 ) => {
   const { account } = useAccount();
   const { trackEvent } = useUserTracking();
+  const { getTaskFormState } = useMissionStore();
 
   const accountAddress = account?.address;
 
@@ -53,6 +55,12 @@ export const useVerifyTaskWithSharedState = (
 
   const handleVerifyTask = useCallback(
     (extraParams?: { [key: string]: string }) => {
+      const { hasForm, isFormValid } = getTaskFormState(taskId);
+
+      if (hasForm && !isFormValid) {
+        return;
+      }
+
       trackEvent({
         category: TrackingCategory.Quests,
         action: TrackingAction.ClickMissionVerify,
@@ -78,7 +86,7 @@ export const useVerifyTaskWithSharedState = (
         additionalFields: extraParams || {},
       });
     },
-    [missionId, taskId, taskName, accountAddress],
+    [missionId, taskId, taskName, accountAddress, getTaskFormState],
   );
 
   const handleReset = useCallback(() => {

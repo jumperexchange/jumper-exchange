@@ -22,6 +22,7 @@ import type {
   ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
+  SettingUpdated,
 } from '@lifi/widget';
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { useEffect, useRef, useState } from 'react';
@@ -32,6 +33,7 @@ import { useContributionStore } from 'src/stores/contribution/ContributionStore'
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { TransformedRoute } from 'src/types/internal';
 import { handleRouteData } from 'src/utils/routes';
+import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -334,6 +336,16 @@ export function WidgetEvents() {
       }
     };
 
+    const onChangeSettings = (settings: SettingUpdated) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnChangeSettings,
+        label: 'change_settings',
+        enableAddressable: true,
+        data: parseWidgetSettingsToTrackingData(settings),
+      });
+    };
+
     const onPageEntered = async (pageType: any) => {
       // Reset contribution state when entering a new page
       setContributed(false);
@@ -367,6 +379,7 @@ export function WidgetEvents() {
       onDestinationChainTokenSelection,
     );
     widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
+    widgetEvents.on(WidgetEvent.SettingUpdated, onChangeSettings);
     // widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
     // widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
 
@@ -410,6 +423,7 @@ export function WidgetEvents() {
       // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
       widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
+      widgetEvents.off(WidgetEvent.SettingUpdated, onChangeSettings);
     };
   }, [
     activeTab,

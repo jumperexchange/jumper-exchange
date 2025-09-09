@@ -2,9 +2,9 @@
 import {
   TaskType,
   TaskWidgetInformationChainData,
-  TaskWidgetInformationWalletData,
-  TaskWidgetInformationTokenData,
   TaskWidgetInformationInputData,
+  TaskWidgetInformationTokenData,
+  TaskWidgetInformationWalletData,
 } from 'src/types/strapi';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -15,6 +15,17 @@ interface MissionState {
 
   isCurrentActiveTaskCompleted: boolean;
   setIsCurrentActiveTaskCompleted: (isCompleted: boolean) => void;
+
+  taskFormStates: Record<string, { hasForm: boolean; isFormValid: boolean }>;
+  setTaskFormState: (
+    taskId: string,
+    hasForm: boolean,
+    isFormValid: boolean,
+  ) => void;
+  getTaskFormState: (taskId: string) => {
+    hasForm: boolean;
+    isFormValid: boolean;
+  };
 
   taskTitle?: string;
   taskDescription?: string;
@@ -30,6 +41,9 @@ interface MissionState {
   sourceChain?: TaskWidgetInformationChainData;
   sourceToken?: TaskWidgetInformationTokenData;
 
+  allowBridge?: string | null;
+  allowExchange?: string | null;
+
   fromAmount?: string;
 
   toAddress?: TaskWidgetInformationWalletData;
@@ -39,6 +53,8 @@ interface MissionState {
   missionType?: string;
 
   setCurrentTaskWidgetFormParams: ({
+    allowBridge,
+    allowExchange,
     destinationChain,
     destinationToken,
     sourceChain,
@@ -46,6 +62,8 @@ interface MissionState {
     fromAmount,
     toAddress,
   }: {
+    allowBridge?: string | null;
+    allowExchange?: string | null;
     destinationChain?: TaskWidgetInformationChainData;
     destinationToken?: TaskWidgetInformationTokenData;
     sourceChain?: TaskWidgetInformationChainData;
@@ -88,7 +106,7 @@ interface MissionState {
 }
 
 export const useMissionStore = createWithEqualityFn<MissionState>(
-  (set) => ({
+  (set, get) => ({
     currentActiveTaskId: undefined,
     currentActiveTaskType: undefined,
     currentActiveTaskName: undefined,
@@ -97,11 +115,29 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
     setIsCurrentActiveTaskCompleted: (isCurrentActiveTaskCompleted) =>
       set({ isCurrentActiveTaskCompleted }),
 
+    taskFormStates: {},
+    setTaskFormState: (taskId, hasForm, isFormValid) =>
+      set((state) => ({
+        taskFormStates: {
+          ...state.taskFormStates,
+          [taskId]: { hasForm, isFormValid },
+        },
+      })),
+    getTaskFormState: (taskId) => {
+      const state = get();
+      return (
+        state.taskFormStates[taskId] || { hasForm: false, isFormValid: true }
+      );
+    },
+
     destinationChain: undefined,
     destinationToken: undefined,
 
     sourceChain: undefined,
     sourceToken: undefined,
+
+    allowBridge: undefined,
+    allowExchange: undefined,
 
     fromAmount: undefined,
 
@@ -145,6 +181,7 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         currentActiveTaskType: undefined,
         currentActiveTaskName: undefined,
         isCurrentActiveTaskCompleted: false,
+        taskFormStates: {},
       }),
   }),
   Object.is,
