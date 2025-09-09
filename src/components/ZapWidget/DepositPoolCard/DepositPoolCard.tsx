@@ -84,7 +84,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     analytics?.lockup_period ?? 0,
   );
 
-  const { isSweeping, sweepError, sweepTokens } = useSweepTokens();
+  const { isSweeping, sweepError, hasTokensToSweep, sweepTokens } = useSweepTokens();
 
   const {
     tooltip: apyTooltip,
@@ -217,6 +217,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             {t('button.manageYourPosition')}
           </Button>
         )}
+        {hasTokensToSweep && (
           <Button
             variant="transparent"
             size="medium"
@@ -232,11 +233,12 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           >
             {isSweeping ? 'Sweeping...' : 'Sweep'}
           </Button>
-          {sweepError && (
-            <Typography variant="bodySmall" color="error" sx={{ mt: 1 }}>
-              {sweepError}
-            </Typography>
-          )}
+        )}
+        {sweepError && (
+          <Typography variant="bodySmall" color="error" sx={{ mt: 1 }}>
+            {sweepError}
+          </Typography>
+        )}
       </DepositPoolCardContainer>
     </SectionCardContainer>
   );

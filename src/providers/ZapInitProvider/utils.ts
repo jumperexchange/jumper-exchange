@@ -100,6 +100,54 @@ export const getGasLimitEstimate = async ({
 };
 
 /**
+ * Checks if there are any tokens with balance that can be swept for a smart account on a given EVM chain
+ * @param oNexus - The multichain smart account
+ * @param chainId - The EVM chain ID to check balances for
+ * @returns Boolean indicating if there are tokens to sweep
+ */
+export const hasTokensToSweep = async (
+  oNexus: MultichainSmartAccount,
+  chainId: number,
+): Promise<boolean> => {
+  try {
+    // Get all available tokens for EVM chains only
+    const tokensResponse = await getTokens({
+      chainTypes: [ChainType.EVM],
+    });
+    
+    // Get the smart account address once (same across all chains)
+    const accountAddress = oNexus.addressOn(chainId, true);
+    
+    // Check all EVM chains for tokens to sweep
+    const allEVMChains = Object.keys(tokensResponse.tokens).map(Number);
+    
+    for (const evmChainId of allEVMChains) {
+      const chainTokens = tokensResponse.tokens[evmChainId];
+      if (!chainTokens || chainTokens.length === 0) {
+        continue;
+      }
+      
+      // Get token balances for the account on this chain
+      const tokenBalances = await getTokenBalances(accountAddress, chainTokens);
+ 
+      // Check if there are any tokens with non-zero balance and non-zero address
+      const hasTokensWithBalance = tokenBalances.some(
+        (balance) => balance.amount && balance.amount > BigInt(0) && balance.address !== '0x0000000000000000000000000000000000000000'
+      );
+
+      if (hasTokensWithBalance) {
+        return true;
+      }
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error checking tokens to sweep:', error);
+    return false;
+  }
+};
+
+/**
  * Creates sweep transfer instructions for all token balances of a smart account on a given EVM chain
  * @param oNexus - The multichain smart account
  * @param chainId - The EVM chain ID to get balances for
@@ -115,36 +163,43 @@ export const createSweepTransferInstructions = async (
       chainTypes: [ChainType.EVM],
     });
     
-    const chainTokens = tokensResponse.tokens[chainId];
-    if (!chainTokens || chainTokens.length === 0) {
-      console.warn(`No EVM tokens found for chain ${chainId}`);
-      return [];
-    }
-
-    // Get the smart account address for the chain
+    // Get the smart account address once (same across all chains)
     const accountAddress = oNexus.addressOn(chainId, true);
     
-    // Get token balances for the account
-    const tokenBalances = await getTokenBalances(accountAddress, chainTokens);
+    // Check all EVM chains for tokens to sweep
+    const allEVMChains = Object.keys(tokensResponse.tokens).map(Number);
+    const allSweepInstructions: any[] = [];
     
-    // Filter out tokens with zero balance
-    const tokensWithBalance = tokenBalances.filter(
-      (balance) => balance.amount && balance.amount > BigInt(0)
-    );
+    for (const evmChainId of allEVMChains) {
+      const chainTokens = tokensResponse.tokens[evmChainId];
+      if (!chainTokens || chainTokens.length === 0) {
+        continue;
+      }
+      
+      // Get token balances for the account on this chain
+      const tokenBalances = await getTokenBalances(accountAddress, chainTokens);
+      
+      // Filter out tokens with zero balance and zero address
+      const tokensWithBalance = tokenBalances.filter(
+        (balance) => balance.amount && balance.amount > BigInt(0) && balance.address !== '0x0000000000000000000000000000000000000000'
+      );
 
-    // Create sweep transfer instructions for each token with balance
-    const sweepInstructions = await Promise.all(
-      tokensWithBalance.map(async (tokenBalance) => {
-        return buildContractComposableWithdrawal(
-          oNexus,
-          chainId,
-          tokenBalance.address
-        );
-      })
-    );
+      // Create sweep transfer instructions for each token with balance on this chain
+      const chainSweepInstructions = await Promise.all(
+        tokensWithBalance.map(async (tokenBalance) => {
+          return buildContractComposableWithdrawal(
+            oNexus,
+            evmChainId, // Use the actual chain ID where the token is located
+            tokenBalance.address
+          );
+        })
+      );
 
-    console.log(`Created ${sweepInstructions.length} sweep transfer instructions for EVM chain ${chainId}`);
-    return sweepInstructions;
+      allSweepInstructions.push(...chainSweepInstructions);
+    }
+
+    console.log(`Created ${allSweepInstructions.length} sweep transfer instructions across all EVM chains`);
+    return allSweepInstructions;
   } catch (error) {
     console.error('Error creating sweep transfer instructions:', error);
     return [];
