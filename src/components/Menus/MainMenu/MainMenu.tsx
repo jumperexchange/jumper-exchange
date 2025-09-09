@@ -16,7 +16,7 @@ interface MainMenuProps {
 }
 
 export const MainMenu = ({ anchorEl }: MainMenuProps) => {
-  const { mainMenuItems, mainMenuSocialLinks } = useMainMenuContent();
+  const { mainMenuItems, mainMenuSocialLinks, mainMenuFooterLinks } = useMainMenuContent();
   const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
     (state) => state,
   );
@@ -70,6 +70,40 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
     [mainMenuSocialLinks],
   );
 
+  const renderedFooterLinks = useMemo(
+    () => (
+      <MenuItem open isInteractive={false}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          width="100%"
+        >
+          {mainMenuFooterLinks.map((footerLink) => (
+            <Link
+              key={footerLink.label}
+              href={footerLink.link.url}
+              onClick={footerLink.onClick}
+              role="link"
+              aria-label={footerLink.label}
+              sx={{
+                color: 'text.secondary',
+                textDecoration: 'none',
+                fontSize: '0.75rem',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            >
+              {footerLink.label}
+            </Link>
+          ))}
+        </Stack>
+      </MenuItem>
+    ),
+    [mainMenuFooterLinks],
+  );
+
   return (
     <Menu
       keepMounted
@@ -80,6 +114,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
     >
       {isMainMenuVisible && renderedMainMenuItems}
       {isMainMenuVisible && renderedSocialLinks}
+      {isMainMenuVisible && renderedFooterLinks}
       <LanguagesSubmenu />
       <DevelopersSubmenu />
       <ThemeModesSubmenu />
