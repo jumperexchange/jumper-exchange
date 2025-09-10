@@ -1,7 +1,7 @@
 import { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
 import { useMissionsMaxAPY } from '../useMissionsMaxAPY';
 import { useMemo } from 'react';
-import { toFixedFractionDigits } from 'src/utils/formatNumbers';
+import { toCompactValue, toFixedFractionDigits } from 'src/utils/formatNumbers';
 import { RewardsInterface } from 'src/types/questDetails';
 
 export const useFormatDisplayRewardsData = (
@@ -42,14 +42,17 @@ export const useFormatDisplayRewardsData = (
     if (rewardType === 'weekly') {
       return [
         {
-          value: rewardRange || 'VAR.%',
+          value:
+            typeof rewardRange === 'number'
+              ? toCompactValue(rewardRange)
+              : rewardRange || 'VAR.%',
           label,
         },
       ];
     } else if (pointsFallback) {
       return [
         {
-          value: pointsFallback,
+          value: toCompactValue(pointsFallback),
           label,
         },
       ];
@@ -60,7 +63,7 @@ export const useFormatDisplayRewardsData = (
   const coinsRewards = useMemo(() => {
     if (tokenRewards) {
       return tokenRewards.map((tokenReward: RewardsInterface) => ({
-        value: tokenReward.amount,
+        value: toCompactValue(tokenReward.amount),
         label: tokenReward.name,
         avatarUrl: tokenReward.logo ?? undefined,
       }));

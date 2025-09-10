@@ -21,6 +21,7 @@ interface QuoteExecutionParams {
   instructions: any[];
   userBalance: bigint;
   requestedAmount: bigint;
+  eoaWallet: Hex;
 }
 
 const millisecondsToSeconds = (input: number) => input / 1000;
@@ -36,6 +37,7 @@ const executeEmbeddedWalletQuote = async (
     cleanUps,
     instructions,
     currentRouteFromToken,
+    eoaWallet,
   } = params;
 
   const currentChainNexusDeployment = oNexusParam.deploymentOn(currentChainId);
@@ -58,6 +60,7 @@ const executeEmbeddedWalletQuote = async (
     feeToken: {
       address: currentRouteFromToken.address as Hex,
       chainId: currentChainId,
+      gasRefundAddress: eoaWallet,
     },
     instructions,
   };
@@ -79,6 +82,7 @@ const executeRegularWalletQuote = async (
     instructions,
     currentChainId,
     userBalance,
+    eoaWallet,
   } = params;
 
   // The biconomy sdk requires the timestamp to be in seconds and throws an error if not using integer
@@ -94,6 +98,7 @@ const executeRegularWalletQuote = async (
     feeToken: {
       address: currentRouteFromToken.address as Hex,
       chainId: currentChainId,
+      gasRefundAddress: eoaWallet,
     },
     instructions,
     lowerBoundTimestamp: now,
