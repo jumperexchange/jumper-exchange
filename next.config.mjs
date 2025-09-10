@@ -163,6 +163,9 @@ export default withSentryConfig(nextConfig, {
   org: 'jumper-exchange',
   project: 'jumper-front',
 
+  // For providing readable stack traces for errors using source maps, we need to setup the auth token
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
   // Suppresses source map uploading logs during build
   silent: true,
 
