@@ -171,6 +171,7 @@
     "tasks": {
       "type": "",
       "typeFallback": "",
+      "typeOptional": "",
       "status": {
         "verify": "",
         "verified": ""
