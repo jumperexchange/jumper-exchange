@@ -184,6 +184,8 @@ export default withSentryConfig(nextConfig, {
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
 
+  environment: process.env.NEXT_PUBLIC_ENVIRONMENT,
+
   // Enables automatic instrumentation of Vercel Cron Monitors.
   // See the following for more information:
   // https://docs.sentry.io/product/crons/
