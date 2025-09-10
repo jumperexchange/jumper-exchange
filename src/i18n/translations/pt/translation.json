@@ -171,6 +171,7 @@
     "tasks": {
       "type": "Tarefa {{type}}",
       "typeFallback": "Tarefa",
+      "typeOptional": "",
       "status": {
         "verify": "Verificar",
         "verified": "Verificada"
