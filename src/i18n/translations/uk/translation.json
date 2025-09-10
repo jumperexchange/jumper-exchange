@@ -171,6 +171,7 @@
     "tasks": {
       "type": "",
       "typeFallback": "Завдання",
+      "typeOptional": "",
       "status": {
         "verify": "Перевірити",
         "verified": "Перевірено"
