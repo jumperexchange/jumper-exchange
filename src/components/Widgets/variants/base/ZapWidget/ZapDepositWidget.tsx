@@ -205,8 +205,6 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     );
   }
 
-  console.log('data', customInformation, widgetConfig, toChain, toToken);
-
   return isZapDataSuccess &&
     ((isInitialized && !!toAddress) || !isConnected) ? (
     <LiFiWidget

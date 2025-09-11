@@ -56,14 +56,14 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   const enhancedCtx = useMemo(() => {
     const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: 'zbkd.morpho',
+      integrator: 'zap.morpho',
       minFromAmountUSD: customInformation?.projectData?.minFromAmountUSD,
       hiddenUI: [
         HiddenUI.LowAddressActivityConfirmation,
         HiddenUI.GasRefuelMessage,
       ],
       variant: 'wide',
-      keyPrefix: 'zbkd.backend',
+      keyPrefix: 'zap.backend',
     };
 
     return {
@@ -77,23 +77,17 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
   delete widgetConfig.bridges;
 
-  console.log('data', customInformation, zapData);
-  console.log('widgetconfig', widgetConfig);
-
   return (
-    <>
-      I am backend
-      <LiFiWidget
-        config={widgetConfig}
-        integrator={widgetConfig.integrator}
-        contractComponent={
-          <ZapDepositSettings
-            toChain={toChain}
-            toToken={toToken}
-            contractCalls={[]}
-          />
-        }
-      />
-    </>
+    <LiFiWidget
+      config={widgetConfig}
+      integrator={widgetConfig.integrator}
+      contractComponent={
+        <ZapDepositSettings
+          toChain={toChain}
+          toToken={toToken}
+          contractCalls={[]}
+        />
+      }
+    />
   );
 };

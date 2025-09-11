@@ -5,10 +5,8 @@ import { FC, useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
-import { ZapDepositWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositWidget';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
-import { ZapInitProvider } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
@@ -38,65 +36,33 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
 
   return (
     <WidgetTrackingProvider>
-      {market?.UID === 'morpho-katana-backend' ? (
+      <Box
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+        }}
+      >
+        <DepositPoolCard customInformation={customInformation} />
         <Box
+          id={MISSION_WIDGET_ELEMENT_ID}
+          data-testid="zap-widget-container"
           sx={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 4,
+            position: { lg: 'sticky' },
+            top: {
+              lg: 124,
+            },
           }}
         >
-          <DepositPoolCard customInformation={customInformation} />
-          <Box
-            id={MISSION_WIDGET_ELEMENT_ID}
-            data-testid="zap-widget-container"
-            sx={{
-              position: { lg: 'sticky' },
-              top: {
-                lg: 124,
-              },
-            }}
-          >
-            <ClientOnly>
-              <ZapDepositBackendWidget
-                ctx={ctx}
-                customInformation={customInformation}
-              />
-            </ClientOnly>
-          </Box>
+          <ClientOnly>
+            <ZapDepositBackendWidget
+              ctx={ctx}
+              customInformation={customInformation}
+            />
+          </ClientOnly>
         </Box>
-      ) : (
-        <ZapInitProvider projectData={projectData}>
-          <Box
-            sx={{
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 4,
-            }}
-          >
-            <DepositPoolCard customInformation={customInformation} />
-            <Box
-              id={MISSION_WIDGET_ELEMENT_ID}
-              data-testid="zap-widget-container"
-              sx={{
-                position: { lg: 'sticky' },
-                top: {
-                  lg: 124,
-                },
-              }}
-            >
-              <ClientOnly>
-                <ZapDepositWidget
-                  ctx={ctx}
-                  customInformation={customInformation}
-                />
-              </ClientOnly>
-            </Box>
-          </Box>
-        </ZapInitProvider>
-      )}
+      </Box>
     </WidgetTrackingProvider>
   );
 };

@@ -166,7 +166,6 @@ export const sendCalls = async (
   }
 
   const { calls } = args;
-  console.log('LOGGING CALLS', calls, sendCallsExtraParams);
   if (calls.length === 0) {
     throw new Error("'calls' array is empty");
   }
@@ -214,7 +213,6 @@ export const sendCalls = async (
   // Build raw calldata instructions (general flow)
   const rawInstructionsPromises = Promise.all(
     baseCalls.map(async (call: WalletCall) => {
-      console.warn('CALL', call);
       if (!call.to || !call.data) {
         throw new Error('Invalid call structure: Missing to or data field');
       }
@@ -227,7 +225,6 @@ export const sendCalls = async (
           : undefined,
       };
 
-      console.warn('computing', data);
       return oNexusParam.buildComposable({
         type: 'rawCalldata',
         data,
