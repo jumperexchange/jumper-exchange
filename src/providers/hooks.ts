@@ -13,7 +13,7 @@ export const useZapQuestIdStorage = () => {
     if (!zapQuestId || zapQuestId !== strapiQuestId) {
       sessionStorage.setItem(ZAP_QUEST_ID_SESSION_STORAGE_KEY, questId);
     }
-  }, []);
+  }, [strapiQuestId]);
 
   useEffect(() => {
     handleZapQuestIdStorage(strapiQuestId);
