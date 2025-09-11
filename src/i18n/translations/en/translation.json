@@ -171,6 +171,7 @@
     "tasks": {
       "type": "{{type}} task",
       "typeFallback": "Task",
+      "typeOptional": "Optional task",
       "status": {
         "verify": "Verify",
         "verified": "Verified"
