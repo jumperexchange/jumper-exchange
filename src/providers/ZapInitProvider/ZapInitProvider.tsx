@@ -238,7 +238,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       'currentRoute' | 'isEmbeddedWallet'
     >,
   ): Promise<ReturnType<WalletMethodsRef[T]>> => {
-    console.warn('EXTRAPARAMS', extraParams);
     const operation = walletMethods[operationName] as
       | WalletMethodsRef[T]
       | undefined;
