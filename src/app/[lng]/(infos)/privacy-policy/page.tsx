@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import { PrivacyPolicyPage } from '@/components/PrivacyPolicy/PrivacyPolicyPage';
 import { siteName } from 'src/app/lib/metadata';
 import { getSiteUrl } from 'src/const/urls';
@@ -27,9 +26,5 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default function Page() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <PrivacyPolicyPage />
-    </Suspense>
-  );
+  return <PrivacyPolicyPage />;
 }
