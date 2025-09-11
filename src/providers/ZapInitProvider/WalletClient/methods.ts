@@ -166,7 +166,6 @@ export const sendCalls = async (
   }
 
   const { calls } = args;
-  console.log('LOGGING CALLS', calls, sendCallsExtraParams);
   if (calls.length === 0) {
     throw new Error("'calls' array is empty");
   }
