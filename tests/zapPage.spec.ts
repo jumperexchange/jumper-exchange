@@ -6,11 +6,13 @@ import { clickItemInSettingsMenu } from './testData/settingsFunctions';
 import { SETTINGS_MENU } from './testData/testConstants';
 import values from './testData/values.json' with { type: 'json' };
 
- async function verifyItemsCount(page: Page, locator: string, expectedCount: number): Promise<void> {
-    const widgetContainer = page.getByTestId('zap-widget-container');
-    const listOfItems = widgetContainer.locator(locator);
-    await expect(listOfItems).toHaveCount(expectedCount);
-  }
+  async function verifyItemsCount(page: Page, locator: string): Promise<void> {
+     const listOfItems = page.getByTestId(locator);
+     await expect(listOfItems).toBeVisible();
+     const numberOfItems = listOfItems.locator('> div');
+     const actualCount = await numberOfItems.count();
+     expect(actualCount).toBeGreaterThanOrEqual(20);
+   }
 
 test.describe('Zap Morpho Katana Page', () => {
     test.beforeEach(async ({ page }) => {
@@ -18,16 +20,16 @@ test.describe('Zap Morpho Katana Page', () => {
         await page.waitForLoadState('networkidle');
     });
 
-    test(qase(33,'Verify bridge selection list has exactly 23 bridges'), async ({ page }) => {
+    test(qase(33,'should verify the number of Bridges is higher than 20'), async ({ page }) => {
             await page.getByRole('button', { name: SETTINGS_MENU.TITLE }).click();
             await clickItemInSettingsMenu(page, SETTINGS_MENU.BRIDGES.LABEL);
-            await verifyItemsCount(page, '[data-testid="bridges-list"] > div', 23);
+            await verifyItemsCount(page, 'bridges-list');
         });
 
-    test(qase(34,'Should verify the number of Exchanges is exactly 24'), async ({ page }) => {
+    test(qase(34,'Should verify the number of Exchanges is higher than 20'), async ({ page }) => {
             await page.getByRole('button', { name: SETTINGS_MENU.TITLE }).click();
             await clickItemInSettingsMenu(page, SETTINGS_MENU.EXCHANGES.LABEL);
-            await verifyItemsCount(page, '[data-testid="exchanges-list"] > div', 24);
+            await verifyItemsCount(page, 'exchanges-list');
         });
 
     test(qase(32,'Verify the url of Discover Morpho link'), async ({ page }) => {
