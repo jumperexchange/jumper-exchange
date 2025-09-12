@@ -75,7 +75,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [JSON.stringify(ctx), projectData.integrator]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
-  delete widgetConfig.bridges;
 
   return (
     <LiFiWidget
