@@ -1,6 +1,6 @@
 import { Protocol, Token } from 'src/types/jumper-backend';
 
-export type EarnCardVariant = 'compact' | 'list-item';
+export type EarnCardVariant = 'compact' | 'list-item' | 'top';
 
 export interface EarnCardProps {
   variant?: EarnCardVariant;
