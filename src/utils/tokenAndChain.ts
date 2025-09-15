@@ -68,6 +68,28 @@ export const getTokenByName = (
     });
 };
 
+export const getTokenByAddressOnSpecificChain = (
+  tokens: TokensResponse['tokens'],
+  chainId: number,
+  address: string,
+) => {
+  const chainTokens = tokens[chainId];
+  if (!chainTokens) {
+    return;
+  }
+
+  const filteredToken = chainTokens.find(
+    (el) => el.address.toLowerCase() === address.toLowerCase(),
+  );
+  if (filteredToken) {
+    return filteredToken;
+  } else {
+    console.error(
+      `Token address ${address} is not available on chain ${chainId}`,
+    );
+  }
+};
+
 // @Note: this works only for EVM chains
 export const getNativeTokenForChain = (
   tokens: TokensResponse['tokens'],
