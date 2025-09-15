@@ -1,7 +1,8 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
@@ -23,7 +24,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   customInformation,
   market,
 }) => {
-  const [activeTab, setActiveTab] = useState<'deposit' | 'withdraw'>('deposit');
+  const { t } = useTranslation();
 
   if (!customInformation || !customInformation.projectData) {
     return <WidgetSkeleton />;
@@ -52,36 +53,15 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   const tabs = useMemo(() => [
     {
       value: 'deposit',
-      label: 'Deposit',
+      label: t('widget.zap.tabs.deposit'),
     },
     {
       value: 'withdraw',
-      label: 'Withdraw',
+      label: t('widget.zap.tabs.withdraw'),
       disabled: !hasDeposited || !hasWithdrawAbi,
     },
-  ], [hasDeposited, hasWithdrawAbi]);
+  ], [hasDeposited, hasWithdrawAbi, t]);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
-    setActiveTab(newValue as 'deposit' | 'withdraw');
-  };
-
-  const renderWidget = () => {
-    if (activeTab === 'deposit') {
-      return (
-        <ZapDepositBackendWidget
-          ctx={ctx}
-          customInformation={customInformation}
-        />
-      );
-    } else {
-      return (
-        <ZapWithdrawWidget
-          ctx={ctx}
-          customInformation={customInformation}
-        />
-      );
-    }
-  };
 
   return (
     <WidgetTrackingProvider>
@@ -104,16 +84,27 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
             },
           }}
         >
-          <Box sx={{ marginBottom: 3 }}>
-            <HorizontalTabs
-              tabs={tabs}
-              value={activeTab}
-              onChange={handleTabChange}
-            />
-          </Box>
-          <ClientOnly>
-            {renderWidget()}
-          </ClientOnly>
+          <HorizontalTabs
+            tabs={tabs}
+            renderContent={(currentTab) => (
+              <ClientOnly>
+                {currentTab === 'deposit' ? (
+                  <ZapDepositBackendWidget
+                    ctx={ctx}
+                    customInformation={customInformation}
+                  />
+                ) : (
+                  <ZapWithdrawWidget
+                    ctx={ctx}
+                    customInformation={customInformation}
+                  />
+                )}
+              </ClientOnly>
+            )}
+            sx={{
+              mb: 3,
+            }}
+          />
         </Box>
       </Box>
     </WidgetTrackingProvider>
