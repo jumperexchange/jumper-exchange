@@ -36,6 +36,9 @@ interface Resources {
       manageYourPosition: 'Manage your position';
       okay: 'Okay';
     };
+    buttons: {
+      depositButtonLabel: 'Quick deposit';
+    };
     campaign: {
       missions: {
         title: 'Missions';
@@ -292,6 +295,10 @@ interface Resources {
         };
         sendToAddressName: 'Deposit into {{name}}';
         sentToAddressName: 'Deposited into {{name}}';
+        tabs: {
+          deposit: 'Deposit';
+          withdraw: 'Withdraw';
+        };
       };
     };
   };

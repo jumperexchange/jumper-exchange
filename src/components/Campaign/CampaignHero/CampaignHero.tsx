@@ -16,12 +16,12 @@ import {
 import { useCampaignDisplayData } from 'src/hooks/campaigns/useCampaignDisplayData';
 import { CampaignHeroCard } from './CampaignHeroCard';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
-import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ChainAvatarSize } from 'src/components/ChainStack/ChainStack.style';
 import { AppPaths } from 'src/const/urls';
 import { ICON_SIZES } from './constants';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
 interface CampaignHeroProps {
   campaign: CampaignData;
@@ -107,7 +107,7 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
                 description={
                   <ChainStack
                     chainIds={rewardChainIds}
-                    size={isMobile ? ChainAvatarSize.XS : ChainAvatarSize.MD}
+                    size={isMobile ? AvatarSize.XS : AvatarSize.MD}
                   />
                 }
                 variant={heroStatsCardVariant}
