@@ -710,6 +710,8 @@ export interface EarnOpportunity {
   lpToken: Token;
   slug: string;
   featured: boolean;
+  lockupMonths: number;
+  capInDollar: string;
 }
 
 export type WalletVerification = object;
@@ -942,7 +944,7 @@ export class HttpClient<SecurityDataType = unknown> {
             : payloadFormatter(body),
       },
     ).then(async (response) => {
-      const r = response.clone() as HttpResponse<T, E>;
+      const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
@@ -1083,12 +1085,12 @@ export class JumperBackend<
      * @request GET:/v1/earn/tops
      */
     earnControllerGetTopsV1: (
-      query: {
+      query?: {
         /**
          * The address to get tops for
          * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
          */
-        address: string;
+        address?: string;
       },
       params: RequestParams = {},
     ) =>
@@ -1109,12 +1111,32 @@ export class JumperBackend<
      * @request GET:/v1/earn/filter
      */
     earnControllerFilterV1: (
-      query: {
+      query?: {
+        /**
+         * The address to filter for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address?: string;
+        /**
+         * Whether to filter for "for you" opportunities
+         * @example true
+         */
+        forYou?: boolean;
+        /**
+         * Whether to filter for featured opportunities
+         * @example true
+         */
+        featured?: boolean;
         /**
          * The chain id to filter for
          * @example 1
          */
-        chainId: number;
+        chainId?: number;
+        /**
+         * The protocol to filter for
+         * @example "Aave"
+         */
+        protocol?: string;
       },
       params: RequestParams = {},
     ) =>
