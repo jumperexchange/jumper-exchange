@@ -2,14 +2,18 @@
 
 import Box from '@mui/material/Box';
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
+import { ZapWithdrawWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapWithdrawWidget';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
+import { HorizontalTabs } from 'src/components/HorizontalTabs/HorizontalTabs';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -20,6 +24,8 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   customInformation,
   market,
 }) => {
+  const { t } = useTranslation();
+
   if (!customInformation || !customInformation.projectData) {
     return <WidgetSkeleton />;
   }
@@ -33,6 +39,29 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
+
+  // Get zap data to check if user has deposited and if withdraw is available
+  const {
+    zapData,
+    depositTokenData,
+    isLoadingDepositTokenData,
+  } = useEnhancedZapData(projectData);
+
+  const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
+  const hasWithdrawAbi = !!zapData?.abi?.withdraw;
+
+  const tabs = useMemo(() => [
+    {
+      value: 'deposit',
+      label: t('widget.zap.tabs.deposit'),
+    },
+    {
+      value: 'withdraw',
+      label: t('widget.zap.tabs.withdraw'),
+      disabled: !hasDeposited || !hasWithdrawAbi,
+    },
+  ], [hasDeposited, hasWithdrawAbi, t]);
+
 
   return (
     <WidgetTrackingProvider>
@@ -55,12 +84,27 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
             },
           }}
         >
-          <ClientOnly>
-            <ZapDepositBackendWidget
-              ctx={ctx}
-              customInformation={customInformation}
-            />
-          </ClientOnly>
+          <HorizontalTabs
+            tabs={tabs}
+            renderContent={(currentTab) => (
+              <ClientOnly>
+                {currentTab === 'deposit' ? (
+                  <ZapDepositBackendWidget
+                    ctx={ctx}
+                    customInformation={customInformation}
+                  />
+                ) : (
+                  <ZapWithdrawWidget
+                    ctx={ctx}
+                    customInformation={customInformation}
+                  />
+                )}
+              </ClientOnly>
+            )}
+            sx={{
+              mb: 3,
+            }}
+          />
         </Box>
       </Box>
     </WidgetTrackingProvider>
