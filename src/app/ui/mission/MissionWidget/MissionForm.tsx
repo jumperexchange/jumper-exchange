@@ -59,6 +59,14 @@ export const MissionForm = () => {
     }
   }, [currentActiveTaskId, isFormValid, setTaskFormState]);
 
+  useEffect(() => {
+    return () => {
+      if (currentActiveTaskId) {
+        setTaskFormState(currentActiveTaskId, true, false);
+      }
+    };
+  }, [currentActiveTaskId]);
+
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = event.target;

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo } from 'react';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
-import { useMissionStore } from 'src/stores/mission';
+import { TaskFormState, useMissionStore } from 'src/stores/mission';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { useGetVerifiedTasks } from './useGetVerifiedTasks';
@@ -30,7 +30,7 @@ export const useEnhancedTasks = (
     setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
-    setTaskFormState,
+    initializeTaskFormStates,
   } = useMissionStore();
 
   const currentActiveTaskId = useMissionStore(
@@ -47,6 +47,19 @@ export const useEnhancedTasks = (
     [JSON.stringify(verifiedTasks)],
   );
 
+  // Initialize form state for all tasks when mission is loaded
+  useEffect(() => {
+    const formStates: Record<string, TaskFormState> = {};
+
+    tasks.forEach((task) => {
+      const widgetParams = task.TaskWidgetInformation ?? {};
+      const hasForm = !!widgetParams.inputs?.length;
+      formStates[task.uuid] = { hasForm, isFormValid: !hasForm };
+    });
+
+    initializeTaskFormStates(formStates);
+  }, [tasks, initializeTaskFormStates]);
+
   const handleSetActiveTask = useCallback(
     (task: TaskVerificationWithApy, shouldScrollToWidget = true) => {
       const taskType = task.TaskType ?? TaskType.Bridge;
@@ -62,7 +75,6 @@ export const useEnhancedTasks = (
       setCurrentActiveTask(task.uuid, taskType, taskName);
       const isTaskVerified = checkIsTaskVerified(task);
       setIsCurrentActiveTaskCompleted(isTaskVerified);
-      setTaskFormState(task.uuid, !!widgetParams.inputs?.length, false);
 
       setCurrentTaskWidgetFormParams({
         allowBridge: widgetParams.allowBridge ?? undefined,
@@ -91,7 +103,6 @@ export const useEnhancedTasks = (
     },
     [
       setCurrentActiveTask,
-      setTaskFormState,
       setCurrentTaskWidgetFormParams,
       setCurrentTaskInstructionParams,
       checkIsTaskVerified,
