@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
 export const EntityChainContainer = styled(Box)(({}) => ({
   display: 'flex',
@@ -25,14 +26,17 @@ export const EntityChainInfoContainer = styled(Box)(({}) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: 2,
+  overflow: 'hidden',
 }));
 
 export const EntityChainTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
+  ...getTextEllipsisStyles(1),
 }));
 
 export const EntityChainDescription = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
+  ...getTextEllipsisStyles(1),
 }));
 
 export const EntityChainTypographySkeleton = styled(Skeleton)(({ theme }) => ({
