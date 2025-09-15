@@ -118,8 +118,6 @@ export const createChartConfig = <T extends LineData<Time>>(
 ) => {
   const typography = getThemeTypography(theme);
 
-  console.log('textcolor', typography.textColor);
-
   return {
     layout: {
       background: { type: ColorType.Solid, color: 'transparent' },

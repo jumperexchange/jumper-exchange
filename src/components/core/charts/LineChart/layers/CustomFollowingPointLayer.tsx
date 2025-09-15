@@ -27,7 +27,7 @@ export const CustomFollowingPointLayer = <T extends LineSeries>({
   return (
     <g style={{ pointerEvents: 'none' }}>
       <motion.circle
-        r={6}
+        r={4}
         fill={customPointColor}
         initial={{ opacity: 0, scale: 0 }}
         animate={{
