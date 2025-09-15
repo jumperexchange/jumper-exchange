@@ -41,27 +41,26 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   }, [customInformation?.projectData]);
 
   // Get zap data to check if user has deposited and if withdraw is available
-  const {
-    zapData,
-    depositTokenData,
-    isLoadingDepositTokenData,
-  } = useEnhancedZapData(projectData);
+  const { zapData, depositTokenData, isLoadingDepositTokenData } =
+    useEnhancedZapData(projectData);
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
   const hasWithdrawAbi = !!zapData?.abi?.withdraw;
 
-  const tabs = useMemo(() => [
-    {
-      value: 'deposit',
-      label: t('widget.zap.tabs.deposit'),
-    },
-    {
-      value: 'withdraw',
-      label: t('widget.zap.tabs.withdraw'),
-      disabled: !hasDeposited || !hasWithdrawAbi,
-    },
-  ], [hasDeposited, hasWithdrawAbi, t]);
-
+  const tabs = useMemo(
+    () => [
+      {
+        value: 'deposit',
+        label: t('widget.zap.tabs.deposit'),
+      },
+      {
+        value: 'withdraw',
+        label: t('widget.zap.tabs.withdraw'),
+        disabled: !hasDeposited || !hasWithdrawAbi,
+      },
+    ],
+    [hasDeposited, hasWithdrawAbi, t],
+  );
 
   return (
     <WidgetTrackingProvider>
@@ -103,6 +102,11 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
             )}
             sx={{
               mb: 3,
+              width: '100%',
+              '& .MuiTab-root': {
+                maxWidth: '100%',
+                width: '100%',
+              },
             }}
           />
         </Box>
