@@ -13,7 +13,7 @@ import {
 } from 'viem';
 import { hyperevm } from 'src/const/chains/hyperwave';
 import { buildContractComposable } from '../utils';
-import { approve, transfer } from './DefaultZap';
+import { approve } from './DefaultZap';
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
 
 const MINT_SLIPPAGE_PERCENT = 2;
