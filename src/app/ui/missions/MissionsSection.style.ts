@@ -13,6 +13,11 @@ export const MissionSectionHeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(2),
   alignItems: 'center',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: theme.spacing(1),
+  },
 }));
 
 export const BaseSkeletonBox = styled(Skeleton)(({ theme }) => ({

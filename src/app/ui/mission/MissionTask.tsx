@@ -34,9 +34,12 @@ export const MissionTask: FC<MissionTaskProps> = ({
     isVerified,
     isRequired,
   } = useFormatDisplayTaskData(task);
+
   const currentActiveTaskId = useMissionStore(
     (state) => state.currentActiveTaskId,
   );
+  const { getTaskFormState } = useMissionStore();
+  const { hasForm, isFormValid } = getTaskFormState(taskId);
   const isActive = currentActiveTaskId === taskId;
   const shouldAnimationRun = useRef(false);
 
@@ -71,7 +74,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
 
   const getVariant = () => {
     if (isSuccess || isVerified) return BadgeVariant.Success;
-    if (isPending) return BadgeVariant.Disabled;
+    if (isPending || (hasForm && !isFormValid)) return BadgeVariant.Disabled;
     if (isError) return BadgeVariant.Error;
     return BadgeVariant.Secondary;
   };

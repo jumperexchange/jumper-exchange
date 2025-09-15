@@ -18,6 +18,7 @@ export const MissionsSection: FC<MissionsSectionProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
+
   return (
     <SectionCard>
       <MissionSectionContainer>
@@ -25,7 +26,15 @@ export const MissionsSection: FC<MissionsSectionProps> = ({
           <Typography variant="titleSmall">
             {t('missions.wrapperCard.title')}
           </Typography>
-          <Typography variant="title2XSmall" color="textSecondary">
+          <Typography
+            variant="title2XSmall"
+            sx={(theme) => ({
+              [theme.breakpoints.down('sm')]: {
+                fontWeight: 500,
+              },
+            })}
+            color="textSecondary"
+          >
             {t('missions.wrapperCard.explore', { count })}
           </Typography>
         </MissionSectionHeaderContainer>
