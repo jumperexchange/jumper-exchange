@@ -10,41 +10,7 @@ import { CenteredWrapper, CloseIconButton } from './DepositModal.styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { TaskType } from 'src/types/strapi';
 import { motion } from 'framer-motion';
-
-export interface Protocol {
-  name: string;
-  product: string;
-  version: string;
-  logo: string;
-}
-
-export interface Chain {
-  chainId: number;
-  chainKey: string;
-}
-
-export interface Token {
-  name: string;
-  symbol: string;
-  decimals: number;
-  logo: string;
-  address: string;
-  chain: Chain;
-}
-
-// @TODO need to import from backend types when available
-export interface EarnOpportunity {
-  name: string;
-  asset: Token;
-  protocol: Protocol;
-  url: string;
-  description: string;
-  tags: string[];
-  rewards: string[];
-  lpToken: Token;
-  slug: string;
-  featured: boolean;
-}
+import { EarnOpportunity } from 'src/types/jumper-backend';
 
 interface DepositModalProps {
   onClose: () => void;
@@ -122,8 +88,8 @@ export const DepositModal: FC<DepositModalProps> = ({
                 ctx={{
                   theme: {
                     container: {
-                      maxHeight: 'calc(100vh - 10rem)',
-                      minWidth: 400,
+                      maxHeight: 'calc(100vh - 6rem)',
+                      minWidth: '100%',
                       maxWidth: 400,
                     },
                   },

@@ -7,6 +7,7 @@ export const CenteredWrapper = styled(Box)(({ theme }) => ({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
+  outline: 'none',
 }));
 
 export const CloseIconButton = styled(IconButton)(({ theme }) => ({

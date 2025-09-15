@@ -7,6 +7,8 @@ import { ConnectButton } from 'src/components/ConnectButton';
 import { useIsDisconnected } from 'src/components/Navbar/hooks';
 import { WalletMenuToggle } from 'src/components/Navbar/components/Buttons/WalletMenuToggle';
 import { DepositButton } from '../DepositButton/DepositButton';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
 const meta = {
   component: DepositModal,
@@ -53,18 +55,21 @@ export const WithToggleAndConnectButton: Story = {
     const isDisconnected = useIsDisconnected();
 
     return (
-      <div>
-        {isDisconnected ? <ConnectButton /> : <WalletMenuToggle />}
-        <DepositButton
-          onClick={() => setIsOpen(!isOpen)}
-          label="Quick deposit"
-        />
+      <Box sx={{ p: 2 }}>
+        <Stack direction="row" spacing={2}>
+          {isDisconnected ? <ConnectButton /> : <WalletMenuToggle />}
+          <DepositButton
+            onClick={() => setIsOpen(!isOpen)}
+            label="Quick deposit"
+          />
+        </Stack>
+
         <DepositModal
           {...args}
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
         />
-      </div>
+      </Box>
     );
   },
   args: {
