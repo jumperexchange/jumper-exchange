@@ -39,13 +39,15 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
-  // Get zap data to check if user has deposited
+  // Get zap data to check if user has deposited and if withdraw is available
   const {
+    zapData,
     depositTokenData,
     isLoadingDepositTokenData,
   } = useEnhancedZapData(projectData);
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
+  const hasWithdrawAbi = !!zapData?.abi?.withdraw;
 
   const tabs = useMemo(() => [
     {
@@ -55,9 +57,9 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
     {
       value: 'withdraw',
       label: 'Withdraw',
-      disabled: !hasDeposited,
+      disabled: !hasDeposited || !hasWithdrawAbi,
     },
-  ], [hasDeposited]);
+  ], [hasDeposited, hasWithdrawAbi]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue as 'deposit' | 'withdraw');
