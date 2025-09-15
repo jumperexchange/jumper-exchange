@@ -290,5 +290,8 @@
         }
       }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": "Quick deposit"
   }
 }

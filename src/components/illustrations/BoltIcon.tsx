@@ -2,13 +2,14 @@ import { SvgIconProps } from '@mui/material/SvgIcon';
 
 interface BoltIconProps extends SvgIconProps {}
 
-const BoltIcon = ({ height, width }: BoltIconProps) => (
+const BoltIcon = ({ height, width, ...props }: BoltIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={width || 28}
     height={height || 28}
     fill="none"
     viewBox="0 0 28 28"
+    {...props}
   >
     <path
       fill="currentColor"
