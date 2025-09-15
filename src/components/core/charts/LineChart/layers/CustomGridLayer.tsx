@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material/styles';
 import { LineCustomSvgLayerProps, LineSeries } from '@nivo/line';
 
 interface CustomGridLayerProps<T extends LineSeries>
@@ -12,6 +13,7 @@ export const CustomGridLayer = <T extends LineSeries>({
   margin,
   gridPadding = 0.01,
 }: CustomGridLayerProps<T>) => {
+  const theme = useTheme();
   const gridWidth = width - (margin.left || 0) - (margin.right || 0);
   const padding = gridWidth * gridPadding;
 
@@ -39,9 +41,10 @@ export const CustomGridLayer = <T extends LineSeries>({
               x2={gridWidth - padding}
               y1={y}
               y2={y}
-              stroke="#000000E6"
+              stroke={`color-mix(in srgb, ${
+                (theme.vars || theme).palette.alpha900.main
+              } 10%, transparent)`}
               strokeWidth={1}
-              opacity={0.1}
             />
           );
         })}

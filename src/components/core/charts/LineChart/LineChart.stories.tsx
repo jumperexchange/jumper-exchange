@@ -70,12 +70,14 @@ const DefaultRenderer = <T extends LineSeries>(args: LineChartProps<T>) => {
       <LineChart
         {...args}
         theme={{
-          topAreaColor: isLightTheme ? `#F2D9F6` : theme.palette.primary.main,
-          bottomAreaColor: isLightTheme
-            ? theme.palette.white.main
-            : theme.palette.alpha200.main,
-          pointColor: theme.palette.accent1.main,
-          lineColor: theme.palette.accent2.main,
+          areaTopColor: isLightTheme
+            ? `#F2D9F6`
+            : (theme.vars || theme).palette.accent2Alt,
+          areaBottomColor: isLightTheme
+            ? (theme.vars || theme).palette.white.main
+            : (theme.vars || theme).palette.bg.main,
+          pointColor: (theme.vars || theme).palette.accent1.main,
+          lineColor: (theme.vars || theme).palette.accent2.main,
           ...args.theme,
         }}
       />
@@ -147,7 +149,7 @@ export const CustomColors: Story = {
     ...commonArgs,
     theme: {
       lineColor: '#FF8C42',
-      topAreaColor: '#FFF2E6',
+      areaTopColor: '#FFF2E6',
       pointColor: '#E65100',
     },
   },

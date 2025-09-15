@@ -63,10 +63,10 @@ export const LineChartV2Skeleton = ({
       <LineChartV2
         data={mockData}
         theme={{
-          backgroundColor: 'transparent',
           lineColor: 'transparent',
-          areaTopColor: '#F9F5FF',
-          areaBottomColor: '#F9F5FF',
+          // Canvas doesn't support css variables
+          areaTopColor: (theme.vars || theme).palette.surface2.main,
+          areaBottomColor: (theme.vars || theme).palette.surface2.main,
           pointColor: 'transparent',
         }}
       />

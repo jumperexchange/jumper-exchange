@@ -1,24 +1,7 @@
-import {
-  AreaSeries,
-  createChart,
-  ColorType,
-  LineType,
-  LineData,
-  Time,
-} from 'lightweight-charts';
+import { AreaSeries, createChart, LineData, Time } from 'lightweight-charts';
 import React, { useEffect, useRef, useState } from 'react';
 import { CustomTooltip } from './CustomTooltip';
-import { format } from 'date-fns';
-import {
-  CHART_CONFIG,
-  CHART_LAYOUT_CONFIG,
-  CROSSHAIR_CONFIG,
-  GRID_CONFIG,
-  PRICE_SCALE_CONFIG,
-  TIME_SCALE_CONFIG,
-  CHART_BEHAVIOR_CONFIG,
-  SERIES_CONFIG,
-} from './constants';
+import { CHART_CONFIG } from './constants';
 import {
   calculateTooltipPosition,
   calculatePriceScaleRange,
@@ -40,8 +23,6 @@ export interface LineChartV2Props<T> {
   enableTooltip?: boolean;
   isLoading?: boolean;
   theme: {
-    backgroundColor?: string;
-    gridLineColor?: string;
     lineColor?: string;
     areaTopColor?: string;
     areaBottomColor?: string;
@@ -61,8 +42,6 @@ export const LineChartV2 = <T extends LineData<Time>>(
     enableTooltip = false,
     isLoading = false,
     theme: {
-      backgroundColor = 'transparent',
-      gridLineColor = 'rgba(0, 0, 0, 0.092)',
       lineColor = '#8700B8',
       pointColor = '#31007A',
       areaTopColor = '#F2D9F6',
@@ -92,8 +71,6 @@ export const LineChartV2 = <T extends LineData<Time>>(
       chartContainerRef.current,
       createChartConfig(
         theme,
-        backgroundColor,
-        gridLineColor,
         enableGridY,
         enableXAxis,
         enableYAxis,
@@ -161,16 +138,15 @@ export const LineChartV2 = <T extends LineData<Time>>(
     };
   }, [
     data,
+    theme,
     enableCrosshair,
     enableGridY,
     enableXAxis,
     enableYAxis,
     enableTooltip,
-    backgroundColor,
     lineColor,
     areaTopColor,
     areaBottomColor,
-    gridLineColor,
   ]);
 
   return (

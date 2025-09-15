@@ -21,6 +21,25 @@ import { format } from 'date-fns';
 import type { Theme } from '@mui/material/styles';
 
 /**
+ * Resolves a css color variable to a string given light weight charts does not support css variables
+ * @param token - The css variable to resolve
+ * @returns
+ */
+export const resolveCssColorVariable = (token: string): string => {
+  // If the token is not a css variable, return it
+  if (!token.startsWith('var(')) {
+    return token.trim();
+  }
+
+  // Remove the var() wrapper
+  const varName = token.slice(4, -1).trim();
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(varName)
+    .trim();
+  return value;
+};
+
+/**
  * Calculates the optimal tooltip position to prevent it from going outside the container bounds
  */
 export const calculateTooltipPosition = (
@@ -82,7 +101,9 @@ export const getThemeTypography = (theme: Theme) => ({
   fontSize: 10, // theme.typography.bodyXXSmall.fontSize,
   fontFamily: theme.typography.bodyXXSmall.fontFamily,
   fontWeight: theme.typography.bodyXXSmall.fontWeight,
-  textColor: (theme.vars || theme).palette.text.secondary,
+  textColor: resolveCssColorVariable(
+    (theme.vars || theme).palette.text.secondary,
+  ),
 });
 
 /**
@@ -90,8 +111,6 @@ export const getThemeTypography = (theme: Theme) => ({
  */
 export const createChartConfig = <T extends LineData<Time>>(
   theme: Theme,
-  backgroundColor: string,
-  gridLineColor: string,
   enableGridY: boolean,
   enableXAxis: boolean,
   enableYAxis: boolean,
@@ -99,9 +118,11 @@ export const createChartConfig = <T extends LineData<Time>>(
 ) => {
   const typography = getThemeTypography(theme);
 
+  console.log('textcolor', typography.textColor);
+
   return {
     layout: {
-      background: { type: ColorType.Solid, color: backgroundColor },
+      background: { type: ColorType.Solid, color: 'transparent' },
       textColor: typography.textColor,
       fontSize: typography.fontSize,
       fontFamily: typography.fontFamily,
@@ -113,7 +134,9 @@ export const createChartConfig = <T extends LineData<Time>>(
       horzLines: {
         ...GRID_CONFIG.horzLines,
         visible: enableGridY,
-        color: gridLineColor,
+        color: `color-mix(in srgb, ${resolveCssColorVariable(
+          (theme.vars || theme).palette.alpha900.main,
+        )} 10%, transparent)`,
       },
     },
     leftPriceScale: {
@@ -148,11 +171,13 @@ export const createSeriesConfig = (
 ) => ({
   lineWidth: CHART_CONFIG.LINE_WIDTH,
   lineType: LineType.Curved,
-  lineColor,
-  topColor: areaTopColor,
-  bottomColor: areaBottomColor,
+  lineColor: resolveCssColorVariable(lineColor),
+  topColor: resolveCssColorVariable(areaTopColor),
+  bottomColor: resolveCssColorVariable(areaBottomColor),
   lastValueVisible: SERIES_CONFIG.lastValueVisible,
   priceLineVisible: SERIES_CONFIG.priceLineVisible,
   crosshairMarkerVisible: enableCrosshair,
-  crosshairMarkerBackgroundColor: pointColor || lineColor,
+  crosshairMarkerBackgroundColor: resolveCssColorVariable(
+    pointColor || lineColor,
+  ),
 });

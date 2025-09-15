@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { LineChartV2 } from './LineChartV2';
+import { LineChartV2, LineChartV2Props } from './LineChartV2';
 import Box from '@mui/material/Box';
+import { useColorScheme, useTheme } from '@mui/material/styles';
+import { LineData, Time } from 'lightweight-charts';
 
 const initialData = [
   { time: '2025-09-05', value: 32.51 },
@@ -29,14 +31,7 @@ const commonArgs = {
   enableXAxis: true,
   enableYAxis: true,
   enableTooltip: true,
-  theme: {
-    backgroundColor: 'transparent',
-    gridLineColor: 'rgba(0, 0, 0, 0.092)',
-    lineColor: '#8700B8',
-    pointColor: '#31007A',
-    areaTopColor: '#F2D9F6',
-    areaBottomColor: 'white',
-  },
+  theme: {},
 };
 
 const meta = {
@@ -47,23 +42,41 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: (args) => (
+const DefaultRenderer = <T extends LineData<Time>>(
+  args: LineChartV2Props<T>,
+) => {
+  const theme = useTheme();
+  const { mode } = useColorScheme();
+  const isLightTheme = mode === 'light';
+  return (
     <Box sx={{ height: 400 }}>
-      <LineChartV2 {...args} />
+      <LineChartV2
+        {...args}
+        theme={{
+          areaTopColor: isLightTheme
+            ? `#F2D9F6`
+            : (theme.vars || theme).palette.accent2Alt,
+          areaBottomColor: isLightTheme
+            ? (theme.vars || theme).palette.white.main
+            : (theme.vars || theme).palette.bg.main,
+          pointColor: (theme.vars || theme).palette.accent1.main,
+          lineColor: (theme.vars || theme).palette.accent2.main,
+          ...args.theme,
+        }}
+      />
     </Box>
-  ),
+  );
+};
+
+export const Default: Story = {
+  render: DefaultRenderer,
   args: {
     ...commonArgs,
   },
 };
 
 export const CustomColors: Story = {
-  render: (args) => (
-    <Box sx={{ height: 400 }}>
-      <LineChartV2 {...args} />
-    </Box>
-  ),
+  render: DefaultRenderer,
   args: {
     ...commonArgs,
     theme: {
@@ -76,11 +89,7 @@ export const CustomColors: Story = {
 };
 
 export const MonthlyTVL: Story = {
-  render: (args) => (
-    <Box sx={{ height: 400 }}>
-      <LineChartV2 {...args} />
-    </Box>
-  ),
+  render: DefaultRenderer,
   args: {
     ...commonArgs,
     dateFormat: 'MMM yyyy',
@@ -104,11 +113,7 @@ export const MonthlyTVL: Story = {
 };
 
 export const Skeleton: Story = {
-  render: (args) => (
-    <Box sx={{ height: 400 }}>
-      <LineChartV2 {...args} />
-    </Box>
-  ),
+  render: DefaultRenderer,
   args: {
     ...commonArgs,
     isLoading: true,

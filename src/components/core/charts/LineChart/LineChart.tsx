@@ -19,8 +19,8 @@ export interface LineChartProps<T extends LineSeries> {
   data: T[];
   theme: {
     lineColor?: string;
-    topAreaColor?: string;
-    bottomAreaColor?: string;
+    areaTopColor?: string;
+    areaBottomColor?: string;
     pointColor?: string;
   };
   enableCrosshair?: boolean;
@@ -33,7 +33,7 @@ export interface LineChartProps<T extends LineSeries> {
 
 export function LineChart<T extends LineSeries>({
   data,
-  theme: { lineColor, topAreaColor, bottomAreaColor, pointColor },
+  theme: { lineColor, areaTopColor, areaBottomColor, pointColor },
   enableCrosshair = false,
   enableGridY = false,
   enableXAxis = false,
@@ -112,12 +112,12 @@ export function LineChart<T extends LineSeries>({
           colors: [
             {
               offset: 0,
-              color: topAreaColor || (theme.vars || theme).palette.primary.main,
+              color: areaTopColor || (theme.vars || theme).palette.primary.main,
             },
             {
               offset: 100,
               color:
-                bottomAreaColor || (theme.vars || theme).palette.white.main,
+                areaBottomColor || (theme.vars || theme).palette.white.main,
             },
           ],
         },
