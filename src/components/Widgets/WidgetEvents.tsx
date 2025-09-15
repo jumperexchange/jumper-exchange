@@ -223,17 +223,6 @@ export function WidgetEvents() {
       setSourceChainToken(sourceChainData);
     };
 
-    // const onWidgetExpanded = async (expanded: boolean) => {
-    //   expanded &&
-    //     trackEvent({
-    //       category: TrackingCategory.WidgetEvent,
-    //       action: TrackingAction.OnWidgetExpanded,
-    //       label: `widget_expanded`,
-    //       enableAddressable: true,
-    //       data: {},
-    //     });
-    // };
-
     const onDestinationChainTokenSelection = async (
       toChainData: ChainTokenSelected,
     ) => {
@@ -397,9 +386,6 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
     widgetEvents.on(WidgetEvent.SettingUpdated, onChangeSettings);
     widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
-    // widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
-
-    // widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
 
     return () => {
       widgetEvents.off(
@@ -436,7 +422,6 @@ export function WidgetEvents() {
         WidgetEvent.LowAddressActivityConfirmed,
         onLowAddressActivityConfirmed,
       );
-      // widgetEvents.off(WidgetEvent.WidgetExpanded, onWidgetExpanded);
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
       widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
       widgetEvents.off(WidgetEvent.SettingUpdated, onChangeSettings);
