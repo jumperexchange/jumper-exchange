@@ -7,7 +7,7 @@ import BoltIcon from 'src/components/illustrations/BoltIcon';
 
 const meta = {
   component: EarnCard,
-  title: 'Components/Cards/EarnCard',
+  title: 'Earn/Cards',
   argTypes: {
     primaryAction: {
       control: false,
