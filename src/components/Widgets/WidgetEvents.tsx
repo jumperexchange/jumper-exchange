@@ -22,6 +22,7 @@ import type {
   ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
+  RouteSelected,
   SettingUpdated,
 } from '@lifi/widget';
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
@@ -352,6 +353,21 @@ export function WidgetEvents() {
       setContributionDisplayed(false);
     };
 
+    const onRouteSelected = async ({ route, routes }: RouteSelected) => {
+      const position = routes.findIndex((r) => r.id === route.id);
+      const data = handleRouteData(route, {
+        [TrackingEventParameter.RoutePosition]: position,
+        [TrackingEventParameter.TransactionStatus]: 'SELECTED',
+      });
+
+      trackTransaction({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnRouteSelected,
+        label: 'route_selected',
+        data,
+      });
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(
       WidgetEvent.LowAddressActivityConfirmed,
@@ -380,7 +396,7 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
     widgetEvents.on(WidgetEvent.SettingUpdated, onChangeSettings);
-    // widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
+    widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
     // widgetEvents.on(WidgetEvent.TokenSearch, onTokenSearch);
 
     // widgetEvents.on(WidgetEvent.WidgetExpanded, onWidgetExpanded);
@@ -424,6 +440,7 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
       widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
       widgetEvents.off(WidgetEvent.SettingUpdated, onChangeSettings);
+      widgetEvents.off(WidgetEvent.RouteSelected, onRouteSelected);
     };
   }, [
     activeTab,
