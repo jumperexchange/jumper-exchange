@@ -17,25 +17,28 @@ import { CustomAreaLayer } from './layers/CustomAreaLayer';
 
 export interface LineChartProps<T extends LineSeries> {
   data: T[];
-  lineColor?: string;
-  areaColor?: string;
-  pointColor?: string;
+  theme: {
+    lineColor?: string;
+    topAreaColor?: string;
+    bottomAreaColor?: string;
+    pointColor?: string;
+  };
   enableCrosshair?: boolean;
   enableGridY?: boolean;
   enableXAxis?: boolean;
   enableYAxis?: boolean;
+  enableTooltip?: boolean;
   dateFormat?: string;
 }
 
 export function LineChart<T extends LineSeries>({
   data,
-  lineColor,
-  areaColor,
-  pointColor,
+  theme: { lineColor, topAreaColor, bottomAreaColor, pointColor },
   enableCrosshair = false,
   enableGridY = false,
   enableXAxis = false,
   enableYAxis = false,
+  enableTooltip = false,
   dateFormat,
 }: LineChartProps<T>) {
   const theme = useTheme();
@@ -98,9 +101,9 @@ export function LineChart<T extends LineSeries>({
       animate
       isInteractive
       enableSlices="x"
-      sliceTooltip={(props: SliceTooltipProps<T>) => (
-        <CustomTooltip {...props} dateFormat={dateFormat} />
-      )}
+      sliceTooltip={(props: SliceTooltipProps<T>) =>
+        enableTooltip && <CustomTooltip {...props} dateFormat={dateFormat} />
+      }
       colors={[lineColor || (theme.vars || theme).palette.primary.main]}
       defs={[
         {
@@ -109,9 +112,13 @@ export function LineChart<T extends LineSeries>({
           colors: [
             {
               offset: 0,
-              color: areaColor || (theme.vars || theme).palette.primary.main,
+              color: topAreaColor || (theme.vars || theme).palette.primary.main,
             },
-            { offset: 100, color: 'white' },
+            {
+              offset: 100,
+              color:
+                bottomAreaColor || (theme.vars || theme).palette.white.main,
+            },
           ],
         },
       ]}
