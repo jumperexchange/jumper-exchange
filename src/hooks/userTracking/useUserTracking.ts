@@ -165,7 +165,7 @@ export function useUserTracking() {
           referrer: document?.referrer,
           abtests: activeAbTests,
           // data from handleRouteTrackingData:
-          action: data[TrackingEventParameter.Action] || '',
+          action: data[TrackingEventParameter.Action] ?? action ?? '',
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           exchange: data[TrackingEventParameter.Exchange],
