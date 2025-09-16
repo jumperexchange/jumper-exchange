@@ -1,12 +1,36 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAccount } from '@lifi/wallet-management';
-import { useWalletClient, useSwitchChain } from 'wagmi';
-import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
+import { useWalletClient, useSwitchChain, useConfig } from 'wagmi';
 import { createSweepTransferInstructions, hasTokensToSweep } from 'src/providers/ZapInitProvider/utils';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
+import { useZapData } from './useZapData';
+import { ProjectData } from 'src/types/questDetails';
 import { Hex } from 'viem';
 import { MultichainSmartAccount } from '@biconomy/abstractjs';
 import { ChainId, Token, getTokenBalances, getTokens, ChainType } from '@lifi/sdk';
+import { getConnectorClient } from 'wagmi/actions';
+import { useWaitForTransactionReceipt } from 'wagmi';
+import { formatUnits } from 'viem';
+
+type SweepStep = 
+  | 'idle'
+  | 'initializing'
+  | 'determining_chain'
+  | 'switching_chain'
+  | 'creating_instructions'
+  | 'getting_quote'
+  | 'executing'
+  | 'completed';
+
+interface SweepableToken {
+  address: string;
+  symbol: string;
+  name: string;
+  decimals: number;
+  chainId: number;
+  amount: string;
+  logoURI?: string;
+}
 
 interface UseSweepTokensReturn {
   isSweeping: boolean;
@@ -14,6 +38,13 @@ interface UseSweepTokensReturn {
   sweepSuccess: boolean;
   hasTokensToSweep: boolean;
   sweepTokens: () => Promise<void>;
+  txHash: `0x${string}` | undefined;
+  isTransactionReceiptLoading: boolean;
+  isTransactionReceiptSuccess: boolean;
+  refreshTokenCheck: () => void;
+  sweepStep: SweepStep;
+  sweepStepText: string;
+  sweepableTokens: SweepableToken[];
 }
 
 /**
@@ -72,22 +103,24 @@ const getTargetChainForSweep = async (
  * Custom hook to handle token sweeping functionality
  * Creates sweep transfer instructions for all token balances on the current EVM chain
  */
-export const useSweepTokens = (): UseSweepTokensReturn => {
+export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn => {
   const [isSweeping, setIsSweeping] = useState(false);
   const [sweepError, setSweepError] = useState<string | null>(null);
   const [sweepSuccess, setSweepSuccess] = useState(false);
   const [hasTokensToSweepState, setHasTokensToSweepState] = useState(false);
+  const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
+  const [hasCheckedTokens, setHasCheckedTokens] = useState(false);
+  const [sweepStep, setSweepStep] = useState<SweepStep>('idle');
+  const [sweepableTokens, setSweepableTokens] = useState<SweepableToken[]>([]);
   
   const { account } = useAccount();
   const address = account?.address;
   const chainId = account?.chainId;
-  const { 
-    isInitialized, 
-    isInitializedForCurrentChain,
-    zapData,
-    isZapDataSuccess,
-    projectData
-  } = useZapInitContext();
+  const wagmiConfig = useConfig();
+  
+  // Use the new API hook to get zap data
+  const { data: zapDataResponse, isSuccess: isZapDataSuccess } = useZapData({ projectData });
+  const zapData = zapDataResponse?.data;
 
   const { data: walletClient } = useWalletClient({
     account: address as Hex,
@@ -100,25 +133,127 @@ export const useSweepTokens = (): UseSweepTokensReturn => {
   const { switchChainAsync } = useSwitchChain();
   const getClients = useBiconomyClientsStore((state) => state.getClients);
 
-  // Check if there are tokens to sweep when dependencies change
+  // Function to get step text
+  const getStepText = (step: SweepStep): string => {
+    switch (step) {
+      case 'idle':
+        return 'Sweep';
+      case 'initializing':
+        return 'Initializing...';
+      case 'determining_chain':
+        return 'Connecting to RPC...';
+      case 'switching_chain':
+        return 'Switching chain...';
+      case 'creating_instructions':
+        return 'Creating instructions...';
+      case 'getting_quote':
+        return 'Getting quote...';
+      case 'executing':
+        return 'Executing sweep...';
+      case 'completed':
+        return 'Sweep completed';
+      default:
+        return 'Sweep';
+    }
+  };
+
+  // Memoized step text
+  const sweepStepText = useMemo(() => getStepText(sweepStep), [sweepStep]);
+
+  // Function to get sweepable tokens
+  const getSweepableTokens = async (oNexus: MultichainSmartAccount, currentChainId: number): Promise<SweepableToken[]> => {
+    try {
+      // Get all available tokens for EVM chains only
+      const tokensResponse = await getTokens({
+        chainTypes: [ChainType.EVM],
+      });
+      
+      // Get the smart account address
+      const accountAddress = oNexus.addressOn(currentChainId, true);
+      
+      // Check all EVM chains for tokens to sweep
+      const allEVMChains = Object.keys(tokensResponse.tokens).map(Number);
+      const allSweepableTokens: SweepableToken[] = [];
+      
+      for (const evmChainId of allEVMChains) {
+        const chainTokens = tokensResponse.tokens[evmChainId];
+        if (!chainTokens || chainTokens.length === 0) {
+          continue;
+        }
+        
+        // Get token balances for the account on this chain
+        const tokenBalances = await getTokenBalances(accountAddress, chainTokens);
+        
+        // Filter out tokens with zero balance and zero address
+        const tokensWithBalance = tokenBalances.filter(
+          (balance) => balance.amount && balance.amount > BigInt(0) && balance.address !== '0x0000000000000000000000000000000000000000'
+        );
+
+        // Convert to SweepableToken format
+        const chainSweepableTokens = tokensWithBalance.map((tokenBalance) => {
+          const token = chainTokens.find(t => t.address === tokenBalance.address);
+          return {
+            address: tokenBalance.address,
+            symbol: token?.symbol || 'Unknown',
+            name: token?.name || 'Unknown Token',
+            decimals: token?.decimals || 18,
+            chainId: evmChainId,
+            amount: formatUnits(tokenBalance.amount || BigInt(0), token?.decimals || 18),
+            logoURI: token?.logoURI,
+          };
+        });
+
+        allSweepableTokens.push(...chainSweepableTokens);
+      }
+
+      return allSweepableTokens;
+    } catch (error) {
+      console.error('Error getting sweepable tokens:', error);
+      return [];
+    }
+  };
+
+  // Track transaction receipt
+  const {
+    isLoading: isTransactionReceiptLoading,
+    isSuccess: isTransactionReceiptSuccess,
+  } = useWaitForTransactionReceipt({
+    chainId: projectData?.chainId,
+    hash: txHash,
+    confirmations: 5,
+    pollingInterval: 1_000,
+    query: {
+      enabled: !!projectData?.chainId && !!txHash,
+    },
+  });
+
+  // Check if there are tokens to sweep only once when page is loaded
   useEffect(() => {
     const checkTokensToSweep = async () => {
-      if (!address || !chainId || !isInitialized || !isInitializedForCurrentChain || !zapData || !isZapDataSuccess || !projectData || !walletClient) {
-        setHasTokensToSweepState(false);
+      // Only check if we haven't checked yet and all dependencies are ready
+      if (hasCheckedTokens || !address || !chainId || !zapData || !isZapDataSuccess || !projectData || !walletClient || !wagmiConfig) {
         return;
       }
 
+      console.log('Checking tokens to sweep (one-time check)...');
+      setHasCheckedTokens(true);
+
       try {
+        // Get the provider from wagmi config
+        const provider = await getConnectorClient(wagmiConfig, { chainId });
+        
+        // Try to get clients, but handle the case where they can't be initialized
         const clients = await getClients(
           projectData.address as Hex,
           projectData.chainId,
           walletClient, // Pass the actual wallet client
-          undefined, // provider - will be fetched internally
+          provider, // Pass the provider
           false, // isEmbeddedWallet
           chainId
         );
 
         if (!clients) {
+          console.log('Biconomy clients not available, skipping token sweep check');
           setHasTokensToSweepState(false);
           return;
         }
@@ -127,25 +262,47 @@ export const useSweepTokens = (): UseSweepTokensReturn => {
         
         // Check for tokens to sweep across all chains (not just current chain)
         const hasTokens = await hasTokensToSweep(oNexus, chainId);
+        
+        // Get the actual tokens available for sweeping
+        const tokens = await getSweepableTokens(oNexus, chainId);
 
         setHasTokensToSweepState(hasTokens);
+        setSweepableTokens(tokens);
+        console.log('Token sweep check completed. Has tokens to sweep:', hasTokens);
+        console.log('Sweepable tokens:', tokens);
       } catch (error) {
         console.error('Error checking tokens to sweep:', error);
+        // Don't set hasTokensToSweepState to false on error, just log it
+        // This allows the sweep functionality to still work if the check fails
         setHasTokensToSweepState(false);
       }
     };
 
     checkTokensToSweep();
-  }, [address, chainId, isInitialized, isInitializedForCurrentChain, zapData, isZapDataSuccess, projectData, walletClient, getClients]);
+  }, [address, chainId, zapData, isZapDataSuccess, projectData, walletClient, wagmiConfig, getClients, hasCheckedTokens]);
+
+  // Function to manually refresh token check
+  const refreshTokenCheck = useCallback(() => {
+    console.log('Manually refreshing token check...');
+    setHasCheckedTokens(false);
+    setHasTokensToSweepState(false);
+    setSweepableTokens([]);
+  }, []);
+
+  // Handle transaction success
+  useEffect(() => {
+    if (isTransactionReceiptSuccess) {
+      console.log('Sweep transaction confirmed successfully');
+      setSweepSuccess(true);
+      setSweepError(null);
+      // Refresh token check after successful sweep
+      refreshTokenCheck();
+    }
+  }, [isTransactionReceiptSuccess, refreshTokenCheck]);
 
   const sweepTokens = useCallback(async () => {
     if (!address || !chainId) {
       setSweepError('Wallet not connected');
-      return;
-    }
-
-    if (!isInitialized || !isInitializedForCurrentChain) {
-      setSweepError('Zap system not initialized for current chain');
       return;
     }
 
@@ -167,33 +324,40 @@ export const useSweepTokens = (): UseSweepTokensReturn => {
     setIsSweeping(true);
     setSweepError(null);
     setSweepSuccess(false);
+    setSweepStep('initializing');
 
     try {
       console.log('Starting sweep for chain:', chainId);
       console.log('Account address:', address);
+      
+      // Get the provider from wagmi config
+      setSweepStep('initializing');
+      const provider = await getConnectorClient(wagmiConfig, { chainId });
       
       // Get the biconomy clients (including oNexus)
       const clients = await getClients(
         projectData.address as Hex,
         projectData.chainId,
         walletClient, // Pass the actual wallet client
-        undefined, // provider - will be fetched internally
+        provider, // Pass the provider
         false, // isEmbeddedWallet
         chainId
       );
 
       if (!clients) {
-        throw new Error('Failed to initialize biconomy clients');
+        throw new Error('Biconomy clients not available. Please ensure your wallet is properly connected and try again.');
       }
 
       const { oNexus } = clients;
       
       // Determine the target chain for sweeping (chain with most tokens)
+      setSweepStep('determining_chain');
       const targetChainId = await getTargetChainForSweep(oNexus, chainId);
       
       // Check if we need to switch chains
       if (targetChainId !== chainId) {
         console.log(`Switching from chain ${chainId} to chain ${targetChainId} for sweep`);
+        setSweepStep('switching_chain');
         try {
           await switchChainAsync({ chainId: targetChainId });
           console.log(`Successfully switched to chain ${targetChainId}`);
@@ -205,10 +369,12 @@ export const useSweepTokens = (): UseSweepTokensReturn => {
       }
       
       // Create sweep transfer instructions for all token balances
+      setSweepStep('creating_instructions');
       const sweepInstructions = await createSweepTransferInstructions(oNexus, targetChainId);
       
       if (sweepInstructions.length === 0) {
         console.log('No tokens to sweep');
+        setSweepStep('completed');
         return;
       }
 
@@ -230,21 +396,24 @@ export const useSweepTokens = (): UseSweepTokensReturn => {
       };
 
       console.log('Executing sweep quote...');
+      setSweepStep('getting_quote');
       const quote = await meeClient.getQuote(sweepQuoteParams);
       
       console.log('Executing sweep transaction...');
+      setSweepStep('executing');
       const execution = await meeClient.executeQuote({ quote });
       
       console.log('Sweep transaction hash:', execution.hash);
-      console.log('Sweep completed successfully');
-      setSweepSuccess(true);
+      setTxHash(execution.hash);
+      setSweepStep('completed');
     } catch (error) {
       console.error('Sweep failed:', error);
       setSweepError(error instanceof Error ? error.message : 'Sweep failed');
+      setSweepStep('idle');
     } finally {
       setIsSweeping(false);
     }
-  }, [address, chainId, isInitialized, isInitializedForCurrentChain, zapData, isZapDataSuccess, projectData, walletClient, getClients, switchChainAsync]);
+  }, [address, chainId, zapData, isZapDataSuccess, projectData, walletClient, wagmiConfig, getClients, switchChainAsync]);
 
   return {
     isSweeping,
@@ -252,5 +421,12 @@ export const useSweepTokens = (): UseSweepTokensReturn => {
     sweepSuccess,
     hasTokensToSweep: hasTokensToSweepState,
     sweepTokens,
+    txHash,
+    isTransactionReceiptLoading,
+    isTransactionReceiptSuccess,
+    refreshTokenCheck,
+    sweepStep,
+    sweepStepText,
+    sweepableTokens,
   };
 };
