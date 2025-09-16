@@ -91,7 +91,7 @@ export const handleRouteData = (
   }
 
   const gasCostUSDNumber = Number(gasCostUSD);
-  if (gasCostUSDNumber) {
+  if (!isNaN(gasCostUSDNumber)) {
     routeData[TrackingEventParameter.GasCostUSD] = gasCostUSDNumber;
   }
 
