@@ -18,6 +18,7 @@ import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
+  ChainPinned,
   ChainTokenSelected,
   ContactSupport,
   RouteExecutionUpdate,
@@ -357,6 +358,18 @@ export function WidgetEvents() {
       });
     };
 
+    const onChainPinned = async ({ chainId, pinned }: ChainPinned) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: TrackingAction.OnChainPinned,
+        label: 'chain_pinned',
+        data: {
+          [TrackingEventParameter.ChainId]: chainId,
+          [TrackingEventParameter.Pinned]: pinned,
+        },
+      });
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(
       WidgetEvent.LowAddressActivityConfirmed,
@@ -386,6 +399,7 @@ export function WidgetEvents() {
     widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
     widgetEvents.on(WidgetEvent.SettingUpdated, onChangeSettings);
     widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
+    widgetEvents.on(WidgetEvent.ChainPinned, onChainPinned);
 
     return () => {
       widgetEvents.off(
@@ -426,6 +440,7 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
       widgetEvents.off(WidgetEvent.SettingUpdated, onChangeSettings);
       widgetEvents.off(WidgetEvent.RouteSelected, onRouteSelected);
+      widgetEvents.off(WidgetEvent.ChainPinned, onChainPinned);
     };
   }, [
     activeTab,
