@@ -1,5 +1,5 @@
 'use client';
-
+import { EarnFiltering } from './EarnFiltering';
 import { useEarnFiltering, withEarnFiltering } from './EarnFilteringContext';
 
 const EarnOpportunitiesAll_ = () => {
@@ -33,6 +33,7 @@ const EarnOpportunitiesAll_ = () => {
     return (
       <div>
         <h1>All</h1>
+        <EarnFiltering />
         <pre>{allLoading ? 'Loading...' : 'Loaded'}</pre>
         <pre>{JSON.stringify(all, null, 2)}</pre>
         <pre>{allError ? 'Error' : 'No error'}</pre>

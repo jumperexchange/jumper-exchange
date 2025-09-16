@@ -42,7 +42,7 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   filter: {},
-  setFilter: () => {},
+  updateFilter: () => {},
   showForYou: false,
   toggleForYou: () => {},
   forYou: [],
@@ -86,7 +86,10 @@ export const EarnFilteringProvider = ({
     }
 
     setInitialData((current) => {
-      return current ?? all.data;
+      if (current.length === 0) {
+        return all.data;
+      }
+      return current;
     });
   }, [all.data]);
 
@@ -106,9 +109,16 @@ export const EarnFilteringProvider = ({
     return extractFilteringParams(initialData);
   }, [initialData]);
 
+  const updateFilter = useCallback(
+    (filter: EarnOpportunityFilter) => {
+      setFilter((current) => ({ ...current, ...filter }));
+    },
+    [setFilter],
+  );
+
   const context: EarnFilteringContextType = {
     filter,
-    setFilter,
+    updateFilter,
     showForYou,
     toggleForYou,
     forYou: forYou.data ?? [],
@@ -159,16 +169,16 @@ const extractFilteringParams = (
   data: EarnOpportunity[],
 ): EarnFilteringParams => {
   let allChains = [...map(data, 'lpToken.chain'), ...map(data, 'asset.chain')];
-  allChains = uniqBy(allChains, 'chainId');
+  allChains = uniqBy(allChains, 'chainId').filter(Boolean);
 
   let allProtocols = map(data, 'protocol');
-  allProtocols = uniqBy(allProtocols, 'name');
+  allProtocols = uniqBy(allProtocols, 'name').filter(Boolean);
 
   let allAssets = map(data, 'asset');
-  allAssets = uniqBy(allAssets, 'address');
+  allAssets = uniqBy(allAssets, 'address').filter(Boolean);
 
   let allTags = map(data, 'tags').flat();
-  allTags = uniqBy(allTags, 'tag');
+  allTags = uniqBy(allTags, 'tag').filter(Boolean);
 
   let allAPY = {
     0.1: 1,
