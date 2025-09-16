@@ -1,23 +1,59 @@
 'use client';
 
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
-import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
+import { useEarnFiltering, withEarnFiltering } from './EarnFilteringContext';
 
-export const EarnOpportunitiesAll = () => {
-  const filter: EarnOpportunityFilter = {
-    chainId: 42,
+const EarnOpportunitiesAll_ = () => {
+  const {
+    totalMarkets,
+    forYouLoading,
+    forYouError,
+    forYou,
+    allLoading,
+    allError,
+    all,
+    showForYou,
+    toggleForYou,
+  } = useEarnFiltering();
+
+  const formatedTotalMarkets = totalMarkets.toLocaleString();
+
+  const ForYou = () => {
+    return (
+      <div>
+        <h1>For You</h1>
+        <pre>{forYouLoading ? 'Loading...' : 'Loaded'}</pre>
+        <pre>{JSON.stringify(forYou, null, 2)}</pre>
+        <pre>{forYouError ? 'Error' : 'No error'}</pre>
+        <pre>{JSON.stringify(forYouError, null, 2)}</pre>
+      </div>
+    );
   };
-  const { data, isLoading, error, isError } = useEarnFilterOpportunities({
-    filter,
-  });
+
+  const All = () => {
+    return (
+      <div>
+        <h1>All</h1>
+        <pre>{allLoading ? 'Loading...' : 'Loaded'}</pre>
+        <pre>{JSON.stringify(all, null, 2)}</pre>
+        <pre>{allError ? 'Error' : 'No error'}</pre>
+        <pre>{JSON.stringify(allError, null, 2)}</pre>
+      </div>
+    );
+  };
 
   return (
     <div>
-      <h1>EarnOpportunitiesSearch</h1>
-      <pre>{isLoading ? 'Loading...' : 'Loaded'}</pre>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <pre>{isError ? 'Error' : 'No error'}</pre>
-      <pre>{JSON.stringify(error, null, 2)}</pre>
+      <h1>Markets</h1>
+      <p>
+        Explore curated and comprehensive ways to put your assets to work across{' '}
+        {formatedTotalMarkets}+ markets
+      </p>
+      <button onClick={toggleForYou}>
+        {showForYou ? 'Show All' : 'Show For You'}
+      </button>
+      {showForYou ? <ForYou /> : <All />}
     </div>
   );
 };
+
+export const EarnOpportunitiesAll = withEarnFiltering(EarnOpportunitiesAll_);

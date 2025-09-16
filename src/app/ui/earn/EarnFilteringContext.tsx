@@ -1,0 +1,186 @@
+import { map, uniqBy } from 'lodash';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
+import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
+import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
+import {
+  Chain,
+  EarnOpportunity,
+  Protocol,
+  Token,
+} from 'src/types/jumper-backend';
+import { Hex } from 'viem';
+
+export interface EarnFilteringParams {
+  allChains: Chain[];
+  allProtocols: Protocol[];
+  allAssets: Token[];
+  allTags: string[];
+  allAPY: Record<number, number>; // histogram of apy
+}
+
+export interface EarnFilteringContextType extends EarnFilteringParams {
+  filter: EarnOpportunityFilter;
+  setFilter: (filter: EarnOpportunityFilter) => void;
+  showForYou: boolean;
+  toggleForYou: () => void;
+  forYou: EarnOpportunity[];
+  forYouLoading: boolean;
+  forYouError: unknown | null;
+  all: EarnOpportunity[];
+  allLoading: boolean;
+  allError: unknown | null;
+  totalMarkets: number;
+}
+
+export const EarnFilteringContext = createContext<EarnFilteringContextType>({
+  filter: {},
+  setFilter: () => {},
+  showForYou: false,
+  toggleForYou: () => {},
+  forYou: [],
+  forYouLoading: false,
+  forYouError: null,
+  all: [],
+  allLoading: false,
+  allError: null,
+  totalMarkets: 0,
+  allChains: [],
+  allProtocols: [],
+  allAssets: [],
+  allTags: [],
+  allAPY: {},
+});
+
+export const EarnFilteringProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const address: Hex | undefined = useAccountAddress();
+  const [initialData, setInitialData] = useState<EarnOpportunity[]>([]);
+
+  const forYou = useEarnFilterOpportunities({
+    filter: {
+      forYou: true,
+      address,
+    },
+  });
+
+  const [filter, setFilter] = useState<EarnOpportunityFilter>({});
+  const all = useEarnFilterOpportunities({
+    filter,
+  });
+
+  // Keep our initial data for later use (filters, etc).
+  useEffect(() => {
+    if (!all.data) {
+      return;
+    }
+
+    setInitialData((current) => {
+      return current ?? all.data;
+    });
+  }, [all.data]);
+
+  const totalMarkets = initialData.length;
+
+  const [showForYou, setShowForYou] = useState(true);
+
+  const toggleForYou = useCallback(() => {
+    setShowForYou((current) => !current);
+  }, [setShowForYou]);
+
+  const stats = useMemo((): EarnFilteringParams => {
+    if (!initialData || initialData.length === 0) {
+      return EMPTY_FILTERING_PARAMS;
+    }
+
+    return extractFilteringParams(initialData);
+  }, [initialData]);
+
+  const context: EarnFilteringContextType = {
+    filter,
+    setFilter,
+    showForYou,
+    toggleForYou,
+    forYou: forYou.data ?? [],
+    forYouLoading: forYou.isLoading,
+    forYouError: forYou.error ?? null,
+    all: all.data ?? [],
+    allLoading: all.isLoading,
+    allError: all.error ?? null,
+    totalMarkets,
+    ...stats,
+  };
+
+  console.log('context', context);
+
+  return (
+    <EarnFilteringContext.Provider value={context}>
+      {children}
+    </EarnFilteringContext.Provider>
+  );
+};
+
+export const withEarnFiltering = <P extends object>(
+  Component: React.ComponentType<P>,
+) => {
+  const Wrapped = (props: P) => (
+    <EarnFilteringProvider>
+      <Component {...props} />
+    </EarnFilteringProvider>
+  );
+
+  Wrapped.displayName = `withEarnFiltering(${Component.displayName || Component.name || 'Component'})`;
+  return Wrapped;
+};
+
+export const useEarnFiltering = (): EarnFilteringContextType => {
+  return useContext(EarnFilteringContext);
+};
+
+const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
+  allChains: [],
+  allProtocols: [],
+  allAssets: [],
+  allTags: [],
+  allAPY: {},
+};
+
+const extractFilteringParams = (
+  data: EarnOpportunity[],
+): EarnFilteringParams => {
+  let allChains = [...map(data, 'lpToken.chain'), ...map(data, 'asset.chain')];
+  allChains = uniqBy(allChains, 'chainId');
+
+  let allProtocols = map(data, 'protocol');
+  allProtocols = uniqBy(allProtocols, 'name');
+
+  let allAssets = map(data, 'asset');
+  allAssets = uniqBy(allAssets, 'address');
+
+  let allTags = map(data, 'tags').flat();
+  allTags = uniqBy(allTags, 'tag');
+
+  let allAPY = {
+    0.1: 1,
+    0.2: 2,
+    0.3: 3,
+  };
+
+  return {
+    allChains,
+    allProtocols,
+    allAssets,
+    allTags,
+    allAPY,
+  };
+};
