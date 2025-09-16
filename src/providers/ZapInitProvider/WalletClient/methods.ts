@@ -7,27 +7,27 @@ import {
   UserOpStatus,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
-import {
-  WalletCall,
-  GetCapabilitiesArgs,
-  GetCallsStatusArgs,
-  WalletMethodsRef,
-  SendCallsArgs,
-  WaitCallsStatusArgs,
-} from '../types';
+import { getTokenBalance } from '@lifi/sdk';
+import { minutesToMilliseconds } from 'date-fns';
+import { findChain } from 'src/utils/chains/findChain';
+import { RetryStoppedError } from 'src/utils/errors';
+import { retryWithTimeout } from 'src/utils/retryWithTimeout';
+import { Hex, TransactionReceipt, zeroAddress } from 'viem';
+import { TIMEOUT_IN_MINUTES } from '../constants';
 import {
   buildContractInstructions,
   SendCallsExtraParams,
 } from '../ModularZaps';
-import { getTokenBalance } from '@lifi/sdk';
-import { Hex, TransactionReceipt, zeroAddress } from 'viem';
+import {
+  GetCallsStatusArgs,
+  GetCapabilitiesArgs,
+  SendCallsArgs,
+  WaitCallsStatusArgs,
+  WalletCall,
+  WalletMethodsRef,
+} from '../types';
 import { isSameToken } from '../utils';
-import { findChain } from 'src/utils/chains/findChain';
 import { executeQuoteStrategy } from './quotes';
-import { minutesToMilliseconds } from 'date-fns';
-import { TIMEOUT_IN_MINUTES } from '../constants';
-import { retryWithTimeout } from 'src/utils/retryWithTimeout';
-import { RetryStoppedError } from 'src/utils/errors';
 
 type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
   Pick<TransactionReceipt, 'status' | 'transactionHash'> & {
@@ -185,6 +185,7 @@ export const sendCalls = async (
   const currentChainId = sendCallsExtraParams.currentRoute.fromChainId;
   const currentAddress = sendCallsExtraParams.currentRoute.fromAddress;
   const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
+  const currentRouteToToken = sendCallsExtraParams.currentRoute.toToken;
   const currentRouteFromAmount = sendCallsExtraParams.currentRoute.fromAmount;
   const currentRouteFromAmountFormatted = BigInt(currentRouteFromAmount);
   const integrationData = sendCallsExtraParams.zapData;
@@ -223,6 +224,7 @@ export const sendCalls = async (
           ? currentRouteFromAmountFormatted
           : undefined,
       };
+
       return oNexusParam.buildComposable({
         type: 'rawCalldata',
         data,

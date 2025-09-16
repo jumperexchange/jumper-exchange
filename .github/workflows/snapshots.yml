@@ -1,0 +1,50 @@
+name: Snapshot Tests
+on:
+  - pull_request
+  - workflow_dispatch
+permissions:
+  checks: write
+  pull-requests: write
+  contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      summary: ${{ steps.results.outputs.summary }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run tests
+        id: test
+        run: pnpm test:snapshots
+        continue-on-error: true
+      - name: Get test results
+        id: results
+        run: |
+          if [ ${{ steps.test.outcome }} == 'success' ]; then
+            echo "summary=✅ All snapshot tests passed" >> "$GITHUB_OUTPUT"
+          else
+            echo "summary=❌ Some snapshot tests failed. Check the logs for details." >> "$GITHUB_OUTPUT"
+          fi
+  post-comment:
+    needs: [test]
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: marocchino/sticky-pull-request-comment@v2
+        env:
+          SUMMARY: ${{needs.test.outputs.summary}}
+        with:
+          header: Snapshot Tests Summary
+          message: ${{ env.SUMMARY }}
