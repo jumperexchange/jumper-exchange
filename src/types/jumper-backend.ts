@@ -699,7 +699,21 @@ export interface Protocol {
   logo: string;
 }
 
-export interface EarnOpportunity {
+export interface APYItem {
+  base: number;
+  reward: number;
+  total: number;
+}
+
+export interface EarnOpportunityHistoryItem {
+  /** @format date-time */
+  date: string;
+  tvlUsd: string;
+  tvlNative: string;
+  apy: APYItem;
+}
+
+export interface EarnOpportunityWithLatestAnalytics {
   name: string;
   asset: Token;
   protocol: Protocol;
@@ -712,6 +726,8 @@ export interface EarnOpportunity {
   featured: boolean;
   lockupMonths: number;
   capInDollar: string;
+  forYou: boolean;
+  latest: EarnOpportunityHistoryItem;
 }
 
 export type WalletVerification = object;
@@ -1094,7 +1110,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunity[], any>({
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/tops`,
         method: 'GET',
         query: query,
@@ -1140,7 +1156,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunity[], any>({
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/filter`,
         method: 'GET',
         query: query,
@@ -1157,7 +1173,7 @@ export class JumperBackend<
      * @request GET:/v1/earn/items/{slug}
      */
     earnControllerGetItemV1: (slug: string, params: RequestParams = {}) =>
-      this.request<EarnOpportunity, any>({
+      this.request<EarnOpportunityWithLatestAnalytics, any>({
         path: `/v1/earn/items/${slug}`,
         method: 'GET',
         format: 'json',
