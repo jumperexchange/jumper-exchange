@@ -101,12 +101,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
               </ClientOnly>
             )}
             sx={{
-              mb: 3,
-              width: '100%',
-              '& .MuiTab-root': {
-                maxWidth: '100%',
-                width: '100%',
-              },
+              mb: 3
             }}
           />
         </Box>
