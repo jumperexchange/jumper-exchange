@@ -171,6 +171,7 @@
     "tasks": {
       "type": "",
       "typeFallback": "",
+      "typeOptional": "",
       "status": {
         "verify": "",
         "verified": ""
@@ -259,7 +260,8 @@
     "apy": "Taux de rendement annuel attendu des jetons investis.",
     "deposit": "",
     "deposited": "",
-    "boostedApy": ""
+    "boostedApy": "",
+    "lockupPeriod": ""
   },
   "widget": {
     "depositCard": {
@@ -272,10 +274,24 @@
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
       "placeholder": {
-        "title": "",
-        "description": ""
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
       }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": ""
   }
 }
