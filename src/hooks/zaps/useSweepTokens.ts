@@ -91,7 +91,6 @@ const getTargetChainForSweep = async (
       }
     }
 
-    console.log(`Target chain for sweep: ${maxTokensChain} (${maxTokensCount} tokens)`);
     return maxTokensChain;
   } catch (error) {
     console.error('Error determining target chain for sweep:', error);
@@ -235,7 +234,6 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
         return;
       }
 
-      console.log('Checking tokens to sweep (one-time check)...');
       setHasCheckedTokens(true);
 
       try {
@@ -253,7 +251,6 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
         );
 
         if (!clients) {
-          console.log('Biconomy clients not available, skipping token sweep check');
           setHasTokensToSweepState(false);
           return;
         }
@@ -268,8 +265,6 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
 
         setHasTokensToSweepState(hasTokens);
         setSweepableTokens(tokens);
-        console.log('Token sweep check completed. Has tokens to sweep:', hasTokens);
-        console.log('Sweepable tokens:', tokens);
       } catch (error) {
         console.error('Error checking tokens to sweep:', error);
         // Don't set hasTokensToSweepState to false on error, just log it
@@ -283,7 +278,6 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
 
   // Function to manually refresh token check
   const refreshTokenCheck = useCallback(() => {
-    console.log('Manually refreshing token check...');
     setHasCheckedTokens(false);
     setHasTokensToSweepState(false);
     setSweepableTokens([]);
@@ -292,7 +286,6 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
   // Handle transaction success
   useEffect(() => {
     if (isTransactionReceiptSuccess) {
-      console.log('Sweep transaction confirmed successfully');
       setSweepSuccess(true);
       setSweepError(null);
       // Refresh token check after successful sweep
@@ -327,9 +320,6 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
     setSweepStep('initializing');
 
     try {
-      console.log('Starting sweep for chain:', chainId);
-      console.log('Account address:', address);
-      
       // Get the provider from wagmi config
       setSweepStep('initializing');
       const provider = await getConnectorClient(wagmiConfig, { chainId });
@@ -356,11 +346,9 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
       
       // Check if we need to switch chains
       if (targetChainId !== chainId) {
-        console.log(`Switching from chain ${chainId} to chain ${targetChainId} for sweep`);
         setSweepStep('switching_chain');
         try {
           await switchChainAsync({ chainId: targetChainId });
-          console.log(`Successfully switched to chain ${targetChainId}`);
         } catch (switchError) {
           console.error('Failed to switch chain:', switchError);
           setSweepError('Failed to switch to the required chain for sweeping');
@@ -373,12 +361,9 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
       const sweepInstructions = await createSweepTransferInstructions(oNexus, targetChainId);
       
       if (sweepInstructions.length === 0) {
-        console.log('No tokens to sweep');
         setSweepStep('completed');
         return;
       }
-
-      console.log(`Created ${sweepInstructions.length} sweep instructions`);
       
       // Execute the sweep instructions
       const { meeClient } = clients;
@@ -395,15 +380,12 @@ export const useSweepTokens = (projectData: ProjectData): UseSweepTokensReturn =
         upperBoundTimestamp: Math.ceil(Date.now() / 1000) + 300, // 5 minutes timeout
       };
 
-      console.log('Executing sweep quote...');
       setSweepStep('getting_quote');
       const quote = await meeClient.getQuote(sweepQuoteParams);
       
-      console.log('Executing sweep transaction...');
       setSweepStep('executing');
       const execution = await meeClient.executeQuote({ quote });
       
-      console.log('Sweep transaction hash:', execution.hash);
       setTxHash(execution.hash);
       setSweepStep('completed');
     } catch (error) {
