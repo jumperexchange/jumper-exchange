@@ -38,9 +38,9 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     state.setSupportModalState,
   ]);
 
-  // const poolName = useMemo(() => {
-  //   return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  // }, [JSON.stringify(zapData ?? {})]);
+  const poolName = useMemo(() => {
+    return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
+  }, [JSON.stringify(zapData ?? {})]);
 
   const toToken = useMemo(() => {
     return zapData?.market?.depositToken.address;
@@ -69,10 +69,10 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return {
       ...ctx,
       includeZap: true,
-      // zapPoolName: poolName,
+      zapPoolName: poolName,
       baseOverrides,
     };
-  }, [JSON.stringify(ctx), projectData.integrator]);
+  }, [JSON.stringify(ctx), projectData.integrator, poolName]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
 
