@@ -1,6 +1,6 @@
+import envConfig from '@/config/env-config';
 import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
-import envConfig from '@/config/env-config';
 import { publicRPCList } from 'src/const/rpcList';
 
 export const BICONOMY_EXPLORER_URL = 'https://meescan.biconomy.io';
@@ -29,7 +29,7 @@ export const useZapRPC = () => {
       explorerUrls,
       keyPrefix: 'jumper-custom-zap',
       bridges: {
-        deny: ['gasZipBridge', 'glacis'],
+        allow: ['across', 'relay'],
       },
       sdkConfig: {
         apiUrl: envConfig.NEXT_PUBLIC_LIFI_API_URL,
@@ -41,6 +41,7 @@ export const useZapRPC = () => {
           allowSwitchChain: false,
         },
       },
+      buildUrl: true,
       useRecommendedRoute: true,
       contractCompactComponent: <></>,
     };

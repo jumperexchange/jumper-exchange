@@ -10,7 +10,7 @@ import {
 type ButtonVariant = 'primary' | 'secondary' | 'transparent';
 type ButtonSize = 'small' | 'medium' | 'large';
 
-interface ButtonProps {
+export interface ButtonProps {
   variant?: ButtonVariant;
   styles?: SxProps<Theme>;
   id?: string;

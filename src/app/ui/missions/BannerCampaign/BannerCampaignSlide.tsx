@@ -6,10 +6,10 @@ import { BannerCampaignContent } from './BannerCampaignContent';
 import { useCampaignDisplayData } from 'src/hooks/campaigns/useCampaignDisplayData';
 import { useRouter } from 'next/navigation';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
-import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { useTranslation } from 'react-i18next';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ChainAvatarSize } from 'src/components/ChainStack/ChainStack.style';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
 interface BannerCampaignSlideProps {
   campaign: CampaignData;
@@ -64,7 +64,7 @@ export const BannerCampaignSlide: FC<BannerCampaignSlideProps> = ({
           description={
             <ChainStack
               chainIds={rewardChainIds}
-              size={isMobile ? ChainAvatarSize.XS : ChainAvatarSize.MD}
+              size={isMobile ? AvatarSize.XS : AvatarSize.MD}
             />
           }
           variant={bannerStatsCardVariant}

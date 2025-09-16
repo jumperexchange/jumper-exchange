@@ -8,6 +8,11 @@ import {
 } from 'src/types/strapi';
 import { createWithEqualityFn } from 'zustand/traditional';
 
+export interface TaskFormState {
+  hasForm: boolean;
+  isFormValid: boolean;
+}
+
 interface MissionState {
   currentActiveTaskId?: string;
   currentActiveTaskType?: TaskType;
@@ -16,7 +21,7 @@ interface MissionState {
   isCurrentActiveTaskCompleted: boolean;
   setIsCurrentActiveTaskCompleted: (isCompleted: boolean) => void;
 
-  taskFormStates: Record<string, { hasForm: boolean; isFormValid: boolean }>;
+  taskFormStates: Record<string, TaskFormState>;
   setTaskFormState: (
     taskId: string,
     hasForm: boolean,
@@ -26,6 +31,7 @@ interface MissionState {
     hasForm: boolean;
     isFormValid: boolean;
   };
+  initializeTaskFormStates: (formStates: Record<string, TaskFormState>) => void;
 
   taskTitle?: string;
   taskDescription?: string;
@@ -128,6 +134,9 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
       return (
         state.taskFormStates[taskId] || { hasForm: false, isFormValid: true }
       );
+    },
+    initializeTaskFormStates: (formStates) => {
+      set({ taskFormStates: formStates });
     },
 
     destinationChain: undefined,

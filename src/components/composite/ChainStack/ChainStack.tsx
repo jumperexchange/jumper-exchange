@@ -1,0 +1,43 @@
+import { FC, useMemo } from 'react';
+import { useChains } from 'src/hooks/useChains';
+import { AvatarStack } from '../../core/AvatarStack/AvatarStack';
+import {
+  AvatarSize,
+  AvatarStackDirection,
+} from '../../core/AvatarStack/AvatarStack.types';
+
+interface ChainStackProps {
+  chainIds: string[];
+  size?: AvatarSize;
+  spacing?: number;
+  direction?: AvatarStackDirection;
+}
+
+// @TODO use this for the missions cards
+export const ChainStack: FC<ChainStackProps> = ({
+  chainIds,
+  size,
+  spacing = -1.5,
+  direction = 'row',
+}) => {
+  const { getChainById } = useChains();
+  const enhancedChains = useMemo(() => {
+    return chainIds.map((chainId) => {
+      const chain = getChainById(Number(chainId));
+      return {
+        id: chainId,
+        src: chain?.logoURI || '',
+        alt: chain?.name || '',
+      };
+    });
+  }, [chainIds, getChainById]);
+
+  return (
+    <AvatarStack
+      avatars={enhancedChains}
+      size={size}
+      spacing={spacing}
+      direction={direction}
+    />
+  );
+};
