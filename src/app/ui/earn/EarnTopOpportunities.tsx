@@ -12,7 +12,7 @@ export const EarnTopOpportunities = () => {
 
   return (
     <div>
-      {data?.map((opportunity, index) => (
+      {/* {data?.map((opportunity, index) => (
         <EarnCard
           {...opportunity}
           key={index}
@@ -25,7 +25,7 @@ export const EarnTopOpportunities = () => {
             tokens: [opportunity.asset],
           }}
         />
-      ))}
+      ))} */}
       <pre>{isLoading ? 'Loading...' : 'Loaded'}</pre>
       <pre>{JSON.stringify(data, null, 2)}</pre>
       <pre>{isError ? 'Error' : 'No error'}</pre>
