@@ -274,6 +274,10 @@
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
       "placeholder": {
         "comingSoon": "",
         "embedded-multisig": {
@@ -286,5 +290,8 @@
         }
       }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": ""
   }
 }
