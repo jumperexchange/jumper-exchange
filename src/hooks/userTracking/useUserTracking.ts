@@ -72,7 +72,12 @@ const addressableEvent = ({
     );
 };
 
-export function useUserTracking() {
+export interface UserTracking {
+  trackEvent: (event: TrackEventProps) => Promise<void>;
+  trackTransaction: (transaction: TrackTransactionProps) => Promise<void>;
+}
+
+export function useUserTracking(): UserTracking {
   const { account } = useAccount();
   const isDesktop = useMediaQuery(
     (theme: Theme) => theme?.breakpoints.up('md') || '0',

@@ -16,6 +16,7 @@ import {
   useMemo,
   useRef,
 } from 'react';
+import { makePosthogTracker } from 'src/components/Widgets/PosthogTracker';
 import {
   TrackingAction,
   TrackingCategory,
@@ -86,6 +87,9 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const sourceChainToken = useRef<ChainTokenSelected | null>(null);
   const destinationChainToken = useRef<ChainTokenSelected | null>(null);
   const isRoutesForCurrentSourceTokenTracked = useRef(false);
+  const posthogTracker = useMemo(() => {
+    return makePosthogTracker({ trackTransaction, trackEvent });
+  }, [trackTransaction, trackEvent]);
 
   const trackSourceToken = useCallback(
     (sourceToken: ChainTokenSelected) => {
@@ -278,6 +282,9 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
     widgetEvents.on(WidgetEvent.SettingUpdated, trackChangeSettings);
 
+    widgetEvents.on(WidgetEvent.RouteSelected, posthogTracker.onRouteSelected);
+    widgetEvents.on(WidgetEvent.ChainPinned, posthogTracker.onChainPinned);
+
     return () => {
       widgetEvents.off(WidgetEvent.SourceChainTokenSelected, trackSourceToken);
       widgetEvents.off(WidgetEvent.AvailableRoutes, trackAvailableRoutes);
@@ -294,6 +301,11 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         trackRouteExecutionFailed,
       );
       widgetEvents.off(WidgetEvent.SettingUpdated, trackChangeSettings);
+      widgetEvents.off(
+        WidgetEvent.RouteSelected,
+        posthogTracker.onRouteSelected,
+      );
+      widgetEvents.off(WidgetEvent.ChainPinned, posthogTracker.onChainPinned);
     };
   }, [
     widgetEvents,

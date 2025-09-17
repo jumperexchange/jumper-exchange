@@ -18,16 +18,14 @@ import type { RouteExtended } from '@lifi/sdk';
 import { type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
-  ChainPinned,
   ChainTokenSelected,
   ContactSupport,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
-  RouteSelected,
   SettingUpdated,
 } from '@lifi/widget';
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteModal';
 import type { JumperEventData } from 'src/hooks/useJumperTracking';
@@ -36,6 +34,7 @@ import { useRouteStore } from 'src/stores/route/RouteStore';
 import { TransformedRoute } from 'src/types/internal';
 import { handleRouteData } from 'src/utils/routes';
 import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
+import { makePosthogTracker } from './PosthogTracker';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -73,6 +72,10 @@ export function WidgetEvents() {
   const { setContributed, setContributionDisplayed } = useContributionStore(
     (state) => state,
   );
+
+  const posthogTracker = useMemo(() => {
+    return makePosthogTracker({ trackTransaction, trackEvent });
+  }, [trackTransaction, trackEvent]);
 
   useEffect(() => {
     const onRouteExecutionStarted = async (route: RouteExtended) => {
@@ -343,33 +346,6 @@ export function WidgetEvents() {
       setContributionDisplayed(false);
     };
 
-    const onRouteSelected = async ({ route, routes }: RouteSelected) => {
-      const position = routes.findIndex((r) => r.id === route.id);
-      const data = handleRouteData(route, {
-        [TrackingEventParameter.RoutePosition]: position,
-        [TrackingEventParameter.TransactionStatus]: 'SELECTED',
-      });
-
-      trackTransaction({
-        category: TrackingCategory.WidgetEvent,
-        action: TrackingAction.OnRouteSelected,
-        label: 'route_selected',
-        data,
-      });
-    };
-
-    const onChainPinned = async ({ chainId, pinned }: ChainPinned) => {
-      trackEvent({
-        category: TrackingCategory.WidgetEvent,
-        action: TrackingAction.OnChainPinned,
-        label: 'chain_pinned',
-        data: {
-          [TrackingEventParameter.ChainId]: chainId,
-          [TrackingEventParameter.Pinned]: pinned,
-        },
-      });
-    };
-
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(
       WidgetEvent.LowAddressActivityConfirmed,
@@ -398,8 +374,8 @@ export function WidgetEvents() {
     );
     widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
     widgetEvents.on(WidgetEvent.SettingUpdated, onChangeSettings);
-    widgetEvents.on(WidgetEvent.RouteSelected, onRouteSelected);
-    widgetEvents.on(WidgetEvent.ChainPinned, onChainPinned);
+    widgetEvents.on(WidgetEvent.RouteSelected, posthogTracker.onRouteSelected);
+    widgetEvents.on(WidgetEvent.ChainPinned, posthogTracker.onChainPinned);
 
     return () => {
       widgetEvents.off(
@@ -439,8 +415,11 @@ export function WidgetEvents() {
       widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
       widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
       widgetEvents.off(WidgetEvent.SettingUpdated, onChangeSettings);
-      widgetEvents.off(WidgetEvent.RouteSelected, onRouteSelected);
-      widgetEvents.off(WidgetEvent.ChainPinned, onChainPinned);
+      widgetEvents.off(
+        WidgetEvent.RouteSelected,
+        posthogTracker.onRouteSelected,
+      );
+      widgetEvents.off(WidgetEvent.ChainPinned, posthogTracker.onChainPinned);
     };
   }, [
     activeTab,
