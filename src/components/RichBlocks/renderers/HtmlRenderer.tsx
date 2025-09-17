@@ -17,6 +17,7 @@ export const HtmlRenderer: FC<HtmlRendererProps> = ({
     strikethrough={strikethrough}
     underline={underline}
     bold={bold}
+    as="div"
   >
     {parse(text)}
   </Paragraph>
