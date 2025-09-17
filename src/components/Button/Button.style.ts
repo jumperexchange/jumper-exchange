@@ -1,7 +1,7 @@
 'use client';
 import type { ButtonProps as MuiButtonProps } from '@mui/material';
-import { Button as MuiButton, alpha } from '@mui/material'; //ButtonProps
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
+import MuiButton, { buttonClasses } from '@mui/material/Button';
 
 const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   borderRadius: '24px',
@@ -32,6 +32,22 @@ export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
     backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
+  },
+}));
+
+export const ButtonTertiary = styled(MuiButton)(({ theme }) => ({
+  height: 40,
+  fontSize: 14,
+  color: theme.vars.palette.text.primary,
+  backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  '&:hover, &:active': {
+    backgroundColor: (theme.vars || theme).palette.alpha200.main,
+  },
+  [`&.${buttonClasses.loading}:disabled`]: {
+    backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  },
+  [`.${buttonClasses.loadingIndicator}`]: {
+    color: (theme.vars || theme).palette.text.primary,
   },
 }));
 

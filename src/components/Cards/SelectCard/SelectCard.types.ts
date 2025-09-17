@@ -5,7 +5,7 @@ export interface SelectCardBaseProps {
   label?: string;
   value?: string;
   placeholder: string;
-  description?: string;
+  description?: ReactNode;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   mode: SelectCardMode;

@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { WithdrawFormContainer } from './WithdrawWidget.style';
-import { AbiParameter, parseUnits } from 'viem';
+import { AbiParameter, formatUnits, parseUnits } from 'viem';
 import { Button } from 'src/components/Button/Button';
 import { ConnectButton } from 'src/components/ConnectButton';
 import {
@@ -23,6 +23,7 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
   errorMessage,
   projectData,
   balance,
+  lpTokenDecimals,
   token,
   poolName,
   overrideStyle,
@@ -37,6 +38,14 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
   const { switchChainAsync } = useSwitchChain();
   const { token: tokenInfo } = useToken(token.chainId, token.address);
 
+  const maxFormattedAmount = useMemo(() => {
+    return parseFloat(formatUnits(BigInt(balance), lpTokenDecimals));
+  }, [balance, lpTokenDecimals]);
+
+  const maxAmount = useMemo(() => {
+    return BigInt(balance);
+  }, [balance]);
+
   const helperText = useMemo(
     () => ({
       left: 'Available balance',
@@ -44,6 +53,18 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
     }),
     [balance],
   );
+
+  const hintEndAdornment = useMemo(() => {
+    return (
+      `/ ` +
+      Intl.NumberFormat('en-US', {
+        notation: 'compact',
+        useGrouping: true,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: maxFormattedAmount > 1 ? 1 : 4,
+      }).format(maxFormattedAmount)
+    );
+  }, [maxFormattedAmount]);
 
   const shouldSwitchChain = useMemo(() => {
     if (!!projectData?.address && account?.chainId !== projectData?.chainId) {
@@ -92,7 +113,7 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
       <WithdrawInput
         name="withdrawValue"
         placeholder="0"
-        label={`Redeem from ${poolName || 'Pool'}`}
+        label={`Withdraw from ${poolName || 'Pool'}`}
         errorMessage={errorMessage}
         priceUSD={tokenInfo?.priceUSD}
         endAdornment={
@@ -100,15 +121,16 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
           !!balance &&
           parseFloat(balance) > 0 && (
             <WithdrawInputEndAdornment
-              balance={balance}
               mainColor={overrideStyle?.mainColor}
               setValue={setValue}
+              maxAmount={maxAmount}
+              decimals={lpTokenDecimals}
             />
           )
         }
         value={value}
         onSetValue={setValue}
-        maxValue={balance}
+        maxValue={maxFormattedAmount.toString()}
         startAdornment={
           token?.logoURI && (
             <BadgeWithChain
@@ -118,6 +140,7 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
             />
           )
         }
+        hintEndAdornment={hintEndAdornment}
       />
       {!account?.isConnected ? (
         <ConnectButton sx={(theme) => ({ marginTop: theme.spacing(2) })} />
