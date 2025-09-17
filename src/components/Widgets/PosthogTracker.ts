@@ -1,11 +1,11 @@
 'use client';
+import type { ChainPinned, RouteSelected } from '@lifi/widget';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { UserTracking } from '@/hooks/userTracking';
-import type { ChainPinned, RouteSelected } from '@lifi/widget';
+} from 'src/const/trackingKeys';
+import { UserTracking } from 'src/hooks/userTracking';
 import { handleRouteData } from 'src/utils/routes';
 
 export interface PosthogTrackerProps extends UserTracking {}
