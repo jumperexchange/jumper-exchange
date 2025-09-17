@@ -2,8 +2,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { Hex } from 'viem';
 
 const isHex = (address: string): address is Hex => {
-  // TODO: improve
-  return address.startsWith('0x');
+  return /^0x[0-9A-Fa-f]+$/.test(address);
 };
 
 export const useAccountAddress = (): Hex | undefined => {
