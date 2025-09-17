@@ -24,7 +24,7 @@ import type {
   RouteHighValueLossUpdate,
   SettingUpdated,
 } from '@lifi/widget';
-import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
+import { useWidgetEvents } from '@lifi/widget';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { shallowEqualObjects } from 'shallow-equal';
 import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteModal';
@@ -35,6 +35,11 @@ import { TransformedRoute } from 'src/types/internal';
 import { handleRouteData } from 'src/utils/routes';
 import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
 import { makePosthogTracker } from './PosthogTracker';
+import {
+  setupWidgetEvents,
+  teardownWidgetEvents,
+  WidgetEventsConfig,
+} from './WidgetEventsManager';
 
 export function WidgetEvents() {
   const previousRoutesRef = useRef<JumperEventData>({});
@@ -78,7 +83,7 @@ export function WidgetEvents() {
   }, [trackTransaction, trackEvent]);
 
   useEffect(() => {
-    const onRouteExecutionStarted = async (route: RouteExtended) => {
+    const routeExecutionStarted = async (route: RouteExtended) => {
       const data = handleRouteData(route, {
         [TrackingEventParameter.Action]: 'execution_start',
         [TrackingEventParameter.TransactionStatus]: 'STARTED',
@@ -94,7 +99,7 @@ export function WidgetEvents() {
       }
     };
 
-    const onRouteExecutionUpdated = async (update: RouteExecutionUpdate) => {
+    const routeExecutionUpdated = async (update: RouteExecutionUpdate) => {
       // check if multisig and open the modal
       const isMultisigRouteActive = shouldOpenMultisigSignatureModal(
         update.route,
@@ -104,7 +109,7 @@ export function WidgetEvents() {
       }
     };
 
-    const onRouteExecutionCompleted = async (route: RouteExtended) => {
+    const routeExecutionCompleted = async (route: RouteExtended) => {
       //to do: if route is not lifi then refetch position of destination token??
 
       if (route.id) {
@@ -162,7 +167,7 @@ export function WidgetEvents() {
       }
     };
 
-    const onRouteExecutionFailed = async (update: RouteExecutionUpdate) => {
+    const routeExecutionFailed = async (update: RouteExecutionUpdate) => {
       const data = handleRouteData(update.route, {
         [TrackingEventParameter.Action]: 'execution_failed',
         [TrackingEventParameter.TransactionStatus]: 'FAILED',
@@ -180,7 +185,7 @@ export function WidgetEvents() {
       });
     };
 
-    const onRouteHighValueLoss = (update: RouteHighValueLossUpdate) => {
+    const routeHighValueLoss = (update: RouteHighValueLossUpdate) => {
       trackEvent({
         action: TrackingAction.OnRouteHighValueLoss,
         category: TrackingCategory.WidgetEvent,
@@ -199,17 +204,11 @@ export function WidgetEvents() {
       });
     };
 
-    const onRouteContactSupport = (supportId: ContactSupport) => {
+    const contactSupport = (supportId: ContactSupport) => {
       setSupportModalState(true);
     };
 
-    const onMultisigChainTokenSelected = (
-      destinationData: ChainTokenSelected,
-    ) => {
-      setDestinationChain(destinationData.chainId);
-    };
-
-    const onSourceChainTokenSelection = async (
+    const sourceChainTokenSelected = async (
       sourceChainData: ChainTokenSelected,
     ) => {
       trackEvent({
@@ -227,7 +226,13 @@ export function WidgetEvents() {
       setSourceChainToken(sourceChainData);
     };
 
-    const onDestinationChainTokenSelection = async (
+    const destinationChainTokenSelectedMultisig = (
+      destinationData: ChainTokenSelected,
+    ) => {
+      setDestinationChain(destinationData.chainId);
+    };
+
+    const destinationChainTokenSelectedRaw = async (
       toChainData: ChainTokenSelected,
     ) => {
       trackEvent({
@@ -245,7 +250,14 @@ export function WidgetEvents() {
       setDestinationChainToken(toChainData);
     };
 
-    const onLowAddressActivityConfirmed = async (props: {
+    const destinationChainTokenSelected = async (
+      destinationData: ChainTokenSelected,
+    ) => {
+      destinationChainTokenSelectedMultisig(destinationData);
+      destinationChainTokenSelectedRaw(destinationData);
+    };
+
+    const lowAddressActivityConfirmed = async (props: {
       address: string;
       chainId: number;
     }) => {
@@ -261,7 +273,7 @@ export function WidgetEvents() {
       });
     };
 
-    const onAvailableRoutes = async (availableRoutes: Route[]) => {
+    const availableRoutes = async (availableRoutes: Route[]) => {
       // current available routes
       const newObj: JumperEventData = {
         [TrackingEventParameter.FromToken]: sourceChainToken.tokenAddress || '',
@@ -330,7 +342,7 @@ export function WidgetEvents() {
       }
     };
 
-    const onChangeSettings = (settings: SettingUpdated) => {
+    const settingUpdated = (settings: SettingUpdated) => {
       trackEvent({
         category: TrackingCategory.WidgetEvent,
         action: TrackingAction.OnChangeSettings,
@@ -340,86 +352,33 @@ export function WidgetEvents() {
       });
     };
 
-    const onPageEntered = async (pageType: any) => {
+    const pageEntered = async (pageType: unknown) => {
       // Reset contribution state when entering a new page
       setContributed(false);
       setContributionDisplayed(false);
     };
 
-    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
-    widgetEvents.on(
-      WidgetEvent.LowAddressActivityConfirmed,
-      onLowAddressActivityConfirmed,
-    );
-    widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
-    );
-    widgetEvents.on(WidgetEvent.AvailableRoutes, onAvailableRoutes);
-    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
-    widgetEvents.on(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
-    widgetEvents.on(
-      WidgetEvent.DestinationChainTokenSelected,
-      onMultisigChainTokenSelected,
-    );
-    widgetEvents.on(
-      WidgetEvent.SourceChainTokenSelected,
-      onSourceChainTokenSelection,
-    );
-    widgetEvents.on(
-      WidgetEvent.DestinationChainTokenSelected,
-      onDestinationChainTokenSelection,
-    );
-    widgetEvents.on(WidgetEvent.PageEntered, onPageEntered);
-    widgetEvents.on(WidgetEvent.SettingUpdated, onChangeSettings);
-    widgetEvents.on(WidgetEvent.RouteSelected, posthogTracker.onRouteSelected);
-    widgetEvents.on(WidgetEvent.ChainPinned, posthogTracker.onChainPinned);
+    const config: WidgetEventsConfig = {
+      routeExecutionStarted,
+      routeExecutionUpdated,
+      routeExecutionCompleted,
+      routeExecutionFailed,
+      routeHighValueLoss,
+      contactSupport,
+      sourceChainTokenSelected,
+      destinationChainTokenSelected,
+      lowAddressActivityConfirmed,
+      availableRoutes,
+      settingUpdated,
+      pageEntered,
+      routeSelected: posthogTracker.onRouteSelected,
+      chainPinned: posthogTracker.onChainPinned,
+    };
+
+    setupWidgetEvents(config, widgetEvents);
 
     return () => {
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionStarted,
-        onRouteExecutionStarted,
-      );
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionUpdated,
-        onRouteExecutionUpdated,
-      );
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionCompleted,
-        onRouteExecutionCompleted,
-      );
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionFailed,
-        onRouteExecutionFailed,
-      );
-      widgetEvents.off(WidgetEvent.RouteHighValueLoss, onRouteHighValueLoss);
-      widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
-      widgetEvents.off(
-        WidgetEvent.DestinationChainTokenSelected,
-        onMultisigChainTokenSelected,
-      );
-      widgetEvents.off(
-        WidgetEvent.SourceChainTokenSelected,
-        onSourceChainTokenSelection,
-      );
-      widgetEvents.off(
-        WidgetEvent.DestinationChainTokenSelected,
-        onDestinationChainTokenSelection,
-      );
-      widgetEvents.off(
-        WidgetEvent.LowAddressActivityConfirmed,
-        onLowAddressActivityConfirmed,
-      );
-      widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
-      widgetEvents.off(WidgetEvent.PageEntered, onPageEntered);
-      widgetEvents.off(WidgetEvent.SettingUpdated, onChangeSettings);
-      widgetEvents.off(
-        WidgetEvent.RouteSelected,
-        posthogTracker.onRouteSelected,
-      );
-      widgetEvents.off(WidgetEvent.ChainPinned, posthogTracker.onChainPinned);
+      teardownWidgetEvents(config, widgetEvents);
     };
   }, [
     activeTab,
