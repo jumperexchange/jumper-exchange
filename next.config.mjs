@@ -163,6 +163,9 @@ export default withSentryConfig(nextConfig, {
   org: 'jumper-exchange',
   project: 'jumper-front',
 
+  // For providing readable stack traces for errors using source maps, we need to setup the auth token
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
   // Suppresses source map uploading logs during build
   silent: true,
 
@@ -178,11 +181,17 @@ export default withSentryConfig(nextConfig, {
   // side errors will fail.
   // tunnelRoute: "/monitoring",
 
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
+  sourcemaps: {
+    disable: false, // Source maps are enabled by default
+    assets: ['**/*.js', '**/*.js.map'], // Specify which files to upload
+    ignore: ['**/node_modules/**'], // Files to exclude
+    deleteSourcemapsAfterUpload: true, // Security: delete after upload
+  },
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
+
+  environment: process.env.NEXT_PUBLIC_ENVIRONMENT,
 
   // Enables automatic instrumentation of Vercel Cron Monitors.
   // See the following for more information:

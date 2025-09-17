@@ -14,6 +14,7 @@ export enum TrackingAction {
   OpenJumperScan = 'action_open_jumper_scan',
   SwitchChain = 'action_switch_chain',
   PortfolioLoaded = 'action_portfolio_loaded',
+  PortfolioOverview = 'action_portfolio_balance_overview',
 
   // Widget
   OnRouteSelected = 'action_on_route_selected',
@@ -290,4 +291,12 @@ export enum TrackingEventParameter {
   //Banner
   ActiveCampaign = 'param_banner_campaign',
   ActiveCampaignBanner = 'param_campaign_banner_campaign',
+
+  // Portfolio
+  PortfolioTotalBalanceUSD = 'param_portfolio_total_balance_usd',
+  PortfolioNumberOfTokens = 'param_portfolio_nb_of_tokens',
+  PortfolioNumberOfChains = 'param_portfolio_nb_of_chains',
+  PortfolioNativeTokensBalanceUSD = 'param_portfolio_native_tokens_balance_usd',
+  PortfolioStableTokensBalanceUSD = 'param_portfolio_stable_tokens_balance_usd',
+  PortfolioOtherTokensBalanceUSD = 'param_portfolio_other_tokens_balance_usd',
 }
