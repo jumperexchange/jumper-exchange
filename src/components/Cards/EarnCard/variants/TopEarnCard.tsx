@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Grid';
+import { uniqBy } from 'lodash';
 import { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
@@ -16,17 +17,19 @@ import { TopEarnCardSkeleton } from './TopEarnCardSkeleton';
 
 export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
-  assets,
-  protocol,
-  link,
-  recommended,
-  tags,
-  lockupPeriod,
-  apy,
-  tvl,
+  data,
   isLoading,
   onClick,
 }) => {
+  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } = data;
+  const { tvlUsd, apy } = latest;
+
+  const assets = [asset];
+  const chains = uniqBy(
+    assets.map((asset) => asset.chain),
+    'chainId',
+  );
+
   if (isLoading) {
     return <TopEarnCardSkeleton />;
   }
@@ -34,7 +37,7 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   return (
     <TopEarnCardContainer onClick={onClick}>
       <TopEarnCardHeaderContainer direction="row">
-        {recommended && (
+        {forYou && (
           <Badge
             variant={BadgeVariant.Secondary}
             size={BadgeSize.SM}
@@ -62,7 +65,7 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
             <EntityChainStack
               variant={EntityChainStackVariant.Protocol}
               protocol={protocol}
-              chains={assets.tokens.map((asset) => asset.chain)}
+              chains={chains}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 6 }}>{primaryAction}</Grid>

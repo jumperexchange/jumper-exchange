@@ -12,7 +12,7 @@ import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import {
   Chain,
-  EarnOpportunity,
+  EarnOpportunityWithLatestAnalytics,
   Protocol,
   Token,
 } from 'src/types/jumper-backend';
@@ -28,13 +28,13 @@ export interface EarnFilteringParams {
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   filter: EarnOpportunityFilter;
-  setFilter: (filter: EarnOpportunityFilter) => void;
+  updateFilter: (filter: EarnOpportunityFilter) => void;
   showForYou: boolean;
   toggleForYou: () => void;
-  forYou: EarnOpportunity[];
+  forYou: EarnOpportunityWithLatestAnalytics[];
   forYouLoading: boolean;
   forYouError: unknown | null;
-  all: EarnOpportunity[];
+  all: EarnOpportunityWithLatestAnalytics[];
   allLoading: boolean;
   allError: unknown | null;
   totalMarkets: number;
@@ -65,7 +65,9 @@ export const EarnFilteringProvider = ({
   children: React.ReactNode;
 }) => {
   const address: Hex | undefined = useAccountAddress();
-  const [initialData, setInitialData] = useState<EarnOpportunity[]>([]);
+  const [initialData, setInitialData] = useState<
+    EarnOpportunityWithLatestAnalytics[]
+  >([]);
 
   const forYou = useEarnFilterOpportunities({
     filter: {
@@ -166,7 +168,7 @@ const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
 };
 
 const extractFilteringParams = (
-  data: EarnOpportunity[],
+  data: EarnOpportunityWithLatestAnalytics[],
 ): EarnFilteringParams => {
   let allChains = [...map(data, 'lpToken.chain'), ...map(data, 'asset.chain')];
   allChains = uniqBy(allChains, 'chainId').filter(Boolean);

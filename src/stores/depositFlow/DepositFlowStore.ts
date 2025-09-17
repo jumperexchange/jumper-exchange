@@ -1,8 +1,9 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import { EarnOpportunity } from 'src/types/jumper-backend';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
-export interface EarnOpportunityExtended extends EarnOpportunity {
+export interface EarnOpportunityExtended
+  extends EarnOpportunityWithLatestAnalytics {
   minFromAmountUSD: number;
   positionUrl: string;
   address: string;

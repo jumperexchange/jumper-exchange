@@ -1,79 +1,104 @@
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { uniqBy } from 'lodash';
 import { FC, useMemo } from 'react';
-import { EarnCardProps } from '../EarnCard.types';
-import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
-import { Tooltip } from 'src/components/TooltipInfo/TooltipInfo.style';
+import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
+import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
-import {
-  ListItemEarnContentWrapper,
-  ListItemEarnCardTagContainer,
-  ListItemEarnCardContainer,
-} from '../EarnCard.styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
+import {
+  ListItemEarnCardContainer,
+  ListItemEarnCardTagContainer,
+  ListItemEarnContentWrapper,
+} from '../EarnCard.styles';
+import { EarnCardProps } from '../EarnCard.types';
+import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
+import {
+  APY_LABEL,
+  APY_TOOLTIP,
+  ASSETS_LABEL,
+  ASSETS_TOOLTIP,
+  LOCKUP_PERIOD_LABEL,
+  LOCKUP_PERIOD_TOOLTIP,
+  TVL_LABEL,
+  TVL_TOOLTIP,
+} from './shared';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
-  apy,
-  tvl,
-  lockupPeriod,
-  assets,
-  protocol,
-  recommended,
-  tags,
+  data,
   primaryAction,
   isLoading,
   onClick,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } = data;
+  const { tvlUsd, apy } = latest;
+
+  const assets = [asset];
+  const chains = uniqBy(
+    assets.map((asset) => asset.chain),
+    'chainId',
+  );
 
   if (isLoading) {
     return <ListItemEarnCardSkeleton />;
   }
 
-  const insightItems = useMemo(() => {
-    const items = [];
+  const items = useMemo(() => {
+    const result = [];
+
     if (apy) {
-      items.push(
+      const formatted = `${apy.total.toLocaleString()}%`;
+
+      result.push(
         <ListItemTooltipBadge
-          label={`${apy.valueFormatted} ${apy.label}`}
-          title={apy.tooltip}
-          key={apy.label}
+          label={`${formatted} ${APY_LABEL}`}
+          title={APY_TOOLTIP}
+          key={APY_LABEL}
         />,
       );
     }
-    if (lockupPeriod) {
-      items.push(
+
+    if (lockupMonths !== undefined) {
+      const formatted = lockupMonths.toLocaleString();
+
+      result.push(
         <ListItemTooltipBadge
-          title={lockupPeriod.tooltip}
-          key={lockupPeriod.label}
-          label={`${lockupPeriod.valueFormatted}`}
+          title={LOCKUP_PERIOD_TOOLTIP}
+          key={LOCKUP_PERIOD_LABEL}
+          label={`${formatted} ${LOCKUP_PERIOD_LABEL}`}
         />,
       );
     }
-    if (tvl) {
-      items.push(
+
+    if (tvlUsd) {
+      const formatted = `$${Number(tvlUsd).toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })}`;
+
+      result.push(
         <ListItemTooltipBadge
-          title={tvl.tooltip}
-          key={tvl.label}
-          label={`${tvl.valueFormatted} ${tvl.label}`}
+          title={TVL_TOOLTIP}
+          key={TVL_LABEL}
+          label={`${formatted} ${TVL_LABEL}`}
         />,
       );
     }
-    items.push(
+
+    result.push(
       <ListItemTooltipBadge
-        title={assets.tooltip}
-        key={assets.label}
-        startIcon={<TokenStack tokens={assets.tokens} />}
-        label={assets.tokens.length === 1 ? assets.tokens[0].name : ''}
+        title={ASSETS_TOOLTIP}
+        key={ASSETS_LABEL}
+        startIcon={<TokenStack tokens={assets} />}
+        label={assets.length === 1 ? assets[0].name : ''}
       />,
     );
-    return items;
-  }, [apy, lockupPeriod, tvl, assets]);
+    return result;
+  }, [apy, lockupMonths, tvlUsd, assets]);
 
   return (
     <ListItemEarnCardContainer onClick={onClick}>
@@ -81,13 +106,13 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
         <EntityChainStack
           variant={EntityChainStackVariant.Protocol}
           protocol={protocol}
-          chains={assets.tokens.map((asset) => asset.chain)}
+          chains={chains}
           protocolSize={AvatarSize.XXL}
           chainsSize={AvatarSize.SM}
         />
         {isMobile && primaryAction}
         <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
-          {recommended && (
+          {forYou && (
             <Badge
               variant={BadgeVariant.Secondary}
               size={BadgeSize.MD}
@@ -102,7 +127,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
               key={tag}
             />
           ))}
-          {insightItems}
+          {items}
           {!isMobile && primaryAction}
         </ListItemEarnCardTagContainer>
       </ListItemEarnContentWrapper>

@@ -724,8 +724,8 @@ export interface EarnOpportunityWithLatestAnalytics {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupMonths: number;
-  capInDollar: string;
+  lockupMonths?: number;
+  capInDollar?: string;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
 }

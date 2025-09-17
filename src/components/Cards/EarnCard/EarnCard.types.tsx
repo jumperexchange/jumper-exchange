@@ -1,40 +1,11 @@
-import { Protocol, Token } from 'src/types/jumper-backend';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
 export type EarnCardVariant = 'compact' | 'list-item' | 'top';
 
 export interface EarnCardProps {
   variant?: EarnCardVariant;
   fullWidth?: boolean;
-  recommended?: boolean;
-  tags?: string[];
-  lockupPeriod?: {
-    label: string;
-    tooltip: string;
-    value: number;
-    valueFormatted: string;
-  };
-  apy?: {
-    label: string;
-    tooltip: string;
-    value: number;
-    valueFormatted: string;
-  };
-  tvl?: {
-    label: string;
-    tooltip: string;
-    value: number;
-    valueFormatted: string;
-  };
-  assets: {
-    label: string;
-    tooltip: string;
-    tokens: Token[];
-  };
-  protocol: Protocol;
-  link?: {
-    url: string;
-    label: string;
-  };
+  data: EarnOpportunityWithLatestAnalytics;
   primaryAction?: React.ReactNode;
   isLoading?: boolean;
   onClick?: () => void;

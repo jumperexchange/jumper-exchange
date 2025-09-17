@@ -1,7 +1,13 @@
-import { EarnOpportunity, HttpResponse } from '@/types/jumper-backend';
+import {
+  EarnOpportunityWithLatestAnalytics,
+  HttpResponse,
+} from '@/types/jumper-backend';
 import { makeClient } from './client';
 
-export type GetOpportunityBySlugResult = HttpResponse<EarnOpportunity, unknown>;
+export type GetOpportunityBySlugResult = HttpResponse<
+  EarnOpportunityWithLatestAnalytics,
+  unknown
+>;
 
 export async function getOpportunityBySlug(
   slug: string,
