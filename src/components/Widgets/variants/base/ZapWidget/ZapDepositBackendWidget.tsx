@@ -14,6 +14,8 @@ import { ChainId } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { useSwitchChain } from 'wagmi';
 import { useUrlParams } from 'src/hooks/useUrlParams';
+import uniqBy from 'lodash/uniqBy';
+import { useZapAllLpTokens } from 'src/hooks/zaps/useZapAllLpTokens';
 
 interface ZapDepositBackendWidgetProps extends WidgetProps {}
 
@@ -39,6 +41,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   const { switchChainAsync } = useSwitchChain();
 
   const { data: zapSupportedChains } = useZapSupportedChains();
+  const { data: allLpTokens } = useZapAllLpTokens();
 
   const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
 
@@ -174,6 +177,16 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     widgetConfig.chains = {
       allow: allowedChains,
     };
+  }
+
+  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
+  if (allLpTokens) {
+    const currentDenyList = widgetConfig.tokens?.deny ?? [];
+    const newDenyList = uniqBy([...currentDenyList, ...allLpTokens], 'address');
+
+    widgetConfig.tokens = widgetConfig.tokens ?? {};
+    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
+    widgetConfig.tokens.deny = newDenyList;
   }
 
   return (
