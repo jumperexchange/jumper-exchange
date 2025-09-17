@@ -7,9 +7,9 @@ import {
   WidgetEvent,
 } from '@lifi/widget';
 import {
+  createContext,
   FC,
   PropsWithChildren,
-  createContext,
   useCallback,
   useContext,
   useEffect,
@@ -17,10 +17,10 @@ import {
   useRef,
 } from 'react';
 import {
-  TrackingCategory,
   TrackingAction,
-  TrackingEventParameter,
+  TrackingCategory,
   TrackingEventDataAction,
+  TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { TransformedRoute } from 'src/types/internal';
@@ -260,61 +260,38 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
-    function onSourceChainAndTokenSelection(
-      sourceChainToken: ChainTokenSelected,
-    ) {
-      trackSourceToken(sourceChainToken);
-    }
-
-    function onAvailableRoutes(availableRoutes: Route[]) {
-      trackAvailableRoutes(availableRoutes);
-    }
-    function onRouteExecutionStarted(route: Route) {
-      trackRouteExecutionStarted(route);
-    }
-
-    function onRouteExecutionCompleted(route: Route) {
-      trackRouteExecutionCompleted(route);
-    }
-
-    function onRouteExecutionFailed(
-      routeExecutionUpdate: RouteExecutionUpdate,
-    ) {
-      trackRouteExecutionFailed(routeExecutionUpdate);
-    }
-
-    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
-    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
     widgetEvents.on(
-      WidgetEvent.SourceChainTokenSelected,
-      onSourceChainAndTokenSelection,
+      WidgetEvent.RouteExecutionStarted,
+      trackRouteExecutionStarted,
     );
-    widgetEvents.on(WidgetEvent.AvailableRoutes, onAvailableRoutes);
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionFailed,
+      trackRouteExecutionFailed,
+    );
+    widgetEvents.on(WidgetEvent.SourceChainTokenSelected, trackSourceToken);
+    widgetEvents.on(WidgetEvent.AvailableRoutes, trackAvailableRoutes);
 
     widgetEvents.on(
       WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
+      trackRouteExecutionCompleted,
     );
 
     widgetEvents.on(WidgetEvent.SettingUpdated, trackChangeSettings);
 
     return () => {
-      widgetEvents.off(
-        WidgetEvent.SourceChainTokenSelected,
-        onSourceChainAndTokenSelection,
-      );
-      widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
+      widgetEvents.off(WidgetEvent.SourceChainTokenSelected, trackSourceToken);
+      widgetEvents.off(WidgetEvent.AvailableRoutes, trackAvailableRoutes);
       widgetEvents.off(
         WidgetEvent.RouteExecutionStarted,
-        onRouteExecutionStarted,
+        trackRouteExecutionStarted,
       );
       widgetEvents.off(
         WidgetEvent.RouteExecutionCompleted,
-        onRouteExecutionCompleted,
+        trackRouteExecutionCompleted,
       );
       widgetEvents.off(
         WidgetEvent.RouteExecutionFailed,
-        onRouteExecutionFailed,
+        trackRouteExecutionFailed,
       );
       widgetEvents.off(WidgetEvent.SettingUpdated, trackChangeSettings);
     };
