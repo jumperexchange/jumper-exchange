@@ -1,6 +1,9 @@
 'use client';
+import { Grid } from '@mui/material';
+import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnFilter } from './EarnFilter';
 import { useEarnFiltering, withEarnFiltering } from './EarnFilteringContext';
+import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 
 const EarnOpportunitiesAll_ = () => {
   const {
@@ -18,26 +21,66 @@ const EarnOpportunitiesAll_ = () => {
   const formatedTotalMarkets = totalMarkets.toLocaleString();
 
   const ForYou = () => {
+    const items = AtLeastNWhenLoading(forYou, forYouLoading, 3, Infinity);
+    // TODO: error management
+
     return (
       <div>
         <h1>For You</h1>
-        <pre>{forYouLoading ? 'Loading...' : 'Loaded'}</pre>
-        <pre>{JSON.stringify(forYou, null, 2)}</pre>
-        <pre>{forYouError ? 'Error' : 'No error'}</pre>
-        <pre>{JSON.stringify(forYouError, null, 2)}</pre>
+        <Grid container spacing={2}>
+          {items.map((item, index) => (
+            <Grid size={{ xs: 12, sm: 4 }}>
+              {item == null ? (
+                <EarnCard
+                  key={index}
+                  variant="compact"
+                  isLoading={true}
+                  data={null}
+                />
+              ) : (
+                <EarnCard
+                  key={index}
+                  variant="compact"
+                  isLoading={false}
+                  data={item}
+                />
+              )}
+            </Grid>
+          ))}
+        </Grid>
       </div>
     );
   };
 
   const All = () => {
+    const items = AtLeastNWhenLoading(all, allLoading, 3, Infinity);
+    // TODO: error management
+
     return (
       <div>
         <h1>All</h1>
         <EarnFilter />
-        <pre>{allLoading ? 'Loading...' : 'Loaded'}</pre>
-        <pre>{JSON.stringify(all, null, 2)}</pre>
-        <pre>{allError ? 'Error' : 'No error'}</pre>
-        <pre>{JSON.stringify(allError, null, 2)}</pre>
+        <Grid container spacing={2}>
+          {items.map((item, index) => (
+            <Grid size={{ xs: 12, sm: 4 }}>
+              {item == null ? (
+                <EarnCard
+                  key={index}
+                  variant="compact"
+                  isLoading={true}
+                  data={null}
+                />
+              ) : (
+                <EarnCard
+                  key={index}
+                  variant="compact"
+                  isLoading={false}
+                  data={item}
+                />
+              )}
+            </Grid>
+          ))}
+        </Grid>
       </div>
     );
   };

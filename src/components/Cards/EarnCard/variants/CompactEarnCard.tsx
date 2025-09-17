@@ -33,6 +33,13 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   isLoading,
   onClick,
 }) => {
+  // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
+  const isEmpty = data === null || isLoading;
+
+  if (isEmpty) {
+    return <CompactEarnCardSkeleton />;
+  }
+
   const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } = data;
   const { tvlUsd, apy } = latest;
 
@@ -42,15 +49,11 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     'chainId',
   );
 
-  if (isLoading) {
-    return <CompactEarnCardSkeleton />;
-  }
-
   const items = useMemo(() => {
     const result = [];
 
     if (apy) {
-      const formatted = `${apy.total.toLocaleString()}%`;
+      const formatted = `${(apy.total * 100).toLocaleString()}%`;
 
       result.push(
         <CompactEarnCardItem
@@ -61,8 +64,9 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       );
     }
 
-    if (lockupMonths !== undefined) {
-      const formatted = lockupMonths.toLocaleString();
+    const lockupMonthsNumber = Number(lockupMonths);
+    if (!isNaN(lockupMonthsNumber)) {
+      const formatted = lockupMonthsNumber.toLocaleString();
 
       result.push(
         <CompactEarnCardItem

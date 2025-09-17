@@ -21,18 +21,24 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   isLoading,
   onClick,
 }) => {
-  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } = data;
-  const { tvlUsd, apy } = latest;
+  // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
+  const isEmpty = data === null || isLoading;
+
+  if (isEmpty) {
+    return <TopEarnCardSkeleton />;
+  }
+
+  // TODO: LF-14990: Complex Top Opportunity rendering
+  // For now we're rendering the same text all the time, ideally
+  // we'd use custom tags like "IsBest" + "Lending" to render different texts
+  const { asset, protocol, forYou, tags, latest } = data;
 
   const assets = [asset];
   const chains = uniqBy(
     assets.map((asset) => asset.chain),
     'chainId',
   );
-
-  if (isLoading) {
-    return <TopEarnCardSkeleton />;
-  }
+  const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
 
   return (
     <TopEarnCardContainer onClick={onClick}>
@@ -55,8 +61,9 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       </TopEarnCardHeaderContainer>
       <TopEarnCardContentContainer>
         <p>
-          Use your spare <span>USDC</span> with <span>Aave</span> and earn up to{' '}
-          <span>4.2%</span> APY
+          Use your spare <span>{asset.symbol}</span> with{' '}
+          <span>{protocol.name}</span> and earn up to{' '}
+          <span>{formattedApy}</span> APY
         </p>
       </TopEarnCardContentContainer>
       <TopEarnCardFooterContainer>
