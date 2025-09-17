@@ -156,17 +156,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
           disabled={isMultisigEnvironment}
           onClick={() => handleCopyButton()}
           sx={(theme) => ({
-            background: 'transparent',
-            ...theme.applyStyles("light", {
-              background: (theme.vars || theme).palette.white.main
-            }),
-            '&:hover': {
-              background:
-              (theme.vars || theme).palette.alphaLight300.main,
-              ...theme.applyStyles("light", {
-                background: (theme.vars || theme).palette.white.main
-              })
-            },
+            background: 'transparent !important',
           })}
         >
           <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
