@@ -275,6 +275,10 @@
     "zap": {
       "sendToAddressName": "Deposit into {{name}}",
       "sentToAddressName": "Deposited into {{name}}",
+      "tabs": {
+        "deposit": "Deposit",
+        "withdraw": "Withdraw"
+      },
       "placeholder": {
         "comingSoon": "Coming soon",
         "embedded-multisig": {
@@ -287,5 +291,8 @@
         }
       }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": "Quick deposit"
   }
 }

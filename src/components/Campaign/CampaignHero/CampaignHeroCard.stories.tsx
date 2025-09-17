@@ -5,14 +5,14 @@ import { CampaignHeroCard } from './CampaignHeroCard';
 import { CampaignHeroCardSkeleton } from './CampaignHeroCardSkeletion';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
 import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
-import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import {
   CampaignHeroCardIcon,
   CampaignHeroStatsWrapper,
 } from './CampaignHero.style';
-import { ChainAvatarSize } from 'src/components/ChainStack/ChainStack.style';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ICON_SIZES } from './constants';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
 type CampaignHeroCardStoryProps = ComponentProps<typeof CampaignHeroCard> & {
   heroStatsCardVariant?: MissionHeroStatsCardVariant;
@@ -97,7 +97,7 @@ const Template: StoryFn<CampaignHeroCardStoryProps> = (_props, { args }) => {
             description={
               <ChainStack
                 chainIds={rewardChainIds}
-                size={isMobile ? ChainAvatarSize.XS : ChainAvatarSize.MD}
+                size={isMobile ? AvatarSize.XS : AvatarSize.MD}
               />
             }
             variant={heroStatsCardVariant}
