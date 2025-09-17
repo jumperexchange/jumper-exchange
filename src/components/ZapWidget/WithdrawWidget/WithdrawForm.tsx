@@ -98,6 +98,9 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
   const handleSubmit = useCallback(
     (event: React.FormEvent) => {
       event.preventDefault();
+      if (!value) {
+        return;
+      }
       try {
         updateSuccessDataRef();
         sendWithdrawTx(value);
