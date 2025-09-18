@@ -7,6 +7,11 @@ import type { StarterVariantType } from '@/types/internal';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { WidgetEvents } from './WidgetEvents';
+import {
+  TrackingAction,
+  TrackingEventDataAction,
+} from 'src/const/trackingKeys';
+import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -65,7 +70,29 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
     <>
       <ChainAlert />
       <PartnerThemeFooterImage />
-      <WidgetEvents />
+      <WidgetTrackingProvider
+        trackingActionKeys={{
+          destinationChainAndTokenSelection:
+            TrackingAction.OnDestinationChainAndTokenSelection,
+          sourceChainAndTokenSelection:
+            TrackingAction.OnSourceChainAndTokenSelection,
+          availableRoutes: TrackingAction.OnAvailableRoutes,
+          routeExecutionStarted: TrackingAction.OnRouteExecutionStarted,
+          routeExecutionCompleted: TrackingAction.OnRouteExecutionCompleted,
+          routeExecutionFailed: TrackingAction.OnRouteExecutionFailed,
+          changeSettings: TrackingAction.OnChangeSettings,
+          routeHighValueLoss: TrackingAction.OnRouteHighValueLoss,
+          lowAddressActivityConfirmed:
+            TrackingAction.OnLowAddressActivityConfirmed,
+        }}
+        trackingDataActionKeys={{
+          routeExecutionStarted: TrackingEventDataAction.ExecutionStart,
+          routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
+          routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
+        }}
+      >
+        <WidgetEvents />
+      </WidgetTrackingProvider>
     </>
   );
 }
