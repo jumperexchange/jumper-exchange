@@ -22,7 +22,7 @@ export const useEarnTopOpportunities = ({}: Props): Result => {
       if (!result.ok) {
         throw result.error;
       }
-      // @ts-expect-error: we need to fix this - typing is incorrect we're retuning the http wrapper data.
+      // @ts-expect-error: see LF-15589 - we are transforming data in the backend
       return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,
