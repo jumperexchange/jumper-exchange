@@ -1,39 +1,60 @@
+import Grid from '@mui/material/Grid';
 import { FC } from 'react';
-import {
-  BaseSkeleton,
-  CompactEarnCardContentContainer,
-  CompactEarnCardHeaderContainer,
-  CompactEarnCardTagContainer,
-  CompactEarnCardContainer,
-} from '../EarnCard.styles';
 import { BadgeSize } from 'src/components/Badge/Badge.styles';
 import { BadgeSkeleton } from 'src/components/Badge/BadgeSkeleton';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import {
+  BaseSkeleton,
+  TopEarnCardContainer,
+  TopEarnCardContentContainer,
+  TopEarnCardFooterContainer,
+  TopEarnCardHeaderContainer,
+} from '../EarnCard.styles';
 
 export const TopEarnCardSkeleton: FC<{}> = ({}) => {
   return (
-    <CompactEarnCardContainer>
-      <CompactEarnCardHeaderContainer direction="row">
-        <CompactEarnCardTagContainer direction="row">
-          <BadgeSkeleton size={BadgeSize.SM} width={96} />
-        </CompactEarnCardTagContainer>
-        <BaseSkeleton variant="circular" width={48} height={48} />
-      </CompactEarnCardHeaderContainer>
-      <CompactEarnCardContentContainer>
-        <EntityChainStack
-          variant={EntityChainStackVariant.Protocol}
-          isLoading
-        />
+    <TopEarnCardContainer>
+      <TopEarnCardHeaderContainer direction="row">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <BadgeSkeleton key={index} size={BadgeSize.SM} />
+        ))}
+      </TopEarnCardHeaderContainer>
+      <TopEarnCardContentContainer>
         <BaseSkeleton
           variant="rounded"
-          sx={{ height: 76, width: '100%', borderRadius: 2 }}
+          sx={{
+            height: 26,
+            width: '100%',
+            maxWidth: '420px',
+            borderRadius: 2,
+            marginTop: '1rem',
+            marginBottom: '1rem',
+          }}
         />
-        <BaseSkeleton
-          variant="rounded"
-          sx={{ height: 76, width: '100%', borderRadius: 2 }}
-        />
-      </CompactEarnCardContentContainer>
-    </CompactEarnCardContainer>
+      </TopEarnCardContentContainer>
+      <TopEarnCardFooterContainer>
+        <Grid container rowSpacing={2} columnSpacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <EntityChainStack
+              variant={EntityChainStackVariant.Protocol}
+              isLoading
+              protocolSize={AvatarSize.XXL}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 'auto' }} sx={{ marginLeft: 'auto' }}>
+            <BaseSkeleton
+              variant="rounded"
+              sx={{
+                height: '80%',
+                width: '120px',
+                borderRadius: 2,
+              }}
+            />
+          </Grid>
+        </Grid>
+      </TopEarnCardFooterContainer>
+    </TopEarnCardContainer>
   );
 };

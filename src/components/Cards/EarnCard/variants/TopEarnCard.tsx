@@ -75,7 +75,9 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
               chains={chains}
             />
           </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>{primaryAction}</Grid>
+          <Grid size={{ xs: 12, sm: 'auto' }} sx={{ marginLeft: 'auto' }}>
+            {primaryAction}
+          </Grid>
         </Grid>
       </TopEarnCardFooterContainer>
     </TopEarnCardContainer>
