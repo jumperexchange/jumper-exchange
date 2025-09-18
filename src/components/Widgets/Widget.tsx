@@ -4,30 +4,24 @@ import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
-import { ChainId } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
-import {
-  HiddenUI,
-  LiFiWidget,
-  WidgetSkeleton as LifiWidgetSkeleton,
-  RequiredUI,
-} from '@lifi/widget';
+import { WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ThemesMap } from 'src/const/themesMap';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
-import { themeAllowChains, WidgetWrapper } from '.';
+import { WidgetWrapper } from './Widget.style';
 import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 import { useTheme } from '@mui/material/styles';
 import { MainWidgetContext } from './variants/widgetConfig/types';
 import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
+import { Widget as BaseWidget } from './variants/base/Widget';
 
 export function Widget({
   starterVariant,
@@ -36,7 +30,7 @@ export function Widget({
   toChain,
   toToken,
   fromAmount,
-  allowChains,
+  allowChains: allowFromChains,
   allowToChains,
   widgetIntegrator,
   activeTheme,
@@ -74,10 +68,6 @@ export function Widget({
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
   const isGasVariant = activeTab === TabsMap.Refuel.index;
-  const allowedChainsByVariant = useMemo(
-    () => (partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
-    [starterVariant, partnerName],
-  );
 
   const integratorStringByType = useMemo(() => {
     if (configTheme?.integrator) {
@@ -136,45 +126,24 @@ export function Widget({
       starterVariant,
       partnerName,
       formData: formParametersCtx,
-      allowFromChains: isConnectedAGW
-        ? [ChainId.ABS]
-        : allowChains || allowedChainsByVariant,
+      allowFromChains: allowFromChains,
       allowToChains,
+      bridgeConditions,
+      isConnectedAGW,
     }),
     [
       starterVariant,
       partnerName,
       formParametersCtx,
-      isConnectedAGW,
-      allowChains,
-      allowedChainsByVariant,
+      allowFromChains,
       allowToChains,
       configTheme,
+      bridgeConditions,
+      isConnectedAGW,
     ],
   );
 
   const widgetConfig = useWidgetConfig('main', context);
-
-  if (bridgeConditions.isAGWToNonABSChain) {
-    widgetConfig.requiredUI = [
-      ...(widgetConfig.requiredUI || []),
-      RequiredUI.ToAddress,
-    ];
-  }
-
-  if (
-    bridgeConditions.isBridgeFromHypeToArbNativeUSDC ||
-    bridgeConditions.isBridgeFromEvmToHype
-  ) {
-    widgetConfig.hiddenUI = [
-      ...(widgetConfig.hiddenUI || []),
-      HiddenUI.ToAddress,
-    ];
-  }
-
-  if (!isConnectedAGW) {
-    widgetConfig.sdkConfig!.routeOptions!.allowSwitchChain = true;
-  }
 
   return (
     <WidgetWrapper
@@ -185,9 +154,9 @@ export function Widget({
       contributionDisplayed={contributionDisplayed}
     >
       <ClientOnly fallback={<LifiWidgetSkeleton config={widgetConfig} />}>
-        <LiFiWidget
-          integrator={widgetConfig.integrator}
-          config={widgetConfig}
+        <BaseWidget
+          type="main"
+          ctx={context}
           formRef={formRef}
           feeConfig={{
             _vcComponent: () => <FeeContribution translationFn={t} />,

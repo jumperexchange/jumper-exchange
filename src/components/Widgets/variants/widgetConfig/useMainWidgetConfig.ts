@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
-import { WidgetConfig, HiddenUI } from '@lifi/widget';
+import { WidgetConfig, HiddenUI, RequiredUI, ChainId } from '@lifi/widget';
 import { ThemesMap } from 'src/const/themesMap';
 import { MainWidgetContext, HookDependencies } from './types';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { tokens } from 'src/config/tokens';
+import { generateRouteLabel } from './utils';
+import { themeAllowChains } from '../../Widget.types';
 
 /**
  * Configuration hook for the main widget variant
@@ -16,6 +18,11 @@ export function useMainWidgetConfig(
     enabled: context.partnerName === ThemesMap.Memecoins,
   });
 
+  const allowedChainsByVariant = useMemo(
+    () => (context.partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
+    [context.starterVariant, context.partnerName],
+  );
+
   return useMemo(() => {
     const isMemecoins = context.partnerName === ThemesMap.Memecoins;
     const isBuyVariant = context.starterVariant === 'buy';
@@ -27,7 +34,7 @@ export function useMainWidgetConfig(
       _tokens.allow = newAllowList;
     }
 
-    return {
+    const config: Partial<WidgetConfig> = {
       keyPrefix: `jumper-${context.starterVariant}`,
       // Variant configuration
       variant: context.starterVariant === 'refuel' ? 'compact' : 'wide',
@@ -62,11 +69,11 @@ export function useMainWidgetConfig(
       chains: {
         ...(deps.theme.configTheme?.chains ?? {}),
         allow: context.allowChains,
-        from: context.allowFromChains
-          ? {
-              allow: context.allowFromChains,
-            }
-          : undefined,
+        from: {
+          allow: context.isConnectedAGW
+            ? [ChainId.ABS]
+            : context.allowFromChains || allowedChainsByVariant,
+        },
         to: context.allowToChains
           ? { allow: context.allowToChains }
           : undefined,
@@ -84,103 +91,44 @@ export function useMainWidgetConfig(
         : undefined,
 
       routeLabels: [
-        {
-          label: {
-            text: '1.5x points',
-            sx: {
-              order: 1,
-              display: 'flex',
-              alignItems: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              marginLeft: 'auto',
-              gap: deps.theme.muiTheme.spacing(0.5),
-              paddingLeft: deps.theme.muiTheme.spacing(0.5),
-              paddingRight: deps.theme.muiTheme.spacing(0.5),
-              background: `linear-gradient(90deg, ${(deps.theme.muiTheme.vars || deps.theme.muiTheme).palette.orchid[600]} 0%, ${(deps.theme.muiTheme.vars || deps.theme.muiTheme).palette.lavenderDark[300]} 100%)`,
-              color: (deps.theme.muiTheme.vars || deps.theme.muiTheme).palette
-                .white.main,
-              ...deps.theme.muiTheme.typography.bodyXSmallStrong,
-              ...deps.theme.muiTheme.applyStyles('light', {
-                // @Note we might adjust to use the theme config
-                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
-              }),
-              '&::before': {
-                content: '""',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%', // Makes the icon circular
-                backgroundImage:
-                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                flexShrink: 0,
-              },
-              '&>p': {
-                alignContent: 'flex-end',
-                paddingLeft: deps.theme.muiTheme.spacing(0.5),
-                paddingRight: deps.theme.muiTheme.spacing(0.5),
-              },
-            },
-          },
-          exchanges: {
-            allow: ['hyperbloom'],
-          },
-        },
-        {
-          label: {
-            text: '1.5x points',
-            sx: {
-              order: 1,
-              display: 'flex',
-              alignItems: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              marginLeft: 'auto',
-              gap: deps.theme.muiTheme.spacing(0.5),
-              paddingLeft: deps.theme.muiTheme.spacing(0.5),
-              paddingRight: deps.theme.muiTheme.spacing(0.5),
-              background: `linear-gradient(90deg, ${(deps.theme.muiTheme.vars || deps.theme.muiTheme).palette.orchid[600]} 0%, ${(deps.theme.muiTheme.vars || deps.theme.muiTheme).palette.lavenderDark[300]} 100%)`,
-              color: (deps.theme.muiTheme.vars || deps.theme.muiTheme).palette
-                .white.main,
-              ...deps.theme.muiTheme.typography.bodyXSmallStrong,
-              ...deps.theme.muiTheme.applyStyles('light', {
-                // @Note we might adjust to use the theme config
-                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
-              }),
-              '&::before': {
-                content: '""',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%', // Makes the icon circular
-                backgroundImage:
-                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                flexShrink: 0,
-              },
-              '&>p': {
-                alignContent: 'flex-end',
-                paddingLeft: deps.theme.muiTheme.spacing(0.5),
-                paddingRight: deps.theme.muiTheme.spacing(0.5),
-              },
-            },
-          },
-          exchanges: {
-            allow: ['hyperflow'],
-          },
-        },
+        generateRouteLabel('1.5x points', 'hyperbloom', deps.theme.muiTheme),
+        generateRouteLabel('1.5x points', 'hyperflow', deps.theme.muiTheme),
       ],
     };
+
+    if (context.bridgeConditions?.isAGWToNonABSChain) {
+      config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
+    }
+
+    if (
+      context.bridgeConditions?.isBridgeFromHypeToArbNativeUSDC ||
+      context.bridgeConditions?.isBridgeFromEvmToHype
+    ) {
+      config.hiddenUI = [...(config.hiddenUI || []), HiddenUI.ToAddress];
+    }
+
+    if (!context.isConnectedAGW) {
+      config.sdkConfig = {
+        ...config.sdkConfig,
+        routeOptions: {
+          ...config.sdkConfig?.routeOptions,
+          allowSwitchChain: true,
+        },
+      };
+    }
+
+    return config;
   }, [
     context.integrator,
     context.starterVariant,
     context.partnerName,
     context.allowChains,
+    context.allowFromChains,
     context.allowToChains,
+    context.isConnectedAGW,
+    context.bridgeConditions,
     deps.theme,
     memeListTokens,
+    allowedChainsByVariant,
   ]);
 }
