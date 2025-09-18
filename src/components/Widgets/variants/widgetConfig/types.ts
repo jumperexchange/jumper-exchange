@@ -58,6 +58,12 @@ export interface CommonWidgetContext {
 export interface MainWidgetContext extends CommonWidgetContext {
   starterVariant: StarterVariantType;
   partnerName: string;
+  bridgeConditions?: {
+    isAGWToNonABSChain?: boolean;
+    isBridgeFromHypeToArbNativeUSDC?: boolean;
+    isBridgeFromEvmToHype?: boolean;
+  };
+  isConnectedAGW?: boolean;
 }
 
 export interface MissionWidgetContext extends CommonWidgetContext {
