@@ -4,11 +4,9 @@ import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
-import type { LanguageKey } from '@/types/i18n';
-import getApiUrl from '@/utils/getApiUrl';
 import { ChainId } from '@lifi/sdk';
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import type { FormState, WidgetConfig } from '@lifi/widget';
+import { useAccount } from '@lifi/wallet-management';
+import type { FormState } from '@lifi/widget';
 import {
   HiddenUI,
   LiFiWidget,
@@ -19,10 +17,7 @@ import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { tokens } from 'src/config/tokens';
-import { publicRPCList } from 'src/const/rpcList';
 import { ThemesMap } from 'src/const/themesMap';
-import { useMemelist } from 'src/hooks/useMemelist';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
 import { useActiveTabStore } from 'src/stores/activeTab';
@@ -31,9 +26,8 @@ import { themeAllowChains, WidgetWrapper } from '.';
 import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 import { useTheme } from '@mui/material/styles';
-import { useLiFiWidgetConfig } from './variants/widgetConfig/hooks';
-import { ConfigContext } from './variants/widgetConfig/types';
-import uniqBy from 'lodash/uniqBy';
+import { MainWidgetContext } from './variants/widgetConfig/types';
+import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
 
 export function Widget({
   starterVariant,
@@ -61,19 +55,15 @@ export function Widget({
     configThemeChains: configTheme?.chains,
   });
   const router = useRouter();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
 
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
-  const { tokens: memeListTokens } = useMemelist({
-    enabled: partnerName === ThemesMap.Memecoins,
-  });
   const contributionDisplayed = useContributionStore(
     (state) => state.contributionDisplayed,
   );
-  const { openWalletMenu } = useWalletMenu();
   const widgetCache = useWidgetCacheStore((state) => state);
 
   useEffect(() => {
@@ -108,13 +98,6 @@ export function Widget({
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
-  const subvariant = useMemo(() => {
-    if (starterVariant === 'buy' || partnerName === ThemesMap.Memecoins) {
-      return 'default';
-    }
-    return starterVariant;
-  }, [partnerName, starterVariant]);
-
   const formParametersCtx = useMemo(() => {
     const params: Record<string, number | string | undefined> = {
       sourceChain:
@@ -147,85 +130,30 @@ export function Widget({
     widgetCache.fromToken,
   ]);
 
-  const tokensCtx = useMemo(() => {
-    const _tokens = tokens || {};
-    console.log('----memeListTokens----', memeListTokens);
-    if (memeListTokens) {
-      const currentAllowList = _tokens?.allow ?? [];
-      const newAllowList = currentAllowList.concat(memeListTokens);
-      _tokens.allow = newAllowList;
-    }
-    return _tokens;
-  }, [memeListTokens]);
-
-  const chainsCtx = useMemo(() => {
-    return {
-      ...configTheme?.chains,
-      from: isConnectedAGW
-        ? { allow: [ChainId.ABS] }
-        : { allow: allowChains || allowedChainsByVariant },
-      to: allowToChains ? { allow: allowToChains } : undefined,
-    };
-  }, [
-    configTheme?.chains,
-    isConnectedAGW,
-    allowChains,
-    allowedChainsByVariant,
-    allowToChains,
-  ]);
-
-  const bridgesCtx = useMemo(() => {
-    return {
-      allow: configTheme?.allowedBridges,
-    };
-  }, [configTheme?.allowedBridges]);
-
-  const exchangesCtx = useMemo(() => {
-    return {
-      allow: configTheme?.allowedExchanges,
-    };
-  }, [configTheme?.allowedExchanges]);
-
-  const ctx = useMemo(() => {
-    const baseOverrides: ConfigContext['baseOverrides'] = {
+  const context: MainWidgetContext = useMemo(
+    () => ({
       integrator: integratorStringByType,
-      keyPrefix: `jumper-${starterVariant}`,
-      hiddenUI: [
-        ...(configTheme?.hiddenUI ?? []),
-        HiddenUI.Appearance,
-        HiddenUI.Language,
-        HiddenUI.PoweredBy,
-        HiddenUI.WalletMenu,
-      ],
-      bridges: bridgesCtx,
-      exchanges: exchangesCtx,
-      tokens: tokensCtx,
-      chains: chainsCtx,
-      buildUrl: true,
-    };
-
-    return {
-      ...formParametersCtx,
-      useMainWidget: true,
-      includeRouteLabels: true,
       starterVariant,
       partnerName,
-      baseOverrides,
-    };
-  }, [
-    formParametersCtx,
-    starterVariant,
-    partnerName,
-    configTheme?.hiddenUI,
-    tokensCtx,
-    chainsCtx,
-    bridgesCtx,
-    exchangesCtx,
-    integratorStringByType,
-    isConnectedAGW,
-  ]);
+      formData: formParametersCtx,
+      allowFromChains: isConnectedAGW
+        ? [ChainId.ABS]
+        : allowChains || allowedChainsByVariant,
+      allowToChains,
+    }),
+    [
+      starterVariant,
+      partnerName,
+      formParametersCtx,
+      isConnectedAGW,
+      allowChains,
+      allowedChainsByVariant,
+      allowToChains,
+      configTheme,
+    ],
+  );
 
-  const widgetConfig = useLiFiWidgetConfig(ctx);
+  const widgetConfig = useWidgetConfig('main', context);
 
   if (bridgeConditions.isAGWToNonABSChain) {
     widgetConfig.requiredUI = [

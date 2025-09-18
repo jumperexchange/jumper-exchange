@@ -2,7 +2,7 @@ import { useMissionStore } from 'src/stores/mission/MissionStore';
 import { EntityWidgetProps } from '../base/Widget.types';
 import { FC, useMemo } from 'react';
 import { Widget } from '../base/Widget';
-import { ConfigContext } from '../widgetConfig/types';
+import { MissionWidgetContext } from '../widgetConfig/types';
 
 interface MissionBaseWidgetProps extends EntityWidgetProps {}
 
@@ -21,16 +21,18 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
     // missionChainIds,
   } = useMissionStore();
 
-  const ctx: ConfigContext = useMemo(() => {
+  const ctx: MissionWidgetContext = useMemo(() => {
     return {
       allowBridge,
       allowExchange,
-      destinationChain,
-      destinationToken,
-      sourceChain,
-      sourceToken,
-      fromAmount,
-      toAddress,
+      formData: {
+        destinationChain,
+        destinationToken,
+        sourceChain,
+        sourceToken,
+        fromAmount,
+        toAddress,
+      },
       taskType: currentActiveTaskType,
       overrideHeader: taskTitle,
     };
@@ -45,5 +47,5 @@ export const MissionBaseWidget: FC<MissionBaseWidgetProps> = () => {
     taskTitle,
   ]);
 
-  return <Widget ctx={ctx} />;
+  return <Widget ctx={ctx} type="mission" />;
 };

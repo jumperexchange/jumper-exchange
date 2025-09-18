@@ -85,6 +85,7 @@ export const DepositModal: FC<DepositModalProps> = ({
             )}
             <ClientOnly>
               <ZapDepositWidget
+                type="zap"
                 ctx={{
                   theme: {
                     container: {
