@@ -16,6 +16,12 @@ import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
 import { TrackingCategory } from 'src/const/trackingKeys';
 import WithdrawInputEndAdornment from './WithdrawInputEndAdornment';
 import { WithdrawFormProps } from './WithdrawWidget.types';
+import { Theme } from '@mui/material/styles';
+
+const buttonStyles = (theme: Theme) => ({
+  marginTop: theme.spacing(2),
+  '&:hover': { boxShadow: 'none' },
+});
 
 export const WithdrawForm: FC<WithdrawFormProps> = ({
   sendWithdrawTx,
@@ -146,10 +152,10 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
         hintEndAdornment={hintEndAdornment}
       />
       {!account?.isConnected ? (
-        <ConnectButton sx={(theme) => ({ marginTop: theme.spacing(2) })} />
+        <ConnectButton sx={buttonStyles} />
       ) : shouldSwitchChain ? (
         <Button
-          styles={(theme) => ({ marginTop: theme.spacing(2) })}
+          styles={buttonStyles}
           muiVariant="contained"
           onClick={() => handleSwitchChain(projectData?.chainId)}
         >
@@ -161,7 +167,7 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
           loading={isSubmitLoading}
           disabled={balance === '0' || isSubmitDisabled}
           muiVariant="contained"
-          styles={(theme) => ({ marginTop: theme.spacing(2) })}
+          styles={buttonStyles}
         >
           {submitLabel}
         </Button>
