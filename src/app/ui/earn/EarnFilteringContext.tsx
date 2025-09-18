@@ -133,8 +133,6 @@ export const EarnFilteringProvider = ({
     ...stats,
   };
 
-  console.log('context', context);
-
   return (
     <EarnFilteringContext.Provider value={context}>
       {children}
