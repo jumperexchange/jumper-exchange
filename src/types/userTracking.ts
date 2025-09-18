@@ -79,8 +79,3 @@ export interface TokenSearchProps {
   value: string;
   tokens: TokenAmount[];
 }
-
-export interface RouteSelectedProps {
-  route: Route;
-  routes: Route[];
-}

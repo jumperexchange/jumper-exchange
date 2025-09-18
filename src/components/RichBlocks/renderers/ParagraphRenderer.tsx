@@ -11,11 +11,11 @@ interface ParagraphRendererProps {
 export const ParagraphRenderer: FC<ParagraphRendererProps> = ({ element }) => {
   const { props } = element;
 
-  if (!props.text) return null;
-
   if (props.content?.type === 'link') {
     return <LinkRenderer content={props.content} />;
   }
+
+  if (!props.text) return null;
 
   if (props.text.includes('<') && props.text.includes('>')) {
     return <HtmlRenderer {...props} />;

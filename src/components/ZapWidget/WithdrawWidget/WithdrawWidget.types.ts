@@ -41,4 +41,5 @@ export interface WithdrawFormProps {
   isSubmitDisabled?: boolean;
   isSubmitLoading?: boolean;
   submitLabel?: string;
+  lpTokenDecimals: number;
 }

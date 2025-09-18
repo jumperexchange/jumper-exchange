@@ -9,6 +9,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { useChains } from 'src/hooks/useChains';
 import { useMemo } from 'react';
 import { TxConfirmation } from '../TxConfirmation/TxConfirmation';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 export interface WithdrawWidgetProps {
   poolName?: string;
@@ -54,42 +55,43 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   });
 
   return (
-    <WithdrawWidgetBox>
-      <WithdrawForm
-        submitLabel={'Redeem'} // This belongs to contractCalls[0].label
-        errorMessage={txError?.name}
-        sendWithdrawTx={sendWithdrawTx}
-        successDataRef={successDataRef}
-        isSubmitDisabled={isWriteContractDataPending}
-        isSubmitLoading={
-          isTransactionReceiptLoading || isWriteContractDataPending
-        }
-        refetchPosition={refetchPosition}
-        projectData={projectData}
-        token={token}
-        poolName={poolName}
-        balance={
-          depositTokenData
-            ? formatUnits(BigInt(depositTokenData), lpTokenDecimals)
-            : '0.00'
-        }
-      />
-
-      {isTransactionReceiptSuccess && (
-        <TxConfirmation
-          description={'Withdraw successful'}
-          link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
-          success={!!isWriteContractDataSuccess && !isWriteContractDataPending}
+    <SectionCardContainer>
+      <WithdrawWidgetBox>
+        <WithdrawForm
+          submitLabel={'Redeem'} // This belongs to contractCalls[0].label
+          errorMessage={txError?.name}
+          sendWithdrawTx={sendWithdrawTx}
+          successDataRef={successDataRef}
+          isSubmitDisabled={isWriteContractDataPending}
+          isSubmitLoading={
+            isTransactionReceiptLoading || isWriteContractDataPending
+          }
+          refetchPosition={refetchPosition}
+          projectData={projectData}
+          token={token}
+          poolName={poolName}
+          balance={depositTokenData?.toString() ?? '0'}
+          lpTokenDecimals={lpTokenDecimals}
         />
-      )}
 
-      {!isTransactionReceiptSuccess && txHash && (
-        <TxConfirmation
-          description={'Check on explorer'}
-          link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
-          success={false}
-        />
-      )}
-    </WithdrawWidgetBox>
+        {isTransactionReceiptSuccess && (
+          <TxConfirmation
+            description={'Withdraw successful'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+            success={
+              !!isWriteContractDataSuccess && !isWriteContractDataPending
+            }
+          />
+        )}
+
+        {!isTransactionReceiptSuccess && txHash && (
+          <TxConfirmation
+            description={'Check on explorer'}
+            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+            success={false}
+          />
+        )}
+      </WithdrawWidgetBox>
+    </SectionCardContainer>
   );
 };
