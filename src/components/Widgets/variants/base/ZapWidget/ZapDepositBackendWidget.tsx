@@ -3,7 +3,6 @@
 import {
   ChainType,
   FormState,
-  HiddenUI,
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
@@ -14,8 +13,6 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { ConfigContext } from '../../widgetConfig/types';
 import { WidgetProps } from '../Widget.types';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
 import { ChainId } from '@lifi/sdk';
@@ -26,11 +23,16 @@ import uniqBy from 'lodash/uniqBy';
 import { useZapAllLpTokens } from 'src/hooks/zaps/useZapAllLpTokens';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 import { useShowZapPlaceholderWidget } from './hooks';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import { ZapWidgetContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
 
-interface ZapDepositBackendWidgetProps extends WidgetProps {}
+interface ZapDepositBackendWidgetProps extends WidgetProps {
+  ctx: ZapWidgetContext;
+}
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
+  type,
   customInformation,
   ctx,
 }) => {
@@ -120,22 +122,15 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [projectData?.minFromAmountUSD]);
 
   const enhancedCtx = useMemo(() => {
-    const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: 'zap.morpho',
-      minFromAmountUSD,
-      hiddenUI: [
-        HiddenUI.LowAddressActivityConfirmation,
-        HiddenUI.GasRefuelMessage,
-      ],
-      variant: 'wide',
-      keyPrefix: 'zap.backend',
-    };
-
     return {
       ...ctx,
-      includeZap: true,
       zapPoolName: poolName,
-      baseOverrides,
+      integrator: 'zap.morpho',
+      keyPrefix: 'zap.backend',
+      variant: 'wide' as const,
+      formData: {
+        minFromAmountUSD,
+      },
     };
   }, [JSON.stringify(ctx), projectData.integrator, minFromAmountUSD, poolName]);
 
@@ -198,7 +193,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
-  const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+  const widgetConfig = useWidgetConfig(type, enhancedCtx);
 
   // @Note: we want to ensure that the chains are set in the widget config without any delay
   if (allowedChains) {

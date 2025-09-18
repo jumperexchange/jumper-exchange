@@ -1,10 +1,11 @@
 import { CustomInformation } from 'src/types/loyaltyPass';
-import { ConfigContext } from '../widgetConfig/types';
+import { WidgetContext, WidgetType } from '../widgetConfig/types';
 
 export interface EntityWidgetProps {
   customInformation?: Partial<CustomInformation>;
 }
 
 export interface WidgetProps extends EntityWidgetProps {
-  ctx: ConfigContext;
+  ctx: WidgetContext;
+  type: WidgetType;
 }

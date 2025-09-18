@@ -32,7 +32,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
 
   const ctx = useMemo(() => {
     return {
-      taskType: TaskType.Zap,
+      taskType: TaskType.Zap as const,
     };
   }, []);
 
@@ -89,11 +89,13 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
               <ClientOnly>
                 {currentTab === 'deposit' ? (
                   <ZapDepositBackendWidget
+                    type="zap"
                     ctx={ctx}
                     customInformation={customInformation}
                   />
                 ) : (
                   <ZapWithdrawWidget
+                    type="zap"
                     ctx={ctx}
                     customInformation={customInformation}
                   />
