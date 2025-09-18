@@ -1,6 +1,14 @@
 'use client';
 
-import { FormState, HiddenUI, LiFiWidget } from '@lifi/widget';
+import {
+  ChainType,
+  FormState,
+  HiddenUI,
+  LiFiWidget,
+  useWidgetEvents,
+  WidgetEvent,
+  WidgetSkeleton,
+} from '@lifi/widget';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
@@ -16,6 +24,8 @@ import { useSwitchChain } from 'wagmi';
 import { useUrlParams } from 'src/hooks/useUrlParams';
 import uniqBy from 'lodash/uniqBy';
 import { useZapAllLpTokens } from 'src/hooks/zaps/useZapAllLpTokens';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
+import { useShowZapPlaceholderWidget } from './hooks';
 
 interface ZapDepositBackendWidgetProps extends WidgetProps {}
 
@@ -29,16 +39,22 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
-  const { zapData, isSuccess: isZapDataSuccess } =
-    useEnhancedZapData(projectData);
+  const {
+    zapData,
+    isSuccess: isZapDataSuccess,
+    refetchDepositToken,
+  } = useEnhancedZapData(projectData);
 
   const formRef = useRef<FormState>(null);
 
   const { sourceChainToken } = useUrlParams();
 
   const { account } = useAccount();
-  const { chainId } = account;
+  const { chainId, chainType } = account;
+  const isEvmWallet = chainType === ChainType.EVM;
   const { switchChainAsync } = useSwitchChain();
+
+  const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
 
   const { data: zapSupportedChains } = useZapSupportedChains();
   const { data: allLpTokens } = useZapAllLpTokens();
@@ -170,6 +186,40 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     formRef.current?.setFieldValue('contractCalls' as any, []);
   }, [toChain, toToken]);
 
+  useEffect(() => {
+    setDestinationChainTokenForTracking({
+      chainId: toChain,
+      tokenAddress: toToken,
+    });
+  }, [toChain, toToken, setDestinationChainTokenForTracking]);
+
+  const widgetEvents = useWidgetEvents();
+  // Custom effect to refetch the balance
+  useEffect(() => {
+    function onRouteExecutionCompleted() {
+      refetchDepositToken();
+    }
+
+    const onRouteContactSupport = () => {
+      setSupportModalState(true);
+    };
+
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionCompleted,
+      onRouteExecutionCompleted,
+    );
+
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
+
+    return () => {
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
+      widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
+    };
+  }, [widgetEvents, refetchDepositToken, setSupportModalState]);
+
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
 
   // @Note: we want to ensure that the chains are set in the widget config without any delay
@@ -189,11 +239,30 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     widgetConfig.tokens.deny = newDenyList;
   }
 
-  return (
+  if (showZapPlaceholderWidget || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+      />
+    );
+  }
+
+  return isZapDataSuccess ? (
     <LiFiWidget
       formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
     />
+  ) : (
+    <WidgetSkeleton />
   );
 };

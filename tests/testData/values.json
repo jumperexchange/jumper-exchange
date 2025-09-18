@@ -5,6 +5,7 @@
   "discordURL": "https://discord.com/invite/jumperexchange",
   "telegramURL": "https://t.me/officialjumperexchange",
   "link3URL": "https://link3.to/jumperexchange",
+  "scanQRCodeTitle": "Scan this QR Code with your phone",
   "exploreFilamentURL": "http://localhost:3000/quests/rewards-from-filament",
   "aerodromeQuestsURL": "http://localhost:3000/quests/rewards-from-aerodrome-on-base",
   "githubURL": "https://github.com/jumperexchange",
