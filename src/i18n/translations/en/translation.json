@@ -36,7 +36,8 @@
       "developers": "Developers",
       "support": "Support",
       "resources": "Resources",
-      "profile": "Profile"
+      "profile": "Profile",
+      "privacyPolicy": "Privacy Policy"
     },
     "walletMenu": {
       "disconnect": "Disconnect",
