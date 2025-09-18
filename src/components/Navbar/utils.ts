@@ -11,3 +11,7 @@ export const checkIsScanPage = (pathname: string) => {
     pathname.includes(AppPaths.Wallet)
   );
 };
+
+export const checkIsPrivacyPolicyPage = (pathname: string) => {
+  return pathname.includes(AppPaths.PrivacyPolicy);
+};
