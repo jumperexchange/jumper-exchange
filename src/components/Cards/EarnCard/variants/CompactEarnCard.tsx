@@ -101,7 +101,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       />,
     );
     return result;
-  }, [apy, lockupMonths, tvlUsd, lpToken]);
+  }, [apy, lockupMonths, tvlUsd]);
 
   return (
     <CompactEarnCardContainer onClick={onClick}>
