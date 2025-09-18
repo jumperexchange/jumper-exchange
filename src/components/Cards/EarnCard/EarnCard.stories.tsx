@@ -116,11 +116,6 @@ export const CompactSingleAsset: Story = {
   args: {
     ...commonArgs,
     variant: 'compact',
-    // TODO: why?
-    // assets: {
-    //   ...commonArgs.assets,
-    //   tokens: [commonArgs.assets.tokens[0]],
-    // },
     primaryAction: compactPrimaryAction,
   },
 };
@@ -157,11 +152,6 @@ export const ListItemSingleAsset: Story = {
   args: {
     ...commonArgs,
     variant: 'list-item',
-    // TODO: why?
-    // assets: {
-    //   ...commonArgs.assets,
-    //   tokens: [commonArgs.assets.tokens[0]],
-    // },
     primaryAction: listItemPrimaryAction,
   },
 };
@@ -192,6 +182,18 @@ export const TopLoading: Story = {
 export const TopWithAction: Story = {
   args: {
     ...commonArgs,
+    variant: 'top',
+    primaryAction: listItemPrimaryAction,
+  },
+};
+
+export const TopWithActionAndNoRecommendation: Story = {
+  args: {
+    ...commonArgs,
+    data: {
+      ...commonArgs.data,
+      forYou: false,
+    },
     variant: 'top',
     primaryAction: listItemPrimaryAction,
   },
