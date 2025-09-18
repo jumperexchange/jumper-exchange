@@ -31,6 +31,9 @@ import { themeAllowChains, WidgetWrapper } from '.';
 import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 import { useTheme } from '@mui/material/styles';
+import { useLiFiWidgetConfig } from './variants/widgetConfig/hooks';
+import { ConfigContext } from './variants/widgetConfig/types';
+import uniqBy from 'lodash/uniqBy';
 
 export function Widget({
   starterVariant,
@@ -112,72 +115,81 @@ export function Widget({
     return starterVariant;
   }, [partnerName, starterVariant]);
 
-  // load environment config
-  const config: WidgetConfig = useMemo((): WidgetConfig => {
-    let rpcUrls = {};
-    try {
-      rpcUrls = {
-        ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
-        ...publicRPCList,
-      };
-    } catch (e) {
-      if (envConfig.DEV) {
-        console.warn('Parsing custom rpcs failed', e);
-      }
-    }
-
-    const formParameters: Record<string, number | string | undefined> = {
-      fromChain:
+  const formParametersCtx = useMemo(() => {
+    const params: Record<string, number | string | undefined> = {
+      sourceChain:
         configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
-      fromToken: configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
-      toChain: configTheme?.toChain ?? toChain,
-      toToken: configTheme?.toToken ?? toToken,
+      sourceToken:
+        configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
+      destinationChain: configTheme?.toChain ?? toChain,
+      destinationToken: configTheme?.toToken ?? toToken,
       fromAmount: fromAmount,
     };
 
-    for (const key in formParameters) {
-      if (!formParameters[key]) {
-        delete formParameters[key];
+    for (const key in params) {
+      if (!params[key]) {
+        delete params[key];
       }
     }
 
-    if (memeListTokens) {
-      tokens.allow!.concat(memeListTokens);
-    }
+    return params;
+  }, [
+    configTheme?.fromChain,
+    configTheme?.fromToken,
+    configTheme?.toChain,
+    configTheme?.toToken,
+    fromAmount,
+    fromChain,
+    fromToken,
+    toChain,
+    toToken,
+    widgetCache.fromChainId,
+    widgetCache.fromToken,
+  ]);
 
+  const tokensCtx = useMemo(() => {
+    const _tokens = tokens || {};
+    console.log('----memeListTokens----', memeListTokens);
+    if (memeListTokens) {
+      const currentAllowList = _tokens?.allow ?? [];
+      const newAllowList = currentAllowList.concat(memeListTokens);
+      _tokens.allow = newAllowList;
+    }
+    return _tokens;
+  }, [memeListTokens]);
+
+  const chainsCtx = useMemo(() => {
     return {
-      ...formParameters,
-      variant:
-        // @ts-expect-error
-        starterVariant === 'compact'
-          ? 'compact'
-          : starterVariant === 'refuel'
-            ? 'compact'
-            : 'wide',
-      subvariant,
-      subvariantOptions: {
-        wide: { enableChainSidebar: true },
-      },
-      walletConfig: {
-        onConnect: openWalletMenu,
-      },
-      chains: {
-        ...configTheme?.chains,
-        from: isConnectedAGW
-          ? { allow: [ChainId.ABS] }
-          : { allow: allowChains || allowedChainsByVariant },
-        to: allowToChains ? { allow: allowToChains } : undefined,
-      },
-      bridges: {
-        allow: configTheme?.allowedBridges,
-      },
-      exchanges: {
-        allow: configTheme?.allowedExchanges,
-      },
-      languages: {
-        default: i18n.language as LanguageKey,
-        allow: i18n.languages as LanguageKey[],
-      },
+      ...configTheme?.chains,
+      from: isConnectedAGW
+        ? { allow: [ChainId.ABS] }
+        : { allow: allowChains || allowedChainsByVariant },
+      to: allowToChains ? { allow: allowToChains } : undefined,
+    };
+  }, [
+    configTheme?.chains,
+    isConnectedAGW,
+    allowChains,
+    allowedChainsByVariant,
+    allowToChains,
+  ]);
+
+  const bridgesCtx = useMemo(() => {
+    return {
+      allow: configTheme?.allowedBridges,
+    };
+  }, [configTheme?.allowedBridges]);
+
+  const exchangesCtx = useMemo(() => {
+    return {
+      allow: configTheme?.allowedExchanges,
+    };
+  }, [configTheme?.allowedExchanges]);
+
+  const ctx = useMemo(() => {
+    const baseOverrides: ConfigContext['baseOverrides'] = {
+      integrator: integratorStringByType,
+      keyPrefix: `jumper-${starterVariant}`,
       hiddenUI: [
         ...(configTheme?.hiddenUI ?? []),
         HiddenUI.Appearance,
@@ -185,163 +197,55 @@ export function Widget({
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      appearance: widgetTheme.config.appearance,
-      theme: widgetTheme.config.theme,
-      keyPrefix: `jumper-${starterVariant}`,
-      apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
-      languageResources: {
-        en: {
-          warning: {
-            message: {
-              lowAddressActivity:
-                "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
-            },
-          },
-        },
-      },
-      sdkConfig: {
-        apiUrl: getApiUrl(),
-        rpcUrls,
-        routeOptions: {
-          maxPriceImpact: 0.4,
-          allowSwitchChain: !isConnectedAGW, // avoid routes requiring chain switch for multisig or smart account wallets
-        },
-      },
+      bridges: bridgesCtx,
+      exchanges: exchangesCtx,
+      tokens: tokensCtx,
+      chains: chainsCtx,
       buildUrl: true,
-      integrator: integratorStringByType,
-      tokens: tokens,
-      useRelayerRoutes: true,
-      routeLabels: [
-        {
-          label: {
-            text: '1.5x points',
-            sx: {
-              order: 1,
-              display: 'flex',
-              alignItems: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              marginLeft: 'auto',
-              gap: theme.spacing(0.5),
-              paddingLeft: theme.spacing(0.5),
-              paddingRight: theme.spacing(0.5),
-              background: `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
-              color: (theme.vars || theme).palette.white.main,
-              ...theme.typography.bodyXSmallStrong,
-              ...theme.applyStyles('light', {
-                // @Note we might adjust to use the theme config
-                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
-              }),
-              '&::before': {
-                content: '""',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%', // Makes the icon circular
-                backgroundImage:
-                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                flexShrink: 0,
-              },
-              '&>p': {
-                alignContent: 'flex-end',
-                paddingLeft: theme.spacing(0.5),
-                paddingRight: theme.spacing(0.5),
-              },
-            },
-          },
-          exchanges: {
-            allow: ['hyperbloom'],
-          },
-        },
-        {
-          label: {
-            text: '1.5x points',
-            sx: {
-              order: 1,
-              display: 'flex',
-              alignItems: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              marginLeft: 'auto',
-              gap: theme.spacing(0.5),
-              paddingLeft: theme.spacing(0.5),
-              paddingRight: theme.spacing(0.5),
-              background: `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
-              color: (theme.vars || theme).palette.white.main,
-              ...theme.typography.bodyXSmallStrong,
-              ...theme.applyStyles('light', {
-                // @Note we might adjust to use the theme config
-                background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
-              }),
-              '&::before': {
-                content: '""',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%', // Makes the icon circular
-                backgroundImage:
-                  'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                flexShrink: 0,
-              },
-              '&>p': {
-                alignContent: 'flex-end',
-                paddingLeft: theme.spacing(0.5),
-                paddingRight: theme.spacing(0.5),
-              },
-            },
-          },
-          exchanges: {
-            allow: ['hyperflow'],
-          },
-        },
-      ],
+    };
+
+    return {
+      ...formParametersCtx,
+      useMainWidget: true,
+      includeRouteLabels: true,
+      starterVariant,
+      partnerName,
+      baseOverrides,
     };
   }, [
-    configTheme?.fromChain,
-    configTheme?.fromToken,
-    configTheme?.toChain,
-    configTheme?.toToken,
-    configTheme?.chains,
-    configTheme?.integrator,
-    configTheme?.allowedBridges,
-    configTheme?.allowedExchanges,
-    configTheme?.hiddenUI,
-    fromChain,
-    widgetCache.fromChainId,
-    widgetCache.fromToken,
-    fromToken,
-    toChain,
-    toToken,
-    fromAmount,
-    memeListTokens,
+    formParametersCtx,
     starterVariant,
-    subvariant,
-    openWalletMenu,
-    isConnectedAGW,
-    allowChains,
-    allowedChainsByVariant,
-    allowToChains,
-    i18n.language,
-    i18n.languages,
-    widgetTheme.config.appearance,
-    widgetTheme.config.theme,
+    partnerName,
+    configTheme?.hiddenUI,
+    tokensCtx,
+    chainsCtx,
+    bridgesCtx,
+    exchangesCtx,
     integratorStringByType,
-    theme,
+    isConnectedAGW,
   ]);
 
+  const widgetConfig = useLiFiWidgetConfig(ctx);
+
   if (bridgeConditions.isAGWToNonABSChain) {
-    config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
+    widgetConfig.requiredUI = [
+      ...(widgetConfig.requiredUI || []),
+      RequiredUI.ToAddress,
+    ];
   }
 
   if (
     bridgeConditions.isBridgeFromHypeToArbNativeUSDC ||
     bridgeConditions.isBridgeFromEvmToHype
   ) {
-    config.hiddenUI = [...(config.hiddenUI || []), HiddenUI.ToAddress];
+    widgetConfig.hiddenUI = [
+      ...(widgetConfig.hiddenUI || []),
+      HiddenUI.ToAddress,
+    ];
+  }
+
+  if (!isConnectedAGW) {
+    widgetConfig.sdkConfig!.routeOptions!.allowSwitchChain = true;
   }
 
   return (
@@ -352,10 +256,10 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
-      <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
+      <ClientOnly fallback={<LifiWidgetSkeleton config={widgetConfig} />}>
         <LiFiWidget
-          integrator={config.integrator}
-          config={config}
+          integrator={widgetConfig.integrator}
+          config={widgetConfig}
           formRef={formRef}
           feeConfig={{
             _vcComponent: () => <FeeContribution translationFn={t} />,

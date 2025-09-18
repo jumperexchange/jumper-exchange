@@ -1,6 +1,5 @@
 import { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
-import { TaskType } from 'src/types/strapi';
 import { ConfigContext } from '../types';
 import { useTranslation } from 'react-i18next';
 import { LanguageKey } from 'src/types/i18n';
@@ -11,58 +10,16 @@ type EnglishLanguageResource = NonNullable<
 
 export const useLanguageResources = (ctx: ConfigContext) => {
   const { i18n, t } = useTranslation();
-  const {
-    taskType,
-    destinationChain,
-    destinationToken,
-    sourceChain,
-    sourceToken,
-    overrideHeader,
-    zapPoolName,
-  } = ctx;
 
   const config: Partial<WidgetConfig> = useMemo(() => {
-    let sourceDestinationTemplate = '';
-
-    if (destinationToken?.tokenSymbol && destinationChain?.chainKey) {
-      sourceDestinationTemplate = `to ${destinationToken?.tokenSymbol} on ${destinationChain?.chainKey}`;
-    } else if (sourceToken?.tokenSymbol && sourceChain?.chainKey) {
-      sourceDestinationTemplate = `from ${sourceToken?.tokenSymbol} on ${sourceChain?.chainKey}`;
-    } else if (sourceToken?.tokenSymbol && destinationToken?.tokenSymbol) {
-      sourceDestinationTemplate = `from ${sourceToken?.tokenSymbol} to ${destinationToken?.tokenSymbol}`;
-    } else if (sourceToken?.tokenSymbol) {
-      sourceDestinationTemplate = `from ${sourceToken?.tokenSymbol}`;
-    } else if (destinationToken?.tokenSymbol) {
-      sourceDestinationTemplate = `to ${destinationToken?.tokenSymbol}`;
-    } else if (sourceChain?.chainKey) {
-      sourceDestinationTemplate = `from ${sourceChain?.chainKey} chain`;
-    } else if (destinationChain?.chainKey) {
-      sourceDestinationTemplate = `to ${destinationChain?.chainKey} chain`;
-    }
-
-    const translationTemplate =
-      overrideHeader ??
-      `${!taskType || taskType === TaskType.Zap ? TaskType.Deposit : taskType} ${sourceDestinationTemplate}`;
-
     const languageResourcesEN: EnglishLanguageResource = {
-      header: {
-        checkout: translationTemplate,
-        exchange: translationTemplate,
-        deposit: translationTemplate,
-        swap: translationTemplate,
+      warning: {
+        message: {
+          lowAddressActivity:
+            "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
+        },
       },
     };
-
-    if (zapPoolName) {
-      languageResourcesEN.main = {
-        sentToAddress: t('widget.zap.sentToAddressName', {
-          name: zapPoolName,
-        }),
-        sendToAddress: t('widget.zap.sendToAddressName', {
-          name: zapPoolName,
-        }),
-      };
-    }
 
     return {
       languages: {
@@ -73,16 +30,7 @@ export const useLanguageResources = (ctx: ConfigContext) => {
         en: languageResourcesEN,
       },
     };
-  }, [
-    i18n,
-    t,
-    taskType,
-    destinationChain?.chainKey,
-    sourceChain?.chainKey,
-    destinationToken?.tokenSymbol,
-    sourceToken?.tokenSymbol,
-    zapPoolName,
-  ]);
+  }, [i18n, t]);
 
   return config;
 };
