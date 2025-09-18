@@ -9,7 +9,6 @@ export const useBaseRPC = () => {
     return {
       sdkConfig: {
         apiUrl: getApiUrl(),
-        useRelayerRoutes: true,
         rpcUrls: {
           ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
           ...publicRPCList,

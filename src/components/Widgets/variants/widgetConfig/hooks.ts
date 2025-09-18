@@ -16,7 +16,9 @@ import { useFormOverride } from './overrides/formOverride';
 import { useLanguageOverride } from './overrides/languageOverride';
 import { useRPCOverride } from './overrides/rpcOverride';
 import { useSubvariantOverride } from './overrides/subvariantOverride';
-import { useZapOverride } from './overrides/zapOverride';
+import { useZapOverride } from './overrides/zapRpcOverride';
+import { useRouteLabelsOverride } from './overrides/routeLabelsOverride';
+import { useVariantOverride } from './overrides/variantOverride';
 
 registerOverrideHook('languageResources', useLanguageOverride);
 registerOverrideHook('subvariant', useSubvariantOverride);
@@ -25,6 +27,8 @@ registerOverrideHook('rpc', useRPCOverride);
 registerOverrideHook('zap', useZapOverride);
 registerOverrideHook('allowBridge', useAllowBridge);
 registerOverrideHook('allowExchange', useAllowExchange);
+registerOverrideHook('routeLabels', useRouteLabelsOverride);
+registerOverrideHook('variant', useVariantOverride);
 
 function getOverrideNamesForContext(ctx: ConfigContext): string[] {
   const names = [
@@ -33,17 +37,27 @@ function getOverrideNamesForContext(ctx: ConfigContext): string[] {
     'form',
     'allowBridge',
     'allowExchange',
+    'variant',
   ];
   if (ctx.includeZap) {
     names.push('zap');
   } else {
     names.push('rpc');
   }
+  if (ctx.includeRouteLabels) {
+    names.push('routeLabels');
+  }
+  if (ctx.useMainWidget) {
+    names.push('variant');
+  }
+  if (ctx.includeZap) {
+    names.push('zapWidget');
+  }
   return names;
 }
 
 export function useLiFiWidgetConfig(ctx: ConfigContext = {}): WidgetConfig {
-  const base = useBaseWidget();
+  const base = useBaseWidget(ctx);
   const overrideHooks = getRegisteredOverrideHooks(
     getOverrideNamesForContext(ctx),
   );

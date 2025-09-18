@@ -1,4 +1,5 @@
 import { EVMProvider, WidgetConfig } from '@lifi/widget';
+import { StarterVariantType } from 'src/types/internal';
 import {
   TaskType,
   TaskWidgetInformationChainData,
@@ -26,6 +27,13 @@ export type ConfigContext = {
   toAddress?: TaskWidgetInformationWalletData;
   allowBridge?: string | null;
   allowExchange?: string | null;
+
+  includeRouteLabels?: boolean;
+
+  useMainWidget?: boolean;
+
+  starterVariant?: StarterVariantType;
+  partnerName?: string;
 
   [key: string]: any;
 };
