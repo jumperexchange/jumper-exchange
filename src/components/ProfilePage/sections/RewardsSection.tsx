@@ -12,8 +12,13 @@ import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCard } from '../components/RewardsCarousel/RewardClaimCard';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/RewardClaimCardSkeleton';
+import { MerklRewardsData } from 'src/types/strapi';
 
-export const RewardsSection = () => {
+export const RewardsSection = ({
+  merklRewards,
+}: {
+  merklRewards: MerklRewardsData[] | undefined;
+}) => {
   const { t } = useTranslation();
   const { walletAddress: address } = useContext(ProfileContext);
 
@@ -21,6 +26,7 @@ export const RewardsSection = () => {
     userAddress: address,
     includeTokenIcons: true,
     claimableOnly: true,
+    merklRewards,
   });
 
   const rewardsWithAmount = availableRewards.filter(
