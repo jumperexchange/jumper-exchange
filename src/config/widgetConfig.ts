@@ -99,7 +99,7 @@ export const getDefaultWidgetThemeV2 = (
       typeof copiedTheme.colorSchemes.dark.palette.grey
     >;
   }
-  copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
+  // copiedTheme.colorSchemes.dark.palette.grey[800] = '#302b52';
 
   const config = {
     config: {
