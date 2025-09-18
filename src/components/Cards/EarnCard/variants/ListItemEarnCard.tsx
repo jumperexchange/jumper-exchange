@@ -21,6 +21,7 @@ import {
   APY_TOOLTIP,
   ASSETS_LABEL,
   ASSETS_TOOLTIP,
+  formatLockupDuration,
   LOCKUP_PERIOD_LABEL,
   LOCKUP_PERIOD_TOOLTIP,
   TVL_LABEL,
@@ -67,13 +68,11 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
     const lockupMonthsNumber = Number(lockupMonths);
     if (!isNaN(lockupMonthsNumber)) {
-      const formatted = lockupMonthsNumber.toLocaleString();
-
       result.push(
         <ListItemTooltipBadge
           title={LOCKUP_PERIOD_TOOLTIP}
           key={LOCKUP_PERIOD_LABEL}
-          label={`${formatted} ${LOCKUP_PERIOD_LABEL}`}
+          label={formatLockupDuration(lockupMonthsNumber)}
         />,
       );
     }

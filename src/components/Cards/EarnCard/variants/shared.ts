@@ -1,5 +1,3 @@
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-
 export const APY_LABEL = 'APY';
 export const APY_TOOLTIP = 'The APY is the annualized return you will receive';
 
@@ -28,4 +26,15 @@ export const AtLeastNWhenLoading = <T>(
   const filler: null[] = isLoading ? Array(missingN).fill(null) : [];
   const result = [...d, ...filler].slice(0, maxN);
   return result;
+};
+
+export const formatLockupDuration = (lockupMonths: number) => {
+  const duration = lockupMonths.toLocaleString();
+
+  if (lockupMonths === 0) {
+    return 'None';
+  } else if (lockupMonths <= 1) {
+    return `${duration} month`;
+  }
+  return `${duration} months`;
 };

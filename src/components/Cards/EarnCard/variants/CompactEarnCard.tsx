@@ -21,6 +21,7 @@ import {
   APY_TOOLTIP,
   ASSETS_LABEL,
   ASSETS_TOOLTIP,
+  formatLockupDuration,
   LOCKUP_PERIOD_LABEL,
   LOCKUP_PERIOD_TOOLTIP,
   TVL_LABEL,
@@ -66,12 +67,10 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
     const lockupMonthsNumber = Number(lockupMonths);
     if (!isNaN(lockupMonthsNumber)) {
-      const formatted = lockupMonthsNumber.toLocaleString();
-
       result.push(
         <CompactEarnCardItem
           title={LOCKUP_PERIOD_LABEL}
-          value={formatted}
+          value={formatLockupDuration(lockupMonthsNumber)}
           tooltip={LOCKUP_PERIOD_TOOLTIP}
         />,
       );

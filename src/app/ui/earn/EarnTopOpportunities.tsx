@@ -15,16 +15,11 @@ export const EarnTopOpportunities = () => {
   return (
     <Grid container spacing={2}>
       {items?.map((item, index) => (
-        <Grid size={{ xs: 12, sm: index === 0 ? 7 : 5 }}>
+        <Grid key={index} size={{ xs: 12, sm: index === 0 ? 7 : 5 }}>
           {item == null ? (
-            <EarnCard key={index} variant="top" isLoading={true} data={null} />
+            <EarnCard variant="top" isLoading={true} data={null} />
           ) : (
-            <EarnCard
-              key={index}
-              variant="top"
-              isLoading={isLoading}
-              data={item}
-            />
+            <EarnCard variant="top" isLoading={isLoading} data={item} />
           )}
         </Grid>
       ))}

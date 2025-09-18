@@ -1,9 +1,9 @@
 'use client';
 import { Grid } from '@mui/material';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
+import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 import { EarnFilter } from './EarnFilter';
 import { useEarnFiltering, withEarnFiltering } from './EarnFilteringContext';
-import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 
 const EarnOpportunitiesAll_ = () => {
   const {
@@ -29,21 +29,11 @@ const EarnOpportunitiesAll_ = () => {
         <h1>For You</h1>
         <Grid container spacing={2}>
           {items.map((item, index) => (
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid key={index} size={{ xs: 12, sm: 4 }}>
               {item == null ? (
-                <EarnCard
-                  key={index}
-                  variant="compact"
-                  isLoading={true}
-                  data={null}
-                />
+                <EarnCard variant="compact" isLoading={true} data={null} />
               ) : (
-                <EarnCard
-                  key={index}
-                  variant="compact"
-                  isLoading={false}
-                  data={item}
-                />
+                <EarnCard variant="compact" isLoading={false} data={item} />
               )}
             </Grid>
           ))}
@@ -62,21 +52,11 @@ const EarnOpportunitiesAll_ = () => {
         <EarnFilter />
         <Grid container spacing={2}>
           {items.map((item, index) => (
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid key={index} size={{ xs: 12, sm: 4 }}>
               {item == null ? (
-                <EarnCard
-                  key={index}
-                  variant="compact"
-                  isLoading={true}
-                  data={null}
-                />
+                <EarnCard variant="compact" isLoading={true} data={null} />
               ) : (
-                <EarnCard
-                  key={index}
-                  variant="compact"
-                  isLoading={false}
-                  data={item}
-                />
+                <EarnCard variant="compact" isLoading={false} data={item} />
               )}
             </Grid>
           ))}
