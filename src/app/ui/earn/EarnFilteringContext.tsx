@@ -1,4 +1,4 @@
-import { map, uniqBy } from 'lodash';
+import { map, uniqBy, uniq } from 'lodash';
 import {
   createContext,
   useCallback,
@@ -178,7 +178,7 @@ const extractFilteringParams = (
   allAssets = uniqBy(allAssets, 'address').filter(Boolean);
 
   let allTags = map(data, 'tags').flat();
-  allTags = uniqBy(allTags, 'tag').filter(Boolean);
+  allTags = uniq(allTags).filter(Boolean);
 
   let allAPY = {
     0.1: 1,
