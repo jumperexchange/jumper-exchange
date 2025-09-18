@@ -1,7 +1,7 @@
 'use client';
 
-import { HiddenUI, LiFiWidget } from '@lifi/widget';
-import { FC, useMemo } from 'react';
+import { FormState, HiddenUI, LiFiWidget } from '@lifi/widget';
+import { FC, useEffect, useMemo, useRef } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
@@ -9,9 +9,11 @@ import { useMenuStore } from 'src/stores/menu/MenuStore';
 import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
 import { ConfigContext } from '../../widgetConfig/types';
 import { WidgetProps } from '../Widget.types';
-import { ZapDepositSettings } from './ZapDepositSettings';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
 import { ChainId } from '@lifi/sdk';
+import { useAccount } from '@lifi/wallet-management';
+import { useSwitchChain } from 'wagmi';
+import { useUrlParams } from 'src/hooks/useUrlParams';
 
 interface ZapDepositBackendWidgetProps extends WidgetProps {}
 
@@ -25,14 +27,16 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
-  const {
-    zapData,
-    isSuccess: isZapDataSuccess,
-    depositTokenData,
-    depositTokenDecimals,
-    isLoadingDepositTokenData,
-    refetchDepositToken,
-  } = useEnhancedZapData(projectData);
+  const { zapData, isSuccess: isZapDataSuccess } =
+    useEnhancedZapData(projectData);
+
+  const formRef = useRef<FormState>(null);
+
+  const { sourceChainToken } = useUrlParams();
+
+  const { account } = useAccount();
+  const { chainId } = account;
+  const { switchChainAsync } = useSwitchChain();
 
   const { data: zapSupportedChains } = useZapSupportedChains();
 
@@ -89,14 +93,16 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return zapData?.market?.depositToken.chainId;
   }, [JSON.stringify(zapData ?? {})]);
 
-  // const minFromAmountUSD = useMemo(() => {
-  //   return Number(projectData?.minFromAmountUSD ?? '0');
-  // }, [projectData?.minFromAmountUSD]);
+  const minFromAmountUSD = useMemo(() => {
+    return projectData?.minFromAmountUSD
+      ? Number(projectData?.minFromAmountUSD)
+      : undefined;
+  }, [projectData?.minFromAmountUSD]);
 
   const enhancedCtx = useMemo(() => {
     const baseOverrides: ConfigContext['baseOverrides'] = {
       integrator: 'zap.morpho',
-      minFromAmountUSD: customInformation?.projectData?.minFromAmountUSD,
+      minFromAmountUSD,
       hiddenUI: [
         HiddenUI.LowAddressActivityConfirmation,
         HiddenUI.GasRefuelMessage,
@@ -111,7 +117,55 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       zapPoolName: poolName,
       baseOverrides,
     };
-  }, [JSON.stringify(ctx), projectData.integrator, poolName]);
+  }, [JSON.stringify(ctx), projectData.integrator, minFromAmountUSD, poolName]);
+
+  useEffect(() => {
+    if (!chainId || allowedChains.includes(chainId)) {
+      return;
+    }
+
+    switchChainAsync({ chainId: ChainId.ETH });
+  }, [chainId, allowedChains, switchChainAsync]);
+
+  useEffect(() => {
+    if (
+      !formRef.current ||
+      !sourceChainToken?.chainId ||
+      allowedChains.includes(sourceChainToken.chainId)
+    ) {
+      return;
+    }
+
+    formRef.current?.setFieldValue('fromToken', undefined, {
+      setUrlSearchParam: true,
+    });
+    formRef.current?.setFieldValue('fromChain', undefined, {
+      setUrlSearchParam: true,
+    });
+  }, [sourceChainToken, allowedChains]);
+
+  useEffect(() => {
+    if (!formRef.current) {
+      return;
+    }
+
+    if (toChain) {
+      formRef.current?.setFieldValue('toChain', toChain, {
+        setUrlSearchParam: true,
+      });
+    }
+
+    if (toToken) {
+      formRef.current?.setFieldValue('toToken', toToken, {
+        setUrlSearchParam: true,
+      });
+    }
+
+    // @Note: Since we now use formRef to set/reset values, we no longer need ZapDepositSettings
+    // which relies on setFieldValue. However, contractCalls still needs to be set either through
+    // this method or setFieldValue - any other approach will prevent routes from being fetched.
+    formRef.current?.setFieldValue('contractCalls' as any, []);
+  }, [toChain, toToken]);
 
   const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
 
@@ -124,15 +178,9 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   return (
     <LiFiWidget
+      formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
-      contractComponent={
-        <ZapDepositSettings
-          toChain={toChain}
-          toToken={toToken}
-          contractCalls={[]}
-        />
-      }
     />
   );
 };
