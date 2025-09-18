@@ -2,6 +2,7 @@ import {
   ChainTokenSelected,
   Route,
   RouteExecutionUpdate,
+  RouteHighValueLossUpdate,
   SettingUpdated,
   useWidgetEvents,
 } from '@lifi/widget';
@@ -56,12 +57,15 @@ export const useWidgetTrackingContext = () => {
 
 interface WidgetTrackingProviderProps extends PropsWithChildren {
   trackingActionKeys?: {
+    destinationChainAndTokenSelection?: TrackingAction;
     sourceChainAndTokenSelection: TrackingAction;
     availableRoutes: TrackingAction;
     routeExecutionStarted: TrackingAction;
     routeExecutionCompleted: TrackingAction;
     routeExecutionFailed: TrackingAction;
     changeSettings: TrackingAction;
+    routeHighValueLoss?: TrackingAction;
+    lowAddressActivityConfirmed?: TrackingAction;
   };
   trackingDataActionKeys?: {
     routeExecutionStarted: TrackingEventDataAction;
@@ -73,6 +77,7 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
 export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   children,
   trackingActionKeys = {
+    destinationChainAndTokenSelection: '',
     sourceChainAndTokenSelection:
       TrackingAction.OnSourceChainAndTokenSelectionZap,
     availableRoutes: TrackingAction.OnAvailableRoutesZap,
@@ -80,6 +85,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
     routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
     changeSettings: TrackingAction.OnChangeSettingsZap,
+    routeHighValueLoss: '',
+    lowAddressActivityConfirmed: '',
   },
   trackingDataActionKeys = {
     routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
@@ -91,6 +98,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const sourceChainToken = useRef<ChainTokenSelected | null>(null);
   const destinationChainToken = useRef<ChainTokenSelected | null>(null);
   const isRoutesForCurrentSourceTokenTracked = useRef(false);
+  const isRoutesForCurrentDestinationTokenTracked = useRef(false);
   const posthogTracker = useMemo(() => {
     return makePosthogTracker({ trackTransaction, trackEvent });
   }, [trackTransaction, trackEvent]);
@@ -121,7 +129,10 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
   const availableRoutes = useCallback(
     (availableRoutes: Route[]) => {
-      if (isRoutesForCurrentSourceTokenTracked.current) {
+      if (
+        isRoutesForCurrentSourceTokenTracked.current &&
+        isRoutesForCurrentDestinationTokenTracked.current
+      ) {
         return;
       }
 
@@ -173,6 +184,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       });
 
       isRoutesForCurrentSourceTokenTracked.current = true;
+      isRoutesForCurrentDestinationTokenTracked.current = true;
     },
     [trackEvent, trackingActionKeys.availableRoutes],
   );
@@ -258,9 +270,77 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     [trackEvent, trackingActionKeys.changeSettings],
   );
 
+  const routeHighValueLoss = useCallback(
+    (update: RouteHighValueLossUpdate) => {
+      if (!trackingActionKeys.routeHighValueLoss) {
+        return;
+      }
+      trackEvent({
+        action: trackingActionKeys.routeHighValueLoss,
+        category: TrackingCategory.WidgetEvent,
+        label: 'click_high_value_loss_accepted',
+        data: {
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUSD,
+          [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
+          [TrackingEventParameter.GasCostUSD]: update.gasCostUSD || '',
+          [TrackingEventParameter.FeeCostUSD]: update.feeCostUSD || '',
+          [TrackingEventParameter.ValueLoss]: update.valueLoss,
+          [TrackingEventParameter.Timestamp]: new Date(
+            Date.now(),
+          ).toUTCString(),
+        },
+        enableAddressable: true,
+      });
+    },
+    [trackEvent, trackingActionKeys.routeHighValueLoss],
+  );
+
+  const lowAddressActivityConfirmed = useCallback(
+    (props: { address: string; chainId: number }) => {
+      if (!trackingActionKeys.lowAddressActivityConfirmed) {
+        return;
+      }
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.lowAddressActivityConfirmed,
+        label: `confirm_low_address_activity_confirmed`,
+        data: {
+          [TrackingEventParameter.WalletAddress]: props.address,
+          [TrackingEventParameter.ChainId]: props.chainId,
+        },
+        enableAddressable: true,
+      });
+    },
+    [trackEvent, trackingActionKeys.lowAddressActivityConfirmed],
+  );
+
+  const destinationChainTokenSelected = useCallback(
+    (toChainData: ChainTokenSelected) => {
+      if (!trackingActionKeys.destinationChainAndTokenSelection) {
+        return;
+      }
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.destinationChainAndTokenSelection,
+        label: `select_destination_chain_and_token`,
+        data: {
+          [TrackingEventParameter.DestinationChainSelection]:
+            toChainData.chainId,
+          [TrackingEventParameter.DestinationTokenSelection]:
+            toChainData.tokenAddress,
+        },
+        enableAddressable: true,
+      });
+      destinationChainToken.current = toChainData;
+      isRoutesForCurrentDestinationTokenTracked.current = false;
+    },
+    [trackEvent, trackingActionKeys.destinationChainAndTokenSelection],
+  );
+
   const setDestinationChainTokenForTracking = useCallback(
     (destinationToken: ChainTokenSelected) => {
       destinationChainToken.current = destinationToken;
+      isRoutesForCurrentDestinationTokenTracked.current = false;
     },
     [],
   );
@@ -270,11 +350,14 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   useEffect(() => {
     const config: WidgetEventsConfig = {
       sourceChainTokenSelected,
+      destinationChainTokenSelected,
       availableRoutes,
       routeExecutionStarted,
       routeExecutionCompleted,
       routeExecutionFailed,
       settingUpdated,
+      routeHighValueLoss,
+      lowAddressActivityConfirmed,
       routeSelected: posthogTracker.onRouteSelected,
       chainPinned: posthogTracker.onChainPinned,
     };
@@ -292,6 +375,9 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionCompleted,
     routeExecutionFailed,
     settingUpdated,
+    destinationChainTokenSelected,
+    routeHighValueLoss,
+    lowAddressActivityConfirmed,
     posthogTracker.onRouteSelected,
     posthogTracker.onChainPinned,
   ]);
