@@ -1,20 +1,17 @@
-import {
-  MultichainSmartAccount,
-} from '@biconomy/abstractjs';
-import { createSweepTransferInstructions } from '../utils';
+// Note: Sweep functionality has been moved to use the backend API
+// This file is kept for backward compatibility but the actual sweep logic
+// is now handled by the useSweepTokens hook which calls the backend API
+
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
 
+// Placeholder implementation - sweep is now handled via API
 export const sweepTransfer: ZapInstruction = async (
-  oNexus: MultichainSmartAccount,
+  oNexus: any,
   context: ZapExecutionContext,
 ) => {
-  const { currentRoute } = context;
-  const chainId = currentRoute.fromChainId;
-
-  // Create sweep transfer instructions for all token balances on the current wallet's EVM chain
-  const sweepInstructions = await createSweepTransferInstructions(oNexus, chainId);
-  
-  return sweepInstructions;
+  // This is a placeholder - actual sweep logic is now in the backend
+  console.warn('SweepZap is deprecated. Use the useSweepTokens hook with API instead.');
+  return [];
 };
 
 export const sweepZap: ZapDefinition = {
