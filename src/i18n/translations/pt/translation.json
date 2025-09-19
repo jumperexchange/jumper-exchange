@@ -113,8 +113,8 @@
   "button": {
     "okay": "Ok",
     "manageYourPosition": "Gerencie sua posição",
-    "goBack": "",
-    "connectAnotherWallet": ""
+    "goBack": "Retroceder",
+    "connectAnotherWallet": "Conectar outra carteira"
   },
   "error": {
     "message": "Algo deu errado. Por favor, tente recarregar a página. Se o problema persistir, entre em contato com nosso suporte."
@@ -171,6 +171,7 @@
     "tasks": {
       "type": "Tarefa {{type}}",
       "typeFallback": "Tarefa",
+      "typeOptional": "Tarefa opcional",
       "status": {
         "verify": "Verificar",
         "verified": "Verificada"
@@ -204,7 +205,7 @@
     "unlocked": "Desbloqueado",
     "levelWithValue": "Nível {{level}}",
     "tooltips": {
-      "unlockAtLevel": ""
+      "unlockAtLevel": "Desbloqueado no nível {{level}}"
     },
     "noData": {
       "description": "Ainda não {{entity}}? Vamos mudar isso!",
@@ -259,7 +260,8 @@
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
-    "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. Há um adicional de {{boostedApy}}% em recompensas extras pagas em outros tokens, verifique o site do protocolo para mais informações."
+    "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
+    "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos."
   },
   "widget": {
     "depositCard": {
@@ -272,10 +274,24 @@
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
+      "tabs": {
+        "deposit": "Depositar",
+        "withdraw": "Retirar"
+      },
       "placeholder": {
-        "title": "",
-        "description": ""
+        "comingSoon": "Em breve",
+        "embedded-multisig": {
+          "title": "Sua carteira não é suportada atualmente",
+          "description": "Estamos trabalhando para adicionar suporte para carteiras incorporadas e de contrato inteligente. Por enquanto, por favor use uma carteira diferente para completar esta missão."
+        },
+        "non-evm": {
+          "title": "Sua carteira não é suportada atualmente",
+          "description": "Estamos trabalhando para adicionar suporte para carteiras não-EVM. Por enquanto, por favor use uma carteira diferente para completar esta missão."
+        }
       }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": "Depósito rápido"
   }
 }
