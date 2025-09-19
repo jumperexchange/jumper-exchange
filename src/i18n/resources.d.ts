@@ -358,6 +358,18 @@ interface Resources {
       deposited: 'The token you have deposited into this market.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       tvl: 'Total value of crypto assets deposited in this market.';
+      assets: 'The assets you will earn from';
+    };
+    labels: {
+      apy: 'APY';
+      lockupPeriod: 'Lockup Period';
+      tvl: 'TVL';
+      assets: 'Assets';
+    };
+    earn: {
+      top: {
+        useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+      };
     };
     widget: {
       depositCard: {

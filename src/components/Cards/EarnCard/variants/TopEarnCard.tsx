@@ -14,6 +14,7 @@ import {
 } from '../EarnCard.styles';
 import { EarnCardProps } from '../EarnCard.types';
 import { TopEarnCardSkeleton } from './TopEarnCardSkeleton';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -23,6 +24,7 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
+  const { t } = useTranslation();
 
   if (isEmpty) {
     return <TopEarnCardSkeleton />;
@@ -61,9 +63,14 @@ export const TopEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       </TopEarnCardHeaderContainer>
       <TopEarnCardContentContainer>
         <p>
-          Use your spare <span>{asset.symbol}</span> with{' '}
-          <span>{protocol.name}</span> and earn up to{' '}
-          <span>{formattedApy}</span> APY
+          <Trans
+            i18nKey="earn.top.useYourSpare"
+            components={{
+              asset: <span>{asset.symbol}</span>,
+              protocol: <span>{protocol.name}</span>,
+              apy: <span>{formattedApy}</span>,
+            }}
+          />
         </p>
       </TopEarnCardContentContainer>
       <TopEarnCardFooterContainer>

@@ -1,6 +1,7 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { uniqBy } from 'lodash';
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -16,17 +17,7 @@ import {
 import { EarnCardProps } from '../EarnCard.types';
 import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
-import {
-  APY_LABEL,
-  APY_TOOLTIP,
-  ASSETS_LABEL,
-  ASSETS_TOOLTIP,
-  formatLockupDuration,
-  LOCKUP_PERIOD_LABEL,
-  LOCKUP_PERIOD_TOOLTIP,
-  TVL_LABEL,
-  TVL_TOOLTIP,
-} from './shared';
+import { formatLockupDuration } from './shared';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -36,6 +27,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
+  const { t } = useTranslation();
 
   if (isEmpty) {
     return <ListItemEarnCardSkeleton />;
@@ -59,20 +51,23 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
       result.push(
         <ListItemTooltipBadge
-          label={`${formatted} ${APY_LABEL}`}
-          title={APY_TOOLTIP}
-          key={APY_LABEL}
+          label={`${formatted} ${t('labels.apy')}`}
+          title={t('tooltips.apy')}
+          key={t('labels.apy')}
         />,
       );
     }
 
     const lockupMonthsNumber = Number(lockupMonths);
     if (!isNaN(lockupMonthsNumber)) {
+      const formatted = formatLockupDuration(lockupMonthsNumber);
       result.push(
         <ListItemTooltipBadge
-          title={LOCKUP_PERIOD_TOOLTIP}
-          key={LOCKUP_PERIOD_LABEL}
-          label={formatLockupDuration(lockupMonthsNumber)}
+          title={t('tooltips.lockupPeriod', {
+            formattedLockupPeriod: formatted,
+          })}
+          key={t('labels.lockupPeriod')}
+          label={formatted}
         />,
       );
     }
@@ -85,17 +80,17 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
       result.push(
         <ListItemTooltipBadge
-          title={TVL_TOOLTIP}
-          key={TVL_LABEL}
-          label={`${formatted} ${TVL_LABEL}`}
+          title={t('tooltips.tvl')}
+          key={t('labels.tvl')}
+          label={`${formatted} ${t('labels.tvl')}`}
         />,
       );
     }
 
     result.push(
       <ListItemTooltipBadge
-        title={ASSETS_TOOLTIP}
-        key={ASSETS_LABEL}
+        title={t('tooltips.assets')}
+        key={t('labels.assets')}
         startIcon={<TokenStack tokens={assets} />}
         label={assets.length === 1 ? assets[0].name : ''}
       />,

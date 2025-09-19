@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Grid';
 import { chunk, uniqBy } from 'lodash';
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -16,17 +17,7 @@ import {
 import { EarnCardProps } from '../EarnCard.types';
 import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
-import {
-  APY_LABEL,
-  APY_TOOLTIP,
-  ASSETS_LABEL,
-  ASSETS_TOOLTIP,
-  formatLockupDuration,
-  LOCKUP_PERIOD_LABEL,
-  LOCKUP_PERIOD_TOOLTIP,
-  TVL_LABEL,
-  TVL_TOOLTIP,
-} from './shared';
+import { formatLockupDuration } from './shared';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -36,6 +27,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
+  const { t } = useTranslation();
 
   if (isEmpty) {
     return <CompactEarnCardSkeleton />;
@@ -58,9 +50,9 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
       result.push(
         <CompactEarnCardItem
-          title={APY_LABEL}
+          title={t('labels.apy')}
           value={formatted}
-          tooltip={APY_TOOLTIP}
+          tooltip={t('tooltips.apy')}
         />,
       );
     }
@@ -69,9 +61,11 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     if (!isNaN(lockupMonthsNumber)) {
       result.push(
         <CompactEarnCardItem
-          title={LOCKUP_PERIOD_LABEL}
+          title={t('labels.lockupPeriod')}
           value={formatLockupDuration(lockupMonthsNumber)}
-          tooltip={LOCKUP_PERIOD_TOOLTIP}
+          tooltip={t('tooltips.lockupPeriod', {
+            formattedLockupPeriod: formatLockupDuration(lockupMonthsNumber),
+          })}
         />,
       );
     }
@@ -84,23 +78,23 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
       result.push(
         <CompactEarnCardItem
-          title={TVL_LABEL}
+          title={t('labels.tvl')}
           value={formatted}
-          tooltip={TVL_TOOLTIP}
+          tooltip={t('tooltips.tvl')}
         />,
       );
     }
 
     result.push(
       <CompactEarnCardItem
-        title={ASSETS_LABEL}
+        title={t('labels.assets')}
         valuePrepend={<TokenStack tokens={assets} />}
         value={assets.length === 1 ? assets[0].name : ''}
-        tooltip={ASSETS_TOOLTIP}
+        tooltip={t('tooltips.assets')}
       />,
     );
     return result;
-  }, [apy, lockupMonths, tvlUsd]);
+  }, [apy, lockupMonths, tvlUsd, assets]);
 
   return (
     <CompactEarnCardContainer onClick={onClick}>
