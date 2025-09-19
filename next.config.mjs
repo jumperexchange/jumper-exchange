@@ -8,6 +8,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   experimental: {
     serverSourceMaps: false,
+    optimizePackageImports: ['recharts'],
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {
