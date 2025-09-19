@@ -9,6 +9,7 @@ import type { Address } from 'viem';
 import { ExtendedToken } from '../utils/Token';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 import { createBatchFetcher } from '@/utils/batches/fetcher';
+import { getCachedData } from 'src/app/lib/cache';
 
 const TOKEN_CHAIN_TYPES: ChainType[] = Object.values(ChainType);
 
@@ -23,7 +24,9 @@ export const getTokensQuery = async (
   const { results } = createBatchFetcher<ChainType, TokensResponse>(
     tokensBatchesByChainType,
     async (_batchKey, chainTypes) => {
-      const data = await getTokens(sdkClient, { chainTypes: [...chainTypes] });
+      const data = await getCachedData('tokens', () =>
+        getTokens(sdkClient, { chainTypes: [...chainTypes] }),
+      );
       return [data];
     },
     {},
