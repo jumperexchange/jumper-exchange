@@ -1,8 +1,9 @@
-import type {
-  LiFiStep,
-  LiFiStepExtended,
-  Process,
-  RouteExtended,
+import {
+  LiFiErrorCode,
+  type LiFiStep,
+  type LiFiStepExtended,
+  type Process,
+  type RouteExtended,
 } from '@lifi/sdk';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import { getDetailInformation } from './routeUtils';
@@ -14,6 +15,18 @@ interface GetProcessInformationType {
   [TrackingEventParameter.ErrorCode]?: string;
   [TrackingEventParameter.ErrorMessage]?: string;
 }
+
+const findErrorKeyFromErrorCode = (code?: string | number) => {
+  if (!code) return null;
+
+  return (
+    Object.keys(LiFiErrorCode).find(
+      (key) =>
+        LiFiErrorCode[key as keyof typeof LiFiErrorCode].toString() ===
+        code.toString(),
+    ) || null
+  );
+};
 
 export const getProcessInformation = (
   route: RouteExtended,
@@ -37,9 +50,13 @@ export const getProcessInformation = (
             errorMessage.indexOf('data:'),
           );
         }
+        const errorCodeKey = findErrorKeyFromErrorCode(process.error?.code);
         errors = {
           ...(process.error?.code && {
             [TrackingEventParameter.ErrorCode]: process.error?.code,
+          }),
+          ...(errorCodeKey && {
+            [TrackingEventParameter.ErrorCodeKey]: errorCodeKey,
           }),
           ...(errorMessage && {
             [TrackingEventParameter.ErrorMessage]: errorMessage.trim(),

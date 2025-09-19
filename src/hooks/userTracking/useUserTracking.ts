@@ -172,6 +172,7 @@ export function useUserTracking(): UserTracking {
           // data from handleRouteTrackingData:
           action: data[TrackingEventParameter.Action] ?? action ?? '',
           errorCode: data[TrackingEventParameter.ErrorCode],
+          errorCodeKey: data[TrackingEventParameter.ErrorCodeKey],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
           exchange: data[TrackingEventParameter.Exchange],
           feeCost: data[TrackingEventParameter.FeeCost],

@@ -48,6 +48,7 @@ export interface TrackTransactionDataProps {
   // Optional properties (conditionally present) - sorted alphabetically
   [TrackingEventParameter.Action]?: string;
   [TrackingEventParameter.ErrorCode]?: string;
+  [TrackingEventParameter.ErrorCodeKey]?: string;
   [TrackingEventParameter.ErrorMessage]?: string;
   [TrackingEventParameter.Exchange]?: string;
   [TrackingEventParameter.FeeCost]?: number;
