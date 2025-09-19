@@ -140,19 +140,6 @@ export const EarnFilteringProvider = ({
   );
 };
 
-export const withEarnFiltering = <P extends object>(
-  Component: React.ComponentType<P>,
-) => {
-  const Wrapped = (props: P) => (
-    <EarnFilteringProvider>
-      <Component {...props} />
-    </EarnFilteringProvider>
-  );
-
-  Wrapped.displayName = `withEarnFiltering(${Component.displayName || Component.name || 'Component'})`;
-  return Wrapped;
-};
-
 export const useEarnFiltering = (): EarnFilteringContextType => {
   return useContext(EarnFilteringContext);
 };

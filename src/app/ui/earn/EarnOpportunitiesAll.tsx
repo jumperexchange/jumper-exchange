@@ -3,7 +3,10 @@ import { Grid } from '@mui/material';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 import { EarnFilter } from './EarnFilter';
-import { useEarnFiltering, withEarnFiltering } from './EarnFilteringContext';
+import {
+  EarnFilteringProvider,
+  useEarnFiltering,
+} from './EarnFilteringContext';
 
 const EarnOpportunitiesAll_ = () => {
   const {
@@ -80,4 +83,10 @@ const EarnOpportunitiesAll_ = () => {
   );
 };
 
-export const EarnOpportunitiesAll = withEarnFiltering(EarnOpportunitiesAll_);
+export const EarnOpportunitiesAll = () => {
+  return (
+    <EarnFilteringProvider>
+      <EarnOpportunitiesAll_ />
+    </EarnFilteringProvider>
+  );
+};
