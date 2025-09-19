@@ -130,11 +130,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              APY
+              labels.apy
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The APY is the annualized return you will receive"
+              aria-label="tooltips.apy"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -165,11 +165,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Lockup Period
+              labels.lockupPeriod
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The lockup period is the time you need to lock your assets for"
+              aria-label="tooltips.lockupPeriod"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -204,11 +204,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              TVL
+              labels.tvl
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The TVL is the total value locked in the pool"
+              aria-label="tooltips.tvl"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -239,11 +239,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Assets
+              labels.assets
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The assets you will earn from"
+              aria-label="tooltips.assets"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -452,11 +452,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              APY
+              labels.apy
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The APY is the annualized return you will receive"
+              aria-label="tooltips.apy"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -487,11 +487,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Lockup Period
+              labels.lockupPeriod
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The lockup period is the time you need to lock your assets for"
+              aria-label="tooltips.lockupPeriod"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -526,11 +526,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              TVL
+              labels.tvl
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The TVL is the total value locked in the pool"
+              aria-label="tooltips.tvl"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -561,11 +561,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Assets
+              labels.assets
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The assets you will earn from"
+              aria-label="tooltips.assets"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -738,11 +738,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              APY
+              labels.apy
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The APY is the annualized return you will receive"
+              aria-label="tooltips.apy"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -773,11 +773,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Lockup Period
+              labels.lockupPeriod
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The lockup period is the time you need to lock your assets for"
+              aria-label="tooltips.lockupPeriod"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -812,11 +812,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              TVL
+              labels.tvl
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The TVL is the total value locked in the pool"
+              aria-label="tooltips.tvl"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -847,11 +847,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Assets
+              labels.assets
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The assets you will earn from"
+              aria-label="tooltips.assets"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -990,18 +990,18 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </p>
         </div>
         <div
-          aria-label="The APY is the annualized return you will receive"
+          aria-label="tooltips.apy"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            7.15% APY
+            7.15% labels.apy
           </p>
         </div>
         <div
-          aria-label="The lockup period is the time you need to lock your assets for"
+          aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1012,18 +1012,18 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </p>
         </div>
         <div
-          aria-label="The TVL is the total value locked in the pool"
+          aria-label="tooltips.tvl"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 TVL
+            $62,572,415 labels.tvl
           </p>
         </div>
         <div
-          aria-label="The assets you will earn from"
+          aria-label="tooltips.assets"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1201,18 +1201,18 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </p>
         </div>
         <div
-          aria-label="The APY is the annualized return you will receive"
+          aria-label="tooltips.apy"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            7.15% APY
+            7.15% labels.apy
           </p>
         </div>
         <div
-          aria-label="The lockup period is the time you need to lock your assets for"
+          aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1223,18 +1223,18 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </p>
         </div>
         <div
-          aria-label="The TVL is the total value locked in the pool"
+          aria-label="tooltips.tvl"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 TVL
+            $62,572,415 labels.tvl
           </p>
         </div>
         <div
-          aria-label="The assets you will earn from"
+          aria-label="tooltips.assets"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1375,18 +1375,18 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </p>
         </div>
         <div
-          aria-label="The APY is the annualized return you will receive"
+          aria-label="tooltips.apy"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            7.15% APY
+            7.15% labels.apy
           </p>
         </div>
         <div
-          aria-label="The lockup period is the time you need to lock your assets for"
+          aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1397,18 +1397,18 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </p>
         </div>
         <div
-          aria-label="The TVL is the total value locked in the pool"
+          aria-label="tooltips.tvl"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 TVL
+            $62,572,415 labels.tvl
           </p>
         </div>
         <div
-          aria-label="The assets you will earn from"
+          aria-label="tooltips.assets"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
