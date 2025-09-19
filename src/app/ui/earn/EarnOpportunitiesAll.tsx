@@ -12,10 +12,8 @@ const EarnOpportunitiesAll_ = () => {
   const {
     totalMarkets,
     forYouLoading,
-    forYouError,
     forYou,
     allLoading,
-    allError,
     all,
     showForYou,
     toggleForYou,
