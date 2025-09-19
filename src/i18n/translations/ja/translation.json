@@ -36,7 +36,8 @@
       "developers": "開発者",
       "support": "サポート",
       "resources": "",
-      "profile": "Jumperプロフィール"
+      "profile": "Jumperプロフィール",
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "接続を解除",
