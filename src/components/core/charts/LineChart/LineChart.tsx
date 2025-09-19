@@ -11,9 +11,10 @@ import {
 import { CustomTooltip } from './CustomTooltip';
 import { toCompactValue } from 'src/utils/formatNumbers';
 import { LineChartSkeleton } from './LineChartSkeleton';
-import { calculateTooltipPosition } from './utils';
+import { calculateTooltipPosition, calculateVisibleYRange } from './utils';
 import { useRef } from 'react';
 import { format } from 'date-fns';
+import { AREA_CONFIG } from './constants';
 
 export interface ChartDataPoint<V> {
   date: string;
@@ -53,12 +54,14 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
+  const { minValue, maxValue } = calculateVisibleYRange(data);
+
   if (isLoading) {
     return <LineChartSkeleton />;
   }
 
   return (
-    <ResponsiveContainer ref={chartContainerRef} width="100%" height={300}>
+    <ResponsiveContainer ref={chartContainerRef} width="100%" height="100%">
       <AreaChart data={data} accessibilityLayer={false}>
         <defs>
           <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
@@ -88,7 +91,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             axisLine={false}
             tickLine={false}
             minTickGap={10}
-            tickMargin={10}
+            tickMargin={14}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
               fontSize: 10,
@@ -104,8 +107,10 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
           <YAxis
             axisLine={false}
             tickLine={false}
-            tickCount={5}
+            tickCount={6} // 5+1 as we do not start from 0
             width={40}
+            tickMargin={8}
+            domain={[minValue, maxValue]}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
               fontSize: 10,
@@ -113,9 +118,9 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
               fontWeight: muiTheme.typography.bodyXXSmall.fontWeight,
             }}
             tickFormatter={(value) => {
-              return !value || isNaN(Number(value))
-                ? value
-                : toCompactValue(value);
+              if (!value || isNaN(Number(value))) return value;
+              if (Number(value) === 0) return '';
+              return toCompactValue(value);
             }}
           />
         )}
@@ -147,13 +152,23 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
           stroke={theme.lineColor}
           activeDot={
             enableCrosshair
-              ? { r: 4, strokeWidth: 0, fill: theme.pointColor }
+              ? {
+                  r: 4,
+                  strokeWidth: 0,
+                  fill: theme.pointColor,
+                  style: {
+                    transform: AREA_CONFIG.TRANSFORM,
+                  },
+                }
               : false
           }
           fillOpacity={1}
           fill="url(#areaGradient)"
           isAnimationActive
-          baseValue={-1}
+          baseValue={minValue}
+          style={{
+            transform: AREA_CONFIG.TRANSFORM,
+          }}
         />
       </AreaChart>
     </ResponsiveContainer>
