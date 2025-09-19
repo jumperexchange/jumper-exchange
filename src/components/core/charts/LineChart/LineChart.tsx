@@ -1,21 +1,26 @@
-import {
-  ResponsiveLine,
-  LineLayerId,
-  LineCustomSvgLayerProps,
-  LineSeries,
-  InferY,
-  SliceTooltipProps,
-} from '@nivo/line';
-import { ReactNode } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { CustomFollowingPointLayer } from './layers/CustomFollowingPointLayer';
-import { CustomGridLayer } from './layers/CustomGridLayer';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 import { CustomTooltip } from './CustomTooltip';
-import { CustomYAxis } from './layers/CustomYAxis';
-import { CustomXAxis } from './layers/CustomXAxis';
-import { CustomAreaLayer } from './layers/CustomAreaLayer';
+import { toCompactValue } from 'src/utils/formatNumbers';
+import { LineChartSkeleton } from './LineChartSkeleton';
+import { calculateTooltipPosition } from './utils';
+import { useRef } from 'react';
+import { format } from 'date-fns';
 
-export interface LineChartProps<T extends LineSeries> {
+export interface ChartDataPoint<V> {
+  date: string;
+  value: V;
+}
+
+export interface LineChartProps<V, T extends ChartDataPoint<V>> {
   data: T[];
   theme: {
     lineColor?: string;
@@ -23,107 +28,134 @@ export interface LineChartProps<T extends LineSeries> {
     areaBottomColor?: string;
     pointColor?: string;
   };
+  dateFormat?: string;
+  dataSetId?: string;
+  isLoading?: boolean;
   enableCrosshair?: boolean;
   enableGridY?: boolean;
   enableXAxis?: boolean;
   enableYAxis?: boolean;
   enableTooltip?: boolean;
-  dateFormat?: string;
 }
 
-export function LineChart<T extends LineSeries>({
+export const LineChart = <V, T extends ChartDataPoint<V>>({
   data,
-  theme: { lineColor, areaTopColor, areaBottomColor, pointColor },
-  enableCrosshair = false,
-  enableGridY = false,
-  enableXAxis = false,
-  enableYAxis = false,
-  enableTooltip = false,
+  theme,
   dateFormat,
-}: LineChartProps<T>) {
-  const theme = useTheme();
+  dataSetId,
+  enableCrosshair = true,
+  enableGridY = true,
+  enableXAxis = true,
+  enableYAxis = true,
+  enableTooltip = true,
+  isLoading,
+}: LineChartProps<V, T>) => {
+  const muiTheme = useTheme();
+  const chartContainerRef = useRef<HTMLDivElement>(null);
 
-  const buildLayers = (): (
-    | LineLayerId
-    | ((props: LineCustomSvgLayerProps<T>) => ReactNode)
-  )[] => {
-    const layers: (
-      | LineLayerId
-      | ((props: LineCustomSvgLayerProps<T>) => ReactNode)
-    )[] = [];
-
-    // Add axes and grid first (rendered behind the chart)
-    if (enableGridY) {
-      layers.push(CustomGridLayer);
-    }
-
-    if (enableYAxis) {
-      layers.push(CustomYAxis);
-    }
-
-    if (enableXAxis) {
-      layers.push((props: LineCustomSvgLayerProps<T>) => (
-        <CustomXAxis {...props} dateFormat={dateFormat} />
-      ));
-    }
-
-    // Add core chart layers
-    layers.push(CustomAreaLayer, 'lines');
-
-    // Add crosshair before slices (so it renders on top of the line but under tooltips)
-    if (enableCrosshair) {
-      layers.push((props: LineCustomSvgLayerProps<T>) => (
-        <CustomFollowingPointLayer {...props} customPointColor={pointColor} />
-      ));
-    }
-
-    // Add slices last (for tooltips)
-    layers.push('slices');
-
-    return layers;
-  };
-
-  const layers = buildLayers();
+  if (isLoading) {
+    return <LineChartSkeleton />;
+  }
 
   return (
-    <ResponsiveLine<T>
-      data={data}
-      margin={{ top: 20, right: 60, bottom: 20, left: 60 }}
-      yScale={{
-        type: 'linear',
-        min: 'auto',
-        max: 'auto',
-        stacked: true,
-        reverse: false,
-      }}
-      lineWidth={1}
-      curve="cardinal"
-      animate
-      isInteractive
-      enableSlices="x"
-      sliceTooltip={(props: SliceTooltipProps<T>) =>
-        enableTooltip && <CustomTooltip {...props} dateFormat={dateFormat} />
-      }
-      colors={[lineColor || (theme.vars || theme).palette.primary.main]}
-      defs={[
-        {
-          id: 'gradient',
-          type: 'linearGradient',
-          colors: [
-            {
-              offset: 0,
-              color: areaTopColor || (theme.vars || theme).palette.primary.main,
-            },
-            {
-              offset: 100,
-              color:
-                areaBottomColor || (theme.vars || theme).palette.white.main,
-            },
-          ],
-        },
-      ]}
-      fill={[{ match: '*', id: 'gradient' }]}
-      layers={layers}
-    />
+    <ResponsiveContainer ref={chartContainerRef} width="100%" height={300}>
+      <AreaChart data={data} accessibilityLayer={false}>
+        <defs>
+          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={theme.areaTopColor} stopOpacity={1} />
+            <stop
+              offset="100%"
+              stopColor={theme.areaBottomColor}
+              stopOpacity={1}
+            />
+          </linearGradient>
+        </defs>
+        {enableGridY && (
+          <CartesianGrid
+            vertical={false}
+            horizontal={{
+              offset: -1,
+            }}
+            strokeDasharray="0"
+            stroke={`color-mix(in srgb, ${
+              (muiTheme.vars || muiTheme).palette.alpha900.main
+            } 10%, transparent)`}
+          />
+        )}
+        {enableXAxis && (
+          <XAxis
+            dataKey="date"
+            axisLine={false}
+            tickLine={false}
+            minTickGap={10}
+            tickMargin={10}
+            tick={{
+              fill: (muiTheme.vars || muiTheme).palette.text.secondary,
+              fontSize: 10,
+              fontFamily: muiTheme.typography.bodyXXSmall.fontFamily,
+              fontWeight: muiTheme.typography.bodyXXSmall.fontWeight,
+            }}
+            tickFormatter={(value) => {
+              return format(value ?? '', dateFormat ?? 'MMM yyyy');
+            }}
+          />
+        )}
+        {enableYAxis && (
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tickCount={5}
+            width={40}
+            tick={{
+              fill: (muiTheme.vars || muiTheme).palette.text.secondary,
+              fontSize: 10,
+              fontFamily: muiTheme.typography.bodyXXSmall.fontFamily,
+              fontWeight: muiTheme.typography.bodyXXSmall.fontWeight,
+            }}
+            tickFormatter={(value) => {
+              return !value || isNaN(Number(value))
+                ? value
+                : toCompactValue(value);
+            }}
+          />
+        )}
+        {enableTooltip && (
+          <Tooltip
+            content={(props) => {
+              const { x, y } = calculateTooltipPosition(
+                props.coordinate?.x ?? 0,
+                props.coordinate?.y ?? 0,
+                chartContainerRef.current?.clientWidth ?? 0,
+                chartContainerRef.current?.clientHeight ?? 0,
+              );
+              return (
+                <CustomTooltip
+                  {...props}
+                  x={x}
+                  y={y}
+                  dateFormat={dateFormat}
+                  dataSetId={dataSetId}
+                />
+              );
+            }}
+            cursor={false}
+          />
+        )}
+        <Area
+          type="natural"
+          dataKey="value"
+          stroke={theme.lineColor}
+          activeDot={
+            enableCrosshair
+              ? { r: 4, strokeWidth: 0, fill: theme.pointColor }
+              : false
+          }
+          fillOpacity={1}
+          fill="url(#areaGradient)"
+          isAnimationActive
+          baseValue={-1}
+        />
+      </AreaChart>
+    </ResponsiveContainer>
   );
-}
+};

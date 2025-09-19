@@ -1,57 +1,37 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import { LineChart, LineChartProps } from './LineChart';
+import { ChartDataPoint, LineChart, LineChartProps } from './LineChart';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import Box from '@mui/material/Box';
 import { useColorScheme, useTheme } from '@mui/material/styles';
-import { LineSeries } from '@nivo/line';
 
 const data = [
-  {
-    id: 'tvl',
-    data: [
-      { x: '2023-01-01', y: 97.92 },
-      { x: '2023-01-02', y: 124.45 },
-      { x: '2023-01-03', y: 86.26 },
-      { x: '2023-01-04', y: 97.28 },
-      { x: '2023-01-05', y: 91.52 },
-      { x: '2023-01-07', y: 130.35 },
-      { x: '2023-01-08', y: 83.77 },
-      { x: '2023-01-09', y: 103.57 },
-      { x: '2023-01-10', y: 102.31 },
-      { x: '2023-01-11', y: 119.63 },
-      { x: '2023-01-12', y: 100.87 },
-      { x: '2023-01-13', y: 88.29 },
-      { x: '2023-01-15', y: 103.58 },
-      { x: '2023-01-16', y: 87.97 },
-      { x: '2023-01-17', y: 90.75 },
-      { x: '2023-01-18', y: 111.31 },
-      { x: '2023-01-20', y: 108.49 },
-      { x: '2023-01-21', y: 105.54 },
-      { x: '2023-01-22', y: 85.69 },
-      { x: '2023-01-23', y: 108.31 },
-      { x: '2023-01-24', y: 90.05 },
-      { x: '2023-01-25', y: 105.59 },
-      { x: '2023-02-06', y: 100.71 },
-      { x: '2023-03-14', y: 96.55 },
-      { x: '2023-04-19', y: 137.6 },
-    ],
-  },
+  { date: '2023-01-01', value: 97.92 },
+  { date: '2023-01-02', value: 124.45 },
+  { date: '2023-01-03', value: 86.26 },
+  { date: '2023-01-04', value: 97.28 },
+  { date: '2023-01-05', value: 91.52 },
+  { date: '2023-01-07', value: 130.35 },
+  { date: '2023-01-08', value: 83.77 },
+  { date: '2023-01-09', value: 103.57 },
+  { date: '2023-01-10', value: 102.31 },
+  { date: '2023-01-11', value: 119.63 },
+  { date: '2023-01-12', value: 100.87 },
+  { date: '2023-01-13', value: 88.29 },
+  { date: '2023-01-15', value: 103.58 },
+  { date: '2023-01-16', value: 87.97 },
+  { date: '2023-01-17', value: 90.75 },
+  { date: '2023-01-18', value: 111.31 },
+  { date: '2023-01-20', value: 108.49 },
+  { date: '2023-01-21', value: 105.54 },
+  { date: '2023-01-22', value: 85.69 },
+  { date: '2023-01-23', value: 108.31 },
+  { date: '2023-01-24', value: 90.05 },
+  { date: '2023-01-25', value: 105.59 },
+  { date: '2023-02-06', value: 100.71 },
+  { date: '2023-03-14', value: 96.55 },
+  { date: '2023-04-19', value: 137.6 },
 ];
-
-const commonArgs = {
-  data,
-  theme: {},
-  dateFormat: 'dd MMM yyyy',
-};
-
-const allLayersEnabledArgs = {
-  enableCrosshair: true,
-  enableGridY: true,
-  enableXAxis: true,
-  enableYAxis: true,
-  enableTooltip: true,
-};
 
 const meta = {
   component: LineChart,
@@ -61,7 +41,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const DefaultRenderer = <T extends LineSeries>(args: LineChartProps<T>) => {
+const DefaultRenderer = <V, T extends ChartDataPoint<V>>(
+  args: LineChartProps<V, T>,
+) => {
   const theme = useTheme();
   const { mode } = useColorScheme();
   const isLightTheme = mode === 'light';
@@ -85,61 +67,17 @@ const DefaultRenderer = <T extends LineSeries>(args: LineChartProps<T>) => {
   );
 };
 
+const commonArgs = {
+  data,
+  theme: {},
+  dateFormat: 'dd MMM yyyy',
+  dataSetId: 'tvl',
+};
+
 export const Default: Story = {
   render: DefaultRenderer,
   args: {
     ...commonArgs,
-  },
-};
-
-export const WithAllLayersEnabled: Story = {
-  render: DefaultRenderer,
-  args: {
-    ...commonArgs,
-    ...allLayersEnabledArgs,
-  },
-};
-
-export const MonthlyTVL: Story = {
-  render: DefaultRenderer,
-  args: {
-    ...commonArgs,
-    ...allLayersEnabledArgs,
-    data: [
-      {
-        id: 'tvl',
-        data: [
-          { x: '2023-01-01', y: 47 },
-          { x: '2023-02-01', y: 120 },
-          { x: '2023-03-01', y: 86 },
-          { x: '2023-04-01', y: 97 },
-          { x: '2023-05-01', y: 91 },
-          { x: '2023-06-01', y: 130 },
-        ],
-      },
-    ],
-    dateFormat: 'MMM yyyy',
-  },
-};
-
-export const DailyTVL: Story = {
-  render: DefaultRenderer,
-  args: {
-    ...commonArgs,
-    ...allLayersEnabledArgs,
-    data: [
-      {
-        id: 'tvl',
-        data: [
-          { x: '2023-01-01', y: 100 },
-          { x: '2023-01-02', y: 230 },
-          { x: '2023-01-03', y: 120 },
-          { x: '2023-01-04', y: 150 },
-          { x: '2023-01-05', y: 100 },
-          { x: '2023-01-06', y: 67 },
-        ],
-      },
-    ],
   },
 };
 
@@ -148,6 +86,7 @@ export const CustomColors: Story = {
   args: {
     ...commonArgs,
     theme: {
+      ...commonArgs.theme,
       lineColor: '#FF8C42',
       areaTopColor: '#FFF2E6',
       pointColor: '#E65100',
@@ -155,14 +94,62 @@ export const CustomColors: Story = {
   },
 };
 
+export const DailyTVL: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    dateFormat: 'dd MMM',
+    data: [
+      { date: '2023-01-01', value: 100 },
+      { date: '2023-01-02', value: 230 },
+      { date: '2023-01-03', value: 120 },
+      { date: '2023-01-04', value: 150 },
+      { date: '2023-01-05', value: 100 },
+      { date: '2023-01-06', value: 67 },
+    ],
+  },
+};
+
+export const MonthlyTVL: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    dateFormat: 'MMM yyyy',
+    data: [
+      { date: '2025-09-01', value: 32.51 },
+      { date: '2025-10-01', value: 31.11 },
+      { date: '2025-11-01', value: 27.02 },
+      { date: '2025-12-01', value: 27.32 },
+      { date: '2026-01-01', value: 25.17 },
+      { date: '2026-02-01', value: 28.89 },
+      { date: '2026-03-01', value: 25.46 },
+      { date: '2026-04-01', value: 23.92 },
+      { date: '2026-05-01', value: 22.68 },
+      { date: '2026-06-01', value: 22.67 },
+      { date: '2026-07-01', value: 23.92 },
+      { date: '2026-08-01', value: 22.68 },
+      { date: '2026-09-01', value: 22.67 },
+      { date: '2026-10-01', value: 28.67 },
+    ],
+  },
+};
+
+export const OnlyWithBaseLayers: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    enableCrosshair: false,
+    enableGridY: false,
+    enableXAxis: false,
+    enableYAxis: false,
+    enableTooltip: false,
+  },
+};
+
 export const Skeleton: Story = {
   render: () => (
-    <Box
-      sx={{
-        height: 400,
-      }}
-    >
-      <LineChartSkeleton height={400} />
+    <Box sx={{ height: 400 }}>
+      <LineChartSkeleton />
     </Box>
   ),
   args: {
