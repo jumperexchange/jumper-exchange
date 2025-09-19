@@ -26,6 +26,7 @@ import uniqBy from 'lodash/uniqBy';
 import { useZapAllLpTokens } from 'src/hooks/zaps/useZapAllLpTokens';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 import { useShowZapPlaceholderWidget } from './hooks';
+import { ZapDepositSettings } from './ZapDepositSettings';
 
 interface ZapDepositBackendWidgetProps extends WidgetProps {}
 
@@ -164,29 +165,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [sourceChainToken, allowedChains]);
 
   useEffect(() => {
-    if (!formRef.current) {
-      return;
-    }
-
-    if (toChain) {
-      formRef.current?.setFieldValue('toChain', toChain, {
-        setUrlSearchParam: true,
-      });
-    }
-
-    if (toToken) {
-      formRef.current?.setFieldValue('toToken', toToken, {
-        setUrlSearchParam: true,
-      });
-    }
-
-    // @Note: Since we now use formRef to set/reset values, we no longer need ZapDepositSettings
-    // which relies on setFieldValue. However, contractCalls still needs to be set either through
-    // this method or setFieldValue - any other approach will prevent routes from being fetched.
-    formRef.current?.setFieldValue('contractCalls' as any, []);
-  }, [toChain, toToken]);
-
-  useEffect(() => {
     setDestinationChainTokenForTracking({
       chainId: toChain,
       tokenAddress: toToken,
@@ -261,8 +239,15 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
+      contractComponent={
+        <ZapDepositSettings
+          toChain={toChain}
+          toToken={toToken}
+          contractCalls={[]}
+        />
+      }
     />
   ) : (
-    <WidgetSkeleton />
+    <WidgetSkeleton config={widgetConfig} />
   );
 };
