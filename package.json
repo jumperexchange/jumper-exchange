@@ -31,6 +31,7 @@
     "@mui/utils": "^7.3.2",
     "@mysten/dapp-kit": "^0.18.0",
     "@mysten/sui": "^1.38.0",
+    "@next/bundle-analyzer": "^15.5.2",
     "@next/third-parties": "^15.5.2",
     "@rive-app/react-canvas": "^4.23.0",
     "@safe-global/safe-apps-sdk": "^9.1.0",
@@ -67,6 +68,7 @@
     "react-cookie": "^7.2.2",
     "react-dom": "^19.1.1",
     "react-i18next": "^15.7.3",
+    "recharts": "^3.2.1",
     "shallow-equal": "^3.1.0",
     "sharp": "^0.34.3",
     "siwe": "^2.3.2",
@@ -135,6 +137,7 @@
     "xvfb": "^0.4.0"
   },
   "scripts": {
+    "analyze:bundle": "ANALYZE=true pnpm build",
     "dev": "next dev --turbopack",
     "dev:local": "dotenv -e .env.localhost next dev",
     "dev:staging": "dotenv -e .env.staging next dev",
