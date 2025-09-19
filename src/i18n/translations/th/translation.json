@@ -36,7 +36,8 @@
       "developers": "ผู้พัฒนา",
       "support": "สนับสนุน",
       "resources": "",
-      "profile": "โปรไฟล์ Jumper"
+      "profile": "โปรไฟล์ Jumper",
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "ยกเลิกการเชื่อมต่อ",
