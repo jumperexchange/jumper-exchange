@@ -26,6 +26,9 @@ import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { ZapWidgetContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { WidgetSkeleton } from '../WidgetSkeleton';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import { useTranslation } from 'react-i18next';
+import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -36,6 +39,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   ctx,
 }) => {
   useZapQuestIdStorage();
+  const { t } = useTranslation();
 
   const projectData = useMemo(() => {
     return customInformation?.projectData;
@@ -106,6 +110,10 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
   }, [JSON.stringify(zapData ?? {})]);
 
+  const partnerName = useMemo(() => {
+    return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
+  }, [JSON.stringify(zapData ?? {})]);
+
   const toToken = useMemo(() => {
     return zapData?.market?.depositToken.address;
   }, [JSON.stringify(zapData ?? {})]);
@@ -126,7 +134,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       zapPoolName: poolName,
       integrator: 'zap.morpho',
       keyPrefix: 'zap.backend',
-      variant: 'wide' as const,
+      // variant: 'wide' as const,
       formData: {
         minFromAmountUSD,
       },
@@ -233,6 +241,9 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
+      contractCompactComponent={
+        <ZapDepositSuccessMessage partnerName={partnerName} t={t} />
+      }
       contractComponent={
         <ZapDepositSettings
           toChain={toChain}
