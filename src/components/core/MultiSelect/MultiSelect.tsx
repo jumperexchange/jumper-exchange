@@ -91,12 +91,12 @@ export const MultiSelect: FC<MultiSelectProps> = ({
 
       case 'count':
         return (
-          <ChipContainer>
-            <StyledChip
-              label={`${selectedArray.length} selected`}
-              size="small"
-            />
-          </ChipContainer>
+          <>
+            <StyledChip label={`${selectedArray.length}`} size="small" />
+            <span style={{ color: 'inherit', opacity: 0.6 }}>
+              {placeholder || 'Select options'}
+            </span>
+          </>
         );
 
       case 'label':

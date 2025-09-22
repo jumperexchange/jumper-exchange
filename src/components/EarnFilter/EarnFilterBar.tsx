@@ -35,6 +35,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
     showForYou,
     toggleForYou,
     filter,
+    updateFilter,
     usedYourAddress,
   } = useEarnFiltering();
 
@@ -103,7 +104,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
   const All = () => {
     // Convert data to MultiSelect options
     const chainOptions: MultiSelectOption[] = allChains.map((chain) => ({
-      value: chain.chainKey,
+      value: `${chain.chainId}`,
       label: chain.chainKey,
     }));
 
@@ -131,6 +132,27 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
       }),
     );
 
+    // Handle filter changes
+    const handleChainChange = (values: string[]) => {
+      updateFilter({ ...filter, chains: values.map(Number) });
+    };
+
+    const handleProtocolChange = (values: string[]) => {
+      updateFilter({ ...filter, protocols: values });
+    };
+
+    const handleTagChange = (values: string[]) => {
+      updateFilter({ ...filter, tags: values });
+    };
+
+    const handleAssetChange = (values: string[]) => {
+      updateFilter({ ...filter, assets: values });
+    };
+
+    const handleAPYChange = (values: string[]) => {
+      // TODO: implement
+    };
+
     return (
       <Box
         sx={{
@@ -152,52 +174,52 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
         >
           <MultiSelect
             options={chainOptions}
-            value={[]}
+            value={filter?.chains?.map(String) ?? []}
+            onChange={handleChainChange}
             placeholder="Chains"
             label="Chains"
             size="small"
-            show="chips"
-            maxChips={2}
+            show="count"
           />
 
           <MultiSelect
             options={protocolOptions}
-            value={[]}
+            value={filter?.protocols || []}
+            onChange={handleProtocolChange}
             placeholder="Protocols"
             label="Protocols"
             size="small"
-            show="chips"
-            maxChips={2}
+            show="count"
           />
 
           <MultiSelect
             options={tagOptions}
-            value={[]}
+            value={filter?.tags || []}
+            onChange={handleTagChange}
             placeholder="Tags"
             label="Tags"
             size="small"
-            show="chips"
-            maxChips={2}
+            show="count"
           />
 
           <MultiSelect
             options={assetOptions}
-            value={[]}
+            value={filter?.assets || []}
+            onChange={handleAssetChange}
             placeholder="Assets"
             label="Assets"
             size="small"
-            show="chips"
-            maxChips={2}
+            show="count"
           />
 
           <MultiSelect
             options={apyOptions}
-            value={[]}
+            value={[]} // TODO: implement
+            onChange={handleAPYChange}
             placeholder="APY"
             label="APY"
             size="small"
-            show="chips"
-            maxChips={2}
+            show="count"
           />
         </Box>
 
