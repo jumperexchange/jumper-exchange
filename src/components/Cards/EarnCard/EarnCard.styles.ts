@@ -103,7 +103,7 @@ export const TopEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
   padding: theme.spacing(3),
   gap: theme.spacing(1),
   minHeight: 312,
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   display: 'flex',
   flexDirection: 'column',
 }));
