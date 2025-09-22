@@ -24,30 +24,6 @@ interface StyledIconButtonProps extends IconButtonProps {
   variant?: 'contained' | 'outlined' | 'text';
 }
 
-const getButtonSize = (size?: 'small' | 'medium' | 'large') => {
-  switch (size) {
-    case 'small':
-      return {
-        width: 40,
-        height: 40,
-        fontSize: '1.25rem',
-      };
-    case 'large':
-      return {
-        width: 64,
-        height: 64,
-        fontSize: '2rem',
-      };
-    case 'medium':
-    default:
-      return {
-        width: 48,
-        height: 48,
-        fontSize: '1.5rem',
-      };
-  }
-};
-
 export const IconSelectContainer = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'orientation' && prop !== 'columns' && prop !== 'fullWidth',

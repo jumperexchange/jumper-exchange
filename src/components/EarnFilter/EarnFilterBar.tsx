@@ -1,12 +1,15 @@
+import { Badge } from 'src/components/Badge/Badge';
 import { Box } from '@mui/system';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
+import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { TabSelect } from '../core/TabSelect/TabSelect';
 import { TabOption } from '../core/TabSelect/TabSelect.types';
+import { RecommendationIcon } from '../illustrations/RecommendationIcon';
 import { EarnFilterBarContainer } from './EarnFilterBar.styles';
 import { EarnFilterSort, SortByOptions } from './EarnFilterSort';
-import { EarnFilterTab } from './EarnFilterTab';
 import { EarnListMode } from './EarnListMode';
 
 type Props = {
@@ -15,10 +18,13 @@ type Props = {
 };
 
 export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
+  const { t } = useTranslation();
+
   // TODO: introduce the loading state?
   const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY); // TODO: move to context.
 
   const {
+    totalMarkets,
     allChains,
     allProtocols,
     allAssets,
@@ -26,7 +32,9 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
     allAPY,
     showForYou,
     toggleForYou,
+    filter,
   } = useEarnFiltering();
+  const isLoggedId = filter?.address !== undefined;
 
   const tabOptions: TabOption[] = [
     { value: 'all', label: 'All' },
@@ -38,6 +46,14 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
   };
 
   const ForYou = () => {
+    const formatedTotalMarkets = totalMarkets.toLocaleString();
+
+    const copy = isLoggedId
+      ? t('earn.copy.forYouBasedOnActivity')
+      : t('earn.copy.forYouDefault', { totalMarkets: formatedTotalMarkets });
+
+    // TODO: add latest update in backend and render here
+
     return (
       <Box
         sx={{
@@ -47,7 +63,12 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
           width: '100%',
         }}
       >
-        <Box>Hello world</Box>
+        <Badge
+          variant={BadgeVariant.Primary}
+          size={BadgeSize.SM}
+          startIcon={<RecommendationIcon height={12} width={12} />}
+        />
+        <Box>{copy}</Box>
         <EarnListMode variant={variant} setVariant={setVariant} />
       </Box>
     );
