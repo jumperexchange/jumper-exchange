@@ -1,17 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { EarnFilterBar } from './EarnFilterBar';
+import { useState } from 'react';
 import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
+import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import { EarnFilterBar } from './EarnFilterBar';
 
 const meta = {
   component: EarnFilterBar,
   title: 'Earn/FilterBar',
   decorators: [
-    (Story) => (
-      <EarnFilteringContext.Provider value={mockContextValue}>
-        <Story />
-      </EarnFilteringContext.Provider>
-    ),
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      return (
+        <EarnFilteringContext.Provider value={mockContextValue}>
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
   ],
+  argTypes: {
+    variant: {
+      control: { type: 'radio' },
+      options: ['compact', 'list-item', 'top'],
+    },
+  },
 } satisfies Meta<typeof EarnFilterBar>;
 
 export default meta;
@@ -110,101 +121,146 @@ const mockContextValue = {
   },
 };
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
+};
+
+export const ListView: Story = {
+  args: {
+    variant: 'list-item',
+    setVariant: () => {},
+  },
+};
 
 export const EmptyState: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
   decorators: [
-    (Story) => (
-      <EarnFilteringContext.Provider
-        value={{
-          ...mockContextValue,
-          allChains: [],
-          allProtocols: [],
-          allAssets: [],
-          allTags: [],
-          allAPY: {},
-          totalMarkets: 0,
-        }}
-      >
-        <Story />
-      </EarnFilteringContext.Provider>
-    ),
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      return (
+        <EarnFilteringContext.Provider
+          value={{
+            ...mockContextValue,
+            allChains: [],
+            allProtocols: [],
+            allAssets: [],
+            allTags: [],
+            allAPY: {},
+            totalMarkets: 0,
+          }}
+        >
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
   ],
 };
 
 export const LoadingState: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
   decorators: [
-    (Story) => (
-      <EarnFilteringContext.Provider
-        value={{
-          ...mockContextValue,
-          allLoading: true,
-          forYouLoading: true,
-        }}
-      >
-        <Story />
-      </EarnFilteringContext.Provider>
-    ),
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      return (
+        <EarnFilteringContext.Provider
+          value={{
+            ...mockContextValue,
+            allLoading: true,
+            forYouLoading: true,
+          }}
+        >
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
   ],
 };
 
 export const MinimalData: Story = {
+  args: {
+    variant: 'list-item',
+    setVariant: () => {},
+  },
   decorators: [
-    (Story) => (
-      <EarnFilteringContext.Provider
-        value={{
-          ...mockContextValue,
-          allChains: [{ chainId: 1, chainKey: 'ethereum' }],
-          allProtocols: [
-            { name: 'Aave', product: 'aave-v3', version: 'v3', logo: '' },
-          ],
-          allAssets: [
-            {
-              name: 'USD Coin',
-              symbol: 'USDC',
-              decimals: 6,
-              address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-              logo: '',
-              chain: { chainId: 1, chainKey: 'ethereum' },
-            },
-          ],
-          allTags: ['Staking'],
-          allAPY: { 0.05: 10 },
-          totalMarkets: 1,
-        }}
-      >
-        <Story />
-      </EarnFilteringContext.Provider>
-    ),
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('list-item');
+      return (
+        <EarnFilteringContext.Provider
+          value={{
+            ...mockContextValue,
+            allChains: [{ chainId: 1, chainKey: 'ethereum' }],
+            allProtocols: [
+              { name: 'Aave', product: 'aave-v3', version: 'v3', logo: '' },
+            ],
+            allAssets: [
+              {
+                name: 'USD Coin',
+                symbol: 'USDC',
+                decimals: 6,
+                address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+                logo: '',
+                chain: { chainId: 1, chainKey: 'ethereum' },
+              },
+            ],
+            allTags: ['Staking'],
+            allAPY: { 0.05: 10 },
+            totalMarkets: 1,
+          }}
+        >
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
   ],
 };
 
 export const WithActiveFilters: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
   decorators: [
-    (Story) => (
-      <EarnFilteringContext.Provider
-        value={{
-          ...mockContextValue,
-          filter: {
-            chains: [1, 137],
-            protocols: ['Aave', 'Compound'],
-            assets: ['USDC', 'ETH'],
-            tags: ['Staking', 'Earn'],
-            minAPY: 0.05,
-            maxAPY: 0.15,
-          },
-          showForYou: true,
-        }}
-      >
-        <Story />
-      </EarnFilteringContext.Provider>
-    ),
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      return (
+        <EarnFilteringContext.Provider
+          value={{
+            ...mockContextValue,
+            filter: {
+              chains: [1, 137],
+              protocols: ['Aave', 'Compound'],
+              assets: ['USDC', 'ETH'],
+              tags: ['Staking', 'Earn'],
+              minAPY: 0.05,
+              maxAPY: 0.15,
+            },
+            showForYou: true,
+          }}
+        >
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
   ],
 };
 
 export const LargeDataSet: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
   decorators: [
     (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
       const largeChains = Array.from({ length: 20 }, (_, i) => ({
         chainId: i + 1,
         chainKey: `chain-${i + 1}`,
@@ -230,7 +286,7 @@ export const LargeDataSet: Story = {
             totalMarkets: 500,
           }}
         >
-          <Story />
+          <Story args={{ variant, setVariant }} />
         </EarnFilteringContext.Provider>
       );
     },

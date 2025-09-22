@@ -1,6 +1,8 @@
 'use client';
 import { Grid } from '@mui/material';
+import { useState } from 'react';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
+import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 import { EarnFilterBar } from 'src/components/EarnFilter/EarnFilterBar';
 import {
@@ -18,6 +20,8 @@ const EarnOpportunitiesAll_ = () => {
     showForYou,
     toggleForYou,
   } = useEarnFiltering();
+
+  const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
   const formatedTotalMarkets = totalMarkets.toLocaleString();
 
@@ -50,7 +54,7 @@ const EarnOpportunitiesAll_ = () => {
     return (
       <div>
         <h1>All</h1>
-        <EarnFilterBar />
+        <EarnFilterBar variant={variant} setVariant={setVariant} />
         <Grid container spacing={2}>
           {items.map((item, index) => (
             <Grid key={index} size={{ xs: 12, sm: 4 }}>
