@@ -1,5 +1,5 @@
 'use client';
-import { Grid } from '@mui/material';
+import { Card, CardContent, Grid } from '@mui/material';
 import { useState } from 'react';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
@@ -23,7 +23,7 @@ const EarnOpportunitiesAll_ = () => {
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
-  const formatedTotalMarkets = totalMarkets.toLocaleString();
+  const gridSize = variant === 'compact' ? { xs: 12, sm: 4 } : { xs: 12 };
 
   const ForYou = () => {
     const items = AtLeastNWhenLoading(forYou, forYouLoading, 3, Infinity);
@@ -31,14 +31,13 @@ const EarnOpportunitiesAll_ = () => {
 
     return (
       <div>
-        <h1>For You</h1>
         <Grid container spacing={2}>
           {items.map((item, index) => (
-            <Grid key={index} size={{ xs: 12, sm: 4 }}>
+            <Grid key={index} size={gridSize}>
               {item == null ? (
-                <EarnCard variant="compact" isLoading={true} data={null} />
+                <EarnCard variant={variant} isLoading={true} data={null} />
               ) : (
-                <EarnCard variant="compact" isLoading={false} data={item} />
+                <EarnCard variant={variant} isLoading={false} data={item} />
               )}
             </Grid>
           ))}
@@ -53,15 +52,13 @@ const EarnOpportunitiesAll_ = () => {
 
     return (
       <div>
-        <h1>All</h1>
-        <EarnFilterBar variant={variant} setVariant={setVariant} />
         <Grid container spacing={2}>
           {items.map((item, index) => (
-            <Grid key={index} size={{ xs: 12, sm: 4 }}>
+            <Grid key={index} size={gridSize}>
               {item == null ? (
-                <EarnCard variant="compact" isLoading={true} data={null} />
+                <EarnCard variant={variant} isLoading={true} data={null} />
               ) : (
-                <EarnCard variant="compact" isLoading={false} data={item} />
+                <EarnCard variant={variant} isLoading={false} data={item} />
               )}
             </Grid>
           ))}
@@ -71,17 +68,19 @@ const EarnOpportunitiesAll_ = () => {
   };
 
   return (
-    <div>
-      <h1>Markets</h1>
-      <p>
-        Explore curated and comprehensive ways to put your assets to work across{' '}
-        {formatedTotalMarkets}+ markets
-      </p>
-      <button onClick={toggleForYou}>
-        {showForYou ? 'Show All' : 'Show For You'}
-      </button>
-      {showForYou ? <ForYou /> : <All />}
-    </div>
+    <Card
+      sx={{
+        borderRadius: 2,
+        boxShadow: 1,
+        overflow: 'visible',
+        marginTop: 2,
+      }}
+    >
+      <CardContent sx={{ padding: 0 }}>
+        <EarnFilterBar variant={variant} setVariant={setVariant} />
+      </CardContent>
+      <CardContent>{showForYou ? <ForYou /> : <All />}</CardContent>
+    </Card>
   );
 };
 
