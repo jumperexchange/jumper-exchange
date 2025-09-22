@@ -38,7 +38,19 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
   };
 
   const ForYou = () => {
-    return <Box>For You</Box>;
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <Box>Hello world</Box>
+        <EarnListMode variant={variant} setVariant={setVariant} />
+      </Box>
+    );
   };
 
   const All = () => {
