@@ -15,7 +15,7 @@ import {
 } from '../EarnCard.styles';
 import { EarnCardProps } from '../EarnCard.types';
 import { TopEarnCardSkeleton } from './TopEarnCardSkeleton';
-import { TopHighlight } from './TopHiglight';
+import { TopHighlight } from './TopHighlight';
 
 export enum TopEarnCardCopyKey {
   USE_YOUR_SPARE = 'earn.top.useYourSpare',
