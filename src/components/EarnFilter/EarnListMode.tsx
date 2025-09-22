@@ -1,7 +1,8 @@
 import GridViewIcon from '@mui/icons-material/GridView';
 import ListIcon from '@mui/icons-material/List';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
-import { IconButton, IconButtonDynamic } from '../IconButton';
+import { IconSelect } from '../core/IconSelect/IconSelect';
+import { IconOption } from '../core/IconSelect/IconSelect.types';
 
 type Props = {
   variant: EarnCardVariant;
@@ -9,20 +10,33 @@ type Props = {
 };
 
 export const EarnListMode: React.FC<Props> = ({ variant, setVariant }) => {
+  const viewOptions: IconOption[] = [
+    {
+      value: 'list-item',
+      icon: <ListIcon />,
+      tooltip: 'List View',
+    },
+    {
+      value: 'compact',
+      icon: <GridViewIcon />,
+      tooltip: 'Grid View',
+    },
+  ];
+
+  const handleChange = (value: string | string[]) => {
+    setVariant(value as EarnCardVariant);
+  };
+
   return (
-    <>
-      <IconButtonDynamic
-        onClick={() => setVariant('list-item')}
-        variant={variant === 'list-item' ? 'primary' : undefined}
-      >
-        <ListIcon />
-      </IconButtonDynamic>
-      <IconButtonDynamic
-        onClick={() => setVariant('compact')}
-        variant={variant === 'compact' ? 'primary' : undefined}
-      >
-        <GridViewIcon />
-      </IconButtonDynamic>
-    </>
+    <IconSelect
+      options={viewOptions}
+      value={variant}
+      onChange={handleChange}
+      selectionMode="radio"
+      variant="text"
+      size="medium"
+      showTooltip={true}
+      color="primary"
+    />
   );
 };

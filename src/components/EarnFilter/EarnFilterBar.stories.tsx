@@ -11,7 +11,7 @@ const meta = {
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
       return (
-        <EarnFilteringContext.Provider value={mockContextValue}>
+        <EarnFilteringContext.Provider value={mockContextValue()}>
           <Story args={{ variant, setVariant }} />
         </EarnFilteringContext.Provider>
       );
@@ -28,97 +28,101 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const mockContextValue = {
-  filter: {},
-  updateFilter: () => {},
-  showForYou: false,
-  toggleForYou: () => {},
-  forYou: [],
-  forYouLoading: false,
-  forYouError: null,
-  all: [],
-  allLoading: false,
-  allError: null,
-  totalMarkets: 150,
-  allChains: [
-    { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
-    { chainId: 137, chainKey: 'polygon', name: 'Polygon' },
-    { chainId: 8453, chainKey: 'base', name: 'Base' },
-    { chainId: 42161, chainKey: 'arbitrum', name: 'Arbitrum' },
-    { chainId: 10, chainKey: 'optimism', name: 'Optimism' },
-  ],
-  allProtocols: [
-    {
-      name: 'Morpho',
-      product: 'metamorpho',
-      version: '',
-      logo: 'https://strapi.jumper.exchange/uploads/morpho.png',
+const mockContextValue = () => {
+  const [showForYou, setShowForYou] = useState(false);
+
+  return {
+    filter: {},
+    updateFilter: () => {},
+    showForYou,
+    toggleForYou: () => setShowForYou((current) => !current),
+    forYou: [],
+    forYouLoading: false,
+    forYouError: null,
+    all: [],
+    allLoading: false,
+    allError: null,
+    totalMarkets: 150,
+    allChains: [
+      { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
+      { chainId: 137, chainKey: 'polygon', name: 'Polygon' },
+      { chainId: 8453, chainKey: 'base', name: 'Base' },
+      { chainId: 42161, chainKey: 'arbitrum', name: 'Arbitrum' },
+      { chainId: 10, chainKey: 'optimism', name: 'Optimism' },
+    ],
+    allProtocols: [
+      {
+        name: 'Morpho',
+        product: 'metamorpho',
+        version: '',
+        logo: 'https://strapi.jumper.exchange/uploads/morpho.png',
+      },
+      {
+        name: 'Aave',
+        product: 'aave-v3',
+        version: 'v3',
+        logo: 'https://strapi.jumper.exchange/uploads/aave.png',
+      },
+      {
+        name: 'Compound',
+        product: 'compound-v3',
+        version: 'v3',
+        logo: 'https://strapi.jumper.exchange/uploads/compound.png',
+      },
+      {
+        name: 'Uniswap',
+        product: 'uniswap-v3',
+        version: 'v3',
+        logo: 'https://strapi.jumper.exchange/uploads/uniswap.png',
+      },
+    ],
+    allAssets: [
+      {
+        name: 'USD Coin',
+        symbol: 'USDC',
+        decimals: 6,
+        address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+        logo: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png',
+        chain: { chainId: 8453, chainKey: 'base' },
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'ETH',
+        decimals: 18,
+        address: '0x0000000000000000000000000000000000000000',
+        logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
+        chain: { chainId: 1, chainKey: 'ethereum' },
+      },
+      {
+        name: 'Wrapped Bitcoin',
+        symbol: 'WBTC',
+        decimals: 8,
+        address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+        logo: 'https://cryptologos.cc/logos/wrapped-bitcoin-wbtc-logo.png',
+        chain: { chainId: 1, chainKey: 'ethereum' },
+      },
+      {
+        name: 'Dai Stablecoin',
+        symbol: 'DAI',
+        decimals: 18,
+        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+        logo: 'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
+        chain: { chainId: 1, chainKey: 'ethereum' },
+      },
+    ],
+    allTags: ['Staking', 'Earn', 'Yield', 'Lending', 'LP', 'Vault', 'DeFi'],
+    allAPY: {
+      0.01: 5,
+      0.02: 12,
+      0.03: 18,
+      0.05: 25,
+      0.08: 15,
+      0.1: 10,
+      0.15: 8,
+      0.2: 5,
+      0.3: 2,
     },
-    {
-      name: 'Aave',
-      product: 'aave-v3',
-      version: 'v3',
-      logo: 'https://strapi.jumper.exchange/uploads/aave.png',
-    },
-    {
-      name: 'Compound',
-      product: 'compound-v3',
-      version: 'v3',
-      logo: 'https://strapi.jumper.exchange/uploads/compound.png',
-    },
-    {
-      name: 'Uniswap',
-      product: 'uniswap-v3',
-      version: 'v3',
-      logo: 'https://strapi.jumper.exchange/uploads/uniswap.png',
-    },
-  ],
-  allAssets: [
-    {
-      name: 'USD Coin',
-      symbol: 'USDC',
-      decimals: 6,
-      address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-      logo: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png',
-      chain: { chainId: 8453, chainKey: 'base' },
-    },
-    {
-      name: 'Ethereum',
-      symbol: 'ETH',
-      decimals: 18,
-      address: '0x0000000000000000000000000000000000000000',
-      logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
-      chain: { chainId: 1, chainKey: 'ethereum' },
-    },
-    {
-      name: 'Wrapped Bitcoin',
-      symbol: 'WBTC',
-      decimals: 8,
-      address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-      logo: 'https://cryptologos.cc/logos/wrapped-bitcoin-wbtc-logo.png',
-      chain: { chainId: 1, chainKey: 'ethereum' },
-    },
-    {
-      name: 'Dai Stablecoin',
-      symbol: 'DAI',
-      decimals: 18,
-      address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-      logo: 'https://cryptologos.cc/logos/multi-collateral-dai-dai-logo.png',
-      chain: { chainId: 1, chainKey: 'ethereum' },
-    },
-  ],
-  allTags: ['Staking', 'Earn', 'Yield', 'Lending', 'LP', 'Vault', 'DeFi'],
-  allAPY: {
-    0.01: 5,
-    0.02: 12,
-    0.03: 18,
-    0.05: 25,
-    0.08: 15,
-    0.1: 10,
-    0.15: 8,
-    0.2: 5,
-    0.3: 2,
-  },
+  };
 };
 
 export const Default: Story = {
@@ -146,7 +150,7 @@ export const EmptyState: Story = {
       return (
         <EarnFilteringContext.Provider
           value={{
-            ...mockContextValue,
+            ...mockContextValue(),
             allChains: [],
             allProtocols: [],
             allAssets: [],
@@ -173,7 +177,7 @@ export const LoadingState: Story = {
       return (
         <EarnFilteringContext.Provider
           value={{
-            ...mockContextValue,
+            ...mockContextValue(),
             allLoading: true,
             forYouLoading: true,
           }}
@@ -196,7 +200,7 @@ export const MinimalData: Story = {
       return (
         <EarnFilteringContext.Provider
           value={{
-            ...mockContextValue,
+            ...mockContextValue(),
             allChains: [{ chainId: 1, chainKey: 'ethereum' }],
             allProtocols: [
               { name: 'Aave', product: 'aave-v3', version: 'v3', logo: '' },
@@ -234,7 +238,7 @@ export const WithActiveFilters: Story = {
       return (
         <EarnFilteringContext.Provider
           value={{
-            ...mockContextValue,
+            ...mockContextValue(),
             filter: {
               chains: [1, 137],
               protocols: ['Aave', 'Compound'],
@@ -279,7 +283,7 @@ export const LargeDataSet: Story = {
       return (
         <EarnFilteringContext.Provider
           value={{
-            ...mockContextValue,
+            ...mockContextValue(),
             allChains: largeChains,
             allProtocols: largeProtocols,
             allTags: largeTags,

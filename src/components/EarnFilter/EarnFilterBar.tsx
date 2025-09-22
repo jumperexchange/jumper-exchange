@@ -2,6 +2,8 @@ import { Box } from '@mui/system';
 import { useState } from 'react';
 import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import { TabSelect } from '../core/TabSelect/TabSelect';
+import { TabOption } from '../core/TabSelect/TabSelect.types';
 import { EarnFilterBarContainer } from './EarnFilterBar.styles';
 import { EarnFilterSort, SortByOptions } from './EarnFilterSort';
 import { EarnFilterTab } from './EarnFilterTab';
@@ -25,6 +27,15 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
     showForYou,
     toggleForYou,
   } = useEarnFiltering();
+
+  const tabOptions: TabOption[] = [
+    { value: 'all', label: 'All' },
+    { value: 'foryou', label: 'For You' },
+  ];
+
+  const handleTabChange = (value: string) => {
+    toggleForYou();
+  };
 
   const ForYou = () => {
     return <Box>For You</Box>;
@@ -53,7 +64,13 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
 
   return (
     <EarnFilterBarContainer>
-      {/* <EarnFilterTab showForYou={showForYou} toggleForYou={toggleForYou} /> */}
+      <TabSelect
+        options={tabOptions}
+        value={showForYou ? 'foryou' : 'all'}
+        onChange={handleTabChange}
+        variant="standard"
+        size="medium"
+      />
       {showForYou ? <ForYou /> : <All />}
     </EarnFilterBarContainer>
   );
