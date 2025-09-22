@@ -30,6 +30,7 @@ export const ithCopy = (index: number): TopEarnCardCopyKey => {
 
 type Props = Omit<EarnCardProps, 'variant'> & {
   copy?: TopEarnCardCopyKey;
+  isMain?: boolean;
 };
 
 export const TopEarnCard: FC<Props> = ({
@@ -37,6 +38,7 @@ export const TopEarnCard: FC<Props> = ({
   data,
   isLoading,
   copy = TopEarnCardCopyKey.USE_YOUR_SPARE,
+  isMain = false,
   onClick,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
@@ -77,7 +79,7 @@ export const TopEarnCard: FC<Props> = ({
           />
         ))}
       </TopEarnCardHeaderContainer>
-      <TopEarnCardContentContainer>
+      <TopEarnCardContentContainer isMain={isMain}>
         <p>
           <Trans
             i18nKey={copy as any} // TODO: type this

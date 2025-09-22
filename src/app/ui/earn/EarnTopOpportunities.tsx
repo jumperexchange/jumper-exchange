@@ -25,6 +25,7 @@ export const EarnTopOpportunities = () => {
               isLoading={isLoading}
               data={item}
               copy={ithCopy(index)}
+              isMain={index === 0}
             />
           )}
         </Grid>
