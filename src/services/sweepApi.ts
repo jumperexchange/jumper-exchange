@@ -4,8 +4,6 @@ import {
   CheckSweepableTokensResponse,
   SweepQuoteRequest,
   SweepQuoteResponse,
-  SweepExecuteRequest,
-  SweepExecuteResponse,
 } from 'src/types/sweep';
 
 const API_BASE_URL = config.NEXT_PUBLIC_BACKEND_URL;
@@ -58,16 +56,6 @@ class SweepApiService {
     );
   }
 
-  /**
-   * Execute sweep for a wallet address
-   */
-  async executeSweep(request: SweepExecuteRequest): Promise<SweepExecuteResponse> {
-    return this.makeRequest<SweepExecuteResponse>(
-      'sweep-execute',
-      'POST',
-      request
-    );
-  }
 }
 
 // Export singleton instance

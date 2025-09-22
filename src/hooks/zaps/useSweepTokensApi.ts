@@ -9,7 +9,6 @@ import {
   SweepableToken,
   CheckSweepableTokensResponse,
   SweepQuoteResponse,
-  SweepExecuteResponse,
 } from 'src/types/sweep';
 
 // Helper function to get EVM provider from wallet connector
@@ -87,8 +86,6 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
         return 'Executing sweep...';
       case 'completed':
         return 'Sweep completed';
-      default:
-        return 'Sweep';
     }
   };
 
@@ -133,7 +130,6 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
         setTargetChainId(data.targetChainId);
         setSweepStep('idle');
       } catch (error) {
-        console.error('Error checking tokens to sweep:', error);
         setHasTokensToSweepState(false);
         setSweepableTokens([]);
         setSweepStep('idle');
@@ -190,7 +186,6 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
         try {
           await switchChainAsync({ chainId: targetChainId });
         } catch (switchError) {
-          console.error('Failed to switch chain:', switchError);
           setSweepError('Failed to switch to the required chain for sweeping');
           return;
         }
@@ -203,22 +198,12 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
         chainId: targetChainId || chainId,
       });
 
-      console.log('API response received:', response);
-      console.log('Response keys:', Object.keys(response));
-
       // Extract data from the wrapped response (backend uses TransformInterceptor)
       const quoteResponse: SweepQuoteResponse = response;
       const { data } = quoteResponse;
 
-      console.log('Quote response data:', data);
-      console.log('Quote from backend:', data.quote);
-
       // Validate quote
       if (!data.quote) {
-        console.error('Invalid quote structure:', {
-          quote: data.quote,
-          type: typeof data.quote
-        });
         throw new Error('No valid quote received from backend');
       }
 
@@ -243,7 +228,6 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
       setTxHash(transactionHash as `0x${string}`);
       setSweepStep('completed');
     } catch (error) {
-      console.error('Sweep failed:', error);
       setSweepError(error instanceof Error ? error.message : 'Sweep failed');
       setSweepStep('idle');
     } finally {

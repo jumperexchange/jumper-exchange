@@ -36,8 +36,6 @@ class BiconomyService {
     quote: any
   ): Promise<string> {
     try {
-      console.log('Executing sweep with quote:', quote);
-      
       // Validate quote parameter
       if (!quote) {
         throw new Error('Quote parameter is undefined');
@@ -51,7 +49,6 @@ class BiconomyService {
             return BigInt(value);
           } catch (e) {
             // If BigInt conversion fails, return original value
-            console.warn('Failed to convert string to BigInt:', value, e);
             return value;
           }
         } else if (typeof value === 'object' && value !== null) {
@@ -101,7 +98,6 @@ class BiconomyService {
 
       return result.hash;
     } catch (error) {
-      console.error('Error executing sweep:', error);
       throw new Error(`Failed to execute sweep: ${error.message}`);
     }
   }
