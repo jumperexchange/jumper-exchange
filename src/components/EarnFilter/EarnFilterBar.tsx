@@ -1,7 +1,7 @@
-import { useEarnFiltering } from './EarnFilteringContext';
+import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
 
-export const EarnFilter: React.FC<{}> = () => {
-  const { allChains, allProtocols, allAssets, allTags, allAPY, updateFilter } =
+export const EarnFilterBar: React.FC<{}> = () => {
+  const { allChains, allProtocols, allAssets, allTags, allAPY } =
     useEarnFiltering();
 
   return (

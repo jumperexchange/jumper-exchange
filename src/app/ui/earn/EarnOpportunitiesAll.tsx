@@ -2,7 +2,7 @@
 import { Grid } from '@mui/material';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
-import { EarnFilter } from './EarnFilter';
+import { EarnFilterBar } from 'src/components/EarnFilter/EarnFilterBar';
 import {
   EarnFilteringProvider,
   useEarnFiltering,
@@ -50,7 +50,7 @@ const EarnOpportunitiesAll_ = () => {
     return (
       <div>
         <h1>All</h1>
-        <EarnFilter />
+        <EarnFilterBar />
         <Grid container spacing={2}>
           {items.map((item, index) => (
             <Grid key={index} size={{ xs: 12, sm: 4 }}>
