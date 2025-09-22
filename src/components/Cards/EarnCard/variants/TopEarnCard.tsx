@@ -82,7 +82,7 @@ export const TopEarnCard: FC<Props> = ({
       <TopEarnCardContentContainer isMain={isMain}>
         <p>
           <Trans
-            i18nKey={copy as any} // TODO: type this
+            i18nKey={copy}
             components={{
               asset: <TopHighlight type="asset">{asset.symbol}</TopHighlight>,
               protocol: (
