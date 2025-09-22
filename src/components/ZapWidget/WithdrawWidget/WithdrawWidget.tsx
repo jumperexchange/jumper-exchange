@@ -1,5 +1,4 @@
 import { type ContractCall, type TokenAmount } from '@lifi/widget';
-import { formatUnits } from 'viem';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
 import { ProjectData } from 'src/types/questDetails';
@@ -8,8 +7,8 @@ import { useWithdrawTransaction } from './hooks';
 import { useAccount } from '@lifi/wallet-management';
 import { useChains } from 'src/hooks/useChains';
 import { useMemo } from 'react';
-import { TxConfirmation } from '../TxConfirmation/TxConfirmation';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import { TxBottomSheet } from '../TxBottomSheet/TxBottomSheet';
 
 export interface WithdrawWidgetProps {
   poolName?: string;
@@ -54,11 +53,16 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
     accountAddress: account.address,
   });
 
+  const containerId = 'withdraw-widget-box';
+
   return (
-    <SectionCardContainer>
+    <SectionCardContainer
+      id={containerId}
+      sx={{ position: 'relative', overflow: 'hidden' }}
+    >
       <WithdrawWidgetBox>
         <WithdrawForm
-          submitLabel={'Redeem'} // This belongs to contractCalls[0].label
+          submitLabel={'Withdraw'} // This belongs to contractCalls[0].label
           errorMessage={txError?.name}
           sendWithdrawTx={sendWithdrawTx}
           successDataRef={successDataRef}
@@ -73,25 +77,22 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
           balance={depositTokenData?.toString() ?? '0'}
           lpTokenDecimals={lpTokenDecimals}
         />
-
-        {isTransactionReceiptSuccess && (
-          <TxConfirmation
-            description={'Withdraw successful'}
-            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
-            success={
-              !!isWriteContractDataSuccess && !isWriteContractDataPending
-            }
-          />
-        )}
-
-        {!isTransactionReceiptSuccess && txHash && (
-          <TxConfirmation
-            description={'Check on explorer'}
-            link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
-            success={false}
-          />
-        )}
       </WithdrawWidgetBox>
+      <TxBottomSheet
+        title={
+          isTransactionReceiptSuccess
+            ? 'Withdraw successful'
+            : 'Transaction failed'
+        }
+        description="Check transaction on explorer"
+        link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+        containerId={containerId}
+        isOpen={
+          !isTransactionReceiptLoading &&
+          (isTransactionReceiptSuccess ||
+            (!isTransactionReceiptSuccess && !!txHash))
+        }
+      />
     </SectionCardContainer>
   );
 };
