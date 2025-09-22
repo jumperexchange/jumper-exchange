@@ -12,7 +12,7 @@ export interface SingleSelectProps {
   placeholder?: string;
   disabled?: boolean;
   fullWidth?: boolean;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium';
   variant?: 'outlined' | 'filled' | 'standard';
   error?: boolean;
   helperText?: string;

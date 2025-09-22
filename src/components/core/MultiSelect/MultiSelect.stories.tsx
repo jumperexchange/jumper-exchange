@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import GroupIcon from '@mui/icons-material/Group';
+import PersonIcon from '@mui/icons-material/Person';
+import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { useState } from 'react';
 import { MultiSelect } from './MultiSelect';
 import { MultiSelectOption } from './MultiSelect.types';
-import PersonIcon from '@mui/icons-material/Person';
-import GroupIcon from '@mui/icons-material/Group';
-import WorkIcon from '@mui/icons-material/Work';
-import SchoolIcon from '@mui/icons-material/School';
 
 const meta = {
   title: 'Components/Core/MultiSelect',
@@ -32,7 +32,7 @@ const basicOptions: MultiSelectOption[] = [
   { value: 'option3', label: 'Option 3' },
   { value: 'option4', label: 'Option 4' },
   { value: 'option5', label: 'Option 5' },
-  { value: 'option6', label: 'Option 6', disabled: true },
+  { value: 'option6', label: 'Option 6' },
 ];
 
 const optionsWithIcons: MultiSelectOption[] = [
@@ -43,15 +43,15 @@ const optionsWithIcons: MultiSelectOption[] = [
 ];
 
 const groupedOptions: MultiSelectOption[] = [
-  { value: 'usa', label: 'United States', group: 'North America' },
-  { value: 'canada', label: 'Canada', group: 'North America' },
-  { value: 'mexico', label: 'Mexico', group: 'North America' },
-  { value: 'uk', label: 'United Kingdom', group: 'Europe' },
-  { value: 'france', label: 'France', group: 'Europe' },
-  { value: 'germany', label: 'Germany', group: 'Europe' },
-  { value: 'japan', label: 'Japan', group: 'Asia' },
-  { value: 'china', label: 'China', group: 'Asia' },
-  { value: 'india', label: 'India', group: 'Asia' },
+  { value: 'usa', label: 'United States' },
+  { value: 'canada', label: 'Canada' },
+  { value: 'mexico', label: 'Mexico' },
+  { value: 'uk', label: 'United Kingdom' },
+  { value: 'france', label: 'France' },
+  { value: 'germany', label: 'Germany' },
+  { value: 'japan', label: 'Japan' },
+  { value: 'china', label: 'China' },
+  { value: 'india', label: 'India' },
 ];
 
 export const Default: Story = {
@@ -62,8 +62,7 @@ export const Default: Story = {
     fullWidth: false,
     size: 'medium',
     variant: 'outlined',
-    showCheckbox: true,
-    showChips: true,
+    show: 'chips',
   },
 };
 
@@ -75,8 +74,7 @@ export const WithSelectedValues: Story = {
     fullWidth: false,
     size: 'medium',
     variant: 'outlined',
-    showCheckbox: true,
-    showChips: true,
+    show: 'chips',
   },
 };
 
@@ -88,8 +86,7 @@ export const WithIcons: Story = {
     fullWidth: false,
     size: 'medium',
     variant: 'outlined',
-    showCheckbox: true,
-    showChips: true,
+    show: 'chips',
   },
 };
 
@@ -101,8 +98,7 @@ export const GroupedOptions: Story = {
     fullWidth: false,
     size: 'medium',
     variant: 'outlined',
-    showCheckbox: true,
-    showChips: true,
+    show: 'chips',
   },
 };
 
@@ -110,8 +106,7 @@ export const WithoutCheckboxes: Story = {
   args: {
     options: basicOptions,
     label: 'No Checkboxes',
-    showCheckbox: false,
-    showChips: true,
+    show: 'chips',
     size: 'medium',
     variant: 'outlined',
   },
@@ -121,8 +116,7 @@ export const WithoutChips: Story = {
   args: {
     options: basicOptions,
     label: 'No Chips Display',
-    showCheckbox: true,
-    showChips: false,
+    show: 'chips',
     size: 'medium',
     variant: 'outlined',
   },
@@ -134,7 +128,7 @@ export const LimitedChips: Story = {
     value: ['option1', 'option2', 'option3', 'option4', 'option5'],
     label: 'Max 2 Chips',
     maxChips: 2,
-    showChips: true,
+    show: 'chips',
     size: 'medium',
     variant: 'outlined',
   },
@@ -209,8 +203,7 @@ export const InteractiveExample: Story = {
     value: [],
     label: 'Interactive Country Selector',
     placeholder: 'Choose countries',
-    showCheckbox: true,
-    showChips: true,
+    show: 'chips',
     maxChips: 3,
   },
   render: (args) => {

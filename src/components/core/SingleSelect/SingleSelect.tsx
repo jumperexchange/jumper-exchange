@@ -1,12 +1,5 @@
-import { FC } from 'react';
-import {
-  StyledFormControl,
-  StyledSelect,
-  StyledMenuItem,
-  StyledInputLabel,
-  StyledFormHelperText,
-  IconWrapper,
-} from './SingleSelect.styles';
+import { FC, useCallback, useMemo } from 'react';
+import { MultiSelect } from '../MultiSelect/MultiSelect';
 import { SingleSelectProps } from './SingleSelect.types';
 
 export const SingleSelect: FC<SingleSelectProps> = ({
@@ -23,66 +16,34 @@ export const SingleSelect: FC<SingleSelectProps> = ({
   label,
   required = false,
 }) => {
-  const handleChange = (event: any) => {
-    if (onChange) {
-      onChange(event.target.value as string);
-    }
-  };
+  const arrayValue = useMemo(() => (value ? [value] : []), [value]);
+
+  const handleChange = useCallback(
+    (values: string[]) => {
+      if (onChange) {
+        onChange(values[0] || '');
+      }
+    },
+    [onChange],
+  );
 
   return (
-    <StyledFormControl
-      fullWidth={fullWidth}
-      size={size === 'small' ? 'small' : 'medium'}
-      error={error}
+    <MultiSelect
+      options={options}
+      value={arrayValue}
+      onChange={handleChange}
+      placeholder={placeholder}
       disabled={disabled}
+      fullWidth={fullWidth}
+      size={size}
       variant={variant}
+      error={error}
+      helperText={helperText}
+      label={label}
       required={required}
-    >
-      {label && (
-        <StyledInputLabel id={`${label}-select-label`}>
-          {label}
-        </StyledInputLabel>
-      )}
-      <StyledSelect
-        labelId={label ? `${label}-select-label` : undefined}
-        value={value}
-        onChange={handleChange}
-        label={label}
-        displayEmpty={!!placeholder}
-        renderValue={(selected) => {
-          if (!selected) {
-            return <em>{placeholder}</em>;
-          }
-          const selectedOption = options.find((opt) => opt.value === selected);
-          return (
-            <>
-              {selectedOption?.icon && (
-                <IconWrapper>{selectedOption.icon}</IconWrapper>
-              )}
-              {selectedOption?.label || selected}
-            </>
-          );
-        }}
-      >
-        {placeholder && (
-          <StyledMenuItem value="" disabled>
-            <em>{placeholder}</em>
-          </StyledMenuItem>
-        )}
-        {options.map((option) => (
-          <StyledMenuItem
-            key={option.value}
-            value={option.value}
-            disabled={option.disabled}
-          >
-            {option.icon && <IconWrapper>{option.icon}</IconWrapper>}
-            {option.label}
-          </StyledMenuItem>
-        ))}
-      </StyledSelect>
-      {helperText && (
-        <StyledFormHelperText error={error}>{helperText}</StyledFormHelperText>
-      )}
-    </StyledFormControl>
+      multiple={false}
+      show="label"
+      maxChips={1}
+    />
   );
 };

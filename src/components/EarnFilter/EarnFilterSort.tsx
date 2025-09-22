@@ -1,11 +1,5 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { SingleSelect } from '../core/SingleSelect/SingleSelect';
 
 // TODO: migrate to backend's typing
 export enum SortByOptions {
@@ -21,23 +15,21 @@ type Props = {
 export const EarnFilterSort: React.FC<Props> = ({ sortBy, setSortBy }) => {
   const { t } = useTranslation();
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setSortBy(event.target.value as SortByOptions);
+  const handleChange = (value: string) => {
+    setSortBy(value as SortByOptions);
   };
 
   return (
-    <FormControl variant="outlined" size="small" sx={{ minWidth: 120 }}>
-      <InputLabel id="sort-by-label">{t('earn.sorting.sortBy')}</InputLabel>
-      <Select
-        labelId="sort-by-label"
-        id="sort-by-select"
-        value={sortBy}
-        onChange={handleChange}
-        label={t('earn.sorting.sortBy')}
-      >
-        <MenuItem value={SortByOptions.APY}>{t('earn.sorting.apy')}</MenuItem>
-        <MenuItem value={SortByOptions.TVL}>{t('earn.sorting.tvl')}</MenuItem>
-      </Select>
-    </FormControl>
+    <SingleSelect
+      options={[
+        { value: SortByOptions.APY, label: t('earn.sorting.apy') },
+        { value: SortByOptions.TVL, label: t('earn.sorting.tvl') },
+      ]}
+      value={sortBy}
+      onChange={handleChange}
+      placeholder={t('earn.sorting.sortBy')}
+      label={t('earn.sorting.sortBy')}
+      size="small"
+    />
   );
 };

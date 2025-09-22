@@ -1,18 +1,16 @@
+import CheckIcon from '@mui/icons-material/Check';
+import ListItemText from '@mui/material/ListItemText';
 import { FC } from 'react';
 import {
-  StyledFormControl,
-  StyledSelect,
-  StyledMenuItem,
-  StyledInputLabel,
-  StyledFormHelperText,
-  StyledChip,
   ChipContainer,
-  StyledCheckbox,
   IconWrapper,
-  GroupHeader,
+  StyledChip,
+  StyledFormControl,
+  StyledFormHelperText,
+  StyledMenuItem,
+  StyledSelect,
 } from './MultiSelect.styles';
-import { MultiSelectProps, MultiSelectOption } from './MultiSelect.types';
-import ListItemText from '@mui/material/ListItemText';
+import { MultiSelectProps } from './MultiSelect.types';
 
 export const MultiSelect: FC<MultiSelectProps> = ({
   options,
@@ -27,16 +25,23 @@ export const MultiSelect: FC<MultiSelectProps> = ({
   helperText,
   label,
   required = false,
+  multiple = true,
   renderValue: customRenderValue,
   maxHeight = 300,
-  showCheckbox = true,
-  showChips = true,
+  show = 'chips',
   maxChips = 3,
 }) => {
   const handleChange = (event: any) => {
     if (onChange) {
-      const selectedValues = event.target.value as string[];
-      onChange(selectedValues);
+      if (multiple === false) {
+        // For single select, wrap the single value in an array
+        const singleValue = event.target.value as string;
+        onChange(singleValue ? [singleValue] : []);
+      } else {
+        // For multi select, pass the array as-is
+        const selectedValues = event.target.value as string[];
+        onChange(selectedValues);
+      }
     }
   };
 
@@ -47,130 +52,112 @@ export const MultiSelect: FC<MultiSelectProps> = ({
   };
 
   const defaultRenderValue = (selected: unknown) => {
-    const selectedArray = selected as string[];
-    if (!selectedArray || selectedArray.length === 0) {
-      return <em>{placeholder}</em>;
-    }
+    const selectedArray = Array.isArray(selected) ? selected : [selected];
 
-    if (showChips) {
+    if (!selectedArray || selectedArray.length === 0) {
       return (
-        <ChipContainer>
-          {selectedArray.slice(0, maxChips).map((val) => {
-            const option = options.find((opt) => opt.value === val);
-            return (
-              <StyledChip
-                key={val}
-                label={option?.label || val}
-                size="small"
-                onDelete={() => handleDelete(val)}
-                onMouseDown={(event) => {
-                  event.stopPropagation();
-                }}
-              />
-            );
-          })}
-          {selectedArray.length > maxChips && (
-            <StyledChip
-              label={`+${selectedArray.length - maxChips} more`}
-              size="small"
-            />
-          )}
-        </ChipContainer>
+        <span style={{ color: 'inherit', opacity: 0.6 }}>
+          {placeholder || 'Select options'}
+        </span>
       );
     }
 
-    const selectedLabels = selectedArray.map((val) => {
-      const option = options.find((opt) => opt.value === val);
-      return option?.label || val;
-    });
-    return selectedLabels.join(', ');
+    switch (show) {
+      case 'chips':
+        return (
+          <ChipContainer>
+            {selectedArray.slice(0, maxChips).map((val) => {
+              const option = options.find((opt) => opt.value === val);
+              return (
+                <StyledChip
+                  key={val}
+                  label={option?.label || val}
+                  size="small"
+                  onDelete={() => handleDelete(val)}
+                  onMouseDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                />
+              );
+            })}
+            {selectedArray.length > maxChips && (
+              <StyledChip
+                label={`+${selectedArray.length - maxChips}`}
+                size="small"
+              />
+            )}
+          </ChipContainer>
+        );
+
+      case 'count':
+        return (
+          <ChipContainer>
+            <StyledChip
+              label={`${selectedArray.length} selected`}
+              size="small"
+            />
+          </ChipContainer>
+        );
+
+      case 'label':
+      default:
+        const selectedLabels = selectedArray.map((val) => {
+          const option = options.find((opt) => opt.value === val);
+          return option?.label || val;
+        });
+        return selectedLabels.join(', ');
+    }
   };
 
   const renderValueFunction = customRenderValue || defaultRenderValue;
 
-  const groupedOptions = options.reduce(
-    (acc, option) => {
-      const group = option.group || '';
-      if (!acc[group]) {
-        acc[group] = [];
-      }
-      acc[group].push(option);
-      return acc;
-    },
-    {} as Record<string, MultiSelectOption[]>,
-  );
-
-  const hasGroups = Object.keys(groupedOptions).some((group) => group !== '');
-
   return (
     <StyledFormControl
       fullWidth={fullWidth}
-      size={size === 'small' ? 'small' : 'medium'}
+      size={size}
       error={error}
       disabled={disabled}
       variant={variant}
       required={required}
     >
-      {label && (
-        <StyledInputLabel id={`${label}-multiselect-label`}>
-          {label}
-        </StyledInputLabel>
-      )}
       <StyledSelect
         labelId={label ? `${label}-multiselect-label` : undefined}
-        multiple
-        value={value}
+        multiple={multiple !== false}
+        value={multiple === false ? value[0] || '' : value}
         onChange={handleChange}
-        label={label}
-        displayEmpty={!!placeholder}
+        displayEmpty={true}
         renderValue={renderValueFunction}
+        size={size}
+        inputProps={{
+          'aria-label': label || placeholder,
+        }}
         MenuProps={{
           PaperProps: {
             style: {
               maxHeight: maxHeight,
+              marginTop: 8,
             },
           },
         }}
       >
-        {placeholder && value.length === 0 && (
-          <StyledMenuItem value="" disabled>
-            <em>{placeholder}</em>
-          </StyledMenuItem>
-        )}
-        {hasGroups
-          ? Object.entries(groupedOptions).map(([group, groupOptions]) => [
-              group && (
-                <GroupHeader key={`group-${group}`}>{group}</GroupHeader>
-              ),
-              ...groupOptions.map((option) => (
-                <StyledMenuItem
-                  key={option.value}
-                  value={option.value}
-                  disabled={option.disabled}
-                >
-                  {showCheckbox && (
-                    <StyledCheckbox
-                      checked={value.indexOf(option.value) > -1}
-                    />
-                  )}
-                  {option.icon && <IconWrapper>{option.icon}</IconWrapper>}
-                  <ListItemText primary={option.label} />
-                </StyledMenuItem>
-              )),
-            ])
-          : options.map((option) => (
-              <StyledMenuItem
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-              >
-                {showCheckbox && (
-                  <StyledCheckbox checked={value.indexOf(option.value) > -1} />
-                )}
-                {option.icon && <IconWrapper>{option.icon}</IconWrapper>}
-                <ListItemText primary={option.label} />
-              </StyledMenuItem>
-            ))}
+        {options.map((option) => {
+          const isSelected = value.indexOf(option.value) > -1;
+          return (
+            <StyledMenuItem key={option.value} value={option.value}>
+              {option.icon && <IconWrapper>{option.icon}</IconWrapper>}
+              <ListItemText primary={option.label} />
+              {isSelected && (
+                <CheckIcon
+                  sx={{
+                    marginLeft: 'auto',
+                    fontSize: '1.2rem',
+                    color: 'primary.main',
+                  }}
+                />
+              )}
+            </StyledMenuItem>
+          );
+        })}
       </StyledSelect>
       {helperText && (
         <StyledFormHelperText error={error}>{helperText}</StyledFormHelperText>

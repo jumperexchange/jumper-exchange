@@ -1,10 +1,10 @@
 export interface MultiSelectOption {
   value: string;
   label: string;
-  disabled?: boolean;
   icon?: React.ReactNode;
-  group?: string;
 }
+
+export type MultiSelectDisplayMode = 'chips' | 'label' | 'count';
 
 export interface MultiSelectProps {
   options: MultiSelectOption[];
@@ -13,7 +13,7 @@ export interface MultiSelectProps {
   placeholder?: string;
   disabled?: boolean;
   fullWidth?: boolean;
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium';
   variant?: 'outlined' | 'filled' | 'standard';
   error?: boolean;
   helperText?: string;
@@ -22,7 +22,6 @@ export interface MultiSelectProps {
   multiple?: boolean;
   renderValue?: (selected: unknown) => React.ReactNode;
   maxHeight?: number;
-  showCheckbox?: boolean;
-  showChips?: boolean;
+  show?: MultiSelectDisplayMode;
   maxChips?: number;
 }

@@ -154,8 +154,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             placeholder="Chains"
             label="Chains"
             size="small"
-            showChips={true}
-            showCheckbox={true}
+            show="chips"
             maxChips={2}
           />
 
@@ -165,8 +164,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             placeholder="Protocols"
             label="Protocols"
             size="small"
-            showChips={true}
-            showCheckbox={true}
+            show="chips"
             maxChips={2}
           />
 
@@ -176,8 +174,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             placeholder="Tags"
             label="Tags"
             size="small"
-            showChips={true}
-            showCheckbox={true}
+            show="chips"
             maxChips={2}
           />
 
@@ -187,8 +184,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             placeholder="Assets"
             label="Assets"
             size="small"
-            showChips={true}
-            showCheckbox={true}
+            show="chips"
             maxChips={2}
           />
 
@@ -198,8 +194,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             placeholder="APY"
             label="APY"
             size="small"
-            showChips={true}
-            showCheckbox={true}
+            show="chips"
             maxChips={2}
           />
         </Box>
