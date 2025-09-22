@@ -35,8 +35,8 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
     showForYou,
     toggleForYou,
     filter,
+    usedYourAddress,
   } = useEarnFiltering();
-  const isLoggedId = filter?.address !== undefined;
 
   const tabOptions: TabOption[] = [
     { value: 'foryou', label: 'For You' },
@@ -50,8 +50,10 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
   const ForYou = () => {
     const formatedTotalMarkets = totalMarkets.toLocaleString();
 
-    const copy = isLoggedId
-      ? t('earn.copy.forYouBasedOnActivity')
+    const copy = usedYourAddress
+      ? t('earn.copy.forYouBasedOnActivity', {
+          totalMarkets: formatedTotalMarkets,
+        })
       : t('earn.copy.forYouDefault', { totalMarkets: formatedTotalMarkets });
 
     // TODO: add latest update in backend and render here

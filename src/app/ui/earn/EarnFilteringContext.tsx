@@ -30,6 +30,7 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   filter: EarnOpportunityFilter;
   updateFilter: (filter: EarnOpportunityFilter) => void;
   showForYou: boolean;
+  usedYourAddress: boolean;
   toggleForYou: () => void;
   forYou: EarnOpportunityWithLatestAnalytics[];
   forYouLoading: boolean;
@@ -44,6 +45,7 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   filter: {},
   updateFilter: () => {},
   showForYou: false,
+  usedYourAddress: false,
   toggleForYou: () => {},
   forYou: [],
   forYouLoading: false,
@@ -65,6 +67,8 @@ export const EarnFilteringProvider = ({
   children: React.ReactNode;
 }) => {
   const address: Hex | undefined = useAccountAddress();
+  const usedYourAddress = address !== undefined;
+
   const [initialData, setInitialData] = useState<
     EarnOpportunityWithLatestAnalytics[]
   >([]);
@@ -122,6 +126,7 @@ export const EarnFilteringProvider = ({
     filter,
     updateFilter,
     showForYou,
+    usedYourAddress,
     toggleForYou,
     forYou: forYou.data ?? [],
     forYouLoading: forYou.isLoading,

@@ -36,6 +36,7 @@ const mockContextValue = () => {
     updateFilter: () => {},
     showForYou,
     toggleForYou: () => setShowForYou((current) => !current),
+    usedYourAddress: false,
     forYou: [],
     forYouLoading: false,
     forYouError: null,
