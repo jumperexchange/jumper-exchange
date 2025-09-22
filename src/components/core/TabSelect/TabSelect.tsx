@@ -86,6 +86,7 @@ export const TabSelect: FC<TabSelectProps> = ({
             disabled={disabled || option.disabled}
             wrapped={wrapped}
             size={size}
+            disableRipple
             iconPosition={
               iconPosition === 'top' || iconPosition === 'bottom'
                 ? iconPosition
