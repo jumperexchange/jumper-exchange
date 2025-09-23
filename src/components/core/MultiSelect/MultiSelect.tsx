@@ -33,23 +33,22 @@ export const MultiSelect: FC<MultiSelectProps> = ({
   'data-testid': dataTestId,
 }) => {
   const handleChange = (event: any) => {
-    if (onChange) {
-      if (multiple === false) {
-        // For single select, wrap the single value in an array
-        const singleValue = event.target.value as string;
-        onChange(singleValue ? [singleValue] : []);
-      } else {
-        // For multi select, pass the array as-is
-        const selectedValues = event.target.value as string[];
-        onChange(selectedValues);
-      }
+    if (!onChange) return;
+    if (multiple === false) {
+      // For single select, wrap the single value in an array
+      const singleValue = event.target.value as string;
+      onChange(singleValue ? [singleValue] : []);
+    } else {
+      // For multi select, pass the array as-is
+      const selectedValues = event.target.value as string[];
+      onChange(selectedValues);
     }
   };
 
   const handleDelete = (chipValue: string) => {
-    if (onChange) {
-      onChange(value.filter((v) => v !== chipValue));
-    }
+    if (!onChange) return;
+
+    onChange(value.filter((v) => v !== chipValue));
   };
 
   const defaultRenderValue = (selected: unknown) => {
