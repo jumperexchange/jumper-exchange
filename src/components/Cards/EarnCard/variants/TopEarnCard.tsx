@@ -25,7 +25,9 @@ export enum TopEarnCardCopyKey {
 }
 
 export const ithCopy = (index: number): TopEarnCardCopyKey => {
-  return Object.values(TopEarnCardCopyKey)[index] as TopEarnCardCopyKey;
+  const values = Object.values(TopEarnCardCopyKey);
+  const safeIndex = (index + values.length) % values.length;
+  return values[safeIndex] as TopEarnCardCopyKey;
 };
 
 type Props = Omit<EarnCardProps, 'variant'> & {
