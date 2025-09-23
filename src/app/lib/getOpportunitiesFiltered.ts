@@ -1,11 +1,14 @@
 import {
-  EarnOpportunity,
+  EarnOpportunityWithLatestAnalytics,
   HttpResponse,
   JumperBackend,
 } from '@/types/jumper-backend';
 import { makeClient } from './client';
 
-export type GetOpportunityTopResult = HttpResponse<EarnOpportunity[], unknown>;
+export type GetOpportunityTopResult = HttpResponse<
+  EarnOpportunityWithLatestAnalytics[],
+  unknown
+>;
 
 export type EarnOpportunityFilter = Parameters<
   JumperBackend<unknown>['v1']['earnControllerFilterV1']

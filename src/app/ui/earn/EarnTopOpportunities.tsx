@@ -1,25 +1,28 @@
 'use client';
 
+import { Grid } from '@mui/material';
+import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
+import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
 
 interface EarnTopOpportunities {}
 
 export const EarnTopOpportunities = () => {
-  const address = '0xE131E0a520F312f0419c772a9889D0c0073db422';
-  const { data, isLoading, error, isError } = useEarnTopOpportunities({
-    address,
-  });
-  // TODO: LF-14983: Create earn page and root components
+  const { data, isLoading, error, isError } = useEarnTopOpportunities({});
   // TODO: LF-14985: Pixel Perfect Design
-  // TODO: LF-14990: Complex Top Opportunity rendering
+  const items = AtLeastNWhenLoading(data, isLoading, 2);
 
   return (
-    <div>
-      <h1>EarnTopOpportunities</h1>
-      <pre>{isLoading ? 'Loading...' : 'Loaded'}</pre>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <pre>{isError ? 'Error' : 'No error'}</pre>
-      <pre>{JSON.stringify(error, null, 2)}</pre>
-    </div>
+    <Grid container spacing={2}>
+      {items?.map((item, index) => (
+        <Grid key={index} size={{ xs: 12, sm: index === 0 ? 7 : 5 }}>
+          {item == null ? (
+            <EarnCard variant="top" isLoading={true} data={null} />
+          ) : (
+            <EarnCard variant="top" isLoading={isLoading} data={item} />
+          )}
+        </Grid>
+      ))}
+    </Grid>
   );
 };

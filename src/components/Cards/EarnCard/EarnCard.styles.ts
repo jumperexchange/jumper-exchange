@@ -98,3 +98,19 @@ export const ListItemEarnCardTagContainer = styled(Stack)(({ theme }) => ({
   columnGap: theme.spacing(1),
   alignItems: 'center',
 }));
+
+export const TopEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
+  padding: theme.spacing(3),
+}));
+
+export const TopEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+}));
+
+export const TopEarnCardContentContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+}));
+
+export const TopEarnCardFooterContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+}));

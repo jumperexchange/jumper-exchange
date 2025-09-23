@@ -81,7 +81,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
             >
               <img
-                alt="Morpho"
+                alt="morpho"
                 class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                 src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
               />
@@ -94,21 +94,10 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               class="MuiStack-root css-1x5pyaa-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1rrlczf-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
               >
-                <img
-                  alt="Ethereum"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1rrlczf-MuiAvatar-root"
-              >
-                <img
-                  alt="Base"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -120,12 +109,12 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
           >
-            Metamorpho
+            metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
           >
-            ETH BASE
+            base
           </p>
         </div>
       </div>
@@ -141,11 +130,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              APY
+              labels.apy
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The APY is the annualized return you will receive"
+              aria-label="tooltips.apy"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -163,7 +152,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              1000%
+              7.15%
             </p>
           </div>
         </div>
@@ -176,11 +165,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Lockup Period
+              labels.lockupPeriod
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The lockup period is the time you need to lock your assets for"
+              aria-label="tooltips.lockupPeriod"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -198,7 +187,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              1000 months
+              2 months
             </p>
           </div>
         </div>
@@ -215,11 +204,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              TVL
+              labels.tvl
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The TVL is the total value locked in the pool"
+              aria-label="tooltips.tvl"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -237,7 +226,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $1,000
+              $62,572,415
             </p>
           </div>
         </div>
@@ -250,11 +239,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Assets
+              labels.assets
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The assets you will earn from"
+              aria-label="tooltips.assets"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -282,15 +271,13 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
                   />
                 </div>
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
-                </div>
               </div>
             </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
+            >
+              USD Coin
+            </p>
           </div>
         </div>
       </div>
@@ -416,7 +403,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
             >
               <img
-                alt="Morpho"
+                alt="morpho"
                 class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                 src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
               />
@@ -429,21 +416,10 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               class="MuiStack-root css-1x5pyaa-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1rrlczf-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
               >
-                <img
-                  alt="Ethereum"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1rrlczf-MuiAvatar-root"
-              >
-                <img
-                  alt="Base"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -455,12 +431,12 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
           >
-            Metamorpho
+            metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
           >
-            ETH BASE
+            base
           </p>
         </div>
       </div>
@@ -476,11 +452,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              APY
+              labels.apy
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The APY is the annualized return you will receive"
+              aria-label="tooltips.apy"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -498,7 +474,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              1000%
+              7.15%
             </p>
           </div>
         </div>
@@ -511,11 +487,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Lockup Period
+              labels.lockupPeriod
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The lockup period is the time you need to lock your assets for"
+              aria-label="tooltips.lockupPeriod"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -533,7 +509,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              1000 months
+              2 months
             </p>
           </div>
         </div>
@@ -550,11 +526,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              TVL
+              labels.tvl
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The TVL is the total value locked in the pool"
+              aria-label="tooltips.tvl"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -572,7 +548,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $1,000
+              $62,572,415
             </p>
           </div>
         </div>
@@ -585,11 +561,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Assets
+              labels.assets
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The assets you will earn from"
+              aria-label="tooltips.assets"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -617,15 +593,13 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
                   />
                 </div>
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
-                </div>
               </div>
             </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
+            >
+              USD Coin
+            </p>
           </div>
         </div>
       </div>
@@ -715,7 +689,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
             >
               <img
-                alt="Morpho"
+                alt="morpho"
                 class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                 src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
               />
@@ -728,12 +702,10 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               class="MuiStack-root css-1x5pyaa-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1rrlczf-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
               >
-                <img
-                  alt="Ethereum"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -745,12 +717,12 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
           >
-            Metamorpho
+            metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
           >
-            ETH
+            base
           </p>
         </div>
       </div>
@@ -766,11 +738,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              APY
+              labels.apy
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The APY is the annualized return you will receive"
+              aria-label="tooltips.apy"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -788,7 +760,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              1000%
+              7.15%
             </p>
           </div>
         </div>
@@ -801,11 +773,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Lockup Period
+              labels.lockupPeriod
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The lockup period is the time you need to lock your assets for"
+              aria-label="tooltips.lockupPeriod"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -823,7 +795,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              1000 months
+              2 months
             </p>
           </div>
         </div>
@@ -840,11 +812,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              TVL
+              labels.tvl
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The TVL is the total value locked in the pool"
+              aria-label="tooltips.tvl"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -862,7 +834,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $1,000
+              $62,572,415
             </p>
           </div>
         </div>
@@ -875,11 +847,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
             >
-              Assets
+              labels.assets
             </p>
             <svg
               aria-hidden="true"
-              aria-label="The assets you will earn from"
+              aria-label="tooltips.assets"
               class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
               data-mui-internal-clone-element="true"
               data-testid="InfoIcon"
@@ -912,7 +884,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              ETH
+              USD Coin
             </p>
           </div>
         </div>
@@ -943,7 +915,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
               class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
             >
               <img
-                alt="Morpho"
+                alt="morpho"
                 class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                 src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
               />
@@ -956,21 +928,10 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
               class="MuiStack-root css-1x5pyaa-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1nlmuk1-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
               >
-                <img
-                  alt="Ethereum"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1nlmuk1-MuiAvatar-root"
-              >
-                <img
-                  alt="Base"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -982,12 +943,12 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
           >
-            Metamorpho
+            metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
           >
-            ETH BASE
+            base
           </p>
         </div>
       </div>
@@ -1029,40 +990,40 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </p>
         </div>
         <div
-          aria-label="The APY is the annualized return you will receive"
+          aria-label="tooltips.apy"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            1000% APY
+            7.15% labels.apy
           </p>
         </div>
         <div
-          aria-label="The lockup period is the time you need to lock your assets for"
+          aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            1000 months
+            2 months
           </p>
         </div>
         <div
-          aria-label="The TVL is the total value locked in the pool"
+          aria-label="tooltips.tvl"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $1,000 TVL
+            $62,572,415 labels.tvl
           </p>
         </div>
         <div
-          aria-label="The assets you will earn from"
+          aria-label="tooltips.assets"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1076,14 +1037,12 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                 class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
               />
             </div>
-            <div
-              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-            >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-              />
-            </div>
           </div>
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          >
+            USD Coin
+          </p>
         </div>
         <button
           class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-tf9979-MuiButtonBase-root-MuiIconButton-root"
@@ -1183,7 +1142,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
               class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
             >
               <img
-                alt="Morpho"
+                alt="morpho"
                 class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                 src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
               />
@@ -1196,21 +1155,10 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
               class="MuiStack-root css-1x5pyaa-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1nlmuk1-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
               >
-                <img
-                  alt="Ethereum"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1nlmuk1-MuiAvatar-root"
-              >
-                <img
-                  alt="Base"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -1222,12 +1170,12 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
           >
-            Metamorpho
+            metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
           >
-            ETH BASE
+            base
           </p>
         </div>
       </div>
@@ -1253,40 +1201,40 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </p>
         </div>
         <div
-          aria-label="The APY is the annualized return you will receive"
+          aria-label="tooltips.apy"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            1000% APY
+            7.15% labels.apy
           </p>
         </div>
         <div
-          aria-label="The lockup period is the time you need to lock your assets for"
+          aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            1000 months
+            2 months
           </p>
         </div>
         <div
-          aria-label="The TVL is the total value locked in the pool"
+          aria-label="tooltips.tvl"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $1,000 TVL
+            $62,572,415 labels.tvl
           </p>
         </div>
         <div
-          aria-label="The assets you will earn from"
+          aria-label="tooltips.assets"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1300,14 +1248,12 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                 class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
               />
             </div>
-            <div
-              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-            >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-              />
-            </div>
           </div>
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          >
+            USD Coin
+          </p>
         </div>
         <button
           class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-tf9979-MuiButtonBase-root-MuiIconButton-root"
@@ -1354,7 +1300,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
               class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
             >
               <img
-                alt="Morpho"
+                alt="morpho"
                 class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                 src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
               />
@@ -1367,12 +1313,10 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
               class="MuiStack-root css-1x5pyaa-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1nlmuk1-MuiAvatar-root"
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
               >
-                <img
-                  alt="Ethereum"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -1384,12 +1328,12 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
           >
-            Metamorpho
+            metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
           >
-            ETH
+            base
           </p>
         </div>
       </div>
@@ -1431,40 +1375,40 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </p>
         </div>
         <div
-          aria-label="The APY is the annualized return you will receive"
+          aria-label="tooltips.apy"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            1000% APY
+            7.15% labels.apy
           </p>
         </div>
         <div
-          aria-label="The lockup period is the time you need to lock your assets for"
+          aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            1000 months
+            2 months
           </p>
         </div>
         <div
-          aria-label="The TVL is the total value locked in the pool"
+          aria-label="tooltips.tvl"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $1,000 TVL
+            $62,572,415 labels.tvl
           </p>
         </div>
         <div
-          aria-label="The assets you will earn from"
+          aria-label="tooltips.assets"
           class="MuiBox-root css-1ci75fx"
           data-mui-internal-clone-element="true"
         >
@@ -1482,7 +1426,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            ETH
+            USD Coin
           </p>
         </div>
       </div>
