@@ -36,7 +36,8 @@
       "developers": "开发者",
       "support": "技术支持",
       "resources": "",
-      "profile": "Jumper 个人资料"
+      "profile": "Jumper 个人资料",
+      "privacyPolicy": "隐私政策"
     },
     "walletMenu": {
       "disconnect": "断开连接",

@@ -21,6 +21,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
@@ -175,6 +176,15 @@ export const useMenuActions = () => {
     });
   }, [setSubMenuState, trackEvent]);
 
+  const handlePrivacyPolicyClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-privacy-policy-link',
+      action: TrackingAction.ClickJumperLearnLink, // Reusing existing action for now
+      dataMenuParam: 'jumper_privacy_policy',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   return {
     handleExchangeClick,
     handleMissionsClick,
@@ -185,6 +195,7 @@ export const useMenuActions = () => {
     handleThemeClick,
     handleLanguageClick,
     handleResourcesClick,
+    handlePrivacyPolicyClick,
   };
 };
 
@@ -270,6 +281,21 @@ export const useSocialLinks = () => {
   );
 
   return { socialLinks };
+};
+
+export const useFooterLinks = () => {
+  const { t } = useTranslation();
+  const { handlePrivacyPolicyClick } = useMenuActions();
+
+  const footerLinks = useMemo(() => [
+    {
+      label: t('navbar.navbarMenu.privacyPolicy'),
+      link: { url: AppPaths.PrivacyPolicy },
+      onClick: handlePrivacyPolicyClick,
+    },
+  ], [t, handlePrivacyPolicyClick]);
+
+  return { footerLinks };
 };
 
 export const useMenuItems = () => {
@@ -390,10 +416,12 @@ export const useMenuItems = () => {
 export const useMainMenuContent = () => {
   const { menuItems } = useMenuItems();
   const { socialLinks } = useSocialLinks();
+  const { footerLinks } = useFooterLinks();
 
   return {
     mainMenuItems: menuItems,
     mainMenuSocialLinks: socialLinks,
+    mainMenuFooterLinks: footerLinks,
   };
   // Todo: to generate on the server side
 };

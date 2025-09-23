@@ -26,6 +26,7 @@ export const JUMPER_QUESTS_PATH = '/quests';
 export const JUMPER_CAMPAIGN_PATH = '/campaign';
 export const JUMPER_LEADERBOARD_PATH = '/leaderboard';
 export const JUMPER_EARN_PATH = '/earn';
+export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
 
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
@@ -42,6 +43,7 @@ export const pages: SitemapPage[] = [
   { path: JUMPER_LEARN_PATH, priority: 0.9 },
   { path: JUMPER_PROFILE_PATH, priority: 0.8 },
   { path: '/gas', priority: 0.7 },
+  { path: JUMPER_PRIVACY_POLICY_PATH, priority: 0.6 },
 ];
 
 export enum AppPaths {
@@ -59,4 +61,5 @@ export enum AppPaths {
   Wallet = JUMPER_WALLET_PATH,
   Leaderboard = JUMPER_LEADERBOARD_PATH,
   Earn = JUMPER_EARN_PATH,
+  PrivacyPolicy = JUMPER_PRIVACY_POLICY_PATH,
 }

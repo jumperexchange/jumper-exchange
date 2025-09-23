@@ -33,6 +33,7 @@ export enum TrackingAction {
   ClickContribute = 'action_contribute',
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
+  OnChainPinned = 'action_on_chain_pinned',
 
   // Mission Widget
   OnSourceChainAndTokenSelectionMission = 'action_on_source_selection_mission',
@@ -192,6 +193,7 @@ export enum TrackingEventParameter {
   UpdatedSetting = 'param_updated_setting',
   NewSettingValue = 'param_new_setting_value',
   PreviousSettingValue = 'param_previous_setting_value',
+  Pinned = 'param_pinned',
 
   // Pageload:
   PageloadSource = 'param_pageload_source',

@@ -1,9 +1,9 @@
 import Box, { BoxProps } from '@mui/material/Box';
+import Card from '@mui/material/Card';
 import InputBase, { InputBaseProps } from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
 import { styled, Theme } from '@mui/material/styles';
-import { fontSize, fontWeight } from '@mui/system';
 
 export enum SelectCardMode {
   Display = 'display',
@@ -14,13 +14,14 @@ interface SelectCardContainerProps extends BoxProps {
   isClickable?: boolean;
 }
 
-export const SelectCardContainer = styled(Box, {
+export const SelectCardContainer = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'isClickable',
 })<SelectCardContainerProps>(({ theme, isClickable }) => ({
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
   background: (theme.vars || theme).palette.surface2.main,
   padding: theme.spacing(2),
+  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
@@ -48,10 +49,7 @@ export const SelectCardLabel = styled(InputLabel)(({ theme }) => ({
 }));
 
 export const SelectCardDescription = styled(Typography)(({ theme }) => ({
-  color: (theme.vars || theme).palette.alphaLight800.main,
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.alphaDark800.main,
-  }),
+  color: (theme.vars || theme).palette.alpha800.main,
 }));
 
 export const getPlaceholderTextStyles = (theme: Theme) => ({

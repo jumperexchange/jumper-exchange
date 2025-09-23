@@ -37,7 +37,21 @@ export const handleRouteData = (
   );
   const priceImpact = calcPriceImpact(route);
 
-  const routeData = {
+  // Note(laurent): the rest of this function code was reworked to fix type issues,
+  // it was producing incorrect types. There are too many checks according to types,
+  // For example we're checking that stepTools is an array despite the type being
+  // `string[]` already. I'm keeping these checks as is, in case runtime types are different.
+  let steps = 'missing';
+  if (Array.isArray(stepTools) && stepTools.length > 0) {
+    steps = stepTools.join(',');
+  }
+
+  let transactionId = 'missing';
+  if (Array.isArray(includedStepIds) && includedStepIds.length > 0) {
+    transactionId = includedStepIds.join(',');
+  }
+
+  const routeData: TrackTransactionDataProps = {
     [TrackingEventParameter.FromAmount]: route.fromAmount,
     [TrackingEventParameter.FromAmountUSD]: route.fromAmountUSD,
     [TrackingEventParameter.FromChainId]: route.fromChainId,
@@ -47,39 +61,51 @@ export const handleRouteData = (
     [TrackingEventParameter.RouteId]: routeId,
     [TrackingEventParameter.Slippage]: priceImpact,
     [TrackingEventParameter.StepIds]: stepIds.join(','),
+    [TrackingEventParameter.Steps]: steps,
+    [TrackingEventParameter.Time]: duration || -1,
     [TrackingEventParameter.ToAmount]: toAmount,
     [TrackingEventParameter.ToAmountFormatted]: toAmountFormatted,
     [TrackingEventParameter.ToAmountMin]: route.toAmountMin,
     [TrackingEventParameter.ToAmountUSD]: toAmountUSD,
     [TrackingEventParameter.ToChainId]: route.toChainId,
     [TrackingEventParameter.ToToken]: route.toToken.address,
+    [TrackingEventParameter.TransactionId]: transactionId,
     [TrackingEventParameter.TransactionStatus]: routeStatus || '',
     [TrackingEventParameter.Type]: type,
-    ...(duration && { [TrackingEventParameter.Time]: duration }),
-    ...(Array.isArray(route.tags) &&
-      route.tags.length > 0 && {
-        [TrackingEventParameter.Tags]: route.tags.join(','),
-      }),
-    ...(Array.isArray(includedStepIds) &&
-      includedStepIds.length > 0 && {
-        [TrackingEventParameter.TransactionId]: includedStepIds.join(','),
-      }),
-    ...(Array.isArray(stepTools) &&
-      stepTools.length > 0 && {
-        [TrackingEventParameter.Steps]: stepTools.join(','),
-      }),
-    ...(integrator && { [TrackingEventParameter.Integrator]: integrator }),
-    ...(gasCost && { [TrackingEventParameter.GasCost]: gasCost }),
-    ...(gasCostFormatted && {
-      [TrackingEventParameter.GasCostFormatted]: gasCostFormatted,
-    }),
-    ...(gasCostUSD && { [TrackingEventParameter.GasCostUSD]: gasCostUSD }),
-    ...(feeCost && { [TrackingEventParameter.FeeCost]: feeCost }),
-    ...(feeCostFormatted && {
-      [TrackingEventParameter.FeeCostFormatted]: feeCostFormatted,
-    }),
-    ...(feeCostUSD && { [TrackingEventParameter.FeeCostUSD]: feeCostUSD }),
   };
+
+  if (Array.isArray(route.tags) && route.tags.length > 0) {
+    routeData[TrackingEventParameter.Tags] = route.tags.join(',');
+  }
+
+  if (integrator) {
+    routeData[TrackingEventParameter.Integrator] = integrator;
+  }
+
+  if (gasCost) {
+    routeData[TrackingEventParameter.GasCost] = gasCost;
+  }
+
+  if (gasCostFormatted) {
+    routeData[TrackingEventParameter.GasCostFormatted] = gasCostFormatted;
+  }
+
+  const gasCostUSDNumber = Number(gasCostUSD);
+  if (!isNaN(gasCostUSDNumber)) {
+    routeData[TrackingEventParameter.GasCostUSD] = gasCostUSDNumber;
+  }
+
+  if (feeCost) {
+    routeData[TrackingEventParameter.FeeCost] = feeCost;
+  }
+
+  if (feeCostFormatted) {
+    routeData[TrackingEventParameter.FeeCostFormatted] = feeCostFormatted;
+  }
+
+  if (feeCostUSD) {
+    routeData[TrackingEventParameter.FeeCostUSD] = feeCostUSD;
+  }
 
   const processData = getProcessInformation(route);
 
@@ -87,5 +113,5 @@ export const handleRouteData = (
     ...routeData,
     ...processData,
     ...customData,
-  } as TrackTransactionDataProps;
+  };
 };

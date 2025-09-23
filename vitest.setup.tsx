@@ -43,6 +43,13 @@ vi.mock('next/font/local', () => ({
   }),
 }));
 
+// Mock ResizeObserver
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
 const customRender = (ui: React.ReactElement, options = {}) => {
   return render(
     <ThemeProvider theme={themeCustomized}>{ui}</ThemeProvider>,
