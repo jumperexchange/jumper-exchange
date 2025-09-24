@@ -4,25 +4,18 @@ import { useSwitchChain, useWalletClient } from 'wagmi';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { ProjectData } from 'src/types/questDetails';
 import { sweepApiService } from 'src/services/sweepApi';
-import { biconomyService } from 'src/services/biconomyService';
 import {
   SweepableToken,
   CheckSweepableTokensResponse,
   SweepQuoteResponse,
 } from 'src/types/sweep';
+import { Hex } from 'viem';
 
-// Helper function to get EVM provider from wallet connector
-const getEVMProvider = async (connector: any) => {
-  if (connector && 'getProvider' in connector) {
-    return await connector.getProvider();
-  }
-  return window.ethereum;
-};
-
-type SweepStep = 
+type SweepStep =
   | 'idle'
   | 'checking_tokens'
   | 'switching_chain'
+  | 'signing_message'
   | 'getting_quote'
   | 'executing'
   | 'completed';
@@ -47,7 +40,9 @@ interface UseSweepTokensApiReturn {
 /**
  * Custom hook to handle token sweeping functionality using the backend API
  */
-export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiReturn => {
+export const useSweepTokensApi = (
+  projectData: ProjectData,
+): UseSweepTokensApiReturn => {
   const [isSweeping, setIsSweeping] = useState(false);
   const [sweepError, setSweepError] = useState<string | null>(null);
   const [sweepSuccess, setSweepSuccess] = useState(false);
@@ -56,9 +51,11 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
   const [hasCheckedTokens, setHasCheckedTokens] = useState(false);
   const [sweepStep, setSweepStep] = useState<SweepStep>('idle');
   const [sweepableTokens, setSweepableTokens] = useState<SweepableToken[]>([]);
-  const [smartAccountAddress, setSmartAccountAddress] = useState<string | null>(null);
+  const [smartAccountAddress, setSmartAccountAddress] = useState<string | null>(
+    null,
+  );
   const [targetChainId, setTargetChainId] = useState<number | null>(null);
-  
+
   const { account } = useAccount();
   const address = account?.address;
   const chainId = account?.chainId;
@@ -82,6 +79,8 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
         return 'Switching chain...';
       case 'getting_quote':
         return 'Getting sweep quote...';
+      case 'signing_message':
+        return 'Signing message...';
       case 'executing':
         return 'Executing sweep...';
       case 'completed':
@@ -117,10 +116,11 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
       setSweepStep('checking_tokens');
 
       try {
-        const response: CheckSweepableTokensResponse = await sweepApiService.checkSweepableTokens({
-          walletAddress: address,
-          chainId: chainId,
-        });
+        const response: CheckSweepableTokensResponse =
+          await sweepApiService.checkSweepableTokens({
+            walletAddress: address,
+            chainId: chainId,
+          });
 
         const { data } = response;
 
@@ -202,28 +202,27 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
       const quoteResponse: SweepQuoteResponse = response;
       const { data } = quoteResponse;
 
-      // Validate quote
-      if (!data.quote) {
-        throw new Error('No valid quote received from backend');
-      }
+      const transactionMessage = data.transactionData.message;
 
-      // Step 3: Execute the pre-generated quote on frontend
-      setSweepStep('executing');
-      
       if (!walletClient) {
         throw new Error('Wallet client not available');
       }
-      
-      // Get the provider from the wallet
-      const provider = await getEVMProvider(account.connector);
-      
-      // Execute the pre-generated quote (this will prompt for wallet signature)
-      const transactionHash = await biconomyService.executeSweep(
-        walletClient,
-        provider,
-        targetChainId || chainId,
-        data.quote
-      );
+
+      setSweepStep('signing_message');
+
+      const signedTransactionMessage = await walletClient.signMessage({
+        message: transactionMessage,
+      });
+
+      setSweepStep('executing');
+
+      const executeResponse = await sweepApiService.executeSweep({
+        walletAddress: address as Hex,
+        chainId: targetChainId || chainId,
+        signedMessage: signedTransactionMessage,
+      });
+
+      const transactionHash = executeResponse.transactionHash;
 
       setTxHash(transactionHash as `0x${string}`);
       setSweepStep('completed');
@@ -233,7 +232,14 @@ export const useSweepTokensApi = (projectData: ProjectData): UseSweepTokensApiRe
     } finally {
       setIsSweeping(false);
     }
-  }, [address, chainId, projectData, hasTokensToSweepState, targetChainId, switchChainAsync]);
+  }, [
+    address,
+    chainId,
+    projectData,
+    hasTokensToSweepState,
+    targetChainId,
+    switchChainAsync,
+  ]);
 
   return {
     isSweeping,

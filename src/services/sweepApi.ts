@@ -2,6 +2,8 @@ import config from '@/config/env-config';
 import {
   CheckSweepableTokensRequest,
   CheckSweepableTokensResponse,
+  SweepExecuteRequest,
+  SweepExecuteResponse,
   SweepQuoteRequest,
   SweepQuoteResponse,
 } from 'src/types/sweep';
@@ -12,10 +14,10 @@ class SweepApiService {
   private async makeRequest<T>(
     endpoint: string,
     method: 'GET' | 'POST' = 'POST',
-    body?: any
+    body?: any,
   ): Promise<T> {
     const url = `${API_BASE_URL}/zaps/${endpoint}`;
-    
+
     const response = await fetch(url, {
       method,
       headers: {
@@ -36,12 +38,12 @@ class SweepApiService {
    * Check for sweepable tokens for a wallet address
    */
   async checkSweepableTokens(
-    request: CheckSweepableTokensRequest
+    request: CheckSweepableTokensRequest,
   ): Promise<CheckSweepableTokensResponse> {
     return this.makeRequest<CheckSweepableTokensResponse>(
       'check-sweepable-tokens',
       'POST',
-      request
+      request,
     );
   }
 
@@ -49,13 +51,18 @@ class SweepApiService {
    * Get sweep quote for a wallet address (only if tokens are available)
    */
   async getSweepQuote(request: SweepQuoteRequest): Promise<SweepQuoteResponse> {
-    return this.makeRequest<SweepQuoteResponse>(
-      'sweep-quote',
-      'POST',
-      request
-    );
+    return this.makeRequest<SweepQuoteResponse>('sweep-quote', 'POST', request);
   }
 
+  async executeSweep(
+    request: SweepExecuteRequest,
+  ): Promise<SweepExecuteResponse> {
+    return this.makeRequest<SweepExecuteResponse>(
+      'execute-sweep-quote',
+      'POST',
+      request,
+    );
+  }
 }
 
 // Export singleton instance

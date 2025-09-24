@@ -1,9 +1,9 @@
-import { 
-  toMultichainNexusAccount, 
-  createMeeClient, 
+import {
+  toMultichainNexusAccount,
+  createMeeClient,
   signQuote,
   getMEEVersion,
-  MEEVersion
+  MEEVersion,
 } from '@biconomy/abstractjs';
 import { createWalletClient, http, custom } from 'viem';
 import type { Hex, WalletClient } from 'viem';
@@ -14,11 +14,11 @@ import { chains } from 'src/const/chains/chains';
  */
 function getViemChainByChainId(chainId: number): any {
   const chain = Object.values(chains).find((chain) => chain.id === chainId);
-  
+
   if (!chain) {
     throw new Error(`Chain ${chainId} not supported`);
   }
-  
+
   return chain;
 }
 
@@ -33,17 +33,21 @@ class BiconomyService {
     walletClient: WalletClient,
     provider: any,
     chainId: number,
-    quote: any
+    quote: any,
   ): Promise<string> {
     try {
       // Validate quote parameter
       if (!quote) {
         throw new Error('Quote parameter is undefined');
       }
-      
+
       // Process quote to convert string values back to BigInt where needed
       const processValue = (value: any): any => {
-        if (typeof value === 'string' && /^\d+$/.test(value) && value.length > 0) {
+        if (
+          typeof value === 'string' &&
+          /^\d+$/.test(value) &&
+          value.length > 0
+        ) {
           try {
             // Convert string numbers to BigInt
             return BigInt(value);
@@ -64,21 +68,23 @@ class BiconomyService {
         }
         return value;
       };
-      
+
       const processedQuote = processValue(quote);
-      
+
       // Create chain configurations for the current chain
       const chain = getViemChainByChainId(chainId);
-      const chainConfigurations = [{
-        chain: chain,
-        transport: custom(provider, { key: 'jumper-custom-sweep' }),
-        version: getMEEVersion(MEEVersion.V2_1_0),
-      }];
+      const chainConfigurations = [
+        {
+          chain: chain,
+          transport: custom(provider, { key: 'jumper-custom-sweep' }),
+          version: getMEEVersion(MEEVersion.V2_1_0),
+        },
+      ];
 
       // Create nexus account for the wallet
       const nexusAccount = await toMultichainNexusAccount({
         signer: createWalletClient({
-          account: walletClient.account.address as Hex,
+          account: walletClient.account?.address as Hex,
           chain: walletClient.chain,
           transport: custom(provider, { key: 'jumper-custom-sweep' }),
         }),
@@ -98,7 +104,7 @@ class BiconomyService {
 
       return result.hash;
     } catch (error) {
-      throw new Error(`Failed to execute sweep: ${error.message}`);
+      throw new Error(`Failed to execute sweep: ${(error as Error).message}`);
     }
   }
 }

@@ -1,5 +1,7 @@
 // Types for sweep functionality matching backend DTOs
 
+import { Hex } from 'viem';
+
 export interface SweepableToken {
   address: string;
   symbol: string;
@@ -36,13 +38,18 @@ export interface SweepQuoteResponse {
     smartAccountAddress: string;
     targetChainId: number;
     quote: any; // Generated quote for frontend to execute
+    transactionData: {
+      message: {
+        raw: Hex;
+      };
+    };
   };
 }
 
 export interface SweepExecuteRequest {
-  walletAddress: string;
+  walletAddress: Hex;
   chainId?: number;
-  signedQuote: any; // The signed quote from the frontend
+  signedMessage: Hex; // The signed transaction message from the frontend
 }
 
 export interface SweepExecuteResponse {
