@@ -43,11 +43,5 @@ export const MissionZapDepositWidget: FC<MissionZapDepositWidgetProps> = ({
     currentActiveTaskType,
   ]);
 
-  return (
-    <ZapDepositWidget
-      type="zap"
-      ctx={ctx}
-      customInformation={customInformation}
-    />
-  );
+  return <ZapDepositWidget ctx={ctx} customInformation={customInformation} />;
 };

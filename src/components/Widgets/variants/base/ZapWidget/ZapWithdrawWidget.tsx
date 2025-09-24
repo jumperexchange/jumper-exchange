@@ -5,7 +5,7 @@ import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 
-interface ZapWithdrawWidgetProps extends WidgetProps {}
+interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {}
 
 export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   customInformation,

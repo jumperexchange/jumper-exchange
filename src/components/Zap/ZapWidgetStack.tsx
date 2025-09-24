@@ -89,13 +89,11 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
               <ClientOnly>
                 {currentTab === 'deposit' ? (
                   <ZapDepositBackendWidget
-                    type="zap"
                     ctx={ctx}
                     customInformation={customInformation}
                   />
                 ) : (
                   <ZapWithdrawWidget
-                    type="zap"
                     ctx={ctx}
                     customInformation={customInformation}
                   />

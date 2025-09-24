@@ -13,7 +13,6 @@ type Story = StoryObj<typeof meta>;
 
 export const ZapWithdraw: Story = {
   args: {
-    type: 'zap',
     ctx: {
       taskType: TaskType.Zap,
     },

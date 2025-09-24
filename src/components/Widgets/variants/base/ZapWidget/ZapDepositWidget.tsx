@@ -20,12 +20,11 @@ import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { ZapWidgetContext } from '../../widgetConfig/types';
 
-interface ZapDepositWidgetProps extends WidgetProps {
+interface ZapDepositWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
 }
 
 export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
-  type,
   customInformation,
   ctx,
 }) => {
@@ -81,7 +80,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     };
   }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
-  const widgetConfig = useWidgetConfig(type, enhancedCtx);
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
   // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
   const lpToken = zapData?.market?.lpToken;

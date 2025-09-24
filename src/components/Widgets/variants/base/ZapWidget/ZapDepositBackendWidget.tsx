@@ -6,7 +6,6 @@ import {
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
-  WidgetSkeleton,
 } from '@lifi/widget';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
@@ -26,13 +25,13 @@ import { useShowZapPlaceholderWidget } from './hooks';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { ZapWidgetContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
+import { WidgetSkeleton } from '../WidgetSkeleton';
 
-interface ZapDepositBackendWidgetProps extends WidgetProps {
+interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
 }
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
-  type,
   customInformation,
   ctx,
 }) => {
@@ -193,7 +192,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
-  const widgetConfig = useWidgetConfig(type, enhancedCtx);
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
   // @Note: we want to ensure that the chains are set in the widget config without any delay
   if (allowedChains) {
@@ -243,6 +242,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       }
     />
   ) : (
-    <WidgetSkeleton config={widgetConfig} />
+    <WidgetSkeleton />
   );
 };

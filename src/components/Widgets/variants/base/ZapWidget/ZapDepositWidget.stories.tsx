@@ -22,7 +22,6 @@ type Story = StoryObj<typeof meta>;
 
 export const ZapDeposit: Story = {
   args: {
-    type: 'zap',
     ctx: {
       taskType: TaskType.Zap,
     },

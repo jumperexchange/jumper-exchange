@@ -43,11 +43,5 @@ export const MissionZapWithdrawWidget: FC<MissionZapWithdrawWidgetProps> = ({
     currentActiveTaskType,
   ]);
 
-  return (
-    <ZapWithdrawWidget
-      type="zap"
-      ctx={ctx}
-      customInformation={customInformation}
-    />
-  );
+  return <ZapWithdrawWidget ctx={ctx} customInformation={customInformation} />;
 };
