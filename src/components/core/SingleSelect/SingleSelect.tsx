@@ -15,6 +15,7 @@ export const SingleSelect: FC<SingleSelectProps> = ({
   helperText,
   label,
   required = false,
+  'data-testid': dataTestId,
 }) => {
   const arrayValue = useMemo(() => (value ? [value] : []), [value]);
 
@@ -44,6 +45,7 @@ export const SingleSelect: FC<SingleSelectProps> = ({
       multiple={false}
       show="label"
       maxChips={1}
+      data-testid={dataTestId}
     />
   );
 };

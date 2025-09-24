@@ -24,4 +24,5 @@ export interface IconSelectProps {
   fullWidth?: boolean;
   className?: string;
   orientation?: 'horizontal' | 'vertical' | 'grid';
+  'data-testid'?: string;
 }

@@ -30,6 +30,7 @@ export const MultiSelect: FC<MultiSelectProps> = ({
   maxHeight = 300,
   show = 'chips',
   maxChips = 3,
+  'data-testid': dataTestId,
 }) => {
   const handleChange = (event: any) => {
     if (onChange) {
@@ -139,6 +140,7 @@ export const MultiSelect: FC<MultiSelectProps> = ({
             },
           },
         }}
+        data-testid={dataTestId}
       >
         {options.map((option) => {
           const isSelected = value.indexOf(option.value) > -1;

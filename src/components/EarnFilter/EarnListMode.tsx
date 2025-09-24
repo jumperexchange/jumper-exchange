@@ -37,6 +37,7 @@ export const EarnListMode: React.FC<Props> = ({ variant, setVariant }) => {
       size="medium"
       showTooltip={true}
       color="primary"
+      data-testid="earn-filter-list-mode-select"
     />
   );
 };

@@ -26,6 +26,7 @@ export const TabSelect: FC<TabSelectProps> = ({
   wrapped = false,
   className,
   ariaLabel = 'tab selection',
+  'data-testid': dataTestId,
 }) => {
   const handleChange = (_event: SyntheticEvent, newValue: string) => {
     if (onChange) {
@@ -77,6 +78,7 @@ export const TabSelect: FC<TabSelectProps> = ({
         scrollButtons={scrollButtons}
         allowScrollButtonsMobile={allowScrollButtonsMobile}
         aria-label={ariaLabel}
+        data-testid={dataTestId}
       >
         {options.map((option) => (
           <StyledTab
@@ -86,6 +88,9 @@ export const TabSelect: FC<TabSelectProps> = ({
             disabled={disabled || option.disabled}
             wrapped={wrapped}
             size={size}
+            data-testid={
+              dataTestId ? `${dataTestId}-${option.value}` : undefined
+            }
             disableRipple
             iconPosition={
               iconPosition === 'top' || iconPosition === 'bottom'

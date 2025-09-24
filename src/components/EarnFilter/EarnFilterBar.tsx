@@ -180,6 +180,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             label="Chains"
             size="small"
             show="count"
+            data-testid="earn-filter-chain-select"
           />
 
           <MultiSelect
@@ -190,6 +191,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             label="Protocols"
             size="small"
             show="count"
+            data-testid="earn-filter-protocol-select"
           />
 
           <MultiSelect
@@ -200,6 +202,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             label="Tags"
             size="small"
             show="count"
+            data-testid="earn-filter-tag-select"
           />
 
           <MultiSelect
@@ -210,6 +213,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             label="Assets"
             size="small"
             show="count"
+            data-testid="earn-filter-asset-select"
           />
 
           <MultiSelect
@@ -220,6 +224,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
             label="APY"
             size="small"
             show="count"
+            data-testid="earn-filter-apy-select"
           />
         </Box>
 
@@ -246,6 +251,7 @@ export const EarnFilterBar: React.FC<Props> = ({ variant, setVariant }) => {
         onChange={handleTabChange}
         variant="standard"
         size="medium"
+        data-testid="earn-filter-tab-select"
       />
       {showForYou ? <ForYou /> : <All />}
     </EarnFilterBarContainer>

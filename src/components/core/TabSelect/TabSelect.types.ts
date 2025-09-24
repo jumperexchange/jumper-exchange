@@ -24,4 +24,5 @@ export interface TabSelectProps {
   wrapped?: boolean;
   className?: string;
   ariaLabel?: string;
+  'data-testid'?: string;
 }

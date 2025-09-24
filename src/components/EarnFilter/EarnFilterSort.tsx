@@ -30,6 +30,7 @@ export const EarnFilterSort: React.FC<Props> = ({ sortBy, setSortBy }) => {
       placeholder={t('earn.sorting.sortBy')}
       label={t('earn.sorting.sortBy')}
       size="small"
+      data-testid="earn-filter-sort-select"
     />
   );
 };

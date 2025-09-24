@@ -24,4 +24,5 @@ export interface MultiSelectProps {
   maxHeight?: number;
   show?: MultiSelectDisplayMode;
   maxChips?: number;
+  'data-testid'?: string;
 }

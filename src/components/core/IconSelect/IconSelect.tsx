@@ -27,20 +27,21 @@ export const IconSelect: FC<IconSelectProps> = ({
   fullWidth = false,
   className,
   orientation = 'horizontal',
+  'data-testid': dataTestId,
 }) => {
   const [selectedValues, setSelectedValues] = useState<string | string[]>(
-    multiple ? (value as string[]) || [] : (value as string) || ''
+    multiple ? (value as string[]) || [] : (value as string) || '',
   );
 
   useEffect(() => {
     setSelectedValues(
-      multiple ? (value as string[]) || [] : (value as string) || ''
+      multiple ? (value as string[]) || [] : (value as string) || '',
     );
   }, [value, multiple]);
 
   const handleToggleChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newValue: string | string[]
+    newValue: string | string[],
   ) => {
     if (newValue !== null) {
       setSelectedValues(newValue);
@@ -109,6 +110,7 @@ export const IconSelect: FC<IconSelectProps> = ({
         className={className}
         disabled={disabled}
         orientation={orientation === 'vertical' ? 'vertical' : 'horizontal'}
+        data-testid={dataTestId}
       >
         {options.map((option) => (
           <StyledToggleButton
@@ -121,6 +123,9 @@ export const IconSelect: FC<IconSelectProps> = ({
               ...buttonSizeProps,
               color: option.color || undefined,
             }}
+            data-testid={
+              dataTestId ? `${dataTestId}-${option.value}` : undefined
+            }
           >
             {renderIcon(option)}
           </StyledToggleButton>
@@ -136,6 +141,7 @@ export const IconSelect: FC<IconSelectProps> = ({
       fullWidth={fullWidth}
       className={className}
       sx={{ gap: spacing }}
+      data-testid={dataTestId}
     >
       {options.map((option) => (
         <StyledIconButton
@@ -150,6 +156,7 @@ export const IconSelect: FC<IconSelectProps> = ({
             ...buttonSizeProps,
             color: option.color || undefined,
           }}
+          data-testid={dataTestId ? `${dataTestId}-${option.value}` : undefined}
         >
           {renderIcon(option)}
         </StyledIconButton>

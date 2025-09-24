@@ -18,4 +18,5 @@ export interface SingleSelectProps {
   helperText?: string;
   label?: string;
   required?: boolean;
+  'data-testid'?: string;
 }
