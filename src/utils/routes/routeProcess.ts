@@ -7,32 +7,33 @@ import {
 } from '@lifi/sdk';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import { getDetailInformation } from './routeUtils';
+import { findKey } from 'lodash';
 
 interface GetProcessInformationType {
   [TrackingEventParameter.TransactionHash]?: string;
   [TrackingEventParameter.TransactionLink]?: string;
   [TrackingEventParameter.TransactionStatus]?: string;
   [TrackingEventParameter.ErrorCode]?: string;
+  [TrackingEventParameter.ErrorCodeKey]?: string;
   [TrackingEventParameter.ErrorMessage]?: string;
 }
 
-const findErrorKeyFromErrorCode = (code?: string | number) => {
+const findErrorKeyFromErrorCode = (code?: string) => {
   if (!code) return null;
 
-  return (
-    Object.keys(LiFiErrorCode).find(
-      (key) =>
-        LiFiErrorCode[key as keyof typeof LiFiErrorCode].toString() ===
-        code.toString(),
-    ) || null
-  );
+  return findKey(LiFiErrorCode, (value) => value.toString() === code) ?? null;
 };
 
 export const getProcessInformation = (
   route: RouteExtended,
 ): GetProcessInformationType => {
-  let processData = {};
-  let errors = {};
+  let processData: GetProcessInformationType = {};
+  let errors: Pick<
+    GetProcessInformationType,
+    | TrackingEventParameter.ErrorCode
+    | TrackingEventParameter.ErrorCodeKey
+    | TrackingEventParameter.ErrorMessage
+  > = {};
   const txHashes: string[] = [];
   const txLinks: string[] = [];
   const txStatuses: string[] = [];
@@ -50,18 +51,18 @@ export const getProcessInformation = (
             errorMessage.indexOf('data:'),
           );
         }
-        const errorCodeKey = findErrorKeyFromErrorCode(process.error?.code);
-        errors = {
-          ...(process.error?.code && {
-            [TrackingEventParameter.ErrorCode]: process.error?.code,
-          }),
-          ...(errorCodeKey && {
-            [TrackingEventParameter.ErrorCodeKey]: errorCodeKey,
-          }),
-          ...(errorMessage && {
-            [TrackingEventParameter.ErrorMessage]: errorMessage.trim(),
-          }),
-        };
+        const errorCode = process.error?.code?.toString();
+        const errorCodeKey = findErrorKeyFromErrorCode(errorCode);
+
+        if (errorCode) {
+          errors[TrackingEventParameter.ErrorCode] = errorCode;
+        }
+        if (errorCodeKey) {
+          errors[TrackingEventParameter.ErrorCodeKey] = errorCodeKey;
+        }
+        if (errorMessage) {
+          errors[TrackingEventParameter.ErrorMessage] = errorMessage.trim();
+        }
 
         // Collect transaction data in arrays
         if (process.txHash) {
@@ -77,18 +78,28 @@ export const getProcessInformation = (
     }
   });
 
-  processData = {
-    ...(txHashes.length > 0 && {
-      [TrackingEventParameter.TransactionHash]: txHashes.join(','),
-    }),
-    ...(txLinks.length > 0 && {
-      [TrackingEventParameter.TransactionLink]: txLinks.join(','),
-    }),
-    ...(txStatuses.length > 0 && {
-      [TrackingEventParameter.TransactionStatus]: txStatuses.join(','),
-    }),
-    ...errors,
-  };
+  if (errors[TrackingEventParameter.ErrorCode]) {
+    processData[TrackingEventParameter.ErrorCode] =
+      errors[TrackingEventParameter.ErrorCode];
+  }
+  if (errors[TrackingEventParameter.ErrorCodeKey]) {
+    processData[TrackingEventParameter.ErrorCodeKey] =
+      errors[TrackingEventParameter.ErrorCodeKey];
+  }
+  if (errors[TrackingEventParameter.ErrorMessage]) {
+    processData[TrackingEventParameter.ErrorMessage] =
+      errors[TrackingEventParameter.ErrorMessage];
+  }
+  if (txHashes.length > 0) {
+    processData[TrackingEventParameter.TransactionHash] = txHashes.join(',');
+  }
+  if (txLinks.length > 0) {
+    processData[TrackingEventParameter.TransactionLink] = txLinks.join(',');
+  }
+  if (txStatuses.length > 0) {
+    processData[TrackingEventParameter.TransactionStatus] =
+      txStatuses.join(',');
+  }
 
   return processData;
 };
