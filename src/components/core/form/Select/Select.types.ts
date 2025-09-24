@@ -27,11 +27,13 @@ export interface SelectBaseProps<T extends TData> {
   helperText?: string;
   label?: string;
   required?: boolean;
+  debounceMs?: number;
 }
 
 export interface MultiSelectProps<T extends string[]>
   extends SelectBaseProps<T> {
   filterBy?: string;
+  label: string;
 }
 
 export interface SingleSelectProps<T extends string>

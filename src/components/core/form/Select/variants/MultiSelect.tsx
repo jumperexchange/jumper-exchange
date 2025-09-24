@@ -1,28 +1,33 @@
 import { useState, useMemo, useCallback, ChangeEvent } from 'react';
 import { MultiSelectProps } from '../Select.types';
-import { SelectBase } from './SelectBase';
+import { SelectBase } from '../components/SelectBase';
 import Typography from '@mui/material/Typography';
 import {
   StyledMultiSelectFiltersClearButton,
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersInput,
+  StyledLabelContainer,
 } from '../Select.styles';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelect } from '../hooks';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { SelectorLabel } from '../components/SelectLabel';
 
 export const MultiSelect = <T extends string[]>({
   value: initialValue,
   onChange,
   options,
   filterBy,
+  label,
+  debounceMs,
   ...rest
 }: MultiSelectProps<T>) => {
-  const { value, setValue, handleChange } = useSelect(
+  const { value, setValue, handleChange, handleDebounceChange } = useSelect(
     initialValue ?? [],
     onChange,
+    debounceMs,
     true,
   );
   const [searchValue, setSearchValue] = useState('');
@@ -35,14 +40,19 @@ export const MultiSelect = <T extends string[]>({
 
   const handleClear = useCallback(() => {
     setValue([] as unknown as T);
-    onChange([] as unknown as T);
+    handleDebounceChange([] as unknown as T);
     setSearchValue('');
-  }, [onChange, setValue]);
+  }, [handleDebounceChange, setValue]);
 
   const handleSearch = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
     setSearchValue(event.target.value);
   }, []);
-  const handleSearchClear = useCallback(() => {
+
+  const handleSearchClear = useCallback((event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
     setSearchValue('');
   }, []);
 
@@ -52,15 +62,18 @@ export const MultiSelect = <T extends string[]>({
       options={filteredOptions}
       value={value}
       onChange={handleChange}
-      selectorPrepend={
-        !!value?.length && (
-          <Badge
-            label={value.length}
-            size={BadgeSize.SM}
-            variant={BadgeVariant.Primary}
-            sx={{ padding: 0, marginRight: 0.5 }}
-          />
-        )
+      selectorContent={
+        <>
+          <SelectorLabel label={label} />
+          {!!value?.length && (
+            <Badge
+              label={value.length}
+              size={BadgeSize.SM}
+              variant={BadgeVariant.Primary}
+              sx={{ padding: 0, marginRight: 0.5 }}
+            />
+          )}
+        </>
       }
       multiple
     >
@@ -78,7 +91,12 @@ export const MultiSelect = <T extends string[]>({
         )}
       </StyledMultiSelectFiltersContainer>
       {filterBy && (
-        <StyledMultiSelectFiltersContainer>
+        <StyledMultiSelectFiltersContainer
+          sx={{ paddingX: 0 }}
+          onKeyDown={(event) => {
+            event.stopPropagation();
+          }}
+        >
           <StyledMultiSelectFiltersInput
             startAdornment={
               <SearchIcon

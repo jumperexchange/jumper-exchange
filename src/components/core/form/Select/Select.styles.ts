@@ -35,7 +35,7 @@ export const StyledSelectorContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.1, 0.25),
 }));
 
-export const StyledSelectorLabelContainer = styled(Box)(({ theme }) => ({
+export const StyledLabelContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
 }));
 
@@ -54,10 +54,6 @@ export const StyledMenuItemContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.25),
   display: 'flex',
   alignItems: 'center',
-}));
-
-export const StyledMenuItemLabelContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(0.5, 1),
 }));
 
 export const StyledMultiSelectFiltersContainer = styled(Box)(({ theme }) => ({

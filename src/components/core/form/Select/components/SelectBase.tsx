@@ -4,30 +4,27 @@ import {
   StyledSelect,
   StyledSelectorContainer,
   StyledSelectorContentContainer,
-  StyledSelectorLabelContainer,
   StyledMenuItem,
-  StyledMenuItemLabelContainer,
   StyledMenuItemContentContainer,
 } from '../Select.styles';
-import Typography from '@mui/material/Typography';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckIcon from '@mui/icons-material/Check';
 import { SelectProps } from '@mui/material/Select';
+import { SelectorLabel } from './SelectLabel';
 
 interface ExtendedSelectBaseProps<T extends TData>
   extends Omit<SelectBaseProps<T>, 'onChange'>,
     PropsWithChildren {
   multiple?: boolean;
   onChange: SelectProps['onChange'];
-  selectorPrepend?: React.ReactNode;
+  selectorContent?: React.ReactNode;
 }
 
 export const SelectBase = <T extends TData>({
   children,
   options,
-  label,
   value,
-  selectorPrepend,
+  selectorContent,
   ...rest
 }: ExtendedSelectBaseProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,10 +47,7 @@ export const SelectBase = <T extends TData>({
       renderValue={() => (
         <StyledSelectorContainer>
           <StyledSelectorContentContainer>
-            <StyledSelectorLabelContainer>
-              <Typography variant="bodySmallStrong">{label}</Typography>
-            </StyledSelectorLabelContainer>
-            {selectorPrepend}
+            {selectorContent}
             <KeyboardArrowDownRoundedIcon
               sx={{
                 height: 22,
@@ -104,9 +98,7 @@ export const SelectBase = <T extends TData>({
         <StyledMenuItem disableRipple key={option.value} value={option.value}>
           <StyledMenuItemContentContainer>
             {option.icon}
-            <StyledMenuItemLabelContainer>
-              <Typography variant="bodySmallStrong">{option.label}</Typography>
-            </StyledMenuItemLabelContainer>
+            <SelectorLabel label={option.label} />
           </StyledMenuItemContentContainer>
           {((Array.isArray(value) && value.includes(option.value)) ||
             (!Array.isArray(value) && value === option.value)) && (
