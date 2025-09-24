@@ -262,7 +262,19 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
-    "lockupPeriod": ""
+    "lockupPeriod": "",
+    "assets": ""
+  },
+  "labels": {
+    "apy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": ""
+    }
   },
   "widget": {
     "depositCard": {
