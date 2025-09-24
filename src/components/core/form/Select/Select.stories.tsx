@@ -1,6 +1,6 @@
 import { Select } from './Select';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { SelectVariant } from './Select.types';
+import { SelectOption, SelectVariant } from './Select.types';
 import { Avatar, AvatarSkeleton } from '../../AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '../../AvatarStack/AvatarStack.types';
 import { action } from 'storybook/actions';
@@ -37,7 +37,7 @@ const AvatarRenderer = ({ src }: { src: string }) => {
   );
 };
 
-const basicOptions: any[] = [
+const basicOptions: SelectOption[] = [
   { value: 'popularity', label: 'Popularity' },
   { value: 'chain', label: 'Chain' },
   { value: 'protocol', label: 'Protocol' },
@@ -47,7 +47,7 @@ const basicOptions: any[] = [
   { value: 'tvl', label: 'TVL' },
 ];
 
-const chainOptions: any[] = [
+const chainOptions: SelectOption[] = [
   {
     value: 'chain1',
     label: 'Chain 1',
@@ -71,10 +71,20 @@ const chainOptions: any[] = [
   },
 ];
 
+const typeOptions: SelectOption[] = [
+  { value: 'type1', label: 'Liquidity' },
+  { value: 'type2', label: 'Farming' },
+  { value: 'type3', label: 'Yield' },
+  { value: 'type4', label: 'Staking' },
+  { value: 'type5', label: 'Lending' },
+  { value: 'type6', label: 'Structured' },
+  { value: 'type7', label: 'Synthetic' },
+];
+
 export const MultiSelect: Story = {
   args: {
-    options: chainOptions,
-    label: 'Chains',
+    options: typeOptions,
+    label: 'Type',
     fullWidth: false,
     value: [],
     variant: SelectVariant.Multi,
@@ -84,10 +94,10 @@ export const MultiSelect: Story = {
 export const MultiSelectWithFilter: Story = {
   args: {
     options: chainOptions,
-    label: 'Chains',
+    label: 'Chain',
     fullWidth: false,
     value: [],
-    filterBy: 'Option',
+    filterBy: 'chain',
     variant: SelectVariant.Multi,
   },
 };
@@ -95,9 +105,19 @@ export const MultiSelectWithFilter: Story = {
 export const MultiSelectWithIcons: Story = {
   args: {
     options: chainOptions,
-    label: 'Chains',
+    label: 'Chain',
     fullWidth: false,
     value: [],
+    variant: SelectVariant.Multi,
+  },
+};
+
+export const MultiSelectWithSelectedValue: Story = {
+  args: {
+    options: chainOptions,
+    label: 'Chain',
+    fullWidth: false,
+    value: [chainOptions[0].value],
     variant: SelectVariant.Multi,
   },
 };

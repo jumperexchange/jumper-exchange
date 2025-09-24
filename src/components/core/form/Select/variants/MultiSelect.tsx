@@ -14,6 +14,7 @@ import { useSelect } from '../hooks';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { SelectorLabel } from '../components/SelectLabel';
+import { useTranslation } from 'react-i18next';
 
 export const MultiSelect = <T extends string[]>({
   value: initialValue,
@@ -24,6 +25,7 @@ export const MultiSelect = <T extends string[]>({
   debounceMs,
   ...rest
 }: MultiSelectProps<T>) => {
+  const { t } = useTranslation();
   const { value, setValue, handleChange, handleDebounceChange } = useSelect(
     initialValue ?? [],
     onChange,
@@ -79,14 +81,14 @@ export const MultiSelect = <T extends string[]>({
     >
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyXSmallStrong">
-          {value?.length ?? 0} selected
+          {t('earn.filter.selected', { count: value?.length ?? 0 })}
         </Typography>
         {value?.length > 0 && (
           <StyledMultiSelectFiltersClearButton
             size="small"
             onClick={handleClear}
           >
-            Clear
+            {t('earn.filter.clear')}
           </StyledMultiSelectFiltersClearButton>
         )}
       </StyledMultiSelectFiltersContainer>
@@ -118,7 +120,7 @@ export const MultiSelect = <T extends string[]>({
                 />
               )
             }
-            placeholder={`Search ${filterBy}...`}
+            placeholder={t('earn.filter.search', { filterBy })}
             onChange={handleSearch}
             value={searchValue}
           />
