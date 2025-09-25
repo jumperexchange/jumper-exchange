@@ -296,6 +296,7 @@ interface Resources {
       deposit: 'The token on which the market is defined and yield accrues on.';
       deposited: 'The token you have deposited into this market.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
+      manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
       tvl: 'Total value of crypto assets deposited in this market.';
     };
     widget: {
@@ -307,6 +308,7 @@ interface Resources {
         tvl: 'TVL';
       };
       zap: {
+        depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your Positions</bold> that redirects to {{partnerName}} UI';
         placeholder: {
           comingSoon: 'Coming soon';
           'embedded-multisig': {

@@ -47,7 +47,7 @@ export function useZapWidgetConfig(
       // Additional zap-specific config
       buildUrl: true,
       useRecommendedRoute: true,
-      contractCompactComponent: <></>,
+      // contractCompactComponent: <></>,
 
       // Chain configuration
       chains: {
