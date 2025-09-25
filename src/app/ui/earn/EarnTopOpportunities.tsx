@@ -1,8 +1,10 @@
 'use client';
-
 import { Grid } from '@mui/material';
-import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
+import {
+  ithCopy,
+  TopEarnCard,
+} from 'src/components/Cards/EarnCard/variants/TopEarnCard';
 import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
 
 interface EarnTopOpportunities {}
@@ -17,9 +19,14 @@ export const EarnTopOpportunities = () => {
       {items?.map((item, index) => (
         <Grid key={index} size={{ xs: 12, sm: index === 0 ? 7 : 5 }}>
           {item == null ? (
-            <EarnCard variant="top" isLoading={true} data={null} />
+            <TopEarnCard isLoading={true} data={null} />
           ) : (
-            <EarnCard variant="top" isLoading={isLoading} data={item} />
+            <TopEarnCard
+              isLoading={isLoading}
+              data={item}
+              copy={ithCopy(index)}
+              isMain={index === 0}
+            />
           )}
         </Grid>
       ))}
