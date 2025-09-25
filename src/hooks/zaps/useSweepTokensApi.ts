@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAccount } from '@lifi/wallet-management';
 import { useSwitchChain, useWalletClient } from 'wagmi';
-import { useWaitForTransactionReceipt } from 'wagmi';
 import { ProjectData } from 'src/types/questDetails';
 import { sweepApiService } from 'src/services/sweepApi';
 import {
@@ -10,6 +9,13 @@ import {
   SweepQuoteResponse,
 } from 'src/types/sweep';
 import { Hex } from 'viem';
+import {
+  getDefaultMEENetworkUrl,
+  parseTransactionStatus,
+} from '@biconomy/abstractjs';
+import config from 'src/config/env-config';
+import { retryWithTimeout } from 'src/utils/retryWithTimeout';
+import { RetryStoppedError } from 'src/utils/errors';
 
 type SweepStep =
   | 'idle'
@@ -26,7 +32,7 @@ interface UseSweepTokensApiReturn {
   sweepSuccess: boolean;
   hasTokensToSweep: boolean;
   sweepTokens: () => Promise<void>;
-  txHash: `0x${string}` | undefined;
+  txHash: Hex | undefined;
   isTransactionReceiptLoading: boolean;
   isTransactionReceiptSuccess: boolean;
   refreshTokenCheck: () => void;
@@ -47,7 +53,7 @@ export const useSweepTokensApi = (
   const [sweepError, setSweepError] = useState<string | null>(null);
   const [sweepSuccess, setSweepSuccess] = useState(false);
   const [hasTokensToSweepState, setHasTokensToSweepState] = useState(false);
-  const [txHash, setTxHash] = useState<`0x${string}` | undefined>(undefined);
+  const [txHash, setTxHash] = useState<Hex | undefined>(undefined);
   const [hasCheckedTokens, setHasCheckedTokens] = useState(false);
   const [sweepStep, setSweepStep] = useState<SweepStep>('idle');
   const [sweepableTokens, setSweepableTokens] = useState<SweepableToken[]>([]);
@@ -55,13 +61,17 @@ export const useSweepTokensApi = (
     null,
   );
   const [targetChainId, setTargetChainId] = useState<number | null>(null);
+  const [isTransactionReceiptSuccess, setIsTransactionReceiptSuccess] =
+    useState(false);
+  const [isTransactionReceiptLoading, setIsTransactionReceiptLoading] =
+    useState(false);
 
   const { account } = useAccount();
   const address = account?.address;
   const chainId = account?.chainId;
   const { switchChainAsync } = useSwitchChain();
   const { data: walletClient } = useWalletClient({
-    account: address as `0x${string}`,
+    account: address as Hex,
     chainId,
     query: {
       enabled: !!address && !!chainId,
@@ -90,20 +100,6 @@ export const useSweepTokensApi = (
 
   // Memoized step text
   const sweepStepText = useMemo(() => getStepText(sweepStep), [sweepStep]);
-
-  // Track transaction receipt
-  const {
-    isLoading: isTransactionReceiptLoading,
-    isSuccess: isTransactionReceiptSuccess,
-  } = useWaitForTransactionReceipt({
-    chainId: targetChainId || projectData?.chainId,
-    hash: txHash,
-    confirmations: 5,
-    pollingInterval: 1_000,
-    query: {
-      enabled: !!(targetChainId || projectData?.chainId) && !!txHash,
-    },
-  });
 
   // Check for sweepable tokens on component mount
   useEffect(() => {
@@ -148,16 +144,60 @@ export const useSweepTokensApi = (
     setTargetChainId(null);
   }, []);
 
-  // Handle transaction success
   useEffect(() => {
-    if (isTransactionReceiptSuccess) {
-      setSweepSuccess(true);
-      setSweepError(null);
-      setSweepStep('completed');
-      // Refresh token check after successful sweep
-      refreshTokenCheck();
+    const checkTransactionStatus = async () => {
+      let biconomyTxStatus;
+      let biconomyTxMessage;
+      setIsTransactionReceiptLoading(true);
+      try {
+        await retryWithTimeout(async () => {
+          // Check explorer status to see if we should retry
+          const result = await fetch(
+            `${getDefaultMEENetworkUrl()}/explorer/${txHash}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': config.NEXT_PUBLIC_BICONOMY_API_KEY,
+              },
+            },
+          );
+
+          const data = await result.json();
+          const metaStatus = await parseTransactionStatus(data.userOps);
+
+          if (!metaStatus.isFinalised) {
+            throw new Error('Transaction still processing, retrying...');
+          }
+
+          biconomyTxStatus = metaStatus.status;
+          biconomyTxMessage = metaStatus.message;
+
+          throw new RetryStoppedError(
+            'Transaction has final status, no retry needed',
+          );
+        }, 10_000);
+      } catch (error) {
+        if (biconomyTxStatus === 'MINED_SUCCESS') {
+          setIsTransactionReceiptSuccess(true);
+          setIsTransactionReceiptLoading(false);
+          setSweepSuccess(true);
+          setSweepError(null);
+          refreshTokenCheck();
+          return;
+        }
+
+        setIsTransactionReceiptLoading(false);
+        setIsTransactionReceiptSuccess(false);
+        setSweepSuccess(false);
+        setSweepError(biconomyTxMessage ?? (error as Error).message ?? null);
+      }
+    };
+
+    if (txHash && !sweepSuccess) {
+      checkTransactionStatus();
     }
-  }, [isTransactionReceiptSuccess, refreshTokenCheck]);
+  }, [txHash, sweepSuccess, refreshTokenCheck]);
 
   const sweepTokens = useCallback(async () => {
     if (!address) {
@@ -222,9 +262,11 @@ export const useSweepTokensApi = (
         signedMessage: signedTransactionMessage,
       });
 
-      const transactionHash = executeResponse.transactionHash;
+      const { data: executeData } = executeResponse;
 
-      setTxHash(transactionHash as `0x${string}`);
+      const transactionHash = executeData.transactionHash as Hex;
+
+      setTxHash(transactionHash);
       setSweepStep('completed');
     } catch (error) {
       setSweepError(error instanceof Error ? error.message : 'Sweep failed');

@@ -53,8 +53,10 @@ export interface SweepExecuteRequest {
 }
 
 export interface SweepExecuteResponse {
-  transactionHash: string;
-  smartAccountAddress: string;
-  chainId: number;
-  tokensSwept: number;
+  data: {
+    transactionHash: string;
+    smartAccountAddress: string;
+    chainId: number;
+    tokensSwept: number;
+  };
 }
