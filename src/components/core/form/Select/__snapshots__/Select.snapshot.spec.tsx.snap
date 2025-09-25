@@ -1,0 +1,270 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Select snapshot > matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-u7mkh7-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-1rpy1qd-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="MuiBox-root css-f0yk4d"
+      >
+        <div
+          class="MuiBox-root css-1a18fce"
+        >
+          <div
+            class="MuiBox-root css-1ht30bk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+            >
+              Type
+            </p>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dcq49y-MuiSvgIcon-root"
+            data-testid="KeyboardArrowDownRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M8.12 9.29 12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <input
+      aria-hidden="true"
+      aria-invalid="false"
+      class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      tabindex="-1"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`Select snapshot > matches snapshot with filter 1`] = `
+<div>
+  <div
+    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-u7mkh7-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-1rpy1qd-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="MuiBox-root css-f0yk4d"
+      >
+        <div
+          class="MuiBox-root css-1a18fce"
+        >
+          <div
+            class="MuiBox-root css-1ht30bk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+            >
+              Chain
+            </p>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dcq49y-MuiSvgIcon-root"
+            data-testid="KeyboardArrowDownRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M8.12 9.29 12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <input
+      aria-hidden="true"
+      aria-invalid="false"
+      class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      tabindex="-1"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`Select snapshot > matches snapshot with icons 1`] = `
+<div>
+  <div
+    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-u7mkh7-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-1rpy1qd-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="MuiBox-root css-f0yk4d"
+      >
+        <div
+          class="MuiBox-root css-1a18fce"
+        >
+          <div
+            class="MuiBox-root css-1ht30bk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+            >
+              Chain
+            </p>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dcq49y-MuiSvgIcon-root"
+            data-testid="KeyboardArrowDownRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M8.12 9.29 12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <input
+      aria-hidden="true"
+      aria-invalid="false"
+      class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      tabindex="-1"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`Select snapshot > matches snapshot with selected value 1`] = `
+<div>
+  <div
+    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-u7mkh7-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="MuiSelect-select MuiSelect-standard MuiSelect-multiple MuiInputBase-input MuiInput-input css-1rpy1qd-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="MuiBox-root css-f0yk4d"
+      >
+        <div
+          class="MuiBox-root css-1a18fce"
+        >
+          <div
+            class="MuiBox-root css-1ht30bk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+            >
+              Chain
+            </p>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-1q58q98"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              1
+            </p>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dcq49y-MuiSvgIcon-root"
+            data-testid="KeyboardArrowDownRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M8.12 9.29 12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <input
+      aria-hidden="true"
+      aria-invalid="false"
+      class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      tabindex="-1"
+      value="chain1"
+    />
+  </div>
+</div>
+`;
+
+exports[`Select snapshot > matches snapshot with single select 1`] = `
+<div>
+  <div
+    class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-u7mkh7-MuiInputBase-root-MuiInput-root-MuiSelect-root"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="MuiSelect-select MuiSelect-standard MuiInputBase-input MuiInput-input css-1rpy1qd-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input-MuiInput-input"
+      role="combobox"
+      tabindex="0"
+    >
+      <div
+        class="MuiBox-root css-f0yk4d"
+      >
+        <div
+          class="MuiBox-root css-1a18fce"
+        >
+          <div
+            class="MuiBox-root css-1ht30bk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+            >
+              Popularity
+            </p>
+          </div>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dcq49y-MuiSvgIcon-root"
+            data-testid="KeyboardArrowDownRoundedIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M8.12 9.29 12 13.17l3.88-3.88c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41l-4.59 4.59c-.39.39-1.02.39-1.41 0L6.7 10.7a.996.996 0 0 1 0-1.41c.39-.38 1.03-.39 1.42 0"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <input
+      aria-hidden="true"
+      aria-invalid="false"
+      class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      tabindex="-1"
+      value="popularity"
+    />
+  </div>
+</div>
+`;

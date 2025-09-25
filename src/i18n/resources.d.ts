@@ -72,8 +72,13 @@ interface Resources {
     };
     earn: {
       copy: {
-        forYouBasedOnActivity: 'Handpicked markets based on your account activity';
+        forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
+      };
+      filter: {
+        clear: 'Clear';
+        search: 'Search {{filterBy}}...';
+        selected: '{{count}} selected';
       };
       sorting: {
         apy: 'APY';

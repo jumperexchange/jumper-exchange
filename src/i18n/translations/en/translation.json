@@ -287,6 +287,11 @@
       "sortBy": "Sort By",
       "apy": "APY",
       "tvl": "TVL"
+    },
+    "filter": {
+      "clear": "Clear",
+      "selected": "{{count}} selected",
+      "search": "Search {{filterBy}}..."
     }
   },
   "widget": {
