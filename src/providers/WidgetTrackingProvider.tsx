@@ -145,6 +145,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
             [TrackingEventParameter.Steps]: {
               tools: routeData[TrackingEventParameter.Steps],
             },
+            [TrackingEventParameter.ToAmount]:
+              routeData[TrackingEventParameter.ToAmount] || '',
             [TrackingEventParameter.ToAmountUSD]:
               Number(routeData[TrackingEventParameter.ToAmountUSD]) || 0,
             [TrackingEventParameter.GasCostUSD]:
@@ -178,6 +180,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           [TrackingEventParameter.FromAmountUSD]: Number(
             availableRoutes?.[0]?.fromAmountUSD,
           ),
+          [TrackingEventParameter.FromAmount]: availableRoutes?.[0]?.fromAmount,
           [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
           [TrackingEventParameter.Routes]: transformedRoutes,
         },
