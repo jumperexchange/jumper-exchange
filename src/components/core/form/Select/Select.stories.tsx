@@ -37,7 +37,7 @@ const AvatarRenderer = ({ src }: { src: string }) => {
   );
 };
 
-const basicOptions: SelectOption[] = [
+const basicOptions: SelectOption<string>[] = [
   { value: 'popularity', label: 'Popularity' },
   { value: 'chain', label: 'Chain' },
   { value: 'protocol', label: 'Protocol' },
@@ -47,7 +47,7 @@ const basicOptions: SelectOption[] = [
   { value: 'tvl', label: 'TVL' },
 ];
 
-const chainOptions: SelectOption[] = [
+const chainOptions: SelectOption<string>[] = [
   {
     value: 'chain1',
     label: 'Chain 1',
@@ -71,7 +71,7 @@ const chainOptions: SelectOption[] = [
   },
 ];
 
-const typeOptions: SelectOption[] = [
+const typeOptions: SelectOption<string>[] = [
   { value: 'type1', label: 'Liquidity' },
   { value: 'type2', label: 'Farming' },
   { value: 'type3', label: 'Yield' },
@@ -128,5 +128,17 @@ export const SingleSelect: Story = {
     fullWidth: false,
     value: '',
     variant: SelectVariant.Single,
+  },
+};
+
+export const SliderSelect: Story = {
+  args: {
+    options: [],
+    fullWidth: false,
+    label: 'APY',
+    value: [],
+    min: 0,
+    max: 100,
+    variant: SelectVariant.Slider,
   },
 };

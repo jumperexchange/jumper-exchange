@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import { ButtonTertiary } from 'src/components/Button/Button.style';
 
@@ -99,4 +100,45 @@ export const StyledMultiSelectFiltersInput = styled(InputBase)(({ theme }) => ({
   '& placeholder': {
     color: (theme.vars || theme).palette.textHint,
   },
+}));
+
+export const StyledSliderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+  width: '100%',
+}));
+
+export const StyledSlider = styled(Slider)(({ theme }) => ({
+  width: `calc(100% - 1.5rem)`,
+  '& .MuiSlider-valueLabel': {
+    display: 'none',
+  },
+
+  '&, & .MuiSlider-track, & .MuiSlider-rail': {
+    height: theme.spacing(1),
+    borderRadius: theme.shape.cardBorderRadius,
+  },
+
+  '& .MuiSlider-rail': {
+    backgroundColor: (theme.vars || theme).palette.alpha200.main,
+    margin: `0 -0.75rem`,
+    width: `calc(100% + 1.5rem)`,
+  },
+
+  '& .MuiSlider-thumb': {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    '&:hover, &:focus, &.Mui-active, &.Mui-focusVisible': {
+      boxShadow: `color-mix(in srgb, ${(theme.vars || theme).palette.accent1Alt.main} 24%, transparent) 0 0 0 4px`,
+    },
+  },
+}));
+
+export const StyledSliderRangeContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  width: '100%',
 }));

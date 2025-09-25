@@ -100,7 +100,8 @@ export const SelectBase = <T extends TData>({
             {option.icon}
             <SelectorLabel label={option.label} />
           </StyledMenuItemContentContainer>
-          {((Array.isArray(value) && value.includes(option.value)) ||
+          {((Array.isArray(value) &&
+            (value as (string | number)[]).includes(option.value)) ||
             (!Array.isArray(value) && value === option.value)) && (
             <CheckIcon
               sx={{
