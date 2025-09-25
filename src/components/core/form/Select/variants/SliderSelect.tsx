@@ -62,7 +62,7 @@ export const SliderSelect = <T extends number[]>({
   return (
     <SelectBase
       {...rest}
-      value={value}
+      value={''}
       onChange={handleChange}
       multiple={false}
       selectorContent={
@@ -91,6 +91,8 @@ export const SliderSelect = <T extends number[]>({
             value={value}
             onChange={handleRangeChange}
             valueLabelDisplay="off"
+            min={min}
+            max={max}
           />
           <StyledSliderRangeContainer>
             <Typography variant="bodyXSmall">{min}</Typography>

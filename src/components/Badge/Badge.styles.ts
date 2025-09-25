@@ -36,6 +36,7 @@ export const StyledBadge = styled(Box, {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
     pointerEvents: 'inherit',
     cursor: onClick ? 'pointer' : 'default',
     variants: [

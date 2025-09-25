@@ -248,7 +248,6 @@ export const WithActiveFilters: Story = {
               minAPY: 0.05,
               maxAPY: 0.15,
             },
-            showForYou: true,
           }}
         >
           <Story args={{ variant, setVariant }} />
