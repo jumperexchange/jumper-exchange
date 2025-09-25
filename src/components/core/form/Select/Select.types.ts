@@ -1,8 +1,9 @@
-export type TData = string | string[];
+export type TData = string | string[] | number[];
 
 export enum SelectVariant {
   Single = 'single',
   Multi = 'multi',
+  Slider = 'slider',
 }
 
 export enum SelectSize {
@@ -10,15 +11,15 @@ export enum SelectSize {
   Medium = 'medium',
 }
 
-export interface SelectOption {
-  value: string;
+export interface SelectOption<T> {
+  value: T;
   label: string;
   disabled?: boolean;
   icon?: React.ReactNode;
 }
 
 export interface SelectBaseProps<T extends TData> {
-  options: SelectOption[];
+  options: SelectOption<T extends (infer U)[] ? U : T>[];
   value: T;
   onChange: (value: T) => void;
   fullWidth?: boolean;
@@ -39,6 +40,15 @@ export interface MultiSelectProps<T extends string[]>
 export interface SingleSelectProps<T extends string>
   extends SelectBaseProps<T> {}
 
+export interface SliderSelectProps<T extends number[]>
+  extends Omit<SelectBaseProps<T>, 'options'> {
+  options: never[];
+  min: number;
+  max: number;
+  label: string;
+}
+
 export type SelectProps<T extends TData> =
   | (MultiSelectProps<string[]> & { variant: SelectVariant.Multi })
-  | (SingleSelectProps<string> & { variant: SelectVariant.Single });
+  | (SingleSelectProps<string> & { variant: SelectVariant.Single })
+  | (SliderSelectProps<number[]> & { variant: SelectVariant.Slider });
