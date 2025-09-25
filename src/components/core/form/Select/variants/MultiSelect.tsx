@@ -6,15 +6,13 @@ import {
   StyledMultiSelectFiltersClearButton,
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersInput,
-  StyledLabelContainer,
 } from '../Select.styles';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelect } from '../hooks';
-import { Badge } from 'src/components/Badge/Badge';
-import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { SelectorLabel } from '../components/SelectLabel';
 import { useTranslation } from 'react-i18next';
+import { SelectBadge } from '../components/SelectBadge';
 
 export const MultiSelect = <T extends string[]>({
   value: initialValue,
@@ -39,6 +37,10 @@ export const MultiSelect = <T extends string[]>({
       option.label.toLowerCase().includes(searchValue.toLowerCase()),
     );
   }, [options, searchValue]);
+
+  const isValueSelected = useMemo(() => {
+    return value.length > 0;
+  }, [value]);
 
   const handleClear = useCallback(() => {
     setValue([] as unknown as T);
@@ -67,14 +69,7 @@ export const MultiSelect = <T extends string[]>({
       selectorContent={
         <>
           <SelectorLabel label={label} />
-          {!!value?.length && (
-            <Badge
-              label={value.length}
-              size={BadgeSize.SM}
-              variant={BadgeVariant.Primary}
-              sx={{ padding: 0, marginRight: 0.5 }}
-            />
-          )}
+          {isValueSelected && <SelectBadge label={value.length.toString()} />}
         </>
       }
       multiple
@@ -83,14 +78,13 @@ export const MultiSelect = <T extends string[]>({
         <Typography variant="bodyXSmallStrong">
           {t('earn.filter.selected', { count: value?.length ?? 0 })}
         </Typography>
-        {value?.length > 0 && (
-          <StyledMultiSelectFiltersClearButton
-            size="small"
-            onClick={handleClear}
-          >
-            {t('earn.filter.clear')}
-          </StyledMultiSelectFiltersClearButton>
-        )}
+        <StyledMultiSelectFiltersClearButton
+          disabled={!isValueSelected}
+          size="small"
+          onClick={handleClear}
+        >
+          {t('earn.filter.clear')}
+        </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
       {filterBy && (
         <StyledMultiSelectFiltersContainer
