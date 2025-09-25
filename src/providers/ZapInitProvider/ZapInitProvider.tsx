@@ -12,10 +12,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import {
-  BICONOMY_EXPLORER_ADDRESS_PATH,
-  BICONOMY_EXPLORER_URL,
-} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
 import { useMultisig } from 'src/hooks/useMultisig';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
@@ -456,41 +452,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     initializeClients,
     checkMultisigEnvironment,
   ]);
-
-  // @Note: This is a hack to fix the broken address link; will be removed
-  useEffect(() => {
-    const explorerUrl = projectData.chainId
-      ? findChain(projectData.chainId)?.blockExplorers?.default.url
-      : undefined;
-
-    if (!explorerUrl) {
-      return;
-    }
-
-    const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const link = target.closest('a');
-
-      if (
-        link?.href.includes(
-          `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_ADDRESS_PATH}`,
-        )
-      ) {
-        event.preventDefault();
-        const linkWalletAddress = link.href
-          .split(`/${BICONOMY_EXPLORER_ADDRESS_PATH}/`)
-          .pop();
-        if (linkWalletAddress) {
-          openInNewTab(
-            `${explorerUrl}/${BICONOMY_EXPLORER_ADDRESS_PATH}/${linkWalletAddress}`,
-          );
-        }
-      }
-    };
-
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
-  }, [projectData.chainId]);
 
   useEffect(() => {
     useZapPendingOperationsStore.setState({

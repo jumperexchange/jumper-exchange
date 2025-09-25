@@ -4,7 +4,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { motion } from 'framer-motion';
 import { FC, useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
-import { ZapDepositWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositWidget';
+import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { ZapInitProvider } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
@@ -83,7 +83,7 @@ export const DepositModal: FC<DepositModalProps> = ({
               </motion.div>
             )}
             <ClientOnly>
-              <ZapDepositWidget
+              <ZapDepositBackendWidget
                 ctx={{
                   theme: {
                     container: {
