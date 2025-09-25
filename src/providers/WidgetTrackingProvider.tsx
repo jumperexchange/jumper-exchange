@@ -99,6 +99,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const destinationChainToken = useRef<ChainTokenSelected | null>(null);
   const isRoutesForCurrentSourceTokenTracked = useRef(false);
   const isRoutesForCurrentDestinationTokenTracked = useRef(false);
+  const isRoutesForCurrentFromAmountTracked = useRef(false);
+  const currentFromAmount = useRef<string | null>(null);
   const posthogTracker = useMemo(() => {
     return makePosthogTracker({ trackTransaction, trackEvent });
   }, [trackTransaction, trackEvent]);
@@ -129,9 +131,15 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
   const availableRoutes = useCallback(
     (availableRoutes: Route[]) => {
+      if (currentFromAmount.current !== availableRoutes[0]?.fromAmount) {
+        currentFromAmount.current = availableRoutes[0]?.fromAmount;
+        isRoutesForCurrentFromAmountTracked.current = false;
+      }
+
       if (
         isRoutesForCurrentSourceTokenTracked.current &&
-        isRoutesForCurrentDestinationTokenTracked.current
+        isRoutesForCurrentDestinationTokenTracked.current &&
+        isRoutesForCurrentFromAmountTracked.current
       ) {
         return;
       }
@@ -188,6 +196,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
       isRoutesForCurrentSourceTokenTracked.current = true;
       isRoutesForCurrentDestinationTokenTracked.current = true;
+      isRoutesForCurrentFromAmountTracked.current = true;
     },
     [trackEvent, trackingActionKeys.availableRoutes],
   );
