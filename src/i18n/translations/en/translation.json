@@ -277,6 +277,15 @@
       "maximizeYourRevenue": "Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool",
       "makeTheJump": "Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!",
       "earnUpTo": "Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>"
+    },
+    "copy": {
+      "forYouBasedOnActivity": "Handpicked markets selected across {{totalMarkets}}+ based on your account activity",
+      "forYouDefault": "Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets"
+    },
+    "sorting": {
+      "sortBy": "Sort By",
+      "apy": "APY",
+      "tvl": "TVL"
     }
   },
   "widget": {

@@ -71,6 +71,15 @@ interface Resources {
       ctaHeadline: 'Join our Discord to learn more';
     };
     earn: {
+      copy: {
+        forYouBasedOnActivity: 'Handpicked markets based on your account activity';
+        forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
+      };
+      sorting: {
+        apy: 'APY';
+        sortBy: 'Sort By';
+        tvl: 'TVL';
+      };
       top: {
         earnUpTo: 'Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>';
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';

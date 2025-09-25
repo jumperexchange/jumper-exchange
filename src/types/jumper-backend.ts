@@ -649,6 +649,8 @@ export interface GeneratePayloadDto {
   params: object;
 }
 
+export type TokenDto = object;
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -964,9 +966,10 @@ export class HttpClient<SecurityDataType = unknown> {
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
+      const responseToParse = responseFormat ? response.clone() : response;
       const data = !responseFormat
         ? r
-        : await response[responseFormat]()
+        : await responseToParse[responseFormat]()
             .then((data) => {
               if (r.ok) {
                 r.data = data;
@@ -1095,6 +1098,22 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags Zaps, Public
+     * @name ZapsControllerGetLpTokensV1
+     * @summary Get all LP tokens
+     * @request GET:/v1/zaps/get-all-lp-tokens
+     */
+    zapsControllerGetLpTokensV1: (params: RequestParams = {}) =>
+      this.request<TokenDto[], any>({
+        path: `/v1/zaps/get-all-lp-tokens`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Earn, Public
      * @name EarnControllerGetTopsV1
      * @summary Get tops for an address
@@ -1144,15 +1163,35 @@ export class JumperBackend<
          */
         featured?: boolean;
         /**
-         * The chain id to filter for
-         * @example 1
+         * The chain ids to filter for
+         * @example [1,10,137]
          */
-        chainId?: number;
+        chains?: number[];
         /**
-         * The protocol to filter for
-         * @example "Aave"
+         * The protocols to filter for
+         * @example ["Aave","Compound","Yearn"]
          */
-        protocol?: string;
+        protocols?: string[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The tags to filter for
+         * @example ["Lending","Staking","Earn"]
+         */
+        tags?: string[];
+        /**
+         * The minimum APY to filter for
+         * @example 5.5
+         */
+        minAPY?: number;
+        /**
+         * The maximum APY to filter for
+         * @example 25
+         */
+        maxAPY?: number;
       },
       params: RequestParams = {},
     ) =>

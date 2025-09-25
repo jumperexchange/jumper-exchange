@@ -16,8 +16,6 @@ export type Result = UseQueryResult<
 >;
 
 export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
-  // TODO: LF-14980: Deal with favorites & refetching
-  // TODO: LF-14854: Filtering
   return useQuery({
     queryKey: ['earn-filter-opportunities', filter],
     queryFn: async () => {
