@@ -6,13 +6,14 @@ import {
   RewardsSectionContainer,
 } from './Section.style';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCard } from '../components/RewardsCarousel/RewardClaimCard';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/RewardClaimCardSkeleton';
 import { MerklRewardsData } from 'src/types/strapi';
+import { useChains } from 'src/hooks/useChains';
 
 export const RewardsSection = ({
   merklRewards,
@@ -21,6 +22,7 @@ export const RewardsSection = ({
 }) => {
   const { t } = useTranslation();
   const { walletAddress: address } = useContext(ProfileContext);
+  const { getChainById, isLoading: isChainsLoading } = useChains();
 
   const { availableRewards, isSuccess, isLoading } = useMerklRewards({
     userAddress: address,
@@ -29,11 +31,20 @@ export const RewardsSection = ({
     merklRewards,
   });
 
-  const rewardsWithAmount = availableRewards.filter(
-    (reward) => reward.amountToClaim > 0 && isSuccess,
-  );
+  const rewardsWithAmount = useMemo(() => {
+    return availableRewards
+      .filter((reward) => reward.amountToClaim > 0)
+      .map((reward) => {
+        const chain = getChainById(reward.chainId);
+        return {
+          ...reward,
+          explorerLink:
+            chain?.metamask.blockExplorerUrls[0] ?? reward.explorerLink,
+        };
+      });
+  }, [availableRewards, getChainById]);
 
-  if (!rewardsWithAmount.length) {
+  if (!rewardsWithAmount.length || !isSuccess) {
     return null;
   }
 
@@ -44,7 +55,7 @@ export const RewardsSection = ({
           {t('profile_page.availableRewards')}
         </Typography>
         <RewardsCarousel>
-          {isLoading
+          {isLoading || isChainsLoading
             ? Array.from({ length: 2 }).map((_, index) => (
                 <RewardClaimCardSkeleton key={index} />
               ))
