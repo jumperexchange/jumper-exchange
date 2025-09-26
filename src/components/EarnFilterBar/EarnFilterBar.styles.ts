@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { Box, Skeleton, styled } from '@mui/material';
 
 export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -17,4 +17,10 @@ export const EarnFilterBarContentContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   gap: theme.spacing(2),
+}));
+
+export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  transform: 'none',
+  borderRadius: theme.shape.buttonBorderRadius,
 }));

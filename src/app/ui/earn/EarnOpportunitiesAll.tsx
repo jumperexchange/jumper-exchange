@@ -9,6 +9,9 @@ import {
   EarnFilteringProvider,
   useEarnFiltering,
 } from './EarnFilteringContext';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import Stack from '@mui/system/Stack';
+import { EarnOpportunitiesCards } from './EarnOpportunitiesCards';
 
 const EarnOpportunitiesAll_ = () => {
   const {
@@ -23,64 +26,29 @@ const EarnOpportunitiesAll_ = () => {
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
-  const gridSize = variant === 'compact' ? { xs: 12, sm: 4 } : { xs: 12 };
-
-  const ForYou = () => {
-    const items = AtLeastNWhenLoading(forYou, forYouLoading, 3, Infinity);
-    // TODO: error management
-
-    return (
-      <div>
-        <Grid container spacing={2}>
-          {items.map((item, index) => (
-            <Grid key={index} size={gridSize}>
-              {item == null ? (
-                <EarnCard variant={variant} isLoading={true} data={null} />
-              ) : (
-                <EarnCard variant={variant} isLoading={false} data={item} />
-              )}
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-    );
-  };
-
-  const All = () => {
-    const items = AtLeastNWhenLoading(all, allLoading, 3, Infinity);
-    // TODO: error management
-
-    return (
-      <div>
-        <Grid container spacing={2}>
-          {items.map((item, index) => (
-            <Grid key={index} size={gridSize}>
-              {item == null ? (
-                <EarnCard variant={variant} isLoading={true} data={null} />
-              ) : (
-                <EarnCard variant={variant} isLoading={false} data={item} />
-              )}
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-    );
-  };
-
   return (
-    <Card
-      sx={{
-        borderRadius: 2,
-        boxShadow: 1,
-        overflow: 'visible',
-        marginTop: 2,
-      }}
-    >
-      <CardContent sx={{ padding: 0 }}>
-        <EarnFilterBar variant={variant} setVariant={setVariant} />
-      </CardContent>
-      <CardContent>{showForYou ? <ForYou /> : <All />}</CardContent>
-    </Card>
+    <SectionCardContainer>
+      <Stack direction="column" gap={3}>
+        <EarnFilterBar
+          isLoading={allLoading || forYouLoading}
+          variant={variant}
+          setVariant={setVariant}
+        />
+        {showForYou ? (
+          <EarnOpportunitiesCards
+            items={forYou}
+            isLoading={forYouLoading}
+            variant={variant}
+          />
+        ) : (
+          <EarnOpportunitiesCards
+            items={all}
+            isLoading={allLoading}
+            variant={variant}
+          />
+        )}
+      </Stack>
+    </SectionCardContainer>
   );
 };
 

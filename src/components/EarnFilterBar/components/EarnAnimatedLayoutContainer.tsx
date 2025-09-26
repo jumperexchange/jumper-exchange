@@ -14,16 +14,14 @@ export const EarnAnimatedLayoutContainer: FC<PropsWithChildren> = ({
   return (
     <AnimatePresence>
       <LayoutContainer
-        initial={{ opacity: 0, y: '100%' }}
+        initial={{ opacity: 0 }}
         animate={{
           opacity: 1,
-          y: 0,
         }}
-        exit={{ opacity: 0, y: '100%' }}
+        exit={{ opacity: 0 }}
         transition={{
-          type: 'spring',
-          stiffness: 400,
-          damping: 40,
+          type: 'fade',
+          duration: 0.3,
         }}
       >
         <Stack direction="row" gap={1} alignItems="center" flex={1}>

@@ -11,15 +11,18 @@ import Stack from '@mui/material/Stack';
 import { EarnListMode } from './components/EarnListMode';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
   setVariant: (variant: EarnCardVariant) => void;
+  isLoading?: boolean;
 }
 
 export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   variant,
   setVariant,
+  isLoading,
 }) => {
   const { showForYou, toggleForYou } = useEarnFiltering();
 
@@ -31,6 +34,10 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   const handleTabChange = (_: React.SyntheticEvent, value: string) => {
     toggleForYou();
   };
+
+  if (isLoading) {
+    return <EarnFilterBarSkeleton />;
+  }
 
   const EarnFilterBarContent = showForYou
     ? EarnFilterBarContentForYou

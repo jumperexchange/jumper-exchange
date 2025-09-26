@@ -6,6 +6,7 @@ import {
 } from '../../app/ui/earn/EarnFilteringContext';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
+import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 
 const meta = {
   component: EarnFilterBar,
@@ -301,4 +302,12 @@ export const LargeDataSet: Story = {
       );
     },
   ],
+};
+
+export const Skeleton: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
+  render: () => <EarnFilterBarSkeleton />,
 };

@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 const EarnCardContainer = styled(Box)(({ theme, onClick }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   cursor: onClick ? 'pointer' : 'default',
