@@ -74,55 +74,65 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   return (
     <EarnFilterBarContentContainer>
       <EarnAnimatedLayoutContainer>
-        <Select
-          options={chainOptions}
-          value={filter?.chains?.map(String) ?? []}
-          onChange={handleChainChange}
-          filterBy="chain"
-          label="Chains"
-          variant={SelectVariant.Multi}
-          data-testid="earn-filter-chain-select"
-        />
-        <Select
-          options={protocolOptions}
-          value={filter?.protocols || []}
-          onChange={handleProtocolChange}
-          filterBy="protocol"
-          label="Protocols"
-          variant={SelectVariant.Multi}
-          data-testid="earn-filter-protocol-select"
-        />
+        {chainOptions.length > 0 && (
+          <Select
+            options={chainOptions}
+            value={filter?.chains?.map(String) ?? []}
+            onChange={handleChainChange}
+            filterBy="chain"
+            label="Chains"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-chain-select"
+          />
+        )}
+        {protocolOptions.length > 0 && (
+          <Select
+            options={protocolOptions}
+            value={filter?.protocols || []}
+            onChange={handleProtocolChange}
+            filterBy="protocol"
+            label="Protocols"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-protocol-select"
+          />
+        )}
 
-        <Select
-          options={tagOptions}
-          value={filter?.tags || []}
-          onChange={handleTagChange}
-          filterBy="tag"
-          label="Tags"
-          variant={SelectVariant.Multi}
-          data-testid="earn-filter-tag-select"
-        />
+        {tagOptions.length > 0 && (
+          <Select
+            options={tagOptions}
+            value={filter?.tags || []}
+            onChange={handleTagChange}
+            filterBy="tag"
+            label="Tags"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-tag-select"
+          />
+        )}
 
-        <Select
-          options={assetOptions}
-          value={filter?.assets || []}
-          onChange={handleAssetChange}
-          filterBy="asset"
-          label="Assets"
-          variant={SelectVariant.Multi}
-          data-testid="earn-filter-asset-select"
-        />
+        {assetOptions.length > 0 && (
+          <Select
+            options={assetOptions}
+            value={filter?.assets || []}
+            onChange={handleAssetChange}
+            filterBy="asset"
+            label="Assets"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-asset-select"
+          />
+        )}
 
-        <Select
-          options={[]}
-          value={[]} // TODO: implement
-          min={apyMin}
-          max={apyMax}
-          onChange={handleAPYChange}
-          label="APY"
-          variant={SelectVariant.Slider}
-          data-testid="earn-filter-apy-select"
-        />
+        {apyMin !== apyMax && (
+          <Select
+            options={[]}
+            value={[]} // TODO: implement
+            min={apyMin}
+            max={apyMax}
+            onChange={handleAPYChange}
+            label="APY"
+            variant={SelectVariant.Slider}
+            data-testid="earn-filter-apy-select"
+          />
+        )}
       </EarnAnimatedLayoutContainer>
 
       {children}
