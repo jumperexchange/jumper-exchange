@@ -263,6 +263,7 @@
     "deposited": "",
     "boostedApy": "",
     "lockupPeriod": "",
+    "manageYourPosition": "",
     "assets": ""
   },
   "labels": {
@@ -286,6 +287,11 @@
       "sortBy": "",
       "apy": "",
       "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": ""
     }
   },
   "widget": {
@@ -299,6 +305,7 @@
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": "",
+      "depositSuccess": "",
       "tabs": {
         "deposit": "",
         "withdraw": ""
