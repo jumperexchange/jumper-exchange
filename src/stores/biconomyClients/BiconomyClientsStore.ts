@@ -7,52 +7,51 @@ import {
   MultichainSmartAccount,
   toMultichainNexusAccount,
 } from '@biconomy/abstractjs';
-import { createWalletClient, custom, http, publicActions } from 'viem';
-import { chains } from '../../const/chains/chains';
-import { createWithEqualityFn } from 'zustand/traditional';
-import { retryWithBackoff } from 'src/utils/retryWithBackoff';
-import { UseWalletClientReturnType } from 'wagmi';
-import { EVMAddress } from 'src/types/internal';
-import { getShuffledRPCForChain } from 'src/utils/rpc/getShuffledRPCForChain';
 import envConfig from 'src/config/env-config';
+import { retryWithBackoff } from 'src/utils/retryWithBackoff';
+import { getShuffledRPCForChain } from 'src/utils/rpc/getShuffledRPCForChain';
+import { createWalletClient, custom, Hex, http, publicActions } from 'viem';
+import { UseWalletClientReturnType } from 'wagmi';
+import { createWithEqualityFn } from 'zustand/traditional';
+import { chains } from '../../const/chains/chains';
 
 export type BiconomyClients = {
   meeClient: MeeClient;
   oNexus: MultichainSmartAccount;
 };
 
-type WalletKey = `${EVMAddress}-${number}`;
-type ClientKey = `${EVMAddress}-${number}-${EVMAddress}`;
+type WalletKey = `${Hex}-${number}`;
+type ClientKey = `${Hex}-${number}-${Hex}`;
 type ChainKey = `${number}`;
 
 interface BiconomyClientsState {
   clientsMap: Map<ClientKey, Map<ChainKey, BiconomyClients>>;
-  toAddressMap: Map<ClientKey, EVMAddress>;
+  toAddressMap: Map<ClientKey, Hex>;
   validateClient: (params: {
-    projectAddress?: EVMAddress;
+    projectAddress?: Hex;
     projectChainId?: number;
-    walletAddress?: EVMAddress;
+    walletAddress?: Hex;
   }) => params is {
-    projectAddress: EVMAddress;
+    projectAddress: Hex;
     projectChainId: number;
-    walletAddress: EVMAddress;
+    walletAddress: Hex;
   };
   validateChain: (params: {
     currentChainId?: number;
   }) => params is { currentChainId: number };
   hasClient: (
-    projectAddress?: EVMAddress,
+    projectAddress?: Hex,
     projectChainId?: number,
-    walletAddress?: EVMAddress,
+    walletAddress?: Hex,
   ) => boolean;
   hasChainClients: (
-    projectAddress?: EVMAddress,
+    projectAddress?: Hex,
     projectChainId?: number,
-    walletAddress?: EVMAddress,
+    walletAddress?: Hex,
     currentChainId?: number,
   ) => boolean;
   getClients: (
-    projectAddress?: EVMAddress,
+    projectAddress?: Hex,
     destinationChainId?: number,
     walletClient?: UseWalletClientReturnType['data'],
     provider?: any,
@@ -60,16 +59,16 @@ interface BiconomyClientsState {
     currentChainId?: number,
   ) => Promise<BiconomyClients | null>;
   getToAddress: (
-    projectAddress?: EVMAddress,
+    projectAddress?: Hex,
     destinationChainId?: number,
-    walletAddress?: EVMAddress,
-  ) => EVMAddress | undefined;
+    walletAddress?: Hex,
+  ) => Hex | undefined;
 }
 
 const getClientKey = (
-  projectAddress: EVMAddress,
+  projectAddress: Hex,
   projectChainId: number,
-  walletAddress: EVMAddress,
+  walletAddress: Hex,
 ): ClientKey => `${projectAddress}-${projectChainId}-${walletAddress}`;
 
 const getChainKey = (currentChainId: number): ChainKey => `${currentChainId}`;
@@ -88,26 +87,23 @@ export const useBiconomyClientsStore =
       toAddressMap: new Map(),
 
       validateClient: (params: {
-        projectAddress?: EVMAddress;
+        projectAddress?: Hex;
         projectChainId?: number;
-        walletAddress?: EVMAddress;
+        walletAddress?: Hex;
       }): params is {
-        projectAddress: EVMAddress;
+        projectAddress: Hex;
         projectChainId: number;
-        walletAddress: EVMAddress;
+        walletAddress: Hex;
       } => {
         if (!params.projectAddress) {
-          console.warn('Missing projectAddress, skipping initialization');
           return false;
         }
 
         if (!params.projectChainId) {
-          console.warn('Missing projectChainId, skipping initialization');
           return false;
         }
 
         if (!params.walletAddress) {
-          console.warn('Missing walletAddress, skipping initialization');
           return false;
         }
 
@@ -118,7 +114,6 @@ export const useBiconomyClientsStore =
         currentChainId?: number;
       }): params is { currentChainId: number } => {
         if (!params.currentChainId) {
-          console.warn('Missing currentChainId, skipping initialization');
           return false;
         }
 
@@ -174,9 +169,9 @@ export const useBiconomyClientsStore =
       },
 
       getToAddress: (
-        projectAddress?: EVMAddress,
+        projectAddress?: Hex,
         projectChainId?: number,
-        walletAddress?: EVMAddress,
+        walletAddress?: Hex,
       ) => {
         if (
           !get().validateClient({
@@ -212,7 +207,6 @@ export const useBiconomyClientsStore =
         currentChainId,
       ) => {
         if (!walletClient) {
-          console.warn('Wallet client is undefined, skipping initialization');
           return null;
         }
 
@@ -245,9 +239,6 @@ export const useBiconomyClientsStore =
         const clientClients = get().clientsMap.get(clientKey);
         const existingClients = clientClients?.get(chainKey);
         if (existingClients) {
-          console.log(
-            `Existing clients found, returning them for ${clientKey}-${chainKey}`,
-          );
           return existingClients;
         }
 
@@ -269,7 +260,6 @@ export const useBiconomyClientsStore =
           const { oNexus, meeClient } = await retryWithBackoff(async () => {
             const chainConfigurations = usedChains.map((chain) => {
               const rpcUrl = getShuffledRPCForChain(chain.id);
-              console.warn(`Using RPC ${rpcUrl} for chain ${chain.id}`);
               return {
                 chain: chain,
                 transport: http(rpcUrl || undefined),
@@ -279,7 +269,7 @@ export const useBiconomyClientsStore =
 
             const oNexusInit = await toMultichainNexusAccount({
               signer: createWalletClient({
-                account: walletClient.account.address as EVMAddress,
+                account: walletClient.account.address as Hex,
                 chain: walletClient.chain,
                 transport: custom(provider, { key: 'jumper-custom-zap' }),
               }),
@@ -291,7 +281,7 @@ export const useBiconomyClientsStore =
 
             oNexusInit.deployments.forEach((deployment) => {
               deployment.walletClient = createWalletClient({
-                account: deployment.walletClient.account.address as EVMAddress,
+                account: deployment.walletClient.account.address as Hex,
                 chain: deployment.walletClient.chain,
                 transport: custom(provider, { key: 'jumper-custom-zap' }),
               }).extend(publicActions);
@@ -306,10 +296,6 @@ export const useBiconomyClientsStore =
           });
 
           const clients = { meeClient, oNexus };
-
-          console.log(
-            `Initialised Biconomy clients, setting state for ${clientKey}-${chainKey}`,
-          );
 
           set((state) => {
             // Create new Map to ensure state change detection
@@ -336,7 +322,7 @@ export const useBiconomyClientsStore =
             if (!newToAddressMap.has(toAddressKey)) {
               newToAddressMap.set(
                 toAddressKey,
-                clients.oNexus.addressOn(projectChainId!, true) as EVMAddress,
+                clients.oNexus.addressOn(projectChainId!, true) as Hex,
               );
             }
 

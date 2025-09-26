@@ -1,37 +1,36 @@
 import { MultichainSmartAccount } from '@biconomy/abstractjs';
 import { ChainId, Token } from '@lifi/sdk';
 import { ContractComposableConfig } from './types';
-import { EVMAddress } from 'src/types/internal';
-import { AbiFunction, encodeFunctionData } from 'viem';
+import { AbiFunction, encodeFunctionData, Hex } from 'viem';
 import { abiNumericTypes } from './constants';
 
 export const buildContractComposable = async (
   oNexus: MultichainSmartAccount,
   contractConfig: ContractComposableConfig,
 ) => {
-  let usedGasLimit = contractConfig.gasLimit;
+  // let usedGasLimit = contractConfig.gasLimit;
 
-  try {
-    usedGasLimit = await getGasLimitEstimate({
-      oNexus,
-      chainId: contractConfig.chainId,
-      to: contractConfig.address as EVMAddress,
-      abiFunction: contractConfig.abi,
-      functionName: contractConfig.functionName,
-      args: contractConfig.abi.inputs.map((abiInput, index) => {
-        // Due to the runtimeERC20BalanceOf function, the args are objects
-        // We need to convert them to 0n
-        if (
-          abiNumericTypes.includes(abiInput.type) &&
-          typeof contractConfig.args[index] === 'object'
-        ) {
-          return 0n;
-        }
-        return contractConfig.args[index];
-      }),
-    });
-    console.warn('Using estimated gas limit', usedGasLimit);
-  } catch {}
+  // try {
+  //   usedGasLimit = await getGasLimitEstimate({
+  //     oNexus,
+  //     chainId: contractConfig.chainId,
+  //     to: contractConfig.address as Hex,
+  //     abiFunction: contractConfig.abi,
+  //     functionName: contractConfig.functionName,
+  //     args: contractConfig.abi.inputs.map((abiInput, index) => {
+  //       // Due to the runtimeERC20BalanceOf function, the args are objects
+  //       // We need to convert them to 0n
+  //       if (
+  //         abiNumericTypes.includes(abiInput.type) &&
+  //         typeof contractConfig.args[index] === 'object'
+  //       ) {
+  //         return 0n;
+  //       }
+  //       return contractConfig.args[index];
+  //     }),
+  //   });
+  //   console.warn('Using estimated gas limit', usedGasLimit);
+  // } catch {}
 
   return oNexus.buildComposable({
     type: 'default',
@@ -40,7 +39,7 @@ export const buildContractComposable = async (
       to: contractConfig.address as `0x${string}`,
       chainId: contractConfig.chainId,
       functionName: contractConfig.functionName,
-      gasLimit: usedGasLimit,
+      gasLimit: contractConfig.gasLimit,
       args: contractConfig.args,
     },
   });
@@ -59,7 +58,7 @@ export const getGasLimitEstimate = async ({
   functionName,
 }: {
   oNexus: MultichainSmartAccount;
-  to: EVMAddress;
+  to: Hex;
   chainId: ChainId;
   abiFunction: AbiFunction;
   functionName: string;
@@ -72,7 +71,7 @@ export const getGasLimitEstimate = async ({
     args,
   });
   const gasLimit = await deployment.publicClient.estimateGas({
-    account: oNexus.addressOn(chainId, true) as EVMAddress,
+    account: oNexus.addressOn(chainId, true) as Hex,
     to,
     data,
   });

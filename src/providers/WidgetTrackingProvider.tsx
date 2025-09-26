@@ -2,28 +2,36 @@ import {
   ChainTokenSelected,
   Route,
   RouteExecutionUpdate,
+  RouteHighValueLossUpdate,
+  SettingUpdated,
   useWidgetEvents,
-  WidgetEvent,
 } from '@lifi/widget';
 import {
+  createContext,
   FC,
   PropsWithChildren,
-  createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
 } from 'react';
+import { makePosthogTracker } from 'src/components/Widgets/PosthogTracker';
 import {
-  TrackingCategory,
+  setupWidgetEvents,
+  teardownWidgetEvents,
+  WidgetEventsConfig,
+} from 'src/components/Widgets/WidgetEventsManager';
+import {
   TrackingAction,
-  TrackingEventParameter,
+  TrackingCategory,
   TrackingEventDataAction,
+  TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { TransformedRoute } from 'src/types/internal';
 import { handleRouteData } from 'src/utils/routes';
+import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
 
 interface WidgetTrackingState {
   setDestinationChainTokenForTracking: (
@@ -49,11 +57,15 @@ export const useWidgetTrackingContext = () => {
 
 interface WidgetTrackingProviderProps extends PropsWithChildren {
   trackingActionKeys?: {
+    destinationChainAndTokenSelection?: TrackingAction;
     sourceChainAndTokenSelection: TrackingAction;
     availableRoutes: TrackingAction;
     routeExecutionStarted: TrackingAction;
     routeExecutionCompleted: TrackingAction;
     routeExecutionFailed: TrackingAction;
+    changeSettings: TrackingAction;
+    routeHighValueLoss?: TrackingAction;
+    lowAddressActivityConfirmed?: TrackingAction;
   };
   trackingDataActionKeys?: {
     routeExecutionStarted: TrackingEventDataAction;
@@ -65,12 +77,16 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
 export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   children,
   trackingActionKeys = {
+    destinationChainAndTokenSelection: '',
     sourceChainAndTokenSelection:
       TrackingAction.OnSourceChainAndTokenSelectionZap,
     availableRoutes: TrackingAction.OnAvailableRoutesZap,
     routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
     routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
     routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
+    changeSettings: TrackingAction.OnChangeSettingsZap,
+    routeHighValueLoss: '',
+    lowAddressActivityConfirmed: '',
   },
   trackingDataActionKeys = {
     routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
@@ -82,8 +98,14 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const sourceChainToken = useRef<ChainTokenSelected | null>(null);
   const destinationChainToken = useRef<ChainTokenSelected | null>(null);
   const isRoutesForCurrentSourceTokenTracked = useRef(false);
+  const isRoutesForCurrentDestinationTokenTracked = useRef(false);
+  const isRoutesForCurrentFromAmountTracked = useRef(false);
+  const currentFromAmount = useRef<string | null>(null);
+  const posthogTracker = useMemo(() => {
+    return makePosthogTracker({ trackTransaction, trackEvent });
+  }, [trackTransaction, trackEvent]);
 
-  const trackSourceToken = useCallback(
+  const sourceChainTokenSelected = useCallback(
     (sourceToken: ChainTokenSelected) => {
       trackEvent({
         category: TrackingCategory.WidgetEvent,
@@ -107,9 +129,18 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     [trackEvent, trackingActionKeys.sourceChainAndTokenSelection],
   );
 
-  const trackAvailableRoutes = useCallback(
+  const availableRoutes = useCallback(
     (availableRoutes: Route[]) => {
-      if (isRoutesForCurrentSourceTokenTracked.current) {
+      if (currentFromAmount.current !== availableRoutes[0]?.fromAmount) {
+        currentFromAmount.current = availableRoutes[0]?.fromAmount;
+        isRoutesForCurrentFromAmountTracked.current = false;
+      }
+
+      if (
+        isRoutesForCurrentSourceTokenTracked.current &&
+        isRoutesForCurrentDestinationTokenTracked.current &&
+        isRoutesForCurrentFromAmountTracked.current
+      ) {
         return;
       }
 
@@ -122,6 +153,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
             [TrackingEventParameter.Steps]: {
               tools: routeData[TrackingEventParameter.Steps],
             },
+            [TrackingEventParameter.ToAmount]:
+              routeData[TrackingEventParameter.ToAmount] || '',
             [TrackingEventParameter.ToAmountUSD]:
               Number(routeData[TrackingEventParameter.ToAmountUSD]) || 0,
             [TrackingEventParameter.GasCostUSD]:
@@ -155,17 +188,20 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           [TrackingEventParameter.FromAmountUSD]: Number(
             availableRoutes?.[0]?.fromAmountUSD,
           ),
+          [TrackingEventParameter.FromAmount]: availableRoutes?.[0]?.fromAmount,
           [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
           [TrackingEventParameter.Routes]: transformedRoutes,
         },
       });
 
       isRoutesForCurrentSourceTokenTracked.current = true;
+      isRoutesForCurrentDestinationTokenTracked.current = true;
+      isRoutesForCurrentFromAmountTracked.current = true;
     },
     [trackEvent, trackingActionKeys.availableRoutes],
   );
 
-  const trackRouteExecutionStarted = useCallback(
+  const routeExecutionStarted = useCallback(
     (route: Route) => {
       if (route.id) {
         trackTransaction({
@@ -188,7 +224,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     ],
   );
 
-  const trackRouteExecutionCompleted = useCallback(
+  const routeExecutionCompleted = useCallback(
     (route: Route) => {
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
@@ -210,7 +246,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     ],
   );
 
-  const trackRouteExecutionFailed = useCallback(
+  const routeExecutionFailed = useCallback(
     (update: RouteExecutionUpdate) => {
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
@@ -233,9 +269,90 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     ],
   );
 
+  const settingUpdated = useCallback(
+    (settings: SettingUpdated) => {
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.changeSettings,
+        label: 'change_settings',
+        enableAddressable: true,
+        data: parseWidgetSettingsToTrackingData(settings),
+      });
+    },
+    [trackEvent, trackingActionKeys.changeSettings],
+  );
+
+  const routeHighValueLoss = useCallback(
+    (update: RouteHighValueLossUpdate) => {
+      if (!trackingActionKeys.routeHighValueLoss) {
+        return;
+      }
+      trackEvent({
+        action: trackingActionKeys.routeHighValueLoss,
+        category: TrackingCategory.WidgetEvent,
+        label: 'click_high_value_loss_accepted',
+        data: {
+          [TrackingEventParameter.FromAmountUSD]: update.fromAmountUSD,
+          [TrackingEventParameter.ToAmountUSD]: update.toAmountUSD,
+          [TrackingEventParameter.GasCostUSD]: update.gasCostUSD || '',
+          [TrackingEventParameter.FeeCostUSD]: update.feeCostUSD || '',
+          [TrackingEventParameter.ValueLoss]: update.valueLoss,
+          [TrackingEventParameter.Timestamp]: new Date(
+            Date.now(),
+          ).toUTCString(),
+        },
+        enableAddressable: true,
+      });
+    },
+    [trackEvent, trackingActionKeys.routeHighValueLoss],
+  );
+
+  const lowAddressActivityConfirmed = useCallback(
+    (props: { address: string; chainId: number }) => {
+      if (!trackingActionKeys.lowAddressActivityConfirmed) {
+        return;
+      }
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.lowAddressActivityConfirmed,
+        label: `confirm_low_address_activity_confirmed`,
+        data: {
+          [TrackingEventParameter.WalletAddress]: props.address,
+          [TrackingEventParameter.ChainId]: props.chainId,
+        },
+        enableAddressable: true,
+      });
+    },
+    [trackEvent, trackingActionKeys.lowAddressActivityConfirmed],
+  );
+
+  const destinationChainTokenSelected = useCallback(
+    (toChainData: ChainTokenSelected) => {
+      if (!trackingActionKeys.destinationChainAndTokenSelection) {
+        return;
+      }
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.destinationChainAndTokenSelection,
+        label: `select_destination_chain_and_token`,
+        data: {
+          [TrackingEventParameter.DestinationChainSelection]:
+            toChainData.chainId,
+          [TrackingEventParameter.DestinationTokenSelection]:
+            toChainData.tokenAddress,
+        },
+        enableAddressable: true,
+      });
+      destinationChainToken.current = toChainData;
+      isRoutesForCurrentDestinationTokenTracked.current = false;
+    },
+    [trackEvent, trackingActionKeys.destinationChainAndTokenSelection],
+  );
+
   const setDestinationChainTokenForTracking = useCallback(
     (destinationToken: ChainTokenSelected) => {
       destinationChainToken.current = destinationToken;
+      isRoutesForCurrentDestinationTokenTracked.current = false;
     },
     [],
   );
@@ -243,68 +360,38 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const widgetEvents = useWidgetEvents();
 
   useEffect(() => {
-    function onSourceChainAndTokenSelection(
-      sourceChainToken: ChainTokenSelected,
-    ) {
-      trackSourceToken(sourceChainToken);
-    }
+    const config: WidgetEventsConfig = {
+      sourceChainTokenSelected,
+      destinationChainTokenSelected,
+      availableRoutes,
+      routeExecutionStarted,
+      routeExecutionCompleted,
+      routeExecutionFailed,
+      settingUpdated,
+      routeHighValueLoss,
+      lowAddressActivityConfirmed,
+      routeSelected: posthogTracker.onRouteSelected,
+      chainPinned: posthogTracker.onChainPinned,
+    };
 
-    function onAvailableRoutes(availableRoutes: Route[]) {
-      trackAvailableRoutes(availableRoutes);
-    }
-    function onRouteExecutionStarted(route: Route) {
-      trackRouteExecutionStarted(route);
-    }
-
-    function onRouteExecutionCompleted(route: Route) {
-      trackRouteExecutionCompleted(route);
-    }
-
-    function onRouteExecutionFailed(
-      routeExecutionUpdate: RouteExecutionUpdate,
-    ) {
-      trackRouteExecutionFailed(routeExecutionUpdate);
-    }
-
-    widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
-    widgetEvents.on(WidgetEvent.RouteExecutionFailed, onRouteExecutionFailed);
-    widgetEvents.on(
-      WidgetEvent.SourceChainTokenSelected,
-      onSourceChainAndTokenSelection,
-    );
-    widgetEvents.on(WidgetEvent.AvailableRoutes, onAvailableRoutes);
-
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionCompleted,
-      onRouteExecutionCompleted,
-    );
+    setupWidgetEvents(config, widgetEvents);
 
     return () => {
-      widgetEvents.off(
-        WidgetEvent.SourceChainTokenSelected,
-        onSourceChainAndTokenSelection,
-      );
-      widgetEvents.off(WidgetEvent.AvailableRoutes, onAvailableRoutes);
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionStarted,
-        onRouteExecutionStarted,
-      );
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionCompleted,
-        onRouteExecutionCompleted,
-      );
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionFailed,
-        onRouteExecutionFailed,
-      );
+      teardownWidgetEvents(config, widgetEvents);
     };
   }, [
     widgetEvents,
-    trackSourceToken,
-    trackAvailableRoutes,
-    trackRouteExecutionStarted,
-    trackRouteExecutionCompleted,
-    trackRouteExecutionFailed,
+    sourceChainTokenSelected,
+    availableRoutes,
+    routeExecutionStarted,
+    routeExecutionCompleted,
+    routeExecutionFailed,
+    settingUpdated,
+    destinationChainTokenSelected,
+    routeHighValueLoss,
+    lowAddressActivityConfirmed,
+    posthogTracker.onRouteSelected,
+    posthogTracker.onChainPinned,
   ]);
 
   const value = useMemo(

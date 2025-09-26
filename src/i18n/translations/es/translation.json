@@ -36,7 +36,8 @@
       "developers": "Desarrolladores",
       "support": "Soporte",
       "resources": "",
-      "profile": "Perfil de Jumper"
+      "profile": "Perfil de Jumper",
+      "privacyPolicy": "Política de Privacidad"
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -112,7 +113,9 @@
   },
   "button": {
     "okay": "",
-    "manageYourPosition": ""
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "Algo salió mal. Por favor, intente recargar la página. Si el problema persiste, póngase en contacto con nuestro soporte."
@@ -169,6 +172,7 @@
     "tasks": {
       "type": "",
       "typeFallback": "",
+      "typeOptional": "",
       "status": {
         "verify": "",
         "verified": ""
@@ -201,6 +205,9 @@
     "achievements": "",
     "unlocked": "",
     "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
       "description": "",
       "caption": "",
@@ -254,7 +261,8 @@
     "apy": "",
     "deposit": "",
     "deposited": "",
-    "boostedApy": ""
+    "boostedApy": "",
+    "lockupPeriod": ""
   },
   "widget": {
     "depositCard": {
@@ -266,7 +274,25 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": ""
   }
 }

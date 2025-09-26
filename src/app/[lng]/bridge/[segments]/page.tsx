@@ -91,8 +91,10 @@ export default async function Page({ params }: { params: Params }) {
       destinationToken: destinationTokenSymbolParam,
     } = result.data;
 
-    const { chains } = await getChainsQuery();
-    const { tokens } = await getTokensQuery();
+    const [{ chains }, { tokens }] = await Promise.all([
+      getChainsQuery(),
+      getTokensQuery(),
+    ]);
 
     const sourceChain = getChainByName(chains, sourceChainNameParam);
     const sourceToken = getTokenBySymbolOnSpecificChain(

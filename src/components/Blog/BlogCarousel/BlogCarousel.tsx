@@ -7,6 +7,7 @@ import { TrackingCategory } from 'src/const/trackingKeys';
 import { BlogArticleCard } from '../BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import { BlogCarouselContainer } from './BlogCarousel.style';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface BlogCarouselProps {
   showAllButton?: boolean;
@@ -15,11 +16,13 @@ interface BlogCarouselProps {
 }
 
 export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <BlogCarouselContainer>
       <Carousel
         title={title}
         fixedSlideWidth={true}
+        shouldAutoplay={!isMobile}
         CarouselNavigation={CarouselNavigation}
         CarouselPagination={DotsPagination}
       >

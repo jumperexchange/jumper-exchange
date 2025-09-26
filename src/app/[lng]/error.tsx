@@ -1,6 +1,9 @@
 'use client'; // Error components must be Client Components
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
+import * as Sentry from '@sentry/nextjs';
+
+import { isProduction } from '@/utils/isProduction';
 
 const ErrorPage = dynamic(() => import('../ui/error/ErrorPage'), {
   ssr: false,
@@ -14,6 +17,9 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
+    if (isProduction) {
+      Sentry.captureException(error);
+    }
     // Log the error to an error reporting service
     console.error(error);
   }, [error]);

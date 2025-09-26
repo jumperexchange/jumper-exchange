@@ -9,12 +9,18 @@ import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import index from '@/utils/getTokens';
 import { arraysEqual } from '@/utils/getTokens/utils';
 import { useAccount } from '@lifi/wallet-management';
+import { ChainId } from '@lifi/widget';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
+import { useChains } from 'src/hooks/useChains';
+import { parsePortfolioDataToTrackingData } from '../tracking/portfolio';
+import { zeroAddress } from 'viem';
+import { usePrevious } from 'src/hooks/usePrevious';
 
 export function usePortfolioTokens() {
   const { trackEvent } = useUserTracking();
   const { accounts } = useAccount();
+  const { getChainById } = useChains();
   const {
     getFormattedCacheTokens,
     setCacheTokens,
@@ -23,6 +29,7 @@ export function usePortfolioTokens() {
     setForceRefresh,
   } = usePortfolioStore((state) => state);
   const hasTrackedSuccess = useRef(false);
+  const hasTrackedPortfolioOverview = useRef(false);
 
   const handleProgress = (
     account: string,
@@ -47,7 +54,14 @@ export function usePortfolioTokens() {
     (query) => !query.isFetching && query.isSuccess,
   );
   const isFetching = queries.every((query) => query.isFetching);
+  const isPrevFetching = usePrevious(isFetching);
   const refetch = () => queries.map((query) => query.refetch());
+  const shouldSendTrackingEvent = isPrevFetching && !isFetching && isSuccess;
+
+  const data =
+    getFormattedCacheTokens(accounts).cache.length === 0
+      ? queries.map((query) => query.data ?? []).flat()
+      : getFormattedCacheTokens(accounts).cache;
 
   // Useful to refresh after bridging something
   useEffect(() => {
@@ -79,23 +93,63 @@ export function usePortfolioTokens() {
   }, [accounts]);
 
   useEffect(() => {
-    if (isSuccess && !hasTrackedSuccess.current) {
-      hasTrackedSuccess.current = true;
-      trackEvent({
-        category: TrackingCategory.Wallet,
-        action: TrackingAction.PortfolioLoaded,
-        label: 'portfolio_balance_loaded',
-        data: {
-          [TrackingEventParameter.Status]: 'success',
-          [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-        },
-      });
+    if (hasTrackedSuccess.current || !shouldSendTrackingEvent) {
+      return;
     }
-  }, [isSuccess, trackEvent]);
+
+    hasTrackedSuccess.current = true;
+
+    trackEvent({
+      category: TrackingCategory.Wallet,
+      action: TrackingAction.PortfolioLoaded,
+      label: 'portfolio_balance_loaded',
+      data: {
+        [TrackingEventParameter.Status]: 'success',
+        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+      },
+    });
+  }, [shouldSendTrackingEvent, trackEvent]);
+
+  useEffect(() => {
+    if (hasTrackedPortfolioOverview.current || !shouldSendTrackingEvent) {
+      return;
+    }
+
+    hasTrackedPortfolioOverview.current = true;
+
+    const { totalValue: totalBalanceUSD } = getFormattedCacheTokens(accounts);
+
+    const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
+      chainsIds.map(
+        (chainId) => getChainById(chainId)?.nativeToken?.address ?? zeroAddress,
+      );
+
+    const trackingData = parsePortfolioDataToTrackingData(
+      totalBalanceUSD,
+      data,
+      returnNativeTokenAddresses,
+    );
+
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.PortfolioOverview,
+      label: 'portfolio_balance_overview',
+      enableAddressable: true,
+      data: trackingData,
+    });
+  }, [
+    shouldSendTrackingEvent,
+    accounts,
+    JSON.stringify(data ?? []),
+    getFormattedCacheTokens,
+    getChainById,
+    trackEvent,
+  ]);
 
   // Reset the tracking flag when accounts change
   useEffect(() => {
     hasTrackedSuccess.current = false;
+    hasTrackedPortfolioOverview.current = false;
   }, [accounts]);
 
   return {
@@ -103,9 +157,6 @@ export function usePortfolioTokens() {
     isSuccess,
     isFetching,
     refetch,
-    data:
-      getFormattedCacheTokens(accounts).cache.length === 0
-        ? queries.map((query) => query.data ?? []).flat()
-        : getFormattedCacheTokens(accounts).cache,
+    data,
   };
 }

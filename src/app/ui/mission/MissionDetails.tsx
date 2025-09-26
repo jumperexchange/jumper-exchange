@@ -1,7 +1,7 @@
 'use client';
 
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useSyncMissionDefaultsFromChains } from './hooks';
+import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import { FC, useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
@@ -89,6 +89,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             slug={missionDisplayData.slug}
             title={missionDisplayData.title}
             description={missionDisplayData.description}
+            descriptionRichText={missionDisplayData.descriptionRichText}
             participants={missionDisplayData.participants}
             imageUrl={missionDisplayData.imageUrl}
             rewardGroups={missionDisplayData.rewardGroups}

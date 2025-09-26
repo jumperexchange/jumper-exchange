@@ -87,6 +87,7 @@ export interface CustomInformation {
 export type QuestAttributes = {
   UID: string;
   Title: string;
+  DescriptionRichText?: RootNode[];
   Description?: string;
   Link: string;
   Category?: string;

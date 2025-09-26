@@ -1,27 +1,28 @@
 'use client';
 
-import { FC, useEffect, useMemo } from 'react';
 import {
-  ChainTokenSelected,
   ChainType,
-  HiddenUI,
   LiFiWidget,
   Route,
   RouteExecutionUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { WidgetSkeleton } from '../WidgetSkeleton';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { WidgetProps } from '../Widget.types';
-import { ConfigContext } from '../../widgetConfig/types';
-import { ZapDepositSettings } from './ZapDepositSettings';
+import uniqBy from 'lodash/uniqBy';
+import { FC, useEffect, useMemo } from 'react';
+import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
+import { WidgetProps } from '../Widget.types';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import { ZapWidgetContext } from '../../widgetConfig/types';
 
-interface ZapDepositWidgetProps extends WidgetProps {}
+interface ZapDepositWidgetProps extends Omit<WidgetProps, 'type'> {
+  ctx: ZapWidgetContext;
+}
 
 export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   customInformation,
@@ -36,6 +37,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     isConnected,
     isMultisigEnvironment,
     isEmbeddedWallet,
+    isEvmWallet,
     providers,
     toAddress,
     zapData,
@@ -68,24 +70,28 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   }, [projectData?.minFromAmountUSD]);
 
   const enhancedCtx = useMemo(() => {
-    const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: projectData.integrator,
-      minFromAmountUSD,
-      hiddenUI: [
-        HiddenUI.LowAddressActivityConfirmation,
-        HiddenUI.GasRefuelMessage,
-      ],
-    };
-
     return {
       ...ctx,
-      includeZap: true,
+      integrator: projectData.integrator,
+      formData: {
+        minFromAmountUSD,
+      },
       zapPoolName: poolName,
-      baseOverrides,
     };
   }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
-  const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+
+  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
+  const lpToken = zapData?.market?.lpToken;
+  if (lpToken) {
+    const currentDenyList = widgetConfig.tokens?.deny ?? [];
+    const newDenyList = uniqBy([...currentDenyList, lpToken], 'address');
+
+    widgetConfig.tokens = widgetConfig.tokens ?? {};
+    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
+    widgetConfig.tokens.deny = newDenyList;
+  }
 
   // @Note: we want to ensure that the toAddress is set in the widget config without any delay
   if (toAddress) {
@@ -173,8 +179,21 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
     setSupportModalState,
   ]);
 
-  if (isMultisigEnvironment || isEmbeddedWallet) {
-    return <ZapPlaceholderWidget />;
+  if (isMultisigEnvironment || isEmbeddedWallet || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+      />
+    );
   }
 
   return isZapDataSuccess &&

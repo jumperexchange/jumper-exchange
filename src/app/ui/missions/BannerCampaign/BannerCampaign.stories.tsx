@@ -3,9 +3,11 @@ import React from 'react';
 import { CarouselShell } from './CarouselShell';
 import { BannerCampaignContent } from './BannerCampaignContent';
 import { BannerCampaignSkeleton } from './BannerCampaignSkeleton';
-import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
 import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
 const meta: Meta<typeof CarouselShell> = {
   title: 'Components/Carousel/Mission campaign carousel',
@@ -67,6 +69,7 @@ type Story = StoryObj<typeof CarouselShell> & {
 // Renders the carousel with optional prop overrides
 const Template: StoryFn<typeof CarouselShell> = (_props, { args }) => {
   const { campaigns = defaultCampaigns, isLoading } = args as CustomStoryArgs;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   if (isLoading) {
     return <BannerCampaignSkeleton />;
@@ -97,7 +100,12 @@ const Template: StoryFn<typeof CarouselShell> = (_props, { args }) => {
           {!!campaign.rewardChainIds?.length && (
             <MissionHeroStatsCard
               title="Rewards"
-              description={<ChainStack chainIds={campaign.rewardChainIds} />}
+              description={
+                <ChainStack
+                  chainIds={campaign.rewardChainIds}
+                  size={isMobile ? AvatarSize.XS : AvatarSize.MD}
+                />
+              }
               variant={campaign.heroStatsCardVariant}
             />
           )}

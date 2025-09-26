@@ -16,8 +16,12 @@ import {
 import { useCampaignDisplayData } from 'src/hooks/campaigns/useCampaignDisplayData';
 import { CampaignHeroCard } from './CampaignHeroCard';
 import { MissionHeroStatsCard } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard';
-import { ChainStack } from 'src/components/ChainStack/ChainStack';
+import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { AppPaths } from 'src/const/urls';
+import { ICON_SIZES } from './constants';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
 interface CampaignHeroProps {
   campaign: CampaignData;
@@ -26,6 +30,7 @@ interface CampaignHeroProps {
 export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
   const router = useRouter();
   const { t } = useTranslation();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const {
     title,
@@ -40,7 +45,11 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
   } = useCampaignDisplayData(campaign);
 
   const handleGoBack = () => {
-    router.back();
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push(AppPaths.Missions);
+    }
   };
 
   return (
@@ -66,8 +75,12 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
             <CampaignHeroCardIcon
               src={icon}
               alt={`${title} campaign icon`}
-              width={112}
-              height={112}
+              width={
+                isMobile ? ICON_SIZES.MOBILE.WIDTH : ICON_SIZES.DESKTOP.WIDTH
+              }
+              height={
+                isMobile ? ICON_SIZES.MOBILE.HEIGHT : ICON_SIZES.DESKTOP.HEIGHT
+              }
               style={{ objectFit: 'contain', borderRadius: '50%' }}
               variant={heroStatsCardVariant}
             />
@@ -91,7 +104,12 @@ export const CampaignHero: FC<CampaignHeroProps> = ({ campaign }) => {
             {!!rewardChainIds?.length && (
               <MissionHeroStatsCard
                 title={t('campaign.stats.rewards')}
-                description={<ChainStack chainIds={rewardChainIds} />}
+                description={
+                  <ChainStack
+                    chainIds={rewardChainIds}
+                    size={isMobile ? AvatarSize.XS : AvatarSize.MD}
+                  />
+                }
                 variant={heroStatsCardVariant}
               />
             )}

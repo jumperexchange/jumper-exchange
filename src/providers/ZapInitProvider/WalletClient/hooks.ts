@@ -1,14 +1,15 @@
 import { useCallback } from 'react';
-import { EVMAddress } from 'src/types/internal';
+import { Hex } from 'viem';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { Account, useAccount } from '@lifi/wallet-management';
 import { ChainId, ChainType } from '@lifi/sdk';
+import * as Sentry from '@sentry/nextjs';
 
 interface WalletClientParams {
-  address?: EVMAddress;
+  address?: Hex;
   chainId?: number;
-  projectAddress: EVMAddress;
+  projectAddress: Hex;
   projectChainId: number;
 }
 
@@ -57,7 +58,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const { account } = useAccount();
   const { address, chainId } = account;
   const { data: walletClient } = useWalletClient({
-    account: address as EVMAddress,
+    account: address as Hex,
     chainId,
     query: {
       enabled: !!address && !!chainId,
@@ -80,18 +81,6 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
           throw new Error('Chain is not allowed');
         }
 
-        console.warn(
-          'initializeClients based on these wallet client values',
-          'walletClient chain:',
-          walletClient?.chain?.id,
-          'walletClient address:',
-          walletClient?.account.address,
-          'priority address:',
-          address,
-          'priority chainId:',
-          chainId,
-        );
-
         if (
           address &&
           chainId &&
@@ -104,10 +93,7 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
         }
 
         const provider = await getEVMProvider(account.connector);
-        console.warn('account.connector', account.connector);
         const isEmbeddedWallet = checkIsEmbeddedWallet(account);
-
-        console.warn('🔍 isEmbeddedWallet', isEmbeddedWallet);
 
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
@@ -121,7 +107,16 @@ export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
 
         return { walletClient, biconomyClients, isEmbeddedWallet };
       } catch (error) {
-        console.error('Failed to initialize clients:', error);
+        Sentry.captureException(error, {
+          tags: {
+            requestWalletAddress: address,
+            requestWalletChainId: chainId,
+            vaultAddress: projectAddress,
+            vaultChainId: projectChainId,
+            walletClientChainId: walletClient?.chain?.id,
+            walletClientAddress: walletClient?.account.address,
+          },
+        });
         return {
           walletClient: null,
           biconomyClients: null,

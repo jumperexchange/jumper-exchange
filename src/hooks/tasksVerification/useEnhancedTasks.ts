@@ -1,10 +1,10 @@
-import { useMemo, useCallback, useEffect } from 'react';
-import { useMissionStore } from 'src/stores/mission';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
+import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
+import { TaskFormState, useMissionStore } from 'src/stores/mission';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { useGetVerifiedTasks } from './useGetVerifiedTasks';
-import { useRouter } from 'next/navigation';
-import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 
 export const useEnhancedTasks = (
   tasks: TaskVerificationWithApy[],
@@ -30,6 +30,7 @@ export const useEnhancedTasks = (
     setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
+    initializeTaskFormStates,
   } = useMissionStore();
 
   const currentActiveTaskId = useMissionStore(
@@ -45,6 +46,19 @@ export const useEnhancedTasks = (
     },
     [JSON.stringify(verifiedTasks)],
   );
+
+  // Initialize form state for all tasks when mission is loaded
+  useEffect(() => {
+    const formStates: Record<string, TaskFormState> = {};
+
+    tasks.forEach((task) => {
+      const widgetParams = task.TaskWidgetInformation ?? {};
+      const hasForm = !!widgetParams.inputs?.length;
+      formStates[task.uuid] = { hasForm, isFormValid: !hasForm };
+    });
+
+    initializeTaskFormStates(formStates);
+  }, [tasks, initializeTaskFormStates]);
 
   const handleSetActiveTask = useCallback(
     (task: TaskVerificationWithApy, shouldScrollToWidget = true) => {
@@ -63,6 +77,8 @@ export const useEnhancedTasks = (
       setIsCurrentActiveTaskCompleted(isTaskVerified);
 
       setCurrentTaskWidgetFormParams({
+        allowBridge: widgetParams.allowBridge ?? undefined,
+        allowExchange: widgetParams.allowExchange ?? undefined,
         sourceChain: widgetParams.sourceChain ?? undefined,
         sourceToken: widgetParams.sourceToken ?? undefined,
         destinationChain: widgetParams.destinationChain ?? undefined,

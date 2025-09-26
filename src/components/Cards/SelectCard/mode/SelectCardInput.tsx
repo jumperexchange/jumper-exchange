@@ -42,11 +42,14 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
             onFocus={onFocus}
             isAmount={isAmount}
           />
-          {description && (
-            <SelectCardDescription variant="bodyXSmall">
-              {description}
-            </SelectCardDescription>
-          )}
+          {description &&
+            (typeof description === 'string' ? (
+              <SelectCardDescription variant="bodyXSmall">
+                {description}
+              </SelectCardDescription>
+            ) : (
+              description
+            ))}
         </SelectCardValueContainer>
         {endAdornment}
       </SelectCardContentContainer>

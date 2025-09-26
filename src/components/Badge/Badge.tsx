@@ -4,15 +4,14 @@ import {
   BadgeVariant,
   StyledBadge,
   StyledBadgeLabel,
+  StyledBadgeProps,
 } from './Badge.styles';
 
-export interface BadgeProps {
+export interface BadgeProps extends StyledBadgeProps {
   startIcon?: React.ReactElement;
   endIcon?: React.ReactElement;
-  label: ReactNode;
-  variant?: BadgeVariant;
-  size?: BadgeSize;
-  onClick?: () => void;
+  label?: ReactNode;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const Badge: FC<BadgeProps> = ({
@@ -22,6 +21,7 @@ export const Badge: FC<BadgeProps> = ({
   variant = BadgeVariant.Default,
   size = BadgeSize.SM,
   onClick,
+  ...rest
 }) => {
   return (
     <StyledBadge
@@ -29,9 +29,10 @@ export const Badge: FC<BadgeProps> = ({
       variant={variant}
       size={size}
       onClick={variant !== 'disabled' ? onClick : undefined}
+      {...rest}
     >
       {startIcon && <>{startIcon}</>}
-      <StyledBadgeLabel>{label}</StyledBadgeLabel>
+      {label && <StyledBadgeLabel>{label}</StyledBadgeLabel>}
       {endIcon && <>{endIcon}</>}
     </StyledBadge>
   );

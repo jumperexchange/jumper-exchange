@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 
-import { PlaywrightTestConfig } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -26,7 +25,7 @@ const qaseReporter = [
       api: {
         token: process.env.QASE_TESTOPS_API_TOKEN,
       },
-      project: 'FE',
+      project: 'WJ',
       uploadAttachments: true,
       run: {
         complete: true,

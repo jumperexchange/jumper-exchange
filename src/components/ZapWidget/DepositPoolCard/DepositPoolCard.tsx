@@ -18,6 +18,10 @@ import { Button } from 'src/components/Button';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { ProjectData } from 'src/types/questDetails';
 import { openInNewTab } from 'src/utils/openInNewTab';
+import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import Tooltip from '@mui/material/Tooltip';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import Box from '@mui/material/Box';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -55,6 +59,10 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     [zapData, lpTokenDecimals],
   );
 
+  const partnerName = useMemo(() => {
+    return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
+  }, [zapData?.meta.name, t]);
+
   const token = useMemo(
     () =>
       isZapDataSuccess && zapData
@@ -77,25 +85,31 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   );
 
   const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [token?.chainId]);
+  const formattedLockupPeriod = formatLockupPeriod(
+    analytics?.lockup_period ?? 0,
+  );
 
   const {
     tooltip: apyTooltip,
     value: apyValue,
     label: apyLabel,
   } = useMemo(() => {
-    if (analytics?.boosted_apy) {
+    const analyticsBaseApy = analytics?.base_apy;
+    const analyticsBoostedApy = analytics?.boosted_apy;
+    const analyticsTotalApy = analytics?.total_apy;
+    if (analyticsBoostedApy && Number(analyticsBoostedApy) > 0) {
       return {
         tooltip: t('tooltips.boostedApy', {
-          baseApy: analytics.base_apy,
-          boostedApy: analytics.boosted_apy,
+          baseApy: analyticsBaseApy,
+          boostedApy: analyticsBoostedApy,
         }),
-        value: boostedAPY.toFixed(1),
+        value: analyticsTotalApy,
         label: t('widget.depositCard.boostedApy'),
       };
     }
     return {
       tooltip: t('tooltips.apy'),
-      value: analytics?.base_apy,
+      value: analyticsBaseApy,
       label: t('widget.depositCard.apy'),
     };
   }, [analytics?.boosted_apy, analytics?.base_apy, boostedAPY, t]);
@@ -151,13 +165,16 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             />
           )}
 
-          {/** Re-enable this once we know the duration and conditionally render it */}
-          {/* <DepositPoolCardItem
+          {formattedLockupPeriod.value && (
+            <DepositPoolCardItem
               title={t('widget.depositCard.lockupPeriod')}
-              tooltip=""
-              value="5"
-              valueAppend="months"
-            /> */}
+              tooltip={t('tooltips.lockupPeriod', {
+                formattedLockupPeriod: `${formattedLockupPeriod.value} ${formattedLockupPeriod.unit}`,
+              })}
+              value={formattedLockupPeriod.value}
+              valueAppend={formattedLockupPeriod.unit}
+            />
+          )}
           {token?.symbol && token?.logoURI && token?.chainId && (
             <DepositPoolCardItem
               title={t('widget.depositCard.token')}
@@ -179,21 +196,33 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           )}
         </Grid>
         {hasDeposited && (
-          <Button
-            variant="transparent"
-            size="medium"
-            endIcon={<OpenInNewRoundedIcon />}
-            disabled={!projectData?.integratorPositionLink}
-            onClick={onClickHandler}
-            styles={(theme) => ({
-              background: (theme.vars || theme).palette.alphaLight100.main,
-              ...theme.applyStyles('light', {
-                background: (theme.vars || theme).palette.alphaDark100.main,
-              }),
+          <Tooltip
+            title={t('tooltips.manageYourPosition', {
+              partnerName: partnerName,
             })}
+            placement={'top'}
+            enterTouchDelay={0}
+            arrow
           >
-            {t('button.manageYourPosition')}
-          </Button>
+            <Box sx={{ display: 'inline-block', width: '100%' }}>
+              <Button
+                fullWidth
+                variant="transparent"
+                size="medium"
+                endIcon={<OpenInNewRoundedIcon />}
+                disabled={!projectData?.integratorPositionLink}
+                onClick={onClickHandler}
+                styles={(theme) => ({
+                  background: (theme.vars || theme).palette.alphaLight100.main,
+                  ...theme.applyStyles('light', {
+                    background: (theme.vars || theme).palette.alphaDark100.main,
+                  }),
+                })}
+              >
+                {t('button.manageYourPosition')}
+              </Button>
+            </Box>
+          </Tooltip>
         )}
       </DepositPoolCardContainer>
     </SectionCardContainer>

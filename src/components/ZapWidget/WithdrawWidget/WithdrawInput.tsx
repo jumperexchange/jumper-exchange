@@ -3,8 +3,13 @@ import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
 import { FC, useMemo, ReactNode } from 'react';
 import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
-import { SelectCardMode } from 'src/components/Cards/SelectCard/SelectCard.styles';
+import {
+  SelectCardDescription,
+  SelectCardMode,
+} from 'src/components/Cards/SelectCard/SelectCard.styles';
 import { WidgetFormHelperText } from './WithdrawWidget.style';
+import { currencyFormatter } from 'src/utils/formatNumbers';
+import Box from '@mui/material/Box';
 
 interface WithdrawInputProps {
   label?: string;
@@ -17,6 +22,7 @@ interface WithdrawInputProps {
   maxValue?: string;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
+  hintEndAdornment?: string;
 }
 
 const NUM_DECIMALS = 1;
@@ -32,6 +38,7 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
   maxValue,
   startAdornment,
   endAdornment,
+  hintEndAdornment,
 }) => {
   const formattedErrorMessage = useMemo(() => {
     if (maxValue && (parseFloat(value) ?? 0) > parseFloat(maxValue)) {
@@ -54,14 +61,13 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
 
   const hint = useMemo(() => {
     return valueUSD
-      ? Intl.NumberFormat('en-US', {
-          style: 'currency',
+      ? currencyFormatter('en-US', {
           notation: 'compact',
           currency: 'USD',
           useGrouping: true,
           minimumFractionDigits: 2,
           maximumFractionDigits: parseFloat(valueUSD) > 2 ? 2 : 4,
-        }).format(parseFloat(valueUSD))
+        })(parseFloat(valueUSD))
       : 'NA';
   }, [valueUSD]);
 
@@ -84,6 +90,7 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
           variant="titleSmall"
           sx={(theme) => ({
             color: (theme.vars || theme).palette.text.primary,
+            whiteSpace: 'break-spaces',
           })}
         >
           {label}
@@ -96,7 +103,24 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
         mode={SelectCardMode.Input}
         placeholder={placeholder}
         value={value}
-        description={hint}
+        label="Amount"
+        description={
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              gap: 1,
+            }}
+          >
+            <SelectCardDescription variant="bodyXSmall">
+              {hint}
+            </SelectCardDescription>
+            <SelectCardDescription variant="bodyXSmall">
+              {hintEndAdornment}
+            </SelectCardDescription>
+          </Box>
+        }
         startAdornment={startAdornment}
         endAdornment={endAdornment}
         onChange={handleInputChange}

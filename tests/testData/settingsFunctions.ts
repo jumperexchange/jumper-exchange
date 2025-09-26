@@ -116,6 +116,16 @@ export async function checkDeselectedAmount(page: Page, category: string, desele
   await expect(numerator).toBe(denominator - deselectedAmount);
 }
 
+export async function  deselectAll(page: Page): Promise<void> {
+  const deselectAllButton = page.locator('xpath=//span[@aria-label="Deselect all"]');
+  await deselectAllButton.click();
+}
+
+export async function selectAll(page: Page): Promise<void> {
+  const selectAllButton = page.locator('#select-all');
+  await selectAllButton.click();
+}
+
 /**
  * Verifies that the numerator is 0 for a given category
  * 
@@ -124,6 +134,6 @@ export async function checkDeselectedAmount(page: Page, category: string, desele
  */
 export async function checkNoneSelected(page: Page, category: string): Promise<void> {
   const fractionLocator = getFractionLocator(page, category);
-  const { numerator, denominator } = await getNumeratorDenominator(fractionLocator);
+  const { numerator } = await getNumeratorDenominator(fractionLocator);
   await expect(numerator).toBe(0);
 }
