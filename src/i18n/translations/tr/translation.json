@@ -36,7 +36,8 @@
       "developers": "Geliştiriciler",
       "support": "Destek",
       "resources": "",
-      "profile": "Jumper Profili"
+      "profile": "Jumper Profili",
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "Bağlantıyı Kes",
@@ -261,7 +262,37 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
-    "lockupPeriod": ""
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets": ""
+  },
+  "labels": {
+    "apy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": ""
+    }
   },
   "widget": {
     "depositCard": {
@@ -274,6 +305,7 @@
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": "",
+      "depositSuccess": "",
       "tabs": {
         "deposit": "",
         "withdraw": ""
