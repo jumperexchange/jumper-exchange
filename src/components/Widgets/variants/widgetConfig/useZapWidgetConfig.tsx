@@ -36,6 +36,12 @@ export function useZapWidgetConfig(
       requiredUI: [RequiredUI.ToAddress],
       keyPrefix: context.keyPrefix ?? 'jumper-custom-zap',
 
+      // This is a rough estimate of the fee for the vault deposit
+      fee: 0.015,
+      feeConfig: {
+        name: 'Vault deposit fee',
+      },
+
       // Explorer configuration
       explorerUrls,
 
