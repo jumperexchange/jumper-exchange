@@ -9,6 +9,8 @@ import type { ClaimableRewards, MerklRewardsData } from 'src/types/strapi';
 import { MERKL_CACHE_TIME, MERKL_STALE_TIME } from 'src/utils/merkl/merklApi';
 import { processRewardsData } from 'src/utils/merkl/merklHelper';
 import { isAddress } from 'viem';
+import { useChains } from './useChains';
+import { ExtendedChain } from '@lifi/sdk';
 
 interface UseMerklRes {
   isSuccess: boolean;
@@ -31,6 +33,8 @@ export const useMerklRewards = ({
   claimableOnly = false,
   includeTokenIcons = false,
 }: UseMerklRewardsProps): UseMerklRes => {
+  const { chains: allChains, isLoading: isAllChainsLoading } = useChains();
+
   // Memoize chain IDs calculation - use Set for O(1) lookup
   const chainIds = useMemo(() => {
     if (!Array.isArray(merklRewards) || merklRewards.length === 0) {
@@ -47,6 +51,18 @@ export const useMerklRewards = ({
       ),
     );
   }, [merklRewards]);
+
+  const chainsMap = useMemo(() => {
+    return allChains
+      .filter((chain) => chainIds.includes(chain.id.toString()))
+      .reduce(
+        (acc, chain) => {
+          acc[chain.id.toString()] = chain;
+          return acc;
+        },
+        {} as Record<string, ExtendedChain>,
+      );
+  }, [allChains, chainIds]);
 
   // Memoize query function
   const fetchUserRewards = useCallback(async () => {
@@ -128,9 +144,12 @@ export const useMerklRewards = ({
         return {
           ...reward,
           tokenLogo: matchingToken?.icon || '',
+          explorerLink:
+            chainsMap[reward.chainId.toString()]?.metamask
+              .blockExplorerUrls[0] || reward.explorerLink,
         };
       }),
-    [rewardsToClaim, tokenAddressMap],
+    [rewardsToClaim, tokenAddressMap, chainsMap],
   );
 
   // Return early if no valid user address
@@ -144,7 +163,7 @@ export const useMerklRewards = ({
   }
 
   return {
-    isLoading: positionsIsLoading,
+    isLoading: positionsIsLoading || isAllChainsLoading,
     isSuccess: positionsIsSuccess,
     availableRewards: rewardsWithLogos,
     pastCampaigns,

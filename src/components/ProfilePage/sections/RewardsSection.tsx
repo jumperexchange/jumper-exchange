@@ -22,7 +22,6 @@ export const RewardsSection = ({
 }) => {
   const { t } = useTranslation();
   const { walletAddress: address } = useContext(ProfileContext);
-  const { getChainById, isLoading: isChainsLoading } = useChains();
 
   const { availableRewards, isSuccess, isLoading } = useMerklRewards({
     userAddress: address,
@@ -31,18 +30,9 @@ export const RewardsSection = ({
     merklRewards,
   });
 
-  const rewardsWithAmount = useMemo(() => {
-    return availableRewards
-      .filter((reward) => reward.amountToClaim > 0)
-      .map((reward) => {
-        const chain = getChainById(reward.chainId);
-        return {
-          ...reward,
-          explorerLink:
-            chain?.metamask.blockExplorerUrls[0] ?? reward.explorerLink,
-        };
-      });
-  }, [availableRewards, getChainById]);
+  const rewardsWithAmount = availableRewards.filter(
+    (reward) => reward.amountToClaim > 0,
+  );
 
   if (!rewardsWithAmount.length || !isSuccess) {
     return null;
@@ -55,7 +45,7 @@ export const RewardsSection = ({
           {t('profile_page.availableRewards')}
         </Typography>
         <RewardsCarousel>
-          {isLoading || isChainsLoading
+          {isLoading
             ? Array.from({ length: 2 }).map((_, index) => (
                 <RewardClaimCardSkeleton key={index} />
               ))
