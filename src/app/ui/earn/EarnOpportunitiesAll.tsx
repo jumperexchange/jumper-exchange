@@ -1,9 +1,7 @@
 'use client';
-import { Card, CardContent, Grid } from '@mui/material';
+
 import { useState } from 'react';
-import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
   EarnFilteringProvider,
@@ -14,15 +12,8 @@ import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from './EarnOpportunitiesCards';
 
 const EarnOpportunitiesAll_ = () => {
-  const {
-    totalMarkets,
-    forYouLoading,
-    forYou,
-    allLoading,
-    all,
-    showForYou,
-    toggleForYou,
-  } = useEarnFiltering();
+  const { forYouLoading, forYou, allLoading, all, showForYou } =
+    useEarnFiltering();
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
