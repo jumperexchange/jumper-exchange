@@ -36,7 +36,8 @@
       "developers": "Desenvolvedores",
       "support": "Suporte",
       "resources": "Recursos",
-      "profile": "Perfil Jumper"
+      "profile": "Perfil Jumper",
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -261,7 +262,37 @@
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
     "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
-    "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos."
+    "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos.",
+    "manageYourPosition": "",
+    "assets": ""
+  },
+  "labels": {
+    "apy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": ""
+    }
   },
   "widget": {
     "depositCard": {
@@ -274,6 +305,7 @@
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
+      "depositSuccess": "",
       "tabs": {
         "deposit": "Depositar",
         "withdraw": "Retirar"
