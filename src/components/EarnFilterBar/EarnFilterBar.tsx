@@ -5,12 +5,11 @@ import {
   HorizontalTabs,
 } from '../HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from '../HorizontalTabs/HorizontalTabs.style';
-import { EarnFilterBarContentForYou } from './EarnFilterBarContentForYou';
-import { EarnFilterBarContentAll } from './EarnFilterBarContentAll';
+import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
+import { EarnFilterBarContentAll } from './components/EarnFilterBarContentAll';
 import Stack from '@mui/material/Stack';
-import { EarnListMode } from './EarnListMode';
-import { EarnFilterSort, SortByOptions } from './EarnFilterSort';
-import { useState } from 'react';
+import { EarnListMode } from './components/EarnListMode';
+import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 
 export interface EarnFilterBarProps {
@@ -22,9 +21,6 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   variant,
   setVariant,
 }) => {
-  // TODO: introduce the loading state?
-  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY); // TODO: move to context.
-
   const { showForYou, toggleForYou } = useEarnFiltering();
 
   const tabOptions: HorizontalTabItem[] = [
@@ -55,9 +51,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
       <EarnFilterBarContent>
         <Stack direction="row" gap={1} alignItems="center" flexShrink={0}>
           <EarnListMode variant={variant} setVariant={setVariant} />
-          {!showForYou && (
-            <EarnFilterSort sortBy={sortBy} setSortBy={setSortBy} />
-          )}
+          {!showForYou && <EarnFilterSort />}
         </Stack>
       </EarnFilterBarContent>
     </EarnFilterBarContainer>

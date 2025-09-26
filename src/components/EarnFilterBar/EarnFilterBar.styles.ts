@@ -10,3 +10,11 @@ export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
   overflow: 'hidden',
 }));
+
+export const EarnFilterBarContentContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+  gap: theme.spacing(2),
+}));

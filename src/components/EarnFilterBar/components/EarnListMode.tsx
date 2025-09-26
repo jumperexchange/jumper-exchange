@@ -1,8 +1,8 @@
-import GridViewRoundedIcon from '../illustrations/GridViewRounded';
+import GridViewRoundedIcon from '../../illustrations/GridViewRounded';
 import ListIcon from '@mui/icons-material/List';
-import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
-import { IconSelect } from '../core/IconSelect/IconSelect';
-import { IconOption } from '../core/IconSelect/IconSelect.types';
+import { EarnCardVariant } from '../../Cards/EarnCard/EarnCard.types';
+import { IconSelect } from '../../core/IconSelect/IconSelect';
+import { IconOption } from '../../core/IconSelect/IconSelect.types';
 
 type Props = {
   variant: EarnCardVariant;

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
-import { EarnFilterBar } from 'src/components/EarnFilter/EarnFilterBar';
+import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
   EarnFilteringProvider,
   useEarnFiltering,

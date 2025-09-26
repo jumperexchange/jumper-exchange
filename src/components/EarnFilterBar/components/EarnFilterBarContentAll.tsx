@@ -1,10 +1,10 @@
 import { FC, PropsWithChildren } from 'react';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
-import { MultiSelectOption } from '../core/MultiSelect/MultiSelect.types';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import { Select } from '../core/form/Select/Select';
-import { SelectVariant } from '../core/form/Select/Select.types';
+import { MultiSelectOption } from '../../core/MultiSelect/MultiSelect.types';
+import { Select } from '../../core/form/Select/Select';
+import { SelectVariant } from '../../core/form/Select/Select.types';
+import { EarnAnimatedLayoutContainer } from './EarnAnimatedLayoutContainer';
+import { EarnFilterBarContentContainer } from '../EarnFilterBar.styles';
 
 export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   children,
@@ -72,16 +72,8 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-        gap: 2,
-      }}
-    >
-      <Stack direction="row" gap={1} flexWrap="wrap" flex={1}>
+    <EarnFilterBarContentContainer>
+      <EarnAnimatedLayoutContainer>
         <Select
           options={chainOptions}
           value={filter?.chains?.map(String) ?? []}
@@ -131,9 +123,9 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
           variant={SelectVariant.Slider}
           data-testid="earn-filter-apy-select"
         />
-      </Stack>
+      </EarnAnimatedLayoutContainer>
 
       {children}
-    </Box>
+    </EarnFilterBarContentContainer>
   );
 };
