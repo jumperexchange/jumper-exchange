@@ -649,6 +649,8 @@ export interface GeneratePayloadDto {
   params: object;
 }
 
+export type TokenDto = object;
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -699,7 +701,21 @@ export interface Protocol {
   logo: string;
 }
 
-export interface EarnOpportunity {
+export interface APYItem {
+  base: number;
+  reward: number;
+  total: number;
+}
+
+export interface EarnOpportunityHistoryItem {
+  /** @format date-time */
+  date: string;
+  tvlUsd: string;
+  tvlNative: string;
+  apy: APYItem;
+}
+
+export interface EarnOpportunityWithLatestAnalytics {
   name: string;
   asset: Token;
   protocol: Protocol;
@@ -710,6 +726,10 @@ export interface EarnOpportunity {
   lpToken: Token;
   slug: string;
   featured: boolean;
+  lockupMonths?: number;
+  capInDollar?: string;
+  forYou: boolean;
+  latest: EarnOpportunityHistoryItem;
 }
 
 export type WalletVerification = object;
@@ -942,13 +962,14 @@ export class HttpClient<SecurityDataType = unknown> {
             : payloadFormatter(body),
       },
     ).then(async (response) => {
-      const r = response.clone() as HttpResponse<T, E>;
+      const r = response as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
+      const responseToParse = responseFormat ? response.clone() : response;
       const data = !responseFormat
         ? r
-        : await response[responseFormat]()
+        : await responseToParse[responseFormat]()
             .then((data) => {
               if (r.ok) {
                 r.data = data;
@@ -1077,22 +1098,38 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags Zaps, Public
+     * @name ZapsControllerGetLpTokensV1
+     * @summary Get all LP tokens
+     * @request GET:/v1/zaps/get-all-lp-tokens
+     */
+    zapsControllerGetLpTokensV1: (params: RequestParams = {}) =>
+      this.request<TokenDto[], any>({
+        path: `/v1/zaps/get-all-lp-tokens`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Earn, Public
      * @name EarnControllerGetTopsV1
      * @summary Get tops for an address
      * @request GET:/v1/earn/tops
      */
     earnControllerGetTopsV1: (
-      query: {
+      query?: {
         /**
          * The address to get tops for
          * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
          */
-        address: string;
+        address?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunity[], any>({
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/tops`,
         method: 'GET',
         query: query,
@@ -1109,16 +1146,56 @@ export class JumperBackend<
      * @request GET:/v1/earn/filter
      */
     earnControllerFilterV1: (
-      query: {
+      query?: {
         /**
-         * The chain id to filter for
-         * @example 1
+         * The address to filter for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
          */
-        chainId: number;
+        address?: string;
+        /**
+         * Whether to filter for "for you" opportunities
+         * @example true
+         */
+        forYou?: boolean;
+        /**
+         * Whether to filter for featured opportunities
+         * @example true
+         */
+        featured?: boolean;
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The protocols to filter for
+         * @example ["Aave","Compound","Yearn"]
+         */
+        protocols?: string[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The tags to filter for
+         * @example ["Lending","Staking","Earn"]
+         */
+        tags?: string[];
+        /**
+         * The minimum APY to filter for
+         * @example 5.5
+         */
+        minAPY?: number;
+        /**
+         * The maximum APY to filter for
+         * @example 25
+         */
+        maxAPY?: number;
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunity[], any>({
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/filter`,
         method: 'GET',
         query: query,
@@ -1135,7 +1212,7 @@ export class JumperBackend<
      * @request GET:/v1/earn/items/{slug}
      */
     earnControllerGetItemV1: (slug: string, params: RequestParams = {}) =>
-      this.request<EarnOpportunity, any>({
+      this.request<EarnOpportunityWithLatestAnalytics, any>({
         path: `/v1/earn/items/${slug}`,
         method: 'GET',
         format: 'json',

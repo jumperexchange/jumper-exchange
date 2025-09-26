@@ -2,7 +2,6 @@
 
 import {
   ChainType,
-  HiddenUI,
   LiFiWidget,
   Route,
   RouteExecutionUpdate,
@@ -14,14 +13,16 @@ import { FC, useEffect, useMemo } from 'react';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { ConfigContext } from '../../widgetConfig/types';
 import { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import { ZapWidgetContext } from '../../widgetConfig/types';
 
-interface ZapDepositWidgetProps extends WidgetProps {}
+interface ZapDepositWidgetProps extends Omit<WidgetProps, 'type'> {
+  ctx: ZapWidgetContext;
+}
 
 export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   customInformation,
@@ -69,24 +70,17 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   }, [projectData?.minFromAmountUSD]);
 
   const enhancedCtx = useMemo(() => {
-    const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: projectData.integrator,
-      minFromAmountUSD,
-      hiddenUI: [
-        HiddenUI.LowAddressActivityConfirmation,
-        HiddenUI.GasRefuelMessage,
-      ],
-    };
-
     return {
       ...ctx,
-      includeZap: true,
+      integrator: projectData.integrator,
+      formData: {
+        minFromAmountUSD,
+      },
       zapPoolName: poolName,
-      baseOverrides,
     };
   }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
 
-  const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
   // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
   const lpToken = zapData?.market?.lpToken;

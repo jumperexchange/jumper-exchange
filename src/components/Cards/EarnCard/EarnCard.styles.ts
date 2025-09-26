@@ -98,3 +98,35 @@ export const ListItemEarnCardTagContainer = styled(Stack)(({ theme }) => ({
   columnGap: theme.spacing(1),
   alignItems: 'center',
 }));
+
+export const TopEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
+  padding: theme.spacing(3),
+  gap: theme.spacing(1),
+  minHeight: 312,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  display: 'flex',
+  flexDirection: 'column',
+}));
+
+export const TopEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+}));
+
+interface TopEarnCardContentContainerProps {
+  isMain?: boolean;
+}
+
+export const TopEarnCardContentContainer = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isMain',
+})<TopEarnCardContentContainerProps>(({ theme, isMain }) => ({
+  gap: theme.spacing(2),
+  '& p': {
+    ...(isMain ? theme.typography.h3 : theme.typography.h4),
+    margin: 0,
+  },
+}));
+
+export const TopEarnCardFooterContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(2),
+  marginTop: 'auto',
+}));

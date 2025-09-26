@@ -1,22 +1,21 @@
-import Box from '@mui/material/Box';
+import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { motion } from 'framer-motion';
 import { FC, useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
-import { ZapDepositWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositWidget';
+import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { ZapInitProvider } from 'src/providers/ZapInitProvider/ZapInitProvider';
-import CloseIcon from '@mui/icons-material/Close';
-import { CenteredWrapper, CloseIconButton } from './DepositModal.styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { TaskType } from 'src/types/strapi';
-import { motion } from 'framer-motion';
-import { EarnOpportunity } from 'src/types/jumper-backend';
+import { CenteredWrapper, CloseIconButton } from './DepositModal.styles';
 
 interface DepositModalProps {
   onClose: () => void;
   isOpen: boolean;
   earnOpportunity: Pick<
-    EarnOpportunity,
+    EarnOpportunityWithLatestAnalytics,
     'name' | 'asset' | 'protocol' | 'url'
   > & {
     minFromAmountUSD: number;
@@ -84,7 +83,7 @@ export const DepositModal: FC<DepositModalProps> = ({
               </motion.div>
             )}
             <ClientOnly>
-              <ZapDepositWidget
+              <ZapDepositBackendWidget
                 ctx={{
                   theme: {
                     container: {

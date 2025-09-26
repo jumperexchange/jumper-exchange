@@ -181,6 +181,7 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     bodyXXSmallStrong: React.CSSProperties;
+    bodyXXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
     titleMedium: React.CSSProperties;
@@ -216,6 +217,7 @@ declare module '@mui/material/styles' {
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
     bodyXXSmallStrong: React.CSSProperties;
+    bodyXXSmall: React.CSSProperties;
     brandHeaderXLarge: React.CSSProperties;
     titleSmall: React.CSSProperties;
     titleMedium: React.CSSProperties;
@@ -253,6 +255,7 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     bodyXXSmallStrong: true;
+    bodyXXSmall: true;
     brandHeaderXLarge: true;
     titleSmall: true;
     titleXSmall: true;
@@ -287,6 +290,7 @@ declare module '@mui/material/Typography' {
     bodyXSmallStrong: true;
     bodyXSmall: true;
     bodyXXSmallStrong: true;
+    bodyXXSmall: true;
     brandHeaderXLarge: true;
     titleSmall: true;
     titleMedium: true;
@@ -568,6 +572,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bodyXSmallStrong: 'p',
             bodyXSmall: 'p',
             bodyXXSmallStrong: 'p',
+            bodyXXSmall: 'p',
             brandHeaderXLarge: 'h1',
             urbanistTitleLarge: 'p',
             urbanistTitle2XLarge: 'p',
@@ -719,6 +724,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       bodyXXSmallStrong: {
         fontStyle: 'normal',
         fontWeight: 700,
+        fontSize: '10px',
+        lineHeight: '14px',
+        letterSpacing: 0,
+      },
+      bodyXXSmall: {
+        fontStyle: 'normal',
+        fontWeight: 400,
         fontSize: '10px',
         lineHeight: '14px',
         letterSpacing: 0,

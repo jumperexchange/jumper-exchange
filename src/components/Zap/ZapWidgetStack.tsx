@@ -32,7 +32,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
 
   const ctx = useMemo(() => {
     return {
-      taskType: TaskType.Zap,
+      taskType: TaskType.Zap as const,
     };
   }, []);
 

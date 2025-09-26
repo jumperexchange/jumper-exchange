@@ -53,6 +53,7 @@ export interface JumperDataTrackTransactionProps {
   action: string;
   browserFingerprint: string;
   errorCode?: string | number;
+  errorCodeKey?: string;
   errorMessage?: string;
   exchange?: string;
   fromAmount: number;
@@ -128,6 +129,7 @@ export const useJumperTracking = () => {
       action: data.action,
       browserFingerprint: data.browserFingerprint,
       errorCode: data.errorCode,
+      errorCodeKey: data.errorCodeKey,
       errorMessage: data.errorMessage,
       exchange: data.exchange,
       fromAmount: data.fromAmount,

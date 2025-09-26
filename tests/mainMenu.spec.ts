@@ -169,6 +169,12 @@ test.describe('Main Menu flows', () => {
     await openNewTabAndVerifyUrl(context, values.link3URL);
   });
 
+  test(qase(37,'Should be able to navigate to the Privacy Policy page'), async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInNavigation(page, 'Privacy Policy');
+    await expect(page).toHaveURL(values.privacyPolicyURL);
+  });
+
   test(qase(20, 'Should be able to click on the Support button'), async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Support');

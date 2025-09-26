@@ -19,6 +19,9 @@ import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { ProjectData } from 'src/types/questDetails';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import Tooltip from '@mui/material/Tooltip';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import Box from '@mui/material/Box';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -55,6 +58,10 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     }),
     [zapData, lpTokenDecimals],
   );
+
+  const partnerName = useMemo(() => {
+    return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
+  }, [zapData?.meta.name, t]);
 
   const token = useMemo(
     () =>
@@ -189,21 +196,33 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           )}
         </Grid>
         {hasDeposited && (
-          <Button
-            variant="transparent"
-            size="medium"
-            endIcon={<OpenInNewRoundedIcon />}
-            disabled={!projectData?.integratorPositionLink}
-            onClick={onClickHandler}
-            styles={(theme) => ({
-              background: (theme.vars || theme).palette.alphaLight100.main,
-              ...theme.applyStyles('light', {
-                background: (theme.vars || theme).palette.alphaDark100.main,
-              }),
+          <Tooltip
+            title={t('tooltips.manageYourPosition', {
+              partnerName: partnerName,
             })}
+            placement={'top'}
+            enterTouchDelay={0}
+            arrow
           >
-            {t('button.manageYourPosition')}
-          </Button>
+            <Box sx={{ display: 'inline-block', width: '100%' }}>
+              <Button
+                fullWidth
+                variant="transparent"
+                size="medium"
+                endIcon={<OpenInNewRoundedIcon />}
+                disabled={!projectData?.integratorPositionLink}
+                onClick={onClickHandler}
+                styles={(theme) => ({
+                  background: (theme.vars || theme).palette.alphaLight100.main,
+                  ...theme.applyStyles('light', {
+                    background: (theme.vars || theme).palette.alphaDark100.main,
+                  }),
+                })}
+              >
+                {t('button.manageYourPosition')}
+              </Button>
+            </Box>
+          </Tooltip>
         )}
       </DepositPoolCardContainer>
     </SectionCardContainer>

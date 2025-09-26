@@ -3,19 +3,15 @@
 import {
   ChainType,
   FormState,
-  HiddenUI,
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
-  WidgetSkeleton,
 } from '@lifi/widget';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { ConfigContext } from '../../widgetConfig/types';
 import { WidgetProps } from '../Widget.types';
 import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
 import { ChainId } from '@lifi/sdk';
@@ -26,14 +22,24 @@ import uniqBy from 'lodash/uniqBy';
 import { useZapAllLpTokens } from 'src/hooks/zaps/useZapAllLpTokens';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 import { useShowZapPlaceholderWidget } from './hooks';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import { ZapWidgetContext } from '../../widgetConfig/types';
+import { ZapDepositSettings } from './ZapDepositSettings';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import { useTranslation } from 'react-i18next';
+import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
 
-interface ZapDepositBackendWidgetProps extends WidgetProps {}
+interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
+  ctx: ZapWidgetContext;
+}
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   customInformation,
   ctx,
 }) => {
   useZapQuestIdStorage();
+  const { t } = useTranslation();
 
   const projectData = useMemo(() => {
     return customInformation?.projectData;
@@ -104,6 +110,10 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
   }, [JSON.stringify(zapData ?? {})]);
 
+  const partnerName = useMemo(() => {
+    return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
+  }, [JSON.stringify(zapData ?? {})]);
+
   const toToken = useMemo(() => {
     return zapData?.market?.depositToken.address;
   }, [JSON.stringify(zapData ?? {})]);
@@ -119,22 +129,15 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [projectData?.minFromAmountUSD]);
 
   const enhancedCtx = useMemo(() => {
-    const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: 'zap.morpho',
-      minFromAmountUSD,
-      hiddenUI: [
-        HiddenUI.LowAddressActivityConfirmation,
-        HiddenUI.GasRefuelMessage,
-      ],
-      variant: 'wide',
-      keyPrefix: 'zap.backend',
-    };
-
     return {
       ...ctx,
-      includeZap: true,
       zapPoolName: poolName,
-      baseOverrides,
+      integrator: 'zap.morpho',
+      keyPrefix: 'zap.backend',
+      // variant: 'wide' as const,
+      formData: {
+        minFromAmountUSD,
+      },
     };
   }, [JSON.stringify(ctx), projectData.integrator, minFromAmountUSD, poolName]);
 
@@ -162,29 +165,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       setUrlSearchParam: true,
     });
   }, [sourceChainToken, allowedChains]);
-
-  useEffect(() => {
-    if (!formRef.current) {
-      return;
-    }
-
-    if (toChain) {
-      formRef.current?.setFieldValue('toChain', toChain, {
-        setUrlSearchParam: true,
-      });
-    }
-
-    if (toToken) {
-      formRef.current?.setFieldValue('toToken', toToken, {
-        setUrlSearchParam: true,
-      });
-    }
-
-    // @Note: Since we now use formRef to set/reset values, we no longer need ZapDepositSettings
-    // which relies on setFieldValue. However, contractCalls still needs to be set either through
-    // this method or setFieldValue - any other approach will prevent routes from being fetched.
-    formRef.current?.setFieldValue('contractCalls' as any, []);
-  }, [toChain, toToken]);
 
   useEffect(() => {
     setDestinationChainTokenForTracking({
@@ -220,7 +200,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
-  const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
   // @Note: we want to ensure that the chains are set in the widget config without any delay
   if (allowedChains) {
@@ -261,6 +241,16 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
+      contractCompactComponent={
+        <ZapDepositSuccessMessage partnerName={partnerName} t={t} />
+      }
+      contractComponent={
+        <ZapDepositSettings
+          toChain={toChain}
+          toToken={toToken}
+          contractCalls={[]}
+        />
+      }
     />
   ) : (
     <WidgetSkeleton />

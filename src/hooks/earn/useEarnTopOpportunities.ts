@@ -1,17 +1,20 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { getOpportunitiesTop } from 'src/app/lib/getOpportunitiesTop';
 import { FIVE_MINUTES_MS } from 'src/const/time';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { Hex } from 'viem';
-import { EarnOpportunity } from 'src/types/jumper-backend';
+import { useAccountAddress } from './useAccountAddress';
 
-export interface Props {
-  address: Hex;
-}
+export interface Props {}
 
-export type Result = UseQueryResult<EarnOpportunity[], unknown>;
+export type Result = UseQueryResult<
+  EarnOpportunityWithLatestAnalytics[],
+  unknown
+>;
 
-export const useEarnTopOpportunities = ({ address }: Props): Result => {
-  // TODO: LF-14980: Deal with favorites & refetching
+export const useEarnTopOpportunities = ({}: Props): Result => {
+  const address: Hex | undefined = useAccountAddress();
+
   return useQuery({
     queryKey: ['earn-top-opportunities', address],
     queryFn: async () => {
@@ -19,7 +22,8 @@ export const useEarnTopOpportunities = ({ address }: Props): Result => {
       if (!result.ok) {
         throw result.error;
       }
-      return result.data;
+      // @ts-expect-error: see LF-15589 - we are transforming data in the backend
+      return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,
   });
