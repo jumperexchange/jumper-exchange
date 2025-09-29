@@ -37,7 +37,7 @@
       "support": "Support",
       "resources": "",
       "profile": "Profil Jumper",
-      "privacyPolicy": "Politique de Confidentialité"
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "Se déconnecter",
@@ -262,7 +262,37 @@
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
-    "lockupPeriod": ""
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets": ""
+  },
+  "labels": {
+    "apy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": ""
+    }
   },
   "widget": {
     "depositCard": {
@@ -275,6 +305,7 @@
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": "",
+      "depositSuccess": "",
       "tabs": {
         "deposit": "",
         "withdraw": ""

@@ -17,7 +17,7 @@ export const AchievementsCard: FC<AchievementsCardProps> = ({ pda }) => {
       imageUrl: pda.reward.image,
       points: pda.points,
     };
-  }, [JSON.stringify(pda)]);
+  }, [pda]);
 
   return (
     <AchievementCard

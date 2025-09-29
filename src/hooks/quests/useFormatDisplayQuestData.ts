@@ -122,5 +122,5 @@ export function useFormatDisplayQuestData(
         id: chainId,
       },
     };
-  }, [rewardGroups, JSON.stringify(quest)]);
+  }, [rewardGroups, quest]);
 }

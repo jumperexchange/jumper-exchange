@@ -28,7 +28,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.meta.name, zapData?.market?.depositToken?.symbol]);
 
   const token = useMemo(
     () =>

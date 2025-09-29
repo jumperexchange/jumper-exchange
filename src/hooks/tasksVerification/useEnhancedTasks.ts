@@ -44,7 +44,7 @@ export const useEnhancedTasks = (
     (task: TaskVerificationWithApy) => {
       return task && task.hasTask && verifiedTaskIds.has(task.uuid);
     },
-    [JSON.stringify(verifiedTasks)],
+    [verifiedTasks],
   );
 
   // Initialize form state for all tasks when mission is loaded
@@ -138,7 +138,7 @@ export const useEnhancedTasks = (
     }
   }, [
     checkIsTaskVerified,
-    JSON.stringify(tasks),
+    tasks,
     currentActiveTaskId,
     isCurrentActiveTaskCompleted,
   ]);
@@ -154,7 +154,7 @@ export const useEnhancedTasks = (
         isRequired,
       };
     });
-  }, [checkIsTaskVerified, JSON.stringify(tasks)]);
+  }, [checkIsTaskVerified, tasks]);
 
   return {
     enhancedTasks,
