@@ -8,6 +8,7 @@ export const queryKey = ['chainStats'];
 export interface ChainProps {
   chains: ExtendedChain[];
   isSuccess: boolean;
+  isLoading: boolean;
   getChainById: (id: ChainId) => ExtendedChain | undefined;
 }
 
@@ -19,7 +20,7 @@ export async function getChainsQuery() {
 }
 
 export const useChains = (): ChainProps => {
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading } = useQuery({
     queryKey: ['chainStats'],
     queryFn: getChainsQuery,
     enabled: true,
@@ -34,5 +35,6 @@ export const useChains = (): ChainProps => {
     getChainById,
     chains: data?.chains || ([] as ExtendedChain[]),
     isSuccess,
+    isLoading,
   };
 };

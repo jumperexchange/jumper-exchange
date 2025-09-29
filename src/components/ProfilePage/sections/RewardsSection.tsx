@@ -6,13 +6,14 @@ import {
   RewardsSectionContainer,
 } from './Section.style';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { useMerklRewards } from 'src/hooks/useMerklRewards';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCard } from '../components/RewardsCarousel/RewardClaimCard';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/RewardClaimCardSkeleton';
 import { MerklRewardsData } from 'src/types/strapi';
+import { useChains } from 'src/hooks/useChains';
 
 export const RewardsSection = ({
   merklRewards,
@@ -30,10 +31,10 @@ export const RewardsSection = ({
   });
 
   const rewardsWithAmount = availableRewards.filter(
-    (reward) => reward.amountToClaim > 0 && isSuccess,
+    (reward) => reward.amountToClaim > 0,
   );
 
-  if (!rewardsWithAmount.length) {
+  if (!rewardsWithAmount.length || !isSuccess) {
     return null;
   }
 
