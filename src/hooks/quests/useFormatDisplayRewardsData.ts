@@ -17,7 +17,7 @@ export const useFormatDisplayRewardsData = (
         rewardsIds: customInformation?.['rewardsIds'],
         chains: customInformation?.['chains'],
       };
-    }, [JSON.stringify(customInformation ?? {})]);
+    }, [customInformation]);
 
   const chainIds = (chains ?? [])
     .map((chain) => chain.chainId)

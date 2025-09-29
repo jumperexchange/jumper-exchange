@@ -37,5 +37,5 @@ export const useFormatDisplayTaskData = (
       isVerified,
       isRequired,
     };
-  }, [JSON.stringify(task ?? {})]);
+  }, [task]);
 };

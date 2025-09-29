@@ -55,15 +55,15 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.meta.name]);
 
   const toToken = useMemo(() => {
     return zapData?.market?.depositToken.address;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.market?.depositToken.address]);
 
   const toChain = useMemo(() => {
     return zapData?.market?.depositToken.chainId;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.market?.depositToken.chainId]);
 
   const minFromAmountUSD = useMemo(() => {
     return Number(projectData?.minFromAmountUSD ?? '0');
@@ -78,7 +78,7 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       },
       zapPoolName: poolName,
     };
-  }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
+  }, [ctx, poolName, projectData.integrator, minFromAmountUSD]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
