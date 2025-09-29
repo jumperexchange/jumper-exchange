@@ -562,6 +562,7 @@ export interface CreateWalletTransactionDto {
   transactionId?: string;
   transactionLink?: string;
   errorCode?: object;
+  errorCodeKey?: string;
   errorMessage?: string;
   message?: string;
   status?: string;
@@ -719,7 +720,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   name: string;
   asset: Token;
   protocol: Protocol;
-  url: string;
+  url?: string;
   description: string;
   tags: string[];
   rewards: string[];
@@ -739,9 +740,9 @@ export interface UpdateValidityDto {
 }
 
 export type QueryParamsType = Record<string | number, any>;
-export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
+export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
-export interface FullRequestParams extends Omit<RequestInit, 'body'> {
+export interface FullRequestParams extends Omit<RequestInit, "body"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -762,12 +763,12 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
 
 export type RequestParams = Omit<
   FullRequestParams,
-  'body' | 'method' | 'query' | 'path'
+  "body" | "method" | "query" | "path"
 >;
 
 export interface ApiConfig<SecurityDataType = unknown> {
   baseUrl?: string;
-  baseApiParams?: Omit<RequestParams, 'baseUrl' | 'cancelToken' | 'signal'>;
+  baseApiParams?: Omit<RequestParams, "baseUrl" | "cancelToken" | "signal">;
   securityWorker?: (
     securityData: SecurityDataType | null,
   ) => Promise<RequestParams | void> | RequestParams | void;
@@ -783,26 +784,26 @@ export interface HttpResponse<D extends unknown, E extends unknown = unknown>
 type CancelToken = Symbol | string | number;
 
 export enum ContentType {
-  Json = 'application/json',
-  JsonApi = 'application/vnd.api+json',
-  FormData = 'multipart/form-data',
-  UrlEncoded = 'application/x-www-form-urlencoded',
-  Text = 'text/plain',
+  Json = "application/json",
+  JsonApi = "application/vnd.api+json",
+  FormData = "multipart/form-data",
+  UrlEncoded = "application/x-www-form-urlencoded",
+  Text = "text/plain",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = '';
+  public baseUrl: string = "";
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
+  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
   private customFetch = (...fetchParams: Parameters<typeof fetch>) =>
     fetch(...fetchParams);
 
   private baseApiParams: RequestParams = {
-    credentials: 'same-origin',
+    credentials: "same-origin",
     headers: {},
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
   };
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
@@ -815,7 +816,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected encodeQueryParam(key: string, value: any) {
     const encodedKey = encodeURIComponent(key);
-    return `${encodedKey}=${encodeURIComponent(typeof value === 'number' ? value : `${value}`)}`;
+    return `${encodedKey}=${encodeURIComponent(typeof value === "number" ? value : `${value}`)}`;
   }
 
   protected addQueryParam(query: QueryParamsType, key: string) {
@@ -824,13 +825,13 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected addArrayQueryParam(query: QueryParamsType, key: string) {
     const value = query[key];
-    return value.map((v: any) => this.encodeQueryParam(key, v)).join('&');
+    return value.map((v: any) => this.encodeQueryParam(key, v)).join("&");
   }
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
     const query = rawQuery || {};
     const keys = Object.keys(query).filter(
-      (key) => 'undefined' !== typeof query[key],
+      (key) => "undefined" !== typeof query[key],
     );
     return keys
       .map((key) =>
@@ -838,25 +839,25 @@ export class HttpClient<SecurityDataType = unknown> {
           ? this.addArrayQueryParam(query, key)
           : this.addQueryParam(query, key),
       )
-      .join('&');
+      .join("&");
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
     const queryString = this.toQueryString(rawQuery);
-    return queryString ? `?${queryString}` : '';
+    return queryString ? `?${queryString}` : "";
   }
 
   private contentFormatters: Record<ContentType, (input: any) => any> = {
     [ContentType.Json]: (input: any) =>
-      input !== null && (typeof input === 'object' || typeof input === 'string')
+      input !== null && (typeof input === "object" || typeof input === "string")
         ? JSON.stringify(input)
         : input,
     [ContentType.JsonApi]: (input: any) =>
-      input !== null && (typeof input === 'object' || typeof input === 'string')
+      input !== null && (typeof input === "object" || typeof input === "string")
         ? JSON.stringify(input)
         : input,
     [ContentType.Text]: (input: any) =>
-      input !== null && typeof input !== 'string'
+      input !== null && typeof input !== "string"
         ? JSON.stringify(input)
         : input,
     [ContentType.FormData]: (input: any) => {
@@ -870,7 +871,7 @@ export class HttpClient<SecurityDataType = unknown> {
           key,
           property instanceof Blob
             ? property
-            : typeof property === 'object' && property !== null
+            : typeof property === "object" && property !== null
               ? JSON.stringify(property)
               : `${property}`,
         );
@@ -933,7 +934,7 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
-      ((typeof secure === 'boolean' ? secure : this.baseApiParams.secure) &&
+      ((typeof secure === "boolean" ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
@@ -943,13 +944,13 @@ export class HttpClient<SecurityDataType = unknown> {
     const responseFormat = format || requestParams.format;
 
     return this.customFetch(
-      `${baseUrl || this.baseUrl || ''}${path}${queryString ? `?${queryString}` : ''}`,
+      `${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`,
       {
         ...requestParams,
         headers: {
           ...(requestParams.headers || {}),
           ...(type && type !== ContentType.FormData
-            ? { 'Content-Type': type }
+            ? { "Content-Type": type }
             : {}),
         },
         signal:
@@ -957,7 +958,7 @@ export class HttpClient<SecurityDataType = unknown> {
             ? this.createAbortSignal(cancelToken)
             : requestParams.signal) || null,
         body:
-          typeof body === 'undefined' || body === null
+          typeof body === "undefined" || body === null
             ? null
             : payloadFormatter(body),
       },
@@ -1029,9 +1030,9 @@ export class JumperBackend<
     ) =>
       this.request<LeaderboardEntity[], any>({
         path: `/v1/leaderboard`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1050,8 +1051,8 @@ export class JumperBackend<
     ) =>
       this.request<LeaderboardEntity, void>({
         path: `/v1/leaderboard/centered-pagination/${position}/${entries}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1069,8 +1070,8 @@ export class JumperBackend<
     ) =>
       this.request<LeaderboardEntity, void>({
         path: `/v1/leaderboard/${address}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1088,10 +1089,10 @@ export class JumperBackend<
     ) =>
       this.request<GeneratePayloadDto, any>({
         path: `/v1/zaps/get-zap-data`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1106,8 +1107,8 @@ export class JumperBackend<
     zapsControllerGetLpTokensV1: (params: RequestParams = {}) =>
       this.request<TokenDto[], any>({
         path: `/v1/zaps/get-all-lp-tokens`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1131,9 +1132,9 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/tops`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1147,6 +1148,16 @@ export class JumperBackend<
      */
     earnControllerFilterV1: (
       query?: {
+        /**
+         * Sort by field.
+         * @example "apy"
+         */
+        sortBy?: "apy" | "tvl" | "slug" | "chain" | "protocol" | "asset";
+        /**
+         * Sort order.
+         * @example "asc"
+         */
+        order?: "asc" | "desc";
         /**
          * The address to filter for
          * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
@@ -1197,9 +1208,9 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/filter`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1214,8 +1225,27 @@ export class JumperBackend<
     earnControllerGetItemV1: (slug: string, params: RequestParams = {}) =>
       this.request<EarnOpportunityWithLatestAnalytics, any>({
         path: `/v1/earn/items/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetRelatedItemsV1
+     * @summary Get related items to an earn opportunity
+     * @request GET:/v1/earn/items/{slug}/related
+     */
+    earnControllerGetRelatedItemsV1: (
+      slug: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+        path: `/v1/earn/items/${slug}/related`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };

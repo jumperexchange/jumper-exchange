@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
+import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 
 interface EarnPageProps {
   slug: string;
@@ -13,10 +14,26 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
     return notFound();
   }
 
+  const relatedMarkets = await getOpportunityRelatedMarket(slug);
+  if (relatedMarkets.error) {
+    console.error(relatedMarkets.error);
+    // pass
+  }
+
+  const related = relatedMarkets.data.slice(0, 3) ?? [];
+
   return (
     <div>
       <h1>EarnPage</h1>
       <pre>{JSON.stringify(data, null, 2)}</pre>
+      <h2>Related Markets</h2>
+      <pre>
+        {JSON.stringify(
+          related.map((x) => x.slug),
+          null,
+          2,
+        )}
+      </pre>
     </div>
   );
 };
