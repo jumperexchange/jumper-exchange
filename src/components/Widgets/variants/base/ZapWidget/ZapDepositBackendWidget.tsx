@@ -108,19 +108,19 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.meta.name]);
 
   const partnerName = useMemo(() => {
     return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.meta.name]);
 
   const toToken = useMemo(() => {
     return zapData?.market?.depositToken.address;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.market?.depositToken.address]);
 
   const toChain = useMemo(() => {
     return zapData?.market?.depositToken.chainId;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.market?.depositToken.chainId]);
 
   const minFromAmountUSD = useMemo(() => {
     return projectData?.minFromAmountUSD
@@ -139,7 +139,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
         minFromAmountUSD,
       },
     };
-  }, [JSON.stringify(ctx), projectData.integrator, minFromAmountUSD, poolName]);
+  }, [ctx, projectData.integrator, minFromAmountUSD, poolName]);
 
   useEffect(() => {
     if (!chainId || allowedChains.includes(chainId)) {

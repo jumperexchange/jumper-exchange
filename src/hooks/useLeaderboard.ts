@@ -120,7 +120,7 @@ export const useLeaderboardUser = (
       Math.ceil(leaderboardUserData?.data.position / LEADERBOARD_LENGTH);
 
     return { ...leaderboardUserData?.data, userPage };
-  }, [JSON.stringify(leaderboardUserData ?? {})]);
+  }, [leaderboardUserData]);
 
   return {
     data,

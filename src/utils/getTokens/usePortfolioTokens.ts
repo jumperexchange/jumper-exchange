@@ -140,7 +140,7 @@ export function usePortfolioTokens() {
   }, [
     shouldSendTrackingEvent,
     accounts,
-    JSON.stringify(data ?? []),
+    data,
     getFormattedCacheTokens,
     getChainById,
     trackEvent,
