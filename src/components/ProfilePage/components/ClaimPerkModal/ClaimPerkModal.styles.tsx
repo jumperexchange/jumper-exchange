@@ -22,12 +22,24 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
     borderRadius: '2px',
     height: '4px',
     backgroundColor: (theme.vars || theme).palette.grey[100],
-    transition: 'background-color 0.3s ease',
+    position: 'relative',
+    overflow: 'hidden',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100%',
+      width: '0%',
+      backgroundColor: (theme.vars || theme).palette.primary.main,
+      borderRadius: '2px',
+      transition: 'width 0.4s ease-in-out',
+    },
   },
   '& .MuiStepConnector-root.Mui-active, & .MuiStepConnector-root.Mui-completed':
     {
-      '& .MuiStepConnector-line': {
-        backgroundColor: (theme.vars || theme).palette.primary.main,
+      '& .MuiStepConnector-line::before': {
+        width: '100%',
       },
     },
 
