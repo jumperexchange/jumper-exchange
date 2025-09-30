@@ -21,6 +21,7 @@ interface PerksCardProps {
   isLoading?: boolean;
   isDisabled?: boolean;
   fullWidth?: boolean;
+  onClick?: () => void;
 }
 
 export const PerksCard = ({
@@ -32,6 +33,7 @@ export const PerksCard = ({
   isLoading,
   isDisabled = false,
   fullWidth,
+  onClick,
 }: PerksCardProps) => {
   if (isLoading) {
     return <PerksCardSkeleton fullWidth={fullWidth} />;
@@ -46,6 +48,7 @@ export const PerksCard = ({
         width: '100%',
         maxWidth: fullWidth ? '100%' : PERK_CARD_SIZES.CARD_WIDTH,
       }}
+      onClick={onClick}
     >
       <PerksCardActionArea disableRipple disabled={isDisabled}>
         {imageUrl ? (
