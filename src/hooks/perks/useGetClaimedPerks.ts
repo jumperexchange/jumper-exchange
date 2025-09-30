@@ -16,7 +16,7 @@ export async function getClaimedPerksQuery(
 ) {
   const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
   const res = await fetch(
-    `${apiBaseUrl}/perks/claimed/${address}${shouldBustCache ? `?cacheBust=${Date.now()}` : ''}`,
+    `${apiBaseUrl}/perks/claimed/address/${address}${shouldBustCache ? `?cacheBust=${Date.now()}` : ''}`,
   );
 
   if (!res.ok) {
