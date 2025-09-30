@@ -5,7 +5,6 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { PerksCard as PerksCardComponent } from 'src/components/Cards/PerksCard/PerksCard';
-import { Link } from 'src/components/Link';
 import { useFormatDisplayPerkData } from 'src/hooks/perks/useFormatDisplayPerkData';
 import { PerksDataAttributes } from 'src/types/strapi';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
@@ -22,6 +21,7 @@ interface PerksCardProps {
 
 export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   const {
+    id,
     title,
     description,
     imageUrl,
@@ -52,10 +52,10 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   const isClaimed = useMemo(() => {
     return (
       claimedPerks?.some(
-        (claimedPerk) => claimedPerk.perkId === perk.id.toString(),
+        (claimedPerk) => claimedPerk.perkId === id.toString(),
       ) ?? false
     );
-  }, [claimedPerks, perk.id]);
+  }, [claimedPerks, id]);
 
   const isLocked = useMemo(() => {
     const currentLevel = Number(level ?? 0);
@@ -124,7 +124,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       <>
         {perkCard}
         <ClaimPerkModal
-          perkId={perk.id.toString()}
+          perkId={id}
           isClaimed={isClaimed}
           isOpen={isOpen}
           onClose={handleCloseModal}

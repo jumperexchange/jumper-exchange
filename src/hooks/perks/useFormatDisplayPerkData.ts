@@ -6,7 +6,7 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
   return useMemo(() => {
     const baseStrapiUrl = getStrapiBaseUrl();
     const {
-      id,
+      documentId,
       Title,
       Description,
       BannerImage,
@@ -34,7 +34,7 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
     }
 
     return {
-      id,
+      id: documentId,
       title: Title,
       description: Description,
       href: Link,
