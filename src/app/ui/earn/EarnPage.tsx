@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { FC } from 'react';
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
+import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 
 interface EarnPageProps {
   slug: string;
@@ -26,6 +27,8 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
     <div>
       <h1>EarnPage</h1>
       <pre>{JSON.stringify(data, null, 2)}</pre>
+      <h2>Analytics</h2>
+      <EarnDetailsAnalytics slug={slug} />
       <h2>Related Markets</h2>
       <pre>
         {JSON.stringify(

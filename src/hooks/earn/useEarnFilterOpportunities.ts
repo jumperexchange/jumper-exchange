@@ -4,7 +4,7 @@ import {
 } from '@/app/lib/getOpportunitiesFiltered';
 import { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { FIVE_MINUTES_MS } from 'src/const/time';
+import { ONE_HOUR_MS } from 'src/const/time';
 
 export interface Props {
   filter: EarnOpportunityFilter;
@@ -26,6 +26,6 @@ export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
       // @ts-expect-error: see LF-15589 - we are transforming data in the backend
       return result.data.data;
     },
-    refetchInterval: FIVE_MINUTES_MS,
+    refetchInterval: ONE_HOUR_MS,
   });
 };

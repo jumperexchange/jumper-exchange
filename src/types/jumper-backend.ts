@@ -652,6 +652,135 @@ export interface GeneratePayloadDto {
 
 export type TokenDto = object;
 
+export interface CheckSweepableTokensDto {
+  /**
+   * Wallet address to check for sweepable tokens
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  walletAddress: string;
+  /**
+   * Chain ID to check for tokens (optional, defaults to checking all EVM chains)
+   * @example 1
+   */
+  chainId?: number;
+}
+
+export interface SweepableTokenDto {
+  /**
+   * Token address
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  address: string;
+  /**
+   * Token symbol
+   * @example "USDC"
+   */
+  symbol: string;
+  /**
+   * Token name
+   * @example "USD Coin"
+   */
+  name: string;
+  /**
+   * Token decimals
+   * @example 6
+   */
+  decimals: number;
+  /**
+   * Chain ID where the token is located
+   * @example 1
+   */
+  chainId: number;
+  /**
+   * Token amount available for sweeping
+   * @example "1000.50"
+   */
+  amount: string;
+  /**
+   * Token logo URI
+   * @example "https://example.com/token-logo.png"
+   */
+  logoURI?: string;
+}
+
+export interface CheckSweepableTokensResponseDto {
+  /**
+   * Whether there are tokens available for sweeping
+   * @example true
+   */
+  hasTokensToSweep: boolean;
+  /** List of sweepable tokens */
+  sweepableTokens: SweepableTokenDto[];
+  /**
+   * Smart account address for the given wallet
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  smartAccountAddress: string;
+  /**
+   * Target chain ID with the most tokens to sweep
+   * @example 1
+   */
+  targetChainId: number;
+}
+
+export interface SweepQuoteDto {
+  /**
+   * Wallet address to get sweep quote for
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  walletAddress: string;
+  /**
+   * Chain ID to get quote for (optional, defaults to chain with most tokens)
+   * @example 1
+   */
+  chainId?: number;
+  /** List of specific tokens to create sweep instructions for */
+  tokens?: SweepableTokenDto[];
+}
+
+export interface SweepQuoteResponseDto {
+  /**
+   * Whether there are tokens available for sweeping
+   * @example true
+   */
+  hasTokensToSweep: boolean;
+  /** List of sweepable tokens */
+  sweepableTokens: SweepableTokenDto[];
+  /**
+   * Smart account address for the given wallet
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  smartAccountAddress: string;
+  /**
+   * Target chain ID with the most tokens to sweep
+   * @example 1
+   */
+  targetChainId: number;
+  /**
+   * Generated quote for the frontend to execute
+   * @example {}
+   */
+  quote: object;
+  /**
+   * Transaction raw message for the frontend to execute
+   * @example {}
+   */
+  transactionData: object;
+}
+
+export interface ExecuteSweepQuoteDto {
+  /**
+   * Wallet address to execute sweep quote for
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  walletAddress: string;
+  /**
+   * Signed message to execute sweep quote for
+   * @example "0x1234567890123456789012345678901234567890"
+   */
+  signedMessage: string;
+}
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -731,6 +860,18 @@ export interface EarnOpportunityWithLatestAnalytics {
   capInDollar?: string;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
+}
+
+export interface EarnOpportunityHistoryPoint {
+  /** The timestamp of the data point */
+  t: number;
+  /** The value of the data point */
+  v: number | string;
+}
+
+export interface EarnOpportunityHistory {
+  /** The data points */
+  points: EarnOpportunityHistoryPoint[];
 }
 
 export type WalletVerification = object;
@@ -1115,6 +1256,83 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags Zaps, Public
+     * @name ZapsControllerCheckSweepableTokensV1
+     * @summary Check for sweepable tokens for wallet address
+     * @request POST:/v1/zaps/check-sweepable-tokens
+     */
+    zapsControllerCheckSweepableTokensV1: (
+      data: CheckSweepableTokensDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<CheckSweepableTokensResponseDto, any>({
+        path: `/v1/zaps/check-sweepable-tokens`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Zaps, Public
+     * @name ZapsControllerGetSweepQuoteV1
+     * @summary Get sweep quote for wallet address (only if tokens are available)
+     * @request POST:/v1/zaps/sweep-quote
+     */
+    zapsControllerGetSweepQuoteV1: (
+      data: SweepQuoteDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<SweepQuoteResponseDto, any>({
+        path: `/v1/zaps/sweep-quote`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Zaps, Public
+     * @name ZapsControllerExecuteSweepQuoteV1
+     * @summary Execute sweep quote for wallet address
+     * @request POST:/v1/zaps/execute-sweep-quote
+     */
+    zapsControllerExecuteSweepQuoteV1: (
+      data: ExecuteSweepQuoteDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/v1/zaps/execute-sweep-quote`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Zaps, Public
+     * @name ZapsControllerGetSupportedChainsV1
+     * @summary Get supported chains for zaps
+     * @request GET:/v1/zaps/supported-chains
+     */
+    zapsControllerGetSupportedChainsV1: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/v1/zaps/supported-chains`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Earn, Public
      * @name EarnControllerGetTopsV1
      * @summary Get tops for an address
@@ -1245,6 +1463,38 @@ export class JumperBackend<
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/items/${slug}/related`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetAnalyticsV1
+     * @summary Get analytics for an earn opportunity
+     * @request GET:/v1/earn/items/{slug}/analytics
+     */
+    earnControllerGetAnalyticsV1: (
+      slug: string,
+      query: {
+        /**
+         * The value field to filter for
+         * @example "apy"
+         */
+        value: "apy" | "tvl";
+        /**
+         * The range field to filter for
+         * @example "day"
+         */
+        range: "day" | "week" | "month" | "year";
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EarnOpportunityHistory, any>({
+        path: `/v1/earn/items/${slug}/analytics`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
