@@ -29,15 +29,12 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const isEmpty = data === null || isLoading;
   const { t } = useTranslation();
 
-  if (isEmpty) {
-    return <ListItemEarnCardSkeleton />;
-  }
-
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } = data;
-  const { tvlUsd, apy } = latest;
+  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } =
+    data ?? {};
+  const { tvlUsd, apy } = latest ?? {};
 
-  const assets = [asset];
+  const assets = asset ? [asset] : [];
   const chains = uniqBy(
     assets.map((asset) => asset.chain),
     'chainId',
@@ -87,16 +84,22 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       );
     }
 
-    result.push(
-      <ListItemTooltipBadge
-        title={t('tooltips.assets')}
-        key={t('labels.assets')}
-        startIcon={<TokenStack tokens={assets} />}
-        label={assets.length === 1 ? assets[0].name : ''}
-      />,
-    );
+    if (assets.length > 0) {
+      result.push(
+        <ListItemTooltipBadge
+          title={t('tooltips.assets')}
+          key={t('labels.assets')}
+          startIcon={<TokenStack tokens={assets} />}
+          label={assets.length === 1 ? assets[0].name : ''}
+        />,
+      );
+    }
     return result;
   }, [apy, lockupMonths, tvlUsd, assets]);
+
+  if (isEmpty) {
+    return <ListItemEarnCardSkeleton />;
+  }
 
   return (
     <ListItemEarnCardContainer onClick={onClick}>

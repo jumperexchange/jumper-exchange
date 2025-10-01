@@ -26,17 +26,14 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   onClick,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
-  const isEmpty = data === null || isLoading;
+  const isEmpty = !data || isLoading;
   const { t } = useTranslation();
 
-  if (isEmpty) {
-    return <CompactEarnCardSkeleton />;
-  }
+  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } =
+    data ?? {};
+  const { tvlUsd, apy } = latest ?? {};
 
-  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } = data;
-  const { tvlUsd, apy } = latest;
-
-  const assets = [asset];
+  const assets = asset ? [asset] : [];
   const chains = uniqBy(
     assets.map((asset) => asset.chain),
     'chainId',
@@ -85,16 +82,22 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       );
     }
 
-    result.push(
-      <CompactEarnCardItem
-        title={t('labels.assets')}
-        valuePrepend={<TokenStack tokens={assets} />}
-        value={assets.length === 1 ? assets[0].name : ''}
-        tooltip={t('tooltips.assets')}
-      />,
-    );
+    if (assets.length > 0) {
+      result.push(
+        <CompactEarnCardItem
+          title={t('labels.assets')}
+          valuePrepend={<TokenStack tokens={assets} />}
+          value={assets.length === 1 ? assets[0].name : ''}
+          tooltip={t('tooltips.assets')}
+        />,
+      );
+    }
     return result;
   }, [apy, lockupMonths, tvlUsd, assets]);
+
+  if (isEmpty) {
+    return <CompactEarnCardSkeleton />;
+  }
 
   return (
     <CompactEarnCardContainer onClick={onClick}>
