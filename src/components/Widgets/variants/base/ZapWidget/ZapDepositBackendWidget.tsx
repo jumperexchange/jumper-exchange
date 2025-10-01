@@ -26,6 +26,7 @@ import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { ZapWidgetContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { WidgetSkeleton } from '../WidgetSkeleton';
+import envConfig from 'src/config/env-config';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
@@ -132,14 +133,14 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return {
       ...ctx,
       zapPoolName: poolName,
-      integrator: 'zap.morpho',
+      integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
       keyPrefix: 'zap.backend',
       // variant: 'wide' as const,
       formData: {
         minFromAmountUSD,
       },
     };
-  }, [ctx, projectData.integrator, minFromAmountUSD, poolName]);
+  }, [ctx, minFromAmountUSD, poolName]);
 
   useEffect(() => {
     if (!chainId || allowedChains.includes(chainId)) {
