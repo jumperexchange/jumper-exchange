@@ -12,7 +12,7 @@ export const StyledSelect = styled(Select)(({ theme }) => ({
     width: 'fit-content',
   },
   '&.MuiSelect-root .MuiSelect-select': {
-    padding: 0,
+    padding: '0 !important',
   },
   '&.MuiInput-underline:before': {
     display: 'none',

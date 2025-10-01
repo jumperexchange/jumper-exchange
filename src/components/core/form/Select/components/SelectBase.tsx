@@ -78,11 +78,6 @@ export const SelectBase = <T extends TData>({
             borderRadius: theme.spacing(3),
             boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)',
             marginTop: theme.spacing(1),
-            '&.MuiPaper-root': {
-              left: '0px !important',
-              transform: 'none !important',
-              transformOrigin: '0px 0px !important',
-            },
             '& .MuiList-root': {
               margin: theme.spacing(1),
               padding: 0,

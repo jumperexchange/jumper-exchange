@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
+import {
+  EarnFilteringContext,
+  SortByOptions,
+} from '../../app/ui/earn/EarnFilteringContext';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
+import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 
 const meta = {
   component: EarnFilterBar,
@@ -30,8 +34,11 @@ type Story = StoryObj<typeof meta>;
 
 const mockContextValue = () => {
   const [showForYou, setShowForYou] = useState(false);
+  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY);
 
   return {
+    sortBy,
+    setSortBy,
     filter: {},
     updateFilter: () => {},
     showForYou,
@@ -248,7 +255,6 @@ export const WithActiveFilters: Story = {
               minAPY: 0.05,
               maxAPY: 0.15,
             },
-            showForYou: true,
           }}
         >
           <Story args={{ variant, setVariant }} />
@@ -296,4 +302,12 @@ export const LargeDataSet: Story = {
       );
     },
   ],
+};
+
+export const Skeleton: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
+  render: () => <EarnFilterBarSkeleton />,
 };

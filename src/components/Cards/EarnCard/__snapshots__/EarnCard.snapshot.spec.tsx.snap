@@ -3,7 +3,7 @@
 exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1hf7rvl"
+    class="MuiBox-root css-w2qcii"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -12,7 +12,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         class="MuiStack-root css-101nimo-MuiStack-root"
       >
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <svg
             fill="none"
@@ -21,14 +21,29 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             width="12"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M14.3164 1.82532C14.9356 1.61746 15.6081 1.62565 16.2227 1.8468C16.8368 2.06813 17.3586 2.49049 17.7031 3.04504C18.0418 3.5906 18.1877 4.23307 18.1221 4.87122C18.1096 5.68959 17.6978 6.37255 17.2617 6.90247C17.6758 7.0096 18.0561 7.22939 18.3545 7.54504C18.7722 7.98703 18.9966 8.5778 18.9795 9.18567C18.9622 9.79235 18.7041 10.3668 18.2637 10.7843L18.2646 10.7853L14.4434 14.4386C13.727 15.2393 12.7251 15.625 11.667 15.6251H8.33301C7.96622 15.6252 7.7651 15.7439 7.66699 15.8741C7.64095 15.9088 7.61077 15.9423 7.57812 15.9708L6.74707 16.6964L7.1084 17.0577C7.35248 17.3018 7.35248 17.6975 7.1084 17.9415C6.86432 18.1856 6.46868 18.1856 6.22461 17.9415L2.05566 13.7726C2.05394 13.7708 2.05151 13.7695 2.0498 13.7677C2.04836 13.7662 2.04732 13.7643 2.0459 13.7628L1.22461 12.9415C0.980914 12.6974 0.980674 12.3017 1.22461 12.0577C1.46856 11.8138 1.86429 11.814 2.1084 12.0577L2.50781 12.4572L6.70703 8.40735C7.11015 7.90917 7.72169 7.70825 8.33301 7.70813H10.0771L9.98145 7.61536C9.96948 7.60372 9.95728 7.5908 9.94629 7.57825C9.41895 6.97562 8.5421 6.11738 8.54199 4.83313C8.51915 4.21508 8.69135 3.60467 9.03516 3.08997C9.38456 2.5673 9.89289 2.16925 10.4844 1.95618C11.0759 1.74335 11.7209 1.72639 12.3232 1.90637C12.6812 2.01346 13.013 2.18838 13.3027 2.41711C13.5948 2.15502 13.9394 1.95199 14.3164 1.82532ZM16.7168 8.07825C16.4404 8.07059 16.1717 8.17255 15.9707 8.36243L15.9668 8.36633L14.3506 9.86633L13.7754 10.4425C13.7231 10.4947 13.6628 10.5341 13.5996 10.5636L12.4668 11.6163C12.4501 11.6318 12.43 11.6431 12.4121 11.6564C11.9865 12.0621 11.4224 12.2921 10.833 12.2921H9.16699C8.82216 12.2919 8.54227 12.0119 8.54199 11.6671C8.54199 11.3221 8.82199 11.0423 9.16699 11.0421H10.833C11.1091 11.0421 11.374 10.9316 11.5693 10.7365C11.7646 10.5412 11.8749 10.2763 11.875 10.0001C11.875 9.72391 11.7646 9.45913 11.5693 9.26379C11.374 9.06861 11.1091 8.95814 10.833 8.95813H8.33301C7.96593 8.95825 7.76503 9.07777 7.66699 9.20813C7.64702 9.23471 7.62353 9.26025 7.59961 9.28333L3.3916 13.3409L5.86133 15.8107L6.71484 15.0646C7.11801 14.5733 7.72555 14.3752 8.33301 14.3751H11.667C12.4288 14.375 13.0808 14.1012 13.5293 13.589L13.5674 13.548L17.4014 9.88196L17.4043 9.87903C17.6051 9.68912 17.7225 9.42675 17.7305 9.15051C17.7382 8.87399 17.6353 8.60451 17.4453 8.40344C17.2554 8.20283 16.993 8.0861 16.7168 8.07825ZM15.7988 3.02258C15.4492 2.89683 15.0661 2.89163 14.7139 3.00989C14.362 3.12821 14.0602 3.36293 13.8574 3.67395C13.7462 3.84454 13.558 3.95116 13.3545 3.95813C13.1508 3.96481 12.9554 3.87104 12.833 3.70813C12.6159 3.41925 12.3111 3.20722 11.9648 3.10364C11.6188 3.00034 11.2481 3.0098 10.9082 3.13196C10.5681 3.25449 10.2751 3.48376 10.0742 3.7843C9.8734 4.08497 9.77405 4.44266 9.79102 4.80383C9.79146 4.81345 9.79101 4.8235 9.79102 4.83313C9.79111 5.54285 10.2406 6.01743 10.8721 6.7384L13.3203 9.11633L13.4619 8.98547L15.8076 6.64172C16.4089 6.04039 16.8749 5.45972 16.875 4.83313C16.875 4.80973 16.8763 4.78607 16.8789 4.76282C16.9211 4.39356 16.8376 4.01999 16.6416 3.70422C16.4456 3.3887 16.1483 3.14852 15.7988 3.02258Z"
-              fill="currentColor"
-            />
+            <g
+              clip-path="url(#a)"
+            >
+              <path
+                d="M18.016 14.167c.573 0 1.057.166 1.45.5.393.333.587.722.58 1.166l-8.03 2.5-7-1.666v-7.5h1.95l7.27 2.241c.52.173.78.484.78.934 0 .26-.113.489-.34.683-.227.194-.513.297-.86.308h-2.8l-1.75-.558-.33.783 2.08.609h7Zm-4-11.475c.707-.684 1.607-1.025 2.7-1.025.907 0 1.673.277 2.3.833.627.556.96 1.194 1 1.917 0 .572-.333 1.255-1 2.05-.667.794-1.323 1.458-1.97 1.991-.647.534-1.657 1.325-3.03 2.375a116.845 116.845 0 0 1-3.06-2.375c-.653-.533-1.31-1.197-1.97-1.991-.66-.795-.983-1.478-.97-2.05 0-.756.323-1.395.97-1.917s1.427-.8 2.34-.833c1.067 0 1.963.341 2.69 1.025ZM-1 9.167h4.016v9.166H-1V9.167Z"
+                fill="currentColor"
+                fill-opacity="0.92"
+              />
+            </g>
+            <defs>
+              <clippath
+                id="a"
+              >
+                <path
+                  d="M0 0h20v20H0z"
+                  fill="#fff"
+                />
+              </clippath>
+            </defs>
           </svg>
         </div>
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -37,7 +52,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </p>
         </div>
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -289,7 +304,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1hf7rvl"
+    class="MuiBox-root css-w2qcii"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -341,7 +356,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1hf7rvl"
+    class="MuiBox-root css-w2qcii"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -350,7 +365,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         class="MuiStack-root css-101nimo-MuiStack-root"
       >
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -359,7 +374,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </p>
         </div>
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -611,7 +626,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
 exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1hf7rvl"
+    class="MuiBox-root css-w2qcii"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -620,7 +635,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         class="MuiStack-root css-101nimo-MuiStack-root"
       >
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <svg
             fill="none"
@@ -629,14 +644,29 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             width="12"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M14.3164 1.82532C14.9356 1.61746 15.6081 1.62565 16.2227 1.8468C16.8368 2.06813 17.3586 2.49049 17.7031 3.04504C18.0418 3.5906 18.1877 4.23307 18.1221 4.87122C18.1096 5.68959 17.6978 6.37255 17.2617 6.90247C17.6758 7.0096 18.0561 7.22939 18.3545 7.54504C18.7722 7.98703 18.9966 8.5778 18.9795 9.18567C18.9622 9.79235 18.7041 10.3668 18.2637 10.7843L18.2646 10.7853L14.4434 14.4386C13.727 15.2393 12.7251 15.625 11.667 15.6251H8.33301C7.96622 15.6252 7.7651 15.7439 7.66699 15.8741C7.64095 15.9088 7.61077 15.9423 7.57812 15.9708L6.74707 16.6964L7.1084 17.0577C7.35248 17.3018 7.35248 17.6975 7.1084 17.9415C6.86432 18.1856 6.46868 18.1856 6.22461 17.9415L2.05566 13.7726C2.05394 13.7708 2.05151 13.7695 2.0498 13.7677C2.04836 13.7662 2.04732 13.7643 2.0459 13.7628L1.22461 12.9415C0.980914 12.6974 0.980674 12.3017 1.22461 12.0577C1.46856 11.8138 1.86429 11.814 2.1084 12.0577L2.50781 12.4572L6.70703 8.40735C7.11015 7.90917 7.72169 7.70825 8.33301 7.70813H10.0771L9.98145 7.61536C9.96948 7.60372 9.95728 7.5908 9.94629 7.57825C9.41895 6.97562 8.5421 6.11738 8.54199 4.83313C8.51915 4.21508 8.69135 3.60467 9.03516 3.08997C9.38456 2.5673 9.89289 2.16925 10.4844 1.95618C11.0759 1.74335 11.7209 1.72639 12.3232 1.90637C12.6812 2.01346 13.013 2.18838 13.3027 2.41711C13.5948 2.15502 13.9394 1.95199 14.3164 1.82532ZM16.7168 8.07825C16.4404 8.07059 16.1717 8.17255 15.9707 8.36243L15.9668 8.36633L14.3506 9.86633L13.7754 10.4425C13.7231 10.4947 13.6628 10.5341 13.5996 10.5636L12.4668 11.6163C12.4501 11.6318 12.43 11.6431 12.4121 11.6564C11.9865 12.0621 11.4224 12.2921 10.833 12.2921H9.16699C8.82216 12.2919 8.54227 12.0119 8.54199 11.6671C8.54199 11.3221 8.82199 11.0423 9.16699 11.0421H10.833C11.1091 11.0421 11.374 10.9316 11.5693 10.7365C11.7646 10.5412 11.8749 10.2763 11.875 10.0001C11.875 9.72391 11.7646 9.45913 11.5693 9.26379C11.374 9.06861 11.1091 8.95814 10.833 8.95813H8.33301C7.96593 8.95825 7.76503 9.07777 7.66699 9.20813C7.64702 9.23471 7.62353 9.26025 7.59961 9.28333L3.3916 13.3409L5.86133 15.8107L6.71484 15.0646C7.11801 14.5733 7.72555 14.3752 8.33301 14.3751H11.667C12.4288 14.375 13.0808 14.1012 13.5293 13.589L13.5674 13.548L17.4014 9.88196L17.4043 9.87903C17.6051 9.68912 17.7225 9.42675 17.7305 9.15051C17.7382 8.87399 17.6353 8.60451 17.4453 8.40344C17.2554 8.20283 16.993 8.0861 16.7168 8.07825ZM15.7988 3.02258C15.4492 2.89683 15.0661 2.89163 14.7139 3.00989C14.362 3.12821 14.0602 3.36293 13.8574 3.67395C13.7462 3.84454 13.558 3.95116 13.3545 3.95813C13.1508 3.96481 12.9554 3.87104 12.833 3.70813C12.6159 3.41925 12.3111 3.20722 11.9648 3.10364C11.6188 3.00034 11.2481 3.0098 10.9082 3.13196C10.5681 3.25449 10.2751 3.48376 10.0742 3.7843C9.8734 4.08497 9.77405 4.44266 9.79102 4.80383C9.79146 4.81345 9.79101 4.8235 9.79102 4.83313C9.79111 5.54285 10.2406 6.01743 10.8721 6.7384L13.3203 9.11633L13.4619 8.98547L15.8076 6.64172C16.4089 6.04039 16.8749 5.45972 16.875 4.83313C16.875 4.80973 16.8763 4.78607 16.8789 4.76282C16.9211 4.39356 16.8376 4.01999 16.6416 3.70422C16.4456 3.3887 16.1483 3.14852 15.7988 3.02258Z"
-              fill="currentColor"
-            />
+            <g
+              clip-path="url(#a)"
+            >
+              <path
+                d="M18.016 14.167c.573 0 1.057.166 1.45.5.393.333.587.722.58 1.166l-8.03 2.5-7-1.666v-7.5h1.95l7.27 2.241c.52.173.78.484.78.934 0 .26-.113.489-.34.683-.227.194-.513.297-.86.308h-2.8l-1.75-.558-.33.783 2.08.609h7Zm-4-11.475c.707-.684 1.607-1.025 2.7-1.025.907 0 1.673.277 2.3.833.627.556.96 1.194 1 1.917 0 .572-.333 1.255-1 2.05-.667.794-1.323 1.458-1.97 1.991-.647.534-1.657 1.325-3.03 2.375a116.845 116.845 0 0 1-3.06-2.375c-.653-.533-1.31-1.197-1.97-1.991-.66-.795-.983-1.478-.97-2.05 0-.756.323-1.395.97-1.917s1.427-.8 2.34-.833c1.067 0 1.963.341 2.69 1.025ZM-1 9.167h4.016v9.166H-1V9.167Z"
+                fill="currentColor"
+                fill-opacity="0.92"
+              />
+            </g>
+            <defs>
+              <clippath
+                id="a"
+              >
+                <path
+                  d="M0 0h20v20H0z"
+                  fill="#fff"
+                />
+              </clippath>
+            </defs>
           </svg>
         </div>
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -645,7 +675,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </p>
         </div>
         <div
-          class="badge-container MuiBox-root css-3aw23n"
+          class="badge-container MuiBox-root css-1wzsofa"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -897,7 +927,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
 exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-l50vyp"
+    class="MuiBox-root css-1w6w16j"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -956,7 +986,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         class="MuiStack-root css-1x8l63s-MuiStack-root"
       >
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <svg
             fill="none"
@@ -965,14 +995,29 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             width="16"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M14.3164 1.82532C14.9356 1.61746 15.6081 1.62565 16.2227 1.8468C16.8368 2.06813 17.3586 2.49049 17.7031 3.04504C18.0418 3.5906 18.1877 4.23307 18.1221 4.87122C18.1096 5.68959 17.6978 6.37255 17.2617 6.90247C17.6758 7.0096 18.0561 7.22939 18.3545 7.54504C18.7722 7.98703 18.9966 8.5778 18.9795 9.18567C18.9622 9.79235 18.7041 10.3668 18.2637 10.7843L18.2646 10.7853L14.4434 14.4386C13.727 15.2393 12.7251 15.625 11.667 15.6251H8.33301C7.96622 15.6252 7.7651 15.7439 7.66699 15.8741C7.64095 15.9088 7.61077 15.9423 7.57812 15.9708L6.74707 16.6964L7.1084 17.0577C7.35248 17.3018 7.35248 17.6975 7.1084 17.9415C6.86432 18.1856 6.46868 18.1856 6.22461 17.9415L2.05566 13.7726C2.05394 13.7708 2.05151 13.7695 2.0498 13.7677C2.04836 13.7662 2.04732 13.7643 2.0459 13.7628L1.22461 12.9415C0.980914 12.6974 0.980674 12.3017 1.22461 12.0577C1.46856 11.8138 1.86429 11.814 2.1084 12.0577L2.50781 12.4572L6.70703 8.40735C7.11015 7.90917 7.72169 7.70825 8.33301 7.70813H10.0771L9.98145 7.61536C9.96948 7.60372 9.95728 7.5908 9.94629 7.57825C9.41895 6.97562 8.5421 6.11738 8.54199 4.83313C8.51915 4.21508 8.69135 3.60467 9.03516 3.08997C9.38456 2.5673 9.89289 2.16925 10.4844 1.95618C11.0759 1.74335 11.7209 1.72639 12.3232 1.90637C12.6812 2.01346 13.013 2.18838 13.3027 2.41711C13.5948 2.15502 13.9394 1.95199 14.3164 1.82532ZM16.7168 8.07825C16.4404 8.07059 16.1717 8.17255 15.9707 8.36243L15.9668 8.36633L14.3506 9.86633L13.7754 10.4425C13.7231 10.4947 13.6628 10.5341 13.5996 10.5636L12.4668 11.6163C12.4501 11.6318 12.43 11.6431 12.4121 11.6564C11.9865 12.0621 11.4224 12.2921 10.833 12.2921H9.16699C8.82216 12.2919 8.54227 12.0119 8.54199 11.6671C8.54199 11.3221 8.82199 11.0423 9.16699 11.0421H10.833C11.1091 11.0421 11.374 10.9316 11.5693 10.7365C11.7646 10.5412 11.8749 10.2763 11.875 10.0001C11.875 9.72391 11.7646 9.45913 11.5693 9.26379C11.374 9.06861 11.1091 8.95814 10.833 8.95813H8.33301C7.96593 8.95825 7.76503 9.07777 7.66699 9.20813C7.64702 9.23471 7.62353 9.26025 7.59961 9.28333L3.3916 13.3409L5.86133 15.8107L6.71484 15.0646C7.11801 14.5733 7.72555 14.3752 8.33301 14.3751H11.667C12.4288 14.375 13.0808 14.1012 13.5293 13.589L13.5674 13.548L17.4014 9.88196L17.4043 9.87903C17.6051 9.68912 17.7225 9.42675 17.7305 9.15051C17.7382 8.87399 17.6353 8.60451 17.4453 8.40344C17.2554 8.20283 16.993 8.0861 16.7168 8.07825ZM15.7988 3.02258C15.4492 2.89683 15.0661 2.89163 14.7139 3.00989C14.362 3.12821 14.0602 3.36293 13.8574 3.67395C13.7462 3.84454 13.558 3.95116 13.3545 3.95813C13.1508 3.96481 12.9554 3.87104 12.833 3.70813C12.6159 3.41925 12.3111 3.20722 11.9648 3.10364C11.6188 3.00034 11.2481 3.0098 10.9082 3.13196C10.5681 3.25449 10.2751 3.48376 10.0742 3.7843C9.8734 4.08497 9.77405 4.44266 9.79102 4.80383C9.79146 4.81345 9.79101 4.8235 9.79102 4.83313C9.79111 5.54285 10.2406 6.01743 10.8721 6.7384L13.3203 9.11633L13.4619 8.98547L15.8076 6.64172C16.4089 6.04039 16.8749 5.45972 16.875 4.83313C16.875 4.80973 16.8763 4.78607 16.8789 4.76282C16.9211 4.39356 16.8376 4.01999 16.6416 3.70422C16.4456 3.3887 16.1483 3.14852 15.7988 3.02258Z"
-              fill="currentColor"
-            />
+            <g
+              clip-path="url(#a)"
+            >
+              <path
+                d="M18.016 14.167c.573 0 1.057.166 1.45.5.393.333.587.722.58 1.166l-8.03 2.5-7-1.666v-7.5h1.95l7.27 2.241c.52.173.78.484.78.934 0 .26-.113.489-.34.683-.227.194-.513.297-.86.308h-2.8l-1.75-.558-.33.783 2.08.609h7Zm-4-11.475c.707-.684 1.607-1.025 2.7-1.025.907 0 1.673.277 2.3.833.627.556.96 1.194 1 1.917 0 .572-.333 1.255-1 2.05-.667.794-1.323 1.458-1.97 1.991-.647.534-1.657 1.325-3.03 2.375a116.845 116.845 0 0 1-3.06-2.375c-.653-.533-1.31-1.197-1.97-1.991-.66-.795-.983-1.478-.97-2.05 0-.756.323-1.395.97-1.917s1.427-.8 2.34-.833c1.067 0 1.963.341 2.69 1.025ZM-1 9.167h4.016v9.166H-1V9.167Z"
+                fill="currentColor"
+                fill-opacity="0.92"
+              />
+            </g>
+            <defs>
+              <clippath
+                id="a"
+              >
+                <path
+                  d="M0 0h20v20H0z"
+                  fill="#fff"
+                />
+              </clippath>
+            </defs>
           </svg>
         </div>
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -981,7 +1026,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </p>
         </div>
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -991,7 +1036,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         </div>
         <div
           aria-label="tooltips.apy"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1002,7 +1047,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         </div>
         <div
           aria-label="tooltips.lockupPeriod"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1013,7 +1058,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         </div>
         <div
           aria-label="tooltips.tvl"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1024,7 +1069,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         </div>
         <div
           aria-label="tooltips.assets"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <div
@@ -1071,7 +1116,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-l50vyp"
+    class="MuiBox-root css-1w6w16j"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1124,7 +1169,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-l50vyp"
+    class="MuiBox-root css-1w6w16j"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1183,7 +1228,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         class="MuiStack-root css-1x8l63s-MuiStack-root"
       >
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -1192,7 +1237,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </p>
         </div>
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -1202,7 +1247,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         </div>
         <div
           aria-label="tooltips.apy"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1213,7 +1258,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         </div>
         <div
           aria-label="tooltips.lockupPeriod"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1224,7 +1269,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         </div>
         <div
           aria-label="tooltips.tvl"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1235,7 +1280,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         </div>
         <div
           aria-label="tooltips.assets"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <div
@@ -1282,7 +1327,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
 exports[`EarnCard snapshot > list item card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-l50vyp"
+    class="MuiBox-root css-1w6w16j"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1341,7 +1386,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         class="MuiStack-root css-1x8l63s-MuiStack-root"
       >
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <svg
             fill="none"
@@ -1350,14 +1395,29 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
             width="16"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M14.3164 1.82532C14.9356 1.61746 15.6081 1.62565 16.2227 1.8468C16.8368 2.06813 17.3586 2.49049 17.7031 3.04504C18.0418 3.5906 18.1877 4.23307 18.1221 4.87122C18.1096 5.68959 17.6978 6.37255 17.2617 6.90247C17.6758 7.0096 18.0561 7.22939 18.3545 7.54504C18.7722 7.98703 18.9966 8.5778 18.9795 9.18567C18.9622 9.79235 18.7041 10.3668 18.2637 10.7843L18.2646 10.7853L14.4434 14.4386C13.727 15.2393 12.7251 15.625 11.667 15.6251H8.33301C7.96622 15.6252 7.7651 15.7439 7.66699 15.8741C7.64095 15.9088 7.61077 15.9423 7.57812 15.9708L6.74707 16.6964L7.1084 17.0577C7.35248 17.3018 7.35248 17.6975 7.1084 17.9415C6.86432 18.1856 6.46868 18.1856 6.22461 17.9415L2.05566 13.7726C2.05394 13.7708 2.05151 13.7695 2.0498 13.7677C2.04836 13.7662 2.04732 13.7643 2.0459 13.7628L1.22461 12.9415C0.980914 12.6974 0.980674 12.3017 1.22461 12.0577C1.46856 11.8138 1.86429 11.814 2.1084 12.0577L2.50781 12.4572L6.70703 8.40735C7.11015 7.90917 7.72169 7.70825 8.33301 7.70813H10.0771L9.98145 7.61536C9.96948 7.60372 9.95728 7.5908 9.94629 7.57825C9.41895 6.97562 8.5421 6.11738 8.54199 4.83313C8.51915 4.21508 8.69135 3.60467 9.03516 3.08997C9.38456 2.5673 9.89289 2.16925 10.4844 1.95618C11.0759 1.74335 11.7209 1.72639 12.3232 1.90637C12.6812 2.01346 13.013 2.18838 13.3027 2.41711C13.5948 2.15502 13.9394 1.95199 14.3164 1.82532ZM16.7168 8.07825C16.4404 8.07059 16.1717 8.17255 15.9707 8.36243L15.9668 8.36633L14.3506 9.86633L13.7754 10.4425C13.7231 10.4947 13.6628 10.5341 13.5996 10.5636L12.4668 11.6163C12.4501 11.6318 12.43 11.6431 12.4121 11.6564C11.9865 12.0621 11.4224 12.2921 10.833 12.2921H9.16699C8.82216 12.2919 8.54227 12.0119 8.54199 11.6671C8.54199 11.3221 8.82199 11.0423 9.16699 11.0421H10.833C11.1091 11.0421 11.374 10.9316 11.5693 10.7365C11.7646 10.5412 11.8749 10.2763 11.875 10.0001C11.875 9.72391 11.7646 9.45913 11.5693 9.26379C11.374 9.06861 11.1091 8.95814 10.833 8.95813H8.33301C7.96593 8.95825 7.76503 9.07777 7.66699 9.20813C7.64702 9.23471 7.62353 9.26025 7.59961 9.28333L3.3916 13.3409L5.86133 15.8107L6.71484 15.0646C7.11801 14.5733 7.72555 14.3752 8.33301 14.3751H11.667C12.4288 14.375 13.0808 14.1012 13.5293 13.589L13.5674 13.548L17.4014 9.88196L17.4043 9.87903C17.6051 9.68912 17.7225 9.42675 17.7305 9.15051C17.7382 8.87399 17.6353 8.60451 17.4453 8.40344C17.2554 8.20283 16.993 8.0861 16.7168 8.07825ZM15.7988 3.02258C15.4492 2.89683 15.0661 2.89163 14.7139 3.00989C14.362 3.12821 14.0602 3.36293 13.8574 3.67395C13.7462 3.84454 13.558 3.95116 13.3545 3.95813C13.1508 3.96481 12.9554 3.87104 12.833 3.70813C12.6159 3.41925 12.3111 3.20722 11.9648 3.10364C11.6188 3.00034 11.2481 3.0098 10.9082 3.13196C10.5681 3.25449 10.2751 3.48376 10.0742 3.7843C9.8734 4.08497 9.77405 4.44266 9.79102 4.80383C9.79146 4.81345 9.79101 4.8235 9.79102 4.83313C9.79111 5.54285 10.2406 6.01743 10.8721 6.7384L13.3203 9.11633L13.4619 8.98547L15.8076 6.64172C16.4089 6.04039 16.8749 5.45972 16.875 4.83313C16.875 4.80973 16.8763 4.78607 16.8789 4.76282C16.9211 4.39356 16.8376 4.01999 16.6416 3.70422C16.4456 3.3887 16.1483 3.14852 15.7988 3.02258Z"
-              fill="currentColor"
-            />
+            <g
+              clip-path="url(#a)"
+            >
+              <path
+                d="M18.016 14.167c.573 0 1.057.166 1.45.5.393.333.587.722.58 1.166l-8.03 2.5-7-1.666v-7.5h1.95l7.27 2.241c.52.173.78.484.78.934 0 .26-.113.489-.34.683-.227.194-.513.297-.86.308h-2.8l-1.75-.558-.33.783 2.08.609h7Zm-4-11.475c.707-.684 1.607-1.025 2.7-1.025.907 0 1.673.277 2.3.833.627.556.96 1.194 1 1.917 0 .572-.333 1.255-1 2.05-.667.794-1.323 1.458-1.97 1.991-.647.534-1.657 1.325-3.03 2.375a116.845 116.845 0 0 1-3.06-2.375c-.653-.533-1.31-1.197-1.97-1.991-.66-.795-.983-1.478-.97-2.05 0-.756.323-1.395.97-1.917s1.427-.8 2.34-.833c1.067 0 1.963.341 2.69 1.025ZM-1 9.167h4.016v9.166H-1V9.167Z"
+                fill="currentColor"
+                fill-opacity="0.92"
+              />
+            </g>
+            <defs>
+              <clippath
+                id="a"
+              >
+                <path
+                  d="M0 0h20v20H0z"
+                  fill="#fff"
+                />
+              </clippath>
+            </defs>
           </svg>
         </div>
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -1366,7 +1426,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </p>
         </div>
         <div
-          class="badge-container MuiBox-root css-1w9a10q"
+          class="badge-container MuiBox-root css-8wpak"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -1376,7 +1436,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         </div>
         <div
           aria-label="tooltips.apy"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1387,7 +1447,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         </div>
         <div
           aria-label="tooltips.lockupPeriod"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1398,7 +1458,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         </div>
         <div
           aria-label="tooltips.tvl"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <p
@@ -1409,7 +1469,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         </div>
         <div
           aria-label="tooltips.assets"
-          class="MuiBox-root css-1ci75fx"
+          class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
         >
           <div

@@ -1,8 +1,8 @@
-import GridViewIcon from '@mui/icons-material/GridView';
+import GridViewRoundedIcon from '../../illustrations/GridViewRounded';
 import ListIcon from '@mui/icons-material/List';
-import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
-import { IconSelect } from '../core/IconSelect/IconSelect';
-import { IconOption } from '../core/IconSelect/IconSelect.types';
+import { EarnCardVariant } from '../../Cards/EarnCard/EarnCard.types';
+import { IconSelect } from '../../core/IconSelect/IconSelect';
+import { IconOption } from '../../core/IconSelect/IconSelect.types';
 
 type Props = {
   variant: EarnCardVariant;
@@ -12,14 +12,14 @@ type Props = {
 export const EarnListMode: React.FC<Props> = ({ variant, setVariant }) => {
   const viewOptions: IconOption[] = [
     {
+      value: 'compact',
+      icon: <GridViewRoundedIcon />,
+      tooltip: 'Grid View',
+    },
+    {
       value: 'list-item',
       icon: <ListIcon />,
       tooltip: 'List View',
-    },
-    {
-      value: 'compact',
-      icon: <GridViewIcon />,
-      tooltip: 'Grid View',
     },
   ];
 
@@ -34,9 +34,9 @@ export const EarnListMode: React.FC<Props> = ({ variant, setVariant }) => {
       onChange={handleChange}
       selectionMode="radio"
       variant="text"
-      size="medium"
+      size="small"
       showTooltip={true}
-      color="primary"
+      color={'primary'}
       data-testid="earn-filter-list-mode-select"
     />
   );

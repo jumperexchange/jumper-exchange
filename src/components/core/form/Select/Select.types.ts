@@ -29,6 +29,7 @@ export interface SelectBaseProps<T extends TData> {
   label?: string;
   required?: boolean;
   debounceMs?: number;
+  'data-testid'?: string;
 }
 
 export interface MultiSelectProps<T extends string[]>

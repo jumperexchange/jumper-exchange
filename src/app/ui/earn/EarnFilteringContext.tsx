@@ -18,6 +18,12 @@ import {
 } from 'src/types/jumper-backend';
 import { Hex } from 'viem';
 
+// TODO: migrate to backend's typing
+export enum SortByOptions {
+  APY = 'apy',
+  TVL = 'tvl',
+}
+
 export interface EarnFilteringParams {
   allChains: Chain[];
   allProtocols: Protocol[];
@@ -27,6 +33,8 @@ export interface EarnFilteringParams {
 }
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
+  sortBy: SortByOptions;
+  setSortBy: (sortBy: SortByOptions) => void;
   filter: EarnOpportunityFilter;
   updateFilter: (filter: EarnOpportunityFilter) => void;
   showForYou: boolean;
@@ -42,6 +50,8 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
+  sortBy: SortByOptions.APY,
+  setSortBy: () => {},
   filter: {},
   updateFilter: () => {},
   showForYou: false,
@@ -68,6 +78,9 @@ export const EarnFilteringProvider = ({
 }) => {
   const address: Hex | undefined = useAccountAddress();
   const usedYourAddress = address !== undefined;
+
+  // TODO: introduce the loading state?
+  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY);
 
   const [initialData, setInitialData] = useState<
     EarnOpportunityWithLatestAnalytics[]
@@ -123,6 +136,8 @@ export const EarnFilteringProvider = ({
   );
 
   const context: EarnFilteringContextType = {
+    sortBy,
+    setSortBy,
     filter,
     updateFilter,
     showForYou,

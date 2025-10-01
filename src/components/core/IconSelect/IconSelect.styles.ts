@@ -84,7 +84,7 @@ export const StyledToggleButton = styled(ToggleButton, {
     backgroundColor:
       variant === 'contained'
         ? (theme.vars || theme).palette.action.hover
-        : 'transparent',
+        : (theme.vars || theme).palette.buttonAlphaDarkBg,
     border:
       variant === 'outlined'
         ? `1px solid ${(theme.vars || theme).palette.divider}`
@@ -164,7 +164,7 @@ export const StyledIconButton = styled(IconButton, {
       ? selectedColor === 'primary' || selectedColor === 'secondary'
         ? selectedContrastText
         : selectedColorValue
-      : (theme.vars || theme).palette.text.primary,
+      : (theme.vars || theme).palette.buttonAlphaLightAction,
     backgroundColor: isSelected
       ? selectedColor === 'primary' || selectedColor === 'secondary'
         ? selectedColorValue
@@ -172,8 +172,8 @@ export const StyledIconButton = styled(IconButton, {
           ? `${selectedColorValue}20`
           : variant === 'outlined'
             ? `${selectedColorValue}10`
-            : 'transparent'
-      : 'transparent',
+            : (theme.vars || theme).palette.buttonAlphaDarkBg
+      : (theme.vars || theme).palette.buttonAlphaDarkBg,
     border:
       variant === 'outlined' &&
       !(selectedColor === 'primary' || selectedColor === 'secondary')
