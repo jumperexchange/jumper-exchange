@@ -2,6 +2,8 @@ import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import { EarnsPageSearchParams } from 'src/app/ui/earn/types';
+import { parseFiltersFromUrl } from 'src/app/ui/earn/utils';
 
 export const metadata: Metadata = {
   title: 'Jumper Earn Opportunities',
@@ -11,10 +13,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page() {
+interface PageProps {
+  searchParams: Promise<EarnsPageSearchParams>;
+}
+
+export default async function Page(props: PageProps) {
+  const searchParams = await props.searchParams;
+  const initialFilters = parseFiltersFromUrl(searchParams);
   return (
     <Suspense fallback={<EarnsPageSkeleton />}>
-      <EarnsPage />
+      <EarnsPage initialFilters={initialFilters} />
     </Suspense>
   );
 }

@@ -15,7 +15,10 @@ export type Result = UseQueryResult<
   unknown
 >;
 
-export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
+export const useEarnFilterOpportunities = (
+  { filter }: Props,
+  enabled: boolean = true,
+): Result => {
   return useQuery({
     queryKey: ['earn-filter-opportunities', filter],
     queryFn: async () => {
@@ -27,5 +30,6 @@ export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
       return result.data.data;
     },
     refetchInterval: ONE_HOUR_MS,
+    enabled,
   });
 };

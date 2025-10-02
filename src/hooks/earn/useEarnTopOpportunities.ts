@@ -26,5 +26,6 @@ export const useEarnTopOpportunities = ({}: Props): Result => {
       return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,
+    enabled: !!address,
   });
 };

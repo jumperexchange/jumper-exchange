@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
-import {
-  SortByOptions,
-  useEarnFiltering,
-} from 'src/app/ui/earn/EarnFilteringContext';
+import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
+import { SortByOptions } from 'src/app/ui/earn/types';
 
 export const EarnFilterSort: React.FC = () => {
   const { t } = useTranslation();
