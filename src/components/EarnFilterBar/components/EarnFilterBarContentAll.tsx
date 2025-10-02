@@ -68,7 +68,11 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   };
 
   const handleAPYChange = (values: number[]) => {
-    // TODO: implement
+    updateFilter({
+      ...filter,
+      minAPY: values[0] / 100,
+      maxAPY: values[1] / 100,
+    });
   };
 
   return (

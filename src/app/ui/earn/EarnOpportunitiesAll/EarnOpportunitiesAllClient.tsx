@@ -13,7 +13,7 @@ import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
 
 const EarnOpportunitiesAllInner = () => {
-  const { data, isLoading, error } = useEarnFiltering();
+  const { data, isLoading, error, isAllDataLoading } = useEarnFiltering();
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
@@ -21,7 +21,7 @@ const EarnOpportunitiesAllInner = () => {
     <SectionCardContainer>
       <Stack direction="column" gap={3}>
         <EarnFilterBar
-          isLoading={isLoading}
+          isLoading={isAllDataLoading}
           variant={variant}
           setVariant={setVariant}
         />

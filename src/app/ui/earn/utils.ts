@@ -1,4 +1,4 @@
-import { map, uniqBy, uniq } from 'lodash';
+import { map, uniqBy, uniq, sortBy, fromPairs } from 'lodash';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import {
@@ -8,6 +8,7 @@ import {
   SortByOptions,
 } from './types';
 import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
+import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 
 const parseString = (value: string): string | null => {
   return value.trim() || null;
@@ -110,11 +111,14 @@ export const extractFilteringParams = (
   let allTags = map(data, 'tags').flat();
   allTags = uniq(allTags).filter(Boolean);
 
-  let allAPY = {
-    0.1: 1,
-    0.2: 2,
-    0.3: 3,
-  };
+  let formattedAPY = map(data, 'latest.apy.total').filter(Boolean);
+  formattedAPY = uniq(formattedAPY).filter(Boolean);
+  formattedAPY = sortBy(formattedAPY);
+  const stepAPYPairs = map(formattedAPY, (apy, index) => [
+    index / (formattedAPY.length - 1),
+    toFixedFractionDigits(apy * 100, 0, 2),
+  ]);
+  const allAPY = fromPairs(stepAPYPairs);
 
   return {
     allChains,

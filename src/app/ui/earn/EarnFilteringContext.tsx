@@ -28,6 +28,7 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   data: EarnOpportunityWithLatestAnalytics[];
   isLoading: boolean;
   error: unknown | null;
+  isAllDataLoading: boolean;
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
@@ -47,6 +48,7 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   data: [],
   isLoading: false,
   error: null,
+  isAllDataLoading: false,
 });
 
 export const EarnFilteringProvider = ({
@@ -88,12 +90,12 @@ export const EarnFilteringProvider = ({
   const totalMarkets = allNoFilter.data?.length ?? 0;
 
   const stats = useMemo((): EarnFilteringParams => {
-    if (!all.data || all.data.length === 0) {
+    if (!allNoFilter.data || allNoFilter.data.length === 0) {
       return EMPTY_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(all.data);
-  }, [all.data]);
+    return extractFilteringParams(allNoFilter.data);
+  }, [allNoFilter.data]);
 
   const updateSearchParams = useCallback(
     (newFilerValue: EarnOpportunityFilter) => {
@@ -144,6 +146,7 @@ export const EarnFilteringProvider = ({
     data: (showForYou ? forYou.data : all.data) ?? [],
     isLoading: showForYou ? forYou.isLoading || !address : all.isLoading,
     error: (showForYou ? forYou.error : all.error) ?? null,
+    isAllDataLoading: allNoFilter.isLoading,
     ...stats,
   };
 

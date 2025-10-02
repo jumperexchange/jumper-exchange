@@ -45,6 +45,7 @@ const mockContextValue = () => {
     data: [],
     isLoading: false,
     error: null,
+    isAllDataLoading: false,
     totalMarkets: 150,
     allChains: [
       { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
@@ -182,6 +183,7 @@ export const LoadingState: Story = {
           value={{
             ...mockContextValue(),
             isLoading: true,
+            isAllDataLoading: true,
           }}
         >
           <Story args={{ variant, setVariant }} />
