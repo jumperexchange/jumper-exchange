@@ -15,6 +15,9 @@ import {
 } from '../../ClaimPerkModal.styles';
 import { useClaimPerkForm } from '../../hooks/useClaimPerkForm';
 import { useClaimPerkSteps } from '../../hooks/useClaimPerkSteps';
+import { StatusBottomSheet } from '../StatusBottomSheet/StatusBottomSheet';
+import { MODAL_CONTAINER_ID } from '../../constants';
+import { useStatusSheetContent } from '../../hooks/useStatusSheetContent';
 
 interface StepperContentProps extends BaseStepperProps {
   perkId: string;
@@ -26,71 +29,70 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
   const {
     values,
     activeStep,
-    showError,
+    showStepError,
+    currentStepError,
     isSubmitting,
     currentStepId,
     isError,
+    errorType,
     handleChange,
     handleContinue,
     handleSubmit,
-    currentStepError,
+    handleCloseErrorBottomSheet,
   } = useClaimPerkForm(props);
+  const bottomSheetProps = useStatusSheetContent(
+    errorType,
+    handleCloseErrorBottomSheet,
+  );
 
   const activeStepContent = steps[activeStep];
   const isMultiStep = steps.length > 1;
 
   return (
-    <form onSubmit={handleSubmit}>
-      {!isError ? (
-        <StyledModalSectionContainer
-          sx={(theme) => ({
-            gap: isMultiStep ? theme.spacing(5) : theme.spacing(3),
-          })}
-        >
-          <StyledModalSectionHeaderContainer>
-            <StyledTitleContainer>
-              <Typography variant="titleSmall">
-                {t('modal.perks.unclaimedPerk.title')}
-              </Typography>
-            </StyledTitleContainer>
-            {isMultiStep && (
-              <StyledStepper activeStep={activeStep} alternativeLabel>
-                {steps.map((step) => (
-                  <Step key={step.title}>
-                    <StepLabel slots={{ stepIcon: StepIcon }}>
-                      {step.title}
-                    </StepLabel>
-                  </Step>
-                ))}
-              </StyledStepper>
-            )}
-          </StyledModalSectionHeaderContainer>
+    <form id={MODAL_CONTAINER_ID} onSubmit={handleSubmit}>
+      <StyledModalSectionContainer
+        sx={(theme) => ({
+          gap: isMultiStep ? theme.spacing(5) : theme.spacing(3),
+        })}
+      >
+        <StyledModalSectionHeaderContainer>
+          <StyledTitleContainer>
+            <Typography variant="titleSmall">
+              {t('modal.perks.unclaimedPerk.title')}
+            </Typography>
+          </StyledTitleContainer>
+          {isMultiStep && (
+            <StyledStepper activeStep={activeStep} alternativeLabel>
+              {steps.map((step) => (
+                <Step key={step.title}>
+                  <StepLabel slots={{ stepIcon: StepIcon }}>
+                    {step.title}
+                  </StepLabel>
+                </Step>
+              ))}
+            </StyledStepper>
+          )}
+        </StyledModalSectionHeaderContainer>
 
-          <StyledActiveStepContentContainer>
-            <StepContentFactory
-              stepType={currentStepId as any}
-              stepId={activeStepContent.id}
-              value={values[activeStepContent.id] ?? ''}
-              onChange={handleChange}
-              onContinue={handleContinue}
-              errorMessage={showError ? currentStepError : ''}
-              isSubmitting={isSubmitting}
-              stepProps={activeStepContent.stepProps}
-              isMultiStep={isMultiStep}
-            />
-          </StyledActiveStepContentContainer>
-        </StyledModalSectionContainer>
-      ) : (
-        <StepContentFactory
-          stepType="error"
-          stepId="error"
-          value=""
-          onChange={() => {}}
-          onContinue={() => {}}
-          isSubmitting={false}
-          stepProps={{}}
-        />
-      )}
+        <StyledActiveStepContentContainer>
+          <StepContentFactory
+            stepType={currentStepId as any}
+            stepId={activeStepContent.id}
+            value={values[activeStepContent.id] ?? ''}
+            onChange={handleChange}
+            onContinue={handleContinue}
+            errorMessage={showStepError ? currentStepError : ''}
+            isSubmitting={isSubmitting}
+            stepProps={activeStepContent.stepProps}
+            isMultiStep={isMultiStep}
+          />
+        </StyledActiveStepContentContainer>
+      </StyledModalSectionContainer>
+      <StatusBottomSheet
+        {...bottomSheetProps}
+        containerId={MODAL_CONTAINER_ID}
+        isOpen={isError}
+      />
     </form>
   );
 };

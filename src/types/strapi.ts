@@ -466,7 +466,7 @@ export interface PerksDataAttributes {
   EndDate: string;
   BannerImage?: StrapiMediaData | null;
   Image?: StrapiMediaData | null;
-  ClaimableSteps?: MultiSelect<AvailableSteps>;
+  ClaimableSteps: MultiSelect<AvailableSteps>;
   ClaimableStepProps?: Record<string, string>;
   HowToUseDescription?: RootNode[];
   NextStepsDescription?: RootNode[];

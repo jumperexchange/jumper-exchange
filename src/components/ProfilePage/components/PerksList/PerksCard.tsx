@@ -33,10 +33,11 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     nextStepsDescription,
   } = useFormatDisplayPerkData(perk);
   const activeAccount = useActiveAccountByChainType();
+  const activeAccountAddress = activeAccount?.address;
   const { t } = useTranslation();
-  const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
+  const { level, isLoading } = useLoyaltyPass(activeAccountAddress);
   const { data: claimedPerks, isLoading: isClaimedLoading } =
-    useGetClaimedPerks(activeAccount?.address);
+    useGetClaimedPerks(activeAccountAddress);
   const [isOpen, setIsOpen] = useState(false);
   const [levelBadgeElement, setLevelBadgeElement] =
     useState<HTMLSpanElement | null>(null);
@@ -63,8 +64,8 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   }, [unlockLevel, level]);
 
   const isDisabled = useMemo(() => {
-    return isLocked || isClaimedLoading || isLoading;
-  }, [isLocked, isClaimedLoading, isLoading]);
+    return isLocked || isClaimedLoading || isLoading || !activeAccountAddress;
+  }, [isLocked, isClaimedLoading, isLoading, activeAccountAddress]);
 
   const levelBadgeProps = useMemo(() => {
     if (isLocked) {

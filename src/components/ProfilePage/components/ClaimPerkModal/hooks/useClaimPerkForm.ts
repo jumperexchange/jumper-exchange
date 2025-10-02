@@ -1,20 +1,24 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BaseStepperProps } from '../ClaimPerkModal.types';
 import { buildFormSchema } from '../validation/schemas';
-import { isHex } from 'viem';
-import { useSignMessage } from 'src/hooks/useSignMessage';
+import { SignMessageErrorType, useSignMessage } from 'src/hooks/useSignMessage';
 import { STEP_ORDER } from './useClaimPerkSteps';
-import {
-  PerkClaimStatus,
-  usePerkClaimStatusStore,
-} from 'src/stores/perkClaimStatus';
+import { usePerkClaimStatus } from 'src/hooks/perks/usePerkClaimStatus';
+
+export enum ErrorType {
+  SignatureFailed = 'signatureFailed',
+  ValidationFailed = 'validationFailed',
+  UnsupportedWallet = 'unsupportedWallet',
+  Unknown = 'unknown',
+}
 
 export interface FormState {
   values: Record<string, string>;
   activeStep: number;
-  showError: boolean;
+  showStepError: boolean;
   isSubmitting: boolean;
   isError: boolean;
+  errorType: ErrorType;
 }
 
 export interface FormActions {
@@ -23,6 +27,7 @@ export interface FormActions {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   setActiveStep: (step: number) => void;
   resetForm: () => void;
+  handleCloseErrorBottomSheet: () => void;
 }
 
 export interface FormValidation {
@@ -40,14 +45,17 @@ export const useClaimPerkForm = ({
 }: BaseStepperProps & { perkId: string }) => {
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [activeStep, setActiveStep] = useState(0);
-  const [showError, setShowError] = useState(false);
+  const [showStepError, setShowStepError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const mutationStatus = usePerkClaimStatusStore((state) =>
-    state.getStatus(perkId),
-  );
-  console.log('mutationStatus', mutationStatus);
+  const mutationStatus = usePerkClaimStatus(perkId, formValues.wallet);
+  const [showErrorBottomSheet, setShowErrorBottomSheet] = useState(false);
+  const [errorType, setErrorType] = useState<ErrorType>(ErrorType.Unknown);
 
-  const { signMessageAsync, isError } = useSignMessage();
+  const {
+    signMessageAsync,
+    isError: isSignMessageError,
+    errorType: signMessageErrorType,
+  } = useSignMessage();
 
   const schema = useMemo(
     () => buildFormSchema(permittedSteps),
@@ -79,9 +87,33 @@ export const useClaimPerkForm = ({
     return currentStepValidation.error.errors[0]?.message || 'Invalid input';
   }, [currentStepValidation]);
 
+  useEffect(() => {
+    if (!isSignMessageError && !mutationStatus.isError) {
+      return;
+    }
+
+    setShowErrorBottomSheet(true);
+
+    if (mutationStatus.isError) {
+      setErrorType(ErrorType.Unknown);
+    }
+
+    if (isSignMessageError) {
+      if (signMessageErrorType === SignMessageErrorType.UnsupportedWallet) {
+        setErrorType(ErrorType.UnsupportedWallet);
+      } else {
+        setErrorType(ErrorType.SignatureFailed);
+      }
+    }
+  }, [isSubmitting, isSignMessageError, signMessageErrorType, mutationStatus]);
+
+  const handleCloseErrorBottomSheet = useCallback(() => {
+    setShowErrorBottomSheet(false);
+  }, []);
+
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setShowError(false);
+      setShowStepError(false);
       setFormValues((prev) => ({
         ...prev,
         [event.target.name]: event.target.value,
@@ -93,7 +125,7 @@ export const useClaimPerkForm = ({
   const handleContinue = useCallback(() => {
     if (isLastStep) return;
     if (!isCurrentStepValid) {
-      setShowError(true);
+      setShowStepError(true);
       return;
     }
     setActiveStep(activeStep + 1);
@@ -102,20 +134,24 @@ export const useClaimPerkForm = ({
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const result = schema.safeParse(formValues);
       setIsSubmitting(true);
+      setShowErrorBottomSheet(false);
+      mutationStatus.resetStatus();
+      const result = schema.safeParse(formValues);
 
       if (!result.success) {
         console.error('Validation failed', result.error.format());
         setIsSubmitting(false);
+        setShowErrorBottomSheet(true);
+        setErrorType(ErrorType.ValidationFailed);
         return;
       }
 
       try {
         const signature = await signMessageAsync({
           message: PERK_CLAIM_MESSAGE,
-          walletAddress: result.data.wallet,
-          walletType: result.data.walletType,
+          walletAddress: formValues.wallet,
+          walletType: formValues.walletType,
         });
 
         const values = {
@@ -137,17 +173,17 @@ export const useClaimPerkForm = ({
   const resetForm = useCallback(() => {
     setFormValues({});
     setActiveStep(0);
-    setShowError(false);
+    setShowStepError(false);
     setIsSubmitting(false);
   }, []);
 
   const formState: FormState = {
     values: formValues,
     activeStep,
-    showError,
-    isSubmitting: isSubmitting || mutationStatus === PerkClaimStatus.Pending,
-    // @Note need to ask design about the BE error state
-    isError: isError /*|| mutationStatus === PerkClaimStatus.Error*/,
+    showStepError,
+    isSubmitting: isSubmitting || mutationStatus.isPending,
+    isError: showErrorBottomSheet,
+    errorType,
   };
 
   const formActions: FormActions = {
@@ -156,6 +192,7 @@ export const useClaimPerkForm = ({
     handleSubmit,
     setActiveStep,
     resetForm,
+    handleCloseErrorBottomSheet,
   };
 
   const formValidation: FormValidation = {

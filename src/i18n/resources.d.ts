@@ -198,6 +198,21 @@ interface Resources {
         unclaimedPerk: {
           title: 'Claim perk';
         };
+        unknown: {
+          description: 'An unknown error occurred. Please try again.';
+          title: 'Unknown error';
+          tryAgain: 'Try again';
+        };
+        unsupportedWallet: {
+          description: "We don't support this wallet type. Please use a different wallet to complete this mission.";
+          switchWallet: 'Switch wallet';
+          title: 'Unsupported wallet';
+        };
+        validationFailed: {
+          close: 'Close';
+          description: 'Please check the fields and try again.';
+          title: 'Validation failed';
+        };
       };
     };
     multisig: {

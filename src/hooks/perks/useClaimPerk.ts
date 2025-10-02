@@ -52,21 +52,21 @@ export const useClaimPerk = (address?: string, perkId?: string) => {
       return claimPerkQuery(props);
     },
     onMutate: () => {
-      if (perkId) {
-        setStatus(perkId, PerkClaimStatus.Pending);
+      if (perkId && address) {
+        setStatus(perkId, address, PerkClaimStatus.Pending);
       }
     },
     onSuccess: () => {
-      if (perkId) {
-        setStatus(perkId, PerkClaimStatus.Success);
+      if (perkId && address) {
+        setStatus(perkId, address, PerkClaimStatus.Success);
       }
       if (address) {
         refetch();
       }
     },
     onError: () => {
-      if (perkId) {
-        setStatus(perkId, PerkClaimStatus.Error);
+      if (perkId && address) {
+        setStatus(perkId, address, PerkClaimStatus.Error);
       }
     },
   });

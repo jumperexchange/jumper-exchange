@@ -345,6 +345,24 @@
         "tryAgain": "Try again"
       },
 
+      "validationFailed": {
+        "title": "Validation failed",
+        "description": "Please check the fields and try again.",
+        "close": "Close"
+      },
+
+      "unsupportedWallet": {
+        "title": "Unsupported wallet",
+        "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
+        "switchWallet": "Switch wallet"
+      },
+
+      "unknown": {
+        "title": "Unknown error",
+        "description": "An unknown error occurred. Please try again.",
+        "tryAgain": "Try again"
+      },
+
       "stepper": {
         "multipleSteps": {
           "username": {

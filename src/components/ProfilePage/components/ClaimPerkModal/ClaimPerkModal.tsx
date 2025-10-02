@@ -52,7 +52,12 @@ export const ClaimPerkModal: FC<ClaimPerkModalProps> = ({
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <SectionCardContainer
-        sx={{ width: '400px', maxWidth: 'calc(100vw - 32px)' }}
+        sx={{
+          width: '400px',
+          maxWidth: 'calc(100vw - 32px)',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
       >
         {isClaimed && walletAddress ? (
           <ClaimedContent
