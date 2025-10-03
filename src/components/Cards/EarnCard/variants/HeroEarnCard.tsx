@@ -83,30 +83,24 @@ export const HeroEarnCard: FC<Props> = ({
           />
         ))}
       </HeroEarnCardHeaderContainer>
-      <HeroEarnCardContentContainer isMain={isMain}>
-        <p>
-          <Trans
-            i18nKey={copy}
-            components={{
-              asset: <HeroHighlight type="asset">{asset.symbol}</HeroHighlight>,
-              protocol: (
-                <HeroHighlight type="protocol">{protocol.name}</HeroHighlight>
-              ),
-              apy: <HeroHighlight type="apy">{formattedApy}</HeroHighlight>,
-              token: <HeroHighlight type="token">{asset.symbol}</HeroHighlight>,
-              tag: (
-                <HeroHighlight type="tag">
-                  {tags?.[0] ?? 'Crypto'}
-                </HeroHighlight>
-              ),
-              chain: (
-                <HeroHighlight type="chain">
-                  {asset.chain.chainKey}
-                </HeroHighlight>
-              ),
-            }}
-          />
-        </p>
+      <HeroEarnCardContentContainer isMain={isMain} as="p">
+        <Trans
+          i18nKey={copy}
+          components={{
+            asset: <HeroHighlight type="asset">{asset.symbol}</HeroHighlight>,
+            protocol: (
+              <HeroHighlight type="protocol">{protocol.name}</HeroHighlight>
+            ),
+            apy: <HeroHighlight type="apy">{formattedApy}</HeroHighlight>,
+            token: <HeroHighlight type="token">{asset.symbol}</HeroHighlight>,
+            tag: (
+              <HeroHighlight type="tag">{tags?.[0] ?? 'Crypto'}</HeroHighlight>
+            ),
+            chain: (
+              <HeroHighlight type="chain">{asset.chain.chainKey}</HeroHighlight>
+            ),
+          }}
+        />
       </HeroEarnCardContentContainer>
       <HeroEarnCardFooterContainer>
         <HeroEarnCardFooterContentContainer>

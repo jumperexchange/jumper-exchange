@@ -122,13 +122,13 @@ interface HeroEarnCardContentContainerProps {
   isMain?: boolean;
 }
 
-export const HeroEarnCardContentContainer = styled(Stack, {
+export const HeroEarnCardContentContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isMain',
 })<HeroEarnCardContentContainerProps>(({ theme, isMain }) => ({
   marginBottom: theme.spacing(1),
   gap: theme.spacing(2),
-  '& p': {
-    ...(isMain ? theme.typography.h3 : theme.typography.h4),
+  '&, & > *': {
+    ...(isMain ? theme.typography.titleMedium : theme.typography.titleSmall),
     margin: 0,
   },
 }));

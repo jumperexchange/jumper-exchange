@@ -50,7 +50,7 @@ export const EarnOpportunitiesCards = ({
                   address: item.lpToken.address,
                 }}
                 displayMode={DepositButtonDisplayMode.IconOnly}
-                size="large"
+                size={variant === 'compact' ? 'large' : 'medium'}
                 disabled
               />
             }

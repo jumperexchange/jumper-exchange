@@ -35,8 +35,6 @@ export const Default: Story = {
 export const IconOnly: Story = {
   args: {
     displayMode: DepositButtonDisplayMode.IconOnly,
-    size: 'small',
-    label: '1234',
   },
 };
 

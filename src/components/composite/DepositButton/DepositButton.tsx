@@ -7,8 +7,9 @@ import {
   DepositButtonContentWrapper,
   DepositButtonLabelWrapper,
   DepositButtonPrimary,
-  DepositIcon,
+  DepositButtonIconWrapper,
 } from './DepositButton.styles';
+import BoltIcon from 'src/components/illustrations/BoltIcon';
 
 export const DepositButton: FC<DepositButtonProps> = ({
   displayMode = DepositButtonDisplayMode.IconAndLabel,
@@ -19,9 +20,13 @@ export const DepositButton: FC<DepositButtonProps> = ({
 }) => {
   const showLabel = displayMode !== DepositButtonDisplayMode.IconOnly;
   const showIcon = displayMode !== DepositButtonDisplayMode.LabelOnly;
-  const renderedIcon = <DepositIcon size={size} />;
+  const renderedIcon = (
+    <DepositButtonIconWrapper size={size}>
+      <BoltIcon />
+    </DepositButtonIconWrapper>
+  );
   const renderedLabel = (
-    <DepositButtonLabelWrapper>{label}</DepositButtonLabelWrapper>
+    <DepositButtonLabelWrapper size={size}>{label}</DepositButtonLabelWrapper>
   );
 
   return (
