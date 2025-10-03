@@ -5,6 +5,7 @@ export const generateRouteLabel = (
   text: string,
   allowExchange: string,
   theme: Theme,
+  backgroundImage?: string,
 ): RouteLabelRule => {
   return {
     label: {
@@ -31,8 +32,9 @@ export const generateRouteLabel = (
           width: '16px',
           height: '16px',
           borderRadius: '50%', // Makes the icon circular
-          backgroundImage:
-            'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
+          backgroundImage: backgroundImage
+            ? `url(${backgroundImage})`
+            : 'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
