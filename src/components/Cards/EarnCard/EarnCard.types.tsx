@@ -1,11 +1,12 @@
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
-export type EarnCardVariant = 'compact' | 'list-item';
+export type EarnCardVariant = 'compact' | 'list-item' | 'overview';
 
 interface CommonEarnCardProps {
   variant?: EarnCardVariant;
   fullWidth?: boolean;
   primaryAction?: React.ReactNode;
+  headerBadge?: React.ReactNode;
   href?: string;
 }
 
