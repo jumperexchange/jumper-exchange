@@ -1,9 +1,13 @@
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
+
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
+import { AppPaths } from 'src/const/urls';
+import { GoBack } from 'src/components/composite/GoBack/GoBack';
+import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
 
 interface EarnPageProps {
   slug: string;
@@ -27,9 +31,13 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   return (
     <>
       <EarnDetailsSection>
-        <h1>EarnPage</h1>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-        <h2>Analytics</h2>
+        <GoBack path={AppPaths.Earn} dataTestId="earn-back-button" />
+
+        <EarnDetailsIntro
+          /* @ts-expect-error: see LF-15589 - we are transforming data in the backend */
+          data={data.data ?? null}
+          isLoading={false}
+        />
         <EarnDetailsAnalytics slug={slug} />
       </EarnDetailsSection>
       <EarnDetailsSection>
