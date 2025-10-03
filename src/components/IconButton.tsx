@@ -18,7 +18,6 @@ export const IconButton = styled(MuiIconButtom)<IconButtonProps>(
 
       ...theme.applyStyles('light', {
         backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
-
       }),
     },
     ...theme.applyStyles('light', {
@@ -70,3 +69,24 @@ export const IconButtonAlpha = styled(IconButton)(({ theme }) => ({
     backgroundColor: theme.palette.alphaDark100.main,
   }),
 }));
+type IconButtonDynamicProps = IconButtonProps & {
+  variant?: 'primary' | 'secondary' | 'alpha';
+};
+
+export const IconButtonDynamic: React.FC<IconButtonDynamicProps> = ({
+  variant,
+  ...props
+}) => {
+  // TODO: this won't animate, replace with a proper component.
+  switch (variant) {
+    case 'primary':
+      return <IconButtonPrimary {...props} />;
+    case 'secondary':
+      return <IconButtonSecondary {...props} />;
+    case 'alpha':
+      return <IconButtonAlpha {...props} />;
+    case undefined:
+      return <IconButton {...props} />;
+  }
+  // TODO: assert never type here
+};

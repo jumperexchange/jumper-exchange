@@ -70,6 +70,28 @@ interface Resources {
       ctaButton: 'Join our Discord';
       ctaHeadline: 'Join our Discord to learn more';
     };
+    earn: {
+      copy: {
+        forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
+        forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
+      };
+      filter: {
+        clear: 'Clear';
+        search: 'Search {{filterBy}}...';
+        selected: '{{count}} selected';
+      };
+      sorting: {
+        apy: 'APY';
+        sortBy: 'Sort By';
+        tvl: 'TVL';
+      };
+      top: {
+        earnUpTo: 'Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>';
+        makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
+        maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
+        useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+      };
+    };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
     };
@@ -83,6 +105,12 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
+    };
+    labels: {
+      apy: 'APY';
+      assets: 'Assets';
+      lockupPeriod: 'Lockup Period';
+      tvl: 'TVL';
     };
     leaderboard: {
       connectWallet: 'Connect wallet';
@@ -215,91 +243,6 @@ interface Resources {
         title: 'Find the best route';
       };
     };
-    privacyPolicy: {
-      lastUpdated: 'Last updated: {{date}}';
-      sections: {
-        changesToPolicy: {
-          content: 'We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new Privacy Policy on this page and updating the "Last updated" date.';
-          title: 'Changes to This Privacy Policy';
-        };
-        childrenPrivacy: {
-          content: 'Our services are not intended for individuals under the age of 18. We do not knowingly collect personal information from children under 18.';
-          title: "Children's Privacy";
-        };
-        contactUs: {
-          content: 'If you have any questions about this Privacy Policy or our data practices, please contact us at:';
-          email: 'privacy@jumper.exchange';
-          title: 'Contact Us';
-        };
-        cookies: {
-          content: 'We use cookies and similar technologies to enhance your experience, analyze usage patterns, and provide personalized content. You can control cookie settings through your browser preferences.';
-          title: 'Cookies and Tracking';
-        };
-        dataRetention: {
-          content: 'We retain your personal information only as long as necessary to fulfill the purposes outlined in this Privacy Policy, comply with legal obligations, resolve disputes, and enforce our agreements.';
-          title: 'Data Retention';
-        };
-        dataSecurity: {
-          content: 'We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.';
-          title: 'Data Security';
-        };
-        howWeUseInformation: {
-          content: 'We use the collected information to:';
-          items: [
-            'Provide and maintain our exchange services',
-            'Process transactions and ensure security',
-            'Improve user experience and platform functionality',
-            'Communicate with you about updates and support',
-            'Comply with legal obligations and prevent fraud',
-          ];
-          title: 'How We Use Your Information';
-        };
-        informationSharing: {
-          content: 'We do not sell your personal information. We may share information only in the following circumstances:';
-          items: [
-            'With your explicit consent',
-            'To comply with legal requirements or court orders',
-            'To protect our rights and prevent fraud',
-            'With service providers who assist in our operations (under strict confidentiality agreements)',
-          ];
-          title: 'Information Sharing';
-        };
-        informationWeCollect: {
-          content: 'We may collect the following types of information:';
-          items: [
-            'Wallet addresses and transaction data when you connect your wallet',
-            'Usage data and analytics to improve our services',
-            'Communication data when you contact our support team',
-            'Technical data including IP addresses and device information',
-          ];
-          title: 'Information We Collect';
-        };
-        internationalTransfers: {
-          content: 'Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your data during such transfers.';
-          title: 'International Data Transfers';
-        };
-        introduction: {
-          content: 'This Privacy Policy describes how Jumper Exchange ("we", "our", or "us") collects, uses, and shares your personal information when you use our decentralized exchange platform and related services.';
-          title: 'Introduction';
-        };
-        thirdPartyServices: {
-          content: 'Our platform may integrate with third-party services for blockchain interactions, analytics, and other functionalities. These services have their own privacy policies, and we encourage you to review them.';
-          title: 'Third-Party Services';
-        };
-        yourRights: {
-          content: 'Depending on your jurisdiction, you may have the following rights:';
-          items: [
-            'Access to your personal information',
-            'Correction of inaccurate data',
-            'Deletion of your personal information',
-            'Portability of your data',
-            'Objection to certain processing activities',
-          ];
-          title: 'Your Rights';
-        };
-      };
-      title: 'Privacy Policy';
-    };
     profile_page: {
       achievements: 'Achievements';
       availableRewards: 'Available Rewards';
@@ -353,10 +296,12 @@ interface Resources {
     };
     tooltips: {
       apy: 'Expected yearly return rate of the tokens invested.';
+      assets: 'The assets you will earn from';
       boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
       deposit: 'The token on which the market is defined and yield accrues on.';
       deposited: 'The token you have deposited into this market.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
+      manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
       tvl: 'Total value of crypto assets deposited in this market.';
     };
     widget: {
@@ -368,6 +313,7 @@ interface Resources {
         tvl: 'TVL';
       };
       zap: {
+        depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your Positions</bold> that redirects to {{partnerName}} UI';
         placeholder: {
           comingSoon: 'Coming soon';
           'embedded-multisig': {

@@ -15,15 +15,18 @@ export const getToAmountData = (route: Route | RouteExtended) => {
   const toAmount = lastStepExecutionOrRoute?.toAmount || route.toAmount;
   const toTokenDecimals =
     lastStepExecutionOrRoute?.toToken?.decimals || route.toToken.decimals;
-  const formattedToAmount = formatUnits(BigInt(toAmount), toTokenDecimals);
+  const toAmountFormatted = formatUnits(BigInt(toAmount), toTokenDecimals);
   const priceUsd =
     lastStepExecutionOrRoute?.toToken?.priceUSD || route.toToken.priceUSD;
-  const toAmountUSD = Number(formattedToAmount) * Number(priceUsd);
+  const toAmountUSD =
+    toAmountFormatted && priceUsd
+      ? Number(toAmountFormatted) * Number(priceUsd)
+      : Number(route?.toAmountUSD || 0);
 
   return {
     toAmount,
     toAmountUSD,
-    toAmountFormatted: formattedToAmount,
+    toAmountFormatted,
   };
 };
 

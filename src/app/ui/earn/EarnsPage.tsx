@@ -8,7 +8,6 @@ interface EarnsPageProps {}
 export const EarnsPage: FC<EarnsPageProps> = async () => {
   return (
     <div>
-      <h1>EarnsPage</h1>
       <EarnTopOpportunities />
       <EarnOpportunitiesAll />
     </div>

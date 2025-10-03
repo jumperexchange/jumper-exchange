@@ -2,7 +2,8 @@ import { useMissionStore } from 'src/stores/mission/MissionStore';
 import { EntityWidgetProps } from '../base/Widget.types';
 import { FC, useMemo } from 'react';
 import { ZapWithdrawWidget } from '../base/ZapWidget/ZapWithdrawWidget';
-import { ConfigContext } from '../widgetConfig/types';
+import { ZapWidgetContext } from '../widgetConfig/types';
+import { TaskType } from 'src/types/strapi';
 
 interface MissionZapWithdrawWidgetProps extends EntityWidgetProps {}
 
@@ -20,15 +21,17 @@ export const MissionZapWithdrawWidget: FC<MissionZapWithdrawWidgetProps> = ({
     // missionChainIds,
   } = useMissionStore();
 
-  const ctx: ConfigContext = useMemo(() => {
+  const ctx: ZapWidgetContext = useMemo(() => {
     return {
-      // destinationChain,
-      // destinationToken,
-      // sourceChain,
-      // sourceToken,
-      // fromAmount,
-      toAddress,
-      taskType: currentActiveTaskType,
+      formData: {
+        toAddress,
+        // destinationChain,
+        // destinationToken,
+        // sourceChain,
+        // sourceToken,
+        // fromAmount,
+      },
+      taskType: currentActiveTaskType as TaskType.Zap,
     };
   }, [
     // destinationChain,

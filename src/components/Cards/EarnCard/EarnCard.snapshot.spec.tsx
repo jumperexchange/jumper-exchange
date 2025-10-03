@@ -2,9 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { render } from '../../../../vitest.setup';
 
-import { EarnCard } from './EarnCard';
 import { IconButtonPrimary } from 'src/components/IconButton.style';
 import BoltIcon from 'src/components/illustrations/BoltIcon';
+import { EarnCard } from './EarnCard';
 
 const mockedChains = [
   {
@@ -92,66 +92,56 @@ vi.mock('src/hooks/useTokens', () => ({
 }));
 
 const commonArgs = {
-  assets: {
-    label: 'Assets',
-    tooltip: 'The assets you will earn from',
-    tokens: [
-      {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-        address: '0x0000000000000000000000000000000000000000',
-        logo: '',
-        chain: {
-          chainKey: 'ETH',
-          chainId: 1,
-        },
+  data: {
+    name: 'Moonwell Flagship USDC on base',
+    asset: {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+      logo: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040',
+      chain: {
+        chainId: 8453,
+        chainKey: 'base',
       },
-      {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-        address: '0x7BfA7C4f149E7415b73bdeDfe609237e29CBF34A',
-        logo: '',
-        chain: {
-          chainId: 10,
-          chainKey: 'BASE',
-        },
-      },
-    ],
-  },
-  protocol: {
-    name: 'Morpho',
-    logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
-    product: 'Metamorpho',
-    version: '1.0.0',
-  },
-  link: {
+    },
+    protocol: {
+      name: 'morpho',
+      product: 'metamorpho',
+      version: '',
+      logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
+    },
     url: 'https://app.morpho.org',
-    label: 'Explore Morpho',
-  },
-  recommended: true,
-  tags: ['Staking', 'Earn'],
-  lockupPeriod: {
-    label: 'Lockup Period',
-    tooltip: 'The lockup period is the time you need to lock your assets for',
-    value: 1000,
-    valueFormatted: '1000 months',
-  },
-  apy: {
-    label: 'APY',
-    tooltip: 'The APY is the annualized return you will receive',
-    value: 1000,
-    valueFormatted: '1000%',
-  },
-  tvl: {
-    label: 'TVL',
-    tooltip: 'The TVL is the total value locked in the pool',
-    value: 1000,
-    valueFormatted: `$${Number(1000).toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`,
+    description:
+      "Development Value - This value is used in our e2e tests workflows!!!\n\nLenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).\n\nDescription from vault manager:\n\nThe Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.\n\n[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)",
+    tags: ['Staking', 'Earn'],
+    rewards: [],
+    lpToken: {
+      name: 'Moonwell Flagship USDC',
+      symbol: 'mwUSDC',
+      decimals: 18,
+      address: '0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca',
+      logo: 'https://moonwell.fi/_next/static/media/usdc.0f045781.svg',
+      chain: {
+        chainId: 8453,
+        chainKey: 'base',
+      },
+    },
+    slug: 'moonwell-flagship-usdc-on-base',
+    lockupMonths: 2,
+    capInDollar: '1000000000000000000',
+    featured: true,
+    forYou: true,
+    latest: {
+      date: '+057679-11-04T06:34:08.000Z',
+      tvlUsd: '62572415',
+      tvlNative: '62588064205976',
+      apy: {
+        base: 0.0558,
+        reward: 0.0157,
+        total: 0.07150000000000001,
+      },
+    },
   },
 };
 
@@ -191,9 +181,9 @@ describe('EarnCard snapshot', () => {
   it('compact card with no recommendation matches snapshot', async () => {
     const { container } = render(
       <EarnCard
-        {...commonArgs}
         variant="compact"
-        recommended={false}
+        {...commonArgs}
+        data={{ ...commonArgs.data, forYou: false }}
         primaryAction={compactPrimaryAction}
       />,
     );
@@ -204,7 +194,6 @@ describe('EarnCard snapshot', () => {
       <EarnCard
         {...commonArgs}
         variant="compact"
-        assets={{ ...commonArgs.assets, tokens: [commonArgs.assets.tokens[0]] }}
         primaryAction={compactPrimaryAction}
       />,
     );
@@ -230,8 +219,8 @@ describe('EarnCard snapshot', () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
+        data={{ ...commonArgs.data, forYou: false }}
         variant="list-item"
-        recommended={false}
         primaryAction={listItemPrimaryAction}
       />,
     );
@@ -250,11 +239,7 @@ describe('EarnCard snapshot', () => {
   });
   it('list item card with single asset matches snapshot', async () => {
     const { container } = render(
-      <EarnCard
-        {...commonArgs}
-        variant="list-item"
-        assets={{ ...commonArgs.assets, tokens: [commonArgs.assets.tokens[0]] }}
-      />,
+      <EarnCard {...commonArgs} variant="list-item" />,
     );
     expect(container).toMatchSnapshot();
   });

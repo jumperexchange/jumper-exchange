@@ -207,6 +207,7 @@ export enum TrackingEventParameter {
   // Transaction:
   Action = 'param_action',
   ErrorCode = 'param_error_code',
+  ErrorCodeKey = 'param_error_code_key',
   ErrorMessage = 'param_error_message',
   FeeCost = 'param_fee_cost',
   FeeCostFormatted = 'param_fee_cost_formatted',

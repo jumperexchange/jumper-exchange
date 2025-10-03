@@ -1,23 +1,52 @@
 'use client';
 
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
-import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
+import { useState } from 'react';
+import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
+import {
+  EarnFilteringProvider,
+  useEarnFiltering,
+} from './EarnFilteringContext';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import Stack from '@mui/system/Stack';
+import { EarnOpportunitiesCards } from './EarnOpportunitiesCards';
 
-export const EarnOpportunitiesAll = () => {
-  const filter: EarnOpportunityFilter = {
-    chainId: 42,
-  };
-  const { data, isLoading, error, isError } = useEarnFilterOpportunities({
-    filter,
-  });
+const EarnOpportunitiesAll_ = () => {
+  const { forYouLoading, forYou, allLoading, all, showForYou } =
+    useEarnFiltering();
+
+  const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
   return (
-    <div>
-      <h1>EarnOpportunitiesSearch</h1>
-      <pre>{isLoading ? 'Loading...' : 'Loaded'}</pre>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <pre>{isError ? 'Error' : 'No error'}</pre>
-      <pre>{JSON.stringify(error, null, 2)}</pre>
-    </div>
+    <SectionCardContainer>
+      <Stack direction="column" gap={3}>
+        <EarnFilterBar
+          isLoading={allLoading || forYouLoading}
+          variant={variant}
+          setVariant={setVariant}
+        />
+        {showForYou ? (
+          <EarnOpportunitiesCards
+            items={forYou}
+            isLoading={forYouLoading}
+            variant={variant}
+          />
+        ) : (
+          <EarnOpportunitiesCards
+            items={all}
+            isLoading={allLoading}
+            variant={variant}
+          />
+        )}
+      </Stack>
+    </SectionCardContainer>
+  );
+};
+
+export const EarnOpportunitiesAll = () => {
+  return (
+    <EarnFilteringProvider>
+      <EarnOpportunitiesAll_ />
+    </EarnFilteringProvider>
   );
 };

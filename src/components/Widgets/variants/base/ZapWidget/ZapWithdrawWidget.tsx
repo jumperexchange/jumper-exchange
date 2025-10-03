@@ -5,7 +5,7 @@ import { WidgetSkeleton } from '../WidgetSkeleton';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 
-interface ZapWithdrawWidgetProps extends WidgetProps {}
+interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {}
 
 export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   customInformation,
@@ -28,7 +28,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.meta.name, zapData?.market?.depositToken?.symbol]);
 
   const token = useMemo(
     () =>
