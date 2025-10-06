@@ -90,7 +90,12 @@ export const SelectBase = <T extends TData>({
     >
       {children}
       {options.map((option) => (
-        <StyledMenuItem disableRipple key={option.value} value={option.value}>
+        <StyledMenuItem
+          disableRipple
+          key={option.value}
+          value={option.value}
+          sx={option.sx}
+        >
           <StyledMenuItemContentContainer>
             {option.icon}
             <SelectorLabel label={option.label} />
