@@ -17,7 +17,7 @@ import { HeroEarnCardSkeleton } from './HeroEarnCardSkeleton';
 import { HeroHighlight } from './HeroHighlight';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { Link } from 'src/components/Link/Link';
+import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 
 export enum EarnHeroCardCopyKey {
   USE_YOUR_SPARE = 'earn.top.useYourSpare',
@@ -76,66 +76,62 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   );
   const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
 
-  const cardContent = (
-    <HeroEarnCardContainer hasLink={!!href}>
-      <HeroEarnCardHeaderContainer direction="row">
-        {forYou && (
-          <Badge
-            variant={BadgeVariant.Secondary}
-            size={BadgeSize.SM}
-            startIcon={<RecommendationIcon height={12} width={12} />}
-          />
-        )}
-        {tags?.map((tag) => (
-          <Badge
-            variant={BadgeVariant.Secondary}
-            size={BadgeSize.SM}
-            label={tag}
-            key={tag}
-          />
-        ))}
-      </HeroEarnCardHeaderContainer>
-      <HeroEarnCardContentContainer isMain={isMain} as="p">
-        <Trans
-          i18nKey={copy}
-          components={{
-            asset: <HeroHighlight type="asset">{asset.symbol}</HeroHighlight>,
-            protocol: (
-              <HeroHighlight type="protocol">{protocol.name}</HeroHighlight>
-            ),
-            apy: <HeroHighlight type="apy">{formattedApy}</HeroHighlight>,
-            token: <HeroHighlight type="token">{asset.symbol}</HeroHighlight>,
-            tag: (
-              <HeroHighlight type="tag">{tags?.[0] ?? 'Crypto'}</HeroHighlight>
-            ),
-            chain: (
-              <HeroHighlight type="chain">{asset.chain.chainKey}</HeroHighlight>
-            ),
-          }}
-        />
-      </HeroEarnCardContentContainer>
-      <HeroEarnCardFooterContainer>
-        <HeroEarnCardFooterContentContainer>
-          <EntityChainStack
-            variant={EntityChainStackVariant.Protocol}
-            protocol={protocol}
-            chains={chains}
-            protocolSize={AvatarSize.XXL}
-            chainsSize={AvatarSize.SM}
-          />
-          {primaryAction}
-        </HeroEarnCardFooterContentContainer>
-      </HeroEarnCardFooterContainer>
-    </HeroEarnCardContainer>
-  );
-
-  if (!href) {
-    return cardContent;
-  }
-
   return (
-    <Link href={href} sx={{ textDecoration: 'none', color: 'unset' }}>
-      {cardContent}
-    </Link>
+    <ConditionalLink href={href}>
+      <HeroEarnCardContainer hasLink={!!href}>
+        <HeroEarnCardHeaderContainer direction="row">
+          {forYou && (
+            <Badge
+              variant={BadgeVariant.Secondary}
+              size={BadgeSize.SM}
+              startIcon={<RecommendationIcon height={12} width={12} />}
+            />
+          )}
+          {tags?.map((tag) => (
+            <Badge
+              variant={BadgeVariant.Secondary}
+              size={BadgeSize.SM}
+              label={tag}
+              key={tag}
+            />
+          ))}
+        </HeroEarnCardHeaderContainer>
+        <HeroEarnCardContentContainer isMain={isMain} as="p">
+          <Trans
+            i18nKey={copy}
+            components={{
+              asset: <HeroHighlight type="asset">{asset.symbol}</HeroHighlight>,
+              protocol: (
+                <HeroHighlight type="protocol">{protocol.name}</HeroHighlight>
+              ),
+              apy: <HeroHighlight type="apy">{formattedApy}</HeroHighlight>,
+              token: <HeroHighlight type="token">{asset.symbol}</HeroHighlight>,
+              tag: (
+                <HeroHighlight type="tag">
+                  {tags?.[0] ?? 'Crypto'}
+                </HeroHighlight>
+              ),
+              chain: (
+                <HeroHighlight type="chain">
+                  {asset.chain.chainKey}
+                </HeroHighlight>
+              ),
+            }}
+          />
+        </HeroEarnCardContentContainer>
+        <HeroEarnCardFooterContainer>
+          <HeroEarnCardFooterContentContainer>
+            <EntityChainStack
+              variant={EntityChainStackVariant.Protocol}
+              protocol={protocol}
+              chains={chains}
+              protocolSize={AvatarSize.XXL}
+              chainsSize={AvatarSize.SM}
+            />
+            {primaryAction}
+          </HeroEarnCardFooterContentContainer>
+        </HeroEarnCardFooterContainer>
+      </HeroEarnCardContainer>
+    </ConditionalLink>
   );
 };

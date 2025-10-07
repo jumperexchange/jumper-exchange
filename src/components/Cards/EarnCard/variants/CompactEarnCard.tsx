@@ -1,7 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { chunk } from 'lodash';
 import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -17,16 +16,16 @@ import { EarnCardProps } from '../EarnCard.types';
 import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
+import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
   data,
   isLoading,
-  onClick,
+  href,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = !data || isLoading;
-  const { t } = useTranslation();
 
   const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(data);
   const { protocol, forYou, tags, lpToken } = data ?? {};
@@ -46,49 +45,51 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   }
 
   return (
-    <CompactEarnCardContainer onClick={onClick}>
-      <CompactEarnCardHeaderContainer direction="row">
-        <CompactEarnCardTagContainer direction="row">
-          {forYou && (
-            <Badge
-              variant={BadgeVariant.Secondary}
-              size={BadgeSize.SM}
-              startIcon={<RecommendationIcon height={12} width={12} />}
-            />
-          )}
-          {tags?.map((tag) => (
-            <Badge
-              variant={BadgeVariant.Secondary}
-              size={BadgeSize.SM}
-              label={tag}
-              key={tag}
-            />
+    <ConditionalLink href={href}>
+      <CompactEarnCardContainer hasLink={!!href}>
+        <CompactEarnCardHeaderContainer direction="row">
+          <CompactEarnCardTagContainer direction="row">
+            {forYou && (
+              <Badge
+                variant={BadgeVariant.Secondary}
+                size={BadgeSize.SM}
+                startIcon={<RecommendationIcon height={12} width={12} />}
+              />
+            )}
+            {tags?.map((tag) => (
+              <Badge
+                variant={BadgeVariant.Secondary}
+                size={BadgeSize.SM}
+                label={tag}
+                key={tag}
+              />
+            ))}
+          </CompactEarnCardTagContainer>
+          {primaryAction}
+        </CompactEarnCardHeaderContainer>
+        <CompactEarnCardContentContainer>
+          <EntityChainStack
+            variant={EntityChainStackVariant.Protocol}
+            protocol={protocol}
+            chains={chains}
+          />
+          {chunk(items, 2).map((itemsChunk, index) => (
+            <Grid
+              container
+              rowSpacing={2}
+              columnSpacing={2}
+              key={index}
+              sx={(theme) => ({
+                backgroundColor: (theme.vars || theme).palette.alpha100.main,
+                padding: theme.spacing(2),
+                borderRadius: theme.spacing(2),
+              })}
+            >
+              {itemsChunk}
+            </Grid>
           ))}
-        </CompactEarnCardTagContainer>
-        {primaryAction}
-      </CompactEarnCardHeaderContainer>
-      <CompactEarnCardContentContainer>
-        <EntityChainStack
-          variant={EntityChainStackVariant.Protocol}
-          protocol={protocol}
-          chains={chains}
-        />
-        {chunk(items, 2).map((itemsChunk, index) => (
-          <Grid
-            container
-            rowSpacing={2}
-            columnSpacing={2}
-            key={index}
-            sx={(theme) => ({
-              backgroundColor: (theme.vars || theme).palette.alpha100.main,
-              padding: theme.spacing(2),
-              borderRadius: theme.spacing(2),
-            })}
-          >
-            {itemsChunk}
-          </Grid>
-        ))}
-      </CompactEarnCardContentContainer>
-    </CompactEarnCardContainer>
+        </CompactEarnCardContentContainer>
+      </CompactEarnCardContainer>
+    </ConditionalLink>
   );
 };

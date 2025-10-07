@@ -1,18 +1,24 @@
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import InfoIcon from '@mui/icons-material/Info';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-const EarnCardContainer = styled(Box)(({ theme, onClick }) => ({
+interface EarnCardContainerProps {
+  hasLink?: boolean;
+}
+
+const EarnCardContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasLink',
+})<EarnCardContainerProps>(({ theme, hasLink }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
-  cursor: onClick ? 'pointer' : 'default',
+  cursor: hasLink ? 'pointer' : 'default',
+  transition: 'all 0.3s ease-in-out',
   '&:hover': {
-    boxShadow: onClick ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
+    boxShadow: hasLink ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
   },
   ...theme.applyStyles('dark', {
     backgroundColor: (theme.vars || theme).palette.surface2.main,

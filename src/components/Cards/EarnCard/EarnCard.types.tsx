@@ -6,7 +6,7 @@ interface CommonEarnCardProps {
   variant?: EarnCardVariant;
   fullWidth?: boolean;
   primaryAction?: React.ReactNode;
-  onClick?: () => void;
+  href?: string;
 }
 
 export interface EarnCardNotEmptyProps extends CommonEarnCardProps {

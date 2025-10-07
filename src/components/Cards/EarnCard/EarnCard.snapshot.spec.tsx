@@ -8,6 +8,7 @@ import {
   compactPrimaryAction,
   listItemPrimaryAction,
 } from './fixtures';
+import { AppPaths } from 'src/const/urls';
 
 const mockedChains = [
   {
@@ -132,6 +133,16 @@ describe('EarnCard snapshot', () => {
     );
     expect(container).toMatchSnapshot();
   });
+  it('compact card with href matches snapshot', async () => {
+    const { container } = render(
+      <EarnCard
+        {...commonArgs}
+        variant="compact"
+        href={`${AppPaths.Earn}/${commonArgs.data.slug}`}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
   it('list item card matches snapshot', async () => {
     const { container } = render(
       <EarnCard
@@ -167,6 +178,16 @@ describe('EarnCard snapshot', () => {
   it('list item card with single asset matches snapshot', async () => {
     const { container } = render(
       <EarnCard {...commonArgs} variant="list-item" />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('list item card with href matches snapshot', async () => {
+    const { container } = render(
+      <EarnCard
+        {...commonArgs}
+        variant="list-item"
+        href={`${AppPaths.Earn}/${commonArgs.data.slug}`}
+      />,
     );
     expect(container).toMatchSnapshot();
   });

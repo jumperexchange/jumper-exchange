@@ -5,6 +5,7 @@ import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import { GridContainer } from 'src/components/Containers/GridContainer';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import { AppPaths } from 'src/const/urls';
 
 export const EarnOpportunitiesCards = ({
   items,
@@ -36,7 +37,8 @@ export const EarnOpportunitiesCards = ({
           />
         ) : (
           <EarnCard
-            key={item?.slug}
+            key={item.slug}
+            href={`${AppPaths.Earn}/${item.slug}`}
             variant={variant}
             isLoading={false}
             data={item}
