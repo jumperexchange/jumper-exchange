@@ -15,6 +15,10 @@ const meta = {
       control: { type: 'select' },
       options: Object.values(DepositButtonDisplayMode),
     },
+    size: {
+      control: { type: 'select' },
+      options: ['small', 'medium', 'large'],
+    },
   },
 } satisfies Meta<typeof DepositButton>;
 
@@ -31,6 +35,8 @@ export const Default: Story = {
 export const IconOnly: Story = {
   args: {
     displayMode: DepositButtonDisplayMode.IconOnly,
+    size: 'small',
+    label: '1234',
   },
 };
 

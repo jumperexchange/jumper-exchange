@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { ButtonProps } from 'src/components/Button';
+import { ButtonPrimary } from 'src/components/Button';
 import BoltIcon from 'src/components/illustrations/BoltIcon';
 
 interface DepositIconProps {
@@ -44,4 +45,12 @@ export const DepositButtonContentWrapper = styled(Box)(() => ({
 
 export const DepositButtonLabelWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.5, 1.5),
+}));
+
+export const DepositButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
+  minWidth: 'auto',
+  '&:disabled': {
+    backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+    color: (theme.vars || theme).palette.buttonDisabledAction,
+  },
 }));

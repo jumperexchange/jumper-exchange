@@ -1,13 +1,12 @@
 import { FC } from 'react';
-import { Button, ButtonProps } from 'src/components/Button';
 import {
   DepositButtonDisplayMode,
   DepositButtonProps,
 } from './DepositButton.types';
-import Box from '@mui/material/Box';
 import {
   DepositButtonContentWrapper,
   DepositButtonLabelWrapper,
+  DepositButtonPrimary,
   DepositIcon,
 } from './DepositButton.styles';
 
@@ -26,19 +25,16 @@ export const DepositButton: FC<DepositButtonProps> = ({
   );
 
   return (
-    <Button
+    <DepositButtonPrimary
       {...props}
-      styles={{
-        ...(props.styles || {}),
-        minWidth: 'auto',
-      }}
-      variant="primary"
+      sx={props.sx}
+      size={size}
       onClick={onClick}
     >
       <DepositButtonContentWrapper>
         {showLabel && renderedLabel}
         {showIcon && renderedIcon}
       </DepositButtonContentWrapper>
-    </Button>
+    </DepositButtonPrimary>
   );
 };

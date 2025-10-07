@@ -18,6 +18,7 @@ import { EarnCardProps } from '../EarnCard.types';
 import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
 import { formatLockupDuration } from './shared';
+import { toCompactValue } from 'src/utils/formatNumbers';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -43,7 +44,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const items = useMemo(() => {
     const result = [];
 
-    if (apy) {
+    if (apy && apy.total) {
       const formatted = `${(apy.total * 100).toLocaleString()}%`;
 
       result.push(
@@ -56,7 +57,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     }
 
     const lockupMonthsNumber = Number(lockupMonths);
-    if (!isNaN(lockupMonthsNumber)) {
+    if (!isNaN(lockupMonthsNumber) && lockupMonthsNumber) {
       const formatted = formatLockupDuration(lockupMonthsNumber);
       result.push(
         <ListItemTooltipBadge
@@ -70,10 +71,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     }
 
     if (tvlUsd) {
-      const formatted = `$${Number(tvlUsd).toLocaleString('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })}`;
+      const formatted = `$${toCompactValue(Number(tvlUsd))}`;
 
       result.push(
         <ListItemTooltipBadge

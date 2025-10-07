@@ -18,6 +18,7 @@ import { EarnCardProps } from '../EarnCard.types';
 import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { formatLockupDuration } from './shared';
+import { toCompactValue } from 'src/utils/formatNumbers';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -42,7 +43,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const items = useMemo(() => {
     const result = [];
 
-    if (apy) {
+    if (apy && apy.total) {
       const formatted = `${(apy.total * 100).toLocaleString()}%`;
 
       result.push(
@@ -55,7 +56,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     }
 
     const lockupMonthsNumber = Number(lockupMonths);
-    if (!isNaN(lockupMonthsNumber)) {
+    if (!isNaN(lockupMonthsNumber) && lockupMonthsNumber) {
       result.push(
         <CompactEarnCardItem
           title={t('labels.lockupPeriod')}
@@ -68,10 +69,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     }
 
     if (tvlUsd) {
-      const formatted = `$${Number(tvlUsd).toLocaleString('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })}`;
+      const formatted = `$${toCompactValue(Number(tvlUsd))}`;
 
       result.push(
         <CompactEarnCardItem

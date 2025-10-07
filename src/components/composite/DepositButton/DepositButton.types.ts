@@ -1,4 +1,4 @@
-import { ButtonProps } from 'src/components/Button/Button';
+import type { ButtonProps } from '@mui/material/Button';
 
 export enum DepositButtonDisplayMode {
   IconOnly = 'icon-only',

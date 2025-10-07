@@ -14,12 +14,16 @@ const EarnCardContainer = styled(Box)(({ theme, onClick }) => ({
   '&:hover': {
     boxShadow: onClick ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
   },
+  ...theme.applyStyles('dark', {
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+  }),
 }));
 
 export const CompactEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(4, 3, 3),
     maxWidth: 330,
+    height: 306,
   }),
 );
 

@@ -2,6 +2,8 @@ import Grid from '@mui/material/Grid';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
+import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
+import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
 export const EarnOpportunitiesCards = ({
@@ -24,7 +26,25 @@ export const EarnOpportunitiesCards = ({
           {item == null ? (
             <EarnCard variant={variant} isLoading={true} data={null} />
           ) : (
-            <EarnCard variant={variant} isLoading={false} data={item} />
+            <EarnCard
+              variant={variant}
+              isLoading={false}
+              data={item}
+              primaryAction={
+                <DepositFlowButton
+                  // TODO: Enable deposit flow button and properly set earnOpportunity
+                  earnOpportunity={{
+                    ...item,
+                    minFromAmountUSD: 5,
+                    positionUrl: item.url ?? 'unset',
+                    address: item.lpToken.address,
+                  }}
+                  displayMode={DepositButtonDisplayMode.IconOnly}
+                  size="medium"
+                  disabled
+                />
+              }
+            />
           )}
         </Grid>
       ))}
