@@ -1,7 +1,7 @@
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatLockupDuration } from 'src/components/Cards/EarnCard/variants/shared';
+import { formatLockupDuration } from 'src/utils/earn/utils';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { toCompactValue } from 'src/utils/formatNumbers';

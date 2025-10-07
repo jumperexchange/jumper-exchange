@@ -11,7 +11,7 @@ import {
   HeroEarnCardContentContainer,
   HeroEarnCardFooterContainer,
   HeroEarnCardHeaderContainer,
-} from '../EarnCard.styles';
+} from '../EarnCard/EarnCard.styles';
 
 export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
   return (

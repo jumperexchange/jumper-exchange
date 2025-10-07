@@ -1,6 +1,6 @@
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
+import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import { GridContainer } from 'src/components/Containers/GridContainer';

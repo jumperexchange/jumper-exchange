@@ -2,12 +2,9 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { render } from '../../../../vitest.setup';
 
-import { EarnCard } from './EarnCard';
-import {
-  commonArgs,
-  compactPrimaryAction,
-  listItemPrimaryAction,
-} from './fixtures';
+import { HeroEarnCard } from './HeroEarnCard';
+import { commonArgs, heroEarnCardPrimaryAction } from './fixtures';
+import { AppPaths } from 'src/const/urls';
 
 const mockedChains = [
   {
@@ -94,79 +91,30 @@ vi.mock('src/hooks/useTokens', () => ({
   }),
 }));
 
-describe('EarnCard snapshot', () => {
-  it('compact card matches snapshot', async () => {
+describe('HeroEarnCard snapshot', () => {
+  it('hero card matches snapshot', async () => {
+    const { container } = render(<HeroEarnCard {...commonArgs} />);
+    expect(container).toMatchSnapshot();
+  });
+  it('hero card with loading matches snapshot', async () => {
+    const { container } = render(<HeroEarnCard {...commonArgs} isLoading />);
+    expect(container).toMatchSnapshot();
+  });
+  it('hero card with single asset matches snapshot', async () => {
     const { container } = render(
-      <EarnCard
+      <HeroEarnCard
         {...commonArgs}
-        variant="compact"
-        primaryAction={compactPrimaryAction}
+        primaryAction={heroEarnCardPrimaryAction}
       />,
     );
     expect(container).toMatchSnapshot();
   });
-  it('compact card with no recommendation matches snapshot', async () => {
+  it('hero card with link matches snapshot', async () => {
     const { container } = render(
-      <EarnCard
-        variant="compact"
+      <HeroEarnCard
         {...commonArgs}
-        data={{ ...commonArgs.data, forYou: false }}
-        primaryAction={compactPrimaryAction}
+        href={`${AppPaths.Earn}/${commonArgs.data.slug}`}
       />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-  it('compact card with single asset matches snapshot', async () => {
-    const { container } = render(
-      <EarnCard
-        {...commonArgs}
-        variant="compact"
-        primaryAction={compactPrimaryAction}
-      />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-  it('compact card with loading matches snapshot', async () => {
-    const { container } = render(
-      <EarnCard {...commonArgs} variant="compact" isLoading />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-  it('list item card matches snapshot', async () => {
-    const { container } = render(
-      <EarnCard
-        {...commonArgs}
-        variant="list-item"
-        primaryAction={listItemPrimaryAction}
-      />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-  it('list item card with no recommendation matches snapshot', async () => {
-    const { container } = render(
-      <EarnCard
-        {...commonArgs}
-        data={{ ...commonArgs.data, forYou: false }}
-        variant="list-item"
-        primaryAction={listItemPrimaryAction}
-      />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-  it('list item card with loading matches snapshot', async () => {
-    const { container } = render(
-      <EarnCard
-        {...commonArgs}
-        variant="list-item"
-        isLoading
-        primaryAction={listItemPrimaryAction}
-      />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-  it('list item card with single asset matches snapshot', async () => {
-    const { container } = render(
-      <EarnCard {...commonArgs} variant="list-item" />,
     );
     expect(container).toMatchSnapshot();
   });

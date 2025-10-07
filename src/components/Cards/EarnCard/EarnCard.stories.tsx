@@ -90,26 +90,3 @@ export const ListItemLoading: Story = {
     isLoading: true,
   },
 };
-
-export const Top: Story = {
-  args: {
-    ...commonArgs,
-    variant: 'hero',
-  },
-};
-
-export const TopLoading: Story = {
-  args: {
-    ...commonArgs,
-    variant: 'hero',
-    isLoading: true,
-  },
-};
-
-export const TopWithAction: Story = {
-  args: {
-    ...commonArgs,
-    variant: 'hero',
-    primaryAction: listItemPrimaryAction,
-  },
-};

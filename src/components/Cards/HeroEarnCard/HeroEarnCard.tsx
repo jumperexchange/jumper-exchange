@@ -1,4 +1,3 @@
-import Grid from '@mui/material/Grid';
 import { uniqBy } from 'lodash';
 import { FC } from 'react';
 import { Trans } from 'react-i18next';
@@ -13,11 +12,12 @@ import {
   HeroEarnCardFooterContainer,
   HeroEarnCardFooterContentContainer,
   HeroEarnCardHeaderContainer,
-} from '../EarnCard.styles';
-import { EarnCardProps } from '../EarnCard.types';
+} from './HeroEarnCard.styles';
 import { HeroEarnCardSkeleton } from './HeroEarnCardSkeleton';
 import { HeroHighlight } from './HeroHighlight';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import { Link } from 'src/components/Link/Link';
 
 export enum EarnHeroCardCopyKey {
   USE_YOUR_SPARE = 'earn.top.useYourSpare',
@@ -26,24 +26,36 @@ export enum EarnHeroCardCopyKey {
   EARN_UP_TO = 'earn.top.earnUpTo',
 }
 
-export const ithCopy = (index: number): EarnHeroCardCopyKey => {
-  const values = Object.values(EarnHeroCardCopyKey);
-  const safeIndex = (index + values.length) % values.length;
-  return values[safeIndex] as EarnHeroCardCopyKey;
-};
-
-type Props = Omit<EarnCardProps, 'variant'> & {
+interface CommonHeroEarnCardProps {
+  fullWidth?: boolean;
+  primaryAction?: React.ReactNode;
   copy?: EarnHeroCardCopyKey;
   isMain?: boolean;
-};
+  href?: string;
+}
 
-export const HeroEarnCard: FC<Props> = ({
+export interface HeroEarnCardNotEmptyProps extends CommonHeroEarnCardProps {
+  data: EarnOpportunityWithLatestAnalytics;
+  isLoading?: boolean;
+}
+
+export interface HeroEarnCardEmptyAndLoadingProps
+  extends CommonHeroEarnCardProps {
+  data: null;
+  isLoading: true;
+}
+
+type HeroEarnCardProps =
+  | HeroEarnCardNotEmptyProps
+  | HeroEarnCardEmptyAndLoadingProps;
+
+export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   primaryAction,
   data,
   isLoading,
   copy = EarnHeroCardCopyKey.USE_YOUR_SPARE,
   isMain = false,
-  onClick,
+  href,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
@@ -64,8 +76,8 @@ export const HeroEarnCard: FC<Props> = ({
   );
   const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
 
-  return (
-    <HeroEarnCardContainer onClick={onClick}>
+  const cardContent = (
+    <HeroEarnCardContainer hasLink={!!href}>
       <HeroEarnCardHeaderContainer direction="row">
         {forYou && (
           <Badge
@@ -115,5 +127,15 @@ export const HeroEarnCard: FC<Props> = ({
         </HeroEarnCardFooterContentContainer>
       </HeroEarnCardFooterContainer>
     </HeroEarnCardContainer>
+  );
+
+  if (!href) {
+    return cardContent;
+  }
+
+  return (
+    <Link href={href} sx={{ textDecoration: 'none', color: 'unset' }}>
+      {cardContent}
+    </Link>
   );
 };

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { commonArgs, compactPrimaryAction } from './fixtures';
-import { HeroEarnCard, EarnHeroCardCopyKey } from './variants/HeroEarnCard';
+import { commonArgs, heroEarnCardPrimaryAction } from './fixtures';
+import { HeroEarnCard, EarnHeroCardCopyKey } from './HeroEarnCard';
 
 const meta = {
   component: HeroEarnCard,
@@ -31,7 +31,7 @@ export const HeroLoading: Story = {
 export const HeroWithAction: Story = {
   args: {
     ...commonArgs,
-    primaryAction: compactPrimaryAction,
+    primaryAction: heroEarnCardPrimaryAction,
   },
 };
 
@@ -42,14 +42,14 @@ export const HeroWithActionAndNoRecommendation: Story = {
       ...commonArgs.data,
       forYou: false,
     },
-    primaryAction: compactPrimaryAction,
+    primaryAction: heroEarnCardPrimaryAction,
   },
 };
 
 export const HeroWithActionAndNoRecommendationAndMain: Story = {
   args: {
     ...commonArgs,
-    primaryAction: compactPrimaryAction,
+    primaryAction: heroEarnCardPrimaryAction,
     isMain: true,
   },
 };
@@ -57,7 +57,7 @@ export const HeroWithActionAndNoRecommendationAndMain: Story = {
 export const HeroWithActionAndNoRecommendationAndCustomCopy: Story = {
   args: {
     ...commonArgs,
-    primaryAction: compactPrimaryAction,
+    primaryAction: heroEarnCardPrimaryAction,
     copy: EarnHeroCardCopyKey.MAXIMIZE_YOUR_REVENUE,
     isMain: true,
   },

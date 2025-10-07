@@ -1,7 +1,7 @@
 'use client';
 
 import Grid from '@mui/material/Grid';
-import { HeroEarnCardSkeleton } from 'src/components/Cards/EarnCard/variants/HeroEarnCardSkeleton';
+import { HeroEarnCardSkeleton } from 'src/components/Cards/HeroEarnCard/HeroEarnCardSkeleton';
 import { EarnOpportunitiesAllSkeleton } from './EarnOpportunitiesAll/EarnOpportunitiesAllSkeleton';
 
 export const EarnsPageSkeleton = () => {

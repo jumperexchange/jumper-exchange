@@ -1,14 +1,13 @@
 'use client';
 import { Grid } from '@mui/material';
-import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
-import {
-  ithCopy,
-  HeroEarnCard,
-} from 'src/components/Cards/EarnCard/variants/HeroEarnCard';
+import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
+import { HeroEarnCard } from 'src/components/Cards/HeroEarnCard/HeroEarnCard';
 import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
+import { AppPaths } from 'src/const/urls';
 
 interface EarnTopOpportunities {}
 
@@ -27,7 +26,8 @@ export const EarnTopOpportunities = () => {
               <HeroEarnCard key={index} isLoading={true} data={null} />
             ) : (
               <HeroEarnCard
-                key={item?.slug}
+                key={item.slug}
+                href={`${AppPaths.Earn}/${item.slug}`}
                 isLoading={isLoading}
                 data={item}
                 copy={ithCopy(index)}
