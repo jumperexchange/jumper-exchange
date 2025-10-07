@@ -1,12 +1,11 @@
 import Grid from '@mui/material/Grid';
-import { chunk, uniqBy } from 'lodash';
-import { FC, useMemo } from 'react';
+import { chunk } from 'lodash';
+import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
-import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
   CompactEarnCardContainer,
@@ -17,8 +16,7 @@ import {
 import { EarnCardProps } from '../EarnCard.types';
 import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
-import { formatLockupDuration } from './shared';
-import { toCompactValue } from 'src/utils/formatNumbers';
+import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -30,68 +28,18 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const isEmpty = !data || isLoading;
   const { t } = useTranslation();
 
-  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } =
-    data ?? {};
-  const { tvlUsd, apy } = latest ?? {};
+  const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(data);
+  const { protocol, forYou, tags, lpToken } = data ?? {};
 
-  const assets = asset ? [asset] : [];
-  const chains = uniqBy(
-    assets.map((asset) => asset.chain),
-    'chainId',
-  );
-
-  const items = useMemo(() => {
-    const result = [];
-
-    if (apy && apy.total) {
-      const formatted = `${(apy.total * 100).toLocaleString()}%`;
-
-      result.push(
-        <CompactEarnCardItem
-          title={t('labels.apy')}
-          value={formatted}
-          tooltip={t('tooltips.apy')}
-        />,
-      );
-    }
-
-    const lockupMonthsNumber = Number(lockupMonths);
-    if (!isNaN(lockupMonthsNumber) && lockupMonthsNumber) {
-      result.push(
-        <CompactEarnCardItem
-          title={t('labels.lockupPeriod')}
-          value={formatLockupDuration(lockupMonthsNumber)}
-          tooltip={t('tooltips.lockupPeriod', {
-            formattedLockupPeriod: formatLockupDuration(lockupMonthsNumber),
-          })}
-        />,
-      );
-    }
-
-    if (tvlUsd) {
-      const formatted = `$${toCompactValue(Number(tvlUsd))}`;
-
-      result.push(
-        <CompactEarnCardItem
-          title={t('labels.tvl')}
-          value={formatted}
-          tooltip={t('tooltips.tvl')}
-        />,
-      );
-    }
-
-    if (assets.length > 0) {
-      result.push(
-        <CompactEarnCardItem
-          title={t('labels.assets')}
-          valuePrepend={<TokenStack tokens={assets} />}
-          value={assets.length === 1 ? assets[0].name : ''}
-          tooltip={t('tooltips.assets')}
-        />,
-      );
-    }
-    return result;
-  }, [apy, lockupMonths, tvlUsd, assets]);
+  const items = overviewItems.map((item) => (
+    <CompactEarnCardItem
+      key={item.key}
+      title={item.label}
+      value={item.value}
+      valuePrepend={item.valuePrepend}
+      tooltip={item.tooltip}
+    />
+  ));
 
   if (isEmpty) {
     return <CompactEarnCardSkeleton />;

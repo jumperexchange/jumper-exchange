@@ -1,12 +1,9 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { uniqBy } from 'lodash';
-import { FC, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
-import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
@@ -17,8 +14,7 @@ import {
 import { EarnCardProps } from '../EarnCard.types';
 import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
-import { formatLockupDuration } from './shared';
-import { toCompactValue } from 'src/utils/formatNumbers';
+import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -28,72 +24,23 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
-  const { t } = useTranslation();
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { asset, protocol, forYou, tags, lockupMonths, latest, lpToken } =
-    data ?? {};
-  const { tvlUsd, apy } = latest ?? {};
+  const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(data);
+  const { protocol, forYou, tags, lpToken } = data ?? {};
 
-  const assets = asset ? [asset] : [];
-  const chains = uniqBy(
-    assets.map((asset) => asset.chain),
-    'chainId',
-  );
-
-  const items = useMemo(() => {
-    const result = [];
-
-    if (apy && apy.total) {
-      const formatted = `${(apy.total * 100).toLocaleString()}%`;
-
-      result.push(
-        <ListItemTooltipBadge
-          label={`${formatted} ${t('labels.apy')}`}
-          title={t('tooltips.apy')}
-          key={t('labels.apy')}
-        />,
-      );
-    }
-
-    const lockupMonthsNumber = Number(lockupMonths);
-    if (!isNaN(lockupMonthsNumber) && lockupMonthsNumber) {
-      const formatted = formatLockupDuration(lockupMonthsNumber);
-      result.push(
-        <ListItemTooltipBadge
-          title={t('tooltips.lockupPeriod', {
-            formattedLockupPeriod: formatted,
-          })}
-          key={t('labels.lockupPeriod')}
-          label={formatted}
-        />,
-      );
-    }
-
-    if (tvlUsd) {
-      const formatted = `$${toCompactValue(Number(tvlUsd))}`;
-
-      result.push(
-        <ListItemTooltipBadge
-          title={t('tooltips.tvl')}
-          key={t('labels.tvl')}
-          label={`${formatted} ${t('labels.tvl')}`}
-        />,
-      );
-    }
-
-    if (assets.length > 0) {
-      result.push(
-        <ListItemTooltipBadge
-          title={t('tooltips.assets')}
-          key={t('labels.assets')}
-          startIcon={<TokenStack tokens={assets} />}
-          label={assets.length === 1 ? assets[0].name : ''}
-        />,
-      );
-    }
-    return result;
-  }, [apy, lockupMonths, tvlUsd, assets]);
+  const items = overviewItems.map((item) => (
+    <ListItemTooltipBadge
+      key={item.key}
+      label={
+        item.key === 'apy' || item.key === 'tvl'
+          ? `${item.value} ${item.label}`
+          : item.value
+      }
+      title={item.tooltip}
+      startIcon={item.valuePrepend}
+    />
+  ));
 
   if (isEmpty) {
     return <ListItemEarnCardSkeleton />;
