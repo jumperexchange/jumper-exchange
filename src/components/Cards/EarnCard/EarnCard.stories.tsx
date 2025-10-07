@@ -94,14 +94,14 @@ export const ListItemLoading: Story = {
 export const Top: Story = {
   args: {
     ...commonArgs,
-    variant: 'top',
+    variant: 'hero',
   },
 };
 
 export const TopLoading: Story = {
   args: {
     ...commonArgs,
-    variant: 'top',
+    variant: 'hero',
     isLoading: true,
   },
 };
@@ -109,7 +109,7 @@ export const TopLoading: Story = {
 export const TopWithAction: Story = {
   args: {
     ...commonArgs,
-    variant: 'top',
+    variant: 'hero',
     primaryAction: listItemPrimaryAction,
   },
 };

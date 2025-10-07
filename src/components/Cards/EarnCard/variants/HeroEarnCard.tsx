@@ -8,38 +8,40 @@ import { EntityChainStack } from 'src/components/composite/EntityChainStack/Enti
 import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
-  TopEarnCardContainer,
-  TopEarnCardContentContainer,
-  TopEarnCardFooterContainer,
-  TopEarnCardHeaderContainer,
+  HeroEarnCardContainer,
+  HeroEarnCardContentContainer,
+  HeroEarnCardFooterContainer,
+  HeroEarnCardFooterContentContainer,
+  HeroEarnCardHeaderContainer,
 } from '../EarnCard.styles';
 import { EarnCardProps } from '../EarnCard.types';
-import { TopEarnCardSkeleton } from './TopEarnCardSkeleton';
-import { TopHighlight } from './TopHighlight';
+import { HeroEarnCardSkeleton } from './HeroEarnCardSkeleton';
+import { HeroHighlight } from './HeroHighlight';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
-export enum TopEarnCardCopyKey {
+export enum EarnHeroCardCopyKey {
   USE_YOUR_SPARE = 'earn.top.useYourSpare',
   MAXIMIZE_YOUR_REVENUE = 'earn.top.maximizeYourRevenue',
   MAKE_THE_JUMP = 'earn.top.makeTheJump',
   EARN_UP_TO = 'earn.top.earnUpTo',
 }
 
-export const ithCopy = (index: number): TopEarnCardCopyKey => {
-  const values = Object.values(TopEarnCardCopyKey);
+export const ithCopy = (index: number): EarnHeroCardCopyKey => {
+  const values = Object.values(EarnHeroCardCopyKey);
   const safeIndex = (index + values.length) % values.length;
-  return values[safeIndex] as TopEarnCardCopyKey;
+  return values[safeIndex] as EarnHeroCardCopyKey;
 };
 
 type Props = Omit<EarnCardProps, 'variant'> & {
-  copy?: TopEarnCardCopyKey;
+  copy?: EarnHeroCardCopyKey;
   isMain?: boolean;
 };
 
-export const TopEarnCard: FC<Props> = ({
+export const HeroEarnCard: FC<Props> = ({
   primaryAction,
   data,
   isLoading,
-  copy = TopEarnCardCopyKey.USE_YOUR_SPARE,
+  copy = EarnHeroCardCopyKey.USE_YOUR_SPARE,
   isMain = false,
   onClick,
 }) => {
@@ -47,7 +49,7 @@ export const TopEarnCard: FC<Props> = ({
   const isEmpty = data === null || isLoading;
 
   if (isEmpty) {
-    return <TopEarnCardSkeleton />;
+    return <HeroEarnCardSkeleton />;
   }
 
   // TODO: LF-14990: Complex Top Opportunity rendering
@@ -63,8 +65,8 @@ export const TopEarnCard: FC<Props> = ({
   const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
 
   return (
-    <TopEarnCardContainer onClick={onClick}>
-      <TopEarnCardHeaderContainer direction="row">
+    <HeroEarnCardContainer onClick={onClick}>
+      <HeroEarnCardHeaderContainer direction="row">
         {forYou && (
           <Badge
             variant={BadgeVariant.Secondary}
@@ -80,42 +82,44 @@ export const TopEarnCard: FC<Props> = ({
             key={tag}
           />
         ))}
-      </TopEarnCardHeaderContainer>
-      <TopEarnCardContentContainer isMain={isMain}>
+      </HeroEarnCardHeaderContainer>
+      <HeroEarnCardContentContainer isMain={isMain}>
         <p>
           <Trans
             i18nKey={copy}
             components={{
-              asset: <TopHighlight type="asset">{asset.symbol}</TopHighlight>,
+              asset: <HeroHighlight type="asset">{asset.symbol}</HeroHighlight>,
               protocol: (
-                <TopHighlight type="protocol">{protocol.name}</TopHighlight>
+                <HeroHighlight type="protocol">{protocol.name}</HeroHighlight>
               ),
-              apy: <TopHighlight type="apy">{formattedApy}</TopHighlight>,
-              token: <TopHighlight type="token">{asset.symbol}</TopHighlight>,
+              apy: <HeroHighlight type="apy">{formattedApy}</HeroHighlight>,
+              token: <HeroHighlight type="token">{asset.symbol}</HeroHighlight>,
               tag: (
-                <TopHighlight type="tag">{tags?.[0] ?? 'Crypto'}</TopHighlight>
+                <HeroHighlight type="tag">
+                  {tags?.[0] ?? 'Crypto'}
+                </HeroHighlight>
               ),
               chain: (
-                <TopHighlight type="chain">{asset.chain.chainKey}</TopHighlight>
+                <HeroHighlight type="chain">
+                  {asset.chain.chainKey}
+                </HeroHighlight>
               ),
             }}
           />
         </p>
-      </TopEarnCardContentContainer>
-      <TopEarnCardFooterContainer>
-        <Grid container rowSpacing={2} columnSpacing={2}>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <EntityChainStack
-              variant={EntityChainStackVariant.Protocol}
-              protocol={protocol}
-              chains={chains}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 'auto' }} sx={{ marginLeft: 'auto' }}>
-            {primaryAction}
-          </Grid>
-        </Grid>
-      </TopEarnCardFooterContainer>
-    </TopEarnCardContainer>
+      </HeroEarnCardContentContainer>
+      <HeroEarnCardFooterContainer>
+        <HeroEarnCardFooterContentContainer>
+          <EntityChainStack
+            variant={EntityChainStackVariant.Protocol}
+            protocol={protocol}
+            chains={chains}
+            protocolSize={AvatarSize.XXL}
+            chainsSize={AvatarSize.SM}
+          />
+          {primaryAction}
+        </HeroEarnCardFooterContentContainer>
+      </HeroEarnCardFooterContainer>
+    </HeroEarnCardContainer>
   );
 };

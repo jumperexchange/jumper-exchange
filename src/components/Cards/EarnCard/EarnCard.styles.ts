@@ -22,8 +22,8 @@ const EarnCardContainer = styled(Box)(({ theme, onClick }) => ({
 export const CompactEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(4, 3, 3),
-    maxWidth: 330,
-    height: 306,
+    minHeight: 330,
+    height: '-webkit-fill-available',
   }),
 );
 
@@ -104,26 +104,28 @@ export const ListItemEarnCardTagContainer = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export const TopEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
+export const HeroEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
   padding: theme.spacing(3),
-  gap: theme.spacing(1),
+  gap: theme.spacing(0.5),
   minHeight: 312,
+  height: '-webkit-fill-available',
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   display: 'flex',
   flexDirection: 'column',
 }));
 
-export const TopEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
-  gap: theme.spacing(2),
+export const HeroEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(0.5),
 }));
 
-interface TopEarnCardContentContainerProps {
+interface HeroEarnCardContentContainerProps {
   isMain?: boolean;
 }
 
-export const TopEarnCardContentContainer = styled(Stack, {
+export const HeroEarnCardContentContainer = styled(Stack, {
   shouldForwardProp: (prop) => prop !== 'isMain',
-})<TopEarnCardContentContainerProps>(({ theme, isMain }) => ({
+})<HeroEarnCardContentContainerProps>(({ theme, isMain }) => ({
+  marginBottom: theme.spacing(1),
   gap: theme.spacing(2),
   '& p': {
     ...(isMain ? theme.typography.h3 : theme.typography.h4),
@@ -131,7 +133,18 @@ export const TopEarnCardContentContainer = styled(Stack, {
   },
 }));
 
-export const TopEarnCardFooterContainer = styled(Stack)(({ theme }) => ({
+export const HeroEarnCardFooterContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
-  marginTop: 'auto',
+  flexDirection: 'column-reverse',
+  flex: '1',
 }));
+
+export const HeroEarnCardFooterContentContainer = styled(Stack)(
+  ({ theme }) => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: theme.spacing(2),
+  }),
+);

@@ -3,7 +3,7 @@
 exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-1u3fxmj"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -122,14 +122,14 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -241,7 +241,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $62,572,415
+              $63M
             </p>
           </div>
         </div>
@@ -304,7 +304,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-1u3fxmj"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -356,7 +356,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-1u3fxmj"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -444,14 +444,14 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -563,7 +563,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $62,572,415
+              $63M
             </p>
           </div>
         </div>
@@ -626,7 +626,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
 exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-1u3fxmj"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -745,14 +745,14 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -864,7 +864,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $62,572,415
+              $63M
             </p>
           </div>
         </div>
@@ -927,7 +927,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
 exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-12we4m7"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -971,14 +971,14 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -1064,7 +1064,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 labels.tvl
+            $63M labels.tvl
           </p>
         </div>
         <div
@@ -1116,7 +1116,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-12we4m7"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1169,7 +1169,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-12we4m7"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1213,14 +1213,14 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -1275,7 +1275,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 labels.tvl
+            $63M labels.tvl
           </p>
         </div>
         <div
@@ -1327,7 +1327,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
 exports[`EarnCard snapshot > list item card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-12we4m7"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1371,14 +1371,14 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -1464,7 +1464,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 labels.tvl
+            $63M labels.tvl
           </p>
         </div>
         <div

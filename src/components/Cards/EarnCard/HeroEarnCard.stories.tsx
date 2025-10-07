@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { commonArgs, compactPrimaryAction } from './fixtures';
-import { TopEarnCard, TopEarnCardCopyKey } from './variants/TopEarnCard';
+import { HeroEarnCard, EarnHeroCardCopyKey } from './variants/HeroEarnCard';
 
 const meta = {
-  component: TopEarnCard,
-  title: 'Earn/TopEarnCard',
+  component: HeroEarnCard,
+  title: 'Earn/HeroEarnCard',
   argTypes: {
     primaryAction: {
       control: false,
     },
   },
-} satisfies Meta<typeof TopEarnCard>;
+} satisfies Meta<typeof HeroEarnCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -21,21 +21,21 @@ export const Top: Story = {
   },
 };
 
-export const TopLoading: Story = {
+export const HeroLoading: Story = {
   args: {
     ...commonArgs,
     isLoading: true,
   },
 };
 
-export const TopWithAction: Story = {
+export const HeroWithAction: Story = {
   args: {
     ...commonArgs,
     primaryAction: compactPrimaryAction,
   },
 };
 
-export const TopWithActionAndNoRecommendation: Story = {
+export const HeroWithActionAndNoRecommendation: Story = {
   args: {
     ...commonArgs,
     data: {
@@ -46,7 +46,7 @@ export const TopWithActionAndNoRecommendation: Story = {
   },
 };
 
-export const TopWithActionAndNoRecommendationAndMain: Story = {
+export const HeroWithActionAndNoRecommendationAndMain: Story = {
   args: {
     ...commonArgs,
     primaryAction: compactPrimaryAction,
@@ -54,11 +54,11 @@ export const TopWithActionAndNoRecommendationAndMain: Story = {
   },
 };
 
-export const TopWithActionAndNoRecommendationAndCustomCopy: Story = {
+export const HeroWithActionAndNoRecommendationAndCustomCopy: Story = {
   args: {
     ...commonArgs,
     primaryAction: compactPrimaryAction,
-    copy: TopEarnCardCopyKey.MAXIMIZE_YOUR_REVENUE,
+    copy: EarnHeroCardCopyKey.MAXIMIZE_YOUR_REVENUE,
     isMain: true,
   },
 };
