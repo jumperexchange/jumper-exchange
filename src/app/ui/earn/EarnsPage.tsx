@@ -1,18 +1,15 @@
 import { FC } from 'react';
 
 import { EarnTopOpportunities } from './EarnTopOpportunities';
-import { EarnOpportunitiesAllServer } from './EarnOpportunitiesAll/EarnOpportunitiesAllServer';
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
+import { EarnOpportunitiesAll } from './EarnOpportunitiesAll/EarnOpportunitiesAll';
 
-interface EarnsPageProps {
-  initialFilters?: EarnOpportunityFilter;
-}
+interface EarnsPageProps {}
 
-export const EarnsPage: FC<EarnsPageProps> = ({ initialFilters }) => {
+export const EarnsPage: FC<EarnsPageProps> = () => {
   return (
     <>
       <EarnTopOpportunities />
-      <EarnOpportunitiesAllServer initialFilters={initialFilters} />
+      <EarnOpportunitiesAll />
     </>
   );
 };

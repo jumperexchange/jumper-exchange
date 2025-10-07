@@ -10,7 +10,8 @@ export const AtLeastNWhenLoading = <T>(
   maxN = maxN ?? minN;
   const d: T[] = data ?? [];
   const missingN = minN - d.length;
-  const filler: null[] = isLoading ? Array(missingN).fill(null) : [];
+  const filler: null[] =
+    isLoading && missingN > 0 ? Array(missingN).fill(null) : [];
   const result = [...d, ...filler].slice(0, maxN);
   return result;
 };

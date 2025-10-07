@@ -1,11 +1,23 @@
 import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
 import { Chain, Protocol, Token } from 'src/types/jumper-backend';
 
-// TODO: migrate to backend's typing
-export enum SortByOptions {
-  APY = 'apy',
-  TVL = 'tvl',
-}
+type SortByType = NonNullable<NonNullable<EarnOpportunityFilter>['sortBy']>;
+
+export const SortByOptions = {
+  APY: 'apy',
+  TVL: 'tvl',
+} as const satisfies Record<string, SortByType>;
+
+export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
+
+type OrderType = NonNullable<NonNullable<EarnOpportunityFilter>['order']>;
+
+export const OrderOptions = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const satisfies Record<string, OrderType>;
+
+export type OrderEnum = (typeof OrderOptions)[keyof typeof OrderOptions];
 
 export interface EarnFilteringParams {
   allChains: Chain[];
@@ -15,16 +27,14 @@ export interface EarnFilteringParams {
   allAPY: Record<number, number>; // histogram of apy
 }
 
-export interface EarnsPageSearchParams {
-  forYou?: string;
-  sortBy?: string;
-  variant?: string;
-  assets?: string;
-  chains?: string;
-  protocols?: string;
-  tags?: string;
-  apy?: string;
-  tvl?: string;
-}
+export type EarnOpportunityFilterWithoutSortByAndOrder = Omit<
+  NonNullable<EarnOpportunityFilter>,
+  'sortBy' | 'order'
+>;
 
-export type FilterKey = keyof EarnOpportunityFilter;
+export type EarnOpportunityFilterUI =
+  EarnOpportunityFilterWithoutSortByAndOrder & {
+    sortBy?: SortByEnum;
+    order?: OrderEnum;
+    forYou?: boolean;
+  };

@@ -2,14 +2,14 @@ import { useTranslation } from 'react-i18next';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
-import { SortByOptions } from 'src/app/ui/earn/types';
+import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
 
 export const EarnFilterSort: React.FC = () => {
   const { t } = useTranslation();
   const { sortBy, setSortBy } = useEarnFiltering();
 
   const handleChange = (value: string) => {
-    setSortBy(value as SortByOptions);
+    setSortBy(value as SortByEnum);
   };
 
   return (

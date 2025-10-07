@@ -3,24 +3,29 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
+import { useQueryStates } from 'nuqs';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { Hex } from 'viem';
-import { extractFilteringParams, serializeFilterValue } from './utils';
+import { extractFilteringParams, searchParamsParsers } from './utils';
 import { EMPTY_FILTERING_PARAMS } from './constants';
-import { EarnFilteringParams, SortByOptions } from './types';
+import {
+  EarnFilteringParams,
+  EarnOpportunityFilterUI,
+  EarnOpportunityFilterWithoutSortByAndOrder,
+  SortByEnum,
+  SortByOptions,
+} from './types';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
-  sortBy: SortByOptions;
-  setSortBy: (sortBy: SortByOptions) => void;
-  filter: EarnOpportunityFilter;
-  updateFilter: (filter: EarnOpportunityFilter) => void;
+  sortBy: SortByEnum;
+  setSortBy: (sortBy: SortByEnum) => void;
+  filter: EarnOpportunityFilterUI;
+  updateFilter: (filter: EarnOpportunityFilterUI) => void;
   showForYou: boolean;
   usedYourAddress: boolean;
   toggleForYou: () => void;
@@ -53,31 +58,43 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
 
 export const EarnFilteringProvider = ({
   children,
-  initialFilters,
 }: {
   children: React.ReactNode;
-  initialFilters?: EarnOpportunityFilter;
 }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const [searchParamsState, setSearchParamsState] = useQueryStates(
+    searchParamsParsers,
+    {
+      history: 'replace',
+    },
+  );
+
   const address: Hex | undefined = useAccountAddress();
   const usedYourAddress = address !== undefined;
-  const { forYou: initialForYou, ...rest } = initialFilters ?? {};
+
+  const {
+    forYou: initialForYou,
+    sortBy: initialSortBy,
+    ...rest
+  } = searchParamsState;
+
+  const initialFilter = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(rest).filter(([_, value]) => value !== null),
+    ) as EarnOpportunityFilterWithoutSortByAndOrder;
+  }, [rest]);
 
   // TODO: introduce the loading state?
-  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY);
-  const [filter, setFilter] = useState<EarnOpportunityFilter>(rest ?? {});
-  const [showForYou, setShowForYou] = useState(initialForYou ?? true);
+  const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
+  const [filter, setFilter] =
+    useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
+  const [showForYou, setShowForYou] = useState(initialForYou);
 
-  const forYou = useEarnFilterOpportunities(
-    {
-      filter: {
-        forYou: true,
-        address,
-      },
+  const forYou = useEarnFilterOpportunities({
+    filter: {
+      forYou: true,
+      address,
     },
-    !!address,
-  );
+  });
 
   const all = useEarnFilterOpportunities({
     filter,
@@ -97,46 +114,32 @@ export const EarnFilteringProvider = ({
     return extractFilteringParams(allNoFilter.data);
   }, [allNoFilter.data]);
 
-  const updateSearchParams = useCallback(
-    (newFilerValue: EarnOpportunityFilter) => {
-      const params = new URLSearchParams(searchParams);
-
-      for (const [key, unserializedValue] of Object.entries(
-        newFilerValue ?? {},
-      )) {
-        const serializedValue = serializeFilterValue(unserializedValue);
-        if (serializedValue) {
-          params.set(key, serializedValue);
-        } else {
-          params.delete(key);
-        }
-      }
-
-      router.replace(`?${params.toString()}`);
-    },
-    [router, searchParams],
-  );
-
   const toggleForYou = useCallback(() => {
     const newShowForYou = !showForYou;
     setShowForYou(newShowForYou);
-
-    updateSearchParams({ forYou: newShowForYou });
-  }, [showForYou, setShowForYou, updateSearchParams]);
+    setSearchParamsState({ forYou: newShowForYou });
+  }, [showForYou, setShowForYou, setSearchParamsState]);
 
   const updateFilter = useCallback(
-    (newFilter: EarnOpportunityFilter) => {
-      const newFilerValue = { ...filter, ...newFilter };
-      setFilter(newFilerValue);
-
-      updateSearchParams(newFilerValue);
+    (newFilter: EarnOpportunityFilterWithoutSortByAndOrder) => {
+      const newFilterValue = { ...filter, ...newFilter };
+      setFilter(newFilterValue);
+      setSearchParamsState(newFilterValue);
     },
-    [filter, setFilter, updateSearchParams],
+    [filter, setFilter, setSearchParamsState],
+  );
+
+  const updateSortBy = useCallback(
+    (newSortBy: SortByEnum) => {
+      setSortBy(newSortBy);
+      setSearchParamsState({ sortBy: newSortBy });
+    },
+    [setSortBy, setSearchParamsState],
   );
 
   const context: EarnFilteringContextType = {
     sortBy,
-    setSortBy,
+    setSortBy: updateSortBy,
     filter,
     updateFilter,
     showForYou,

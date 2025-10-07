@@ -2,13 +2,14 @@ import Grid from '@mui/material/Grid';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/components/Cards/EarnCard/variants/shared';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
 export const EarnOpportunitiesCards = ({
   items,
   isLoading,
   variant,
 }: {
-  items: any[];
+  items: EarnOpportunityWithLatestAnalytics[];
   isLoading: boolean;
   variant: EarnCardVariant;
 }) => {
@@ -19,7 +20,7 @@ export const EarnOpportunitiesCards = ({
   return (
     <Grid container spacing={2}>
       {gridItems.map((item, index) => (
-        <Grid key={item?.id || index} size={gridSize}>
+        <Grid key={item?.slug || index} size={gridSize}>
           {item == null ? (
             <EarnCard variant={variant} isLoading={true} data={null} />
           ) : (

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
-import { SortByOptions } from '../../app/ui/earn/types';
+import { SortByEnum, SortByOptions } from '../../app/ui/earn/types';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 const mockContextValue = () => {
   const [showForYou, setShowForYou] = useState(false);
-  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY);
+  const [sortBy, setSortBy] = useState<SortByEnum>(SortByOptions.APY);
 
   return {
     sortBy,

@@ -10,7 +10,6 @@ import {
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
 
 const EarnOpportunitiesAllInner = () => {
   const { data, isLoading, error, isAllDataLoading } = useEarnFiltering();
@@ -35,15 +34,11 @@ const EarnOpportunitiesAllInner = () => {
   );
 };
 
-interface EarnOpportunitiesAllClientProps {
-  initialFilters: EarnOpportunityFilter;
-}
+interface EarnOpportunitiesAllProps {}
 
-export const EarnOpportunitiesAllClient: FC<
-  EarnOpportunitiesAllClientProps
-> = ({ initialFilters }) => {
+export const EarnOpportunitiesAll: FC<EarnOpportunitiesAllProps> = () => {
   return (
-    <EarnFilteringProvider initialFilters={initialFilters}>
+    <EarnFilteringProvider>
       <EarnOpportunitiesAllInner />
     </EarnFilteringProvider>
   );
