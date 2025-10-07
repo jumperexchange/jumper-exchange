@@ -30,8 +30,8 @@ export const useAnalyticsQuery = (slug: string) => {
   return useMemo(
     () => ({
       ...result,
-      value: query.value as AnalyticsValueFieldEnum,
-      range: query.range as AnalyticsRangeFieldEnum,
+      value: query.value,
+      range: query.range,
       setValue,
       setRange,
     }),
@@ -41,7 +41,7 @@ export const useAnalyticsQuery = (slug: string) => {
 
 export const useAnalyticsChartData = (
   rawData: EarnOpportunityHistory | undefined,
-  range: AnalyticsRangeFieldEnum,
+  range: EarnOpportunityAnalyticsQuery['range'],
 ) => {
   const theme = useTheme();
   const { mode } = useColorScheme();

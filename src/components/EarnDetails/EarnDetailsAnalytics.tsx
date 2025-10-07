@@ -29,15 +29,6 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
     dateFormat: chartDateFormat,
   } = useAnalyticsChartData(data, range);
 
-  const transformedData = useMemo(() => {
-    return (
-      data?.points.map((point) => ({
-        date: new Date(point.t).toISOString(),
-        value: point.v,
-      })) ?? []
-    );
-  }, [data]);
-
   return (
     <EarnDetailsAnalyticsContainer>
       <EarnDetailsAnalyticsHeaderContainer direction="row">
