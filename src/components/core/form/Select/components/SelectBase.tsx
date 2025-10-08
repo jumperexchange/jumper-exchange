@@ -72,6 +72,7 @@ export const SelectBase = <T extends TData>({
           vertical: 'top',
           horizontal: 'left',
         },
+        disableScrollLock: true,
         PaperProps: {
           sx: (theme) => ({
             backgroundColor: (theme.vars || theme).palette.surface1.main,
