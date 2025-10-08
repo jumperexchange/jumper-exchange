@@ -1,5 +1,3 @@
-'use client';
-
 import { EarnDetailsAnalyticsSkeleton } from 'src/components/EarnDetails/EarnDetailsAnalyticsSkeleton';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 

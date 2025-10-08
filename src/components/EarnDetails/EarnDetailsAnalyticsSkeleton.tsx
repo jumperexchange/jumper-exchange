@@ -1,3 +1,4 @@
+'use client';
 import { LineChartSkeleton } from '../core/charts/LineChart/LineChartSkeleton';
 import {
   EarnDetailsAnalyticsContainer,
