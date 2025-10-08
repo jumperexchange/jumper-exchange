@@ -76,7 +76,7 @@ export function Widget({
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
-    // all the trafic from mobile (including "/gas")
+    // all the traffic from mobile (including "/gas")
     // if (!isDesktop) {
     //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
