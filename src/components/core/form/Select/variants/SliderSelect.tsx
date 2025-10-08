@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { SelectBase } from '../components/SelectBase';
 import { SelectorLabel } from '../components/SelectLabel';
 import { useSelect } from '../hooks';
@@ -25,11 +25,19 @@ export const SliderSelect = <T extends number[]>({
 }: SliderSelectProps<T>) => {
   const { t } = useTranslation();
   const fallbackValue = useMemo(() => [min, max] as unknown as T, [min, max]);
+  const defaultValue = useMemo(
+    () => (initialValue?.length > 0 ? initialValue : fallbackValue),
+    [initialValue, fallbackValue],
+  );
   const { value, setValue, handleChange, handleDebounceChange } = useSelect(
-    initialValue?.length > 0 ? initialValue : fallbackValue,
+    defaultValue,
     onChange,
     debounceMs,
   );
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const formatValue = useCallback((value: T) => {
     return value.join(' - ');

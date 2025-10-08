@@ -132,7 +132,10 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
         {apyMin !== apyMax && (
           <Select
             options={[]}
-            value={[]} // TODO: implement
+            value={[
+              filter?.minAPY ? filter?.minAPY * 100 : apyMin,
+              filter?.maxAPY ? filter?.maxAPY * 100 : apyMax,
+            ]}
             min={apyMin}
             max={apyMax}
             onChange={handleAPYChange}
