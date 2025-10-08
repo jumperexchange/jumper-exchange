@@ -5,6 +5,7 @@ import { formatLockupDuration } from 'src/utils/earn/utils';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { toCompactValue } from 'src/utils/formatNumbers';
+import { isZeroApprox } from 'src/utils/numbers/utils';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -30,7 +31,7 @@ export const useFormatDisplayEarnOpportunityData = (
 
     const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
 
-    if (apy?.total) {
+    if (apy?.total && !isZeroApprox(apy.total)) {
       const formatted = `${(apy.total * 100).toLocaleString()}%`;
       overviewItems.push({
         key: 'apy',
@@ -54,7 +55,7 @@ export const useFormatDisplayEarnOpportunityData = (
     }
 
     const tvlUsdNumber = Number(tvlUsd);
-    if (!isNaN(tvlUsdNumber) && tvlUsdNumber) {
+    if (!isNaN(tvlUsdNumber) && !isZeroApprox(tvlUsdNumber)) {
       overviewItems.push({
         key: 'tvl',
         label: t('labels.tvl'),
@@ -63,12 +64,13 @@ export const useFormatDisplayEarnOpportunityData = (
       });
     }
 
-    if (assets.length > 0) {
+    const assetsCount = assets.length;
+    if (assetsCount > 0) {
       overviewItems.push({
         key: 'assets',
-        label: t('labels.assets', { count: assets.length }),
-        value: assets.length === 1 ? assets[0].name : '',
-        tooltip: t('tooltips.assets', { count: assets.length }),
+        label: t('labels.assets', { count: assetsCount }),
+        value: assetsCount === 1 ? assets[0].name : '',
+        tooltip: t('tooltips.assets', { count: assetsCount }),
         valuePrepend: <TokenStack tokens={assets} />,
       });
     }
