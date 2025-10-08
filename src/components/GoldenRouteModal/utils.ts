@@ -90,6 +90,9 @@ export const bagelFatOne = Bagel_Fat_One({
 });
 
 const GOLDENTICKET_BASE_URL = config.NEXT_PUBLIC_GOLDENTICKET_BASE_URL;
+if (!GOLDENTICKET_BASE_URL) {
+  throw new Error('GOLDENTICKET_BASE_URL is not defined. Please set NEXT_PUBLIC_GOLDENTICKET_BASE_URL in your environment variables.');
+}
 
 export async function checkWinningSwap({
   txHash,
