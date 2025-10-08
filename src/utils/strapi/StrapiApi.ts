@@ -12,7 +12,8 @@ interface GetStrapiBaseUrlProps {
     | 'partner-themes'
     | 'quests'
     | 'campaigns'
-    | 'perks';
+    | 'perks'
+    | 'merkl-rewards';
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -743,6 +744,12 @@ class PerkStrapiApi extends StrapiApi {
   }
 }
 
+class MerklRewardsStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'merkl-rewards' });
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
@@ -753,4 +760,5 @@ export {
   StrapiApi,
   TagStrapiApi,
   PerkStrapiApi,
+  MerklRewardsStrapiApi,
 };

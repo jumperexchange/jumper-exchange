@@ -1,7 +1,7 @@
 'use client';
 
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useSyncMissionDefaultsFromChains } from './hooks';
+import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import { FC, useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
@@ -24,6 +24,7 @@ import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQues
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { BaseAlertVariant } from 'src/components/Alerts/BaseAlert/BaseAlert.styles';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import { useResetCurrentActiveTask } from 'src/hooks/tasksVerification/useResetCurrentActiveTask';
 
 interface MissionDetailsProps {
   mission: Quest;
@@ -40,6 +41,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     () => missionDisplayData.participants,
     [missionDisplayData.participants],
   );
+  useResetCurrentActiveTask();
   useSyncMissionDefaultsFromChains(participants, mission.documentId);
   const router = useRouter();
   const { t } = useTranslation();
@@ -87,6 +89,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             slug={missionDisplayData.slug}
             title={missionDisplayData.title}
             description={missionDisplayData.description}
+            descriptionRichText={missionDisplayData.descriptionRichText}
             participants={missionDisplayData.participants}
             imageUrl={missionDisplayData.imageUrl}
             rewardGroups={missionDisplayData.rewardGroups}

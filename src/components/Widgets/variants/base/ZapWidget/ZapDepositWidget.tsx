@@ -1,23 +1,28 @@
 'use client';
 
-import { FC, useEffect, useMemo } from 'react';
 import {
   ChainType,
-  HiddenUI,
   LiFiWidget,
   Route,
   RouteExecutionUpdate,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { WidgetSkeleton } from '../WidgetSkeleton';
-import { useLiFiWidgetConfig } from '../../widgetConfig/hooks';
-import { WidgetProps } from '../Widget.types';
-import { ConfigContext } from '../../widgetConfig/types';
-import { ZapDepositSettings } from './ZapDepositSettings';
+import uniqBy from 'lodash/uniqBy';
+import { FC, useEffect, useMemo } from 'react';
+import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useZapInitContext } from 'src/providers/ZapInitProvider/ZapInitProvider';
+import { useMenuStore } from 'src/stores/menu/MenuStore';
+import { WidgetProps } from '../Widget.types';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { ZapDepositSettings } from './ZapDepositSettings';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import { ZapWidgetContext } from '../../widgetConfig/types';
 
-interface ZapDepositWidgetProps extends WidgetProps {}
+interface ZapDepositWidgetProps extends Omit<WidgetProps, 'type'> {
+  ctx: ZapWidgetContext;
+}
 
 export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   customInformation,
@@ -30,46 +35,63 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
   const {
     isInitialized,
     isConnected,
+    isMultisigEnvironment,
+    isEmbeddedWallet,
+    isEvmWallet,
     providers,
     toAddress,
     zapData,
     isZapDataSuccess,
+    allowedChains,
     refetchDepositToken,
     setCurrentRoute,
   } = useZapInitContext();
 
+  const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
+
+  const [setSupportModalState] = useMenuStore((state) => [
+    state.setSupportModalState,
+  ]);
+
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.meta.name]);
 
   const toToken = useMemo(() => {
     return zapData?.market?.depositToken.address;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.market?.depositToken.address]);
 
   const toChain = useMemo(() => {
     return zapData?.market?.depositToken.chainId;
-  }, [JSON.stringify(zapData ?? {})]);
+  }, [zapData?.market?.depositToken.chainId]);
 
   const minFromAmountUSD = useMemo(() => {
     return Number(projectData?.minFromAmountUSD ?? '0');
   }, [projectData?.minFromAmountUSD]);
 
   const enhancedCtx = useMemo(() => {
-    const baseOverrides: ConfigContext['baseOverrides'] = {
-      integrator: projectData.integrator,
-      minFromAmountUSD,
-      hiddenUI: [HiddenUI.LowAddressActivityConfirmation],
-    };
-
     return {
       ...ctx,
-      includeZap: true,
+      integrator: projectData.integrator,
+      formData: {
+        minFromAmountUSD,
+      },
       zapPoolName: poolName,
-      baseOverrides,
     };
-  }, [JSON.stringify(ctx), poolName, projectData.integrator, minFromAmountUSD]);
+  }, [ctx, poolName, projectData.integrator, minFromAmountUSD]);
 
-  const widgetConfig = useLiFiWidgetConfig(enhancedCtx);
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+
+  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
+  const lpToken = zapData?.market?.lpToken;
+  if (lpToken) {
+    const currentDenyList = widgetConfig.tokens?.deny ?? [];
+    const newDenyList = uniqBy([...currentDenyList, lpToken], 'address');
+
+    widgetConfig.tokens = widgetConfig.tokens ?? {};
+    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
+    widgetConfig.tokens.deny = newDenyList;
+  }
 
   // @Note: we want to ensure that the toAddress is set in the widget config without any delay
   if (toAddress) {
@@ -87,6 +109,20 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       providers,
     };
   }
+
+  // @Note: we want to ensure that the chains are set in the widget config without any delay
+  if (allowedChains) {
+    widgetConfig.chains = {
+      allow: allowedChains,
+    };
+  }
+
+  useEffect(() => {
+    setDestinationChainTokenForTracking({
+      chainId: toChain,
+      tokenAddress: toToken,
+    });
+  }, [toChain, toToken, setDestinationChainTokenForTracking]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
@@ -107,6 +143,10 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       setCurrentRoute(routeExecutionUpdate.route);
     }
 
+    const onRouteContactSupport = () => {
+      setSupportModalState(true);
+    };
+
     widgetEvents.on(WidgetEvent.RouteExecutionStarted, onRouteExecutionStarted);
     widgetEvents.on(WidgetEvent.RouteExecutionUpdated, onRouteExecutionUpdated);
 
@@ -114,6 +154,8 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
       WidgetEvent.RouteExecutionCompleted,
       onRouteExecutionCompleted,
     );
+
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
 
     return () => {
       widgetEvents.off(
@@ -128,8 +170,31 @@ export const ZapDepositWidget: FC<ZapDepositWidgetProps> = ({
         WidgetEvent.RouteExecutionCompleted,
         onRouteExecutionCompleted,
       );
+      widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
     };
-  }, [widgetEvents, refetchDepositToken, setCurrentRoute]);
+  }, [
+    widgetEvents,
+    refetchDepositToken,
+    setCurrentRoute,
+    setSupportModalState,
+  ]);
+
+  if (isMultisigEnvironment || isEmbeddedWallet || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+      />
+    );
+  }
 
   return isZapDataSuccess &&
     ((isInitialized && !!toAddress) || !isConnected) ? (

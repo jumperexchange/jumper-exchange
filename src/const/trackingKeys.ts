@@ -14,6 +14,7 @@ export enum TrackingAction {
   OpenJumperScan = 'action_open_jumper_scan',
   SwitchChain = 'action_switch_chain',
   PortfolioLoaded = 'action_portfolio_loaded',
+  PortfolioOverview = 'action_portfolio_balance_overview',
 
   // Widget
   OnRouteSelected = 'action_on_route_selected',
@@ -28,9 +29,27 @@ export enum TrackingAction {
   OnAvailableRoutes = 'action_available_routes',
   OnTokenSearch = 'action_token_search',
   OnLowAddressActivityConfirmed = 'action_on_low_address_activity_confirmed',
+  OnChangeSettings = 'action_change_settings',
   ClickContribute = 'action_contribute',
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
+  OnChainPinned = 'action_on_chain_pinned',
+
+  // Mission Widget
+  OnSourceChainAndTokenSelectionMission = 'action_on_source_selection_mission',
+  OnAvailableRoutesMission = 'action_available_routes_mission',
+  OnRouteExecutionStartedMission = 'action_on_route_exec_started_mission',
+  OnRouteExecutionCompletedMission = 'action_on_route_exec_completed_mission',
+  OnRouteExecutionFailedMission = 'action_on_route_exec_failed_mission',
+  OnChangeSettingsMission = 'action_change_settings_mission',
+
+  // Zap Widget
+  OnSourceChainAndTokenSelectionZap = 'action_on_source_selection_zap',
+  OnAvailableRoutesZap = 'action_available_routes_zap',
+  OnRouteExecutionStartedZap = 'action_on_route_exec_started_zap',
+  OnRouteExecutionCompletedZap = 'action_on_route_exec_completed_zap',
+  OnRouteExecutionFailedZap = 'action_on_route_exec_failed_zap',
+  OnChangeSettingsZap = 'action_change_settings_zap',
 
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
@@ -80,6 +99,7 @@ export enum TrackingAction {
   ClickQuestCard = 'action_click_quest_card',
   ClickMissionCta = 'action_click_mission_cta',
   ClickMissionCtaSteps = 'action_click_mission_cta_steps',
+  ClickMissionVerify = 'action_click_mission_task_verify',
 
   // Pagination
   ClickPagination = 'action_click_pagination',
@@ -92,6 +112,18 @@ export enum TrackingAction {
   //Banner
   ClickBanner = 'action_click_banner',
   ClickCampaignBanner = 'action_click_campaign_banner',
+}
+
+export enum TrackingEventDataAction {
+  ExecutionStart = 'execution_start',
+  ExecutionCompleted = 'execution_completed',
+  ExecutionFailed = 'execution_failed',
+  ExecutionStartZap = 'execution_start_zap',
+  ExecutionCompletedZap = 'execution_completed_zap',
+  ExecutionFailedZap = 'execution_failed_zap',
+  ExecutionStartMission = 'execution_start_mission',
+  ExecutionCompletedMission = 'execution_completed_mission',
+  ExecutionFailedMission = 'execution_failed_mission',
 }
 
 export enum TrackingCategory {
@@ -149,6 +181,19 @@ export enum TrackingEventParameter {
   SourceTokenSelection = 'param_source_token',
   DestinationChainSelection = 'param_destination_chain',
   DestinationTokenSelection = 'param_destination_token',
+  GasPriceSettings = 'param_gas_price',
+  SlippageLevelSettings = 'param_slippage_level',
+  SlippageStatusSettings = 'param_slippage_status',
+  RoutePrioritySettings = 'param_route_priority',
+  EnableAutoRefuelSettings = 'param_enable_auto_refuel',
+  EnabledBridgesSettings = 'param_enabled_bridges',
+  EnabledExchangesSettings = 'param_enabled_exchanges',
+  DisabledBridgesSettings = 'param_disabled_bridges',
+  DisabledExchangesSettings = 'param_disabled_exchanges',
+  UpdatedSetting = 'param_updated_setting',
+  NewSettingValue = 'param_new_setting_value',
+  PreviousSettingValue = 'param_previous_setting_value',
+  Pinned = 'param_pinned',
 
   // Pageload:
   PageloadSource = 'param_pageload_source',
@@ -162,6 +207,7 @@ export enum TrackingEventParameter {
   // Transaction:
   Action = 'param_action',
   ErrorCode = 'param_error_code',
+  ErrorCodeKey = 'param_error_code_key',
   ErrorMessage = 'param_error_message',
   FeeCost = 'param_fee_cost',
   FeeCostFormatted = 'param_fee_cost_formatted',
@@ -232,6 +278,7 @@ export enum TrackingEventParameter {
   MissionCtaStepsTaskStepId = 'param_mission_cta_steps_task_step_id',
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
+  MissionTaskInputPrepend = 'param_mission_task_input_field_',
 
   // Search
   SearchValue = 'param_search_value',
@@ -247,4 +294,12 @@ export enum TrackingEventParameter {
   //Banner
   ActiveCampaign = 'param_banner_campaign',
   ActiveCampaignBanner = 'param_campaign_banner_campaign',
+
+  // Portfolio
+  PortfolioTotalBalanceUSD = 'param_portfolio_total_balance_usd',
+  PortfolioNumberOfTokens = 'param_portfolio_nb_of_tokens',
+  PortfolioNumberOfChains = 'param_portfolio_nb_of_chains',
+  PortfolioNativeTokensBalanceUSD = 'param_portfolio_native_tokens_balance_usd',
+  PortfolioStableTokensBalanceUSD = 'param_portfolio_stable_tokens_balance_usd',
+  PortfolioOtherTokensBalanceUSD = 'param_portfolio_other_tokens_balance_usd',
 }

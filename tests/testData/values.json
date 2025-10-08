@@ -1,11 +1,14 @@
 {
-  "localJumperScanURL": "http://localhost:3000/scan",
-  "localLearnURL": "http://localhost:3000/learn",
+  "localJumperScanURL": "/scan",
+  "localLearnURL": "/learn",
   "xUrl": "https://x.com/JumperExchange",
   "discordURL": "https://discord.com/invite/jumperexchange",
   "telegramURL": "https://t.me/officialjumperexchange",
   "link3URL": "https://link3.to/jumperexchange",
-  "exploreFilamentURL": "http://localhost:3000/quests/rewards-from-filament",
-  "aerodromeQuestsURL": "http://localhost:3000/quests/rewards-from-aerodrome-on-base",
-  "githubURL": "https://github.com/jumperexchange"
+  "privacyPolicyURL": "/privacy-policy",
+  "scanQRCodeTitle": "Scan this QR Code with your phone",
+  "exploreFilamentURL": "/quests/rewards-from-filament",
+  "aerodromeQuestsURL": "/quests/rewards-from-aerodrome-on-base",
+  "githubURL": "https://github.com/jumperexchange",
+  "morphoURL": "https://morpho.org/"
 }

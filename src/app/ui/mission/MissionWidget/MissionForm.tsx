@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, FormEvent } from 'react';
+import { useState, useMemo, useCallback, FormEvent, useEffect } from 'react';
 import z from 'zod';
 import FormControl from '@mui/material/FormControl';
 
@@ -29,6 +29,7 @@ export const MissionForm = () => {
     currentActiveTaskId,
     currentActiveTaskName,
     missionId,
+    setTaskFormState,
   } = useMissionStore();
   const { t } = useTranslation();
   const taskCTATextWithFallback =
@@ -51,6 +52,20 @@ export const MissionForm = () => {
     const result = schema.safeParse(formValues);
     return result.success;
   }, [formValues, schema]);
+
+  useEffect(() => {
+    if (currentActiveTaskId) {
+      setTaskFormState(currentActiveTaskId, true, isFormValid);
+    }
+  }, [currentActiveTaskId, isFormValid, setTaskFormState]);
+
+  useEffect(() => {
+    return () => {
+      if (currentActiveTaskId) {
+        setTaskFormState(currentActiveTaskId, true, false);
+      }
+    };
+  }, [currentActiveTaskId]);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,24 +1,64 @@
 import { useCallback } from 'react';
-import { EVMAddress } from 'src/types/internal';
-import { getWalletClient } from '@wagmi/core';
+import { Hex } from 'viem';
 import { useConfig, useWalletClient } from 'wagmi';
 import { useBiconomyClientsStore } from 'src/stores/biconomyClients/BiconomyClientsStore';
-import { useAccount } from '@lifi/wallet-management';
+import { Account, useAccount } from '@lifi/wallet-management';
+import { ChainId, ChainType } from '@lifi/sdk';
+import * as Sentry from '@sentry/nextjs';
 
 interface WalletClientParams {
-  address?: EVMAddress;
+  address?: Hex;
   chainId?: number;
-  projectAddress: EVMAddress;
+  projectAddress: Hex;
   projectChainId: number;
 }
 
-export const useWalletClientInitialization = () => {
+const getEVMProvider = async (connector: any) => {
+  if (connector && 'getProvider' in connector) {
+    return await connector.getProvider();
+  }
+  return window.ethereum;
+};
+
+const validateAccountChainType = (account: Account) => {
+  return !account.chainType || account.chainType === ChainType.EVM;
+};
+
+const checkIsEmbeddedWallet = (account: Account) => {
+  if (!account?.connector) return false;
+
+  const connector = account.connector as any;
+
+  // Check explicit flags first
+  if (
+    connector.isEmbedded === true ||
+    connector.custodial === true ||
+    connector.options?.isEmbedded === true
+  ) {
+    return true;
+  }
+
+  // If explicitly injected, it's external
+  if (connector.isInjected === true || connector.type === 'injected') {
+    return false;
+  }
+
+  // Check by wallet name/id
+  const name = (connector.name || '').toLowerCase();
+  const id = (connector.id || '').toLowerCase();
+
+  return EMBEDDED_WALLETS.some(
+    (wallet) => name.includes(wallet) || id.includes(wallet),
+  );
+};
+
+export const useWalletClientInitialization = (allowedChains: ChainId[]) => {
   const wagmiConfig = useConfig();
   const { getClients } = useBiconomyClientsStore();
   const { account } = useAccount();
   const { address, chainId } = account;
-  const { data: fallbackWalletClient } = useWalletClient({
-    account: address as EVMAddress,
+  const { data: walletClient } = useWalletClient({
+    account: address as Hex,
     chainId,
     query: {
       enabled: !!address && !!chainId,
@@ -33,51 +73,80 @@ export const useWalletClientInitialization = () => {
       projectChainId,
     }: WalletClientParams) => {
       try {
-        let walletClient = fallbackWalletClient;
-        let currentChainId = fallbackWalletClient?.chain?.id;
+        if (!validateAccountChainType(account)) {
+          throw new Error('Account is not an EVM account');
+        }
 
-        console.warn(
-          'initializeClients based on these wallet client values',
-          address,
-          chainId,
-          fallbackWalletClient?.chain?.id,
-          fallbackWalletClient?.account.address,
-          fallbackWalletClient,
-        );
+        if (chainId && !allowedChains.includes(chainId)) {
+          throw new Error('Chain is not allowed');
+        }
 
         if (
           address &&
           chainId &&
-          (fallbackWalletClient?.account.address !== address ||
-            fallbackWalletClient?.chain?.id !== chainId)
+          (walletClient?.account.address !== address ||
+            walletClient?.chain?.id !== chainId)
         ) {
-          currentChainId = chainId;
-          walletClient = await getWalletClient(wagmiConfig, {
-            account: address,
-            chainId,
-          });
+          throw new Error(
+            'Current wallet client is initialized on different chain or address',
+          );
         }
+
+        const provider = await getEVMProvider(account.connector);
+        const isEmbeddedWallet = checkIsEmbeddedWallet(account);
 
         // Note: getClients would need to be passed as parameter or imported
         const biconomyClients = await getClients(
           projectAddress,
           projectChainId,
           walletClient,
-          currentChainId,
+          provider,
+          isEmbeddedWallet,
+          chainId,
         );
 
-        return { walletClient, biconomyClients };
+        return { walletClient, biconomyClients, isEmbeddedWallet };
       } catch (error) {
-        console.error('Failed to initialize clients:', error);
-        return { walletClient: null, biconomyClients: null };
+        Sentry.captureException(error, {
+          tags: {
+            requestWalletAddress: address,
+            requestWalletChainId: chainId,
+            vaultAddress: projectAddress,
+            vaultChainId: projectChainId,
+            walletClientChainId: walletClient?.chain?.id,
+            walletClientAddress: walletClient?.account.address,
+          },
+        });
+        return {
+          walletClient: null,
+          biconomyClients: null,
+          isEmbeddedWallet: false,
+        };
       }
     },
     [
       wagmiConfig,
-      fallbackWalletClient?.account.address,
-      fallbackWalletClient?.chain?.id,
+      walletClient?.account.address,
+      walletClient?.chain?.id,
+      account,
+      allowedChains,
     ],
   );
 
   return { initializeClients };
 };
+
+const EMBEDDED_WALLETS = [
+  'magic',
+  'privy',
+  'dynamic',
+  'thirdweb',
+  'particle',
+  'web3auth',
+  'fireblocks',
+  'fortmatic',
+  'torus',
+  'capsule',
+  'turnkey',
+  'dfns',
+];

@@ -36,7 +36,8 @@
       "developers": "開発者",
       "support": "サポート",
       "resources": "",
-      "profile": "Jumperプロフィール"
+      "profile": "Jumperプロフィール",
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "接続を解除",
@@ -112,7 +113,9 @@
   },
   "button": {
     "okay": "OK",
-    "manageYourPosition": ""
+    "manageYourPosition": "",
+    "goBack": "",
+    "connectAnotherWallet": ""
   },
   "error": {
     "message": "問題が発生しました。ページを再読み込みしてください。問題が解決しない場合はサポートにお問い合わせください。"
@@ -169,6 +172,7 @@
     "tasks": {
       "type": "",
       "typeFallback": "",
+      "typeOptional": "",
       "status": {
         "verify": "",
         "verified": ""
@@ -201,6 +205,9 @@
     "achievements": "",
     "unlocked": "",
     "levelWithValue": "",
+    "tooltips": {
+      "unlockAtLevel": ""
+    },
     "noData": {
       "description": "",
       "caption": "",
@@ -254,7 +261,38 @@
     "apy": "",
     "deposit": "",
     "deposited": "",
-    "boostedApy": ""
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets": ""
+  },
+  "labels": {
+    "apy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": ""
+    }
   },
   "widget": {
     "depositCard": {
@@ -266,7 +304,26 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": ""
   }
 }

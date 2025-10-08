@@ -3,18 +3,17 @@ import {
   MultichainSmartAccount,
   runtimeERC20BalanceOf,
 } from '@biconomy/abstractjs';
-import { EVMAddress } from 'src/types/internal';
 import {
   Abi,
   AbiParameter,
   createPublicClient,
   getContract,
+  Hex,
   http,
-  parseUnits,
 } from 'viem';
 import { hyperevm } from 'src/const/chains/hyperwave';
 import { buildContractComposable } from '../utils';
-import { approve, transfer } from './DefaultZap';
+import { approve } from './DefaultZap';
 import { ZapDefinition, ZapExecutionContext, ZapInstruction } from './base';
 
 const MINT_SLIPPAGE_PERCENT = 2;
@@ -78,7 +77,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
   const depositChainId = projectData.chainId;
 
   const constraints = [
-    greaterThanOrEqualTo(parseUnits('0.1', depositTokenDecimals)),
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
   ];
 
   const minimumMint: bigint = withSlippage(
@@ -95,7 +94,7 @@ export const hyperwaveDeposit: ZapInstruction = async (
       return depositToken;
     } else if (input.type === 'uint256') {
       return runtimeERC20BalanceOf({
-        targetAddress: oNexus.addressOn(depositChainId, true) as EVMAddress,
+        targetAddress: oNexus.addressOn(depositChainId, true) as Hex,
         tokenAddress: depositToken,
         constraints,
       });
@@ -113,11 +112,43 @@ export const hyperwaveDeposit: ZapInstruction = async (
   });
 };
 
+export const hyperwaveTransfer: ZapInstruction = async (
+  oNexus: MultichainSmartAccount,
+  context: ZapExecutionContext,
+) => {
+  const { zapData: integrationData, projectData, currentRoute } = context;
+
+  const currentAddress = currentRoute.fromAddress;
+  const depositAddress = integrationData.market.address;
+  const depositTokenDecimals = integrationData.market?.depositToken.decimals;
+  const depositChainId = projectData.chainId;
+
+  const constraints = [
+    greaterThanOrEqualTo(context.getMinConstraintValue(depositTokenDecimals)),
+  ];
+
+  return buildContractComposable(oNexus, {
+    address: depositAddress,
+    chainId: depositChainId,
+    abi: integrationData.abi.transfer,
+    functionName: integrationData.abi.transfer.name,
+    gasLimit: 200000n,
+    args: [
+      currentAddress,
+      runtimeERC20BalanceOf({
+        targetAddress: oNexus.addressOn(depositChainId, true) as Hex,
+        tokenAddress: depositAddress,
+        constraints,
+      }),
+    ],
+  });
+};
+
 export const hyperwaveZap: ZapDefinition = {
   commands: {
     approve,
     deposit: hyperwaveDeposit,
-    transfer,
+    transfer: hyperwaveTransfer,
   },
   steps: ['approve', 'deposit', 'transfer'],
 };

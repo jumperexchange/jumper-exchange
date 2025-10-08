@@ -23,6 +23,8 @@ import { useAccount } from '@lifi/wallet-management';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import { SectionCardContainer } from '../Cards/SectionCard/SectionCard.style';
 import { MissionTask } from 'src/app/ui/mission/MissionTask';
+import { useResetCurrentActiveTask } from 'src/hooks/tasksVerification/useResetCurrentActiveTask';
+import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
 
 interface ZapDetailsProps {
   market: Quest;
@@ -35,6 +37,12 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
     market?.EndDate ?? '',
   );
   const zapDisplayData = useFormatDisplayQuestData(market, true, AppPaths.Zap);
+  const participants = useMemo(
+    () => zapDisplayData.participants,
+    [zapDisplayData.participants],
+  );
+  useResetCurrentActiveTask();
+  useSyncMissionDefaultsFromChains(participants, market.documentId);
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -82,6 +90,7 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
             slug={zapDisplayData.slug}
             title={zapDisplayData.title}
             description={zapDisplayData.description}
+            descriptionRichText={zapDisplayData.descriptionRichText}
             participants={zapDisplayData.participants}
             imageUrl={zapDisplayData.imageUrl}
             rewardGroups={zapDisplayData.rewardGroups}

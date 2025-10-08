@@ -36,7 +36,8 @@
       "developers": "Developers",
       "support": "Support",
       "resources": "Resources",
-      "profile": "Profile"
+      "profile": "Profile",
+      "privacyPolicy": "Privacy Policy"
     },
     "walletMenu": {
       "disconnect": "Disconnect",
@@ -112,7 +113,9 @@
   },
   "button": {
     "okay": "Okay",
-    "manageYourPosition": "Manage your position"
+    "manageYourPosition": "Manage your position",
+    "goBack": "Go back",
+    "connectAnotherWallet": "Connect another wallet"
   },
   "error": {
     "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support."
@@ -169,6 +172,7 @@
     "tasks": {
       "type": "{{type}} task",
       "typeFallback": "Task",
+      "typeOptional": "Optional task",
       "status": {
         "verify": "Verify",
         "verified": "Verified"
@@ -201,6 +205,9 @@
     "achievements": "Achievements",
     "unlocked": "Unlocked",
     "levelWithValue": "Level {{level}}",
+    "tooltips": {
+      "unlockAtLevel": "Unlocked at Level {{level}}"
+    },
     "noData": {
       "description": "No {{entity}} yet? Let's change that!",
       "caption": "Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.",
@@ -254,7 +261,38 @@
     "apy": "Expected yearly return rate of the tokens invested.",
     "deposit": "The token on which the market is defined and yield accrues on.",
     "deposited": "The token you have deposited into this market.",
-    "boostedApy": "{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. There is an additional {{boostedApy}}% in extra rewards paid in other tokens, check the protocol website for more information."
+    "boostedApy": "{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.",
+    "lockupPeriod": "Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.",
+    "manageYourPosition": "You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button",
+    "assets": "The assets you will earn from"
+  },
+  "labels": {
+    "apy": "APY",
+    "lockupPeriod": "Lockup Period",
+    "tvl": "TVL",
+    "assets": "Assets"
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "Use your spare <asset/> with <protocol/> and earn up to <apy/> APY",
+      "maximizeYourRevenue": "Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool",
+      "makeTheJump": "Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!",
+      "earnUpTo": "Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>"
+    },
+    "copy": {
+      "forYouBasedOnActivity": "Handpicked markets selected across {{totalMarkets}}+ based on your account activity",
+      "forYouDefault": "Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets"
+    },
+    "sorting": {
+      "sortBy": "Sort By",
+      "apy": "APY",
+      "tvl": "TVL"
+    },
+    "filter": {
+      "clear": "Clear",
+      "selected": "{{count}} selected",
+      "search": "Search {{filterBy}}..."
+    }
   },
   "widget": {
     "depositCard": {
@@ -265,8 +303,27 @@
       "token": "Asset"
     },
     "zap": {
-      "sendToAddressName": "Send to {{name}}",
-      "sentToAddressName": "Sent to {{name}}"
+      "sendToAddressName": "Deposit into {{name}}",
+      "sentToAddressName": "Deposited into {{name}}",
+      "depositSuccess": "You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your Positions</bold> that redirects to {{partnerName}} UI",
+      "tabs": {
+        "deposit": "Deposit",
+        "withdraw": "Withdraw"
+      },
+      "placeholder": {
+        "comingSoon": "Coming soon",
+        "embedded-multisig": {
+          "title": "Your wallet is currently not supported",
+          "description": "We are working on adding support for embedded and smart contract wallets. In the mean time please use a different wallet to complete this mission."
+        },
+        "non-evm": {
+          "title": "Your wallet is currently not supported",
+          "description": "We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission."
+        }
+      }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": "Quick deposit"
   }
 }

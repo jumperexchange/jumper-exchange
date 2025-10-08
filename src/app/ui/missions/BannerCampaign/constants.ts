@@ -1,7 +1,7 @@
 export const IMAGE_SIZES = {
   MOBILE: {
     WIDTH: 704,
-    HEIGHT: 320,
+    HEIGHT: 256,
   },
   DESKTOP: {
     WIDTH: 1032,

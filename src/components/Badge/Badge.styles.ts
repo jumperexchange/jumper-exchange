@@ -1,4 +1,5 @@
 import Box, { BoxProps } from '@mui/material/Box';
+import Skeleton, { SkeletonProps } from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -21,7 +22,7 @@ export enum BadgeSize {
   XL = 'xl',
 }
 
-interface StyledBadgeProps extends BoxProps {
+export interface StyledBadgeProps extends BoxProps {
   variant?: BadgeVariant;
   size?: BadgeSize;
 }
@@ -34,13 +35,16 @@ export const StyledBadge = styled(Box, {
     width: 'fit-content',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
     pointerEvents: 'inherit',
-    cursor: 'pointer',
+    cursor: onClick ? 'pointer' : 'default',
     variants: [
       {
         props: ({ size }) => size === BadgeSize.SM,
         style: {
           height: 24,
+          minWidth: 24,
           padding: theme.spacing(0.5),
           '& > p': {
             fontSize: theme.typography.bodyXXSmallStrong.fontSize,
@@ -56,6 +60,7 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.MD,
         style: {
           height: 32,
+          minWidth: 32,
           padding: theme.spacing(0.5, 0.75),
           '& > p': {
             fontSize: theme.typography.bodyXSmallStrong.fontSize,
@@ -71,6 +76,7 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.LG,
         style: {
           height: 40,
+          minWidth: 40,
           padding: theme.spacing(0.5, 1),
           '& > p': {
             fontSize: theme.typography.bodySmallStrong.fontSize,
@@ -86,6 +92,7 @@ export const StyledBadge = styled(Box, {
         props: ({ size }) => size === BadgeSize.XL,
         style: {
           height: 48,
+          minWidth: 48,
           padding: theme.spacing(0.5, 1),
           '& > p': {
             fontSize: theme.typography.bodyMediumStrong.fontSize,
@@ -168,4 +175,46 @@ export const StyledBadge = styled(Box, {
 
 export const StyledBadgeLabel = styled(Typography)(({ theme }) => ({
   fontWeight: theme.typography.fontWeightBold,
+}));
+
+interface BaseSkeletonProps extends SkeletonProps {
+  size?: BadgeSize;
+}
+
+export const BaseSkeleton = styled(Skeleton, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSkeletonProps>(({ theme, size }) => ({
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  transform: 'none',
+  borderRadius: theme.shape.buttonBorderRadius,
+  variants: [
+    {
+      props: ({ size }) => size === BadgeSize.SM,
+      style: {
+        height: 24,
+        width: 48,
+      },
+    },
+    {
+      props: ({ size }) => size === BadgeSize.MD,
+      style: {
+        height: 32,
+        width: 56,
+      },
+    },
+    {
+      props: ({ size }) => size === BadgeSize.LG,
+      style: {
+        height: 40,
+        width: 64,
+      },
+    },
+    {
+      props: ({ size }) => size === BadgeSize.XL,
+      style: {
+        height: 48,
+        width: 72,
+      },
+    },
+  ],
 }));

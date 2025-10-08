@@ -27,11 +27,14 @@ export const SelectCardDisplay: FC<SelectCardDisplayProps> = ({
           <SelectCardDisplayValue showPlaceholder={!!placeholder && !value}>
             {value ?? placeholder}
           </SelectCardDisplayValue>
-          {description && (
-            <SelectCardDescription variant="bodyXSmall">
-              {description}
-            </SelectCardDescription>
-          )}
+          {description &&
+            (typeof description === 'string' ? (
+              <SelectCardDescription variant="bodyXSmall">
+                {description}
+              </SelectCardDescription>
+            ) : (
+              description
+            ))}
         </SelectCardValueContainer>
         {endAdornment}
       </SelectCardContentContainer>

@@ -1,10 +1,10 @@
-import { useMemo, useCallback, useEffect } from 'react';
-import { useMissionStore } from 'src/stores/mission';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo } from 'react';
+import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
+import { TaskFormState, useMissionStore } from 'src/stores/mission';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { useGetVerifiedTasks } from './useGetVerifiedTasks';
-import { useRouter } from 'next/navigation';
-import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 
 export const useEnhancedTasks = (
   tasks: TaskVerificationWithApy[],
@@ -30,16 +30,35 @@ export const useEnhancedTasks = (
     setIsCurrentActiveTaskCompleted,
     setCurrentTaskWidgetFormParams,
     setCurrentTaskInstructionParams,
-    currentActiveTaskId,
-    isCurrentActiveTaskCompleted,
+    initializeTaskFormStates,
   } = useMissionStore();
+
+  const currentActiveTaskId = useMissionStore(
+    (state) => state.currentActiveTaskId,
+  );
+  const isCurrentActiveTaskCompleted = useMissionStore(
+    (state) => state.isCurrentActiveTaskCompleted,
+  );
 
   const checkIsTaskVerified = useCallback(
     (task: TaskVerificationWithApy) => {
       return task && task.hasTask && verifiedTaskIds.has(task.uuid);
     },
-    [JSON.stringify(verifiedTasks)],
+    [verifiedTasks],
   );
+
+  // Initialize form state for all tasks when mission is loaded
+  useEffect(() => {
+    const formStates: Record<string, TaskFormState> = {};
+
+    tasks.forEach((task) => {
+      const widgetParams = task.TaskWidgetInformation ?? {};
+      const hasForm = !!widgetParams.inputs?.length;
+      formStates[task.uuid] = { hasForm, isFormValid: !hasForm };
+    });
+
+    initializeTaskFormStates(formStates);
+  }, [tasks, initializeTaskFormStates]);
 
   const handleSetActiveTask = useCallback(
     (task: TaskVerificationWithApy, shouldScrollToWidget = true) => {
@@ -58,6 +77,8 @@ export const useEnhancedTasks = (
       setIsCurrentActiveTaskCompleted(isTaskVerified);
 
       setCurrentTaskWidgetFormParams({
+        allowBridge: widgetParams.allowBridge ?? undefined,
+        allowExchange: widgetParams.allowExchange ?? undefined,
         sourceChain: widgetParams.sourceChain ?? undefined,
         sourceToken: widgetParams.sourceToken ?? undefined,
         destinationChain: widgetParams.destinationChain ?? undefined,
@@ -117,7 +138,7 @@ export const useEnhancedTasks = (
     }
   }, [
     checkIsTaskVerified,
-    JSON.stringify(tasks),
+    tasks,
     currentActiveTaskId,
     isCurrentActiveTaskCompleted,
   ]);
@@ -133,7 +154,7 @@ export const useEnhancedTasks = (
         isRequired,
       };
     });
-  }, [checkIsTaskVerified, JSON.stringify(tasks)]);
+  }, [checkIsTaskVerified, tasks]);
 
   return {
     enhancedTasks,

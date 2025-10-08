@@ -67,6 +67,7 @@ interface RichElement<T> {
 type ParagraphElement = RichElement<ParagraphProps>;
 type QuoteElement = RichElement<QuoteProps>;
 
+// @deprecated use RichBlocks instead
 export const CustomRichBlocks = ({
   id,
   content,

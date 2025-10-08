@@ -1,11 +1,9 @@
-'use client';
-import { getChainInfoData } from '@/app/ui/bridge/utils';
 import { Widget } from '@/components/Widgets/Widget';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 import { Container, Stack, Typography } from '@mui/material';
-import InformationCard from 'src/components/InformationCard/InformationCard';
 import SwapExplanationSection from './SwapExplanation';
 import StepsExplainerSection from './SwapStepsExplainer';
+import { ChainInformationCard } from 'src/components/InformationCard/variants/ChainInformationCard';
 
 interface SwapPageProps {
   sourceChain: ExtendedChain;
@@ -55,15 +53,7 @@ const SwapPage = ({
           width="100%"
           flexWrap="wrap"
         >
-          <InformationCard
-            type="Blockchain"
-            fullWidth={true}
-            info={{
-              logoURI: sourceChain?.logoURI,
-              name: sourceChain.name,
-            }}
-            data={getChainInfoData(sourceChain)}
-          />
+          <ChainInformationCard chain={sourceChain} fullWidth={true} />
         </Stack>
         <SwapExplanationSection />
       </Stack>

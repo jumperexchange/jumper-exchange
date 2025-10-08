@@ -7,6 +7,7 @@ import {
   openOrCloseMainMenu,
   openLeaderboardPage,
   sectionOnTheBlogPage,
+  checkTabsInHeader,
 } from './testData/menuFunctions';
 import {
   getElementByText,
@@ -26,14 +27,14 @@ test.describe('Main Menu flows', () => {
     await closeWelcomeScreen(page);
   });
 
-  test(qase(94, 'Should be able to open menu and close it'), async ({ page }) => {
+  test(qase(12, 'Should be able to open menu and close it'), async ({ page }) => {
     openOrCloseMainMenu(page);
     await checkTheNumberOfMenuItems(page, 6);
     await page.locator('body').click();
     await expect(page.getByRole('menu')).not.toBeVisible();
   });
 
-  test.skip(qase(89, 'Should be able to navigate to profile and open first Mission'), async ({
+  test.skip(qase(9, 'Should be able to navigate to profile and open first Mission'), async ({
     page,
   }) => {
     const profileUrl = `${await page.url()}profile`;
@@ -50,7 +51,7 @@ test.describe('Main Menu flows', () => {
     await expect(missionTitle).toBeVisible();
   });
 
-  test.skip(qase(90, 'Should open the Jumper Profile page and then open the leaderboard page'), async ({
+  test.skip(qase(10, 'Should open the Jumper Profile page and then open the leaderboard page'), async ({
     page,
   }) => {
     const whereDoYouRank = await getElementByText(page, 'Where do you rank?');
@@ -69,7 +70,7 @@ test.describe('Main Menu flows', () => {
     await expect(connectWalletButtonOnLeaderboardPage).toBeVisible();
   });
 
-  test(qase(119, 'Should be able to navigate to the Jumper Learn'), async ({ page }) => {
+  test(qase(22, 'Should be able to navigate to the Jumper Learn'), async ({ page }) => {
     const sectionName = [
       'Announcements',
       'Partnerships',
@@ -89,6 +90,7 @@ test.describe('Main Menu flows', () => {
     await expect(page).toHaveURL(values.localLearnURL);
     await page.waitForLoadState('load');
     await page.locator('.learn-page').isVisible();
+    await checkTabsInHeader(page);
     sectionOnTheBlogPage(page, sectionName);
     await blogArticle.click();
     await page.waitForLoadState('load');
@@ -96,29 +98,30 @@ test.describe('Main Menu flows', () => {
     checkSocialNetworkIcons(page, socialNetworks);
   });
 
-  test(qase(96, 'Should open Resources section inside menu'), async ({ page, context }) => {
+  test(qase(13, 'Should open Resources section inside menu'), async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Resources');
     await checkTheNumberOfMenuItems(page, 2);
   });
 
-  test(qase(97, 'Should open Language section inside menu'), async ({ page }) => {
+  test(qase(14, 'Should open Language section inside menu'), async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Language');
     await checkTheNumberOfMenuItems(page, 14);
   });
 
-  test(qase(112, 'Should be able to navigate to LI.FI Scan'), async ({ page }) => {
+  test(qase(21, 'Should be able to navigate to LI.FI Scan'), async ({ page }) => {
     const searchBar = await page.locator(
       'xpath=//div[@class="MuiBox-root mui-1nhlr6a"]',
     );
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Scan');
     await expect(page).toHaveURL(values.localJumperScanURL);
+    await checkTabsInHeader(page);
     await expect(searchBar).toBeVisible();
   });
 
-  test.skip(qase(91, 'Should be able to open quests mission page and switch background color'), async ({
+  test.skip(qase(11, 'Should be able to open quests mission page and switch background color'), async ({
     page,
   }) => {
     const jumperProfileBackButton = await getElementByText(page, 'Missions');
@@ -135,38 +138,44 @@ test.describe('Main Menu flows', () => {
     expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
   });
 
-  test(qase(98, 'Should open Github page inside Resources section'), async ({ page, context }) => {
+  test(qase(15, 'Should open Github page inside Resources section'), async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Resources');
     await itemInMenu(page, 'Github');
     await openNewTabAndVerifyUrl(context, values.githubURL);
   });
 
-  test(qase(99, 'Should be able to navigate to X'), async ({ page, context }) => {
+  test(qase(16, 'Should be able to navigate to X'), async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'X social link');
     await openNewTabAndVerifyUrl(context, values.xUrl);
   });
 
-  test(qase(100, 'Should be able to navigate to Discord'), async ({ page, context }) => {
+  test(qase(17, 'Should be able to navigate to Discord'), async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Discord social link');
     await openNewTabAndVerifyUrl(context, values.discordURL);
   });
 
-  test(qase(101, 'Should be able to navigate to Telegram'), async ({ page, context }) => {
+  test(qase(18, 'Should be able to navigate to Telegram'), async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Telegram social link');
     await openNewTabAndVerifyUrl(context, values.telegramURL);
   });
 
-  test(qase(102, 'Should be able to navigate to Link3'), async ({ page, context }) => {
+  test(qase(19, 'Should be able to navigate to Link3'), async ({ page, context }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Link3 social link');
     await openNewTabAndVerifyUrl(context, values.link3URL);
   });
 
-  test(qase(103, 'Should be able to click on the Support button'), async ({ page }) => {
+  test(qase(37,'Should be able to navigate to the Privacy Policy page'), async ({ page }) => {
+    await openOrCloseMainMenu(page);
+    await itemInNavigation(page, 'Privacy Policy');
+    await expect(page).toHaveURL(values.privacyPolicyURL);
+  });
+
+  test(qase(20, 'Should be able to click on the Support button'), async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Support');
     const iFrameLocator = page.frameLocator(

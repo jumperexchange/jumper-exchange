@@ -48,6 +48,7 @@ export interface TrackTransactionDataProps {
   // Optional properties (conditionally present) - sorted alphabetically
   [TrackingEventParameter.Action]?: string;
   [TrackingEventParameter.ErrorCode]?: string;
+  [TrackingEventParameter.ErrorCodeKey]?: string;
   [TrackingEventParameter.ErrorMessage]?: string;
   [TrackingEventParameter.Exchange]?: string;
   [TrackingEventParameter.FeeCost]?: number;
@@ -78,9 +79,4 @@ export interface TrackTransactionProps {
 export interface TokenSearchProps {
   value: string;
   tokens: TokenAmount[];
-}
-
-export interface RouteSelectedProps {
-  route: Route;
-  routes: Route[];
 }

@@ -36,7 +36,8 @@
       "developers": "Розробникам",
       "support": "Підтримка",
       "resources": "",
-      "profile": "Профіль Jumper"
+      "profile": "Профіль Jumper",
+      "privacyPolicy": ""
     },
     "walletMenu": {
       "disconnect": "Від'єднатись",
@@ -112,7 +113,9 @@
   },
   "button": {
     "okay": "Добре",
-    "manageYourPosition": ""
+    "manageYourPosition": "Керуйте вашою позицією",
+    "goBack": "Назад",
+    "connectAnotherWallet": "Під'єднати інший гаманець"
   },
   "error": {
     "message": "Щось пішло не так. Будь ласка, спробуйте перезавантажити сторінку. Якщо проблема залишиться, зверніться до нашої служби підтримки."
@@ -144,21 +147,21 @@
   },
   "missions": {
     "wrapperCard": {
-      "title": "",
-      "explore_one": "",
-      "explore_other": ""
+      "title": "Місії",
+      "explore_one": "Дослідити {{count}} завдання",
+      "explore_other": "Дослідити {{count}} завдання"
     },
     "available": "Доступні місії",
     "completed": "Виконані місії",
     "mission": {
       "completed": {
-        "title": "",
-        "description": ""
+        "title": "Місію завершено",
+        "description": "Усі завдання цієї місії були перевірені та виконані."
       }
     },
     "status": {
-      "new": "",
-      "upcoming": "",
+      "new": "Нове",
+      "upcoming": "Майбутні",
       "minutesLeft_one": "",
       "minutesLeft_other": "",
       "hoursLeft_one": "",
@@ -168,18 +171,19 @@
     },
     "tasks": {
       "type": "",
-      "typeFallback": "",
+      "typeFallback": "Завдання",
+      "typeOptional": "",
       "status": {
-        "verify": "",
-        "verified": ""
+        "verify": "Перевірити",
+        "verified": "Перевірено"
       },
       "action": {
-        "verify": "",
-        "go": ""
+        "verify": "Перевірити",
+        "go": "Вперед"
       },
       "completed": {
-        "title": "",
-        "description": ""
+        "title": "Завдання виконано",
+        "description": "Це завдання було перевірено та виконано."
       }
     }
   },
@@ -196,25 +200,28 @@
     "shareProfile": "Поділитися профілем",
     "open": "Відкрити {{tool}}",
     "rewards": "Отримані винагороди",
-    "availableRewards": "",
-    "perks": "",
-    "achievements": "",
-    "unlocked": "",
-    "levelWithValue": "",
+    "availableRewards": "Доступні винагороди",
+    "perks": "Перки",
+    "achievements": "Досягнення",
+    "unlocked": "Розблоковано",
+    "levelWithValue": "Рівень {{level}}",
+    "tooltips": {
+      "unlockAtLevel": "Розблоковано на рівні {{level}}"
+    },
     "noData": {
-      "description": "",
-      "caption": "",
-      "cta": ""
+      "description": "Ще не {{entity}}? Давайте змінимо!",
+      "caption": "Почніть свою подорож шляхом виконання місій та обміну токенів на різних чейнах, щоб розблокувати унікальні досягнення та заробити досвід.",
+      "cta": "Почати обмін"
     }
   },
   "campaign": {
     "missions": {
-      "title": ""
+      "title": "Місії"
     },
     "stats": {
-      "missions": "",
-      "rewards": "",
-      "totalRewards": ""
+      "missions": "Місії",
+      "rewards": "Нагороди",
+      "totalRewards": "Загальна винагорода"
     }
   },
   "leaderboard": {
@@ -237,24 +244,55 @@
     "shortDate": "{{value, dateExt(month: short)}}"
   },
   "contribution": {
-    "title": "",
-    "custom": "",
-    "confirm": "",
-    "thankYou": "",
-    "description": "",
+    "title": "Підтримати",
+    "custom": "Власне",
+    "confirm": "Підтвердити",
+    "thankYou": "Дякую!",
+    "description": "Продемонструйте свою вдячність, додавши внесок. 100% від цього піде на підтримку Jumper.",
     "error": {
-      "amountTooSmall": "",
-      "errorSending": "",
-      "invalidTokenPrice": "",
+      "amountTooSmall": "Сума внеску занадто мала для цього токену. Будь ласка, спробуйте більшу суму.",
+      "errorSending": "Помилка під час надсилання внеску:",
+      "invalidTokenPrice": "Невірна ціна токена",
       "noFeeAddress": ""
     }
   },
   "tooltips": {
-    "tvl": "",
-    "apy": "",
+    "tvl": "Загальна вартість криптовалютних активів на цьому ринку.",
+    "apy": "Очікувана річна ставка токенів що вкладені.",
     "deposit": "",
     "deposited": "",
-    "boostedApy": ""
+    "boostedApy": "",
+    "lockupPeriod": "",
+    "manageYourPosition": "",
+    "assets": ""
+  },
+  "labels": {
+    "apy": "",
+    "lockupPeriod": "",
+    "tvl": "",
+    "assets": ""
+  },
+  "earn": {
+    "top": {
+      "useYourSpare": "",
+      "maximizeYourRevenue": "",
+      "makeTheJump": "",
+      "earnUpTo": ""
+    },
+    "copy": {
+      "forYouBasedOnActivity": "",
+      "forYouDefault": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "apy": "",
+      "tvl": ""
+    },
+    "filter": {
+      "clear": "",
+      "selected": "",
+      "search": ""
+    }
   },
   "widget": {
     "depositCard": {
@@ -266,7 +304,26 @@
     },
     "zap": {
       "sendToAddressName": "",
-      "sentToAddressName": ""
+      "sentToAddressName": "",
+      "depositSuccess": "",
+      "tabs": {
+        "deposit": "",
+        "withdraw": ""
+      },
+      "placeholder": {
+        "comingSoon": "",
+        "embedded-multisig": {
+          "title": "",
+          "description": ""
+        },
+        "non-evm": {
+          "title": "",
+          "description": ""
+        }
+      }
     }
+  },
+  "buttons": {
+    "depositButtonLabel": ""
   }
 }

@@ -1,4 +1,6 @@
 import config from '@/config/env-config';
+import { isProduction } from 'src/utils/isProduction';
+
 const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
 export const getFeatureFlag = async (
@@ -18,4 +20,8 @@ export const getFeatureFlag = async (
   const resFormatted = await response.json();
 
   return !!resFormatted.data;
+};
+
+export const isEarnFeatureEnabled = () => {
+  return !isProduction;
 };

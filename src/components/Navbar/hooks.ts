@@ -14,7 +14,7 @@ import type { Address } from 'viem';
 import { walletDigest } from 'src/utils/walletDigest';
 import { AppPaths } from 'src/const/urls';
 import { useTranslation } from 'react-i18next';
-import { usePathname } from 'next/navigation';
+import { usePathnameWithoutLocale } from 'src/hooks/routing/usePathnameWithoutLocale';
 
 export const useLevelDisplayData = () => {
   const activeAccount = useActiveAccountByChainType();
@@ -71,7 +71,7 @@ export const useIsDisconnected = () => {
 
 export const useMainLinks = () => {
   const { t } = useTranslation();
-  const pathname = usePathname();
+  const pathname = usePathnameWithoutLocale();
 
   const links = useMemo(() => {
     return [
@@ -79,11 +79,13 @@ export const useMainLinks = () => {
         value: AppPaths.Main,
         label: t('navbar.links.exchange'),
         subLinks: [AppPaths.Gas],
+        testId: 'navbar-exchange-button',
       },
       {
         value: AppPaths.Missions,
         label: t('navbar.links.missions'),
-        subLinks: [AppPaths.Campaign],
+        subLinks: [AppPaths.Missions, AppPaths.Campaign, AppPaths.Zap],
+        testId: 'navbar-missions-button',
       },
     ];
   }, [t]);

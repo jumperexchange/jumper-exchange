@@ -10,12 +10,13 @@ import { useThemeStore } from 'src/stores/theme';
 import { LogoLinkWrapper, NavbarContainer } from '.';
 import { Logo } from './components/Logo/Logo';
 import { Layout } from './layout/Layout';
-import { checkIsLearnPage, checkIsScanPage } from './utils';
+import { checkIsLearnPage, checkIsScanPage, checkIsPrivacyPolicyPage } from './utils';
 
 export const ClientNavbar = () => {
   const pathname = usePathname();
   const isLearnPage = checkIsLearnPage(pathname);
   const isScanPage = checkIsScanPage(pathname);
+  const isPrivacyPolicyPage = checkIsPrivacyPolicyPage(pathname);
 
   const { setWelcomeScreenClosed } = useWelcomeScreen();
   const configTheme = useThemeStore((state) => state.configTheme);
@@ -31,10 +32,12 @@ export const ClientNavbar = () => {
       return AppPaths.Learn;
     } else if (isScanPage) {
       return AppPaths.Scan;
+    } else if (isPrivacyPolicyPage) {
+      return AppPaths.PrivacyPolicy;
     } else {
       return AppPaths.Main;
     }
-  }, [isLearnPage, isScanPage]);
+  }, [isLearnPage, isScanPage, isPrivacyPolicyPage]);
 
   return (
     <NavbarContainer
@@ -43,10 +46,10 @@ export const ClientNavbar = () => {
     >
       <LogoLinkWrapper href={logoHref} id="jumper-logo" onClick={handleClick}>
         <Logo
-          variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : 'default'}
+          variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : isPrivacyPolicyPage ? 'default' : 'default'}
         />
       </LogoLinkWrapper>
-      <Layout hideConnectButton={isLearnPage} />
+      <Layout />
     </NavbarContainer>
   );
 };

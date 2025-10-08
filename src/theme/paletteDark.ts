@@ -89,8 +89,8 @@ export const paletteDark = {
   buttonAlphaLightBg: baseColors.alphaLight900.main,
   buttonAlphaLightAction: baseColors.alphaLight100.main,
 
-  buttonAlphaDarkBg: baseColors.alphaLight900.main,
-  buttonAlphaDarkAction: baseColors.alphaLight100.main,
+  buttonAlphaDarkBg: baseColors.alphaLight100.main,
+  buttonAlphaDarkAction: baseColors.alphaLight900.main,
 
   buttonDisabledBg: baseColors.alphaLight100.main,
   buttonDisabledAction: baseColors.alphaLight500.main,

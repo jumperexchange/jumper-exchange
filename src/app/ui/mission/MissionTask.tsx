@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskCard } from 'src/components/Cards/TaskCard/TaskCard';
 import { Badge } from 'src/components/Badge/Badge';
@@ -25,9 +25,21 @@ export const MissionTask: FC<MissionTaskProps> = ({
   missionId,
   onClick,
 }) => {
-  const { taskId, title, taskType, description, shouldVerify, isVerified } =
-    useFormatDisplayTaskData(task);
-  const { currentActiveTaskId } = useMissionStore();
+  const {
+    taskId,
+    title,
+    taskType,
+    description,
+    shouldVerify,
+    isVerified,
+    isRequired,
+  } = useFormatDisplayTaskData(task);
+
+  const currentActiveTaskId = useMissionStore(
+    (state) => state.currentActiveTaskId,
+  );
+  const { getTaskFormState } = useMissionStore();
+  const { hasForm, isFormValid } = getTaskFormState(taskId);
   const isActive = currentActiveTaskId === taskId;
   const shouldAnimationRun = useRef(false);
 
@@ -50,9 +62,19 @@ export const MissionTask: FC<MissionTaskProps> = ({
     return () => clearTimeout(timeout);
   }, [isPending]);
 
+  const onTaskVerificationClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onClick();
+      handleVerifyTask();
+    },
+    [onClick, handleVerifyTask],
+  );
+
   const getVariant = () => {
     if (isSuccess || isVerified) return BadgeVariant.Success;
-    if (isPending) return BadgeVariant.Disabled;
+    if (isPending || (hasForm && !isFormValid)) return BadgeVariant.Disabled;
     if (isError) return BadgeVariant.Error;
     return BadgeVariant.Secondary;
   };
@@ -80,9 +102,11 @@ export const MissionTask: FC<MissionTaskProps> = ({
       description={description}
       isActive={isActive}
       type={
-        taskType
-          ? t('missions.tasks.type', { type: taskType })
-          : t('missions.tasks.typeFallback')
+        !isRequired
+          ? t('missions.tasks.typeOptional')
+          : taskType
+            ? t('missions.tasks.type', { type: taskType })
+            : t('missions.tasks.typeFallback')
       }
       statusBadge={
         shouldVerify && (
@@ -95,7 +119,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
             startIcon={getIcon()}
             variant={getVariant()}
             onClick={
-              !isSuccess && !isVerified ? () => handleVerifyTask() : undefined
+              !isSuccess && !isVerified ? onTaskVerificationClick : undefined
             }
           />
         )

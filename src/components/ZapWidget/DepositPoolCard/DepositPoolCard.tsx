@@ -10,14 +10,23 @@ import { formatUnits } from 'viem';
 import BadgeWithChain from '../BadgeWithChain';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 import { DepositPoolCardItem } from './DepositPoolCardItem';
 import { useTranslation } from 'react-i18next';
 import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import { Button } from 'src/components/Button';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { ProjectData } from 'src/types/questDetails';
 import { openInNewTab } from 'src/utils/openInNewTab';
+import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import { useSweepTokens } from 'src/hooks/zaps/useSweepTokens';
+import { TxConfirmation } from '../TxConfirmation/TxConfirmation';
+import { useChains } from 'src/hooks/useChains';
+import Tooltip from '@mui/material/Tooltip';
+import { capitalizeString } from 'src/utils/capitalizeString';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -27,9 +36,16 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   customInformation,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const chains = useChains();
   const projectData: ProjectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
+
+  const chain = useMemo(
+    () => chains.getChainById(projectData?.chainId),
+    [projectData?.chainId, chains],
+  );
 
   const claimingIds = useMemo(() => {
     return customInformation?.claimingIds;
@@ -55,6 +71,10 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     [zapData, lpTokenDecimals],
   );
 
+  const partnerName = useMemo(() => {
+    return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
+  }, [zapData?.meta.name, t]);
+
   const token = useMemo(
     () =>
       isZapDataSuccess && zapData
@@ -77,25 +97,43 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   );
 
   const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [token?.chainId]);
+  const formattedLockupPeriod = formatLockupPeriod(
+    analytics?.lockup_period ?? 0,
+  );
+
+  const { 
+    isSweeping, 
+    sweepError, 
+    hasTokensToSweep, 
+    sweepTokens,
+    txHash,
+    isTransactionReceiptLoading,
+    isTransactionReceiptSuccess,
+    sweepStepText,
+    sweepableTokens
+  } = useSweepTokens(projectData);
 
   const {
     tooltip: apyTooltip,
     value: apyValue,
     label: apyLabel,
   } = useMemo(() => {
-    if (analytics?.boosted_apy) {
+    const analyticsBaseApy = analytics?.base_apy;
+    const analyticsBoostedApy = analytics?.boosted_apy;
+    const analyticsTotalApy = analytics?.total_apy;
+    if (analyticsBoostedApy && Number(analyticsBoostedApy) > 0) {
       return {
         tooltip: t('tooltips.boostedApy', {
-          baseApy: analytics.base_apy,
-          boostedApy: analytics.boosted_apy,
+          baseApy: analyticsBaseApy,
+          boostedApy: analyticsBoostedApy,
         }),
-        value: boostedAPY.toFixed(1),
+        value: analyticsTotalApy,
         label: t('widget.depositCard.boostedApy'),
       };
     }
     return {
       tooltip: t('tooltips.apy'),
-      value: analytics?.base_apy,
+      value: analyticsBaseApy,
       label: t('widget.depositCard.apy'),
     };
   }, [analytics?.boosted_apy, analytics?.base_apy, boostedAPY, t]);
@@ -114,15 +152,25 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     openInNewTab(projectData.integratorPositionLink);
   };
 
+  const onClaimHandler = async () => {
+    try {
+      await sweepTokens();
+    } catch (error) {
+      console.error('Sweep failed:', error);
+    }
+  };
+
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
 
   return (
-    <SectionCardContainer>
-      <DepositPoolCardContainer>
+    <>
+      <SectionCardContainer>
+        <DepositPoolCardContainer>
         <DepositPoolHeaderContainer>
           <BadgeWithChain
             logoURI={zapData?.meta?.logoURI}
             chainId={token?.chainId}
+            badgeSize={15}
             alt={`${zapData?.meta?.name} protocol`}
           />
           <Typography
@@ -150,13 +198,16 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             />
           )}
 
-          {/** Re-enable this once we know the duration and conditionally render it */}
-          {/* <DepositPoolCardItem
+          {formattedLockupPeriod.value && (
+            <DepositPoolCardItem
               title={t('widget.depositCard.lockupPeriod')}
-              tooltip=""
-              value="5"
-              valueAppend="months"
-            /> */}
+              tooltip={t('tooltips.lockupPeriod', {
+                formattedLockupPeriod: `${formattedLockupPeriod.value} ${formattedLockupPeriod.unit}`,
+              })}
+              value={formattedLockupPeriod.value}
+              valueAppend={formattedLockupPeriod.unit}
+            />
+          )}
           {token?.symbol && token?.logoURI && token?.chainId && (
             <DepositPoolCardItem
               title={t('widget.depositCard.token')}
@@ -170,7 +221,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
                   chainId={token.chainId}
                   alt={`${zapData?.meta?.name} protocol`}
                   logoSize={24}
-                  badgeSize={8}
+                  badgeSize={9}
                 />
               }
               contentStyles={{ alignItems: 'center' }}
@@ -178,12 +229,41 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
           )}
         </Grid>
         {hasDeposited && (
+          <Tooltip
+            title={t('tooltips.manageYourPosition', {
+              partnerName: partnerName,
+            })}
+            placement={'top'}
+            enterTouchDelay={0}
+            arrow
+          >
+            <Box sx={{ display: 'inline-block', width: '100%' }}>
+              <Button
+                fullWidth
+                variant="transparent"
+                size="medium"
+                endIcon={<OpenInNewRoundedIcon />}
+                disabled={!projectData?.integratorPositionLink}
+                onClick={onClickHandler}
+                styles={(theme) => ({
+                  background: (theme.vars || theme).palette.alphaLight100.main,
+                  ...theme.applyStyles('light', {
+                    background: (theme.vars || theme).palette.alphaDark100.main,
+                  }),
+                })}
+              >
+                {t('button.manageYourPosition')}
+              </Button>
+            </Box>
+          </Tooltip>
+        )}
+        {hasTokensToSweep && !txHash && (
           <Button
             variant="transparent"
             size="medium"
-            endIcon={<OpenInNewRoundedIcon />}
-            disabled={!projectData?.integratorPositionLink}
-            onClick={onClickHandler}
+            endIcon={<AutorenewIcon />}
+            disabled={isSweeping}
+            onClick={onClaimHandler}
             styles={(theme) => ({
               background: (theme.vars || theme).palette.alphaLight100.main,
               ...theme.applyStyles('light', {
@@ -191,10 +271,88 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
               }),
             })}
           >
-            {t('button.manageYourPosition')}
+            {isSweeping ? sweepStepText : 'Sweep'}
           </Button>
         )}
-      </DepositPoolCardContainer>
-    </SectionCardContainer>
+
+        {/* Display sweepable tokens */}
+        {hasTokensToSweep && sweepableTokens.length > 0 && !txHash && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="bodySmall" color="text.secondary" sx={{ mb: 1 }}>
+              Tokens available to sweep:
+            </Typography>
+            <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
+              {sweepableTokens.map((token, index) => (
+                <Box
+                  key={`${token.address}-${token.chainId}-${index}`}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    py: 1,
+                    px: 2,
+                    mb: 1,
+                    backgroundColor: 'alphaLight100.main',
+                    borderRadius: 1,
+                    ...theme.applyStyles('light', {
+                      backgroundColor: 'alphaDark100.main',
+                    }),
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {token.logoURI && (
+                      <img
+                        src={token.logoURI}
+                        alt={token.symbol}
+                        style={{ width: 20, height: 20, borderRadius: '50%' }}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    )}
+                    <Box>
+                      <Typography variant="bodySmall" fontWeight="medium">
+                        {token.symbol}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Chain {token.chainId}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Typography variant="bodySmall" fontWeight="medium">
+                    {parseFloat(token.amount).toFixed(6)}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {sweepError && (
+          <Typography variant="bodySmall" color="error" sx={{ mt: 1 }}>
+            {sweepError}
+          </Typography>
+        )}
+
+        </DepositPoolCardContainer>
+      </SectionCardContainer>
+
+      {/* Transaction confirmation outside the box */}
+      {isTransactionReceiptSuccess && txHash && (
+        <TxConfirmation
+          description={'Sweep successful'}
+          link={`https://meescan.biconomy.io/details/${txHash}`}
+          success={true}
+        />
+      )}
+
+      {!isTransactionReceiptSuccess && txHash && (
+        <TxConfirmation
+          description={'Check on explorer'}
+          link={`https://meescan.biconomy.io/details/${txHash}`}
+          success={false}
+        />
+      )}
+    </>
   );
 };

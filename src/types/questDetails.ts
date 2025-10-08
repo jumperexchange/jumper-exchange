@@ -31,6 +31,7 @@ export interface ProjectData {
   address: string;
   withdrawAddress?: string;
   tokenAddress?: string;
+  minFromAmountUSD?: number | string;
 }
 
 export interface QuestDetails {

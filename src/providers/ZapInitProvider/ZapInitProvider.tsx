@@ -1,51 +1,54 @@
 'use client';
 
-import { EVMProvider, Route } from '@lifi/sdk';
+import { ChainId, ChainType, EVMProvider, Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
+import { MultichainSmartAccount } from '@biconomy/abstractjs';
 import {
   createContext,
   FC,
   PropsWithChildren,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
+import { useMultisig } from 'src/hooks/useMultisig';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
+import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
 import { createCustomEVMProvider } from 'src/providers/WalletProvider/createCustomEVMProvider';
-import { EVMAddress } from 'src/types/internal';
-import { ProjectData } from 'src/types/questDetails';
-import { useConfig, UseReadContractsReturnType } from 'wagmi';
-import {
-  WalletMethod,
-  WalletMethodsRef,
-  WalletMethodArgsType,
-  WalletMethodReturnType,
-  WalletMethodDefinition,
-} from './types';
 import {
   BiconomyClients,
   useBiconomyClientsStore,
 } from 'src/stores/biconomyClients/BiconomyClientsStore';
 import { useZapPendingOperationsStore } from 'src/stores/zapPendingOperations/ZapPendingOperationsStore';
-import { walletMethods } from './WalletClient/methods';
-import { useWalletClientInitialization } from './WalletClient/hooks';
-import { SendCallsExtraParams } from './ModularZaps';
-import { NO_DEPS_METHODS } from './constants';
-import { openInNewTab } from 'src/utils/openInNewTab';
-import {
-  BICONOMY_EXPLORER_ADDRESS_PATH,
-  BICONOMY_EXPLORER_URL,
-} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
+import { ProjectData } from 'src/types/questDetails';
 import { findChain } from 'src/utils/chains/findChain';
+import { openInNewTab } from 'src/utils/openInNewTab';
+import { Hex } from 'viem';
+import { useConfig, UseReadContractsReturnType, useSwitchChain } from 'wagmi';
+import { useZapQuestIdStorage } from '../hooks';
+import { SendCallsExtraParams } from './ModularZaps';
+import { useWalletClientInitialization } from './WalletClient/hooks';
+import { walletMethods } from './WalletClient/methods';
+import { NO_DEPS_METHODS } from './constants';
+import {
+  WalletMethod,
+  WalletMethodArgsType,
+  WalletMethodDefinition,
+  WalletMethodReturnType,
+  WalletMethodsRef,
+} from './types';
 
 interface ZapInitState {
   isInitialized: boolean;
   isInitializedForCurrentChain: boolean;
+  isMultisigEnvironment: boolean;
+  isEmbeddedWallet: boolean;
+  isEvmWallet: boolean;
   isConnected: boolean;
   providers: EVMProvider[];
-  toAddress?: EVMAddress;
+  toAddress?: Hex;
   zapData?: any;
   isZapDataSuccess: boolean;
   setCurrentRoute: (newRoute: Route) => void;
@@ -53,11 +56,16 @@ interface ZapInitState {
   depositTokenDecimals: number | bigint | undefined;
   isLoadingDepositTokenData: boolean;
   refetchDepositToken: UseReadContractsReturnType['refetch'];
+  allowedChains: ChainId[];
+  projectData: ProjectData;
 }
 
 export const ZapInitContext = createContext<ZapInitState>({
   isInitialized: false,
   isInitializedForCurrentChain: false,
+  isMultisigEnvironment: false,
+  isEmbeddedWallet: false,
+  isEvmWallet: false,
   isConnected: false,
   providers: [],
   toAddress: undefined,
@@ -69,6 +77,8 @@ export const ZapInitContext = createContext<ZapInitState>({
   isLoadingDepositTokenData: false,
   refetchDepositToken: () =>
     Promise.resolve({}) as ReturnType<UseReadContractsReturnType['refetch']>,
+  allowedChains: [],
+  projectData: {} as ProjectData,
 });
 
 export const useZapInitContext = () => {
@@ -91,7 +101,11 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   children,
   projectData,
 }) => {
+  useZapQuestIdStorage();
   const wagmiConfig = useConfig();
+
+  const { data: zapSupportedChains } = useZapSupportedChains();
+
   // @Note: Might need to handle the persisted pending operations a bit differently
   // but it depends on the route execution logic which currently handles a single active route at a time
   const {
@@ -101,7 +115,12 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     removePendingOperation,
     getPendingOperationsForFromValues,
     getPromiseResolversForOperation,
+    setProcessingPendingOperation,
   } = useZapPendingOperationsStore();
+
+  const { checkMultisigEnvironment } = useMultisig();
+  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const [isEmbeddedWallet, setIsEmbeddedWallet] = useState(false);
 
   const pendingOperationsLength = useZapPendingOperationsStore(
     (state) => Object.keys(state.pendingOperations).length,
@@ -111,9 +130,45 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     (state) => state.currentRoute,
   );
 
-  const { initializeClients } = useWalletClientInitialization();
+  const allowedChains = useMemo(() => {
+    // @Note: This is a fallback for when the zap supported chains are not loaded yet
+    if (!zapSupportedChains) {
+      return [
+        ChainId.ETH,
+        ChainId.BSC,
+        ChainId.ARB,
+        ChainId.BAS,
+        ChainId.AVA,
+        ChainId.POL,
+        ChainId.SCL,
+        ChainId.OPT,
+        ChainId.DAI,
+        ChainId.UNI,
+        ChainId.SEI,
+        ChainId.SON,
+        ChainId.APE,
+        ChainId.WCC,
+        ChainId.HYP,
+        // @Note: Even though docs say they are supported, they are not retrieved from the API
+        // https://docs.biconomy.io/supportedNetworks#-supported-chains
+        // ChainId.KAT,
+        // ChainId.LSK,
+      ];
+    }
+
+    const zapSupportedChainsIds = zapSupportedChains.map(
+      (chain) => chain.chainId,
+    );
+
+    return Object.values(ChainId).filter((chainId): chainId is ChainId =>
+      zapSupportedChainsIds?.includes(chainId.toString()),
+    );
+  }, [zapSupportedChains]);
+
+  const { initializeClients } = useWalletClientInitialization(allowedChains);
 
   const initInProgressRef = useRef(false);
+  const isExecutingPendingOpsInProgressRef = useRef(false);
 
   const {
     zapData,
@@ -125,7 +180,10 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
   } = useEnhancedZapData(projectData);
 
   const { account } = useAccount();
-  const { address, chainId } = account;
+  const { address, chainId, chainType } = account;
+  const isEvmWallet = chainType === ChainType.EVM;
+
+  const { switchChainAsync } = useSwitchChain();
 
   const sendCallsExtraParams = useMemo(
     () => ({
@@ -139,174 +197,195 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
 
   // Check if oNexus and meeClient are initialized before rendering
   const isInitialized = useBiconomyClientsStore((state) => {
-    console.warn('🔍 isInitialized selector running');
     return (
       isConnected &&
-      state.hasProjectClients(
-        projectData.address as EVMAddress | undefined,
+      state.hasClient(
+        projectData.address as Hex | undefined,
         projectData.chainId,
+        address as Hex | undefined,
       )
     );
   });
 
   const isInitializedForCurrentChain = useBiconomyClientsStore((state) => {
-    console.warn('🔍 isInitializedForCurrentChain selector running');
     return (
       (isInitialized && !currentRoute) ||
-      state.hasWalletClients(
-        projectData.address as EVMAddress | undefined,
+      state.hasChainClients(
+        projectData.address as Hex | undefined,
         projectData.chainId,
-        currentRoute?.fromAddress as EVMAddress | undefined,
+        currentRoute?.fromAddress as Hex | undefined,
         currentRoute?.fromChainId,
       )
     );
   });
 
   const toAddress = useBiconomyClientsStore((state) => {
-    console.warn('🔍 toAddress selector running');
-    return state.getToAddress(
-      projectData.address as EVMAddress | undefined,
+    const valueFromStore = state.getToAddress(
+      projectData.address as Hex | undefined,
       projectData.chainId,
-      address as EVMAddress | undefined,
+      address as Hex | undefined,
     );
+    return valueFromStore;
   });
 
   // RPC operation queueing
-  const queueOperation = useCallback(
-    async <T extends WalletMethod>(
-      operationName: T,
-      args: WalletMethodArgsType<T>,
-      extraParams: Omit<SendCallsExtraParams, 'currentRoute'>,
-    ): Promise<ReturnType<WalletMethodsRef[T]>> => {
-      const operation = walletMethods[operationName] as
-        | WalletMethodsRef[T]
-        | undefined;
+  const queueOperation = async <T extends WalletMethod>(
+    operationName: T,
+    args: WalletMethodArgsType<T>,
+    extraParams: Omit<
+      SendCallsExtraParams,
+      'currentRoute' | 'isEmbeddedWallet'
+    >,
+  ): Promise<ReturnType<WalletMethodsRef[T]>> => {
+    const operation = walletMethods[operationName] as
+      | WalletMethodsRef[T]
+      | undefined;
 
-      if (!operation) {
-        throw new Error(`Operation ${operationName} not found`);
-      }
+    if (!operation) {
+      throw new Error(`Operation ${operationName} not found`);
+    }
 
-      let biconomyClients: BiconomyClients | null = null;
-      const actualCurrentRoute = getCurrentRoute();
+    let biconomyClients: BiconomyClients | null = null;
+    let isCurrentEmbeddedWallet: boolean = false;
+    const actualCurrentRoute = getCurrentRoute();
 
-      try {
-        const clients = await initializeClients({
-          address: actualCurrentRoute?.fromAddress as EVMAddress,
-          chainId: actualCurrentRoute?.fromChainId,
-          projectAddress: extraParams.projectData.address as EVMAddress,
-          projectChainId: extraParams.projectData.chainId,
-        });
-
-        biconomyClients = clients.biconomyClients;
-      } catch (error) {
-        console.error('Failed to initialize clients:', error);
-      }
-
-      const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
-
-      // Skip this for wallet_getCapabilities method
-      // Queue the operation if either the biconomy clients are not initialized or the current route is not set
-      if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
-        return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
-          addPendingOperation(operationName, args, resolve, reject);
-        });
-      }
-
-      return (
-        operation as WalletMethodDefinition<
-          WalletMethodArgsType<T>,
-          Awaited<WalletMethodReturnType<T>>
-        >
-      )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
-        ...extraParams,
-        currentRoute: actualCurrentRoute,
+    try {
+      const clients = await initializeClients({
+        address: actualCurrentRoute?.fromAddress as Hex,
+        chainId: actualCurrentRoute?.fromChainId,
+        projectAddress: extraParams.projectData.address as Hex,
+        projectChainId: extraParams.projectData.chainId,
       });
-    },
-    [initializeClients, getCurrentRoute],
-  );
+
+      biconomyClients = clients.biconomyClients;
+      isCurrentEmbeddedWallet = clients.isEmbeddedWallet;
+    } catch (error) {
+      console.error(
+        'Failed to initialize clients inside queueOperation:',
+        error,
+      );
+    }
+
+    const isMethodWithDeps = !NO_DEPS_METHODS.has(operationName);
+
+    // Skip this for wallet_getCapabilities method
+    // Queue the operation if either the biconomy clients are not initialized or the current route is not set
+    if (isMethodWithDeps && (!biconomyClients || !actualCurrentRoute)) {
+      return new Promise<WalletMethodReturnType<T>>((resolve, reject) => {
+        addPendingOperation(operationName, args, resolve, reject);
+      });
+    }
+
+    return (
+      operation as WalletMethodDefinition<
+        WalletMethodArgsType<T>,
+        Awaited<WalletMethodReturnType<T>>
+      >
+    )(args, biconomyClients?.meeClient, biconomyClients?.oNexus, {
+      ...extraParams,
+      currentRoute: actualCurrentRoute,
+      isEmbeddedWallet: isCurrentEmbeddedWallet,
+    });
+  };
 
   // Execute pending operations when clients are ready
   useEffect(() => {
     const executePendingOperations = async () => {
-      const actualCurrentRoute = getCurrentRoute();
-      const filteredPendingOps = getPendingOperationsForFromValues(
-        actualCurrentRoute?.fromAddress,
-        actualCurrentRoute?.fromChainId,
-      );
-
-      console.warn(
-        `Preparing to execute ${filteredPendingOps.length}/${pendingOperationsLength} pending operations`,
-      );
-
-      let biconomyClients: BiconomyClients | null = null;
-
-      try {
-        const clients = await initializeClients({
-          address: actualCurrentRoute?.fromAddress as EVMAddress,
-          chainId: actualCurrentRoute?.fromChainId,
-          projectAddress: sendCallsExtraParams.projectData
-            .address as EVMAddress,
-          projectChainId: sendCallsExtraParams.projectData.chainId,
-        });
-
-        biconomyClients = clients.biconomyClients;
-      } catch (error) {
-        console.error('Failed to initialize clients:', error);
+      if (isExecutingPendingOpsInProgressRef.current) {
+        return;
       }
 
-      // Execute all pending operations sequentially
-      for (const pendingOp of filteredPendingOps) {
-        const isMethodWithDeps = !NO_DEPS_METHODS.has(pendingOp.operationName);
+      isExecutingPendingOpsInProgressRef.current = true;
 
-        if (isMethodWithDeps && (!biconomyClients || !pendingOp.routeContext)) {
-          console.warn(
-            `Skipping executing pending operation: ${pendingOp.operationName}`,
-          );
-          continue;
-        }
-
-        console.warn(
-          `Executing ${pendingOp.operationName} with id: ${pendingOp.id}`,
+      try {
+        const actualCurrentRoute = getCurrentRoute();
+        const filteredPendingOps = getPendingOperationsForFromValues(
+          actualCurrentRoute?.fromAddress,
+          actualCurrentRoute?.fromChainId,
         );
 
-        const resolvers = getPromiseResolversForOperation(pendingOp.id);
+        if (filteredPendingOps.length === 0) {
+          return;
+        }
+
+        let biconomyClients: BiconomyClients | null = null;
+        let isCurrentEmbeddedWallet: boolean = false;
 
         try {
-          const operation = walletMethods[pendingOp.operationName];
-          if (!operation) {
-            console.warn(`Operation ${pendingOp.operationName} not found`);
+          const clients = await initializeClients({
+            address: actualCurrentRoute?.fromAddress as Hex,
+            chainId: actualCurrentRoute?.fromChainId,
+            projectAddress: sendCallsExtraParams.projectData.address as Hex,
+            projectChainId: sendCallsExtraParams.projectData.chainId,
+          });
+
+          biconomyClients = clients.biconomyClients;
+          isCurrentEmbeddedWallet = clients.isEmbeddedWallet;
+        } catch (error) {
+          console.error(
+            'Failed to initialize clients inside executePendingOperations:',
+            error,
+          );
+        }
+
+        // Execute all pending operations sequentially
+        for (const pendingOp of filteredPendingOps) {
+          const isMethodWithDeps = !NO_DEPS_METHODS.has(
+            pendingOp.operationName,
+          );
+
+          if (
+            isMethodWithDeps &&
+            (!biconomyClients || !pendingOp.routeContext)
+          ) {
             continue;
           }
 
-          const result = await operation(
-            pendingOp.args as any,
-            biconomyClients?.meeClient,
-            biconomyClients?.oNexus,
-            {
-              ...sendCallsExtraParams,
-              currentRoute: pendingOp.routeContext,
-            },
-          );
+          const resolvers = getPromiseResolversForOperation(pendingOp.id);
 
-          if (resolvers?.resolve) {
-            resolvers.resolve(
-              result as unknown as WalletMethodReturnType<
-                typeof pendingOp.operationName
-              >,
+          try {
+            const operation = walletMethods[pendingOp.operationName];
+            if (!operation) {
+              continue;
+            }
+
+            setProcessingPendingOperation(pendingOp.id);
+
+            const result = await operation(
+              pendingOp.args as any,
+              biconomyClients?.meeClient,
+              biconomyClients?.oNexus,
+              {
+                ...sendCallsExtraParams,
+                currentRoute: pendingOp.routeContext,
+                isEmbeddedWallet: isCurrentEmbeddedWallet,
+              },
             );
-          }
-        } catch (error) {
-          console.error(
-            `Failed to execute operation ${pendingOp.operationName}:`,
-            error,
-          );
 
-          if (resolvers?.reject) {
-            resolvers.reject(error as Error);
+            if (resolvers?.resolve) {
+              resolvers.resolve(
+                result as unknown as WalletMethodReturnType<
+                  typeof pendingOp.operationName
+                >,
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Failed to execute operation ${pendingOp.operationName}:`,
+              error,
+            );
+
+            if (resolvers?.reject) {
+              resolvers.reject(error as Error);
+            }
+          } finally {
+            removePendingOperation(pendingOp.id);
           }
-        } finally {
-          removePendingOperation(pendingOp.id);
         }
+      } catch (error) {
+        console.error('Failed to execute pending operations:', error);
+      } finally {
+        isExecutingPendingOpsInProgressRef.current = false;
       }
     };
 
@@ -321,33 +400,43 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     initializeClients,
     getPromiseResolversForOperation,
     removePendingOperation,
+    setProcessingPendingOperation,
   ]);
 
   // Enhanced initialization with retry logic and better error handling
+  // @Note this is needed for the initial clients initialization
   useEffect(() => {
     if (initInProgressRef.current) {
-      console.warn('Already initializing, skipping...');
       return;
     }
 
     if (!chainId || !address) {
-      console.warn('No chain id or address, skipping...');
       return;
     }
 
     const initMeeClient = async () => {
+      const isMultisig = await checkMultisigEnvironment();
+      if (isMultisig) {
+        setIsMultisigEnvironment(true);
+        return;
+      }
+
       try {
         initInProgressRef.current = true;
 
-        const { biconomyClients } = await initializeClients({
-          address: address as EVMAddress,
+        const clients = await initializeClients({
+          address: address as Hex,
           chainId,
-          projectAddress: projectData.address as EVMAddress,
+          projectAddress: projectData.address as Hex,
           projectChainId: projectData.chainId,
         });
 
-        if (!biconomyClients) {
-          console.warn('Failed to get biconomy clients');
+        if (clients.isEmbeddedWallet) {
+          setIsEmbeddedWallet(true);
+          return;
+        }
+
+        if (!clients.biconomyClients) {
           return;
         }
       } catch (error) {
@@ -364,50 +453,19 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     projectData.chainId,
     projectData.address,
     initializeClients,
+    checkMultisigEnvironment,
   ]);
 
-  // @Note: This is a hack to fix the broken address link; will be removed
   useEffect(() => {
-    const explorerUrl = projectData.chainId
-      ? findChain(projectData.chainId)?.blockExplorers?.default.url
-      : undefined;
+    useZapPendingOperationsStore.setState({
+      currentRoute: null,
+    });
 
-    if (!explorerUrl) {
-      return;
-    }
-
-    const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const link = target.closest('a');
-
-      if (
-        link?.href.includes(
-          `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_ADDRESS_PATH}`,
-        )
-      ) {
-        event.preventDefault();
-        const linkWalletAddress = link.href
-          .split(`/${BICONOMY_EXPLORER_ADDRESS_PATH}/`)
-          .pop();
-        if (linkWalletAddress) {
-          openInNewTab(
-            `${explorerUrl}/${BICONOMY_EXPLORER_ADDRESS_PATH}/${linkWalletAddress}`,
-          );
-        }
-      }
+    return () => {
+      setIsMultisigEnvironment(false);
+      setIsEmbeddedWallet(false);
     };
-
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
-  }, [projectData.chainId]);
-
-  useEffect(() => {
-    if (!isConnected) {
-      useZapPendingOperationsStore.setState({
-        currentRoute: null,
-      });
-    }
-  }, [isConnected]);
+  }, [address]);
 
   useEffect(() => {
     return () => {
@@ -421,7 +479,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     createCustomEVMProvider({
       wagmiConfig,
       getCapabilities: async (_, args) => {
-        console.warn('getCapabilities');
         return queueOperation(
           'wallet_getCapabilities',
           args,
@@ -429,7 +486,6 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
       },
       getCallsStatus: async (_, args) => {
-        console.warn('getCallsStatus');
         return queueOperation(
           'wallet_getCallsStatus',
           args,
@@ -437,11 +493,9 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
         );
       },
       sendCalls: async (_, args) => {
-        console.warn('sendCalls');
         return queueOperation('wallet_sendCalls', args, sendCallsExtraParams);
       },
       waitForCallsStatus: async (_, args) => {
-        console.warn('waitForCallsStatus');
         return queueOperation(
           'wallet_waitForCallsStatus',
           args,
@@ -451,10 +505,19 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     }),
   ];
 
+  useEffect(() => {
+    if (chainId && !allowedChains.includes(chainId)) {
+      switchChainAsync({ chainId: ChainId.ETH });
+    }
+  }, [chainId, allowedChains, switchChainAsync]);
+
   const value = useMemo(() => {
     return {
       isInitialized,
       isInitializedForCurrentChain,
+      isMultisigEnvironment,
+      isEmbeddedWallet,
+      isEvmWallet,
       isConnected,
       providers,
       toAddress,
@@ -465,12 +528,17 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       depositTokenDecimals,
       isLoadingDepositTokenData,
       refetchDepositToken,
+      allowedChains,
+      projectData,
     };
   }, [
     providers,
     toAddress,
     isInitialized,
     isInitializedForCurrentChain,
+    isMultisigEnvironment,
+    isEmbeddedWallet,
+    isEvmWallet,
     isConnected,
     zapData,
     isZapDataSuccess,
@@ -479,6 +547,8 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     isLoadingDepositTokenData,
     refetchDepositToken,
     setCurrentRoute,
+    allowedChains,
+    projectData,
   ]);
 
   return (

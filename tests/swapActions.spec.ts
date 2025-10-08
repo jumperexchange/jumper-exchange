@@ -5,7 +5,7 @@ import {
   checkRoutesVisibility,
   closeWelcomeScreen,
 } from './testData/landingPageFunctions';
-import { clickItemInSettingsMenu } from './testData/settingsFunctions';
+import { clickItemInSettingsMenu, deselectAll  } from './testData/settingsFunctions';
 import { qase } from 'playwright-qase-reporter';
 
 [
@@ -20,12 +20,11 @@ import { qase } from 'playwright-qase-reporter';
       await closeWelcomeScreen(page);
     });
 
-    test(qase(name === 'Mobile' ? 109 : 113, 'ETH chain swap pair'), async ({ page }) => {
+    test(qase(name === 'Mobile' ? 23 : 26, 'ETH chain swap pair'), async ({ page }) => {
       await test.step('Check if the Relay fallback route is shown', async () => {
         await page.getByRole('button', { name: 'Settings' }).click();
         await clickItemInSettingsMenu(page, 'Bridges');
-        const deselectAllButton = page.getByTestId('CheckBoxOutlinedIcon'); // Deselect all bridges
-        await deselectAllButton.click();
+        await deselectAll(page);
         await page.getByTestId('ArrowBackIcon').first().click();
         const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoETH);
         await page.goto(`/${urlParams}`);
@@ -36,7 +35,7 @@ import { qase } from 'playwright-qase-reporter';
       });
     });
 
-    test(qase(name === 'Mobile' ? 110 : 114, 'ARB chain swap pairs'), async ({ page }) => {
+    test(qase(name === 'Mobile' ? 24 : 27, 'ARB chain swap pairs'), async ({ page }) => {
       await test.step(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.ARBtoARB.ETHtoUSDT);
         await page.goto(`/${urlParams}`);
@@ -50,7 +49,7 @@ import { qase } from 'playwright-qase-reporter';
       // });
     });
 
-    test.skip(qase(name === 'Mobile' ? 117 : 118, 'Hyperliquid chain swap pairs'), async ({ page }) => {
+    test.skip(qase(name === 'Mobile' ? 25 : 28, 'Hyperliquid chain swap pairs'), async ({ page }) => {
       await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.EVMtoHypercore.ETHtoUSDC);
         await page.goto(`/${urlParams}`);

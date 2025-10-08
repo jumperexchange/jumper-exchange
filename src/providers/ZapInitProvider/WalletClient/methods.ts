@@ -1,76 +1,113 @@
 import {
-  getChain,
-  GetFusionQuoteParams,
+  BaseGetSupertransactionReceiptPayload,
+  getMeeScanLink,
   MeeClient,
+  MeeFilledUserOpDetails,
   MultichainSmartAccount,
+  UserOpStatus,
   WaitForSupertransactionReceiptPayload,
 } from '@biconomy/abstractjs';
-import {
-  WalletCall,
-  GetCapabilitiesArgs,
-  GetCallsStatusArgs,
-  WalletMethod,
-  WalletMethodsRef,
-  SendCallsArgs,
-  WaitCallsStatusArgs,
-} from '../types';
+import { getTokenBalance } from '@lifi/sdk';
+import { minutesToMilliseconds } from 'date-fns';
+import { findChain } from 'src/utils/chains/findChain';
+import { RetryStoppedError } from 'src/utils/errors';
+import { retryWithTimeout } from 'src/utils/retryWithTimeout';
+import { Hex, TransactionReceipt, zeroAddress } from 'viem';
+import { TIMEOUT_IN_MINUTES } from '../constants';
 import {
   buildContractInstructions,
   SendCallsExtraParams,
 } from '../ModularZaps';
-import { getTokenBalance } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
-import { WalletCallReceipt, zeroAddress } from 'viem';
-import { isSameToken } from '../utils';
 import {
-  BICONOMY_EXPLORER_TX_PATH,
-  BICONOMY_EXPLORER_URL,
-} from 'src/components/Widgets/variants/widgetConfig/base/useZapRPC';
-import { findChain } from 'src/utils/chains/findChain';
+  GetCallsStatusArgs,
+  GetCapabilitiesArgs,
+  SendCallsArgs,
+  WaitCallsStatusArgs,
+  WalletCall,
+  WalletMethodsRef,
+} from '../types';
+import { isSameToken } from '../utils';
+import { executeQuoteStrategy } from './quotes';
+
+type ExtendedTransactionReceipt = Partial<TransactionReceipt> &
+  Pick<TransactionReceipt, 'status' | 'transactionHash'> & {
+    transactionLink?: string;
+  };
 
 const BICONOMY_TRANSACTION_HASH_SUFFIX = '_biconomy';
 
-// Helper function to handle 'wallet_getCapabilities'
-export const getCapabilities = async (
-  args: GetCapabilitiesArgs,
-  meeClientParam: MeeClient | undefined,
-  oNexusParam: MultichainSmartAccount | undefined,
-  extraParams: SendCallsExtraParams,
-): Promise<{
-  atomic: { status: 'supported' | 'ready' | 'unsupported' };
-}> => {
-  return Promise.resolve({
-    atomic: { status: 'supported' },
-  });
-};
+const hasPendingStatus = (status: string) => status === 'PENDING';
 
-// Helper function to handle 'wallet_getCallsStatus'
-export const getCallsStatus = async (
-  args: GetCallsStatusArgs,
-  meeClientParam: MeeClient | undefined,
-  oNexusParam: MultichainSmartAccount | undefined,
+const hasFailedStatus = (status: string) =>
+  ['FAILED', 'MINED_FAIL'].includes(status);
+
+const getFormattedTransactionHash = (hash: string) =>
+  hash.includes(BICONOMY_TRANSACTION_HASH_SUFFIX)
+    ? (hash as Hex)
+    : (`${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as Hex);
+
+// Helper function used for both getCallsStatus and waitForCallsStatus
+const processTransactionReceipt = (
+  receipt: WaitForSupertransactionReceiptPayload | null,
+  hash: Hex,
   extraParams: SendCallsExtraParams,
+  hasFailedNonCleanUpUserOps?: boolean,
 ) => {
-  if (!meeClientParam) {
-    throw new Error('MEE client not initialized');
-  }
-  if (!args.params || !Array.isArray(args.params)) {
-    throw new Error('Invalid args.params structure for wallet_getCallsStatus');
-  }
-  const hash = args.params[0];
-  if (typeof hash !== 'string' || !hash) {
-    throw new Error('Missing or invalid hash in params object');
+  if (!receipt) {
+    if (hasFailedNonCleanUpUserOps) {
+      return {
+        atomic: true,
+        id: getFormattedTransactionHash(hash),
+        status: 'failure',
+        statusCode: 400,
+        receipts: [
+          {
+            transactionHash: getFormattedTransactionHash(hash),
+            transactionLink: getMeeScanLink(hash),
+            status: 'reverted' as const,
+          },
+        ],
+      };
+    }
+
+    return {
+      atomic: true,
+      id: getFormattedTransactionHash(hash),
+      status: 'success',
+      statusCode: 200,
+      receipts: [
+        {
+          transactionHash: getFormattedTransactionHash(hash),
+          transactionLink: getMeeScanLink(hash),
+          status: 'success' as const,
+        },
+      ],
+    };
   }
 
-  const receipt = (await meeClientParam.waitForSupertransactionReceipt({
-    hash: hash as EVMAddress,
-  })) as WaitForSupertransactionReceiptPayload;
+  const originalReceipts: ExtendedTransactionReceipt[] =
+    receipt?.receipts || [];
 
-  const originalReceipts = receipt?.receipts || [];
+  // Add transaction links and chain info
+  let fromChain;
+  let fromChainBlockExplorerUrl;
+  if (extraParams.currentRoute?.fromChainId) {
+    fromChain = findChain(extraParams.currentRoute?.fromChainId);
+  }
+
+  if (fromChain) {
+    fromChainBlockExplorerUrl = fromChain.blockExplorers?.default.url;
+  }
+
+  if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
+    (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
+      `${fromChainBlockExplorerUrl}/tx/${originalReceipts[1].transactionHash}`;
+  }
+
   // Ensure the last receipt has the correct transactionHash format
   if (originalReceipts.length > 0) {
     originalReceipts[originalReceipts.length - 1].transactionHash =
-      `${hash}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
+      getFormattedTransactionHash(hash);
   }
 
   const chainIdAsNumber = receipt?.paymentInfo?.chainId;
@@ -86,14 +123,29 @@ export const getCallsStatus = async (
   return {
     atomic: true,
     chainId: hexChainId,
-    id: hash,
-    status: isSuccess ? 'success' : 'failed', // String status as expected by LiFi SDK
-    statusCode, // Numeric status code
+    id: getFormattedTransactionHash(hash),
+    status: isSuccess ? 'success' : 'failed',
+    statusCode,
     receipts: originalReceipts.map((receipt) => ({
       transactionHash: receipt.transactionHash,
+      transactionLink: (receipt as any).transactionLink,
       status: receipt.status || (isSuccess ? 'success' : 'reverted'),
     })),
   };
+};
+
+// Helper function to handle 'wallet_getCapabilities'
+export const getCapabilities = async (
+  args: GetCapabilitiesArgs,
+  meeClientParam: MeeClient | undefined,
+  oNexusParam: MultichainSmartAccount | undefined,
+  extraParams: SendCallsExtraParams,
+): Promise<{
+  atomic: { status: 'supported' | 'ready' | 'unsupported' };
+}> => {
+  return Promise.resolve({
+    atomic: { status: 'supported' },
+  });
 };
 
 // @TODO split this function into smaller units
@@ -130,15 +182,12 @@ export const sendCalls = async (
     throw new Error('Integration data is not available.');
   }
 
-  console.warn(
-    'sendCallsExtraParams.currentRoute',
-    sendCallsExtraParams.currentRoute,
-  );
-
   const currentChainId = sendCallsExtraParams.currentRoute.fromChainId;
   const currentAddress = sendCallsExtraParams.currentRoute.fromAddress;
   const currentRouteFromToken = sendCallsExtraParams.currentRoute.fromToken;
+  const currentRouteToToken = sendCallsExtraParams.currentRoute.toToken;
   const currentRouteFromAmount = sendCallsExtraParams.currentRoute.fromAmount;
+  const currentRouteFromAmountFormatted = BigInt(currentRouteFromAmount);
   const integrationData = sendCallsExtraParams.zapData;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositChainId = sendCallsExtraParams.projectData.chainId;
@@ -154,19 +203,15 @@ export const sendCalls = async (
   // @Note this works only for EVM chains
   const isNativeSourceToken = currentRouteFromToken.address === zeroAddress;
 
-  console.warn('currentRouteFromToken', currentRouteFromToken);
-
   const isSameTokenDeposit = isSameToken(
     sendCallsExtraParams.currentRoute.fromToken,
     sendCallsExtraParams.currentRoute.toToken,
   );
 
-  console.warn('isSameTokenDeposit', isSameTokenDeposit);
-
   const baseCalls = isSameTokenDeposit ? [] : calls;
 
   // Build raw calldata instructions (general flow)
-  const rawInstructions = await Promise.all(
+  const rawInstructionsPromises = Promise.all(
     baseCalls.map(async (call: WalletCall) => {
       if (!call.to || !call.data) {
         throw new Error('Invalid call structure: Missing to or data field');
@@ -174,9 +219,12 @@ export const sendCalls = async (
       const data = {
         to: call.to,
         calldata: call.data,
-        chainId: currentChainId,
-        value: isNativeSourceToken ? BigInt(currentRouteFromAmount) : undefined,
+        chainId: call.chainId ?? currentChainId,
+        value: isNativeSourceToken
+          ? currentRouteFromAmountFormatted
+          : undefined,
       };
+
       return oNexusParam.buildComposable({
         type: 'rawCalldata',
         data,
@@ -184,61 +232,113 @@ export const sendCalls = async (
     }),
   );
 
-  // Build project-specific contract instructions (approve, deposit, transfer)
-  const contractInstructions = await buildContractInstructions(
-    oNexusParam,
-    sendCallsExtraParams,
-  );
+  const [rawInstructions, contractInstructions, currentTokenBalance] =
+    await Promise.all([
+      rawInstructionsPromises,
+      // Build project-specific contract instructions (approve, deposit, transfer)
+      buildContractInstructions(oNexusParam, sendCallsExtraParams),
+      // Get current token balance
+      getTokenBalance(currentAddress, currentRouteFromToken),
+    ]);
 
   // Combine all instructions
   const instructions = [...rawInstructions, ...contractInstructions];
 
-  const currentTokenBalance = await getTokenBalance(
-    currentAddress,
-    currentRouteFromToken,
-  );
-
   const userBalance = BigInt(currentTokenBalance?.amount ?? 0);
-  const requestedAmount = BigInt(currentRouteFromAmount);
+  const requestedAmount = currentRouteFromAmountFormatted;
 
-  const fusionQuoteParams: GetFusionQuoteParams = {
-    trigger: {
-      tokenAddress: currentRouteFromToken.address as EVMAddress,
-      amount: requestedAmount,
+  const cleanUps = [];
+
+  // Add source token cleanup (only if not same token deposit)
+  if (!isSameTokenDeposit) {
+    const sourceTokenCleanup: {
+      tokenAddress: Hex;
+      chainId: number;
+      recipientAddress: Hex;
+      amount?: bigint;
+    } = {
+      tokenAddress: currentRouteFromToken.address as Hex,
       chainId: currentChainId,
-    },
-    cleanUps: [
-      {
-        tokenAddress: depositToken,
-        chainId: depositChainId,
-        recipientAddress: currentAddress as EVMAddress,
-      },
-    ],
-    feeToken: {
-      address: currentRouteFromToken.address as EVMAddress,
-      chainId: currentChainId,
-    },
-    instructions,
-  };
+      recipientAddress: currentAddress as Hex,
+    };
 
-  // Calculate the percentage of the balance the user wants to use (in basis points)
-  const usageInBasisPoints =
-    userBalance > 0n ? (requestedAmount * 10_000n) / userBalance : 0n;
+    if (isNativeSourceToken) {
+      sourceTokenCleanup.amount = currentRouteFromAmountFormatted;
+    }
 
-  // If the user is using ≥ 99.90% of their balance, we assume they intend to use max
-  const isUsingMax = usageInBasisPoints >= 9_990n;
-
-  if (isUsingMax) {
-    fusionQuoteParams.trigger.useMaxAvailableFunds = true;
+    cleanUps.push(sourceTokenCleanup);
   }
 
-  const quote = await meeClientParam.getFusionQuote(fusionQuoteParams);
-
-  const { hash } = await meeClientParam.executeFusionQuote({
-    fusionQuote: quote,
+  // Add deposit token cleanup
+  cleanUps.push({
+    tokenAddress: depositToken,
+    chainId: depositChainId,
+    recipientAddress: currentAddress as Hex,
   });
 
-  return { id: hash };
+  const hash = await executeQuoteStrategy({
+    meeClientParam,
+    oNexusParam,
+    currentChainId,
+    depositChainId,
+    currentRouteFromToken,
+    currentRouteFromAmount,
+    cleanUps,
+    instructions,
+    userBalance,
+    requestedAmount,
+    isEmbeddedWallet: sendCallsExtraParams.isEmbeddedWallet,
+    eoaWallet: currentAddress as Hex,
+  });
+
+  return { id: getFormattedTransactionHash(hash) };
+};
+
+// Helper function to handle 'wallet_getCallsStatus'
+export const getCallsStatus = async (
+  args: GetCallsStatusArgs,
+  meeClientParam: MeeClient | undefined,
+  oNexusParam: MultichainSmartAccount | undefined,
+  extraParams: SendCallsExtraParams,
+) => {
+  if (!meeClientParam) {
+    throw new Error('MEE client not initialized');
+  }
+  if (!args.params || !Array.isArray(args.params)) {
+    throw new Error('Invalid args.params structure for wallet_getCallsStatus');
+  }
+  const hash = args.params[0];
+  if (typeof hash !== 'string' || !hash) {
+    throw new Error('Missing or invalid hash in params object');
+  }
+
+  const originalHash = hash.replace(
+    BICONOMY_TRANSACTION_HASH_SUFFIX,
+    '',
+  ) as Hex;
+
+  try {
+    const receipt = await meeClientParam.getSupertransactionReceipt({
+      hash: originalHash,
+    });
+
+    if (!receipt) {
+      throw new Error('Transaction not found or still pending');
+    }
+
+    return processTransactionReceipt(
+      {
+        ...receipt,
+        receipts: receipt.receipts || [],
+      },
+      originalHash,
+      extraParams,
+    );
+  } catch (error) {
+    console.error('🔍 getCallsStatus error for hash', originalHash, error);
+
+    return processTransactionReceipt(null, originalHash, extraParams);
+  }
 };
 
 // Helper function to handle 'wallet_waitForCallsStatus'
@@ -257,90 +357,62 @@ export const waitForCallsStatus = async (
     );
   }
 
-  const { id, timeout = 60000 } = args;
+  const { id } = args;
+  const timeout = minutesToMilliseconds(TIMEOUT_IN_MINUTES);
+  const originalId = id.replace(BICONOMY_TRANSACTION_HASH_SUFFIX, '') as Hex;
 
-  let receipt;
-  let originalReceipts: any[] = [];
+  let nonCleanUpUserOps: (MeeFilledUserOpDetails & UserOpStatus)[] = [];
 
   try {
-    // waitForSupertransactionReceipt already waits for completion, so we don't need to poll
-    // We'll use the timeout to set a maximum wait time
-    receipt = (await Promise.race([
-      meeClientParam!.waitForSupertransactionReceipt({
-        hash: id as EVMAddress,
-      }),
-      new Promise((_, reject) =>
-        setTimeout(
-          () =>
-            reject(
-              new Error(
-                `Timed out while waiting for call bundle with id "${id}" to be confirmed.`,
-              ),
-            ),
-          timeout,
-        ),
-      ),
-    ])) as WaitForSupertransactionReceiptPayload;
+    const receipt = await meeClientParam.waitForSupertransactionReceipt({
+      hash: originalId,
+    });
+    return processTransactionReceipt(receipt, originalId, extraParams);
+  } catch (error) {
+    console.error('🔍 waitForSupertransactionReceipt failed:', error);
 
-    let fromChain;
-    let fromChainBlockExplorerUrl;
-    if (extraParams.currentRoute?.fromChainId) {
-      fromChain = findChain(extraParams.currentRoute?.fromChainId);
+    try {
+      await retryWithTimeout(async () => {
+        // Check explorer status to see if we should retry
+        const explorerResponse =
+          await meeClientParam.request<BaseGetSupertransactionReceiptPayload>({
+            path: `explorer/${originalId}`,
+            method: 'GET',
+          });
+
+        nonCleanUpUserOps = explorerResponse.userOps.filter(
+          (userOp) => !userOp.isCleanUpUserOp,
+        );
+
+        const hasPendingNonCleanUpUserOps = nonCleanUpUserOps.some((userOp) =>
+          hasPendingStatus(userOp.executionStatus),
+        );
+
+        // @Note: if waitForSupertransactionReceipt fails, but the main transactions are still processing, we should retry
+        if (hasPendingNonCleanUpUserOps) {
+          throw new Error('Transaction still processing, retrying...');
+        }
+
+        throw new RetryStoppedError(
+          'Transaction has final status, no retry needed',
+        );
+      }, timeout);
+    } catch (explorerError) {
+      console.error('🔍 Explorer check failed:', explorerError);
+      // Continue retrying even if explorer check fails
     }
-
-    if (fromChain) {
-      fromChainBlockExplorerUrl = fromChain.blockExplorers?.default.url;
-    }
-
-    // Now get the status using the same logic as handleWalletGetCallsStatus
-    originalReceipts = receipt?.receipts || [];
-    if (originalReceipts.length > 0) {
-      originalReceipts[originalReceipts.length - 1].transactionHash =
-        `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress;
-    }
-
-    console.warn(
-      `fromChainBlockExplorerUrl ${fromChainBlockExplorerUrl} for chain ${fromChain}`,
-      extraParams.currentRoute,
-    );
-
-    if (fromChainBlockExplorerUrl && originalReceipts.length > 0) {
-      (originalReceipts[originalReceipts.length - 1] as any).transactionLink =
-        `${fromChainBlockExplorerUrl}/tx/${id}`;
-    }
-  } catch {
-    originalReceipts = [
-      {
-        transactionHash:
-          `${id}${BICONOMY_TRANSACTION_HASH_SUFFIX}` as EVMAddress,
-        transactionLink: `${BICONOMY_EXPLORER_URL}/${BICONOMY_EXPLORER_TX_PATH}/${id}`,
-        status: 'failed',
-      },
-    ];
   }
 
-  const chainIdAsNumber = receipt?.paymentInfo?.chainId;
-  const hexChainId = chainIdAsNumber
-    ? `0x${Number(chainIdAsNumber).toString(16)}`
-    : undefined;
+  const hasFailedNonCleanUpUserOps = nonCleanUpUserOps
+    ?.slice(0, 2)
+    .some((userOp) => hasFailedStatus(userOp.executionStatus));
 
-  const isSuccess = receipt?.transactionStatus
-    ?.toLowerCase()
-    .includes('success');
-  const statusCode = isSuccess ? 200 : 400;
-
-  return {
-    atomic: true,
-    chainId: hexChainId,
-    id: id,
-    status: isSuccess ? 'success' : 'failed',
-    statusCode,
-    receipts: originalReceipts.map((receipt) => ({
-      transactionHash: receipt.transactionHash,
-      transactionLink: (receipt as any).transactionLink,
-      status: receipt.status || (isSuccess ? 'success' : 'reverted'),
-    })),
-  };
+  return processTransactionReceipt(
+    null,
+    originalId,
+    extraParams,
+    hasFailedNonCleanUpUserOps,
+  );
 };
 
 export const walletMethods: WalletMethodsRef = {

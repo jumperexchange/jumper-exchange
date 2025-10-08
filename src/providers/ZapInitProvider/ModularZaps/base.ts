@@ -1,13 +1,14 @@
 import { Instruction, MultichainSmartAccount } from '@biconomy/abstractjs';
 import { Route } from '@lifi/sdk';
-import { EVMAddress } from 'src/types/internal';
 import { ProjectData } from 'src/types/questDetails';
 import { AbiEntry, ZapDataResponse } from './zap.jumper-backend';
+import { Hex, parseUnits } from 'viem';
 
 export interface SendCallsExtraParams {
   currentRoute: Route | null;
   zapData: ZapDataResponse;
   projectData: ProjectData;
+  isEmbeddedWallet: boolean;
 }
 
 export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
@@ -15,13 +16,13 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
   // Later we might want to implement runtime validation using something like zod
   // to simplify our code.
   currentRoute: Route & {
-    fromAddress: EVMAddress;
+    fromAddress: Hex;
   };
   zapData: ZapDataResponse & {
     market: {
-      address: EVMAddress;
+      address: Hex;
       depositToken: {
-        address: EVMAddress;
+        address: Hex;
         decimals: number;
       };
     };
@@ -30,8 +31,9 @@ export interface ValidatedSendCallsExtraParams extends SendCallsExtraParams {
 }
 
 export interface ZapExecutionContext extends ValidatedSendCallsExtraParams {
-  getAbiAddress: (fct: AbiEntry) => EVMAddress;
-  getDepositAddress: () => EVMAddress;
+  getAbiAddress: (fct: AbiEntry) => Hex;
+  getDepositAddress: () => Hex;
+  getMinConstraintValue: (decimals: number) => bigint;
 }
 
 export interface ZapDefinition {
@@ -54,7 +56,7 @@ export const makeZapExecutionContext = (
     throw new Error('Market not found in zap data');
   }
 
-  const getAbiAddress = (fct: AbiEntry): EVMAddress => {
+  const getAbiAddress = (fct: AbiEntry): Hex => {
     if (fct.contract) {
       const contracts = market.contracts;
       if (!contracts) {
@@ -70,14 +72,36 @@ export const makeZapExecutionContext = (
     return market.address;
   };
 
-  const getDepositAddress = (): EVMAddress => {
+  const getDepositAddress = (): Hex => {
     return getAbiAddress(params.zapData.abi.deposit);
+  };
+
+  const getMinConstraintValue = (decimals: number) => {
+    if (
+      !params.projectData.minFromAmountUSD ||
+      !params.currentRoute.toToken.priceUSD ||
+      isNaN(Number(params.currentRoute.toToken.priceUSD))
+    ) {
+      return parseUnits('0.001', decimals);
+    }
+
+    // @Note: Alternatively we could use the toAmountUSD and toAmount to calculate the token rate.
+    // (Number(params.currentRoute.toAmountUSD) / Number(params.currentRoute.toAmount)) * 10**decimals
+    const tokenRateUSD = Number(params.currentRoute.toToken.priceUSD);
+    const minTokenAmount =
+      Number(params.projectData.minFromAmountUSD) / tokenRateUSD;
+
+    // @Note: We divide by 2 as the final amount might get some loss due to gas payments.
+    const halfMinTokenAmount = minTokenAmount / 2;
+
+    return parseUnits(halfMinTokenAmount.toString(), decimals);
   };
 
   return {
     ...params,
     getAbiAddress,
     getDepositAddress,
+    getMinConstraintValue,
   };
 };
 
@@ -98,7 +122,7 @@ export const isValidParams = (
     throw new Error('Missing chainId or address');
   }
 
-  const depositAddress = integrationData.market?.address as EVMAddress;
+  const depositAddress = integrationData.market?.address as Hex;
   const depositToken = integrationData.market?.depositToken?.address;
   const depositTokenDecimals = integrationData.market?.depositToken.decimals;
   const depositChainId = projectData.chainId;
