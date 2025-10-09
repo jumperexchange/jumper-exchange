@@ -86,15 +86,15 @@ export const ErrorIconCircle = styled(Box)(({ theme }) => {
   return {
     backgroundColor: (theme.vars || theme).palette.statusErrorBg,
     borderRadius: '50%',
-    width: 72,
-    height: 72,
+    width: 96,
+    height: 96,
     display: 'grid',
     position: 'relative',
     placeItems: 'center',
     '& > svg': {
       color: (theme.vars || theme).palette.statusErrorFg,
-      width: 36,
-      height: 36,
+      width: 48,
+      height: 48,
     },
   };
 });

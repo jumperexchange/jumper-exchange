@@ -54,7 +54,7 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
           padding: theme.spacing(3),
         })}
       >
-        <ErrorIconCircle>
+        <ErrorIconCircle sx={(theme) => ({ marginTop: theme.spacing(3) })}>
           <ErrorRounded />
         </ErrorIconCircle>
 
@@ -62,9 +62,7 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
           <Typography variant="titleXSmall">{title}</Typography>
         </StyledTitleContainer>
 
-        <Typography variant="bodyMedium" color="textSecondary">
-          {description}
-        </Typography>
+        <Typography variant="bodyMedium">{description}</Typography>
 
         {callToAction && (
           <Button
