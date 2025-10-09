@@ -37,7 +37,7 @@ export const extractFilteringParams = (
   allProtocols = uniqBy(allProtocols, 'name').filter(Boolean);
 
   let allAssets = map(data, 'asset');
-  allAssets = uniqBy(allAssets, 'address').filter(Boolean);
+  allAssets = uniqBy(allAssets, 'name').filter(Boolean);
 
   let allTags = map(data, 'tags').flat();
   allTags = uniq(allTags).filter(Boolean);
