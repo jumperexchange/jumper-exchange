@@ -24,6 +24,8 @@ import {
 } from 'src/utils/formatNumbers';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { useTranslation } from 'react-i18next';
+import * as Sentry from '@sentry/nextjs';
+import { BICONOMY_EXPLORER } from 'src/const/explorers';
 
 interface SweepTokensCardProps {
   customInformation?: CustomInformation;
@@ -68,7 +70,9 @@ export const SweepTokensCard: FC<SweepTokensCardProps> = ({
 
   const onClickHandler = async () => {
     if (txHash) {
-      openInNewTab(`https://meescan.biconomy.io/details/${txHash}`);
+      openInNewTab(
+        `${BICONOMY_EXPLORER.URL}/${BICONOMY_EXPLORER.TX_PATH}/${txHash}`,
+      );
       return;
     }
 
@@ -76,6 +80,12 @@ export const SweepTokensCard: FC<SweepTokensCardProps> = ({
       await sweepTokens();
     } catch (error) {
       console.error('Sweep failed:', error);
+      Sentry.captureException(error, {
+        tags: {
+          component: 'SweepTokensCard',
+          action: 'onClickHandler',
+        },
+      });
     }
   };
 
