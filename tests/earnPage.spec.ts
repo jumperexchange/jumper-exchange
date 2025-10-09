@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
 	verifyNoSelectedChainsAreVisible,
-	selectChain,
-	selectProtocol,
 	verifyNoSelectedProtocolsAreVisible,
 	selectAllMarketsTab,
 	selectOptionFromDropDown,
