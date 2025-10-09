@@ -23,8 +23,8 @@ export const LineChartSkeleton = () => {
     { time: '2025-01-13', value: 55 },
   ];
   return (
-    <Box sx={{ position: 'relative' }}>
-      <ResponsiveContainer width="100%" height={300}>
+    <Box sx={{ position: 'relative', height: '100%' }}>
+      <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={mockData}>
           <defs>
             <mask id="areaMask">
@@ -56,6 +56,7 @@ export const LineChartSkeleton = () => {
           height="100%"
           animation="wave"
           sx={{
+            transform: 'none',
             borderRadius: 0,
             backgroundColor: (muiTheme.vars || muiTheme).palette.surface2.main,
           }}

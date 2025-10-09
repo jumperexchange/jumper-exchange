@@ -12,7 +12,7 @@ import { CustomTooltip } from './CustomTooltip';
 import { toCompactValue } from 'src/utils/formatNumbers';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import { calculateTooltipPosition, calculateVisibleYRange } from './utils';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { format } from 'date-fns';
 import { AREA_CONFIG } from './constants';
 
@@ -55,6 +55,12 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
   const { minValue, maxValue } = calculateVisibleYRange(data);
+
+  const tickValues = useMemo(() => {
+    const range = maxValue - minValue;
+    const step = range / 4; // for 5 ticks, there are 4 steps
+    return Array.from({ length: 5 }, (_, i) => minValue + step * i);
+  }, [minValue, maxValue]);
 
   if (isLoading) {
     return <LineChartSkeleton />;
@@ -107,7 +113,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
           <YAxis
             axisLine={false}
             tickLine={false}
-            tickCount={6} // 5+1 as we do not start from 0
+            ticks={tickValues}
             width={40}
             tickMargin={8}
             domain={[minValue, maxValue]}
