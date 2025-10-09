@@ -48,13 +48,17 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   }, []);
 
   return (
-    <BottomSheet containerId={containerId} ref={bottomSheetRef}>
+    <BottomSheet
+      containerId={containerId}
+      ref={bottomSheetRef}
+      backdropFilter="blur(16px)"
+    >
       <StyledModalContentContainer
         sx={(theme) => ({
           padding: theme.spacing(3),
         })}
       >
-        <ErrorIconCircle sx={(theme) => ({ marginTop: theme.spacing(3) })}>
+        <ErrorIconCircle>
           <ErrorRounded />
         </ErrorIconCircle>
 

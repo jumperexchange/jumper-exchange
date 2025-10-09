@@ -8,8 +8,16 @@ export const createStepSchema = (step: AvailableSteps) => {
     case AvailableSteps.Username:
       return z
         .string()
-        .transform((val) => (val ? val.trim().replace('@', '') : ''))
-        .refine((val) => val.length > 0, 'Username must not be empty');
+        .transform((val) => val.trim().replace(/^@/, ''))
+        .refine((val) => val.length > 0, 'Username must not be empty')
+        .refine(
+          (val) => val.length <= 80,
+          'Username must not exceed 80 characters',
+        )
+        .refine(
+          (val) => /^[a-zA-Z0-9_.]+$/.test(val),
+          'This does not look like a username',
+        );
 
     case AvailableSteps.Wallet:
       return z

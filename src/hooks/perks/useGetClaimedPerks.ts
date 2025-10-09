@@ -50,7 +50,7 @@ export const updateClaimedPerksQueryCache = async (
 export const useGetClaimedPerks = (address?: string) => {
   return useQuery({
     queryKey: [...QUERY_KEY, address!],
-    queryFn: () => getClaimedPerksQuery(address!),
+    queryFn: () => getClaimedPerksQuery(address!, true),
     enabled: !!address,
     refetchInterval: ONE_HOUR_MS,
   });

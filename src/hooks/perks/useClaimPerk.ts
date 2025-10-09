@@ -1,9 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import config from '@/config/env-config';
-import {
-  updateClaimedPerksQueryCache,
-  useGetClaimedPerks,
-} from './useGetClaimedPerks';
+import { useGetClaimedPerks } from './useGetClaimedPerks';
 import {
   usePerkClaimStatusStore,
   PerkClaimStatus,

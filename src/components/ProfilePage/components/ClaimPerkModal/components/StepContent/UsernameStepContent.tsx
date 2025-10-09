@@ -49,6 +49,9 @@ export const UsernameStepContent: FC<UsernameStepContentProps> = ({
         onClick={onContinue}
         variant={isDisabled ? 'transparent' : 'primary'}
         type={'button'}
+        styles={{
+          marginTop: 4,
+        }}
       >
         {t('modal.perks.stepper.continue')}
       </Button>

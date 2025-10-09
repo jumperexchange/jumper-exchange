@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
+import { ButtonPrimary } from 'src/components/Button/Button.style';
 import { IconButton } from 'src/components/IconButton';
 
 export const StyledTitleContainer = styled(Box)(() => ({
@@ -64,12 +65,13 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
       },
     },
 
-  '& .MuiStepLabel-label': {
-    paddingTop: theme.spacing(1),
-    marginTop: 0,
-    color: (theme.vars || theme).palette.text.secondary,
-    transition: 'color 0.3s ease',
-  },
+  '& .MuiStepLabel-label, & .MuiStepLabel-label.MuiStepLabel-alternativeLabel':
+    {
+      paddingTop: theme.spacing(1),
+      marginTop: 0,
+      color: (theme.vars || theme).palette.text.secondary,
+      transition: 'color 0.3s ease',
+    },
   '& .MuiStepLabel-label.Mui-active, & .MuiStepLabel-label.Mui-completed': {
     color: (theme.vars || theme).palette.text.primary,
   },
@@ -78,7 +80,7 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
 export const StyledActiveStepContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
+  gap: theme.spacing(3),
 }));
 
 // @Note we can expand this to use other statuses

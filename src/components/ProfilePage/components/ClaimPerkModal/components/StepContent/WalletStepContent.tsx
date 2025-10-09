@@ -54,6 +54,9 @@ export const WalletStepContent: FC<WalletStepContentProps> = ({
         disabled={isSubmitting}
         loading={isSubmitting}
         loadingPosition="start"
+        styles={{
+          marginTop: 4,
+        }}
       >
         {t(`modal.perks.stepper.${isSubmitting ? 'submitting' : 'submit'}`)}
       </Button>
