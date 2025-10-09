@@ -34,7 +34,7 @@ export const DepositModal: FC<DepositModalProps> = ({
         address: earnOpportunity.address,
         project: earnOpportunity.protocol.name,
         integrator: `zap.${earnOpportunity.protocol.name}`,
-        integratorLink: earnOpportunity.url,
+        integratorLink: earnOpportunity.url ?? 'unset',
         integratorPositionLink: earnOpportunity.positionUrl,
         minFromAmountUSD: earnOpportunity.minFromAmountUSD,
       },

@@ -1,8 +1,7 @@
-import { MultichainSmartAccount } from '@biconomy/abstractjs';
-import { ChainId, Token } from '@lifi/sdk';
+import { MultichainSmartAccount, runtimeERC20BalanceOf } from '@biconomy/abstractjs';
+import { ChainId, Token, getTokenBalances, getTokens, ChainType } from '@lifi/sdk';
 import { ContractComposableConfig } from './types';
 import { AbiFunction, encodeFunctionData, Hex } from 'viem';
-import { abiNumericTypes } from './constants';
 
 export const buildContractComposable = async (
   oNexus: MultichainSmartAccount,
@@ -45,6 +44,24 @@ export const buildContractComposable = async (
   });
 };
 
+export const buildContractComposableWithdrawal = async (
+  oNexus: MultichainSmartAccount,
+  chainId: number,
+  tokenAddress: string,
+) => {
+  return oNexus.buildComposable({
+    type: 'withdrawal',
+    data: {
+      amount: runtimeERC20BalanceOf({
+        targetAddress: oNexus.addressOn(chainId, true),
+        tokenAddress: tokenAddress as Hex,
+      }),
+      chainId: chainId,
+      tokenAddress: tokenAddress as Hex,
+    }
+  });
+};
+
 export const isSameToken = (a: Token, b: Token) => {
   return a.address === b.address && a.chainId === b.chainId;
 };
@@ -81,3 +98,10 @@ export const getGasLimitEstimate = async ({
 
   return gasLimitWithBuffer;
 };
+
+// Note: Sweep-related functions have been moved to the backend API
+// The following functions are deprecated and should not be used:
+// - hasTokensToSweep
+// - createSweepTransferInstructions
+// 
+// Use the useSweepTokens hook instead, which calls the backend API endpoints.

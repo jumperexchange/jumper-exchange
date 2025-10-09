@@ -1,4 +1,4 @@
-import { EarnPage, EarnsPageSkeleton } from '@/app/ui/earn';
+import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next/types';
 import { Suspense } from 'react';
@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   return (
-    <Suspense fallback={<EarnsPageSkeleton />}>
+    <Suspense fallback={<EarnPageSkeleton />}>
       <EarnPage slug={slug} />
     </Suspense>
   );

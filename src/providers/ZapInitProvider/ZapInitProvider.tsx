@@ -2,6 +2,7 @@
 
 import { ChainId, ChainType, EVMProvider, Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
+import { MultichainSmartAccount } from '@biconomy/abstractjs';
 import {
   createContext,
   FC,
@@ -56,6 +57,7 @@ interface ZapInitState {
   isLoadingDepositTokenData: boolean;
   refetchDepositToken: UseReadContractsReturnType['refetch'];
   allowedChains: ChainId[];
+  projectData: ProjectData;
 }
 
 export const ZapInitContext = createContext<ZapInitState>({
@@ -76,6 +78,7 @@ export const ZapInitContext = createContext<ZapInitState>({
   refetchDepositToken: () =>
     Promise.resolve({}) as ReturnType<UseReadContractsReturnType['refetch']>,
   allowedChains: [],
+  projectData: {} as ProjectData,
 });
 
 export const useZapInitContext = () => {
@@ -526,6 +529,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
       isLoadingDepositTokenData,
       refetchDepositToken,
       allowedChains,
+      projectData,
     };
   }, [
     providers,
@@ -544,6 +548,7 @@ export const ZapInitProvider: FC<ZapInitProviderProps> = ({
     refetchDepositToken,
     setCurrentRoute,
     allowedChains,
+    projectData,
   ]);
 
   return (

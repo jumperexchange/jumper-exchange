@@ -95,8 +95,8 @@ export function useMainWidgetConfig(
         : undefined,
 
       routeLabels: [
-        generateRouteLabel('1.5x points', 'hyperbloom', deps.theme.muiTheme),
-        generateRouteLabel('1.5x points', 'hyperflow', deps.theme.muiTheme),
+        generateRouteLabel('1.5x points', 'hyperbloom', deps.theme.muiTheme, 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg'),
+        generateRouteLabel('1.5x points', 'hyperflow', deps.theme.muiTheme, 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg'),
       ],
     };
 
