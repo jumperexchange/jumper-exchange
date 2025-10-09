@@ -264,13 +264,15 @@
     "boostedApy": "{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.",
     "lockupPeriod": "Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.",
     "manageYourPosition": "You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button",
-    "assets": "The assets you will earn from"
+    "assets_one": "The asset you will earn from",
+    "assets_other": "The assets you will earn from"
   },
   "labels": {
     "apy": "APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",
-    "assets": "Assets"
+    "assets_one": "Asset",
+    "assets_other": "Assets"
   },
   "earn": {
     "top": {

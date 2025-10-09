@@ -5,6 +5,7 @@ import {
   compactPrimaryAction,
   listItemPrimaryAction,
 } from './fixtures';
+import { AppPaths } from 'src/const/urls';
 
 const meta = {
   component: EarnCard,
@@ -55,6 +56,13 @@ export const CompactLoading: Story = {
   },
 };
 
+export const CompactWithHref: Story = {
+  args: {
+    ...commonArgs,
+    variant: 'compact',
+    href: `${AppPaths.Earn}/${commonArgs.data.slug}`,
+  },
+};
 export const ListItem: Story = {
   args: {
     ...commonArgs,
@@ -91,25 +99,10 @@ export const ListItemLoading: Story = {
   },
 };
 
-export const Top: Story = {
+export const ListItemWithHref: Story = {
   args: {
     ...commonArgs,
-    variant: 'top',
-  },
-};
-
-export const TopLoading: Story = {
-  args: {
-    ...commonArgs,
-    variant: 'top',
-    isLoading: true,
-  },
-};
-
-export const TopWithAction: Story = {
-  args: {
-    ...commonArgs,
-    variant: 'top',
-    primaryAction: listItemPrimaryAction,
+    variant: 'list-item',
+    href: `${AppPaths.Earn}/${commonArgs.data.slug}`,
   },
 };

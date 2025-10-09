@@ -1,23 +1,22 @@
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
-export type EarnCardVariant = 'compact' | 'list-item' | 'top';
+export type EarnCardVariant = 'compact' | 'list-item';
 
-export interface EarnCardNotEmptyProps {
+interface CommonEarnCardProps {
   variant?: EarnCardVariant;
   fullWidth?: boolean;
-  data: EarnOpportunityWithLatestAnalytics;
-  isLoading?: boolean;
   primaryAction?: React.ReactNode;
-  onClick?: () => void;
+  href?: string;
 }
 
-export interface EarnCardEmptyAndLoadingProps {
-  variant?: EarnCardVariant;
-  fullWidth?: boolean;
+export interface EarnCardNotEmptyProps extends CommonEarnCardProps {
+  data: EarnOpportunityWithLatestAnalytics;
+  isLoading?: boolean;
+}
+
+export interface EarnCardEmptyAndLoadingProps extends CommonEarnCardProps {
   data: null;
   isLoading: true;
-  primaryAction?: React.ReactNode;
-  onClick?: () => void;
 }
 
 export type EarnCardProps =

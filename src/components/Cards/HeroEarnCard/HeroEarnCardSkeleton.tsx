@@ -7,21 +7,21 @@ import { EntityChainStackVariant } from 'src/components/composite/EntityChainSta
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import {
   BaseSkeleton,
-  TopEarnCardContainer,
-  TopEarnCardContentContainer,
-  TopEarnCardFooterContainer,
-  TopEarnCardHeaderContainer,
-} from '../EarnCard.styles';
+  HeroEarnCardContainer,
+  HeroEarnCardContentContainer,
+  HeroEarnCardFooterContainer,
+  HeroEarnCardHeaderContainer,
+} from '../EarnCard/EarnCard.styles';
 
-export const TopEarnCardSkeleton: FC<{}> = ({}) => {
+export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
   return (
-    <TopEarnCardContainer>
-      <TopEarnCardHeaderContainer direction="row">
+    <HeroEarnCardContainer>
+      <HeroEarnCardHeaderContainer direction="row">
         {Array.from({ length: 3 }).map((_, index) => (
           <BadgeSkeleton key={index} size={BadgeSize.SM} />
         ))}
-      </TopEarnCardHeaderContainer>
-      <TopEarnCardContentContainer>
+      </HeroEarnCardHeaderContainer>
+      <HeroEarnCardContentContainer>
         <BaseSkeleton
           variant="rounded"
           sx={{
@@ -33,8 +33,8 @@ export const TopEarnCardSkeleton: FC<{}> = ({}) => {
             marginBottom: '1rem',
           }}
         />
-      </TopEarnCardContentContainer>
-      <TopEarnCardFooterContainer>
+      </HeroEarnCardContentContainer>
+      <HeroEarnCardFooterContainer>
         <Grid container rowSpacing={2} columnSpacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <EntityChainStack
@@ -54,7 +54,7 @@ export const TopEarnCardSkeleton: FC<{}> = ({}) => {
             />
           </Grid>
         </Grid>
-      </TopEarnCardFooterContainer>
-    </TopEarnCardContainer>
+      </HeroEarnCardFooterContainer>
+    </HeroEarnCardContainer>
   );
 };

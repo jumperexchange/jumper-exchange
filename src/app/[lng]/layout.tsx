@@ -3,6 +3,7 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import config from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import {
   MUIThemeProvider,
@@ -157,30 +158,32 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <InitColorSchemeScript attribute="class" defaultMode="system" />
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ReactQueryProvider>
-            <TranslationsProvider
-              namespaces={[defaultNS]}
-              locale={lng}
-              resources={resources}
-            >
-              <DefaultThemeProvider
-                themes={partnerThemes.data}
-                activeTheme={'default'}
+        <NuqsAdapter>
+          <InitColorSchemeScript attribute="class" defaultMode="system" />
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <ReactQueryProvider>
+              <TranslationsProvider
+                namespaces={[defaultNS]}
+                locale={lng}
+                resources={resources}
               >
-                <WalletProvider>
-                  <MUIThemeProvider>
-                    <SettingsStoreProvider>
-                      <NavbarWrapper />
-                      {children}
-                    </SettingsStoreProvider>
-                  </MUIThemeProvider>
-                </WalletProvider>
-              </DefaultThemeProvider>
-            </TranslationsProvider>
-          </ReactQueryProvider>
-        </AppRouterCacheProvider>
+                <DefaultThemeProvider
+                  themes={partnerThemes.data}
+                  activeTheme={'default'}
+                >
+                  <WalletProvider>
+                    <MUIThemeProvider>
+                      <SettingsStoreProvider>
+                        <NavbarWrapper />
+                        {children}
+                      </SettingsStoreProvider>
+                    </MUIThemeProvider>
+                  </WalletProvider>
+                </DefaultThemeProvider>
+              </TranslationsProvider>
+            </ReactQueryProvider>
+          </AppRouterCacheProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

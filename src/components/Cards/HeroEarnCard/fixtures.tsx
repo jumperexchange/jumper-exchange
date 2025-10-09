@@ -55,17 +55,9 @@ export const commonArgs = {
   },
 };
 
-export const compactPrimaryAction = (
+export const heroEarnCardPrimaryAction = (
   <DepositButton
     size="large"
-    displayMode={DepositButtonDisplayMode.IconOnly}
-    onClick={() => {}}
-  />
-);
-
-export const listItemPrimaryAction = (
-  <DepositButton
-    size="medium"
     displayMode={DepositButtonDisplayMode.IconOnly}
     onClick={() => {}}
   />

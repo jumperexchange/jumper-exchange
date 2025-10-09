@@ -108,7 +108,8 @@ interface Resources {
     };
     labels: {
       apy: 'APY';
-      assets: 'Assets';
+      assets_one: 'Asset';
+      assets_other: 'Assets';
       lockupPeriod: 'Lockup Period';
       tvl: 'TVL';
     };
@@ -296,7 +297,8 @@ interface Resources {
     };
     tooltips: {
       apy: 'Expected yearly return rate of the tokens invested.';
-      assets: 'The assets you will earn from';
+      assets_one: 'The asset you will earn from';
+      assets_other: 'The assets you will earn from';
       boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
       deposit: 'The token on which the market is defined and yield accrues on.';
       deposited: 'The token you have deposited into this market.';

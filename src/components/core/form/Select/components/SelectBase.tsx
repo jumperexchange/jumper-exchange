@@ -72,6 +72,7 @@ export const SelectBase = <T extends TData>({
           vertical: 'top',
           horizontal: 'left',
         },
+        disableScrollLock: true,
         PaperProps: {
           sx: (theme) => ({
             backgroundColor: (theme.vars || theme).palette.surface1.main,
@@ -90,7 +91,12 @@ export const SelectBase = <T extends TData>({
     >
       {children}
       {options.map((option) => (
-        <StyledMenuItem disableRipple key={option.value} value={option.value}>
+        <StyledMenuItem
+          disableRipple
+          key={option.value}
+          value={option.value}
+          sx={option.sx}
+        >
           <StyledMenuItemContentContainer>
             {option.icon}
             <SelectorLabel label={option.label} />

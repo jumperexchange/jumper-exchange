@@ -3,11 +3,13 @@ import Box from '@mui/material/Box';
 
 interface GridContainerProps extends PropsWithChildren {
   gridTemplateColumns?: string;
+  gap?: number;
 }
 
 export const GridContainer: FC<GridContainerProps> = ({
   children,
   gridTemplateColumns = 'repeat(auto-fit, minmax(296px, 1fr))',
+  gap = 4,
 }) => {
   return (
     <Box
@@ -15,7 +17,7 @@ export const GridContainer: FC<GridContainerProps> = ({
         height: '100%',
         display: 'grid',
         gridTemplateColumns,
-        gap: 4,
+        gap,
       }}
     >
       {children}

@@ -31,6 +31,7 @@ interface DepositFlowButtonProps extends Omit<DepositButtonProps, 'onClick'> {
 }
 export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
   earnOpportunity,
+  ...props
 }) => {
   const { t } = useTranslation();
   const openModal = useDepositFlowStore((state) => state.openModal);
@@ -38,6 +39,7 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
     <DepositButton
       onClick={() => openModal(earnOpportunity)}
       label={t('buttons.depositButtonLabel')}
+      {...props}
     />
   );
 };

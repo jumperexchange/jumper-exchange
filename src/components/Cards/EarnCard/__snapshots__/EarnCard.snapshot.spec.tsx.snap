@@ -3,7 +3,7 @@
 exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-aiq5q4"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -62,22 +62,30 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         </div>
       </div>
       <button
-        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-1cefz00-MuiButtonBase-root-MuiIconButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
         tabindex="0"
         type="button"
       >
-        <svg
-          fill="none"
-          height="28"
-          viewBox="0 0 28 28"
-          width="28"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="MuiBox-root css-wxfvax"
         >
-          <path
-            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
-            fill="currentColor"
-          />
-        </svg>
+          <div
+            class="MuiBox-root css-11hplq4"
+          >
+            <svg
+              fill="none"
+              height="28"
+              viewBox="0 0 28 28"
+              width="28"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </div>
       </button>
     </div>
     <div
@@ -122,14 +130,14 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -241,7 +249,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $62,572,415
+              $63M
             </p>
           </div>
         </div>
@@ -301,10 +309,298 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 </div>
 `;
 
+exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
+<div>
+  <a
+    class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-fvpjsp-MuiTypography-root-MuiLink-root"
+    href="/earn/moonwell-flagship-usdc-on-base"
+  >
+    <div
+      class="MuiBox-root css-1iqf87b"
+    >
+      <div
+        class="MuiStack-root css-10yhf5k-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-101nimo-MuiStack-root"
+        >
+          <div
+            class="badge-container MuiBox-root css-1wzsofa"
+          >
+            <svg
+              fill="none"
+              height="12"
+              viewBox="0 0 20 20"
+              width="12"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                clip-path="url(#a)"
+              >
+                <path
+                  d="M18.016 14.167c.573 0 1.057.166 1.45.5.393.333.587.722.58 1.166l-8.03 2.5-7-1.666v-7.5h1.95l7.27 2.241c.52.173.78.484.78.934 0 .26-.113.489-.34.683-.227.194-.513.297-.86.308h-2.8l-1.75-.558-.33.783 2.08.609h7Zm-4-11.475c.707-.684 1.607-1.025 2.7-1.025.907 0 1.673.277 2.3.833.627.556.96 1.194 1 1.917 0 .572-.333 1.255-1 2.05-.667.794-1.323 1.458-1.97 1.991-.647.534-1.657 1.325-3.03 2.375a116.845 116.845 0 0 1-3.06-2.375c-.653-.533-1.31-1.197-1.97-1.991-.66-.795-.983-1.478-.97-2.05 0-.756.323-1.395.97-1.917s1.427-.8 2.34-.833c1.067 0 1.963.341 2.69 1.025ZM-1 9.167h4.016v9.166H-1V9.167Z"
+                  fill="currentColor"
+                  fill-opacity="0.92"
+                />
+              </g>
+              <defs>
+                <clippath
+                  id="a"
+                >
+                  <path
+                    d="M0 0h20v20H0z"
+                    fill="#fff"
+                  />
+                </clippath>
+              </defs>
+            </svg>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-1wzsofa"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Staking
+            </p>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-1wzsofa"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Earn
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-4e6rn7-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-h1oaii"
+        >
+          <div
+            class="MuiBox-root css-wioyy2"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+            <div
+              class="MuiBox-root css-k8f1u5"
+            >
+              <div
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              >
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root css-16zy09x"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            >
+              metamorpho
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              Base
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-1gk85zv-MuiGrid-root"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-5ul7dk"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+              >
+                labels.apy
+              </p>
+              <svg
+                aria-hidden="true"
+                aria-label="tooltips.apy"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+                data-mui-internal-clone-element="true"
+                data-testid="InfoIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+                />
+              </svg>
+            </div>
+            <div
+              class="MuiBox-root css-nqls9x"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
+              >
+                7.15%
+              </p>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-5ul7dk"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+              >
+                labels.lockupPeriod
+              </p>
+              <svg
+                aria-hidden="true"
+                aria-label="tooltips.lockupPeriod"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+                data-mui-internal-clone-element="true"
+                data-testid="InfoIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+                />
+              </svg>
+            </div>
+            <div
+              class="MuiBox-root css-nqls9x"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
+              >
+                2 months
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-1gk85zv-MuiGrid-root"
+        >
+          <div
+            class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-5ul7dk"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+              >
+                labels.tvl
+              </p>
+              <svg
+                aria-hidden="true"
+                aria-label="tooltips.tvl"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+                data-mui-internal-clone-element="true"
+                data-testid="InfoIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+                />
+              </svg>
+            </div>
+            <div
+              class="MuiBox-root css-nqls9x"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
+              >
+                $63M
+              </p>
+            </div>
+          </div>
+          <div
+            class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          >
+            <div
+              class="MuiBox-root css-5ul7dk"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+              >
+                labels.assets
+              </p>
+              <svg
+                aria-hidden="true"
+                aria-label="tooltips.assets"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+                data-mui-internal-clone-element="true"
+                data-testid="InfoIcon"
+                focusable="false"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+                />
+              </svg>
+            </div>
+            <div
+              class="MuiBox-root css-nqls9x"
+            >
+              <div
+                class="MuiBox-root css-1xdhyk6"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    />
+                  </div>
+                </div>
+              </div>
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
+              >
+                USD Coin
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+`;
+
 exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-aiq5q4"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -356,7 +652,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-aiq5q4"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -384,22 +680,30 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         </div>
       </div>
       <button
-        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-1cefz00-MuiButtonBase-root-MuiIconButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
         tabindex="0"
         type="button"
       >
-        <svg
-          fill="none"
-          height="28"
-          viewBox="0 0 28 28"
-          width="28"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="MuiBox-root css-wxfvax"
         >
-          <path
-            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
-            fill="currentColor"
-          />
-        </svg>
+          <div
+            class="MuiBox-root css-11hplq4"
+          >
+            <svg
+              fill="none"
+              height="28"
+              viewBox="0 0 28 28"
+              width="28"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </div>
       </button>
     </div>
     <div
@@ -444,14 +748,14 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -563,7 +867,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $62,572,415
+              $63M
             </p>
           </div>
         </div>
@@ -626,7 +930,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
 exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-w2qcii"
+    class="MuiBox-root css-aiq5q4"
   >
     <div
       class="MuiStack-root css-10yhf5k-MuiStack-root"
@@ -685,22 +989,30 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         </div>
       </div>
       <button
-        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-1cefz00-MuiButtonBase-root-MuiIconButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
         tabindex="0"
         type="button"
       >
-        <svg
-          fill="none"
-          height="28"
-          viewBox="0 0 28 28"
-          width="28"
-          xmlns="http://www.w3.org/2000/svg"
+        <div
+          class="MuiBox-root css-wxfvax"
         >
-          <path
-            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
-            fill="currentColor"
-          />
-        </svg>
+          <div
+            class="MuiBox-root css-11hplq4"
+          >
+            <svg
+              fill="none"
+              height="28"
+              viewBox="0 0 28 28"
+              width="28"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </div>
       </button>
     </div>
     <div
@@ -745,14 +1057,14 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -864,7 +1176,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              $62,572,415
+              $63M
             </p>
           </div>
         </div>
@@ -927,7 +1239,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
 exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-g8e8kl"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -971,14 +1283,14 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -1064,7 +1376,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 labels.tvl
+            $63M labels.tvl
           </p>
         </div>
         <div
@@ -1090,22 +1402,30 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </p>
         </div>
         <button
-          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-tf9979-MuiButtonBase-root-MuiIconButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
-          <svg
-            fill="none"
-            height="20"
-            viewBox="0 0 28 28"
-            width="20"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            class="MuiBox-root css-wxfvax"
           >
-            <path
-              d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
-              fill="currentColor"
-            />
-          </svg>
+            <div
+              class="MuiBox-root css-1uih2ds"
+            >
+              <svg
+                fill="none"
+                height="28"
+                viewBox="0 0 28 28"
+                width="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+          </div>
         </button>
       </div>
     </div>
@@ -1113,10 +1433,186 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 </div>
 `;
 
+exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
+<div>
+  <a
+    class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-fvpjsp-MuiTypography-root-MuiLink-root"
+    href="/earn/moonwell-flagship-usdc-on-base"
+  >
+    <div
+      class="MuiBox-root css-7ym0j2"
+    >
+      <div
+        class="MuiStack-root css-qvm35a-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-h1oaii"
+        >
+          <div
+            class="MuiBox-root css-wioyy2"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+            <div
+              class="MuiBox-root css-k8f1u5"
+            >
+              <div
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              >
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root css-16zy09x"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            >
+              metamorpho
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              Base
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiStack-root css-1x8l63s-MuiStack-root"
+        >
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <svg
+              fill="none"
+              height="16"
+              viewBox="0 0 20 20"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g
+                clip-path="url(#a)"
+              >
+                <path
+                  d="M18.016 14.167c.573 0 1.057.166 1.45.5.393.333.587.722.58 1.166l-8.03 2.5-7-1.666v-7.5h1.95l7.27 2.241c.52.173.78.484.78.934 0 .26-.113.489-.34.683-.227.194-.513.297-.86.308h-2.8l-1.75-.558-.33.783 2.08.609h7Zm-4-11.475c.707-.684 1.607-1.025 2.7-1.025.907 0 1.673.277 2.3.833.627.556.96 1.194 1 1.917 0 .572-.333 1.255-1 2.05-.667.794-1.323 1.458-1.97 1.991-.647.534-1.657 1.325-3.03 2.375a116.845 116.845 0 0 1-3.06-2.375c-.653-.533-1.31-1.197-1.97-1.991-.66-.795-.983-1.478-.97-2.05 0-.756.323-1.395.97-1.917s1.427-.8 2.34-.833c1.067 0 1.963.341 2.69 1.025ZM-1 9.167h4.016v9.166H-1V9.167Z"
+                  fill="currentColor"
+                  fill-opacity="0.92"
+                />
+              </g>
+              <defs>
+                <clippath
+                  id="a"
+                >
+                  <path
+                    d="M0 0h20v20H0z"
+                    fill="#fff"
+                  />
+                </clippath>
+              </defs>
+            </svg>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Staking
+            </p>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Earn
+            </p>
+          </div>
+          <div
+            aria-label="tooltips.apy"
+            class="MuiBox-root css-pq1w8v"
+            data-mui-internal-clone-element="true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              7.15% labels.apy
+            </p>
+          </div>
+          <div
+            aria-label="tooltips.lockupPeriod"
+            class="MuiBox-root css-pq1w8v"
+            data-mui-internal-clone-element="true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              2 months
+            </p>
+          </div>
+          <div
+            aria-label="tooltips.tvl"
+            class="MuiBox-root css-pq1w8v"
+            data-mui-internal-clone-element="true"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              $63M labels.tvl
+            </p>
+          </div>
+          <div
+            aria-label="tooltips.assets"
+            class="MuiBox-root css-pq1w8v"
+            data-mui-internal-clone-element="true"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              USD Coin
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+`;
+
 exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-g8e8kl"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1169,7 +1665,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-g8e8kl"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1213,14 +1709,14 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -1275,7 +1771,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 labels.tvl
+            $63M labels.tvl
           </p>
         </div>
         <div
@@ -1301,22 +1797,30 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </p>
         </div>
         <button
-          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-tf9979-MuiButtonBase-root-MuiIconButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
-          <svg
-            fill="none"
-            height="20"
-            viewBox="0 0 28 28"
-            width="20"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            class="MuiBox-root css-wxfvax"
           >
-            <path
-              d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
-              fill="currentColor"
-            />
-          </svg>
+            <div
+              class="MuiBox-root css-1uih2ds"
+            >
+              <svg
+                fill="none"
+                height="28"
+                viewBox="0 0 28 28"
+                width="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+          </div>
         </button>
       </div>
     </div>
@@ -1327,7 +1831,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
 exports[`EarnCard snapshot > list item card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1w6w16j"
+    class="MuiBox-root css-g8e8kl"
   >
     <div
       class="MuiStack-root css-qvm35a-MuiStack-root"
@@ -1371,14 +1875,14 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           class="MuiBox-root css-16zy09x"
         >
           <span
-            class="MuiTypography-root MuiTypography-titleXSmall css-1ifzs6j-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
           >
             metamorpho
           </span>
           <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-jqy5sg-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
           >
-            base
+            Base
           </p>
         </div>
       </div>
@@ -1464,7 +1968,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
           >
-            $62,572,415 labels.tvl
+            $63M labels.tvl
           </p>
         </div>
         <div
