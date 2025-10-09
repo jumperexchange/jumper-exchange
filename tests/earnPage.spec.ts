@@ -4,13 +4,15 @@ import {
 	selectChain,
 	selectProtocol,
 	verifyNoSelectedProtocolsAreVisible,
+	selectAllMarketsTab,
+	selectOptionFromDropDown,
+	verifyOnlySelectedAssetIsVisible,
 } from "./testData/earnPageFunctions";
 
 test.describe("Chains filters on Earn page", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/earn");
-		const allMarketsTab = page.getByTestId("_r_4_-all");
-		await allMarketsTab.click();
+		await selectAllMarketsTab(page);
 	});
 
 	test("Should be able to navigate to the earn page", async ({ page }) => {
@@ -19,8 +21,8 @@ test.describe("Chains filters on Earn page", () => {
 		});
 
 		await test.step("Verify Earn tabs are visible", async () => {
-			const allMarketsTab = page.getByTestId("_r_4_-all");
-			const forYouTab = page.getByTestId("_r_4_-foryou");
+			const allMarketsTab = page.locator('xpath=//button[normalize-space(text())="All Markets"]');
+			const forYouTab = page.locator('xpath=//button[normalize-space(text())="For You"]');
 			const tabs = [allMarketsTab, forYouTab];
 			for (const tab of tabs) {
 				await expect(tab).toBeVisible();
@@ -42,7 +44,7 @@ test.describe("Chains filters on Earn page", () => {
 	});
 	test("Should be able to filter by base chain", async ({ page }) => {
 		await test.step("Select base chain", async () => {
-			await selectChain(page, "base");
+			await selectOptionFromDropDown(page, "earn-filter-chain-select", "base");
 		});
 
 		await test.step("Verify no arbitrum or mainnet items after selecting base chain", async () => {
@@ -52,7 +54,7 @@ test.describe("Chains filters on Earn page", () => {
 
 	test("Should be able to filter by arbitrum chain", async ({ page }) => {
 		await test.step("Select arbitrum chain", async () => {
-			await selectChain(page, "arbitrum");
+			await selectOptionFromDropDown(page, "earn-filter-chain-select", "arbitrum");
 		});
 
 		await test.step("Verify no base or mainnet items after selecting arbitrum chain", async () => {
@@ -62,7 +64,7 @@ test.describe("Chains filters on Earn page", () => {
 
 	test("Should be able to filter by mainnet chain", async ({ page }) => {
 		await test.step("Select mainnet chain", async () => {
-			await selectChain(page, "mainnet");
+			await selectOptionFromDropDown(page, "earn-filter-chain-select", "mainnet");
 		});
 
 		await test.step("Verify no arbitrum or base items after selecting mainnet chain", async () => {
@@ -71,26 +73,25 @@ test.describe("Chains filters on Earn page", () => {
 	});
 });
 
-test.describe.skip("Protocols filters on Earn page", () => {
+test.describe("Protocols filters on Earn page", () => {
 	test.beforeEach(async ({ page }) => {
 		await page.goto("/earn");
-		const allMarketsTab = page.getByTestId("_r_4_-all");
-		await allMarketsTab.click();
+		await selectAllMarketsTab(page);
 	});
 
 	test("Should be able to filter by Aave protocol", async ({ page }) => {
 		await test.step("Select Aave protocol", async () => {
-			await selectProtocol(page, "aave");
+			await selectOptionFromDropDown(page, "earn-filter-protocol-select", "aave");
 		});
 
 		await test.step("Verify no morpho protocol is visible after selecting aave protocol", async () => {
-			await verifyNoSelectedProtocolsAreVisible(page,"morpho");
+			await verifyNoSelectedProtocolsAreVisible(page, "morpho");
 		});
 	});
 
 	test("Should be able to filter by morpho protocol", async ({ page }) => {
 		await test.step("Select morpho protocol", async () => {
-			await selectProtocol(page, "morpho");
+			await selectOptionFromDropDown(page, "earn-filter-protocol-select", "morpho");
 		});
 
 		await test.step("Verify no aave protocol is visible after selecting morpho protocol", async () => {
@@ -98,5 +99,23 @@ test.describe.skip("Protocols filters on Earn page", () => {
 		});
 	});
 
+	});
+
+	test.describe("Assets filters on Earn page", () => {
+		test.beforeEach(async ({ page }) => {
+			await page.goto("/earn");
+			await selectAllMarketsTab(page);
+		});
+		
+		test("Should be able to filter by ETHx asset", async ({ page }) => {
+			await test.step("Select ETHx asset", async () => {
+				await selectOptionFromDropDown(page, "earn-filter-asset-select", "ETHx");
+			});
+
+			await test.step("Verify only ETHx assets are visible (all other assets hidden)", async () => {
+				await verifyOnlySelectedAssetIsVisible(page, "ETHx");
+			});
+		});
+		
 	});
 
