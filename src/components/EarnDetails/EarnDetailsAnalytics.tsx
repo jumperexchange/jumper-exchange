@@ -1,88 +1,70 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import {
-  AnalyticsRangeField,
-  AnalyticsValueField,
-  EarnOpportunityAnalyticsQuery,
-} from 'src/app/lib/getOpportunityAnalytics';
-import { useEarnAnalytics } from 'src/hooks/earn/useEarnAnalytics';
+  EarnDetailsAnalyticsButton,
+  EarnDetailsAnalyticsButtonsContainer,
+  EarnDetailsAnalyticsContainer,
+  EarnDetailsAnalyticsHeaderContainer,
+  EarnDetailsAnalyticsLineChartContainer,
+} from './EarnDetails.styles';
+import { LineChart } from '../core/charts/LineChart/LineChart';
+import { useAnalyticsChartData, useAnalyticsQuery } from './hooks';
+import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
+import { capitalizeString } from 'src/utils/capitalizeString';
 
-type Props = {
+interface EarnDetailsAnalyticsProps {
   slug: string;
-};
+}
 
-const useAnalyticsQuery = (slug: string) => {
-  const [query, setQuery] = useState<EarnOpportunityAnalyticsQuery>({
-    value: 'apy',
-    range: 'day',
-  });
-
-  const result = useEarnAnalytics({ slug, query });
-
-  const setValue = useCallback(
-    (value: AnalyticsValueField) => {
-      setQuery((query) => ({ ...query, value }));
-    },
-    [setQuery],
-  );
-
-  const setRange = useCallback(
-    (range: AnalyticsRangeField) => {
-      setQuery((query) => ({ ...query, range }));
-    },
-    [setQuery],
-  );
-
-  return useMemo(
-    () => ({
-      ...result,
-      value: query.value,
-      range: query.range,
-      setValue,
-      setRange,
-    }),
-    [result, query, setValue, setRange],
-  );
-};
-
-export const EarnDetailsAnalytics: React.FC<Props> = ({ slug }) => {
+export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
+  slug,
+}) => {
   const { isLoading, error, data, value, range, setValue, setRange } =
     useAnalyticsQuery(slug);
 
+  const {
+    data: chartData,
+    theme: chartTheme,
+    dateFormat: chartDateFormat,
+  } = useAnalyticsChartData(data, range);
+
   return (
-    <div>
-      <h2>Analytics</h2>
-      <div>
-        <button onClick={() => setValue('apy')} disabled={value === 'apy'}>
-          APY
-        </button>
-        <button onClick={() => setValue('tvl')} disabled={value === 'tvl'}>
-          TVL
-        </button>
-      </div>
-      <div>
-        <button onClick={() => setRange('day')} disabled={range === 'day'}>
-          Day
-        </button>
-        <button onClick={() => setRange('week')} disabled={range === 'week'}>
-          Week
-        </button>
-        <button onClick={() => setRange('month')} disabled={range === 'month'}>
-          Month
-        </button>
-        <button onClick={() => setRange('year')} disabled={range === 'year'}>
-          Year
-        </button>
-      </div>
-      {isLoading && <div>Loading...</div>}
-      {error ? <div>Error: {`${error}`}</div> : null}
-      {data && (
-        <div>
-          {data.points.length} points
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
-      )}
-    </div>
+    <EarnDetailsAnalyticsContainer>
+      <EarnDetailsAnalyticsHeaderContainer direction="row">
+        <EarnDetailsAnalyticsButtonsContainer direction="row">
+          {Object.values(AnalyticsRangeFieldEnum).map((rangeItem) => (
+            <EarnDetailsAnalyticsButton
+              key={rangeItem}
+              isActive={rangeItem === range}
+              onClick={() => setRange(rangeItem as AnalyticsRangeFieldEnum)}
+              size="small"
+            >
+              {capitalizeString(rangeItem)}
+            </EarnDetailsAnalyticsButton>
+          ))}
+        </EarnDetailsAnalyticsButtonsContainer>
+        <EarnDetailsAnalyticsButtonsContainer direction="row">
+          {Object.values(AnalyticsValueFieldEnum).map((valueItem) => (
+            <EarnDetailsAnalyticsButton
+              key={valueItem}
+              isActive={valueItem === value}
+              onClick={() => setValue(valueItem as AnalyticsValueFieldEnum)}
+              size="small"
+            >
+              {valueItem.toUpperCase()}
+            </EarnDetailsAnalyticsButton>
+          ))}
+        </EarnDetailsAnalyticsButtonsContainer>
+      </EarnDetailsAnalyticsHeaderContainer>
+      <EarnDetailsAnalyticsLineChartContainer>
+        <LineChart
+          isLoading={isLoading}
+          data={chartData}
+          dateFormat={chartDateFormat}
+          theme={chartTheme}
+        />
+      </EarnDetailsAnalyticsLineChartContainer>
+    </EarnDetailsAnalyticsContainer>
   );
 };
