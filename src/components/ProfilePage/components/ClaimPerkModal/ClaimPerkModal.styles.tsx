@@ -1,11 +1,32 @@
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
+import { IconButton } from 'src/components/IconButton';
 
-export const StyledTitleContainer = styled(Box)(({ theme }) => ({
-  paddingY: theme.spacing(0.5),
+export const StyledTitleContainer = styled(Box)(() => ({
   width: '100%',
   textAlign: 'center',
+}));
+
+export const StyledMultiStepTitleContainer = styled(StyledTitleContainer)(
+  () => ({
+    width: '100%',
+    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    height: 40,
+  }),
+);
+
+export const StyledTitleIconButton = styled(IconButton)(({ theme }) => ({
+  backgroundColor: 'transparent !important',
+  height: 40,
+  width: 40,
+  position: 'absolute',
+  left: 0,
+  top: 0,
 }));
 
 export const StyledStepper = styled(Stepper)(({ theme }) => ({

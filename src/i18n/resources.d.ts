@@ -194,6 +194,7 @@ interface Resources {
             };
           };
           submit: 'Verify wallet and claim perk';
+          submitting: 'Waiting for verification';
         };
         unclaimedPerk: {
           title: 'Claim perk';

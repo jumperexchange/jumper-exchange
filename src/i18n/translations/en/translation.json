@@ -381,7 +381,8 @@
           }
         },
         "continue": "Continue",
-        "submit": "Verify wallet and claim perk"
+        "submit": "Verify wallet and claim perk",
+        "submitting": "Waiting for verification"
       }
     }
   }

@@ -52,8 +52,10 @@ export const WalletStepContent: FC<WalletStepContentProps> = ({
         variant={isSubmitting ? 'transparent' : 'primary'}
         type="submit"
         disabled={isSubmitting}
+        loading={isSubmitting}
+        loadingPosition="start"
       >
-        {t('modal.perks.stepper.submit')}
+        {t(`modal.perks.stepper.${isSubmitting ? 'submitting' : 'submit'}`)}
       </Button>
     </>
   );

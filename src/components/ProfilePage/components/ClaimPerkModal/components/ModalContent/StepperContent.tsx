@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { StepIcon } from '../StepIcon';
 import { BaseStepperProps } from '../../ClaimPerkModal.types';
 import { StepContentFactory } from '../StepContent/StepContentFactory';
@@ -10,14 +11,17 @@ import {
   StyledActiveStepContentContainer,
   StyledModalSectionContainer,
   StyledModalSectionHeaderContainer,
+  StyledMultiStepTitleContainer,
   StyledStepper,
   StyledTitleContainer,
+  StyledTitleIconButton,
 } from '../../ClaimPerkModal.styles';
 import { useClaimPerkForm } from '../../hooks/useClaimPerkForm';
 import { useClaimPerkSteps } from '../../hooks/useClaimPerkSteps';
 import { StatusBottomSheet } from '../StatusBottomSheet/StatusBottomSheet';
 import { MODAL_CONTAINER_ID } from '../../constants';
 import { useStatusSheetContent } from '../../hooks/useStatusSheetContent';
+import { IconButton } from 'src/components/IconButton';
 
 interface StepperContentProps extends BaseStepperProps {
   perkId: string;
@@ -35,6 +39,7 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
     currentStepId,
     isError,
     errorType,
+    handleBack,
     handleChange,
     handleContinue,
     handleSubmit,
@@ -47,6 +52,10 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
 
   const activeStepContent = steps[activeStep];
   const isMultiStep = steps.length > 1;
+  const showBackButton = isMultiStep && activeStep > 0;
+  const TitleContainer = isMultiStep
+    ? StyledMultiStepTitleContainer
+    : StyledTitleContainer;
 
   return (
     <form id={MODAL_CONTAINER_ID} onSubmit={handleSubmit}>
@@ -56,11 +65,20 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
         })}
       >
         <StyledModalSectionHeaderContainer>
-          <StyledTitleContainer>
+          <TitleContainer>
+            {showBackButton && (
+              <StyledTitleIconButton
+                disabled={isSubmitting}
+                size="small"
+                onClick={handleBack}
+              >
+                <ChevronLeftIcon />
+              </StyledTitleIconButton>
+            )}
             <Typography variant="titleSmall">
               {t('modal.perks.unclaimedPerk.title')}
             </Typography>
-          </StyledTitleContainer>
+          </TitleContainer>
           {isMultiStep && (
             <StyledStepper activeStep={activeStep} alternativeLabel>
               {steps.map((step) => (

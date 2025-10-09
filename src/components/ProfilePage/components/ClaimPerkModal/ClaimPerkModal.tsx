@@ -1,5 +1,4 @@
-import Typography from '@mui/material/Typography';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback } from 'react';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import {
   ModalContainer,

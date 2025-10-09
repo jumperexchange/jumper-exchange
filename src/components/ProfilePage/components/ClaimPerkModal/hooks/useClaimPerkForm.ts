@@ -24,6 +24,7 @@ export interface FormState {
 export interface FormActions {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleContinue: () => void;
+  handleBack: () => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   setActiveStep: (step: number) => void;
   resetForm: () => void;
@@ -122,6 +123,10 @@ export const useClaimPerkForm = ({
     [],
   );
 
+  const handleBack = useCallback(() => {
+    setActiveStep(activeStep - 1);
+  }, [activeStep]);
+
   const handleContinue = useCallback(() => {
     if (isLastStep) return;
     if (!isCurrentStepValid) {
@@ -189,6 +194,7 @@ export const useClaimPerkForm = ({
   const formActions: FormActions = {
     handleChange,
     handleContinue,
+    handleBack,
     handleSubmit,
     setActiveStep,
     resetForm,
