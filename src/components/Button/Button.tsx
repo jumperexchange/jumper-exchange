@@ -16,6 +16,7 @@ export interface ButtonProps {
   id?: string;
   fullWidth?: boolean;
   loading?: boolean;
+  loadingPosition?: 'start' | 'end';
   muiVariant?: 'text' | 'outlined' | 'contained';
   onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   children?: ReactNode;
@@ -32,6 +33,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   id,
   fullWidth,
   loading,
+  loadingPosition,
   onClick,
   children,
   muiVariant,
@@ -56,6 +58,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          loadingPosition={loadingPosition}
           startIcon={startIcon}
           endIcon={endIcon}
         >
@@ -75,6 +78,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          loadingPosition={loadingPosition}
           startIcon={startIcon}
           endIcon={endIcon}
         >
@@ -94,6 +98,7 @@ export const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
           sx={styles}
           type={type}
           loading={loading}
+          loadingPosition={loadingPosition}
           startIcon={startIcon}
           endIcon={endIcon}
         >

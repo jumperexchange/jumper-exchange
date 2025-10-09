@@ -3,11 +3,6 @@ import { useAccount } from '@lifi/wallet-management';
 import { useSwitchChain, useWalletClient } from 'wagmi';
 import { ProjectData } from 'src/types/questDetails';
 import { sweepApiService } from 'src/services/sweepApi';
-import {
-  SweepableToken,
-  CheckSweepableTokensResponse,
-  SweepQuoteResponse,
-} from 'src/types/sweep';
 import { Hex } from 'viem';
 import {
   getDefaultMEENetworkUrl,
@@ -16,18 +11,19 @@ import {
 import config from 'src/config/env-config';
 import { retryWithTimeout } from 'src/utils/retryWithTimeout';
 import { RetryStoppedError } from 'src/utils/errors';
+import type { ParseKeys } from 'i18next';
+import { SweepableTokenDto } from 'src/types/jumper-backend';
 
 type SweepStep =
   | 'idle'
-  | 'checking_tokens'
   | 'switching_chain'
-  | 'signing_message'
-  | 'getting_quote'
-  | 'executing'
-  | 'completed';
+  | 'waiting_for_transaction'
+  | 'transaction_in_progress'
+  | 'view_transaction';
 
 interface UseSweepTokensApiReturn {
   isSweeping: boolean;
+  isSweepingTxInProgress: boolean;
   sweepError: string | null;
   sweepSuccess: boolean;
   hasTokensToSweep: boolean;
@@ -35,10 +31,9 @@ interface UseSweepTokensApiReturn {
   txHash: Hex | undefined;
   isTransactionReceiptLoading: boolean;
   isTransactionReceiptSuccess: boolean;
-  refreshTokenCheck: () => void;
   sweepStep: SweepStep;
-  sweepStepText: string;
-  sweepableTokens: SweepableToken[];
+  sweepStepButtonKey: ParseKeys<'translation'>;
+  sweepableTokens: SweepableTokenDto[];
   smartAccountAddress: string | null;
   targetChainId: number | null;
 }
@@ -50,13 +45,16 @@ export const useSweepTokensApi = (
   projectData: ProjectData,
 ): UseSweepTokensApiReturn => {
   const [isSweeping, setIsSweeping] = useState(false);
+  const [isSweepingTxInProgress, setIsSweepingTxInProgress] = useState(false);
   const [sweepError, setSweepError] = useState<string | null>(null);
   const [sweepSuccess, setSweepSuccess] = useState(false);
   const [hasTokensToSweepState, setHasTokensToSweepState] = useState(false);
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined);
   const [hasCheckedTokens, setHasCheckedTokens] = useState(false);
   const [sweepStep, setSweepStep] = useState<SweepStep>('idle');
-  const [sweepableTokens, setSweepableTokens] = useState<SweepableToken[]>([]);
+  const [sweepableTokens, setSweepableTokens] = useState<SweepableTokenDto[]>(
+    [],
+  );
   const [smartAccountAddress, setSmartAccountAddress] = useState<string | null>(
     null,
   );
@@ -79,27 +77,28 @@ export const useSweepTokensApi = (
   });
 
   // Function to get step text
-  const getStepText = (step: SweepStep): string => {
+  const getStepButtonTextKey = (step: SweepStep): ParseKeys<'translation'> => {
     switch (step) {
       case 'idle':
-        return 'Sweep';
-      case 'checking_tokens':
-        return 'Checking tokens...';
+        return 'widget.sweepTokensCard.button.claim';
       case 'switching_chain':
-        return 'Switching chain...';
-      case 'getting_quote':
-        return 'Getting sweep quote...';
-      case 'signing_message':
-        return 'Signing message...';
-      case 'executing':
-        return 'Executing sweep...';
-      case 'completed':
-        return 'Sweep completed';
+        return 'widget.sweepTokensCard.button.switchChain';
+      case 'waiting_for_transaction':
+        return 'widget.sweepTokensCard.button.waitingForTransaction';
+      case 'transaction_in_progress':
+        return 'widget.sweepTokensCard.button.transactionInProgress';
+      case 'view_transaction':
+        return 'widget.sweepTokensCard.button.viewTransaction';
+      default:
+        return 'widget.sweepTokensCard.button.claim';
     }
   };
 
   // Memoized step text
-  const sweepStepText = useMemo(() => getStepText(sweepStep), [sweepStep]);
+  const sweepStepButtonKey = useMemo(
+    () => getStepButtonTextKey(sweepStep),
+    [sweepStep],
+  );
 
   // Check for sweepable tokens on component mount
   useEffect(() => {
@@ -109,14 +108,12 @@ export const useSweepTokensApi = (
       }
 
       setHasCheckedTokens(true);
-      setSweepStep('checking_tokens');
 
       try {
-        const response: CheckSweepableTokensResponse =
-          await sweepApiService.checkSweepableTokens({
-            walletAddress: address,
-            chainId: chainId,
-          });
+        const response = await sweepApiService.checkSweepableTokens({
+          walletAddress: address,
+          chainId: chainId,
+        });
 
         const { data } = response;
 
@@ -134,15 +131,6 @@ export const useSweepTokensApi = (
 
     checkTokensToSweep();
   }, [address, chainId, projectData, hasCheckedTokens]);
-
-  // Function to manually refresh token check
-  const refreshTokenCheck = useCallback(() => {
-    setHasCheckedTokens(false);
-    setHasTokensToSweepState(false);
-    setSweepableTokens([]);
-    setSmartAccountAddress(null);
-    setTargetChainId(null);
-  }, []);
 
   useEffect(() => {
     const checkTransactionStatus = async () => {
@@ -179,14 +167,17 @@ export const useSweepTokensApi = (
         }, 10_000);
       } catch (error) {
         if (biconomyTxStatus === 'MINED_SUCCESS') {
+          setSweepStep('view_transaction');
+          setIsSweepingTxInProgress(false);
           setIsTransactionReceiptSuccess(true);
           setIsTransactionReceiptLoading(false);
           setSweepSuccess(true);
           setSweepError(null);
-          refreshTokenCheck();
           return;
         }
 
+        setSweepStep('idle');
+        setIsSweepingTxInProgress(false);
         setIsTransactionReceiptLoading(false);
         setIsTransactionReceiptSuccess(false);
         setSweepSuccess(false);
@@ -197,7 +188,7 @@ export const useSweepTokensApi = (
     if (txHash && !sweepSuccess) {
       checkTransactionStatus();
     }
-  }, [txHash, sweepSuccess, refreshTokenCheck]);
+  }, [txHash, sweepSuccess]);
 
   const sweepTokens = useCallback(async () => {
     if (!address) {
@@ -232,14 +223,14 @@ export const useSweepTokensApi = (
       }
 
       // Step 2: Get sweep instructions
-      setSweepStep('getting_quote');
+      setSweepStep('waiting_for_transaction');
       const response = await sweepApiService.getSweepQuote({
         walletAddress: address,
         chainId: targetChainId || chainId,
       });
 
       // Extract data from the wrapped response (backend uses TransformInterceptor)
-      const quoteResponse: SweepQuoteResponse = response;
+      const quoteResponse = response;
       const { data } = quoteResponse;
 
       const transactionMessage = data.transactionData.message;
@@ -248,13 +239,12 @@ export const useSweepTokensApi = (
         throw new Error('Wallet client not available');
       }
 
-      setSweepStep('signing_message');
-
       const signedTransactionMessage = await walletClient.signMessage({
         message: transactionMessage,
       });
 
-      setSweepStep('executing');
+      setSweepStep('transaction_in_progress');
+      setIsSweepingTxInProgress(true);
 
       const executeResponse = await sweepApiService.executeSweep({
         walletAddress: address as Hex,
@@ -267,10 +257,11 @@ export const useSweepTokensApi = (
       const transactionHash = executeData.transactionHash as Hex;
 
       setTxHash(transactionHash);
-      setSweepStep('completed');
     } catch (error) {
+      console.error(error);
       setSweepError(error instanceof Error ? error.message : 'Sweep failed');
       setSweepStep('idle');
+      setIsSweepingTxInProgress(false);
     } finally {
       setIsSweeping(false);
     }
@@ -285,6 +276,7 @@ export const useSweepTokensApi = (
 
   return {
     isSweeping,
+    isSweepingTxInProgress,
     sweepError,
     sweepSuccess,
     hasTokensToSweep: hasTokensToSweepState,
@@ -292,9 +284,8 @@ export const useSweepTokensApi = (
     txHash,
     isTransactionReceiptLoading,
     isTransactionReceiptSuccess,
-    refreshTokenCheck,
     sweepStep,
-    sweepStepText,
+    sweepStepButtonKey,
     sweepableTokens,
     smartAccountAddress,
     targetChainId,

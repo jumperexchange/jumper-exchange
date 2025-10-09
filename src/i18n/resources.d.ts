@@ -312,6 +312,23 @@ interface Resources {
         token: 'Asset';
         tvl: 'TVL';
       };
+      sweepTokensCard: {
+        button: {
+          claim: 'Claim returned funds';
+          switchChain: 'Switching chain...';
+          transactionInProgress: 'Transaction in progress...';
+          viewTransaction: 'View transaction';
+          waitingForTransaction: 'Waiting for transaction...';
+        };
+        error: {
+          description: 'A previous transaction failed and your funds are now available to be returned to you.';
+          title: 'Claim returned funds';
+        };
+        success: {
+          description: 'Your funds have been returned and are now available to use in your wallet.';
+          title: 'Funds successfully returned';
+        };
+      };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your Positions</bold> that redirects to {{partnerName}} UI';
         placeholder: {
