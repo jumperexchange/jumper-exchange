@@ -1,3 +1,5 @@
+import { SxProps, Theme } from '@mui/material/styles';
+
 export type TData = string | string[] | number[];
 
 export enum SelectVariant {
@@ -16,6 +18,7 @@ export interface SelectOption<T> {
   label: string;
   disabled?: boolean;
   icon?: React.ReactNode;
+  sx?: SxProps<Theme>;
 }
 
 export interface SelectBaseProps<T extends TData> {

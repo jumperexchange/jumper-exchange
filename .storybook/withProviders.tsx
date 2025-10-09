@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ReactQueryProvider } from '../src/providers/ReactQueryProvider';
 import {
   DefaultThemeProvider,
@@ -44,24 +45,26 @@ export const withProviders = (Story: () => ReactNode, context) => {
   const activeTheme = context.globals.theme === 'dark' ? 'dark' : 'light';
 
   return (
-    <ReactQueryProvider>
-      <TranslationsProvider
-        namespaces={[defaultNS]}
-        locale={fallbackLng}
-        resources={resources}
-      >
-        <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
-          <WalletProvider>
-            <MUIThemeProvider>
-              <SettingsStoreProvider>
-                <ThemeBridge theme={activeTheme}>
-                  <Story {...context} />
-                </ThemeBridge>
-              </SettingsStoreProvider>
-            </MUIThemeProvider>
-          </WalletProvider>
-        </DefaultThemeProvider>
-      </TranslationsProvider>
-    </ReactQueryProvider>
+    <NuqsAdapter>
+      <ReactQueryProvider>
+        <TranslationsProvider
+          namespaces={[defaultNS]}
+          locale={fallbackLng}
+          resources={resources}
+        >
+          <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
+            <WalletProvider>
+              <MUIThemeProvider>
+                <SettingsStoreProvider>
+                  <ThemeBridge theme={activeTheme}>
+                    <Story {...context} />
+                  </ThemeBridge>
+                </SettingsStoreProvider>
+              </MUIThemeProvider>
+            </WalletProvider>
+          </DefaultThemeProvider>
+        </TranslationsProvider>
+      </ReactQueryProvider>
+    </NuqsAdapter>
   );
 };

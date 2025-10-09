@@ -5,6 +5,8 @@ import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { EarnAnimatedLayoutContainer } from './EarnAnimatedLayoutContainer';
 import { EarnFilterBarContentContainer } from '../EarnFilterBar.styles';
+import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
+import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
 
 export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   children,
@@ -23,6 +25,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   const chainOptions: MultiSelectOption[] = allChains.map((chain) => ({
     value: `${chain.chainId}`,
     label: chain.chainKey,
+    icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
   }));
 
   const protocolOptions: MultiSelectOption[] = allProtocols.map((protocol) => ({
@@ -38,6 +41,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   const assetOptions: MultiSelectOption[] = allAssets.map((asset) => ({
     value: asset.name,
     label: asset.name,
+    icon: <TokenStack tokens={[asset]} />,
   }));
 
   const apyOptions: MultiSelectOption[] = Object.entries(allAPY).map(
@@ -68,7 +72,11 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   };
 
   const handleAPYChange = (values: number[]) => {
-    // TODO: implement
+    updateFilter({
+      ...filter,
+      minAPY: values[0] / 100,
+      maxAPY: values[1] / 100,
+    });
   };
 
   return (

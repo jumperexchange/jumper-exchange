@@ -1,52 +1,39 @@
-import { map, uniqBy, uniq } from 'lodash';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
+import { useQueryStates } from 'nuqs';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
-import {
-  Chain,
-  EarnOpportunityWithLatestAnalytics,
-  Protocol,
-  Token,
-} from 'src/types/jumper-backend';
+import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { Hex } from 'viem';
-
-// TODO: migrate to backend's typing
-export enum SortByOptions {
-  APY = 'apy',
-  TVL = 'tvl',
-}
-
-export interface EarnFilteringParams {
-  allChains: Chain[];
-  allProtocols: Protocol[];
-  allAssets: Token[];
-  allTags: string[];
-  allAPY: Record<number, number>; // histogram of apy
-}
+import { extractFilteringParams, searchParamsParsers } from './utils';
+import { EMPTY_FILTERING_PARAMS } from './constants';
+import {
+  EarnFilteringParams,
+  EarnOpportunityFilterUI,
+  EarnOpportunityFilterWithoutSortByAndOrder,
+  SortByEnum,
+  SortByOptions,
+} from './types';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
-  sortBy: SortByOptions;
-  setSortBy: (sortBy: SortByOptions) => void;
-  filter: EarnOpportunityFilter;
-  updateFilter: (filter: EarnOpportunityFilter) => void;
+  sortBy: SortByEnum;
+  setSortBy: (sortBy: SortByEnum) => void;
+  filter: EarnOpportunityFilterUI;
+  updateFilter: (filter: EarnOpportunityFilterUI) => void;
   showForYou: boolean;
   usedYourAddress: boolean;
   toggleForYou: () => void;
-  forYou: EarnOpportunityWithLatestAnalytics[];
-  forYouLoading: boolean;
-  forYouError: unknown | null;
-  all: EarnOpportunityWithLatestAnalytics[];
-  allLoading: boolean;
-  allError: unknown | null;
   totalMarkets: number;
+  data: EarnOpportunityWithLatestAnalytics[];
+  isLoading: boolean;
+  error: unknown | null;
+  isAllDataLoading: boolean;
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
@@ -57,18 +44,16 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   showForYou: false,
   usedYourAddress: false,
   toggleForYou: () => {},
-  forYou: [],
-  forYouLoading: false,
-  forYouError: null,
-  all: [],
-  allLoading: false,
-  allError: null,
   totalMarkets: 0,
   allChains: [],
   allProtocols: [],
   allAssets: [],
   allTags: [],
   allAPY: {},
+  data: [],
+  isLoading: false,
+  error: null,
+  isAllDataLoading: false,
 });
 
 export const EarnFilteringProvider = ({
@@ -76,15 +61,33 @@ export const EarnFilteringProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [searchParamsState, setSearchParamsState] = useQueryStates(
+    searchParamsParsers,
+    {
+      history: 'replace',
+    },
+  );
+
   const address: Hex | undefined = useAccountAddress();
   const usedYourAddress = address !== undefined;
 
-  // TODO: introduce the loading state?
-  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY);
+  const {
+    forYou: initialForYou,
+    sortBy: initialSortBy,
+    ...rest
+  } = searchParamsState;
 
-  const [initialData, setInitialData] = useState<
-    EarnOpportunityWithLatestAnalytics[]
-  >([]);
+  const initialFilter = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(rest).filter(([_, value]) => value !== null),
+    ) as EarnOpportunityFilterWithoutSortByAndOrder;
+  }, [rest]);
+
+  // TODO: introduce the loading state?
+  const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
+  const [filter, setFilter] =
+    useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
+  const [showForYou, setShowForYou] = useState(initialForYou);
 
   const forYou = useEarnFilterOpportunities({
     filter: {
@@ -93,63 +96,60 @@ export const EarnFilteringProvider = ({
     },
   });
 
-  const [filter, setFilter] = useState<EarnOpportunityFilter>({});
   const all = useEarnFilterOpportunities({
     filter,
   });
 
-  // Keep our initial data for later use (filters, etc).
-  useEffect(() => {
-    if (!all.data) {
-      return;
-    }
+  const allNoFilter = useEarnFilterOpportunities({
+    filter: {},
+  });
 
-    setInitialData((current) => {
-      if (current.length === 0) {
-        return all.data;
-      }
-      return current;
-    });
-  }, [all.data]);
-
-  const totalMarkets = initialData.length;
-
-  const [showForYou, setShowForYou] = useState(true);
-
-  const toggleForYou = useCallback(() => {
-    setShowForYou((current) => !current);
-  }, [setShowForYou]);
+  const totalMarkets = allNoFilter.data?.length ?? 0;
 
   const stats = useMemo((): EarnFilteringParams => {
-    if (!initialData || initialData.length === 0) {
+    if (!allNoFilter.data || allNoFilter.data.length === 0) {
       return EMPTY_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(initialData);
-  }, [initialData]);
+    return extractFilteringParams(allNoFilter.data);
+  }, [allNoFilter.data]);
+
+  const toggleForYou = useCallback(() => {
+    const newShowForYou = !showForYou;
+    setShowForYou(newShowForYou);
+    setSearchParamsState({ forYou: newShowForYou });
+  }, [showForYou, setShowForYou, setSearchParamsState]);
 
   const updateFilter = useCallback(
-    (filter: EarnOpportunityFilter) => {
-      setFilter((current) => ({ ...current, ...filter }));
+    (newFilter: EarnOpportunityFilterWithoutSortByAndOrder) => {
+      const newFilterValue = { ...filter, ...newFilter };
+      setFilter(newFilterValue);
+      setSearchParamsState(newFilterValue);
     },
-    [setFilter],
+    [filter, setFilter, setSearchParamsState],
+  );
+
+  const updateSortBy = useCallback(
+    (newSortBy: SortByEnum) => {
+      setSortBy(newSortBy);
+      setSearchParamsState({ sortBy: newSortBy });
+    },
+    [setSortBy, setSearchParamsState],
   );
 
   const context: EarnFilteringContextType = {
     sortBy,
-    setSortBy,
+    setSortBy: updateSortBy,
     filter,
     updateFilter,
     showForYou,
     usedYourAddress,
     toggleForYou,
-    forYou: forYou.data ?? [],
-    forYouLoading: forYou.isLoading,
-    forYouError: forYou.error ?? null,
-    all: all.data ?? [],
-    allLoading: all.isLoading,
-    allError: all.error ?? null,
     totalMarkets,
+    data: (showForYou ? forYou.data : all.data) ?? [],
+    isLoading: showForYou ? forYou.isLoading || !address : all.isLoading,
+    error: (showForYou ? forYou.error : all.error) ?? null,
+    isAllDataLoading: allNoFilter.isLoading,
     ...stats,
   };
 
@@ -162,42 +162,4 @@ export const EarnFilteringProvider = ({
 
 export const useEarnFiltering = (): EarnFilteringContextType => {
   return useContext(EarnFilteringContext);
-};
-
-const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
-  allChains: [],
-  allProtocols: [],
-  allAssets: [],
-  allTags: [],
-  allAPY: {},
-};
-
-const extractFilteringParams = (
-  data: EarnOpportunityWithLatestAnalytics[],
-): EarnFilteringParams => {
-  let allChains = [...map(data, 'lpToken.chain'), ...map(data, 'asset.chain')];
-  allChains = uniqBy(allChains, 'chainId').filter(Boolean);
-
-  let allProtocols = map(data, 'protocol');
-  allProtocols = uniqBy(allProtocols, 'name').filter(Boolean);
-
-  let allAssets = map(data, 'asset');
-  allAssets = uniqBy(allAssets, 'address').filter(Boolean);
-
-  let allTags = map(data, 'tags').flat();
-  allTags = uniq(allTags).filter(Boolean);
-
-  let allAPY = {
-    0.1: 1,
-    0.2: 2,
-    0.3: 3,
-  };
-
-  return {
-    allChains,
-    allProtocols,
-    allAssets,
-    allTags,
-    allAPY,
-  };
 };

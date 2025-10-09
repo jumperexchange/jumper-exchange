@@ -1,0 +1,299 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DepositButton snapshot > disabled state matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
+    disabled=""
+    tabindex="-1"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-16jbav5"
+      >
+        Quick deposit
+      </div>
+      <div
+        class="MuiBox-root css-1uih2ds"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > icon and label matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-16jbav5"
+      >
+        Quick deposit
+      </div>
+      <div
+        class="MuiBox-root css-1uih2ds"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > icon and label with large size matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-1duuwtk"
+      >
+        Quick deposit
+      </div>
+      <div
+        class="MuiBox-root css-11hplq4"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > icon and label with small size matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1l19amm-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-1rcbmyq"
+      >
+        Quick deposit
+      </div>
+      <div
+        class="MuiBox-root css-ehgkh"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > icon only mode matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-1uih2ds"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > icon only with large size matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-11hplq4"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > icon only with small size matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1l19amm-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-ehgkh"
+      >
+        <svg
+          fill="none"
+          height="28"
+          viewBox="0 0 28 28"
+          width="28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.535 1.766a1.167 1.167 0 0 1 1.338 1.458l-.007.021-2.24 7.024a.624.624 0 0 1-.009.026.584.584 0 0 0 .548.788h8.168a1.751 1.751 0 0 1 1.742 1.956 1.75 1.75 0 0 1-.413.935l-11.55 11.9h-.001a1.165 1.165 0 0 1-1.984-1.097l.007-.023 2.24-7.024a.584.584 0 0 0-.268-.748.584.584 0 0 0-.27-.065h-8.17a1.751 1.751 0 0 1-1.362-2.853l.034-.039 11.55-11.9c.171-.187.398-.313.647-.359Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > label only mode matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-16jbav5"
+      >
+        Quick deposit
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > label only with large size matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-1duuwtk"
+      >
+        Quick deposit
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`DepositButton snapshot > label only with small size matches snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1l19amm-MuiButtonBase-root-MuiButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="MuiBox-root css-wxfvax"
+    >
+      <div
+        class="MuiBox-root css-1rcbmyq"
+      >
+        Quick deposit
+      </div>
+    </div>
+  </button>
+</div>
+`;

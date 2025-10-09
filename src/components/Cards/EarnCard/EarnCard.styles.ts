@@ -1,25 +1,35 @@
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import InfoIcon from '@mui/icons-material/Info';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-const EarnCardContainer = styled(Box)(({ theme, onClick }) => ({
+interface EarnCardContainerProps {
+  hasLink?: boolean;
+}
+
+const EarnCardContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasLink',
+})<EarnCardContainerProps>(({ theme, hasLink }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
-  cursor: onClick ? 'pointer' : 'default',
+  cursor: hasLink ? 'pointer' : 'default',
+  transition: 'all 0.3s ease-in-out',
   '&:hover': {
-    boxShadow: onClick ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
+    boxShadow: hasLink ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
   },
+  ...theme.applyStyles('dark', {
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+  }),
 }));
 
 export const CompactEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(4, 3, 3),
-    maxWidth: 330,
+    minHeight: 330,
+    height: '-webkit-fill-available',
   }),
 );
 
@@ -100,34 +110,47 @@ export const ListItemEarnCardTagContainer = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
 }));
 
-export const TopEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
+export const HeroEarnCardContainer = styled(EarnCardContainer)(({ theme }) => ({
   padding: theme.spacing(3),
-  gap: theme.spacing(1),
+  gap: theme.spacing(0.5),
   minHeight: 312,
+  height: '-webkit-fill-available',
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   display: 'flex',
   flexDirection: 'column',
 }));
 
-export const TopEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
-  gap: theme.spacing(2),
+export const HeroEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(0.5),
 }));
 
-interface TopEarnCardContentContainerProps {
+interface HeroEarnCardContentContainerProps {
   isMain?: boolean;
 }
 
-export const TopEarnCardContentContainer = styled(Stack, {
+export const HeroEarnCardContentContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isMain',
-})<TopEarnCardContentContainerProps>(({ theme, isMain }) => ({
+})<HeroEarnCardContentContainerProps>(({ theme, isMain }) => ({
+  marginBottom: theme.spacing(1),
   gap: theme.spacing(2),
-  '& p': {
-    ...(isMain ? theme.typography.h3 : theme.typography.h4),
+  '&, & > *': {
+    ...(isMain ? theme.typography.titleMedium : theme.typography.titleSmall),
     margin: 0,
   },
 }));
 
-export const TopEarnCardFooterContainer = styled(Stack)(({ theme }) => ({
+export const HeroEarnCardFooterContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(2),
-  marginTop: 'auto',
+  flexDirection: 'column-reverse',
+  flex: '1',
 }));
+
+export const HeroEarnCardFooterContentContainer = styled(Stack)(
+  ({ theme }) => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: theme.spacing(2),
+  }),
+);

@@ -30,12 +30,12 @@ export const EntityChainInfoContainer = styled(Box)(({}) => ({
 }));
 
 export const EntityChainTitle = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   ...getTextEllipsisStyles(1),
 }));
 
 export const EntityChainDescription = styled(Typography)(({ theme }) => ({
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   ...getTextEllipsisStyles(1),
 }));
 

@@ -1,15 +1,15 @@
 import { FC } from 'react';
-import { Button, ButtonProps } from 'src/components/Button';
 import {
   DepositButtonDisplayMode,
   DepositButtonProps,
 } from './DepositButton.types';
-import Box from '@mui/material/Box';
 import {
   DepositButtonContentWrapper,
   DepositButtonLabelWrapper,
-  DepositIcon,
+  DepositButtonPrimary,
+  DepositButtonIconWrapper,
 } from './DepositButton.styles';
+import BoltIcon from 'src/components/illustrations/BoltIcon';
 
 export const DepositButton: FC<DepositButtonProps> = ({
   displayMode = DepositButtonDisplayMode.IconAndLabel,
@@ -20,25 +20,26 @@ export const DepositButton: FC<DepositButtonProps> = ({
 }) => {
   const showLabel = displayMode !== DepositButtonDisplayMode.IconOnly;
   const showIcon = displayMode !== DepositButtonDisplayMode.LabelOnly;
-  const renderedIcon = <DepositIcon size={size} />;
+  const renderedIcon = (
+    <DepositButtonIconWrapper size={size}>
+      <BoltIcon />
+    </DepositButtonIconWrapper>
+  );
   const renderedLabel = (
-    <DepositButtonLabelWrapper>{label}</DepositButtonLabelWrapper>
+    <DepositButtonLabelWrapper size={size}>{label}</DepositButtonLabelWrapper>
   );
 
   return (
-    <Button
+    <DepositButtonPrimary
       {...props}
-      styles={{
-        ...(props.styles || {}),
-        minWidth: 'auto',
-      }}
-      variant="primary"
+      sx={props.sx}
+      size={size}
       onClick={onClick}
     >
       <DepositButtonContentWrapper>
         {showLabel && renderedLabel}
         {showIcon && renderedIcon}
       </DepositButtonContentWrapper>
-    </Button>
+    </DepositButtonPrimary>
   );
 };

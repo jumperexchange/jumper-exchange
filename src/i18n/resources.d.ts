@@ -108,7 +108,8 @@ interface Resources {
     };
     labels: {
       apy: 'APY';
-      assets: 'Assets';
+      assets_one: 'Asset';
+      assets_other: 'Assets';
       lockupPeriod: 'Lockup Period';
       tvl: 'TVL';
     };
@@ -351,7 +352,8 @@ interface Resources {
     };
     tooltips: {
       apy: 'Expected yearly return rate of the tokens invested.';
-      assets: 'The assets you will earn from';
+      assets_one: 'The asset you will earn from';
+      assets_other: 'The assets you will earn from';
       boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
       deposit: 'The token on which the market is defined and yield accrues on.';
       deposited: 'The token you have deposited into this market.';
@@ -366,6 +368,23 @@ interface Resources {
         lockupPeriod: 'Lockup period';
         token: 'Asset';
         tvl: 'TVL';
+      };
+      sweepTokensCard: {
+        button: {
+          claim: 'Claim returned funds';
+          switchChain: 'Switching chain...';
+          transactionInProgress: 'Transaction in progress...';
+          viewTransaction: 'View transaction';
+          waitingForTransaction: 'Waiting for transaction...';
+        };
+        error: {
+          description: 'A previous transaction failed and your funds are now available to be returned to you.';
+          title: 'Claim returned funds';
+        };
+        success: {
+          description: 'Your funds have been returned and are now available to use in your wallet.';
+          title: 'Funds successfully returned';
+        };
       };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your Positions</bold> that redirects to {{partnerName}} UI';
