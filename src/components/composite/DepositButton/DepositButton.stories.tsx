@@ -15,6 +15,10 @@ const meta = {
       control: { type: 'select' },
       options: Object.values(DepositButtonDisplayMode),
     },
+    size: {
+      control: { type: 'select' },
+      options: ['small', 'medium', 'large'],
+    },
   },
 } satisfies Meta<typeof DepositButton>;
 

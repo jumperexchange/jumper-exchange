@@ -13,7 +13,7 @@ const HighlightedSpan = styled('span')(({ theme }) => ({
   }),
 }));
 
-export const TopHighlight: FC<PropsWithChildren<Props>> = ({ children }) => {
+export const HeroHighlight: FC<PropsWithChildren<Props>> = ({ children }) => {
   // TODO: LF-14990: Generate clickable links / filters events if possible.
   return <HighlightedSpan>{children}</HighlightedSpan>;
 };
