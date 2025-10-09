@@ -302,6 +302,23 @@
       "lockupPeriod": "Lockup period",
       "token": "Asset"
     },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "Claim returned funds",
+        "switchChain": "Switching chain...",
+        "waitingForTransaction": "Waiting for transaction...",
+        "transactionInProgress": "Transaction in progress...",
+        "viewTransaction": "View transaction"
+      },
+      "error": {
+        "title": "Claim returned funds",
+        "description": "A previous transaction failed and your funds are now available to be returned to you."
+      },
+      "success": {
+        "title": "Funds successfully returned",
+        "description": "Your funds have been returned and are now available to use in your wallet."
+      }
+    },
     "zap": {
       "sendToAddressName": "Deposit into {{name}}",
       "sentToAddressName": "Deposited into {{name}}",

@@ -14,6 +14,7 @@ import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 import { HorizontalTabs } from 'src/components/HorizontalTabs/HorizontalTabs';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
+import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -72,6 +73,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
           gap: 4,
         }}
       >
+        <SweepTokensCard customInformation={customInformation} />
         <DepositPoolCard customInformation={customInformation} />
         <Box
           id={MISSION_WIDGET_ELEMENT_ID}
