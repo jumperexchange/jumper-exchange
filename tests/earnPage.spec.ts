@@ -6,6 +6,7 @@ import {
 	selectOptionFromDropDown,
 	verifyOnlySelectedAssetIsVisible,
 } from "./testData/earnPageFunctions";
+import { qase } from 'playwright-qase-reporter';
 
 test.describe("Chains filters on Earn page", () => {
 	test.beforeEach(async ({ page }) => {
@@ -13,7 +14,7 @@ test.describe("Chains filters on Earn page", () => {
 		await selectAllMarketsTab(page);
 	});
 
-	test("Should be able to navigate to the earn page", async ({ page }) => {
+	test(qase(40, 'Should be able to navigate to the earn page'), async ({ page }) => {
 		await test.step("Navigate to earn page and verify URL", async () => {
 			await expect(page).toHaveURL("/earn");
 		});
@@ -40,7 +41,7 @@ test.describe("Chains filters on Earn page", () => {
 			}
 		});
 	});
-	test("Should be able to filter by base chain", async ({ page }) => {
+	test(qase(41, 'Should be able to filter by base chain'), async ({ page }) => {
 		await test.step("Select base chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "base");
 		});
@@ -50,7 +51,7 @@ test.describe("Chains filters on Earn page", () => {
 		});
 	});
 
-	test("Should be able to filter by arbitrum chain", async ({ page }) => {
+	test(qase(42,'Should be able to filter by arbitrum chain'), async ({ page }) => {
 		await test.step("Select arbitrum chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "arbitrum");
 		});
@@ -60,7 +61,7 @@ test.describe("Chains filters on Earn page", () => {
 		});
 	});
 
-	test("Should be able to filter by mainnet chain", async ({ page }) => {
+	test(qase(43,'Should be able to filter by mainnet chain'), async ({ page }) => {
 		await test.step("Select mainnet chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "mainnet");
 		});
@@ -77,7 +78,7 @@ test.describe("Protocols filters on Earn page", () => {
 		await selectAllMarketsTab(page);
 	});
 
-	test("Should be able to filter by Aave protocol", async ({ page }) => {
+	test(qase(39,'Should be able to filter by Aave protocol'), async ({ page }) => {
 		await test.step("Select Aave protocol", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-protocol-select", "aave");
 		});
@@ -87,7 +88,7 @@ test.describe("Protocols filters on Earn page", () => {
 		});
 	});
 
-	test("Should be able to filter by morpho protocol", async ({ page }) => {
+	test(qase(38, 'Should be able to filter by morpho protocol'), async ({ page }) => {
 		await test.step("Select morpho protocol", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-protocol-select", "morpho");
 		});
@@ -105,7 +106,7 @@ test.describe("Protocols filters on Earn page", () => {
 			await selectAllMarketsTab(page);
 		});
 		
-		test("Should be able to filter by ETHx asset", async ({ page }) => {
+		test(qase(44,'Should be able to filter by ETHx asset'), async ({ page }) => {
 			await test.step("Select ETHx asset", async () => {
 				await selectOptionFromDropDown(page, "earn-filter-asset-select", "ETHx");
 			});
