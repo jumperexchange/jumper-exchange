@@ -153,7 +153,7 @@ export const StyledParticipantsContainer = styled((props: StackProps) => (
 
 export const StyledRewardsContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
-  flexWrap: 'wrap',
+  flexWrap: 'nowrap',
 }));
 
 interface StyledCompactRewardChipContainerProps extends ChipProps {
