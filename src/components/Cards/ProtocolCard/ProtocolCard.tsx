@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { EarnCardProps } from '../EarnCard/EarnCard.types';
 import {
   ProtocolCardContainer,
   ProtocolCardContentContainer,
@@ -22,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { ProtocolCardSkeleton } from './ProtocolCardSkeleton';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import { useGetContrastTextColor } from 'src/hooks/images/useGetContrastTextColor';
 
 interface CommonCardProps {
   fullWidth?: boolean;
@@ -50,6 +50,10 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
 }) => {
   const { protocol, tags, description, url } = data ?? {};
   const { t } = useTranslation();
+
+  const protocolImageContrastColor = useGetContrastTextColor(
+    protocol?.logo || '',
+  );
 
   if (isLoading) {
     return <ProtocolCardSkeleton fullWidth={fullWidth} />;
@@ -83,7 +87,11 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
               width={56}
             />
           )}
-          <ProtocolCardProtocolTitle>
+          <ProtocolCardProtocolTitle
+            sx={{
+              color: protocolImageContrastColor,
+            }}
+          >
             {protocol?.name}
           </ProtocolCardProtocolTitle>
         </ProtocolCardHeaderContentContainer>
