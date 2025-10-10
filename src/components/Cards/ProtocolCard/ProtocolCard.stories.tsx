@@ -50,7 +50,7 @@ export const WithLongTitle: Story = {
   },
 };
 
-export const DefaultDifferentBackground: Story = {
+export const TitleContrastColor: Story = {
   args: {
     ...commonArgs,
     fullWidth: false,

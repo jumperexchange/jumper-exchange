@@ -66,7 +66,6 @@ export const ProtocolCardHeaderContentContainer = styled(Box)(({ theme }) => ({
   maxWidth: '100%',
 }));
 
-// @TODO: need to see how to change color based on background
 export const ProtocolCardProtocolTitle = styled(Typography)(({ theme }) => ({
   ...theme.typography.urbanistTitle2XLarge,
   ...getTextEllipsisStyles(1),
