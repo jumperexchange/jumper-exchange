@@ -21,9 +21,11 @@ export const useGetColorsFromImage = (imageUrl: string) => {
       try {
         const palette = await extractColors(imageUrl, {
           crossOrigin: 'anonymous',
+          requestMode: 'cors',
         });
         setColors(palette);
-      } catch {
+      } catch (error) {
+        console.error('Error extracting colors from image:', error);
         setColors([]);
       }
     };
