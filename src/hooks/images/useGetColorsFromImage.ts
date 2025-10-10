@@ -19,7 +19,9 @@ export const useGetColorsFromImage = (imageUrl: string) => {
   useEffect(() => {
     const fetchColors = async () => {
       try {
-        const palette = await extractColors(imageUrl);
+        const palette = await extractColors(imageUrl, {
+          crossOrigin: 'anonymous',
+        });
         setColors(palette);
       } catch {
         setColors([]);
