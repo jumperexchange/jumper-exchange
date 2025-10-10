@@ -52,13 +52,10 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
   const { protocol, tags, description, url } = data ?? {};
   const { t } = useTranslation();
 
-  const {
-    contrastTextColor: protocolImageContrastColor,
-    isLoading: protocolImageContrastColorIsLoading,
-  } = useGetContrastTextColor(protocol?.logo || '');
+  const { contrastTextColor: protocolImageContrastColor } =
+    useGetContrastTextColor(protocol?.logo || '');
 
-  const isAvatarLoading =
-    protocolImageContrastColorIsLoading || !protocolAvatarLoaded;
+  const isAvatarLoading = !protocolAvatarLoaded;
 
   if (isLoading) {
     return <ProtocolCardSkeleton fullWidth={fullWidth} />;
