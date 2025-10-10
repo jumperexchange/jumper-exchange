@@ -96,6 +96,20 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             {Object.entries(rewardGroups || {}).map(([rewardKey, rewards]) => {
               if (rewards.length === 0) return null;
 
+              if (rewardKey === 'generic') {
+                return rewards?.map((reward) => (
+                  <StyledCompactRewardChipContainer
+                    clickable={false}
+                    key={rewardKey}
+                    label={
+                      <StyledCompactRewardLabel>
+                        {reward.label}
+                      </StyledCompactRewardLabel>
+                    }
+                  />
+                ));
+              }
+
               if (rewardKey !== 'coins') {
                 return (
                   <StyledCompactRewardChipContainer
@@ -109,6 +123,8 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
                   />
                 );
               }
+
+              const hasMultipleRewards = rewards.length > 1;
 
               return (
                 <StyledCompactRewardChipContainer
@@ -132,6 +148,14 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
                           />
                         ))}
                     </StyledRewardsAvatarsContainer>
+                  }
+                  hideLabel={hasMultipleRewards}
+                  label={
+                    !hasMultipleRewards ? (
+                      <StyledCompactRewardLabel>
+                        {rewards[0].value}
+                      </StyledCompactRewardLabel>
+                    ) : undefined
                   }
                 />
               );

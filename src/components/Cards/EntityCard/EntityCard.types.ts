@@ -14,7 +14,7 @@ export type Participant = {
 
 export type EntityCardVariant = 'wide' | 'compact';
 
-export type RewardGroupKey = 'apy' | 'xp' | 'coins';
+export type RewardGroupKey = 'apy' | 'xp' | 'coins' | 'generic';
 
 export interface EntityCardProps {
   id?: string;
