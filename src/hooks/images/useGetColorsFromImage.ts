@@ -20,7 +20,7 @@ export const useGetColorsFromImage = (imageUrl: string) => {
     const fetchColors = async () => {
       try {
         const palette = await extractColors(imageUrl, {
-          crossOrigin: '',
+          crossOrigin: 'anonymous',
         });
         setColors(palette);
       } catch (error) {

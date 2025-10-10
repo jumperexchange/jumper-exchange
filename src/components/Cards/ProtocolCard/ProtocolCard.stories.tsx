@@ -58,7 +58,7 @@ export const TitleContrastColor: Story = {
       ...commonArgs.data,
       protocol: {
         ...commonArgs.data.protocol,
-        logo: 'https://strapi.jumper.exchange/uploads/hyperevm_icon_ac0e4b3bd6.png',
+        logo: 'https://strapi-staging.jumper.exchange/uploads/hyperevm_icon_a7e3d82b3b.png',
       },
     },
   },
