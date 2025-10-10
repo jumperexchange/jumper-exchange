@@ -132,6 +132,7 @@ interface Resources {
       status: {
         daysLeft_one: '{{count}} day left';
         daysLeft_other: '{{count}} days left';
+        ended: 'Ended';
         hoursLeft_one: '{{count}} hour left';
         hoursLeft_other: '{{count}} hours left';
         minutesLeft_one: '{{count}} minute left';

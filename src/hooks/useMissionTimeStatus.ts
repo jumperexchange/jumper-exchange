@@ -5,6 +5,7 @@ import {
   differenceInHours,
   differenceInMinutes,
   isBefore,
+  isAfter,
 } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
@@ -57,6 +58,13 @@ export const useMissionTimeStatus = (
           isDisabled: false,
         };
       }
+    }
+
+    if (isAfter(now, endsDate)) {
+      return {
+        status: t('missions.status.ended'),
+        isDisabled: false,
+      };
     }
 
     return {

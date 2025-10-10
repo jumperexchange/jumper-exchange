@@ -167,7 +167,8 @@
       "hoursLeft_one": "{{count}} hour left",
       "hoursLeft_other": "{{count}} hours left",
       "daysLeft_one": "{{count}} day left",
-      "daysLeft_other": "{{count}} days left"
+      "daysLeft_other": "{{count}} days left",
+      "ended": "Ended"
     },
     "tasks": {
       "type": "{{type}} task",
