@@ -15,6 +15,7 @@ import {
 } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
 import { BaseProps } from '../EntityChainStack.types';
+import { capitalizeString } from 'src/utils/capitalizeString';
 
 interface BaseChainStackProps extends BaseProps {
   mainStack: ReactNode;
@@ -83,7 +84,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
             {content.title}
           </EntityChainTitle>
           <EntityChainDescription variant={content.descriptionVariant}>
-            {chainKeys.join(' ')}
+            {chainKeys.map(capitalizeString).join(' ')}
           </EntityChainDescription>
         </EntityChainInfoContainer>
       )}

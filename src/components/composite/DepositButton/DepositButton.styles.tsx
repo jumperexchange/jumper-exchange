@@ -1,47 +1,125 @@
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { ButtonProps } from 'src/components/Button';
-import BoltIcon from 'src/components/illustrations/BoltIcon';
+import { ButtonPrimary } from 'src/components/Button';
 
-interface DepositIconProps {
+interface DepositButtonIconWrapperProps extends BoxProps {
   size: ButtonProps['size'];
 }
 
-export const DepositIcon = styled(BoltIcon, {
+export const DepositButtonIconWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<DepositIconProps>(() => ({
+})<DepositButtonIconWrapperProps>(({ size }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   variants: [
     {
       props: ({ size }) => size === 'small',
       style: {
-        width: 17,
-        height: 19,
+        height: 20,
+        width: 20,
+        '& svg': { width: 16, height: 16 },
       },
     },
     {
       props: ({ size }) => size === 'medium',
       style: {
-        width: 22,
         height: 24,
+        width: 24,
+        '& svg': { width: 22, height: 22 },
       },
     },
     {
       props: ({ size }) => size === 'large',
       style: {
-        width: 24,
         height: 28,
+        width: 28,
+        '& svg': { width: 28, height: 28 },
       },
     },
   ],
 }));
 
 export const DepositButtonContentWrapper = styled(Box)(() => ({
-  padding: 0.2,
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'row',
 }));
 
-export const DepositButtonLabelWrapper = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(0.5, 1.5),
+interface DepositButtonLabelWrapperProps extends BoxProps {
+  size: ButtonProps['size'];
+}
+
+export const DepositButtonLabelWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<DepositButtonLabelWrapperProps>(({ theme }) => ({
+  variants: [
+    {
+      props: ({ size }) => size === 'small',
+      style: {
+        padding: theme.spacing(0.25, 0.5),
+        fontSize: theme.typography.bodyXSmallStrong.fontSize,
+        lineHeight: theme.typography.bodyXSmallStrong.lineHeight,
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: theme.spacing(0.5, 1),
+        fontSize: theme.typography.bodySmallStrong.fontSize,
+        lineHeight: theme.typography.bodySmallStrong.lineHeight,
+      },
+    },
+    {
+      props: ({ size }) => size === 'large',
+      style: {
+        padding: theme.spacing(0.5, 1.5),
+        fontSize: theme.typography.bodyMediumStrong.fontSize,
+        lineHeight: theme.typography.bodyMediumStrong.lineHeight,
+      },
+    },
+  ],
+}));
+
+export const DepositButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
+  minWidth: 'auto',
+  height: 'fit-content',
+  borderRadius: theme.shape.buttonBorderRadius,
+  '&:disabled': {
+    backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+    color: (theme.vars || theme).palette.buttonDisabledAction,
+  },
+  variants: [
+    {
+      props: ({ size }) => size === 'small',
+      style: {
+        padding: theme.spacing(0.5),
+        '& > .MuiBox-root': {
+          padding: theme.spacing(0.25, 0),
+          height: 24,
+        },
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: theme.spacing(0.75),
+        '& > .MuiBox-root': {
+          padding: theme.spacing(0.125, 0.25),
+          height: 28,
+        },
+      },
+    },
+    {
+      props: ({ size }) => size === 'large',
+      style: {
+        padding: theme.spacing(1),
+        '& > .MuiBox-root': {
+          padding: theme.spacing(0.25),
+          height: 32,
+        },
+      },
+    },
+  ],
 }));

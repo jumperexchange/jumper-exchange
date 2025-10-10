@@ -48,7 +48,10 @@ export const ProtocolChainStack: FC<ProtocolChainStackProps> = (props) => {
       isContentVisible={props.isContentVisible}
       content={{
         ...props.content,
-        title: props.content?.title || props.protocol?.product,
+        title:
+          props.content?.title ||
+          props.protocol?.product ||
+          props.protocol?.name,
       }}
       skeletonSize={props.protocolSize}
     />

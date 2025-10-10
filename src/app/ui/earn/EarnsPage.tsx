@@ -1,15 +1,15 @@
 import { FC } from 'react';
 
-import { EarnOpportunitiesAll } from './EarnOpportunitiesAll';
 import { EarnTopOpportunities } from './EarnTopOpportunities';
+import { EarnOpportunitiesAll } from './EarnOpportunitiesAll/EarnOpportunitiesAll';
 
 interface EarnsPageProps {}
 
-export const EarnsPage: FC<EarnsPageProps> = async () => {
+export const EarnsPage: FC<EarnsPageProps> = () => {
   return (
-    <div>
+    <>
       <EarnTopOpportunities />
       <EarnOpportunitiesAll />
-    </div>
+    </>
   );
 };

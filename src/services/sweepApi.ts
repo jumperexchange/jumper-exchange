@@ -1,14 +1,22 @@
 import config from '@/config/env-config';
 import {
-  CheckSweepableTokensRequest,
-  CheckSweepableTokensResponse,
-  SweepExecuteRequest,
-  SweepExecuteResponse,
-  SweepQuoteRequest,
-  SweepQuoteResponse,
-} from 'src/types/sweep';
+  CheckSweepableTokensDto,
+  CheckSweepableTokensResponseDto,
+  ExecuteSweepQuoteDto,
+  ExecuteSweepQuoteResponseDto,
+  HttpResponse,
+  SweepQuoteDto,
+  SweepQuoteResponseDto,
+} from 'src/types/jumper-backend';
+import { Hex } from 'viem';
 
 const API_BASE_URL = config.NEXT_PUBLIC_BACKEND_URL;
+
+type TransactionData = {
+  message: {
+    raw: Hex;
+  };
+};
 
 class SweepApiService {
   private async makeRequest<T>(
@@ -37,31 +45,28 @@ class SweepApiService {
   /**
    * Check for sweepable tokens for a wallet address
    */
-  async checkSweepableTokens(
-    request: CheckSweepableTokensRequest,
-  ): Promise<CheckSweepableTokensResponse> {
-    return this.makeRequest<CheckSweepableTokensResponse>(
-      'check-sweepable-tokens',
-      'POST',
-      request,
-    );
+  async checkSweepableTokens(request: CheckSweepableTokensDto) {
+    return this.makeRequest<
+      HttpResponse<CheckSweepableTokensResponseDto, unknown>
+    >('check-sweepable-tokens', 'POST', request);
   }
 
   /**
    * Get sweep quote for a wallet address (only if tokens are available)
    */
-  async getSweepQuote(request: SweepQuoteRequest): Promise<SweepQuoteResponse> {
-    return this.makeRequest<SweepQuoteResponse>('sweep-quote', 'POST', request);
+  async getSweepQuote(request: SweepQuoteDto) {
+    return this.makeRequest<
+      HttpResponse<
+        SweepQuoteResponseDto & { transactionData: TransactionData },
+        unknown
+      >
+    >('sweep-quote', 'POST', request);
   }
 
-  async executeSweep(
-    request: SweepExecuteRequest,
-  ): Promise<SweepExecuteResponse> {
-    return this.makeRequest<SweepExecuteResponse>(
-      'execute-sweep-quote',
-      'POST',
-      request,
-    );
+  async executeSweep(request: ExecuteSweepQuoteDto) {
+    return this.makeRequest<
+      HttpResponse<ExecuteSweepQuoteResponseDto, unknown>
+    >('execute-sweep-quote', 'POST', request);
   }
 }
 

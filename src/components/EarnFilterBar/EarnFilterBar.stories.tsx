@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import {
-  EarnFilteringContext,
-  SortByOptions,
-} from '../../app/ui/earn/EarnFilteringContext';
+import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
+import { SortByEnum, SortByOptions } from '../../app/ui/earn/types';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
@@ -34,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 const mockContextValue = () => {
   const [showForYou, setShowForYou] = useState(false);
-  const [sortBy, setSortBy] = useState<SortByOptions>(SortByOptions.APY);
+  const [sortBy, setSortBy] = useState<SortByEnum>(SortByOptions.APY);
 
   return {
     sortBy,
@@ -44,12 +42,10 @@ const mockContextValue = () => {
     showForYou,
     toggleForYou: () => setShowForYou((current) => !current),
     usedYourAddress: false,
-    forYou: [],
-    forYouLoading: false,
-    forYouError: null,
-    all: [],
-    allLoading: false,
-    allError: null,
+    data: [],
+    isLoading: false,
+    error: null,
+    isAllDataLoading: false,
     totalMarkets: 150,
     allChains: [
       { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
@@ -186,8 +182,8 @@ export const LoadingState: Story = {
         <EarnFilteringContext.Provider
           value={{
             ...mockContextValue(),
-            allLoading: true,
-            forYouLoading: true,
+            isLoading: true,
+            isAllDataLoading: true,
           }}
         >
           <Story args={{ variant, setVariant }} />

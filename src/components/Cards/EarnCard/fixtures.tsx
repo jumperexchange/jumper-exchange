@@ -1,5 +1,5 @@
-import { IconButtonPrimary } from 'src/components/IconButton';
-import BoltIcon from 'src/components/illustrations/BoltIcon';
+import { DepositButton } from 'src/components/composite/DepositButton/DepositButton';
+import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 
 export const commonArgs = {
   data: {
@@ -56,23 +56,17 @@ export const commonArgs = {
 };
 
 export const compactPrimaryAction = (
-  <IconButtonPrimary
-    sx={(theme) => ({
-      color: `${(theme.vars || theme).palette.white.main} !important`,
-    })}
-  >
-    <BoltIcon />
-  </IconButtonPrimary>
+  <DepositButton
+    size="large"
+    displayMode={DepositButtonDisplayMode.IconOnly}
+    onClick={() => {}}
+  />
 );
 
 export const listItemPrimaryAction = (
-  <IconButtonPrimary
-    sx={(theme) => ({
-      color: `${(theme.vars || theme).palette.white.main} !important`,
-      height: 40,
-      width: 40,
-    })}
-  >
-    <BoltIcon height={20} width={20} />
-  </IconButtonPrimary>
+  <DepositButton
+    size="medium"
+    displayMode={DepositButtonDisplayMode.IconOnly}
+    onClick={() => {}}
+  />
 );
