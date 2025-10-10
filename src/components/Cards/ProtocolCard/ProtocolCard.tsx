@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   ProtocolCardContainer,
   ProtocolCardContentContainer,
@@ -48,16 +48,22 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
   fullWidth,
   headerBadge,
 }) => {
+  const [protocolAvatarLoaded, setProtocolAvatarLoaded] = useState(false);
   const { protocol, tags, description, url } = data ?? {};
   const { t } = useTranslation();
 
-  const protocolImageContrastColor = useGetContrastTextColor(
-    protocol?.logo || '',
-  );
+  const {
+    contrastTextColor: protocolImageContrastColor,
+    isLoading: protocolImageContrastColorIsLoading,
+  } = useGetContrastTextColor(protocol?.logo || '');
+
+  const isAvatarLoading =
+    protocolImageContrastColorIsLoading || !protocolAvatarLoaded;
 
   if (isLoading) {
     return <ProtocolCardSkeleton fullWidth={fullWidth} />;
   }
+
   return (
     <ProtocolCardContainer
       sx={{
@@ -78,13 +84,19 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
             {headerBadge}
           </ProtocolCardHeaderBadgeContainer>
         )}
-        <ProtocolCardHeaderContentContainer>
+        <ProtocolCardHeaderContentContainer
+          sx={{
+            opacity: isAvatarLoading ? 0 : 1,
+            transition: 'opacity 0.2s ease-in',
+          }}
+        >
           {protocol?.logo && (
             <ProtocolCardProtocolAvatar
               src={protocol?.logo || ''}
               alt={protocol?.name || 'Protocol Logo'}
               height={56}
               width={56}
+              onLoad={() => setProtocolAvatarLoaded(true)}
             />
           )}
           <ProtocolCardProtocolTitle

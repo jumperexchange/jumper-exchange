@@ -14,7 +14,9 @@ export const useGetContrastTextColor = (imageUrl: string) => {
   const currentPalette =
     theme.colorSchemes?.[currentMode]?.palette || basePalette;
 
-  return useMemo(() => {
+  const isLoading = colors.length === 0;
+
+  const contrastTextColor = useMemo(() => {
     if (!colors.length) {
       return currentPalette.textPrimary;
     }
@@ -34,4 +36,6 @@ export const useGetContrastTextColor = (imageUrl: string) => {
 
     return contrastColor;
   }, [colors, currentPalette, basePalette]);
+
+  return { contrastTextColor, isLoading };
 };
