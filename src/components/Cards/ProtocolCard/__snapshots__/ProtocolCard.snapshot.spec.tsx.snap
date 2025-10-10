@@ -4,6 +4,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-bbef3p"
+    data-testid="protocol-card"
   >
     <div
       class="MuiBox-root css-1n3ldtq"
@@ -99,6 +100,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
 <div>
   <div
     class="MuiBox-root css-bbef3p"
+    data-testid="protocol-card"
   >
     <div
       class="MuiBox-root css-1n3ldtq"
@@ -239,6 +241,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
 <div>
   <div
     class="MuiBox-root css-bbef3p"
+    data-testid="protocol-card"
   >
     <div
       class="MuiBox-root css-1n3ldtq"
