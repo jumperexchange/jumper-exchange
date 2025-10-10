@@ -66,6 +66,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
 
   return (
     <ProtocolCardContainer
+      data-testid="protocol-card"
       sx={{
         width: '100%',
         maxWidth: fullWidth ? '100%' : PROTOCOL_CARD_SIZES.CARD_WIDTH,
