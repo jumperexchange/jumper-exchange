@@ -264,13 +264,15 @@
     "boostedApy": "",
     "lockupPeriod": "",
     "manageYourPosition": "",
-    "assets": ""
+    "assets_one": "",
+    "assets_other": ""
   },
   "labels": {
     "apy": "",
     "lockupPeriod": "",
     "tvl": "",
-    "assets": ""
+    "assets_one": "",
+    "assets_other": ""
   },
   "earn": {
     "top": {
@@ -301,6 +303,23 @@
       "tvl": "",
       "lockupPeriod": "",
       "token": ""
+    },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "",
+        "switchChain": "",
+        "waitingForTransaction": "",
+        "transactionInProgress": "",
+        "viewTransaction": ""
+      },
+      "error": {
+        "title": "",
+        "description": ""
+      },
+      "success": {
+        "title": "",
+        "description": ""
+      }
     },
     "zap": {
       "sendToAddressName": "",
