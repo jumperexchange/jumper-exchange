@@ -1,7 +1,11 @@
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { QuestData, StrapiResponseData } from 'src/types/strapi';
 import { usePaginatedData } from './usePaginatedData';
-import { PAGE_SIZE, UPCOMING_DAYS_AHEAD } from 'src/const/quests';
+import {
+  PAGE_SIZE,
+  UPCOMING_DAYS_AHEAD,
+  PAST_DAYS_BACK,
+} from 'src/const/quests';
 
 export async function fetchMissionsData(page: number, pageSize: number = 12) {
   const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
@@ -11,6 +15,7 @@ export async function fetchMissionsData(page: number, pageSize: number = 12) {
       withCount: true,
     },
     UPCOMING_DAYS_AHEAD,
+    PAST_DAYS_BACK,
   );
 
   return missionsResponse.data;

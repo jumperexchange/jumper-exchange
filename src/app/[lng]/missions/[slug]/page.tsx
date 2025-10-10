@@ -10,7 +10,7 @@ import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
 import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
 import { MissionPage } from 'src/app/ui/mission/MissionPage';
-import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
+import { UPCOMING_DAYS_AHEAD, PAST_DAYS_BACK } from 'src/const/quests';
 
 type Params = Promise<{ slug: string }>;
 
@@ -29,6 +29,7 @@ export async function generateStaticParams() {
       pageSize: 12,
     },
     UPCOMING_DAYS_AHEAD,
+    PAST_DAYS_BACK,
   );
 
   return missionsResponse.data.map((mission) => ({ slug: mission.Slug || '' }));

@@ -1,4 +1,8 @@
-import { PAGE_SIZE, UPCOMING_DAYS_AHEAD } from 'src/const/quests';
+import {
+  PAGE_SIZE,
+  UPCOMING_DAYS_AHEAD,
+  PAST_DAYS_BACK,
+} from 'src/const/quests';
 import { MissionsList } from './MissionsList';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
@@ -17,6 +21,7 @@ export const MissionsPage = async () => {
         withCount: true,
       },
       UPCOMING_DAYS_AHEAD,
+      PAST_DAYS_BACK,
     ),
   ]);
   const missions = missionsResponse.data;
