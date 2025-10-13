@@ -532,36 +532,22 @@ class QuestStrapiApi extends StrapiApi {
     return this;
   }
 
-  filterByStartAndEndDateIncludingUpcoming(
-    daysAhead: number = 0,
-    daysBack: number = 0,
-  ): this {
+  filterByStartAndEndDateIncludingUpcoming(daysAhead: number = 0): this {
     const today = startOfToday();
     const future = addDays(today, daysAhead);
-    const past = addDays(today, -daysBack);
 
     const todayStr = format(today, 'yyyy-MM-dd');
     const futureStr = format(future, 'yyyy-MM-dd');
-    const pastStr = format(past, 'yyyy-MM-dd');
 
     const orFilters: StrapiOrFilter[] = [
       {
         StartDate: { $lte: todayStr },
         EndDate: { $gte: todayStr },
       },
-    ];
-
-    if (daysAhead > 0) {
-      orFilters.push({
+      {
         StartDate: { $gte: todayStr, $lte: futureStr },
-      });
-    }
-
-    if (daysBack > 0) {
-      orFilters.push({
-        EndDate: { $gte: pastStr, $lte: todayStr },
-      });
-    }
+      },
+    ];
 
     orFilters.forEach((filter, i) => {
       Object.entries(filter).forEach(([field, conditions]) => {

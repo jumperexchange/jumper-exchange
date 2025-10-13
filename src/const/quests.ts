@@ -6,6 +6,4 @@ export const MISSION_WIDGET_ELEMENT_ID = 'mission-widget';
 
 export const UPCOMING_DAYS_AHEAD = 0;
 
-export const PAST_DAYS_BACK = 5;
-
 export const ZAP_QUEST_ID_SESSION_STORAGE_KEY = 'zap-quest-id';
