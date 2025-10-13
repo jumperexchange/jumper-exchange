@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { FC } from 'react';
-
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
@@ -15,8 +14,8 @@ interface EarnPageProps {
 
 export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   // TODO: LF-14853: Opportunity Details
-  const { data, error } = await getOpportunityBySlug(slug);
-  if (error || !data) {
+  const opportunity = await getOpportunityBySlug(slug);
+  if (opportunity.error || !opportunity.data) {
     return notFound();
   }
 
@@ -33,11 +32,7 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
       <EarnDetailsSection>
         <GoBack path={AppPaths.Earn} dataTestId="earn-back-button" />
 
-        <EarnDetailsIntro
-          /* @ts-expect-error: see LF-15589 - we are transforming data in the backend */
-          data={data.data ?? null}
-          isLoading={false}
-        />
+        <EarnDetailsIntro data={opportunity.data} isLoading={false} />
         <EarnDetailsAnalytics slug={slug} />
       </EarnDetailsSection>
       <EarnDetailsSection>
