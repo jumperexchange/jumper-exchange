@@ -32,9 +32,11 @@ interface ZapDetailsProps {
 }
 
 export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
+  const hasEnded = market.hasEnded ?? false;
   const { status } = useMissionTimeStatus(
     market?.StartDate ?? '',
     market?.EndDate ?? '',
+    hasEnded,
   );
   const zapDisplayData = useFormatDisplayQuestData(market, true, AppPaths.Zap);
   const participants = useMemo(
@@ -42,7 +44,7 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
     [zapDisplayData.participants],
   );
   useResetCurrentActiveTask();
-  useSyncMissionDefaultsFromChains(participants, market.documentId);
+  useSyncMissionDefaultsFromChains(participants, market.documentId, hasEnded);
   const { t } = useTranslation();
   const router = useRouter();
 

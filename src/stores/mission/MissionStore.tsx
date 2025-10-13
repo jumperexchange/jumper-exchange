@@ -57,6 +57,7 @@ interface MissionState {
   missionChainIds?: number[];
   missionId?: string;
   missionType?: string;
+  missionHasEnded?: boolean;
 
   setCurrentTaskWidgetFormParams: ({
     allowBridge,
@@ -102,11 +103,12 @@ interface MissionState {
     taskName: string,
   ) => void;
 
-  setMissionDefaults: (
-    chainIds?: number[],
-    missionId?: string,
-    missionType?: string,
-  ) => void;
+  setMissionDefaults: (params: {
+    missionChainIds?: number[];
+    missionId?: string;
+    missionType?: string;
+    missionHasEnded?: boolean;
+  }) => void;
 
   resetCurrentActiveTask: () => void;
 }
@@ -177,11 +179,9 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         ...params,
       }),
 
-    setMissionDefaults: (missionChainIds, missionId, missionType) =>
+    setMissionDefaults: (params) =>
       set({
-        missionChainIds,
-        missionId,
-        missionType,
+        ...params,
       }),
 
     resetCurrentActiveTask: () =>
@@ -190,6 +190,7 @@ export const useMissionStore = createWithEqualityFn<MissionState>(
         currentActiveTaskType: undefined,
         currentActiveTaskName: undefined,
         isCurrentActiveTaskCompleted: false,
+        missionHasEnded: undefined,
         taskFormStates: {},
       }),
   }),

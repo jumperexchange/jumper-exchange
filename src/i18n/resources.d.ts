@@ -128,6 +128,10 @@ interface Resources {
           description: 'All tasks in this mission have been verified and completed.';
           title: 'Mission completed';
         };
+        ended: {
+          description: 'Mission has ended, go back to the main missions page to explore other missions!';
+          title: 'Mission has ended';
+        };
       };
       status: {
         daysLeft_one: '{{count}} day left';

@@ -17,6 +17,7 @@ import { CustomInformation } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { MissionFormWidget } from './MissionFormWidget';
 import { MissionTaskComplete } from './MissionTaskComplete';
+import { MissionEnded } from './MissionEnded';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -25,10 +26,15 @@ export interface MissionWidgetProps {
 export const MissionWidget: FC<MissionWidgetProps> = ({
   customInformation,
 }) => {
-  const { currentActiveTaskType, isCurrentActiveTaskCompleted } =
-    useMissionStore();
+  const {
+    currentActiveTaskType,
+    isCurrentActiveTaskCompleted,
+    missionHasEnded,
+  } = useMissionStore();
 
   const renderContent = (): ReactNode => {
+    if (missionHasEnded) return <MissionEnded />;
+
     if (isCurrentActiveTaskCompleted) return <MissionTaskComplete />;
 
     if (
