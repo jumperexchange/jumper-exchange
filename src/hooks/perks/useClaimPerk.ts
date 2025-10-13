@@ -5,19 +5,16 @@ import {
   usePerkClaimStatusStore,
   PerkClaimStatus,
 } from 'src/stores/perkClaimStatus';
+import {
+  HttpResponse,
+  PerkClaimDto,
+  PerkClaimEntity,
+} from 'src/types/jumper-backend';
 
-interface ClaimPerkProps {
-  perkId: string;
-  address: string;
-  signature: string;
-  username?: string;
-  walletType?: string;
-  message: string;
-}
+export type ClaimPerkResult = HttpResponse<PerkClaimEntity, unknown>;
 
-export async function claimPerkQuery(props: ClaimPerkProps) {
+export async function claimPerkQuery(props: PerkClaimDto) {
   const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
-  await new Promise((resolve) => setTimeout(resolve, 10000));
   const res = await fetch(`${apiBaseUrl}/perks/claim`, {
     method: 'POST',
     headers: {
@@ -30,7 +27,7 @@ export async function claimPerkQuery(props: ClaimPerkProps) {
     throw new Error(res.statusText);
   }
 
-  const data = await res.json();
+  const data: ClaimPerkResult = await res.json();
 
   if (!data) {
     throw new Error('Invalid response');
@@ -45,7 +42,7 @@ export const useClaimPerk = (address?: string, perkId?: string) => {
 
   return useMutation({
     mutationKey: ['perks', 'claim', address, perkId],
-    mutationFn: (props: ClaimPerkProps) => {
+    mutationFn: (props: PerkClaimDto) => {
       return claimPerkQuery(props);
     },
     onMutate: () => {

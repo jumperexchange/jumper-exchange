@@ -1,8 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { isHex } from 'viem';
 import { useSignMessage as useSignMessageWagmi } from 'wagmi';
 import { useWallet as useSolanaWallet } from '@solana/wallet-adapter-react';
 import { ChainType } from '@lifi/sdk';
+import { useMutation } from '@tanstack/react-query';
 
 export enum SignMessageErrorType {
   UnsupportedWallet = 'unsupportedWallet',
@@ -20,27 +21,22 @@ export class SignMessageError extends Error {
   }
 }
 
+interface SignMessageParams {
+  message: string;
+  walletAddress: string;
+  walletType?: string;
+}
+
 export const useSignMessage = () => {
-  const [isError, setIsError] = useState(false);
-  const [errorType, setErrorType] = useState<SignMessageErrorType>(
-    SignMessageErrorType.Unknown,
-  );
   const { signMessageAsync } = useSignMessageWagmi();
   const solanaWallet = useSolanaWallet();
 
-  const signMessageAsyncOverride = useCallback(
+  const signMessageFn = useCallback(
     async ({
       message,
       walletAddress,
       walletType,
-    }: {
-      message: string;
-      walletAddress: string;
-      walletType?: string;
-    }) => {
-      setIsError(false);
-      setErrorType(SignMessageErrorType.Unknown);
-
+    }: SignMessageParams): Promise<string> => {
       try {
         let signature = '';
 
@@ -69,23 +65,33 @@ export const useSignMessage = () => {
 
         return signature;
       } catch (error) {
-        setIsError(true);
-
         if (error instanceof SignMessageError) {
-          setErrorType(error.type);
-        } else {
-          setErrorType(SignMessageErrorType.SignatureFailed);
+          throw error;
         }
-
-        throw error;
+        throw new SignMessageError(
+          'Failed to sign message',
+          SignMessageErrorType.SignatureFailed,
+        );
       }
     },
     [signMessageAsync, solanaWallet],
   );
 
+  const mutation = useMutation({
+    mutationFn: signMessageFn,
+  });
+
+  const errorType =
+    mutation.error instanceof SignMessageError
+      ? mutation.error.type
+      : SignMessageErrorType.Unknown;
+
   return {
-    signMessageAsync: signMessageAsyncOverride,
-    isError,
+    signMessageAsync: mutation.mutateAsync,
+    isPending: mutation.isPending,
+    isError: mutation.isError,
     errorType,
+    reset: mutation.reset,
+    error: mutation.error,
   };
 };

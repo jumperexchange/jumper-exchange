@@ -54,6 +54,7 @@ export const useClaimPerkForm = ({
 
   const {
     signMessageAsync,
+    isPending: isSignMessagePending,
     isError: isSignMessageError,
     errorType: signMessageErrorType,
   } = useSignMessage();
@@ -186,7 +187,8 @@ export const useClaimPerkForm = ({
     values: formValues,
     activeStep,
     showStepError,
-    isSubmitting: isSubmitting || mutationStatus.isPending,
+    isSubmitting:
+      isSubmitting || isSignMessagePending || mutationStatus.isPending,
     isError: showErrorBottomSheet,
     errorType,
   };
