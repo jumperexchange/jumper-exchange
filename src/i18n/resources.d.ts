@@ -110,7 +110,12 @@ interface Resources {
       apy: 'APY';
       assets_one: 'Asset';
       assets_other: 'Assets';
+      assets_other_one: 'Asset';
+      chains_one: 'Chain';
+      chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
+      overview: 'Overview';
+      protocol: 'Protocol';
       tvl: 'TVL';
     };
     leaderboard: {
@@ -302,11 +307,15 @@ interface Resources {
       apy: 'Expected yearly return rate of the tokens invested.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';
+      assets_other_one: 'The asset you will earn from';
       boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
+      chains_one: 'The chain you will earn from';
+      chains_other: 'The chains you will earn from';
       deposit: 'The token on which the market is defined and yield accrues on.';
       deposited: 'The token you have deposited into this market.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
+      protocol: 'The protocol you will earn from';
       tvl: 'Total value of crypto assets deposited in this market.';
     };
     widget: {

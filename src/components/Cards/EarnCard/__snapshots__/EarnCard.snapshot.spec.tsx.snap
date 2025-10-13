@@ -1998,3 +1998,713 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
   </div>
 </div>
 `;
+
+exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-13fpmno"
+  >
+    <div
+      class="MuiStack-root css-h345r2-MuiStack-root"
+    >
+      <div
+        class="MuiBox-root css-ynzgks"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-titleXSmall css-f793q6-MuiTypography-root"
+        >
+          labels.overview
+        </span>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.apy
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.apy"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              7.15%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.lockupPeriod
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.lockupPeriod"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              2 months
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.tvl
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.tvl"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              $63M
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.assets
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.assets"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiBox-root css-h1oaii"
+              >
+                <div
+                  class="MuiBox-root css-wioyy2"
+                >
+                  <div
+                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                    >
+                      <span
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="MuiBox-root css-k8f1u5"
+                  >
+                    <div
+                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                    >
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                      >
+                        <span
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              USD Coin
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.chains
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.chains"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiStack-root css-k0vgmj-MuiStack-root"
+              >
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              Base
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.protocol
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.protocol"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiBox-root css-h1oaii"
+              >
+                <div
+                  class="MuiBox-root css-wioyy2"
+                >
+                  <div
+                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                    >
+                      <img
+                        alt="morpho"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="MuiBox-root css-k8f1u5"
+                  >
+                    <div
+                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                    >
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                      >
+                        <span
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              morpho
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-13fpmno"
+  >
+    <div
+      class="MuiStack-root css-h345r2-MuiStack-root"
+    >
+      <div
+        class="MuiBox-root css-ynzgks"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-titleXSmall css-f793q6-MuiTypography-root"
+        >
+          labels.overview
+        </span>
+        <div
+          class="badge-container MuiBox-root css-1wzsofa"
+        />
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.apy
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.apy"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              7.15%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.lockupPeriod
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.lockupPeriod"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              2 months
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.tvl
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.tvl"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              $63M
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.assets
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.assets"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiBox-root css-h1oaii"
+              >
+                <div
+                  class="MuiBox-root css-wioyy2"
+                >
+                  <div
+                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                    >
+                      <span
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="MuiBox-root css-k8f1u5"
+                  >
+                    <div
+                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                    >
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                      >
+                        <span
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              USD Coin
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.chains
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.chains"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiStack-root css-k0vgmj-MuiStack-root"
+              >
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              Base
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
+            >
+              labels.protocol
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.protocol"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiBox-root css-h1oaii"
+              >
+                <div
+                  class="MuiBox-root css-wioyy2"
+                >
+                  <div
+                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                    >
+                      <img
+                        alt="morpho"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="MuiBox-root css-k8f1u5"
+                  >
+                    <div
+                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                    >
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                      >
+                        <span
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
+            >
+              morpho
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-13fpmno"
+  >
+    <div
+      class="MuiStack-root css-h345r2-MuiStack-root"
+    >
+      <div
+        class="MuiBox-root css-ynzgks"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vnwm1m-MuiSkeleton-root"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-k4wtzs-MuiSkeleton-root"
+          style="width: 96px;"
+        />
+      </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cghl3z-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cghl3z-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cghl3z-MuiSkeleton-root"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -109,3 +109,62 @@ export const ListItemEarnCardTagContainer = styled(Stack)(({ theme }) => ({
   columnGap: theme.spacing(1),
   alignItems: 'center',
 }));
+
+export const OverviewEarnCardContainer = styled(EarnCardContainer)(
+  ({ theme }) => ({
+    padding: theme.spacing(3),
+    width: '100%',
+    height: 'fit-content',
+  }),
+);
+
+export const OverviewEarnCardContentContainer = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(3),
+}));
+
+export const OverviewEarnCardHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
+}));
+
+export const OverviewEarnCardItemHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(1),
+  alignItems: 'center',
+}));
+
+export const OverviewEarnCardItemContentContainer = styled(Box)(
+  ({ theme }) => ({
+    marginTop: theme.spacing(0.5),
+    display: 'flex',
+    gap: theme.spacing(1),
+    alignItems: 'center',
+  }),
+);
+
+export const OverviewEarnCardItemValuePrepend = styled(Box)(
+  ({ theme }) => ({}),
+);
+
+export const OverviewEarnCardItemValue = styled(Typography)(({ theme }) => ({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  display: '-webkit-box',
+  WebkitLineClamp: 1,
+  WebkitBoxOrient: 'vertical',
+  fontWeight: 700,
+}));
+
+export const OverviewEarnCardItemValueAppend = styled(Typography)(
+  ({ theme }) => ({
+    mb: theme.spacing(0.25),
+    color: (theme.vars || theme).palette.alphaLight800.main,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.alphaDark800.main,
+    }),
+  }),
+);
