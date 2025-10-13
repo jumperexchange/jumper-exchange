@@ -1,12 +1,9 @@
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import { ONE_HOUR_MS } from 'src/const/time';
+import { HttpResponse, PerkClaimEntity } from 'src/types/jumper-backend';
 
-interface ClaimedPerksResponse {
-  id: number;
-  perkId: string;
-  timestamp: Date;
-}
+type ClaimedPerksResult = HttpResponse<PerkClaimEntity[], unknown>;
 
 const QUERY_KEY = ['perks', 'claimed'];
 
@@ -23,7 +20,7 @@ export async function getClaimedPerksQuery(
     throw new Error('Network error');
   }
 
-  const jsonResponse: { data: ClaimedPerksResponse[] } = await res.json();
+  const jsonResponse: ClaimedPerksResult = await res.json();
 
   if (!jsonResponse) {
     throw new Error('No data found');
