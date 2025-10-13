@@ -32,6 +32,7 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.NbOfSteps]: number;
   [TrackingEventParameter.RouteId]: string;
   [TrackingEventParameter.Slippage]: number;
+  [TrackingEventParameter.MaxSlippage]: string;
   [TrackingEventParameter.StepIds]: string;
   [TrackingEventParameter.Steps]: string;
   [TrackingEventParameter.Time]: number;
