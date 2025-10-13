@@ -1,0 +1,334 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-bbef3p"
+    data-testid="protocol-card"
+  >
+    <div
+      class="MuiBox-root css-1n3ldtq"
+    >
+      <div
+        class="MuiBox-root css-716jf3"
+      >
+        <img
+          alt="morpho"
+          class="css-12y411v"
+          height="56"
+          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          width="56"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
+        >
+          morpho
+        </p>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1phtfd3"
+    >
+      <div
+        class="MuiBox-root css-7tc8bc"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        >
+          metamorpho
+        </span>
+        <div
+          class="MuiStack-root css-qzuiar-MuiStack-root"
+        >
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Staking
+            </p>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Earn
+            </p>
+          </div>
+        </div>
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1lef7nx-MuiTypography-root"
+      >
+        Development Value - This value is used in our e2e tests workflows!!!
+
+Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).
+
+Description from vault manager:
+
+The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.
+
+[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)
+      </p>
+      <a
+        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
+        href="https://app.morpho.org"
+        target="_blank"
+      >
+        links.discover
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
+          data-testid="ArrowForwardIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-bbef3p"
+    data-testid="protocol-card"
+  >
+    <div
+      class="MuiBox-root css-1n3ldtq"
+    >
+      <div
+        class="MuiBox-root css-1f6e6uc"
+      >
+        <div
+          class="badge-container MuiBox-root css-4ejq0z"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          >
+            New
+          </p>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-716jf3"
+      >
+        <img
+          alt="morpho"
+          class="css-12y411v"
+          height="56"
+          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          width="56"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
+        >
+          morpho
+        </p>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1phtfd3"
+    >
+      <div
+        class="MuiBox-root css-7tc8bc"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        >
+          metamorpho
+        </span>
+        <div
+          class="MuiStack-root css-qzuiar-MuiStack-root"
+        >
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Staking
+            </p>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Earn
+            </p>
+          </div>
+        </div>
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1lef7nx-MuiTypography-root"
+      >
+        Development Value - This value is used in our e2e tests workflows!!!
+
+Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).
+
+Description from vault manager:
+
+The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.
+
+[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)
+      </p>
+      <a
+        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
+        href="https://app.morpho.org"
+        target="_blank"
+      >
+        links.discover
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
+          data-testid="ArrowForwardIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-bbef3p"
+  >
+    <div
+      class="MuiBox-root css-1yz1h9d"
+    />
+    <div
+      class="MuiBox-root css-1phtfd3"
+    >
+      <span
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1w43a1r-MuiSkeleton-root"
+      />
+      <div
+        class="MuiBox-root css-1a7ncva"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-96fut0-MuiSkeleton-root"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-96fut0-MuiSkeleton-root"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-ey5kg8-MuiSkeleton-root"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-bbef3p"
+    data-testid="protocol-card"
+  >
+    <div
+      class="MuiBox-root css-1n3ldtq"
+    >
+      <div
+        class="MuiBox-root css-716jf3"
+      >
+        <img
+          alt="this is a very long protocol name that should be truncated"
+          class="css-12y411v"
+          height="56"
+          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          width="56"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
+        >
+          this is a very long protocol name that should be truncated
+        </p>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root css-1phtfd3"
+    >
+      <div
+        class="MuiBox-root css-7tc8bc"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        >
+          metamorpho
+        </span>
+        <div
+          class="MuiStack-root css-qzuiar-MuiStack-root"
+        >
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Staking
+            </p>
+          </div>
+          <div
+            class="badge-container MuiBox-root css-8wpak"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            >
+              Earn
+            </p>
+          </div>
+        </div>
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1lef7nx-MuiTypography-root"
+      >
+        Development Value - This value is used in our e2e tests workflows!!!
+
+Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).
+
+Description from vault manager:
+
+The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.
+
+[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)
+      </p>
+      <a
+        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
+        href="https://app.morpho.org"
+        target="_blank"
+      >
+        links.discover
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
+          data-testid="ArrowForwardIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+`;

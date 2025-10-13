@@ -120,6 +120,9 @@ interface Resources {
       title: 'Leaderboard';
       updatedLabel: 'Updated: {{date}}';
     };
+    links: {
+      discover: 'Discover {{name}}';
+    };
     missions: {
       available: 'Available Missions';
       completed: 'Completed Missions';

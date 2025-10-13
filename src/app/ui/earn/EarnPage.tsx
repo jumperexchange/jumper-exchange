@@ -4,6 +4,9 @@ import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
+import { AppPaths } from 'src/const/urls';
+import { GoBack } from 'src/components/composite/GoBack/GoBack';
+import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
 
 interface EarnPageProps {
   slug: string;
@@ -11,8 +14,8 @@ interface EarnPageProps {
 
 export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   // TODO: LF-14853: Opportunity Details
-  const { data, error } = await getOpportunityBySlug(slug);
-  if (error || !data) {
+  const opportunity = await getOpportunityBySlug(slug);
+  if (opportunity.error || !opportunity.data) {
     return notFound();
   }
 
@@ -27,9 +30,9 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   return (
     <>
       <EarnDetailsSection>
-        <h1>EarnPage</h1>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-        <h2>Analytics</h2>
+        <GoBack path={AppPaths.Earn} dataTestId="earn-back-button" />
+
+        <EarnDetailsIntro data={opportunity.data} isLoading={false} />
         <EarnDetailsAnalytics slug={slug} />
       </EarnDetailsSection>
       <EarnDetailsSection>
