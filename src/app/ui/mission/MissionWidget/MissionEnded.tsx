@@ -20,12 +20,12 @@ export const MissionEnded = () => {
           <MissionWidgetTitle variant="titleSmall">
             {t('missions.mission.ended.title')}
           </MissionWidgetTitle>
-          <MissionWidgetDescription variant="bodyMedium">
+          <MissionWidgetDescription variant="bodyMedium" color="textSecondary">
             {t('missions.mission.ended.description')}
           </MissionWidgetDescription>
         </MissionWidgetContentContainer>
         <Button onClick={() => router.push(AppPaths.Missions)}>
-          {t('button.goBack')}
+          {t('missions.mission.ended.cta')}
         </Button>
       </MissionWidgetContainer>
     </SectionCardContainer>

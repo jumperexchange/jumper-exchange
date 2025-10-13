@@ -160,7 +160,8 @@
       },
       "ended": {
         "title": "Mission has ended",
-        "description": "Mission has ended, go back to the main missions page to explore other missions!"
+        "description": "Mission has ended, go back to the main missions page to explore other missions!",
+        "cta": "Go back to missions"
       }
     },
     "status": {

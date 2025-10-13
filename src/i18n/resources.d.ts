@@ -129,6 +129,7 @@ interface Resources {
           title: 'Mission completed';
         };
         ended: {
+          cta: 'Go back to missions';
           description: 'Mission has ended, go back to the main missions page to explore other missions!';
           title: 'Mission has ended';
         };
