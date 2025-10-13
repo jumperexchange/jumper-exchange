@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, ChangeEvent } from 'react';
+import { useState, useMemo, useCallback, ChangeEvent, useEffect } from 'react';
 import { MultiSelectProps } from '../Select.types';
 import { SelectBase } from '../components/SelectBase';
 import Typography from '@mui/material/Typography';
@@ -24,13 +24,18 @@ export const MultiSelect = <T extends string[]>({
   ...rest
 }: MultiSelectProps<T>) => {
   const { t } = useTranslation();
+  const defaultValue = useMemo(() => initialValue ?? [], [initialValue]);
   const { value, setValue, handleChange, handleDebounceChange } = useSelect(
-    initialValue ?? [],
+    defaultValue,
     onChange,
     debounceMs,
     true,
   );
   const [searchValue, setSearchValue] = useState('');
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const filteredOptions = useMemo(() => {
     return options.filter((option) =>
