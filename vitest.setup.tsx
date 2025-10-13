@@ -43,6 +43,10 @@ vi.mock('next/font/local', () => ({
   }),
 }));
 
+vi.mock('next/image', () => ({
+  default: (props: any) => <img {...props} />,
+}));
+
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
