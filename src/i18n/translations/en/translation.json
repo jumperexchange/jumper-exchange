@@ -269,7 +269,8 @@
     "assets_other": "The assets you will earn from",
     "chains_one": "The chain you will earn from",
     "chains_other": "The chains you will earn from",
-    "protocol": "The protocol you will earn from"
+    "protocol": "The protocol you will earn from",
+    "noPositionsToManage": "You do not have any positions to manage"
   },
   "labels": {
     "apy": "APY",
@@ -355,7 +356,8 @@
     "discover": "Discover {{name}}"
   },
   "buttons": {
-    "depositButtonLabel": "Quick deposit"
+    "depositButtonLabel": "Quick deposit",
+    "managePositionsButtonLabel": "Manage Positions"
   },
   "modal": {
     "perks": {

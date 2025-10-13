@@ -6,8 +6,13 @@ import { EarnCard } from '../Cards/EarnCard/EarnCard';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Box from '@mui/material/Box';
 import { ProtocolCard } from '../Cards/ProtocolCard/ProtocolCard';
+import {
+  EarnDetailsColumnFlexContainer,
+  EarnDetailsRowFlexContainer,
+} from './EarnDetails.styles';
+import { EarnDetailsActions } from './EarnDetailsActions';
+import { DepositFlowModal } from '../composite/DepositFlow/DepositFlow';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -20,43 +25,52 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   return (
-    <Box
-      sx={(theme) => ({
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: isMobile ? 'wrap' : 'nowrap',
-        columnGap: theme.spacing(2),
-        rowGap: theme.spacing(3),
-      })}
-    >
+    <EarnDetailsRowFlexContainer>
       {data ? (
         <>
-          <ProtocolCard data={data} isLoading={isLoading} />
-          <EarnCard
+          <ProtocolCard
             data={data}
-            variant="overview"
             isLoading={isLoading}
-            headerBadge={
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.SM}
-                label="Updated 12 hours ago"
-              />
-            }
             fullWidth={isMobile}
           />
+          <EarnDetailsColumnFlexContainer>
+            <EarnCard
+              data={data}
+              variant="overview"
+              isLoading={isLoading}
+              headerBadge={
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.SM}
+                  label="Updated 12 hours ago"
+                />
+              }
+              fullWidth={isMobile}
+            />
+            <EarnDetailsActions
+              earnOpportunity={{
+                ...data,
+                minFromAmountUSD: 5,
+                positionUrl: '',
+                address: '',
+              }}
+            />
+          </EarnDetailsColumnFlexContainer>
+          <DepositFlowModal />
         </>
       ) : (
         <>
-          <ProtocolCard data={null} isLoading />
-          <EarnCard
-            data={null}
-            variant="overview"
-            isLoading
-            fullWidth={isMobile}
-          />
+          <ProtocolCard data={null} isLoading fullWidth={isMobile} />
+          <EarnDetailsColumnFlexContainer>
+            <EarnCard
+              data={null}
+              variant="overview"
+              isLoading
+              fullWidth={isMobile}
+            />
+          </EarnDetailsColumnFlexContainer>
         </>
       )}
-    </Box>
+    </EarnDetailsRowFlexContainer>
   );
 };

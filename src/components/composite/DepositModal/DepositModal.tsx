@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
@@ -9,6 +9,7 @@ import {
   ModalContainer,
   ModalContainerProps,
 } from 'src/components/core/modals/ModalContainer/ModalContainer';
+import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
 
 interface DepositModalProps extends ModalContainerProps {
   earnOpportunity: Pick<
@@ -26,20 +27,8 @@ export const DepositModal: FC<DepositModalProps> = ({
   isOpen,
   earnOpportunity,
 }) => {
-  const customInformation = useMemo(() => {
-    return {
-      projectData: {
-        chain: earnOpportunity.asset.chain.chainKey,
-        chainId: earnOpportunity.asset.chain.chainId,
-        address: earnOpportunity.address,
-        project: earnOpportunity.protocol.name,
-        integrator: `zap.${earnOpportunity.protocol.name}`,
-        integratorLink: earnOpportunity.url ?? 'unset',
-        integratorPositionLink: earnOpportunity.positionUrl,
-        minFromAmountUSD: earnOpportunity.minFromAmountUSD,
-      },
-    };
-  }, [earnOpportunity]);
+  const customInformation =
+    useProjectLikeDataFromEarnOpportunity(earnOpportunity);
 
   return (
     <WidgetTrackingProvider>
@@ -53,6 +42,7 @@ export const DepositModal: FC<DepositModalProps> = ({
                     maxHeight: 'calc(100vh - 6rem)',
                     minWidth: '100%',
                     maxWidth: 400,
+                    borderRadius: '24px',
                   },
                 },
                 taskType: TaskType.Zap,
