@@ -1,4 +1,6 @@
+import { groupBy } from 'lodash';
 import { TOOLTIP_CONFIG, Y_AXIS_CONFIG } from './constants';
+import { ChartDataPoint } from './LineChart';
 
 /**
  * Calculates the optimal tooltip position to prevent it from going outside the container bounds
@@ -23,14 +25,50 @@ export const calculateTooltipPosition = (
 };
 
 /**
- * Calculates the visible y range for the chart
+ * Calculates the visible y range for the chart with padding to prevent curve clipping
+ * Uses range-based padding which is more mathematically sound than value-based padding:
+ * - Scale-independent (works with any magnitude of values)
+ * - Handles edge cases (values near zero, negative values)
+ * - Proportional to data variation
  */
-export const calculateVisibleYRange = (data: any[]) => {
+export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
+  data: T[],
+) => {
   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
   const minValue = Math.min(...values);
-  // Offset the min value by 10% to avoid the area being cut off due to curve rendering
-  const minValueWithOffset =
-    minValue - minValue * Y_AXIS_CONFIG.START_VALUE_OFFSET;
   const maxValue = Math.max(...values);
-  return { minValue: minValueWithOffset, maxValue };
+
+  // Calculate the range of the data
+  const range = maxValue - minValue;
+
+  // Add padding as a percentage of the range (not the values themselves)
+  // This ensures consistent padding regardless of data scale
+  const padding = range * Y_AXIS_CONFIG.START_VALUE_OFFSET;
+
+  const minValueWithOffset = minValue - padding;
+  const maxValueWithOffset = maxValue + padding;
+
+  return {
+    minValue,
+    maxValue,
+    minValueWithOffset,
+    maxValueWithOffset,
+  };
+};
+
+/**
+ * Groups data by formatted date values and returns the first date from each group
+ * This ensures one tick per unique formatted date (e.g., one per month if using 'MMM yyyy')
+ */
+export const calculateEvenXAxisTicks = <V, T extends ChartDataPoint<V>>(
+  data: T[],
+  dateFormatter: (date: string) => string,
+): T['date'][] => {
+  if (!data || data.length === 0) return [];
+
+  // Group data points by their formatted date
+  const grouped = groupBy(data, (point) => dateFormatter(point.date));
+
+  // Pick the first date from each group
+  return Object.values(grouped).map((group) => group[0].date);
 };

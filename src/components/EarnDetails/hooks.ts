@@ -60,9 +60,9 @@ export const useAnalyticsChartData = (
       data,
       dateFormat:
         range === AnalyticsRangeFieldEnum.DAY
-          ? 'dd MMM yyyy'
+          ? 'dd MMM yyyy hhaa'
           : range === AnalyticsRangeFieldEnum.WEEK
-            ? 'ww MMM'
+            ? 'dd MMM'
             : range === AnalyticsRangeFieldEnum.MONTH
               ? 'MMM yyyy'
               : 'yyyy',

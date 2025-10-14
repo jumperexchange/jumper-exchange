@@ -11,8 +11,12 @@ import {
 import { CustomTooltip } from './CustomTooltip';
 import { toCompactValue } from 'src/utils/formatNumbers';
 import { LineChartSkeleton } from './LineChartSkeleton';
-import { calculateTooltipPosition, calculateVisibleYRange } from './utils';
-import { useMemo, useRef } from 'react';
+import {
+  calculateTooltipPosition,
+  calculateVisibleYRange,
+  calculateEvenXAxisTicks,
+} from './utils';
+import { useCallback, useMemo, useRef } from 'react';
 import { format } from 'date-fns';
 import { AREA_CONFIG } from './constants';
 
@@ -54,13 +58,25 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
-  const { minValue, maxValue } = calculateVisibleYRange(data);
+  const { minValue, maxValue, minValueWithOffset, maxValueWithOffset } =
+    calculateVisibleYRange(data);
 
-  const tickValues = useMemo(() => {
+  const dateFormatter = useCallback(
+    (date: string) => {
+      return format(date ?? '', dateFormat ?? 'MMM yyyy');
+    },
+    [dateFormat],
+  );
+
+  const yAxisTickValues = useMemo(() => {
     const range = maxValue - minValue;
     const step = range / 4; // for 5 ticks, there are 4 steps
     return Array.from({ length: 5 }, (_, i) => minValue + step * i);
   }, [minValue, maxValue]);
+
+  const xAxisTicks = useMemo(() => {
+    return calculateEvenXAxisTicks(data, dateFormatter);
+  }, [data, dateFormatter]);
 
   if (isLoading) {
     return <LineChartSkeleton />;
@@ -82,9 +98,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
         {enableGridY && (
           <CartesianGrid
             vertical={false}
-            horizontal={{
-              offset: -1,
-            }}
+            syncWithTicks={true}
             strokeDasharray="0"
             stroke={`color-mix(in srgb, ${
               (muiTheme.vars || muiTheme).palette.alpha900.main
@@ -96,7 +110,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             dataKey="date"
             axisLine={false}
             tickLine={false}
-            minTickGap={10}
+            ticks={xAxisTicks}
             tickMargin={14}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
@@ -104,19 +118,17 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
               fontFamily: muiTheme.typography.bodyXXSmall.fontFamily,
               fontWeight: muiTheme.typography.bodyXXSmall.fontWeight,
             }}
-            tickFormatter={(value) => {
-              return format(value ?? '', dateFormat ?? 'MMM yyyy');
-            }}
+            tickFormatter={dateFormatter}
           />
         )}
         {enableYAxis && (
           <YAxis
             axisLine={false}
             tickLine={false}
-            ticks={tickValues}
+            ticks={yAxisTickValues}
             width={40}
             tickMargin={8}
-            domain={[minValue, maxValue]}
+            domain={[minValueWithOffset, maxValueWithOffset]}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
               fontSize: 10,
@@ -140,20 +152,14 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
                 chartContainerRef.current?.clientHeight ?? 0,
               );
               return (
-                <CustomTooltip
-                  {...props}
-                  x={x}
-                  y={y}
-                  dateFormat={dateFormat}
-                  dataSetId={dataSetId}
-                />
+                <CustomTooltip {...props} x={x} y={y} dataSetId={dataSetId} />
               );
             }}
             cursor={false}
           />
         )}
         <Area
-          type="natural"
+          type="monotone"
           dataKey="value"
           stroke={theme.lineColor}
           activeDot={
@@ -171,7 +177,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
           fillOpacity={1}
           fill="url(#areaGradient)"
           isAnimationActive
-          baseValue={minValue}
+          baseValue="dataMin"
           style={{
             transform: AREA_CONFIG.TRANSFORM,
           }}
