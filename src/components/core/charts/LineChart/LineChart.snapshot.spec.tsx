@@ -2,6 +2,27 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { render } from '../../../../../vitest.setup';
 import { LineChart } from './LineChart';
+import { Children, cloneElement } from 'react';
+import { ResponsiveContainerProps } from 'recharts';
+
+vi.mock('recharts', async (importOriginal) => {
+  const originalModule = (await importOriginal()) as Record<string, unknown>;
+  return {
+    ...originalModule,
+    ResponsiveContainer: ({
+      children,
+      className,
+      id,
+      ...rest
+    }: ResponsiveContainerProps) => (
+      <div {...rest}>
+        {Children.map(children, (child) =>
+          cloneElement(child, { width: 100, height: 100 } as any),
+        )}
+      </div>
+    ),
+  };
+});
 
 const data = [
   { date: '2023-01-01', value: 97.92 },
