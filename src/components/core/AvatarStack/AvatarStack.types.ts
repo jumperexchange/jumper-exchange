@@ -1,4 +1,5 @@
 export enum AvatarSize {
+  '3XS' = '3xs',
   XXS = 'xxs',
   XS = 'xs',
   SM = 'sm',

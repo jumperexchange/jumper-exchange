@@ -265,14 +265,23 @@
     "lockupPeriod": "Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.",
     "manageYourPosition": "You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button",
     "assets_one": "The asset you will earn from",
-    "assets_other": "The assets you will earn from"
+    "assets_other_one": "The asset you will earn from",
+    "assets_other": "The assets you will earn from",
+    "chains_one": "The chain you will earn from",
+    "chains_other": "The chains you will earn from",
+    "protocol": "The protocol you will earn from"
   },
   "labels": {
     "apy": "APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",
     "assets_one": "Asset",
-    "assets_other": "Assets"
+    "assets_other_one": "Asset",
+    "assets_other": "Assets",
+    "chains_one": "Chain",
+    "chains_other": "Chains",
+    "protocol": "Protocol",
+    "overview": "Overview"
   },
   "earn": {
     "top": {
