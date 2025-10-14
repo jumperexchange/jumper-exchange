@@ -18,8 +18,8 @@ export const EarnDetailsIntroSkeleton = () => {
       <EarnDetailsColumnFlexContainer>
         <OverviewEarnSkeleton fullWidth={isMobile} />
         <EarnDetailsActionsContainer>
-          <BaseSkeletonBox variant="rounded" width={120} height={48} />
-          <BaseSkeletonBox variant="rounded" width={120} height={48} />
+          <BaseSkeletonBox variant="rounded" width="100%" height={48} />
+          <BaseSkeletonBox variant="rounded" width="100%" height={48} />
         </EarnDetailsActionsContainer>
       </EarnDetailsColumnFlexContainer>
     </EarnDetailsRowFlexContainer>
