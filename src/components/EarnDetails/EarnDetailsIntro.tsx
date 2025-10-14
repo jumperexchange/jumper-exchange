@@ -12,7 +12,6 @@ import {
   EarnDetailsRowFlexContainer,
 } from './EarnDetails.styles';
 import { EarnDetailsActions } from './EarnDetailsActions';
-import { DepositFlowModal } from '../composite/DepositFlow/DepositFlow';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -56,7 +55,6 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
               }}
             />
           </EarnDetailsColumnFlexContainer>
-          <DepositFlowModal />
         </>
       ) : (
         <>

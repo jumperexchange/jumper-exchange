@@ -304,6 +304,9 @@
       "clear": "Clear",
       "selected": "{{count}} selected",
       "search": "Search {{filterBy}}..."
+    },
+    "relatedMarkets": {
+      "title": "Related Markets"
     }
   },
   "widget": {
