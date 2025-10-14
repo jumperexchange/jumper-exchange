@@ -356,5 +356,65 @@
   },
   "buttons": {
     "depositButtonLabel": "Quick deposit"
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": "Claim perk"
+      },
+      "claimedPerk": {
+        "title": "Perk claimed!",
+        "description": "You have verified this perk with the following address",
+        "nextSteps": "Next steps",
+        "howToUsePerk": "How to use your perk ?",
+        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
+      },
+
+      "signatureFailed": {
+        "title": "Signature required",
+        "description": "You need to sign the transaction to confirm ownership of the wallet address.",
+        "tryAgain": "Try again"
+      },
+
+      "validationFailed": {
+        "title": "Validation failed",
+        "description": "Please check the fields and try again.",
+        "close": "Close"
+      },
+
+      "unsupportedWallet": {
+        "title": "Unsupported wallet",
+        "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
+        "switchWallet": "Switch wallet"
+      },
+
+      "unknown": {
+        "title": "Unknown error",
+        "description": "An unknown error occurred. Please try again.",
+        "tryAgain": "Try again"
+      },
+
+      "stepper": {
+        "multipleSteps": {
+          "username": {
+            "title": "Enter username",
+            "description": "To claim your perk you must first share your {{usernameType}} username."
+          },
+          "wallet": {
+            "title": "Verify wallet",
+            "description": "Next you must sign a message to verify ownership of the below connected wallet address."
+          }
+        },
+        "singleStep": {
+          "wallet": {
+            "title": "Verify wallet",
+            "description": "To claim your perk you must sign a message to verify ownership of the below connected wallet address."
+          }
+        },
+        "continue": "Continue",
+        "submit": "Verify wallet and claim perk",
+        "submitting": "Waiting for verification"
+      }
+    }
   }
 }
