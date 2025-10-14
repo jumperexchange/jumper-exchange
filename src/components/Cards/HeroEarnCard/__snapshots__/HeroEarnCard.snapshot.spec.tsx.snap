@@ -260,13 +260,16 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
       class="MuiStack-root css-imab1l-MuiStack-root"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-k4wtzs-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
+        color="default"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-k4wtzs-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
+        color="default"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-k4wtzs-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
+        color="default"
       />
     </div>
     <div

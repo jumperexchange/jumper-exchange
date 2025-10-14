@@ -3,7 +3,7 @@
 exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-bbef3p"
+    class="MuiBox-root css-dy5pm"
     data-testid="protocol-card"
   >
     <div
@@ -27,7 +27,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="MuiBox-root css-1phtfd3"
+      class="MuiBox-root css-pqmg6p"
     >
       <div
         class="MuiBox-root css-7tc8bc"
@@ -61,7 +61,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1lef7nx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1f6xzyb-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
@@ -99,7 +99,7 @@ The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitic
 exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-bbef3p"
+    class="MuiBox-root css-dy5pm"
     data-testid="protocol-card"
   >
     <div
@@ -136,7 +136,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
       </div>
     </div>
     <div
-      class="MuiBox-root css-1phtfd3"
+      class="MuiBox-root css-pqmg6p"
     >
       <div
         class="MuiBox-root css-7tc8bc"
@@ -170,7 +170,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1lef7nx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1f6xzyb-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
@@ -208,13 +208,13 @@ The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitic
 exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-bbef3p"
+    class="MuiBox-root css-dy5pm"
   >
     <div
       class="MuiBox-root css-1yz1h9d"
     />
     <div
-      class="MuiBox-root css-1phtfd3"
+      class="MuiBox-root css-pqmg6p"
     >
       <span
         class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1w43a1r-MuiSkeleton-root"
@@ -240,7 +240,7 @@ exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`]
 exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-bbef3p"
+    class="MuiBox-root css-dy5pm"
     data-testid="protocol-card"
   >
     <div
@@ -264,7 +264,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
       </div>
     </div>
     <div
-      class="MuiBox-root css-1phtfd3"
+      class="MuiBox-root css-pqmg6p"
     >
       <div
         class="MuiBox-root css-7tc8bc"
@@ -298,7 +298,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1lef7nx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-body1 css-1f6xzyb-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
