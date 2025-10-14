@@ -1,10 +1,11 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { PerksCard as PerksCardComponent } from 'src/components/Cards/PerksCard/PerksCard';
+import { Link } from 'src/components/Link';
 import { useFormatDisplayPerkData } from 'src/hooks/perks/useFormatDisplayPerkData';
 import { PerksDataAttributes } from 'src/types/strapi';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
@@ -12,60 +13,24 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import { ClaimPerkModal } from '../ClaimPerkModal/ClaimPerkModal';
-import { useGetClaimedPerks } from 'src/hooks/perks/useGetClaimedPerks';
 
 interface PerksCardProps {
   perk: PerksDataAttributes;
 }
 
 export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
-  const {
-    id,
-    title,
-    description,
-    imageUrl,
-    unlockLevel,
-    perkItems,
-    claimableSteps,
-    claimableStepProps,
-    howToUsePerkDescription,
-    nextStepsDescription,
-  } = useFormatDisplayPerkData(perk);
+  const { title, description, imageUrl, href, unlockLevel, perkItems } =
+    useFormatDisplayPerkData(perk);
   const activeAccount = useActiveAccountByChainType();
-  const activeAccountAddress = activeAccount?.address;
   const { t } = useTranslation();
-  const { level, isLoading } = useLoyaltyPass(activeAccountAddress);
-  const { data: claimedPerks, isLoading: isClaimedLoading } =
-    useGetClaimedPerks(activeAccountAddress);
-  const [isOpen, setIsOpen] = useState(false);
+  const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
   const [levelBadgeElement, setLevelBadgeElement] =
     useState<HTMLSpanElement | null>(null);
-
-  const handleCloseModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-
-  const handleOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const isClaimed = useMemo(() => {
-    return (
-      claimedPerks?.some(
-        (claimedPerk) => claimedPerk.perkId === id.toString(),
-      ) ?? false
-    );
-  }, [claimedPerks, id]);
 
   const isLocked = useMemo(() => {
     const currentLevel = Number(level ?? 0);
     return unlockLevel > currentLevel;
   }, [unlockLevel, level]);
-
-  const isDisabled = useMemo(() => {
-    return isLocked || isClaimedLoading || isLoading || !activeAccountAddress;
-  }, [isLocked, isClaimedLoading, isLoading, activeAccountAddress]);
 
   const levelBadgeProps = useMemo(() => {
     if (isLocked) {
@@ -115,27 +80,22 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
       }
       perksBadge={perksBadge}
       fullWidth
-      isDisabled={isDisabled}
-      onClick={isDisabled ? undefined : handleOpenModal}
+      isDisabled={isLocked}
     />
   );
 
-  if (!isLocked) {
+  if (href && !isLocked) {
     return (
-      <>
+      <Link
+        href={href}
+        target="_blank"
+        sx={{
+          textDecoration: 'none',
+          width: 'auto',
+        }}
+      >
         {perkCard}
-        <ClaimPerkModal
-          perkId={id}
-          isClaimed={isClaimed}
-          isOpen={isOpen}
-          onClose={handleCloseModal}
-          walletAddress={activeAccount?.address}
-          stepProps={claimableStepProps}
-          permittedSteps={claimableSteps}
-          nextStepsDescription={nextStepsDescription}
-          howToUsePerkDescription={howToUsePerkDescription}
-        />
-      </>
+      </Link>
     );
   }
 
