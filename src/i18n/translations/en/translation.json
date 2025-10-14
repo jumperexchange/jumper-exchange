@@ -265,14 +265,24 @@
     "lockupPeriod": "Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.",
     "manageYourPosition": "You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button",
     "assets_one": "The asset you will earn from",
-    "assets_other": "The assets you will earn from"
+    "assets_other_one": "The asset you will earn from",
+    "assets_other": "The assets you will earn from",
+    "chains_one": "The chain you will earn from",
+    "chains_other": "The chains you will earn from",
+    "protocol": "The protocol you will earn from",
+    "noPositionsToManage": "You do not have any positions to manage"
   },
   "labels": {
     "apy": "APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",
     "assets_one": "Asset",
-    "assets_other": "Assets"
+    "assets_other_one": "Asset",
+    "assets_other": "Assets",
+    "chains_one": "Chain",
+    "chains_other": "Chains",
+    "protocol": "Protocol",
+    "overview": "Overview"
   },
   "earn": {
     "top": {
@@ -294,6 +304,9 @@
       "clear": "Clear",
       "selected": "{{count}} selected",
       "search": "Search {{filterBy}}..."
+    },
+    "relatedMarkets": {
+      "title": "Related Markets"
     }
   },
   "widget": {
@@ -342,7 +355,71 @@
       }
     }
   },
+  "links": {
+    "discover": "Discover {{name}}"
+  },
   "buttons": {
-    "depositButtonLabel": "Quick deposit"
+    "depositButtonLabel": "Quick deposit",
+    "managePositionsButtonLabel": "Manage Positions"
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": "Claim perk"
+      },
+      "claimedPerk": {
+        "title": "Perk claimed!",
+        "description": "You have verified this perk with the following address",
+        "nextSteps": "Next steps",
+        "howToUsePerk": "How to use your perk ?",
+        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
+      },
+
+      "signatureFailed": {
+        "title": "Signature required",
+        "description": "You need to sign the transaction to confirm ownership of the wallet address.",
+        "tryAgain": "Try again"
+      },
+
+      "validationFailed": {
+        "title": "Validation failed",
+        "description": "Please check the fields and try again.",
+        "close": "Close"
+      },
+
+      "unsupportedWallet": {
+        "title": "Unsupported wallet",
+        "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
+        "switchWallet": "Switch wallet"
+      },
+
+      "unknown": {
+        "title": "Unknown error",
+        "description": "An unknown error occurred. Please try again.",
+        "tryAgain": "Try again"
+      },
+
+      "stepper": {
+        "multipleSteps": {
+          "username": {
+            "title": "Enter username",
+            "description": "To claim your perk you must first share your {{usernameType}} username."
+          },
+          "wallet": {
+            "title": "Verify wallet",
+            "description": "Next you must sign a message to verify ownership of the below connected wallet address."
+          }
+        },
+        "singleStep": {
+          "wallet": {
+            "title": "Verify wallet",
+            "description": "To claim your perk you must sign a message to verify ownership of the below connected wallet address."
+          }
+        },
+        "continue": "Continue",
+        "submit": "Verify wallet and claim perk",
+        "submitting": "Waiting for verification"
+      }
+    }
   }
 }

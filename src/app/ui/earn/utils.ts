@@ -1,6 +1,11 @@
 import { map, uniqBy, uniq, sortBy, fromPairs } from 'lodash';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { EarnFilteringParams, OrderOptions, SortByOptions } from './types';
+import {
+  EarnFilteringParams,
+  EarnOpportunityFilterWithoutSortByAndOrder,
+  OrderOptions,
+  SortByOptions,
+} from './types';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
   parseAsStringEnum,
@@ -9,6 +14,7 @@ import {
   parseAsInteger,
   parseAsString,
   parseAsFloat,
+  Nullable,
 } from 'nuqs';
 
 export const searchParamsParsers = {
@@ -57,5 +63,53 @@ export const extractFilteringParams = (
     allAssets,
     allTags,
     allAPY,
+  };
+};
+
+export const removeNullValuesFromFilter = (
+  filter: Nullable<EarnOpportunityFilterWithoutSortByAndOrder>,
+) => {
+  return Object.fromEntries(
+    Object.entries(filter).filter(([_, value]) => value !== null),
+  ) as EarnOpportunityFilterWithoutSortByAndOrder;
+};
+
+export const sanitizeFilter = (
+  filter: EarnOpportunityFilterWithoutSortByAndOrder,
+  stats: EarnFilteringParams,
+): Nullable<EarnOpportunityFilterWithoutSortByAndOrder> => {
+  if (
+    !stats.allChains.length ||
+    !stats.allProtocols.length ||
+    !stats.allAssets.length ||
+    !stats.allTags.length
+  ) {
+    return filter;
+  }
+
+  const validChainIds = new Set(stats.allChains.map((c) => c.chainId));
+  const validProtocols = new Set(stats.allProtocols.map((p) => p.name));
+  const validAssets = new Set(stats.allAssets.map((a) => a.name));
+  const validTags = new Set(stats.allTags);
+  const validAPY = new Set(
+    Object.values(stats.allAPY ?? []).map((apy) => apy / 100),
+  );
+  const apyMin = Math.min(...validAPY, 0);
+  const apyMax = Math.max(...validAPY, 0);
+
+  return {
+    ...filter,
+    chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
+    protocols: filter.protocols?.filter((p) => validProtocols.has(p)) ?? null,
+    assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
+    tags: filter.tags?.filter((t) => validTags.has(t)) ?? null,
+    minAPY:
+      filter.minAPY !== undefined
+        ? Math.max(Math.min(filter.minAPY, apyMax), apyMin)
+        : null,
+    maxAPY:
+      filter.maxAPY !== undefined
+        ? Math.max(Math.min(filter.maxAPY, apyMax), apyMin)
+        : null,
   };
 };
