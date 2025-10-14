@@ -265,14 +265,23 @@
     "lockupPeriod": "",
     "manageYourPosition": "",
     "assets_one": "",
-    "assets_other": ""
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": ""
   },
   "labels": {
     "apy": "",
     "lockupPeriod": "",
     "tvl": "",
     "assets_one": "",
-    "assets_other": ""
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": ""
   },
   "earn": {
     "top": {
@@ -342,7 +351,65 @@
       }
     }
   },
+  "links": {
+    "discover": ""
+  },
   "buttons": {
     "depositButtonLabel": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "multipleSteps": {
+          "username": {
+            "title": "",
+            "description": ""
+          },
+          "wallet": {
+            "title": "",
+            "description": ""
+          }
+        },
+        "singleStep": {
+          "wallet": {
+            "title": "",
+            "description": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
   }
 }
