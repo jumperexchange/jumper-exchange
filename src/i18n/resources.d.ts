@@ -81,6 +81,9 @@ interface Resources {
         "search": "Search {{filterBy}}...",
         "selected": "{{count}} selected"
       },
+      "relatedMarkets": {
+        "title": "Related Markets"
+      },
       "sorting": {
         "apy": "APY",
         "sortBy": "Sort By",

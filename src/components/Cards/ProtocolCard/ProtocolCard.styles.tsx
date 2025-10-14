@@ -16,6 +16,8 @@ export const ProtocolCardContainer = styled(Box)(({ theme }) => ({
     backgroundColor: (theme.vars || theme).palette.surface2.main,
   }),
   overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
 }));
 
 interface ProtocolCardHeaderContainerProps {
@@ -90,6 +92,7 @@ export const ProtocolCardProtocolAvatar = styled(Image)(({ theme }) => ({
 export const ProtocolCardContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   gap: theme.spacing(3),
+  flex: 1,
   display: 'flex',
   flexDirection: 'column',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
@@ -120,6 +123,7 @@ export const ProtocolCardDescriptionContainer = styled(Typography)(
     ...getTextEllipsisStyles(4),
     overflow: 'hidden',
     whiteSpace: 'break-spaces',
+    marginBottom: 'auto',
   }),
 );
 
