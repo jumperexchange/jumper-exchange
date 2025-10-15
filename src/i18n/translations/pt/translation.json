@@ -269,7 +269,8 @@
     "assets_other": "",
     "chains_one": "",
     "chains_other": "",
-    "protocol": ""
+    "protocol": "",
+    "noPositionsToManage": ""
   },
   "labels": {
     "apy": "",
@@ -303,6 +304,9 @@
       "clear": "",
       "selected": "",
       "search": ""
+    },
+    "relatedMarkets": {
+      "title": ""
     }
   },
   "widget": {
@@ -355,61 +359,7 @@
     "discover": ""
   },
   "buttons": {
-    "depositButtonLabel": "Depósito rápido"
-  },
-  "modal": {
-    "perks": {
-      "unclaimedPerk": {
-        "title": ""
-      },
-      "claimedPerk": {
-        "title": "",
-        "description": "",
-        "nextSteps": "",
-        "howToUsePerk": "",
-        "howToUsePerkDescription": ""
-      },
-      "signatureFailed": {
-        "title": "",
-        "description": "",
-        "tryAgain": ""
-      },
-      "validationFailed": {
-        "title": "",
-        "description": "",
-        "close": ""
-      },
-      "unsupportedWallet": {
-        "title": "",
-        "description": "",
-        "switchWallet": ""
-      },
-      "unknown": {
-        "title": "",
-        "description": "",
-        "tryAgain": ""
-      },
-      "stepper": {
-        "multipleSteps": {
-          "username": {
-            "title": "",
-            "description": ""
-          },
-          "wallet": {
-            "title": "",
-            "description": ""
-          }
-        },
-        "singleStep": {
-          "wallet": {
-            "title": "",
-            "description": ""
-          }
-        },
-        "continue": "",
-        "submit": "",
-        "submitting": ""
-      }
-    }
+    "depositButtonLabel": "Depósito rápido",
+    "managePositionsButtonLabel": ""
   }
 }
