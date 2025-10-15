@@ -296,7 +296,7 @@ interface Resources {
       completed: 'Completed';
       earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month and this has been added to your total XP balance.";
       join: 'Join';
-      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}} addtional XP this month.';
+      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}} additional XP this month.';
     };
     seiAlert: {
       buttonText: 'Link Wallet';

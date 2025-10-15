@@ -80,7 +80,7 @@ export function Widget({
     // if (!isDesktop) {
     //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
     // }
-    // all the trafic from web on "/gas"
+    // all the traffic from web on "/gas"
     if (isGasVariant) {
       return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
     }
