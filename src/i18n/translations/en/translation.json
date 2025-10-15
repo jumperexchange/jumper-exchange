@@ -307,6 +307,9 @@
     },
     "relatedMarkets": {
       "title": "Related Markets"
+    },
+    "overview": {
+      "updated": "Updated {{time}} ago"
     }
   },
   "widget": {
