@@ -1,4 +1,4 @@
-import { groupBy } from 'lodash';
+import { groupBy, uniq } from 'lodash';
 import { TOOLTIP_CONFIG, Y_AXIS_CONFIG } from './constants';
 import { ChartDataPoint } from './LineChart';
 
@@ -35,8 +35,18 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
   data: T[],
 ) => {
   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
+  let minValue = Math.min(...values);
+  let maxValue = Math.max(...values);
+
+  if (minValue === maxValue) {
+    if (minValue === 0) {
+      maxValue = 1;
+    } else {
+      const offset = Math.abs(minValue) * Y_AXIS_CONFIG.START_VALUE_OFFSET;
+      minValue -= offset;
+      maxValue += offset;
+    }
+  }
 
   // Calculate the range of the data
   const range = maxValue - minValue;
@@ -71,4 +81,10 @@ export const calculateEvenXAxisTicks = <V, T extends ChartDataPoint<V>>(
 
   // Pick the first date from each group
   return Object.values(grouped).map((group) => group[0].date);
+};
+
+export const calculateEvenYAxisTicks = (minValue: number, maxValue: number) => {
+  const range = maxValue - minValue;
+  const step = range / 4; // for 5 ticks, there are 4 steps
+  return Array.from({ length: 5 }, (_, i) => minValue + step * i);
 };

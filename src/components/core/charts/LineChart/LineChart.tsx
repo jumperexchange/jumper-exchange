@@ -15,6 +15,7 @@ import {
   calculateTooltipPosition,
   calculateVisibleYRange,
   calculateEvenXAxisTicks,
+  calculateEvenYAxisTicks,
 } from './utils';
 import { useCallback, useMemo, useRef } from 'react';
 import { format } from 'date-fns';
@@ -68,10 +69,26 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
     [dateFormat],
   );
 
+  const valueFormatter = useCallback((value: T) => {
+    if (!value || isNaN(Number(value))) {
+      return value.toString();
+    }
+
+    const numberValue = Number(value);
+
+    if (numberValue === 0) {
+      return '';
+    }
+
+    if (Math.abs(numberValue) < 0.001 && numberValue !== 0) {
+      return numberValue.toExponential(1);
+    }
+
+    return toCompactValue(numberValue).toString();
+  }, []);
+
   const yAxisTickValues = useMemo(() => {
-    const range = maxValue - minValue;
-    const step = range / 4; // for 5 ticks, there are 4 steps
-    return Array.from({ length: 5 }, (_, i) => minValue + step * i);
+    return calculateEvenYAxisTicks(minValue, maxValue);
   }, [minValue, maxValue]);
 
   const xAxisTicks = useMemo(() => {
@@ -135,11 +152,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
               fontFamily: muiTheme.typography.bodyXXSmall.fontFamily,
               fontWeight: muiTheme.typography.bodyXXSmall.fontWeight,
             }}
-            tickFormatter={(value) => {
-              if (!value || isNaN(Number(value))) return value;
-              if (Number(value) === 0) return '';
-              return toCompactValue(value);
-            }}
+            tickFormatter={valueFormatter}
           />
         )}
         {enableTooltip && (
