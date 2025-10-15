@@ -118,7 +118,6 @@ export const ProtocolCardTagsContainer = styled(Stack)(({ theme }) => ({
 
 export const ProtocolCardDescriptionContainer = styled(Typography)(
   ({ theme }) => ({
-    ...theme.typography.bodyMedium,
     color: (theme.vars || theme).palette.text.secondary,
     ...getTextEllipsisStyles(4),
     overflow: 'hidden',
