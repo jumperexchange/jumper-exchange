@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { EarnCard } from '../Cards/EarnCard/EarnCard';
 import { Badge } from '../Badge/Badge';
@@ -12,6 +12,8 @@ import {
   EarnDetailsRowFlexContainer,
 } from './EarnDetails.styles';
 import { EarnDetailsActions } from './EarnDetailsActions';
+import { formatDistance } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -22,7 +24,16 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
   data,
   isLoading,
 }) => {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const updateBadgeLabel = useMemo(() => {
+    if (!data.latest.date) return '';
+
+    const now = Date.now();
+    const distance = formatDistance(data.latest.date, now);
+    return t('earn.overview.updated', { time: distance });
+  }, [data.latest.date, t]);
+
   return (
     <EarnDetailsRowFlexContainer>
       {data ? (
@@ -38,11 +49,13 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
               variant="overview"
               isLoading={isLoading}
               headerBadge={
-                <Badge
-                  variant={BadgeVariant.Secondary}
-                  size={BadgeSize.SM}
-                  label="Updated 12 hours ago"
-                />
+                updateBadgeLabel ? (
+                  <Badge
+                    variant={BadgeVariant.Secondary}
+                    size={BadgeSize.SM}
+                    label={updateBadgeLabel}
+                  />
+                ) : null
               }
               fullWidth={isMobile}
             />

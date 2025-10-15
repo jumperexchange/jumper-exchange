@@ -81,6 +81,9 @@ interface Resources {
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
       };
+      overview: {
+        updated: 'Updated {{time}} ago';
+      };
       relatedMarkets: {
         title: 'Related Markets';
       };
