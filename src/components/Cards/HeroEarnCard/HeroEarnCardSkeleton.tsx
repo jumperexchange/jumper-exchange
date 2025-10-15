@@ -10,6 +10,7 @@ import {
   HeroEarnCardContainer,
   HeroEarnCardContentContainer,
   HeroEarnCardFooterContainer,
+  HeroEarnCardFooterContentContainer,
   HeroEarnCardHeaderContainer,
 } from './HeroEarnCard.styles';
 
@@ -17,43 +18,36 @@ export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
   return (
     <HeroEarnCardContainer>
       <HeroEarnCardHeaderContainer direction="row">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <BadgeSkeleton key={index} size={BadgeSize.SM} />
-        ))}
+        <BadgeSkeleton size={BadgeSize.SM} width={84} />
       </HeroEarnCardHeaderContainer>
-      <HeroEarnCardContentContainer>
+      <HeroEarnCardContentContainer sx={{ paddingTop: 0.5 }}>
         <BaseSkeleton
           variant="rounded"
           sx={{
-            height: 26,
-            width: '100%',
-            maxWidth: '420px',
+            height: 24,
+            width: 146,
             borderRadius: 2,
-            marginTop: '1rem',
-            marginBottom: '1rem',
           }}
         />
       </HeroEarnCardContentContainer>
       <HeroEarnCardFooterContainer>
-        <Grid container rowSpacing={2} columnSpacing={2}>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <EntityChainStack
-              variant={EntityChainStackVariant.Protocol}
-              isLoading
-              protocolSize={AvatarSize.XXL}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 'auto' }} sx={{ marginLeft: 'auto' }}>
-            <BaseSkeleton
-              variant="rounded"
-              sx={{
-                height: '80%',
-                width: '120px',
-                borderRadius: 2,
-              }}
-            />
-          </Grid>
-        </Grid>
+        <HeroEarnCardFooterContentContainer>
+          <EntityChainStack
+            variant={EntityChainStackVariant.Protocol}
+            isLoading
+            isContentVisible={false}
+            protocolSize={AvatarSize.XXL}
+          />
+
+          <BaseSkeleton
+            variant="rounded"
+            sx={{
+              height: 48,
+              width: 120,
+              borderRadius: 2,
+            }}
+          />
+        </HeroEarnCardFooterContentContainer>
       </HeroEarnCardFooterContainer>
     </HeroEarnCardContainer>
   );
