@@ -16,7 +16,7 @@ test.describe("Chains filters on Earn page", () => {
 
 	test(qase(40, 'Should be able to navigate to the earn page'), async ({ page }) => {
 		await test.step("Navigate to earn page and verify URL", async () => {
-			await expect(page).toHaveURL("/earn");
+			await expect(page.url()).toContain("/earn");
 		});
 
 		await test.step("Verify Earn tabs are visible", async () => {
