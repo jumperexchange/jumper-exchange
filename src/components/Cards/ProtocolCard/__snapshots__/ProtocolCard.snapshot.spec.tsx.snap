@@ -61,7 +61,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1f6xzyb-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1iv6zei-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
@@ -170,7 +170,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1f6xzyb-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1iv6zei-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
@@ -298,7 +298,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-body1 css-1f6xzyb-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1iv6zei-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
