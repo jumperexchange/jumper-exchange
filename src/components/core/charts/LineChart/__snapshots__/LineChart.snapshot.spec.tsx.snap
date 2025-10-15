@@ -1105,6 +1105,23 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
             </g>
           </g>
         </g>
+        <g
+          class="recharts-layer recharts-reference-line"
+        >
+          <line
+            class="recharts-reference-line-line"
+            fill="none"
+            fill-opacity="1"
+            opacity="0.5"
+            stroke="var(--jumper-palette-text-primary)"
+            stroke-width="1"
+            x1="53"
+            x2="95"
+            y="0"
+            y1="35"
+            y2="35"
+          />
+        </g>
       </svg>
     </div>
   </div>
@@ -2454,6 +2471,23 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
               </g>
             </g>
           </g>
+        </g>
+        <g
+          class="recharts-layer recharts-reference-line"
+        >
+          <line
+            class="recharts-reference-line-line"
+            fill="none"
+            fill-opacity="1"
+            opacity="0.5"
+            stroke="var(--jumper-palette-text-primary)"
+            stroke-width="1"
+            x1="53"
+            x2="95"
+            y="0"
+            y1="35"
+            y2="35"
+          />
         </g>
       </svg>
     </div>

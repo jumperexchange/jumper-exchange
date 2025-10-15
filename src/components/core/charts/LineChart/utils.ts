@@ -42,6 +42,7 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
   const absMaxValue = Math.max(...absValues);
   const isNegative = minValue < 0;
   const isSame = minValue === maxValue;
+  let isSymmetricRange = false;
 
   if (isNegative) {
     if (isSame) {
@@ -52,6 +53,7 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
     } else {
       minValue = -absMaxValue;
       maxValue = absMaxValue;
+      isSymmetricRange = true;
     }
   } else {
     if (isSame) {
@@ -77,6 +79,7 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
     maxValue,
     minValueWithOffset,
     maxValueWithOffset,
+    isSymmetricRange,
     isNegative,
   };
 };

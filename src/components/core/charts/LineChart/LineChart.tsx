@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from 'recharts';
 import { CustomTooltip } from './CustomTooltip';
 import { toCompactValue } from 'src/utils/formatNumbers';
@@ -64,6 +65,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
     maxValue,
     minValueWithOffset,
     maxValueWithOffset,
+    isSymmetricRange,
     isNegative,
   } = calculateVisibleYRange(data);
 
@@ -196,6 +198,14 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             transform: AREA_CONFIG.TRANSFORM,
           }}
         />
+        {isSymmetricRange && (
+          <ReferenceLine
+            type="monotone"
+            y={0}
+            stroke={(muiTheme.vars || muiTheme).palette.text.primary}
+            opacity={0.5}
+          />
+        )}
       </AreaChart>
     </ResponsiveContainer>
   );
