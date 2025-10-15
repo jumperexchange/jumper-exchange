@@ -6,6 +6,11 @@ import Skeleton, { SkeletonProps } from '@mui/material/Skeleton';
 
 const getAvatarSize = (size: AvatarSize) => {
   switch (size) {
+    case AvatarSize['3XS']:
+      return {
+        width: 9,
+        height: 9,
+      };
     case AvatarSize.XXS:
       return {
         width: 12,

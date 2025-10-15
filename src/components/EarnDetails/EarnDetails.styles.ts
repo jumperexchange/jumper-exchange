@@ -1,13 +1,12 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonProps } from '../Button';
+import { ButtonPrimary, ButtonProps, ButtonTransparent } from '../Button';
 import Skeleton from '@mui/material/Skeleton';
 
-export const EarnDetailsAnalyticsContainer = styled(Box)(({ theme }) => ({
+export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(3),
   padding: theme.spacing(3),
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: `0px 4px 24px 0px rgba(0, 0, 0, 0.08)`,
@@ -15,6 +14,12 @@ export const EarnDetailsAnalyticsContainer = styled(Box)(({ theme }) => ({
   ...theme.applyStyles('dark', {
     backgroundColor: (theme.vars || theme).palette.surface2.main,
   }),
+}));
+
+export const EarnDetailsAnalyticsContainer = styled(
+  EarnDetailsSectionContainer,
+)(({ theme }) => ({
+  gap: theme.spacing(3),
 }));
 
 export const EarnDetailsAnalyticsHeaderContainer = styled(Stack)(
@@ -79,4 +84,48 @@ export const BaseSkeletonBox = styled(Skeleton)(({ theme }) => ({
   ...theme.applyStyles('dark', {
     backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
+}));
+
+export const EarnDetailsFlexContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  columnGap: theme.spacing(2),
+  rowGap: theme.spacing(3),
+  [theme.breakpoints.down('md')]: {
+    flexWrap: 'wrap',
+  },
+}));
+
+export const EarnDetailsRowFlexContainer = styled(EarnDetailsFlexContainer)(
+  ({ theme }) => ({
+    flex: '1',
+    flexDirection: 'row',
+  }),
+);
+
+export const EarnDetailsColumnFlexContainer = styled(EarnDetailsFlexContainer)(
+  ({ theme }) => ({
+    flex: '1 0 fit-content',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  }),
+);
+
+export const EarnDetailsActionsContainer = styled(EarnDetailsSectionContainer)(
+  ({ theme }) => ({
+    gap: theme.spacing(2),
+  }),
+);
+
+export const ManagePositionsButton = styled(ButtonTransparent)(({ theme }) => ({
+  padding: theme.spacing(1),
+  background: (theme.vars || theme.palette).palette.buttonLightBg,
+  color: (theme.vars || theme.palette).palette.buttonLightAction,
+  '&:hover': {
+    background: (theme.vars || theme.palette).palette.buttonPrimaryBg,
+    color: (theme.vars || theme.palette).palette.buttonPrimaryAction,
+  },
+  '&.MuiButtonBase-root.Mui-disabled, &.MuiButtonBase-root:disabled': {
+    background: (theme.vars || theme.palette).palette.buttonDisabledBg,
+    color: (theme.vars || theme.palette).palette.buttonDisabledAction,
+  },
 }));
