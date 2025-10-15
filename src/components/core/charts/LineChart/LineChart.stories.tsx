@@ -156,3 +156,133 @@ export const Skeleton: Story = {
     ...commonArgs,
   },
 };
+
+// Edge Cases: Testing calculateVisibleYRange logic
+
+export const NegativeValuesSame: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: -5 },
+      { date: '2023-01-02', value: -5 },
+      { date: '2023-01-03', value: -5 },
+      { date: '2023-01-04', value: -5 },
+      { date: '2023-01-05', value: -5 },
+    ],
+  },
+};
+
+export const NegativeValuesSameSmall: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: -0.5 },
+      { date: '2023-01-02', value: -0.5 },
+      { date: '2023-01-03', value: -0.5 },
+      { date: '2023-01-04', value: -0.5 },
+      { date: '2023-01-05', value: -0.5 },
+    ],
+  },
+};
+
+export const NegativeValuesVarying: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: -10 },
+      { date: '2023-01-02', value: -25 },
+      { date: '2023-01-03', value: -5 },
+      { date: '2023-01-04', value: -15 },
+      { date: '2023-01-05', value: -20 },
+      { date: '2023-01-06', value: -8 },
+    ],
+  },
+};
+
+export const PositiveValuesSame: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: 100 },
+      { date: '2023-01-02', value: 100 },
+      { date: '2023-01-03', value: 100 },
+      { date: '2023-01-04', value: 100 },
+      { date: '2023-01-05', value: 100 },
+    ],
+  },
+};
+
+export const PositiveValuesSameSmall: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: 0.5 },
+      { date: '2023-01-02', value: 0.5 },
+      { date: '2023-01-03', value: 0.5 },
+      { date: '2023-01-04', value: 0.5 },
+      { date: '2023-01-05', value: 0.5 },
+    ],
+  },
+};
+
+export const MixedPositiveNegative: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: 50 },
+      { date: '2023-01-02', value: -20 },
+      { date: '2023-01-03', value: 30 },
+      { date: '2023-01-04', value: -10 },
+      { date: '2023-01-05', value: 40 },
+      { date: '2023-01-06', value: -30 },
+    ],
+  },
+};
+
+export const ZeroValues: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: 0 },
+      { date: '2023-01-02', value: 0 },
+      { date: '2023-01-03', value: 0 },
+      { date: '2023-01-04', value: 0 },
+      { date: '2023-01-05', value: 0 },
+    ],
+  },
+};
+
+export const VerySmallValues: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: 0.001 },
+      { date: '2023-01-02', value: 0.003 },
+      { date: '2023-01-03', value: 0.002 },
+      { date: '2023-01-04', value: 0.0015 },
+      { date: '2023-01-05', value: 0.0025 },
+    ],
+  },
+};
+
+export const VeryLargeValues: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    data: [
+      { date: '2023-01-01', value: 1000000 },
+      { date: '2023-01-02', value: 2500000 },
+      { date: '2023-01-03', value: 1500000 },
+      { date: '2023-01-04', value: 3000000 },
+      { date: '2023-01-05', value: 2000000 },
+    ],
+  },
+};
