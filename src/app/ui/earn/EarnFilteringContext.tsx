@@ -3,6 +3,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -11,7 +12,12 @@ import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { Hex } from 'viem';
-import { extractFilteringParams, searchParamsParsers } from './utils';
+import {
+  extractFilteringParams,
+  removeNullValuesFromFilter,
+  sanitizeFilter,
+  searchParamsParsers,
+} from './utils';
 import { EMPTY_FILTERING_PARAMS } from './constants';
 import {
   EarnFilteringParams,
@@ -20,6 +26,7 @@ import {
   SortByEnum,
   SortByOptions,
 } from './types';
+import { isEqual } from 'lodash';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -78,9 +85,7 @@ export const EarnFilteringProvider = ({
   } = searchParamsState;
 
   const initialFilter = useMemo(() => {
-    return Object.fromEntries(
-      Object.entries(rest).filter(([_, value]) => value !== null),
-    ) as EarnOpportunityFilterWithoutSortByAndOrder;
+    return removeNullValuesFromFilter(rest);
   }, [rest]);
 
   // TODO: introduce the loading state?
@@ -113,6 +118,15 @@ export const EarnFilteringProvider = ({
 
     return extractFilteringParams(allNoFilter.data);
   }, [allNoFilter.data]);
+
+  useEffect(() => {
+    const sanitized = sanitizeFilter(filter, stats);
+
+    if (!isEqual(sanitized, filter)) {
+      setFilter(removeNullValuesFromFilter(sanitized));
+      setSearchParamsState(sanitized);
+    }
+  }, [stats]);
 
   const toggleForYou = useCallback(() => {
     const newShowForYou = !showForYou;

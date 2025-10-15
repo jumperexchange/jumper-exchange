@@ -5,10 +5,10 @@ export const TOOLTIP_CONFIG = {
 } as const;
 
 export const Y_AXIS_CONFIG = {
-  START_VALUE_OFFSET: 0.1,
+  START_VALUE_OFFSET: 0.05,
 } as const;
 
 export const AREA_CONFIG = {
   OFFSET: 0.1,
-  TRANSFORM: 'translateY(2.5px)',
+  TRANSFORM: 'translateY(0)',
 } as const;

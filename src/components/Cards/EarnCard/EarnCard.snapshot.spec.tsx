@@ -9,6 +9,8 @@ import {
   listItemPrimaryAction,
 } from './fixtures';
 import { AppPaths } from 'src/const/urls';
+import { Badge } from 'src/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 
 const mockedChains = [
   {
@@ -187,6 +189,33 @@ describe('EarnCard snapshot', () => {
         {...commonArgs}
         variant="list-item"
         href={`${AppPaths.Earn}/${commonArgs.data.slug}`}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('overview card matches snapshot', async () => {
+    const { container } = render(
+      <EarnCard {...commonArgs} variant="overview" />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('overview card with loading matches snapshot', async () => {
+    const { container } = render(
+      <EarnCard {...commonArgs} variant="overview" isLoading />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('overview card with badge matches snapshot', async () => {
+    const { container } = render(
+      <EarnCard
+        {...commonArgs}
+        variant="overview"
+        headerBadge={
+          <Badge variant={BadgeVariant.Secondary} size={BadgeSize.SM}>
+            Badge
+          </Badge>
+        }
       />,
     );
     expect(container).toMatchSnapshot();

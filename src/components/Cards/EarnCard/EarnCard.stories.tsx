@@ -6,6 +6,8 @@ import {
   listItemPrimaryAction,
 } from './fixtures';
 import { AppPaths } from 'src/const/urls';
+import { Badge } from 'src/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 
 const meta = {
   component: EarnCard,
@@ -104,5 +106,34 @@ export const ListItemWithHref: Story = {
     ...commonArgs,
     variant: 'list-item',
     href: `${AppPaths.Earn}/${commonArgs.data.slug}`,
+  },
+};
+
+export const Overview: Story = {
+  args: {
+    ...commonArgs,
+    variant: 'overview',
+  },
+};
+
+export const OverviewLoading: Story = {
+  args: {
+    ...commonArgs,
+    variant: 'overview',
+    isLoading: true,
+  },
+};
+
+export const OvervieWithBadge: Story = {
+  args: {
+    ...commonArgs,
+    variant: 'overview',
+    headerBadge: (
+      <Badge
+        variant={BadgeVariant.Secondary}
+        size={BadgeSize.SM}
+        label="Updated 12 hours ago"
+      />
+    ),
   },
 };

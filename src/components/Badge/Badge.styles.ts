@@ -179,14 +179,18 @@ export const StyledBadgeLabel = styled(Typography)(({ theme }) => ({
 
 interface BaseSkeletonProps extends SkeletonProps {
   size?: BadgeSize;
+  color?: 'default' | 'grey';
 }
 
 export const BaseSkeleton = styled(Skeleton, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<BaseSkeletonProps>(({ theme, size }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+})<BaseSkeletonProps>(({ theme, color = 'default' }) => ({
   transform: 'none',
   borderRadius: theme.shape.buttonBorderRadius,
+  backgroundColor:
+    color === 'default'
+      ? (theme.vars || theme).palette.surface2.main
+      : (theme.vars || theme).palette.grey[100],
   variants: [
     {
       props: ({ size }) => size === BadgeSize.SM,
