@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import { format } from 'date-fns';
 import { FC } from 'react';
 import { TooltipContentProps } from 'recharts/types/component/Tooltip';
+import { toCompactValue } from 'src/utils/formatNumbers';
 
 type ValueType = string | number;
 type NameType = string;
@@ -12,7 +13,6 @@ interface CustomTooltipProps
     TooltipContentProps<ValueType, NameType>,
     'active' | 'payload' | 'label'
   > {
-  dateFormat?: string;
   dataSetId?: string;
   x: number;
   y: number;
@@ -24,7 +24,6 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
   label,
   x,
   y,
-  dateFormat,
   dataSetId,
 }) => {
   if (!active || !payload || !payload.length) {
@@ -57,12 +56,12 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
         variant="bodySmallStrong"
         style={{ textTransform: 'capitalize' }}
       >
-        {format(label ?? '', dateFormat ?? 'MMM yyyy')}
+        {format(label ?? '', 'PP p')}
       </Typography>
       <Typography variant="bodySmall">
-        {typeof data.value === 'number'
-          ? data.value?.toFixed(2)
-          : data.value?.toString()}{' '}
+        {!data.value || isNaN(Number(data.value))
+          ? data.value
+          : toCompactValue(data.value)}{' '}
         <strong>{dataSetId?.toString().toUpperCase()}</strong>
       </Typography>
     </Box>

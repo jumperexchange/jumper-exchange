@@ -15,7 +15,8 @@ export async function getOpportunityBySlug(
   try {
     const client = makeClient();
     const opportunity = await client.v1.earnControllerGetItemV1(slug);
-    return opportunity;
+    /* @ts-expect-error: see LF-15589 - we are transforming data in the backend */
+    return opportunity.data;
   } catch (error) {
     return error as GetOpportunityBySlugResult;
   }
