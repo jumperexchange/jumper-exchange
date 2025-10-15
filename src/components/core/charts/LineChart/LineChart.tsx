@@ -59,8 +59,13 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
-  const { minValue, maxValue, minValueWithOffset, maxValueWithOffset } =
-    calculateVisibleYRange(data);
+  const {
+    minValue,
+    maxValue,
+    minValueWithOffset,
+    maxValueWithOffset,
+    isNegative,
+  } = calculateVisibleYRange(data);
 
   const dateFormatter = useCallback(
     (date: string) => {
@@ -78,10 +83,6 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
 
     if (numberValue === 0) {
       return '';
-    }
-
-    if (Math.abs(numberValue) < 0.001 && numberValue !== 0) {
-      return numberValue.toExponential(1);
     }
 
     return toCompactValue(numberValue).toString();
@@ -143,7 +144,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             axisLine={false}
             tickLine={false}
             ticks={yAxisTickValues}
-            width={40}
+            width={48}
             tickMargin={8}
             domain={[minValueWithOffset, maxValueWithOffset]}
             tick={{
@@ -190,7 +191,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
           fillOpacity={1}
           fill="url(#areaGradient)"
           isAnimationActive
-          baseValue="dataMin"
+          baseValue={isNegative ? 0 : 'dataMin'}
           style={{
             transform: AREA_CONFIG.TRANSFORM,
           }}

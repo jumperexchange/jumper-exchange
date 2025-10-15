@@ -56,7 +56,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
         variant="bodySmallStrong"
         style={{ textTransform: 'capitalize' }}
       >
-        {format(label ?? '', 'dd MMM yyyy hh:00:00aa')}
+        {format(label ?? '', 'PP p')}
       </Typography>
       <Typography variant="bodySmall">
         {!data.value || isNaN(Number(data.value))

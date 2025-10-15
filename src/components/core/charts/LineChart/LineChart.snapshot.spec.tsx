@@ -89,4 +89,152 @@ describe('LineChart snapshot', () => {
     );
     expect(container).toMatchSnapshot();
   });
+
+  // Edge Cases: Testing calculateVisibleYRange logic
+
+  it('negative values same matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: -5 },
+          { date: '2023-01-02', value: -5 },
+          { date: '2023-01-03', value: -5 },
+          { date: '2023-01-04', value: -5 },
+          { date: '2023-01-05', value: -5 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('negative values same small matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: -0.5 },
+          { date: '2023-01-02', value: -0.5 },
+          { date: '2023-01-03', value: -0.5 },
+          { date: '2023-01-04', value: -0.5 },
+          { date: '2023-01-05', value: -0.5 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('negative values varying matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: -10 },
+          { date: '2023-01-02', value: -25 },
+          { date: '2023-01-03', value: -5 },
+          { date: '2023-01-04', value: -15 },
+          { date: '2023-01-05', value: -20 },
+          { date: '2023-01-06', value: -8 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('positive values same matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: 100 },
+          { date: '2023-01-02', value: 100 },
+          { date: '2023-01-03', value: 100 },
+          { date: '2023-01-04', value: 100 },
+          { date: '2023-01-05', value: 100 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('positive values same small matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: 0.5 },
+          { date: '2023-01-02', value: 0.5 },
+          { date: '2023-01-03', value: 0.5 },
+          { date: '2023-01-04', value: 0.5 },
+          { date: '2023-01-05', value: 0.5 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('mixed positive negative matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: 50 },
+          { date: '2023-01-02', value: -20 },
+          { date: '2023-01-03', value: 30 },
+          { date: '2023-01-04', value: -10 },
+          { date: '2023-01-05', value: 40 },
+          { date: '2023-01-06', value: -30 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('zero values matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: 0 },
+          { date: '2023-01-02', value: 0 },
+          { date: '2023-01-03', value: 0 },
+          { date: '2023-01-04', value: 0 },
+          { date: '2023-01-05', value: 0 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('very small values matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: 0.001 },
+          { date: '2023-01-02', value: 0.003 },
+          { date: '2023-01-03', value: 0.002 },
+          { date: '2023-01-04', value: 0.0015 },
+          { date: '2023-01-05', value: 0.0025 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('very large values matches snapshot', async () => {
+    const { container } = render(
+      <LineChart
+        {...commonArgs}
+        data={[
+          { date: '2023-01-01', value: 1000000 },
+          { date: '2023-01-02', value: 2500000 },
+          { date: '2023-01-03', value: 1500000 },
+          { date: '2023-01-04', value: 3000000 },
+          { date: '2023-01-05', value: 2000000 },
+        ]}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
 });

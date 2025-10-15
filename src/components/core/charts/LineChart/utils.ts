@@ -35,16 +35,30 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
   data: T[],
 ) => {
   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
+  const absValues = values.map((v) => Math.abs(v));
   let minValue = Math.min(...values);
   let maxValue = Math.max(...values);
 
-  if (minValue === maxValue) {
-    if (minValue === 0) {
-      maxValue = 1;
+  const absMaxValue = Math.max(...absValues);
+  const isNegative = minValue < 0;
+  const isSame = minValue === maxValue;
+
+  if (isNegative) {
+    if (isSame) {
+      maxValue = 0;
+      if (absMaxValue < 1) {
+        minValue = -1;
+      }
     } else {
-      const offset = Math.abs(minValue) * Y_AXIS_CONFIG.START_VALUE_OFFSET;
-      minValue -= offset;
-      maxValue += offset;
+      minValue = -absMaxValue;
+      maxValue = absMaxValue;
+    }
+  } else {
+    if (isSame) {
+      minValue = 0;
+      if (absMaxValue < 1) {
+        maxValue = 1;
+      }
     }
   }
 
@@ -63,6 +77,7 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
     maxValue,
     minValueWithOffset,
     maxValueWithOffset,
+    isNegative,
   };
 };
 
