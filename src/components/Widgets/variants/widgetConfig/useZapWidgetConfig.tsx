@@ -39,6 +39,12 @@ export function useZapWidgetConfig(
       // Explorer configuration
       explorerUrls,
 
+      sdkConfig: {
+        routeOptions: {
+          allowSwitchChain: false,
+        },
+      },
+
       // Additional zap-specific config
       buildUrl: true,
       useRecommendedRoute: true,
