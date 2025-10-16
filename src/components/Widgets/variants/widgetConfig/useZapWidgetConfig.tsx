@@ -39,11 +39,6 @@ export function useZapWidgetConfig(
       // Explorer configuration
       explorerUrls,
 
-      // Bridge configuration
-      bridges: {
-        allow: ['across', 'relay'],
-      },
-
       // Additional zap-specific config
       buildUrl: true,
       useRecommendedRoute: true,
