@@ -19,6 +19,7 @@ interface OverviewEarnCardItemProps {
   valuePrepend?: ReactNode;
   valueAppend?: ReactNode;
   contentStyles?: SxProps<Theme>;
+  shouldExpand?: boolean;
 }
 
 export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
@@ -28,9 +29,10 @@ export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
   valuePrepend,
   valueAppend,
   contentStyles,
+  shouldExpand,
 }) => {
   return (
-    <Grid size={{ xs: 12, sm: 6 }}>
+    <Grid size={{ xs: 12, sm: shouldExpand ? 12 : 6 }}>
       <OverviewEarnCardItemHeaderContainer sx={{ display: 'flex', gap: 1 }}>
         <Typography variant="bodyXSmall" color="text.secondary">
           {title}

@@ -27,15 +27,20 @@ export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     'overview',
   );
 
-  const items = overviewItems.map((item) => (
-    <OverviewEarnCardItem
-      key={item.key}
-      title={item.label}
-      value={item.value}
-      valuePrepend={item.valuePrepend}
-      tooltip={item.tooltip}
-    />
-  ));
+  const items = overviewItems.map((item, index) => {
+    const shouldExpand =
+      index === overviewItems.length - 1 && overviewItems.length % 2 !== 0;
+    return (
+      <OverviewEarnCardItem
+        key={item.key}
+        title={item.label}
+        value={item.value}
+        valuePrepend={item.valuePrepend}
+        tooltip={item.tooltip}
+        shouldExpand={shouldExpand}
+      />
+    );
+  });
 
   if (isEmpty) {
     return <OverviewEarnSkeleton />;
