@@ -908,6 +908,47 @@ export interface UpdateValidityDto {
   valid: boolean;
 }
 
+export interface PerkClaimDto {
+  /** Users wallet address */
+  address: string;
+  /** Message to sign */
+  message: string;
+  /** Wallet type */
+  walletType?: string;
+  /** Perk id */
+  perkId: string;
+  /** Inserted username for the perk claim */
+  username?: string;
+  /** Signature of the user for the perk claim */
+  signature: string;
+}
+
+export interface PerkClaimEntity {
+  /**
+   * Unique identifier for the perk
+   * @example 1
+   */
+  id: number;
+  /**
+   * Timestamp when the perk claim was created
+   * @format date-time
+   * @example "2023-01-01T00:00:00Z"
+   */
+  timestamp: string;
+  /**
+   * Perk id on strapi
+   * @example "test-perk-id"
+   */
+  perkId: string;
+  /** Wallet associated with the perk claim */
+  wallet: WalletEntity;
+  /**
+   * Inserted username for the perk claim
+   * @example "test-username"
+   */
+  username: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
 

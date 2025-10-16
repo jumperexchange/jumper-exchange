@@ -1,5 +1,6 @@
 import InputBase from '@mui/material/InputBase';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 export const TaskInputField = styled(InputBase)(({ theme }) => ({
   width: '100%',
@@ -31,4 +32,12 @@ export const TaskInputField = styled(InputBase)(({ theme }) => ({
       color: (theme.vars || theme).palette.textDisabled,
     },
   },
+  '&.Mui-error input': {
+    borderColor: (theme.vars || theme).palette.borderError,
+  },
+}));
+
+export const TaskInputErrorMessage = styled(Typography)(({ theme }) => ({
+  marginTop: theme.spacing(1),
+  color: (theme.vars || theme).palette.textError,
 }));
