@@ -56,12 +56,13 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   copy = EarnHeroCardCopyKey.USE_YOUR_SPARE,
   isMain = false,
   href,
+  fullWidth = false,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
 
   if (isEmpty) {
-    return <HeroEarnCardSkeleton />;
+    return <HeroEarnCardSkeleton fullWidth={fullWidth} />;
   }
 
   // TODO: LF-14990: Complex Top Opportunity rendering
@@ -77,8 +78,11 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
 
   return (
-    <ConditionalLink href={href}>
-      <HeroEarnCardContainer hasLink={!!href}>
+    <ConditionalLink href={href} sx={{ width: fullWidth ? '100%' : 'auto' }}>
+      <HeroEarnCardContainer
+        hasLink={!!href}
+        sx={{ width: fullWidth ? '100%' : 'auto' }}
+      >
         <HeroEarnCardHeaderContainer direction="row">
           {forYou && (
             <Badge
