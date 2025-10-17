@@ -9,7 +9,7 @@ export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   padding: theme.spacing(3),
   borderRadius: theme.shape.cardBorderRadius,
-  boxShadow: `0px 4px 24px 0px rgba(0, 0, 0, 0.08)`,
+  boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   ...theme.applyStyles('dark', {
     backgroundColor: (theme.vars || theme).palette.surface2.main,
@@ -88,7 +88,7 @@ export const BaseSkeletonBox = styled(Skeleton)(({ theme }) => ({
 
 export const EarnDetailsFlexContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  columnGap: theme.spacing(2),
+  columnGap: theme.spacing(3),
   rowGap: theme.spacing(3),
   [theme.breakpoints.down('md')]: {
     flexWrap: 'wrap',

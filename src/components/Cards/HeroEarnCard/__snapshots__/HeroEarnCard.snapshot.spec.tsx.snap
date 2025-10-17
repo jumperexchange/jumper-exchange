@@ -262,57 +262,32 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
       <span
         class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
         color="default"
-      />
-      <span
-        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
-        color="default"
-      />
-      <span
-        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
-        color="default"
+        style="width: 84px;"
       />
     </div>
     <div
-      class="MuiBox-root css-1m04jmt"
+      class="MuiBox-root css-1e1l0gs"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-yr1h07-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-414zdl-MuiSkeleton-root"
       />
     </div>
     <div
       class="MuiStack-root css-185w891-MuiStack-root"
     >
       <div
-        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-13dnaa9-MuiGrid-root"
+        class="MuiStack-root css-69zndg-MuiStack-root"
       >
         <div
-          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
-        >
-          <div
-            class="MuiBox-root css-cmx6on"
-          >
-            <span
-              class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2rnxpj-MuiSkeleton-root"
-            />
-            <div
-              class="MuiBox-root css-fxacz8"
-            >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
-              />
-              <span
-                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-auto css-1yjni8j-MuiGrid-root"
+          class="MuiBox-root css-cmx6on"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-127o7vf-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2rnxpj-MuiSkeleton-root"
           />
         </div>
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-2zon0b-MuiSkeleton-root"
+        />
       </div>
     </div>
   </div>
