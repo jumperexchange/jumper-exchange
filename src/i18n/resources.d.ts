@@ -197,6 +197,7 @@ interface Resources {
         back: 'Back';
         buy: 'Buy';
         dashboard: 'Dashboard';
+        earn: 'Earn';
         exchange: 'Exchange';
         missions: 'Missions';
         refuel: 'Gas';
