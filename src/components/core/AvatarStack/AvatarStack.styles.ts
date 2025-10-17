@@ -54,6 +54,12 @@ const getAvatarSize = (size: AvatarSize) => {
   }
 };
 
+export const AvatarStackContainer = styled(Stack)(({ theme }) => ({
+  width: 'fit-content',
+  alignItems: 'center',
+  gap: theme.spacing(0.75),
+}));
+
 export const AvatarStackWrapper = styled(Stack)(({ theme }) => ({
   width: 'fit-content',
 }));
