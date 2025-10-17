@@ -33,15 +33,20 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   );
   const { protocol, forYou, tags, lpToken } = data ?? {};
 
-  const items = overviewItems.map((item) => (
-    <CompactEarnCardItem
-      key={item.key}
-      title={item.label}
-      value={item.value}
-      valuePrepend={item.valuePrepend}
-      tooltip={item.tooltip}
-    />
-  ));
+  const items = overviewItems.map((item, index) => {
+    const shouldExpand =
+      index === overviewItems.length - 1 && overviewItems.length % 2 !== 0;
+    return (
+      <CompactEarnCardItem
+        key={item.key}
+        title={item.label}
+        value={item.value}
+        valuePrepend={item.valuePrepend}
+        tooltip={item.tooltip}
+        shouldExpand={shouldExpand}
+      />
+    );
+  });
 
   if (isEmpty) {
     return <CompactEarnCardSkeleton />;
