@@ -1,0 +1,712 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AssetProgress snapshot > Protocol variant > protocol progress at 100% matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="100"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 0.000px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+        >
+          <img
+            alt="Morpho"
+            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+            src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $11K
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      100%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Protocol variant > protocol progress matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="32"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 88.122px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+        >
+          <img
+            alt="Morpho"
+            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+            src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $100
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      32%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Text variant > text progress at 0% matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="0"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 129.591px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        >
+          0
+        </p>
+      </div>
+    </div>
+    <p
+      aria-label="$0"
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      &lt;$0.01
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      0%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Text variant > text progress at 100% matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="100"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 0.000px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        >
+          +20
+        </p>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $1K
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      100%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Text variant > text progress matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="32"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 88.122px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        >
+          +3
+        </p>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $100
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      32%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Text variant > text progress with high percentage matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="85"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 19.439px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        >
+          +10
+        </p>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $500
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      85%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Text variant > text progress with low percentage matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="5"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 123.111px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        >
+          +1
+        </p>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $25
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      5%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Token variant > token progress matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="32"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 88.122px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-16b2ihg-MuiSkeleton-root"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $100
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      32%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Token variant > token progress with USDC matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="65"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 45.357px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-16b2ihg-MuiSkeleton-root"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $251
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      65%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Token variant > token progress with large amount matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="90"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 12.959px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-16b2ihg-MuiSkeleton-root"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      $1.2M
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      90%
+    </p>
+  </div>
+</div>
+`;
+
+exports[`AssetProgress snapshot > Token variant > token progress with small amount matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-11swifz"
+  >
+    <div
+      class="MuiBox-root css-dj6tjg"
+    >
+      <span
+        aria-valuenow="15"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 64px; height: 64px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            aria-hidden="true"
+            class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+          />
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.625"
+            stroke-width="2.75"
+            style="stroke-dasharray: 129.591; stroke-dashoffset: 110.152px;"
+          />
+        </svg>
+      </span>
+      <div
+        class="MuiBox-root css-iwsnym"
+      >
+        <div
+          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-16b2ihg-MuiSkeleton-root"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      aria-label="$0.0012"
+      class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+      data-mui-internal-clone-element="true"
+    >
+      &lt;$0.01
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+    >
+      15%
+    </p>
+  </div>
+</div>
+`;
