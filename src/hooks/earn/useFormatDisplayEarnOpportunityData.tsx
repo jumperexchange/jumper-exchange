@@ -16,6 +16,7 @@ import type { TFunction } from 'i18next';
 
 interface EarnCardOverviewItem {
   key: string;
+  dataTestId: string;
   label: string;
   value: string;
   valuePrepend?: React.ReactElement;
@@ -31,9 +32,11 @@ const buildApyItem = (
     return null;
   }
 
-  const formatted = `${(apy.total * 100).toLocaleString()}%`;
+  const scaledValue = (apy.total * 100).toLocaleString();
+  const formatted = `${scaledValue}%`;
   return {
     key: 'apy',
+    dataTestId: `apy-${scaledValue}`,
     label: t('labels.apy'),
     value: formatted,
     tooltip: t('tooltips.apy'),
@@ -53,6 +56,7 @@ const buildLockupItem = (
   const formatted = formatLockupDuration(lockupMonthsNumber);
   return {
     key: 'lockupPeriod',
+    dataTestId: `lockupPeriod-${lockupMonthsNumber}`,
     label: t('labels.lockupPeriod'),
     value: formatted,
     tooltip: t('tooltips.lockupPeriod', {
@@ -71,10 +75,14 @@ const buildTvlItem = (
     return null;
   }
 
+  const compactValue = toCompactValue(tvlUsdNumber);
+  const formatted = `$${compactValue}`;
+
   return {
     key: 'tvl',
+    dataTestId: `tvl-${compactValue}`,
     label: t('labels.tvl'),
-    value: `$${toCompactValue(tvlUsdNumber)}`,
+    value: formatted,
     tooltip: t('tooltips.tvl'),
   };
 };
@@ -102,10 +110,13 @@ const buildAssetsItem = (
     <TokenStack tokens={assets} />
   );
 
+  const assetValue = assetsCount === 1 ? assets[0].name : '';
+
   return {
     key: 'assets',
+    dataTestId: `assets-${assetValue}`,
     label: t('labels.assets', { count: assetsCount }),
-    value: assetsCount === 1 ? assets[0].name : '',
+    value: assetValue,
     tooltip: t('tooltips.assets', { count: assetsCount }),
     valuePrepend: assetsValuePrepend,
   };
@@ -123,6 +134,7 @@ const buildChainsItem = (
   const chainsCount = chains.length;
   return {
     key: 'chains',
+    dataTestId: `chains-${chains.map((chain) => capitalizeString(chain.chainId)).join('-')}`,
     label: t('labels.chains', { count: chainsCount }),
     value: chains.map((chain) => capitalizeString(chain.chainKey)).join(', '),
     tooltip: t('tooltips.chains', { count: chainsCount }),
@@ -148,10 +160,13 @@ const buildProtocolItem = (
     return null;
   }
 
+  const protocolValue = protocol.name;
+
   return {
     key: 'protocol',
+    dataTestId: `protocol-${protocolValue}`,
     label: t('labels.protocol'),
-    value: protocol?.name,
+    value: protocolValue,
     tooltip: t('tooltips.protocol'),
     valuePrepend: (
       <EntityChainStack
