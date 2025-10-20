@@ -24,10 +24,21 @@ interface BottomSheetProps extends PropsWithChildren {
   onClose?: () => void;
   containerId: string;
   elementRef?: RefObject<HTMLDivElement>;
+  backdropFilter?: string;
 }
 
 export const BottomSheet = forwardRef<any, BottomSheetProps>(
-  ({ containerId, elementRef, children, open = false, onClose }, ref) => {
+  (
+    {
+      containerId,
+      elementRef,
+      children,
+      open = false,
+      onClose,
+      backdropFilter,
+    },
+    ref,
+  ) => {
     const [drawerOpen, setDrawerOpen] = useState(open);
     const openRef = useRef(open);
     const [isInert, setIsInert] = useState(!open);
@@ -111,7 +122,7 @@ export const BottomSheet = forwardRef<any, BottomSheetProps>(
             sx: {
               position: 'absolute',
               backgroundColor: 'rgb(0 0 0 / 32%)',
-              backdropFilter: 'blur(3px)',
+              backdropFilter: backdropFilter || 'blur(3px)',
             },
           },
         }}

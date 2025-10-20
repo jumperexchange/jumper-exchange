@@ -1,6 +1,7 @@
 import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
+import { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
 
 /* Strapi */
 export interface ImageData<T> {
@@ -465,7 +466,19 @@ export interface PerksDataAttributes {
   EndDate: string;
   BannerImage?: StrapiMediaData | null;
   Image?: StrapiMediaData | null;
+  ClaimableSteps: MultiSelect<AvailableSteps>;
+  ClaimableStepProps?: Record<string, string>;
+  HowToUseDescription?: RootNode[];
+  NextStepsDescription?: RootNode[];
   createdAt: string;
   publishedAt?: string;
   updatedAt: string;
+}
+
+export interface MultiSelect<T> {
+  options: {
+    label: string;
+    value: T;
+  }[];
+  selectedValues: T[];
 }
