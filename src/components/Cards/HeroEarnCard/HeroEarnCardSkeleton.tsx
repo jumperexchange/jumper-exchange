@@ -13,15 +13,9 @@ import {
   HeroEarnCardHeaderContainer,
 } from './HeroEarnCard.styles';
 
-interface HeroEarnCardSkeletonProps {
-  fullWidth?: boolean;
-}
-
-export const HeroEarnCardSkeleton: FC<HeroEarnCardSkeletonProps> = ({
-  fullWidth,
-}) => {
+export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
   return (
-    <HeroEarnCardContainer sx={{ width: fullWidth ? '100%' : 'auto' }}>
+    <HeroEarnCardContainer>
       <HeroEarnCardHeaderContainer direction="row">
         {Array.from({ length: 3 }).map((_, index) => (
           <BadgeSkeleton key={index} size={BadgeSize.SM} />

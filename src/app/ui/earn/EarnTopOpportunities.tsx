@@ -31,12 +31,7 @@ export const EarnTopOpportunities = () => {
             sx={{ display: 'flex' }}
           >
             {item == null ? (
-              <HeroEarnCard
-                key={index}
-                isLoading={true}
-                data={null}
-                fullWidth
-              />
+              <HeroEarnCard key={index} isLoading={true} data={null} />
             ) : (
               <HeroEarnCard
                 key={item.slug}
@@ -45,7 +40,6 @@ export const EarnTopOpportunities = () => {
                 data={item}
                 copy={ithCopy(index)}
                 isMain={isMain}
-                fullWidth
                 primaryAction={
                   <DepositFlowButton
                     // TODO: Enable deposit flow button and properly set earnOpportunity
