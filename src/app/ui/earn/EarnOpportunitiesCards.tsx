@@ -6,7 +6,6 @@ import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositF
 import { GridContainer } from 'src/components/Containers/GridContainer';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { AppPaths } from 'src/const/urls';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const EarnOpportunitiesCards = ({
   items,
@@ -17,18 +16,15 @@ export const EarnOpportunitiesCards = ({
   isLoading: boolean;
   variant: EarnCardVariant;
 }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const isCompact = variant === 'compact';
   const gridItems = AtLeastNWhenLoading(items, isLoading, 3, Infinity);
 
   return (
     <GridContainer
       gridTemplateColumns={
-        isCompact && isMobile
-          ? 'repeat(auto-fit, minmax(328px, 1fr))'
-          : isCompact
-            ? 'repeat(auto-fit, 328px)'
-            : 'repeat(auto-fit, 100%)'
+        isCompact
+          ? 'repeat(auto-fill, minmax(328px, 1fr))'
+          : 'repeat(auto-fit, 100%)'
       }
       gap={3}
       justifyContent={isCompact ? 'space-evenly' : undefined}
