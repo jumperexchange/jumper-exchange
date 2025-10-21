@@ -11,7 +11,6 @@ import BadgeWithChain from '../BadgeWithChain';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
 import { DepositPoolCardItem } from './DepositPoolCardItem';
 import { useTranslation } from 'react-i18next';
 import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
@@ -20,7 +19,6 @@ import { Button } from 'src/components/Button';
 import { ProjectData } from 'src/types/questDetails';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
-import { useChains } from 'src/hooks/useChains';
 import Tooltip from '@mui/material/Tooltip';
 import { capitalizeString } from 'src/utils/capitalizeString';
 
@@ -32,16 +30,9 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   customInformation,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const chains = useChains();
   const projectData: ProjectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
-
-  const chain = useMemo(
-    () => chains.getChainById(projectData?.chainId),
-    [projectData?.chainId, chains],
-  );
 
   const claimingIds = useMemo(() => {
     return customInformation?.claimingIds;
@@ -137,6 +128,11 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   };
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
+  const hasApy = !!apyValue;
+  const hasTvl = !!analytics?.tvl_usd;
+  const hasLockupPeriod =
+    formattedLockupPeriod.value && formattedLockupPeriod.value !== '0';
+  const hasToken = !!token?.symbol && !!token?.logoURI && !!token?.chainId;
 
   return (
     <>
@@ -155,7 +151,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
             >{`${zapData?.meta.name} Pool`}</Typography>
           </DepositPoolHeaderContainer>
           <Grid container rowSpacing={3} columnSpacing={2}>
-            {apyValue && (
+            {hasApy && (
               <DepositPoolCardItem
                 title={apyLabel}
                 tooltip={apyTooltip}
@@ -163,7 +159,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
                 valueAppend={'%'}
               />
             )}
-            {analytics?.tvl_usd && (
+            {hasTvl && (
               <DepositPoolCardItem
                 title={t('widget.depositCard.tvl')}
                 tooltip={t('tooltips.tvl')}
@@ -174,7 +170,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
               />
             )}
 
-            {formattedLockupPeriod.value && (
+            {hasLockupPeriod && (
               <DepositPoolCardItem
                 title={t('widget.depositCard.lockupPeriod')}
                 tooltip={t('tooltips.lockupPeriod', {
@@ -184,7 +180,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
                 valueAppend={formattedLockupPeriod.unit}
               />
             )}
-            {token?.symbol && token?.logoURI && token?.chainId && (
+            {hasToken && (
               <DepositPoolCardItem
                 title={t('widget.depositCard.token')}
                 tooltip={
