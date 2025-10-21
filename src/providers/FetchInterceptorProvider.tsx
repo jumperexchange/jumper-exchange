@@ -14,8 +14,13 @@ export function FetchInterceptorProvider() {
       const zapQuestId = sessionStorage.getItem(
         ZAP_QUEST_ID_SESSION_STORAGE_KEY,
       );
+      // zaps flow
       if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL)) {
         request.headers.append('x-zap-quest-id', zapQuestId || '');
+      }
+      // scan page flow
+      if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) && request.url.includes('status')) {
+        request.headers.append('x-zap-scan-id', 'biconomy-powered-tx');
       }
     });
 

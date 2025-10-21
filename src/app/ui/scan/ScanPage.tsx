@@ -7,6 +7,7 @@ import { LiFiExplorer } from '@lifi/explorer';
 import { Box, Shape, useColorScheme, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { fallbackLng } from 'src/i18n';
+import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider';
 
 export default function ScanPage({ lng }: { lng: string }) {
   const theme = useTheme();
@@ -25,6 +26,7 @@ export default function ScanPage({ lng }: { lng: string }) {
 
   const explorerConfig = useMemo(
     () => ({
+      apiUrl: config.NEXT_PUBLIC_LIFI_API_URL,
       // appearance: 'light' as PaletteMode, // This controls light and dark mode
       integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
       base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
@@ -67,6 +69,7 @@ export default function ScanPage({ lng }: { lng: string }) {
           },
         }}
       >
+        <FetchInterceptorProvider />
         <LiFiExplorer config={explorerConfig} />
       </Box>
     </ClientOnly>
