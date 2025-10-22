@@ -50,6 +50,10 @@ export function useZapWidgetConfig(
       useRecommendedRoute: true,
       // contractCompactComponent: <></>,
 
+      bridges: {
+        allow: ['across', 'relay'],
+      },
+
       // Chain configuration
       chains: {
         allow: context.allowChains,
