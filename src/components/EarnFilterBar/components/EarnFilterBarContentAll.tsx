@@ -7,6 +7,7 @@ import { EarnAnimatedLayoutContainer } from './EarnAnimatedLayoutContainer';
 import { EarnFilterBarContentContainer } from '../EarnFilterBar.styles';
 import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
+import { AvatarStack } from 'src/components/core/AvatarStack/AvatarStack';
 
 export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   children,
@@ -31,6 +32,14 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   const protocolOptions: MultiSelectOption[] = allProtocols.map((protocol) => ({
     value: protocol.name,
     label: protocol.name,
+    // TODO: replace with ProtocolStack once PR #2349 gets merged
+    icon: (
+      <AvatarStack
+        avatars={[
+          { id: protocol.name, src: protocol.logo, alt: protocol.name },
+        ]}
+      />
+    ),
   }));
 
   const tagOptions: MultiSelectOption[] = allTags.map((tag) => ({
