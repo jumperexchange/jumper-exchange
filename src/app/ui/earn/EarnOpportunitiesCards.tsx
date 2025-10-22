@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from 'framer-motion';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
@@ -29,38 +30,42 @@ export const EarnOpportunitiesCards = ({
       gap={3}
       justifyContent={isCompact ? 'space-evenly' : undefined}
     >
-      {gridItems.map((item, index) =>
-        item == null ? (
-          <EarnCard
-            key={index}
-            variant={variant}
-            isLoading={true}
-            data={null}
-          />
-        ) : (
-          <EarnCard
-            key={item.slug}
-            href={`${AppPaths.Earn}/${item.slug}`}
-            variant={variant}
-            isLoading={false}
-            data={item}
-            primaryAction={
-              <DepositFlowButton
-                // TODO: Enable deposit flow button and properly set earnOpportunity
-                earnOpportunity={{
-                  ...item,
-                  minFromAmountUSD: 5,
-                  positionUrl: item.url ?? 'unset',
-                  address: item.lpToken.address,
-                }}
-                displayMode={DepositButtonDisplayMode.IconOnly}
-                size={isCompact ? 'large' : 'medium'}
-                disabled
+      <AnimatePresence mode="popLayout">
+        {gridItems.map((item, index) => (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            key={item?.slug || index}
+          >
+            {item == null ? (
+              <EarnCard variant={variant} isLoading={true} data={null} />
+            ) : (
+              <EarnCard
+                href={`${AppPaths.Earn}/${item.slug}`}
+                variant={variant}
+                isLoading={false}
+                data={item}
+                primaryAction={
+                  <DepositFlowButton
+                    // TODO: Enable deposit flow button and properly set earnOpportunity
+                    earnOpportunity={{
+                      ...item,
+                      minFromAmountUSD: 5,
+                      positionUrl: item.url ?? 'unset',
+                      address: item.lpToken.address,
+                    }}
+                    displayMode={DepositButtonDisplayMode.IconOnly}
+                    size={isCompact ? 'large' : 'medium'}
+                    disabled
+                  />
+                }
               />
-            }
-          />
-        ),
-      )}
+            )}
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </GridContainer>
   );
 };
