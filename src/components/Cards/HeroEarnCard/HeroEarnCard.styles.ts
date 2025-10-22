@@ -12,7 +12,7 @@ export const HeroEarnCardContainer = styled(Box, {
 })<HeroEarnCardContainerProps>(({ theme, hasLink }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   borderRadius: theme.shape.cardBorderRadius,
-  boxShadow: theme.shadows[2],
+  boxShadow: theme.shadows[3],
   cursor: hasLink ? 'pointer' : 'default',
   transition: 'all 0.3s ease-in-out',
   '&:hover': {
