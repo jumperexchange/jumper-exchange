@@ -1,10 +1,17 @@
+import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { Hex, isHex } from 'viem';
 
 export const useAccountAddress = (): Hex | undefined => {
-  const { account } = useAccount();
+  const { accounts } = useAccount();
 
-  if (account.address && isHex(account.address, { strict: true })) {
+  const evmAccounts = accounts?.filter(
+    (account) => account.chainType === ChainType.EVM,
+  );
+
+  const account = evmAccounts?.[0];
+
+  if (account?.address && isHex(account.address, { strict: true })) {
     return account.address;
   }
 
