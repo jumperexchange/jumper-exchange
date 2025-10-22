@@ -115,7 +115,7 @@ const buildAssetsItem = (
     <TokenStack tokens={assets} />
   );
 
-  const assetValue = assetsCount === 1 ? assets[0].name : '';
+  const assetValue = assetsCount === 1 ? assets[0].symbol : '';
 
   return {
     key: 'assets',
