@@ -408,7 +408,7 @@ interface Resources {
         };
       };
       zap: {
-        depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your Positions</bold> that redirects to {{partnerName}} UI';
+        depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';
         placeholder: {
           comingSoon: 'Coming soon';
           'embedded-multisig': {
