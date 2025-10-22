@@ -3,7 +3,12 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatLockupDuration } from 'src/utils/earn/utils';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import {
+  Chain,
+  EarnOpportunityWithLatestAnalytics,
+  Protocol,
+  Token,
+} from 'src/types/jumper-backend';
 import { toCompactValue } from 'src/utils/formatNumbers';
 import { isZeroApprox } from 'src/utils/numbers/utils';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
@@ -88,7 +93,7 @@ const buildTvlItem = (
 };
 
 const buildAssetsItem = (
-  assets: any[],
+  assets: Token[],
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
@@ -123,7 +128,7 @@ const buildAssetsItem = (
 };
 
 const buildChainsItem = (
-  chains: any[],
+  chains: Chain[],
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
@@ -134,7 +139,7 @@ const buildChainsItem = (
   const chainsCount = chains.length;
   return {
     key: 'chains',
-    dataTestId: `chains-${chains.map((chain) => capitalizeString(chain.chainId)).join('-')}`,
+    dataTestId: `chains-${chains.map((chain) => chain.chainId).join('-')}`,
     label: t('labels.chains', { count: chainsCount }),
     value: chains.map((chain) => capitalizeString(chain.chainKey)).join(', '),
     tooltip: t('tooltips.chains', { count: chainsCount }),
@@ -151,8 +156,8 @@ const buildChainsItem = (
 };
 
 const buildProtocolItem = (
-  protocol: any | undefined,
-  chains: any[],
+  protocol: Protocol | undefined,
+  chains: Chain[],
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
