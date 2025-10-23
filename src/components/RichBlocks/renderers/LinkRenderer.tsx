@@ -9,5 +9,7 @@ interface LinkRendererProps {
 }
 
 export const LinkRenderer: FC<LinkRendererProps> = ({ content }) => (
-  <ParagraphLink href={content.url}>{content.children[0].text}</ParagraphLink>
+  <ParagraphLink href={content.url} target="_blank">
+    {content.children[0].text}
+  </ParagraphLink>
 );
