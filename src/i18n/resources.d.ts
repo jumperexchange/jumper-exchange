@@ -177,61 +177,6 @@ interface Resources {
         title: 'Missions';
       };
     };
-    modal: {
-      perks: {
-        claimedPerk: {
-          description: 'You have verified this perk with the following address';
-          howToUsePerk: 'How to use your perk ?';
-          howToUsePerkDescription: 'Simply add the code we provide you in the checkout of the Nansen website.';
-          nextSteps: 'Next steps';
-          title: 'Perk claimed!';
-        };
-        signatureFailed: {
-          description: 'You need to sign the transaction to confirm ownership of the wallet address.';
-          title: 'Signature required';
-          tryAgain: 'Try again';
-        };
-        stepper: {
-          continue: 'Continue';
-          multipleSteps: {
-            username: {
-              description: 'To claim your perk you must first share your {{usernameType}} username.';
-              title: 'Enter username';
-            };
-            wallet: {
-              description: 'Next you must sign a message to verify ownership of the below connected wallet address.';
-              title: 'Verify wallet';
-            };
-          };
-          singleStep: {
-            wallet: {
-              description: 'To claim your perk you must sign a message to verify ownership of the below connected wallet address.';
-              title: 'Verify wallet';
-            };
-          };
-          submit: 'Verify wallet and claim perk';
-          submitting: 'Waiting for verification';
-        };
-        unclaimedPerk: {
-          title: 'Claim perk';
-        };
-        unknown: {
-          description: 'An unknown error occurred. Please try again.';
-          title: 'Unknown error';
-          tryAgain: 'Try again';
-        };
-        unsupportedWallet: {
-          description: "We don't support this wallet type. Please use a different wallet to complete this mission.";
-          switchWallet: 'Switch wallet';
-          title: 'Unsupported wallet';
-        };
-        validationFailed: {
-          close: 'Close';
-          description: 'Please check the fields and try again.';
-          title: 'Validation failed';
-        };
-      };
-    };
     multisig: {
       connected: {
         description: 'Please notify other wallet participants to be ready to sign.';

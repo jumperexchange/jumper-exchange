@@ -6,7 +6,7 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
   return useMemo(() => {
     const baseStrapiUrl = getStrapiBaseUrl();
     const {
-      documentId,
+      id,
       Title,
       Description,
       BannerImage,
@@ -17,10 +17,6 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       PerkItems,
       UnlockLevel,
       Slug,
-      ClaimableSteps,
-      ClaimableStepProps,
-      HowToUseDescription,
-      NextStepsDescription,
     } = perk;
 
     let bannerImageUrl = '';
@@ -34,7 +30,7 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
     }
 
     return {
-      id: documentId,
+      id,
       title: Title,
       description: Description,
       href: Link,
@@ -45,10 +41,6 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       slug: Slug,
       bannerImageUrl,
       imageUrl,
-      claimableSteps: ClaimableSteps?.selectedValues ?? [],
-      claimableStepProps: ClaimableStepProps ?? {},
-      howToUsePerkDescription: HowToUseDescription,
-      nextStepsDescription: NextStepsDescription,
     };
   }, [perk]);
 };
