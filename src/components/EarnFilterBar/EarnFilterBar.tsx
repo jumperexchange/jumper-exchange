@@ -66,7 +66,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
           data-testid="earn-filter-tabs"
           onChange={handleTabChange}
           sx={(theme) => ({
-            width: 'fit-content',
+            flex: '0 0 auto',
             backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
           })}
         />
