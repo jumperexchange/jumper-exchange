@@ -4,10 +4,14 @@ import { MultiSelectOption } from '../../core/MultiSelect/MultiSelect.types';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { EarnAnimatedLayoutContainer } from './EarnAnimatedLayoutContainer';
-import { EarnFilterBarContentContainer } from '../EarnFilterBar.styles';
+import {
+  EarnFilterBarClearFiltersButton,
+  EarnFilterBarContentContainer,
+} from '../EarnFilterBar.styles';
 import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
 import { AvatarStack } from 'src/components/core/AvatarStack/AvatarStack';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
   children,
@@ -88,6 +92,31 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
     });
   };
 
+  const handleClearAllFilters = () => {
+    updateFilter({
+      chains: [],
+      protocols: [],
+      tags: [],
+      assets: [],
+      minAPY: apyMin,
+      maxAPY: apyMax,
+    });
+  };
+
+  const apyMinValue = filter?.minAPY ? filter.minAPY * 100 : apyMin;
+  const apyMaxValue = filter?.maxAPY ? filter.maxAPY * 100 : apyMax;
+
+  const hasArrayFiltersApplied = [
+    filter?.chains,
+    filter?.protocols,
+    filter?.tags,
+    filter?.assets,
+  ].some((arr) => arr && arr.length > 0);
+
+  const hasAPYFilterApplied = apyMinValue !== apyMin || apyMaxValue !== apyMax;
+
+  const hasFilterApplied = hasArrayFiltersApplied || hasAPYFilterApplied;
+
   return (
     <EarnFilterBarContentContainer>
       <EarnAnimatedLayoutContainer>
@@ -141,10 +170,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
         {apyMin !== apyMax && (
           <Select
             options={[]}
-            value={[
-              filter?.minAPY ? filter?.minAPY * 100 : apyMin,
-              filter?.maxAPY ? filter?.maxAPY * 100 : apyMax,
-            ]}
+            value={[apyMinValue, apyMaxValue]}
             min={apyMin}
             max={apyMax}
             onChange={handleAPYChange}
@@ -152,6 +178,15 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
             variant={SelectVariant.Slider}
             data-testid="earn-filter-apy-select"
           />
+        )}
+
+        {hasFilterApplied && (
+          <EarnFilterBarClearFiltersButton
+            onClick={handleClearAllFilters}
+            data-testid="earn-filter-clear-filters-button"
+          >
+            <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+          </EarnFilterBarClearFiltersButton>
         )}
       </EarnAnimatedLayoutContainer>
 
