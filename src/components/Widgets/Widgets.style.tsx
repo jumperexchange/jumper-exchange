@@ -21,10 +21,7 @@ export const WidgetContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'welcomeScreenClosed',
 })<WidgetContainerProps>(({ theme, welcomeScreenClosed }) => {
   return {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: '100%',
+    display: 'contents',
     overflow: 'inherit',
     transitionProperty: 'max-height',
     transitionDuration: '.3s',

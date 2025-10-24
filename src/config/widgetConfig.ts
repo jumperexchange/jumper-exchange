@@ -113,11 +113,11 @@ export const getDefaultWidgetThemeV2 = (
         container: {
           borderRadius: '24px',
           maxWidth: '100%',
-          maxHeight: 720,
           [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
             borderRadius: '24px',
             maxWidth: 416,
             minWidth: 416,
+            maxHeight: 720,
             boxShadow: copiedTheme.shadows[1],
           },
         },

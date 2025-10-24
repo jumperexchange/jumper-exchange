@@ -37,6 +37,7 @@ export const WidgetWrapper = styled(Box, {
     margin: theme.spacing(0, 'auto'),
     zIndex: 2,
     height: 'auto',
+    display: 'contents',
     '& > div:not(.alert)': {
       position: 'relative',
       transitionProperty: 'margin-top',

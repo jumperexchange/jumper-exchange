@@ -49,10 +49,6 @@ const App = ({ children }: { children: React.ReactNode }) => {
       onClick={handleWelcomeScreenEnter}
       sx={{
         height: { xs: 'calc(100dvh - 64px)', sm: 'auto' },
-        position: 'relative',
-        zIndex: 1,
-        WebkitOverflowScrolling: 'touch',
-        overscrollBehavior: 'none',
       }}
     >
       <Slide
@@ -81,6 +77,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         direction="row"
         justifyContent="center"
         alignItems="start"
+        gap={3}
         sx={{
           height: welcomeScreenClosed ? '100%' : 'auto',
           overflow: {
@@ -89,6 +86,8 @@ const App = ({ children }: { children: React.ReactNode }) => {
           },
           paddingTop: 3.5,
           paddingBottom: { xs: 11, md: 0 },
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'none',
         }}
       >
         {welcomeScreenClosed && <VerticalTabs />}
