@@ -2,6 +2,7 @@ import { PerksDataAttributes } from 'src/types/strapi';
 
 export enum AvailableSteps {
   Username = 'username',
+  Email = 'email',
   Wallet = 'wallet',
 }
 
@@ -13,8 +14,13 @@ export interface WalletStepProps {
   // Wallet step doesn't need additional props for now
 }
 
+export interface EmailStepProps {
+  // Email step doesn't need additional props for now
+}
+
 export interface StepProps {
   [AvailableSteps.Username]?: UsernameStepProps;
+  [AvailableSteps.Email]?: EmailStepProps;
   [AvailableSteps.Wallet]?: WalletStepProps;
 }
 

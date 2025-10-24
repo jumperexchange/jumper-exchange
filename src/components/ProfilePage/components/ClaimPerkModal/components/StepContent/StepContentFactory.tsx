@@ -3,6 +3,7 @@ import { AvailableSteps } from '../../ClaimPerkModal.types';
 import { UsernameStepContent } from './UsernameStepContent';
 import { WalletStepContent } from './WalletStepContent';
 import { SignatureRequiredContent } from './SignatureRequiredContent';
+import { EmailStepContent } from './EmailStepContent';
 
 export interface StepContentProps {
   stepId: string;
@@ -16,7 +17,8 @@ export interface StepContentProps {
 
 interface StepContentFactoryProps extends StepContentProps {
   stepType: AvailableSteps | 'error';
-  isMultiStep?: boolean;
+  position: string;
+  positionIndex: number;
 }
 
 export const StepContentFactory: FC<StepContentFactoryProps> = ({
@@ -28,7 +30,8 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
   errorMessage,
   isSubmitting,
   stepProps,
-  isMultiStep,
+  position,
+  positionIndex,
 }) => {
   switch (stepType) {
     case AvailableSteps.Username:
@@ -40,6 +43,21 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
           onChange={onChange}
           onContinue={onContinue}
           errorMessage={errorMessage}
+          position={position}
+          positionIndex={positionIndex}
+        />
+      );
+
+    case AvailableSteps.Email:
+      return (
+        <EmailStepContent
+          value={value}
+          id={stepId}
+          onChange={onChange}
+          onContinue={onContinue}
+          errorMessage={errorMessage}
+          position={position}
+          positionIndex={positionIndex}
         />
       );
 
@@ -49,7 +67,8 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
           value={value}
           onChange={onChange}
           isSubmitting={isSubmitting}
-          isMultiStep={isMultiStep}
+          position={position}
+          positionIndex={positionIndex}
         />
       );
 

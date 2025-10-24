@@ -11,14 +11,16 @@ interface WalletStepContentProps {
   value: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isSubmitting: boolean;
-  isMultiStep?: boolean;
+  position: string;
+  positionIndex: number;
 }
 
 export const WalletStepContent: FC<WalletStepContentProps> = ({
   value,
   onChange,
   isSubmitting,
-  isMultiStep,
+  position,
+  positionIndex,
 }) => {
   const { account } = useAccount();
   const { t } = useTranslation();
@@ -37,9 +39,10 @@ export const WalletStepContent: FC<WalletStepContentProps> = ({
   return (
     <>
       <Typography variant="bodyMedium" color="textSecondary">
-        {t(
-          `modal.perks.stepper.${isMultiStep ? 'multipleSteps' : 'singleStep'}.wallet.description`,
-        )}
+        {t(`modal.perks.stepper.steps.wallet.description`, {
+          position,
+          count: positionIndex + 1,
+        })}
       </Typography>
       <Badge
         variant={BadgeVariant.Alpha}

@@ -21,7 +21,6 @@ import { useClaimPerkSteps } from '../../hooks/useClaimPerkSteps';
 import { StatusBottomSheet } from '../StatusBottomSheet/StatusBottomSheet';
 import { MODAL_CONTAINER_ID } from '../../constants';
 import { useStatusSheetContent } from '../../hooks/useStatusSheetContent';
-import { IconButton } from 'src/components/IconButton';
 
 interface StepperContentProps extends BaseStepperProps {
   perkId: string;
@@ -50,7 +49,14 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
     handleCloseErrorBottomSheet,
   );
 
-  const activeStepContent = steps[activeStep];
+  const positionKey =
+    activeStep === 0
+      ? 'first'
+      : activeStep === steps.length - 1 && steps.length > 2
+        ? 'finally'
+        : 'next';
+
+  const activeStepContent = steps[activeStep] ?? {};
   const isMultiStep = steps.length > 1;
   const showBackButton = isMultiStep && activeStep > 0;
   const TitleContainer = isMultiStep
@@ -102,7 +108,8 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
             errorMessage={showStepError ? currentStepError : ''}
             isSubmitting={isSubmitting}
             stepProps={activeStepContent.stepProps}
-            isMultiStep={isMultiStep}
+            position={t(`modal.perks.stepper.steps.position.${positionKey}`)}
+            positionIndex={activeStep}
           />
         </StyledActiveStepContentContainer>
       </StyledModalSectionContainer>

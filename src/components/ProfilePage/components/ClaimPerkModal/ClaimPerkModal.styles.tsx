@@ -53,14 +53,14 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
       left: 0,
       height: '100%',
       width: '0%',
-      backgroundColor: (theme.vars || theme).palette.primary.main,
       borderRadius: '2px',
-      transition: 'width 0.4s ease-in-out',
+      transition: 'all 0.4s ease-in-out',
     },
   },
   '& .MuiStepConnector-root.Mui-active, & .MuiStepConnector-root.Mui-completed':
     {
       '& .MuiStepConnector-line::before': {
+        backgroundColor: (theme.vars || theme).palette.primary.main,
         width: '100%',
       },
     },
@@ -81,6 +81,7 @@ export const StyledActiveStepContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
+  width: '100%',
 }));
 
 // @Note we can expand this to use other statuses

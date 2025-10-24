@@ -7,8 +7,7 @@ import { capitalizeString } from 'src/utils/capitalizeString';
 import { Button } from 'src/components/Button/Button';
 import { useTranslation } from 'react-i18next';
 
-interface UsernameStepContentProps {
-  usernameType: string;
+interface EmailStepContentProps {
   value: string;
   id: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -18,9 +17,8 @@ interface UsernameStepContentProps {
   positionIndex: number;
 }
 
-export const UsernameStepContent: FC<UsernameStepContentProps> = ({
+export const EmailStepContent: FC<EmailStepContentProps> = ({
   errorMessage,
-  usernameType,
   value,
   id,
   onChange,
@@ -33,15 +31,14 @@ export const UsernameStepContent: FC<UsernameStepContentProps> = ({
   return (
     <>
       <Typography variant="bodyMedium" color="textSecondary">
-        {t('modal.perks.stepper.steps.username.description', {
-          usernameType: capitalizeString(usernameType),
+        {t('modal.perks.stepper.steps.email.description', {
           position,
           count: positionIndex + 1,
         })}
       </Typography>
       <FormControl key={id} sx={{ width: '100%' }}>
         <TaskInput
-          placeholder={`@username`}
+          placeholder={`email@example.com`}
           id={id}
           name={id}
           value={value}

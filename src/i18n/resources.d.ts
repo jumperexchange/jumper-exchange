@@ -193,19 +193,22 @@ interface Resources {
         };
         stepper: {
           continue: 'Continue';
-          multipleSteps: {
+          steps: {
+            email: {
+              description: '{{position}} you must first share your email address.';
+              title: 'Enter email';
+            };
+            position: {
+              finally: 'Finally';
+              first: 'To claim your perk';
+              next: 'Next';
+            };
             username: {
-              description: 'To claim your perk you must first share your {{usernameType}} username.';
+              description: '{{position}} you must first share your {{usernameType}} username.';
               title: 'Enter username';
             };
             wallet: {
-              description: 'Next you must sign a message to verify ownership of the below connected wallet address.';
-              title: 'Verify wallet';
-            };
-          };
-          singleStep: {
-            wallet: {
-              description: 'To claim your perk you must sign a message to verify ownership of the below connected wallet address.';
+              description: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
               title: 'Verify wallet';
             };
           };
