@@ -23,13 +23,15 @@ export const WidgetContainer = styled(Box, {
   return {
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'inherit',
+    height: '100%',
     width: '100%',
+    overflow: 'inherit',
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
     [theme.breakpoints.up('sm' as Breakpoint)]: {
       width: 'auto',
+      // height: 'auto',
     },
     [theme.breakpoints.up('lg' as Breakpoint)]: {
       margin: theme.spacing(0, 4),
@@ -64,9 +66,9 @@ export const WidgetContainer = styled(Box, {
         top: GLOW_EFFECT_TOP_POSITIONS.md,
       },
       [theme.breakpoints.up('lg' as Breakpoint)]: {
-        // using vh here as well to make it a circle-ish glow
-        maxWidth: '90vh',
-        maxHeight: '90vh',
+        // using viewport units to make it a circle-ish glow
+        maxWidth: '90dvh',
+        maxHeight: '90dvh',
       },
       ...theme.applyStyles('light', {
         background:

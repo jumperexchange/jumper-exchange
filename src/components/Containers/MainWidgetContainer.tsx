@@ -8,9 +8,9 @@ export const MainWidgetContainer: FC<MainWidgetContainerProps> = ({
 }) => {
   return (
     <Box
+      id="main-widget-container"
       sx={{
         paddingX: { xs: 2, sm: 0 },
-        marginBottom: { xs: 12, md: 0 },
       }}
     >
       {children}

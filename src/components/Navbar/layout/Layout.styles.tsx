@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 export const FloatingMainLinksContainer = styled(Stack)(({ theme }) => ({
   left: 0,
   right: 0,
+  transform: 'translate3d(0, 0, 0)',
   position: 'fixed',
   zIndex: theme.zIndex.appBar,
   bottom: theme.spacing(1.25),

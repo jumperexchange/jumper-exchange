@@ -43,10 +43,13 @@ export const WidgetWrapper = styled(Box, {
       transitionDuration: '.3s',
       transitionTimingFunction: 'ease-in-out',
       marginTop: 0,
-      maxHeight: '50vh',
+      // Use dvh on mobile for dynamic viewport (iOS Safari keyboard fix)
+      maxHeight: '50dvh',
       [theme.breakpoints.up('sm' as Breakpoint)]: {
         height: 'auto',
         marginTop: 0,
+        // Use standard vh on larger screens
+        maxHeight: '50vh',
         [`@media screen and (min-height: 700px)`]: {
           // set default widget height
           height: '50vh',

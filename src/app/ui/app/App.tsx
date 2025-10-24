@@ -13,7 +13,6 @@ export interface AppProps {
 }
 
 const App = ({ children }: { children: React.ReactNode }) => {
-
   const { trackEvent } = useUserTracking();
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
@@ -46,7 +45,14 @@ const App = ({ children }: { children: React.ReactNode }) => {
   }, [setWelcomeScreenClosed]);
 
   return (
-    <Box onClick={handleWelcomeScreenEnter}>
+    <Box
+      onClick={handleWelcomeScreenEnter}
+      sx={{
+        height: { xs: 'calc(100dvh - 64px)', sm: 'auto' },
+        position: 'relative',
+        zIndex: 1,
+      }}
+    >
       <Slide
         direction="up"
         in={enabled && !welcomeScreenClosed}
@@ -73,7 +79,12 @@ const App = ({ children }: { children: React.ReactNode }) => {
         direction="row"
         justifyContent="center"
         alignItems="start"
-        paddingTop={3.5}
+        sx={{
+          height: '100%',
+          overflow: { xs: 'scroll', sm: 'inherit' },
+          paddingTop: 3.5,
+          paddingBottom: { xs: 11, md: 0 },
+        }}
       >
         {welcomeScreenClosed && <VerticalTabs />}
         <WidgetContainer
