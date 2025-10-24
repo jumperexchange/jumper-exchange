@@ -16,6 +16,7 @@ interface CustomTooltipProps
   dataSetId?: string;
   x: number;
   y: number;
+  transform?: string;
 }
 
 export const CustomTooltip: FC<CustomTooltipProps> = ({
@@ -24,6 +25,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
   label,
   x,
   y,
+  transform,
   dataSetId,
 }) => {
   if (!active || !payload || !payload.length) {
@@ -50,6 +52,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
         top: y,
         pointerEvents: 'none',
         zIndex: 1000,
+        transform,
       })}
     >
       <Typography

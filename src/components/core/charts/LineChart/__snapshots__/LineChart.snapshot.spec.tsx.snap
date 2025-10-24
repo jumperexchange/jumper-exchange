@@ -117,12 +117,6 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -655,12 +649,6 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -1138,12 +1126,6 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -1580,12 +1562,6 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -2022,12 +1998,6 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -2505,12 +2475,6 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -2947,12 +2911,6 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -3494,12 +3452,6 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -3936,12 +3888,6 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"
@@ -4378,12 +4324,6 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
       class="recharts-wrapper"
       style="position: relative; cursor: default; width: 100px; height: 100px;"
     >
-      <div
-        class="recharts-tooltip-wrapper"
-        style="visibility: hidden; pointer-events: none; position: absolute; top: 0px; left: 0px;"
-        tabindex="-1"
-        xmlns="http://www.w3.org/1999/xhtml"
-      />
       <svg
         class="recharts-surface"
         height="100"

@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
@@ -21,6 +20,7 @@ import {
 import { useCallback, useMemo, useRef } from 'react';
 import { format } from 'date-fns';
 import { AREA_CONFIG } from './constants';
+import { ActiveDotProps } from 'recharts/types/util/types';
 
 export interface ChartDataPoint<V> {
   date: string;
@@ -158,35 +158,54 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             tickFormatter={valueFormatter}
           />
         )}
-        {enableTooltip && (
-          <Tooltip
-            content={(props) => {
-              const { x, y } = calculateTooltipPosition(
-                props.coordinate?.x ?? 0,
-                props.coordinate?.y ?? 0,
-                chartContainerRef.current?.clientWidth ?? 0,
-                chartContainerRef.current?.clientHeight ?? 0,
-              );
-              return (
-                <CustomTooltip {...props} x={x} y={y} dataSetId={dataSetId} />
-              );
-            }}
-            cursor={false}
-          />
-        )}
         <Area
           type="monotone"
           dataKey="value"
           stroke={theme.lineColor}
           activeDot={
             enableCrosshair
-              ? {
-                  r: 4,
-                  strokeWidth: 0,
-                  fill: theme.pointColor,
-                  style: {
-                    transform: AREA_CONFIG.TRANSFORM,
-                  },
+              ? (props: ActiveDotProps) => {
+                  const { cx, cy, payload } = props;
+                  const { x, y, transform } = calculateTooltipPosition(
+                    cx,
+                    cy,
+                    chartContainerRef.current?.clientWidth ?? 0,
+                    chartContainerRef.current?.clientHeight ?? 0,
+                  );
+
+                  return (
+                    <g style={{ cursor: 'crosshair' }}>
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={4}
+                        strokeWidth={0}
+                        fill={theme.pointColor}
+                        style={{
+                          transform: AREA_CONFIG.TRANSFORM,
+                        }}
+                      />
+                      {enableTooltip && (
+                        <foreignObject
+                          x={x}
+                          y={y}
+                          width={1}
+                          height={1}
+                          style={{ overflow: 'visible' }}
+                        >
+                          <CustomTooltip
+                            active={true}
+                            payload={[{ payload, value: payload.value }]}
+                            label={payload.date}
+                            x={0}
+                            y={0}
+                            transform={transform}
+                            dataSetId={dataSetId}
+                          />
+                        </foreignObject>
+                      )}
+                    </g>
+                  );
                 }
               : false
           }
