@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import {
   AreaChart,
   Area,
@@ -21,6 +21,16 @@ import { useCallback, useMemo, useRef } from 'react';
 import { format } from 'date-fns';
 import { AREA_CONFIG } from './constants';
 import { ActiveDotProps } from 'recharts/types/util/types';
+
+const StyledResponsiveContainer = styled(ResponsiveContainer, {
+  shouldForwardProp: (prop) => prop !== 'enableCrosshair',
+})<{
+  enableCrosshair?: boolean;
+}>(({ enableCrosshair }) => ({
+  '& .recharts-cartesian-grid, & .recharts-layer.recharts-area': {
+    cursor: enableCrosshair ? 'crosshair' : 'default',
+  },
+}));
 
 export interface ChartDataPoint<V> {
   date: string;
@@ -103,7 +113,12 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   }
 
   return (
-    <ResponsiveContainer ref={chartContainerRef} width="100%" height="100%">
+    <StyledResponsiveContainer
+      ref={chartContainerRef}
+      width="100%"
+      height="100%"
+      enableCrosshair={enableCrosshair}
+    >
       <AreaChart data={data} accessibilityLayer={false}>
         <defs>
           <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
@@ -123,6 +138,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             stroke={`color-mix(in srgb, ${
               (muiTheme.vars || muiTheme).palette.alpha900.main
             } 10%, transparent)`}
+            horizontalFill={['transparent']}
           />
         )}
         {enableXAxis && (
@@ -226,6 +242,6 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
           />
         )}
       </AreaChart>
-    </ResponsiveContainer>
+    </StyledResponsiveContainer>
   );
 };
