@@ -247,8 +247,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     );
   }
 
-  console.log('tototo', toToken, toChain, widgetConfig, account);
-
   return isZapDataSuccess && toChain && toToken ? (
     <LiFiWidget
       formRef={formRef}
@@ -259,7 +257,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       }
       contractComponent={
         <ZapDepositSettings
-          toChain={toChain.toString()}
+          toChain={toChain}
           toToken={toToken}
           contractCalls={[]}
         />

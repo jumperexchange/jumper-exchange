@@ -2,7 +2,7 @@ import { type ContractCall, useFieldActions } from '@lifi/widget';
 import { FC, useEffect } from 'react';
 
 interface ZapDepositSettingsProps {
-  toChain: string;
+  toChain: number;
   toToken: string;
   contractCalls: ContractCall[];
 }
@@ -17,7 +17,6 @@ export const ZapDepositSettings: FC<ZapDepositSettingsProps> = ({
   const { setFieldValue } = useFieldActions();
 
   useEffect(() => {
-    console.log('--toChain', toChain, toToken, contractCalls);
     setFieldValue('toChain', toChain, { isTouched: true });
     setFieldValue('toToken', toToken, { isTouched: true });
     setFieldValue('contractCalls', contractCalls ?? [], { isTouched: true });
