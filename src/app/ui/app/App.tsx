@@ -82,8 +82,11 @@ const App = ({ children }: { children: React.ReactNode }) => {
         justifyContent="center"
         alignItems="start"
         sx={{
-          height: '100%',
-          overflow: { xs: 'scroll', sm: 'inherit' },
+          height: welcomeScreenClosed ? '100%' : 'auto',
+          overflow: {
+            xs: welcomeScreenClosed ? 'scroll' : 'inherit',
+            sm: 'inherit',
+          },
           paddingTop: 3.5,
           paddingBottom: { xs: 11, md: 0 },
         }}
