@@ -7,7 +7,7 @@
   "dependencies": {
     "@abstract-foundation/agw-client": "^1.9.1",
     "@abstract-foundation/agw-react": "^1.9.1",
-    "@biconomy/abstractjs": "1.1.5",
+    "@biconomy/abstractjs": "1.1.13",
     "@bigmi/react": "^0.5.3",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
