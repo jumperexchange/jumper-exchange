@@ -15,6 +15,7 @@ import { walletDigest } from 'src/utils/walletDigest';
 import { AppPaths } from 'src/const/urls';
 import { useTranslation } from 'react-i18next';
 import { usePathnameWithoutLocale } from 'src/hooks/routing/usePathnameWithoutLocale';
+import { isEarnFeatureEnabled } from 'src/app/lib/getFeatureFlag';
 
 export const useLevelDisplayData = () => {
   const activeAccount = useActiveAccountByChainType();
@@ -69,12 +70,21 @@ export const useIsDisconnected = () => {
   return !activeAccount?.address;
 };
 
+interface MainLink {
+  value: AppPaths;
+  label: string;
+  subLinks?: AppPaths[];
+  testId?: string;
+}
+
 export const useMainLinks = () => {
   const { t } = useTranslation();
   const pathname = usePathnameWithoutLocale();
 
+  const isEarnEnabled = isEarnFeatureEnabled();
+
   const links = useMemo(() => {
-    return [
+    const _links: MainLink[] = [
       {
         value: AppPaths.Main,
         label: t('navbar.links.exchange'),
@@ -88,7 +98,17 @@ export const useMainLinks = () => {
         testId: 'navbar-missions-button',
       },
     ];
-  }, [t]);
+
+    if (isEarnEnabled) {
+      _links.push({
+        value: AppPaths.Earn,
+        label: t('navbar.links.earn'),
+        subLinks: [AppPaths.Earn],
+        testId: 'navbar-earn-button',
+      });
+    }
+    return _links;
+  }, [t, isEarnEnabled]);
 
   const activeLink = useMemo(
     () =>

@@ -62,6 +62,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
           isLoading={isLoading}
           data={chartData}
           dateFormat={chartDateFormat}
+          dataSetId={value}
           theme={chartTheme}
         />
       </EarnDetailsAnalyticsLineChartContainer>
