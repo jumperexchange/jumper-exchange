@@ -30,12 +30,19 @@ import envConfig from 'src/config/env-config';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
+import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
+  zapData?: ZapDataResponse | null;
+  isZapDataSuccess?: boolean;
+  refetchDepositToken?: () => void;
 }
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
+  // zapData,
+  // isZapDataSuccess,
+  // refetchDepositToken,
   customInformation,
   ctx,
 }) => {
@@ -51,6 +58,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     isSuccess: isZapDataSuccess,
     refetchDepositToken,
   } = useEnhancedZapData(projectData);
+  console.log('zapData', zapData);
 
   const formRef = useRef<FormState>(null);
 
@@ -168,17 +176,19 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [sourceChainToken, allowedChains]);
 
   useEffect(() => {
-    setDestinationChainTokenForTracking({
-      chainId: toChain,
-      tokenAddress: toToken,
-    });
+    if (toChain && toToken) {
+      setDestinationChainTokenForTracking({
+        chainId: toChain,
+        tokenAddress: toToken,
+      });
+    }
   }, [toChain, toToken, setDestinationChainTokenForTracking]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
   useEffect(() => {
     function onRouteExecutionCompleted() {
-      refetchDepositToken();
+      refetchDepositToken?.();
     }
 
     const onRouteContactSupport = () => {
@@ -237,7 +247,9 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     );
   }
 
-  return isZapDataSuccess ? (
+  console.log('tototo', toToken, toChain, widgetConfig, account);
+
+  return isZapDataSuccess && toChain && toToken ? (
     <LiFiWidget
       formRef={formRef}
       config={widgetConfig}
@@ -247,7 +259,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       }
       contractComponent={
         <ZapDepositSettings
-          toChain={toChain}
+          toChain={toChain.toString()}
           toToken={toToken}
           contractCalls={[]}
         />

@@ -40,8 +40,13 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   }, [customInformation?.projectData]);
 
   // Get zap data to check if user has deposited and if withdraw is available
-  const { zapData, depositTokenData, isLoadingDepositTokenData } =
-    useEnhancedZapData(projectData);
+  const {
+    zapData,
+    depositTokenData,
+    isLoadingDepositTokenData,
+    isSuccess: isZapDataSuccess,
+    refetchDepositToken,
+  } = useEnhancedZapData(projectData);
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
   const hasWithdrawAbi = !!zapData?.abi?.withdraw;
@@ -87,6 +92,9 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
             <ZapDepositBackendWidget
               ctx={ctx}
               customInformation={customInformation}
+              refetchDepositToken={refetchDepositToken}
+              zapData={zapData}
+              isZapDataSuccess={isZapDataSuccess}
             />
           </ClientOnly>
         </Box>

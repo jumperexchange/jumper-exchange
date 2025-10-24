@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
@@ -10,11 +10,14 @@ import {
   ModalContainerProps,
 } from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
+import { useReadContracts } from 'wagmi';
+import { useAccount } from '@lifi/wallet-management';
+import { Hex } from 'viem';
 
 interface DepositModalProps extends ModalContainerProps {
   earnOpportunity: Pick<
     EarnOpportunityWithLatestAnalytics,
-    'name' | 'asset' | 'protocol' | 'url'
+    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest'
   > & {
     minFromAmountUSD: number;
     positionUrl: string;
@@ -27,12 +30,42 @@ export const DepositModal: FC<DepositModalProps> = ({
   isOpen,
   earnOpportunity,
 }) => {
-  const customInformation =
+  const { projectData, zapData } =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
+  console.log('customInformation', { projectData, zapData }, earnOpportunity);
+
+  const { account } = useAccount();
+
+  const contractsConfig = useMemo(() => {
+    return [
+      {
+        abi: [
+          {
+            inputs: [{ name: 'owner', type: 'address' }],
+            name: 'balanceOf',
+            outputs: [{ name: '', type: 'uint256' }],
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ] as const,
+        address: projectData.address as Hex,
+        chainId: projectData.chainId,
+        functionName: 'balanceOf',
+        args: [account.address as Hex],
+      },
+    ];
+  }, [projectData.address, projectData.chainId, account.address]);
+
+  const { refetch: refetchDepositToken } = useReadContracts({
+    contracts: contractsConfig,
+    query: {
+      enabled: !!account.address,
+    },
+  });
 
   return (
     <WidgetTrackingProvider>
-      <ZapInitProvider projectData={customInformation.projectData}>
+      <ZapInitProvider projectData={projectData}>
         <ModalContainer isOpen={isOpen} onClose={onClose}>
           <ClientOnly>
             <ZapDepositBackendWidget
@@ -48,7 +81,10 @@ export const DepositModal: FC<DepositModalProps> = ({
                 taskType: TaskType.Zap,
                 overrideHeader: 'Quick deposit',
               }}
-              customInformation={customInformation}
+              customInformation={{ projectData }}
+              zapData={zapData}
+              isZapDataSuccess={true}
+              refetchDepositToken={refetchDepositToken}
             />
           </ClientOnly>
         </ModalContainer>
