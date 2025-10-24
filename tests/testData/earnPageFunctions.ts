@@ -115,7 +115,7 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
 	await page.waitForLoadState("load");
 	await page.waitForTimeout(3000);
 	const earnOpportunitiesContainer = page.locator(
-		'xpath=//div[@class="MuiBox-root mui-g7qz86"]/following-sibling::div[1]',
+		'xpath=(//div[@class="MuiBox-root mui-1iwh6v5"]//div)[1]',
 	);
 	await expect(earnOpportunitiesContainer).toBeVisible();
 	const childElements = earnOpportunitiesContainer.locator("*");
