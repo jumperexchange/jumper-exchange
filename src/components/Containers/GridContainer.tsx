@@ -1,15 +1,17 @@
 import { FC, PropsWithChildren } from 'react';
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 
 interface GridContainerProps extends PropsWithChildren {
   gridTemplateColumns?: string;
   gap?: number;
+  'data-testid'?: string;
 }
 
 export const GridContainer: FC<GridContainerProps> = ({
   children,
   gridTemplateColumns = 'repeat(auto-fit, minmax(296px, 1fr))',
   gap = 4,
+  'data-testid': dataTestId,
 }) => {
   return (
     <Box
@@ -19,6 +21,7 @@ export const GridContainer: FC<GridContainerProps> = ({
         gridTemplateColumns,
         gap,
       }}
+      data-testid={dataTestId}
     >
       {children}
     </Box>

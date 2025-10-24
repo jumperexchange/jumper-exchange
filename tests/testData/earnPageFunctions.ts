@@ -24,6 +24,8 @@ export async function selectOptionFromDropDown(
 	const dropdownFilter = page.getByTestId(dropdown);
 	await dropdownFilter.click();
 	await page.getByRole("option", { name: option }).click();
+	// click page body to close the dropdown
+	await page.locator("body").click();
 }
 
 export async function verifyNoSelectedProtocolsAreVisible(
@@ -75,6 +77,33 @@ export async function verifyOnlySelectedAssetIsVisible(
 		(asset) => asset.toLowerCase() !== selectedAsset.toLowerCase(),
 	);
 	await verifyNoSelectedItemsAreVisible(page, assetsToHide);
+}
+
+/**
+ * Verifies that all earn cards display the expected chain name
+ * @param page - Playwright page object
+ * @param expectedChain - The chain name that should be displayed (e.g., "Base", "Mainnet", "Arbitrum")
+ */
+export async function verifyAllCardsShowChain(
+	page: Page,
+	expectedChain: string,
+) {
+	await page.waitForLoadState("load");
+	await page.waitForTimeout(3000);
+
+	// Get the filtered cards container and then find chain name elements within it
+	const filteredCardsContainer = page.getByTestId("earn-filtered-cards-container");
+	const chainNameElements = filteredCardsContainer.getByTestId("earn-card-chain-name");
+	const count = await chainNameElements.count();
+		
+	// Verify each chain name matches the expected chain
+	for (let i = 0; i < count; i++) {
+		const chainElement = chainNameElements.nth(i);
+		await expect(chainElement).toBeVisible();
+		const chainText = await chainElement.textContent();
+		console.log(`Card ${i + 1}: Chain = "${chainText}"`);
+		expect(chainText?.toLowerCase()).toBe(expectedChain.toLowerCase());
+	}
 }
 
 /**

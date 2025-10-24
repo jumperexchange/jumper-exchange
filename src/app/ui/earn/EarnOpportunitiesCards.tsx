@@ -26,6 +26,7 @@ export const EarnOpportunitiesCards = ({
           : 'repeat(auto-fit, 1fr)'
       }
       gap={3}
+      data-testid="earn-filtered-cards-container"
     >
       {gridItems.map((item, index) =>
         item == null ? (

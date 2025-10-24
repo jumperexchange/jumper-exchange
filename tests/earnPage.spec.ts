@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 import {
-	verifyNoSelectedChainsAreVisible,
 	verifyNoSelectedProtocolsAreVisible,
 	selectAllMarketsTab,
 	selectOptionFromDropDown,
 	verifyOnlySelectedAssetIsVisible,
+	verifyAllCardsShowChain,
 } from "./testData/earnPageFunctions";
 import { qase } from 'playwright-qase-reporter';
 
@@ -45,9 +45,9 @@ test.describe("Chains filters on Earn page", () => {
 		await test.step("Select base chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "base");
 		});
-
-		await test.step("Verify no arbitrum or mainnet items after selecting base chain", async () => {
-			await verifyNoSelectedChainsAreVisible(page, "arbitrum", "mainnet");
+		
+		await test.step("Verify all cards show Base chain name", async () => {
+			await verifyAllCardsShowChain(page, "Base");
 		});
 	});
 
@@ -55,9 +55,9 @@ test.describe("Chains filters on Earn page", () => {
 		await test.step("Select arbitrum chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "arbitrum");
 		});
-
-		await test.step("Verify no base or mainnet items after selecting arbitrum chain", async () => {
-			await verifyNoSelectedChainsAreVisible(page, "base", "mainnet");
+		
+		await test.step("Verify all cards show Arbitrum chain name", async () => {
+			await verifyAllCardsShowChain(page, "Arbitrum");
 		});
 	});
 
@@ -65,9 +65,9 @@ test.describe("Chains filters on Earn page", () => {
 		await test.step("Select mainnet chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "mainnet");
 		});
-
-		await test.step("Verify no arbitrum or base items after selecting mainnet chain", async () => {
-			await verifyNoSelectedChainsAreVisible(page, "arbitrum", "base");
+		
+		await test.step("Verify all cards show Mainnet chain name", async () => {
+			await verifyAllCardsShowChain(page, "Mainnet");
 		});
 	});
 });
