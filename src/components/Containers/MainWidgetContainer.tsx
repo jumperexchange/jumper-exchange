@@ -11,6 +11,7 @@ export const MainWidgetContainer: FC<MainWidgetContainerProps> = ({
       id="main-widget-container"
       sx={{
         paddingX: { xs: 2, sm: 0 },
+        height: '100%',
       }}
     >
       {children}

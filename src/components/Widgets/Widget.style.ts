@@ -26,10 +26,8 @@ export const WidgetWrapper = styled(Box, {
     prop !== 'autoHeight' &&
     prop !== 'contributionDisplayed',
 })<WidgetWrapperProps>(({ theme, autoHeight, contributionDisplayed }) => {
-  // autoHeight is used to adapt widget-height automatically instead of default 686px
-  const widgetHeight: 'auto' | number = autoHeight
-    ? 'auto'
-    : DEFAULT_WIDGET_HEIGHT;
+  // autoHeight is used to adapt widget-height automatically
+  const widgetHeight: 'auto' | '100%' = autoHeight ? 'auto' : '100%';
 
   return {
     width: '100%',
@@ -97,6 +95,22 @@ export const WidgetWrapper = styled(Box, {
         height: '600px',
       },
     }),
+
+    '& [id^="widget-relative-container-"]': {
+      maxHeight: '100%',
+    },
+    '& [id^="widget-app-expanded-container-"], & [id^="widget-scrollable-container-"]':
+      {
+        height: '100%',
+        maxHeight: '100%',
+      },
+    [theme.breakpoints.up('sm' as Breakpoint)]: {
+      '& [id^="widget-app-expanded-container-"], & [id^="widget-relative-container-"], & [id^="widget-scrollable-container-"]':
+        {
+          height: 'initial',
+          maxHeight: 'initial',
+        },
+    },
     variants: [
       {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,

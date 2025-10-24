@@ -7,6 +7,7 @@ import { useUserTracking } from '@/hooks/userTracking';
 import { Box, Slide, Stack } from '@mui/material';
 import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
 import React, { useEffect } from 'react';
+import { HeaderHeight } from 'src/const/headerHeight';
 
 export interface AppProps {
   children: React.ReactNode;
@@ -48,7 +49,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
     <Box
       onClick={handleWelcomeScreenEnter}
       sx={{
-        height: { xs: 'calc(100dvh - 64px)', sm: 'auto' },
+        height: { xs: `calc(100dvh - ${HeaderHeight.XS}px)`, sm: 'auto' },
       }}
     >
       <Slide
