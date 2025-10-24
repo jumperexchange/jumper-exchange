@@ -14,10 +14,10 @@
     "@emotion/styled": "^11.14.0",
     "@fingerprintjs/fingerprintjs": "^3.4.2",
     "@headlessui/react": "^2.2.7",
-    "@lifi/explorer": "^0.4.0",
-    "@lifi/sdk": "^3.12.11",
-    "@lifi/wallet-management": "^3.17.3",
-    "@lifi/widget": "^3.32.2",
+    "@lifi/explorer": "^0.4.3",
+    "@lifi/sdk": "^3.12.14",
+    "@lifi/wallet-management": "^3.18.1",
+    "@lifi/widget": "^3.33.1",
     "@merkl/api": "1.1.2",
     "@metaplex-foundation/mpl-core": "^1.1.1",
     "@metaplex-foundation/umi": "^0.9.2",
@@ -204,5 +204,5 @@
       "utf-8-validate"
     ]
   },
-  "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a"
+  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8"
 }
