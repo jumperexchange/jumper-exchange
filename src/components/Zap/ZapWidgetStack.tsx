@@ -13,6 +13,7 @@ import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
+import { useZapQuestIdStorage } from 'src/providers/hooks';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -23,6 +24,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   customInformation,
   market,
 }) => {
+  useZapQuestIdStorage();
   const { t } = useTranslation();
 
   if (!customInformation || !customInformation.projectData) {

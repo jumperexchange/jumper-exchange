@@ -65,30 +65,28 @@ export const DepositModal: FC<DepositModalProps> = ({
 
   return (
     <WidgetTrackingProvider>
-      <ZapInitProvider projectData={projectData}>
-        <ModalContainer isOpen={isOpen} onClose={onClose}>
-          <ClientOnly>
-            <ZapDepositBackendWidget
-              ctx={{
-                theme: {
-                  container: {
-                    maxHeight: 'calc(100vh - 6rem)',
-                    minWidth: '100%',
-                    maxWidth: 400,
-                    borderRadius: '24px',
-                  },
+      <ModalContainer isOpen={isOpen} onClose={onClose}>
+        <ClientOnly>
+          <ZapDepositBackendWidget
+            ctx={{
+              theme: {
+                container: {
+                  maxHeight: 'calc(100vh - 6rem)',
+                  minWidth: '100%',
+                  maxWidth: 400,
+                  borderRadius: '24px',
                 },
-                taskType: TaskType.Zap,
-                overrideHeader: 'Quick deposit',
-              }}
-              customInformation={{ projectData }}
-              zapData={zapData}
-              isZapDataSuccess={true}
-              refetchDepositToken={refetchDepositToken}
-            />
-          </ClientOnly>
-        </ModalContainer>
-      </ZapInitProvider>
+              },
+              taskType: TaskType.Zap,
+              overrideHeader: 'Quick deposit',
+            }}
+            customInformation={{ projectData }}
+            zapData={zapData}
+            isZapDataSuccess={true}
+            refetchDepositToken={refetchDepositToken}
+          />
+        </ClientOnly>
+      </ModalContainer>
     </WidgetTrackingProvider>
   );
 };

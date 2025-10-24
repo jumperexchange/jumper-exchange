@@ -8,8 +8,6 @@ import {
   WidgetEvent,
 } from '@lifi/widget';
 import { FC, useEffect, useMemo, useRef } from 'react';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
 import { WidgetProps } from '../Widget.types';
@@ -40,25 +38,17 @@ interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
 }
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
-  // zapData,
-  // isZapDataSuccess,
-  // refetchDepositToken,
+  zapData,
+  isZapDataSuccess,
+  refetchDepositToken,
   customInformation,
   ctx,
 }) => {
-  useZapQuestIdStorage();
   const { t } = useTranslation();
 
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
-
-  const {
-    zapData,
-    isSuccess: isZapDataSuccess,
-    refetchDepositToken,
-  } = useEnhancedZapData(projectData);
-  console.log('zapData', zapData);
 
   const formRef = useRef<FormState>(null);
 
