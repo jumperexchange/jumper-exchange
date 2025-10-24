@@ -96,17 +96,16 @@ export const WidgetWrapper = styled(Box, {
       },
     }),
 
-    [`@media screen and (max-width: ${theme.breakpoints.values.sm - 1}px) and (min-height: 700px)`]:
-      {
-        '& [id^="widget-relative-container-"]': {
+    [theme.breakpoints.down('sm')]: {
+      '& [id^="widget-relative-container-"]': {
+        maxHeight: '100% !important',
+      },
+      '& [id^="widget-app-expanded-container-"], & [id^="widget-scrollable-container-"]':
+        {
+          height: '100%',
           maxHeight: '100% !important',
         },
-        '& [id^="widget-app-expanded-container-"], & [id^="widget-scrollable-container-"]':
-          {
-            height: '100%',
-            maxHeight: '100% !important',
-          },
-      },
+    },
     variants: [
       {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
