@@ -162,6 +162,64 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -694,6 +752,64 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -1171,6 +1287,64 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -1607,6 +1781,64 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -2042,6 +2274,64 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
         <g
           class="recharts-cartesian-grid"
         >
+          <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
           <g
             class="recharts-cartesian-grid-horizontal"
           >
@@ -2520,6 +2810,64 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -2955,6 +3303,64 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
         <g
           class="recharts-cartesian-grid"
         >
+          <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
           <g
             class="recharts-cartesian-grid-horizontal"
           >
@@ -3497,6 +3903,64 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -3933,6 +4397,64 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
           class="recharts-cartesian-grid"
         >
           <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
+          <g
             class="recharts-cartesian-grid-horizontal"
           >
             <line
@@ -4368,6 +4890,64 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
         <g
           class="recharts-cartesian-grid"
         >
+          <g
+            class="recharts-cartesian-gridstripes-horizontal"
+          >
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="8"
+              stroke="none"
+              width="42"
+              x="53"
+              y="0"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="8"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="21"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="14"
+              stroke="none"
+              width="42"
+              x="53"
+              y="35"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="13"
+              stroke="none"
+              width="42"
+              x="53"
+              y="49"
+            />
+            <rect
+              class="recharts-cartesian-grid-bg"
+              fill="transparent"
+              height="3"
+              stroke="none"
+              width="42"
+              x="53"
+              y="62"
+            />
+          </g>
           <g
             class="recharts-cartesian-grid-horizontal"
           >
