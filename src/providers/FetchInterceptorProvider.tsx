@@ -23,7 +23,7 @@ export function FetchInterceptorProvider() {
         request.headers.append('x-zap-quest-id', zapQuestId || '');
       }
       // scan page flow
-      if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) && request.url.includes(AppPaths.Status) && pathname?.includes(AppPaths.Scan)) {
+      if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) && request.url.includes('status') && pathname?.includes(AppPaths.Scan)) {
         request.headers.append('x-zap-scan-id', 'biconomy-powered-tx');
       }
     });
