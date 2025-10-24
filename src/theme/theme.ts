@@ -544,8 +544,6 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             scrollBehavior: 'smooth',
             margin: 0,
             padding: 0,
-            WebkitOverflowScrolling: 'touch',
-            overscrollBehavior: 'none',
           },
         },
       },

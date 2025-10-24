@@ -51,6 +51,8 @@ const App = ({ children }: { children: React.ReactNode }) => {
         height: { xs: 'calc(100dvh - 64px)', sm: 'auto' },
         position: 'relative',
         zIndex: 1,
+        WebkitOverflowScrolling: 'touch',
+        overscrollBehavior: 'none',
       }}
     >
       <Slide
