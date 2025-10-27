@@ -16,7 +16,7 @@ import {
 
 export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
   return (
-    <HeroEarnCardContainer>
+    <HeroEarnCardContainer sx={{ width: '100%' }}>
       <HeroEarnCardHeaderContainer direction="row">
         <BadgeSkeleton size={BadgeSize.SM} width={84} />
       </HeroEarnCardHeaderContainer>

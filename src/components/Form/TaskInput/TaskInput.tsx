@@ -1,7 +1,6 @@
 import { ChangeEventHandler, FC, FocusEventHandler } from 'react';
-import { TaskInputErrorMessage, TaskInputField } from './TaskInput.styles';
+import { TaskInputField } from './TaskInput.styles';
 import { SxProps, Theme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 
 export interface TaskInputProps {
   id: string;
@@ -10,7 +9,6 @@ export interface TaskInputProps {
   value?: string;
   placeholder: string;
   disabled?: boolean;
-  errorMessage?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -23,34 +21,25 @@ export const TaskInput: FC<TaskInputProps> = ({
   value,
   placeholder,
   disabled,
-  errorMessage,
   onChange,
   onFocus,
   onBlur,
   sx,
 }) => {
   return (
-    <>
-      <TaskInputField
-        id={id}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        type="text"
-        autoComplete="off"
-        disabled={disabled}
-        error={!!errorMessage}
-        fullWidth
-        onChange={onChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        sx={sx}
-      />
-      {errorMessage && (
-        <TaskInputErrorMessage variant="bodyMedium">
-          {errorMessage}
-        </TaskInputErrorMessage>
-      )}
-    </>
+    <TaskInputField
+      id={id}
+      name={name}
+      value={value}
+      placeholder={placeholder}
+      type="text"
+      autoComplete="off"
+      disabled={disabled}
+      fullWidth
+      onChange={onChange}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      sx={sx}
+    />
   );
 };
