@@ -99,14 +99,14 @@ export const useMainLinks = () => {
       },
     ];
 
-    if (isEarnEnabled) {
-      _links.push({
-        value: AppPaths.Earn,
-        label: t('navbar.links.earn'),
-        subLinks: [AppPaths.Earn],
-        testId: 'navbar-earn-button',
-      });
-    }
+    // if (isEarnEnabled) {
+    //   _links.push({
+    //     value: AppPaths.Earn,
+    //     label: t('navbar.links.earn'),
+    //     subLinks: [AppPaths.Earn],
+    //     testId: 'navbar-earn-button',
+    //   });
+    // }
     return _links;
   }, [t, isEarnEnabled]);
 
