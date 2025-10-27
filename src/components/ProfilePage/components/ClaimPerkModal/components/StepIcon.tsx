@@ -1,29 +1,15 @@
-import Box from '@mui/material/Box';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { FC } from 'react';
+import { StyledStepIconBox } from '../ClaimPerkModal.styles';
 
 interface StepIconProps {
   active: boolean;
   completed: boolean;
 }
 
-export const StepIcon: FC<StepIconProps> = ({ active, completed }) => {
+export const StepIcon: FC<StepIconProps> = ({ completed }) => {
   return (
-    <Box
-      sx={(theme) => ({
-        width: theme.spacing(3),
-        height: theme.spacing(3),
-        padding: theme.spacing(0.5),
-        backgroundColor:
-          completed || active
-            ? (theme.vars || theme).palette.primary.main
-            : (theme.vars || theme).palette.grey[100],
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      })}
-    >
+    <StyledStepIconBox>
       {completed ? (
         <CheckRoundedIcon
           sx={(theme) => ({
@@ -33,6 +19,6 @@ export const StepIcon: FC<StepIconProps> = ({ active, completed }) => {
           })}
         />
       ) : null}
-    </Box>
+    </StyledStepIconBox>
   );
 };

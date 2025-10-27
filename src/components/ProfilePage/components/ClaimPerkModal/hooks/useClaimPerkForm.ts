@@ -125,8 +125,8 @@ export const useClaimPerkForm = ({
   );
 
   const handleBack = useCallback(() => {
-    setActiveStep(activeStep - 1);
-  }, [activeStep]);
+    setActiveStep((prev) => prev - 1);
+  }, []);
 
   const handleContinue = useCallback(() => {
     if (isLastStep) return;

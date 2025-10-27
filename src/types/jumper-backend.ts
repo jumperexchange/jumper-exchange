@@ -919,6 +919,8 @@ export interface PerkClaimDto {
   perkId: string;
   /** Inserted username for the perk claim */
   username?: string;
+  /** Inserted email for the perk claim */
+  email?: string;
   /** Signature of the user for the perk claim */
   signature: string;
 }
@@ -947,6 +949,11 @@ export interface PerkClaimEntity {
    * @example "test-username"
    */
   username: string;
+  /**
+   * Inserted email for the perk claim
+   * @example "test-email@example.com"
+   */
+  email: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;

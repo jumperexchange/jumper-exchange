@@ -19,6 +19,15 @@ export const createStepSchema = (step: AvailableSteps) => {
           'This does not look like a username',
         );
 
+    case AvailableSteps.Email:
+      return z
+        .string()
+        .email('Invalid email address')
+        .refine(
+          (val) => val.length <= 80,
+          'Email must not exceed 80 characters',
+        );
+
     case AvailableSteps.Wallet:
       return z
         .string()

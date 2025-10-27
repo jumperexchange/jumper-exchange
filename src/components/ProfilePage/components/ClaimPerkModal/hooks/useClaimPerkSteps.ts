@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 export const STEP_ORDER: AvailableSteps[] = [
   AvailableSteps.Username,
+  AvailableSteps.Email,
   AvailableSteps.Wallet,
 ];
 
@@ -22,11 +23,15 @@ export const useClaimPerkSteps = ({
     () =>
       ({
         [AvailableSteps.Username]: {
-          title: t('modal.perks.stepper.multipleSteps.username.title'),
+          title: t('modal.perks.stepper.steps.username.title'),
           id: 'username',
         },
+        [AvailableSteps.Email]: {
+          title: t('modal.perks.stepper.steps.email.title'),
+          id: 'email',
+        },
         [AvailableSteps.Wallet]: {
-          title: t('modal.perks.stepper.multipleSteps.wallet.title'),
+          title: t('modal.perks.stepper.steps.wallet.title'),
           id: 'wallet',
         },
       }) as const,

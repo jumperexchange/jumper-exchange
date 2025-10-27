@@ -40,6 +40,7 @@ export const ClaimPerkModal: FC<ClaimPerkModalProps> = ({
         perkId: perkId,
         signature: values.signature,
         address: values[AvailableSteps.Wallet],
+        email: values[AvailableSteps.Email],
         username: values[AvailableSteps.Username],
         message: values.message,
         walletType: values.walletType,

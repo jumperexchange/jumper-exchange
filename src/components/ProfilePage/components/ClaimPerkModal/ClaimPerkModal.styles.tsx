@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Step from '@mui/material/Step';
 import Stepper from '@mui/material/Stepper';
 import { styled } from '@mui/material/styles';
 import { ButtonPrimary } from 'src/components/Button/Button.style';
@@ -34,6 +35,9 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
   mt: theme.spacing(3),
   width: '100%',
   padding: theme.spacing(0, 3.5),
+}));
+
+export const StyledStep = styled(Step)(({ theme }) => ({
   '& .MuiStepConnector-root': {
     top: '10px',
     left: 'calc(-50% + 24px)',
@@ -48,19 +52,24 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
     overflow: 'hidden',
     '&::before': {
       content: '""',
+      display: 'block',
       position: 'absolute',
+      zIndex: 1,
       top: 0,
       left: 0,
       height: '100%',
       width: '0%',
-      backgroundColor: (theme.vars || theme).palette.primary.main,
       borderRadius: '2px',
-      transition: 'width 0.4s ease-in-out',
+      backgroundColor: 'transparent',
+      transition: 'width 0.3s ease-in-out, background-color 0.3s ease-in-out',
+      willChange: 'width, background-color',
+      transform: 'translate(0, 0)',
     },
   },
   '& .MuiStepConnector-root.Mui-active, & .MuiStepConnector-root.Mui-completed':
     {
       '& .MuiStepConnector-line::before': {
+        backgroundColor: (theme.vars || theme).palette.primary.main,
         width: '100%',
       },
     },
@@ -77,10 +86,28 @@ export const StyledStepper = styled(Stepper)(({ theme }) => ({
   },
 }));
 
+export const StyledStepIconBox = styled(Box)(({ theme }) => ({
+  width: theme.spacing(3),
+  height: theme.spacing(3),
+  padding: theme.spacing(0.5),
+  backgroundColor: (theme.vars || theme).palette.grey[100],
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'background-color 0.1s ease-in-out',
+  transform: 'translate(0, 0)',
+
+  '.Mui-active &, .Mui-completed &': {
+    backgroundColor: (theme.vars || theme).palette.primary.main,
+  },
+}));
+
 export const StyledActiveStepContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
+  width: '100%',
 }));
 
 // @Note we can expand this to use other statuses
