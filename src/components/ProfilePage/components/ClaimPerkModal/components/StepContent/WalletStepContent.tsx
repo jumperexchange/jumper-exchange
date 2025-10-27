@@ -6,24 +6,27 @@ import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { Button } from 'src/components/Button/Button';
 import { walletDigest } from 'src/utils/walletDigest';
+import { getStepPositionKey } from '../../utils';
 
 interface WalletStepContentProps {
   value: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isSubmitting: boolean;
-  position: string;
-  positionIndex: number;
+  currentStep: number;
+  totalSteps: number;
 }
 
 export const WalletStepContent: FC<WalletStepContentProps> = ({
   value,
   onChange,
   isSubmitting,
-  position,
-  positionIndex,
+  currentStep,
+  totalSteps,
 }) => {
   const { account } = useAccount();
   const { t } = useTranslation();
+  const positionKey = getStepPositionKey(currentStep, totalSteps);
+
   useEffect(() => {
     if (!account?.address || !onChange) {
       return;
@@ -40,8 +43,8 @@ export const WalletStepContent: FC<WalletStepContentProps> = ({
     <>
       <Typography variant="bodyMedium" color="textSecondary">
         {t(`modal.perks.stepper.steps.wallet.description`, {
-          position,
-          count: positionIndex + 1,
+          position: t(`modal.perks.stepper.steps.position.${positionKey}`),
+          count: currentStep,
         })}
       </Typography>
       <Badge

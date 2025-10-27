@@ -6,6 +6,7 @@ import { TaskInput } from 'src/components/Form/TaskInput/TaskInput';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { Button } from 'src/components/Button/Button';
 import { useTranslation } from 'react-i18next';
+import { getStepPositionKey } from '../../utils';
 
 interface UsernameStepContentProps {
   usernameType: string;
@@ -14,8 +15,8 @@ interface UsernameStepContentProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onContinue: () => void;
   errorMessage?: string;
-  position: string;
-  positionIndex: number;
+  currentStep: number;
+  totalSteps: number;
 }
 
 export const UsernameStepContent: FC<UsernameStepContentProps> = ({
@@ -25,18 +26,20 @@ export const UsernameStepContent: FC<UsernameStepContentProps> = ({
   id,
   onChange,
   onContinue,
-  position,
-  positionIndex,
+  currentStep,
+  totalSteps,
 }) => {
   const isDisabled = errorMessage !== '';
   const { t } = useTranslation();
+  const positionKey = getStepPositionKey(currentStep, totalSteps);
+
   return (
     <>
       <Typography variant="bodyMedium" color="textSecondary">
         {t('modal.perks.stepper.steps.username.description', {
           usernameType: capitalizeString(usernameType),
-          position,
-          count: positionIndex + 1,
+          position: t(`modal.perks.stepper.steps.position.${positionKey}`),
+          count: currentStep,
         })}
       </Typography>
       <FormControl key={id} sx={{ width: '100%' }}>

@@ -17,8 +17,8 @@ export interface StepContentProps {
 
 interface StepContentFactoryProps extends StepContentProps {
   stepType: AvailableSteps | 'error';
-  position: string;
-  positionIndex: number;
+  currentStep: number;
+  totalSteps: number;
 }
 
 export const StepContentFactory: FC<StepContentFactoryProps> = ({
@@ -30,8 +30,8 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
   errorMessage,
   isSubmitting,
   stepProps,
-  position,
-  positionIndex,
+  currentStep,
+  totalSteps,
 }) => {
   switch (stepType) {
     case AvailableSteps.Username:
@@ -43,8 +43,8 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
           onChange={onChange}
           onContinue={onContinue}
           errorMessage={errorMessage}
-          position={position}
-          positionIndex={positionIndex}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
         />
       );
 
@@ -56,8 +56,8 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
           onChange={onChange}
           onContinue={onContinue}
           errorMessage={errorMessage}
-          position={position}
-          positionIndex={positionIndex}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
         />
       );
 
@@ -67,8 +67,8 @@ export const StepContentFactory: FC<StepContentFactoryProps> = ({
           value={value}
           onChange={onChange}
           isSubmitting={isSubmitting}
-          position={position}
-          positionIndex={positionIndex}
+          currentStep={currentStep}
+          totalSteps={totalSteps}
         />
       );
 

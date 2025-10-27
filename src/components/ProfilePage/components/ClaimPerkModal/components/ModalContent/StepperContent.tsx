@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -12,6 +11,7 @@ import {
   StyledModalSectionContainer,
   StyledModalSectionHeaderContainer,
   StyledMultiStepTitleContainer,
+  StyledStep,
   StyledStepper,
   StyledTitleContainer,
   StyledTitleIconButton,
@@ -49,12 +49,8 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
     handleCloseErrorBottomSheet,
   );
 
-  const positionKey =
-    activeStep === 0
-      ? 'first'
-      : activeStep === steps.length - 1 && steps.length > 2
-        ? 'finally'
-        : 'next';
+  const currentStep = activeStep + 1;
+  const totalSteps = steps.length;
 
   const activeStepContent = steps[activeStep] ?? {};
   const isMultiStep = steps.length > 1;
@@ -88,11 +84,11 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
           {isMultiStep && (
             <StyledStepper activeStep={activeStep} alternativeLabel>
               {steps.map((step) => (
-                <Step key={step.title}>
+                <StyledStep key={step.title}>
                   <StepLabel slots={{ stepIcon: StepIcon }}>
                     {step.title}
                   </StepLabel>
-                </Step>
+                </StyledStep>
               ))}
             </StyledStepper>
           )}
@@ -108,8 +104,8 @@ export const StepperContent: FC<StepperContentProps> = (props) => {
             errorMessage={showStepError ? currentStepError : ''}
             isSubmitting={isSubmitting}
             stepProps={activeStepContent.stepProps}
-            position={t(`modal.perks.stepper.steps.position.${positionKey}`)}
-            positionIndex={activeStep}
+            currentStep={currentStep}
+            totalSteps={totalSteps}
           />
         </StyledActiveStepContentContainer>
       </StyledModalSectionContainer>
