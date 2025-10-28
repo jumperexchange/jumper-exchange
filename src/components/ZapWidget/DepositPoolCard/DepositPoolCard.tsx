@@ -83,10 +83,10 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     [isZapDataSuccess, zapData],
   );
 
-  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [token?.chainId]);
-  const formattedLockupPeriod = formatLockupPeriod(
-    analytics?.lockup_period ?? 0,
-  );
+  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [
+    token?.chainId ?? 0,
+  ]);
+  const formattedLockupPeriod = formatLockupPeriod(0);
 
   const {
     tooltip: apyTooltip,
@@ -155,7 +155,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
               <DepositPoolCardItem
                 title={apyLabel}
                 tooltip={apyTooltip}
-                value={apyValue}
+                value={String(apyValue)}
                 valueAppend={'%'}
               />
             )}
@@ -186,11 +186,11 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
                 tooltip={
                   hasDeposited ? t('tooltips.deposited') : t('tooltips.deposit')
                 }
-                value={token.symbol.toUpperCase()}
+                value={(token.symbol ?? '').toUpperCase()}
                 valuePrepend={
                   <BadgeWithChain
-                    logoURI={token.logoURI}
-                    chainId={token.chainId}
+                    logoURI={token.logoURI ?? ''}
+                    chainId={token.chainId ?? 0}
                     alt={`${zapData?.meta?.name} protocol`}
                     logoSize={24}
                     badgeSize={9}
