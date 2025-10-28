@@ -22,7 +22,9 @@ export async function selectOptionFromDropDown(
 	option: string,
 ) {
 	const dropdownFilter = page.getByTestId(dropdown);
+	const clearButton = page.getByTestId("clear-button");
 	await dropdownFilter.click();
+	await expect(clearButton).toBeVisible();
 	await page.getByRole("option", { name: option }).click();
 	// click page body to close the dropdown
 	await page.locator("body").click();
@@ -54,7 +56,7 @@ export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
 	const assets: string[] = [];
 	for (let i = 0; i < optionCount; i++) {
 		const optionText = await options.nth(i).textContent();
-		if (optionText && optionText.trim()) {
+		if (optionText?.trim()) {
 			assets.push(optionText.trim());
 		}
 	}
@@ -143,4 +145,32 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
 			}
 		}
 	}
+}
+
+export async function verifyOnlySelectedTagIsVisible(page: Page, selectedTag: string) {
+	const allOptions = await getAllOptionsFromDropdown(page, "earn-filter-tag-select");
+	const optionsToHide = allOptions.filter(
+		(option) => option.toLowerCase() !== selectedTag.toLowerCase(),
+	);
+	
+	const selectedTagTestId = `earn-card-tag-${selectedTag.toLowerCase().replace(/\s+/g, '-')}`;
+	const selectedTagElements = page.getByTestId(selectedTagTestId);
+	const selectedTagCount = await selectedTagElements.count();
+	
+	for (const optionToHide of optionsToHide) {
+		const hiddenTagTestId = `earn-card-tag-${optionToHide.toLowerCase().replace(/\s+/g, '-')}`;
+		const hiddenTagElements = page.getByTestId(hiddenTagTestId);
+		await expect(hiddenTagElements).toHaveCount(0);
+	}
+	
+	expect(selectedTagCount).toBeGreaterThan(0);
+}
+
+export async function getAllOptionsFromDropdown(page: Page, dropdown: string) {
+	const dropdownFilter = page.getByTestId(dropdown);
+	await dropdownFilter.click(); // Open the dropdown
+	const optionsArray = dropdownFilter.locator('[role="option"]');
+	const options = await optionsArray.allTextContents();
+	await page.keyboard.press("Escape"); // Close the dropdown
+	return options;
 }
