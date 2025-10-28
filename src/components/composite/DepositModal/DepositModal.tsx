@@ -13,13 +13,14 @@ import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProject
 import { useReadContracts } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { Hex } from 'viem';
+import { useZapEarnOpportunitySlugStorage } from 'src/providers/hooks';
 
 interface DepositModalProps {
   onClose: () => void;
   isOpen: boolean;
   earnOpportunity: Pick<
     EarnOpportunityWithLatestAnalytics,
-    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest'
+    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest' | 'slug'
   > & {
     minFromAmountUSD: number;
     positionUrl: string;
@@ -52,10 +53,10 @@ export const DepositModal: FC<DepositModalProps> = ({
   isOpen,
   earnOpportunity,
 }) => {
+  useZapEarnOpportunitySlugStorage(earnOpportunity.slug);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { projectData, zapData } =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
-  console.log('customInformation', { projectData, zapData }, earnOpportunity);
 
   const { account } = useAccount();
 

@@ -37,7 +37,7 @@ export const EarnRelatedMarkets: FC<EarnRelatedMarketsProps> = ({
                   // TODO: Enable deposit flow button and properly set earnOpportunity
                   earnOpportunity={{
                     ...relatedMarket,
-                    minFromAmountUSD: 5,
+                    minFromAmountUSD: 0.99,
                     positionUrl: relatedMarket.url ?? 'unset',
                     address: relatedMarket.lpToken.address,
                   }}

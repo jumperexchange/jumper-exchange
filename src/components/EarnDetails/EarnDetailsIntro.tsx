@@ -62,7 +62,7 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
             <EarnDetailsActions
               earnOpportunity={{
                 ...data,
-                minFromAmountUSD: 5,
+                minFromAmountUSD: 0.99,
                 positionUrl: '',
                 address: '',
               }}
