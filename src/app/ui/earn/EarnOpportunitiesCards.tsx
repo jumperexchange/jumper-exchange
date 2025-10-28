@@ -49,7 +49,7 @@ export const EarnOpportunitiesCards = ({
                 // TODO: Enable deposit flow button and properly set earnOpportunity
                 earnOpportunity={{
                   ...item,
-                  minFromAmountUSD: 5,
+                  minFromAmountUSD: 0.99,
                   positionUrl: item.url ?? 'unset',
                   address: item.lpToken.address,
                 }}

@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
-import { ZapInitProvider } from 'src/providers/ZapInitProvider/ZapInitProvider';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { TaskType } from 'src/types/strapi';
 import {
@@ -13,11 +12,12 @@ import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProject
 import { useReadContracts } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { Hex } from 'viem';
+import { useZapEarnOpportunitySlugStorage } from 'src/providers/hooks';
 
 interface DepositModalProps extends ModalContainerProps {
   earnOpportunity: Pick<
     EarnOpportunityWithLatestAnalytics,
-    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest'
+    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest' | 'slug'
   > & {
     minFromAmountUSD: number;
     positionUrl: string;
@@ -30,9 +30,9 @@ export const DepositModal: FC<DepositModalProps> = ({
   isOpen,
   earnOpportunity,
 }) => {
+  useZapEarnOpportunitySlugStorage(earnOpportunity.slug);
   const { projectData, zapData } =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
-  console.log('customInformation', { projectData, zapData }, earnOpportunity);
 
   const { account } = useAccount();
 

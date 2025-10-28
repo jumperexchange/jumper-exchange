@@ -53,7 +53,6 @@ export function useZapWidgetConfig(
       bridges: {
         allow: ['across', 'relay'],
       },
-
       // Chain configuration
       chains: {
         allow: context.allowChains,
