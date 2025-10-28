@@ -23,14 +23,16 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonSecondary } from 'src/components/Button';
+import { ButtonTransparent } from 'src/components/Button';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
-  Button,
   WalletAvatar,
   WalletCardBadge,
+  WalletCardButton,
+  WalletCardButtonSecondary,
   WalletCardContainer,
   WalletChainAvatar,
+  WalletContainer,
 } from './WalletCard.style';
 
 interface WalletCardProps {
@@ -132,7 +134,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
 
   return (
     <WalletCardContainer disableGutters>
-      <WalletCardStack>
+      <WalletContainer>
         <WalletCardBadge
           overlap="circular"
           className="badge"
@@ -151,7 +153,7 @@ export const WalletCard = ({ account }: WalletCardProps) => {
         >
           <WalletAvatar src={getConnectorIcon(account.connector)} />
         </WalletCardBadge>
-        <Button
+        <ButtonTransparent
           size="small"
           disabled={isMultisigEnvironment}
           onClick={() => handleCopyButton()}
@@ -159,29 +161,29 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             background: 'transparent !important',
           })}
         >
-          <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
+          <Typography variant="bodyMediumStrong">
             {walletDigest(account.address)}
           </Typography>
-        </Button>
-        <Stack direction="row" alignItems="flex-end" spacing={1}>
-          <Button size="small" onClick={() => handleExploreButton()}>
-            <OpenInNewIcon sx={{ height: '16px' }} />
-          </Button>
-          <Button size="small" onClick={() => handleScanButton()}>
-            <ReceiptLongIcon sx={{ height: '16px' }} />
-          </Button>
-          <ButtonSecondary
-            id="disconnect-wallet-button"
-            size="small"
-            onClick={() => {
-              handleDisconnect();
-            }}
-            sx={{ minWidth: 'auto' }}
-          >
-            <PowerSettingsNewIcon sx={{ height: '16px' }} />
-          </ButtonSecondary>
-        </Stack>
-      </WalletCardStack>
+        </ButtonTransparent>
+      </WalletContainer>
+      <Stack direction="row" alignItems="flex-end" spacing={1}>
+        <WalletCardButton size="small" onClick={() => handleExploreButton()}>
+          <OpenInNewIcon sx={{ height: 20, width: 20 }} />
+        </WalletCardButton>
+        <WalletCardButton size="small" onClick={() => handleScanButton()}>
+          <ReceiptLongIcon sx={{ height: 20, width: 20 }} />
+        </WalletCardButton>
+        <WalletCardButtonSecondary
+          id="disconnect-wallet-button"
+          size="small"
+          onClick={() => {
+            handleDisconnect();
+          }}
+          sx={{ minWidth: 'auto' }}
+        >
+          <PowerSettingsNewIcon sx={{ height: 20, width: 20 }} />
+        </WalletCardButtonSecondary>
+      </Stack>
     </WalletCardContainer>
   );
 };

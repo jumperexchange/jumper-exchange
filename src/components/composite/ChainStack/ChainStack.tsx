@@ -12,6 +12,7 @@ interface ChainStackProps {
   spacing?: number;
   direction?: AvatarStackDirection;
   disableBorder?: boolean;
+  limit?: number;
 }
 
 // @TODO use this for the missions cards
@@ -21,6 +22,7 @@ export const ChainStack: FC<ChainStackProps> = ({
   spacing = -1.5,
   direction = 'row',
   disableBorder = false,
+  limit,
 }) => {
   const { getChainById } = useChains();
   const enhancedChains = useMemo(() => {
@@ -41,6 +43,7 @@ export const ChainStack: FC<ChainStackProps> = ({
       spacing={spacing}
       direction={direction}
       disableBorder={disableBorder}
+      limit={limit}
     />
   );
 };

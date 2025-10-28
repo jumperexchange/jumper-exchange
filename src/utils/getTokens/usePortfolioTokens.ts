@@ -24,7 +24,6 @@ export function usePortfolioTokens() {
   const {
     getFormattedCacheTokens,
     setCacheTokens,
-    lastAddresses,
     forceRefresh,
     setForceRefresh,
   } = usePortfolioStore((state) => state);
@@ -40,15 +39,34 @@ export function usePortfolioTokens() {
     setCacheTokens(account, fetchedBalances);
   };
 
+  const connectedAccounts = accounts.filter(
+    (account) => account.isConnected && !!account?.address,
+  );
+
   const queries = useQueries({
-    queries: accounts
-      .filter((account) => account.isConnected && !!account?.address)
-      .map((account) => ({
-        queryKey: ['tokens', account.chainType, account.address],
-        queryFn: () => index(account, { onProgress: handleProgress }),
-        // refetchInterval: 100000 * 60 * 60,
-      })),
+    queries: connectedAccounts.map((account) => ({
+      queryKey: ['tokens', account.chainType, account.address],
+      queryFn: () => index(account, { onProgress: handleProgress }),
+      // refetchInterval: 100000 * 60 * 60,
+    })),
   });
+
+  console.log('queries', queries);
+
+  // Group queries by account address for easy lookup
+  const queriesByAddress = new Map(
+    connectedAccounts.map((account, index) => [
+      account.address!,
+      {
+        ...queries[index],
+        isSuccess: !queries[index].isFetching && queries[index].isSuccess,
+        data:
+          getFormattedCacheTokens([account]).cache.length === 0
+            ? (queries[index].data ?? [])
+            : getFormattedCacheTokens([account]).cache,
+      },
+    ]),
+  );
 
   const isSuccess = queries.every(
     (query) => !query.isFetching && query.isSuccess,
@@ -63,97 +81,83 @@ export function usePortfolioTokens() {
       ? queries.map((query) => query.data ?? []).flat()
       : getFormattedCacheTokens(accounts).cache;
 
-  // Useful to refresh after bridging something
-  useEffect(() => {
-    if (!forceRefresh) {
-      return;
-    }
+  // // Refresh specific accounts by address
+  // useEffect(() => {
+  //   if (forceRefresh.size === 0) {
+  //     return;
+  //   }
 
-    refetch();
-    setForceRefresh(false);
-  }, [forceRefresh]);
+  //   connectedAccounts.forEach((account, index) => {
+  //     if (account.address && forceRefresh.has(account.address)) {
+  //       queries[index].refetch();
+  //       setForceRefresh(account.address, false);
+  //     }
+  //   });
+  // }, [forceRefresh]);
 
-  useEffect(() => {
-    if (!accounts) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (hasTrackedSuccess.current || !shouldSendTrackingEvent) {
+  //     return;
+  //   }
 
-    if (
-      arraysEqual(
-        accounts
-          .filter((account) => account.isConnected && account?.address)
-          .map((account) => account.address!),
-        lastAddresses ?? [],
-      )
-    ) {
-      return;
-    }
+  //   hasTrackedSuccess.current = true;
 
-    refetch();
-  }, [accounts]);
+  //   trackEvent({
+  //     category: TrackingCategory.Wallet,
+  //     action: TrackingAction.PortfolioLoaded,
+  //     label: 'portfolio_balance_loaded',
+  //     data: {
+  //       [TrackingEventParameter.Status]: 'success',
+  //       [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+  //     },
+  //   });
+  // }, [shouldSendTrackingEvent, trackEvent]);
 
-  useEffect(() => {
-    if (hasTrackedSuccess.current || !shouldSendTrackingEvent) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (hasTrackedPortfolioOverview.current || !shouldSendTrackingEvent) {
+  //     return;
+  //   }
 
-    hasTrackedSuccess.current = true;
+  //   hasTrackedPortfolioOverview.current = true;
 
-    trackEvent({
-      category: TrackingCategory.Wallet,
-      action: TrackingAction.PortfolioLoaded,
-      label: 'portfolio_balance_loaded',
-      data: {
-        [TrackingEventParameter.Status]: 'success',
-        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-      },
-    });
-  }, [shouldSendTrackingEvent, trackEvent]);
+  //   const { totalValue: totalBalanceUSD } = getFormattedCacheTokens(accounts);
 
-  useEffect(() => {
-    if (hasTrackedPortfolioOverview.current || !shouldSendTrackingEvent) {
-      return;
-    }
+  //   const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
+  //     chainsIds.map(
+  //       (chainId) => getChainById(chainId)?.nativeToken?.address ?? zeroAddress,
+  //     );
 
-    hasTrackedPortfolioOverview.current = true;
+  //   const trackingData = parsePortfolioDataToTrackingData(
+  //     totalBalanceUSD,
+  //     data,
+  //     returnNativeTokenAddresses,
+  //   );
 
-    const { totalValue: totalBalanceUSD } = getFormattedCacheTokens(accounts);
+  //   trackEvent({
+  //     category: TrackingCategory.WalletMenu,
+  //     action: TrackingAction.PortfolioOverview,
+  //     label: 'portfolio_balance_overview',
+  //     enableAddressable: true,
+  //     data: trackingData,
+  //   });
+  // }, [
+  //   shouldSendTrackingEvent,
+  //   accounts,
+  //   data,
+  //   getFormattedCacheTokens,
+  //   getChainById,
+  //   trackEvent,
+  // ]);
 
-    const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
-      chainsIds.map(
-        (chainId) => getChainById(chainId)?.nativeToken?.address ?? zeroAddress,
-      );
-
-    const trackingData = parsePortfolioDataToTrackingData(
-      totalBalanceUSD,
-      data,
-      returnNativeTokenAddresses,
-    );
-
-    trackEvent({
-      category: TrackingCategory.WalletMenu,
-      action: TrackingAction.PortfolioOverview,
-      label: 'portfolio_balance_overview',
-      enableAddressable: true,
-      data: trackingData,
-    });
-  }, [
-    shouldSendTrackingEvent,
-    accounts,
-    data,
-    getFormattedCacheTokens,
-    getChainById,
-    trackEvent,
-  ]);
-
-  // Reset the tracking flag when accounts change
-  useEffect(() => {
-    hasTrackedSuccess.current = false;
-    hasTrackedPortfolioOverview.current = false;
-  }, [accounts]);
+  // // Reset the tracking flag when accounts change
+  // useEffect(() => {
+  //   hasTrackedSuccess.current = false;
+  //   hasTrackedPortfolioOverview.current = false;
+  // }, [accounts]);
 
   return {
     queries,
+    queriesByAddress,
     isSuccess,
     isFetching,
     refetch,

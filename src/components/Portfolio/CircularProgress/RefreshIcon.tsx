@@ -3,6 +3,7 @@ import { CircularProgress, IconButton, Tooltip } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CircularBox } from './CircularProgress.style';
+import MuiRefreshIcon from '@mui/icons-material/Refresh';
 
 const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
   updatedAt
@@ -44,7 +45,16 @@ const RefreshIcon: React.FC<
   }, [isLoading]);
 
   return (
-    <IconButton onClick={onClick} disabled={isLoading} {...other}>
+    <IconButton
+      onClick={onClick}
+      disabled={isLoading}
+      {...other}
+      sx={(theme) => ({
+        boxShadow: theme.shadows[2],
+        color: (theme.vars || theme).palette.buttonLightAction,
+        backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+      })}
+    >
       <Tooltip
         title={t('navbar.walletMenu.totalBalanceRefresh')}
         placement="top"
@@ -58,31 +68,30 @@ const RefreshIcon: React.FC<
         }}
       >
         <CircularBox>
-          <CircularProgress
-            variant="determinate"
-            size={24}
-            value={100}
-            sx={(theme) => ({
-              position: 'absolute',
-              color:
-                (theme.vars || theme).palette.grey[300],
-              ...theme.applyStyles("light", {
-                color: (theme.vars || theme).palette.grey[300]
-              })
-            })}
-          />
-          <CircularProgress
-            variant={isLoading ? 'indeterminate' : 'determinate'}
-            size={24}
-            value={value}
-            sx={(theme) => ({
-              opacity: value === 100 && !isLoading ? 0.5 : 1,
-              color: (theme.vars || theme).palette.primary.light,
-              ...theme.applyStyles("light", {
-                color: (theme.vars || theme).palette.primary.main
-              })
-            })}
-          />
+          {isLoading ? (
+            <>
+              <CircularProgress
+                variant="determinate"
+                size={20}
+                value={100}
+                sx={(theme) => ({
+                  position: 'absolute',
+                  color: (theme.vars || theme).palette.alpha300.main,
+                })}
+              />
+              <CircularProgress
+                variant={isLoading ? 'indeterminate' : 'determinate'}
+                size={20}
+                value={value}
+                sx={(theme) => ({
+                  opacity: value === 100 && !isLoading ? 0.5 : 1,
+                  color: (theme.vars || theme).palette.text.primary,
+                })}
+              />
+            </>
+          ) : (
+            <MuiRefreshIcon sx={{ width: 20, height: 20 }} />
+          )}
         </CircularBox>
       </Tooltip>
     </IconButton>

@@ -98,30 +98,38 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <img
-                alt="morpho"
-                class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
             </div>
           </div>
           <div
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -136,6 +144,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -285,14 +294,18 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-k0vgmj-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -385,30 +398,38 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             class="MuiBox-root css-wioyy2"
           >
             <div
-              class="MuiStack-root css-k0vgmj-MuiStack-root"
+              class="MuiStack-root css-5s31b2-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+                class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
-                <img
-                  alt="morpho"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+                >
+                  <img
+                    alt="morpho"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                  />
+                </div>
               </div>
             </div>
             <div
               class="MuiBox-root css-k8f1u5"
             >
               <div
-                class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                class="MuiStack-root css-1g44ov9-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                  class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -423,6 +444,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -572,14 +594,18 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                 class="MuiBox-root css-1xdhyk6"
               >
                 <div
-                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                  class="MuiStack-root css-5s31b2-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                    class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                    />
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                    >
+                      <span
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -717,30 +743,38 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <img
-                alt="morpho"
-                class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
             </div>
           </div>
           <div
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -755,6 +789,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -904,14 +939,18 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-k0vgmj-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -1026,30 +1065,38 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <img
-                alt="morpho"
-                class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1we4ia9-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
             </div>
           </div>
           <div
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1064,6 +1111,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1213,14 +1261,18 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-k0vgmj-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -1252,30 +1304,38 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <img
-                alt="morpho"
-                class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
             </div>
           </div>
           <div
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1290,6 +1350,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1386,14 +1447,18 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           data-mui-internal-clone-element="true"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                />
+              </div>
             </div>
           </div>
           <p
@@ -1453,30 +1518,38 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             class="MuiBox-root css-wioyy2"
           >
             <div
-              class="MuiStack-root css-k0vgmj-MuiStack-root"
+              class="MuiStack-root css-5s31b2-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+                class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
-                <img
-                  alt="morpho"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+                >
+                  <img
+                    alt="morpho"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                  />
+                </div>
               </div>
             </div>
             <div
               class="MuiBox-root css-k8f1u5"
             >
               <div
-                class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                class="MuiStack-root css-1g44ov9-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                  class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -1491,6 +1564,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -1587,14 +1661,18 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             data-mui-internal-clone-element="true"
           >
             <div
-              class="MuiStack-root css-k0vgmj-MuiStack-root"
+              class="MuiStack-root css-5s31b2-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
             <p
@@ -1683,30 +1761,38 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <img
-                alt="morpho"
-                class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
             </div>
           </div>
           <div
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1721,6 +1807,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1786,14 +1873,18 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           data-mui-internal-clone-element="true"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                />
+              </div>
             </div>
           </div>
           <p
@@ -1849,30 +1940,38 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <img
-                alt="morpho"
-                class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1vh1zud-MuiAvatar-root"
+              >
+                <img
+                  alt="morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
             </div>
           </div>
           <div
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-1x5pyaa-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                class="MuiStack-root css-1x5pyaa-MuiStack-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
-                />
+                <div
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
+                >
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1887,6 +1986,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1983,14 +2083,18 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           data-mui-internal-clone-element="true"
         >
           <div
-            class="MuiStack-root css-k0vgmj-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
-              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-              />
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                />
+              </div>
             </div>
           </div>
           <p
@@ -2172,28 +2276,36 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                      />
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      >
+                        <span
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
-                        />
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        >
+                          <span
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2243,14 +2355,18 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-k0vgmj-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -2299,30 +2415,38 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                      class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
-                      <img
-                        alt="morpho"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                        src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-                      />
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                      >
+                        <img
+                          alt="morpho"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
-                        />
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        >
+                          <span
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2512,28 +2636,36 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                      />
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      >
+                        <span
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
-                        />
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        >
+                          <span
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2583,14 +2715,18 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-k0vgmj-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
-                  />
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  >
+                    <span
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -2639,30 +2775,38 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-k0vgmj-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                      class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
-                      <img
-                        alt="morpho"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                        src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
-                      />
+                      <div
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                      >
+                        <img
+                          alt="morpho"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
-                        />
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
+                        >
+                          <span
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -244,6 +244,7 @@ interface Resources {
         totalBalance: 'Total balance';
         totalBalanceRefresh: 'Click here to restart the indexing of your tokens now.';
         totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
+        walletBalance: 'Wallet balance';
         walletNotInstalled: '{{wallet}} is not installed';
       };
       walletSelectMenu: {

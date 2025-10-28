@@ -1,11 +1,9 @@
 import { WalletCardContainer } from '@/components/Menus';
 import { TotalValue } from '@/components/Portfolio/Portfolio.styles';
-import TotalBalanceSkeleton from '@/components/Portfolio/TotalBalance.Skeleton';
+import TotalBalanceSkeleton from 'src/components/Portfolio/TotalBalanceSkeleton';
 import { usePortfolioStore } from '@/stores/portfolio';
-import { arraysEqual } from '@/utils/getTokens/utils';
 import { useAccount } from '@lifi/wallet-management';
-import InfoIcon from '@mui/icons-material/Info';
-import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { AnimatedCounter } from 'react-animated-counter';
 import { useTranslation } from 'react-i18next';
@@ -21,55 +19,52 @@ interface TotalBalanceProps {
   isComplete: boolean;
   isFetching: boolean;
   refetch: () => void;
+  walletAddress: string;
 }
 
 function TotalBalance({
   isComplete = false,
   isFetching = false,
   refetch,
+  walletAddress,
 }: TotalBalanceProps) {
   const theme = useTheme();
   const [differenceValue, setDifferenceValue] = useState(0);
   const [differencePercent, setDifferencePercent] = useState(0);
   const { t } = useTranslation();
   const { accounts } = useAccount();
+  const connectedAccount = accounts.find(
+    (account) => account.address === walletAddress,
+  );
   const portfolio = usePortfolioStore((state) => state);
-  const { totalValue } = portfolio.getFormattedCacheTokens(accounts);
+  const { totalValue } = portfolio.getFormattedCacheTokens([connectedAccount!]);
+  const lastTotalValue = portfolio.getLast(walletAddress).value;
 
   useMemo(() => {
     if (!isComplete) {
       return;
     }
 
-    const addresses = accounts
-      .filter((a) => !!a?.address)
-      .map(({ address }) => address) as string[];
+    const lastDate = portfolio.getLast(walletAddress).date;
 
-    if (addresses.length === 0) {
+    if (lastDate && !has24HoursPassed(lastDate)) {
       return;
     }
 
-    if (!arraysEqual(portfolio.lastAddresses ?? [], addresses)) {
-      portfolio.setLast(totalValue, addresses);
-      return;
-    }
+    const now = Date.now();
 
-    if (portfolio.lastDate && !has24HoursPassed(portfolio.lastDate)) {
-      return;
-    }
-
-    portfolio.setLast(totalValue, addresses);
+    portfolio.setLast(walletAddress, totalValue, now);
 
     if (!portfolio.lastTotalValue) {
       return;
     }
 
-    const differenceValue = totalValue - portfolio.lastTotalValue;
+    const lastTotalValue = portfolio.getLast(walletAddress).value;
+
+    const differenceValue = totalValue - lastTotalValue;
     const differencePercent =
-      portfolio.lastTotalValue !== 0
-        ? ((totalValue - portfolio.lastTotalValue) /
-            Math.abs(portfolio.lastTotalValue)) *
-          100
+      lastTotalValue !== 0
+        ? ((totalValue - lastTotalValue) / Math.abs(lastTotalValue)) * 100
         : 0;
 
     setDifferenceValue(differenceValue);
@@ -82,65 +77,13 @@ function TotalBalance({
 
   return (
     <WalletCardContainer disableGutters>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            fontWeight={500}
-            fontSize={14}
-            sx={(theme) => ({
-              color: (theme.vars || theme).palette.text.primary,
-            })}
-          >
-            {t('navbar.walletMenu.totalBalance')}
-          </Typography>
-          <Tooltip
-            title={t('navbar.walletMenu.totalBalanceTooltip')}
-            placement="top"
-            enterTouchDelay={0}
-            arrow
-            sx={{
-              zIndex: 25000,
-            }}
-            slotProps={{
-              popper: { sx: { zIndex: 2000 } },
-            }}
-          >
-            <InfoIcon
-              sx={{
-                cursor: 'help',
-                marginLeft: '8px',
-                width: 16,
-                height: 16,
-                opacity: '0.5',
-              }}
-            />
-          </Tooltip>
-        </Box>
-        <RefreshIcon
-          updatedAt={new Date().getTime()}
-          timeToUpdate={0}
-          isLoading={!isComplete}
-          onClick={() => refetch()}
-        />
-      </Box>
-      <Stack spacing={1}>
+      <Stack>
+        <Typography variant="bodyXSmallStrong" color="textSecondary">
+          {t('navbar.walletMenu.walletBalance')}
+        </Typography>
         <TotalValue as="div">
-          {portfolio.lastTotalValue && !isComplete ? (
-            t('format.currency', { value: portfolio.lastTotalValue })
+          {lastTotalValue && !isComplete ? (
+            t('format.currency', { value: lastTotalValue })
           ) : (
             <>
               $
@@ -190,6 +133,12 @@ function TotalBalance({
           )}
         </Stack> */}
       </Stack>
+      <RefreshIcon
+        updatedAt={new Date().getTime()}
+        timeToUpdate={0}
+        isLoading={!isComplete}
+        onClick={() => refetch()}
+      />
     </WalletCardContainer>
   );
 }

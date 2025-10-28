@@ -1,8 +1,10 @@
 'use client';
 
-import { ButtonTransparent } from '@/components/Button';
-import type { Breakpoint } from '@mui/material';
-import { Avatar, Badge, Container } from '@mui/material';
+import { ButtonSecondary, ButtonTransparent } from '@/components/Button';
+import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
 
 export const WalletAvatar = styled(Avatar)(() => ({
@@ -18,14 +20,16 @@ export const WalletAvatar = styled(Avatar)(() => ({
 }));
 
 export const WalletCardContainer = styled(Container)(({ theme }) => ({
-  boxShadow: '0px 1px 4px 0px rgba(0, 0, 0, 0.04)',
   display: 'flex',
-  background: (theme.vars || theme).palette.surface2.main,
-  borderRadius: '16px',
-  padding: theme.spacing(2),
-  [theme.breakpoints.down('sm' as Breakpoint)]: {
-    padding: '10px',
-  },
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
+}));
+
+export const WalletContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(2),
 }));
 
 export const WalletCardButtonContainer = styled(Container)(() => ({
@@ -50,13 +54,30 @@ export const WalletCardBadge = styled(Badge)(() => ({
   },
 }));
 
-export const Button = styled(ButtonTransparent)(({ theme }) => ({
+export const WalletCardButton = styled(ButtonTransparent)(({ theme }) => ({
+  padding: theme.spacing(0.75),
   minWidth: 'auto',
-  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
+  color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
+    color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+  }),
+
   '&:hover': {
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
+    backgroundColor: (theme.vars || theme).palette.buttonActiveBg,
+    color: (theme.vars || theme).palette.buttonActiveAction,
   },
 }));
+
+export const WalletCardButtonSecondary = styled(ButtonSecondary)(
+  ({ theme }) => ({
+    padding: theme.spacing(0.75),
+    minWidth: 'auto',
+    backgroundColor: (theme.vars || theme).palette.buttonSecondaryBg,
+    color: (theme.vars || theme).palette.buttonSecondaryAction,
+  }),
+);
 
 export const WalletChainAvatar = styled(Avatar)(({ theme }) => ({
   borderRadius: '50%',

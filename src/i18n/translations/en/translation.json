@@ -50,6 +50,7 @@
       "walletNotInstalled": "{{wallet}} is not installed",
       "connectAnotherWallet": "Connect another wallet",
       "refreshBalances": "Refresh balances",
+      "walletBalance": "Wallet balance",
       "totalBalance": "Total balance",
       "totalBalanceTooltip": "Your total balance may not always be accurate due to potential indexing issues. We're on it!",
       "totalBalanceRefresh": "Click here to restart the indexing of your tokens now.",

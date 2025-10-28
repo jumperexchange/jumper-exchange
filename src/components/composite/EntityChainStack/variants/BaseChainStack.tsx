@@ -14,7 +14,10 @@ import {
   AvatarStackDirection,
 } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
-import { BaseProps } from '../EntityChainStack.types';
+import {
+  BaseProps,
+  EntityChainStackChainsPlacement,
+} from '../EntityChainStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 
 interface BaseChainStackProps extends BaseProps {
@@ -28,7 +31,9 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
   mainStack,
   chainIds,
   chainKeys,
+  chainsLimit,
   chainsSize = AvatarSize.XS,
+  chainsPlacement = EntityChainStackChainsPlacement.Overlay,
   isLoading = false,
   spacing: spacingProp = {},
   layout: layoutProp = {},
@@ -65,30 +70,39 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
     ...contentProp,
   };
 
+  const chainsStack = (
+    <ChainStack
+      chainIds={chainIds}
+      size={chainsSize}
+      limit={chainsLimit}
+      spacing={spacing.chains}
+      direction={layout.direction}
+    />
+  );
+
   return (
     <EntityChainContainer gap={spacing.containerGap}>
       <EntityChainStackWrapper>
         {mainStack}
-        <ChainStackWrapper>
-          <ChainStack
-            chainIds={chainIds}
-            size={chainsSize}
-            spacing={spacing.chains}
-            direction={layout.direction}
-          />
-        </ChainStackWrapper>
+        {chainsPlacement === EntityChainStackChainsPlacement.Overlay && (
+          <ChainStackWrapper>{chainsStack}</ChainStackWrapper>
+        )}
       </EntityChainStackWrapper>
       {isContentVisible && (
         <EntityChainInfoContainer gap={spacing.infoContainerGap}>
           <EntityChainTitle variant={content.titleVariant}>
             {content.title}
           </EntityChainTitle>
-          <EntityChainDescription
-            variant={content.descriptionVariant}
-            data-testid="earn-card-chain-name"
-          >
-            {chainKeys.map(capitalizeString).join(' ')}
-          </EntityChainDescription>
+          {chainsPlacement === EntityChainStackChainsPlacement.Overlay ? (
+            <EntityChainDescription
+              variant={content.descriptionVariant}
+              data-testid="earn-card-chain-name"
+            >
+              {chainKeys.map(capitalizeString).join(' ')}
+            </EntityChainDescription>
+          ) : (
+            chainsStack
+          )}
         </EntityChainInfoContainer>
       )}
     </EntityChainContainer>

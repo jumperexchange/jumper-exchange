@@ -7,7 +7,6 @@ import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CustomDrawer } from '.';
-import { WalletCard } from './WalletCard';
 import { WalletButton } from './WalletMenu.style';
 
 export const WalletMenu = () => {
@@ -79,12 +78,6 @@ export const WalletMenu = () => {
           </Typography>
         </WalletButton>
       </Stack>
-      {accounts.map(
-        (account) =>
-          account.isConnected && (
-            <WalletCard key={account.address} account={account} />
-          ),
-      )}
       <Portfolio />
     </CustomDrawer>
   );
