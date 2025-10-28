@@ -86,6 +86,7 @@ export const MultiSelect = <T extends string[]>({
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
           size="small"
+          data-testid="clear-button"
           onClick={handleClear}
         >
           {t('earn.filter.clear')}

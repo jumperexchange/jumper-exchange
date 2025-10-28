@@ -5,6 +5,7 @@ interface GridContainerProps extends PropsWithChildren {
   gridTemplateColumns?: string;
   gap?: number;
   justifyContent?: CSSProperties['justifyContent'];
+  dataTestId?: string;
 }
 
 export const GridContainer: FC<GridContainerProps> = ({
@@ -12,6 +13,7 @@ export const GridContainer: FC<GridContainerProps> = ({
   gridTemplateColumns = 'repeat(auto-fit, minmax(296px, 1fr))',
   gap = 4,
   justifyContent,
+  dataTestId,
 }) => {
   return (
     <Box
@@ -22,6 +24,7 @@ export const GridContainer: FC<GridContainerProps> = ({
         gap,
         justifyContent,
       }}
+      data-testid={dataTestId}
     >
       {children}
     </Box>

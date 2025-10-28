@@ -83,7 +83,10 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
           <EntityChainTitle variant={content.titleVariant}>
             {content.title}
           </EntityChainTitle>
-          <EntityChainDescription variant={content.descriptionVariant}>
+          <EntityChainDescription
+            variant={content.descriptionVariant}
+            data-testid="earn-card-chain-name"
+          >
             {chainKeys.map(capitalizeString).join(' ')}
           </EntityChainDescription>
         </EntityChainInfoContainer>
