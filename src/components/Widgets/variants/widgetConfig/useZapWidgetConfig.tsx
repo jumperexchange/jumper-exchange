@@ -39,15 +39,20 @@ export function useZapWidgetConfig(
       // Explorer configuration
       explorerUrls,
 
-      // Bridge configuration
-      bridges: {
-        allow: ['across', 'relay'],
+      sdkConfig: {
+        routeOptions: {
+          allowSwitchChain: false,
+        },
       },
 
       // Additional zap-specific config
       buildUrl: true,
       useRecommendedRoute: true,
       // contractCompactComponent: <></>,
+
+      bridges: {
+        allow: ['across', 'relay'],
+      },
 
       // Chain configuration
       chains: {

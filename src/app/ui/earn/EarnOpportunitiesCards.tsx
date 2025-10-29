@@ -16,16 +16,18 @@ export const EarnOpportunitiesCards = ({
   isLoading: boolean;
   variant: EarnCardVariant;
 }) => {
+  const isCompact = variant === 'compact';
   const gridItems = AtLeastNWhenLoading(items, isLoading, 3, Infinity);
 
   return (
     <GridContainer
       gridTemplateColumns={
-        variant === 'compact'
-          ? 'repeat(auto-fit, minmax(328px, 1fr))'
-          : 'repeat(auto-fit, 1fr)'
+        isCompact
+          ? 'repeat(auto-fill, minmax(328px, 1fr))'
+          : 'repeat(auto-fit, 100%)'
       }
       gap={3}
+      justifyContent={isCompact ? 'space-evenly' : undefined}
     >
       {gridItems.map((item, index) =>
         item == null ? (
@@ -52,7 +54,7 @@ export const EarnOpportunitiesCards = ({
                   address: item.lpToken.address,
                 }}
                 displayMode={DepositButtonDisplayMode.IconOnly}
-                size={variant === 'compact' ? 'large' : 'medium'}
+                size={isCompact ? 'large' : 'medium'}
                 disabled
               />
             }

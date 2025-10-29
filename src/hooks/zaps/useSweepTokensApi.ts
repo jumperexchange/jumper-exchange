@@ -272,6 +272,7 @@ export const useSweepTokensApi = (
     hasTokensToSweepState,
     targetChainId,
     switchChainAsync,
+    walletClient,
   ]);
 
   return {

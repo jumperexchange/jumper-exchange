@@ -14,23 +14,27 @@ import {
 
 interface CompactEarnCardItemProps {
   title: string;
+  dataTestId?: string;
   tooltip: string;
   value?: string;
   valuePrepend?: ReactNode;
   valueAppend?: ReactNode;
   contentStyles?: SxProps<Theme>;
+  shouldExpand?: boolean;
 }
 
 export const CompactEarnCardItem: FC<CompactEarnCardItemProps> = ({
+  dataTestId,
   title,
   tooltip,
   value,
   valuePrepend,
   valueAppend,
   contentStyles,
+  shouldExpand,
 }) => {
   return (
-    <Grid size={{ xs: 12, sm: 6 }}>
+    <Grid size={{ xs: 12, sm: shouldExpand ? 12 : 6 }} data-testid={dataTestId}>
       <CompactEarnCardItemHeaderContainer sx={{ display: 'flex', gap: 1 }}>
         <Typography variant="bodyXSmall" color="text.secondary">
           {title}

@@ -122,7 +122,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
             ))}
           </ProtocolCardTagsContainer>
         </ProtocolCardContentHeaderContainer>
-        <ProtocolCardDescriptionContainer>
+        <ProtocolCardDescriptionContainer variant="bodyMediumParagraph">
           {description}
         </ProtocolCardDescriptionContainer>
         {protocol?.name && url && (

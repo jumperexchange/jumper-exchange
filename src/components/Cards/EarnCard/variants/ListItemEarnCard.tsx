@@ -35,6 +35,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
   const items = overviewItems.map((item) => (
     <ListItemTooltipBadge
+      dataTestId={item.dataTestId}
       key={item.key}
       label={
         item.key === 'apy' || item.key === 'tvl'

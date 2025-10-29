@@ -10,6 +10,7 @@ import {
   EarnRelatedMarketWrapper,
 } from './EarnRelatedMarkets.styles';
 import { useTranslation } from 'react-i18next';
+import { AppPaths } from 'src/const/urls';
 
 interface EarnRelatedMarketsProps {
   relatedMarkets: EarnOpportunityWithLatestAnalytics[];
@@ -29,6 +30,7 @@ export const EarnRelatedMarkets: FC<EarnRelatedMarketsProps> = ({
           <EarnRelatedMarketWrapper key={relatedMarket.slug}>
             <EarnCard
               variant="compact"
+              href={`${AppPaths.Earn}/${relatedMarket.slug}`}
               data={relatedMarket}
               primaryAction={
                 <DepositFlowButton

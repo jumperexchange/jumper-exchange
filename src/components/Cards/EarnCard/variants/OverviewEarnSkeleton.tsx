@@ -21,6 +21,7 @@ export const OverviewEarnSkeleton: FC<Pick<EarnCardProps, 'fullWidth'>> = ({
         </OverviewEarnCardHeaderContainer>
         {Array.from({ length: 3 }).map((_, index) => (
           <BaseSkeleton
+            key={index}
             variant="rounded"
             sx={{ height: 52, width: '100%', borderRadius: 2 }}
           />
