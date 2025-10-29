@@ -5,6 +5,7 @@ import {
 	selectOptionFromDropDown,
 	verifyOnlySelectedAssetIsVisible,
 	verifyAllCardsShowChain,
+	verifyOnlySelectedTagIsVisible,
 } from "./testData/earnPageFunctions";
 import { qase } from 'playwright-qase-reporter';
 
@@ -20,8 +21,8 @@ test.describe("Chains filters on Earn page", () => {
 		});
 
 		await test.step("Verify Earn tabs are visible", async () => {
-			const allMarketsTab = page.locator('xpath=//button[normalize-space(text())="All Markets"]');
-			const forYouTab = page.locator('xpath=//button[normalize-space(text())="For You"]');
+			const allMarketsTab = page.getByTestId('earn-filter-tab-all');
+			const forYouTab = page.getByTestId('earn-filter-tab-foryou');
 			const tabs = [allMarketsTab, forYouTab];
 			for (const tab of tabs) {
 				await expect(tab).toBeVisible();
@@ -106,15 +107,41 @@ test.describe("Protocols filters on Earn page", () => {
 			await selectAllMarketsTab(page);
 		});
 		
-		test(qase(44,'Should be able to filter by ETHx asset'), async ({ page }) => {
-			await test.step("Select ETHx asset", async () => {
-				await selectOptionFromDropDown(page, "earn-filter-asset-select", "ETHx");
+		test(qase(44,'Should be able to filter by Maker asset'), async ({ page }) => {
+			await test.step("Select MKR asset", async () => {
+				await selectOptionFromDropDown(page, "earn-filter-asset-select", "Maker");
 			});
 
-			await test.step("Verify only ETHx assets are visible (all other assets hidden)", async () => {
-				await verifyOnlySelectedAssetIsVisible(page, "ETHx");
+			await test.step("Verify only MKR asset is visible", async () => {
+				await verifyOnlySelectedAssetIsVisible(page, "MKR");
 			});
 		});
 		
 	});
+	test.describe("Tags filters on Earn page", () => {
+		test.beforeEach(async ({ page }) => {
+			await page.goto("/earn");
+			await selectAllMarketsTab(page);
+		});
+		
+	test(qase(45,'Should be able to filter by Lending tag'), async ({ page }) => {
+		await test.step("Select Lending tag", async () => {
+			await selectOptionFromDropDown(page, "earn-filter-tag-select", "Lending");
+		});
 
+		await test.step("Verify only Lending tag is visible", async () => {
+			await verifyOnlySelectedTagIsVisible(page, "Lending");
+		});
+	});
+
+	test(qase(46,'Should be able to filter by Yield Aggregator tag'), async ({ page }) => {
+		await test.step("Select Yield Aggregator tag", async () => {
+			await selectOptionFromDropDown(page, "earn-filter-tag-select", "Yield Aggregator");
+		});
+
+		await test.step("Verify only Yield Aggregator tag is visible", async () => {
+			await verifyOnlySelectedTagIsVisible(page, "Yield Aggregator");
+		});
+	});
+
+	});
