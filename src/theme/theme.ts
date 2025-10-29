@@ -195,6 +195,7 @@ declare module '@mui/material/styles' {
     bodyLarge: React.CSSProperties;
     bodyMediumStrong: React.CSSProperties;
     bodyMedium: React.CSSProperties;
+    bodyMediumParagraph: React.CSSProperties;
     bodySmallStrong: React.CSSProperties;
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
@@ -231,6 +232,7 @@ declare module '@mui/material/styles' {
     bodyLarge: React.CSSProperties;
     bodyMediumStrong: React.CSSProperties;
     bodyMedium: React.CSSProperties;
+    bodyMediumParagraph: React.CSSProperties;
     bodySmallStrong: React.CSSProperties;
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
@@ -269,6 +271,7 @@ declare module '@mui/material/Typography' {
     bodyLarge: true;
     bodyMediumStrong: true;
     bodyMedium: true;
+    bodyMediumParagraph: true;
     bodySmallStrong: true;
     bodySmall: true;
     bodyXSmallStrong: true;
@@ -304,6 +307,7 @@ declare module '@mui/material/Typography' {
     bodyLarge: true;
     bodyMediumStrong: true;
     bodyMedium: true;
+    bodyMediumParagraph: true;
     bodySmallStrong: true;
     bodySmall: true;
     bodyXSmallStrong: true;
@@ -601,6 +605,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bodyLarge: 'p',
             bodyMediumStrong: 'p',
             bodyMedium: 'p',
+            bodyMediumParagraph: 'p',
             bodySmallStrong: 'p',
             bodySmall: 'p',
             bodyXSmallStrong: 'p',
@@ -725,6 +730,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         fontWeight: 500,
         fontSize: '16px',
         lineHeight: '20px',
+        letterSpacing: 0,
+      },
+      bodyMediumParagraph: {
+        fontStyle: 'normal',
+        fontWeight: 500,
+        fontSize: '16px',
+        lineHeight: '24px',
         letterSpacing: 0,
       },
       bodySmallStrong: {
@@ -1008,7 +1020,8 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         shadows: [
           'none',
           '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
-          '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+          '0px 2px 8px 0px rgba(0, 0, 0, 0.04)', // elevation-1
+          '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // elevation-4
           ...themeBase.shadows.slice(3),
         ],
       },
@@ -1107,7 +1120,8 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         shadows: [
           'none',
           '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',
-          '0px 2px 8px 0px rgba(0, 0, 0, 0.04)',
+          '0px 2px 8px 0px rgba(0, 0, 0, 0.04)', // elevation-1
+          '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // elevation-4
           ...themeBase.shadows.slice(3),
         ],
       },
