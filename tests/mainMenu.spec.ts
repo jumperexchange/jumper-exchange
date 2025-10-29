@@ -98,7 +98,7 @@ test.describe('Main Menu flows', () => {
     checkSocialNetworkIcons(page, socialNetworks);
   });
 
-  test(qase(13, 'Should open Resources section inside menu'), async ({ page, context }) => {
+  test(qase(13, 'Should open Resources section inside menu'), async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInMenu(page, 'Resources');
     await checkTheNumberOfMenuItems(page, 2);
