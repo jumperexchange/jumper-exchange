@@ -8,6 +8,7 @@
     "links": {
       "exchange": "Conversão",
       "missions": "Missões",
+      "earn": "",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar",
@@ -264,13 +265,25 @@
     "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
     "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos.",
     "manageYourPosition": "",
-    "assets": ""
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": ""
   },
   "labels": {
     "apy": "",
     "lockupPeriod": "",
     "tvl": "",
-    "assets": ""
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": ""
   },
   "earn": {
     "top": {
@@ -292,6 +305,12 @@
       "clear": "",
       "selected": "",
       "search": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "overview": {
+      "updated": ""
     }
   },
   "widget": {
@@ -301,6 +320,23 @@
       "tvl": "TVL — Valor Total Bloqueado",
       "lockupPeriod": "Período de bloqueio",
       "token": "Ativo"
+    },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "",
+        "switchChain": "",
+        "waitingForTransaction": "",
+        "transactionInProgress": "",
+        "viewTransaction": ""
+      },
+      "error": {
+        "title": "",
+        "description": ""
+      },
+      "success": {
+        "title": "",
+        "description": ""
+      }
     },
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
@@ -323,7 +359,11 @@
       }
     }
   },
+  "links": {
+    "discover": ""
+  },
   "buttons": {
-    "depositButtonLabel": "Depósito rápido"
+    "depositButtonLabel": "Depósito rápido",
+    "managePositionsButtonLabel": ""
   }
 }

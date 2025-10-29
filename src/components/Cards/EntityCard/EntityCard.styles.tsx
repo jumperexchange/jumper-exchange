@@ -177,7 +177,7 @@ export const StyledCompactRewardChipContainer = styled(
   padding: theme.spacing(1, 1),
   height: 40,
   backgroundColor: (theme.vars || theme).palette.badgeAlphaBg,
-  borderRadius: (theme.vars || theme).shape.buttonBorderRadius,
+  borderRadius: theme.shape.buttonBorderRadius,
   '& .MuiChip-label': {
     padding: theme.spacing(0, 0.75),
     ...(hideLabel && {
