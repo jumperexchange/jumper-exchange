@@ -69,6 +69,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
       >
         <div
           class="MuiBox-root css-h1oaii"
+          data-testid="protocol-morpho"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -196,6 +197,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
         >
           <div
             class="MuiBox-root css-h1oaii"
+            data-testid="protocol-morpho"
           >
             <div
               class="MuiBox-root css-wioyy2"
@@ -363,6 +365,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
       >
         <div
           class="MuiBox-root css-h1oaii"
+          data-testid="protocol-morpho"
         >
           <div
             class="MuiBox-root css-wioyy2"

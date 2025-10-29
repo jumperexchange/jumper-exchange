@@ -32,6 +32,7 @@ export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       index === overviewItems.length - 1 && overviewItems.length % 2 !== 0;
     return (
       <OverviewEarnCardItem
+        dataTestId={item.dataTestId}
         key={item.key}
         title={item.label}
         value={item.value}
