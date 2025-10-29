@@ -86,7 +86,9 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [
     token?.chainId ?? 0,
   ]);
-  const formattedLockupPeriod = formatLockupPeriod(0);
+  const formattedLockupPeriod = formatLockupPeriod(
+    analytics?.lockup_period ?? 0,
+  );
 
   const {
     tooltip: apyTooltip,
