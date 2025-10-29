@@ -12,7 +12,7 @@ export async function getQuestsWithNoCampaignAttached(
 ) {
   const urlParams = new QuestStrapiApi()
     .filterByNoCampaignAttached()
-    .filterByStartDateIncludingUpcoming(daysAhead)
+    .filterByStartAndEndDateIncludingUpcoming(daysAhead)
     .addPaginationParams({
       page: pagination.page,
       pageSize: pagination.pageSize,

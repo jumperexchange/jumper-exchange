@@ -68,9 +68,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const { data } = await getQuestsWithNoCampaignAttached();
 
-  return data.data
-    .filter((quest) => quest.Slug && typeof quest.Slug === 'string')
-    .map((quest) => ({ slug: quest.Slug }));
+  return data.data.map((quest) => ({ slug: quest.Slug }));
 }
 
 export const dynamicParams = true;
