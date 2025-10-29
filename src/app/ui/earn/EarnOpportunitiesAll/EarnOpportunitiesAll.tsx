@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
@@ -17,9 +17,20 @@ const EarnOpportunitiesAllInner = () => {
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isLoading) {
+      sectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [isLoading]);
+
   return (
     <>
-      <SectionCardContainer>
+      <SectionCardContainer ref={sectionRef}>
         <Stack direction="column" gap={3}>
           <EarnFilterBar
             isLoading={isAllDataLoading}
