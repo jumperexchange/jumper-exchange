@@ -55,7 +55,6 @@ export const DepositModal: FC<DepositModalProps> = ({
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { projectData, zapData } =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
-  console.log('customInformation', { projectData, zapData }, earnOpportunity);
 
   const { account } = useAccount();
 
