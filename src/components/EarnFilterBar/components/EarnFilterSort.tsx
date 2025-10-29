@@ -23,6 +23,7 @@ export const EarnFilterSort: React.FC = () => {
       label={t('earn.sorting.sortBy')}
       variant={SelectVariant.Single}
       data-testid="earn-filter-sort-select"
+      menuPlacementX="right"
     />
   );
 };

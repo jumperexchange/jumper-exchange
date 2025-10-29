@@ -39,6 +39,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     return (
       <CompactEarnCardItem
         key={item.key}
+        dataTestId={item.dataTestId}
         title={item.label}
         value={item.value}
         valuePrepend={item.valuePrepend}
