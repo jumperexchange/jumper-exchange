@@ -137,6 +137,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -429,6 +430,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -766,6 +768,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1080,6 +1083,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1311,6 +1315,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1517,6 +1522,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -1752,6 +1758,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1923,6 +1930,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>

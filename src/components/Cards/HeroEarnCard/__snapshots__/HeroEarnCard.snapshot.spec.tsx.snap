@@ -113,6 +113,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -241,6 +242,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
               </span>
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                data-testid="earn-card-chain-name"
               >
                 Base
               </p>
@@ -409,6 +411,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
