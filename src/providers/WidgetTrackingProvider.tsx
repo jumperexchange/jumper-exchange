@@ -219,8 +219,6 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           [TrackingEventParameter.TransactionStatus]: 'STARTED',
         });
 
-        console.log('routeData', routeData, route);
-
         trackedRoutesData.current[route.id] = routeData;
 
         trackTransaction({
