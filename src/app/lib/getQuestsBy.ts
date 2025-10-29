@@ -7,7 +7,7 @@ export async function getQuestsBy(key: string, value: string) {
   const urlParams = new QuestStrapiApi()
     .filterBy(key, value)
     .populateCampaign()
-    .filterByStartAndEndDate();
+    .filterByStartDate();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();
 
