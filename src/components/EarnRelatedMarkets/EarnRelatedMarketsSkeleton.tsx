@@ -1,10 +1,7 @@
 'use client';
 import { CompactEarnCardSkeleton } from '../Cards/EarnCard/variants/CompactEarnCardSkeleton';
-import {
-  BaseSkeleton,
-  EarnRelatedMarketsContainer,
-  EarnRelatedMarketWrapper,
-} from './EarnRelatedMarkets.styles';
+import { GridContainer } from '../Containers/GridContainer';
+import { BaseSkeleton } from './EarnRelatedMarkets.styles';
 
 export const EarnRelatedMarketsSkeleton = () => {
   return (
@@ -15,13 +12,15 @@ export const EarnRelatedMarketsSkeleton = () => {
           height: 32,
         }}
       />
-      <EarnRelatedMarketsContainer direction="row" spacing={3}>
+      <GridContainer
+        gridTemplateColumns={'repeat(auto-fill, minmax(328px, 1fr))'}
+        gap={3}
+        justifyContent={'space-evenly'}
+      >
         {Array.from({ length: 3 }).map((_, index) => (
-          <EarnRelatedMarketWrapper key={index}>
-            <CompactEarnCardSkeleton />
-          </EarnRelatedMarketWrapper>
+          <CompactEarnCardSkeleton key={index} />
         ))}
-      </EarnRelatedMarketsContainer>
+      </GridContainer>
     </>
   );
 };

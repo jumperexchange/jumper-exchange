@@ -23,8 +23,6 @@ export const EarnFilterBarContentForYou: FC<PropsWithChildren> = ({
       })
     : t('earn.copy.forYouDefault', { totalMarkets: formatedTotalMarkets });
 
-  // TODO: add latest update in backend and render here
-
   return (
     <EarnFilterBarContentContainer>
       {/* Left side: Badge and copy */}
@@ -35,11 +33,6 @@ export const EarnFilterBarContentForYou: FC<PropsWithChildren> = ({
           startIcon={<RecommendationIcon height={20} width={20} />}
         />
         <Typography variant="bodyMediumStrong">{copy}</Typography>
-        <Badge
-          variant={BadgeVariant.Secondary}
-          size={BadgeSize.SM}
-          label="Updated 12 hours ago"
-        />
       </EarnAnimatedLayoutContainer>
 
       {children}

@@ -3,7 +3,7 @@
 exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-fhj6gi"
+    class="MuiBox-root css-vs3jgl"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -113,6 +113,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -131,7 +132,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-6n5j87"
+      class="MuiBox-root css-1t5s2yj"
     >
       <div
         class="MuiStack-root css-imab1l-MuiStack-root"
@@ -241,6 +242,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
               </span>
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                data-testid="earn-card-chain-name"
               >
                 Base
               </p>
@@ -256,7 +258,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1uahi8c"
+    class="MuiBox-root css-1ug8t68"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -299,7 +301,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-fhj6gi"
+    class="MuiBox-root css-vs3jgl"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -409,6 +411,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
