@@ -71,6 +71,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
                 size={BadgeSize.SM}
                 label={tag}
                 key={tag}
+                data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
               />
             ))}
           </CompactEarnCardTagContainer>

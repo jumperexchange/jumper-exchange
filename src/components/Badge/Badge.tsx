@@ -12,6 +12,7 @@ export interface BadgeProps extends StyledBadgeProps {
   endIcon?: React.ReactElement;
   label?: ReactNode;
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+  'data-testid'?: string;
 }
 
 export const Badge: FC<BadgeProps> = ({
@@ -21,6 +22,7 @@ export const Badge: FC<BadgeProps> = ({
   variant = BadgeVariant.Default,
   size = BadgeSize.SM,
   onClick,
+  'data-testid': dataTestId,
   ...rest
 }) => {
   return (
@@ -32,7 +34,7 @@ export const Badge: FC<BadgeProps> = ({
       {...rest}
     >
       {startIcon && <>{startIcon}</>}
-      {label && <StyledBadgeLabel>{label}</StyledBadgeLabel>}
+      {label && <StyledBadgeLabel data-testid={dataTestId}>{label}</StyledBadgeLabel>}
       {endIcon && <>{endIcon}</>}
     </StyledBadge>
   );

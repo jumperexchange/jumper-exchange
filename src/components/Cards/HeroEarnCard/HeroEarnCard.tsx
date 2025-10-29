@@ -93,6 +93,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
               size={BadgeSize.SM}
               label={tag}
               key={tag}
+              data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
             />
           ))}
         </HeroEarnCardHeaderContainer>
