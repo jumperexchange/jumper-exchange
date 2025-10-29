@@ -8,8 +8,6 @@ import {
   WidgetEvent,
 } from '@lifi/widget';
 import { FC, useEffect, useMemo, useRef } from 'react';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
 import { WidgetProps } from '../Widget.types';
@@ -30,27 +28,27 @@ import envConfig from 'src/config/env-config';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
+import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
+  zapData?: ZapDataResponse | null;
+  isZapDataSuccess?: boolean;
+  refetchDepositToken?: () => void;
 }
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
+  zapData,
+  isZapDataSuccess,
+  refetchDepositToken,
   customInformation,
   ctx,
 }) => {
-  useZapQuestIdStorage();
   const { t } = useTranslation();
 
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
-
-  const {
-    zapData,
-    isSuccess: isZapDataSuccess,
-    refetchDepositToken,
-  } = useEnhancedZapData(projectData);
 
   const formRef = useRef<FormState>(null);
 
@@ -168,17 +166,19 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [sourceChainToken, allowedChains]);
 
   useEffect(() => {
-    setDestinationChainTokenForTracking({
-      chainId: toChain,
-      tokenAddress: toToken,
-    });
+    if (toChain && toToken) {
+      setDestinationChainTokenForTracking({
+        chainId: toChain,
+        tokenAddress: toToken,
+      });
+    }
   }, [toChain, toToken, setDestinationChainTokenForTracking]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
   useEffect(() => {
     function onRouteExecutionCompleted() {
-      refetchDepositToken();
+      refetchDepositToken?.();
     }
 
     const onRouteContactSupport = () => {
@@ -237,7 +237,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     );
   }
 
-  return isZapDataSuccess ? (
+  return isZapDataSuccess && toChain && toToken ? (
     <LiFiWidget
       formRef={formRef}
       config={widgetConfig}

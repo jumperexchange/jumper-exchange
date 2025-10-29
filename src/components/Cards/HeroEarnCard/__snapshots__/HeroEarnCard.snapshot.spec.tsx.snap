@@ -44,6 +44,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          data-testid="earn-card-tag-staking"
         >
           Staking
         </p>
@@ -53,6 +54,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          data-testid="earn-card-tag-earn"
         >
           Earn
         </p>
@@ -173,6 +175,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -182,6 +185,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -342,6 +346,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          data-testid="earn-card-tag-staking"
         >
           Staking
         </p>
@@ -351,6 +356,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
       >
         <p
           class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+          data-testid="earn-card-tag-earn"
         >
           Earn
         </p>

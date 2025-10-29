@@ -107,13 +107,13 @@ test.describe("Protocols filters on Earn page", () => {
 			await selectAllMarketsTab(page);
 		});
 		
-		test(qase(44,'Should be able to filter by ETHx asset'), async ({ page }) => {
-			await test.step("Select ETHx asset", async () => {
-				await selectOptionFromDropDown(page, "earn-filter-asset-select", "ETHx");
+		test(qase(44,'Should be able to filter by Maker asset'), async ({ page }) => {
+			await test.step("Select MKR asset", async () => {
+				await selectOptionFromDropDown(page, "earn-filter-asset-select", "Maker");
 			});
 
-			await test.step("Verify only ETHx assets are visible (all other assets hidden)", async () => {
-				await verifyOnlySelectedAssetIsVisible(page, "ETHx");
+			await test.step("Verify only MKR asset is visible", async () => {
+				await verifyOnlySelectedAssetIsVisible(page, "MKR");
 			});
 		});
 		

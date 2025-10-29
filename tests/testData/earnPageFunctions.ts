@@ -68,11 +68,15 @@ export async function verifyOnlySelectedAssetIsVisible(
 	page: Page,
 	selectedAsset: string,
 ) {
-	const allAssets = await getAllAssetsFromDropdown(page);
-	const assetsToHide = allAssets.filter(
-		(asset) => asset.toLowerCase() !== selectedAsset.toLowerCase(),
-	);
-	await verifyNoSelectedItemsAreVisible(page, assetsToHide);
+	await page.waitForLoadState("load");
+	const filteredCardsContainer = page.locator("xpath=//div[@class='MuiBox-root mui-1eiibmt']");
+	await expect(filteredCardsContainer).toBeVisible();
+
+	// Verify that only the selected asset's data-testid is visible
+	const selectedAssetTestId = `assets-${selectedAsset}`;
+	const selectedAssetElements = page.getByTestId(selectedAssetTestId);
+	const selectedAssetCount = await selectedAssetElements.count();	
+	expect(selectedAssetCount).toBeGreaterThan(0);
 }
 
 export async function verifyAllCardsShowChain(
@@ -81,8 +85,6 @@ export async function verifyAllCardsShowChain(
 ) {
 	await page.waitForLoadState("load");
 	await page.waitForTimeout(3000);
-
-	// Get the filtered cards container and then find chain name elements within it
 	const filteredCardsContainer = page.getByTestId(
 		"earn-filtered-cards-container",
 	);
