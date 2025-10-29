@@ -7,7 +7,6 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { usePortfolioStore } from '@/stores/portfolio';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import index from '@/utils/getTokens';
-import { arraysEqual } from '@/utils/getTokens/utils';
 import { useAccount } from '@lifi/wallet-management';
 import { ChainId } from '@lifi/widget';
 import { useQueries } from '@tanstack/react-query';
@@ -51,8 +50,6 @@ export function usePortfolioTokens() {
     })),
   });
 
-  console.log('queries', queries);
-
   // Group queries by account address for easy lookup
   const queriesByAddress = new Map(
     connectedAccounts.map((account, index) => [
@@ -81,79 +78,79 @@ export function usePortfolioTokens() {
       ? queries.map((query) => query.data ?? []).flat()
       : getFormattedCacheTokens(accounts).cache;
 
-  // // Refresh specific accounts by address
-  // useEffect(() => {
-  //   if (forceRefresh.size === 0) {
-  //     return;
-  //   }
+  // Refresh specific accounts by address
+  useEffect(() => {
+    if (forceRefresh.size === 0) {
+      return;
+    }
 
-  //   connectedAccounts.forEach((account, index) => {
-  //     if (account.address && forceRefresh.has(account.address)) {
-  //       queries[index].refetch();
-  //       setForceRefresh(account.address, false);
-  //     }
-  //   });
-  // }, [forceRefresh]);
+    connectedAccounts.forEach((account, index) => {
+      if (account.address && forceRefresh.has(account.address)) {
+        queries[index].refetch();
+        setForceRefresh(account.address, false);
+      }
+    });
+  }, [forceRefresh]);
 
-  // useEffect(() => {
-  //   if (hasTrackedSuccess.current || !shouldSendTrackingEvent) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (hasTrackedSuccess.current || !shouldSendTrackingEvent) {
+      return;
+    }
 
-  //   hasTrackedSuccess.current = true;
+    hasTrackedSuccess.current = true;
 
-  //   trackEvent({
-  //     category: TrackingCategory.Wallet,
-  //     action: TrackingAction.PortfolioLoaded,
-  //     label: 'portfolio_balance_loaded',
-  //     data: {
-  //       [TrackingEventParameter.Status]: 'success',
-  //       [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-  //     },
-  //   });
-  // }, [shouldSendTrackingEvent, trackEvent]);
+    trackEvent({
+      category: TrackingCategory.Wallet,
+      action: TrackingAction.PortfolioLoaded,
+      label: 'portfolio_balance_loaded',
+      data: {
+        [TrackingEventParameter.Status]: 'success',
+        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+      },
+    });
+  }, [shouldSendTrackingEvent, trackEvent]);
 
-  // useEffect(() => {
-  //   if (hasTrackedPortfolioOverview.current || !shouldSendTrackingEvent) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (hasTrackedPortfolioOverview.current || !shouldSendTrackingEvent) {
+      return;
+    }
 
-  //   hasTrackedPortfolioOverview.current = true;
+    hasTrackedPortfolioOverview.current = true;
 
-  //   const { totalValue: totalBalanceUSD } = getFormattedCacheTokens(accounts);
+    const { totalValue: totalBalanceUSD } = getFormattedCacheTokens(accounts);
 
-  //   const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
-  //     chainsIds.map(
-  //       (chainId) => getChainById(chainId)?.nativeToken?.address ?? zeroAddress,
-  //     );
+    const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
+      chainsIds.map(
+        (chainId) => getChainById(chainId)?.nativeToken?.address ?? zeroAddress,
+      );
 
-  //   const trackingData = parsePortfolioDataToTrackingData(
-  //     totalBalanceUSD,
-  //     data,
-  //     returnNativeTokenAddresses,
-  //   );
+    const trackingData = parsePortfolioDataToTrackingData(
+      totalBalanceUSD,
+      data,
+      returnNativeTokenAddresses,
+    );
 
-  //   trackEvent({
-  //     category: TrackingCategory.WalletMenu,
-  //     action: TrackingAction.PortfolioOverview,
-  //     label: 'portfolio_balance_overview',
-  //     enableAddressable: true,
-  //     data: trackingData,
-  //   });
-  // }, [
-  //   shouldSendTrackingEvent,
-  //   accounts,
-  //   data,
-  //   getFormattedCacheTokens,
-  //   getChainById,
-  //   trackEvent,
-  // ]);
+    trackEvent({
+      category: TrackingCategory.WalletMenu,
+      action: TrackingAction.PortfolioOverview,
+      label: 'portfolio_balance_overview',
+      enableAddressable: true,
+      data: trackingData,
+    });
+  }, [
+    shouldSendTrackingEvent,
+    accounts,
+    data,
+    getFormattedCacheTokens,
+    getChainById,
+    trackEvent,
+  ]);
 
-  // // Reset the tracking flag when accounts change
-  // useEffect(() => {
-  //   hasTrackedSuccess.current = false;
-  //   hasTrackedPortfolioOverview.current = false;
-  // }, [accounts]);
+  // Reset the tracking flag when accounts change
+  useEffect(() => {
+    hasTrackedSuccess.current = false;
+    hasTrackedPortfolioOverview.current = false;
+  }, [accounts]);
 
   return {
     queries,

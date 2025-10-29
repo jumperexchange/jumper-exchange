@@ -44,17 +44,12 @@ export const PortfolioByAccount: FC<PortfolioByAccountProps> = ({
     return null;
   }
 
-  const hasMultipleChains = data.length > 1;
-
   const handleSelectToken = (token: { address: string; chainId: number }) => {
-    if (!hasMultipleChains) {
-      setFrom(token.address, token.chainId);
-      setWalletMenuState(false);
+    setFrom(token.address, token.chainId);
+    setWalletMenuState(false);
 
-      if (!isMainPaths) {
-        router.push('/');
-      }
-      return;
+    if (!isMainPaths) {
+      router.push('/');
     }
   };
 

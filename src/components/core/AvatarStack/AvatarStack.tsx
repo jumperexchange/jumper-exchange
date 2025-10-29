@@ -5,9 +5,9 @@ import {
   AvatarSkeleton,
   AvatarStackContainer,
   OverflowCount,
+  AvatarPlaceholder,
 } from './AvatarStack.styles';
 import { AvatarSize, AvatarStackDirection } from './AvatarStack.types';
-import Typography from '@mui/material/Typography';
 
 interface AvatarStackProps {
   avatars: {
@@ -45,6 +45,11 @@ export const AvatarStack: FC<AvatarStackProps> = ({
             disableBorder={disableBorder}
             variant="circular"
           >
+            {avatar.alt ? (
+              <AvatarPlaceholder size={size} color="textSecondary">
+                {avatar.alt[0].toUpperCase()}
+              </AvatarPlaceholder>
+            ) : null}
             <AvatarSkeleton size={size} key={avatar.id} variant="circular" />
           </Avatar>
         ))}

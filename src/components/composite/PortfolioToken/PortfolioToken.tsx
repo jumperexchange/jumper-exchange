@@ -47,15 +47,27 @@ export const PortfolioToken: FC<PortfolioTokenProps> = ({
   const descriptionVariant = isSmallVariant ? 'bodyXXSmall' : 'bodyXSmall';
   const spacing = isSmallVariant ? 2 : 3;
 
-  const handleChange = (_event: React.SyntheticEvent, expanded: boolean) => {
-    setIsExpanded(expanded);
-    if (expanded) {
-      onSelect?.(portfolioToken);
+  const hasMultipleChains = portfolioToken.chains.length > 1;
+
+  const handleMainTokenClick = (
+    token: CacheToken | ExtendedTokenAmountWithChain,
+  ) => {
+    if (!hasMultipleChains) {
+      onSelect?.(token);
+      return;
     }
+    setIsExpanded((prevExpanded) => !prevExpanded);
+  };
+
+  const handleExpandedTokenClick = (
+    token: CacheToken | ExtendedTokenAmountWithChain,
+  ) => {
+    onSelect?.(token);
   };
 
   const renderTokenStack = (
     token: CacheToken | ExtendedTokenAmountWithChain,
+    onClick: (token: CacheToken | ExtendedTokenAmountWithChain) => void,
   ) => {
     return (
       <Stack
@@ -63,7 +75,8 @@ export const PortfolioToken: FC<PortfolioTokenProps> = ({
         spacing={2}
         useFlexGap
         justifyContent="space-between"
-        sx={{ width: '100%' }}
+        sx={{ width: '100%', cursor: 'pointer' }}
+        onClick={() => onClick(token)}
       >
         <EntityChainStack
           variant={EntityChainStackVariant.TokensWithChains}
@@ -101,12 +114,11 @@ export const PortfolioToken: FC<PortfolioTokenProps> = ({
   return (
     <StyledAccordion
       expanded={isExpanded}
-      onChange={handleChange}
       disableGutters
       sx={{ ':not(:last-child)': { paddingBottom: spacing } }}
     >
       <StyledAccordionSummary>
-        {renderTokenStack(portfolioToken)}
+        {renderTokenStack(portfolioToken, handleMainTokenClick)}
       </StyledAccordionSummary>
       <StyledAccordionDetails>
         <Stack direction="column" spacing={spacing} useFlexGap>
@@ -116,7 +128,9 @@ export const PortfolioToken: FC<PortfolioTokenProps> = ({
               marginTop: spacing,
             })}
           />
-          {portfolioToken.chains.map(renderTokenStack)}
+          {portfolioToken.chains.map((token) =>
+            renderTokenStack(token, handleExpandedTokenClick),
+          )}
         </Stack>
       </StyledAccordionDetails>
     </StyledAccordion>

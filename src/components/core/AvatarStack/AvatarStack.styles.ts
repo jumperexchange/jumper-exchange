@@ -137,12 +137,24 @@ export const AvatarSkeleton = styled(Skeleton, {
   ...getAvatarSize(size),
 }));
 
-interface OverflowCountProps extends TypographyProps {
+interface BaseTypographyProps extends TypographyProps {
   size?: AvatarSize;
 }
 
-export const OverflowCount = styled(Typography, {
+export const BaseTypography = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<OverflowCountProps>(({ theme, size = AvatarSize.MD }) => ({
+})<BaseTypographyProps>(({ theme, size = AvatarSize.MD }) => ({
   ...getFontVariant(size, theme),
+}));
+
+export const OverflowCount = styled(BaseTypography)(({}) => ({}));
+
+export const AvatarPlaceholder = styled(BaseTypography)(({}) => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 1,
+  width: 'fit-content',
+  fontWeight: 500,
 }));
