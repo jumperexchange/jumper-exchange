@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { themeCustomized } from 'src/theme/theme';
 
+export const WIDGET_WIDTH = 416;
+
 // INFO: Do NOT use theme.vars here, it will break the widget
 export const getDefaultWidgetTheme = (
   theme: Theme,
@@ -29,8 +31,8 @@ export const getDefaultWidgetTheme = (
           maxWidth: '100%',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             borderRadius: '12px',
-            maxWidth: 416,
-            minWidth: 416,
+            maxWidth: WIDGET_WIDTH,
+            minWidth: WIDGET_WIDTH,
             boxShadow: theme.shadows[1],
           },
         },
