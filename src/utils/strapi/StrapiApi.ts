@@ -532,7 +532,7 @@ class QuestStrapiApi extends StrapiApi {
     return this;
   }
 
-  filterByStartAndEndDateIncludingUpcoming(daysAhead: number = 0): this {
+  filterByStartDateIncludingUpcoming(daysAhead: number = 0): this {
     const today = startOfToday();
     const future = addDays(today, daysAhead);
 
@@ -542,7 +542,6 @@ class QuestStrapiApi extends StrapiApi {
     const orFilters: StrapiOrFilter[] = [
       {
         StartDate: { $lte: todayStr },
-        EndDate: { $gte: todayStr },
       },
       {
         StartDate: { $gte: todayStr, $lte: futureStr },
@@ -565,10 +564,9 @@ class QuestStrapiApi extends StrapiApi {
     return this;
   }
 
-  filterByStartAndEndDate(): this {
+  filterByStartDate(): this {
     const currentDate = new Date(Date.now()).toISOString().split('T')[0];
     this.apiUrl.searchParams.set('filters[StartDate][$lte]', currentDate);
-    this.apiUrl.searchParams.set('filters[EndDate][$gte]', currentDate);
     return this;
   }
 
