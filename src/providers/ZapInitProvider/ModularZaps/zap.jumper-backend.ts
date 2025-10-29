@@ -105,6 +105,7 @@ export interface ZapAnalytics {
   boosted_apy: number;
   total_apy: number;
   tvl_usd: number;
+  lockup_period?: number;
 }
 
 export interface ZapDataResponse {

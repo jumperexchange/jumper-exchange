@@ -47,6 +47,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -56,6 +57,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -366,6 +368,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -375,6 +378,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -678,6 +682,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -687,6 +692,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -993,6 +999,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -1002,6 +1009,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -1377,10 +1385,10 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           aria-label="tooltips.apy"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="apy-7.15"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="apy-7.15"
           >
             7.15% labels.apy
           </p>
@@ -1389,10 +1397,10 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="lockupPeriod-2"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="lockupPeriod-2"
           >
             2 months
           </p>
@@ -1401,10 +1409,10 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           aria-label="tooltips.tvl"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="tvl-63M"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="tvl-63M"
           >
             $63M labels.tvl
           </p>
@@ -1413,7 +1421,6 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           aria-label="tooltips.assets"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="assets-USDC"
         >
           <div
             class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1428,6 +1435,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </div>
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="assets-USDC"
           >
             USDC
           </p>
@@ -1584,10 +1592,10 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             aria-label="tooltips.apy"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
-            data-testid="apy-7.15"
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="apy-7.15"
             >
               7.15% labels.apy
             </p>
@@ -1596,10 +1604,10 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             aria-label="tooltips.lockupPeriod"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
-            data-testid="lockupPeriod-2"
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="lockupPeriod-2"
             >
               2 months
             </p>
@@ -1608,10 +1616,10 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             aria-label="tooltips.tvl"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
-            data-testid="tvl-63M"
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="tvl-63M"
             >
               $63M labels.tvl
             </p>
@@ -1620,7 +1628,6 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             aria-label="tooltips.assets"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
-            data-testid="assets-USDC"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1635,6 +1642,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </div>
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="assets-USDC"
             >
               USDC
             </p>
@@ -1789,10 +1797,10 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           aria-label="tooltips.apy"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="apy-7.15"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="apy-7.15"
           >
             7.15% labels.apy
           </p>
@@ -1801,10 +1809,10 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="lockupPeriod-2"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="lockupPeriod-2"
           >
             2 months
           </p>
@@ -1813,10 +1821,10 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           aria-label="tooltips.tvl"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="tvl-63M"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="tvl-63M"
           >
             $63M labels.tvl
           </p>
@@ -1825,7 +1833,6 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           aria-label="tooltips.assets"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="assets-USDC"
         >
           <div
             class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1840,6 +1847,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </div>
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="assets-USDC"
           >
             USDC
           </p>
@@ -1992,10 +2000,10 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           aria-label="tooltips.apy"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="apy-7.15"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="apy-7.15"
           >
             7.15% labels.apy
           </p>
@@ -2004,10 +2012,10 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           aria-label="tooltips.lockupPeriod"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="lockupPeriod-2"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="lockupPeriod-2"
           >
             2 months
           </p>
@@ -2016,10 +2024,10 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           aria-label="tooltips.tvl"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="tvl-63M"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="tvl-63M"
           >
             $63M labels.tvl
           </p>
@@ -2028,7 +2036,6 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           aria-label="tooltips.assets"
           class="MuiBox-root css-pq1w8v"
           data-mui-internal-clone-element="true"
-          data-testid="assets-USDC"
         >
           <div
             class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2043,6 +2050,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </div>
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="assets-USDC"
           >
             USDC
           </p>
