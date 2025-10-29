@@ -27,8 +27,8 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   const { showForYou, toggleForYou } = useEarnFiltering();
 
   const tabOptions: HorizontalTabItem[] = [
-    { value: 'foryou', label: 'For You' },
-    { value: 'all', label: 'All Markets' },
+    { value: 'foryou', label: 'For You', 'data-testid': 'earn-filter-tab-foryou' },
+    { value: 'all', label: 'All Markets', 'data-testid': 'earn-filter-tab-all' },
   ];
 
   const handleTabChange = (_: React.SyntheticEvent, value: string) => {
@@ -49,6 +49,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
         tabs={tabOptions}
         value={showForYou ? 'foryou' : 'all'}
         size={HorizontalTabSize.MD}
+        data-testid="earn-filter-tabs"
         onChange={handleTabChange}
         sx={(theme) => ({
           width: 'fit-content',
