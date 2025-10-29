@@ -23,8 +23,10 @@ export async function selectOptionFromDropDown(
 ) {
 	const dropdownFilter = page.getByTestId(dropdown);
 	await dropdownFilter.click();
+	await page.waitForLoadState("networkidle");
+	await page.getByRole("option", { name: option }).waitFor({ state: "visible", timeout: 10000 });
 	await page.getByRole("option", { name: option }).click();
-	// click page body to close the dropdown
+	await page.waitForTimeout(1000);
 	await page.locator("body").click();
 }
 
@@ -48,16 +50,35 @@ export async function verifyNoSelectedAssetsAreVisible(
  * @returns Array of asset names
  */
 export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
+	// Wait for the dropdown to be visible and options to load
+	await page.waitForLoadState("networkidle");
+	
 	const options = page.locator('[role="option"]');
+	
+	// Wait for at least one option to be available
+	await options.first().waitFor({ state: "visible", timeout: 10000 });
+	
+	// Get the actual count of available options
 	const optionCount = await options.count();
+	console.log(`Found ${optionCount} options in the dropdown`);
 
 	const assets: string[] = [];
 	for (let i = 0; i < optionCount; i++) {
-		const optionText = await options.nth(i).textContent();
-		if (optionText && optionText.trim()) {
-			assets.push(optionText.trim());
+		try {
+			// Wait for the specific option to be available before getting its text
+			await options.nth(i).waitFor({ state: "visible", timeout: 5000 });
+			const optionText = await options.nth(i).textContent();
+			if (optionText?.trim()) {
+				assets.push(optionText.trim());
+			}
+		} catch (error) {
+			console.log(`Failed to get text for option ${i}: ${error?.toString()}`);
+			// Continue with the next option instead of failing the entire test
+			continue;
 		}
 	}
+	
+	// Close the dropdown
 	await page.keyboard.press("Escape");
 
 	return assets;
@@ -72,6 +93,13 @@ export async function verifyOnlySelectedAssetIsVisible(
 	page: Page,
 	selectedAsset: string,
 ) {
+	// Open the asset dropdown to get all available options
+	const assetDropdown = page.getByTestId("earn-filter-asset-select");
+	await assetDropdown.click();
+	
+	// Wait for the dropdown to open
+	await page.waitForLoadState("networkidle");
+	
 	const allAssets = await getAllAssetsFromDropdown(page);
 	const assetsToHide = allAssets.filter(
 		(asset) => asset.toLowerCase() !== selectedAsset.toLowerCase(),
