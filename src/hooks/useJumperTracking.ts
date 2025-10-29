@@ -90,6 +90,7 @@ export interface JumperDataTrackTransactionProps {
   message?: string;
   nbOfSteps?: number;
   slippage?: number;
+  maxSlippage?: string;
   status?: string;
   stepIds?: string;
   steps?: string;
@@ -169,6 +170,7 @@ export const useJumperTracking = () => {
       ...(data.message && { message: data.message }),
       ...(data.nbOfSteps && { nbOfSteps: data.nbOfSteps }),
       ...(data.slippage && { slippage: data.slippage }),
+      ...(data.maxSlippage && { maxSlippage: data.maxSlippage }),
       ...(data.status && { status: data.status }),
       ...(data.stepIds && { stepIds: data.stepIds }),
       ...(data.steps && { steps: data.steps }),
