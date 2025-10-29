@@ -116,6 +116,7 @@ export enum TrackingAction {
 
 export enum TrackingEventDataAction {
   ExecutionStart = 'execution_start',
+  ExecutionUpdated = 'execution_updated',
   ExecutionCompleted = 'execution_completed',
   ExecutionFailed = 'execution_failed',
   ExecutionStartZap = 'execution_start_zap',
@@ -229,6 +230,7 @@ export enum TrackingEventParameter {
   Routes = 'param_routes',
   SessionId = 'param_session_id',
   Slippage = 'param_slippage',
+  MaxSlippage = 'param_max_slippage',
   Status = 'param_status',
   StepIds = 'param_step_ids',
   Steps = 'param_steps',

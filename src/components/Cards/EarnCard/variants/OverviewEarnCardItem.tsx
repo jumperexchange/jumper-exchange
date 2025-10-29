@@ -13,6 +13,7 @@ import {
 } from '../EarnCard.styles';
 
 interface OverviewEarnCardItemProps {
+  dataTestId: string;
   title: string;
   tooltip: string;
   value?: string;
@@ -23,6 +24,7 @@ interface OverviewEarnCardItemProps {
 }
 
 export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
+  dataTestId,
   title,
   tooltip,
   value,
@@ -32,7 +34,7 @@ export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
   shouldExpand,
 }) => {
   return (
-    <Grid size={{ xs: 12, sm: shouldExpand ? 12 : 6 }}>
+    <Grid size={{ xs: 12, sm: shouldExpand ? 12 : 6 }} data-testid={dataTestId}>
       <OverviewEarnCardItemHeaderContainer sx={{ display: 'flex', gap: 1 }}>
         <Typography variant="bodyXSmall" color="text.secondary">
           {title}

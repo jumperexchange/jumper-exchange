@@ -377,6 +377,9 @@ type PerkField =
   | 'Link'
   | 'StartDate'
   | 'EndDate'
+  | 'ClaimableSteps'
+  | 'HowToUseDescription'
+  | 'NextStepsDescription'
   | 'createdAt'
   | 'updatedAt'
   | 'publishedAt';
@@ -390,11 +393,18 @@ class PerkParams {
     'EndDate',
     'Link',
     'UnlockLevel',
+    'ClaimableSteps',
+    'HowToUseDescription',
+    'NextStepsDescription',
     'createdAt',
     'updatedAt',
   ];
 
-  private static defaultPopulates = ['Image', 'PerkItems'];
+  private static defaultPopulates = [
+    'Image',
+    'PerkItems',
+    'ClaimableStepsProps',
+  ];
 
   constructor(private apiUrl: URL) {
     this.apiUrl = apiUrl;

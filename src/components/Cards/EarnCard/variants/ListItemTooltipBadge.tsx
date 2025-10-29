@@ -5,6 +5,7 @@ import { Badge } from 'src/components/Badge/Badge';
 import { BadgeVariant, BadgeSize } from 'src/components/Badge/Badge.styles';
 
 interface TooltipBadgeProps {
+  dataTestId?: string;
   title: string;
   variant?: BadgeVariant;
   size?: BadgeSize;
@@ -15,6 +16,7 @@ interface TooltipBadgeProps {
 }
 
 export const ListItemTooltipBadge: FC<TooltipBadgeProps> = ({
+  dataTestId,
   title,
   variant = BadgeVariant.Default,
   size = BadgeSize.MD,
@@ -26,6 +28,7 @@ export const ListItemTooltipBadge: FC<TooltipBadgeProps> = ({
   return (
     <Tooltip title={title} placement={placement} enterTouchDelay={0} arrow>
       <Badge
+        data-testid={dataTestId}
         variant={variant}
         size={size}
         startIcon={startIcon}

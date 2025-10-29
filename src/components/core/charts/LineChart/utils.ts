@@ -11,9 +11,12 @@ export const calculateTooltipPosition = (
   containerWidth: number,
   containerHeight: number,
 ) => {
-  let left = pointX + TOOLTIP_CONFIG.MARGIN;
+  const left = pointX;
+  let transform = 'translateX(0)';
   if (left > containerWidth - TOOLTIP_CONFIG.MIN_WIDTH) {
-    left = pointX - TOOLTIP_CONFIG.MARGIN - TOOLTIP_CONFIG.MIN_WIDTH;
+    transform = 'translateX(-100%)';
+  } else if (left > TOOLTIP_CONFIG.MIN_WIDTH) {
+    transform = 'translateX(-50%)';
   }
 
   let top = pointY + TOOLTIP_CONFIG.MARGIN;
@@ -21,7 +24,7 @@ export const calculateTooltipPosition = (
     top = pointY - TOOLTIP_CONFIG.HEIGHT - TOOLTIP_CONFIG.MARGIN;
   }
 
-  return { x: left, y: top };
+  return { x: left, y: top, transform };
 };
 
 /**

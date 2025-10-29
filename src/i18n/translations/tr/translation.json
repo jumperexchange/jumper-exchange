@@ -8,6 +8,7 @@
     "links": {
       "exchange": "Al-Sat",
       "missions": "",
+      "earn": "",
       "dashboard": "Kontrol Paneli",
       "refuel": "Gaz",
       "buy": "Satın al",
@@ -264,13 +265,25 @@
     "boostedApy": "",
     "lockupPeriod": "",
     "manageYourPosition": "",
-    "assets": ""
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "noPositionsToManage": ""
   },
   "labels": {
     "apy": "",
     "lockupPeriod": "",
     "tvl": "",
-    "assets": ""
+    "assets_one": "",
+    "assets_other_one": "",
+    "assets_other": "",
+    "chains_one": "",
+    "chains_other": "",
+    "protocol": "",
+    "overview": ""
   },
   "earn": {
     "top": {
@@ -292,6 +305,12 @@
       "clear": "",
       "selected": "",
       "search": ""
+    },
+    "relatedMarkets": {
+      "title": ""
+    },
+    "overview": {
+      "updated": ""
     }
   },
   "widget": {
@@ -301,6 +320,23 @@
       "tvl": "",
       "lockupPeriod": "",
       "token": ""
+    },
+    "sweepTokensCard": {
+      "button": {
+        "claim": "",
+        "switchChain": "",
+        "waitingForTransaction": "",
+        "transactionInProgress": "",
+        "viewTransaction": ""
+      },
+      "error": {
+        "title": "",
+        "description": ""
+      },
+      "success": {
+        "title": "",
+        "description": ""
+      }
     },
     "zap": {
       "sendToAddressName": "",
@@ -323,7 +359,11 @@
       }
     }
   },
+  "links": {
+    "discover": ""
+  },
   "buttons": {
-    "depositButtonLabel": ""
+    "depositButtonLabel": "",
+    "managePositionsButtonLabel": ""
   }
 }
