@@ -6,15 +6,17 @@ import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking';
 import { Box, Slide, Stack } from '@mui/material';
 import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { AnnouncementBanner } from 'src/components/AnnouncementBanner/AnnouncementBanner';
 
 export interface AppProps {
   children: React.ReactNode;
 }
 
 const App = ({ children }: { children: React.ReactNode }) => {
-
   const { trackEvent } = useUserTracking();
+  const announcementBannersRef = useRef<HTMLDivElement>(null);
+  const [announcementBannerHeight, setAnnouncementBannerHeight] = useState(0);
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
     useWelcomeScreen();
@@ -44,6 +46,27 @@ const App = ({ children }: { children: React.ReactNode }) => {
       setWelcomeScreenClosed(true);
     }
   }, [setWelcomeScreenClosed]);
+
+  useEffect(() => {
+    const element = announcementBannersRef.current;
+    if (!element) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const height = entry.contentRect.height;
+        setAnnouncementBannerHeight(height);
+      }
+    });
+
+    resizeObserver.observe(element);
+
+    return () => {
+      resizeObserver.disconnect();
+      setAnnouncementBannerHeight(0);
+    };
+  }, []);
 
   return (
     <Box onClick={handleWelcomeScreenEnter}>
@@ -75,11 +98,31 @@ const App = ({ children }: { children: React.ReactNode }) => {
         alignItems="start"
         paddingTop={3.5}
       >
-        {welcomeScreenClosed && <VerticalTabs />}
+        {welcomeScreenClosed && (
+          <Box
+            sx={{
+              marginTop: `${announcementBannerHeight}px`,
+            }}
+          >
+            <VerticalTabs />
+          </Box>
+        )}
         <WidgetContainer
           welcomeScreenClosed={!enabled || welcomeScreenClosed!}
           className="widget-container"
         >
+          {welcomeScreenClosed && (
+            <Box
+              sx={{
+                '& > :last-child': {
+                  marginBottom: `16px`,
+                },
+              }}
+              ref={announcementBannersRef}
+            >
+              <AnnouncementBanner />
+            </Box>
+          )}
           {children}
         </WidgetContainer>
       </Stack>
