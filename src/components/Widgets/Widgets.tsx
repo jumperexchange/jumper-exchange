@@ -78,6 +78,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
             TrackingAction.OnSourceChainAndTokenSelection,
           availableRoutes: TrackingAction.OnAvailableRoutes,
           routeExecutionStarted: TrackingAction.OnRouteExecutionStarted,
+          routeExecutionUpdated: TrackingAction.OnRouteExecutionUpdated,
           routeExecutionCompleted: TrackingAction.OnRouteExecutionCompleted,
           routeExecutionFailed: TrackingAction.OnRouteExecutionFailed,
           changeSettings: TrackingAction.OnChangeSettings,
@@ -87,6 +88,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
         }}
         trackingDataActionKeys={{
           routeExecutionStarted: TrackingEventDataAction.ExecutionStart,
+          routeExecutionUpdated: TrackingEventDataAction.ExecutionUpdated,
           routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
           routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
         }}

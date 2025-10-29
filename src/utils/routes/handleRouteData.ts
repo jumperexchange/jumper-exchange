@@ -36,6 +36,7 @@ export const handleRouteData = (
     0,
   );
   const priceImpact = calcPriceImpact(route);
+  const maxSlippage = route.steps?.[0]?.action?.slippage?.toString() ?? 'auto';
 
   // Note(laurent): the rest of this function code was reworked to fix type issues,
   // it was producing incorrect types. There are too many checks according to types,
@@ -60,6 +61,7 @@ export const handleRouteData = (
     [TrackingEventParameter.NbOfSteps]: nbOfSteps,
     [TrackingEventParameter.RouteId]: routeId,
     [TrackingEventParameter.Slippage]: priceImpact,
+    [TrackingEventParameter.MaxSlippage]: maxSlippage,
     [TrackingEventParameter.StepIds]: stepIds.join(','),
     [TrackingEventParameter.Steps]: steps,
     [TrackingEventParameter.Time]: duration || -1,

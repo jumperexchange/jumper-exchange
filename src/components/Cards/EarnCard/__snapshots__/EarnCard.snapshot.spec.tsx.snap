@@ -47,6 +47,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -56,6 +57,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -93,6 +95,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
     >
       <div
         class="MuiBox-root css-h1oaii"
+        data-testid="protocol-morpho"
       >
         <div
           class="MuiBox-root css-wioyy2"
@@ -136,6 +139,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -146,6 +150,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="apy-7.15"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -181,6 +186,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="lockupPeriod-2"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -220,6 +226,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="tvl-63M"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -255,6 +262,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="assets-USDC"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -299,7 +307,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              USD Coin
+              USDC
             </p>
           </div>
         </div>
@@ -360,6 +368,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -369,6 +378,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -380,6 +390,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
       >
         <div
           class="MuiBox-root css-h1oaii"
+          data-testid="protocol-morpho"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -423,6 +434,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -433,6 +445,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
         >
           <div
             class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+            data-testid="apy-7.15"
           >
             <div
               class="MuiBox-root css-5ul7dk"
@@ -468,6 +481,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           </div>
           <div
             class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+            data-testid="lockupPeriod-2"
           >
             <div
               class="MuiBox-root css-5ul7dk"
@@ -507,6 +521,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
         >
           <div
             class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+            data-testid="tvl-63M"
           >
             <div
               class="MuiBox-root css-5ul7dk"
@@ -542,6 +557,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           </div>
           <div
             class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+            data-testid="assets-USDC"
           >
             <div
               class="MuiBox-root css-5ul7dk"
@@ -586,7 +602,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
               >
-                USD Coin
+                USDC
               </p>
             </div>
           </div>
@@ -666,6 +682,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -675,6 +692,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -712,6 +730,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
     >
       <div
         class="MuiBox-root css-h1oaii"
+        data-testid="protocol-morpho"
       >
         <div
           class="MuiBox-root css-wioyy2"
@@ -755,6 +774,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -765,6 +785,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="apy-7.15"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -800,6 +821,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="lockupPeriod-2"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -839,6 +861,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="tvl-63M"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -874,6 +897,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="assets-USDC"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -918,7 +942,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              USD Coin
+              USDC
             </p>
           </div>
         </div>
@@ -975,6 +999,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-staking"
           >
             Staking
           </p>
@@ -984,6 +1009,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="earn-card-tag-earn"
           >
             Earn
           </p>
@@ -1021,6 +1047,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
     >
       <div
         class="MuiBox-root css-h1oaii"
+        data-testid="protocol-morpho"
       >
         <div
           class="MuiBox-root css-wioyy2"
@@ -1064,6 +1091,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1074,6 +1102,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="apy-7.15"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -1109,6 +1138,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="lockupPeriod-2"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -1148,6 +1178,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="tvl-63M"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -1183,6 +1214,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="assets-USDC"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -1227,7 +1259,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
-              USD Coin
+              USDC
             </p>
           </div>
         </div>
@@ -1247,6 +1279,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
     >
       <div
         class="MuiBox-root css-h1oaii"
+        data-testid="protocol-morpho"
       >
         <div
           class="MuiBox-root css-wioyy2"
@@ -1290,6 +1323,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1354,6 +1388,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="apy-7.15"
           >
             7.15% labels.apy
           </p>
@@ -1365,6 +1400,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="lockupPeriod-2"
           >
             2 months
           </p>
@@ -1376,6 +1412,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="tvl-63M"
           >
             $63M labels.tvl
           </p>
@@ -1398,8 +1435,9 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </div>
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="assets-USDC"
           >
-            USD Coin
+            USDC
           </p>
         </div>
         <button
@@ -1448,6 +1486,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
       >
         <div
           class="MuiBox-root css-h1oaii"
+          data-testid="protocol-morpho"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -1491,6 +1530,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="earn-card-chain-name"
             >
               Base
             </p>
@@ -1555,6 +1595,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="apy-7.15"
             >
               7.15% labels.apy
             </p>
@@ -1566,6 +1607,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="lockupPeriod-2"
             >
               2 months
             </p>
@@ -1577,6 +1619,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="tvl-63M"
             >
               $63M labels.tvl
             </p>
@@ -1599,8 +1642,9 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </div>
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="assets-USDC"
             >
-              USD Coin
+              USDC
             </p>
           </div>
         </div>
@@ -1678,6 +1722,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
     >
       <div
         class="MuiBox-root css-h1oaii"
+        data-testid="protocol-morpho"
       >
         <div
           class="MuiBox-root css-wioyy2"
@@ -1721,6 +1766,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1754,6 +1800,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="apy-7.15"
           >
             7.15% labels.apy
           </p>
@@ -1765,6 +1812,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="lockupPeriod-2"
           >
             2 months
           </p>
@@ -1776,6 +1824,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="tvl-63M"
           >
             $63M labels.tvl
           </p>
@@ -1798,8 +1847,9 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </div>
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="assets-USDC"
           >
-            USD Coin
+            USDC
           </p>
         </div>
         <button
@@ -1844,6 +1894,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
     >
       <div
         class="MuiBox-root css-h1oaii"
+        data-testid="protocol-morpho"
       >
         <div
           class="MuiBox-root css-wioyy2"
@@ -1887,6 +1938,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            data-testid="earn-card-chain-name"
           >
             Base
           </p>
@@ -1951,6 +2003,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="apy-7.15"
           >
             7.15% labels.apy
           </p>
@@ -1962,6 +2015,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="lockupPeriod-2"
           >
             2 months
           </p>
@@ -1973,6 +2027,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="tvl-63M"
           >
             $63M labels.tvl
           </p>
@@ -1995,8 +2050,9 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </div>
           <p
             class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+            data-testid="assets-USDC"
           >
-            USD Coin
+            USDC
           </p>
         </div>
       </div>
@@ -2027,6 +2083,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="apy-7.15"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2062,6 +2119,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="lockupPeriod-2"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2101,6 +2159,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="tvl-63M"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2136,6 +2195,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="assets-USDC"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2167,6 +2227,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
             >
               <div
                 class="MuiBox-root css-h1oaii"
+                data-testid="tokens-USD Coin"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -2203,7 +2264,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
             >
-              USD Coin
+              USDC
             </p>
           </div>
         </div>
@@ -2213,6 +2274,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="chains-8453"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2263,6 +2325,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="protocol-morpho"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2294,6 +2357,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
             >
               <div
                 class="MuiBox-root css-h1oaii"
+                data-testid="protocol-morpho"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -2367,6 +2431,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="apy-7.15"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2402,6 +2467,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="lockupPeriod-2"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2441,6 +2507,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="tvl-63M"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2476,6 +2543,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="assets-USDC"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2507,6 +2575,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
             >
               <div
                 class="MuiBox-root css-h1oaii"
+                data-testid="tokens-USD Coin"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -2543,7 +2612,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
             >
-              USD Coin
+              USDC
             </p>
           </div>
         </div>
@@ -2553,6 +2622,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
       >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="chains-8453"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2603,6 +2673,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="protocol-morpho"
         >
           <div
             class="MuiBox-root css-5ul7dk"
@@ -2634,6 +2705,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
             >
               <div
                 class="MuiBox-root css-h1oaii"
+                data-testid="protocol-morpho"
               >
                 <div
                   class="MuiBox-root css-wioyy2"

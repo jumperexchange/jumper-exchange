@@ -365,5 +365,71 @@
   "buttons": {
     "depositButtonLabel": "Quick deposit",
     "managePositionsButtonLabel": "Manage Positions"
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": "Claim perk"
+      },
+      "claimedPerk": {
+        "title": "Perk claimed!",
+        "description": "You have verified this perk with the following address",
+        "nextSteps": "Next steps",
+        "howToUsePerk": "How to use your perk ?",
+        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
+      },
+
+      "signatureFailed": {
+        "title": "Signature required",
+        "description": "You need to sign the transaction to confirm ownership of the wallet address.",
+        "tryAgain": "Try again"
+      },
+
+      "validationFailed": {
+        "title": "Validation failed",
+        "description": "Please check the fields and try again.",
+        "close": "Close"
+      },
+
+      "unsupportedWallet": {
+        "title": "Unsupported wallet",
+        "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
+        "switchWallet": "Switch wallet"
+      },
+
+      "unknown": {
+        "title": "Unknown error",
+        "description": "An unknown error occurred. Please try again.",
+        "tryAgain": "Try again"
+      },
+
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "Enter username",
+            "description_one": "{{position}} you must first share your {{usernameType}} username.",
+            "description_other": "{{position}} you must share your {{usernameType}} username."
+          },
+          "email": {
+            "title": "Enter email",
+            "description_one": "{{position}} you must first share your email address.",
+            "description_other": "{{position}} you must share your email address."
+          },
+          "wallet": {
+            "title": "Verify wallet",
+            "description_one": "{{position}} you must sign a message to verify ownership of the below connected wallet address.",
+            "description_other": "{{position}} you must sign a message to verify ownership of the below connected wallet address."
+          },
+          "position": {
+            "first": "To claim your perk",
+            "next": "Next",
+            "finally": "Finally"
+          }
+        },
+        "continue": "Continue",
+        "submit": "Verify wallet and claim perk",
+        "submitting": "Waiting for verification"
+      }
+    }
   }
 }

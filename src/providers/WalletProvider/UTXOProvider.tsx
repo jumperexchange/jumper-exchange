@@ -10,10 +10,10 @@ const { config } = createDefaultBigmiConfig({
 });
 
 export const UTXOProvider: FC<PropsWithChildren> = ({ children }) => {
-  useReconnect(config);
+  useReconnect(config as any);
 
   return (
-    <BigmiProvider config={config} reconnectOnMount={false}>
+    <BigmiProvider config={config as any} reconnectOnMount={false}>
       {children}
     </BigmiProvider>
   );

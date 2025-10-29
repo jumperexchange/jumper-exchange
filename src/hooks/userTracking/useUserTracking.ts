@@ -193,6 +193,7 @@ export function useUserTracking(): UserTracking {
           routeId: data[TrackingEventParameter.RouteId],
           sessionId: sessionId || '',
           slippage: data[TrackingEventParameter.Slippage],
+          maxSlippage: data[TrackingEventParameter.MaxSlippage],
           status: data[TrackingEventParameter.Status],
           stepIds: data[TrackingEventParameter.StepIds],
           steps: data[TrackingEventParameter.Steps],

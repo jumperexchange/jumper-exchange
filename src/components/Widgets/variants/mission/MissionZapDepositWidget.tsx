@@ -1,7 +1,7 @@
 import { useMissionStore } from 'src/stores/mission/MissionStore';
 import { EntityWidgetProps } from '../base/Widget.types';
 import { FC, useMemo } from 'react';
-import { ZapDepositWidget } from '../base/ZapWidget/ZapDepositWidget';
+import { ZapDepositBackendWidget } from '../base/ZapWidget/ZapDepositBackendWidget';
 import { ZapWidgetContext } from '../widgetConfig/types';
 import { TaskType } from 'src/types/strapi';
 
@@ -43,5 +43,7 @@ export const MissionZapDepositWidget: FC<MissionZapDepositWidgetProps> = ({
     currentActiveTaskType,
   ]);
 
-  return <ZapDepositWidget ctx={ctx} customInformation={customInformation} />;
+  return (
+    <ZapDepositBackendWidget ctx={ctx} customInformation={customInformation} />
+  );
 };

@@ -1,5 +1,5 @@
 export const TOOLTIP_CONFIG = {
-  MIN_WIDTH: 120,
+  MIN_WIDTH: 160,
   HEIGHT: 80,
   MARGIN: 15,
 } as const;

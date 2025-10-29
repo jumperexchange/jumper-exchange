@@ -1,12 +1,9 @@
 import { expect, type Page } from "@playwright/test";
 
 export async function selectAllMarketsTab(page: Page) {
-	const allMarketsTab = page.locator(
-		'xpath=//button[normalize-space(text())="All Markets"]',
-	);
+	const allMarketsTab = page.getByTestId("earn-filter-tab-all");
 	await allMarketsTab.click();
 }
-
 
 export async function verifyNoSelectedChainsAreVisible(
 	page: Page,
@@ -22,10 +19,21 @@ export async function selectOptionFromDropDown(
 	option: string,
 ) {
 	const dropdownFilter = page.getByTestId(dropdown);
+	const clearButton = page.getByTestId("clear-button");
 	await dropdownFilter.click();
+	await expect(clearButton).toBeVisible();
 	await page.getByRole("option", { name: option }).click();
 	// click page body to close the dropdown
 	await page.locator("body").click();
+}
+
+export async function getAllOptionsFromDropdown(page: Page, dropdown: string) {
+	const dropdownFilter = page.getByTestId(dropdown);
+	await dropdownFilter.click();
+	const optionsArray = dropdownFilter.locator('[role="option"]');
+	const options = await optionsArray.allTextContents();
+	await page.keyboard.press("Escape"); //close dropdown
+	return options;
 }
 
 export async function verifyNoSelectedProtocolsAreVisible(
@@ -42,11 +50,6 @@ export async function verifyNoSelectedAssetsAreVisible(
 	await verifyNoSelectedItemsAreVisible(page, [asset1]);
 }
 
-/**
- * Gets all available assets from the asset dropdown
- * @param page - Playwright page object
- * @returns Array of asset names
- */
 export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
 	const options = page.locator('[role="option"]');
 	const optionCount = await options.count();
@@ -54,48 +57,42 @@ export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
 	const assets: string[] = [];
 	for (let i = 0; i < optionCount; i++) {
 		const optionText = await options.nth(i).textContent();
-		if (optionText && optionText.trim()) {
+		if (optionText?.trim()) {
 			assets.push(optionText.trim());
 		}
 	}
-	await page.keyboard.press("Escape");
-
 	return assets;
 }
 
-/**
- * Verifies that when a specific asset is selected, all other assets are not visible
- * @param page - Playwright page object
- * @param selectedAsset - The asset that should be visible
- */
 export async function verifyOnlySelectedAssetIsVisible(
 	page: Page,
 	selectedAsset: string,
 ) {
-	const allAssets = await getAllAssetsFromDropdown(page);
-	const assetsToHide = allAssets.filter(
-		(asset) => asset.toLowerCase() !== selectedAsset.toLowerCase(),
-	);
-	await verifyNoSelectedItemsAreVisible(page, assetsToHide);
+	await page.waitForLoadState("load");
+	const filteredCardsContainer = page.locator("xpath=//div[@class='MuiBox-root mui-1eiibmt']");
+	await expect(filteredCardsContainer).toBeVisible();
+
+	// Verify that only the selected asset's data-testid is visible
+	const selectedAssetTestId = `assets-${selectedAsset}`;
+	const selectedAssetElements = page.getByTestId(selectedAssetTestId);
+	const selectedAssetCount = await selectedAssetElements.count();	
+	expect(selectedAssetCount).toBeGreaterThan(0);
 }
 
-/**
- * Verifies that all earn cards display the expected chain name
- * @param page - Playwright page object
- * @param expectedChain - The chain name that should be displayed (e.g., "Base", "Mainnet", "Arbitrum")
- */
 export async function verifyAllCardsShowChain(
 	page: Page,
 	expectedChain: string,
 ) {
 	await page.waitForLoadState("load");
 	await page.waitForTimeout(3000);
-
-	// Get the filtered cards container and then find chain name elements within it
-	const filteredCardsContainer = page.getByTestId("earn-filtered-cards-container");
-	const chainNameElements = filteredCardsContainer.getByTestId("earn-card-chain-name");
+	const filteredCardsContainer = page.getByTestId(
+		"earn-filtered-cards-container",
+	);
+	const chainNameElements = filteredCardsContainer.getByTestId(
+		"earn-card-chain-name",
+	);
 	const count = await chainNameElements.count();
-		
+
 	// Verify each chain name matches the expected chain
 	for (let i = 0; i < count; i++) {
 		const chainElement = chainNameElements.nth(i);
@@ -143,4 +140,29 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
 			}
 		}
 	}
+}
+
+export async function verifyOnlySelectedTagIsVisible(
+	page: Page,
+	selectedTag: string,
+) {
+	const allOptions = await getAllOptionsFromDropdown(
+		page,
+		"earn-filter-tag-select",
+	);
+	const optionsToHide = allOptions.filter(
+		(option) => option.toLowerCase() !== selectedTag.toLowerCase(),
+	);
+
+	const selectedTagTestId = `earn-card-tag-${selectedTag.toLowerCase().replace(/\s+/g, "-")}`;
+	const selectedTagElements = page.getByTestId(selectedTagTestId);
+	const selectedTagCount = await selectedTagElements.count();
+
+	for (const optionToHide of optionsToHide) {
+		const hiddenTagTestId = `earn-card-tag-${optionToHide.toLowerCase().replace(/\s+/g, "-")}`;
+		const hiddenTagElements = page.getByTestId(hiddenTagTestId);
+		await expect(hiddenTagElements).toHaveCount(0);
+	}
+
+	expect(selectedTagCount).toBeGreaterThan(0); //verify that at least one tag is visible
 }

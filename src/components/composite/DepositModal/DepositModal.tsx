@@ -8,16 +8,16 @@ import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/Za
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { TaskType } from 'src/types/strapi';
-import { CenteredWrapper, CloseIconButton } from './DepositModal.styles';
+import {
+  ModalContainer,
+  ModalContainerProps,
+} from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
 import { useReadContracts } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import { Hex } from 'viem';
 import { useZapEarnOpportunitySlugStorage } from 'src/providers/hooks';
-
-interface DepositModalProps {
-  onClose: () => void;
-  isOpen: boolean;
+interface DepositModalProps extends ModalContainerProps {
   earnOpportunity: Pick<
     EarnOpportunityWithLatestAnalytics,
     'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest' | 'slug'
@@ -27,26 +27,6 @@ interface DepositModalProps {
     address: string;
   };
 }
-
-const motionConfig = {
-  initial: {
-    opacity: 0,
-  },
-  animate: {
-    opacity: 1,
-  },
-  transition: {
-    visualDuration: 0.5,
-    delay: 0.1,
-  },
-  style: {
-    position: 'absolute',
-    top: '0',
-    right: '0',
-    x: '100%',
-    y: '-100%',
-  },
-} as const;
 
 export const DepositModal: FC<DepositModalProps> = ({
   onClose,
@@ -89,42 +69,28 @@ export const DepositModal: FC<DepositModalProps> = ({
 
   return (
     <WidgetTrackingProvider>
-      <Modal open={isOpen} onClose={onClose}>
-        <CenteredWrapper>
-          {!isMobile && (
-            <motion.div {...motionConfig}>
-              <CloseIconButton onClick={onClose}>
-                <CloseIcon
-                  sx={{
-                    width: '24px',
-                    height: '24px',
-                  }}
-                />
-              </CloseIconButton>
-            </motion.div>
-          )}
-          <ClientOnly>
-            <ZapDepositBackendWidget
-              ctx={{
-                theme: {
-                  container: {
-                    maxHeight: 'calc(100vh - 6rem)',
-                    minWidth: '100%',
-                    maxWidth: 400,
-                    borderRadius: '24px',
-                  },
+      <ModalContainer isOpen={isOpen} onClose={onClose}>
+        <ClientOnly>
+          <ZapDepositBackendWidget
+            ctx={{
+              theme: {
+                container: {
+                  maxHeight: 'calc(100vh - 6rem)',
+                  minWidth: '100%',
+                  maxWidth: 400,
+                  borderRadius: '24px',
                 },
-                taskType: TaskType.Zap,
-                overrideHeader: 'Quick deposit',
-              }}
-              customInformation={{ projectData }}
-              zapData={zapData}
-              isZapDataSuccess={true}
-              refetchDepositToken={refetchDepositToken}
-            />
-          </ClientOnly>
-        </CenteredWrapper>
-      </Modal>
+              },
+              taskType: TaskType.Zap,
+              overrideHeader: 'Quick deposit',
+            }}
+            customInformation={{ projectData }}
+            zapData={zapData}
+            isZapDataSuccess={true}
+            refetchDepositToken={refetchDepositToken}
+          />
+        </ClientOnly>
+      </ModalContainer>
     </WidgetTrackingProvider>
   );
 };

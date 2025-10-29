@@ -6,6 +6,7 @@ import {
   SettingUpdated,
   useWidgetEvents,
 } from '@lifi/widget';
+import { isEqual, omit } from 'lodash';
 import {
   createContext,
   FC,
@@ -30,6 +31,7 @@ import {
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import { TransformedRoute } from 'src/types/internal';
+import { TrackTransactionDataProps } from 'src/types/userTracking';
 import { handleRouteData } from 'src/utils/routes';
 import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
 
@@ -64,6 +66,7 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionCompleted: TrackingAction;
     routeExecutionFailed: TrackingAction;
     changeSettings: TrackingAction;
+    routeExecutionUpdated?: TrackingAction;
     routeHighValueLoss?: TrackingAction;
     lowAddressActivityConfirmed?: TrackingAction;
   };
@@ -71,6 +74,7 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionStarted: TrackingEventDataAction;
     routeExecutionCompleted: TrackingEventDataAction;
     routeExecutionFailed: TrackingEventDataAction;
+    routeExecutionUpdated?: TrackingEventDataAction;
   };
 }
 
@@ -85,6 +89,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
     routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
     changeSettings: TrackingAction.OnChangeSettingsZap,
+    routeExecutionUpdated: '',
     routeHighValueLoss: '',
     lowAddressActivityConfirmed: '',
   },
@@ -92,6 +97,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
     routeExecutionCompleted: TrackingEventDataAction.ExecutionCompletedZap,
     routeExecutionFailed: TrackingEventDataAction.ExecutionFailedZap,
+    routeExecutionUpdated: '',
   },
 }) => {
   const { trackTransaction, trackEvent } = useUserTracking();
@@ -101,6 +107,9 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const isRoutesForCurrentDestinationTokenTracked = useRef(false);
   const isRoutesForCurrentFromAmountTracked = useRef(false);
   const currentFromAmount = useRef<string | null>(null);
+  const trackedRoutesData = useRef<Record<string, TrackTransactionDataProps>>(
+    {},
+  );
   const posthogTracker = useMemo(() => {
     return makePosthogTracker({ trackTransaction, trackEvent });
   }, [trackTransaction, trackEvent]);
@@ -204,15 +213,19 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const routeExecutionStarted = useCallback(
     (route: Route) => {
       if (route.id) {
+        const routeData = handleRouteData(route, {
+          [TrackingEventParameter.Action]:
+            trackingDataActionKeys.routeExecutionStarted,
+          [TrackingEventParameter.TransactionStatus]: 'STARTED',
+        });
+
+        trackedRoutesData.current[route.id] = routeData;
+
         trackTransaction({
           category: TrackingCategory.WidgetEvent,
           action: trackingActionKeys.routeExecutionStarted,
           label: 'execution_start',
-          data: handleRouteData(route, {
-            [TrackingEventParameter.Action]:
-              trackingDataActionKeys.routeExecutionStarted,
-            [TrackingEventParameter.TransactionStatus]: 'STARTED',
-          }),
+          data: routeData,
           enableAddressable: true,
         });
       }
@@ -224,8 +237,56 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     ],
   );
 
+  const routeExecutionUpdated = useCallback(
+    (update: RouteExecutionUpdate) => {
+      if (
+        !trackingActionKeys.routeExecutionUpdated ||
+        !trackingDataActionKeys.routeExecutionUpdated
+      ) {
+        return;
+      }
+      const updatedRouteData = handleRouteData(update.route, {
+        [TrackingEventParameter.Action]:
+          trackingDataActionKeys.routeExecutionUpdated,
+        [TrackingEventParameter.TransactionStatus]: 'UPDATED',
+      });
+      const routeData = trackedRoutesData.current[update.route.id];
+      const shouldTrack = !isEqual(
+        omit(routeData, [
+          TrackingEventParameter.TransactionStatus,
+          TrackingEventParameter.IsFinal,
+          TrackingEventParameter.Action,
+        ]),
+        omit(updatedRouteData, [
+          TrackingEventParameter.TransactionStatus,
+          TrackingEventParameter.IsFinal,
+          TrackingEventParameter.Action,
+        ]),
+      );
+      if (!shouldTrack) {
+        return;
+      }
+      trackedRoutesData.current[update.route.id] = updatedRouteData;
+
+      trackTransaction({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.routeExecutionUpdated,
+        label: `execution_updated`,
+        data: routeData,
+        enableAddressable: true,
+      });
+    },
+    [
+      trackTransaction,
+      trackingActionKeys.routeExecutionUpdated,
+      trackingDataActionKeys.routeExecutionUpdated,
+    ],
+  );
+
   const routeExecutionCompleted = useCallback(
     (route: Route) => {
+      delete trackedRoutesData.current[route.id];
+
       trackTransaction({
         category: TrackingCategory.WidgetEvent,
         action: trackingActionKeys.routeExecutionCompleted,
@@ -365,6 +426,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       destinationChainTokenSelected,
       availableRoutes,
       routeExecutionStarted,
+      routeExecutionUpdated,
       routeExecutionCompleted,
       routeExecutionFailed,
       settingUpdated,
@@ -384,6 +446,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     sourceChainTokenSelected,
     availableRoutes,
     routeExecutionStarted,
+    routeExecutionUpdated,
     routeExecutionCompleted,
     routeExecutionFailed,
     settingUpdated,

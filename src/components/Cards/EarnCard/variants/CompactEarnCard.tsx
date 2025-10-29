@@ -39,6 +39,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     return (
       <CompactEarnCardItem
         key={item.key}
+        dataTestId={item.dataTestId}
         title={item.label}
         value={item.value}
         valuePrepend={item.valuePrepend}
@@ -70,6 +71,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
                 size={BadgeSize.SM}
                 label={tag}
                 key={tag}
+                data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
               />
             ))}
           </CompactEarnCardTagContainer>

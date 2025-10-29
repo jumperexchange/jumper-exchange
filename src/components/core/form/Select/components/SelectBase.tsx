@@ -11,6 +11,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import CheckIcon from '@mui/icons-material/Check';
 import { SelectProps } from '@mui/material/Select';
 import { SelectorLabel } from './SelectLabel';
+import Fade from '@mui/material/Fade';
 
 interface ExtendedSelectBaseProps<T extends TData>
   extends Omit<SelectBaseProps<T>, 'onChange'>,
@@ -25,6 +26,7 @@ export const SelectBase = <T extends TData>({
   options,
   value,
   selectorContent,
+  menuPlacementX = 'left',
   ...rest
 }: ExtendedSelectBaseProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,13 +68,16 @@ export const SelectBase = <T extends TData>({
       MenuProps={{
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: menuPlacementX,
         },
         transformOrigin: {
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: menuPlacementX,
         },
         disableScrollLock: true,
+        slots: {
+          transition: Fade,
+        },
         PaperProps: {
           sx: (theme) => ({
             backgroundColor: (theme.vars || theme).palette.surface1.main,
