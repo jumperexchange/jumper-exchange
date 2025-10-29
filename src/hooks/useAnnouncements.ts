@@ -4,8 +4,8 @@ import type {
 } from '@/types/announcement';
 import { useQuery } from '@tanstack/react-query';
 import { getAnnouncements } from '@/app/lib/getAnnouncements';
-import { useAnnouncementStore } from '@/stores/announcements';
-import { useMemo } from 'react';
+import { useAnnouncementStore } from '@/stores/announcements/AnnouncementStore';
+import { useEffect, useMemo } from 'react';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { TEN_MINUTES_MS, THIRTY_MINUTES_MS } from 'src/const/time';
 
@@ -50,11 +50,10 @@ export const useAnnouncements = (): UseAnnouncementsProps => {
     }),
   );
 
-  const { data, isSuccess, isLoading, isFetching } = useQuery({
+  const { data, dataUpdatedAt, isSuccess, isLoading, isFetching } = useQuery({
     queryKey: ['announcements'],
     queryFn: async () => {
       const result = await getAnnouncements();
-      setLastFetchDate(Date.now());
       return result.data;
     },
     refetchInterval: TEN_MINUTES_MS,
@@ -73,6 +72,12 @@ export const useAnnouncements = (): UseAnnouncementsProps => {
       )
       .map(mapToDisplayFormat);
   }, [data, dismissedAnnouncements]);
+
+  useEffect(() => {
+    if (dataUpdatedAt) {
+      setLastFetchDate(dataUpdatedAt);
+    }
+  }, [dataUpdatedAt]);
 
   return {
     data: data || [],

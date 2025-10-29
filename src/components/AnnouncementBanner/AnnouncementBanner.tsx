@@ -1,9 +1,8 @@
 'use client';
 import { FC } from 'react';
 import { useAnnouncements } from '@/hooks/useAnnouncements';
-import { useAnnouncementStore } from '@/stores/announcements';
+import { useAnnouncementStore } from '@/stores/announcements/AnnouncementStore';
 import CloseIcon from '@mui/icons-material/Close';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import { AnimatePresence, motion } from 'framer-motion';
