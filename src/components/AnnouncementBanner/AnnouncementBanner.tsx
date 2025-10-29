@@ -28,10 +28,6 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
 
   const displayedAnnouncements = activeAnnouncements.slice(0, maxAnnouncements);
 
-  const handleDismiss = (uid: string) => {
-    dismissAnnouncement(uid);
-  };
-
   if (displayedAnnouncements.length === 0) {
     return null;
   }
@@ -68,7 +64,7 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
                 />
                 {announcement.dismissible && (
                   <IconButton
-                    onClick={() => handleDismiss(announcement.documentId)}
+                    onClick={() => dismissAnnouncement(announcement.documentId)}
                     aria-label="Dismiss announcement"
                     size="small"
                   >
