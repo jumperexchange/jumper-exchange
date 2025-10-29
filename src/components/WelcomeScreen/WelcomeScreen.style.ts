@@ -5,12 +5,14 @@ import { ButtonPrimary } from '../Button';
 
 /**
  * more welcome-screen styles to be found in Widget.style.tsx + Widgets.style.tsx
+ * Using dvh (dynamic viewport height) for mobile to handle iOS Safari keyboard/URL bar
+ * Using vh for desktop where viewport is stable
  */
 
 export const DEFAULT_WELCOME_SCREEN_HEIGHT = '55vh';
 export const DEFAULT_WELCOME_SCREEN_HEIGHTS = {
-  xs: '55vh',
-  md: '50vh',
+  xs: '55dvh', // Dynamic viewport height for mobile (iOS Safari fix)
+  md: '50vh', // Standard viewport for desktop
 };
 
 export interface ContentWrapperProps extends BoxProps {

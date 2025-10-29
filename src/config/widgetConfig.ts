@@ -10,6 +10,7 @@ import {
 import { themeCustomized } from 'src/theme/theme';
 
 export const WIDGET_WIDTH = 416;
+export const WIDGET_HEIGHT = 720;
 
 // INFO: Do NOT use theme.vars here, it will break the widget
 export const getDefaultWidgetTheme = (
@@ -29,10 +30,13 @@ export const getDefaultWidgetTheme = (
         container: {
           borderRadius: '12px',
           maxWidth: '100%',
+          height: '100%',
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             borderRadius: '12px',
             maxWidth: WIDGET_WIDTH,
             minWidth: WIDGET_WIDTH,
+            maxHeight: WIDGET_HEIGHT,
+            height: 'auto',
             boxShadow: theme.shadows[1],
           },
         },
@@ -115,11 +119,13 @@ export const getDefaultWidgetThemeV2 = (
         container: {
           borderRadius: '24px',
           maxWidth: '100%',
-          maxHeight: 720,
+          height: '100%',
           [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
             borderRadius: '24px',
-            maxWidth: 416,
-            minWidth: 416,
+            maxWidth: WIDGET_WIDTH,
+            minWidth: WIDGET_WIDTH,
+            maxHeight: WIDGET_HEIGHT,
+            height: 'auto',
             boxShadow: copiedTheme.shadows[1],
           },
         },
