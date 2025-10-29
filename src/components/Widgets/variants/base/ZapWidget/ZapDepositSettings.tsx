@@ -2,7 +2,7 @@ import { type ContractCall, useFieldActions } from '@lifi/widget';
 import { FC, useEffect } from 'react';
 
 interface ZapDepositSettingsProps {
-  toChain: string;
+  toChain: number;
   toToken: string;
   contractCalls: ContractCall[];
 }

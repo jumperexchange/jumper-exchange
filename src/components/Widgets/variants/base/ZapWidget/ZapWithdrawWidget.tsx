@@ -57,6 +57,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     <WithdrawWidget
       poolName={poolName}
       refetchPosition={refetchDepositToken}
+      // @ts-expect-error
       token={token}
       lpTokenDecimals={lpTokenDecimals}
       projectData={projectData}

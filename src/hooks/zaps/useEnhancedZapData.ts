@@ -7,6 +7,7 @@ import { Hex } from 'viem';
 
 export const useEnhancedZapData = (projectData: ProjectData) => {
   const { data, isSuccess } = useZaps(projectData);
+
   const zapData = data?.data;
 
   const { account } = useAccount();
