@@ -25,9 +25,11 @@ interface BaseChainStackProps extends BaseProps {
   chainIds: string[];
   chainKeys: string[];
   skeletonSize?: AvatarSize;
+  dataTestId?: string;
 }
 
 export const BaseChainStack: FC<BaseChainStackProps> = ({
+  dataTestId,
   mainStack,
   chainIds,
   chainKeys,
@@ -81,7 +83,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
   );
 
   return (
-    <EntityChainContainer gap={spacing.containerGap}>
+    <EntityChainContainer gap={spacing.containerGap} data-testid={dataTestId}>
       <EntityChainStackWrapper>
         {mainStack}
         {chainsPlacement === EntityChainStackChainsPlacement.Overlay && (

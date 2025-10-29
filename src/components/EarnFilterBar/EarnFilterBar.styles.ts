@@ -1,4 +1,7 @@
-import { Box, Skeleton, styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Skeleton from '@mui/material/Skeleton';
+import { styled } from '@mui/material/styles';
 
 export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -14,6 +17,14 @@ export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   }),
 }));
 
+export const EarnFilterBarHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+  gap: theme.spacing(2),
+}));
+
 export const EarnFilterBarContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
@@ -27,3 +38,16 @@ export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'none',
   borderRadius: theme.shape.buttonBorderRadius,
 }));
+
+export const EarnFilterBarClearFiltersButton = styled(IconButton)(
+  ({ theme }) => ({
+    height: 40,
+    width: 40,
+    backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
+    color: (theme.vars || theme).palette.buttonAlphaLightAction,
+    '&:hover': {
+      backgroundColor: (theme.vars || theme).palette.buttonActiveBg,
+      color: (theme.vars || theme).palette.buttonActiveAction,
+    },
+  }),
+);
