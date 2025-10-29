@@ -11,6 +11,7 @@ export interface HorizontalTabItem {
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   disabled?: boolean;
+  'data-testid'?: string;
 }
 
 export interface HorizontalTabsProps {
@@ -78,6 +79,7 @@ export const HorizontalTabs = ({
               }
               size={size}
               id={`${id}-${tab.value}`}
+              data-testid={tab['data-testid']}
             />
           ))}
       </HorizontalTabsContainer>
