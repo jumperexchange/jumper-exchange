@@ -1,4 +1,3 @@
-import { WalletCardStack } from '@/components/Menus/WalletMenu/WalletCardStack';
 import {
   TrackingAction,
   TrackingCategory,
@@ -19,25 +18,24 @@ import {
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonSecondary } from 'src/components/Button';
+import { ButtonTransparent } from 'src/components/Button';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
 import {
-  Button,
-  WalletAvatar,
-  WalletCardBadge,
-  WalletCardContainer,
-  WalletChainAvatar,
-} from './WalletCard.style';
+  DarkIconButton,
+  SecondaryIconButton,
+  WalletBalanceSharedContainer,
+  WalletInfoContainer,
+} from '../WalletBalanceCard.styles';
+import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
 
-interface WalletCardProps {
+interface WalletWithActionsProps {
   account: Account;
 }
-
-export const WalletCard = ({ account }: WalletCardProps) => {
+export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
   const { t } = useTranslation();
   const disconnectWallet = useAccountDisconnect();
   const { trackEvent } = useUserTracking();
@@ -49,6 +47,14 @@ export const WalletCard = ({ account }: WalletCardProps) => {
     () => chains?.find((chainEl) => chainEl.id === account.chainId),
     [chains, account.chainId],
   );
+
+  const walletSrc = useMemo(
+    () => getConnectorIcon(account?.connector),
+    [account?.connector],
+  );
+
+  const chainSrc = activeChain?.logoURI;
+
   const deleteCacheTokenAddress = usePortfolioStore(
     (state) => state.deleteCacheTokenAddress,
   );
@@ -117,41 +123,63 @@ export const WalletCard = ({ account }: WalletCardProps) => {
   };
 
   const handleDisconnect = () => {
-    if (!account?.address) {
+    const walletAddress = account.address;
+    if (!walletAddress) {
       return;
     }
 
-    disconnectWallet(account);
-    deleteCacheTokenAddress(account.address);
+    disconnectWallet(account).then(() => {
+      deleteCacheTokenAddress(walletAddress);
+    });
+
     trackEvent({
       category: TrackingCategory.WalletMenu,
       action: TrackingAction.DisconnectWallet,
       label: 'disconnect_wallet',
     });
   };
-
   return (
-    <WalletCardContainer disableGutters>
-      <WalletCardStack>
-        <WalletCardBadge
-          overlap="circular"
-          className="badge"
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          badgeContent={
-            activeChain?.logoURI ? (
-              <WalletChainAvatar
-                src={activeChain?.logoURI || ''}
-                alt={'wallet-avatar'}
-                sx={{ width: 18, height: 18 }}
-              />
-            ) : (
-              <Skeleton variant="circular" />
-            )
-          }
-        >
-          <WalletAvatar src={getConnectorIcon(account.connector)} />
-        </WalletCardBadge>
-        <Button
+    <WalletBalanceSharedContainer disableGutters>
+      <WalletInfoContainer>
+        <AvatarBadge
+          avatarSrc={walletSrc}
+          badgeSrc={chainSrc}
+          avatarSize={40}
+          // We need to account for the border
+          badgeSize={20}
+          badgeOffset={{ x: 7, y: 2.5 }}
+          alt={'wallet-avatar'}
+          badgeAlt={'chain-avatar'}
+          maskEnabled={false}
+          sxAvatar={(theme) => ({
+            padding: theme.spacing(0.5),
+          })}
+          sxBadge={(theme) => ({
+            border: '2px solid',
+            borderColor: (theme.vars || theme).palette.surface1.main,
+            background: 'transparent',
+            ...theme.applyStyles('light', {
+              backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
+            }),
+          })}
+          sx={(theme) => ({
+            border: '2px solid',
+            borderColor: (theme.vars || theme).palette.surface1.main,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            // Use backgroundImage to repeat non-SVG icons in the padding ring; fallback to backgroundColor for SVGs
+            backgroundImage:
+              walletSrc && !walletSrc.includes('svg')
+                ? `url(${walletSrc})`
+                : 'none',
+            backgroundColor: (theme.vars || theme).palette.black.main,
+            ...theme.applyStyles('light', {
+              backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
+            }),
+          })}
+        />
+
+        <ButtonTransparent
           size="small"
           disabled={isMultisigEnvironment}
           onClick={() => handleCopyButton()}
@@ -159,29 +187,29 @@ export const WalletCard = ({ account }: WalletCardProps) => {
             background: 'transparent !important',
           })}
         >
-          <Typography variant="bodySmallStrong" sx={{ fontSize: '16px' }}>
+          <Typography variant="bodyMediumStrong">
             {walletDigest(account.address)}
           </Typography>
-        </Button>
-        <Stack direction="row" alignItems="flex-end" spacing={1}>
-          <Button size="small" onClick={() => handleExploreButton()}>
-            <OpenInNewIcon sx={{ height: '16px' }} />
-          </Button>
-          <Button size="small" onClick={() => handleScanButton()}>
-            <ReceiptLongIcon sx={{ height: '16px' }} />
-          </Button>
-          <ButtonSecondary
-            id="disconnect-wallet-button"
-            size="small"
-            onClick={() => {
-              handleDisconnect();
-            }}
-            sx={{ minWidth: 'auto' }}
-          >
-            <PowerSettingsNewIcon sx={{ height: '16px' }} />
-          </ButtonSecondary>
-        </Stack>
-      </WalletCardStack>
-    </WalletCardContainer>
+        </ButtonTransparent>
+      </WalletInfoContainer>
+      <Stack direction="row" alignItems="flex-end" spacing={1}>
+        <DarkIconButton size="small" onClick={() => handleExploreButton()}>
+          <OpenInNewIcon sx={{ height: 20, width: 20 }} />
+        </DarkIconButton>
+        <DarkIconButton size="small" onClick={() => handleScanButton()}>
+          <ReceiptLongIcon sx={{ height: 20, width: 20 }} />
+        </DarkIconButton>
+        <SecondaryIconButton
+          id="disconnect-wallet-button"
+          size="small"
+          onClick={() => {
+            handleDisconnect();
+          }}
+          sx={{ minWidth: 'auto' }}
+        >
+          <PowerSettingsNewIcon sx={{ height: 20, width: 20 }} />
+        </SecondaryIconButton>
+      </Stack>
+    </WalletBalanceSharedContainer>
   );
 };

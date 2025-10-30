@@ -7,15 +7,15 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { usePortfolioStore } from '@/stores/portfolio';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import index from '@/utils/getTokens';
-import { arraysEqual } from '@/utils/getTokens/utils';
 import { useAccount } from '@lifi/wallet-management';
 import { ChainId } from '@lifi/widget';
 import { useQueries } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useChains } from 'src/hooks/useChains';
 import { parsePortfolioDataToTrackingData } from '../tracking/portfolio';
 import { zeroAddress } from 'viem';
 import { usePrevious } from 'src/hooks/usePrevious';
+import { differenceInHours } from 'date-fns';
 
 export function usePortfolioTokens() {
   const { trackEvent } = useUserTracking();
@@ -24,9 +24,11 @@ export function usePortfolioTokens() {
   const {
     getFormattedCacheTokens,
     setCacheTokens,
-    lastAddresses,
     forceRefresh,
     setForceRefresh,
+    cacheTokens,
+    setLast,
+    getLast,
   } = usePortfolioStore((state) => state);
   const hasTrackedSuccess = useRef(false);
   const hasTrackedPortfolioOverview = useRef(false);
@@ -40,60 +42,91 @@ export function usePortfolioTokens() {
     setCacheTokens(account, fetchedBalances);
   };
 
+  const connectedAccounts = useMemo(() => {
+    return accounts.filter(
+      (account) => account.isConnected && !!account?.address,
+    );
+  }, [accounts]);
+
   const queries = useQueries({
-    queries: accounts
-      .filter((account) => account.isConnected && !!account?.address)
-      .map((account) => ({
-        queryKey: ['tokens', account.chainType, account.address],
-        queryFn: () => index(account, { onProgress: handleProgress }),
-        // refetchInterval: 100000 * 60 * 60,
-      })),
+    queries: connectedAccounts.map((account) => ({
+      queryKey: ['tokens', account.chainType, account.address],
+      queryFn: () => index(account, { onProgress: handleProgress }),
+    })),
   });
 
   const isSuccess = queries.every(
     (query) => !query.isFetching && query.isSuccess,
   );
-  const isFetching = queries.every((query) => query.isFetching);
+  const isFetching = queries.some((query) => query.isFetching);
   const isPrevFetching = usePrevious(isFetching);
-  const refetch = () => queries.map((query) => query.refetch());
-  const shouldSendTrackingEvent = isPrevFetching && !isFetching && isSuccess;
+  const queriesJustCompleted = isPrevFetching && !isFetching && isSuccess;
 
-  const data =
-    getFormattedCacheTokens(accounts).cache.length === 0
-      ? queries.map((query) => query.data ?? []).flat()
-      : getFormattedCacheTokens(accounts).cache;
+  const data = useMemo(() => {
+    const cached = getFormattedCacheTokens(accounts);
 
-  // Useful to refresh after bridging something
+    if (cached.cache.length === 0) {
+      return queries
+        .filter((query) => query.isSuccess)
+        .map((query) => query.data ?? [])
+        .flat();
+    }
+
+    return cached.cache;
+  }, [queries, accounts, getFormattedCacheTokens]);
+
   useEffect(() => {
-    if (!forceRefresh) {
+    connectedAccounts.forEach((account, index) => {
+      const query = queries[index];
+
+      if (!query?.isSuccess || !account.address) {
+        return;
+      }
+
+      // Only update cache if this address doesn't already have cached data
+      if (!cacheTokens.has(account.address)) {
+        setCacheTokens(
+          account.address,
+          (query.data as ExtendedTokenAmount[]) ?? [],
+        );
+      }
+
+      const { totalValue } = getFormattedCacheTokens([account]);
+      const { date: lastDate } = getLast(account.address);
+
+      if (lastDate && differenceInHours(lastDate, new Date()) < 24) {
+        return;
+      }
+
+      const now = Date.now();
+
+      setLast(account.address, totalValue, now);
+    });
+  }, [
+    queries,
+    connectedAccounts,
+    setCacheTokens,
+    getFormattedCacheTokens,
+    getLast,
+    setLast,
+    cacheTokens,
+  ]);
+
+  useEffect(() => {
+    if (forceRefresh.size === 0) {
       return;
     }
 
-    refetch();
-    setForceRefresh(false);
-  }, [forceRefresh]);
+    connectedAccounts.forEach((account, index) => {
+      if (account.address && forceRefresh.has(account.address)) {
+        queries[index]?.refetch();
+        setForceRefresh(account.address, false);
+      }
+    });
+  }, [forceRefresh, connectedAccounts, queries, setForceRefresh]);
 
   useEffect(() => {
-    if (!accounts) {
-      return;
-    }
-
-    if (
-      arraysEqual(
-        accounts
-          .filter((account) => account.isConnected && account?.address)
-          .map((account) => account.address!),
-        lastAddresses ?? [],
-      )
-    ) {
-      return;
-    }
-
-    refetch();
-  }, [accounts]);
-
-  useEffect(() => {
-    if (hasTrackedSuccess.current || !shouldSendTrackingEvent) {
+    if (hasTrackedSuccess.current || !queriesJustCompleted) {
       return;
     }
 
@@ -108,10 +141,10 @@ export function usePortfolioTokens() {
         [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
       },
     });
-  }, [shouldSendTrackingEvent, trackEvent]);
+  }, [queriesJustCompleted, trackEvent]);
 
   useEffect(() => {
-    if (hasTrackedPortfolioOverview.current || !shouldSendTrackingEvent) {
+    if (hasTrackedPortfolioOverview.current || !queriesJustCompleted) {
       return;
     }
 
@@ -138,7 +171,7 @@ export function usePortfolioTokens() {
       data: trackingData,
     });
   }, [
-    shouldSendTrackingEvent,
+    queriesJustCompleted,
     accounts,
     data,
     getFormattedCacheTokens,
@@ -146,14 +179,37 @@ export function usePortfolioTokens() {
     trackEvent,
   ]);
 
-  // Reset the tracking flag when accounts change
   useEffect(() => {
     hasTrackedSuccess.current = false;
     hasTrackedPortfolioOverview.current = false;
   }, [accounts]);
 
+  const refetch = () => queries.map((query) => query.refetch());
+
+  const queriesByAddress = useMemo(() => {
+    return new Map(
+      connectedAccounts.map((account, index) => {
+        const accountAddress = account.address!;
+        const cachedData = getFormattedCacheTokens([account]);
+
+        return [
+          accountAddress,
+          {
+            refetch: () => queries[index]?.refetch(),
+            isFetching: queries[index]?.isFetching ?? false,
+            isSuccess:
+              !queries[index]?.isFetching &&
+              (queries[index]?.isSuccess ?? false),
+            data: cachedData.cache,
+          },
+        ];
+      }),
+    );
+  }, [connectedAccounts, queries, getFormattedCacheTokens]);
+
   return {
     queries,
+    queriesByAddress,
     isSuccess,
     isFetching,
     refetch,
