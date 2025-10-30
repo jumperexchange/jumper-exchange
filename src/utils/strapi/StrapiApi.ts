@@ -13,7 +13,8 @@ interface GetStrapiBaseUrlProps {
     | 'quests'
     | 'campaigns'
     | 'perks'
-    | 'merkl-rewards';
+    | 'merkl-rewards'
+    | 'announcements';
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -760,6 +761,35 @@ class MerklRewardsStrapiApi extends StrapiApi {
   }
 }
 
+class AnnouncementStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'announcements' });
+    this.addAnnouncementParams();
+  }
+
+  private addAnnouncementParams(): void {
+    // Populate Logo media field
+    this.apiUrl.searchParams.set('populate[0]', 'Logo');
+  }
+
+  sort(order: SortOrder = 'desc'): this {
+    this.apiUrl.searchParams.set('sort[0]', `Priority:${order}`);
+    return this;
+  }
+
+  sortBy(field: string, order: SortOrder = 'desc'): this {
+    this.apiUrl.searchParams.set('sort', `${field}:${order}`);
+    return this;
+  }
+
+  filterByActiveDate(): this {
+    const today = new Date().toISOString().split('T')[0];
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', today);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', today);
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
@@ -771,4 +801,5 @@ export {
   TagStrapiApi,
   PerkStrapiApi,
   MerklRewardsStrapiApi,
+  AnnouncementStrapiApi,
 };

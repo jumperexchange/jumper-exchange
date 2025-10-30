@@ -38,7 +38,9 @@ export default function ScanPage({ lng }: { lng: string }) {
           borderRadius: 12,
           cardBorderRadius: 24,
           buttonBorderRadius: 128,
-        } as Shape,
+          tabBarRadius: 12,
+          inputTextBorderRadius: 12,
+        },
         colorSchemes: {
           light: {
             palette: {
