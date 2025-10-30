@@ -5,7 +5,6 @@ import {
 import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import { FC, useMemo } from 'react';
 import { CustomInformation } from 'src/types/loyaltyPass';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { formatUnits } from 'viem';
 import BadgeWithChain from '../BadgeWithChain';
 import Grid from '@mui/material/Grid';
@@ -21,13 +20,24 @@ import { openInNewTab } from 'src/utils/openInNewTab';
 import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
 import Tooltip from '@mui/material/Tooltip';
 import { capitalizeString } from 'src/utils/capitalizeString';
+import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
+  zapData?: ZapDataResponse | null;
+  isZapDataSuccess: boolean;
+  depositTokenData?: bigint | number;
+  depositTokenDecimals?: bigint | number;
+  isLoadingDepositTokenData: boolean;
 }
 
 export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   customInformation,
+  zapData,
+  isZapDataSuccess,
+  depositTokenData,
+  depositTokenDecimals,
+  isLoadingDepositTokenData,
 }) => {
   const { t } = useTranslation();
   const projectData: ProjectData = useMemo(() => {
@@ -37,14 +47,6 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   const claimingIds = useMemo(() => {
     return customInformation?.claimingIds;
   }, [customInformation?.claimingIds]);
-
-  const {
-    zapData,
-    isSuccess: isZapDataSuccess,
-    depositTokenData,
-    depositTokenDecimals,
-    isLoadingDepositTokenData,
-  } = useEnhancedZapData(projectData);
 
   const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
 
@@ -202,36 +204,33 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
               />
             )}
           </Grid>
-          {hasDeposited && (
-            <Tooltip
-              title={t('tooltips.manageYourPosition', {
-                partnerName: partnerName,
-              })}
-              placement={'top'}
-              enterTouchDelay={0}
-              arrow
-            >
-              <Box sx={{ display: 'inline-block', width: '100%' }}>
-                <Button
-                  fullWidth
-                  variant="transparent"
-                  size="medium"
-                  disabled={!projectData?.integratorPositionLink}
-                  onClick={onClickHandler}
-                  styles={(theme) => ({
-                    background: (theme.vars || theme).palette.alphaLight100
-                      .main,
-                    ...theme.applyStyles('light', {
-                      background: (theme.vars || theme).palette.alphaDark100
-                        .main,
-                    }),
-                  })}
-                >
-                  {t('button.manageYourPosition')}
-                </Button>
-              </Box>
-            </Tooltip>
-          )}
+
+          <Tooltip
+            title={t('tooltips.manageYourPosition', {
+              partnerName: partnerName,
+            })}
+            placement={'top'}
+            enterTouchDelay={0}
+            arrow
+          >
+            <Box sx={{ display: 'inline-block', width: '100%' }}>
+              <Button
+                fullWidth
+                variant="transparent"
+                size="medium"
+                disabled={!projectData?.integratorPositionLink || !hasDeposited}
+                onClick={onClickHandler}
+                styles={(theme) => ({
+                  background: (theme.vars || theme).palette.alphaLight100.main,
+                  ...theme.applyStyles('light', {
+                    background: (theme.vars || theme).palette.alphaDark100.main,
+                  }),
+                })}
+              >
+                {t('button.manageYourPosition')}
+              </Button>
+            </Box>
+          </Tooltip>
         </DepositPoolCardContainer>
       </SectionCardContainer>
     </>

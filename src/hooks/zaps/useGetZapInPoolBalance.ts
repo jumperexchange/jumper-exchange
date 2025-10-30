@@ -19,7 +19,7 @@ export const useGetZapInPoolBalance = (
             type: 'function',
           },
         ] as const,
-        address: walletAddress,
+        address: tokenAddress,
         chainId,
         functionName: 'balanceOf',
         args: [walletAddress],

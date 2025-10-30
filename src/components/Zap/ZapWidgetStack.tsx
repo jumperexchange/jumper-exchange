@@ -45,6 +45,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   const {
     zapData,
     depositTokenData,
+    depositTokenDecimals,
     isLoadingDepositTokenData,
     isSuccess: isZapDataSuccess,
     refetchDepositToken,
@@ -79,7 +80,14 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
         }}
       >
         <SweepTokensCard customInformation={customInformation} />
-        <DepositPoolCard customInformation={customInformation} />
+        <DepositPoolCard
+          customInformation={customInformation}
+          zapData={zapData}
+          isZapDataSuccess={isZapDataSuccess}
+          depositTokenData={depositTokenData}
+          depositTokenDecimals={depositTokenDecimals}
+          isLoadingDepositTokenData={isLoadingDepositTokenData}
+        />
         <Box
           id={MISSION_WIDGET_ELEMENT_ID}
           data-testid="zap-widget-container"
