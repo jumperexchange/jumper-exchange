@@ -89,13 +89,28 @@ export function Widget({
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
   const formParametersCtx = useMemo(() => {
-    const params: Record<string, number | string | undefined> = {
-      sourceChain:
-        configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
-      sourceToken:
-        configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
-      destinationChain: configTheme?.toChain ?? toChain,
-      destinationToken: configTheme?.toToken ?? toToken,
+    const params: Record<
+      string,
+      | number
+      | string
+      | { chainId: string | number | undefined }
+      | { tokenAddress: string | number | undefined }
+      | undefined
+    > = {
+      sourceChain: {
+        chainId:
+          configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
+      },
+      sourceToken: {
+        tokenAddress:
+          configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
+      },
+      destinationChain: {
+        chainId: configTheme?.toChain ?? toChain,
+      },
+      destinationToken: {
+        tokenAddress: configTheme?.toToken ?? toToken,
+      },
       fromAmount: fromAmount,
     };
 
