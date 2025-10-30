@@ -189,8 +189,14 @@ export const BaseSkeleton = styled(Skeleton, {
   borderRadius: theme.shape.buttonBorderRadius,
   backgroundColor:
     color === 'default'
-      ? (theme.vars || theme).palette.surface2.main
+      ? (theme.vars || theme).palette.surface1.main
       : (theme.vars || theme).palette.grey[100],
+  ...theme.applyStyles('light', {
+    backgroundColor:
+      color === 'default'
+        ? (theme.vars || theme).palette.surface2.main
+        : (theme.vars || theme).palette.grey[100],
+  }),
   variants: [
     {
       props: ({ size }) => size === BadgeSize.SM,

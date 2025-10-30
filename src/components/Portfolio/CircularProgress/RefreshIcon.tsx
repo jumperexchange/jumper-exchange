@@ -53,6 +53,7 @@ const RefreshIcon: React.FC<
         boxShadow: theme.shadows[2],
         color: (theme.vars || theme).palette.buttonLightAction,
         backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+        padding: theme.spacing(0.75),
       })}
     >
       <Tooltip

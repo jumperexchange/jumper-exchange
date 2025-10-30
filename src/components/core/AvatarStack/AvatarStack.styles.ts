@@ -133,7 +133,10 @@ interface AvatarSkeletonProps extends SkeletonProps {
 export const AvatarSkeleton = styled(Skeleton, {
   shouldForwardProp: (prop) => prop !== 'size',
 })<AvatarSkeletonProps>(({ theme, size = AvatarSize.MD }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+  }),
   ...getAvatarSize(size),
 }));
 

@@ -5,6 +5,4 @@ export const CircularBox = styled(Box)(({ theme }) => ({
   display: 'grid',
   position: 'relative',
   placeItems: 'center',
-  width: 24,
-  height: 24,
 }));

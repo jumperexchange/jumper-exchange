@@ -65,6 +65,9 @@ export const HeroEarnCardFooterContentContainer = styled(Stack)(
 );
 
 export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+  }),
   transform: 'none',
 }));

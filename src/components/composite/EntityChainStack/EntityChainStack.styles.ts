@@ -40,7 +40,10 @@ export const EntityChainDescription = styled(Typography)(({ theme }) => ({
 }));
 
 export const EntityChainTypographySkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  ...theme.applyStyles('light', {
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+  }),
   transform: 'none',
   width: '100%',
   height: '100%',
