@@ -8,7 +8,7 @@
     "links": {
       "exchange": "Conversão",
       "missions": "Missões",
-      "earn": "",
+      "earn": "Ganhe",
       "dashboard": "Painel de controle",
       "refuel": "Gás",
       "buy": "Comprar",
@@ -38,7 +38,7 @@
       "support": "Suporte",
       "resources": "Recursos",
       "profile": "Perfil Jumper",
-      "privacyPolicy": ""
+      "privacyPolicy": "Política de Privacidade"
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -264,53 +264,53 @@
     "deposited": "O token que você depositou neste mercado.",
     "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
     "lockupPeriod": "Uma vez depositada, sua posição estará sujeita a um período de bloqueio {{formattedLockupPeriod}} antes que você possa sacar os fundos.",
-    "manageYourPosition": "",
-    "assets_one": "",
-    "assets_other_one": "",
-    "assets_other": "",
-    "chains_one": "",
-    "chains_other": "",
-    "protocol": "",
-    "noPositionsToManage": ""
+    "manageYourPosition": "Você também pode gerenciar seus fundos (retirada, verificar PNL) na interface do usuário {{partnerName}} clicando neste botão",
+    "assets_one": "O ativo do qual você ganhará",
+    "assets_other_one": "O ativo do qual você ganhará",
+    "assets_other": "O ativo do qual você ganhará",
+    "chains_one": "A cadeia da qual você ganhará",
+    "chains_other": "As cadeias das quais você ganhará",
+    "protocol": "O protocolo do qual você ganhará",
+    "noPositionsToManage": "Você não tem nenhuma posição para gerenciar"
   },
   "labels": {
-    "apy": "",
-    "lockupPeriod": "",
-    "tvl": "",
-    "assets_one": "",
-    "assets_other_one": "",
-    "assets_other": "",
-    "chains_one": "",
-    "chains_other": "",
-    "protocol": "",
-    "overview": ""
+    "apy": "APY",
+    "lockupPeriod": "Período de bloqueio",
+    "tvl": "TVL",
+    "assets_one": "Ativo",
+    "assets_other_one": "Ativo",
+    "assets_other": "Ativos",
+    "chains_one": "Rede",
+    "chains_other": "Redes",
+    "protocol": "Protocolo",
+    "overview": "Visão geral"
   },
   "earn": {
     "top": {
-      "useYourSpare": "",
-      "maximizeYourRevenue": "",
-      "makeTheJump": "",
-      "earnUpTo": ""
+      "useYourSpare": "Use seu saldo <asset/> com <protocol/> e ganhe até <apy/> APY",
+      "maximizeYourRevenue": "Maximize sua receita de <tag/> depositando em <protocol/> <token/> Pool",
+      "makeTheJump": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> em <protocol/>, pule dentro!",
+      "earnUpTo": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> por ano se for colocado em <protocol/>"
     },
     "copy": {
-      "forYouBasedOnActivity": "",
-      "forYouDefault": ""
+      "forYouBasedOnActivity": "Mercado escolhido a dedo em {{totalMarkets}}+ baseado na atividade da sua conta",
+      "forYouDefault": "Explore formas precisas e abrangentes de colocar seus ativos para trabalhar em {{totalMarkets}}+ mercados"
     },
     "sorting": {
-      "sortBy": "",
-      "apy": "",
-      "tvl": ""
+      "sortBy": "Ordenar por",
+      "apy": "APY",
+      "tvl": "TVL"
     },
     "filter": {
-      "clear": "",
-      "selected": "",
-      "search": ""
+      "clear": "Limpar",
+      "selected": "{{count}} selecionado",
+      "search": "Buscar {{filterBy}}..."
     },
     "relatedMarkets": {
-      "title": ""
+      "title": "Mercados relacionados"
     },
     "overview": {
-      "updated": ""
+      "updated": "Atualizado há {{time}} atrás"
     }
   },
   "widget": {
@@ -323,25 +323,25 @@
     },
     "sweepTokensCard": {
       "button": {
-        "claim": "",
-        "switchChain": "",
-        "waitingForTransaction": "",
-        "transactionInProgress": "",
-        "viewTransaction": ""
+        "claim": "Reivindicar fundos devolvidos",
+        "switchChain": "Trocando de cadeia...",
+        "waitingForTransaction": "Aguardando pela transação...",
+        "transactionInProgress": "Transação em andamento...",
+        "viewTransaction": "Ver transação"
       },
       "error": {
-        "title": "",
-        "description": ""
+        "title": "Reivindicar fundos devolvidos",
+        "description": "Uma transação anterior falhou e seus fundos agora estão disponíveis para serem devolvidos para você."
       },
       "success": {
-        "title": "",
-        "description": ""
+        "title": "Fundos devolvidos com sucesso",
+        "description": "Seus fundos foram devolvidos e agora estão disponíveis para serem usados na sua carteira."
       }
     },
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
-      "depositSuccess": "",
+      "depositSuccess": "Você será capaz de ver sua posição em alguns segundos ou alternativamente clicando em <bold>Gerenciar sua posição</bold> que redireciona para a interface do usuário {{partnerName}}",
       "tabs": {
         "deposit": "Depositar",
         "withdraw": "Retirar"
@@ -360,10 +360,71 @@
     }
   },
   "links": {
-    "discover": ""
+    "discover": "Descobrir {{name}}"
   },
   "buttons": {
     "depositButtonLabel": "Depósito rápido",
-    "managePositionsButtonLabel": ""
+    "managePositionsButtonLabel": "Gerenciar Posições"
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": "Reivindicar vantagem"
+      },
+      "claimedPerk": {
+        "title": "Vantagem reivindicada!",
+        "description": "Você verificou esta vantagem com o seguinte endereço",
+        "nextSteps": "Próximos passos",
+        "howToUsePerk": "Como usar sua vantagem ?",
+        "howToUsePerkDescription": "Basta adicionar o código que fornecemos na finalização de compra do site Nansen."
+      },
+      "signatureFailed": {
+        "title": "Necessário assinatura",
+        "description": "Você precisa assinar a transação para confirmar a propriedade do endereço da carteira.",
+        "tryAgain": "Tente novamente"
+      },
+      "validationFailed": {
+        "title": "Falha na validação",
+        "description": "Por favor, verifique os campos e tente novamente.",
+        "close": "Fechar"
+      },
+      "unsupportedWallet": {
+        "title": "Carteira incompatível",
+        "description": "Nós não atendemos este tipo de carteira. Por favor, use uma carteira diferente para completar esta missão.",
+        "switchWallet": "Mudar de carteira"
+      },
+      "unknown": {
+        "title": "Erro desconhecido",
+        "description": "Ocorreu um erro desconhecido. Por favor, tente novamente.",
+        "tryAgain": "Tente novamente"
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "Insira o nome de usuário",
+            "description_one": "{{position}} primeiro você deve compartilhar seu nome de usuário do {{usernameType}}.",
+            "description_other": "{{position}} você deve compartilhar seu nome de usuário do {{usernameType}}."
+          },
+          "email": {
+            "title": "Insira o e-mail",
+            "description_one": "{{position}} você deve primeiro compartilhar seu endereço de e-mail.",
+            "description_other": "{{position}} você deve compartilhar seu endereço de e-mail."
+          },
+          "wallet": {
+            "title": "Verificar carteira",
+            "description_one": "{{position}} você deve assinar uma mensagem para verificar a propriedade do endereço de carteira conectado abaixo.",
+            "description_other": "{{position}} você deve assinar uma mensagem para verificar a propriedade do endereço de carteira conectado abaixo."
+          },
+          "position": {
+            "first": "Para reivindicar sua vantagem",
+            "next": "Próximo",
+            "finally": "Finalmente"
+          }
+        },
+        "continue": "Continuar",
+        "submit": "Verificar carteira e reivindicar vantagem",
+        "submitting": "Aguardando verificação"
+      }
+    }
   }
 }
