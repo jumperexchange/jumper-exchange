@@ -130,7 +130,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-103d8ek-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -310,7 +310,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -437,7 +437,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-103d8ek-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -617,7 +617,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                     >
                       <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                       />
                     </div>
                   </div>
@@ -649,13 +649,13 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
         class="MuiStack-root css-101nimo-MuiStack-root"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1njndas-MuiSkeleton-root"
           color="default"
           style="width: 96px;"
         />
       </div>
       <span
-        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ewrmch-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9ji6yx-MuiSkeleton-root"
         style="width: 48px; height: 48px;"
       />
     </div>
@@ -666,24 +666,24 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
         class="MuiBox-root css-cmx6on"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
         />
         <div
           class="MuiBox-root css-fxacz8"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
         </div>
       </div>
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1131gtb-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-179n321-MuiSkeleton-root"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1131gtb-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-179n321-MuiSkeleton-root"
       />
     </div>
   </div>
@@ -789,7 +789,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-103d8ek-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -969,7 +969,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -1118,7 +1118,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lqgmaj-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-103d8ek-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1298,7 +1298,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -1362,7 +1362,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1488,7 +1488,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
               >
                 <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -1581,7 +1581,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -1707,7 +1707,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1738,16 +1738,16 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
         class="MuiBox-root css-cmx6on"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2rnxpj-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-px6suj-MuiSkeleton-root"
         />
         <div
           class="MuiBox-root css-fxacz8"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
         </div>
       </div>
@@ -1755,27 +1755,27 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
         class="MuiStack-root css-1x8l63s-MuiStack-root"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d5n0n7-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-ifq5l5-MuiSkeleton-root"
           color="default"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d5n0n7-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-ifq5l5-MuiSkeleton-root"
           color="default"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d5n0n7-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-ifq5l5-MuiSkeleton-root"
           color="default"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d5n0n7-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-ifq5l5-MuiSkeleton-root"
           color="default"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d5n0n7-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-ifq5l5-MuiSkeleton-root"
           color="default"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ewrmch-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9ji6yx-MuiSkeleton-root"
           style="width: 40px; height: 40px;"
         />
       </div>
@@ -1829,7 +1829,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1924,7 +1924,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
               >
                 <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -2013,7 +2013,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                 >
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -2139,7 +2139,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
               >
                 <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                 />
               </div>
             </div>
@@ -2338,7 +2338,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                         class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                       >
                         <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                         />
                       </div>
                     </div>
@@ -2356,7 +2356,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1njl4kh-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -2418,7 +2418,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -2500,7 +2500,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1njl4kh-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -2706,7 +2706,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                         class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                       >
                         <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                         />
                       </div>
                     </div>
@@ -2724,7 +2724,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1njl4kh-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -2786,7 +2786,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-mop73e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-catbul-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -2868,7 +2868,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-7bgxp8-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1njl4kh-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -2902,22 +2902,22 @@ exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
         class="MuiBox-root css-ynzgks"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vnwm1m-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1ez1nak-MuiSkeleton-root"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1njndas-MuiSkeleton-root"
           color="default"
           style="width: 96px;"
         />
       </div>
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cghl3z-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-13ma76x-MuiSkeleton-root"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cghl3z-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-13ma76x-MuiSkeleton-root"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cghl3z-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-13ma76x-MuiSkeleton-root"
       />
     </div>
   </div>

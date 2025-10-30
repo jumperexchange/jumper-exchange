@@ -106,7 +106,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -245,7 +245,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                     >
                       <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                       />
                     </div>
                   </div>
@@ -284,7 +284,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
       class="MuiStack-root css-imab1l-MuiStack-root"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1njndas-MuiSkeleton-root"
         color="default"
         style="width: 84px;"
       />
@@ -293,7 +293,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
       class="MuiBox-root css-1e1l0gs"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-414zdl-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-yyhee1-MuiSkeleton-root"
       />
     </div>
     <div
@@ -306,11 +306,11 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
           class="MuiBox-root css-cmx6on"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2rnxpj-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-px6suj-MuiSkeleton-root"
           />
         </div>
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-2zon0b-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-q6140b-MuiSkeleton-root"
         />
       </div>
     </div>
@@ -424,7 +424,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ddjmgs-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-nhxog0-MuiSkeleton-root"
                     />
                   </div>
                 </div>
