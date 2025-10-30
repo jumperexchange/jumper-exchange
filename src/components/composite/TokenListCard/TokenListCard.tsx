@@ -49,7 +49,6 @@ export const TokenListCard: FC<TokenListCardProps> = ({
   const handleExpandedTokenClick = (token: MinimalToken) => {
     onSelect?.(token);
   };
-  console.log(portfolioToken);
 
   const renderTokenStack = (
     token: MinimalToken,
