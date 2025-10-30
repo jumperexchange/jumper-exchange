@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { render } from '../../../../../vitest.setup';
 import { LineChart } from './LineChart';
-import { Children, cloneElement } from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import { ResponsiveContainerProps } from 'recharts';
 
 vi.mock('recharts', async (importOriginal) => {
@@ -17,7 +17,9 @@ vi.mock('recharts', async (importOriginal) => {
     }: ResponsiveContainerProps) => (
       <div {...rest}>
         {Children.map(children, (child) =>
-          cloneElement(child, { width: 100, height: 100 } as any),
+          isValidElement(child)
+            ? cloneElement(child, { width: 100, height: 100 } as any)
+            : null,
         )}
       </div>
     ),
