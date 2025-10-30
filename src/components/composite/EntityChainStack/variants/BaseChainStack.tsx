@@ -3,10 +3,7 @@ import { ChainStack } from '../../ChainStack/ChainStack';
 import {
   ChainStackWrapper,
   EntityChainContainer,
-  EntityChainDescription,
-  EntityChainInfoContainer,
   EntityChainStackWrapper,
-  EntityChainTitle,
 } from '../EntityChainStack.styles';
 import { BaseChainStackSkeleton } from './BaseChainStackSkeleton';
 import {
@@ -14,8 +11,12 @@ import {
   AvatarStackDirection,
 } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
-import { BaseProps } from '../EntityChainStack.types';
+import {
+  BaseProps,
+  EntityChainStackChainsPlacement,
+} from '../EntityChainStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
+import { TitleWithHint } from '../../TitleWithHint/TitleWithHint';
 
 interface BaseChainStackProps extends BaseProps {
   mainStack: ReactNode;
@@ -32,6 +33,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
   chainKeys,
   chainsSize = AvatarSize.XS,
   chainsLimit,
+  chainsPlacement = EntityChainStackChainsPlacement.Overlay,
   isLoading = false,
   spacing: spacingProp = {},
   layout: layoutProp = {},
@@ -68,32 +70,38 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
     ...contentProp,
   };
 
+  const chainsStack = (
+    <ChainStack
+      chainIds={chainIds}
+      size={chainsSize}
+      limit={chainsLimit}
+      spacing={spacing.chains}
+      direction={layout.direction}
+    />
+  );
+
   return (
     <EntityChainContainer gap={spacing.containerGap} data-testid={dataTestId}>
       <EntityChainStackWrapper>
         {mainStack}
-        <ChainStackWrapper>
-          <ChainStack
-            chainIds={chainIds}
-            size={chainsSize}
-            limit={chainsLimit}
-            spacing={spacing.chains}
-            direction={layout.direction}
-          />
-        </ChainStackWrapper>
+        {chainsPlacement === EntityChainStackChainsPlacement.Overlay && (
+          <ChainStackWrapper>{chainsStack}</ChainStackWrapper>
+        )}
       </EntityChainStackWrapper>
       {isContentVisible && (
-        <EntityChainInfoContainer gap={spacing.infoContainerGap}>
-          <EntityChainTitle variant={content.titleVariant}>
-            {content.title}
-          </EntityChainTitle>
-          <EntityChainDescription
-            variant={content.descriptionVariant}
-            data-testid="earn-card-chain-name"
-          >
-            {chainKeys.map(capitalizeString).join(' ')}
-          </EntityChainDescription>
-        </EntityChainInfoContainer>
+        <TitleWithHint
+          gap={spacing.infoContainerGap}
+          titleVariant={content.titleVariant}
+          title={content.title}
+          hintVariant={content.descriptionVariant}
+          hint={chainKeys.map(capitalizeString).join(' ')}
+          titleDataTestId="entity-chain-stack-title"
+          hintDataTestId="entity-chain-stack-chain-name"
+        >
+          {chainsPlacement === EntityChainStackChainsPlacement.Overlay
+            ? null
+            : chainsStack}
+        </TitleWithHint>
       )}
     </EntityChainContainer>
   );
