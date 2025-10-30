@@ -217,19 +217,19 @@ exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`]
       class="MuiBox-root css-pqmg6p"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1w43a1r-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1ohqa4v-MuiSkeleton-root"
       />
       <div
         class="MuiBox-root css-1a7ncva"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-96fut0-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vxtztc-MuiSkeleton-root"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-96fut0-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vxtztc-MuiSkeleton-root"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-ey5kg8-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1c9d3f5-MuiSkeleton-root"
         />
       </div>
     </div>

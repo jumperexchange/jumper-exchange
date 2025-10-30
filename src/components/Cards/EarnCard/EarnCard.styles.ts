@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import InfoIcon from '@mui/icons-material/Info';
-import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
 interface EarnCardContainerProps {
   hasLink?: boolean;
@@ -87,10 +87,7 @@ export const CompactEarnCardItemValueAppend = styled(Typography)(
   }),
 );
 
-export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  transform: 'none',
-}));
+export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));
 
 export const ListItemEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
