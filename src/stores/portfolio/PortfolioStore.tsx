@@ -41,11 +41,10 @@ function cacheTokenPartialize({
 }
 
 const defaultSettings = {
-  lastAddresses: undefined,
-  lastTotalValue: null,
-  lastDate: null,
-  forceRefresh: false,
-  cacheTokens: new Map(),
+  lastTotalValue: new Map<string, number>(),
+  lastDate: new Map<string, number>(),
+  forceRefresh: new Map<string, boolean>(),
+  cacheTokens: new Map<string, CacheToken[]>(),
 };
 
 // Always return a new map to avoid mutation
@@ -57,28 +56,55 @@ export function getOrCreateMap<T>(
 
 /*--  Use Zustand  --*/
 export const usePortfolioStore = createWithEqualityFn(
-  persist(
+  persist<PortfolioState>(
     (set, get) => ({
       ...defaultSettings,
 
-      setLast(value: number, addresses: string[]) {
+      setLast(address: string, value: number, date: number) {
+        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
+        const lastDate = getOrCreateMap(get().lastDate);
+        lastTotalValue.set(address, value);
+        lastDate.set(address, date);
         set({
-          lastTotalValue: value,
-          lastAddresses: addresses,
-          lastDate: Date.now(),
+          lastTotalValue,
+          lastDate,
         });
       },
-      setForceRefresh(state: boolean) {
+      getLast(address: string) {
+        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
+        const lastDate = getOrCreateMap(get().lastDate);
+        return {
+          value: lastTotalValue.get(address) ?? 0,
+          date: lastDate.get(address) ?? 0,
+        };
+      },
+      setForceRefresh(address: string, state: boolean) {
+        const forceRefresh = getOrCreateMap(get().forceRefresh);
+        if (state) {
+          forceRefresh.set(address, true);
+        } else {
+          forceRefresh.delete(address);
+        }
         set({
-          forceRefresh: state,
+          forceRefresh,
         });
       },
-      deleteCacheTokenAddress(account: string) {
+      deleteCacheTokenAddress(address: string) {
         const cacheTokens = getOrCreateMap(get().cacheTokens);
-        cacheTokens.delete(account);
+        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
+        const lastDate = getOrCreateMap(get().lastDate);
+        const forceRefresh = getOrCreateMap(get().forceRefresh);
+
+        cacheTokens.delete(address);
+        lastTotalValue.delete(address);
+        lastDate.delete(address);
+        forceRefresh.delete(address);
 
         set({
           cacheTokens,
+          lastTotalValue,
+          lastDate,
+          forceRefresh,
         });
       },
       getFormattedCacheTokens(accounts?: Account[]) {
@@ -92,7 +118,7 @@ export const usePortfolioStore = createWithEqualityFn(
             .map((account) => cacheTokens.get(account) ?? []);
         }
 
-        let totalValue = accountsValues
+        const totalValue = accountsValues
           .map((account) => {
             return account.reduce((sum, item) => {
               return sum + (item.cumulatedTotalUSD ?? 0);
@@ -117,38 +143,50 @@ export const usePortfolioStore = createWithEqualityFn(
           cacheTokens,
         });
       },
-      setLastTotalValue: (portfolioLastValue: number) => {
-        set({
-          lastTotalValue: portfolioLastValue,
-        });
-      },
-      setLastAddresses: (lastAddresses: string[]) => {
-        set({
-          lastAddresses: lastAddresses,
-        });
-      },
     }),
     {
       name: 'jumper-portfolio', // name of the item in the storage (must be unique)
-      version: 0,
+      version: 1,
       storage: createJSONStorage(() => localStorage),
       partialize: (state: PortfolioState) => {
-        const { cacheTokens, ...rest } = state;
-        if (cacheTokens.size > 0) {
-          return {
-            ...rest,
-            cacheTokens: Array.from(cacheTokens.entries()).reduce(
-              (acc, [account, tokens]) => {
-                acc[account] = tokens;
-                return acc;
-              },
-              {} as { [key: string]: CacheToken[] },
-            ),
-          };
-        }
-        return rest;
+        const { cacheTokens, lastTotalValue, lastDate, forceRefresh } = state;
+        const serialized: any = {};
+
+        serialized.cacheTokens = Array.from(cacheTokens.entries()).reduce(
+          (acc, [account, tokens]) => {
+            acc[account] = tokens;
+            return acc;
+          },
+          {} as Record<string, CacheToken[]>,
+        );
+
+        serialized.lastTotalValue = Array.from(lastTotalValue.entries()).reduce(
+          (acc, [address, value]) => {
+            acc[address] = value;
+            return acc;
+          },
+          {} as Record<string, number>,
+        );
+
+        serialized.lastDate = Array.from(lastDate.entries()).reduce(
+          (acc, [address, date]) => {
+            acc[address] = date;
+            return acc;
+          },
+          {} as Record<string, number>,
+        );
+
+        serialized.forceRefresh = Array.from(forceRefresh.entries()).reduce(
+          (acc, [address, value]) => {
+            acc[address] = value;
+            return acc;
+          },
+          {} as Record<string, boolean>,
+        );
+
+        return serialized;
       },
     },
-  ) as unknown as StateCreator<PortfolioState, [], [], PortfolioState>,
+  ),
   shallow,
 );

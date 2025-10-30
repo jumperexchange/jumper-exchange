@@ -22,10 +22,9 @@ export type CacheToken = Pick<
 };
 
 export interface PortfolioProps {
-  lastTotalValue: number | null;
-  lastAddresses?: string[];
-  lastDate: number | null;
-  forceRefresh: boolean;
+  lastTotalValue: Map<string, number>;
+  lastDate: Map<string, number>;
+  forceRefresh: Map<string, boolean>;
   cacheTokens: Map<string, CacheToken[]>;
 }
 export interface PortfolioState extends PortfolioProps {
@@ -33,10 +32,9 @@ export interface PortfolioState extends PortfolioProps {
     totalValue: number;
     cache: CacheToken[];
   };
-  setLastTotalValue: (portfolioLastValue: number) => void;
-  setLastAddresses: (lastAddresses: string[]) => void;
-  setLast: (portfolioLastValue: number, lastAddresses: string[]) => void;
-  setForceRefresh: (state: boolean) => void;
+  getLast: (address: string) => { value: number; date: number };
+  setLast: (address: string, value: number, date: number) => void;
+  setForceRefresh: (address: string, state: boolean) => void;
   setCacheTokens: (account: string, state: ExtendedTokenAmount[]) => void;
   deleteCacheTokenAddress: (account: string) => void;
 }

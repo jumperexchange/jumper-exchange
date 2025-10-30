@@ -51,6 +51,7 @@
       "connectAnotherWallet": "Connect another wallet",
       "refreshBalances": "Refresh balances",
       "totalBalance": "Total balance",
+      "walletBalance": "Wallet balance",
       "totalBalanceTooltip": "Your total balance may not always be accurate due to potential indexing issues. We're on it!",
       "totalBalanceRefresh": "Click here to restart the indexing of your tokens now.",
       "numberOfChains": "{{numberOfChains}} chains"
