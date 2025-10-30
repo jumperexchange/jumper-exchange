@@ -6,7 +6,6 @@ import { useMainLinks } from '../hooks';
 import { LabelButton } from '../components/Buttons/LabelButton';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import { LayoutVariantProps } from './Layout.types';
-import { AppPaths } from '@/const/urls';
 
 export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();

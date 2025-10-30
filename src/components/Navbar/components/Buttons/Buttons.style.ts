@@ -133,8 +133,18 @@ export const NavbarMenuToggleButton = styled(ButtonSecondary)<ButtonProps>(({
 
 export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) => ({
   fontSize: '24px',
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   ...theme.applyStyles('light', {
-    color: theme.palette.black.main,
+    color: (theme.vars || theme).palette.black.main,
   }),
+}));
+
+export const LevelIconBox = styled(Box)(({ theme }) => ({
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  backgroundColor: (theme.vars || theme).palette.accent1.main,
+  color: (theme.vars || theme).palette.white.main,
+  alignContent: 'center',
+  justifySelf: 'center',
 }));
