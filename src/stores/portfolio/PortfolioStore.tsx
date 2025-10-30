@@ -47,13 +47,6 @@ const defaultSettings = {
   cacheTokens: new Map<string, CacheToken[]>(),
 };
 
-// Always return a new map to avoid mutation
-export function getOrCreateMap<T>(
-  data: Map<string, T> | { [key: string]: T },
-): Map<string, T> {
-  return new Map(data instanceof Map ? data : Object.entries(data));
-}
-
 /*--  Use Zustand  --*/
 export const usePortfolioStore = createWithEqualityFn(
   persist<PortfolioState>(
@@ -61,8 +54,8 @@ export const usePortfolioStore = createWithEqualityFn(
       ...defaultSettings,
 
       setLast(address: string, value: number, date: number) {
-        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
-        const lastDate = getOrCreateMap(get().lastDate);
+        const lastTotalValue = get().lastTotalValue;
+        const lastDate = get().lastDate;
         lastTotalValue.set(address, value);
         lastDate.set(address, date);
         set({
@@ -71,15 +64,15 @@ export const usePortfolioStore = createWithEqualityFn(
         });
       },
       getLast(address: string) {
-        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
-        const lastDate = getOrCreateMap(get().lastDate);
+        const lastTotalValue = get().lastTotalValue;
+        const lastDate = get().lastDate;
         return {
           value: lastTotalValue.get(address) ?? 0,
           date: lastDate.get(address) ?? 0,
         };
       },
       setForceRefresh(address: string, state: boolean) {
-        const forceRefresh = getOrCreateMap(get().forceRefresh);
+        const forceRefresh = get().forceRefresh;
         if (state) {
           forceRefresh.set(address, true);
         } else {
@@ -90,10 +83,10 @@ export const usePortfolioStore = createWithEqualityFn(
         });
       },
       deleteCacheTokenAddress(address: string) {
-        const cacheTokens = getOrCreateMap(get().cacheTokens);
-        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
-        const lastDate = getOrCreateMap(get().lastDate);
-        const forceRefresh = getOrCreateMap(get().forceRefresh);
+        const cacheTokens = get().cacheTokens;
+        const lastTotalValue = get().lastTotalValue;
+        const lastDate = get().lastDate;
+        const forceRefresh = get().forceRefresh;
 
         cacheTokens.delete(address);
         lastTotalValue.delete(address);
@@ -108,7 +101,7 @@ export const usePortfolioStore = createWithEqualityFn(
         });
       },
       getFormattedCacheTokens(accounts?: Account[]) {
-        const cacheTokens = getOrCreateMap(get().cacheTokens);
+        const cacheTokens = get().cacheTokens;
         let accountsValues = Array.from(cacheTokens.values());
 
         if (accounts) {
@@ -136,7 +129,7 @@ export const usePortfolioStore = createWithEqualityFn(
         };
       },
       setCacheTokens(account: string, tokens: ExtendedTokenAmount[]) {
-        const cacheTokens = getOrCreateMap(get().cacheTokens);
+        const cacheTokens = get().cacheTokens;
         cacheTokens.set(account, tokens.map(cacheTokenPartialize));
 
         set({
@@ -148,6 +141,18 @@ export const usePortfolioStore = createWithEqualityFn(
       name: 'jumper-portfolio', // name of the item in the storage (must be unique)
       version: 1,
       storage: createJSONStorage(() => localStorage),
+      migrate: async (state: any, version: number) => {
+        if (version === 0) {
+          return {
+            cacheTokens: new Map<string, CacheToken[]>(),
+            lastTotalValue: new Map<string, number>(),
+            lastDate: new Map<string, number>(),
+            forceRefresh: new Map<string, boolean>(),
+          };
+        }
+
+        return state;
+      },
       partialize: (state: PortfolioState) => {
         const { cacheTokens, lastTotalValue, lastDate, forceRefresh } = state;
         const serialized: any = {};
@@ -185,6 +190,15 @@ export const usePortfolioStore = createWithEqualityFn(
         );
 
         return serialized;
+      },
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        state.cacheTokens = new Map(Object.entries(state.cacheTokens || {}));
+        state.lastTotalValue = new Map(
+          Object.entries(state.lastTotalValue || {}),
+        );
+        state.lastDate = new Map(Object.entries(state.lastDate || {}));
+        state.forceRefresh = new Map(Object.entries(state.forceRefresh || {}));
       },
     },
   ),
