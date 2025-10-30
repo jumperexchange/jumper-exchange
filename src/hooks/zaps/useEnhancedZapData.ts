@@ -1,69 +1,25 @@
 import { useMemo } from 'react';
 import { ProjectData } from 'src/types/questDetails';
-import { useReadContracts } from 'wagmi';
 import { useZaps } from '../useZaps';
 import { useAccount } from '@lifi/wallet-management';
 import { Hex } from 'viem';
+import { useGetZapInPoolBalance } from './useGetZapInPoolBalance';
 
 export const useEnhancedZapData = (projectData: ProjectData) => {
   const { data, isSuccess } = useZaps(projectData);
-
-  const zapData = data?.data;
-
   const { account } = useAccount();
 
-  const contractsConfig = useMemo(() => {
-    return [
-      {
-        abi: [
-          {
-            inputs: [{ name: 'owner', type: 'address' }],
-            name: 'balanceOf',
-            outputs: [{ name: '', type: 'uint256' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ] as const,
-        address: projectData.address as Hex,
-        chainId: projectData.chainId,
-        functionName: 'balanceOf',
-        args: [account.address as Hex],
-      },
-      {
-        abi: [
-          {
-            inputs: [],
-            name: 'decimals',
-            outputs: [{ name: '', type: 'uint8' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ] as const,
-        address: (projectData.tokenAddress || projectData.address) as Hex,
-        chainId: projectData.chainId,
-        functionName: 'decimals',
-      },
-    ];
-  }, [
-    projectData.address,
-    projectData.tokenAddress,
-    projectData.chainId,
-    account.address,
-  ]);
-
+  const zapData = data?.data;
   const {
-    data: [
-      { result: depositTokenData } = {},
-      { result: depositTokenDecimals } = {},
-    ] = [],
-    isLoading: isLoadingDepositTokenData,
-    refetch: refetchDepositToken,
-  } = useReadContracts({
-    contracts: contractsConfig,
-    query: {
-      enabled: !!account.address,
-    },
-  });
+    depositTokenData,
+    depositTokenDecimals,
+    isLoadingDepositTokenData,
+    refetchDepositToken,
+  } = useGetZapInPoolBalance(
+    account.address as Hex,
+    (projectData.tokenAddress as Hex) || (projectData.address as Hex),
+    projectData.chainId,
+  );
 
   return {
     zapData,

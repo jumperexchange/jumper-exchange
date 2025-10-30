@@ -4,6 +4,7 @@ import type { PropsWithChildren } from 'react';
 import { isEarnFeatureEnabled } from 'src/app/lib/getFeatureFlag';
 import { PageContainer } from 'src/components/Containers/PageContainer';
 import { Layout } from 'src/Layout';
+import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider';
 
 export const fetchCache = 'default-cache';
 
@@ -20,6 +21,7 @@ export default async function EarnLayout({ children }: PropsWithChildren) {
 
   return (
     <Layout>
+      <FetchInterceptorProvider />
       <PageContainer>{children}</PageContainer>
     </Layout>
   );
