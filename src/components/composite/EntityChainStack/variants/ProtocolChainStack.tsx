@@ -22,6 +22,7 @@ export const ProtocolChainStack: FC<ProtocolChainStackProps> = (props) => {
       size={props.protocolSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}
+      limit={props.protocolLimit}
     />
   );
 

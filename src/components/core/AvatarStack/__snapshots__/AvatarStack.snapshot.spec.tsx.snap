@@ -3,7 +3,7 @@
 exports[`AvatarStack snapshot > matches snapshot 1`] = `
 <div>
   <div
-    class="MuiStack-root css-1c8be61-MuiStack-root"
+    class="MuiStack-root css-5s31b2-MuiStack-root"
   >
     <div
       class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -43,7 +43,7 @@ exports[`AvatarStack snapshot > matches snapshot 1`] = `
 exports[`AvatarStack snapshot > matches snapshot with limit 1`] = `
 <div>
   <div
-    class="MuiStack-root css-1c8be61-MuiStack-root"
+    class="MuiStack-root css-5s31b2-MuiStack-root"
   >
     <div
       class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -77,7 +77,7 @@ exports[`AvatarStack snapshot > matches snapshot with limit 1`] = `
       </div>
     </div>
     <p
-      class="MuiTypography-root MuiTypography-bodySmallStrong css-1npts02-MuiTypography-root"
+      class="MuiTypography-root MuiTypography-body1 css-1angzm9-MuiTypography-root"
     >
       +
       2

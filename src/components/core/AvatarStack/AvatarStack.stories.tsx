@@ -50,6 +50,14 @@ export const Loading: Story = {
   },
 };
 
+export const Vertical: Story = {
+  args: {
+    avatars: baseAvatars,
+    direction: 'column',
+    spacing: -1.5,
+  },
+};
+
 export const WithLimit: Story = {
   args: {
     avatars: overflowAvatars,

@@ -101,7 +101,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -121,7 +121,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-m6i5fs-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -301,7 +301,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-1c8be61-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -408,7 +408,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             class="MuiBox-root css-wioyy2"
           >
             <div
-              class="MuiStack-root css-1c8be61-MuiStack-root"
+              class="MuiStack-root css-5s31b2-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -428,7 +428,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
               class="MuiBox-root css-k8f1u5"
             >
               <div
-                class="MuiStack-root css-m6i5fs-MuiStack-root"
+                class="MuiStack-root css-1g44ov9-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -608,7 +608,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                 class="MuiBox-root css-1xdhyk6"
               >
                 <div
-                  class="MuiStack-root css-1c8be61-MuiStack-root"
+                  class="MuiStack-root css-5s31b2-MuiStack-root"
                 >
                   <div
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -760,7 +760,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -780,7 +780,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-m6i5fs-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -960,7 +960,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-1c8be61-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1089,7 +1089,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1109,7 +1109,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-m6i5fs-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -1289,7 +1289,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-1c8be61-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1333,7 +1333,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1353,7 +1353,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-m6i5fs-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -1479,7 +1479,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           data-mui-internal-clone-element="true"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1552,7 +1552,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             class="MuiBox-root css-wioyy2"
           >
             <div
-              class="MuiStack-root css-1c8be61-MuiStack-root"
+              class="MuiStack-root css-5s31b2-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1572,7 +1572,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
               class="MuiBox-root css-k8f1u5"
             >
               <div
-                class="MuiStack-root css-m6i5fs-MuiStack-root"
+                class="MuiStack-root css-1g44ov9-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -1698,7 +1698,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             data-mui-internal-clone-element="true"
           >
             <div
-              class="MuiStack-root css-1c8be61-MuiStack-root"
+              class="MuiStack-root css-5s31b2-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1800,7 +1800,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1820,7 +1820,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-m6i5fs-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -1915,7 +1915,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           data-mui-internal-clone-element="true"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -1984,7 +1984,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           class="MuiBox-root css-wioyy2"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2004,7 +2004,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
             class="MuiBox-root css-k8f1u5"
           >
             <div
-              class="MuiStack-root css-m6i5fs-MuiStack-root"
+              class="MuiStack-root css-1g44ov9-MuiStack-root"
             >
               <div
                 class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -2130,7 +2130,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           data-mui-internal-clone-element="true"
         >
           <div
-            class="MuiStack-root css-1c8be61-MuiStack-root"
+            class="MuiStack-root css-5s31b2-MuiStack-root"
           >
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2329,7 +2329,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-1c8be61-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2347,7 +2347,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-m6i5fs-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -2409,7 +2409,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-1c8be61-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2471,7 +2471,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-1c8be61-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2491,7 +2491,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-m6i5fs-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -2697,7 +2697,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-1c8be61-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2715,7 +2715,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-m6i5fs-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
@@ -2777,7 +2777,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiStack-root css-1c8be61-MuiStack-root"
+                class="MuiStack-root css-5s31b2-MuiStack-root"
               >
                 <div
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2839,7 +2839,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                   class="MuiBox-root css-wioyy2"
                 >
                   <div
-                    class="MuiStack-root css-1c8be61-MuiStack-root"
+                    class="MuiStack-root css-5s31b2-MuiStack-root"
                   >
                     <div
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
@@ -2859,7 +2859,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                     class="MuiBox-root css-k8f1u5"
                   >
                     <div
-                      class="MuiStack-root css-m6i5fs-MuiStack-root"
+                      class="MuiStack-root css-1g44ov9-MuiStack-root"
                     >
                       <div
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"

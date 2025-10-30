@@ -4,9 +4,10 @@ import {
   Avatar,
   AvatarSkeleton,
   AvatarStackContainer,
+  AvatarPlaceholder,
+  OverflowCount,
 } from './AvatarStack.styles';
 import { AvatarSize, AvatarStackDirection } from './AvatarStack.types';
-import Typography from '@mui/material/Typography';
 
 interface AvatarStackProps {
   avatars: {
@@ -29,9 +30,9 @@ export const AvatarStack: FC<AvatarStackProps> = ({
   disableBorder = false,
   limit,
 }) => {
-  const displayAvatars = limit ? avatars.slice(0, limit) : avatars;
-  const remainingCount =
-    limit && avatars.length > limit ? avatars.length - limit : 0;
+  const hasOverflow = limit && avatars.length > limit;
+  const overflowCount = hasOverflow ? avatars.length - limit : 0;
+  const displayAvatars = hasOverflow ? avatars.slice(0, limit) : avatars;
 
   return (
     <AvatarStackContainer direction={direction} useFlexGap>
@@ -45,14 +46,19 @@ export const AvatarStack: FC<AvatarStackProps> = ({
             disableBorder={disableBorder}
             variant="circular"
           >
+            {avatar.alt ? (
+              <AvatarPlaceholder size={size} color="textSecondary">
+                {avatar.alt[0].toUpperCase()}
+              </AvatarPlaceholder>
+            ) : null}
             <AvatarSkeleton size={size} key={avatar.id} variant="circular" />
           </Avatar>
         ))}
       </AvatarStackWrapper>
-      {remainingCount > 0 && (
-        <Typography variant="bodySmallStrong" color="textSecondary">
-          +{remainingCount}
-        </Typography>
+      {overflowCount > 0 && (
+        <OverflowCount size={size} color="textSecondary">
+          +{overflowCount}
+        </OverflowCount>
       )}
     </AvatarStackContainer>
   );
