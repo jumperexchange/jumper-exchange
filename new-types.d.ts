@@ -27,5 +27,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: string;
     NEXT_PUBLIC_BACKEND_URL: string;
     NEXT_PUBLIC_SOLANA_RPC_URI: string;
+    NEXT_PUBLIC_INTERCOM_APP_ID: string;
   }
 }
