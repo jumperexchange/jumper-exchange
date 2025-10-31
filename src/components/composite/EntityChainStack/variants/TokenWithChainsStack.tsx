@@ -21,15 +21,12 @@ export const TokenWithChainsStack: FC<TokenWithChainsChainStackProps> = (
     if (!chainMap.has(props.token.chain.chainId.toString())) {
       chainMap.set(
         props.token.chain.chainId.toString(),
-        props.token.chain.chainKey ?? '',
+        props.token.chain.chainKey,
       );
     }
     props.token.relatedTokens?.forEach((token) => {
       if (!chainMap.has(token.chain.chainId.toString())) {
-        chainMap.set(
-          token.chain.chainId.toString(),
-          token.chain.chainKey ?? '',
-        );
+        chainMap.set(token.chain.chainId.toString(), token.chain.chainKey);
       }
     });
     return {
