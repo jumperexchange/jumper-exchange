@@ -29,7 +29,6 @@ export async function selectOptionFromDropDown(
 
 export async function getAllOptionsFromDropdown(page: Page, dropdown: string) {
 	const dropdownFilter = page.getByTestId(dropdown);
-	await dropdownFilter.click();
 	const optionsArray = dropdownFilter.locator('[role="option"]');
 	const options = await optionsArray.allTextContents();
 	await page.keyboard.press("Escape"); //close dropdown

@@ -60,12 +60,12 @@ export const useAnalyticsChartData = (
       data,
       dateFormat:
         range === AnalyticsRangeFieldEnum.DAY
-          ? 'PP p'
+          ? 'PP @ HH:mm'
           : range === AnalyticsRangeFieldEnum.WEEK
             ? 'PP'
             : range === AnalyticsRangeFieldEnum.MONTH
-              ? 'MMM yyyy'
-              : 'yyyy',
+              ? 'PP'
+              : 'MMM yyyy',
       theme: {
         areaTopColor: isLightTheme
           ? `#F2D9F6`
