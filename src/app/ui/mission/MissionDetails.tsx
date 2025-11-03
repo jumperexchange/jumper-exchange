@@ -32,6 +32,7 @@ interface MissionDetailsProps {
 }
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
+  const missionId = mission.documentId;
   const hasEnded = mission.hasEnded ?? false;
 
   const { status } = useMissionTimeStatus(
@@ -45,13 +46,14 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     [missionDisplayData.participants],
   );
   useResetCurrentActiveTask();
-  useSyncMissionDefaultsFromChains(participants, mission.documentId, hasEnded);
+  useSyncMissionDefaultsFromChains(participants, missionId, hasEnded);
   const router = useRouter();
   const { t } = useTranslation();
 
   const { account } = useAccount();
   const { enhancedTasks, setActiveTask } = useEnhancedTasks(
     tasks ?? [],
+    missionId,
     account?.address,
   );
 
@@ -103,7 +105,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             <MissionTask
               key={task.uuid}
               task={task}
-              missionId={mission.documentId}
+              missionId={missionId}
               onClick={() => setActiveTask(task)}
             />
           ))}

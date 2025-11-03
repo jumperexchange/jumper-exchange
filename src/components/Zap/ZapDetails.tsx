@@ -32,6 +32,7 @@ interface ZapDetailsProps {
 }
 
 export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
+  const missionId = market.documentId;
   const hasEnded = market.hasEnded ?? false;
   const { status } = useMissionTimeStatus(
     market?.StartDate ?? '',
@@ -44,13 +45,14 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
     [zapDisplayData.participants],
   );
   useResetCurrentActiveTask();
-  useSyncMissionDefaultsFromChains(participants, market.documentId, hasEnded);
+  useSyncMissionDefaultsFromChains(participants, missionId, hasEnded);
   const { t } = useTranslation();
   const router = useRouter();
 
   const { account } = useAccount();
   const { enhancedTasks, setActiveTask } = useEnhancedTasks(
     tasks ?? [],
+    missionId,
     account?.address,
   );
 
@@ -103,7 +105,7 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
             <MissionTask
               key={task.uuid}
               task={task}
-              missionId={market.documentId}
+              missionId={missionId}
               onClick={() => setActiveTask(task)}
             />
           ))}
