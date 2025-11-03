@@ -10,6 +10,7 @@ import {
   connectAnotherWalletButton,
   disconnectWalletButton,
   connectedWalletButton,
+  connectMetaMaskWallet,
 } from './testData/connectWalletFunctions';
 import basicSetup from './wallet-setup/basic.setup';
 import { qase } from 'playwright-qase-reporter';
@@ -22,21 +23,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
     qase(3, 'Complete wallet connection and disconnection flow'),
     async ({ context, page, extensionId }) => {
       await test.step('Connect Metamask wallet to Jumper', async () => {
-        const metamask = new MetaMask(
-          context,
-          page,
-          basicSetup.walletPassword,
-          extensionId,
-        );
-        const metaMaskWalletOption = page.locator(
-          'xpath=//span[normalize-space(text())="MetaMask"]',
-        );
-
-        await page.goto('/');
-        await expect(connectButton(page)).toBeEnabled();
-        await connectButton(page).click();
-        await metaMaskWalletOption.click();
-        await metamask.connectToDapp(['Account 1']);
+        await connectMetaMaskWallet(context, page, extensionId);
       });
 
       await test.step('Close welcome screen and navigate to profile', async () => {

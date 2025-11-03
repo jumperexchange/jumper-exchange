@@ -17,6 +17,7 @@ interface DisplayQuestData {
   info: string;
   startDate: string;
   endDate: string;
+  hasEnded: boolean;
   imageUrl?: string;
   participants?: ParticipantChain[];
   rewardGroups: Record<string, RewardGroup[]>;
@@ -67,6 +68,7 @@ export function useFormatDisplayQuestData(
       Slug,
       StartDate,
       EndDate,
+      hasEnded,
       Link,
       CustomInformation,
     } = quest;
@@ -103,6 +105,7 @@ export function useFormatDisplayQuestData(
       info: Information || '',
       startDate: StartDate || '',
       endDate: EndDate || '',
+      hasEnded: hasEnded ?? false,
       imageUrl: imageUrl,
       participants: chains?.map((chain) => ({
         avatarUrl: chain.logo,

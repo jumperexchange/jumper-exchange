@@ -94,6 +94,7 @@ export type QuestAttributes = {
   Points: number;
   EndDate?: string;
   StartDate?: string;
+  hasEnded?: boolean;
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
