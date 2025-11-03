@@ -10,7 +10,7 @@ exports[`AssetProgress snapshot > Protocol variant > protocol progress at 100% m
     >
       <span
         aria-valuenow="100"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -77,7 +77,7 @@ exports[`AssetProgress snapshot > Protocol variant > protocol progress matches s
     >
       <span
         aria-valuenow="32"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -144,7 +144,7 @@ exports[`AssetProgress snapshot > Text variant > text progress at 0% matches sna
     >
       <span
         aria-valuenow="0"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -208,7 +208,7 @@ exports[`AssetProgress snapshot > Text variant > text progress at 100% matches s
     >
       <span
         aria-valuenow="100"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -271,7 +271,7 @@ exports[`AssetProgress snapshot > Text variant > text progress matches snapshot 
     >
       <span
         aria-valuenow="32"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -334,7 +334,7 @@ exports[`AssetProgress snapshot > Text variant > text progress with high percent
     >
       <span
         aria-valuenow="85"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -397,7 +397,7 @@ exports[`AssetProgress snapshot > Text variant > text progress with low percenta
     >
       <span
         aria-valuenow="5"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -460,7 +460,7 @@ exports[`AssetProgress snapshot > Token variant > token progress matches snapsho
     >
       <span
         aria-valuenow="32"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -525,7 +525,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with USDC match
     >
       <span
         aria-valuenow="65"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -590,7 +590,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with large amou
     >
       <span
         aria-valuenow="90"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >
@@ -655,7 +655,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with small amou
     >
       <span
         aria-valuenow="15"
-        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-9u2jlq-MuiCircularProgress-root"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
         role="progressbar"
         style="width: 64px; height: 64px; transform: rotate(-90deg);"
       >

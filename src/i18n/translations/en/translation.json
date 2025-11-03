@@ -320,6 +320,27 @@
       "updated": "Updated {{time}} ago"
     }
   },
+  "portfolio": {
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "Overview",
+        "tokens": "Tokens",
+        "defiPositions": "DeFi Protocols"
+      },
+      "overview": {
+        "tokens": "Tokens",
+        "defiPositions": "DeFi Protocols"
+      },
+      "noContent": {
+        "title": "This is looking a bit empty!",
+        "description": "Use Earn or Exchange and jump start your DeFi journey!",
+        "cta": {
+          "startEarning": "Start Earning",
+          "startSwapping": "Start Swapping"
+        }
+      }
+    }
+  },
   "widget": {
     "depositCard": {
       "apy": "Base APR",
