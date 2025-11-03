@@ -8,15 +8,19 @@ import { useGetVerifiedTasks } from './useGetVerifiedTasks';
 
 export const useEnhancedTasks = (
   tasks: TaskVerificationWithApy[],
+  missionId: string,
   accountAddress?: string,
 ) => {
   const router = useRouter();
 
   const { data: verifiedTasks = [] } = useGetVerifiedTasks(accountAddress);
-  //   const { setConfigType, configType } = useSdkConfigStore();
   const verifiedTaskIds = useMemo(() => {
-    return new Set(verifiedTasks?.map((v) => v.stepId));
-  }, [verifiedTasks]);
+    return new Set(
+      verifiedTasks
+        ?.filter((v) => v.questId === missionId)
+        .map((v) => v.stepId),
+    );
+  }, [verifiedTasks, missionId]);
 
   const firstUnverifiedTask = useMemo(() => {
     return (
@@ -66,12 +70,6 @@ export const useEnhancedTasks = (
       const taskName = task.name ?? '';
       const widgetParams = task.TaskWidgetInformation ?? {};
 
-      // @TODO enable once the lifi config store is available
-      //   if (taskType === TaskType.Zap && configType !== 'zap') {
-      //     setConfigType('zap');
-      //   } else if (taskType !== TaskType.Zap && configType === 'zap') {
-      //     setConfigType('default');
-      //   }
       setCurrentActiveTask(task.uuid, taskType, taskName);
       const isTaskVerified = checkIsTaskVerified(task);
       setIsCurrentActiveTaskCompleted(isTaskVerified);

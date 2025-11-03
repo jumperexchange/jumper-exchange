@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-// import { useSdkConfigStore } from 'src/stores/sdkConfig/SDKConfigStore';
 import { ParticipantChain } from 'src/types/loyaltyPass';
 
 export const useSyncMissionDefaultsFromChains = (
