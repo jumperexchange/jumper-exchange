@@ -8,16 +8,23 @@ export const useFormatDisplayRewardsData = (
   customInformation?: CustomInformation,
   pointsFallback?: number,
 ) => {
-  const { tokenRewards, rewardType, rewardRange, rewardsIds, chains } =
-    useMemo(() => {
-      return {
-        tokenRewards: customInformation?.['tokenRewards'],
-        rewardType: customInformation?.['rewardType'],
-        rewardRange: customInformation?.['rewardRange'],
-        rewardsIds: customInformation?.['rewardsIds'],
-        chains: customInformation?.['chains'],
-      };
-    }, [customInformation]);
+  const {
+    tokenRewards,
+    rewardType,
+    rewardRange,
+    rewardsIds,
+    chains,
+    genericRewards,
+  } = useMemo(() => {
+    return {
+      tokenRewards: customInformation?.['tokenRewards'],
+      rewardType: customInformation?.['rewardType'],
+      rewardRange: customInformation?.['rewardRange'],
+      rewardsIds: customInformation?.['rewardsIds'],
+      chains: customInformation?.['chains'],
+      genericRewards: customInformation?.['genericRewards'] ?? [],
+    };
+  }, [customInformation]);
 
   const chainIds = (chains ?? [])
     .map((chain) => chain.chainId)
@@ -82,8 +89,11 @@ export const useFormatDisplayRewardsData = (
     if (coinsRewards.length > 0) {
       groups.coins = coinsRewards;
     }
+    if (genericRewards.length > 0) {
+      groups.generic = genericRewards;
+    }
     return groups;
-  }, [apyRewards, xpRewards, coinsRewards]);
+  }, [apyRewards, xpRewards, coinsRewards, genericRewards]);
 
   return rewardGroups;
 };

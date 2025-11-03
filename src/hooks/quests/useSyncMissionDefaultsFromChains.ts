@@ -6,6 +6,7 @@ import { ParticipantChain } from 'src/types/loyaltyPass';
 export const useSyncMissionDefaultsFromChains = (
   participatingChains?: ParticipantChain[],
   missionId?: string,
+  missionHasEnded?: boolean,
 ) => {
   const { setMissionDefaults } = useMissionStore();
 
@@ -24,7 +25,11 @@ export const useSyncMissionDefaultsFromChains = (
 
   useEffect(() => {
     if (participatingChainsIds) {
-      setMissionDefaults(participatingChainsIds, missionId);
+      setMissionDefaults({
+        missionChainIds: participatingChainsIds,
+        missionId,
+        missionHasEnded,
+      });
     }
-  }, [participatingChainsIds, missionId, setMissionDefaults]);
+  }, [participatingChainsIds, missionId, missionHasEnded, setMissionDefaults]);
 };

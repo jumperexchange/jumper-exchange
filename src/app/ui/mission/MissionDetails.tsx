@@ -32,9 +32,12 @@ interface MissionDetailsProps {
 }
 
 export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
+  const hasEnded = mission.hasEnded ?? false;
+
   const { status } = useMissionTimeStatus(
     mission.StartDate ?? '',
     mission.EndDate ?? '',
+    hasEnded,
   );
   const missionDisplayData = useFormatDisplayQuestData(mission);
   const participants = useMemo(
@@ -42,7 +45,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
     [missionDisplayData.participants],
   );
   useResetCurrentActiveTask();
-  useSyncMissionDefaultsFromChains(participants, mission.documentId);
+  useSyncMissionDefaultsFromChains(participants, mission.documentId, hasEnded);
   const router = useRouter();
   const { t } = useTranslation();
 

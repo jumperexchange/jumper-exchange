@@ -4,8 +4,6 @@ import { removeFormattingTags } from '../tests/utils/translationUtils';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
 import { isFullyInViewport } from './utils/elementUtils';
 import {
-  MAIN_MENU,
-  checkSocialNetworkIcons,
   checkTheNumberOfMenuItems,
   expectBackgroundColorToHaveCss,
   openOrCloseMainMenu,

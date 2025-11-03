@@ -153,23 +153,36 @@ export const StyledParticipantsContainer = styled((props: StackProps) => (
 
 export const StyledRewardsContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
-  flexWrap: 'wrap',
+  flexWrap: 'nowrap',
 }));
+
+interface StyledCompactRewardChipContainerProps extends ChipProps {
+  hideLabel?: boolean;
+}
 
 /*
  * Currently this component is not clickable,
  * but passing an onClick prop to the parent container makes it throw an error.
  * https://github.com/mui/material-ui/issues/46262
  */
-export const StyledCompactRewardChipContainer = styled((props: ChipProps) => {
-  return <Chip {...props} onClick={() => {}} />;
-})(({ theme }) => ({
+export const StyledCompactRewardChipContainer = styled(
+  ({ hideLabel, ...props }: StyledCompactRewardChipContainerProps) => {
+    return <Chip {...props} onClick={() => {}} />;
+  },
+)<StyledCompactRewardChipContainerProps>(({ theme, hideLabel }) => ({
+  display: 'inline-flex !important',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'row',
   padding: theme.spacing(1, 1),
   height: 40,
   backgroundColor: (theme.vars || theme).palette.badgeAlphaBg,
   borderRadius: theme.shape.buttonBorderRadius,
   '& .MuiChip-label': {
     padding: theme.spacing(0, 0.75),
+    ...(hideLabel && {
+      display: 'none',
+    }),
   },
   '& .MuiChip-avatar': {
     width: 'fit-content',

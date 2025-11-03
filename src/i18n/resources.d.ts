@@ -143,10 +143,16 @@ interface Resources {
           description: 'All tasks in this mission have been verified and completed.';
           title: 'Mission completed';
         };
+        ended: {
+          cta: 'Go back to missions';
+          description: 'Mission has ended, go back to the main missions page to explore other missions!';
+          title: 'Mission has ended';
+        };
       };
       status: {
         daysLeft_one: '{{count}} day left';
         daysLeft_other: '{{count}} days left';
+        ended: 'Ended';
         hoursLeft_one: '{{count}} hour left';
         hoursLeft_other: '{{count}} hours left';
         minutesLeft_one: '{{count}} minute left';
