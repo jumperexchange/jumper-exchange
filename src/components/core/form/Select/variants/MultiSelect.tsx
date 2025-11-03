@@ -70,6 +70,7 @@ export const MultiSelect = <T extends string[]>({
       {...rest}
       options={filteredOptions}
       value={value}
+      title={label}
       onChange={handleChange}
       selectorContent={
         <>

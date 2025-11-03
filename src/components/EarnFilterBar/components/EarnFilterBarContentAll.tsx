@@ -2,7 +2,10 @@ import { FC, PropsWithChildren } from 'react';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
 import { MultiSelectOption } from '../../core/MultiSelect/MultiSelect.types';
 import { Select } from '../../core/form/Select/Select';
-import { SelectVariant } from '../../core/form/Select/Select.types';
+import {
+  SelectDisplayMode,
+  SelectVariant,
+} from '../../core/form/Select/Select.types';
 import { EarnAnimatedLayoutContainer } from './EarnAnimatedLayoutContainer';
 import {
   EarnFilterBarClearFiltersButton,
@@ -129,6 +132,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
             label="Chains"
             variant={SelectVariant.Multi}
             data-testid="earn-filter-chain-select"
+            displayMode={SelectDisplayMode.Menu}
           />
         )}
         {protocolOptions.length > 0 && (
@@ -140,6 +144,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
             label="Protocols"
             variant={SelectVariant.Multi}
             data-testid="earn-filter-protocol-select"
+            displayMode={SelectDisplayMode.Menu}
           />
         )}
 
@@ -152,6 +157,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
             label="Tags"
             variant={SelectVariant.Multi}
             data-testid="earn-filter-tag-select"
+            displayMode={SelectDisplayMode.Menu}
           />
         )}
 
@@ -164,6 +170,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
             label="Assets"
             variant={SelectVariant.Multi}
             data-testid="earn-filter-asset-select"
+            displayMode={SelectDisplayMode.Menu}
           />
         )}
 
@@ -177,6 +184,7 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
             label="APY"
             variant={SelectVariant.Slider}
             data-testid="earn-filter-apy-select"
+            displayMode={SelectDisplayMode.Menu}
           />
         )}
 

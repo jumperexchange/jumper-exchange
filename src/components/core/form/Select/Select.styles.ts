@@ -142,3 +142,9 @@ export const StyledSliderRangeContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   width: '100%',
 }));
+
+export const StyledDrawerHeader = styled(Box)(({ theme }) => ({
+  height: 40,
+  overflow: 'hidden',
+  position: 'relative',
+}));

@@ -71,6 +71,7 @@ export const SliderSelect = <T extends number[]>({
     <SelectBase
       {...rest}
       value={''}
+      title={initialLabel}
       onChange={handleChange}
       multiple={false}
       selectorContent={
