@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { CustomTooltip } from './CustomTooltip';
 import { toCompactValue } from 'src/utils/formatNumbers';
+import { formatDateLocalized } from 'src/utils/formatDateLocalized';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import {
   calculateTooltipPosition,
@@ -18,7 +19,6 @@ import {
   calculateEvenYAxisTicks,
 } from './utils';
 import { useCallback, useMemo, useRef } from 'react';
-import { format } from 'date-fns';
 import { AREA_CONFIG } from './constants';
 import { ActiveDotProps } from 'recharts/types/util/types';
 
@@ -47,6 +47,7 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>> {
   };
   dateFormat?: string;
   dataSetId?: string;
+  dataSetValueAppend?: string;
   isLoading?: boolean;
   enableCrosshair?: boolean;
   enableGridY?: boolean;
@@ -60,6 +61,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   theme,
   dateFormat,
   dataSetId,
+  dataSetValueAppend,
   enableCrosshair = true,
   enableGridY = true,
   enableXAxis = true,
@@ -81,7 +83,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
 
   const dateFormatter = useCallback(
     (date: string) => {
-      return format(date ?? '', dateFormat ?? 'MMM yyyy');
+      return formatDateLocalized(date ?? '', dateFormat ?? 'MMM yyyy');
     },
     [dateFormat],
   );
@@ -217,6 +219,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
                             y={0}
                             transform={transform}
                             dataSetId={dataSetId}
+                            dataSetValueAppend={dataSetValueAppend}
                           />
                         </foreignObject>
                       )}

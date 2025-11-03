@@ -11,6 +11,9 @@ import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProject
 import { useMemo } from 'react';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useTranslation } from 'react-i18next';
+import { useGetZapInPoolBalance } from 'src/hooks/zaps/useGetZapInPoolBalance';
+import { Hex } from 'viem';
+import { useAccount } from '@lifi/wallet-management';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -20,6 +23,7 @@ export const EarnDetailsActions = ({
   earnOpportunity,
 }: EarnDetailsActionsProps) => {
   const { t } = useTranslation();
+  const { account } = useAccount();
   const customInformation =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
   const projectData = useMemo(() => {
@@ -27,7 +31,11 @@ export const EarnDetailsActions = ({
   }, [customInformation?.projectData]);
 
   const { depositTokenData, isLoadingDepositTokenData } =
-    useEnhancedZapData(projectData);
+    useGetZapInPoolBalance(
+      account.address as Hex,
+      projectData.address as Hex,
+      projectData.chainId,
+    );
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
   const managePositionButton = (

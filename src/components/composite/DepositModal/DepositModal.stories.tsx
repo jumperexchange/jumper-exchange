@@ -26,6 +26,7 @@ export const Default: Story = {
     isOpen: true,
     earnOpportunity: {
       name: 'morpho',
+      slug: 'morpho',
       protocol: {
         name: 'morpho',
         product: 'morpho',
@@ -93,6 +94,7 @@ export const WithToggleAndConnectButton: Story = {
   args: {
     isOpen: false,
     earnOpportunity: {
+      slug: 'morpho',
       name: 'morpho',
       protocol: {
         name: 'morpho',

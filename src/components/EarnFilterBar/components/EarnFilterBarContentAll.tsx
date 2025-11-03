@@ -98,8 +98,8 @@ export const EarnFilterBarContentAll: FC<PropsWithChildren> = ({
       protocols: [],
       tags: [],
       assets: [],
-      minAPY: apyMin,
-      maxAPY: apyMax,
+      minAPY: apyMin / 100,
+      maxAPY: apyMax / 100,
     });
   };
 

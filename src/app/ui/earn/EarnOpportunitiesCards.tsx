@@ -34,8 +34,9 @@ export const EarnOpportunitiesCards = ({
         {gridItems.map((item, index) => (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            whileInView={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.3 }}
             key={item?.slug || index}
           >
@@ -52,7 +53,7 @@ export const EarnOpportunitiesCards = ({
                     // TODO: Enable deposit flow button and properly set earnOpportunity
                     earnOpportunity={{
                       ...item,
-                      minFromAmountUSD: 5,
+                      minFromAmountUSD: 0.99,
                       positionUrl: item.url ?? 'unset',
                       address: item.lpToken.address,
                     }}
