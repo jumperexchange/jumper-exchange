@@ -158,6 +158,11 @@
       "completed": {
         "title": "",
         "description": ""
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
       }
     },
     "status": {
@@ -168,7 +173,8 @@
       "hoursLeft_one": "",
       "hoursLeft_other": "",
       "daysLeft_one": "",
-      "daysLeft_other": ""
+      "daysLeft_other": "",
+      "ended": ""
     },
     "tasks": {
       "type": "",
