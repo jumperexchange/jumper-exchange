@@ -35,9 +35,9 @@ export const GenericFilterDrawer = <TFilterKey extends string = string>({
   sliderRanges,
   hasFilterApplied,
   filtersCount,
-  drawerTitle = 'Filter and sort',
-  applyButtonLabel = 'Filter and sort',
-  clearButtonLabel = 'Clear all',
+  drawerTitle,
+  applyButtonLabel,
+  clearButtonLabel,
   children,
 }: PropsWithChildren<GenericFilterDrawerProps<TFilterKey>>) => {
   const { isOpen, open, close } = useFullScreenDrawer();
@@ -124,18 +124,20 @@ export const GenericFilterDrawer = <TFilterKey extends string = string>({
 
   return (
     <>
-      {hasFilterApplied && (
-        <GenericFilterDrawerIconButton
-          onClick={onClearAll}
-          data-testid="earn-filter-clear-filters-button"
-        >
-          <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+      <Stack direction="row" gap={1}>
+        {hasFilterApplied && (
+          <GenericFilterDrawerIconButton
+            onClick={onClearAll}
+            data-testid="generic-filter-clear-filters-icon-button"
+          >
+            <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+          </GenericFilterDrawerIconButton>
+        )}
+        <GenericFilterDrawerIconButton onClick={open}>
+          {hasFilterApplied && <SelectBadge label={filtersCount.toString()} />}
+          <TuneRoundedIcon sx={{ height: 22, width: 22 }} />
         </GenericFilterDrawerIconButton>
-      )}
-      <GenericFilterDrawerIconButton onClick={open}>
-        {hasFilterApplied && <SelectBadge label={filtersCount.toString()} />}
-        <TuneRoundedIcon sx={{ height: 22, width: 22 }} />
-      </GenericFilterDrawerIconButton>
+      </Stack>
 
       <FullScreenDrawer
         isOpen={isOpen}

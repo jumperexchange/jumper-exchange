@@ -11,10 +11,12 @@ import {
 } from '../EarnFilterBar.styles';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useEarnFilterBar } from '../hooks';
+import { useTranslation } from 'react-i18next';
 
 export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const {
     chainOptions,
     protocolOptions,
@@ -43,7 +45,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             value={filter?.chains?.map(String) ?? []}
             onChange={handleChainChange}
             filterBy="chain"
-            label="Chains"
+            label={t('earn.filter.chain')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-chain-select"
             displayMode={SelectDisplayMode.Menu}
@@ -55,7 +57,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             value={filter?.protocols || []}
             onChange={handleProtocolChange}
             filterBy="protocol"
-            label="Protocols"
+            label={t('earn.filter.protocol')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-protocol-select"
             displayMode={SelectDisplayMode.Menu}
@@ -68,7 +70,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             value={filter?.tags || []}
             onChange={handleTagChange}
             filterBy="tag"
-            label="Tags"
+            label={t('earn.filter.tag')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-tag-select"
             displayMode={SelectDisplayMode.Menu}
@@ -81,7 +83,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             value={filter?.assets || []}
             onChange={handleAssetChange}
             filterBy="asset"
-            label="Assets"
+            label={t('earn.filter.asset')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-asset-select"
             displayMode={SelectDisplayMode.Menu}
@@ -95,7 +97,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             min={apyMin}
             max={apyMax}
             onChange={handleAPYChange}
-            label="APY"
+            label={t('earn.filter.apy')}
             variant={SelectVariant.Slider}
             data-testid="earn-filter-apy-select"
             displayMode={SelectDisplayMode.Menu}

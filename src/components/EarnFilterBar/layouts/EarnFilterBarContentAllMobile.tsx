@@ -3,10 +3,12 @@ import { FC, PropsWithChildren } from 'react';
 import { useEarnFilterBar } from '../hooks';
 import { FilterCategoryConfig } from 'src/components/composite/GenericFilterDrawer/GenericFilterDrawer.types';
 import { SelectVariant } from 'src/components/core/form/Select/Select.types';
+import { useTranslation } from 'react-i18next';
 
 export const EarnFilterBarContentAllMobile: FC<PropsWithChildren> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const {
     chainOptions,
     protocolOptions,
@@ -32,38 +34,38 @@ export const EarnFilterBarContentAllMobile: FC<PropsWithChildren> = ({
   // Define filter categories
   const categories: FilterCategoryConfig[] = [
     {
-      id: 'chains',
-      label: 'Chains',
+      id: 'chain',
+      label: t('earn.filter.chain'),
       selectType: SelectVariant.Multi,
       testId: 'earn-filter-chain-select-mobile',
     },
     {
-      id: 'protocols',
-      label: 'Protocols',
+      id: 'protocol',
+      label: t('earn.filter.protocol'),
       selectType: SelectVariant.Multi,
       testId: 'earn-filter-protocol-select-mobile',
     },
     {
-      id: 'tags',
-      label: 'Tags',
+      id: 'tag',
+      label: t('earn.filter.tag'),
       selectType: SelectVariant.Multi,
       testId: 'earn-filter-tag-select-mobile',
     },
     {
-      id: 'assets',
-      label: 'Assets',
+      id: 'asset',
+      label: t('earn.filter.asset'),
       selectType: SelectVariant.Multi,
       testId: 'earn-filter-asset-select-mobile',
     },
     {
       id: 'apy',
-      label: 'APY',
+      label: t('earn.filter.apy'),
       selectType: SelectVariant.Slider,
       testId: 'earn-filter-apy-select-mobile',
     },
     {
       id: 'sortBy',
-      label: 'Sort',
+      label: t('earn.sorting.sort'),
       selectType: SelectVariant.Single,
       testId: 'earn-filter-sort-select-mobile',
     },
@@ -127,7 +129,9 @@ export const EarnFilterBarContentAllMobile: FC<PropsWithChildren> = ({
       sliderRanges={sliderRanges}
       hasFilterApplied={hasFilterApplied}
       filtersCount={filtersCount}
-      drawerTitle="Filter and sort"
+      drawerTitle={t('earn.filter.filterAndSort')}
+      applyButtonLabel={t('earn.filter.filterAndSort')}
+      clearButtonLabel={t('earn.filter.clearAll')}
     >
       {children}
     </GenericFilterDrawer>

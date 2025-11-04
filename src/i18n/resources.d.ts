@@ -77,9 +77,16 @@ interface Resources {
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       filter: {
+        apy: 'APY';
+        asset: 'Asset';
+        chain: 'Chain';
         clear: 'Clear';
+        clearAll: 'Clear all';
+        filterAndSort: 'Filter and sort';
+        protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
+        tag: 'Type';
       };
       overview: {
         updated: 'Updated {{time}} ago';
@@ -89,6 +96,7 @@ interface Resources {
       };
       sorting: {
         apy: 'APY';
+        sort: 'Sort';
         sortBy: 'Sort By';
         tvl: 'TVL';
       };
@@ -97,6 +105,11 @@ interface Resources {
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
         useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+      };
+      views: {
+        all: 'All';
+        allMarkets: 'All markets';
+        forYou: 'For you';
       };
     };
     error: {
@@ -195,7 +208,8 @@ interface Resources {
           continue: 'Continue';
           steps: {
             email: {
-              description: '{{position}} you must first share your email address.';
+              description_one: '{{position}} you must first share your email address.';
+              description_other: '{{position}} you must share your email address.';
               title: 'Enter email';
             };
             position: {
@@ -204,11 +218,13 @@ interface Resources {
               next: 'Next';
             };
             username: {
-              description: '{{position}} you must first share your {{usernameType}} username.';
+              description_one: '{{position}} you must first share your {{usernameType}} username.';
+              description_other: '{{position}} you must share your {{usernameType}} username.';
               title: 'Enter username';
             };
             wallet: {
-              description: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
+              description_one: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
+              description_other: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
               title: 'Verify wallet';
             };
           };

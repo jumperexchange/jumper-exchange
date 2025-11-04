@@ -26,7 +26,7 @@ export interface GenericFilterDrawerProps<TFilterKey extends string = string> {
   sliderRanges?: Record<TFilterKey, { min: number; max: number }>;
   hasFilterApplied: boolean;
   filtersCount: number;
-  drawerTitle?: string;
-  clearButtonLabel?: string;
-  applyButtonLabel?: string;
+  drawerTitle: string;
+  clearButtonLabel: string;
+  applyButtonLabel: string;
 }
