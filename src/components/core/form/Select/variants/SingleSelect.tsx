@@ -7,6 +7,7 @@ import { useEffect, useMemo } from 'react';
 export const SingleSelect = <T extends string>({
   value: initialValue,
   label: initialLabel,
+  title,
   debounceMs,
   onChange,
   ...rest
@@ -35,7 +36,7 @@ export const SingleSelect = <T extends string>({
     <SelectBase
       {...rest}
       value={value}
-      title={label}
+      title={title ?? label}
       onChange={handleChange}
       multiple={false}
       selectorContent={<SelectorLabel label={label} />}

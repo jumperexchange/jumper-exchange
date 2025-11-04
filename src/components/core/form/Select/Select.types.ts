@@ -35,6 +35,7 @@ export interface BaseProps<T extends TData> {
   error?: boolean;
   helperText?: string;
   label?: string;
+  title?: string;
   required?: boolean;
   debounceMs?: number;
   'data-testid'?: string;
@@ -52,6 +53,7 @@ export interface DrawerSelectProps<T extends TData> extends BaseProps<T> {
   open?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
+  onBack?: () => void;
 }
 
 export type SelectBaseProps<T extends TData> =
@@ -65,15 +67,19 @@ export type MultiSelectProps<T extends string[]> = SelectBaseProps<T> & {
 
 export type SingleSelectProps<T extends string> = SelectBaseProps<T>;
 
-export type SliderSelectProps<T extends number[]> = Omit<
-  SelectBaseProps<T>,
-  'options'
-> & {
-  options: never[];
-  min: number;
-  max: number;
-  label: string;
-};
+export type SliderSelectProps<T extends number[]> =
+  | (Omit<MenuSelectProps<T>, 'options'> & {
+      options: never[];
+      min: number;
+      max: number;
+      label: string;
+    })
+  | (Omit<DrawerSelectProps<T>, 'options'> & {
+      options: never[];
+      min: number;
+      max: number;
+      label: string;
+    });
 
 export type SelectProps<T extends TData> =
   | (MultiSelectProps<string[]> & { variant: SelectVariant.Multi })

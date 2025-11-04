@@ -16,6 +16,7 @@ import { SelectBadge } from '../components/SelectBadge';
 
 export const MultiSelect = <T extends string[]>({
   value: initialValue,
+  title,
   onChange,
   options,
   filterBy,
@@ -70,7 +71,7 @@ export const MultiSelect = <T extends string[]>({
       {...rest}
       options={filteredOptions}
       value={value}
-      title={label}
+      title={title ?? label}
       onChange={handleChange}
       selectorContent={
         <>

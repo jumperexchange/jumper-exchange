@@ -13,10 +13,12 @@ import { SliderSelectProps } from '../Select.types';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { SelectBadge } from '../components/SelectBadge';
+import { formatSliderValue } from '../utils';
 
 export const SliderSelect = <T extends number[]>({
   value: initialValue,
   label: initialLabel,
+  title,
   min,
   max,
   debounceMs,
@@ -39,13 +41,9 @@ export const SliderSelect = <T extends number[]>({
     setValue(defaultValue);
   }, [defaultValue]);
 
-  const formatValue = useCallback((value: T) => {
-    return value.join(' - ');
-  }, []);
-
   const isValueSelected = useMemo(() => {
-    return formatValue(value) !== formatValue(fallbackValue);
-  }, [value, fallbackValue, formatValue]);
+    return formatSliderValue(value) !== formatSliderValue(fallbackValue);
+  }, [value, fallbackValue]);
 
   const handleClear = useCallback(
     (event: React.MouseEvent) => {
@@ -71,19 +69,19 @@ export const SliderSelect = <T extends number[]>({
     <SelectBase
       {...rest}
       value={''}
-      title={initialLabel}
+      title={title ?? initialLabel}
       onChange={handleChange}
       multiple={false}
       selectorContent={
         <>
           <SelectorLabel label={initialLabel} />
-          {isValueSelected && <SelectBadge label={formatValue(value)} />}
+          {isValueSelected && <SelectBadge label={formatSliderValue(value)} />}
         </>
       }
     >
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyXSmallStrong">
-          {`${formatValue(value)} ${initialLabel}`}
+          {`${formatSliderValue(value)} ${initialLabel}`}
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}

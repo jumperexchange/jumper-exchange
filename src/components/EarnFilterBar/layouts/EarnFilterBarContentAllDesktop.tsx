@@ -1,0 +1,118 @@
+import { FC, PropsWithChildren } from 'react';
+import { Select } from '../../core/form/Select/Select';
+import {
+  SelectDisplayMode,
+  SelectVariant,
+} from '../../core/form/Select/Select.types';
+import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
+import {
+  EarnFilterBarClearFiltersButton,
+  EarnFilterBarContentContainer,
+} from '../EarnFilterBar.styles';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useEarnFilterBar } from '../hooks';
+
+export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
+  children,
+}) => {
+  const {
+    chainOptions,
+    protocolOptions,
+    tagOptions,
+    assetOptions,
+    hasFilterApplied,
+    filter,
+    apyMinValue,
+    apyMaxValue,
+    apyMin,
+    apyMax,
+    handleChainChange,
+    handleProtocolChange,
+    handleTagChange,
+    handleAssetChange,
+    handleAPYChange,
+    handleClearAllFilters,
+  } = useEarnFilterBar();
+
+  return (
+    <EarnFilterBarContentContainer>
+      <EarnAnimatedLayoutContainer>
+        {chainOptions.length > 0 && (
+          <Select
+            options={chainOptions}
+            value={filter?.chains?.map(String) ?? []}
+            onChange={handleChainChange}
+            filterBy="chain"
+            label="Chains"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-chain-select"
+            displayMode={SelectDisplayMode.Menu}
+          />
+        )}
+        {protocolOptions.length > 0 && (
+          <Select
+            options={protocolOptions}
+            value={filter?.protocols || []}
+            onChange={handleProtocolChange}
+            filterBy="protocol"
+            label="Protocols"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-protocol-select"
+            displayMode={SelectDisplayMode.Menu}
+          />
+        )}
+
+        {tagOptions.length > 0 && (
+          <Select
+            options={tagOptions}
+            value={filter?.tags || []}
+            onChange={handleTagChange}
+            filterBy="tag"
+            label="Tags"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-tag-select"
+            displayMode={SelectDisplayMode.Menu}
+          />
+        )}
+
+        {assetOptions.length > 0 && (
+          <Select
+            options={assetOptions}
+            value={filter?.assets || []}
+            onChange={handleAssetChange}
+            filterBy="asset"
+            label="Assets"
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-asset-select"
+            displayMode={SelectDisplayMode.Menu}
+          />
+        )}
+
+        {apyMin !== apyMax && (
+          <Select
+            options={[]}
+            value={[apyMinValue, apyMaxValue]}
+            min={apyMin}
+            max={apyMax}
+            onChange={handleAPYChange}
+            label="APY"
+            variant={SelectVariant.Slider}
+            data-testid="earn-filter-apy-select"
+            displayMode={SelectDisplayMode.Menu}
+          />
+        )}
+
+        {hasFilterApplied && (
+          <EarnFilterBarClearFiltersButton
+            onClick={handleClearAllFilters}
+            data-testid="earn-filter-clear-filters-button"
+          >
+            <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+          </EarnFilterBarClearFiltersButton>
+        )}
+      </EarnAnimatedLayoutContainer>
+
+      {children}
+    </EarnFilterBarContentContainer>
+  );
+};

@@ -1,7 +1,6 @@
 import { DrawerSelectProps, TData } from '../Select.types';
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { PropsWithChildren, useCallback } from 'react';
 import {
-  StyledDrawerHeader,
   StyledMenuItem,
   StyledMenuItemContentContainer,
   StyledSelectorContainer,
@@ -9,14 +8,12 @@ import {
 } from '../Select.styles';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { SelectProps, SelectChangeEvent } from '@mui/material/Select';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 import { SelectorLabel } from '../components/SelectLabel';
 import CheckIcon from '@mui/icons-material/Check';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import BackIcon from '@mui/icons-material/ArrowBack';
+import { FullScreenDrawer } from 'src/components/core/FullScreenDrawer/FullScreenDrawer';
+import { useFullScreenDrawer } from 'src/components/core/FullScreenDrawer/hooks';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
 export interface DrawerDisplayModeProps<T extends TData>
   extends Omit<DrawerSelectProps<T>, 'onChange' | 'displayMode'>,
@@ -48,21 +45,15 @@ export const DrawerDisplayMode = <T extends TData>({
   open: externalOpen,
   onOpen,
   onClose,
+  onBack,
   onChange,
   multiple,
 }: DrawerDisplayModeProps<T>) => {
-  const [internalOpen, setInternalOpen] = useState(false);
-  const isOpen = externalOpen !== undefined ? externalOpen : internalOpen;
-
-  const handleOpen = useCallback(() => {
-    setInternalOpen(true);
-    onOpen?.();
-  }, [onOpen]);
-
-  const handleClose = useCallback(() => {
-    setInternalOpen(false);
-    onClose?.();
-  }, [onClose]);
+  const { isOpen, open, close } = useFullScreenDrawer(
+    externalOpen,
+    onOpen,
+    onClose,
+  );
 
   const handleItemClick = useCallback(
     (selectedValue: string | number) => {
@@ -87,10 +78,8 @@ export const DrawerDisplayMode = <T extends TData>({
   return (
     <>
       {showTrigger && (
-        <StyledSelectorContainer onClick={handleOpen}>
-          <StyledSelectorContentContainer
-            sx={{ justifyContent: 'space-between' }}
-          >
+        <StyledSelectorContainer onClick={open} sx={{ width: 'fit-content' }}>
+          <StyledSelectorContentContainer>
             {selectorContent}
             <KeyboardArrowDownRoundedIcon
               sx={{
@@ -103,75 +92,49 @@ export const DrawerDisplayMode = <T extends TData>({
           </StyledSelectorContentContainer>
         </StyledSelectorContainer>
       )}
-
-      <Drawer
-        anchor={showTrigger ? 'bottom' : 'right'}
-        open={isOpen}
-        onClose={handleClose}
-        hideBackdrop
-        slotProps={{
-          paper: {
-            sx: (theme) => ({
-              height: '100dvh',
-              maxHeight: '100dvh',
-              overflow: 'auto',
-            }),
-          },
-        }}
+      <FullScreenDrawer
+        isOpen={isOpen}
+        onOpen={open}
+        onClose={close}
+        onBack={onBack}
+        title={title}
+        showBackButton={!showTrigger}
       >
-        <Box sx={(theme) => ({ padding: theme.spacing(1.5, 2) })}>
-          <StyledDrawerHeader>
-            {!showTrigger && (
-              <IconButton onClick={handleClose} sx={{ float: 'left' }}>
-                <BackIcon />
-              </IconButton>
-            )}
-
-            <IconButton onClick={handleClose} sx={{ float: 'right' }}>
-              <CloseIcon />
-            </IconButton>
-
-            <Typography
-              variant="titleXSmall"
-              sx={{
-                display: 'block',
-                textAlign: 'center',
-                lineHeight: '40px',
-              }}
-            >
-              {title}
-            </Typography>
-          </StyledDrawerHeader>
-
+        <Box>
           {children}
-
-          {options.map((option) => (
-            <StyledMenuItem
-              disableRipple
-              key={option.value}
-              value={option.value}
-              sx={option.sx}
-              onClick={() => handleItemClick(option.value)}
-            >
-              <StyledMenuItemContentContainer>
-                {option.icon}
-                <SelectorLabel label={option.label} />
-              </StyledMenuItemContentContainer>
-              {((Array.isArray(value) &&
-                (value as (string | number)[]).includes(option.value)) ||
-                (!Array.isArray(value) && value === option.value)) && (
-                <CheckIcon
-                  sx={{
-                    marginLeft: 'auto',
-                    height: 16,
-                    width: 16,
-                  }}
-                />
-              )}
-            </StyledMenuItem>
-          ))}
+          <Stack
+            direction="column"
+            spacing={1}
+            sx={{ flex: 1, overflowY: 'auto' }}
+          >
+            {options.map((option) => (
+              <StyledMenuItem
+                disableRipple
+                key={option.value}
+                value={option.value}
+                sx={option.sx}
+                onClick={() => handleItemClick(option.value)}
+              >
+                <StyledMenuItemContentContainer>
+                  {option.icon}
+                  <SelectorLabel label={option.label} />
+                </StyledMenuItemContentContainer>
+                {((Array.isArray(value) &&
+                  (value as (string | number)[]).includes(option.value)) ||
+                  (!Array.isArray(value) && value === option.value)) && (
+                  <CheckIcon
+                    sx={{
+                      marginLeft: 'auto',
+                      height: 16,
+                      width: 16,
+                    }}
+                  />
+                )}
+              </StyledMenuItem>
+            ))}
+          </Stack>
         </Box>
-      </Drawer>
+      </FullScreenDrawer>
     </>
   );
 };
