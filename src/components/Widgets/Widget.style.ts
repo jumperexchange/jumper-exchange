@@ -98,6 +98,7 @@ export const WidgetWrapper = styled(Box, {
       },
       '& [id^="widget-app-expanded-container-"], & [id^="widget-scrollable-container-"]':
         {
+          height: '100% !important',
           maxHeight: '100% !important',
         },
     },

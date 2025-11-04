@@ -537,10 +537,12 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         styleOverrides: {
           '@supports': { fontVariationSettings: 'normal' },
           html: {
+            height: '100%',
             margin: 0,
             padding: 0,
           },
           body: {
+            height: '100%',
             scrollBehavior: 'smooth',
             margin: 0,
             padding: 0,

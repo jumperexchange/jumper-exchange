@@ -73,7 +73,11 @@ const App = ({ children }: { children: React.ReactNode }) => {
     <Box
       onClick={handleWelcomeScreenEnter}
       sx={{
-        height: { xs: `calc(100dvh - ${HeaderHeight.XS}px)`, sm: 'auto' },
+        height: {
+          xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
+          sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+          md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+        },
       }}
     >
       <Slide
