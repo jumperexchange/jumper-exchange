@@ -158,6 +158,11 @@
       "completed": {
         "title": "Missão concluída",
         "description": "Todas as tarefas desta missão foram verificadas e concluídas."
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
       }
     },
     "status": {
@@ -168,7 +173,8 @@
       "hoursLeft_one": "{{count}} hora restante",
       "hoursLeft_other": "{{count}} horas restante",
       "daysLeft_one": "{{count}} dia restante",
-      "daysLeft_other": "{{count}} dias restante"
+      "daysLeft_other": "{{count}} dias restante",
+      "ended": ""
     },
     "tasks": {
       "type": "Tarefa {{type}}",
