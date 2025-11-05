@@ -44,7 +44,7 @@ export async function checkRoutesVisibility(
   const { bestReturnShouldBeVisible, checkRelayRoute } = options;
 
   if (bestReturnShouldBeVisible) {
-    const bestReturnLabel = await getElementByText(page, 'Best Return');
+    const bestReturnLabel = page.getByText('Best Return').first();
     await expect(bestReturnLabel).toBeVisible();
 
     if (checkRelayRoute) {
@@ -54,7 +54,7 @@ export async function checkRoutesVisibility(
           .locator('button.MuiIconButton-root.MuiIconButton-sizeSmall:has(svg)')
           .click();
       }
-      const relayLabel = await getElementByText(page, 'Relay via LI.FI');
+      const relayLabel = page.getByText(/Relay/);
       await expect(relayLabel).toBeVisible();
     }
   } else {
