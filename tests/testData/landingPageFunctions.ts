@@ -44,7 +44,7 @@ export async function checkRoutesVisibility(
   const { bestReturnShouldBeVisible, checkRelayRoute } = options;
 
   if (bestReturnShouldBeVisible) {
-    const bestReturnLabel = page.getByText('Best Return').first();
+    const bestReturnLabel = page.getByText('Best Return').first(); //added first() to handle cases where multiple "Best Return" labels exist - LF-16508
     await expect(bestReturnLabel).toBeVisible();
 
     if (checkRelayRoute) {
