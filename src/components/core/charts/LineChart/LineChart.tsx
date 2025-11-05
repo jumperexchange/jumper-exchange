@@ -54,6 +54,7 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>> {
   enableXAxis?: boolean;
   enableYAxis?: boolean;
   enableTooltip?: boolean;
+  'data-testid'?: string;
 }
 
 export const LineChart = <V, T extends ChartDataPoint<V>>({
@@ -68,6 +69,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   enableYAxis = true,
   enableTooltip = true,
   isLoading,
+  'data-testid': dataTestId,
 }: LineChartProps<V, T>) => {
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -120,6 +122,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
       width="100%"
       height="100%"
       enableCrosshair={enableCrosshair}
+      data-testid={dataTestId || 'analytics-chart'}
     >
       <AreaChart data={data} accessibilityLayer={false}>
         <defs>

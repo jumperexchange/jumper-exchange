@@ -29,12 +29,17 @@ export const DepositButton: FC<DepositButtonProps> = ({
     <DepositButtonLabelWrapper size={size}>{label}</DepositButtonLabelWrapper>
   );
 
+  const dataTestId =
+    ((props as Record<string, unknown>)['data-testid'] as string | undefined) ||
+    'quick-deposit-button';
+
   return (
     <DepositButtonPrimary
       {...props}
       sx={props.sx}
       size={size}
       onClick={onClick}
+      data-testid={dataTestId}
     >
       <DepositButtonContentWrapper>
         {showLabel && renderedLabel}
