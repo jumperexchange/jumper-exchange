@@ -3,35 +3,85 @@
 exports[`AvatarStack snapshot > matches snapshot 1`] = `
 <div>
   <div
-    class="MuiStack-root css-k0vgmj-MuiStack-root"
+    class="MuiStack-root css-5s31b2-MuiStack-root"
   >
     <div
-      class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      class="MuiStack-root css-k0vgmj-MuiStack-root"
     >
-      <img
-        alt="Avatar 1"
-        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
-      />
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      >
+        <img
+          alt="Avatar 1"
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+        />
+      </div>
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      >
+        <img
+          alt="Avatar 2"
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+        />
+      </div>
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      >
+        <img
+          alt="Avatar 3"
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png"
+        />
+      </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`AvatarStack snapshot > matches snapshot with limit 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-5s31b2-MuiStack-root"
+  >
     <div
-      class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      class="MuiStack-root css-k0vgmj-MuiStack-root"
     >
-      <img
-        alt="Avatar 2"
-        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
-      />
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      >
+        <img
+          alt="Avatar 1"
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+        />
+      </div>
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      >
+        <img
+          alt="Avatar 2"
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png"
+        />
+      </div>
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+      >
+        <img
+          alt="Avatar 3"
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png"
+        />
+      </div>
     </div>
-    <div
-      class="MuiAvatar-root MuiAvatar-circular css-1w86fk0-MuiAvatar-root"
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-1angzm9-MuiTypography-root"
     >
-      <img
-        alt="Avatar 3"
-        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png"
-      />
-    </div>
+      +
+      2
+    </p>
   </div>
 </div>
 `;
