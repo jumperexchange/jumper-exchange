@@ -31,6 +31,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
   chainIds,
   chainKeys,
   chainsSize = AvatarSize.XS,
+  chainsLimit,
   isLoading = false,
   spacing: spacingProp = {},
   layout: layoutProp = {},
@@ -75,6 +76,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
           <ChainStack
             chainIds={chainIds}
             size={chainsSize}
+            limit={chainsLimit}
             spacing={spacing.chains}
             direction={layout.direction}
           />

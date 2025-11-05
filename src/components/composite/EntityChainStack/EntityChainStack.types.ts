@@ -7,6 +7,7 @@ import { Chain, Protocol, Token } from 'src/types/jumper-backend';
 
 export interface BaseProps {
   chainsSize?: AvatarSize;
+  chainsLimit?: number;
   isLoading?: boolean;
   spacing?: {
     main?: number;
@@ -29,11 +30,13 @@ export interface ProtocolChainStackProps extends BaseProps {
   protocol?: Protocol;
   chains?: Chain[];
   protocolSize?: AvatarSize;
+  protocolLimit?: number;
 }
 
 export interface TokenChainStackProps extends BaseProps {
   tokens?: Token[];
   tokensSize?: AvatarSize;
+  tokensLimit?: number;
 }
 
 export enum EntityChainStackVariant {
