@@ -4,10 +4,12 @@ import {
   AvatarStackDirection,
 } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { Chain, Protocol, Token } from 'src/types/jumper-backend';
+import { MinimalToken } from 'src/types/tokens';
 
 export interface BaseProps {
   chainsSize?: AvatarSize;
   chainsLimit?: number;
+  chainsPlacement?: EntityChainStackChainsPlacement;
   isLoading?: boolean;
   spacing?: {
     main?: number;
@@ -26,6 +28,11 @@ export interface BaseProps {
   };
 }
 
+export enum EntityChainStackChainsPlacement {
+  Overlay = 'overlay',
+  Inline = 'inline',
+}
+
 export interface ProtocolChainStackProps extends BaseProps {
   protocol?: Protocol;
   chains?: Chain[];
@@ -39,11 +46,20 @@ export interface TokenChainStackProps extends BaseProps {
   tokensLimit?: number;
 }
 
+export interface TokenWithChainsChainStackProps extends BaseProps {
+  token?: MinimalToken;
+  tokenSize?: AvatarSize;
+}
+
 export enum EntityChainStackVariant {
   Protocol = 'protocol',
   Tokens = 'tokens',
+  TokenWithChains = 'tokensWithChains',
 }
 
 export type EntityChainStackProps =
   | ({ variant: EntityChainStackVariant.Protocol } & ProtocolChainStackProps)
-  | ({ variant: EntityChainStackVariant.Tokens } & TokenChainStackProps);
+  | ({ variant: EntityChainStackVariant.Tokens } & TokenChainStackProps)
+  | ({
+      variant: EntityChainStackVariant.TokenWithChains;
+    } & TokenWithChainsChainStackProps);

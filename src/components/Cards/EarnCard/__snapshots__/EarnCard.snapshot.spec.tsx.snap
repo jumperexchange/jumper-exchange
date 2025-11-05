@@ -142,12 +142,13 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            data-testid="entity-chain-stack-title"
           >
             metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="earn-card-chain-name"
+            data-testid="entity-chain-stack-chain-name"
           >
             Base
           </p>
@@ -449,12 +450,13 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+              data-testid="entity-chain-stack-title"
             >
               metamorpho
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-              data-testid="earn-card-chain-name"
+              data-testid="entity-chain-stack-chain-name"
             >
               Base
             </p>
@@ -672,10 +674,10 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
           class="MuiBox-root css-fxacz8"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
         </div>
       </div>
@@ -801,12 +803,13 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            data-testid="entity-chain-stack-title"
           >
             metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="earn-card-chain-name"
+            data-testid="entity-chain-stack-chain-name"
           >
             Base
           </p>
@@ -1130,12 +1133,13 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            data-testid="entity-chain-stack-title"
           >
             metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="earn-card-chain-name"
+            data-testid="entity-chain-stack-chain-name"
           >
             Base
           </p>
@@ -1374,12 +1378,13 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            data-testid="entity-chain-stack-title"
           >
             metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="earn-card-chain-name"
+            data-testid="entity-chain-stack-chain-name"
           >
             Base
           </p>
@@ -1593,12 +1598,13 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+              data-testid="entity-chain-stack-title"
             >
               metamorpho
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-              data-testid="earn-card-chain-name"
+              data-testid="entity-chain-stack-chain-name"
             >
               Base
             </p>
@@ -1744,10 +1750,10 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
           class="MuiBox-root css-fxacz8"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-12wa9j5-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-i5pwmn-MuiSkeleton-root"
           />
         </div>
       </div>
@@ -1841,12 +1847,13 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            data-testid="entity-chain-stack-title"
           >
             metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="earn-card-chain-name"
+            data-testid="entity-chain-stack-chain-name"
           >
             Base
           </p>
@@ -2025,12 +2032,13 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+            data-testid="entity-chain-stack-title"
           >
             metamorpho
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="earn-card-chain-name"
+            data-testid="entity-chain-stack-chain-name"
           >
             Base
           </p>
