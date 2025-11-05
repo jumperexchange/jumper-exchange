@@ -17,6 +17,7 @@ interface TokenStackProps {
   size?: AvatarSize;
   spacing?: number;
   direction?: AvatarStackDirection;
+  limit?: number;
 }
 
 export const TokenStack: FC<TokenStackProps> = ({
@@ -24,6 +25,7 @@ export const TokenStack: FC<TokenStackProps> = ({
   size,
   spacing = -1.5,
   direction = 'row',
+  limit,
 }) => {
   const { getTokenByAddressAndChain } = useTokens();
   const enhancedTokens = useMemo(() => {
@@ -47,6 +49,7 @@ export const TokenStack: FC<TokenStackProps> = ({
       spacing={spacing}
       direction={direction}
       disableBorder
+      limit={limit}
     />
   );
 };

@@ -1,8 +1,27 @@
 import MuiAvatar, { AvatarProps as MuiAvatarProps } from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import { AvatarSize } from './AvatarStack.types';
 import Skeleton, { SkeletonProps } from '@mui/material/Skeleton';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+
+export const getFontVariant = (size: AvatarSize, theme: Theme) => {
+  switch (size) {
+    case AvatarSize['3XS']:
+    case AvatarSize.XXS:
+    case AvatarSize.XS:
+      return theme.typography.bodyXSmallStrong;
+    case AvatarSize.MD:
+      return theme.typography.bodyMediumStrong;
+    case AvatarSize.LG:
+      return theme.typography.bodyLargeStrong;
+    case AvatarSize.XL:
+    case AvatarSize.XXL:
+      return theme.typography.bodyXLargeStrong;
+    default:
+      return theme.typography.bodySmallStrong;
+  }
+};
 
 const getAvatarSize = (size: AvatarSize) => {
   switch (size) {
@@ -54,6 +73,28 @@ const getAvatarSize = (size: AvatarSize) => {
   }
 };
 
+export const AvatarStackContainer = styled(Stack)(({ theme }) => ({
+  width: 'fit-content',
+  alignItems: 'center',
+  gap: theme.spacing(0.75),
+  variants: [
+    {
+      props: ({ direction }) =>
+        direction === 'column' || direction === 'column-reverse',
+      style: {
+        flexDirection: 'column',
+      },
+    },
+    {
+      props: ({ direction }) =>
+        direction === 'row' || direction === 'row-reverse',
+      style: {
+        flexDirection: 'row',
+      },
+    },
+  ],
+}));
+
 export const AvatarStackWrapper = styled(Stack)(({ theme }) => ({
   width: 'fit-content',
 }));
@@ -94,4 +135,26 @@ export const AvatarSkeleton = styled(Skeleton, {
 })<AvatarSkeletonProps>(({ theme, size = AvatarSize.MD }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...getAvatarSize(size),
+}));
+
+interface BaseTypographyProps extends TypographyProps {
+  size?: AvatarSize;
+}
+
+export const BaseTypography = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseTypographyProps>(({ theme, size = AvatarSize.MD }) => ({
+  ...getFontVariant(size, theme),
+}));
+
+export const OverflowCount = styled(BaseTypography)(({}) => ({}));
+
+export const AvatarPlaceholder = styled(BaseTypography)(({}) => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  zIndex: 1,
+  width: 'fit-content',
+  fontWeight: 500,
 }));
