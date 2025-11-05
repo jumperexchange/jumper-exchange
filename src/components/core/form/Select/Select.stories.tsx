@@ -1,6 +1,6 @@
 import { Select } from './Select';
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { SelectDisplayMode, SelectOption, SelectVariant } from './Select.types';
+import { SelectOption, SelectVariant } from './Select.types';
 import { Avatar, AvatarSkeleton } from '../../AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '../../AvatarStack/AvatarStack.types';
 import { action } from 'storybook/actions';
@@ -13,10 +13,6 @@ const meta = {
     variant: {
       control: { type: 'select' },
       options: Object.values(SelectVariant),
-    },
-    displayMode: {
-      control: { type: 'select' },
-      options: Object.values(SelectDisplayMode),
     },
   },
   args: {
@@ -92,7 +88,6 @@ export const MultiSelect: Story = {
     fullWidth: false,
     value: [],
     variant: SelectVariant.Multi,
-    displayMode: SelectDisplayMode.Menu,
   },
 };
 
@@ -104,7 +99,6 @@ export const MultiSelectWithFilter: Story = {
     value: [],
     filterBy: 'chain',
     variant: SelectVariant.Multi,
-    displayMode: SelectDisplayMode.Menu,
   },
 };
 
@@ -115,7 +109,6 @@ export const MultiSelectWithIcons: Story = {
     fullWidth: false,
     value: [],
     variant: SelectVariant.Multi,
-    displayMode: SelectDisplayMode.Menu,
   },
 };
 
@@ -126,7 +119,6 @@ export const MultiSelectWithSelectedValue: Story = {
     fullWidth: false,
     value: [chainOptions[0].value],
     variant: SelectVariant.Multi,
-    displayMode: SelectDisplayMode.Menu,
   },
 };
 
@@ -136,7 +128,6 @@ export const SingleSelect: Story = {
     fullWidth: false,
     value: '',
     variant: SelectVariant.Single,
-    displayMode: SelectDisplayMode.Menu,
   },
 };
 
@@ -149,6 +140,5 @@ export const SliderSelect: Story = {
     min: 0,
     max: 100,
     variant: SelectVariant.Slider,
-    displayMode: SelectDisplayMode.Menu,
   },
 };

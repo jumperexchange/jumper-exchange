@@ -36,7 +36,6 @@ export const SingleSelect = <T extends string>({
     <SelectBase
       {...rest}
       value={value}
-      title={title ?? label}
       onChange={handleChange}
       multiple={false}
       selectorContent={<SelectorLabel label={label} />}

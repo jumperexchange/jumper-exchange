@@ -71,7 +71,6 @@ export const MultiSelect = <T extends string[]>({
       {...rest}
       options={filteredOptions}
       value={value}
-      title={title ?? label}
       onChange={handleChange}
       selectorContent={
         <>

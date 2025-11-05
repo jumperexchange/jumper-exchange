@@ -1,9 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import { Select } from '../../core/form/Select/Select';
-import {
-  SelectDisplayMode,
-  SelectVariant,
-} from '../../core/form/Select/Select.types';
+import { SelectVariant } from '../../core/form/Select/Select.types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
 import {
   EarnFilterBarClearFiltersButton,
@@ -48,7 +45,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             label={t('earn.filter.chain')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-chain-select"
-            displayMode={SelectDisplayMode.Menu}
           />
         )}
         {protocolOptions.length > 0 && (
@@ -60,7 +56,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             label={t('earn.filter.protocol')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-protocol-select"
-            displayMode={SelectDisplayMode.Menu}
           />
         )}
 
@@ -73,7 +68,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             label={t('earn.filter.tag')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-tag-select"
-            displayMode={SelectDisplayMode.Menu}
           />
         )}
 
@@ -86,7 +80,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             label={t('earn.filter.asset')}
             variant={SelectVariant.Multi}
             data-testid="earn-filter-asset-select"
-            displayMode={SelectDisplayMode.Menu}
           />
         )}
 
@@ -100,7 +93,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             label={t('earn.filter.apy')}
             variant={SelectVariant.Slider}
             data-testid="earn-filter-apy-select"
-            displayMode={SelectDisplayMode.Menu}
           />
         )}
 

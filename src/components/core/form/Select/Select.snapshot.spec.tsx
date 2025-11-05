@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from '../../../../../vitest.setup';
 
 import { Select } from './Select';
-import { SelectDisplayMode, SelectOption, SelectVariant } from './Select.types';
+import { SelectOption, SelectVariant } from './Select.types';
 import { Avatar } from '../../AvatarStack/AvatarStack.styles';
 import { AvatarSkeleton } from '../../AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '../../AvatarStack/AvatarStack.types';
@@ -76,7 +76,6 @@ describe('Select snapshot', () => {
         value={[]}
         variant={SelectVariant.Multi}
         onChange={() => {}}
-        displayMode={SelectDisplayMode.Menu}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -92,7 +91,6 @@ describe('Select snapshot', () => {
         variant={SelectVariant.Multi}
         filterBy="chain"
         onChange={() => {}}
-        displayMode={SelectDisplayMode.Menu}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -107,7 +105,6 @@ describe('Select snapshot', () => {
         value={[]}
         variant={SelectVariant.Multi}
         onChange={() => {}}
-        displayMode={SelectDisplayMode.Menu}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -122,7 +119,6 @@ describe('Select snapshot', () => {
         value={[chainOptions[0].value]}
         variant={SelectVariant.Multi}
         onChange={() => {}}
-        displayMode={SelectDisplayMode.Menu}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -136,7 +132,6 @@ describe('Select snapshot', () => {
         value={''}
         variant={SelectVariant.Single}
         onChange={() => {}}
-        displayMode={SelectDisplayMode.Menu}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -153,7 +148,6 @@ describe('Select snapshot', () => {
         min={0}
         max={100}
         onChange={() => {}}
-        displayMode={SelectDisplayMode.Menu}
       />,
     );
     expect(container).toMatchSnapshot();

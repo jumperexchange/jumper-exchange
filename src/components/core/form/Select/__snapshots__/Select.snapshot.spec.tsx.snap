@@ -4,7 +4,6 @@ exports[`Select snapshot > matches snapshot 1`] = `
 <div>
   <div
     class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-1w4s959-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-    title="Type"
   >
     <div
       aria-expanded="false"
@@ -57,7 +56,6 @@ exports[`Select snapshot > matches snapshot with filter 1`] = `
 <div>
   <div
     class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-1w4s959-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-    title="Chain"
   >
     <div
       aria-expanded="false"
@@ -110,7 +108,6 @@ exports[`Select snapshot > matches snapshot with icons 1`] = `
 <div>
   <div
     class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-1w4s959-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-    title="Chain"
   >
     <div
       aria-expanded="false"
@@ -163,7 +160,6 @@ exports[`Select snapshot > matches snapshot with selected value 1`] = `
 <div>
   <div
     class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-1w4s959-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-    title="Chain"
   >
     <div
       aria-expanded="false"
@@ -225,7 +221,6 @@ exports[`Select snapshot > matches snapshot with single select 1`] = `
 <div>
   <div
     class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-1w4s959-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-    title="Popularity"
   >
     <div
       aria-expanded="false"
@@ -278,7 +273,6 @@ exports[`Select snapshot > matches snapshot with slider select 1`] = `
 <div>
   <div
     class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-colorPrimary MuiSelect-root css-1w4s959-MuiInputBase-root-MuiInput-root-MuiSelect-root"
-    title="APY"
   >
     <div
       aria-expanded="false"
