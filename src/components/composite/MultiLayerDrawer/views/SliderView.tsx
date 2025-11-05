@@ -10,6 +10,8 @@ import {
 } from 'src/components/core/form/Select/Select.styles';
 import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
+import { toFixedFractionDigits } from 'src/utils/formatNumbers';
+import { useMemo } from 'react';
 
 export interface SliderViewProps {
   category: LeafCategory<number[]>;
@@ -21,6 +23,9 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
   const min = category.min ?? 0;
   const max = category.max ?? 100;
   const value = category.value || [min, max];
+  const [displayMin, displayMax] = [min, max].map((v) =>
+    toFixedFractionDigits(v, 0, 2),
+  );
 
   const isValueSelected = value[0] !== min || value[1] !== max;
 
@@ -36,11 +41,15 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
     }
   };
 
+  const formattedValue = useMemo(() => {
+    return value.map((v) => toFixedFractionDigits(v, 0, 2));
+  }, [value]);
+
   return (
     <Stack direction="column" width="100%" gap={1}>
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyMediumStrong">
-          {`${formatSliderValue(value)} ${category.label}`}
+          {`${formatSliderValue(formattedValue)} ${category.label}`}
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
@@ -65,8 +74,8 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
             max={max}
           />
           <StyledSliderRangeContainer>
-            <Typography variant="bodyXSmall">{min}</Typography>
-            <Typography variant="bodyXSmall">{max}</Typography>
+            <Typography variant="bodyXSmall">{displayMin}</Typography>
+            <Typography variant="bodyXSmall">{displayMax}</Typography>
           </StyledSliderRangeContainer>
         </StyledSliderContainer>
       </StyledMultiSelectFiltersContainer>

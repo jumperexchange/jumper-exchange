@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
 import { SortByEnum } from 'src/app/ui/earn/types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
+import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 
 interface PendingFilterValues {
   chains: string[];
@@ -102,7 +103,9 @@ export const EarnFilterBarContentAllTablet = () => {
     !isNaN(usedApyMinValue) &&
     !isNaN(usedApyMaxValue) &&
     (usedApyMinValue !== apyMin || usedApyMaxValue !== apyMax)
-      ? formatSliderValue(pendingValues.apy)
+      ? formatSliderValue(
+          pendingValues.apy.map((value) => toFixedFractionDigits(value, 0, 2)),
+        )
       : undefined;
 
   const categories: CategoryConfig[] = [];
