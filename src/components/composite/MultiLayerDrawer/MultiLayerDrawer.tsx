@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useImperativeHandle } from 'react';
 import { FullScreenDrawer } from 'src/components/core/FullScreenDrawer/FullScreenDrawer';
 import { useFullScreenDrawer } from 'src/components/core/FullScreenDrawer/hooks';
 import Stack from '@mui/material/Stack';
@@ -32,6 +32,7 @@ import { SelectBadge } from 'src/components/core/form/Select/components/SelectBa
  * Supports unlimited nesting depth through recursive category structure.
  */
 export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
+  ref,
   categories,
   title,
   applyButtonLabel = 'Apply',
@@ -43,10 +44,20 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
   disableApply = false,
   testId = 'multi-layer-drawer',
   showFooter = true,
+  defaultTriggerSx,
   triggerButton,
   appliedFiltersCount,
 }) => {
   const { isOpen, open, close } = useFullScreenDrawer();
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      open,
+      close,
+    }),
+    [open, close],
+  );
 
   const [navigationPath, setNavigationPath] = useState<number[]>([]);
 
@@ -126,7 +137,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
       {triggerButton ? (
         triggerButton
       ) : (
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" gap={1} sx={defaultTriggerSx}>
           {hasFilterApplied && (
             <MultiLayerDrawerIconButton
               onClick={onClear}

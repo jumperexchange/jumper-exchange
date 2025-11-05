@@ -25,7 +25,7 @@ export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
   };
 
   return (
-    <Stack direction="column" spacing={1} sx={{ flex: 1, overflowY: 'auto' }}>
+    <Stack direction="column" spacing={2} sx={{ flex: 1, overflowY: 'auto' }}>
       {options.map((option) => {
         const isSelected = value === option.value;
 
@@ -39,9 +39,13 @@ export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
             onClick={() => handleSelect(option.value)}
             disabled={option.disabled}
           >
-            <StyledMenuItemContentContainer>
+            <StyledMenuItemContentContainer size="medium">
               {option.icon}
-              <SelectorLabel label={option.label} labelVariant="bodyMedium" />
+              <SelectorLabel
+                label={option.label}
+                labelVariant="bodyMedium"
+                size="medium"
+              />
             </StyledMenuItemContentContainer>
             {isSelected && (
               <CheckIcon

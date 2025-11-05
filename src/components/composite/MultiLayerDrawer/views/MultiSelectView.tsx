@@ -113,7 +113,7 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
         </StyledMultiSelectFiltersContainer>
       )}
 
-      <Stack direction="column" spacing={1} sx={{ flex: 1, overflowY: 'auto' }}>
+      <Stack direction="column" spacing={2} sx={{ flex: 1, overflowY: 'auto' }}>
         {filteredOptions.map((option) => {
           const isSelected = value.includes(option.value);
 
@@ -126,9 +126,13 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
               sx={option.sx}
               onClick={() => handleToggle(option.value)}
             >
-              <StyledMenuItemContentContainer>
+              <StyledMenuItemContentContainer size="medium">
                 {option.icon}
-                <SelectorLabel label={option.label} labelVariant="bodyMedium" />
+                <SelectorLabel
+                  label={option.label}
+                  labelVariant="bodyMedium"
+                  size="medium"
+                />
               </StyledMenuItemContentContainer>
               {isSelected && (
                 <CheckIcon

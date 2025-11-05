@@ -4,12 +4,14 @@ import { StyledLabelContainer } from '../Select.styles';
 export const SelectorLabel = ({
   label,
   labelVariant,
+  size = 'small',
 }: {
   label: string;
   labelVariant?: TypographyProps['variant'];
+  size?: 'small' | 'medium';
 }) => {
   return (
-    <StyledLabelContainer>
+    <StyledLabelContainer size={size}>
       <Typography variant={labelVariant || 'bodySmallStrong'}>
         {label}
       </Typography>

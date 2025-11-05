@@ -17,7 +17,7 @@ import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import { Badge } from '../Badge/Badge';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { EarnFilterBarContentAllMobile } from './layouts/EarnFilterBarContentAllMobile';
+import { EarnFilterBarContentAllTablet } from './layouts/EarnFilterBarContentAllTablet';
 import { EarnFilterBarContentAllDesktop } from './layouts/EarnFilterBarContentAllDesktop';
 import { useTranslation } from 'react-i18next';
 
@@ -33,7 +33,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   isLoading,
 }) => {
   const { showForYou, toggleForYou } = useEarnFiltering();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { t } = useTranslation();
 
   const tabOptions: HorizontalTabItem[] = [
@@ -44,7 +44,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
     },
     {
       value: 'all',
-      label: t(`earn.views.${isMobile ? 'all' : 'allMarkets'}`),
+      label: t(`earn.views.${isTablet ? 'all' : 'allMarkets'}`),
       'data-testid': 'earn-filter-tab-all',
     },
   ];
@@ -76,16 +76,16 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
           })}
         />
         {/* TODO: add latest update in backend and render here */}
-        {!isMobile && (
+        {!isTablet && (
           <Badge
             variant={BadgeVariant.Secondary}
             size={BadgeSize.SM}
             label="Updated 12 hours ago"
           />
         )}
-        {isMobile && <EarnFilterBarContentAllMobile />}
+        {isTablet && !showForYou && <EarnFilterBarContentAllTablet />}
       </EarnFilterBarHeaderContainer>
-      {!isMobile && (
+      {!isTablet && (
         <EarnFilterBarContent>
           <Stack direction="row" gap={1} alignItems="center" flexShrink={0}>
             <EarnListMode variant={variant} setVariant={setVariant} />

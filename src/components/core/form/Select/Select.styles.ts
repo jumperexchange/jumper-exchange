@@ -6,6 +6,10 @@ import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import { ButtonTertiary } from 'src/components/Button/Button.style';
 
+interface BaseSizeProps {
+  size?: 'small' | 'medium';
+}
+
 export const StyledSelect = styled(Select)(({ theme }) => ({
   '&.MuiSelect-root': {
     padding: 0,
@@ -36,17 +40,29 @@ export const StyledSelectorContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.1, 0.25),
 }));
 
-export const StyledLabelContainer = styled(Box)(({ theme }) => ({
+export const StyledLabelContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        padding: theme.spacing(0.5, 1),
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: 0,
+      },
+    },
+  ],
 }));
-
-interface StyledMenuItemProps {
-  size?: 'small' | 'medium';
-}
 
 export const StyledMenuItem = styled(MenuItem, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<StyledMenuItemProps>(({ theme, size }) => ({
+})<BaseSizeProps>(({ theme, size }) => ({
   padding: theme.spacing(0.75),
   '&:hover': {
     backgroundColor: 'transparent',
@@ -71,19 +87,31 @@ export const StyledMenuItem = styled(MenuItem, {
   ],
 }));
 
-export const StyledMenuItemContentContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(0.25),
+export const StyledMenuItemContentContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme, size }) => ({
   display: 'flex',
   alignItems: 'center',
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        padding: theme.spacing(0.25),
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: 0,
+        gap: theme.spacing(1.5),
+      },
+    },
+  ],
 }));
-
-interface StyledMultiSelectFiltersContainerProps {
-  size?: 'small' | 'medium';
-}
 
 export const StyledMultiSelectFiltersContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<StyledMultiSelectFiltersContainerProps>(({ theme }) => ({
+})<BaseSizeProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -138,13 +166,9 @@ export const StyledMultiSelectFiltersClearButton = styled(ButtonTertiary)(
   }),
 );
 
-interface StyledMultiSelectFiltersInputProps {
-  size?: 'small' | 'medium';
-}
-
 export const StyledMultiSelectFiltersInput = styled(InputBase, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<StyledMultiSelectFiltersInputProps>(({ theme, size }) => ({
+})<BaseSizeProps>(({ theme, size }) => ({
   width: '100%',
   padding: theme.spacing(1.25, 1.5),
   borderRadius: theme.shape.inputTextBorderRadius,

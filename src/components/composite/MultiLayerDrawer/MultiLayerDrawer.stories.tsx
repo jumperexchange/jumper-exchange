@@ -14,6 +14,7 @@ import {
   protocolOptions,
   tagOptions,
   sortOptions,
+  assetOptions,
 } from './fixtures';
 
 const meta: Meta<typeof MultiLayerDrawer> = {
@@ -40,6 +41,7 @@ const EarnFiltersTemplate = () => {
     protocols: [] as string[],
     tags: [] as string[],
     apy: [0, 100] as number[],
+    assets: [] as string[],
     sortBy: 'apy-high' as string,
   });
 
@@ -61,6 +63,7 @@ const EarnFiltersTemplate = () => {
         protocols: [],
         tags: [],
         apy: [0, 100],
+        assets: [],
         sortBy: 'apy-high',
       });
       console.log('Cleared all filters');
@@ -70,6 +73,7 @@ const EarnFiltersTemplate = () => {
         values.chains.length > 0 ||
         values.protocols.length > 0 ||
         values.tags.length > 0 ||
+        values.assets.length > 0 ||
         values.apy[0] !== 0 ||
         values.apy[1] !== 100
       );
@@ -80,6 +84,7 @@ const EarnFiltersTemplate = () => {
     appliedFilters.chains.length +
     appliedFilters.protocols.length +
     appliedFilters.tags.length +
+    appliedFilters.assets.length +
     (appliedFilters.apy[0] !== 0 || appliedFilters.apy[1] !== 100 ? 1 : 0);
 
   const chainBadge =
@@ -93,6 +98,10 @@ const EarnFiltersTemplate = () => {
   const tagBadge =
     pendingValues.tags.length > 0
       ? pendingValues.tags.length.toString()
+      : undefined;
+  const assetBadge =
+    pendingValues.assets.length > 0
+      ? pendingValues.assets.length.toString()
       : undefined;
   const apyBadge =
     pendingValues.apy[0] !== 0 || pendingValues.apy[1] !== 100
@@ -133,6 +142,16 @@ const EarnFiltersTemplate = () => {
       onChange: (value: string[]) => setPendingValue('tags', value),
       options: tagOptions,
       testId: 'tag-filter',
+    },
+    {
+      id: 'asset',
+      label: 'Asset',
+      badgeLabel: assetBadge,
+      contentType: CategoryContentType.MultiSelect,
+      value: pendingValues.assets,
+      onChange: (value: string[]) => setPendingValue('assets', value),
+      options: assetOptions,
+      testId: 'asset-filter',
     },
     {
       id: 'apy',

@@ -9,6 +9,7 @@ import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hoo
 import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
 import { SortByEnum } from 'src/app/ui/earn/types';
+import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
 
 interface PendingFilterValues {
   chains: string[];
@@ -19,9 +20,7 @@ interface PendingFilterValues {
   sortBy: SortByEnum;
 }
 
-export const EarnFilterBarContentAllMobile: FC<PropsWithChildren> = ({
-  children,
-}) => {
+export const EarnFilterBarContentAllTablet = () => {
   const { t } = useTranslation();
   const {
     chainOptions,
@@ -200,8 +199,7 @@ export const EarnFilterBarContentAllMobile: FC<PropsWithChildren> = ({
   }
 
   return (
-    <>
-      {children}
+    <EarnAnimatedLayoutContainer useStackWrapper={false}>
       <MultiLayerDrawer
         categories={categories}
         title={t('earn.filter.filterAndSort')}
@@ -214,7 +212,8 @@ export const EarnFilterBarContentAllMobile: FC<PropsWithChildren> = ({
         disableApply={!hasPendingFiltersApplied}
         disableClear={!hasPendingFiltersApplied}
         testId="earn-filters-mobile-drawer"
+        defaultTriggerSx={{ justifyContent: 'flex-end' }}
       />
-    </>
+    </EarnAnimatedLayoutContainer>
   );
 };

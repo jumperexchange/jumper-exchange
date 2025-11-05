@@ -1,3 +1,4 @@
+import { SxProps, Theme } from '@mui/material/styles';
 import { ReactNode } from 'react';
 
 /**
@@ -124,6 +125,11 @@ export interface BreadcrumbItem {
  * Props for MultiLayerDrawer component
  */
 export interface MultiLayerDrawerProps {
+  /** Ref for the drawer */
+  ref?: React.RefObject<{ open: () => void; close: () => void }>;
+  /** Default trigger button sx */
+  defaultTriggerSx?: SxProps<Theme>;
+  /** Trigger button to open the drawer */
   triggerButton?: ReactNode;
   /** Root level categories */
   categories: CategoryConfig[];
