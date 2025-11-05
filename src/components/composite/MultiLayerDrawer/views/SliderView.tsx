@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { LeafCategory } from '../../MultiLayerDrawer.types';
+import { LeafCategory } from '../MultiLayerDrawer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -15,14 +15,6 @@ export interface SliderViewProps {
   category: LeafCategory<number[]>;
 }
 
-/**
- * SliderView - Renders a range slider
- *
- * Features:
- * - Shows current range value
- * - Clear button to reset to min/max
- * - Formatted display of values
- */
 export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
   const { t } = useTranslation();
 
@@ -46,14 +38,13 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
 
   return (
     <Stack direction="column" width="100%" gap={1}>
-      {/* Header with current value and clear button */}
       <StyledMultiSelectFiltersContainer>
-        <Typography variant="bodyXSmallStrong">
+        <Typography variant="bodyMediumStrong">
           {`${formatSliderValue(value)} ${category.label}`}
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
-          size="small"
+          size="medium"
           data-testid={`${category.testId}-clear-button`}
           onClick={handleClear}
         >
@@ -61,8 +52,9 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
 
-      {/* Slider */}
-      <StyledMultiSelectFiltersContainer sx={{ height: 'auto' }}>
+      <StyledMultiSelectFiltersContainer
+        sx={{ height: 'auto', padding: (theme) => theme.spacing(2) }}
+      >
         <StyledSliderContainer>
           <StyledSlider
             getAriaLabel={() => `${category.label} range`}

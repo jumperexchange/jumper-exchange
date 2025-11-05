@@ -90,7 +90,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {apyMin !== apyMax && (
+        {!isNaN(apyMin) && !isNaN(apyMax) && apyMin !== apyMax && (
           <Select
             options={[]}
             value={[apyMinValue, apyMaxValue]}

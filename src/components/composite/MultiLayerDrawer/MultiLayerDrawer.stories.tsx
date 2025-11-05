@@ -5,15 +5,27 @@ import {
   CategoryContentType,
   CategoryOption,
 } from './MultiLayerDrawer.types';
-import { usePendingFilters } from './hooks/usePendingFilters';
 import { useState } from 'react';
 import Stack from '@mui/material/Stack';
+import { formatSliderValue } from 'src/components/core/form/Select/utils';
+import { usePendingFilters } from './hooks';
+import {
+  chainOptions,
+  protocolOptions,
+  tagOptions,
+  sortOptions,
+} from './fixtures';
 
 const meta: Meta<typeof MultiLayerDrawer> = {
   title: 'Composite/MultiLayerDrawer',
   component: MultiLayerDrawer,
   parameters: {
-    layout: 'centered',
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/',
+      },
+    },
   },
   tags: ['autodocs'],
 };
@@ -21,167 +33,54 @@ const meta: Meta<typeof MultiLayerDrawer> = {
 export default meta;
 type Story = StoryObj<typeof MultiLayerDrawer>;
 
-// Simple mock options without external dependencies
-const chainOptions: CategoryOption[] = [
-  { value: '1', label: 'Ethereum' },
-  { value: '42161', label: 'Arbitrum' },
-  { value: '137', label: 'Polygon' },
-  { value: '10', label: 'Optimism' },
-  { value: '56', label: 'BSC' },
-];
+// Story 1: Earn Filters (with pending filters pattern)
+const EarnFiltersTemplate = () => {
+  const [appliedFilters, setAppliedFilters] = useState({
+    chains: [] as string[],
+    protocols: [] as string[],
+    tags: [] as string[],
+    apy: [0, 100] as number[],
+    sortBy: 'apy-high' as string,
+  });
 
-const protocolOptions: CategoryOption[] = [
-  { value: 'aave', label: 'Aave' },
-  { value: 'compound', label: 'Compound' },
-  { value: 'lido', label: 'Lido' },
-  { value: 'uniswap', label: 'Uniswap' },
-];
-
-const tagOptions: CategoryOption[] = [
-  { value: 'stable', label: 'Stable Coin' },
-  { value: 'liquid-staking', label: 'Liquid Staking' },
-  { value: 'lending', label: 'Lending' },
-  { value: 'farming', label: 'Yield Farming' },
-];
-
-const sortOptions: CategoryOption[] = [
-  { value: 'apy', label: 'APY (Highest)' },
-  { value: 'tvl', label: 'TVL (Highest)' },
-  { value: 'popular', label: 'Most Popular' },
-];
-
-// Story 1: Basic Flat Structure
-const FlatStructureTemplate = () => {
-  const [selectedChains, setSelectedChains] = useState<string[]>([]);
-  const [selectedProtocols, setSelectedProtocols] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [apyRange, setApyRange] = useState<number[]>([0, 100]);
-  const [sortBy, setSortBy] = useState<string>('apy');
-
-  const chainBadge =
-    selectedChains.length > 0 ? selectedChains.length.toString() : undefined;
-  const protocolBadge =
-    selectedProtocols.length > 0
-      ? selectedProtocols.length.toString()
-      : undefined;
-  const tagBadge =
-    selectedTags.length > 0 ? selectedTags.length.toString() : undefined;
-  const apyBadge = apyRange[0] !== 0 || apyRange[1] !== 100 ? '1' : undefined;
-
-  const categories: CategoryConfig[] = [
-    {
-      id: 'chain',
-      label: 'Chain',
-      badgeLabel: chainBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: selectedChains,
-      onChange: setSelectedChains,
-      options: chainOptions,
-      searchable: true,
-      searchPlaceholder: 'Search chains...',
-      testId: 'chain-view',
-    },
-    {
-      id: 'protocol',
-      label: 'Protocol',
-      badgeLabel: protocolBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: selectedProtocols,
-      onChange: setSelectedProtocols,
-      options: protocolOptions,
-      searchable: true,
-      searchPlaceholder: 'Search protocols...',
-      testId: 'protocol-view',
-    },
-    {
-      id: 'tag',
-      label: 'Tag',
-      badgeLabel: tagBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: selectedTags,
-      onChange: setSelectedTags,
-      options: tagOptions,
-      searchable: false,
-      testId: 'tag-view',
-    },
-    {
-      id: 'apy',
-      label: 'APY',
-      badgeLabel: apyBadge,
-      contentType: CategoryContentType.Slider,
-      value: apyRange,
-      onChange: setApyRange,
-      min: 0,
-      max: 100,
-      testId: 'apy-view',
-    },
-    {
-      id: 'sortBy',
-      label: 'Sort By',
-      contentType: CategoryContentType.SingleSelect,
-      value: sortBy,
-      onChange: setSortBy,
-      options: sortOptions,
-      testId: 'sort-view',
-    },
-  ];
-
-  return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
-      <MultiLayerDrawer
-        categories={categories}
-        title="Filter & Sort"
-        applyButtonLabel="Apply Filters"
-        clearButtonLabel="Clear All"
-        onApply={() => console.log('Applied views')}
-        onClear={() => {
-          setSelectedChains([]);
-          setSelectedProtocols([]);
-          setSelectedTags([]);
-          setApyRange([0, 100]);
-          setSortBy('apy');
-        }}
-        testId="flat-structure-drawer"
-      />
-    </Stack>
-  );
-};
-
-export const FlatStructure: Story = {
-  render: () => <FlatStructureTemplate />,
-};
-
-// Story 2: With Pending Filters (Mobile UX Pattern)
-const WithPendingFiltersTemplate = () => {
   const {
     pendingValues,
     setPendingValue,
     applyFilters,
     clearAll,
-    hasFiltersApplied,
+    hasPendingFiltersApplied,
   } = usePendingFilters({
-    initialValues: {
-      chains: [] as string[],
-      protocols: [] as string[],
-      apy: [0, 100] as number[],
-      sortBy: 'apy' as string,
-    },
+    initialValues: appliedFilters,
     onApply: (values) => {
-      console.log('Applying views:', values);
-      alert(`Views applied! Check console for values.`);
+      setAppliedFilters(values);
+      console.log('Applied filters:', values);
     },
     onClear: () => {
-      console.log('Clearing all views');
+      setAppliedFilters({
+        chains: [],
+        protocols: [],
+        tags: [],
+        apy: [0, 100],
+        sortBy: 'apy-high',
+      });
+      console.log('Cleared all filters');
     },
     isFilterApplied: (values) => {
       return (
         values.chains.length > 0 ||
         values.protocols.length > 0 ||
+        values.tags.length > 0 ||
         values.apy[0] !== 0 ||
         values.apy[1] !== 100
       );
     },
   });
+
+  const appliedFiltersCount =
+    appliedFilters.chains.length +
+    appliedFilters.protocols.length +
+    appliedFilters.tags.length +
+    (appliedFilters.apy[0] !== 0 || appliedFilters.apy[1] !== 100 ? 1 : 0);
 
   const chainBadge =
     pendingValues.chains.length > 0
@@ -191,9 +90,13 @@ const WithPendingFiltersTemplate = () => {
     pendingValues.protocols.length > 0
       ? pendingValues.protocols.length.toString()
       : undefined;
+  const tagBadge =
+    pendingValues.tags.length > 0
+      ? pendingValues.tags.length.toString()
+      : undefined;
   const apyBadge =
     pendingValues.apy[0] !== 0 || pendingValues.apy[1] !== 100
-      ? '1'
+      ? formatSliderValue(pendingValues.apy)
       : undefined;
 
   const categories: CategoryConfig[] = [
@@ -206,7 +109,8 @@ const WithPendingFiltersTemplate = () => {
       onChange: (value: string[]) => setPendingValue('chains', value),
       options: chainOptions,
       searchable: true,
-      testId: 'chain-view-pending',
+      searchPlaceholder: 'Search chains...',
+      testId: 'chain-filter',
     },
     {
       id: 'protocol',
@@ -217,7 +121,18 @@ const WithPendingFiltersTemplate = () => {
       onChange: (value: string[]) => setPendingValue('protocols', value),
       options: protocolOptions,
       searchable: true,
-      testId: 'protocol-view-pending',
+      searchPlaceholder: 'Search protocols...',
+      testId: 'protocol-filter',
+    },
+    {
+      id: 'tag',
+      label: 'Tag',
+      badgeLabel: tagBadge,
+      contentType: CategoryContentType.MultiSelect,
+      value: pendingValues.tags,
+      onChange: (value: string[]) => setPendingValue('tags', value),
+      options: tagOptions,
+      testId: 'tag-filter',
     },
     {
       id: 'apy',
@@ -228,7 +143,7 @@ const WithPendingFiltersTemplate = () => {
       onChange: (value: number[]) => setPendingValue('apy', value),
       min: 0,
       max: 100,
-      testId: 'apy-view-pending',
+      testId: 'apy-filter',
     },
     {
       id: 'sortBy',
@@ -237,7 +152,7 @@ const WithPendingFiltersTemplate = () => {
       value: pendingValues.sortBy,
       onChange: (value: string) => setPendingValue('sortBy', value),
       options: sortOptions,
-      testId: 'sort-view-pending',
+      testId: 'sort-filter',
     },
   ];
 
@@ -250,175 +165,169 @@ const WithPendingFiltersTemplate = () => {
         clearButtonLabel="Clear All"
         onApply={applyFilters}
         onClear={clearAll}
-        disableClear={!hasFiltersApplied}
-        disableApply={!hasFiltersApplied}
-        testId="pending-filters-drawer"
+        disableApply={!hasPendingFiltersApplied}
+        disableClear={!hasPendingFiltersApplied}
+        testId="earn-filters-drawer"
+        appliedFiltersCount={appliedFiltersCount}
       />
     </Stack>
   );
 };
 
-export const WithPendingFilters: Story = {
-  render: () => <WithPendingFiltersTemplate />,
+export const EarnFilters: Story = {
+  render: () => <EarnFiltersTemplate />,
 };
 
-// Story 3: Nested Categories (Multi-Layer)
-const NestedStructureTemplate = () => {
-  const [ethChains, setEthChains] = useState<string[]>([]);
-  const [l2Chains, setL2Chains] = useState<string[]>([]);
-  const [protocols, setProtocols] = useState<string[]>([]);
+// Story 2: Nested Filters with 2 Layers
+const NestedFiltersTemplate = () => {
+  const [selectedNetwork, setSelectedNetwork] = useState<string>('ethereum');
+  const [selectedChains, setSelectedChains] = useState<string[]>([]);
 
   const categories: CategoryConfig[] = [
     {
-      id: 'blockchain',
-      label: 'Blockchain Networks',
+      id: 'networks',
+      label: 'Networks',
       badgeLabel:
-        ethChains.length + l2Chains.length > 0
-          ? (ethChains.length + l2Chains.length).toString()
+        selectedChains.length > 0
+          ? selectedChains.length.toString()
           : undefined,
       subcategories: [
         {
           id: 'ethereum',
-          label: 'Ethereum Mainnet',
-          badgeLabel:
-            ethChains.length > 0 ? ethChains.length.toString() : undefined,
-          contentType: CategoryContentType.MultiSelect,
-          value: ethChains,
-          onChange: setEthChains,
-          options: [{ value: '1', label: 'Ethereum' }],
-          testId: 'ethereum-view',
+          label: 'Ethereum Ecosystem',
+          contentType: CategoryContentType.SingleSelect,
+          value: selectedNetwork,
+          onChange: setSelectedNetwork,
+          options: [
+            { value: 'ethereum', label: 'Ethereum Mainnet' },
+            { value: 'goerli', label: 'Goerli Testnet' },
+            { value: 'sepolia', label: 'Sepolia Testnet' },
+          ],
+          testId: 'ethereum-select',
         },
         {
           id: 'layer2',
-          label: 'Layer 2 Solutions',
-          badgeLabel:
-            l2Chains.length > 0 ? l2Chains.length.toString() : undefined,
-          subcategories: [
-            {
-              id: 'optimistic',
-              label: 'Optimistic Rollups',
-              contentType: CategoryContentType.MultiSelect,
-              value: l2Chains,
-              onChange: setL2Chains,
-              options: [
-                { value: '42161', label: 'Arbitrum' },
-                { value: '10', label: 'Optimism' },
-              ],
-              testId: 'optimistic-view',
-            },
-            {
-              id: 'zk',
-              label: 'ZK Rollups',
-              contentType: CategoryContentType.MultiSelect,
-              value: [],
-              onChange: (value) => console.log('ZK:', value),
-              options: [
-                { value: 'zksync', label: 'zkSync Era' },
-                { value: 'starknet', label: 'Starknet' },
-              ],
-              testId: 'zk-view',
-            },
+          label: 'Layer 2',
+          contentType: CategoryContentType.MultiSelect,
+          value: selectedChains,
+          onChange: setSelectedChains,
+          options: [
+            { value: '42161', label: 'Arbitrum' },
+            { value: '10', label: 'Optimism' },
+            { value: '8453', label: 'Base' },
           ],
+          searchable: true,
+          testId: 'layer2-multiselect',
         },
       ],
     },
-    {
-      id: 'protocol',
-      label: 'DeFi Protocols',
-      badgeLabel:
-        protocols.length > 0 ? protocols.length.toString() : undefined,
-      contentType: CategoryContentType.MultiSelect,
-      value: protocols,
-      onChange: setProtocols,
-      options: protocolOptions,
-      searchable: true,
-      testId: 'protocol-view-nested',
-    },
   ];
+
+  const handleClear = () => {
+    setSelectedNetwork('ethereum');
+    setSelectedChains([]);
+  };
+
+  const handleApply = () => {
+    console.log('Applied filters:', {
+      network: selectedNetwork,
+      chains: selectedChains,
+    });
+  };
 
   return (
     <Stack gap={2} sx={{ width: 400, padding: 3 }}>
       <MultiLayerDrawer
         categories={categories}
-        title="Advanced Filters"
+        title="Network Filters"
         applyButtonLabel="Apply"
         clearButtonLabel="Reset"
-        onApply={() => console.log('Applied nested filters')}
-        onClear={() => {
-          setEthChains([]);
-          setL2Chains([]);
-          setProtocols([]);
-        }}
-        testId="nested-structure-drawer"
+        onApply={handleApply}
+        onClear={handleClear}
+        testId="nested-filters-drawer"
       />
     </Stack>
   );
 };
 
-export const NestedStructure: Story = {
-  render: () => <NestedStructureTemplate />,
+export const NestedFilters: Story = {
+  render: () => <NestedFiltersTemplate />,
 };
 
-// Story 4: Custom Content
-const CustomContentTemplate = () => {
-  const [customValue, setCustomValue] = useState({
-    setting1: true,
-    setting2: false,
-  });
+// Story 3: Main Menu Navigation (based on actual Jumper menu)
+const MainMenuTemplate = () => {
+  const [selectedTheme, setSelectedTheme] = useState<string>('auto');
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
 
   const categories: CategoryConfig[] = [
     {
-      id: 'chains',
-      label: 'Select Chains',
-      contentType: CategoryContentType.MultiSelect,
-      value: [],
-      onChange: (value) => console.log('chains:', value),
-      options: chainOptions.slice(0, 3),
-      testId: 'chains-custom',
+      id: 'learn',
+      label: 'Learn',
+      href: '/learn',
+      testId: 'learn-menu',
     },
     {
-      id: 'custom',
-      label: 'Custom Settings',
-      contentType: CategoryContentType.Custom,
-      value: customValue,
-      onChange: setCustomValue,
-      render: ({ value, onChange }) => (
-        <Stack gap={2} sx={{ padding: 2 }}>
-          <div
-            style={{
-              padding: 16,
-              background: 'rgba(255,255,255,0.1)',
-              borderRadius: 8,
-            }}
-          >
-            <h3 style={{ margin: '0 0 16px 0' }}>Custom Content Area</h3>
-            <p>You can render any custom React content here!</p>
-            <Stack gap={1} sx={{ marginTop: 2 }}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={value.setting1}
-                  onChange={(e) =>
-                    onChange({ ...value, setting1: e.target.checked })
-                  }
-                />
-                {' Setting 1'}
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={value.setting2}
-                  onChange={(e) =>
-                    onChange({ ...value, setting2: e.target.checked })
-                  }
-                />
-                {' Setting 2'}
-              </label>
-            </Stack>
-          </div>
-        </Stack>
-      ),
-      testId: 'custom-content',
+      id: 'scan',
+      label: 'Scan',
+      href: '/scan',
+      testId: 'scan-menu',
+    },
+    {
+      id: 'support',
+      label: 'Support',
+      onClick: () => console.log('Support clicked'),
+      testId: 'support-menu',
+    },
+    {
+      id: 'theme',
+      label: 'Theme',
+      contentType: CategoryContentType.SingleSelect,
+      value: selectedTheme,
+      onChange: setSelectedTheme,
+      options: [
+        { value: 'light', label: 'Light Mode' },
+        { value: 'dark', label: 'Dark Mode' },
+        { value: 'auto', label: 'Auto (System)' },
+      ],
+      testId: 'theme-select',
+    },
+    {
+      id: 'language',
+      label: 'Language',
+      contentType: CategoryContentType.SingleSelect,
+      value: selectedLanguage,
+      onChange: setSelectedLanguage,
+      options: [
+        { value: 'en', label: 'English' },
+        { value: 'es', label: 'Español' },
+        { value: 'fr', label: 'Français' },
+        { value: 'de', label: 'Deutsch' },
+        { value: 'zh', label: '中文' },
+        { value: 'ja', label: '日本語' },
+        { value: 'ko', label: '한국어' },
+        { value: 'pt', label: 'Português' },
+      ],
+      searchable: true,
+      searchPlaceholder: 'Search languages...',
+      testId: 'language-select',
+    },
+    {
+      id: 'resources',
+      label: 'Resources',
+      subcategories: [
+        {
+          id: 'docs',
+          label: 'Documentation',
+          href: '/docs',
+          testId: 'docs-menu',
+        },
+        {
+          id: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/jumper-exchange',
+          testId: 'github-menu',
+        },
+      ],
     },
   ];
 
@@ -426,64 +335,14 @@ const CustomContentTemplate = () => {
     <Stack gap={2} sx={{ width: 400, padding: 3 }}>
       <MultiLayerDrawer
         categories={categories}
-        title="Custom Content Example"
-        applyButtonLabel="Save"
-        clearButtonLabel="Reset"
-        onApply={() => console.log('Custom value:', customValue)}
-        onClear={() => setCustomValue({ setting1: true, setting2: false })}
-        testId="custom-content-drawer"
-      />
-    </Stack>
-  );
-};
-
-export const CustomContent: Story = {
-  render: () => <CustomContentTemplate />,
-};
-
-// Story 5: Without Footer
-const NoFooterTemplate = () => {
-  const categories: CategoryConfig[] = [
-    {
-      id: 'info',
-      label: 'Information',
-      contentType: CategoryContentType.Custom,
-      render: () => (
-        <Stack gap={2} sx={{ padding: 2 }}>
-          <p>This drawer has no footer buttons.</p>
-          <p>
-            Useful for read-only views or when actions are embedded in the
-            content.
-          </p>
-        </Stack>
-      ),
-      testId: 'info',
-    },
-  ];
-
-  return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
-      <MultiLayerDrawer
-        categories={categories}
-        title="No Footer Example"
+        title="Main Menu"
         showFooter={false}
-        testId="no-footer-drawer"
+        testId="main-menu-drawer"
       />
     </Stack>
   );
 };
 
-export const WithoutFooter: Story = {
-  render: () => <NoFooterTemplate />,
-};
-
-// Story 6: Empty State
-export const EmptyState: Story = {
-  args: {
-    categories: [],
-    title: 'No Filters Available',
-    applyButtonLabel: 'Apply',
-    clearButtonLabel: 'Clear',
-    testId: 'empty-drawer',
-  },
+export const MainMenu: Story = {
+  render: () => <MainMenuTemplate />,
 };

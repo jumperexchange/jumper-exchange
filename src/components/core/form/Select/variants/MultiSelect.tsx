@@ -102,6 +102,7 @@ export const MultiSelect = <T extends string[]>({
           }}
         >
           <StyledMultiSelectFiltersInput
+            name="search"
             startAdornment={
               <SearchIcon
                 sx={(theme) => ({

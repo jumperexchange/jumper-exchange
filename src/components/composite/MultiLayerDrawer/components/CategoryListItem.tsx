@@ -8,51 +8,50 @@ import {
 import {
   CategoryListItemContainer,
   CategoryListItemContent,
-  CategoryListItemLabel,
-  CategoryListItemBadge,
+  MultiLayerDrawerFilterBadge,
 } from '../MultiLayerDrawer.styles';
+import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/navigation';
 
 export interface CategoryListItemProps {
   category: CategoryConfig;
   onClick: () => void;
 }
 
-/**
- * CategoryListItem - Renders a single category in the list
- *
- * Shows:
- * - Icon (if provided)
- * - Label
- * - Badge (if provided)
- * - Chevron > icon (if category is navigable - has subcategories or is a leaf category)
- */
 export const CategoryListItem: React.FC<CategoryListItemProps> = ({
   category,
   onClick,
 }) => {
-  // Show chevron for both subcategories and leaf categories (both are navigable)
+  const router = useRouter();
   const showChevron = hasSubcategories(category) || isLeafCategory(category);
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (category.href) {
+      router.push(category.href);
+    } else if (category.onClick) {
+      category.onClick();
+    } else {
+      onClick();
+    }
+  };
+
   return (
-    <CategoryListItemContainer onClick={onClick} data-testid={category.testId}>
+    <CategoryListItemContainer
+      onClick={handleClick}
+      data-testid={category.testId}
+      disableRipple
+    >
       <CategoryListItemContent>
         {category.icon && <Stack sx={{ flexShrink: 0 }}>{category.icon}</Stack>}
-        <CategoryListItemLabel>{category.label}</CategoryListItemLabel>
+        <Typography variant="bodyMedium">{category.label}</Typography>
       </CategoryListItemContent>
 
       <Stack direction="row" gap={1} alignItems="center">
         {category.badgeLabel && (
-          <CategoryListItemBadge>{category.badgeLabel}</CategoryListItemBadge>
+          <MultiLayerDrawerFilterBadge label={category.badgeLabel} />
         )}
-        {showChevron && (
-          <ChevronRightRoundedIcon
-            sx={{
-              height: 24,
-              width: 24,
-              color: 'text.secondary',
-            }}
-          />
-        )}
+        {showChevron && <ChevronRightRoundedIcon />}
       </Stack>
     </CategoryListItemContainer>
   );

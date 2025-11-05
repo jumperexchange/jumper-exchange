@@ -25,6 +25,10 @@ export interface BaseCategoryConfig {
   badgeLabel?: string;
   /** Optional test id */
   testId?: string;
+  /** Optional link to navigate to when the category is clicked */
+  href?: string;
+  /** Optional callback to execute when the category is clicked */
+  onClick?: () => void;
 }
 
 /**
@@ -32,7 +36,7 @@ export interface BaseCategoryConfig {
  */
 export interface CategoryWithSubcategories extends BaseCategoryConfig {
   /** Array of subcategories */
-  subcategories: CategoryConfig[];
+  subcategories?: CategoryConfig[];
 }
 
 /**
@@ -93,7 +97,9 @@ export type CategoryConfig = CategoryWithSubcategories | LeafCategory;
  */
 export const hasSubcategories = (
   category: CategoryConfig,
-): category is CategoryWithSubcategories => {
+): category is CategoryWithSubcategories & {
+  subcategories: CategoryConfig[];
+} => {
   return 'subcategories' in category;
 };
 
@@ -118,6 +124,7 @@ export interface BreadcrumbItem {
  * Props for MultiLayerDrawer component
  */
 export interface MultiLayerDrawerProps {
+  triggerButton?: ReactNode;
   /** Root level categories */
   categories: CategoryConfig[];
   /** Drawer title */
@@ -130,6 +137,8 @@ export interface MultiLayerDrawerProps {
   onApply?: () => void;
   /** Callback when clear button is clicked */
   onClear?: () => void;
+  /** Callback when drawer is closed */
+  onClose?: () => void;
   /** Whether clear button should be disabled */
   disableClear?: boolean;
   /** Whether apply button should be disabled */
@@ -138,4 +147,6 @@ export interface MultiLayerDrawerProps {
   testId?: string;
   /** Show/hide footer buttons */
   showFooter?: boolean;
+  /** Applied filters count */
+  appliedFiltersCount?: number;
 }

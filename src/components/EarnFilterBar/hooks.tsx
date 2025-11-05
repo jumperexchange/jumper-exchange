@@ -3,7 +3,11 @@ import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
 import { AvatarStack } from '../core/AvatarStack/AvatarStack';
 import { MultiSelectOption } from '../core/MultiSelect/MultiSelect.types';
-import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
+import {
+  EarnOpportunityFilterUI,
+  SortByEnum,
+  SortByOptions,
+} from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 
 export const useEarnFilterBar = () => {
@@ -106,6 +110,10 @@ export const useEarnFilterBar = () => {
     setSortBy(value as SortByEnum);
   };
 
+  const handleApplyAllFilters = (values: Partial<EarnOpportunityFilterUI>) => {
+    updateFilter({ ...values });
+  };
+
   const apyMinValue = filter?.minAPY ? filter.minAPY * 100 : apyMin;
   const apyMaxValue = filter?.maxAPY ? filter.maxAPY * 100 : apyMax;
 
@@ -116,7 +124,10 @@ export const useEarnFilterBar = () => {
     filter?.assets,
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
-  const hasAPYFilterApplied = apyMinValue !== apyMin || apyMaxValue !== apyMax;
+  const hasAPYFilterApplied =
+    !isNaN(apyMinValue) &&
+    !isNaN(apyMaxValue) &&
+    (apyMinValue !== apyMin || apyMaxValue !== apyMax);
   const apyFilterCount = hasAPYFilterApplied ? 1 : 0;
 
   const filtersCount = arrayFiltersCount + apyFilterCount;
@@ -144,5 +155,6 @@ export const useEarnFilterBar = () => {
     handleAPYChange,
     handleClearAllFilters,
     handleSortBy,
+    handleApplyAllFilters,
   };
 };

@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 import CheckIcon from '@mui/icons-material/Check';
-import { LeafCategory } from '../../MultiLayerDrawer.types';
+import { LeafCategory } from '../MultiLayerDrawer.types';
 import {
   StyledMenuItem,
   StyledMenuItemContentContainer,
@@ -11,13 +11,6 @@ export interface SingleSelectViewProps {
   category: LeafCategory<string>;
 }
 
-/**
- * SingleSelectView - Renders a single-select list with radio-like behavior
- *
- * Features:
- * - Only one option can be selected at a time
- * - Checkmark indicates selected option
- */
 export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
   category,
 }) => {
@@ -27,7 +20,6 @@ export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
   const handleSelect = (optionValue: string) => {
     if (!category.onChange) return;
 
-    // Toggle selection - deselect if clicking the same option
     const newValue = value === optionValue ? '' : optionValue;
     category.onChange(newValue);
   };
@@ -39,6 +31,7 @@ export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
 
         return (
           <StyledMenuItem
+            size="medium"
             disableRipple
             key={option.value}
             value={option.value}
@@ -48,14 +41,12 @@ export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
           >
             <StyledMenuItemContentContainer>
               {option.icon}
-              <SelectorLabel label={option.label} />
+              <SelectorLabel label={option.label} labelVariant="bodyMedium" />
             </StyledMenuItemContentContainer>
             {isSelected && (
               <CheckIcon
                 sx={{
                   marginLeft: 'auto',
-                  height: 16,
-                  width: 16,
                 }}
               />
             )}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { FullScreenDrawer } from 'src/components/core/FullScreenDrawer/FullScreenDrawer';
 import { useFullScreenDrawer } from 'src/components/core/FullScreenDrawer/hooks';
 import Stack from '@mui/material/Stack';
@@ -7,16 +7,17 @@ import {
   CategoryConfig,
   hasSubcategories,
   isLeafCategory,
-  BreadcrumbItem,
 } from './MultiLayerDrawer.types';
 import { CategoryListItem } from './components/CategoryListItem';
 import { LeafCategoryRenderer } from './components/LeafCategoryRenderer';
 import {
+  MultiLayerDrawerFilterBadge,
   MultiLayerDrawerAlphaButton,
   MultiLayerDrawerDivider,
   MultiLayerDrawerIconButton,
   MultiLayerDrawerPrimaryButton,
 } from './MultiLayerDrawer.styles';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { SelectBadge } from 'src/components/core/form/Select/components/SelectBadge';
 
@@ -24,7 +25,8 @@ import { SelectBadge } from 'src/components/core/form/Select/components/SelectBa
  * MultiLayerDrawer - A generic drawer component that supports multi-level navigation
  *
  * Categories can either:
- * - Have subcategories (branch node) - shows with > icon
+ * - Have no subcategories
+ * - Have subcategories (branch node)
  * - Be a leaf with content type (leaf node) - renders specific content
  *
  * Supports unlimited nesting depth through recursive category structure.
@@ -36,120 +38,136 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
   clearButtonLabel = 'Clear',
   onApply,
   onClear,
+  onClose,
   disableClear = false,
   disableApply = false,
   testId = 'multi-layer-drawer',
   showFooter = true,
+  triggerButton,
+  appliedFiltersCount,
 }) => {
   const { isOpen, open, close } = useFullScreenDrawer();
 
-  // Navigation stack: each item represents a level in the category tree
-  const [navigationStack, setNavigationStack] = useState<CategoryConfig[][]>([
-    categories,
-  ]);
+  const [navigationPath, setNavigationPath] = useState<number[]>([]);
 
-  // Breadcrumb trail for UI display
-  const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[]>([]);
+  const isRootLevel = navigationPath.length === 0;
 
-  // Get current categories to display
-  const currentCategories = navigationStack[navigationStack.length - 1];
+  const { currentCategories, breadcrumbLabel } = useMemo(() => {
+    if (navigationPath.length === 0) {
+      return { currentCategories: categories, breadcrumbLabel: '' };
+    }
 
-  // Check if we're at root level
-  const isRootLevel = navigationStack.length === 1;
+    let current: CategoryConfig[] = categories;
+    let label = '';
 
-  const handleNavigateToSubcategory = (category: CategoryConfig) => {
-    if (hasSubcategories(category)) {
-      // Navigate deeper into subcategories
-      setNavigationStack([...navigationStack, category.subcategories]);
-      setBreadcrumbs([
-        ...breadcrumbs,
-        { id: category.id, label: category.label },
-      ]);
-    } else if (isLeafCategory(category)) {
-      // Navigate to leaf category detail view
-      setNavigationStack([...navigationStack, [category]]);
-      setBreadcrumbs([
-        ...breadcrumbs,
-        { id: category.id, label: category.label },
-      ]);
+    for (let i = 0; i < navigationPath.length; i++) {
+      const index = navigationPath[i];
+      const category = current[index];
+
+      if (!category) {
+        // Invalid path, return root
+        return { currentCategories: categories, breadcrumbLabel: '' };
+      }
+
+      label = category.label;
+
+      if (hasSubcategories(category)) {
+        current = category.subcategories;
+      } else if (isLeafCategory(category)) {
+        return { currentCategories: [category], breadcrumbLabel: label };
+      }
+    }
+
+    return { currentCategories: current, breadcrumbLabel: label };
+  }, [categories, navigationPath]);
+
+  const handleNavigateToSubcategory = (categoryIndex: number) => {
+    const category = currentCategories[categoryIndex];
+    if (!category) return;
+
+    if (hasSubcategories(category) || isLeafCategory(category)) {
+      setNavigationPath([...navigationPath, categoryIndex]);
     }
   };
 
   const handleBack = () => {
     if (!isRootLevel) {
-      setNavigationStack(navigationStack.slice(0, -1));
-      setBreadcrumbs(breadcrumbs.slice(0, -1));
+      setNavigationPath(navigationPath.slice(0, -1));
     }
   };
 
   const handleClose = () => {
-    // Reset navigation to root
-    setNavigationStack([categories]);
-    setBreadcrumbs([]);
+    setNavigationPath([]);
+    onClose?.();
     close();
   };
 
-  const handleApply = () => {
+  const handleApply = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     onApply?.();
-    handleClose();
+    close();
   };
 
-  const handleClear = () => {
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     onClear?.();
     close();
   };
 
-  // Determine if current view shows a leaf category
   const currentLeafCategory =
     currentCategories.length === 1 && isLeafCategory(currentCategories[0])
       ? currentCategories[0]
       : null;
 
-  // Calculate total applied filters count (sum all badge labels that are numbers)
-  const totalFiltersCount = categories.reduce((count, category) => {
-    const badgeValue = category.badgeLabel
-      ? parseInt(category.badgeLabel, 10)
-      : 0;
-    return count + (isNaN(badgeValue) ? 0 : badgeValue);
-  }, 0);
-
-  const hasFiltersApplied = totalFiltersCount > 0;
+  const hasFilterApplied = !!appliedFiltersCount;
 
   return (
     <>
-      <Stack direction="row" gap={1}>
-        <MultiLayerDrawerIconButton
-          onClick={open}
-          data-testid={`${testId}-trigger-button`}
-        >
-          {hasFiltersApplied && (
-            <SelectBadge label={totalFiltersCount.toString()} />
+      {triggerButton ? (
+        triggerButton
+      ) : (
+        <Stack direction="row" gap={1}>
+          {hasFilterApplied && (
+            <MultiLayerDrawerIconButton
+              onClick={onClear}
+              data-testid={`${testId}-clear-button`}
+            >
+              <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+            </MultiLayerDrawerIconButton>
           )}
-          <TuneRoundedIcon sx={{ height: 22, width: 22 }} />
-        </MultiLayerDrawerIconButton>
-      </Stack>
+          <MultiLayerDrawerIconButton
+            onClick={open}
+            data-testid={`${testId}-trigger-button`}
+          >
+            {hasFilterApplied && (
+              <MultiLayerDrawerFilterBadge
+                label={appliedFiltersCount.toString()}
+              />
+            )}
+            <TuneRoundedIcon sx={{ height: 22, width: 22 }} />
+          </MultiLayerDrawerIconButton>
+        </Stack>
+      )}
 
       <FullScreenDrawer
         isOpen={isOpen}
         onClose={handleClose}
-        title={
-          isRootLevel ? title : breadcrumbs[breadcrumbs.length - 1]?.label || ''
-        }
+        title={isRootLevel ? title : breadcrumbLabel}
         showBackButton={!isRootLevel}
         onBack={handleBack}
       >
         {/* Main content area */}
-        <Stack direction="column" width="100%" gap={1} sx={{ flex: 1 }}>
+        <Stack direction="column" width="100%" gap={2} sx={{ flex: 1 }}>
           {currentLeafCategory ? (
             // Render leaf category content
             <LeafCategoryRenderer category={currentLeafCategory} />
           ) : (
             // Render category list
-            currentCategories.map((category) => (
+            currentCategories.map((category, index) => (
               <CategoryListItem
                 key={category.id}
                 category={category}
-                onClick={() => handleNavigateToSubcategory(category)}
+                onClick={() => handleNavigateToSubcategory(index)}
               />
             ))
           )}

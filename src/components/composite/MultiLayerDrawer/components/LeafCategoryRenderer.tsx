@@ -1,16 +1,13 @@
 import { LeafCategory, CategoryContentType } from '../MultiLayerDrawer.types';
-import { MultiSelectView } from './views/MultiSelectView';
-import { SingleSelectView } from './views/SingleSelectView';
-import { SliderView } from './views/SliderView';
-import { ListView } from './views/ListView';
+import { MultiSelectView } from '../views/MultiSelectView';
+import { SingleSelectView } from '../views/SingleSelectView';
+import { SliderView } from '../views/SliderView';
+import { ListView } from '../views/ListView';
 
 export interface LeafCategoryRendererProps {
   category: LeafCategory;
 }
 
-/**
- * LeafCategoryRenderer - Routes to appropriate renderer based on content type
- */
 export const LeafCategoryRenderer: React.FC<LeafCategoryRendererProps> = ({
   category,
 }) => {

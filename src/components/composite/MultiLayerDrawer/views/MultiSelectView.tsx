@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import { LeafCategory } from '../../MultiLayerDrawer.types';
+import { LeafCategory } from '../MultiLayerDrawer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -19,15 +19,6 @@ export interface MultiSelectViewProps {
   category: LeafCategory<string[]>;
 }
 
-/**
- * MultiSelectView - Renders a multi-select list with checkboxes
- *
- * Features:
- * - Shows selected count
- * - Clear button
- * - Optional search/filter
- * - Checkbox selection with checkmark
- */
 export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
   category,
 }) => {
@@ -36,9 +27,8 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
 
   const value = category.value || [];
   const options = category.options || [];
-  const isSearchable = category.searchable !== false; // Default to true
+  const isSearchable = !!category.searchable;
 
-  // Filter options based on search
   const filteredOptions = useMemo(() => {
     if (!searchValue) return options;
     const lowerSearch = searchValue.toLowerCase();
@@ -76,15 +66,14 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
   const isValueSelected = value.length > 0;
 
   return (
-    <Stack direction="column" width="100%" gap={1}>
-      {/* Header with count and clear button */}
-      <StyledMultiSelectFiltersContainer>
-        <Typography variant="bodyXSmallStrong">
+    <Stack direction="column" width="100%" gap={2}>
+      <StyledMultiSelectFiltersContainer sx={{ padding: 0, marginBottom: 0 }}>
+        <Typography variant="bodyMediumStrong">
           {t('earn.filter.selected', { count: value.length })}
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
-          size="small"
+          size="medium"
           data-testid={`${category.testId}-clear-button`}
           onClick={handleClear}
         >
@@ -92,29 +81,22 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
 
-      {/* Search input */}
       {isSearchable && (
         <StyledMultiSelectFiltersContainer
-          sx={{ paddingX: 0 }}
+          size="medium"
+          sx={{ marginBottom: 0 }}
           onKeyDown={(event) => {
             event.stopPropagation();
           }}
         >
           <StyledMultiSelectFiltersInput
-            startAdornment={
-              <SearchIcon
-                sx={{
-                  height: 20,
-                  width: 20,
-                }}
-              />
-            }
+            size="medium"
+            name="search"
+            startAdornment={<SearchIcon />}
             endAdornment={
               searchValue && (
                 <CloseIcon
                   sx={{
-                    height: 20,
-                    width: 20,
                     cursor: 'pointer',
                   }}
                   onClick={handleSearchClear}
@@ -131,13 +113,13 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
         </StyledMultiSelectFiltersContainer>
       )}
 
-      {/* Options list */}
       <Stack direction="column" spacing={1} sx={{ flex: 1, overflowY: 'auto' }}>
         {filteredOptions.map((option) => {
           const isSelected = value.includes(option.value);
 
           return (
             <StyledMenuItem
+              size="medium"
               disableRipple
               key={option.value}
               value={option.value}
@@ -146,14 +128,12 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
             >
               <StyledMenuItemContentContainer>
                 {option.icon}
-                <SelectorLabel label={option.label} />
+                <SelectorLabel label={option.label} labelVariant="bodyMedium" />
               </StyledMenuItemContentContainer>
               {isSelected && (
                 <CheckIcon
                   sx={{
                     marginLeft: 'auto',
-                    height: 16,
-                    width: 16,
                   }}
                 />
               )}
