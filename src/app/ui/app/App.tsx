@@ -8,6 +8,7 @@ import { Box, Slide, Stack } from '@mui/material';
 import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
 import React, { useEffect, useRef, useState } from 'react';
 import { AnnouncementBanner } from 'src/components/AnnouncementBanner/AnnouncementBanner';
+import { HeaderHeight } from 'src/const/headerHeight';
 
 export interface AppProps {
   children: React.ReactNode;
@@ -69,7 +70,16 @@ const App = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <Box onClick={handleWelcomeScreenEnter}>
+    <Box
+      onClick={handleWelcomeScreenEnter}
+      sx={{
+        height: {
+          xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
+          sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+          md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+        },
+      }}
+    >
       <Slide
         direction="up"
         in={enabled && !welcomeScreenClosed}
@@ -97,6 +107,17 @@ const App = ({ children }: { children: React.ReactNode }) => {
         justifyContent="center"
         alignItems="start"
         paddingTop={3.5}
+        sx={{
+          height: welcomeScreenClosed ? '100%' : 'auto',
+          overflow: {
+            xs: welcomeScreenClosed ? 'scroll' : 'hidden',
+            sm: 'inherit',
+          },
+          paddingTop: 3.5,
+          paddingBottom: { xs: 11, md: 0 },
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'none',
+        }}
       >
         {welcomeScreenClosed && (
           <Box

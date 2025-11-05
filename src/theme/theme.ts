@@ -536,7 +536,17 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       MuiCssBaseline: {
         styleOverrides: {
           '@supports': { fontVariationSettings: 'normal' },
-          body: { scrollBehavior: 'smooth' },
+          html: {
+            height: '100%',
+            margin: 0,
+            padding: 0,
+          },
+          body: {
+            height: '100%',
+            scrollBehavior: 'smooth',
+            margin: 0,
+            padding: 0,
+          },
         },
       },
       MuiButton: {

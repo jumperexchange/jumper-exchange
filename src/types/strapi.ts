@@ -308,6 +308,7 @@ export interface QuestData {
   Category: string | null;
   Points: number | null;
   EndDate: string;
+  hasEnded: boolean;
   quests_platform?: any; // Relation with Quests Platforms
   StartDate: string;
   Slug: string;

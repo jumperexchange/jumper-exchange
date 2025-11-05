@@ -42,14 +42,14 @@ import { qase } from 'playwright-qase-reporter';
         await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
       });
 
-      // await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
-      //   const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
-      //   await page.goto(`/${urlParams}`);
-      //   await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
-      // });
+      await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
+        const urlParams = buildUlParams(chainData.ARBtoARB.USDCtoWBTC);
+        await page.goto(`/${urlParams}`);
+        await checkRoutesVisibility(page, { bestReturnShouldBeVisible: true });
+      });
     });
 
-    test.skip(qase(name === 'Mobile' ? 25 : 28, 'Hyperliquid chain swap pairs'), async ({ page }) => {
+    test(qase(name === 'Mobile' ? 25 : 28, 'Hyperliquid chain swap pairs'), async ({ page }) => {
       await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {
         const urlParams = buildUlParams(chainData.EVMtoHypercore.ETHtoUSDC);
         await page.goto(`/${urlParams}`);

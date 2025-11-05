@@ -10,7 +10,7 @@ export const MainWidgetContainer: FC<MainWidgetContainerProps> = ({
     <Box
       sx={{
         paddingX: { xs: 2, sm: 0 },
-        marginBottom: { xs: 12, md: 0 },
+        flex: '1',
       }}
     >
       {children}

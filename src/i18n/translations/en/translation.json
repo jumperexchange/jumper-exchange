@@ -158,6 +158,11 @@
       "completed": {
         "title": "Mission completed",
         "description": "All tasks in this mission have been verified and completed."
+      },
+      "ended": {
+        "title": "Mission has ended",
+        "description": "Mission has ended, go back to the main missions page to explore other missions!",
+        "cta": "Go back to missions"
       }
     },
     "status": {
@@ -168,7 +173,8 @@
       "hoursLeft_one": "{{count}} hour left",
       "hoursLeft_other": "{{count}} hours left",
       "daysLeft_one": "{{count}} day left",
-      "daysLeft_other": "{{count}} days left"
+      "daysLeft_other": "{{count}} days left",
+      "ended": "Ended"
     },
     "tasks": {
       "type": "{{type}} task",

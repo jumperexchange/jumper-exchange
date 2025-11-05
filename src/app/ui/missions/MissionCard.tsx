@@ -24,6 +24,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
   const { status, isDisabled } = useMissionTimeStatus(
     mission.StartDate,
     mission.EndDate,
+    mission.hasEnded,
   );
 
   const badge = useMemo(() => {

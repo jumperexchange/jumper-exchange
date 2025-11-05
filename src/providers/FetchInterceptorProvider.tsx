@@ -25,7 +25,10 @@ export function FetchInterceptorProvider() {
       const earnOpportunitySlug = sessionStorage.getItem(
         ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
       );
-      if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL)) {
+      if (
+        request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) ||
+        request.url.includes('pipeline')
+      ) {
         if (earnOpportunitySlug) {
           request.headers.append(
             'x-earn-opportunity-slug',

@@ -23,7 +23,7 @@ export async function selectOptionFromDropDown(
 	await dropdownFilter.click();
 	await expect(clearButton).toBeVisible();
 	await page.getByRole("option", { name: option }).click();
-	// click page body to close the dropdown
+	await page.waitForTimeout(1000);
 	await page.locator("body").click();
 }
 
@@ -50,8 +50,17 @@ export async function verifyNoSelectedAssetsAreVisible(
 }
 
 export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
+	// Wait for the dropdown to be visible and options to load
+	await page.waitForLoadState("networkidle");
+	
 	const options = page.locator('[role="option"]');
+	
+	// Wait for at least one option to be available
+	await options.first().waitFor({ state: "visible", timeout: 10000 });
+	
+	// Get the actual count of available options
 	const optionCount = await options.count();
+	console.log(`Found ${optionCount} options in the dropdown`);
 
 	const assets: string[] = [];
 	for (let i = 0; i < optionCount; i++) {
