@@ -29,6 +29,7 @@ import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
 import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import { ZAP_ALLOWED_SOURCE_CHAINS } from './constants';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -61,7 +62,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
 
-  const { data: zapSupportedChains } = useZapSupportedChains();
+  // const { data: zapSupportedChains } = useZapSupportedChains();
   const { data: allLpTokens } = useZapAllLpTokens();
 
   const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
@@ -70,40 +71,43 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     state.setSupportModalState,
   ]);
 
-  const allowedChains = useMemo(() => {
-    // @Note: This is a fallback for when the zap supported chains are not loaded yet
-    if (!zapSupportedChains) {
-      return [
-        ChainId.ETH,
-        ChainId.BSC,
-        ChainId.ARB,
-        ChainId.BAS,
-        ChainId.AVA,
-        ChainId.POL,
-        ChainId.SCL,
-        ChainId.OPT,
-        ChainId.DAI,
-        ChainId.UNI,
-        ChainId.SEI,
-        ChainId.SON,
-        ChainId.APE,
-        ChainId.WCC,
-        ChainId.HYP,
-        // @Note: Even though docs say they are supported, they are not retrieved from the API
-        // https://docs.biconomy.io/supportedNetworks#-supported-chains
-        // ChainId.KAT,
-        // ChainId.LSK,
-      ];
-    }
+  // @Note: This is commented until we can release more source deposit chains
+  // const allowedChains = useMemo(() => {
+  //   // @Note: This is a fallback for when the zap supported chains are not loaded yet
+  //   if (!zapSupportedChains) {
+  //     return [
+  //       ChainId.ETH,
+  //       ChainId.BSC,
+  //       ChainId.ARB,
+  //       ChainId.BAS,
+  //       ChainId.AVA,
+  //       ChainId.POL,
+  //       ChainId.SCL,
+  //       ChainId.OPT,
+  //       ChainId.DAI,
+  //       ChainId.UNI,
+  //       ChainId.SEI,
+  //       ChainId.SON,
+  //       ChainId.APE,
+  //       ChainId.WCC,
+  //       ChainId.HYP,
+  //       // @Note: Even though docs say they are supported, they are not retrieved from the API
+  //       // https://docs.biconomy.io/supportedNetworks#-supported-chains
+  //       // ChainId.KAT,
+  //       // ChainId.LSK,
+  //     ];
+  //   }
 
-    const zapSupportedChainsIds = zapSupportedChains.map(
-      (chain) => chain.chainId,
-    );
+  //   const zapSupportedChainsIds = zapSupportedChains.map(
+  //     (chain) => chain.chainId,
+  //   );
 
-    return Object.values(ChainId).filter((chainId): chainId is ChainId =>
-      zapSupportedChainsIds?.includes(chainId.toString()),
-    );
-  }, [zapSupportedChains]);
+  //   return Object.values(ChainId).filter((chainId): chainId is ChainId =>
+  //     zapSupportedChainsIds?.includes(chainId.toString()),
+  //   );
+  // }, [zapSupportedChains]);
+
+  const allowedChains = ZAP_ALLOWED_SOURCE_CHAINS;
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;

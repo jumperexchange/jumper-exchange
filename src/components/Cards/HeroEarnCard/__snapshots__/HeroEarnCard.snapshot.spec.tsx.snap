@@ -118,12 +118,13 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+              data-testid="entity-chain-stack-title"
             >
               metamorpho
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-              data-testid="earn-card-chain-name"
+              data-testid="entity-chain-stack-chain-name"
             >
               Base
             </p>
@@ -257,12 +258,13 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
             >
               <span
                 class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+                data-testid="entity-chain-stack-title"
               >
                 metamorpho
               </span>
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-                data-testid="earn-card-chain-name"
+                data-testid="entity-chain-stack-chain-name"
               >
                 Base
               </p>
@@ -436,12 +438,13 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
+              data-testid="entity-chain-stack-title"
             >
               metamorpho
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-              data-testid="earn-card-chain-name"
+              data-testid="entity-chain-stack-chain-name"
             >
               Base
             </p>
