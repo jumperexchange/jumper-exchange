@@ -5,6 +5,9 @@ import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
 } from './BackgroundGradient';
+import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
+import { AnimatedBackgroundImage } from './core/AnimatedBackgroundImage/AnimatedBackgroundImage';
+import { useGetPartnerThemeImage } from 'src/hooks/images/useGetPartnerThemeImage';
 
 export interface BackgroundContainerProps {
   variant?: 'outlined';
@@ -13,15 +16,19 @@ export interface BackgroundContainerProps {
 }
 
 const BackgroundContainer = styled('div', {
-  name: 'Background', // The component name
-  slot: 'root', // The slot name
+  name: 'Background',
+  slot: 'root',
 })(() => ({}));
 
 function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
 
+  const backgroundImageUrl = useGetPartnerThemeImage();
+
   return (
     <BackgroundContainer id="background-root">
+      <AnimatedBackgroundImage src={backgroundImageUrl} />
+
       {configTheme?.hasBackgroundGradient && (
         <>
           <BackgroundGradientBottomLeft />

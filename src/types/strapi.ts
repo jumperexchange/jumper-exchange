@@ -246,6 +246,8 @@ export interface Customization {
   typography?: string;
   hasBackgroundGradient?: boolean;
   hasBlurredNavigation?: boolean;
+  showForFromChain?: boolean;
+  showForToChain?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &

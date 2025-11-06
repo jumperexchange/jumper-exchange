@@ -35,4 +35,6 @@ export interface PartnerThemeConfig {
   hasBlurredNavigation: boolean;
   allowedBridges: string[];
   allowedExchanges: string[];
+  showForFromChain: boolean;
+  showForToChain: boolean;
 }

@@ -86,6 +86,12 @@ export function formatConfig(
     hasBackgroundGradient:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.hasBackgroundGradient ?? false,
+    showForFromChain:
+      (theme.lightConfig || theme.darkConfig)?.customization
+        ?.showForFromChain ?? false,
+    showForToChain:
+      (theme.lightConfig || theme.darkConfig)?.customization?.showForToChain ??
+      false,
     integrator:
       (theme.lightConfig || theme.darkConfig)?.config?.integrator ?? undefined,
     fromChain:
