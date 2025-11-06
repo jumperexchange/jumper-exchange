@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
@@ -23,41 +24,64 @@ export const useEarnFilterBar = () => {
     setSortBy,
   } = useEarnFiltering();
 
-  const chainOptions = allChains.map((chain) => ({
-    value: `${chain.chainId}`,
-    label: chain.chainKey,
-    icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
-  }));
+  const chainOptions = useMemo(
+    () =>
+      allChains.map((chain) => ({
+        value: `${chain.chainId}`,
+        label: chain.chainKey,
+        icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
+      })),
+    [allChains],
+  );
 
-  const protocolOptions = allProtocols.map((protocol) => ({
-    value: protocol.name,
-    label: protocol.name,
-    icon: <ProtocolStack protocols={[protocol]} />,
-  }));
+  const protocolOptions = useMemo(
+    () =>
+      allProtocols.map((protocol) => ({
+        value: protocol.name,
+        label: protocol.name,
+        icon: <ProtocolStack protocols={[protocol]} />,
+      })),
+    [allProtocols],
+  );
 
-  const tagOptions = allTags.map((tag) => ({
-    value: tag,
-    label: tag,
-  }));
+  const tagOptions = useMemo(
+    () =>
+      allTags.map((tag) => ({
+        value: tag,
+        label: tag,
+      })),
+    [allTags],
+  );
 
-  const assetOptions = allAssets.map((asset) => ({
-    value: asset.name,
-    label: asset.name,
-    icon: <TokenStack tokens={[asset]} />,
-  }));
+  const assetOptions = useMemo(
+    () =>
+      allAssets.map((asset) => ({
+        value: asset.name,
+        label: asset.name,
+        icon: <TokenStack tokens={[asset]} />,
+      })),
+    [allAssets],
+  );
 
-  const apyOptions = Object.entries(allAPY).map(([key, value]) => ({
-    value: key,
-    label: `${key}: ${value}`,
-  }));
+  const apyOptions = useMemo(
+    () =>
+      Object.entries(allAPY).map(([key, value]) => ({
+        value: key,
+        label: `${key}: ${value}`,
+      })),
+    [allAPY],
+  );
 
   const apyMin = Math.min(...Object.values(allAPY), 0);
   const apyMax = Math.max(...Object.values(allAPY), 0);
 
-  const sortByOptions = [
-    { value: SortByOptions.APY, label: t('earn.sorting.apy') },
-    { value: SortByOptions.TVL, label: t('earn.sorting.tvl') },
-  ];
+  const sortByOptions = useMemo(
+    () => [
+      { value: SortByOptions.APY, label: t('earn.sorting.apy') },
+      { value: SortByOptions.TVL, label: t('earn.sorting.tvl') },
+    ],
+    [t],
+  );
 
   // Handle filter changes
   const handleChainChange = (values: string[]) => {
