@@ -30,8 +30,22 @@ const EarnOpportunitiesAllInner = () => {
 
   return (
     <>
-      <SectionCardContainer ref={sectionRef}>
-        <Stack direction="column" gap={3}>
+      <SectionCardContainer
+        ref={sectionRef}
+        sx={(theme) => ({
+          padding: theme.spacing(2),
+          [theme.breakpoints.up('md')]: {
+            padding: theme.spacing(3),
+          },
+        })}
+      >
+        <Stack
+          direction="column"
+          gap={{
+            xs: 2,
+            md: 3,
+          }}
+        >
           <EarnFilterBar
             isLoading={isAllDataLoading}
             variant={variant}

@@ -21,12 +21,14 @@ export const EarnTopOpportunities = () => {
     <Grid container spacing={2}>
       {items?.map((item, index) => {
         const isMain = index === 0;
+
         return (
           <Grid
             key={index}
             size={{
               xs: 12,
-              sm: isSingleItem ? 12 : index === 0 ? 7 : 5,
+              sm: 6,
+              md: isSingleItem ? 12 : index === 0 ? 7 : 5,
             }}
             sx={{ display: 'flex' }}
           >
@@ -50,12 +52,11 @@ export const EarnTopOpportunities = () => {
                       address: item.lpToken.address,
                     }}
                     displayMode={
-                      isMain
+                      isMain && !isMobile
                         ? DepositButtonDisplayMode.IconAndLabel
                         : DepositButtonDisplayMode.IconOnly
                     }
                     size="large"
-                    fullWidth={isMain && isMobile}
                     disabled
                   />
                 }
