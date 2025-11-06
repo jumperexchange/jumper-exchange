@@ -117,7 +117,7 @@ export const StyledMultiSelectFiltersContainer = styled(Box, {
   justifyContent: 'space-between',
   marginBottom: theme.spacing(1),
   pointerEvents: 'none',
-  '& > *': {
+  '& > .MuiInputBase-root, & > .MuiButtonBase-root': {
     pointerEvents: 'auto',
   },
   variants: [
