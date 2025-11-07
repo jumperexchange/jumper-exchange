@@ -51,6 +51,7 @@
       "connectAnotherWallet": "Під'єднати інший гаманець",
       "refreshBalances": "Оновити баланс",
       "totalBalance": "Загальний баланс",
+      "walletBalance": "",
       "totalBalanceTooltip": "Ваш загальний баланс не завжди може бути точним через потенційні проблеми з індексацією. Ми працюємо над цим!",
       "totalBalanceRefresh": "Натисніть тут, щоб перезавантажити індексацію своїх токенів.",
       "numberOfChains": "{{numberOfChains}} чейнів"
