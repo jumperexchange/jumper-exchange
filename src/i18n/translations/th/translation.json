@@ -51,6 +51,7 @@
       "connectAnotherWallet": "เชื่อมต่อกระเป๋าเงินอื่น",
       "refreshBalances": "",
       "totalBalance": "",
+      "walletBalance": "",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
       "numberOfChains": ""
