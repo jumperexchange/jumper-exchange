@@ -51,6 +51,7 @@
       "connectAnotherWallet": "Conectar otra billetera",
       "refreshBalances": "",
       "totalBalance": "",
+      "walletBalance": "",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
       "numberOfChains": ""
