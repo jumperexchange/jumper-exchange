@@ -51,6 +51,7 @@
       "connectAnotherWallet": "別のウォレットを接続する",
       "refreshBalances": "",
       "totalBalance": "",
+      "walletBalance": "",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
       "numberOfChains": ""
