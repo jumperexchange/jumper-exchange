@@ -4,6 +4,7 @@ import { styled, Theme } from '@mui/material/styles';
 import { AvatarSize } from './AvatarStack.types';
 import Skeleton, { SkeletonProps } from '@mui/material/Skeleton';
 import Typography, { TypographyProps } from '@mui/material/Typography';
+import { BaseSurfaceSkeleton } from '../skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
 export const getFontVariant = (size: AvatarSize, theme: Theme) => {
   switch (size) {
@@ -130,10 +131,9 @@ interface AvatarSkeletonProps extends SkeletonProps {
   size?: AvatarSize;
 }
 
-export const AvatarSkeleton = styled(Skeleton, {
+export const AvatarSkeleton = styled(BaseSurfaceSkeleton, {
   shouldForwardProp: (prop) => prop !== 'size',
 })<AvatarSkeletonProps>(({ theme, size = AvatarSize.MD }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
   ...getAvatarSize(size),
 }));
 

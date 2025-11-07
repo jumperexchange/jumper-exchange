@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { Link } from 'src/components/Link/Link';
 import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
@@ -144,7 +144,4 @@ export const ProtocolCardLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  transform: 'none',
-}));
+export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));
