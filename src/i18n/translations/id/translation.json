@@ -51,6 +51,7 @@
       "connectAnotherWallet": "Hubungkan dompet yang lain",
       "refreshBalances": "",
       "totalBalance": "",
+      "walletBalance": "",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
       "numberOfChains": ""
