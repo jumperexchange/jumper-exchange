@@ -51,6 +51,7 @@
       "connectAnotherWallet": "Kết nối ví khác",
       "refreshBalances": "",
       "totalBalance": "",
+      "walletBalance": "",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
       "numberOfChains": ""
