@@ -60,15 +60,16 @@ export function formatConfig(
   if (!theme) {
     return {
       uid: 'default',
-      availableThemeModes: getAvailableThemeModes(theme),
+      availableThemeModes: getAvailableThemeModes(),
       hasThemeModeSwitch: true,
       hasBackgroundGradient: true,
     };
   }
 
   const defaultMode = isDarkOrLightThemeMode(theme);
+  const themeModes = getAvailableThemeModes(theme);
   const result = {
-    availableThemeModes: getAvailableThemeModes(theme),
+    availableThemeModes: themeModes,
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
     backgroundImageUrl: getImageUrl(theme, 'BackgroundImage', defaultMode),
@@ -79,7 +80,11 @@ export function formatConfig(
     selectableInMenu: theme.SelectableInMenu || false,
     createdAt: theme.createdAt,
     uid: theme.uid,
-    hasThemeModeSwitch: false,
+    defaultThemeMode: (theme.lightConfig || theme.darkConfig)?.config
+      ?.appearance as 'light' | 'dark',
+    hasThemeModeSwitch:
+      (theme.lightConfig || theme.darkConfig)?.customization
+        ?.hasThemeModeSwitch || false,
     hasBlurredNavigation:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.hasBlurredNavigation ?? false,
@@ -157,5 +162,6 @@ export function formatTheme(theme: PartnerThemesAttributes) {
   };
 }
 
-export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) =>
-  theme.lightConfig ? 'light' : 'dark';
+export const isDarkOrLightThemeMode = (
+  theme: PartnerThemesAttributes,
+): 'light' | 'dark' => (theme.lightConfig ? 'light' : 'dark');

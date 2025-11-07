@@ -32,6 +32,7 @@ export interface MenuListItem {
   link?: MenuItemLinkType;
   onClick?: () => void;
   showButton?: boolean;
+  disabled?: boolean;
 }
 
 export interface ChainsMenuListItem {

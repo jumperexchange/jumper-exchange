@@ -79,9 +79,11 @@ export const SubMenu = ({
               marginLeft: 0,
               color: (theme.vars || theme).palette.text.primary,
               '&:hover': {
-                backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+                backgroundColor: (theme.vars || theme).palette.alphaLight100
+                  .main,
                 ...theme.applyStyles('light', {
-                  backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+                  backgroundColor: (theme.vars || theme).palette.alphaDark100
+                    .main,
                 }),
               },
             }}
@@ -128,6 +130,7 @@ export const SubMenu = ({
             <MenuItemContainer
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
+              disabled={el.disabled}
               key={`${el.label}-${index}`}
             >
               <MenuLabel

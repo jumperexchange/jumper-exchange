@@ -6,6 +6,7 @@ import type {
 } from '@lifi/widget';
 
 export interface PartnerThemeConfig {
+  defaultThemeMode: 'light' | 'dark';
   availableThemeModes: string[];
   backgroundColor: string | null;
   backgroundImageUrl: URL | null;

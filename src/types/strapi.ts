@@ -248,6 +248,7 @@ export interface Customization {
   hasBlurredNavigation?: boolean;
   showForFromChain?: boolean;
   showForToChain?: boolean;
+  hasThemeModeSwitch?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
