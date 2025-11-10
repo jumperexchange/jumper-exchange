@@ -201,7 +201,8 @@ interface Resources {
           continue: 'Continue';
           steps: {
             email: {
-              description: '{{position}} you must first share your email address.';
+              description_one: '{{position}} you must first share your email address.';
+              description_other: '{{position}} you must share your email address.';
               title: 'Enter email';
             };
             position: {
@@ -210,11 +211,13 @@ interface Resources {
               next: 'Next';
             };
             username: {
-              description: '{{position}} you must first share your {{usernameType}} username.';
+              description_one: '{{position}} you must first share your {{usernameType}} username.';
+              description_other: '{{position}} you must share your {{usernameType}} username.';
               title: 'Enter username';
             };
             wallet: {
-              description: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
+              description_one: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
+              description_other: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
               title: 'Verify wallet';
             };
           };
@@ -308,6 +311,7 @@ interface Resources {
         totalBalance: 'Total balance';
         totalBalanceRefresh: 'Click here to restart the indexing of your tokens now.';
         totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
+        walletBalance: 'Wallet balance';
         walletNotInstalled: '{{wallet}} is not installed';
       };
       walletSelectMenu: {
