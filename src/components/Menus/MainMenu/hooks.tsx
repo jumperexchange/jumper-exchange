@@ -21,7 +21,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
-import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
 import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 import Typography from '@mui/material/Typography';
+import Badge from '@mui/material/Badge';
 
 interface MenuLink {
   url: string;
@@ -287,13 +288,16 @@ export const useFooterLinks = () => {
   const { t } = useTranslation();
   const { handlePrivacyPolicyClick } = useMenuActions();
 
-  const footerLinks = useMemo(() => [
-    {
-      label: t('navbar.navbarMenu.privacyPolicy'),
-      link: { url: AppPaths.PrivacyPolicy },
-      onClick: handlePrivacyPolicyClick,
-    },
-  ], [t, handlePrivacyPolicyClick]);
+  const footerLinks = useMemo(
+    () => [
+      {
+        label: t('navbar.navbarMenu.privacyPolicy'),
+        link: { url: AppPaths.PrivacyPolicy },
+        onClick: handlePrivacyPolicyClick,
+      },
+    ],
+    [t, handlePrivacyPolicyClick],
+  );
 
   return { footerLinks };
 };
@@ -303,6 +307,7 @@ export const useMenuItems = () => {
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon } = useThemeModesMenuContent();
+  const { supportModalUnreadCount } = useMenuStore((state) => state);
 
   const {
     handleLearnClick,
@@ -330,13 +335,6 @@ export const useMenuItems = () => {
     [i18n.language],
   );
 
-  const discordSupportIcon = useMemo(
-    () => (
-      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
-    ),
-    [theme],
-  );
-
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
 
@@ -357,7 +355,24 @@ export const useMenuItems = () => {
       },
       {
         label: t('navbar.navbarMenu.support'),
-        prefixIcon: discordSupportIcon,
+        prefixIcon:
+          supportModalUnreadCount > 0 ? (
+            <Badge
+              color="secondary"
+              variant="dot"
+              sx={(theme) => ({
+                '.MuiBadge-badge': {
+                  backgroundColor: (theme.vars || theme).palette.borderActive,
+                  mt: 0.5,
+                  mr: 0.25,
+                },
+              })}
+            >
+              <SupportRoundedIcon />
+            </Badge>
+          ) : (
+            <SupportRoundedIcon />
+          ),
         showMoreIcon: false,
         onClick: handleSupportClick,
       },
@@ -400,7 +415,6 @@ export const useMenuItems = () => {
     t,
     handleLearnClick,
     handleScanClick,
-    discordSupportIcon,
     handleSupportClick,
     configTheme?.hasThemeModeSwitch,
     selectedThemeIcon,
@@ -408,6 +422,7 @@ export const useMenuItems = () => {
     languageSuffixIcon,
     handleLanguageClick,
     handleResourcesClick,
+    supportModalUnreadCount,
   ]);
 
   return { menuItems: baseMenuItems };
