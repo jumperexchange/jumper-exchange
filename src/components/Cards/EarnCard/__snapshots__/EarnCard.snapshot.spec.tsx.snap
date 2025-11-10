@@ -138,7 +138,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -446,7 +446,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="MuiBox-root css-16zy09x"
+            class="MuiBox-root css-fxacz8"
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -799,7 +799,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1129,7 +1129,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1374,7 +1374,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1594,7 +1594,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="MuiBox-root css-16zy09x"
+            class="MuiBox-root css-fxacz8"
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1843,7 +1843,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -2028,7 +2028,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"

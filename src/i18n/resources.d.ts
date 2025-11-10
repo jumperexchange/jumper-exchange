@@ -348,6 +348,37 @@ interface Resources {
           tokens: 'Tokens';
         };
       };
+      defiPositionCard: {
+        actions: {
+          claim: 'Claim';
+          compound: 'Compound';
+          deposit: 'Deposit';
+          withdraw: 'Withdraw';
+        };
+        header: {
+          apy: 'APY';
+          rewards: 'Rewards';
+          supplied: 'Supplied';
+          value: 'Value';
+        };
+        overview: {
+          lockup: 'Lockup';
+          lockupPeriod: {
+            days_one: '{{count}} day ago';
+            days_other: '{{count}} days ago';
+            hours_one: '{{count}} hour ago';
+            hours_other: '{{count}} hours ago';
+            lessThanOneMinute: '<1 minute ago';
+            minutes_one: '{{count}} minute ago';
+            minutes_other: '{{count}} minutes ago';
+            months_one: '{{count}} month ago';
+            months_other: '{{count}} months ago';
+            years_one: '{{count}} year ago';
+            years_other: '{{count}} years ago';
+          };
+          opened: 'Opened';
+        };
+      };
     };
     profile_page: {
       achievements: 'Achievements';

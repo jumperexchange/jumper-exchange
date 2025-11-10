@@ -23,6 +23,11 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
     [defiPositions],
   );
 
+  const defiPositionsProtocols = useMemo(
+    () => defiPositions.map((defiPosition) => defiPosition.protocol),
+    [defiPositions],
+  );
+
   return (
     <AssetOverviewCardOverviewContainer>
       <OverviewCardColumn
@@ -40,7 +45,7 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
         totalPrice={defiPositionsOverallPriceInUSD}
       >
         <ProtocolStack
-          protocols={defiPositions}
+          protocols={defiPositionsProtocols}
           size={AvatarSize.LG}
           limit={MAX_DISPLAY_ASSETS_COUNT}
         />

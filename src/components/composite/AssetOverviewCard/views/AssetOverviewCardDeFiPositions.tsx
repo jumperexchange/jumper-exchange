@@ -24,16 +24,16 @@ export const AssetOverviewCardDeFiPositions: FC<
 
   return (
     <AssetOverviewCardAssetsContainer>
-      {grouped.displayAssets.map((protocol) => (
+      {grouped.displayAssets.map((defiPosition) => (
         <AssetProgress
-          key={`${protocol.name}-${protocol.product}`}
+          key={defiPosition.slug}
           variant={AssetProgressVariant.Protocol}
-          protocol={protocol}
+          protocol={defiPosition.protocol}
           progress={calculateAssetPercentage(
-            protocol.totalPriceUSD,
+            defiPosition.totalPriceUSD,
             grouped.totalPrice,
           )}
-          amount={protocol.totalPriceUSD}
+          amount={defiPosition.totalPriceUSD}
         />
       ))}
       {grouped.overflow && (

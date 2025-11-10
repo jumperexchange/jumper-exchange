@@ -1,23 +1,8 @@
 import { MinimalDeFiPosition } from 'src/types/defi';
-import { MinimalToken } from 'src/types/tokens';
 
 const ethereumChain = {
   chainId: 1,
   chainKey: 'ethereum' as const,
-};
-
-const baseChain = {
-  chainId: 8453,
-  chainKey: 'base' as const,
-};
-
-const tokenAddresses = {
-  ETH: '0x0000000000000000000000000000000000000000',
-  USDC_ETHEREUM: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-  USDC_BASE: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-  USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-  WBTC: '0x2260FAC5E5542a773Aa44fBCfeDd86a3D015C766',
-  DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
 };
 
 const assets = {
@@ -26,7 +11,7 @@ const assets = {
     symbol: 'USDC',
     decimals: 6,
     logo: 'https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
-    address: tokenAddresses.USDC_ETHEREUM,
+    address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     chain: ethereumChain,
   },
   WETH: {
@@ -42,7 +27,7 @@ const assets = {
     symbol: 'ETH',
     decimals: 18,
     logo: 'https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png',
-    address: tokenAddresses.ETH,
+    address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
     chain: ethereumChain,
   },
   USDA: {
@@ -51,6 +36,38 @@ const assets = {
     decimals: 18,
     logo: 'https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png',
     address: '0x0000206329b97db379d5e1bf586bbdb969c63274',
+    chain: ethereumChain,
+  },
+  stkAAVE: {
+    name: 'stkAAVE',
+    symbol: 'stkAAVE',
+    decimals: 18,
+    logo: 'https://tokens.1inch.io/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9.png',
+    address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
+    chain: ethereumChain,
+  },
+  stETH: {
+    name: 'ETH Staking Rewards',
+    symbol: 'stETH',
+    decimals: 18,
+    logo: 'https://tokens.1inch.io/0xabcdef1234567890abcdef1234567890abcdef12.png',
+    address: '0xabcdef1234567890abcdef1234567890abcdef12',
+    chain: ethereumChain,
+  },
+  tradingFees: {
+    name: 'Trading Fees',
+    symbol: 'Trading Fees',
+    decimals: 18,
+    logo: 'https://tokens.1inch.io/0xabcdef1234567890abcdef1234567890abcdef12.png',
+    address: '0xabcdef1234567890abcdef1234567890abcdef12',
+    chain: ethereumChain,
+  },
+  ethStakingRewards: {
+    name: 'ETH Staking Rewards',
+    symbol: 'ETH Staking Rewards',
+    decimals: 18,
+    logo: 'https://tokens.1inch.io/0xabcdef1234567890abcdef1234567890abcdef12.png',
+    address: '0xabcdef1234567890abcdef1234567890abcdef12',
     chain: ethereumChain,
   },
 };
@@ -147,12 +164,56 @@ const lpTokens = {
 
 const tags = {
   lending: ['Lending'],
+  aave: ['Lending'],
   borrowing: ['Borrowing'],
   dex: ['Dex'],
   liquidStaking: ['Liquid Staking', 'Yield'],
+  lidoStaking: ['Liquid Staking'],
 };
 
 const rewards = {
+  usdc: (balance = 1.0, totalPriceUSD = 1000.0) => [
+    {
+      asset: assets.USDC,
+      balance,
+      totalPriceUSD,
+    },
+  ],
+  weth: (balance = 1.0, totalPriceUSD = 1000.0) => [
+    {
+      asset: assets.WETH,
+      balance,
+      totalPriceUSD,
+    },
+  ],
+  stkAAVE: (balance = 1.0, totalPriceUSD = 1000.0) => [
+    {
+      asset: assets.stkAAVE,
+      balance,
+      totalPriceUSD,
+    },
+  ],
+  tradingFees: (balance = 1.0, totalPriceUSD = 1000.0) => [
+    {
+      asset: assets.tradingFees,
+      balance,
+      totalPriceUSD,
+    },
+  ],
+  ethStaking: (balance = 1.0, totalPriceUSD = 1000.0) => [
+    {
+      asset: assets.ethStakingRewards,
+      balance,
+      totalPriceUSD,
+    },
+  ],
+  stETH: (balance = 1.0, totalPriceUSD = 1000.0) => [
+    {
+      asset: assets.stETH,
+      balance,
+      totalPriceUSD,
+    },
+  ],
   none: [],
 };
 
@@ -219,56 +280,10 @@ const latestData = {
   },
 };
 
-export const tokens: MinimalToken[] = [
-  {
-    address: tokenAddresses.ETH,
-    chain: ethereumChain,
-    symbol: 'ETH',
-    balance: 5.25,
-    totalPriceUSD: 18562.5,
-  },
-  {
-    address: tokenAddresses.USDC_ETHEREUM,
-    chain: ethereumChain,
-    symbol: 'USDC',
-    balance: 2.5,
-    totalPriceUSD: 8625.3,
-    relatedTokens: [
-      {
-        address: tokenAddresses.USDC_BASE,
-        chain: baseChain,
-        symbol: 'USDC',
-        balance: 1.0,
-        totalPriceUSD: 3450.12,
-      },
-    ],
-  },
-  {
-    address: tokenAddresses.USDT,
-    chain: ethereumChain,
-    symbol: 'USDT',
-    balance: 1.8,
-    totalPriceUSD: 6210.24,
-  },
-  {
-    address: tokenAddresses.WBTC,
-    chain: ethereumChain,
-    symbol: 'WBTC',
-    balance: 0.15,
-    totalPriceUSD: 9847.5,
-  },
-  {
-    address: tokenAddresses.DAI,
-    chain: ethereumChain,
-    symbol: 'DAI',
-    balance: 3.2,
-    totalPriceUSD: 3211.84,
-  },
-];
-
 export const defiPositions: MinimalDeFiPosition[] = [
   {
     name: 'Morpho USDC Vault',
+    performance: -10.52,
     openedAt: '2025-11-07T00:00:00Z',
     asset: assets.USDC,
     protocol: protocols.morpho,
@@ -276,7 +291,7 @@ export const defiPositions: MinimalDeFiPosition[] = [
     description:
       "Earn optimized yield on USDC through Morpho's MetaMorpho vaults with automated lending strategies.",
     tags: tags.lending,
-    rewards: rewards.none,
+    rewards: rewards.usdc(),
     lpToken: lpTokens.mUSDC,
     slug: 'morpho-usdc-vault',
     featured: true,
@@ -293,16 +308,36 @@ export const defiPositions: MinimalDeFiPosition[] = [
     url: 'https://app.aave.com',
     description:
       'Supply WETH to Aave V3 and earn interest while maintaining liquidity with your collateral.',
-    tags: tags.lending,
-    rewards: rewards.none,
+    tags: tags.aave,
+    rewards: rewards.weth(),
     lpToken: lpTokens.aEthWETH,
     slug: 'aave-v3-weth',
     featured: true,
+    lockupMonths: 10,
     forYou: false,
     latest: latestData.aaveWeth,
     balance: 1.8,
     totalPriceUSD: 6210.24,
     relatedPositions: [
+      {
+        name: 'Aave V3 WETH',
+        asset: assets.WETH,
+        protocol: protocols.aaveLending,
+        url: 'https://app.aave.com',
+        description:
+          'Supply WETH to Aave V3 and earn interest while maintaining liquidity with your collateral.',
+        tags: tags.aave,
+        rewards: [...rewards.stkAAVE(), ...rewards.tradingFees()],
+        lpToken: lpTokens.aEthWETH,
+        slug: 'aave-v3-weth',
+        featured: true,
+        lockupMonths: 10,
+        openedAt: '2025-11-07T00:00:00Z',
+        forYou: false,
+        latest: latestData.aaveWeth,
+        balance: 1.8,
+        totalPriceUSD: 4485.18,
+      },
       {
         name: 'Aave V3 USDC Borrow',
         asset: assets.USDC,
@@ -314,6 +349,7 @@ export const defiPositions: MinimalDeFiPosition[] = [
         lpToken: lpTokens.variableDebtEthUSDC,
         slug: 'aave-v3-usdc-borrow',
         featured: false,
+        lockupMonths: 1,
         openedAt: '2025-09-07T00:00:00Z',
         forYou: false,
         latest: latestData.aaveUsdcBorrow,
@@ -349,10 +385,11 @@ export const defiPositions: MinimalDeFiPosition[] = [
     description:
       'Stake ETH through Frax Finance to receive frxETH and earn staking rewards.',
     tags: tags.liquidStaking,
-    rewards: rewards.none,
+    rewards: rewards.ethStaking(),
     lpToken: lpTokens.frxETH,
     slug: 'frax-eth-staking',
     featured: true,
+    capInDollar: '500000000',
     forYou: true,
     latest: latestData.fraxEth,
     balance: 3.2,
@@ -366,8 +403,8 @@ export const defiPositions: MinimalDeFiPosition[] = [
     url: 'https://stake.lido.fi',
     description:
       'Stake ETH with Lido and receive stETH, maintaining liquidity while earning staking rewards.',
-    tags: tags.liquidStaking,
-    rewards: rewards.none,
+    tags: tags.lidoStaking,
+    rewards: rewards.stETH(),
     lpToken: lpTokens.stETH,
     slug: 'lido-staked-ether',
     featured: true,
@@ -375,45 +412,5 @@ export const defiPositions: MinimalDeFiPosition[] = [
     latest: latestData.lidoStEth,
     balance: 1.5,
     totalPriceUSD: 5175.18,
-  },
-];
-
-export const tokenTinyAmounts: MinimalToken[] = [
-  {
-    address: tokenAddresses.ETH,
-    chain: ethereumChain,
-    symbol: 'ETH',
-    balance: 5.25,
-    totalPriceUSD: 0.0005,
-  },
-  {
-    address: tokenAddresses.USDC_ETHEREUM,
-    chain: ethereumChain,
-    symbol: 'USDC',
-    balance: 2.5,
-    totalPriceUSD: 0.0001,
-    relatedTokens: [
-      {
-        address: tokenAddresses.USDC_BASE,
-        chain: baseChain,
-        symbol: 'USDC',
-        balance: 1.0,
-        totalPriceUSD: 0.0001,
-      },
-    ],
-  },
-  {
-    address: tokenAddresses.USDT,
-    chain: ethereumChain,
-    symbol: 'USDT',
-    balance: 1.8,
-    totalPriceUSD: 0.0001,
-  },
-  {
-    address: tokenAddresses.WBTC,
-    chain: ethereumChain,
-    symbol: 'WBTC',
-    balance: 0.15,
-    totalPriceUSD: 0.0003,
   },
 ];
