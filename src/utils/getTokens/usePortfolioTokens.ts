@@ -214,5 +214,6 @@ export function usePortfolioTokens() {
     isFetching,
     refetch,
     data,
+    accounts: connectedAccounts,
   };
 }
