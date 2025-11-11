@@ -7,7 +7,7 @@ import { getConnectorIcon } from '@lifi/wallet-management';
 import { PortfolioTokensFilterUI } from 'src/app/ui/portfolio/types';
 import { useMemo } from 'react';
 
-export const usePortfolioFilterBar = () => {
+export const usePortfolioTokensFilterBar = () => {
   const {
     allWallets,
     allChains,
@@ -105,6 +105,17 @@ export const usePortfolioFilterBar = () => {
     updateFilter({ ...values });
   };
 
+  const optionsCount = [
+    walletOptions.length,
+    chainOptions.length,
+    assetOptions.length,
+    allValueRange.min !== allValueRange.max &&
+    !isNaN(valueMin) &&
+    !isNaN(valueMax)
+      ? 1
+      : 0,
+  ].reduce((count, length) => count + (length || 0), 0);
+
   const arrayFiltersCount = [
     filter?.tokensWallets,
     filter?.tokensChains,
@@ -116,7 +127,7 @@ export const usePortfolioFilterBar = () => {
   const valueFilterCount = hasValueFilterApplied ? 1 : 0;
 
   const filtersCount = arrayFiltersCount + valueFilterCount;
-  const hasFilterApplied = filtersCount > 0;
+  const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
 
   return {
     walletOptions,

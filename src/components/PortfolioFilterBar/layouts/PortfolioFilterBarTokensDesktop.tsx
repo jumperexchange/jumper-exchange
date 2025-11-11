@@ -7,7 +7,7 @@ import {
   PortfolioFilterBarContentContainer,
 } from '../PortfolioFilterBar.styles';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { usePortfolioFilterBar } from '../hooks';
+import { usePortfolioTokensFilterBar } from '../hooks';
 
 export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
   children,
@@ -27,7 +27,7 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
     handleAssetChange,
     handleValueChange,
     handleClearAllFilters,
-  } = usePortfolioFilterBar();
+  } = usePortfolioTokensFilterBar();
 
   return (
     <PortfolioFilterBarContentContainer>

@@ -1,6 +1,6 @@
 import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
 import { FC } from 'react';
-import { usePortfolioFilterBar } from '../hooks';
+import { usePortfolioTokensFilterBar } from '../hooks';
 import {
   CategoryConfig,
   CategoryContentType,
@@ -34,7 +34,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     filtersCount,
     handleClearAllFilters,
     handleApplyAllFilters,
-  } = usePortfolioFilterBar();
+  } = usePortfolioTokensFilterBar();
 
   const {
     pendingValues,
