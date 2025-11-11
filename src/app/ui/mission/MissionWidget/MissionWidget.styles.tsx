@@ -17,6 +17,13 @@ export const MissionWidgetContentContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(0.5),
 }));
 
+export const MissionWidgetFooterContainer = styled(Box)(({ theme }) => ({
+  marginTop: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+}));
+
 export const MissionWidgetTitle = styled(Typography)(() => ({}));
 
 export const MissionWidgetDescription = styled(Typography)(() => ({}));

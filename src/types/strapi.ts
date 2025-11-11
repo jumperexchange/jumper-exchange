@@ -442,6 +442,7 @@ export enum TaskType {
   Swap = 'Swap',
   Deposit = 'Deposit',
   OnChain = 'On-chain',
+  OnChainWalletOwnership = 'On-chain-wallet-ownership',
   OffChain = 'Off-chain',
   Zap = 'Zap',
 }

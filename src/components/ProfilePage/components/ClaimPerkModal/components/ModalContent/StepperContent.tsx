@@ -16,11 +16,11 @@ import {
   StyledTitleContainer,
   StyledTitleIconButton,
 } from '../../ClaimPerkModal.styles';
+import { StatusBottomSheet } from 'src/components/composite/StatusBottomSheet/StatusBottomSheet';
 import { useClaimPerkForm } from '../../hooks/useClaimPerkForm';
 import { useClaimPerkSteps } from '../../hooks/useClaimPerkSteps';
-import { StatusBottomSheet } from '../StatusBottomSheet/StatusBottomSheet';
-import { MODAL_CONTAINER_ID } from '../../constants';
 import { useStatusSheetContent } from '../../hooks/useStatusSheetContent';
+import { MODAL_CONTAINER_ID } from '../../constants';
 
 interface StepperContentProps extends BaseStepperProps {
   perkId: string;

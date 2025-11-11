@@ -10,6 +10,7 @@ import { useMissionStore } from 'src/stores/mission';
 import { useFormatDisplayTaskData } from 'src/hooks/tasksVerification/useFormatDisplayTaskData';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
+import { TaskType } from 'src/types/strapi';
 
 interface MissionTaskProps {
   task: TaskVerificationWithApy & {
@@ -95,19 +96,25 @@ export const MissionTask: FC<MissionTaskProps> = ({
     );
   };
 
+  const getTypeLabel = () => {
+    if (!isRequired) return t('missions.tasks.typeOptional');
+    if (!taskType) return t('missions.tasks.typeFallback');
+
+    const displayType =
+      taskType === TaskType.OnChainWalletOwnership
+        ? TaskType.OnChain
+        : taskType;
+
+    return t('missions.tasks.type', { type: displayType });
+  };
+
   return (
     <TaskCard
       onClick={onClick}
       title={title}
       description={description}
       isActive={isActive}
-      type={
-        !isRequired
-          ? t('missions.tasks.typeOptional')
-          : taskType
-            ? t('missions.tasks.type', { type: taskType })
-            : t('missions.tasks.typeFallback')
-      }
+      type={getTypeLabel()}
       statusBadge={
         shouldVerify && (
           <Badge

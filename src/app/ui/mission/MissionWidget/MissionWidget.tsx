@@ -18,6 +18,7 @@ import { TaskType } from 'src/types/strapi';
 import { MissionFormWidget } from './MissionFormWidget';
 import { MissionTaskComplete } from './MissionTaskComplete';
 import { MissionEnded } from './MissionEnded';
+import { MissionVerifyWallet } from './MissionVerifyWallet';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -34,6 +35,10 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
 
   const renderContent = (): ReactNode => {
     if (missionHasEnded) return <MissionEnded />;
+
+    if (currentActiveTaskType === TaskType.OnChainWalletOwnership) {
+      return <MissionVerifyWallet isComplete={isCurrentActiveTaskCompleted} />;
+    }
 
     if (isCurrentActiveTaskCompleted) return <MissionTaskComplete />;
 

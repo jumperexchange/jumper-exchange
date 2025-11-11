@@ -1,16 +1,16 @@
 import { FC, useEffect, useRef } from 'react';
+import ErrorRounded from '@mui/icons-material/ErrorRounded';
+import Typography from '@mui/material/Typography';
 import {
   BottomSheet,
   BottomSheetBase,
 } from 'src/components/core/BottomSheet/BottomSheet';
+import { Button } from 'src/components/Button/Button';
 import {
   ErrorIconCircle,
   StyledModalContentContainer,
   StyledTitleContainer,
-} from '../../ClaimPerkModal.styles';
-import ErrorRounded from '@mui/icons-material/ErrorRounded';
-import Typography from '@mui/material/Typography';
-import { Button } from 'src/components/Button/Button';
+} from './StatusBottomSheet.styles';
 
 interface StatusBottomSheetProps {
   title: string;

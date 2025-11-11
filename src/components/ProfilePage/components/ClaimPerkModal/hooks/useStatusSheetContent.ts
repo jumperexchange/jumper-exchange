@@ -3,10 +3,18 @@ import { useWalletMenu } from '@lifi/wallet-management';
 
 import { ErrorType } from './useClaimPerkForm';
 
+interface StatusSheetContent {
+  title: string;
+  description: string;
+  callToAction: string;
+  callToActionType: 'submit' | 'button';
+  onClick?: () => void;
+}
+
 export const useStatusSheetContent = (
   errorType: ErrorType,
   handleCloseErrorBottomSheet: () => void,
-) => {
+): StatusSheetContent => {
   const { t } = useTranslation();
   const { openWalletMenu } = useWalletMenu();
 
