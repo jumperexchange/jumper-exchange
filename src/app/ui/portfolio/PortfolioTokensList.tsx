@@ -8,7 +8,7 @@ import {
 } from './PortfolioPage.styles';
 
 export const PortfolioTokensList = () => {
-  const { data } = usePortfolioTokensFiltering();
+  const { data, filter } = usePortfolioTokensFiltering();
 
   const tokens = useMemo(() => {
     if (data?.length === 0) {
@@ -40,7 +40,9 @@ export const PortfolioTokensList = () => {
   return (
     <PortfolioAssetsListContainer useFlexGap direction="column">
       {tokens.map((token) => (
-        <PortfolioAssetContainer key={token.address}>
+        <PortfolioAssetContainer
+          key={`${token.address}-${token.chain.chainId}`}
+        >
           <TokenListCard size={TokenListCardTokenSize.MD} token={token} />
         </PortfolioAssetContainer>
       ))}

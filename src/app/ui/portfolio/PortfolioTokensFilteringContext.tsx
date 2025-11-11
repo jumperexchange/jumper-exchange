@@ -82,9 +82,7 @@ export const PortfolioTokensFilteringProvider = ({
     return extractFilteringParams(allData, accounts);
   }, [allData, accounts]);
 
-  // Sanitize filter when stats change
   useEffect(() => {
-    // Only run if stats actually changed
     if (isEqual(prevStatsRef.current, stats)) {
       return;
     }
@@ -98,10 +96,8 @@ export const PortfolioTokensFilteringProvider = ({
       setFilter(cleanedSanitized);
       setSearchParamsState(sanitized);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stats, setSearchParamsState]);
+  }, [stats, setSearchParamsState, setFilter]);
 
-  // Apply filters to the data
   const filteredData = useMemo(() => {
     return filterPortfolioData(queriesByAddress, filter);
   }, [queriesByAddress, filter]);
