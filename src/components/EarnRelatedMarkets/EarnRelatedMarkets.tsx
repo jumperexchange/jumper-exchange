@@ -1,8 +1,8 @@
 'use client';
 import { EarnCard } from '../Cards/EarnCard/EarnCard';
 import Typography from '@mui/material/Typography';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { FC } from 'react';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { FC } from 'react';
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
 import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButton.types';
 import { useTranslation } from 'react-i18next';
@@ -49,11 +49,9 @@ export const EarnRelatedMarkets: FC<EarnRelatedMarketsProps> = ({
                       ...relatedMarket,
                       minFromAmountUSD: 0.99,
                       positionUrl: relatedMarket.url ?? 'unset',
-                      address: relatedMarket.lpToken.address,
                     }}
                     displayMode={DepositButtonDisplayMode.IconOnly}
                     size="large"
-                    disabled
                   />
                 }
               />
