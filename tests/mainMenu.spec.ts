@@ -226,6 +226,20 @@ test.describe('Main Menu flows', () => {
         'iframe[name="intercom-messenger-frame"]',
       );
 
+      const messagesTab = await iFrameLocator.locator(
+        '[aria-label*="Messages"]',
+      );
+      await expect(messagesTab).toBeVisible();
+      await messagesTab.click();
+
+      const contactSupportButton = await iFrameLocator.locator(
+        '[aria-label*="Contact support"]',
+      );
+      await expect(contactSupportButton).toBeVisible();
+      await contactSupportButton.click();
+
+      await page.waitForLoadState('networkidle');
+
       const sendMessageInIframe = await iFrameLocator.locator(
         '[aria-label*="Send a message"]',
       );
