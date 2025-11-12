@@ -77,9 +77,16 @@ interface Resources {
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       filter: {
+        apy: 'APY';
+        asset: 'Asset';
+        chain: 'Chain';
         clear: 'Clear';
+        clearAll: 'Clear all';
+        filterAndSort: 'Filter and sort';
+        protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
+        tag: 'Type';
       };
       overview: {
         updated: 'Updated {{time}} ago';
@@ -89,6 +96,7 @@ interface Resources {
       };
       sorting: {
         apy: 'APY';
+        sort: 'Sort';
         sortBy: 'Sort By';
         tvl: 'TVL';
       };
@@ -97,6 +105,11 @@ interface Resources {
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
         useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+      };
+      views: {
+        all: 'All';
+        allMarkets: 'All markets';
+        forYou: 'For you';
       };
     };
     error: {

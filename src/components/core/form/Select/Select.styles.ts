@@ -6,6 +6,10 @@ import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import { ButtonTertiary } from 'src/components/Button/Button.style';
 
+interface BaseSizeProps {
+  size?: 'small' | 'medium';
+}
+
 export const StyledSelect = styled(Select)(({ theme }) => ({
   '&.MuiSelect-root': {
     padding: 0,
@@ -36,11 +40,29 @@ export const StyledSelectorContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.1, 0.25),
 }));
 
-export const StyledLabelContainer = styled(Box)(({ theme }) => ({
+export const StyledLabelContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme }) => ({
   padding: theme.spacing(0.5, 1),
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        padding: theme.spacing(0.5, 1),
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: 0,
+      },
+    },
+  ],
 }));
 
-export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+export const StyledMenuItem = styled(MenuItem, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme, size }) => ({
   padding: theme.spacing(0.75),
   '&:hover': {
     backgroundColor: 'transparent',
@@ -49,45 +71,108 @@ export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     {
       backgroundColor: 'transparent',
     },
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        padding: theme.spacing(0.75),
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: theme.spacing(0.5, 0),
+      },
+    },
+  ],
 }));
 
-export const StyledMenuItemContentContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(0.25),
+export const StyledMenuItemContentContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme, size }) => ({
   display: 'flex',
   alignItems: 'center',
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        padding: theme.spacing(0.25),
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        padding: 0,
+        gap: theme.spacing(1.5),
+      },
+    },
+  ],
 }));
 
-export const StyledMultiSelectFiltersContainer = styled(Box)(({ theme }) => ({
-  height: 40,
+export const StyledMultiSelectFiltersContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: theme.spacing(1),
   marginBottom: theme.spacing(1),
   pointerEvents: 'none',
   '& > *': {
     pointerEvents: 'auto',
   },
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        height: 40,
+        padding: theme.spacing(1),
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        height: 48,
+        padding: 0,
+      },
+    },
+  ],
 }));
 
 export const StyledMultiSelectFiltersClearButton = styled(ButtonTertiary)(
   ({ theme }) => ({
     minWidth: 'unset',
-    height: theme.spacing(4),
-    padding: theme.spacing(1, 1.2),
-    fontSize: theme.typography.bodyXSmallStrong.fontSize,
-    fontWeight: theme.typography.bodyXSmallStrong.fontWeight,
-    lineHeight: theme.typography.bodyXSmallStrong.lineHeight,
+    variants: [
+      {
+        props: ({ size }) => size === 'small',
+        style: {
+          height: theme.spacing(4),
+          padding: theme.spacing(1, 1.2),
+          fontSize: theme.typography.bodyXSmallStrong.fontSize,
+          fontWeight: theme.typography.bodyXSmallStrong.fontWeight,
+          lineHeight: theme.typography.bodyXSmallStrong.lineHeight,
+        },
+      },
+      {
+        props: ({ size }) => size === 'medium',
+        style: {
+          height: theme.spacing(5),
+          padding: theme.spacing(1.375, 2),
+          fontSize: theme.typography.bodySmallStrong.fontSize,
+          fontWeight: theme.typography.bodySmallStrong.fontWeight,
+          lineHeight: theme.typography.bodySmallStrong.lineHeight,
+        },
+      },
+    ],
   }),
 );
 
-export const StyledMultiSelectFiltersInput = styled(InputBase)(({ theme }) => ({
-  height: 40,
+export const StyledMultiSelectFiltersInput = styled(InputBase, {
+  shouldForwardProp: (prop) => prop !== 'size',
+})<BaseSizeProps>(({ theme, size }) => ({
   width: '100%',
   padding: theme.spacing(1.25, 1.5),
   borderRadius: theme.shape.inputTextBorderRadius,
   backgroundColor: (theme.vars || theme).palette.alpha100.main,
-  ...theme.typography.bodySmall,
   fontWeight: 500,
   gap: theme.spacing(0.75),
   '& svg': {
@@ -100,6 +185,22 @@ export const StyledMultiSelectFiltersInput = styled(InputBase)(({ theme }) => ({
   '& placeholder': {
     color: (theme.vars || theme).palette.textHint,
   },
+  variants: [
+    {
+      props: ({ size }) => !size || size === 'small',
+      style: {
+        ...theme.typography.bodySmall,
+        height: 40,
+      },
+    },
+    {
+      props: ({ size }) => size === 'medium',
+      style: {
+        ...theme.typography.bodyMedium,
+        height: 48,
+      },
+    },
+  ],
 }));
 
 export const StyledSliderContainer = styled(Box)(({ theme }) => ({
@@ -113,6 +214,7 @@ export const StyledSliderContainer = styled(Box)(({ theme }) => ({
 
 export const StyledSlider = styled(Slider)(({ theme }) => ({
   width: `calc(100% - 1.5rem)`,
+  // width: `calc(100% - 0.75rem)`,
   '& .MuiSlider-valueLabel': {
     display: 'none',
   },
@@ -126,6 +228,7 @@ export const StyledSlider = styled(Slider)(({ theme }) => ({
     backgroundColor: (theme.vars || theme).palette.alpha200.main,
     margin: `0 -0.75rem`,
     width: `calc(100% + 1.5rem)`,
+    // width: `calc(100% + 0.75rem)`,
   },
 
   '& .MuiSlider-thumb': {

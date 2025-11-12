@@ -305,13 +305,26 @@
     },
     "sorting": {
       "sortBy": "Sort By",
+      "sort": "Sort",
       "apy": "APY",
       "tvl": "TVL"
     },
     "filter": {
       "clear": "Clear",
       "selected": "{{count}} selected",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "filterAndSort": "Filter and sort",
+      "clearAll": "Clear all",
+      "chain": "Chain",
+      "protocol": "Protocol",
+      "tag": "Type",
+      "asset": "Asset",
+      "apy": "APY"
+    },
+    "views": {
+      "forYou": "For you",
+      "allMarkets": "All markets",
+      "all": "All"
     },
     "relatedMarkets": {
       "title": "Related Markets"

@@ -16,6 +16,7 @@ import { SelectBadge } from '../components/SelectBadge';
 
 export const MultiSelect = <T extends string[]>({
   value: initialValue,
+  title,
   onChange,
   options,
   filterBy,
@@ -100,6 +101,7 @@ export const MultiSelect = <T extends string[]>({
           }}
         >
           <StyledMultiSelectFiltersInput
+            name="search"
             startAdornment={
               <SearchIcon
                 sx={(theme) => ({
