@@ -101,7 +101,8 @@ export const MultiSelect = <T extends string[]>({
           }}
         >
           <StyledMultiSelectFiltersInput
-            name="search"
+            autoFocus
+            name={`${label}-search`}
             startAdornment={
               <SearchIcon
                 sx={(theme) => ({

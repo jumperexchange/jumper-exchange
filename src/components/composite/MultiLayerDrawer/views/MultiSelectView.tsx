@@ -90,6 +90,7 @@ export const MultiSelectView = <TValue extends string | number>({
           }}
         >
           <StyledMultiSelectFiltersInput
+            autoFocus
             size="medium"
             name="search"
             startAdornment={<SearchIcon />}

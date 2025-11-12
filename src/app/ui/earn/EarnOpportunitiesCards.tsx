@@ -29,6 +29,7 @@ export const EarnOpportunitiesCards = ({
       }
       gap={3}
       justifyContent={isCompact ? 'space-evenly' : undefined}
+      dataTestId="earn-opportunities-cards-grid"
     >
       <AnimatePresence mode="popLayout">
         {gridItems.map((item, index) => (

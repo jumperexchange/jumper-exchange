@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useEffect, useRef, useState } from 'react';
+import { useInView } from 'framer-motion';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
@@ -18,15 +19,16 @@ const EarnOpportunitiesAllInner = () => {
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0 });
 
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading && !isInView) {
       sectionRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
     }
-  }, [isLoading]);
+  }, [isLoading, isInView]);
 
   return (
     <>
