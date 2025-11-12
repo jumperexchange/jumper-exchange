@@ -8,10 +8,12 @@ import {
 } from '../PortfolioFilterBar.styles';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { usePortfolioTokensFilterBar } from '../hooks';
+import { useTranslation } from 'react-i18next';
 
 export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
   children,
 }) => {
+  const { t } = useTranslation();
   const {
     walletOptions,
     chainOptions,
@@ -37,8 +39,8 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
             options={walletOptions}
             value={filter?.tokensWallets || []}
             onChange={handleWalletChange}
-            filterBy="wallet"
-            label="Wallets"
+            filterBy={t('portfolio.filter.wallet').toLowerCase()}
+            label={t('portfolio.filter.wallet')}
             variant={SelectVariant.Multi}
             data-testid="portfolio-filter-wallet-select"
           />
@@ -49,8 +51,8 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
             options={chainOptions}
             value={filter?.tokensChains?.map(String) ?? []}
             onChange={handleChainChange}
-            filterBy="chain"
-            label="Chains"
+            filterBy={t('portfolio.filter.chain').toLowerCase()}
+            label={t('portfolio.filter.chain')}
             variant={SelectVariant.Multi}
             data-testid="portfolio-filter-chain-select"
           />
@@ -61,8 +63,8 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
             options={assetOptions}
             value={filter?.tokensAssets || []}
             onChange={handleAssetChange}
-            filterBy="asset"
-            label="Assets"
+            filterBy={t('portfolio.filter.asset').toLowerCase()}
+            label={t('portfolio.filter.asset')}
             variant={SelectVariant.Multi}
             data-testid="portfolio-filter-asset-select"
           />
@@ -77,7 +79,7 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
               min={valueRangeMin}
               max={valueRangeMax}
               onChange={handleValueChange}
-              label="Value"
+              label={t('portfolio.filter.value')}
               variant={SelectVariant.Slider}
               data-testid="portfolio-filter-value-select"
             />

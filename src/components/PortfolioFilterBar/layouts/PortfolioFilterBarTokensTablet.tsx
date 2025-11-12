@@ -13,6 +13,7 @@ import {
   createMultiSelectCategory,
   createSliderCategory,
 } from 'src/components/composite/MultiLayerDrawer/utils';
+import { useTranslation } from 'react-i18next';
 
 interface PendingFilterValues {
   tokensWallets: string[];
@@ -36,6 +37,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     handleApplyAllFilters,
   } = usePortfolioTokensFilterBar();
 
+  const { t } = useTranslation();
   const {
     pendingValues,
     setPendingValue,
@@ -103,13 +105,15 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     categories.push(
       createMultiSelectCategory({
         id: 'wallet',
-        label: 'Wallets',
+        label: t('portfolio.filter.wallet'),
         badgeLabel: walletBadge,
         value: pendingValues.tokensWallets,
         onChange: (value) => setPendingValue('tokensWallets', value),
         options: walletOptions,
         searchable: true,
-        searchPlaceholder: 'Search wallets',
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.wallet').toLowerCase(),
+        }),
         testId: 'portfolio-filter-wallet-select-mobile',
       }),
     );
@@ -119,13 +123,15 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     categories.push(
       createMultiSelectCategory({
         id: 'chain',
-        label: 'Chains',
+        label: t('portfolio.filter.chain'),
         badgeLabel: chainBadge,
         value: pendingValues.tokensChains,
         onChange: (value) => setPendingValue('tokensChains', value),
         options: chainOptions,
         searchable: true,
-        searchPlaceholder: 'Search chains',
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.chain').toLowerCase(),
+        }),
         testId: 'portfolio-filter-chain-select-mobile',
       }),
     );
@@ -135,13 +141,15 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     categories.push(
       createMultiSelectCategory({
         id: 'asset',
-        label: 'Assets',
+        label: t('portfolio.filter.asset'),
         badgeLabel: assetBadge,
         value: pendingValues.tokensAssets,
         onChange: (value) => setPendingValue('tokensAssets', value),
         options: assetOptions,
         searchable: true,
-        searchPlaceholder: 'Search assets',
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.asset').toLowerCase(),
+        }),
         testId: 'portfolio-filter-asset-select-mobile',
       }),
     );
@@ -155,7 +163,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     categories.push(
       createSliderCategory({
         id: 'value',
-        label: 'Value',
+        label: t('portfolio.filter.value'),
         badgeLabel: valueBadge,
         value: pendingValues.tokensValue,
         onChange: (value) => setPendingValue('tokensValue', value),
@@ -170,9 +178,9 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     <PortfolioAnimatedLayoutContainer useStackWrapper={false}>
       <MultiLayerDrawer
         categories={categories}
-        title="Filter"
-        applyButtonLabel="Apply Filters"
-        clearButtonLabel="Clear All"
+        title={t('portfolio.filter.filterAndSort')}
+        applyButtonLabel={t('portfolio.filter.filterAndSort')}
+        clearButtonLabel={t('portfolio.filter.clearAll')}
         onApply={applyFilters}
         onClear={clearAll}
         onClose={resetPending}

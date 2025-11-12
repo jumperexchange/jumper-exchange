@@ -14,6 +14,7 @@ import { PortfolioFilterBarDeFiTablet } from './layouts/PortfolioFilterBarDeFiTa
 import { PortfolioFilterBarTokensDesktop } from './layouts/PortfolioFilterBarTokensDesktop';
 import { PortfolioFilterBarTokensTablet } from './layouts/PortfolioFilterBarTokensTablet';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslation } from 'react-i18next';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -25,15 +26,16 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
   onChange,
 }) => {
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const { t } = useTranslation();
   const tabOptions: HorizontalTabItem[] = [
     {
       value: 'tokens',
-      label: 'Tokens',
+      label: t('portfolio.filter.tokens'),
       'data-testid': 'portfolio-filter-tab-tokens',
     },
     {
       value: 'defi-protocols',
-      label: 'DeFi Protocols',
+      label: t('portfolio.filter.defiProtocols'),
       'data-testid': 'portfolio-filter-tab-defi-protocols',
     },
   ];
@@ -55,7 +57,7 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
           tabs={tabOptions}
           size={HorizontalTabSize.MD}
           data-testid="portfolio-filter-tabs"
-          onChange={(event, newValue) =>
+          onChange={(_event, newValue) =>
             onChange(newValue as PortfolioFilterBarTab)
           }
           value={value}
