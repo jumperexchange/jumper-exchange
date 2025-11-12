@@ -68,37 +68,36 @@ export const usePortfolioFilterBar = () => {
     [allAssets],
   );
 
-  const valueMin = filter?.minValue ?? allValueRange.min;
-  const valueMax = filter?.maxValue ?? allValueRange.max;
+  const valueMin = filter?.tokensMinValue ?? allValueRange.min;
+  const valueMax = filter?.tokensMaxValue ?? allValueRange.max;
 
-  // Handle filter changes
   const handleWalletChange = (values: string[]) => {
-    updateFilter({ ...filter, wallets: values });
+    updateFilter({ ...filter, tokensWallets: values });
   };
 
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, chains: values.map(Number) });
+    updateFilter({ ...filter, tokensChains: values.map(Number) });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, assets: values });
+    updateFilter({ ...filter, tokensAssets: values });
   };
 
   const handleValueChange = (values: number[]) => {
     updateFilter({
       ...filter,
-      minValue: values[0],
-      maxValue: values[1],
+      tokensMinValue: values[0],
+      tokensMaxValue: values[1],
     });
   };
 
   const handleClearAllFilters = () => {
     updateFilter({
-      wallets: [],
-      chains: [],
-      assets: [],
-      minValue: allValueRange.min,
-      maxValue: allValueRange.max,
+      tokensWallets: [],
+      tokensChains: [],
+      tokensAssets: [],
+      tokensMinValue: allValueRange.min,
+      tokensMaxValue: allValueRange.max,
     });
   };
 
@@ -107,9 +106,9 @@ export const usePortfolioFilterBar = () => {
   };
 
   const arrayFiltersCount = [
-    filter?.wallets,
-    filter?.chains,
-    filter?.assets,
+    filter?.tokensWallets,
+    filter?.tokensChains,
+    filter?.tokensAssets,
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
   const hasValueFilterApplied =

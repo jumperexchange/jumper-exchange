@@ -15,10 +15,10 @@ import {
 } from 'src/components/composite/MultiLayerDrawer/utils';
 
 interface PendingFilterValues {
-  wallets: string[];
-  chains: string[];
-  assets: string[];
-  value: number[];
+  tokensWallets: string[];
+  tokensChains: string[];
+  tokensAssets: string[];
+  tokensValue: number[];
 }
 
 export const PortfolioFilterBarTokensTablet: FC = () => {
@@ -45,53 +45,53 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     hasPendingFiltersApplied,
   } = usePendingFilters<PendingFilterValues>({
     initialValues: {
-      wallets: filter?.wallets ?? [],
-      chains: filter?.chains?.map(String) ?? [],
-      assets: filter?.assets ?? [],
-      value: [valueMin, valueMax],
+      tokensWallets: filter?.tokensWallets ?? [],
+      tokensChains: filter?.tokensChains?.map(String) ?? [],
+      tokensAssets: filter?.tokensAssets ?? [],
+      tokensValue: [valueMin, valueMax],
     },
     onApply: (values) => {
       handleApplyAllFilters({
-        wallets: values.wallets,
-        chains: values.chains.map(Number),
-        assets: values.assets,
-        minValue: values.value[0],
-        maxValue: values.value[1],
+        tokensWallets: values.tokensWallets,
+        tokensChains: values.tokensChains.map(Number),
+        tokensAssets: values.tokensAssets,
+        tokensMinValue: values.tokensValue[0],
+        tokensMaxValue: values.tokensValue[1],
       });
     },
     onClear: handleClearAllFilters,
     isFilterApplied: (values) => {
       return (
-        values.wallets.length > 0 ||
-        values.chains.length > 0 ||
-        values.assets.length > 0 ||
-        values.value[0] !== valueRangeMin ||
-        values.value[1] !== valueRangeMax
+        values.tokensWallets.length > 0 ||
+        values.tokensChains.length > 0 ||
+        values.tokensAssets.length > 0 ||
+        values.tokensValue[0] !== valueRangeMin ||
+        values.tokensValue[1] !== valueRangeMax
       );
     },
   });
 
-  const usedValueMin = pendingValues.value[0] ?? valueMin;
-  const usedValueMax = pendingValues.value[1] ?? valueMax;
+  const usedValueMin = pendingValues.tokensValue[0] ?? valueMin;
+  const usedValueMax = pendingValues.tokensValue[1] ?? valueMax;
 
   const walletBadge =
-    pendingValues.wallets.length > 0
-      ? pendingValues.wallets.length.toString()
+    pendingValues.tokensWallets.length > 0
+      ? pendingValues.tokensWallets.length.toString()
       : undefined;
   const chainBadge =
-    pendingValues.chains.length > 0
-      ? pendingValues.chains.length.toString()
+    pendingValues.tokensChains.length > 0
+      ? pendingValues.tokensChains.length.toString()
       : undefined;
   const assetBadge =
-    pendingValues.assets.length > 0
-      ? pendingValues.assets.length.toString()
+    pendingValues.tokensAssets.length > 0
+      ? pendingValues.tokensAssets.length.toString()
       : undefined;
   const valueBadge =
     !isNaN(usedValueMin) &&
     !isNaN(usedValueMax) &&
     (usedValueMin !== valueRangeMin || usedValueMax !== valueRangeMax)
       ? formatSliderValue(
-          pendingValues.value.map((value) =>
+          pendingValues.tokensValue.map((value) =>
             toFixedFractionDigits(value, 0, 2),
           ),
         )
@@ -105,8 +105,8 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
         id: 'wallet',
         label: 'Wallets',
         badgeLabel: walletBadge,
-        value: pendingValues.wallets,
-        onChange: (value) => setPendingValue('wallets', value),
+        value: pendingValues.tokensWallets,
+        onChange: (value) => setPendingValue('tokensWallets', value),
         options: walletOptions,
         searchable: true,
         searchPlaceholder: 'Search wallets',
@@ -121,8 +121,8 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
         id: 'chain',
         label: 'Chains',
         badgeLabel: chainBadge,
-        value: pendingValues.chains,
-        onChange: (value) => setPendingValue('chains', value),
+        value: pendingValues.tokensChains,
+        onChange: (value) => setPendingValue('tokensChains', value),
         options: chainOptions,
         searchable: true,
         searchPlaceholder: 'Search chains',
@@ -137,8 +137,8 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
         id: 'asset',
         label: 'Assets',
         badgeLabel: assetBadge,
-        value: pendingValues.assets,
-        onChange: (value) => setPendingValue('assets', value),
+        value: pendingValues.tokensAssets,
+        onChange: (value) => setPendingValue('tokensAssets', value),
         options: assetOptions,
         searchable: true,
         searchPlaceholder: 'Search assets',
@@ -157,8 +157,8 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
         id: 'value',
         label: 'Value',
         badgeLabel: valueBadge,
-        value: pendingValues.value,
-        onChange: (value) => setPendingValue('value', value),
+        value: pendingValues.tokensValue,
+        onChange: (value) => setPendingValue('tokensValue', value),
         min: valueRangeMin,
         max: valueRangeMax,
         testId: 'portfolio-filter-value-select-mobile',

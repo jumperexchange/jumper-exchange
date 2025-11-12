@@ -31,7 +31,6 @@ export interface PortfolioTokensFilteringContextType
   updateFilter: (filter: PortfolioTokensFilterUI) => void;
   data: CacheToken[];
   isLoading: boolean;
-  isAllDataLoading: boolean;
 }
 
 export const PortfolioTokensFilteringContext =
@@ -44,7 +43,6 @@ export const PortfolioTokensFilteringContext =
     allValueRange: { min: 0, max: 0 },
     data: [],
     isLoading: false,
-    isAllDataLoading: false,
   });
 
 export const PortfolioTokensFilteringProvider = ({
@@ -69,6 +67,7 @@ export const PortfolioTokensFilteringProvider = ({
   const {
     queriesByAddress,
     isFetching,
+    isSuccess,
     data: allData,
     accounts,
   } = usePortfolioTokens();
@@ -96,7 +95,7 @@ export const PortfolioTokensFilteringProvider = ({
       setFilter(cleanedSanitized);
       setSearchParamsState(sanitized);
     }
-  }, [stats, setSearchParamsState, setFilter]);
+  }, [stats, setSearchParamsState, setFilter, filter]);
 
   const filteredData = useMemo(() => {
     return filterPortfolioData(queriesByAddress, filter);
@@ -117,8 +116,7 @@ export const PortfolioTokensFilteringProvider = ({
     filter,
     updateFilter,
     data: filteredData,
-    isLoading: isFetching,
-    isAllDataLoading: isFetching,
+    isLoading: isFetching || !isSuccess,
     ...stats,
   };
 

@@ -15,18 +15,17 @@ import {
 import type { Account } from '@lifi/wallet-management';
 
 export const searchParamsParsers = {
-  wallets: parseAsArrayOf(parseAsString),
-  chains: parseAsArrayOf(parseAsInteger),
-  assets: parseAsArrayOf(parseAsString),
-  minValue: parseAsFloat,
-  maxValue: parseAsFloat,
+  tokensWallets: parseAsArrayOf(parseAsString),
+  tokensChains: parseAsArrayOf(parseAsInteger),
+  tokensAssets: parseAsArrayOf(parseAsString),
+  tokensMinValue: parseAsFloat,
+  tokensMaxValue: parseAsFloat,
 };
 
 export const extractFilteringParams = (
   data: CacheToken[],
   accounts: Account[],
 ): PortfolioFilteringParams => {
-  // Extract wallet information from accounts
   const allWallets: WalletInfo[] = accounts.map((account) => {
     const connector = account.connector as any;
     return {
@@ -35,8 +34,7 @@ export const extractFilteringParams = (
       connector: account.connector,
     };
   });
-  // Get all unique chains from the data
-  // Flatten all tokens including nested chains
+
   const allTokens = data.flatMap((token) => [token, ...(token.chains || [])]);
 
   const chainMap = new Map<
@@ -57,10 +55,8 @@ export const extractFilteringParams = (
 
   const allChains = Array.from(chainMap.values());
 
-  // Get all unique assets
   const allAssets = uniqBy(data, 'address');
 
-  // Calculate value range
   const allValues = data
     .map((token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0)
     .filter((value) => value > 0);
@@ -106,16 +102,19 @@ export const sanitizeFilter = (
 
   return {
     ...filter,
-    wallets: filter.wallets?.filter((w) => validWalletAddresses.has(w)) ?? null,
-    chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
-    assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
-    minValue:
-      filter.minValue !== undefined
-        ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
+    tokensWallets:
+      filter.tokensWallets?.filter((w) => validWalletAddresses.has(w)) ?? null,
+    tokensChains:
+      filter.tokensChains?.filter((id) => validChainIds.has(id)) ?? null,
+    tokensAssets:
+      filter.tokensAssets?.filter((a) => validAssets.has(a)) ?? null,
+    tokensMinValue:
+      filter.tokensMinValue !== undefined
+        ? Math.max(Math.min(filter.tokensMinValue, valueMax), valueMin)
         : null,
-    maxValue:
-      filter.maxValue !== undefined
-        ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
+    tokensMaxValue:
+      filter.tokensMaxValue !== undefined
+        ? Math.max(Math.min(filter.tokensMaxValue, valueMax), valueMin)
         : null,
   };
 };
@@ -126,9 +125,8 @@ export const filterPortfolioData = (
 ): CacheToken[] => {
   let allData: CacheToken[] = [];
 
-  // Filter by wallets first (multiple wallet selection)
-  const walletsToInclude = filter.wallets?.length
-    ? filter.wallets
+  const walletsToInclude = filter.tokensWallets?.length
+    ? filter.tokensWallets
     : Array.from(queriesByAddress.keys());
 
   walletsToInclude.forEach((wallet) => {
@@ -138,26 +136,30 @@ export const filterPortfolioData = (
     }
   });
 
-  // Filter by chains
-  if (filter.chains?.length) {
+  if (filter.tokensChains?.length) {
     allData = allData.filter((token) =>
-      token.chains?.some((chain) => filter.chains!.includes(chain.chainId)),
+      token.chains?.some((chain) =>
+        filter.tokensChains!.includes(chain.chainId),
+      ),
     );
   }
 
-  // Filter by assets
-  if (filter.assets?.length) {
-    allData = allData.filter((token) => filter.assets!.includes(token.address));
+  if (filter.tokensAssets?.length) {
+    allData = allData.filter((token) =>
+      filter.tokensAssets!.includes(token.address),
+    );
   }
 
-  // Filter by value range
-  if (filter.minValue !== undefined || filter.maxValue !== undefined) {
+  if (
+    filter.tokensMinValue !== undefined ||
+    filter.tokensMaxValue !== undefined
+  ) {
     allData = allData.filter((token) => {
       const value = token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0;
       const meetsMin =
-        filter.minValue === undefined || value >= filter.minValue;
+        filter.tokensMinValue === undefined || value >= filter.tokensMinValue;
       const meetsMax =
-        filter.maxValue === undefined || value <= filter.maxValue;
+        filter.tokensMaxValue === undefined || value <= filter.tokensMaxValue;
       return meetsMin && meetsMax;
     });
   }
