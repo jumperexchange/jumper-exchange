@@ -85,6 +85,7 @@ export const DepositButtonLabelWrapper = styled(Box, {
 export const DepositButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
   minWidth: 'auto',
   height: 'fit-content',
+  flexShrink: 0,
   borderRadius: theme.shape.buttonBorderRadius,
   '&:disabled': {
     backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,

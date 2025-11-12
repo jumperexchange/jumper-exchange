@@ -1,10 +1,20 @@
-import Typography from '@mui/material/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { StyledLabelContainer } from '../Select.styles';
 
-export const SelectorLabel = ({ label }: { label: string }) => {
+export const SelectorLabel = ({
+  label,
+  labelVariant,
+  size = 'small',
+}: {
+  label: string;
+  labelVariant?: TypographyProps['variant'];
+  size?: 'small' | 'medium';
+}) => {
   return (
-    <StyledLabelContainer>
-      <Typography variant="bodySmallStrong">{label}</Typography>
+    <StyledLabelContainer size={size}>
+      <Typography variant={labelVariant || 'bodySmallStrong'}>
+        {label}
+      </Typography>
     </StyledLabelContainer>
   );
 };

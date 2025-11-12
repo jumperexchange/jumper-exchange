@@ -1,13 +1,19 @@
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
-export const TitleWithHintContainer = styled(Box)(({}) => ({
+interface TitleWithHintContainerProps {
+  gap?: number;
+}
+
+export const TitleWithHintContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'gap',
+})<TitleWithHintContainerProps>(({ gap }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: 2,
+  gap: gap || 2,
   overflow: 'hidden',
 }));
 
@@ -21,13 +27,8 @@ export const TitleWithHintHint = styled(Typography)(({ theme }) => ({
   ...getTextEllipsisStyles(1),
 }));
 
-export const TitleWithHintTypographySkeleton = styled(Skeleton)(
+export const TitleWithHintTypographySkeleton = styled(BaseSurfaceSkeleton)(
   ({ theme }) => ({
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface2.main,
-    }),
-    transform: 'none',
     width: '100%',
     height: '100%',
     minWidth: 100,

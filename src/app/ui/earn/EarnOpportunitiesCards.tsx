@@ -24,11 +24,12 @@ export const EarnOpportunitiesCards = ({
     <GridContainer
       gridTemplateColumns={
         isCompact
-          ? 'repeat(auto-fill, minmax(328px, 1fr))'
+          ? 'repeat(auto-fill, minmax(min(328px, 100%), 1fr))'
           : 'repeat(auto-fit, 100%)'
       }
       gap={3}
       justifyContent={isCompact ? 'space-evenly' : undefined}
+      dataTestId="earn-opportunities-cards-grid"
     >
       <AnimatePresence mode="popLayout">
         {gridItems.map((item, index) => (

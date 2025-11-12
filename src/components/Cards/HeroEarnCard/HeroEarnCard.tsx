@@ -18,6 +18,7 @@ import { HeroHighlight } from './HeroHighlight';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export enum EarnHeroCardCopyKey {
   USE_YOUR_SPARE = 'earn.top.useYourSpare',
@@ -57,6 +58,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   isMain = false,
   href,
 }) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
 
@@ -77,7 +79,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
 
   return (
-    <ConditionalLink href={href}>
+    <ConditionalLink href={href} sx={{ width: '100%' }}>
       <HeroEarnCardContainer hasLink={!!href}>
         <HeroEarnCardHeaderContainer direction="row">
           {forYou && (
@@ -128,6 +130,9 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
               chains={chains}
               protocolSize={AvatarSize.XXL}
               chainsSize={AvatarSize.SM}
+              content={{
+                titleVariant: isMobile ? 'bodyLargeStrong' : 'titleXSmall',
+              }}
             />
             {primaryAction}
           </HeroEarnCardFooterContentContainer>

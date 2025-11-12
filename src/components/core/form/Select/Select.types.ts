@@ -30,6 +30,7 @@ export interface SelectBaseProps<T extends TData> {
   error?: boolean;
   helperText?: string;
   label?: string;
+  title?: string;
   required?: boolean;
   debounceMs?: number;
   menuPlacementX?: 'left' | 'right';

@@ -1,5 +1,8 @@
 import type { Preview } from '@storybook/nextjs-vite';
+import { sb } from 'storybook/test';
 import { withProviders } from './withProviders';
+
+sb.mock(import('@lifi/wallet-management'), { spy: true });
 
 const preview: Preview = {
   globalTypes: {
@@ -44,6 +47,13 @@ const preview: Preview = {
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
       test: 'todo',
+    },
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/',
+        query: {},
+      },
     },
   },
   decorators: [withProviders],
