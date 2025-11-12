@@ -58,6 +58,9 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
                   blockSx={{
                     paragraph: (theme) => ({
                       ...theme.typography.bodyXSmall,
+                      '& a': {
+                        marginLeft: 0,
+                      },
                     }),
                   }}
                 />

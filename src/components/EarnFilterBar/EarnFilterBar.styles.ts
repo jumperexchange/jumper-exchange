@@ -9,12 +9,15 @@ export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
-  padding: theme.spacing(3),
+  padding: theme.spacing(2),
   gap: theme.spacing(2),
   overflow: 'hidden',
   ...theme.applyStyles('dark', {
     backgroundColor: (theme.vars || theme).palette.surface2.main,
   }),
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(3),
+  },
 }));
 
 export const EarnFilterBarHeaderContainer = styled(Box)(({ theme }) => ({

@@ -7,6 +7,7 @@ import { useEffect, useMemo } from 'react';
 export const SingleSelect = <T extends string>({
   value: initialValue,
   label: initialLabel,
+  title,
   debounceMs,
   onChange,
   ...rest

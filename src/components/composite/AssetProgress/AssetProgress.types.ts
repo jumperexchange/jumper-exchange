@@ -13,7 +13,7 @@ export interface BaseAssetProgressProps {
 
 export interface TokenAssetProgressProps extends BaseAssetProgressProps {
   variant: AssetProgressVariant.Token;
-  token: Token;
+  token: Partial<Token> & Pick<Token, 'address' | 'chain'>;
 }
 
 export interface ProtocolAssetProgressProps extends BaseAssetProgressProps {
