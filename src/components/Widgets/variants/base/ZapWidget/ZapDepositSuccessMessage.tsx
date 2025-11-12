@@ -12,8 +12,8 @@ export const ZapDepositSuccessMessage: FC<{
   return (
     <Box sx={{ width: '100%', textAlign: 'center' }}>
       <Typography variant="bodyMedium" color="text.secondary">
-        <Trans
-          i18nKey={messageKey ?? 'widget.zap.depositSuccess'}
+        <Trans<ParseKeys<'translation'>>
+          i18nKey={messageKey || 'widget.zap.depositSuccess'}
           values={{ partnerName }}
           components={{ bold: <b /> }}
           t={t}
