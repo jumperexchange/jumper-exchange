@@ -86,7 +86,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
       />
       <Stack>
         {!isSuccess &&
-          data.length == 0 &&
+          tokens.length == 0 &&
           Array.from({ length: 8 }).map(() => (
             <TokenListCardSkeleton key={generateKey('token')} />
           ))}
