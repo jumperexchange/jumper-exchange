@@ -55,6 +55,12 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   useEffect(() => {
     if (!containerRef.current || !onHeightChange) return;
 
+    if (typeof ResizeObserver === 'undefined') {
+      const height = isOpen ? containerRef.current.offsetHeight : 0;
+      onHeightChange(height);
+      return;
+    }
+
     const resizeObserver = new ResizeObserver(() => {
       if (!containerRef.current) {
         return;
