@@ -621,7 +621,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -675,7 +675,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -1271,7 +1271,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -1331,7 +1331,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -1734,7 +1734,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -1759,7 +1759,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -2084,7 +2084,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -2117,7 +2117,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -2769,7 +2769,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -2829,7 +2829,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -3398,7 +3398,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -3445,7 +3445,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -4121,7 +4121,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -4181,7 +4181,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -4628,7 +4628,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
@@ -4668,7 +4668,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
           class="MuiBox-root css-zhco5e"
         >
           <div
-            class="MuiBox-root css-ffqlu4"
+            class="MuiBox-root css-xl0s26"
           >
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"

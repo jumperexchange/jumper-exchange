@@ -4,10 +4,16 @@ import Typography from '@mui/material/Typography';
 import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
-export const TitleWithHintContainer = styled(Box)(({}) => ({
+interface TitleWithHintContainerProps {
+  gap?: number;
+}
+
+export const TitleWithHintContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'gap',
+})<TitleWithHintContainerProps>(({ gap }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: 2,
+  gap: gap || 2,
   overflow: 'hidden',
 }));
 

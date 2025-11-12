@@ -1,7 +1,17 @@
-import { Protocol } from './jumper-backend';
+import { EarnOpportunityWithLatestAnalytics } from './jumper-backend';
 
-export interface MinimalDeFiPosition extends Protocol {
+export interface EarnOpportunityRewardEntity
+  extends Pick<EarnOpportunityWithLatestAnalytics, 'asset'> {
   balance: number;
   totalPriceUSD: number;
-  relatedProtocols?: Omit<MinimalDeFiPosition, 'relatedProtocols'>[];
+}
+
+export interface MinimalDeFiPosition
+  extends Omit<EarnOpportunityWithLatestAnalytics, 'rewards'> {
+  performance?: number;
+  openedAt?: string;
+  balance: number;
+  totalPriceUSD: number;
+  relatedPositions?: Omit<MinimalDeFiPosition, 'relatedPositions'>[];
+  rewards?: EarnOpportunityRewardEntity[];
 }
