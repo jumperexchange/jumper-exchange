@@ -19,6 +19,7 @@ import {
   calculateEvenYAxisTicks,
 } from './utils';
 import { useCallback, useMemo, useRef } from 'react';
+import type { HTMLAttributes } from 'react';
 import { AREA_CONFIG } from './constants';
 import { ActiveDotProps } from 'recharts/types/util/types';
 
@@ -37,7 +38,8 @@ export interface ChartDataPoint<V> {
   value: V;
 }
 
-export interface LineChartProps<V, T extends ChartDataPoint<V>> {
+export interface LineChartProps<V, T extends ChartDataPoint<V>>
+  extends HTMLAttributes<HTMLDivElement> {
   data: T[];
   theme: {
     lineColor?: string;
@@ -54,7 +56,6 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>> {
   enableXAxis?: boolean;
   enableYAxis?: boolean;
   enableTooltip?: boolean;
-  'data-testid'?: string;
 }
 
 export const LineChart = <V, T extends ChartDataPoint<V>>({
@@ -69,7 +70,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   enableYAxis = true,
   enableTooltip = true,
   isLoading,
-  'data-testid': dataTestId,
+  ...props
 }: LineChartProps<V, T>) => {
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -122,7 +123,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
       width="100%"
       height="100%"
       enableCrosshair={enableCrosshair}
-      data-testid={dataTestId || 'analytics-chart'}
+      {...props}
     >
       <AreaChart data={data} accessibilityLayer={false}>
         <defs>

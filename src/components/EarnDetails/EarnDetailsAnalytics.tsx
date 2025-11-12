@@ -67,6 +67,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
           dataSetId={value}
           dataSetValueAppend={value === AnalyticsValueFieldEnum.APY ? '%' : ''}
           theme={chartTheme}
+          data-testid="analytics-chart"
         />
       </EarnDetailsAnalyticsLineChartContainer>
     </EarnDetailsAnalyticsContainer>

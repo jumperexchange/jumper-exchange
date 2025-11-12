@@ -64,6 +64,7 @@ export const EarnDetailsActions = ({
         size="large"
         label={t('buttons.depositButtonLabel')}
         refetchCallback={refetchDepositToken}
+        data-testid="quick-deposit-button"
       />
       {managePositionSection}
     </EarnDetailsActionsContainer>
