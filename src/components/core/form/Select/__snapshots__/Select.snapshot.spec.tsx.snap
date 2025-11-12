@@ -19,7 +19,7 @@ exports[`Select snapshot > matches snapshot 1`] = `
           class="MuiBox-root css-1a18fce"
         >
           <div
-            class="MuiBox-root css-1ht30bk"
+            class="MuiBox-root css-466uax"
           >
             <p
               class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
@@ -71,7 +71,7 @@ exports[`Select snapshot > matches snapshot with filter 1`] = `
           class="MuiBox-root css-1a18fce"
         >
           <div
-            class="MuiBox-root css-1ht30bk"
+            class="MuiBox-root css-466uax"
           >
             <p
               class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
@@ -123,7 +123,7 @@ exports[`Select snapshot > matches snapshot with icons 1`] = `
           class="MuiBox-root css-1a18fce"
         >
           <div
-            class="MuiBox-root css-1ht30bk"
+            class="MuiBox-root css-466uax"
           >
             <p
               class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
@@ -175,7 +175,7 @@ exports[`Select snapshot > matches snapshot with selected value 1`] = `
           class="MuiBox-root css-1a18fce"
         >
           <div
-            class="MuiBox-root css-1ht30bk"
+            class="MuiBox-root css-466uax"
           >
             <p
               class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
@@ -236,7 +236,7 @@ exports[`Select snapshot > matches snapshot with single select 1`] = `
           class="MuiBox-root css-1a18fce"
         >
           <div
-            class="MuiBox-root css-1ht30bk"
+            class="MuiBox-root css-466uax"
           >
             <p
               class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
@@ -288,7 +288,7 @@ exports[`Select snapshot > matches snapshot with slider select 1`] = `
           class="MuiBox-root css-1a18fce"
         >
           <div
-            class="MuiBox-root css-1ht30bk"
+            class="MuiBox-root css-466uax"
           >
             <p
               class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"

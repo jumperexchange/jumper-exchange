@@ -3,7 +3,7 @@
 exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-vs3jgl"
+    class="MuiBox-root css-1y44ltr"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -67,10 +67,10 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
       class="MuiStack-root css-185w891-MuiStack-root"
     >
       <div
-        class="MuiStack-root css-69zndg-MuiStack-root"
+        class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-h1oaii"
+          class="MuiBox-root css-u70uxf"
           data-testid="protocol-morpho"
         >
           <div
@@ -139,11 +139,11 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
 <div>
   <a
-    class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-fvpjsp-MuiTypography-root-MuiLink-root"
+    class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1u8xbgg-MuiTypography-root-MuiLink-root"
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-1t5s2yj"
+      class="MuiBox-root css-yyhbh8"
     >
       <div
         class="MuiStack-root css-imab1l-MuiStack-root"
@@ -207,10 +207,10 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
         class="MuiStack-root css-185w891-MuiStack-root"
       >
         <div
-          class="MuiStack-root css-69zndg-MuiStack-root"
+          class="MuiStack-root css-4n2h5n-MuiStack-root"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-u70uxf"
             data-testid="protocol-morpho"
           >
             <div
@@ -280,7 +280,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1ug8t68"
+    class="MuiBox-root css-gpbse"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -302,10 +302,10 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
       class="MuiStack-root css-185w891-MuiStack-root"
     >
       <div
-        class="MuiStack-root css-69zndg-MuiStack-root"
+        class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-cmx6on"
+          class="MuiBox-root css-1lr3mj0"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
@@ -323,7 +323,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-vs3jgl"
+    class="MuiBox-root css-1y44ltr"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -387,10 +387,10 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
       class="MuiStack-root css-185w891-MuiStack-root"
     >
       <div
-        class="MuiStack-root css-69zndg-MuiStack-root"
+        class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-h1oaii"
+          class="MuiBox-root css-u70uxf"
           data-testid="protocol-morpho"
         >
           <div
@@ -451,7 +451,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >

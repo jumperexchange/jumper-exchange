@@ -73,6 +73,9 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
           sx={(theme) => ({
             flex: '0 0 auto',
             backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
+            '.MuiTabs-list': {
+              gap: theme.spacing(0.5),
+            },
           })}
         />
         {/* TODO: add latest update in backend and render here */}
