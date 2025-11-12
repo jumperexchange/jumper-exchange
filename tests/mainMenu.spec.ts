@@ -238,7 +238,7 @@ test.describe('Main Menu flows', () => {
       await expect(contactSupportButton).toBeVisible();
       await contactSupportButton.click();
 
-      await page.waitForTimeout(1000);
+      await page.waitForLoadState('networkidle');
 
       const sendMessageInIframe = await iFrameLocator.locator(
         '[aria-label*="Send a message"]',
