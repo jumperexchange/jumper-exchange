@@ -13,10 +13,13 @@ import { SliderSelectProps } from '../Select.types';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { SelectBadge } from '../components/SelectBadge';
+import { formatSliderValue } from '../utils';
+import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 
 export const SliderSelect = <T extends number[]>({
   value: initialValue,
   label: initialLabel,
+  title,
   min,
   max,
   debounceMs,
@@ -35,17 +38,17 @@ export const SliderSelect = <T extends number[]>({
     debounceMs,
   );
 
+  const [displayMin, displayMax] = [min, max].map((v) =>
+    toFixedFractionDigits(v, 0, 2),
+  );
+
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
 
-  const formatValue = useCallback((value: T) => {
-    return value.join(' - ');
-  }, []);
-
   const isValueSelected = useMemo(() => {
-    return formatValue(value) !== formatValue(fallbackValue);
-  }, [value, fallbackValue, formatValue]);
+    return formatSliderValue(value) !== formatSliderValue(fallbackValue);
+  }, [value, fallbackValue]);
 
   const handleClear = useCallback(
     (event: React.MouseEvent) => {
@@ -67,6 +70,10 @@ export const SliderSelect = <T extends number[]>({
     [handleDebounceChange, setValue],
   );
 
+  const formattedValue = useMemo(() => {
+    return value.map((v) => toFixedFractionDigits(v, 0, 2));
+  }, [value]);
+
   return (
     <SelectBase
       {...rest}
@@ -76,13 +83,15 @@ export const SliderSelect = <T extends number[]>({
       selectorContent={
         <>
           <SelectorLabel label={initialLabel} />
-          {isValueSelected && <SelectBadge label={formatValue(value)} />}
+          {isValueSelected && (
+            <SelectBadge label={formatSliderValue(formattedValue)} />
+          )}
         </>
       }
     >
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyXSmallStrong">
-          {`${formatValue(value)} ${initialLabel}`}
+          {`${formatSliderValue(formattedValue)} ${initialLabel}`}
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
@@ -103,8 +112,8 @@ export const SliderSelect = <T extends number[]>({
             max={max}
           />
           <StyledSliderRangeContainer>
-            <Typography variant="bodyXSmall">{min}</Typography>
-            <Typography variant="bodyXSmall">{max}</Typography>
+            <Typography variant="bodyXSmall">{displayMin}</Typography>
+            <Typography variant="bodyXSmall">{displayMax}</Typography>
           </StyledSliderRangeContainer>
         </StyledSliderContainer>
       </StyledMultiSelectFiltersContainer>

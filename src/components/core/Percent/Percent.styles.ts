@@ -14,6 +14,7 @@ export const PercentCircularProgress = styled(CircularProgress)(
       r: 21.45, // radius of the track; is dependant on the size and thickness of the component
       strokeWidth: 1.375,
       stroke: (theme.vars || theme).palette.statusPending,
+      opacity: 1,
     },
   }),
 );

@@ -1,0 +1,4715 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for DeFi Positions view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="39"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 79.315px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $11K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            38.8%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="30"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 90.325px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            30.3%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="22"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 101.320px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            21.82%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="9"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 117.812px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $2.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            9.09%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for Tokens view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="43"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 73.966px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $19K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            42.92%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="23"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 100.081px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $9.8K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            22.77%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="20"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 103.744px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            19.94%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="14"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 110.981px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            14.36%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with four assets 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $43K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $28K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with loading 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-a5552t"
+    >
+      <div
+        class="MuiBox-root css-g2ojj3"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+          style="width: 40px; height: 24px;"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+          style="width: 40px; height: 24px;"
+        />
+        <span
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+          style="width: 40px; height: 24px;"
+        />
+      </div>
+      <div
+        class="MuiBox-root css-1pds7ma"
+      >
+        <div
+          class="MuiBox-root css-515ex2"
+        >
+          <div
+            class="MuiBox-root css-zhco5e"
+          >
+            <div
+              class="MuiBox-root css-pipn1k"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                style="width: 42px; height: 16px;"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                style="width: 108px; height: 32px;"
+              />
+            </div>
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+              style="width: 24px; height: 24px;"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-zhco5e"
+          >
+            <div
+              class="MuiBox-root css-pipn1k"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                style="width: 42px; height: 16px;"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                style="width: 108px; height: 32px;"
+              />
+            </div>
+            <span
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+              style="width: 24px; height: 24px;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no content 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-a5552t"
+      >
+        <div
+          class="MuiStack-root css-5s31b2-MuiStack-root"
+        >
+          <div
+            class="MuiStack-root css-k0vgmj-MuiStack-root"
+          >
+            <div
+              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
+              />
+            </div>
+            <div
+              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
+              />
+            </div>
+            <div
+              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
+              />
+            </div>
+            <div
+              class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-pipn1k"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-bodyMediumStrong css-1isabjp-MuiTypography-root"
+          >
+            portfolio.assetOverviewCard.noContent.title
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodySmallParagraph css-5efv90-MuiTypography-root"
+          >
+            portfolio.assetOverviewCard.noContent.description
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-1c20ww1"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1ib84il-MuiButtonBase-root-MuiButton-root"
+            tabindex="0"
+            type="button"
+          >
+            portfolio.assetOverviewCard.noContent.cta.startEarning
+          </button>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1jan64m-MuiButtonBase-root-MuiButton-root"
+            tabindex="0"
+            type="button"
+          >
+            portfolio.assetOverviewCard.noContent.cta.startSwapping
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for DeFi Positions view with no positions 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for Tokens view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="40"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 77.811px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $19K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            39.96%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="21"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 102.122px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $9.8K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            21.2%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="19"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 105.531px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            18.57%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="20"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 103.308px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+              >
+                +2
+              </p>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $9.4K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            20.28%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot with no DeFi positions 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $46K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $0
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi Positions view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="33"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 87.049px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $11K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            32.83%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="26"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 96.366px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            25.64%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="18"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 105.669px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            18.46%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="23"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 99.689px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+              >
+                +2
+              </p>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $7.8K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            23.07%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Tokens view with no tokens 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no tokens 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $0
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            />
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $34K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi Positions view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="100"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 0.000px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            100%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Tokens view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="100"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 0.000px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $19K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            100%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one asset 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $19K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $8.6K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi Positions view with overflow 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="33"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 87.049px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $11K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            32.83%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="26"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 96.366px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            25.64%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="18"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 105.669px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            18.46%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="23"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 99.689px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+              >
+                +2
+              </p>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $7.8K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            23.07%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Tokens view with overflow 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="40"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 77.811px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $19K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            39.96%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="21"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 102.122px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $9.8K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            21.2%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="19"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 105.531px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            18.57%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="20"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 103.308px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+              >
+                +2
+              </p>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $9.4K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            20.28%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with overflow (more than 4 assets) 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $46K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $34K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for DeFi Positions view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="50"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 65.437px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            49.51%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="36"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 83.400px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            35.64%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="15"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 110.345px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $2.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            14.85%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for Tokens view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="56"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 57.565px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $19K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            55.58%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="26"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 96.123px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            25.83%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="19"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 105.494px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            18.59%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with three assets 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $33K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $17K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for DeFi Positions view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="33"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 87.049px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $11K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            32.83%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="26"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 96.366px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            25.64%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="18"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 105.669px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            18.46%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="23"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 99.689px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <p
+                class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+              >
+                +2
+              </p>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $7.8K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            23.07%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for Tokens view with tiny amounts 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="50"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 64.795px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            aria-label="$0.0005"
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            &lt;$0.01
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            50%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="30"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 90.713px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            aria-label="$0.0003"
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            &lt;$0.01
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            30%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="10"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 116.632px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            aria-label="$0.0001"
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            &lt;$0.01
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            10%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="10"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 116.632px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            aria-label="$0.0001"
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            &lt;$0.01
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            10%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot with tiny token amounts 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              <span
+                aria-label="$0.001"
+                class=""
+                data-mui-internal-clone-element="true"
+              >
+                &lt;$0.01
+              </span>
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $34K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeFi Positions view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="58"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 54.247px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            58.14%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="42"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 75.343px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $6.2K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            41.86%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tokens view 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-1t4f022"
+      >
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="68"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 41.113px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $19K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            68.28%
+          </p>
+        </div>
+        <div
+          class="MuiBox-root css-11swifz"
+        >
+          <div
+            class="MuiBox-root css-dj6tjg"
+          >
+            <span
+              aria-valuenow="32"
+              class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+              role="progressbar"
+              style="width: 64px; height: 64px; transform: rotate(-90deg);"
+            >
+              <svg
+                class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                viewBox="22 22 44 44"
+              >
+                <circle
+                  aria-hidden="true"
+                  class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                />
+                <circle
+                  class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                  cx="44"
+                  cy="44"
+                  fill="none"
+                  r="20.625"
+                  stroke-width="2.75"
+                  style="stroke-dasharray: 129.591; stroke-dashoffset: 88.478px;"
+                />
+              </svg>
+            </span>
+            <div
+              class="MuiBox-root css-iwsnym"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+            data-mui-internal-clone-element="true"
+          >
+            $8.6K
+          </p>
+          <p
+            class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+          >
+            31.72%
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with two assets 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-x5bp0x"
+  >
+    <div
+      class="MuiBox-root css-g2ojj3"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-overview"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.overview
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-tokens"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.tokens
+      </button>
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        data-testid="asset-overview-nav-defiPositions"
+        tabindex="0"
+        type="button"
+      >
+        portfolio.assetOverviewCard.navigation.defiPositions
+      </button>
+    </div>
+    <div
+      class="MuiBox-root css-1pds7ma"
+    >
+      <div
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $27K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $15K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

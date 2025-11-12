@@ -30,7 +30,7 @@ export const EarnDetailsActions = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
-  const { depositTokenData, isLoadingDepositTokenData } =
+  const { depositTokenData, refetchDepositToken, isLoadingDepositTokenData } =
     useGetZapInPoolBalance(
       account.address as Hex,
       projectData.address as Hex,
@@ -59,6 +59,7 @@ export const EarnDetailsActions = ({
         displayMode={DepositButtonDisplayMode.LabelOnly}
         size="large"
         label={t('buttons.depositButtonLabel')}
+        refetchCallback={refetchDepositToken}
       />
       {managePositionSection}
     </EarnDetailsActionsContainer>

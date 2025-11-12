@@ -64,7 +64,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         </div>
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
         tabindex="0"
         type="button"
       >
@@ -94,7 +94,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
       class="MuiStack-root css-4e6rn7-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-h1oaii"
+        class="MuiBox-root css-u70uxf"
         data-testid="protocol-morpho"
       >
         <div
@@ -138,7 +138,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -402,7 +402,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-h1oaii"
+          class="MuiBox-root css-u70uxf"
           data-testid="protocol-morpho"
         >
           <div
@@ -446,7 +446,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="MuiBox-root css-16zy09x"
+            class="MuiBox-root css-fxacz8"
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -665,7 +665,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
       class="MuiStack-root css-4e6rn7-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-cmx6on"
+        class="MuiBox-root css-1lr3mj0"
       >
         <span
           class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
@@ -725,7 +725,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         </div>
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
         tabindex="0"
         type="button"
       >
@@ -755,7 +755,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
       class="MuiStack-root css-4e6rn7-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-h1oaii"
+        class="MuiBox-root css-u70uxf"
         data-testid="protocol-morpho"
       >
         <div
@@ -799,7 +799,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1055,7 +1055,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         </div>
       </div>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-181aqyq-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
         tabindex="0"
         type="button"
       >
@@ -1085,7 +1085,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
       class="MuiStack-root css-4e6rn7-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-h1oaii"
+        class="MuiBox-root css-u70uxf"
         data-testid="protocol-morpho"
       >
         <div
@@ -1129,7 +1129,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1330,7 +1330,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
       class="MuiStack-root css-qvm35a-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-h1oaii"
+        class="MuiBox-root css-u70uxf"
         data-testid="protocol-morpho"
       >
         <div
@@ -1374,7 +1374,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1506,7 +1506,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           </p>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -1550,7 +1550,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
         class="MuiStack-root css-qvm35a-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-h1oaii"
+          class="MuiBox-root css-u70uxf"
           data-testid="protocol-morpho"
         >
           <div
@@ -1594,7 +1594,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="MuiBox-root css-16zy09x"
+            class="MuiBox-root css-fxacz8"
           >
             <span
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1741,7 +1741,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
       class="MuiStack-root css-qvm35a-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-cmx6on"
+        class="MuiBox-root css-1lr3mj0"
       >
         <span
           class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
@@ -1799,7 +1799,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
       class="MuiStack-root css-qvm35a-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-h1oaii"
+        class="MuiBox-root css-u70uxf"
         data-testid="protocol-morpho"
       >
         <div
@@ -1843,7 +1843,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
@@ -1944,7 +1944,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           </p>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-o57fdb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -1984,7 +1984,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
       class="MuiStack-root css-qvm35a-MuiStack-root"
     >
       <div
-        class="MuiBox-root css-h1oaii"
+        class="MuiBox-root css-u70uxf"
         data-testid="protocol-morpho"
       >
         <div
@@ -2028,7 +2028,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           </div>
         </div>
         <div
-          class="MuiBox-root css-16zy09x"
+          class="MuiBox-root css-fxacz8"
         >
           <span
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"

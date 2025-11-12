@@ -336,19 +336,84 @@
     },
     "sorting": {
       "sortBy": "Sort By",
+      "sort": "Sort",
       "apy": "APY",
       "tvl": "TVL"
     },
     "filter": {
       "clear": "Clear",
       "selected": "{{count}} selected",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "filterAndSort": "Filter and sort",
+      "clearAll": "Clear all",
+      "chain": "Chain",
+      "protocol": "Protocol",
+      "tag": "Type",
+      "asset": "Asset",
+      "apy": "APY"
+    },
+    "views": {
+      "forYou": "For you",
+      "allMarkets": "All markets",
+      "all": "All"
     },
     "relatedMarkets": {
       "title": "Related Markets"
     },
     "overview": {
       "updated": "Updated {{time}} ago"
+    }
+  },
+  "portfolio": {
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "Overview",
+        "tokens": "Tokens",
+        "defiPositions": "DeFi Protocols"
+      },
+      "overview": {
+        "tokens": "Tokens",
+        "defiPositions": "DeFi Protocols"
+      },
+      "noContent": {
+        "title": "This is looking a bit empty!",
+        "description": "Use Earn or Exchange and jump start your DeFi journey!",
+        "cta": {
+          "startEarning": "Start Earning",
+          "startSwapping": "Start Swapping"
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "Opened",
+        "lockup": "Lockup",
+        "lockupPeriod": {
+          "lessThanOneMinute": "<1 minute ago",
+          "minutes_one": "{{count}} minute ago",
+          "minutes_other": "{{count}} minutes ago",
+          "hours_one": "{{count}} hour ago",
+          "hours_other": "{{count}} hours ago",
+          "days_one": "{{count}} day ago",
+          "days_other": "{{count}} days ago",
+          "months_one": "{{count}} month ago",
+          "months_other": "{{count}} months ago",
+          "years_one": "{{count}} year ago",
+          "years_other": "{{count}} years ago"
+        }
+      },
+      "actions": {
+        "withdraw": "Withdraw",
+        "deposit": "Deposit",
+        "claim": "Claim",
+        "compound": "Compound"
+      },
+      "header": {
+        "supplied": "Supplied",
+        "value": "Value",
+        "apy": "APY",
+        "rewards": "Rewards"
+      }
     }
   },
   "widget": {
@@ -395,6 +460,9 @@
           "description": "We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission."
         }
       }
+    },
+    "earn": {
+      "depositSuccess": "You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>"
     }
   },
   "links": {

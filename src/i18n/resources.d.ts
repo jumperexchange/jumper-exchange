@@ -77,9 +77,16 @@ interface Resources {
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       filter: {
+        apy: 'APY';
+        asset: 'Asset';
+        chain: 'Chain';
         clear: 'Clear';
+        clearAll: 'Clear all';
+        filterAndSort: 'Filter and sort';
+        protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
+        tag: 'Type';
       };
       overview: {
         updated: 'Updated {{time}} ago';
@@ -89,6 +96,7 @@ interface Resources {
       };
       sorting: {
         apy: 'APY';
+        sort: 'Sort';
         sortBy: 'Sort By';
         tvl: 'TVL';
       };
@@ -97,6 +105,11 @@ interface Resources {
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
         useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+      };
+      views: {
+        all: 'All';
+        allMarkets: 'All markets';
+        forYou: 'For you';
       };
     };
     error: {
@@ -357,6 +370,58 @@ interface Resources {
         title: 'Find the best route';
       };
     };
+    portfolio: {
+      assetOverviewCard: {
+        navigation: {
+          defiPositions: 'DeFi Protocols';
+          overview: 'Overview';
+          tokens: 'Tokens';
+        };
+        noContent: {
+          cta: {
+            startEarning: 'Start Earning';
+            startSwapping: 'Start Swapping';
+          };
+          description: 'Use Earn or Exchange and jump start your DeFi journey!';
+          title: 'This is looking a bit empty!';
+        };
+        overview: {
+          defiPositions: 'DeFi Protocols';
+          tokens: 'Tokens';
+        };
+      };
+      defiPositionCard: {
+        actions: {
+          claim: 'Claim';
+          compound: 'Compound';
+          deposit: 'Deposit';
+          withdraw: 'Withdraw';
+        };
+        header: {
+          apy: 'APY';
+          rewards: 'Rewards';
+          supplied: 'Supplied';
+          value: 'Value';
+        };
+        overview: {
+          lockup: 'Lockup';
+          lockupPeriod: {
+            days_one: '{{count}} day ago';
+            days_other: '{{count}} days ago';
+            hours_one: '{{count}} hour ago';
+            hours_other: '{{count}} hours ago';
+            lessThanOneMinute: '<1 minute ago';
+            minutes_one: '{{count}} minute ago';
+            minutes_other: '{{count}} minutes ago';
+            months_one: '{{count}} month ago';
+            months_other: '{{count}} months ago';
+            years_one: '{{count}} year ago';
+            years_other: '{{count}} years ago';
+          };
+          opened: 'Opened';
+        };
+      };
+    };
     profile_page: {
       achievements: 'Achievements';
       availableRewards: 'Available Rewards';
@@ -431,6 +496,9 @@ interface Resources {
         lockupPeriod: 'Lockup period';
         token: 'Asset';
         tvl: 'TVL';
+      };
+      earn: {
+        depositSuccess: 'You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>';
       };
       sweepTokensCard: {
         button: {
