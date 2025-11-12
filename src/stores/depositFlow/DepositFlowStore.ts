@@ -12,8 +12,12 @@ export interface EarnOpportunityExtended
 interface DepositFlowState {
   isModalOpen: boolean;
   selectedEarnOpportunity: EarnOpportunityExtended | null;
+  refetchCallback?: () => void;
 
-  openModal: (earnOpportunity: EarnOpportunityExtended) => void;
+  openModal: (
+    earnOpportunity: EarnOpportunityExtended,
+    refetchCallback?: () => void,
+  ) => void;
   closeModal: () => void;
 }
 
@@ -21,17 +25,23 @@ export const useDepositFlowStore = createWithEqualityFn<DepositFlowState>(
   (set) => ({
     isModalOpen: false,
     selectedEarnOpportunity: null,
+    refetchCallback: undefined,
 
-    openModal: (earnOpportunity: EarnOpportunityExtended) => {
+    openModal: (
+      earnOpportunity: EarnOpportunityExtended,
+      refetchCallback?: () => void,
+    ) => {
       set({
         isModalOpen: true,
         selectedEarnOpportunity: earnOpportunity,
+        refetchCallback,
       });
     },
 
     closeModal: () => {
       set({
         isModalOpen: false,
+        refetchCallback: undefined,
         // selectedEarnOpportunity: null,
       });
     },

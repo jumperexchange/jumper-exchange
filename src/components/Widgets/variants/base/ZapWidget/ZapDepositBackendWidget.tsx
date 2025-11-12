@@ -30,12 +30,14 @@ import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
 import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
 import { ZAP_ALLOWED_SOURCE_CHAINS } from './constants';
+import { ParseKeys } from 'i18next';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
   zapData?: ZapDataResponse | null;
   isZapDataSuccess?: boolean;
   refetchDepositToken?: () => void;
+  depositSuccessMessageKey?: ParseKeys<'translation'>;
 }
 
 export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
@@ -44,6 +46,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   refetchDepositToken,
   customInformation,
   ctx,
+  depositSuccessMessageKey,
 }) => {
   const { t } = useTranslation();
 
@@ -247,7 +250,11 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       config={widgetConfig}
       integrator={widgetConfig.integrator}
       contractCompactComponent={
-        <ZapDepositSuccessMessage partnerName={partnerName} t={t} />
+        <ZapDepositSuccessMessage
+          partnerName={partnerName}
+          t={t}
+          messageKey={depositSuccessMessageKey}
+        />
       }
       contractComponent={
         <ZapDepositSettings

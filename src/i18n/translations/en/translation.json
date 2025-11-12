@@ -429,6 +429,9 @@
           "description": "We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission."
         }
       }
+    },
+    "earn": {
+      "depositSuccess": "You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>"
     }
   },
   "links": {

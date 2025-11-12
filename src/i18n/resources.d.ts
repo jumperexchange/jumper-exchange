@@ -468,6 +468,9 @@ interface Resources {
         token: 'Asset';
         tvl: 'TVL';
       };
+      earn: {
+        depositSuccess: 'You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>';
+      };
       sweepTokensCard: {
         button: {
           claim: 'Claim returned funds';

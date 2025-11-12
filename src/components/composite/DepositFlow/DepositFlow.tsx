@@ -29,16 +29,18 @@ export const DepositFlowModal = () => {
 
 interface DepositFlowButtonProps extends Omit<DepositButtonProps, 'onClick'> {
   earnOpportunity: EarnOpportunityExtended;
+  refetchCallback?: () => void;
 }
 export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
   earnOpportunity,
+  refetchCallback,
   ...props
 }) => {
   const { t } = useTranslation();
   const openModal = useDepositFlowStore((state) => state.openModal);
   return (
     <DepositButton
-      onClick={() => openModal(earnOpportunity)}
+      onClick={() => openModal(earnOpportunity, refetchCallback)}
       label={t('buttons.depositButtonLabel')}
       {...props}
     />
