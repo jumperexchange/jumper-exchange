@@ -328,6 +328,27 @@ interface Resources {
         title: 'Find the best route';
       };
     };
+    portfolio: {
+      assetOverviewCard: {
+        navigation: {
+          defiPositions: 'DeFi Protocols';
+          overview: 'Overview';
+          tokens: 'Tokens';
+        };
+        noContent: {
+          cta: {
+            startEarning: 'Start Earning';
+            startSwapping: 'Start Swapping';
+          };
+          description: 'Use Earn or Exchange and jump start your DeFi journey!';
+          title: 'This is looking a bit empty!';
+        };
+        overview: {
+          defiPositions: 'DeFi Protocols';
+          tokens: 'Tokens';
+        };
+      };
+    };
     profile_page: {
       achievements: 'Achievements';
       availableRewards: 'Available Rewards';

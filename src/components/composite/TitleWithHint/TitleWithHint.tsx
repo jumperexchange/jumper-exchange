@@ -6,10 +6,12 @@ import {
   TitleWithHintHint,
 } from './TitleWithHint.styles';
 import { SxProps, Theme } from '@mui/material/styles';
+import { Tooltip } from 'src/components/core/Tooltip/Tooltip';
 
 interface TitleWithHintProps extends PropsWithChildren {
   title: string;
   titleVariant: TypographyProps['variant'];
+  titleTooltip?: string;
   titleDataTestId?: string;
   hint?: string;
   hintVariant?: TypographyProps['variant'];
@@ -20,6 +22,7 @@ interface TitleWithHintProps extends PropsWithChildren {
 
 export const TitleWithHint: FC<TitleWithHintProps> = ({
   title,
+  titleTooltip,
   hint,
   titleVariant,
   hintVariant,
@@ -32,7 +35,13 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
   return (
     <TitleWithHintContainer gap={gap} sx={sx}>
       <TitleWithHintTitle variant={titleVariant} data-testid={titleDataTestId}>
-        {title}
+        {titleTooltip ? (
+          <Tooltip title={titleTooltip}>
+            <span>{title}</span>
+          </Tooltip>
+        ) : (
+          title
+        )}
       </TitleWithHintTitle>
       {children
         ? children
