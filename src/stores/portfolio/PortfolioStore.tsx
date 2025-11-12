@@ -1,4 +1,3 @@
-import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
@@ -9,6 +8,12 @@ import type {
 } from '@/utils/getTokens';
 import { createJSONStorage } from 'zustand/middleware';
 import type { Account } from '@lifi/wallet-management';
+
+export function getOrCreateMap<T>(
+  data: Map<string, T> | { [key: string]: T },
+): Map<string, T> {
+  return new Map(data instanceof Map ? data : Object.entries(data));
+}
 
 function cacheTokenPartialize({
   address,
@@ -54,8 +59,8 @@ export const usePortfolioStore = createWithEqualityFn(
       ...defaultSettings,
 
       setLast(address: string, value: number, date: number) {
-        const lastTotalValue = get().lastTotalValue;
-        const lastDate = get().lastDate;
+        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
+        const lastDate = getOrCreateMap(get().lastDate);
         lastTotalValue.set(address, value);
         lastDate.set(address, date);
         set({
@@ -72,7 +77,7 @@ export const usePortfolioStore = createWithEqualityFn(
         };
       },
       setForceRefresh(address: string, state: boolean) {
-        const forceRefresh = get().forceRefresh;
+        const forceRefresh = getOrCreateMap(get().forceRefresh);
         if (state) {
           forceRefresh.set(address, true);
         } else {
@@ -83,10 +88,10 @@ export const usePortfolioStore = createWithEqualityFn(
         });
       },
       deleteCacheTokenAddress(address: string) {
-        const cacheTokens = get().cacheTokens;
-        const lastTotalValue = get().lastTotalValue;
-        const lastDate = get().lastDate;
-        const forceRefresh = get().forceRefresh;
+        const cacheTokens = getOrCreateMap(get().cacheTokens);
+        const lastTotalValue = getOrCreateMap(get().lastTotalValue);
+        const lastDate = getOrCreateMap(get().lastDate);
+        const forceRefresh = getOrCreateMap(get().forceRefresh);
 
         cacheTokens.delete(address);
         lastTotalValue.delete(address);
@@ -129,7 +134,7 @@ export const usePortfolioStore = createWithEqualityFn(
         };
       },
       setCacheTokens(account: string, tokens: ExtendedTokenAmount[]) {
-        const cacheTokens = get().cacheTokens;
+        const cacheTokens = getOrCreateMap(get().cacheTokens);
         cacheTokens.set(account, tokens.map(cacheTokenPartialize));
 
         set({

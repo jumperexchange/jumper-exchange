@@ -75,8 +75,18 @@ export const SelectBase = <T extends TData>({
           horizontal: menuPlacementX,
         },
         disableScrollLock: true,
+        autoFocus: false,
         slots: {
           transition: Fade,
+        },
+        slotProps: {
+          root: {
+            disableEnforceFocus: true,
+            disableRestoreFocus: true,
+          },
+        },
+        MenuListProps: {
+          autoFocusItem: false,
         },
         PaperProps: {
           sx: (theme) => ({

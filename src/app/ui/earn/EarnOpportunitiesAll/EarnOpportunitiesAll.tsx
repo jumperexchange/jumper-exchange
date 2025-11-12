@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useEffect, useRef, useState } from 'react';
+import { useInView } from 'framer-motion';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
@@ -18,20 +19,35 @@ const EarnOpportunitiesAllInner = () => {
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0 });
 
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading && !isInView) {
       sectionRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
     }
-  }, [isLoading]);
+  }, [isLoading, isInView]);
 
   return (
     <>
-      <SectionCardContainer ref={sectionRef}>
-        <Stack direction="column" gap={3}>
+      <SectionCardContainer
+        ref={sectionRef}
+        sx={(theme) => ({
+          padding: theme.spacing(2),
+          [theme.breakpoints.up('md')]: {
+            padding: theme.spacing(3),
+          },
+        })}
+      >
+        <Stack
+          direction="column"
+          gap={{
+            xs: 2,
+            md: 3,
+          }}
+        >
           <EarnFilterBar
             isLoading={isAllDataLoading}
             variant={variant}

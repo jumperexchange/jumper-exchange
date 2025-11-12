@@ -81,7 +81,11 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
   );
 
   return (
-    <EntityChainContainer gap={spacing.containerGap} data-testid={dataTestId}>
+    <EntityChainContainer
+      gap={spacing.containerGap}
+      data-testid={dataTestId}
+      isContentVisible={isContentVisible}
+    >
       <EntityChainStackWrapper>
         {mainStack}
         {chainsPlacement === EntityChainStackChainsPlacement.Overlay && (

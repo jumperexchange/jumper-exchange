@@ -22,12 +22,15 @@ export const HeroEarnCardContainer = styled(Box, {
   ...theme.applyStyles('dark', {
     backgroundColor: (theme.vars || theme).palette.surface2.main,
   }),
-  padding: theme.spacing(3),
+  padding: theme.spacing(4),
   gap: theme.spacing(0.5),
   minHeight: 312,
   height: '-webkit-fill-available',
   display: 'flex',
   flexDirection: 'column',
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(3),
+  },
 }));
 
 export const HeroEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
@@ -60,7 +63,7 @@ export const HeroEarnCardFooterContentContainer = styled(Stack)(
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     gap: theme.spacing(2),
   }),
 );

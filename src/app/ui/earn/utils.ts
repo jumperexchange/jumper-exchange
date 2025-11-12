@@ -6,7 +6,6 @@ import {
   OrderOptions,
   SortByOptions,
 } from './types';
-import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
   parseAsStringEnum,
   parseAsBoolean,
@@ -53,7 +52,7 @@ export const extractFilteringParams = (
   formattedAPY = sortBy(formattedAPY);
   const stepAPYPairs = map(formattedAPY, (apy, index) => [
     index / (formattedAPY.length - 1),
-    toFixedFractionDigits(apy * 100, 0, 2),
+    (apy * 100).toFixed(2),
   ]);
   const allAPY = fromPairs(stepAPYPairs);
 

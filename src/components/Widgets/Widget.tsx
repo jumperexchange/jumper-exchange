@@ -3,7 +3,6 @@ import { ClientOnly } from '@/components/ClientOnly';
 import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
-import { useWidgetCacheStore } from '@/stores/widgetCache';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import { WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
@@ -22,6 +21,7 @@ import { useTheme } from '@mui/material/styles';
 import { MainWidgetContext } from './variants/widgetConfig/types';
 import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
 import { Widget as BaseWidget } from './variants/base/Widget';
+import { useFormParameters } from './hooks';
 
 export function Widget({
   starterVariant,
@@ -58,7 +58,6 @@ export function Widget({
   const contributionDisplayed = useContributionStore(
     (state) => state.contributionDisplayed,
   );
-  const widgetCache = useWidgetCacheStore((state) => state);
 
   useEffect(() => {
     router.prefetch('/', { kind: PrefetchKind.FULL });
@@ -88,52 +87,13 @@ export function Widget({
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
   }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
 
-  const formParametersCtx = useMemo(() => {
-    const params: Record<
-      string,
-      | number
-      | string
-      | { chainId: string | number | undefined }
-      | { tokenAddress: string | number | undefined }
-      | undefined
-    > = {
-      sourceChain: {
-        chainId:
-          configTheme?.fromChain ?? (fromChain || widgetCache.fromChainId),
-      },
-      sourceToken: {
-        tokenAddress:
-          configTheme?.fromToken ?? (fromToken || widgetCache.fromToken),
-      },
-      destinationChain: {
-        chainId: configTheme?.toChain ?? toChain,
-      },
-      destinationToken: {
-        tokenAddress: configTheme?.toToken ?? toToken,
-      },
-      fromAmount: fromAmount,
-    };
-
-    for (const key in params) {
-      if (!params[key]) {
-        delete params[key];
-      }
-    }
-
-    return params;
-  }, [
-    configTheme?.fromChain,
-    configTheme?.fromToken,
-    configTheme?.toChain,
-    configTheme?.toToken,
-    fromAmount,
+  const formParametersCtx = useFormParameters({
     fromChain,
     fromToken,
     toChain,
     toToken,
-    widgetCache.fromChainId,
-    widgetCache.fromToken,
-  ]);
+    fromAmount,
+  });
 
   const context: MainWidgetContext = useMemo(
     () => ({
