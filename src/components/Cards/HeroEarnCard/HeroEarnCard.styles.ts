@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
+import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
 interface HeroEarnCardContainerProps {
   hasLink?: boolean;
@@ -64,7 +65,4 @@ export const HeroEarnCardFooterContentContainer = styled(Stack)(
   }),
 );
 
-export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  transform: 'none',
-}));
+export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));

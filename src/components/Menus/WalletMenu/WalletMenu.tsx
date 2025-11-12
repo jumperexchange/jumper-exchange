@@ -1,4 +1,3 @@
-import { Portfolio } from '@/components/Portfolio/Portfolio';
 import { useMenuStore } from '@/stores/menu';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import CloseIcon from '@mui/icons-material/Close';
@@ -6,9 +5,9 @@ import { alpha, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CustomDrawer } from '.';
-import { WalletCard } from './WalletCard';
-import { WalletButton } from './WalletMenu.style';
+import { WalletButton, CustomDrawer } from './WalletMenu.style';
+import { usePortfolioTokens } from 'src/utils/getTokens/usePortfolioTokens';
+import { WalletBalanceCard } from 'src/components/composite/WalletBalanceCard/WalletBalanceCard';
 
 export const WalletMenu = () => {
   const { t } = useTranslation();
@@ -20,6 +19,7 @@ export const WalletMenu = () => {
     setWalletMenuState,
     setSnackbarState,
   } = useMenuStore((state) => state);
+  const { queriesByAddress } = usePortfolioTokens();
 
   const handleOpenWalletMenu: MouseEventHandler<HTMLButtonElement> = (
     event,
@@ -79,13 +79,18 @@ export const WalletMenu = () => {
           </Typography>
         </WalletButton>
       </Stack>
-      {accounts.map(
-        (account) =>
-          account.isConnected && (
-            <WalletCard key={account.address} account={account} />
-          ),
+      {Array.from(queriesByAddress.entries()).map(
+        ([walletAddress, account]) => (
+          <WalletBalanceCard
+            key={walletAddress}
+            walletAddress={walletAddress}
+            refetch={account.refetch}
+            isFetching={account.isFetching}
+            isSuccess={account.isSuccess}
+            data={account.data ?? []}
+          />
+        ),
       )}
-      <Portfolio />
     </CustomDrawer>
   );
 };

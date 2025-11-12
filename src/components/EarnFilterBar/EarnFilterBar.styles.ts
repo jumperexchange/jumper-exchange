@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
+import { BaseSurfaceSkeleton } from '../core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
 export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -33,9 +33,7 @@ export const EarnFilterBarContentContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(2),
 }));
 
-export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  transform: 'none',
+export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({
   borderRadius: theme.shape.buttonBorderRadius,
 }));
 
