@@ -305,19 +305,84 @@
     },
     "sorting": {
       "sortBy": "Ordenar por",
+      "sort": "",
       "apy": "APY",
       "tvl": "TVL"
     },
     "filter": {
       "clear": "Limpar",
       "selected": "{{count}} selecionado",
-      "search": "Buscar {{filterBy}}..."
+      "search": "Buscar {{filterBy}}...",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": ""
+    },
+    "views": {
+      "forYou": "",
+      "allMarkets": "",
+      "all": ""
     },
     "relatedMarkets": {
       "title": "Mercados relacionados"
     },
     "overview": {
       "updated": "Atualizado há {{time}} atrás"
+    }
+  },
+  "portfolio": {
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": ""
+      }
     }
   },
   "widget": {
@@ -364,6 +429,9 @@
           "description": "Estamos trabalhando para adicionar suporte para carteiras não-EVM. Por enquanto, por favor use uma carteira diferente para completar esta missão."
         }
       }
+    },
+    "earn": {
+      "depositSuccess": ""
     }
   },
   "links": {
