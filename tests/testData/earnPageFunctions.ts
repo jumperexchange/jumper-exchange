@@ -5,6 +5,20 @@ export async function selectAllMarketsTab(page: Page) {
   await allMarketsTab.click();
 }
 
+export async function verifyAnalyticsButtonsAreVisible(page: Page) {
+	const chartButtons = [
+		"analytics-range-day",
+		"analytics-range-week",
+		"analytics-range-month",
+		"analytics-range-year",
+		"analytics-value-apy",
+		"analytics-value-tvl",
+	];
+	for (const chartButton of chartButtons) {
+		await page.waitForLoadState("networkidle");
+		await expect(page.getByTestId(chartButton)).toBeVisible();
+	}
+}
 export async function verifyNoSelectedChainsAreVisible(
   page: Page,
   chain1: string,
