@@ -33,65 +33,113 @@ export interface BaseCategoryConfig {
 }
 
 /**
- * Category with subcategories (branch node in the tree)
+ * Option for select/multi-select
  */
-export interface CategoryWithSubcategories extends BaseCategoryConfig {
-  /** Array of subcategories */
-  subcategories?: CategoryConfig[];
+export interface CategoryOption<T> {
+  value: T;
+  label: string;
+  icon?: ReactNode;
+  disabled?: boolean;
+  sx?: SxProps<Theme>;
 }
 
 /**
- * Leaf category with content type and data
+ * Single select leaf category
  */
-export interface LeafCategory<TValue = any> extends BaseCategoryConfig {
-  /** Type of content to render */
-  contentType: CategoryContentType;
-  /** Current value for this category */
+export type SingleSelectLeafCategory<TValue extends string | number> =
+  BaseCategoryConfig & {
+    contentType: CategoryContentType.SingleSelect;
+    value?: TValue;
+    onChange?: (value: TValue) => void;
+    options?: CategoryOption<TValue>[];
+    searchable?: boolean;
+    searchPlaceholder?: string;
+  };
+
+/**
+ * Multi select leaf category
+ */
+export type MultiSelectLeafCategory<TValue extends string | number> =
+  BaseCategoryConfig & {
+    contentType: CategoryContentType.MultiSelect;
+    value?: TValue[];
+    onChange?: (value: TValue[]) => void;
+    options?: CategoryOption<TValue>[];
+    searchable?: boolean;
+    searchPlaceholder?: string;
+  };
+
+/**
+ * Slider leaf category
+ */
+export type SliderLeafCategory = BaseCategoryConfig & {
+  contentType: CategoryContentType.Slider;
+  value?: number[];
+  onChange?: (value: number[]) => void;
+  min: number;
+  max: number;
+};
+
+/**
+ * List leaf category
+ */
+export type ListLeafCategory<TValue> = BaseCategoryConfig & {
+  contentType: CategoryContentType.List;
   value?: TValue;
-  /** Callback when value changes */
   onChange?: (value: TValue) => void;
-  /** For Select/MultiSelect: options to display */
-  options?: CategoryOption[];
-  /** For Slider: min value */
-  min?: number;
-  /** For Slider: max value */
-  max?: number;
-  /** For Custom: custom render function */
-  render?: (props: LeafCategoryRenderProps<TValue>) => ReactNode;
-  /** For List: custom render function for each item */
-  renderItem?: (item: any, index: number) => ReactNode;
-  /** For List: array of items */
-  items?: any[];
-  /** Enable search/filter functionality */
+  items: TValue[];
+  renderItem: (item: TValue, index: number) => ReactNode;
   searchable?: boolean;
-  /** Placeholder text for search input */
   searchPlaceholder?: string;
-}
+};
+
+/**
+ * Custom render leaf category
+ */
+export type CustomLeafCategory<TValue> = BaseCategoryConfig & {
+  contentType: CategoryContentType.Custom;
+  value?: TValue;
+  onChange?: (value: TValue) => void;
+  render: (props: LeafCategoryRenderProps<TValue>) => ReactNode;
+};
+
+/**
+ * Discriminated union of all leaf category variants
+ */
+export type LeafCategory<TValue> =
+  | SingleSelectLeafCategory<TValue extends string | number ? TValue : string>
+  | MultiSelectLeafCategory<TValue extends string | number ? TValue : string>
+  | SliderLeafCategory
+  | ListLeafCategory<TValue>
+  | CustomLeafCategory<TValue>;
 
 /**
  * Props passed to custom render function
  */
-export interface LeafCategoryRenderProps<TValue = any> {
-  value: TValue;
+export interface LeafCategoryRenderProps<TValue> {
+  value?: TValue;
   onChange: (value: TValue) => void;
   category: LeafCategory<TValue>;
 }
 
 /**
- * Option for select/multi-select
+ * Category with subcategories (branch node in the tree)
  */
-export interface CategoryOption<T = string> {
-  value: T;
-  label: string;
-  icon?: ReactNode;
-  disabled?: boolean;
-  sx?: any;
+export interface CategoryWithSubcategories extends BaseCategoryConfig {
+  subcategories?: CategoryConfig[];
 }
+
+export type LeafCategoryAny =
+  | LeafCategory<string>
+  | LeafCategory<number>
+  | LeafCategory<boolean>
+  | LeafCategory<string[]>
+  | LeafCategory<number[]>;
 
 /**
  * Union type for all category configurations
  */
-export type CategoryConfig = CategoryWithSubcategories | LeafCategory;
+export type CategoryConfig = CategoryWithSubcategories | LeafCategory<unknown>;
 
 /**
  * Type guard to check if category has subcategories
@@ -107,9 +155,9 @@ export const hasSubcategories = (
 /**
  * Type guard to check if category is a leaf
  */
-export const isLeafCategory = (
+export const isLeafCategory = <TValue>(
   category: CategoryConfig,
-): category is LeafCategory => {
+): category is LeafCategory<TValue> => {
   return 'contentType' in category;
 };
 
@@ -131,7 +179,7 @@ export interface MultiLayerDrawerProps {
   defaultTriggerSx?: SxProps<Theme>;
   /** Trigger button to open the drawer */
   triggerButton?: ReactNode;
-  /** Root level categories */
+  /** Root level categories - each can have different value types */
   categories: CategoryConfig[];
   /** Drawer title */
   title: string;

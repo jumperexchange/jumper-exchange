@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import { LeafCategory } from '../MultiLayerDrawer.types';
+import type { MultiSelectLeafCategory } from '../MultiLayerDrawer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -15,13 +15,13 @@ import {
 import { SelectorLabel } from 'src/components/core/form/Select/components/SelectLabel';
 import { useTranslation } from 'react-i18next';
 
-export interface MultiSelectViewProps {
-  category: LeafCategory<string[]>;
+export interface MultiSelectViewProps<TValue extends string | number> {
+  category: MultiSelectLeafCategory<TValue>;
 }
 
-export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
+export const MultiSelectView = <TValue extends string | number>({
   category,
-}) => {
+}: MultiSelectViewProps<TValue>) => {
   const { t } = useTranslation();
   const [searchValue, setSearchValue] = useState('');
 
@@ -46,7 +46,7 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
     setSearchValue('');
   };
 
-  const handleToggle = (optionValue: string) => {
+  const handleToggle = (optionValue: TValue) => {
     if (!category.onChange) return;
 
     const isSelected = value.includes(optionValue);
@@ -121,7 +121,7 @@ export const MultiSelectView: React.FC<MultiSelectViewProps> = ({
             <StyledMenuItem
               size="medium"
               disableRipple
-              key={option.value}
+              key={option.value.toString()}
               value={option.value}
               sx={option.sx}
               onClick={() => handleToggle(option.value)}

@@ -1,27 +1,27 @@
 import Stack from '@mui/material/Stack';
 import CheckIcon from '@mui/icons-material/Check';
-import { LeafCategory } from '../MultiLayerDrawer.types';
+import type { SingleSelectLeafCategory } from '../MultiLayerDrawer.types';
 import {
   StyledMenuItem,
   StyledMenuItemContentContainer,
 } from 'src/components/core/form/Select/Select.styles';
 import { SelectorLabel } from 'src/components/core/form/Select/components/SelectLabel';
 
-export interface SingleSelectViewProps {
-  category: LeafCategory<string>;
+export interface SingleSelectViewProps<TValue extends string | number> {
+  category: SingleSelectLeafCategory<TValue>;
 }
 
-export const SingleSelectView: React.FC<SingleSelectViewProps> = ({
+export const SingleSelectView = <TValue extends string | number>({
   category,
-}) => {
+}: SingleSelectViewProps<TValue>) => {
   const value = category.value || '';
   const options = category.options || [];
 
-  const handleSelect = (optionValue: string) => {
+  const handleSelect = (optionValue: TValue) => {
     if (!category.onChange) return;
 
     const newValue = value === optionValue ? '' : optionValue;
-    category.onChange(newValue);
+    category.onChange(newValue as TValue);
   };
 
   return (

@@ -1,16 +1,17 @@
 import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
-import { FC, PropsWithChildren } from 'react';
 import { useEarnFilterBar } from '../hooks';
-import {
-  CategoryConfig,
-  CategoryContentType,
-} from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
+import { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
 import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hooks';
 import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
 import { SortByEnum } from 'src/app/ui/earn/types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
+import {
+  createMultiSelectCategory,
+  createSingleSelectCategory,
+  createSliderCategory,
+} from 'src/components/composite/MultiLayerDrawer/utils';
 
 interface PendingFilterValues {
   chains: string[];
@@ -111,94 +112,100 @@ export const EarnFilterBarContentAllTablet = () => {
   const categories: CategoryConfig[] = [];
 
   if (chainOptions.length > 0) {
-    categories.push({
-      id: 'chain',
-      label: t('earn.filter.chain'),
-      badgeLabel: chainBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: pendingValues.chains,
-      onChange: (value: string[]) => setPendingValue('chains', value),
-      options: chainOptions,
-      searchable: true,
-      searchPlaceholder: t('earn.filter.search', {
-        filterBy: t('earn.filter.chain').toLowerCase(),
+    categories.push(
+      createMultiSelectCategory<string>({
+        id: 'chain',
+        label: t('earn.filter.chain'),
+        badgeLabel: chainBadge,
+        value: pendingValues.chains,
+        onChange: (value: string[]) => setPendingValue('chains', value),
+        options: chainOptions,
+        searchable: true,
+        searchPlaceholder: t('earn.filter.search', {
+          filterBy: t('earn.filter.chain').toLowerCase(),
+        }),
+        testId: 'earn-filter-chain-select-mobile',
       }),
-      testId: 'earn-filter-chain-select-mobile',
-    });
+    );
   }
   if (protocolOptions.length > 0) {
-    categories.push({
-      id: 'protocol',
-      label: t('earn.filter.protocol'),
-      badgeLabel: protocolBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: pendingValues.protocols,
-      onChange: (value: string[]) => setPendingValue('protocols', value),
-      options: protocolOptions,
-      searchable: true,
-      searchPlaceholder: t('earn.filter.search', {
-        filterBy: t('earn.filter.protocol').toLowerCase(),
+    categories.push(
+      createMultiSelectCategory({
+        id: 'protocol',
+        label: t('earn.filter.protocol'),
+        badgeLabel: protocolBadge,
+        value: pendingValues.protocols,
+        onChange: (value: string[]) => setPendingValue('protocols', value),
+        options: protocolOptions,
+        searchable: true,
+        searchPlaceholder: t('earn.filter.search', {
+          filterBy: t('earn.filter.protocol').toLowerCase(),
+        }),
+        testId: 'earn-filter-protocol-select-mobile',
       }),
-      testId: 'earn-filter-protocol-select-mobile',
-    });
+    );
   }
   if (tagOptions.length > 0) {
-    categories.push({
-      id: 'tag',
-      label: t('earn.filter.tag'),
-      badgeLabel: tagBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: pendingValues.tags,
-      onChange: (value: string[]) => setPendingValue('tags', value),
-      options: tagOptions,
-      searchable: true,
-      searchPlaceholder: t('earn.filter.search', {
-        filterBy: t('earn.filter.tag').toLowerCase(),
+    categories.push(
+      createMultiSelectCategory({
+        id: 'tag',
+        label: t('earn.filter.tag'),
+        badgeLabel: tagBadge,
+        value: pendingValues.tags,
+        onChange: (value: string[]) => setPendingValue('tags', value),
+        options: tagOptions,
+        searchable: true,
+        searchPlaceholder: t('earn.filter.search', {
+          filterBy: t('earn.filter.tag').toLowerCase(),
+        }),
+        testId: 'earn-filter-tag-select-mobile',
       }),
-      testId: 'earn-filter-tag-select-mobile',
-    });
+    );
   }
   if (assetOptions.length > 0) {
-    categories.push({
-      id: 'asset',
-      label: t('earn.filter.asset'),
-      badgeLabel: assetBadge,
-      contentType: CategoryContentType.MultiSelect,
-      value: pendingValues.assets,
-      onChange: (value: string[]) => setPendingValue('assets', value),
-      options: assetOptions,
-      searchable: true,
-      searchPlaceholder: t('earn.filter.search', {
-        filterBy: t('earn.filter.asset').toLowerCase(),
+    categories.push(
+      createMultiSelectCategory({
+        id: 'asset',
+        label: t('earn.filter.asset'),
+        badgeLabel: assetBadge,
+        value: pendingValues.assets,
+        onChange: (value: string[]) => setPendingValue('assets', value),
+        options: assetOptions,
+        searchable: true,
+        searchPlaceholder: t('earn.filter.search', {
+          filterBy: t('earn.filter.asset').toLowerCase(),
+        }),
+        testId: 'earn-filter-asset-select-mobile',
       }),
-      testId: 'earn-filter-asset-select-mobile',
-    });
+    );
   }
 
   if (!isNaN(apyMin) && !isNaN(apyMax) && apyMin !== apyMax) {
-    categories.push({
-      id: 'apy',
-      label: t('earn.filter.apy'),
-      badgeLabel: apyBadge,
-      contentType: CategoryContentType.Slider,
-      value: pendingValues.apy,
-      onChange: (value: number[]) => setPendingValue('apy', value),
-      min: apyMin,
-      max: apyMax,
-      testId: 'earn-filter-apy-select-mobile',
-    });
+    categories.push(
+      createSliderCategory({
+        id: 'apy',
+        label: t('earn.filter.apy'),
+        badgeLabel: apyBadge,
+        value: pendingValues.apy,
+        onChange: (value: number[]) => setPendingValue('apy', value),
+        min: apyMin,
+        max: apyMax,
+        testId: 'earn-filter-apy-select-mobile',
+      }),
+    );
   }
 
   if (sortByOptions.length > 0) {
-    categories.push({
-      id: 'sortBy',
-      label: t('earn.sorting.sort'),
-      contentType: CategoryContentType.SingleSelect,
-      value: pendingValues.sortBy,
-      onChange: (value: SortByEnum) => setPendingValue('sortBy', value),
-      options: sortByOptions,
-      testId: 'earn-filter-sort-select-mobile',
-    });
+    categories.push(
+      createSingleSelectCategory<SortByEnum>({
+        id: 'sortBy',
+        label: t('earn.sorting.sort'),
+        value: pendingValues.sortBy,
+        onChange: (value) => setPendingValue('sortBy', value),
+        options: sortByOptions,
+        testId: 'earn-filter-sort-select-mobile',
+      }),
+    );
   }
 
   return (

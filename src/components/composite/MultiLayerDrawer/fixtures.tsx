@@ -1,7 +1,8 @@
+import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
 import { TokenStack } from '../TokenStack/TokenStack';
 import { CategoryOption } from './MultiLayerDrawer.types';
 
-export const chainOptions: CategoryOption[] = [
+export const chainOptions: CategoryOption<string>[] = [
   { value: '1', label: 'Ethereum' },
   { value: '42161', label: 'Arbitrum' },
   { value: '137', label: 'Polygon' },
@@ -10,7 +11,7 @@ export const chainOptions: CategoryOption[] = [
   { value: '43114', label: 'Avalanche' },
 ];
 
-export const protocolOptions: CategoryOption[] = [
+export const protocolOptions: CategoryOption<string>[] = [
   { value: 'aave', label: 'Aave' },
   { value: 'compound', label: 'Compound' },
   { value: 'lido', label: 'Lido' },
@@ -18,7 +19,7 @@ export const protocolOptions: CategoryOption[] = [
   { value: 'curve', label: 'Curve' },
 ];
 
-export const tagOptions: CategoryOption[] = [
+export const tagOptions: CategoryOption<string>[] = [
   { value: 'stable', label: 'Stable Coin' },
   { value: 'liquid-staking', label: 'Liquid Staking' },
   { value: 'lending', label: 'Lending' },
@@ -26,7 +27,7 @@ export const tagOptions: CategoryOption[] = [
   { value: 'single-asset', label: 'Single Asset' },
 ];
 
-export const assetOptions: CategoryOption[] = [
+export const assetOptions: CategoryOption<string>[] = [
   {
     value: 'usdc',
     label: 'USDC',
@@ -71,9 +72,7 @@ export const assetOptions: CategoryOption[] = [
   },
 ];
 
-export const sortOptions: CategoryOption[] = [
-  { value: 'apy-high', label: 'APY (Highest)' },
-  { value: 'apy-low', label: 'APY (Lowest)' },
-  { value: 'tvl-high', label: 'TVL (Highest)' },
-  { value: 'tvl-low', label: 'TVL (Lowest)' },
+export const sortOptions: CategoryOption<SortByEnum>[] = [
+  { value: SortByOptions.APY, label: 'APY' },
+  { value: SortByOptions.TVL, label: 'TVL' },
 ];

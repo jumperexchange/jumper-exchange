@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { LeafCategory } from '../MultiLayerDrawer.types';
+import type { SliderLeafCategory } from '../MultiLayerDrawer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -14,7 +14,7 @@ import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import { useMemo } from 'react';
 
 export interface SliderViewProps {
-  category: LeafCategory<number[]>;
+  category: SliderLeafCategory;
 }
 
 export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
@@ -42,7 +42,7 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
   };
 
   const formattedValue = useMemo(() => {
-    return value.map((v) => toFixedFractionDigits(v, 0, 2));
+    return value.map((v: number) => toFixedFractionDigits(v, 0, 2));
   }, [value]);
 
   return (

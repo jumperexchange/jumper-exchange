@@ -1,16 +1,20 @@
-import { LeafCategory, CategoryContentType } from '../MultiLayerDrawer.types';
+import {
+  LeafCategory,
+  CategoryContentType,
+  BaseCategoryConfig,
+} from '../MultiLayerDrawer.types';
 import { MultiSelectView } from '../views/MultiSelectView';
 import { SingleSelectView } from '../views/SingleSelectView';
 import { SliderView } from '../views/SliderView';
 import { ListView } from '../views/ListView';
 
-export interface LeafCategoryRendererProps {
-  category: LeafCategory;
+export interface LeafCategoryRendererProps<TValue> {
+  category: LeafCategory<TValue>;
 }
 
-export const LeafCategoryRenderer: React.FC<LeafCategoryRendererProps> = ({
+export const LeafCategoryRenderer = <TValue,>({
   category,
-}) => {
+}: LeafCategoryRendererProps<TValue>) => {
   switch (category.contentType) {
     case CategoryContentType.MultiSelect:
       return <MultiSelectView category={category} />;
@@ -39,7 +43,9 @@ export const LeafCategoryRenderer: React.FC<LeafCategoryRendererProps> = ({
       return null;
 
     default:
-      console.warn(`Unknown content type for category: ${category.id}`);
+      console.warn(
+        `Unknown content type for category: ${(category as unknown as BaseCategoryConfig).id}`,
+      );
       return null;
   }
 };

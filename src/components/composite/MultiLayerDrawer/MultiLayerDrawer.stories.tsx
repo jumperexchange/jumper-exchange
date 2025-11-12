@@ -1,10 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { MultiLayerDrawer } from './MultiLayerDrawer';
-import {
-  CategoryConfig,
-  CategoryContentType,
-  CategoryOption,
-} from './MultiLayerDrawer.types';
+import { CategoryConfig, CategoryContentType } from './MultiLayerDrawer.types';
 import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
@@ -16,6 +12,12 @@ import {
   sortOptions,
   assetOptions,
 } from './fixtures';
+import {
+  createMultiSelectCategory,
+  createSingleSelectCategory,
+  createSliderCategory,
+} from './utils';
+import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
 
 const meta: Meta<typeof MultiLayerDrawer> = {
   title: 'Composite/MultiLayerDrawer',
@@ -34,15 +36,24 @@ const meta: Meta<typeof MultiLayerDrawer> = {
 export default meta;
 type Story = StoryObj<typeof MultiLayerDrawer>;
 
+interface FilterState {
+  chains: string[];
+  protocols: string[];
+  tags: string[];
+  apy: number[];
+  assets: string[];
+  sortBy: SortByEnum;
+}
+
 // Story 1: Earn Filters (with pending filters pattern)
 const EarnFiltersTemplate = () => {
-  const [appliedFilters, setAppliedFilters] = useState({
-    chains: [] as string[],
-    protocols: [] as string[],
-    tags: [] as string[],
-    apy: [0, 100] as number[],
-    assets: [] as string[],
-    sortBy: 'apy-high' as string,
+  const [appliedFilters, setAppliedFilters] = useState<FilterState>({
+    chains: [],
+    protocols: [],
+    tags: [],
+    apy: [0, 100],
+    assets: [],
+    sortBy: SortByOptions.APY,
   });
 
   const {
@@ -64,7 +75,7 @@ const EarnFiltersTemplate = () => {
         tags: [],
         apy: [0, 100],
         assets: [],
-        sortBy: 'apy-high',
+        sortBy: SortByOptions.APY,
       });
       console.log('Cleared all filters');
     },
@@ -109,70 +120,64 @@ const EarnFiltersTemplate = () => {
       : undefined;
 
   const categories: CategoryConfig[] = [
-    {
+    createMultiSelectCategory<string>({
       id: 'chain',
       label: 'Chain',
       badgeLabel: chainBadge,
-      contentType: CategoryContentType.MultiSelect,
       value: pendingValues.chains,
-      onChange: (value: string[]) => setPendingValue('chains', value),
+      onChange: (value) => setPendingValue('chains', value),
       options: chainOptions,
       searchable: true,
       searchPlaceholder: 'Search chains...',
       testId: 'chain-filter',
-    },
-    {
+    }),
+    createMultiSelectCategory<string>({
       id: 'protocol',
       label: 'Protocol',
       badgeLabel: protocolBadge,
-      contentType: CategoryContentType.MultiSelect,
       value: pendingValues.protocols,
-      onChange: (value: string[]) => setPendingValue('protocols', value),
+      onChange: (value) => setPendingValue('protocols', value),
       options: protocolOptions,
       searchable: true,
       searchPlaceholder: 'Search protocols...',
       testId: 'protocol-filter',
-    },
-    {
+    }),
+    createMultiSelectCategory<string>({
       id: 'tag',
       label: 'Tag',
       badgeLabel: tagBadge,
-      contentType: CategoryContentType.MultiSelect,
       value: pendingValues.tags,
-      onChange: (value: string[]) => setPendingValue('tags', value),
+      onChange: (value) => setPendingValue('tags', value),
       options: tagOptions,
       testId: 'tag-filter',
-    },
-    {
+    }),
+    createMultiSelectCategory<string>({
       id: 'asset',
       label: 'Asset',
       badgeLabel: assetBadge,
-      contentType: CategoryContentType.MultiSelect,
       value: pendingValues.assets,
-      onChange: (value: string[]) => setPendingValue('assets', value),
+      onChange: (value) => setPendingValue('assets', value),
       options: assetOptions,
       testId: 'asset-filter',
-    },
-    {
+    }),
+    createSliderCategory({
       id: 'apy',
       label: 'APY Range',
       badgeLabel: apyBadge,
-      contentType: CategoryContentType.Slider,
       value: pendingValues.apy,
-      onChange: (value: number[]) => setPendingValue('apy', value),
+      onChange: (value) => setPendingValue('apy', value),
       min: 0,
       max: 100,
       testId: 'apy-filter',
-    },
-    {
+    }),
+    createSingleSelectCategory<SortByEnum>({
       id: 'sortBy',
       label: 'Sort By',
-      contentType: CategoryContentType.SingleSelect,
       value: pendingValues.sortBy,
-      onChange: (value: string) => setPendingValue('sortBy', value),
+      onChange: (value) => setPendingValue('sortBy', value),
       options: sortOptions,
       testId: 'sort-filter',
-    },
+    }),
   ];
 
   return (
@@ -211,10 +216,9 @@ const NestedFiltersTemplate = () => {
           ? selectedChains.length.toString()
           : undefined,
       subcategories: [
-        {
+        createSingleSelectCategory<string>({
           id: 'ethereum',
           label: 'Ethereum Ecosystem',
-          contentType: CategoryContentType.SingleSelect,
           value: selectedNetwork,
           onChange: setSelectedNetwork,
           options: [
@@ -223,11 +227,10 @@ const NestedFiltersTemplate = () => {
             { value: 'sepolia', label: 'Sepolia Testnet' },
           ],
           testId: 'ethereum-select',
-        },
-        {
+        }),
+        createMultiSelectCategory<string>({
           id: 'layer2',
           label: 'Layer 2',
-          contentType: CategoryContentType.MultiSelect,
           value: selectedChains,
           onChange: setSelectedChains,
           options: [
@@ -237,7 +240,7 @@ const NestedFiltersTemplate = () => {
           ],
           searchable: true,
           testId: 'layer2-multiselect',
-        },
+        }),
       ],
     },
   ];
@@ -297,10 +300,9 @@ const MainMenuTemplate = () => {
       onClick: () => console.log('Support clicked'),
       testId: 'support-menu',
     },
-    {
+    createSingleSelectCategory<string>({
       id: 'theme',
       label: 'Theme',
-      contentType: CategoryContentType.SingleSelect,
       value: selectedTheme,
       onChange: setSelectedTheme,
       options: [
@@ -309,11 +311,10 @@ const MainMenuTemplate = () => {
         { value: 'auto', label: 'Auto (System)' },
       ],
       testId: 'theme-select',
-    },
-    {
+    }),
+    createSingleSelectCategory<string>({
       id: 'language',
       label: 'Language',
-      contentType: CategoryContentType.SingleSelect,
       value: selectedLanguage,
       onChange: setSelectedLanguage,
       options: [
@@ -329,7 +330,7 @@ const MainMenuTemplate = () => {
       searchable: true,
       searchPlaceholder: 'Search languages...',
       testId: 'language-select',
-    },
+    }),
     {
       id: 'resources',
       label: 'Resources',

@@ -1,9 +1,9 @@
 import Stack from '@mui/material/Stack';
-import { LeafCategory } from '../MultiLayerDrawer.types';
+import type { ListLeafCategory } from '../MultiLayerDrawer.types';
 import Box from '@mui/material/Box';
 
-export interface ListViewProps {
-  category: LeafCategory<any>;
+export interface ListViewProps<TValue> {
+  category: ListLeafCategory<TValue>;
 }
 
 /**
@@ -11,7 +11,7 @@ export interface ListViewProps {
  * - Resources section with some re-working as in not requiring the renderItem function
  * - Footer section
  */
-export const ListView: React.FC<ListViewProps> = ({ category }) => {
+export const ListView = <TValue,>({ category }: ListViewProps<TValue>) => {
   const items = category.items || [];
 
   if (!category.renderItem) {

@@ -1,14 +1,13 @@
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
-import { AvatarStack } from '../core/AvatarStack/AvatarStack';
-import { MultiSelectOption } from '../core/MultiSelect/MultiSelect.types';
 import {
   EarnOpportunityFilterUI,
   SortByEnum,
   SortByOptions,
 } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
+import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 
 export const useEarnFilterBar = () => {
   const { t } = useTranslation();
@@ -24,48 +23,38 @@ export const useEarnFilterBar = () => {
     setSortBy,
   } = useEarnFiltering();
 
-  // Convert data to MultiSelect options
-  const chainOptions: MultiSelectOption[] = allChains.map((chain) => ({
+  const chainOptions = allChains.map((chain) => ({
     value: `${chain.chainId}`,
     label: chain.chainKey,
     icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
   }));
 
-  const protocolOptions: MultiSelectOption[] = allProtocols.map((protocol) => ({
+  const protocolOptions = allProtocols.map((protocol) => ({
     value: protocol.name,
     label: protocol.name,
-    // TODO: replace with ProtocolStack once PR #2349 gets merged
-    icon: (
-      <AvatarStack
-        avatars={[
-          { id: protocol.name, src: protocol.logo, alt: protocol.name },
-        ]}
-      />
-    ),
+    icon: <ProtocolStack protocols={[protocol]} />,
   }));
 
-  const tagOptions: MultiSelectOption[] = allTags.map((tag) => ({
+  const tagOptions = allTags.map((tag) => ({
     value: tag,
     label: tag,
   }));
 
-  const assetOptions: MultiSelectOption[] = allAssets.map((asset) => ({
+  const assetOptions = allAssets.map((asset) => ({
     value: asset.name,
     label: asset.name,
     icon: <TokenStack tokens={[asset]} />,
   }));
 
-  const apyOptions: MultiSelectOption[] = Object.entries(allAPY).map(
-    ([key, value]) => ({
-      value: key,
-      label: `${key}: ${value}`,
-    }),
-  );
+  const apyOptions = Object.entries(allAPY).map(([key, value]) => ({
+    value: key,
+    label: `${key}: ${value}`,
+  }));
 
   const apyMin = Math.min(...Object.values(allAPY), 0);
   const apyMax = Math.max(...Object.values(allAPY), 0);
 
-  const sortByOptions: MultiSelectOption[] = [
+  const sortByOptions = [
     { value: SortByOptions.APY, label: t('earn.sorting.apy') },
     { value: SortByOptions.TVL, label: t('earn.sorting.tvl') },
   ];
@@ -114,8 +103,12 @@ export const useEarnFilterBar = () => {
     updateFilter({ ...values });
   };
 
-  const apyMinValue = filter?.minAPY ? filter.minAPY * 100 : apyMin;
-  const apyMaxValue = filter?.maxAPY ? filter.maxAPY * 100 : apyMax;
+  const apyMinValue = filter?.minAPY
+    ? Math.trunc(filter.minAPY * 10000) / 100
+    : apyMin;
+  const apyMaxValue = filter?.maxAPY
+    ? Math.trunc(filter.maxAPY * 10000) / 100
+    : apyMax;
 
   const arrayFiltersCount = [
     filter?.chains,

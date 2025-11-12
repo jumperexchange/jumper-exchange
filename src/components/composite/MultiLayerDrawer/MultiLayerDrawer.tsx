@@ -19,7 +19,6 @@ import {
 } from './MultiLayerDrawer.styles';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
-import { SelectBadge } from 'src/components/core/form/Select/components/SelectBadge';
 
 /**
  * MultiLayerDrawer - A generic drawer component that supports multi-level navigation
