@@ -27,7 +27,7 @@ interface BottomSheetProps extends PropsWithChildren {
   backdropFilter?: string;
 }
 
-export const BottomSheet = forwardRef<any, BottomSheetProps>(
+export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
   (
     {
       containerId,
@@ -96,6 +96,7 @@ export const BottomSheet = forwardRef<any, BottomSheetProps>(
         open={drawerOpen}
         onClose={close}
         disableAutoFocus
+        keepMounted
         inert={isInert}
         ModalProps={{
           container: container,

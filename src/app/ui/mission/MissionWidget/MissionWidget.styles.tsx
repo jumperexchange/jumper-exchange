@@ -73,3 +73,9 @@ export const MissionDescriptionLink = styled(Link)(({ theme }) => ({
     height: 20,
   },
 }));
+
+export const MissionFooterContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+}));

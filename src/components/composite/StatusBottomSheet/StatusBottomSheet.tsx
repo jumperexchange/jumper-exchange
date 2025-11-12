@@ -20,6 +20,8 @@ interface StatusBottomSheetProps {
   containerId: string;
   isOpen: boolean;
   onClick?: () => void;
+  onClose?: () => void;
+  onHeightChange?: (height: number) => void;
 }
 
 export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
@@ -30,8 +32,11 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   containerId,
   isOpen,
   onClick,
+  onClose,
+  onHeightChange,
 }) => {
   const bottomSheetRef = useRef<BottomSheetBase>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && !bottomSheetRef.current?.isOpen()) {
@@ -47,13 +52,46 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (!containerRef.current || !onHeightChange) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (!containerRef.current) {
+        return;
+      }
+      const height = isOpen ? containerRef.current.offsetHeight : 0;
+      onHeightChange(height);
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    if (!isOpen) {
+      onHeightChange(0);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+      if (!isOpen && onHeightChange) {
+        onHeightChange(0);
+      }
+    };
+  }, [isOpen, onHeightChange, containerRef.current]);
+
+  useEffect(() => {
+    return () => {
+      bottomSheetRef.current?.close();
+    };
+  }, []);
+
   return (
     <BottomSheet
       containerId={containerId}
       ref={bottomSheetRef}
       backdropFilter="blur(16px)"
+      onClose={onClose}
     >
       <StyledModalContentContainer
+        ref={containerRef}
         sx={(theme) => ({
           padding: theme.spacing(3),
         })}

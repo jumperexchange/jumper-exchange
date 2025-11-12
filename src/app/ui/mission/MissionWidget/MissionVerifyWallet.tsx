@@ -17,6 +17,7 @@ import {
   VERIFY_WALLET_MESSAGE,
 } from '../constants';
 import {
+  MissionFooterContainer,
   MissionWidgetContainer,
   MissionWidgetContentContainer,
   MissionWidgetDescription,
@@ -43,6 +44,7 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
     SignMessageErrorType.Unknown,
   );
   const [showError, setShowError] = useState(false);
+  const [statusBottomSheetHeight, setStatusBottomSheetHeight] = useState(0);
 
   const {
     signMessageAsync,
@@ -74,9 +76,13 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
 
   const title = taskTitle ?? t('missions.tasks.verifyWallet.title');
 
+  const handleCloseErrorBottomSheet = () => {
+    setShowError(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowError(false);
+    handleCloseErrorBottomSheet();
 
     if (!isConnected) {
       openWalletMenu();
@@ -104,7 +110,7 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
 
   const getTranslationWithDiscordLink = (key: ParseKeys<'translation'>) => {
     return (
-      <Trans
+      <Trans<ParseKeys<'translation'>>
         i18nKey={key}
         components={[
           <Link
@@ -127,7 +133,9 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
               {title}
             </MissionWidgetTitle>
             <MissionWidgetDescription variant="bodyMedium">
-              {t('missions.tasks.verifyWallet.description.notConnected')}
+              {getTranslationWithDiscordLink(
+                'missions.tasks.verifyWallet.description.notConnected',
+              )}
             </MissionWidgetDescription>
           </MissionWidgetContentContainer>
 
@@ -172,16 +180,18 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
           </MissionWidgetDescription>
         </MissionWidgetContentContainer>
 
-        <Badge
-          variant={BadgeVariant.Alpha}
-          size={BadgeSize.XL}
-          label={walletDigest(account.address)}
-          sx={{ width: '100%' }}
-        />
+        <MissionFooterContainer>
+          <Badge
+            variant={BadgeVariant.Alpha}
+            size={BadgeSize.XL}
+            label={walletDigest(account.address)}
+            sx={{ width: '100%' }}
+          />
 
-        <Button type="submit">
-          {t('missions.tasks.verifyWallet.action.verifyWallet')}
-        </Button>
+          <Button type="submit">
+            {t('missions.tasks.verifyWallet.action.verifyWallet')}
+          </Button>
+        </MissionFooterContainer>
       </>
     );
   };
@@ -194,8 +204,8 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        minHeight: 360,
         display: 'flex',
+        minHeight: showError ? statusBottomSheetHeight + 24 : 'auto',
       }}
     >
       <MissionWidgetContainer
@@ -207,6 +217,8 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
           {...errorSheetProps}
           containerId={VERIFY_WALLET_CONTAINER_ID}
           isOpen={showError}
+          onClose={handleCloseErrorBottomSheet}
+          onHeightChange={setStatusBottomSheetHeight}
         />
       </MissionWidgetContainer>
     </SectionCardContainer>
