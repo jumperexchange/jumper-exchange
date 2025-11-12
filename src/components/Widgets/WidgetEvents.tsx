@@ -79,8 +79,14 @@ export function WidgetEvents() {
       // Store the completed route
       setCompletedRoute(route);
 
+      const fromAddress = route.fromAddress;
+      const toAddress = route.toAddress;
+
       // Refresh portfolio value
-      setForceRefresh(true);
+      setForceRefresh(fromAddress ?? '', true);
+      if (fromAddress !== toAddress) {
+        setForceRefresh(toAddress ?? '', true);
+      }
 
       const routeStatus = getRouteStatus(route);
 

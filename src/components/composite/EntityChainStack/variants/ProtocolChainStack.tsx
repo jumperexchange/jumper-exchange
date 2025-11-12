@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { BaseChainStack } from './BaseChainStack';
-import { AvatarStack } from 'src/components/core/AvatarStack/AvatarStack';
+import { ProtocolStack } from 'src/components/composite/ProtocolStack/ProtocolStack';
 import { ProtocolChainStackProps } from '../EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 
@@ -17,22 +17,12 @@ export const ProtocolChainStack: FC<ProtocolChainStackProps> = (props) => {
   }, [props.chains]);
 
   const mainStack = (
-    <AvatarStack
+    <ProtocolStack
+      protocols={props.protocol ? [props.protocol] : []}
       size={props.protocolSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}
-      disableBorder
-      avatars={
-        props.protocol
-          ? [
-              {
-                id: props.protocol.name,
-                src: props.protocol.logo,
-                alt: props.protocol.name,
-              },
-            ]
-          : []
-      }
+      limit={props.protocolLimit}
     />
   );
 

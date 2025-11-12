@@ -24,6 +24,7 @@ export const TokenChainStack: FC<TokenChainStackProps> = (props) => {
       size={props.tokensSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}
+      limit={props.tokensLimit}
     />
   );
 
