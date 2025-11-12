@@ -1,5 +1,5 @@
 import { styled, Typography } from '@mui/material';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { interTight, bagelFatOne } from './utils';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '../Button';
