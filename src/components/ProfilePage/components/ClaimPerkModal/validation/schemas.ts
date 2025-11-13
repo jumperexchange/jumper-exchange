@@ -20,9 +20,7 @@ export const createStepSchema = (step: AvailableSteps) => {
         );
 
     case AvailableSteps.Email:
-      return z
-        .string()
-        .email('Invalid email address')
+      return z.email('Invalid email address')
         .refine(
           (val) => val.length <= 80,
           'Email must not exceed 80 characters',
