@@ -18,29 +18,22 @@ export const useThemeConditionsMet = () => {
   const { sourceChainToken, destinationChainToken } =
     useChainTokenSelectionStore();
 
-  // Use widget cache - set through the wallet menu
-  useEffect(() => {
-    setShouldShowForChain(
-      widgetCache?.fromChainId === configTheme.showForFromChain ||
-        widgetCache?.toChainId === configTheme.showForToChain,
-    );
-  }, [widgetCache]);
+  const sourceChainId = sourceChainToken.chainId ?? widgetCache.fromChainId;
 
-  // Use chain selection store reacting to widget events
-  useEffect(() => {
-    setShouldShowForChain(
-      sourceChainToken?.chainId === configTheme.showForFromChain ||
-        destinationChainToken?.chainId === configTheme.showForToChain,
-    );
-  }, [sourceChainToken, destinationChainToken]);
+  const destinationChainId =
+    destinationChainToken.chainId ?? widgetCache.toChainId;
 
-  // Use query params updated through link clicks as the announcement links
   useEffect(() => {
     setShouldShowForChain(
-      queryParams?.fromChain === configTheme.showForFromChain ||
-        queryParams?.toChain === configTheme.showForToChain,
+      sourceChainId === configTheme.showForFromChain ||
+        destinationChainId === configTheme.showForToChain,
     );
-  }, [queryParams]);
+  }, [
+    sourceChainId,
+    destinationChainId,
+    configTheme.showForFromChain,
+    configTheme.showForToChain,
+  ]);
 
   const shouldShowForPath = pathname === AppPaths.Main;
   return shouldShowForChain && shouldShowForPath;

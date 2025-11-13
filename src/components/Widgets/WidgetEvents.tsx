@@ -13,6 +13,7 @@ import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
   ContactSupport,
+  FormFieldChanged,
   RouteExecutionUpdate,
 } from '@lifi/widget';
 import { useWidgetEvents } from '@lifi/widget';
@@ -29,8 +30,12 @@ import {
 
 export function WidgetEvents() {
   const { activeTab } = useActiveTabStore();
-  const { setDestinationChainToken, setSourceChainToken } =
-    useChainTokenSelectionStore();
+  const {
+    setDestinationChainToken,
+    setSourceChainToken,
+    setPartialSourceChainToken,
+    setPartialDestinationChainToken,
+  } = useChainTokenSelectionStore();
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -159,6 +164,27 @@ export function WidgetEvents() {
       setContributionDisplayed(false);
     };
 
+    const formFieldChanged = (formFieldData: FormFieldChanged) => {
+      if (formFieldData?.fieldName === 'fromChain') {
+        setPartialSourceChainToken({ chainId: formFieldData.newValue });
+        return;
+      }
+      if (formFieldData?.fieldName === 'toChain') {
+        setPartialDestinationChainToken({ chainId: formFieldData.newValue });
+        return;
+      }
+      if (formFieldData?.fieldName === 'fromToken') {
+        setPartialSourceChainToken({ tokenAddress: formFieldData.newValue });
+        return;
+      }
+      if (formFieldData?.fieldName === 'toToken') {
+        setPartialDestinationChainToken({
+          tokenAddress: formFieldData.newValue,
+        });
+        return;
+      }
+    };
+
     const config: WidgetEventsConfig = {
       routeExecutionUpdated,
       routeExecutionCompleted,
@@ -166,6 +192,7 @@ export function WidgetEvents() {
       sourceChainTokenSelected,
       destinationChainTokenSelected,
       pageEntered,
+      formFieldChanged,
     };
 
     setupWidgetEvents(config, widgetEvents);
@@ -184,6 +211,8 @@ export function WidgetEvents() {
     setCompletedRoute,
     setContributed,
     setContributionDisplayed,
+    setPartialSourceChainToken,
+    setPartialDestinationChainToken,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {

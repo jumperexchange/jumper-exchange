@@ -12,8 +12,14 @@ interface OptionalChainTokenSelected {
 interface ChainTokenSelectionState {
   sourceChainToken: OptionalChainTokenSelected;
   setSourceChainToken: (sourceChainToken: ChainTokenSelected) => void;
+  setPartialSourceChainToken: (
+    sourceChainToken: OptionalChainTokenSelected,
+  ) => void;
   destinationChainToken: OptionalChainTokenSelected;
   setDestinationChainToken: (destinationChainToken: ChainTokenSelected) => void;
+  setPartialDestinationChainToken: (
+    destinationChainToken: OptionalChainTokenSelected,
+  ) => void;
 }
 
 const queryParameters =
@@ -27,7 +33,7 @@ const toToken = queryParameters && queryParameters.get('toToken');
 
 export const useChainTokenSelectionStore =
   createWithEqualityFn<ChainTokenSelectionState>(
-    (set) => ({
+    (set, get) => ({
       sourceChainToken: {
         tokenAddress: fromToken || undefined,
         chainId: (fromChain && (parseInt(fromChain) as ChainId)) || undefined,
@@ -36,6 +42,13 @@ export const useChainTokenSelectionStore =
         set({
           sourceChainToken,
         }),
+      setPartialSourceChainToken: (sourceChainToken) =>
+        set({
+          sourceChainToken: {
+            ...get().sourceChainToken,
+            ...sourceChainToken,
+          },
+        }),
       destinationChainToken: {
         tokenAddress: toToken || undefined,
         chainId: (toChain && (parseInt(toChain) as ChainId)) || undefined,
@@ -43,6 +56,13 @@ export const useChainTokenSelectionStore =
       setDestinationChainToken: (destinationChainToken) =>
         set({
           destinationChainToken,
+        }),
+      setPartialDestinationChainToken: (destinationChainToken) =>
+        set({
+          destinationChainToken: {
+            ...get().destinationChainToken,
+            ...destinationChainToken,
+          },
         }),
     }),
     Object.is,

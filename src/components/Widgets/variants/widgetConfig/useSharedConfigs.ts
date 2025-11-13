@@ -99,6 +99,10 @@ export function useSharedFormConfig(
       partialConfig.minFromAmountUSD = formData.minFromAmountUSD;
     }
 
+    if (Object.keys(partialConfig).length) {
+      partialConfig.formUpdateKey = new Date().valueOf().toString();
+    }
+
     return partialConfig;
   }, [
     formData?.sourceChain?.chainId,

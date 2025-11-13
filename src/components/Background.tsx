@@ -5,7 +5,6 @@ import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
 } from './BackgroundGradient';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { AnimatedBackgroundImage } from './core/AnimatedBackgroundImage/AnimatedBackgroundImage';
 import { useGetPartnerThemeImage } from 'src/hooks/theme/useGetPartnerThemeImage';
 
