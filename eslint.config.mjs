@@ -45,6 +45,18 @@ const eslintConfig = defineConfig([
   // Prettier config (disables conflicting rules)
   prettierConfig,
 
+  // React Hooks plugin configuration
+  {
+    files: ['**/*.{js,jsx,ts,tsx,mjs}'],
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
+  },
+
   // Custom rules
   {
     files: ['**/*.{js,jsx,ts,tsx,mjs}'],
@@ -95,7 +107,6 @@ const eslintConfig = defineConfig([
       ],
     },
   },
-  reactHooks.configs['recommended-latest'],
 ]);
 
 export default eslintConfig;

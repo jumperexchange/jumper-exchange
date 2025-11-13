@@ -5,7 +5,7 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 const nextConfig = {
   output: 'standalone',
   trailingSlash: false,
-  reactCompiler: false,
+  reactCompiler: true,
   productionBrowserSourceMaps: false,
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
