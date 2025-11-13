@@ -6,6 +6,7 @@ import {
 	verifyOnlySelectedAssetIsVisible,
 	verifyAllCardsShowChain,
 	verifyOnlySelectedTagIsVisible,
+	verifyAnalyticsButtonsAreVisible,
 } from "./testData/earnPageFunctions";
 import { qase } from 'playwright-qase-reporter';
 
@@ -143,5 +144,15 @@ test.describe("Protocols filters on Earn page", () => {
 			await verifyOnlySelectedTagIsVisible(page, "Yield Aggregator");
 		});
 	});
-
+	});
+	test.describe("Analytics filters on Earn page", () => {
+		test.beforeEach(async ({ page }) => {
+			await page.goto("/earn/aave-v3-usdc-on-mainnet");
+		});
+		
+		test(qase(47,'Should be able to verify analytics buttons are visible'), async ({ page }) => {
+			await test.step("Verify analytics range filters are visible", async () => {
+				await verifyAnalyticsButtonsAreVisible(page);
+			});
+		});
 	});
