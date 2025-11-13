@@ -27,15 +27,14 @@ import {
   teardownWidgetEvents,
   WidgetEventsConfig,
 } from './WidgetEventsManager';
+import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 
 export function WidgetEvents() {
   const { activeTab } = useActiveTabStore();
-  const {
-    setDestinationChainToken,
-    setSourceChainToken,
-    setPartialSourceChainToken,
-    setPartialDestinationChainToken,
-  } = useChainTokenSelectionStore();
+  const { setDestinationChainToken, setSourceChainToken } =
+    useChainTokenSelectionStore();
+  const { setFromChainId, setFromToken, setToChainId, setToToken } =
+    useWidgetCacheStore((state) => state);
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -166,21 +165,19 @@ export function WidgetEvents() {
 
     const formFieldChanged = (formFieldData: FormFieldChanged) => {
       if (formFieldData?.fieldName === 'fromChain') {
-        setPartialSourceChainToken({ chainId: formFieldData.newValue });
+        setFromChainId(formFieldData.newValue);
         return;
       }
       if (formFieldData?.fieldName === 'toChain') {
-        setPartialDestinationChainToken({ chainId: formFieldData.newValue });
+        setToChainId(formFieldData.newValue);
         return;
       }
       if (formFieldData?.fieldName === 'fromToken') {
-        setPartialSourceChainToken({ tokenAddress: formFieldData.newValue });
+        setFromToken(formFieldData.newValue);
         return;
       }
       if (formFieldData?.fieldName === 'toToken') {
-        setPartialDestinationChainToken({
-          tokenAddress: formFieldData.newValue,
-        });
+        setToToken(formFieldData.newValue);
         return;
       }
     };
@@ -211,8 +208,10 @@ export function WidgetEvents() {
     setCompletedRoute,
     setContributed,
     setContributionDisplayed,
-    setPartialSourceChainToken,
-    setPartialDestinationChainToken,
+    setFromChainId,
+    setToChainId,
+    setFromToken,
+    setToToken,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {

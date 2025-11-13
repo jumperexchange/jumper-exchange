@@ -6,10 +6,10 @@ export interface WidgetCacheProps {
 }
 
 export interface WidgetCacheState extends Partial<WidgetCacheProps> {
-  setFromToken: (token: string) => void;
-  setFromChainId: (chainId: number) => void;
+  setFromToken: (token?: string) => void;
+  setFromChainId: (chainId?: number) => void;
   setFrom(token: string, chainId: number): void;
-  setToToken: (token: string) => void;
-  setToChainId: (chainId: number) => void;
+  setToToken: (token?: string) => void;
+  setToChainId: (chainId?: number) => void;
   setTo(token: string, chainId: number): void;
 }

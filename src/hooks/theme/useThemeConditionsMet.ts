@@ -1,8 +1,6 @@
 import { usePathname } from 'next/navigation';
-import { parseAsInteger, useQueryStates } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { AppPaths } from 'src/const/urls';
-import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { useThemeStore } from 'src/stores/theme';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
 
@@ -10,27 +8,25 @@ export const useThemeConditionsMet = () => {
   const [shouldShowForChain, setShouldShowForChain] = useState<boolean>(false);
   const pathname = usePathname();
   const configTheme = useThemeStore((state) => state.configTheme);
-  const [queryParams] = useQueryStates({
-    fromChain: parseAsInteger,
-    toChain: parseAsInteger,
-  });
-  const widgetCache = useWidgetCacheStore((state) => state);
-  const { sourceChainToken, destinationChainToken } =
-    useChainTokenSelectionStore();
+  const [fromChainId, toChainId] = useWidgetCacheStore((state) => [
+    state.fromChainId,
+    state.toChainId,
+  ]);
 
-  const sourceChainId = sourceChainToken.chainId ?? widgetCache.fromChainId;
-
-  const destinationChainId =
-    destinationChainToken.chainId ?? widgetCache.toChainId;
+  console.log('fromChainId', fromChainId);
+  console.log('toChainId', toChainId);
 
   useEffect(() => {
+    if (!fromChainId || !toChainId) {
+      return;
+    }
     setShouldShowForChain(
-      sourceChainId === configTheme.showForFromChain ||
-        destinationChainId === configTheme.showForToChain,
+      fromChainId === configTheme.showForFromChain ||
+        toChainId === configTheme.showForToChain,
     );
   }, [
-    sourceChainId,
-    destinationChainId,
+    fromChainId,
+    toChainId,
     configTheme.showForFromChain,
     configTheme.showForToChain,
   ]);

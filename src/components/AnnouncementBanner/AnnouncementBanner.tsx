@@ -12,6 +12,10 @@ import {
   AnnouncementBannerContainerList,
   AnnouncementBannerContentContainer,
 } from './AnnouncementBanner.style';
+import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
+import { openInNewTab } from 'src/utils/openInNewTab';
+import { useRouter } from 'next/navigation';
+import { isExternalUrl } from 'src/utils/urls/isExternalUrl';
 
 interface AnnouncementBannerProps {
   maxAnnouncements?: number;
@@ -20,6 +24,8 @@ interface AnnouncementBannerProps {
 export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
   maxAnnouncements = 1,
 }) => {
+  const widgetCache = useWidgetCacheStore((state) => state);
+  const router = useRouter();
   const { activeAnnouncements } = useAnnouncements();
   const dismissAnnouncement = useAnnouncementStore(
     (state) => state.dismissAnnouncement,
@@ -30,6 +36,47 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
   if (displayedAnnouncements.length === 0) {
     return null;
   }
+
+  const handleRewriteLinkBehavior = (e: React.MouseEvent<HTMLElement>) => {
+    if ((e.target as HTMLElement)?.tagName?.toLowerCase() === 'a') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const link = (e.target as HTMLElement).closest('a') as HTMLAnchorElement;
+      const href = link.getAttribute('href');
+
+      if (!href) {
+        return;
+      }
+
+      if (isExternalUrl(href)) {
+        openInNewTab(href);
+        return;
+      }
+
+      if (/fromChain|toChain|fromToken|toToken/g.test(href)) {
+        const url = new URL(href, window.location.origin);
+        const searchParams = url.searchParams;
+        if (searchParams.get('fromChain')) {
+          widgetCache.setFromChainId(
+            parseInt(searchParams.get('fromChain') ?? ''),
+          );
+        }
+        if (searchParams.get('fromToken')) {
+          widgetCache.setFromToken(searchParams.get('fromToken') ?? '');
+        }
+        if (searchParams.get('toChain')) {
+          widgetCache.setToChainId(parseInt(searchParams.get('toChain') ?? ''));
+        }
+        if (searchParams.get('toToken')) {
+          widgetCache.setToToken(searchParams.get('toToken') ?? '');
+        }
+        return;
+      }
+
+      router.push(href);
+    }
+  };
 
   return (
     <AnimatePresence mode="popLayout">
@@ -42,7 +89,7 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
             transition={{ duration: 0.3 }}
             key={announcement.documentId}
           >
-            <AnnouncementBannerContainer>
+            <AnnouncementBannerContainer onClick={handleRewriteLinkBehavior}>
               <AnnouncementBannerContentContainer>
                 {announcement.logo ? (
                   <Avatar
