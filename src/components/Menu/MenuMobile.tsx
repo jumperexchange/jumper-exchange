@@ -55,6 +55,7 @@ export const MenuMobile = ({
         <MenuList
           autoFocusItem={open}
           id="main-burger-menu"
+          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={open}
           isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
           aria-labelledby="main-burger-menu"

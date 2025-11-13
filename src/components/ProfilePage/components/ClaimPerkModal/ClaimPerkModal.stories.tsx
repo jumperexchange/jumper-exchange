@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { ClaimPerkModal } from './ClaimPerkModal';
 import { Button } from 'src/components/Button';
-import { action } from 'storybook/internal/actions';
+import { fn } from '@storybook/test';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { AvailableSteps } from './ClaimPerkModal.types';
@@ -20,7 +20,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const commonArgs = {
-  onClose: action('on-close'),
+  onClose: fn(),
   isOpen: true,
   perkId: '1',
   permittedSteps: [AvailableSteps.Username, AvailableSteps.Wallet],

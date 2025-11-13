@@ -20,7 +20,7 @@ const { config, connectors } = createDefaultWagmiConfig({
   lazy: true, // Lazy loading of connectors, only loads when needed to avoid having an extra 2MB in the bundle size
   wagmiConfig: {
     ssr: true,
-  }
+  },
 });
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {

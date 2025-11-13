@@ -60,7 +60,7 @@ export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
 
   // Get the actual count of available options
   const optionCount = await options.count();
-  console.log(`Found ${optionCount} options in the dropdown`);
+  console.debug(`Found ${optionCount} options in the dropdown`);
 
   const assets: string[] = [];
   for (let i = 0; i < optionCount; i++) {
@@ -108,7 +108,7 @@ export async function verifyAllCardsShowChain(
     const chainElement = chainNameElements.nth(i);
     await expect(chainElement).toBeVisible();
     const chainText = await chainElement.textContent();
-    console.log(`Card ${i + 1}: Chain = "${chainText}"`);
+    console.debug(`Card ${i + 1}: Chain = "${chainText}"`);
     expect(chainText?.toLowerCase()).toBe(expectedChain.toLowerCase());
   }
 }
@@ -128,7 +128,7 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
   const childElements = earnOpportunitiesContainer.locator('*');
   const childCount = await childElements.count();
 
-  console.log(`Checking ${childCount} elements for items: ${items.join(', ')}`);
+  console.debug(`Checking ${childCount} elements for items: ${items.join(', ')}`);
 
   const patterns = items.map(
     (item) => new RegExp(`\\b${item.toLowerCase()}\\b`),
@@ -144,7 +144,7 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
       for (let j = 0; j < patterns.length; j++) {
         const pattern = patterns[j];
         if (lowerText.match(pattern)) {
-          console.log(`Found matching text in element ${i}: "${textContent}"`);
+          console.debug(`Found matching text in element ${i}: "${textContent}"`);
         }
         expect(lowerText).not.toMatch(pattern);
       }

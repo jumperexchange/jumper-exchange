@@ -14,7 +14,7 @@ export const InstructionsRenderer: FC<InstructionsRendererProps> = ({
 }) => {
   const instructions_array: InstructionItemProps[] = [];
   try {
-    let jso = text.replace('<INSTRUCTIONS ', '').replace('/>', '');
+    const jso = text.replace('<INSTRUCTIONS ', '').replace('/>', '');
 
     // Parse the JSON string and push each parsed object into the instructions_array
     JSON.parse(jso).forEach((obj: InstructionItemProps) => {

@@ -5,6 +5,7 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 const nextConfig = {
   output: 'standalone',
   trailingSlash: false,
+  reactCompiler: true,
   productionBrowserSourceMaps: false,
   experimental: {
     serverSourceMaps: false,

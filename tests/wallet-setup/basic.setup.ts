@@ -11,5 +11,5 @@ export default defineWalletSetup(
   async (context: BrowserContext, walletPage: Page) => {
     const metamask = new MetaMask(context, walletPage, PASSWORD)
     await metamask.importWallet(SEED_PHRASE);
-  }
+  },
 );
