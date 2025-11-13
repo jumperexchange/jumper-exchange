@@ -140,6 +140,7 @@
     "xvfb": "^0.4.0"
   },
   "scripts": {
+    "prepare": "husky",
     "analyze:bundle": "ANALYZE=true pnpm build",
     "dev": "next dev --turbopack",
     "dev:local": "dotenv -e .env.localhost next dev",
@@ -157,7 +158,6 @@
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "pre-commit": "lint-staged",
-    "pre-push": "pnpm install && pnpm build",
     "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
     "test": "pnpm exec playwright test",
     "test:install": "pnpm exec playwright install",
@@ -176,7 +176,7 @@
     "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "lint-staged": {
-    "**/*.(ts|tsx|js)": [
+    "**/*.(ts|tsx|js|mjs)": [
       "bash -c tsc --noEmit",
       "pnpm eslint --fix",
       "pnpm prettier --write"

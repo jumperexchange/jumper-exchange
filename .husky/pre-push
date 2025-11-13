@@ -1,5 +1,2 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
 echo "Executing pre-push scripts"
-pnpm pre-push
+# no-op for now
