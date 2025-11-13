@@ -305,7 +305,7 @@
     },
     "sorting": {
       "sortBy": "Ordenar por",
-      "sort": "",
+      "sort": "Ordenar",
       "apy": "APY",
       "tvl": "TVL"
     },
@@ -313,18 +313,18 @@
       "clear": "Limpar",
       "selected": "{{count}} selecionado",
       "search": "Buscar {{filterBy}}...",
-      "filterAndSort": "",
-      "clearAll": "",
-      "chain": "",
-      "protocol": "",
-      "tag": "",
-      "asset": "",
-      "apy": ""
+      "filterAndSort": "Filtrar e ordenar",
+      "clearAll": "Limpar tudo",
+      "chain": "Rede",
+      "protocol": "Protocolo",
+      "tag": "Tipo",
+      "asset": "Ativo",
+      "apy": "APY"
     },
     "views": {
-      "forYou": "",
-      "allMarkets": "",
-      "all": ""
+      "forYou": "Para você",
+      "allMarkets": "Todos os mercados",
+      "all": "Tudo"
     },
     "relatedMarkets": {
       "title": "Mercados relacionados"
@@ -336,52 +336,52 @@
   "portfolio": {
     "assetOverviewCard": {
       "navigation": {
-        "overview": "",
-        "tokens": "",
-        "defiPositions": ""
+        "overview": "Visão geral",
+        "tokens": "Tokens",
+        "defiPositions": "Protocolos DeFi"
       },
       "overview": {
-        "tokens": "",
-        "defiPositions": ""
+        "tokens": "Tokens",
+        "defiPositions": "Protocolos DeFi"
       },
       "noContent": {
-        "title": "",
-        "description": "",
+        "title": "Isso parece um pouco vazio!",
+        "description": "Use Ganhe ou Converta e comece sua jornada DeFi!",
         "cta": {
-          "startEarning": "",
-          "startSwapping": ""
+          "startEarning": "Comece a Ganhar",
+          "startSwapping": "Comece a Conversão"
         }
       }
     },
     "defiPositionCard": {
       "overview": {
-        "opened": "",
-        "lockup": "",
+        "opened": "Aberto",
+        "lockup": "Bloqueio",
         "lockupPeriod": {
-          "lessThanOneMinute": "",
-          "minutes_one": "",
-          "minutes_other": "",
-          "hours_one": "",
-          "hours_other": "",
-          "days_one": "",
-          "days_other": "",
-          "months_one": "",
-          "months_other": "",
-          "years_one": "",
-          "years_other": ""
+          "lessThanOneMinute": "<1 minuto atrás",
+          "minutes_one": "{{count}} minuto atrás",
+          "minutes_other": "{{count}} minutos atrás",
+          "hours_one": "{{count}} hora atrás",
+          "hours_other": "{{count}} horas atrás",
+          "days_one": "{{count}} dia atrás",
+          "days_other": "{{count}} dias atrás",
+          "months_one": "{{count}} mês atrás",
+          "months_other": "{{count}} meses atrás",
+          "years_one": "{{count}} ano atrás",
+          "years_other": "{{count}} anos atrás"
         }
       },
       "actions": {
-        "withdraw": "",
-        "deposit": "",
-        "claim": "",
-        "compound": ""
+        "withdraw": "Retirar",
+        "deposit": "Depositar",
+        "claim": "Reivindicar",
+        "compound": "Composto"
       },
       "header": {
-        "supplied": "",
-        "value": "",
-        "apy": "",
-        "rewards": ""
+        "supplied": "Fornecido",
+        "value": "Valor",
+        "apy": "APY",
+        "rewards": "Recompensas"
       }
     }
   },
@@ -431,7 +431,7 @@
       }
     },
     "earn": {
-      "depositSuccess": ""
+      "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie suas posições</bold>"
     }
   },
   "links": {
