@@ -27,7 +27,14 @@ function Background() {
 
   return (
     <BackgroundContainer id="background-root">
-      <AnimatedBackgroundImage src={backgroundImageUrl} />
+      <AnimatedBackgroundImage
+        src={backgroundImageUrl}
+        sx={{
+          '& > img': {
+            objectPosition: configTheme?.backgroundImagePosition ?? 'center',
+          },
+        }}
+      />
 
       {configTheme?.hasBackgroundGradient && (
         <>

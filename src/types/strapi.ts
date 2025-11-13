@@ -241,13 +241,14 @@ export interface PartnerThemesData extends PartnerThemesAttributes {
 
 export interface Customization {
   palette: { [colorName: string]: { main: string } };
+  backgroundImagePosition?: string;
   logoName?: string;
   footerBannerUrl?: string;
   typography?: string;
   hasBackgroundGradient?: boolean;
   hasBlurredNavigation?: boolean;
-  showForFromChain?: boolean;
-  showForToChain?: boolean;
+  showForFromChain?: number;
+  showForToChain?: number;
   hasThemeModeSwitch?: boolean;
 }
 

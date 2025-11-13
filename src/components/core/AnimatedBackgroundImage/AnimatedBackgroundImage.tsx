@@ -1,13 +1,16 @@
 import { AnimatePresence } from 'framer-motion';
 import { AnimatedBackgroundImageContainer } from './AnimatedBackgroundImage.styles';
 import Image from 'next/image';
+import { SxProps, Theme } from '@mui/material/styles';
 
 export interface AnimatedBackgroundImageProps {
   src?: string | null;
+  sx?: SxProps<Theme>;
 }
 
 export const AnimatedBackgroundImage = ({
   src,
+  sx,
 }: AnimatedBackgroundImageProps) => {
   return (
     <AnimatePresence mode="wait">
@@ -21,6 +24,7 @@ export const AnimatedBackgroundImage = ({
             duration: 0.5,
             ease: 'easeInOut',
           }}
+          sx={sx}
         >
           <Image
             src={src}
@@ -30,7 +34,6 @@ export const AnimatedBackgroundImage = ({
             sizes="100vw"
             style={{
               objectFit: 'cover',
-              objectPosition: 'center',
             }}
           />
         </AnimatedBackgroundImageContainer>

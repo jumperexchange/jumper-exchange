@@ -10,6 +10,7 @@ export interface PartnerThemeConfig {
   availableThemeModes: string[];
   backgroundColor: string | null;
   backgroundImageUrl: URL | null;
+  backgroundImagePosition: string;
   footerImageUrl: URL | null;
   logo:
     | {
@@ -36,6 +37,6 @@ export interface PartnerThemeConfig {
   hasBlurredNavigation: boolean;
   allowedBridges: string[];
   allowedExchanges: string[];
-  showForFromChain: boolean;
-  showForToChain: boolean;
+  showForFromChain: number;
+  showForToChain: number;
 }

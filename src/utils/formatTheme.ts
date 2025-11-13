@@ -73,6 +73,9 @@ export function formatConfig(
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
     backgroundImageUrl: getImageUrl(theme, 'BackgroundImage', defaultMode),
+    backgroundImagePosition:
+      (theme.lightConfig || theme.darkConfig)?.customization
+        ?.backgroundImagePosition || 'center',
     footerImageUrl: getImageUrl(theme, 'FooterImage', defaultMode),
     logo: getLogoData(theme),
     partnerName: theme.PartnerName,
@@ -93,10 +96,10 @@ export function formatConfig(
         ?.hasBackgroundGradient ?? false,
     showForFromChain:
       (theme.lightConfig || theme.darkConfig)?.customization
-        ?.showForFromChain ?? false,
+        ?.showForFromChain ?? undefined,
     showForToChain:
       (theme.lightConfig || theme.darkConfig)?.customization?.showForToChain ??
-      false,
+      undefined,
     integrator:
       (theme.lightConfig || theme.darkConfig)?.config?.integrator ?? undefined,
     fromChain:
