@@ -12,7 +12,7 @@ import { AvatarSize, AvatarStackDirection } from './AvatarStack.types';
 interface AvatarStackProps {
   avatars: {
     id: string;
-    src: string;
+    src?: string;
     alt: string;
   }[];
   size?: AvatarSize;

@@ -34,7 +34,7 @@ interface MarketEntry {
     decimals: number;
     chainId: number;
     coinKey: string;
-    logoURI: string;
+    logoURI?: string;
   };
   lpToken: {
     symbol: string;

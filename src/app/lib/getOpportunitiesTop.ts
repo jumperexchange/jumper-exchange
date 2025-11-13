@@ -14,6 +14,8 @@ export async function getOpportunitiesTop(
   address: Hex | undefined,
 ): Promise<GetOpportunityTopResult> {
   const client = makeClient();
-  const opportunity = await client.v1.earnControllerGetTopsV1({ address });
+  const opportunity = await client.v1.recommendationControllerGetTopsV1({
+    address,
+  });
   return opportunity;
 }
