@@ -34,21 +34,11 @@ Please refer to the following descriptions of the dev serve scripts:
     dev:staging - starts the app using the backend staging stage
     dev:production - starts the app using the backend production stage
 
-### Husky Scripts
+## Lint and checks
 
-In addition to these commands you should also run
+We use [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/lint-staged/lint-staged) to run checks and linting on your code before you commit.
 
-```
-yarn add husky
-```
-
-if you plan to commit to this repository please use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
-
-```
-chmod ug+x .husky/
-```
-
-to mark them as executables.
+Husky should be installed automatically when you run `pnpm install`.
 
 ### lint-staged
 

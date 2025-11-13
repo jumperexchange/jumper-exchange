@@ -40,7 +40,6 @@
     "@strapi/blocks-react-renderer": "^1.0.2",
     "@tanstack/react-query": "^5.90.8",
     "@turtledev/api": "1.4.5",
-    "@types/jsonwebtoken": "^9.0.10",
     "@wagmi/core": "^2.21.2",
     "@widgetbot/react-embed": "^1.10.0",
     "accept-language": "^3.0.20",
@@ -55,7 +54,6 @@
     "i18next-resources-to-backend": "^1.2.1",
     "immer": "^10.1.3",
     "import-in-the-middle": "1.15.0",
-    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "motion": "^12.23.24",
     "next": "16.0.3",
@@ -125,6 +123,7 @@
     "web-vitals": "^5.1.0"
   },
   "scripts": {
+    "prepare": "husky",
     "analyze:bundle": "ANALYZE=true pnpm build",
     "dev": "next dev --turbopack",
     "dev:local": "dotenv -e .env.localhost next dev",
@@ -142,7 +141,6 @@
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "pre-commit": "lint-staged",
-    "pre-push": "pnpm install && pnpm build",
     "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
     "test": "pnpm exec playwright test",
     "test:install": "pnpm exec playwright install",
@@ -161,7 +159,7 @@
     "debug": "NODE_OPTIONS='--inspect' next dev"
   },
   "lint-staged": {
-    "**/*.(ts|tsx|js)": [
+    "**/*.(ts|tsx|js|mjs)": [
       "bash -c tsc --noEmit",
       "pnpm eslint --fix",
       "pnpm prettier --write"

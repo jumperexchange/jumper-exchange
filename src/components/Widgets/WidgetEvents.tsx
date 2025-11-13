@@ -96,9 +96,13 @@ export function WidgetEvents() {
           return;
         }
 
-        const txHash = route.steps[0].execution?.process.find(
-          (process) => !!process.txHash,
-        )?.txHash;
+        const process = route.steps[0].execution?.process;
+
+        if (!Array.isArray(process) || process.length === 0) {
+          return;
+        }
+
+        const txHash = process[process.length - 1]?.txHash;
 
         if (txHash) {
           const { winner, position } = await checkWinningSwap({

@@ -39,6 +39,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
               isActive={rangeItem === range}
               onClick={() => setRange(rangeItem as AnalyticsRangeFieldEnum)}
               size="small"
+              data-testid={`analytics-range-${rangeItem}`}
             >
               {capitalizeString(rangeItem)}
             </EarnDetailsAnalyticsButton>
@@ -51,6 +52,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
               isActive={valueItem === value}
               onClick={() => setValue(valueItem as AnalyticsValueFieldEnum)}
               size="small"
+              data-testid={`analytics-value-${valueItem}`}
             >
               {valueItem.toUpperCase()}
             </EarnDetailsAnalyticsButton>
@@ -65,6 +67,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
           dataSetId={value}
           dataSetValueAppend={value === AnalyticsValueFieldEnum.APY ? '%' : ''}
           theme={chartTheme}
+          data-testid="analytics-chart"
         />
       </EarnDetailsAnalyticsLineChartContainer>
     </EarnDetailsAnalyticsContainer>
