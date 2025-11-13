@@ -13,9 +13,6 @@ export const useThemeConditionsMet = () => {
     state.toChainId,
   ]);
 
-  console.log('fromChainId', fromChainId);
-  console.log('toChainId', toChainId);
-
   useEffect(() => {
     if (!fromChainId || !toChainId) {
       return;
