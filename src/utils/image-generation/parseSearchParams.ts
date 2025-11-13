@@ -29,7 +29,7 @@ type RawParams = {
 
 export function parseSearchParams<T extends RouteParams>(
   url: string,
-  schema: z.ZodType<T, any, RawParams>,
+  schema: z.ZodSchema<T>,
 ): T {
   const searchParams = new URL(url).searchParams;
   const rawParams: RawParams = {

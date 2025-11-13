@@ -5,8 +5,9 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 const nextConfig = {
   output: 'standalone',
   trailingSlash: false,
-  reactCompiler: true,
+  reactCompiler: false,
   productionBrowserSourceMaps: false,
+  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
     serverSourceMaps: false,
     optimizePackageImports: ['recharts'],
@@ -17,7 +18,7 @@ const nextConfig = {
     };
     config.resolve.fallback = { fs: false, net: false, tls: false };
     // Walletconnect configuration is blocking the build, pino-pretty needs to be added as an external
-    config.externals.push('pino-pretty');
+    config.externals.push('pino-pretty', 'pino', 'thread-stream');
     //trying to reduce RAM usage
     if (config.cache) {
       config.cache = Object.freeze({
