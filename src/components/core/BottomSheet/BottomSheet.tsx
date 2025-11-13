@@ -102,6 +102,9 @@ export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
           container: container,
           style: { position: 'absolute' },
         }}
+        transitionDuration={{
+          enter: 300,
+        }}
         slotProps={{
           transition: {
             direction: 'up',

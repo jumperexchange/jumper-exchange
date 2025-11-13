@@ -26,6 +26,7 @@ import {
 import { Link } from 'src/components/Link';
 import { DISCORD_URL } from 'src/const/urls';
 import { ParseKeys } from 'i18next';
+import { motion } from 'framer-motion';
 
 interface MissionVerifyWalletProps {
   isComplete: boolean;
@@ -197,30 +198,43 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
   };
 
   return (
-    <SectionCardContainer
-      as="form"
-      onSubmit={handleSubmit}
-      id={VERIFY_WALLET_CONTAINER_ID}
-      sx={{
-        position: 'relative',
+    <motion.div
+      initial={{ height: 'auto' }}
+      animate={{
+        height: showError ? statusBottomSheetHeight + 24 : 'auto',
+      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
+      style={{
         overflow: 'hidden',
         display: 'flex',
-        minHeight: showError ? statusBottomSheetHeight + 24 : 'auto',
+        flexDirection: 'column',
       }}
     >
-      <MissionWidgetContainer
-        sx={{ height: 'auto', justifyContent: 'space-between' }}
+      <SectionCardContainer
+        as="form"
+        onSubmit={handleSubmit}
+        id={VERIFY_WALLET_CONTAINER_ID}
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          height: '100%',
+        }}
       >
-        {renderContent()}
+        <MissionWidgetContainer
+          sx={{ height: 'auto', justifyContent: 'space-between' }}
+        >
+          {renderContent()}
 
-        <StatusBottomSheet
-          {...errorSheetProps}
-          containerId={VERIFY_WALLET_CONTAINER_ID}
-          isOpen={showError}
-          onClose={handleCloseErrorBottomSheet}
-          onHeightChange={setStatusBottomSheetHeight}
-        />
-      </MissionWidgetContainer>
-    </SectionCardContainer>
+          <StatusBottomSheet
+            {...errorSheetProps}
+            containerId={VERIFY_WALLET_CONTAINER_ID}
+            isOpen={showError}
+            onClose={handleCloseErrorBottomSheet}
+            onHeightChange={setStatusBottomSheetHeight}
+          />
+        </MissionWidgetContainer>
+      </SectionCardContainer>
+    </motion.div>
   );
 };
