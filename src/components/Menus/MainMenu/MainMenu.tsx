@@ -1,5 +1,5 @@
 import { Menu } from '@/components/Menu/Menu';
-import { MenuItem } from '@/components/Menu/MenuItem/';
+import { MenuItem } from '@/components/Menu/MenuItem/MenuItem';
 import { Link } from '@/components/Link';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';

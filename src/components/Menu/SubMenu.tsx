@@ -9,16 +9,9 @@ import { alpha, Box, IconButton, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
-import {
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
-  MenuHeaderLabel,
-  MenuItemContainer,
-  MenuItemLink,
-  MenuLabel,
-  MenuPaper,
-} from '.';
+import { MenuHeaderAppBar, MenuHeaderAppWrapper, MenuPaper, MenuHeaderLabel } from './Menu.style';
 import { SubMenuLabel } from './SubMenu.style';
+import { MenuItemContainer, MenuItemLink, MenuLabel } from './MenuItem/MenuItem.style';
 
 interface SubMenuProps {
   open: boolean;
