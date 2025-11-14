@@ -93,7 +93,6 @@ jobs:
       - name: Install Playwright Browsers
         run: |
           pnpm exec playwright install --with-deps chromium
-          node node_modules/.pnpm/playwright-core@1.56.1/node_modules/playwright-core/cli.js install chromium
       - name: Setup Playwright Cache
         run: |
           pnpm build:cache:ci
