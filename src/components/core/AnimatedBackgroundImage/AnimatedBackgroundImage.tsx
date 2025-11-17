@@ -1,7 +1,7 @@
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'motion/react';
 import { AnimatedBackgroundImageContainer } from './AnimatedBackgroundImage.styles';
 import Image from 'next/image';
-import { SxProps, Theme } from '@mui/material/styles';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 export interface AnimatedBackgroundImageProps {
   src?: string | null;
