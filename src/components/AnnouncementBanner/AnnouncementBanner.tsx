@@ -1,5 +1,5 @@
 'use client';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useAnnouncements } from '@/hooks/useAnnouncements';
 import { useAnnouncementStore } from '@/stores/announcements/AnnouncementStore';
 import CloseIcon from '@mui/icons-material/Close';

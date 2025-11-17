@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import type { ThemeProviderProps } from './types';
 import { getPartnerTheme, getWidgetThemeV2 } from './utils';
 import { useMediaQuery } from '@mui/material';
-import { ThemeProps } from 'src/types/theme';
+import type { ThemeProps } from 'src/types/theme';
 
 export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
   const { mode } = useColorScheme();

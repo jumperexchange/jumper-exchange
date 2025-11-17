@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import merge from 'lodash/merge';
-import { WidgetConfig } from '@lifi/widget';
-import {
+import type { WidgetConfig } from '@lifi/widget';
+import type {
   WidgetType,
-  WidgetContext,
   MainWidgetContext,
   MissionWidgetContext,
   ZapWidgetContext,
 } from './types';
+import { WidgetContext } from './types';
 import { useWidgetDependencies } from './useWidgetDependencies';
 import {
   useSharedRPCConfig,

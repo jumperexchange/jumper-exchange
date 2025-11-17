@@ -22,11 +22,8 @@ import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteMod
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { getRouteStatus } from 'src/utils/routes';
-import {
-  setupWidgetEvents,
-  teardownWidgetEvents,
-  WidgetEventsConfig,
-} from './WidgetEventsManager';
+import type { WidgetEventsConfig } from './WidgetEventsManager';
+import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 
 export function WidgetEvents() {

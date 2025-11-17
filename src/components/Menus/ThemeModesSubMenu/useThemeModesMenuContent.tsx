@@ -11,7 +11,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { Appearance } from '@lifi/widget';
+import type { Appearance } from '@lifi/widget';
 import { useThemeConditionsMet } from 'src/hooks/theme/useThemeConditionsMet';
 import { useEffect, useRef } from 'react';
 
