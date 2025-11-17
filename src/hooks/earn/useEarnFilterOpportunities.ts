@@ -21,7 +21,7 @@ export type Result = UseQueryResult<
 >;
 
 export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
-  return useQuery<EarnOpportunityWithLatestAnalytics[], unknown>({
+  return useQuery({
     queryKey: ['earn-filter-opportunities', filter],
     queryFn: async () => {
       const result = await getOpportunitiesFiltered(filter);
