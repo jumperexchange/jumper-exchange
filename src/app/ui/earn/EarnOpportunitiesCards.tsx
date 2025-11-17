@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/utils/earn/utils';

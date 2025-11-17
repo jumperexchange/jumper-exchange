@@ -25,7 +25,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
     if (widgetVariant) {
       return widgetVariant;
     } else {
-      let url = window?.location.pathname.slice(1);
+      const url = window?.location.pathname.slice(1);
       if (Object.values(LinkMap).includes(url as LinkMap)) {
         if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
           return TabsMap.Buy.variant;

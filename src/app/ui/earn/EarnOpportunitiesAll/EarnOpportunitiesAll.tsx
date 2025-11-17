@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useEffect, useRef, useState } from 'react';
-import { useInView } from 'framer-motion';
+import { useInView } from 'motion/react';
 import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {

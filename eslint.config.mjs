@@ -1,41 +1,89 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from 'eslint-plugin-storybook';
-
+// ESLint Flat Config for Next.js 16
+// See: https://nextjs.org/docs/app/api-reference/config/eslint
+import nextPlugin from '@next/eslint-plugin-next';
+import prettierConfig from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
+import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig, globalIgnores } from 'eslint/config';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 const eslintConfig = defineConfig([
+  // Global ignores
   globalIgnores([
-    '**/node_modules/**/*',
-    '**/dist/**/*',
-    '**/build/**/*',
+    '**/node_modules/**',
+    '**/.next/**',
+    '**/dist/**',
+    '**/build/**',
     '**/*.d.ts',
+    '**/coverage/**',
+    '**/.turbo/**',
+    '**/out/**',
+    '**/playwright-report/**',
+    '**/test-results/**',
+    '**/__blobstorage__/**',
+    '**/.storybook/**',
+    '**/src/**/**.stories.tsx',
   ]),
-  ...compat.config({
-    extends: ['plugin:prettier/recommended', 'plugin:@next/next/recommended'],
+
+  jsxA11y.flatConfigs.recommended,
+
+  // TypeScript configuration
+  ...tseslint.configs.recommended,
+
+  // Next.js plugin configuration
+  {
+    files: ['**/*.{js,jsx,ts,tsx,mjs}'],
+    plugins: {
+      '@next/next': nextPlugin,
+    },
     rules: {
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
+    },
+  },
+
+  // Prettier config (disables conflicting rules)
+  prettierConfig,
+
+  // React Hooks plugin configuration
+  {
+    files: ['**/*.{js,jsx,ts,tsx,mjs}'],
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
+  },
+
+  // Custom rules
+  {
+    files: ['**/*.{js,jsx,ts,tsx,mjs}'],
+    rules: {
+      // TypeScript rules
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/consistent-type-imports': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-shadow': 'off',
+
+      // General rules
       'class-methods-use-this': 'off',
-      'comma-dangle': ['error', 'always-multiline'],
+      'comma-dangle': ['warn', 'always-multiline'],
       curly: 1,
-      'import/extensions': 'off',
-      // "import/no-default-export": "error",
-      'import/no-extraneous-dependencies': 'off',
-      'import/no-unresolved': 0,
-      'import/prefer-default-export': 'off',
-      indent: 'off',
       'jsx-quotes': ['error', 'prefer-double'],
       'linebreak-style': 'off',
       'max-len': 'off',
       'newline-per-chained-call': 'off',
       'no-bitwise': 'off',
+      '@typescript-eslint/ban-ts-comment': 'warn',
       'no-console': [
         'error',
         {
-          allow: ['error', 'warn', 'debug'],
+          allow: ['log', 'group', 'groupEnd', 'error', 'warn', 'debug'],
         },
       ],
       'no-continue': 'off',
@@ -49,9 +97,8 @@ const eslintConfig = defineConfig([
       'no-unused-vars': 'off',
       'no-var': 'warn',
       'object-curly-newline': 'off',
-      'prettier/prettier': 'error',
       quotes: [
-        'error',
+        'warn',
         'single',
         {
           avoidEscape: true,
@@ -59,7 +106,7 @@ const eslintConfig = defineConfig([
         },
       ],
     },
-  }),
+  },
 ]);
 
 export default eslintConfig;

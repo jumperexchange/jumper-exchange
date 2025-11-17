@@ -57,7 +57,7 @@ export const tokenAddressSchema = baseAddressSchema;
 export const themeSchema = z
   .enum(['light', 'dark'])
   .optional()
-  .default('light');
+  .prefault('light');
 
 /**
  * Schema for chain names
@@ -80,7 +80,7 @@ export const searchParamsSchema = z.object({
   toChainId: chainIdSchema.nullable(),
   highlighted: pathSegmentSchema.nullable(),
   theme: themeSchema,
-  isSwap: z.enum(['true', 'false']).default('false'),
+  isSwap: z.enum(['true', 'false']).prefault('false'),
   amountUSD: amountSchema.nullable(),
   chainName: chainNameSchema.nullable(),
 });
@@ -108,8 +108,8 @@ export const walletAddressSchema = z
   .string()
   .transform((val) => sanitizeAddress(val))
   .refine((val) => val.length > 0, {
-    message: 'Wallet address cannot be empty',
-  });
+      error: 'Wallet address cannot be empty'
+});
 
 /**
  * Schema for quest slugs (alphanumeric, hyphens, and underscores)
@@ -134,8 +134,7 @@ export const transactionHashSchema = z
       return isValidTransaction(val);
     },
     {
-      message:
-        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a UTXO transaction hash (64 hex chars), a Solana transaction signature, or a SUI transaction digest',
+        error: 'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a UTXO transaction hash (64 hex chars), a Solana transaction signature, or a SUI transaction digest'
     },
   );
 
@@ -182,8 +181,8 @@ export const scanParamsSchema = z.object({
         return scanAddressSchema.safeParse(value).success;
       },
       {
-        message: 'Invalid scan segments format',
-      },
+          error: 'Invalid scan segments format'
+    },
     ),
 });
 
@@ -199,8 +198,7 @@ export const bridgeSegmentsSchema = z
       return parts.length === 2;
     },
     {
-      message:
-        'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken',
+        error: 'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken'
     },
   )
   .transform((val) => {
@@ -219,14 +217,14 @@ export const bridgeSegmentsSchema = z
     (val) =>
       isAlphanumeric(val.sourceToken) && isAlphanumeric(val.destinationToken),
     {
-      message: 'Token names must contain only alphanumeric characters',
+        error: 'Token names must contain only alphanumeric characters'
     },
   )
   .refine(
     (val) =>
       isAlphanumeric(val.sourceChain) && isAlphanumeric(val.destinationChain),
     {
-      message: 'Chain names must contain only alphanumeric characters',
+        error: 'Chain names must contain only alphanumeric characters'
     },
   );
 

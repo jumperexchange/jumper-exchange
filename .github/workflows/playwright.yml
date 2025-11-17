@@ -28,7 +28,7 @@ jobs:
           fi
 
           RUN_TITLE="[Jumper Exchange] CI Run ${{ github.run_id }}"
-          
+
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             PR_URL="${{ github.event.pull_request.html_url }}"
             DESCRIPTION="Pull Request: [$PR_URL]($PR_URL)"
@@ -78,45 +78,46 @@ jobs:
         shard: [1, 2, 3, 4, 5, 6]
       fail-fast: false
     steps:
-    - uses: actions/checkout@v4
-    - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 18
-        cache: 'pnpm'
-    - name: Install pnpm
-      run: npm install -g pnpm
-    - name: Install dependencies
-      run: pnpm install
-    - name: Install xvfb server
-      run: sudo apt-get install xvfb
-    - name: Install Playwright Browsers
-      run: pnpm exec playwright install --with-deps chromium
-    - name: Setup Playwright Cache
-      run: |
-        pnpm build:cache:ci
-    - name: Run Playwright tests
-      env:
-        QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
-        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
-      if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
-      run: |
-        if [ -n "${{ secrets.QASE_TOKEN }}" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
-          echo "Running tests with Qase reporting (Run ID: $QASE_TESTOPS_RUN_ID)"
-          pnpm run test:ci:e2e:qase \
-            --shard ${{ matrix.shard }}/${{ strategy.job-total }}
-        else
-          echo "Running tests without Qase reporting (API token or run ID not available)"
-          pnpm run test:ci:e2e \
-            --shard ${{ matrix.shard }}/${{ strategy.job-total }}
-        fi
-    - name: Upload blob report to Github Actions Artifacts
-      if: ${{ !cancelled() }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: blob-report-${{ matrix.shard }}
-        path: blob-report
-        retention-days: 1
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install xvfb server
+        run: sudo apt-get install xvfb
+      - name: Install Playwright Browsers
+        run: |
+          pnpm exec playwright install --with-deps chromium
+      - name: Setup Playwright Cache
+        run: |
+          pnpm build:cache:ci
+      - name: Run Playwright tests
+        env:
+          QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
+          QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
+        if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
+        run: |
+          if [ -n "${{ secrets.QASE_TOKEN }}" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
+            echo "Running tests with Qase reporting (Run ID: $QASE_TESTOPS_RUN_ID)"
+            pnpm run test:ci:e2e:qase \
+              --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+          else
+            echo "Running tests without Qase reporting (API token or run ID not available)"
+            pnpm run test:ci:e2e \
+              --shard ${{ matrix.shard }}/${{ strategy.job-total }}
+          fi
+      - name: Upload blob report to Github Actions Artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.shard }}
+          path: blob-report
+          retention-days: 1
 
   merge-reports:
     if: ${{ !cancelled() }}
@@ -131,8 +132,8 @@ jobs:
       - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'pnpm'
+          node-version: 20
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
       - name: Download blob reports from GitHub Actions Articfacts
@@ -166,5 +167,5 @@ jobs:
         with:
           message: |
             ${{ needs.merge-reports.outputs.summary }}
-            
+
             ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}

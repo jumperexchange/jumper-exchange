@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { interTight } from './utils';
 import { Typography } from '@mui/material';
 import { bagelFatOne } from './utils';

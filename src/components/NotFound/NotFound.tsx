@@ -1,3 +1,5 @@
+'use client';
+
 import { ButtonPrimary } from '@/components/Button';
 import { NotFoundWrapper } from '@/components/NotFound/NotFound.style';
 import { Box } from '@mui/material';

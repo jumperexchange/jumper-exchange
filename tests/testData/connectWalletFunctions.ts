@@ -49,7 +49,7 @@ export const connectMetaMaskWallet = async (
   context: BrowserContext,
   page: Page,
   extensionId: string,
-  targetUrl: string = '/'
+  targetUrl: string = '/',
 ) => {
   const metamask = new MetaMask(
     context,
@@ -60,11 +60,10 @@ export const connectMetaMaskWallet = async (
   const metaMaskWalletOption = page.locator(
     'xpath=//span[normalize-space(text())="MetaMask"]',
   );
-  
+
   await page.goto(targetUrl);
   await expect(connectButton(page)).toBeEnabled();
   await connectButton(page).click();
   await metaMaskWalletOption.click();
   await metamask.connectToDapp(['Account 1']);
 };
-  

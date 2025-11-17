@@ -47,7 +47,7 @@ test.describe("Chains filters on Earn page", () => {
 		await test.step("Select base chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "base");
 		});
-		
+
 		await test.step("Verify all cards show Base chain name", async () => {
 			await verifyAllCardsShowChain(page, "Base");
 		});
@@ -57,7 +57,7 @@ test.describe("Chains filters on Earn page", () => {
 		await test.step("Select arbitrum chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "arbitrum");
 		});
-		
+
 		await test.step("Verify all cards show Arbitrum chain name", async () => {
 			await verifyAllCardsShowChain(page, "Arbitrum");
 		});
@@ -67,7 +67,7 @@ test.describe("Chains filters on Earn page", () => {
 		await test.step("Select mainnet chain", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-chain-select", "mainnet");
 		});
-		
+
 		await test.step("Verify all cards show Mainnet chain name", async () => {
 			await verifyAllCardsShowChain(page, "Mainnet");
 		});
@@ -107,7 +107,7 @@ test.describe("Protocols filters on Earn page", () => {
 			await page.goto("/earn");
 			await selectAllMarketsTab(page);
 		});
-		
+
 		test(qase(44,'Should be able to filter by Maker asset'), async ({ page }) => {
 			await test.step("Select MKR asset", async () => {
 				await selectOptionFromDropDown(page, "earn-filter-asset-select", "Maker");
@@ -117,14 +117,14 @@ test.describe("Protocols filters on Earn page", () => {
 				await verifyOnlySelectedAssetIsVisible(page, "MKR");
 			});
 		});
-		
+
 	});
 	test.describe("Tags filters on Earn page", () => {
 		test.beforeEach(async ({ page }) => {
 			await page.goto("/earn");
 			await selectAllMarketsTab(page);
 		});
-		
+
 	test(qase(45,'Should be able to filter by Lending tag'), async ({ page }) => {
 		await test.step("Select Lending tag", async () => {
 			await selectOptionFromDropDown(page, "earn-filter-tag-select", "Lending");
@@ -149,7 +149,7 @@ test.describe("Protocols filters on Earn page", () => {
 		test.beforeEach(async ({ page }) => {
 			await page.goto("/earn/aave-v3-usdc-on-mainnet");
 		});
-		
+
 		test(qase(47,'Should be able to verify analytics buttons are visible'), async ({ page }) => {
 			await test.step("Verify analytics range filters are visible", async () => {
 				await verifyAnalyticsButtonsAreVisible(page);

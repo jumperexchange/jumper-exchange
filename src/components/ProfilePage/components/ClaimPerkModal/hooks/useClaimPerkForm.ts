@@ -86,7 +86,7 @@ export const useClaimPerkForm = ({
 
   const currentStepError = useMemo(() => {
     if (!currentStepValidation || currentStepValidation.success) return '';
-    return currentStepValidation.error.errors[0]?.message || 'Invalid input';
+    return currentStepValidation.error.issues[0]?.message || 'Invalid input';
   }, [currentStepValidation]);
 
   useEffect(() => {

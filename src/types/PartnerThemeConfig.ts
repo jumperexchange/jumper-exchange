@@ -6,9 +6,11 @@ import type {
 } from '@lifi/widget';
 
 export interface PartnerThemeConfig {
+  defaultThemeMode: 'light' | 'dark';
   availableThemeModes: string[];
   backgroundColor: string | null;
   backgroundImageUrl: URL | null;
+  backgroundImagePosition: string;
   footerImageUrl: URL | null;
   logo:
     | {
@@ -35,4 +37,6 @@ export interface PartnerThemeConfig {
   hasBlurredNavigation: boolean;
   allowedBridges: string[];
   allowedExchanges: string[];
+  showForFromChain: number;
+  showForToChain: number;
 }

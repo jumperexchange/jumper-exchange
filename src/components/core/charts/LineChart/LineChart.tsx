@@ -189,8 +189,8 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
               ? (props: ActiveDotProps) => {
                   const { cx, cy, payload } = props;
                   const { x, y, transform } = calculateTooltipPosition(
-                    cx,
-                    cy,
+                    cx ?? 0,
+                    cy ?? 0,
                     chartContainerRef.current?.clientWidth ?? 0,
                     chartContainerRef.current?.clientHeight ?? 0,
                   );
