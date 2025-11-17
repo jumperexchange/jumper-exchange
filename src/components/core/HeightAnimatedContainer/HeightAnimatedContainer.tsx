@@ -10,6 +10,7 @@ export interface HeightAnimatedContainerRenderProps {
 export interface HeightAnimatedContainerProps {
   isOpen: boolean;
   offsetHeight?: number;
+  minHeight?: number;
   animationDuration?: number;
   animationEase?:
     | 'easeInOut'
@@ -29,6 +30,7 @@ export interface HeightAnimatedContainerProps {
 export const HeightAnimatedContainer: FC<HeightAnimatedContainerProps> = ({
   isOpen,
   offsetHeight = 0,
+  minHeight = 0,
   animationDuration = 0.3,
   animationEase = 'easeInOut',
   children,
@@ -42,7 +44,7 @@ export const HeightAnimatedContainer: FC<HeightAnimatedContainerProps> = ({
   const motionProps: MotionProps = {
     initial: { height: 'auto' },
     animate: {
-      height: isOpen ? height + offsetHeight : 'auto',
+      height: isOpen ? Math.max(height + offsetHeight, minHeight) : 'auto',
     },
     transition: {
       duration: animationDuration,

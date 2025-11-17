@@ -1,30 +1,41 @@
-import { FC, useMemo } from 'react';
-import { WidgetProps } from '../Widget.types';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { WidgetProps } from '../Widget.types';
 import { WithdrawWidget } from 'src/components/ZapWidget/WithdrawWidget/WithdrawWidget';
 import { WidgetSkeleton } from '../WidgetSkeleton';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
+import type { ZapDataResponse } from '@/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import { useAccount } from '@lifi/wallet-management';
+import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
+import type { Hex } from 'viem';
 
-interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {}
+interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
+  zapData?: ZapDataResponse | null;
+}
 
 export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
+  zapData,
   customInformation,
   ctx,
 }) => {
   useZapQuestIdStorage();
+
+  const { account } = useAccount();
 
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
   const {
-    zapData,
-    isSuccess: isZapDataSuccess,
-    isLoadingDepositTokenData,
     depositTokenData,
     depositTokenDecimals,
+    isLoadingDepositTokenData,
     refetchDepositToken,
-  } = useEnhancedZapData(projectData);
+  } = useGetZapInPoolBalance(
+    account.address as Hex,
+    (projectData.tokenAddress as Hex) || (projectData.address as Hex),
+    projectData.chainId,
+  );
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
@@ -32,7 +43,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
 
   const token = useMemo(
     () =>
-      isZapDataSuccess && zapData
+      zapData
         ? {
             chainId: zapData.market?.depositToken.chainId,
             address: zapData.market?.depositToken.address as `0x${string}`,
@@ -48,7 +59,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
             amount: BigInt(0),
           }
         : null,
-    [isZapDataSuccess, zapData],
+    [zapData],
   );
 
   const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
@@ -63,6 +74,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       projectData={projectData}
       depositTokenData={depositTokenData}
       withdrawAbi={zapData?.abi?.withdraw}
+      sx={ctx?.theme?.container}
     />
   ) : (
     <WidgetSkeleton />

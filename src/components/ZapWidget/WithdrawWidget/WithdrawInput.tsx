@@ -1,38 +1,52 @@
-import { formatInputAmount } from '@lifi/widget';
+import {
+  formatInputAmount,
+  formatTokenPrice,
+  priceToTokenAmount,
+} from '@lifi/widget';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
-import { FC, useMemo, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
 import {
   SelectCardDescription,
   SelectCardMode,
 } from 'src/components/Cards/SelectCard/SelectCard.styles';
-import { WidgetFormHelperText } from './WithdrawWidget.style';
-import { currencyFormatter } from 'src/utils/formatNumbers';
-import Box from '@mui/material/Box';
+import {
+  DescriptionWrapper,
+  HintIcon,
+  HintWrapper,
+  WidgetFormHelperText,
+} from './WithdrawWidget.style';
+import { currencyFormatter, decimalFormatter } from 'src/utils/formatNumbers';
+import { useTranslation } from 'react-i18next';
+import { USD_DECIMALS } from './constants';
 
 interface WithdrawInputProps {
   label?: string;
   value: string;
   onSetValue: (value: string) => void;
   priceUSD?: string;
-  placeholder: string;
+  decimals?: number;
+  symbol?: string;
   name: string;
-  errorMessage?: string;
   maxValue?: string;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   hintEndAdornment?: string;
 }
 
-const NUM_DECIMALS = 1;
+export enum InputMode {
+  Amount = 'amount',
+  Price = 'price',
+}
 
 export const WithdrawInput: FC<WithdrawInputProps> = ({
   label,
   priceUSD,
-  placeholder,
   name,
-  errorMessage,
+  decimals,
+  symbol,
   value,
   onSetValue,
   maxValue,
@@ -40,47 +54,105 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
   endAdornment,
   hintEndAdornment,
 }) => {
+  const { t } = useTranslation();
+  const [inputMode, setInputMode] = useState<InputMode>(InputMode.Amount);
+  const [formattedPriceInput, setFormattedPriceInput] = useState('');
+  const isEditingRef = useRef(false);
+  const placeholder = useMemo(() => {
+    return inputMode === InputMode.Amount ? '0' : '$0';
+  }, [inputMode]);
   const formattedErrorMessage = useMemo(() => {
     if (maxValue && (parseFloat(value) ?? 0) > parseFloat(maxValue)) {
       return `You have not enough tokens. Current balance: ${maxValue}.`;
     }
 
-    if (errorMessage) {
-      return `An error occurred during the execution: ${errorMessage}. Please check your wallet.`;
-    }
-
     return null;
-  }, [value, maxValue, errorMessage]);
+  }, [value, maxValue]);
 
-  const valueUSD = useMemo(() => {
-    if (!value || !priceUSD) {
-      return '0';
+  const { displayValue, hintValue, hintSymbol } = useMemo(() => {
+    const priceValue = formatTokenPrice(value, priceUSD);
+
+    if (inputMode === InputMode.Price) {
+      let displayVal = '';
+      if (isEditingRef.current) {
+        displayVal = formattedPriceInput;
+      } else {
+        const formattedDisplayValue = decimalFormatter('en-US', {
+          notation: 'standard',
+          useGrouping: false,
+        })(priceValue);
+        displayVal = formattedDisplayValue;
+      }
+
+      const formattedHint = decimalFormatter('en-US', {
+        notation: 'standard',
+        useGrouping: true,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: decimals,
+      })(value);
+
+      return {
+        displayValue: displayVal ? `$${displayVal}` : '',
+        hintValue: formattedHint,
+        hintSymbol: symbol,
+      };
     }
-    return (parseFloat(priceUSD) * parseFloat(value)).toString();
-  }, [priceUSD, value]);
 
-  const hint = useMemo(() => {
-    return valueUSD
-      ? currencyFormatter('en-US', {
-          notation: 'compact',
-          currency: 'USD',
-          useGrouping: true,
-          minimumFractionDigits: 2,
-          maximumFractionDigits: parseFloat(valueUSD) > 2 ? 2 : 4,
-        })(parseFloat(valueUSD))
-      : 'NA';
-  }, [valueUSD]);
+    const formattedHint = currencyFormatter('en-US', {
+      notation: 'compact',
+      currency: 'USD',
+      useGrouping: true,
+      minimumFractionDigits: USD_DECIMALS,
+      maximumFractionDigits: USD_DECIMALS,
+    })(priceValue);
+
+    return {
+      displayValue: value,
+      hintValue: formattedHint,
+      hintSymbol: '',
+    };
+  }, [inputMode, value, priceUSD, decimals, symbol, formattedPriceInput]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
-    const formattedValue = formatInputAmount(rawValue, NUM_DECIMALS, true);
-    onSetValue(formattedValue);
+    isEditingRef.current = true;
+
+    if (inputMode === InputMode.Amount) {
+      const formattedValue = formatInputAmount(rawValue, decimals, true);
+      onSetValue(formattedValue);
+    } else {
+      const cleanInputValue = rawValue.replace('$', '');
+      const formattedValue = formatInputAmount(
+        cleanInputValue,
+        USD_DECIMALS,
+        true,
+      );
+      setFormattedPriceInput(formattedValue);
+      const tokenValue = priceToTokenAmount(formattedValue, priceUSD);
+      onSetValue(tokenValue);
+    }
   };
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const rawValue = e.target.value;
-    const formattedValue = formatInputAmount(rawValue, NUM_DECIMALS);
-    onSetValue(formattedValue);
+    isEditingRef.current = false;
+
+    if (inputMode === InputMode.Amount) {
+      const formattedValue = formatInputAmount(rawValue, decimals);
+      onSetValue(formattedValue);
+    } else {
+      const cleanInputValue = rawValue.replace('$', '');
+      const formattedValue = formatInputAmount(cleanInputValue, USD_DECIMALS);
+      const tokenValue = priceToTokenAmount(formattedValue, priceUSD);
+      const formattedAmount = formatInputAmount(tokenValue, decimals);
+      onSetValue(formattedAmount);
+    }
+  };
+
+  const handleSwitch = () => {
+    setInputMode((prev) =>
+      prev === InputMode.Amount ? InputMode.Price : InputMode.Amount,
+    );
   };
 
   return (
@@ -88,10 +160,9 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
       <InputLabel htmlFor={name} sx={{ marginBottom: 2 }}>
         <Typography
           variant="titleSmall"
-          sx={(theme) => ({
-            color: (theme.vars || theme).palette.text.primary,
+          sx={{
             whiteSpace: 'break-spaces',
-          })}
+          }}
         >
           {label}
         </Typography>
@@ -102,24 +173,28 @@ export const WithdrawInput: FC<WithdrawInputProps> = ({
         isAmount
         mode={SelectCardMode.Input}
         placeholder={placeholder}
-        value={value}
-        label="Amount"
+        value={displayValue}
+        label={t('widget.withdraw.amount')}
         description={
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              gap: 1,
-            }}
-          >
-            <SelectCardDescription variant="bodyXSmall">
-              {hint}
-            </SelectCardDescription>
-            <SelectCardDescription variant="bodyXSmall">
+          <DescriptionWrapper>
+            <HintWrapper>
+              <SelectCardDescription variant="bodyXSmall" hideOverflow>
+                {hintValue}
+              </SelectCardDescription>
+              {!!hintSymbol && (
+                <SelectCardDescription
+                  variant="bodyXSmall"
+                  sx={{ flexShrink: 0, marginLeft: 0.25 }}
+                >
+                  {hintSymbol}
+                </SelectCardDescription>
+              )}
+              <HintIcon onClick={handleSwitch} />
+            </HintWrapper>
+            <SelectCardDescription variant="bodyXSmall" sx={{ flexShrink: 0 }}>
               {hintEndAdornment}
             </SelectCardDescription>
-          </Box>
+          </DescriptionWrapper>
         }
         startAdornment={startAdornment}
         endAdornment={endAdornment}

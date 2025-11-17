@@ -1,6 +1,7 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { useEffect, useRef } from 'react';
 import ErrorRounded from '@mui/icons-material/ErrorRounded';
+import Check from '@mui/icons-material/Check';
 import Typography from '@mui/material/Typography';
 import type {
   BottomSheetBase,
@@ -9,16 +10,17 @@ import type {
 import { BottomSheet } from 'src/components/core/BottomSheet/BottomSheet';
 import { Button } from 'src/components/Button/Button';
 import {
-  ErrorIconCircle,
+  StatusIconCircle,
   StyledModalContentContainer,
   StyledTitleContainer,
 } from './StatusBottomSheet.styles';
 
-interface StatusBottomSheetProps {
+interface StatusBottomSheetProps extends PropsWithChildren {
   title: string;
-  description: string;
-  callToAction: string;
-  callToActionType: 'submit' | 'button';
+  description?: string;
+  callToAction?: string;
+  callToActionType?: 'submit' | 'button';
+  status?: 'error' | 'success';
   containerId: string;
   isOpen: boolean;
   onClick?: () => void;
@@ -29,9 +31,11 @@ interface StatusBottomSheetProps {
 
 export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   title,
+  children,
   description,
   callToAction,
-  callToActionType,
+  callToActionType = 'submit',
+  status = 'error',
   containerId,
   isOpen,
   onClick,
@@ -103,25 +107,33 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
           padding: theme.spacing(3),
         })}
       >
-        <ErrorIconCircle>
-          <ErrorRounded />
-        </ErrorIconCircle>
+        <StatusIconCircle status={status}>
+          {status === 'error' ? <ErrorRounded /> : <Check />}
+        </StatusIconCircle>
 
         <StyledTitleContainer>
           <Typography variant="titleXSmall">{title}</Typography>
         </StyledTitleContainer>
 
-        <Typography variant="bodyMedium">{description}</Typography>
+        {children ? (
+          children
+        ) : (
+          <>
+            {description && (
+              <Typography variant="bodyMedium">{description}</Typography>
+            )}
 
-        {callToAction && (
-          <Button
-            fullWidth
-            variant="primary"
-            type={callToActionType}
-            onClick={onClick}
-          >
-            {callToAction}
-          </Button>
+            {callToAction && (
+              <Button
+                fullWidth
+                variant="primary"
+                type={callToActionType}
+                onClick={onClick}
+              >
+                {callToAction}
+              </Button>
+            )}
+          </>
         )}
       </StyledModalContentContainer>
     </BottomSheet>

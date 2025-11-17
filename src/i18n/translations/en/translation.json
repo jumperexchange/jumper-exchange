@@ -463,6 +463,41 @@
     },
     "earn": {
       "depositSuccess": "You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>"
+    },
+    "withdraw": {
+      "title": "Withdraw",
+      "amount": "Amount",
+      "received": "Received",
+      "switchChain": "Switching chain...",
+      "waitingForTransaction": "Waiting for transaction...",
+      "withdraw": "Withdraw",
+      "success": {
+        "title": "Withdraw successful",
+        "seeDetails": "See details",
+        "done": "Done"
+      },
+      "error": {
+        "chainSwitchFailed": {
+          "title": "Chain switch failed",
+          "description": "Failed to switch to the required network. Please try again.",
+          "tryAgain": "Try again"
+        },
+        "signatureFailed": {
+          "title": "Signature required",
+          "description": "You need to sign the transaction to confirm ownership of the wallet address.",
+          "tryAgain": "Try again"
+        },
+        "insufficientGas": {
+          "title": "Insufficient gas",
+          "description": "You have insufficient gas to complete this transaction. Please top up and try again.",
+          "increaseGas": "Get gas"
+        },
+        "transactionFailed": {
+          "title": "Transaction failed",
+          "description": "Something went wrong with the transaction. No funds were lost or moved. Please try again.",
+          "tryAgain": "Try again"
+        }
+      }
     }
   },
   "links": {
@@ -470,6 +505,7 @@
   },
   "buttons": {
     "depositButtonLabel": "Quick deposit",
+    "withdrawButtonLabel": "Withdraw",
     "managePositionsButtonLabel": "Manage Positions"
   },
   "modal": {

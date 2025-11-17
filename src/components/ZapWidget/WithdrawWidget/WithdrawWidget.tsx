@@ -1,14 +1,32 @@
-import { type ContractCall, type TokenAmount } from '@lifi/widget';
+import type { ContractCall, TokenAmount } from '@lifi/widget';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
-import { ProjectData } from 'src/types/questDetails';
+import type { ProjectData } from 'src/types/questDetails';
 import { WithdrawForm } from './WithdrawForm';
-import { useWithdrawTransaction } from './hooks';
+import {
+  useWithdrawTransactionState,
+  useWithdrawTransactionExecution,
+  useWithdrawTracking,
+} from './hooks';
 import { useAccount } from '@lifi/wallet-management';
-import { useChains } from 'src/hooks/useChains';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import { TxBottomSheet } from '../TxBottomSheet/TxBottomSheet';
+import type { Theme, SxProps } from '@mui/material/styles';
+import { HeightAnimatedContainer } from '@/components/core/HeightAnimatedContainer/HeightAnimatedContainer';
+import { motion } from 'motion/react';
+import { WithdrawStatusSheetController } from './WithdrawStatusSheetController';
+import type { WithdrawErrorType } from './WithdrawWidget.types';
+import { useToken } from '@/hooks/useToken';
+import { getButtonLabel } from './utils';
+import { useTranslation } from 'react-i18next';
+import {
+  BOTTOM_SHEET_TOP_OFFSET,
+  MODAL_BOTTOM_SHEET_MIN_HEIGHT,
+  ANIMATION_DURATION_SECONDS,
+  CONTAINER_ID,
+  WITHDRAW_SHEET_STATES,
+  WITHDRAW_FLOW_STATES,
+} from './constants';
 
 export interface WithdrawWidgetProps {
   poolName?: string;
@@ -19,6 +37,7 @@ export interface WithdrawWidgetProps {
   depositTokenData: number | bigint | undefined;
   refetchPosition: () => void;
   withdrawAbi?: AbiFunction;
+  sx?: SxProps<Theme>;
 }
 
 export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
@@ -29,70 +48,150 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
   depositTokenData,
   refetchPosition,
   withdrawAbi,
+  sx,
 }) => {
+  const { t } = useTranslation();
   const { account } = useAccount();
-  const chains = useChains();
-  const chain = useMemo(
-    () => chains.getChainById(projectData?.chainId),
-    [projectData?.chainId],
+  const { token: tokenInfo } = useToken(token.chainId, token.address);
+
+  const enhancedToken = useMemo(() => {
+    return tokenInfo || token;
+  }, [tokenInfo, token]);
+
+  const [withdrawValue, setWithdrawValue] = useState('');
+  const [sheetState, setSheetState] = useState<string>(
+    WITHDRAW_SHEET_STATES.HIDDEN,
   );
-  const {
-    sendWithdrawTx,
-    successDataRef,
-    txHash,
-    txError,
-    isTransactionReceiptLoading,
-    isTransactionReceiptSuccess,
-    isWriteContractDataError,
-    isWriteContractDataPending,
-    isWriteContractDataSuccess,
-  } = useWithdrawTransaction({
-    projectData,
-    writeDecimals: lpTokenDecimals,
-    withdrawAbi,
+
+  const transactionState = useWithdrawTransactionState({
     accountAddress: account.address,
+    projectData,
   });
 
-  const containerId = 'withdraw-widget-box';
+  const { sendWithdrawTx } = useWithdrawTransactionExecution({
+    withdrawAbi,
+    projectData,
+    writeDecimals: lpTokenDecimals,
+    accountAddress: account.address,
+    enhancedToken,
+    state: transactionState,
+  });
+
+  useWithdrawTracking({
+    projectData,
+    enhancedToken,
+    withdrawValue: transactionState.value,
+    isTransactionReceiptSuccess: transactionState.isTransactionReceiptSuccess,
+    withdrawStep: transactionState.withdrawStep,
+    refetchPosition,
+  });
+
+  useEffect(() => {
+    if (transactionState.withdrawErrorType) {
+      setSheetState(WITHDRAW_SHEET_STATES.ERROR);
+    }
+  }, [transactionState.withdrawErrorType]);
+
+  useEffect(() => {
+    if (
+      !transactionState.isTransactionReceiptLoading &&
+      transactionState.isTransactionReceiptSuccess &&
+      !!transactionState.txHash
+    ) {
+      setSheetState(WITHDRAW_SHEET_STATES.SUCCESS);
+    }
+  }, [
+    transactionState.isTransactionReceiptLoading,
+    transactionState.isTransactionReceiptSuccess,
+    transactionState.txHash,
+  ]);
+
+  const handleCloseErrorBottomSheet = useCallback(() => {
+    setSheetState(WITHDRAW_SHEET_STATES.HIDDEN);
+  }, []);
+
+  const handleCloseSuccessBottomSheet = useCallback(() => {
+    transactionState.resetState();
+    setWithdrawValue('');
+    setSheetState(WITHDRAW_SHEET_STATES.HIDDEN);
+  }, [transactionState]);
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+
+      setSheetState(WITHDRAW_SHEET_STATES.HIDDEN);
+
+      const form = event.currentTarget as unknown as HTMLFormElement;
+      const formData = new FormData(form);
+      const values = Object.fromEntries(formData.entries());
+      const value = values['withdrawValue'].toString();
+
+      try {
+        sendWithdrawTx(value);
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [sendWithdrawTx],
+  );
+
+  const buttonLabel = getButtonLabel(transactionState.withdrawStep, t);
+  const isSheetOpen = sheetState !== WITHDRAW_SHEET_STATES.HIDDEN;
 
   return (
-    <SectionCardContainer
-      id={containerId}
-      sx={{ position: 'relative', overflow: 'hidden' }}
+    <HeightAnimatedContainer
+      isOpen={isSheetOpen}
+      offsetHeight={BOTTOM_SHEET_TOP_OFFSET}
+      minHeight={MODAL_BOTTOM_SHEET_MIN_HEIGHT}
+      animationDuration={ANIMATION_DURATION_SECONDS}
     >
-      <WithdrawWidgetBox>
-        <WithdrawForm
-          submitLabel={'Withdraw'} // This belongs to contractCalls[0].label
-          errorMessage={txError?.name}
-          sendWithdrawTx={sendWithdrawTx}
-          successDataRef={successDataRef}
-          isSubmitDisabled={isWriteContractDataPending}
-          isSubmitLoading={
-            isTransactionReceiptLoading || isWriteContractDataPending
-          }
-          refetchPosition={refetchPosition}
-          projectData={projectData}
-          token={token}
-          poolName={poolName}
-          balance={depositTokenData?.toString() ?? '0'}
-          lpTokenDecimals={lpTokenDecimals}
-        />
-      </WithdrawWidgetBox>
-      <TxBottomSheet
-        title={
-          isTransactionReceiptSuccess
-            ? 'Withdraw successful'
-            : 'Transaction failed'
-        }
-        description="Check transaction on explorer"
-        link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
-        containerId={containerId}
-        isOpen={
-          !isTransactionReceiptLoading &&
-          (isTransactionReceiptSuccess ||
-            (!isTransactionReceiptSuccess && !!txHash))
-        }
-      />
-    </SectionCardContainer>
+      {({ motionProps, onHeightChange }) => (
+        <motion.div {...motionProps}>
+          <SectionCardContainer
+            id={CONTAINER_ID}
+            as="form"
+            onSubmit={handleSubmit}
+            sx={{
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              height: '100%',
+              ...sx,
+            }}
+          >
+            <WithdrawWidgetBox>
+              <WithdrawForm
+                submitLabel={buttonLabel}
+                isSubmitDisabled={transactionState.isPending}
+                isSubmitLoading={
+                  transactionState.isTransactionReceiptLoading ||
+                  transactionState.isPending
+                }
+                projectData={projectData}
+                token={enhancedToken}
+                poolName={poolName}
+                balance={depositTokenData?.toString() ?? '0'}
+                lpTokenDecimals={lpTokenDecimals}
+                setWithdrawValue={setWithdrawValue}
+                withdrawValue={withdrawValue}
+              />
+            </WithdrawWidgetBox>
+            <WithdrawStatusSheetController
+              sheetState={sheetState}
+              containerId={CONTAINER_ID}
+              token={enhancedToken}
+              txHash={transactionState.txHash}
+              value={withdrawValue}
+              chainId={projectData?.chainId}
+              withdrawErrorType={transactionState.withdrawErrorType}
+              onCloseError={handleCloseErrorBottomSheet}
+              onCloseSuccess={handleCloseSuccessBottomSheet}
+              onHeightChange={onHeightChange}
+            />
+          </SectionCardContainer>
+        </motion.div>
+      )}
+    </HeightAnimatedContainer>
   );
 };

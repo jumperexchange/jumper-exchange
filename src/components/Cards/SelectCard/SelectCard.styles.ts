@@ -1,9 +1,13 @@
-import Box, { BoxProps } from '@mui/material/Box';
+import type { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import InputBase, { InputBaseProps } from '@mui/material/InputBase';
+import type { InputBaseProps } from '@mui/material/InputBase';
+import InputBase from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
+import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
-import { styled, Theme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 export enum SelectCardMode {
   Display = 'display',
@@ -17,6 +21,7 @@ interface SelectCardContainerProps extends BoxProps {
 export const SelectCardContainer = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'isClickable',
 })<SelectCardContainerProps>(({ theme, isClickable }) => ({
+  width: '100%',
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
   background: (theme.vars || theme).palette.surface2.main,
@@ -34,7 +39,7 @@ export const SelectCardContainer = styled(Card, {
 export const SelectCardContentContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
-  gap: theme.spacing(1.25),
+  gap: theme.spacing(2),
   alignItems: 'center',
 }));
 
@@ -42,14 +47,26 @@ export const SelectCardValueContainer = styled(Box)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
+  overflow: 'hidden',
 }));
 
 export const SelectCardLabel = styled(InputLabel)(({ theme }) => ({
   ...theme.typography.bodySmallStrong,
 }));
 
-export const SelectCardDescription = styled(Typography)(({ theme }) => ({
-  color: (theme.vars || theme).palette.alpha800.main,
+interface SelectCardDescriptionProps extends TypographyProps {
+  hideOverflow?: boolean;
+}
+
+export const SelectCardDescription = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'hideOverflow',
+})<SelectCardDescriptionProps>(({ theme, hideOverflow }) => ({
+  color: (theme.vars || theme).palette.text.secondary,
+  ...(hideOverflow && {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  }),
 }));
 
 export const getPlaceholderTextStyles = (theme: Theme) => ({
@@ -70,6 +87,7 @@ export const SelectCardInputField = styled(InputBase, {
 })<SelectCardInputFieldProps>(({ theme, isAmount }) => ({
   '& input': {
     ...theme.typography.bodyLargeStrong,
+    height: 'auto',
     paddingTop: 0,
     paddingBottom: theme.spacing(0.25),
   },

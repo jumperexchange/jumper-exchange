@@ -6,8 +6,13 @@ export const StyledTitleContainer = styled(Box)(() => ({
   textAlign: 'center',
 }));
 
-export const ErrorIconCircle = styled(Box)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+export interface StatusIconCircleProps {
+  status?: 'error' | 'success';
+}
+
+export const StatusIconCircle = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'status',
+})<StatusIconCircleProps>(({ theme, status = 'error' }) => ({
   borderRadius: '50%',
   width: 96,
   height: 96,
@@ -15,9 +20,28 @@ export const ErrorIconCircle = styled(Box)(({ theme }) => ({
   position: 'relative',
   placeItems: 'center',
   '& > svg': {
-    color: (theme.vars || theme).palette.statusErrorFg,
     fontSize: 48,
   },
+  variants: [
+    {
+      props: { status: 'error' },
+      style: {
+        backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+        '& > svg': {
+          color: (theme.vars || theme).palette.statusErrorFg,
+        },
+      },
+    },
+    {
+      props: { status: 'success' },
+      style: {
+        backgroundColor: (theme.vars || theme).palette.statusSuccessBg,
+        '& > svg': {
+          color: (theme.vars || theme).palette.statusSuccessFg,
+        },
+      },
+    },
+  ],
 }));
 
 export const StyledModalContentContainer = styled(Box)(({ theme }) => ({

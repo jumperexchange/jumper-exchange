@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
 
 export const useProjectLikeDataFromEarnOpportunity = (
   earnOpportunity: Pick<
@@ -47,6 +47,32 @@ export const useProjectLikeDataFromEarnOpportunity = (
         approve: {} as any, // Not needed for DepositModal
         deposit: {} as any, // Not needed for DepositModal
         transfer: {} as any, // Not needed for DepositModal
+        withdraw: {
+          inputs: [
+            {
+              name: 'shares',
+              type: 'uint256',
+            },
+            {
+              name: 'receiver',
+              type: 'address',
+            },
+            {
+              name: 'owner',
+              type: 'address',
+            },
+          ],
+          name: 'redeem',
+          outputs: [
+            {
+              name: 'assets',
+              type: 'uint256',
+            },
+          ],
+          payable: false,
+          stateMutability: 'nonpayable',
+          type: 'function',
+        },
       },
     };
 

@@ -3,11 +3,13 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { styled } from '@mui/material/styles';
 import { cardClasses } from '@mui/material/Card';
 import { ButtonTertiary } from 'src/components/Button';
+import SwapVertRoundedIcon from '@mui/icons-material/SwapVertRounded';
 
 export const WithdrawWidgetBox = styled(Box)(() => ({
   display: 'flex',
   flexGrow: 1,
   flexDirection: 'column',
+  width: '100%',
 }));
 
 export const WithdrawFormContainer = styled(Box)(() => ({
@@ -98,5 +100,36 @@ export const MaxButton = styled(ButtonTertiary)(({ theme }) => ({
       transform: 'scale(0.85) translateY(-10px)',
       transitionDelay: '75ms',
     },
+  },
+}));
+
+export const DescriptionWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  gap: theme.spacing(1),
+}));
+
+export const HintWrapper = styled(Box)(() => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 0.5,
+  minWidth: 0,
+}));
+
+export const HintIcon = styled(SwapVertRoundedIcon)(({ theme }) => ({
+  fontSize: 16,
+  cursor: 'pointer',
+  flexShrink: 0,
+  color: (theme.vars || theme).palette.text.secondary,
+}));
+
+export const ButtonGroupContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
   },
 }));

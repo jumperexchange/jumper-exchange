@@ -38,6 +38,7 @@ interface Resources {
     };
     buttons: {
       depositButtonLabel: 'Quick deposit';
+      withdrawButtonLabel: 'Withdraw';
       managePositionsButtonLabel: 'Manage Positions';
     };
     campaign: {
@@ -516,6 +517,41 @@ interface Resources {
           description: 'Your funds have been returned and are now available to use in your wallet.';
           title: 'Funds successfully returned';
         };
+      };
+      withdraw: {
+        amount: 'Amount';
+        error: {
+          chainSwitchFailed: {
+            description: 'Failed to switch to the required network. Please try again.';
+            title: 'Chain switch failed';
+            tryAgain: 'Try again';
+          };
+          insufficientGas: {
+            description: 'You have insufficient gas to complete this transaction. Please top up and try again.';
+            increaseGas: 'Get gas';
+            title: 'Insufficient gas';
+          };
+          signatureFailed: {
+            description: 'You need to sign the transaction to confirm ownership of the wallet address.';
+            title: 'Signature required';
+            tryAgain: 'Try again';
+          };
+          transactionFailed: {
+            description: 'Something went wrong with the transaction. No funds were lost or moved. Please try again.';
+            title: 'Transaction failed';
+            tryAgain: 'Try again';
+          };
+        };
+        received: 'Received';
+        success: {
+          done: 'Done';
+          seeDetails: 'See details';
+          title: 'Withdraw successful';
+        };
+        switchChain: 'Switching chain...';
+        title: 'Withdraw';
+        waitingForTransaction: 'Waiting for transaction...';
+        withdraw: 'Withdraw';
       };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';

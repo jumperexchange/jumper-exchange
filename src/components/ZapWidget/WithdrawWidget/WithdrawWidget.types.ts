@@ -1,6 +1,8 @@
-import { ProjectData } from 'src/types/questDetails';
+import type { ProjectData } from 'src/types/questDetails';
+import type { Token } from '@lifi/widget';
 import { type TokenAmount } from '@lifi/widget';
-import { RefObject } from 'react';
+import type { Dispatch, SetStateAction, RefObject } from 'react';
+import type { Hex } from 'viem';
 
 export interface BaseContractCall {
   label: string;
@@ -19,27 +21,42 @@ export interface SendContractCall extends BaseContractCall {
 
 export type ContractCall = SignContractCall | SendContractCall;
 
-export interface SuccessDataRef {
-  token?: TokenAmount;
-  tokenPriceUSD?: string;
-  value?: string;
-  callback?: () => void;
-}
-
 export interface WithdrawFormProps {
   errorMessage?: string;
   projectData: ProjectData;
   balance: string;
-  token: TokenAmount;
+  token: Token;
   poolName?: string;
   overrideStyle?: {
     mainColor?: string;
   };
-  refetchPosition: () => void;
-  sendWithdrawTx: (value: string) => void;
-  successDataRef: RefObject<SuccessDataRef>;
   isSubmitDisabled?: boolean;
   isSubmitLoading?: boolean;
   submitLabel?: string;
   lpTokenDecimals: number;
+  setWithdrawValue: Dispatch<SetStateAction<string>>;
+  withdrawValue: string;
+}
+
+export interface WithdrawStatusSheetContent {
+  title: string;
+  description: string;
+  callToAction: string;
+  callToActionType: 'submit' | 'button';
+  onClick?: () => void;
+}
+
+export enum WithdrawErrorType {
+  ChainSwitchFailed = 'chainSwitchFailed',
+  SignatureFailed = 'signatureFailed',
+  InsufficientGas = 'insufficientGas',
+  TransactionFailed = 'transactionFailed',
+}
+
+export interface WithdrawSuccessProps {
+  token: Token;
+  value: string;
+  chainId: number;
+  txHash?: Hex;
+  onClose: () => void;
 }
