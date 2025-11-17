@@ -103,6 +103,7 @@ export const SubMenu = ({
             <MenuItemContainer
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
+              disabled={el.disabled}
               key={`${el.label}-${index}`}
             >
               <MenuItemLink

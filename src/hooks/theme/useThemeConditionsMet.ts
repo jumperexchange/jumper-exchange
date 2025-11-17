@@ -14,12 +14,12 @@ export const useThemeConditionsMet = () => {
   ]);
 
   useEffect(() => {
-    if (!fromChainId || !toChainId) {
-      return;
-    }
+    const showForFromChain = configTheme?.showForFromChain;
+    const showForToChain = configTheme?.showForToChain;
+
     setShouldShowForChain(
-      fromChainId === configTheme.showForFromChain ||
-        toChainId === configTheme.showForToChain,
+      (!!showForFromChain && fromChainId === showForFromChain) ||
+        (!!showForToChain && toChainId === showForToChain),
     );
   }, [
     fromChainId,

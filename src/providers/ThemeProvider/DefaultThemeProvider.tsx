@@ -29,7 +29,7 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
       partnerThemes: themes!,
       widgetTheme: widgetTheme,
     };
-  }, [mode, themes, partnerThemeConfig]);
+  }, [mode, themes, partnerThemeConfig, prefersDarkMode]);
 
   return <ThemeStoreProvider value={themeStore}>{children}</ThemeStoreProvider>;
 }

@@ -16,6 +16,7 @@ import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { useRouter } from 'next/navigation';
 import { isExternalUrl } from 'src/utils/urls/isExternalUrl';
+import { parseNumber } from 'src/utils/numbers/utils';
 
 interface AnnouncementBannerProps {
   maxAnnouncements?: number;
@@ -54,23 +55,30 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
         return;
       }
 
-      if (/fromChain|toChain|fromToken|toToken/g.test(href)) {
+      if (/fromChain|toChain|fromToken|toToken/.test(href)) {
         const url = new URL(href, window.location.origin);
         const searchParams = url.searchParams;
-        if (searchParams.get('fromChain')) {
-          widgetCache.setFromChainId(
-            parseInt(searchParams.get('fromChain') ?? ''),
-          );
+
+        const fromChainId = parseNumber(searchParams.get('fromChain'));
+        if (fromChainId !== undefined) {
+          widgetCache.setFromChainId(fromChainId);
         }
-        if (searchParams.get('fromToken')) {
-          widgetCache.setFromToken(searchParams.get('fromToken') ?? '');
+
+        const fromToken = searchParams.get('fromToken');
+        if (fromToken) {
+          widgetCache.setFromToken(fromToken);
         }
-        if (searchParams.get('toChain')) {
-          widgetCache.setToChainId(parseInt(searchParams.get('toChain') ?? ''));
+
+        const toChainId = parseNumber(searchParams.get('toChain'));
+        if (toChainId !== undefined) {
+          widgetCache.setToChainId(toChainId);
         }
-        if (searchParams.get('toToken')) {
-          widgetCache.setToToken(searchParams.get('toToken') ?? '');
+
+        const toToken = searchParams.get('toToken');
+        if (toToken) {
+          widgetCache.setToToken(toToken);
         }
+
         return;
       }
 
