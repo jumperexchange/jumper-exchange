@@ -113,7 +113,7 @@ export function formatTheme(theme: PartnerThemesAttributes) {
   const config = formatConfig(theme);
 
   const formattedMUITheme = {
-    // @ts-expect-error
+    // @ts-expect-error TODO: Fix this
     ...(theme.lightConfig || theme.darkConfig).customization,
     components: {
       Background: {

@@ -124,6 +124,7 @@ export default async function RootLayout({
           }
 `}
         </style>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script type="text/javascript" src="/api/env-config.js" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script

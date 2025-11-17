@@ -2,7 +2,7 @@ import { Typography, Box, styled } from '@mui/material';
 import { Button } from '@/components/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import { bagelFatOne, interTight } from './utils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import UnicornScene from '../UnicornScene/UnicornScene';
 
 const CloseButton = styled('button')({

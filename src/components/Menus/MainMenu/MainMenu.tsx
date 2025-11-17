@@ -1,5 +1,5 @@
 import { Menu } from '@/components/Menu/Menu';
-import { MenuItem } from '@/components/Menu/MenuItem/';
+import { MenuItem } from '@/components/Menu/MenuItem/MenuItem';
 import { Link } from '@/components/Link';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
@@ -16,7 +16,8 @@ interface MainMenuProps {
 }
 
 export const MainMenu = ({ anchorEl }: MainMenuProps) => {
-  const { mainMenuItems, mainMenuSocialLinks, mainMenuFooterLinks } = useMainMenuContent();
+  const { mainMenuItems, mainMenuSocialLinks, mainMenuFooterLinks } =
+    useMainMenuContent();
   const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
     (state) => state,
   );
@@ -28,6 +29,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
       mainMenuItems.map((item, index) => (
         <MenuItem
           key={`${item.label}-${index}`}
+          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={index > 0}
           label={item.label}
           prefixIcon={item.prefixIcon}

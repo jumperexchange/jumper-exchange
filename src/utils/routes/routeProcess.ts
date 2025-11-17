@@ -27,8 +27,8 @@ const findErrorKeyFromErrorCode = (code?: string) => {
 export const getProcessInformation = (
   route: RouteExtended,
 ): GetProcessInformationType => {
-  let processData: GetProcessInformationType = {};
-  let errors: Pick<
+  const processData: GetProcessInformationType = {};
+  const errors: Pick<
     GetProcessInformationType,
     | TrackingEventParameter.ErrorCode
     | TrackingEventParameter.ErrorCodeKey

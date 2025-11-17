@@ -1038,7 +1038,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: paletteLight.surface4,
           },
         },
-        // @ts-expect-error
+        // @ts-expect-error TODO: Fix this
         shadows: [
           'none',
           '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
@@ -1138,7 +1138,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: paletteDark.surface4,
           },
         },
-        // @ts-expect-error
+        // @ts-expect-error TODO: Fix this
         shadows: [
           'none',
           '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',

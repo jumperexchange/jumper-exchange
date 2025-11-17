@@ -3,13 +3,7 @@ import { useMenuStore } from '@/stores/menu';
 import type { SxProps, Theme } from '@mui/material';
 import { Typography } from '@mui/material';
 import type { ReactNode } from 'react';
-import {
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
-  MenuList,
-  MenuPaper,
-  MobileDrawer,
-} from '.';
+import { MenuHeaderAppBar, MenuHeaderAppWrapper, MenuList, MenuPaper, MobileDrawer } from './Menu.style';
 
 const paperProps = {
   sx: (theme: Theme) => ({
@@ -55,6 +49,7 @@ export const MenuMobile = ({
         <MenuList
           autoFocusItem={open}
           id="main-burger-menu"
+          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={open}
           isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
           aria-labelledby="main-burger-menu"

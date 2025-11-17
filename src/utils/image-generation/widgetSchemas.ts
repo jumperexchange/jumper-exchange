@@ -44,14 +44,14 @@ export const widgetQuotesSchema = z.object({
     .transform((val) => val || '0')
     .transform((val) => sanitizeNumeric(val))
     .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-      message: 'AmountUSD must be a non-negative number',
+        error: 'AmountUSD must be a non-negative number'
     })
     .optional(),
   isSwap: z
     .string()
     .transform((val) => val.toLowerCase() === 'true')
     .transform((val) => Boolean(val))
-    .default('false'),
+    .prefault('false'),
   theme: baseThemeSchema,
   highlighted: highlightedSchema.optional(),
 });
@@ -100,7 +100,7 @@ export const widgetReviewSchema = z.object({
   isSwap: z
     .string()
     .transform((val) => val.toLowerCase() === 'true')
-    .default('false'),
+    .prefault('false'),
   theme: baseThemeSchema,
   highlighted: highlightedSchema,
 });

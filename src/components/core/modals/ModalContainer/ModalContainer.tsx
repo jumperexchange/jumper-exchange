@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 import Modal from '@mui/material/Modal';
 import useMediaQuery from '@mui/material/useMediaQuery';
