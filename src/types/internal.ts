@@ -1,7 +1,7 @@
+import { MenuItemLinkType } from '@/components/Menu/MenuItem/MenuItem.types';
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
-import type { MenuItemLinkType } from 'src/components/Menu';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
 

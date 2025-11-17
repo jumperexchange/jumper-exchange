@@ -44,6 +44,7 @@ export const AddressMenu = ({
               <AddressMenuList
                 autoFocusItem={open}
                 id="address-menu"
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={open}
                 aria-labelledby="address-menu"
                 hasLabel={true}
@@ -59,6 +60,7 @@ export const AddressMenu = ({
                 {addressBoxMenuItems.map((el, index) => (
                   <MenuItem
                     key={`${el.label}-${index}`}
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus={index > 0 ? true : false}
                     label={el.label}
                     prefixIcon={el.prefixIcon}

@@ -3,7 +3,7 @@
 const data = { isHealthy: true };
 
 export async function GET() {
-  let hasUpdateAvailable = false;
+  const hasUpdateAvailable = false;
 
   return Response.json({ ...data, hasUpdateAvailable });
 

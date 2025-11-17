@@ -7,7 +7,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -16,29 +16,15 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2020",
-    "paths": {
-      "src": ["./src/"],
-      "src/*": ["./src/*"],
-      "@/app/*": ["src/app/*"],
-      "@/components/*": ["src/components/*"],
-      "@/config/*": ["src/config/*"],
-      "@/const/*": ["src/const/*"],
-      "@/fonts/*": ["src/fonts/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/i18n/*": ["src/i18n/*"],
-      "@/providers/*": ["src/providers/*"],
-      "@/stores/*": ["src/stores/*"],
-      "src/themes/*": ["src/themes/*"],
-      "@/types/*": ["src/types/*"],
-      "@/utils/*": ["src/utils/*"]
-    },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "plugins": ["import"],
   "rules": {
     "import/no-unresolved": "error"
   },
@@ -47,12 +33,14 @@
       "@typescript-eslint/parser": [".ts", ".tsx"]
     }
   },
-  "exclude": ["**/.*/", "**/build", "**/dist", "node_modules", ".yarn"],
+  "exclude": ["node_modules"],
   "include": [
     "next-env.d.ts",
     "new-types.d.ts",
     "./src/**/*",
     "./src/**/*.json",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
   ]
 }

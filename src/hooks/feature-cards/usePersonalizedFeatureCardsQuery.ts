@@ -25,8 +25,12 @@ export const usePersonalizedFeatureCardsQuery =
     const { data: fcCardData, isSuccess: fcCardDataIsSuccess } = useQuery({
       queryKey: ['jumperUser', account?.address],
       queryFn: async () => {
+        if (!account?.address) {
+          throw new Error('Account address must be set');
+        }
+
         const response = await fetch(
-          getFeatureCardsEndpoint(account?.address!),
+          getFeatureCardsEndpoint(account?.address),
         );
 
         if (!response.ok) {

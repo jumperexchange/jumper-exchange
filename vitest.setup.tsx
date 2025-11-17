@@ -44,7 +44,7 @@ vi.mock('next/font/local', () => ({
 }));
 
 vi.mock('next/image', () => ({
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => <img {...props} alt="" />,
 }));
 
 vi.mock('react-i18next', async (importOriginal) => {

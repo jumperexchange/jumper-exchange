@@ -101,6 +101,7 @@ export const MultiSelect = <T extends string[]>({
           }}
         >
           <StyledMultiSelectFiltersInput
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             name={`${label}-search`}
             startAdornment={

@@ -42,6 +42,7 @@ export const InteractiveMenuItem = ({
     <MenuItemContainer
       disableRipple={disableRipple || showButton}
       sx={styles}
+      // eslint-disable-next-line jsx-a11y/no-autofocus
       autoFocus={autoFocus}
       onClick={handleClick}
     >

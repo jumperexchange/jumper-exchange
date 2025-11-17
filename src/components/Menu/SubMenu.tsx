@@ -9,16 +9,9 @@ import { alpha, Box, IconButton, useTheme } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useRef } from 'react';
-import {
-  MenuHeaderAppBar,
-  MenuHeaderAppWrapper,
-  MenuHeaderLabel,
-  MenuItemContainer,
-  MenuItemLink,
-  MenuLabel,
-  MenuPaper,
-} from '.';
+import { MenuHeaderAppBar, MenuHeaderAppWrapper, MenuPaper, MenuHeaderLabel } from './Menu.style';
 import { SubMenuLabel } from './SubMenu.style';
+import { MenuItemContainer, MenuItemLink, MenuLabel } from './MenuItem/MenuItem.style';
 
 interface SubMenuProps {
   open: boolean;
@@ -65,6 +58,7 @@ export const SubMenu = ({
       show={openSubMenu === triggerSubMenu}
       className="submenu"
       onKeyDown={handleBackSpace}
+      // eslint-disable-next-line jsx-a11y/no-autofocus
       autoFocus={open}
       component="ul"
       ref={menuListRef}
@@ -101,12 +95,14 @@ export const SubMenu = ({
         subMenuList.map((el, index) =>
           !!el.link?.url ? (
             <MenuItemContainer
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
               disabled={el.disabled}
               key={`${el.label}-${index}`}
             >
               <MenuItemLink
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={index > 0 ? true : false}
                 href={el.link.url}
                 target={el.link.external ? '_blank' : '_self'}
@@ -129,6 +125,7 @@ export const SubMenu = ({
             </MenuItemContainer>
           ) : (
             <MenuItemContainer
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={index > 0 ? true : false}
               onClick={() => handleClick(el)}
               disabled={el.disabled}

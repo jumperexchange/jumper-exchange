@@ -1,5 +1,3 @@
-import RouterLink from 'next/link';
-
 import { Logo } from './components/Logo/Logo';
 import { NavbarContainer } from './Navbar.style';
 import { Layout } from './layout/Layout';
@@ -10,7 +8,7 @@ import { AppPaths } from 'src/const/urls';
 export const ServerNavbar = async () => {
   return (
     <NavbarContainer enableColorOnDark>
-      <Link component={RouterLink} href={AppPaths.Main}>
+      <Link href={AppPaths.Main}>
         <Logo variant="default" />
       </Link>
       <Layout />

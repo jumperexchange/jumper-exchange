@@ -31,15 +31,11 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
     return <WidgetSkeleton />;
   }
 
-  const ctx = useMemo(() => {
-    return {
-      taskType: TaskType.Zap as const,
-    };
-  }, []);
+  const ctx = {
+    taskType: TaskType.Zap as const,
+  };
 
-  const projectData = useMemo(() => {
-    return customInformation?.projectData;
-  }, [customInformation?.projectData]);
+  const projectData = customInformation?.projectData;
 
   // Get zap data to check if user has deposited and if withdraw is available
   const {
@@ -49,25 +45,11 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
     isLoadingDepositTokenData,
     isSuccess: isZapDataSuccess,
     refetchDepositToken,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useEnhancedZapData(projectData);
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
   const hasWithdrawAbi = !!zapData?.abi?.withdraw;
-
-  const tabs = useMemo(
-    () => [
-      {
-        value: 'deposit',
-        label: t('widget.zap.tabs.deposit'),
-      },
-      {
-        value: 'withdraw',
-        label: t('widget.zap.tabs.withdraw'),
-        disabled: !hasDeposited || !hasWithdrawAbi,
-      },
-    ],
-    [hasDeposited, hasWithdrawAbi, t],
-  );
 
   return (
     <WidgetTrackingProvider>
