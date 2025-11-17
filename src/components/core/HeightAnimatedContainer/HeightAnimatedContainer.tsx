@@ -1,5 +1,5 @@
-import { FC, ReactNode, useState, useCallback } from 'react';
-import { MotionProps } from 'framer-motion';
+import { type FC, type ReactNode, useState, useCallback } from 'react';
+import type { MotionProps } from 'motion/react';
 
 export interface HeightAnimatedContainerRenderProps {
   height: number;

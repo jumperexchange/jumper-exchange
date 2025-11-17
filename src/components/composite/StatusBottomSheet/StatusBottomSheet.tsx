@@ -1,11 +1,12 @@
-import { FC, useEffect, useRef } from 'react';
+import type { FC } from 'react';
+import { useEffect, useRef } from 'react';
 import ErrorRounded from '@mui/icons-material/ErrorRounded';
 import Typography from '@mui/material/Typography';
-import {
-  BottomSheet,
+import type {
   BottomSheetBase,
   BottomSheetProps,
 } from 'src/components/core/BottomSheet/BottomSheet';
+import { BottomSheet } from 'src/components/core/BottomSheet/BottomSheet';
 import { Button } from 'src/components/Button/Button';
 import {
   ErrorIconCircle,
@@ -56,7 +57,9 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !onHeightChange) return;
+    if (!containerRef.current || !onHeightChange) {
+      return;
+    }
 
     if (typeof ResizeObserver === 'undefined') {
       const height = isOpen ? containerRef.current.offsetHeight : 0;

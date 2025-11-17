@@ -1,8 +1,9 @@
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { Trans, useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { Button } from 'src/components/Button';
@@ -29,7 +30,7 @@ import {
 } from './MissionWidget.styles';
 import { Link } from 'src/components/Link';
 import { DISCORD_URL } from 'src/const/urls';
-import { ParseKeys } from 'i18next';
+import type { ParseKeys } from 'i18next';
 
 interface MissionVerifyWalletProps {
   isComplete: boolean;

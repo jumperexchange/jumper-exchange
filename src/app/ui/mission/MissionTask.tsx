@@ -1,5 +1,6 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
-import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import type { FC } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskCard } from 'src/components/Cards/TaskCard/TaskCard';
 import { Badge } from 'src/components/Badge/Badge';
 
@@ -74,14 +75,22 @@ export const MissionTask: FC<MissionTaskProps> = ({
   );
 
   const getVariant = () => {
-    if (isSuccess || isVerified) return BadgeVariant.Success;
-    if (isPending || (hasForm && !isFormValid)) return BadgeVariant.Disabled;
-    if (isError) return BadgeVariant.Error;
+    if (isSuccess || isVerified) {
+      return BadgeVariant.Success;
+    }
+    if (isPending || (hasForm && !isFormValid)) {
+      return BadgeVariant.Disabled;
+    }
+    if (isError) {
+      return BadgeVariant.Error;
+    }
     return BadgeVariant.Secondary;
   };
 
   const getIcon = () => {
-    if (isSuccess || isVerified) return <CheckIcon />;
+    if (isSuccess || isVerified) {
+      return <CheckIcon />;
+    }
     return (
       <RefreshIcon
         sx={{
@@ -97,8 +106,12 @@ export const MissionTask: FC<MissionTaskProps> = ({
   };
 
   const getTypeLabel = () => {
-    if (!isRequired) return t('missions.tasks.typeOptional');
-    if (!taskType) return t('missions.tasks.typeFallback');
+    if (!isRequired) {
+      return t('missions.tasks.typeOptional');
+    }
+    if (!taskType) {
+      return t('missions.tasks.typeFallback');
+    }
 
     const displayType =
       taskType === TaskType.OnChainWalletOwnership

@@ -1,13 +1,13 @@
-import Drawer, { DrawerProps } from '@mui/material/Drawer';
+import type { DrawerProps } from '@mui/material/Drawer';
+import Drawer from '@mui/material/Drawer';
+import type { PropsWithChildren, RefObject } from 'react';
 import {
-  PropsWithChildren,
   forwardRef,
   startTransition,
   useCallback,
   useImperativeHandle,
   useRef,
   useState,
-  RefObject,
   useEffect,
   useLayoutEffect,
 } from 'react';
