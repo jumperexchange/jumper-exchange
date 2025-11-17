@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { DepositButton } from './DepositButton';
-import { action } from 'storybook/internal/actions';
+import { fn } from '@storybook/test';
 import { DepositButtonDisplayMode } from './DepositButton.types';
 
 const meta = {
   component: DepositButton,
   title: 'Composite/Deposit Button',
   args: {
-    onClick: action('on-click'),
+    onClick: fn(),
   },
   argTypes: {
     displayMode: {

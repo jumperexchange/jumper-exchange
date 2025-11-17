@@ -19,10 +19,10 @@ export const useZapData = ({ projectData }: UseZapDataProps) => {
       // POST request to get zap data
       const res = await fetch(`${apiBaseUrl}/zaps/get-zap-data`, {
         method: 'POST',
-        body: JSON.stringify({ 
-          chain: projectData.chain, 
-          address: projectData.address, 
-          project: projectData.project 
+        body: JSON.stringify({
+          chain: projectData.chain,
+          address: projectData.address,
+          project: projectData.project,
         }),
         headers: {
           'Content-Type': 'application/json',

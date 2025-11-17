@@ -5,7 +5,7 @@ import { useAnnouncementStore } from '@/stores/announcements/AnnouncementStore';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { RichBlocks } from '../RichBlocks/RichBlocks';
 import {
   AnnouncementBannerContainer,

@@ -1,4 +1,4 @@
-import { MainMenu } from 'src/components/Menus/MainMenu';
+import { MainMenu } from 'src/components/Menus/MainMenu/MainMenu';
 import { DotsMenuIcon, NavbarMenuToggleButton } from './Buttons.style';
 import { useRef, useEffect } from 'react';
 import { useMenuStore } from 'src/stores/menu';

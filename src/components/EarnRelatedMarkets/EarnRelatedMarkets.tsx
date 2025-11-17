@@ -8,7 +8,7 @@ import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButt
 import { useTranslation } from 'react-i18next';
 import { AppPaths } from 'src/const/urls';
 import { GridContainer } from '../Containers/GridContainer';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 interface EarnRelatedMarketsProps {
   relatedMarkets: EarnOpportunityWithLatestAnalytics[];

@@ -10,7 +10,6 @@ interface DefaultMenuType {
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
   openSnackbar: SnackbarProps;
-  supportModalUnreadCount: number;
 }
 
 export const defaultMenu: DefaultMenuType = {
@@ -19,7 +18,6 @@ export const defaultMenu: DefaultMenuType = {
   openSubMenu: MenuKeysEnum.None,
   openSupportModal: false,
   openSnackbar: { open: false },
-  supportModalUnreadCount: 0,
 };
 
 export const useMenuStore = createWithEqualityFn<MenuState>(
@@ -88,20 +86,13 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
 
     // Toggle support modal
     setSupportModalState: (open) => {
-      set((state) => ({
-        ...state,
+      set({
         openSupportModal: open,
         openMainMenu: false,
         openWalletMenu: false,
         openSubMenu: MenuKeysEnum.None,
-      }));
+      });
     },
-
-    setSupportModalUnreadCount: (count: number) =>
-      set((state) => ({
-        ...state,
-        supportModalUnreadCount: count,
-      })),
   }),
   shallow,
 );

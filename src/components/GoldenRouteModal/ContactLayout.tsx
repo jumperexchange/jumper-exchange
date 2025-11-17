@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { bagelFatOne, interTight } from './utils';
 import { ChevronRight } from '@mui/icons-material';
 import { useState, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 const BackButton = styled('button', {
   shouldForwardProp: (prop) => prop !== 'isMobile',

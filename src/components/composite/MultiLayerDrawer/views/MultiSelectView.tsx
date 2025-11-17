@@ -90,6 +90,7 @@ export const MultiSelectView = <TValue extends string | number>({
           }}
         >
           <StyledMultiSelectFiltersInput
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             size="medium"
             name="search"
