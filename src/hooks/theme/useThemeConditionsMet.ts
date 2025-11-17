@@ -28,6 +28,8 @@ export const useThemeConditionsMet = () => {
     configTheme.showForToChain,
   ]);
 
-  const shouldShowForPath = pathname === AppPaths.Main;
+  const shouldShowForPath = [AppPaths.Main, AppPaths.Gas].includes(
+    pathname as AppPaths,
+  );
   return shouldShowForChain && shouldShowForPath;
 };
