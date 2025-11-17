@@ -2,17 +2,21 @@ import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import { FC, useEffect, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { Trans, useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { Button } from 'src/components/Button';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import { StatusBottomSheet } from 'src/components/composite/StatusBottomSheet/StatusBottomSheet';
+import { HeightAnimatedContainer } from 'src/components/core/HeightAnimatedContainer/HeightAnimatedContainer';
 import { SignMessageErrorType, useSignMessage } from 'src/hooks/useSignMessage';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
 import { walletDigest } from 'src/utils/walletDigest';
 import { useVerifyWalletStatusSheetContent } from '../hooks';
 import {
+  ANIMATION_DURATION_SECONDS,
+  BOTTOM_SHEET_TOP_OFFSET,
   VERIFY_WALLET_CONTAINER_ID,
   VERIFY_WALLET_MESSAGE,
 } from '../constants';
@@ -44,7 +48,6 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
     SignMessageErrorType.Unknown,
   );
   const [showError, setShowError] = useState(false);
-  const [statusBottomSheetHeight, setStatusBottomSheetHeight] = useState(0);
 
   const {
     signMessageAsync,
@@ -197,30 +200,41 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
   };
 
   return (
-    <SectionCardContainer
-      as="form"
-      onSubmit={handleSubmit}
-      id={VERIFY_WALLET_CONTAINER_ID}
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        display: 'flex',
-        minHeight: showError ? statusBottomSheetHeight + 24 : 'auto',
-      }}
+    <HeightAnimatedContainer
+      isOpen={showError}
+      offsetHeight={BOTTOM_SHEET_TOP_OFFSET}
+      animationDuration={ANIMATION_DURATION_SECONDS}
     >
-      <MissionWidgetContainer
-        sx={{ height: 'auto', justifyContent: 'space-between' }}
-      >
-        {renderContent()}
+      {({ motionProps, onHeightChange }) => (
+        <motion.div {...motionProps}>
+          <SectionCardContainer
+            as="form"
+            onSubmit={handleSubmit}
+            id={VERIFY_WALLET_CONTAINER_ID}
+            sx={{
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              height: '100%',
+            }}
+          >
+            <MissionWidgetContainer sx={{ justifyContent: 'space-between' }}>
+              {renderContent()}
 
-        <StatusBottomSheet
-          {...errorSheetProps}
-          containerId={VERIFY_WALLET_CONTAINER_ID}
-          isOpen={showError}
-          onClose={handleCloseErrorBottomSheet}
-          onHeightChange={setStatusBottomSheetHeight}
-        />
-      </MissionWidgetContainer>
-    </SectionCardContainer>
+              <StatusBottomSheet
+                {...errorSheetProps}
+                containerId={VERIFY_WALLET_CONTAINER_ID}
+                isOpen={showError}
+                onClose={handleCloseErrorBottomSheet}
+                onHeightChange={onHeightChange}
+                transitionDuration={{
+                  enter: ANIMATION_DURATION_SECONDS * 1_000,
+                }}
+              />
+            </MissionWidgetContainer>
+          </SectionCardContainer>
+        </motion.div>
+      )}
+    </HeightAnimatedContainer>
   );
 };

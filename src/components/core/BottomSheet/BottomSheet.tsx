@@ -1,6 +1,5 @@
-import Drawer from '@mui/material/Drawer';
+import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import {
-  FC,
   PropsWithChildren,
   forwardRef,
   startTransition,
@@ -19,12 +18,13 @@ export interface BottomSheetBase {
   close(): void;
 }
 
-interface BottomSheetProps extends PropsWithChildren {
+export interface BottomSheetProps extends PropsWithChildren {
   open?: boolean;
   onClose?: () => void;
   containerId: string;
   elementRef?: RefObject<HTMLDivElement>;
   backdropFilter?: string;
+  transitionDuration?: DrawerProps['transitionDuration'];
 }
 
 export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
@@ -36,6 +36,7 @@ export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
       open = false,
       onClose,
       backdropFilter,
+      transitionDuration,
     },
     ref,
   ) => {
@@ -102,6 +103,7 @@ export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
           container: container,
           style: { position: 'absolute' },
         }}
+        transitionDuration={transitionDuration}
         slotProps={{
           transition: {
             direction: 'up',

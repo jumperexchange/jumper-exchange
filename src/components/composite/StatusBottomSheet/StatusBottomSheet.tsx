@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import {
   BottomSheet,
   BottomSheetBase,
+  BottomSheetProps,
 } from 'src/components/core/BottomSheet/BottomSheet';
 import { Button } from 'src/components/Button/Button';
 import {
@@ -22,6 +23,7 @@ interface StatusBottomSheetProps {
   onClick?: () => void;
   onClose?: () => void;
   onHeightChange?: (height: number) => void;
+  transitionDuration?: BottomSheetProps['transitionDuration'];
 }
 
 export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
@@ -34,6 +36,7 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   onClick,
   onClose,
   onHeightChange,
+  transitionDuration,
 }) => {
   const bottomSheetRef = useRef<BottomSheetBase>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -89,6 +92,7 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
       ref={bottomSheetRef}
       backdropFilter="blur(16px)"
       onClose={onClose}
+      transitionDuration={transitionDuration}
     >
       <StyledModalContentContainer
         ref={containerRef}
