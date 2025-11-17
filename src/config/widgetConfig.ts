@@ -129,7 +129,7 @@ export const getDefaultWidgetThemeV2 = (
         },
         chainSidebarContainer: {
           [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
-            borderRadius: '12px',
+            borderRadius: '24px',
             maxWidth: 256,
             minWidth: 256,
             maxHeight: WIDGET_HEIGHT,
@@ -138,7 +138,7 @@ export const getDefaultWidgetThemeV2 = (
         },
         routesContainer: {
           [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
-            borderRadius: '12px',
+            borderRadius: '24px',
             maxWidth: 436,
             minWidth: 436,
             boxShadow: copiedTheme.shadows[1],
