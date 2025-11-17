@@ -81,13 +81,7 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
         onHeightChange(0);
       }
     };
-  }, [isOpen, onHeightChange, containerRef.current]);
-
-  useEffect(() => {
-    return () => {
-      bottomSheetRef.current?.close();
-    };
-  }, []);
+  }, [isOpen, onHeightChange]);
 
   return (
     <BottomSheet
