@@ -2,7 +2,10 @@ import type { PartnerThemesData } from '@/types/strapi';
 import { formatTheme, getAvailableThemeModes } from '@/utils/formatTheme';
 import type { PaletteMode, Theme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import { getDefaultWidgetTheme, getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
+import {
+  getDefaultWidgetTheme,
+  getDefaultWidgetThemeV2,
+} from 'src/config/widgetConfig';
 import { themeCustomized } from 'src/theme/theme';
 import type { Appearance } from '@lifi/widget';
 
@@ -60,11 +63,9 @@ export function getWidgetTheme(
 
 export function getWidgetThemeV2(
   mode: PaletteMode,
-  activeTheme?: string,
-  themes?: PartnerThemesData[],
+  partnerThemeAttributes?: PartnerThemesData,
 ) {
   const defaultWidgetTheme = getDefaultWidgetThemeV2(mode);
-  const partnerThemeAttributes = getPartnerTheme(themes, activeTheme);
 
   const widgetTheme = partnerThemeAttributes
     ? {

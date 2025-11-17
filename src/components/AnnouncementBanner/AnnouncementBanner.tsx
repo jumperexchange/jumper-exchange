@@ -1,5 +1,5 @@
 'use client';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useAnnouncements } from '@/hooks/useAnnouncements';
 import { useAnnouncementStore } from '@/stores/announcements/AnnouncementStore';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,6 +12,11 @@ import {
   AnnouncementBannerContainerList,
   AnnouncementBannerContentContainer,
 } from './AnnouncementBanner.style';
+import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
+import { openInNewTab } from 'src/utils/openInNewTab';
+import { useRouter } from 'next/navigation';
+import { isExternalUrl } from 'src/utils/urls/isExternalUrl';
+import { parseNumber } from 'src/utils/numbers/utils';
 
 interface AnnouncementBannerProps {
   maxAnnouncements?: number;
@@ -20,6 +25,8 @@ interface AnnouncementBannerProps {
 export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
   maxAnnouncements = 1,
 }) => {
+  const widgetCache = useWidgetCacheStore((state) => state);
+  const router = useRouter();
   const { activeAnnouncements } = useAnnouncements();
   const dismissAnnouncement = useAnnouncementStore(
     (state) => state.dismissAnnouncement,
@@ -30,6 +37,54 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
   if (displayedAnnouncements.length === 0) {
     return null;
   }
+
+  const handleRewriteLinkBehavior = (e: React.MouseEvent<HTMLElement>) => {
+    if ((e.target as HTMLElement)?.tagName?.toLowerCase() === 'a') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const link = (e.target as HTMLElement).closest('a') as HTMLAnchorElement;
+      const href = link.getAttribute('href');
+
+      if (!href) {
+        return;
+      }
+
+      if (isExternalUrl(href)) {
+        openInNewTab(href);
+        return;
+      }
+
+      if (/fromChain|toChain|fromToken|toToken/.test(href)) {
+        const url = new URL(href, window.location.origin);
+        const searchParams = url.searchParams;
+
+        const fromChainId = parseNumber(searchParams.get('fromChain'));
+        if (fromChainId !== undefined) {
+          widgetCache.setFromChainId(fromChainId);
+        }
+
+        const fromToken = searchParams.get('fromToken');
+        if (fromToken) {
+          widgetCache.setFromToken(fromToken);
+        }
+
+        const toChainId = parseNumber(searchParams.get('toChain'));
+        if (toChainId !== undefined) {
+          widgetCache.setToChainId(toChainId);
+        }
+
+        const toToken = searchParams.get('toToken');
+        if (toToken) {
+          widgetCache.setToToken(toToken);
+        }
+
+        return;
+      }
+
+      router.push(href);
+    }
+  };
 
   return (
     <AnimatePresence mode="popLayout">
@@ -42,7 +97,7 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
             transition={{ duration: 0.3 }}
             key={announcement.documentId}
           >
-            <AnnouncementBannerContainer>
+            <AnnouncementBannerContainer onClick={handleRewriteLinkBehavior}>
               <AnnouncementBannerContentContainer>
                 {announcement.logo ? (
                   <Avatar

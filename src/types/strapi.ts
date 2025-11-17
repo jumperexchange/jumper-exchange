@@ -1,7 +1,7 @@
 import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
-import { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
+import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
 
 /* Strapi */
 export interface ImageData<T> {
@@ -241,11 +241,15 @@ export interface PartnerThemesData extends PartnerThemesAttributes {
 
 export interface Customization {
   palette: { [colorName: string]: { main: string } };
+  backgroundImagePosition?: string;
   logoName?: string;
   footerBannerUrl?: string;
   typography?: string;
   hasBackgroundGradient?: boolean;
   hasBlurredNavigation?: boolean;
+  showForFromChain?: number;
+  showForToChain?: number;
+  hasThemeModeSwitch?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
