@@ -5,9 +5,8 @@ import type {
 } from '@/types/jumper-backend';
 import { makeClient } from './client';
 
-export type GetOpportunityTopResult = HttpResponse<
-  EarnOpportunityWithLatestAnalytics[],
-  unknown
+export type GetOpportunityTopResult = ReturnType<
+  JumperBackend<unknown>['v1']['recommendationControllerFilterV1']
 >;
 
 export type EarnOpportunityFilter = Parameters<

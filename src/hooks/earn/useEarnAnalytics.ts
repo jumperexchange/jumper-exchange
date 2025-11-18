@@ -1,16 +1,8 @@
-import {
-  EarnOpportunityFilter,
-  getOpportunitiesFiltered,
-} from '@/app/lib/getOpportunitiesFiltered';
-import {
-  EarnOpportunityHistory,
-  EarnOpportunityWithLatestAnalytics,
-} from '@/types/jumper-backend';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import {
-  EarnOpportunityAnalyticsQuery,
-  getOpportunityAnalytics,
-} from 'src/app/lib/getOpportunityAnalytics';
+import type { EarnOpportunityHistory } from '@/types/jumper-backend';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import type { EarnOpportunityAnalyticsQuery } from 'src/app/lib/getOpportunityAnalytics';
+import { getOpportunityAnalytics } from 'src/app/lib/getOpportunityAnalytics';
 import { FIVE_MINUTES_MS } from 'src/const/time';
 
 export interface Props {

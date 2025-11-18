@@ -22,7 +22,6 @@ export const useEarnTopOpportunities = ({}: Props): Result => {
       if (!result.ok) {
         throw result.error;
       }
-      // @ts-expect-error: see LF-15589 - we are transforming data in the backend
       return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,

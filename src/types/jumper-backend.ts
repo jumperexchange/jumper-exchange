@@ -955,6 +955,37 @@ export interface WalletPositions {
   positions: DefiPosition[];
 }
 
+export interface MetadataWithUpdatedAt {
+  /**
+   * @format date-time
+   * @example "2025-11-18T14:23:00.000Z"
+   */
+  updatedAt: string;
+}
+
+export interface EarnOpportunityWithScore {
+  name: string;
+  asset: Token;
+  protocol: Protocol;
+  url?: string;
+  description: string;
+  tags: string[];
+  rewards: string[];
+  lpToken: Token;
+  slug: string;
+  featured: boolean;
+  lockupMonths?: number;
+  /** The cap in dollar */
+  capInDollar?: string;
+  forYou: boolean;
+  latest: EarnOpportunityHistoryItem;
+}
+
+export interface EarnOpportunities {
+  meta: MetadataWithUpdatedAt;
+  data: EarnOpportunityWithScore[];
+}
+
 export interface RecommendationDto {
   summary: object;
   scores: string[];
@@ -1725,7 +1756,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+      this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/tops`,
         method: 'GET',
         query: query,
@@ -1801,7 +1832,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+      this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/filter`,
         method: 'GET',
         query: query,
