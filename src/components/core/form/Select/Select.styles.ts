@@ -210,6 +210,7 @@ export const StyledSliderContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(1),
   width: '100%',
+  pointerEvents: 'auto',
 }));
 
 export const StyledSlider = styled(Slider)(({ theme }) => ({
