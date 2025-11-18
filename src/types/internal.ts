@@ -1,4 +1,4 @@
-import { MenuItemLinkType } from '@/components/Menu/MenuItem/MenuItem.types';
+import type { MenuItemLinkType } from '@/components/Menu/MenuItem/MenuItem.types';
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
@@ -32,6 +32,7 @@ export interface MenuListItem {
   link?: MenuItemLinkType;
   onClick?: () => void;
   showButton?: boolean;
+  disabled?: boolean;
 }
 
 export interface ChainsMenuListItem {

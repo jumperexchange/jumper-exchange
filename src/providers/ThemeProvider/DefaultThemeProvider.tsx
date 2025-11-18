@@ -7,8 +7,7 @@ import { useMemo } from 'react';
 import type { ThemeProviderProps } from './types';
 import { getPartnerTheme, getWidgetThemeV2 } from './utils';
 import { useMediaQuery } from '@mui/material';
-import { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
-import { ThemeProps } from 'src/types/theme';
+import type { ThemeProps } from 'src/types/theme';
 
 export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
   const { mode } = useColorScheme();
@@ -17,22 +16,20 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
   const metaTheme = useMetaTag('partner-theme');
 
   const partnerTheme = metaTheme || 'default';
+  const partnerThemeConfig = getPartnerTheme(themes, partnerTheme);
 
   const themeStore = useMemo((): ThemeProps => {
     const widgetTheme = getWidgetThemeV2(
       mode === 'system' || !mode ? (prefersDarkMode ? 'dark' : 'light') : mode,
-      partnerTheme,
-      themes,
+      partnerThemeConfig,
     );
 
     return {
-      configTheme: formatConfig(
-        getPartnerTheme(themes, partnerTheme),
-      ) as PartnerThemeConfig,
+      configTheme: formatConfig(partnerThemeConfig),
       partnerThemes: themes!,
       widgetTheme: widgetTheme,
     };
-  }, [mode, themes]);
+  }, [mode, themes, partnerThemeConfig, prefersDarkMode]);
 
   return <ThemeStoreProvider value={themeStore}>{children}</ThemeStoreProvider>;
 }

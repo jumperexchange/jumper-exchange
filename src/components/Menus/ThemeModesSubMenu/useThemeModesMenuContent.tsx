@@ -11,7 +11,9 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { Appearance } from '@lifi/widget';
+import type { Appearance } from '@lifi/widget';
+import { useThemeConditionsMet } from 'src/hooks/theme/useThemeConditionsMet';
+import { useEffect, useRef } from 'react';
 
 export const useThemeModesMenuContent = () => {
   const { mode, setMode } = useColorScheme();
@@ -19,6 +21,29 @@ export const useThemeModesMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const { isMainPaths } = useMainPaths();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
+  const defaultThemeMode = configTheme?.defaultThemeMode;
+  const isThemeConditionsMet = useThemeConditionsMet();
+  const defaultMode = isMainPaths ? 'system' : 'light';
+  const selectedThemeMode = mode ?? defaultMode;
+  const selectedThemeModeRef = useRef<Appearance | undefined>(undefined);
+
+  useEffect(() => {
+    if (
+      isThemeConditionsMet &&
+      defaultThemeMode &&
+      selectedThemeMode !== defaultThemeMode
+    ) {
+      setMode(defaultThemeMode);
+      selectedThemeModeRef.current = selectedThemeMode;
+    } else if (
+      !isThemeConditionsMet &&
+      selectedThemeModeRef.current &&
+      selectedThemeModeRef.current !== selectedThemeMode
+    ) {
+      setMode(selectedThemeModeRef.current);
+      selectedThemeModeRef.current = undefined;
+    }
+  }, [isThemeConditionsMet, defaultThemeMode, selectedThemeMode, setMode]);
 
   const handleSwitchMode = (newMode: Appearance) => {
     trackEvent({
@@ -58,15 +83,13 @@ export const useThemeModesMenuContent = () => {
       prefixIcon: modeOptions[theme].prefixIcon,
       checkIcon: mode === theme,
       onClick: () => handleSwitchMode(theme),
-      disabled: !isModeAvailable(theme),
+      disabled: isThemeConditionsMet || !isModeAvailable(theme),
     }),
   );
 
-  const defaultMode = isMainPaths ? 'system' : 'light';
-
   return {
-    selectedThemeMode: mode ?? defaultMode,
-    selectedThemeIcon: modeOptions[mode ?? defaultMode].prefixIcon,
+    selectedThemeMode,
+    selectedThemeIcon: modeOptions[selectedThemeMode].prefixIcon,
     submenuItems,
   };
 };
