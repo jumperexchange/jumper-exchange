@@ -26,7 +26,7 @@ export const WithdrawSuccess: FC<WithdrawSuccessProps> = ({
   const chains = useChains();
   const chain = useMemo(() => chains.getChainById(chainId), [chains, chainId]);
   const explorerUrl = useMemo(
-    () => chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/',
+    () => chain?.metamask?.blockExplorerUrls?.[0] ?? 'https://etherscan.io/',
     [chain],
   );
 

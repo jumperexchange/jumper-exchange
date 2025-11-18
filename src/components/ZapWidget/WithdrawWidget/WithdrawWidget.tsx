@@ -15,7 +15,6 @@ import type { Theme, SxProps } from '@mui/material/styles';
 import { HeightAnimatedContainer } from '@/components/core/HeightAnimatedContainer/HeightAnimatedContainer';
 import { motion } from 'motion/react';
 import { WithdrawStatusSheetController } from './WithdrawStatusSheetController';
-import type { WithdrawErrorType } from './WithdrawWidget.types';
 import { useToken } from '@/hooks/useToken';
 import { getButtonLabel } from './utils';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +24,6 @@ import {
   ANIMATION_DURATION_SECONDS,
   CONTAINER_ID,
   WITHDRAW_SHEET_STATES,
-  WITHDRAW_FLOW_STATES,
 } from './constants';
 
 export interface WithdrawWidgetProps {
@@ -58,7 +56,6 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
     return tokenInfo || token;
   }, [tokenInfo, token]);
 
-  const [withdrawValue, setWithdrawValue] = useState('');
   const [sheetState, setSheetState] = useState<string>(
     WITHDRAW_SHEET_STATES.HIDDEN,
   );
@@ -112,7 +109,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
 
   const handleCloseSuccessBottomSheet = useCallback(() => {
     transactionState.resetState();
-    setWithdrawValue('');
+    transactionState.setValue('');
     setSheetState(WITHDRAW_SHEET_STATES.HIDDEN);
   }, [transactionState]);
 
@@ -173,8 +170,8 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
                 poolName={poolName}
                 balance={depositTokenData?.toString() ?? '0'}
                 lpTokenDecimals={lpTokenDecimals}
-                setWithdrawValue={setWithdrawValue}
-                withdrawValue={withdrawValue}
+                setWithdrawValue={transactionState.setValue}
+                withdrawValue={transactionState.value}
               />
             </WithdrawWidgetBox>
             <WithdrawStatusSheetController
@@ -182,7 +179,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
               containerId={CONTAINER_ID}
               token={enhancedToken}
               txHash={transactionState.txHash}
-              value={withdrawValue}
+              value={transactionState.value}
               chainId={projectData?.chainId}
               withdrawErrorType={transactionState.withdrawErrorType}
               onCloseError={handleCloseErrorBottomSheet}

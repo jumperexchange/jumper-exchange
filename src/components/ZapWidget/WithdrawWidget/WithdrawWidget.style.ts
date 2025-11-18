@@ -110,10 +110,10 @@ export const DescriptionWrapper = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const HintWrapper = styled(Box)(() => ({
+export const HintWrapper = styled(Box)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: 0.5,
+  gap: theme.spacing(0.5),
   minWidth: 0,
 }));
 

@@ -159,7 +159,7 @@ export const useWithdrawTransactionExecution = ({
         const data = encodeFunctionData({
           abi: [abi],
           functionName: (abi.name || 'redeem') as 'redeem',
-          args: dynamicArgs as unknown as readonly [bigint],
+          args: dynamicArgs,
         });
 
         const hash = await walletClient.sendTransaction({

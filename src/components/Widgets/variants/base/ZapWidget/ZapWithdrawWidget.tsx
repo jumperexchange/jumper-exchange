@@ -32,9 +32,9 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     isLoadingDepositTokenData,
     refetchDepositToken,
   } = useGetZapInPoolBalance(
-    account.address as Hex,
-    (projectData.tokenAddress as Hex) || (projectData.address as Hex),
-    projectData.chainId,
+    account?.address as Hex,
+    (projectData?.tokenAddress as Hex) || (projectData?.address as Hex),
+    projectData?.chainId,
   );
 
   const poolName = useMemo(() => {

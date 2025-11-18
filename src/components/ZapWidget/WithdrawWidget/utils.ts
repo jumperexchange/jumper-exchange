@@ -79,7 +79,7 @@ export const buildWithdrawAbiArgs = (
   value: string,
   writeDecimals: number,
   accountAddress: Hex,
-): unknown[] => {
+) => {
   if (!abiInputs || abiInputs.length === 0) {
     return [parseUnits(value, writeDecimals)];
   }
