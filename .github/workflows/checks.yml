@@ -40,7 +40,7 @@ jobs:
             git diff --stat --staged | head -n -1 >> DIFF.txt
             echo '```' >> DIFF.txt
             echo "" >> DIFF.txt
-            echo "To fix this issue, use \`pnpm lint-staged --diff=\"${SOURCE_NAME}...${BRANCH_NAME}\"\` to lint changed files." >> DIFF.txt
+            echo "To fix this issue, use \`git fetch && pnpm lint-staged --diff=\"origin/${SOURCE_NAME}...${BRANCH_NAME}\"\` to lint changed files." >> DIFF.txt
             echo "" >> DIFF.txt
             echo "🚧 Your commit hooks might be missing 🚧" >> DIFF.txt
             exit 1
