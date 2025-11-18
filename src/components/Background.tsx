@@ -5,6 +5,8 @@ import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
 } from './BackgroundGradient';
+import { AnimatedBackgroundImage } from './core/AnimatedBackgroundImage/AnimatedBackgroundImage';
+import { useGetPartnerThemeImage } from 'src/hooks/theme/useGetPartnerThemeImage';
 
 export interface BackgroundContainerProps {
   variant?: 'outlined';
@@ -13,15 +15,26 @@ export interface BackgroundContainerProps {
 }
 
 const BackgroundContainer = styled('div', {
-  name: 'Background', // The component name
-  slot: 'root', // The slot name
+  name: 'Background',
+  slot: 'root',
 })(() => ({}));
 
 function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
 
+  const backgroundImageUrl = useGetPartnerThemeImage();
+
   return (
     <BackgroundContainer id="background-root">
+      <AnimatedBackgroundImage
+        src={backgroundImageUrl}
+        sx={{
+          '& > img': {
+            objectPosition: configTheme?.backgroundImagePosition ?? 'center',
+          },
+        }}
+      />
+
       {configTheme?.hasBackgroundGradient && (
         <>
           <BackgroundGradientBottomLeft />

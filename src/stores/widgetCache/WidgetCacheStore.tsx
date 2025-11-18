@@ -16,12 +16,12 @@ export const useWidgetCacheStore = createWithEqualityFn<WidgetCacheState>(
   (set, get) => ({
     ...defaultSettings,
 
-    setFromToken(token: string) {
+    setFromToken(token?: string) {
       set({
         fromToken: token,
       });
     },
-    setFromChainId(chainId: number) {
+    setFromChainId(chainId?: number) {
       set({
         fromChainId: chainId,
       });
@@ -32,12 +32,12 @@ export const useWidgetCacheStore = createWithEqualityFn<WidgetCacheState>(
         fromChainId: chainId,
       });
     },
-    setToToken(token: string) {
+    setToToken(token?: string) {
       set({
         toToken: token,
       });
     },
-    setToChainId(chainId: number) {
+    setToChainId(chainId?: number) {
       set({
         toChainId: chainId,
       });

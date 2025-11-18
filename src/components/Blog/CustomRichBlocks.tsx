@@ -200,7 +200,7 @@ export const CustomRichBlocks = ({
       } else if (children[0].props.text.includes('<INSTRUCTIONS')) {
         try {
           const instructions_array: InstructionItemProps[] = [];
-          let jso = children[0].props.text
+          const jso = children[0].props.text
             .replace('<INSTRUCTIONS ', '')
             .replace('/>', '');
 

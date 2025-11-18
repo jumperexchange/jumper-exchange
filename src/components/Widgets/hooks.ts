@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useThemeStore } from '@/stores/theme';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
-import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs';
 
 interface UseFormParametersProps {
   fromChain?: number;
@@ -20,13 +19,6 @@ export const useFormParameters = ({
 }: UseFormParametersProps) => {
   const configTheme = useThemeStore((state) => state.configTheme);
   const widgetCache = useWidgetCacheStore((state) => state);
-  const [queryParams] = useQueryStates({
-    fromChain: parseAsInteger,
-    fromToken: parseAsString,
-    toChain: parseAsInteger,
-    toToken: parseAsString,
-    fromAmount: parseAsString,
-  });
 
   const formParametersCtx = useMemo(() => {
     const params: Record<
@@ -39,24 +31,18 @@ export const useFormParameters = ({
     > = {};
 
     const sourceChainId =
-      configTheme?.fromChain ??
-      fromChain ??
-      widgetCache.fromChainId ??
-      queryParams.fromChain;
+      configTheme?.fromChain ?? fromChain ?? widgetCache.fromChainId;
 
     const sourceTokenAddress =
-      configTheme?.fromToken ??
-      fromToken ??
-      widgetCache.fromToken ??
-      queryParams.fromToken;
+      configTheme?.fromToken ?? fromToken ?? widgetCache.fromToken;
 
     const destinationChainId =
-      configTheme?.toChain ?? toChain ?? queryParams.toChain;
+      configTheme?.toChain ?? toChain ?? widgetCache.toChainId;
 
     const destinationTokenAddress =
-      configTheme?.toToken ?? toToken ?? queryParams.toToken;
+      configTheme?.toToken ?? toToken ?? widgetCache.toToken;
 
-    const amount = fromAmount ?? queryParams.fromAmount;
+    const amount = fromAmount;
 
     if (sourceChainId) {
       params.sourceChain = { chainId: sourceChainId };
@@ -87,11 +73,8 @@ export const useFormParameters = ({
     toToken,
     widgetCache.fromChainId,
     widgetCache.fromToken,
-    queryParams.toChain,
-    queryParams.toToken,
-    queryParams.fromChain,
-    queryParams.fromToken,
-    queryParams.fromAmount,
+    widgetCache.toChainId,
+    widgetCache.toToken,
   ]);
 
   return formParametersCtx;

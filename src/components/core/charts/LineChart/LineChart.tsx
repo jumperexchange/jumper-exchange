@@ -19,6 +19,7 @@ import {
   calculateEvenYAxisTicks,
 } from './utils';
 import { useCallback, useMemo, useRef } from 'react';
+import type { HTMLAttributes } from 'react';
 import { AREA_CONFIG } from './constants';
 import { ActiveDotProps } from 'recharts/types/util/types';
 
@@ -37,7 +38,8 @@ export interface ChartDataPoint<V> {
   value: V;
 }
 
-export interface LineChartProps<V, T extends ChartDataPoint<V>> {
+export interface LineChartProps<V, T extends ChartDataPoint<V>>
+  extends HTMLAttributes<HTMLDivElement> {
   data: T[];
   theme: {
     lineColor?: string;
@@ -68,6 +70,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
   enableYAxis = true,
   enableTooltip = true,
   isLoading,
+  ...props
 }: LineChartProps<V, T>) => {
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -120,6 +123,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
       width="100%"
       height="100%"
       enableCrosshair={enableCrosshair}
+      {...props}
     >
       <AreaChart data={data} accessibilityLayer={false}>
         <defs>
@@ -185,8 +189,8 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
               ? (props: ActiveDotProps) => {
                   const { cx, cy, payload } = props;
                   const { x, y, transform } = calculateTooltipPosition(
-                    cx,
-                    cy,
+                    cx ?? 0,
+                    cy ?? 0,
                     chartContainerRef.current?.clientWidth ?? 0,
                     chartContainerRef.current?.clientHeight ?? 0,
                   );

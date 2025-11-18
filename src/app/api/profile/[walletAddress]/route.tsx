@@ -53,6 +53,7 @@ export async function GET(
   { params }: { params: Promise<{ walletAddress: string }> },
 ) {
   const { walletAddress } = await params;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const imgLink = useBlockieImg(walletAddress);
 
   try {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 
 import { DepositModal } from './DepositModal';
-import { action } from 'storybook/internal/actions';
+import { fn } from '@storybook/test';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { useIsDisconnected } from 'src/components/Navbar/hooks';
 import { WalletMenuToggle } from 'src/components/Navbar/components/Buttons/WalletMenuToggle';
@@ -14,7 +14,7 @@ const meta = {
   component: DepositModal,
   title: 'Composite/Deposit Modal',
   args: {
-    onClose: action('on-close'),
+    onClose: fn(),
   },
 } satisfies Meta<typeof DepositModal>;
 

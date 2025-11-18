@@ -7,7 +7,7 @@ import { locales } from './i18n/i18next-locales';
 
 acceptLanguage.languages(locales);
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const response = i18nRouter(request, i18nConfig);
 
   // Set a cookie with the pathname that was used on the first page load

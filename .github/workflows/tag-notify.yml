@@ -1,0 +1,46 @@
+name: Notify Slack on tag
+on:
+  push:
+    tags: [ '*' ]         # run for any tag
+
+jobs:
+  slack-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }          # we need full history for diff
+
+      # Detect the previous tag (if any)
+      - id: prev
+        run: |
+          prev=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1) 2>/dev/null || echo '')
+          echo "prev=$prev" >> "$GITHUB_OUTPUT"
+
+      # Build a bullet-list changelog
+      - id: changelog
+        run: |
+          if [ -z "${{ steps.prev.outputs.prev }}" ]; then
+            log="Initial release :rocket:"
+          else
+            log=$(git log --pretty=format:'• %s — %an' "${{ steps.prev.outputs.prev }}..${GITHUB_REF_NAME}" | sed 's/"/\\"/g' | sed 's/^/  /' | sed 's/$/\n/')
+          fi
+          printf 'log<<EOF\n%s\nEOF\n' "$log" >> "$GITHUB_OUTPUT"
+
+      # Send the Slack message
+      - uses: slackapi/slack-github-action@v2
+        with:
+          webhook-type: incoming-webhook
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL_QA }}
+          payload: |
+            {
+              "text": "New tag `${{ github.ref_name }}` published",
+              "blocks": [
+                { "type": "header", "text": { "type": "plain_text", "text": "🚀  Tag ${{ github.ref_name }} created and deploy in progress.." } },
+                { "type": "section",
+                  "text": { "type": "mrkdwn",
+                            "text": "*Repo:* <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\n*Author:* ${{ github.actor }}" } },
+                { "type": "divider" },
+                { "type": "section",
+                  "text": { "type": "mrkdwn", "text": "*Changes since ${{ steps.prev.outputs.prev || 'initial commit' }}:*\n${{ steps.changelog.outputs.log }}" } }
+              ]
+            }

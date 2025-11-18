@@ -39,7 +39,11 @@ export const EarnDetailsActions = ({
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
   const managePositionButton = (
-    <ManagePositionsButton fullWidth disabled={!hasDeposited}>
+    <ManagePositionsButton
+      fullWidth
+      disabled={!hasDeposited}
+      data-testid="manage-positions-button"
+    >
       {t('buttons.managePositionsButtonLabel')}
     </ManagePositionsButton>
   );
@@ -60,6 +64,7 @@ export const EarnDetailsActions = ({
         size="large"
         label={t('buttons.depositButtonLabel')}
         refetchCallback={refetchDepositToken}
+        data-testid="quick-deposit-button"
       />
       {managePositionSection}
     </EarnDetailsActionsContainer>
