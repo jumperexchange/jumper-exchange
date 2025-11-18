@@ -175,13 +175,13 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // Suppresses source map uploading logs during build
-  silent: true,
+  silent: false,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
+  widenClientFileUpload: false,
 
   // Transpiles SDK to be compatible with IE11 (increases bundle size)
-  transpileClientSDK: true,
+  transpileClientSDK: false,
 
   // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
   // This can increase your server load as well as your hosting bill.
@@ -190,7 +190,7 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // tunnelRoute: "/monitoring",
 
   sourcemaps: {
-    disable: false, // Source maps are enabled by default
+    disable: process.env.VERCEL === '1', // Disable on Vercel to avoid timeouts
     assets: ['**/*.js', '**/*.js.map'], // Specify which files to upload
     ignore: ['**/node_modules/**'], // Files to exclude
     deleteSourcemapsAfterUpload: true, // Security: delete after upload
