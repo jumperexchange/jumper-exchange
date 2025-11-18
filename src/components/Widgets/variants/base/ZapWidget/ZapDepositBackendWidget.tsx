@@ -121,8 +121,8 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [zapData?.meta.name]);
 
   const toToken = useMemo(() => {
-    return zapData?.market?.depositToken.address;
-  }, [zapData?.market?.depositToken.address]);
+    return zapData?.market?.address;
+  }, [zapData?.market?.address]);
 
   const toChain = useMemo(() => {
     return zapData?.market?.depositToken.chainId;
