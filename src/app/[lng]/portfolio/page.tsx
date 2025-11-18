@@ -1,5 +1,5 @@
 import { AppPaths, getSiteUrl } from '@/const/urls';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { PortfolioPage } from 'src/app/ui/portfolio/PortfolioPage';
 import { PortfolioPageSkeleton } from 'src/app/ui/portfolio/PortfolioPageSkeleton';
