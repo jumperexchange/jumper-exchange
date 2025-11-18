@@ -1,13 +1,13 @@
+import type { Nullable } from 'nuqs';
 import {
   parseAsArrayOf,
   parseAsFloat,
   parseAsInteger,
   parseAsString,
-  Nullable,
 } from 'nuqs';
 import { uniqBy } from 'lodash';
-import { CacheToken } from 'src/types/portfolio';
-import {
+import type { CacheToken } from 'src/types/portfolio';
+import type {
   PortfolioFilteringParams,
   PortfolioTokensFilter,
   WalletInfo,

@@ -3,7 +3,7 @@ import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { PortfolioTokensFilteringProvider } from './PortfolioTokensFilteringContext';
 import { PortfolioFilterBar } from 'src/components/PortfolioFilterBar/PortfolioFilterBar';
 import { useState } from 'react';
-import { PortfolioFilterBarTab } from './types';
+import type { PortfolioFilterBarTab } from './types';
 import { PortfolioDeFiProtocolsList } from './PortfolioDeFiProtocolsList';
 import { PortfolioTokensList } from './PortfolioTokensList';
 

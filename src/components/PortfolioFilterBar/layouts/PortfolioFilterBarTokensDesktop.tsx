@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';

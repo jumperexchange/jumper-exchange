@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useQueryStates } from 'nuqs';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
-import { CacheToken } from 'src/types/portfolio';
+import type { CacheToken } from 'src/types/portfolio';
 import { isEqual } from 'lodash';
 import {
   extractFilteringParams,
@@ -19,7 +19,7 @@ import {
   filterPortfolioData,
 } from './utils';
 import { EMPTY_FILTERING_PARAMS } from './constants';
-import {
+import type {
   PortfolioFilteringParams,
   PortfolioTokensFilter,
   PortfolioTokensFilterUI,

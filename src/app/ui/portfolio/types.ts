@@ -1,5 +1,5 @@
-import { CacheToken } from 'src/types/portfolio';
-import { Chain } from 'src/types/jumper-backend';
+import type { CacheToken } from 'src/types/portfolio';
+import type { Chain } from 'src/types/jumper-backend';
 
 export type PortfolioFilterBarTab = 'tokens' | 'defi-protocols';
 

@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
 import Stack from '@mui/system/Stack';
-import { AnimatePresence, motion } from 'framer-motion';
-import { FC, PropsWithChildren } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import type { FC, PropsWithChildren } from 'react';
 
 const LayoutContainer = styled(motion.div)({
   width: '100%',
@@ -24,7 +24,7 @@ export const PortfolioAnimatedLayoutContainer: FC<
         }}
         exit={{ opacity: 0 }}
         transition={{
-          type: 'fade',
+          type: 'tween',
           duration: 0.3,
         }}
       >

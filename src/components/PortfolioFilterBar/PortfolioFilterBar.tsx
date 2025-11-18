@@ -1,10 +1,8 @@
-import { PortfolioFilterBarTab } from 'src/app/ui/portfolio/types';
-import {
-  HorizontalTabItem,
-  HorizontalTabs,
-} from '../HorizontalTabs/HorizontalTabs';
+import type { PortfolioFilterBarTab } from 'src/app/ui/portfolio/types';
+import type { HorizontalTabItem } from '../HorizontalTabs/HorizontalTabs';
+import { HorizontalTabs } from '../HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from '../HorizontalTabs/HorizontalTabs.style';
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   PortfolioFilterBarContainer,
   PortfolioFilterBarHeaderContainer,

@@ -1,10 +1,8 @@
 import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { usePortfolioTokensFilterBar } from '../hooks';
-import {
-  CategoryConfig,
-  CategoryContentType,
-} from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
+import type { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
+import { CategoryContentType } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
 import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hooks';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';

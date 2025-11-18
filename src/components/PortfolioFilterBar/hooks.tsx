@@ -4,7 +4,7 @@ import { TokenStack } from '../composite/TokenStack/TokenStack';
 import { MultiSelectOption } from '../core/MultiSelect/MultiSelect.types';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import { PortfolioTokensFilterUI } from 'src/app/ui/portfolio/types';
+import type { PortfolioTokensFilterUI } from 'src/app/ui/portfolio/types';
 import { useMemo } from 'react';
 
 export const usePortfolioTokensFilterBar = () => {

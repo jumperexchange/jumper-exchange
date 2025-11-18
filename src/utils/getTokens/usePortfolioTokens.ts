@@ -8,7 +8,7 @@ import { usePortfolioStore } from '@/stores/portfolio';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
 import index from '@/utils/getTokens';
 import { useAccount } from '@lifi/wallet-management';
-import { ChainId } from '@lifi/widget';
+import type { ChainId } from '@lifi/widget';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef } from 'react';
 import { useChains } from 'src/hooks/useChains';
