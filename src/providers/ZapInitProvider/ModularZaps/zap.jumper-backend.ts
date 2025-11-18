@@ -1,7 +1,7 @@
 // For now this is copied and pasted from the jumper-backend's zap.interface.ts
 // TODO: Eventually share the types.
 
-import { AbiFunction } from 'viem';
+import type { AbiFunction } from 'viem';
 
 export enum Chain {
   ETHEREUM = 'ethereum',

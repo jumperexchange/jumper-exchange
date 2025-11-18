@@ -1,8 +1,8 @@
-import {
+import type {
   EarnOpportunityWithLatestAnalytics,
   HttpResponse,
 } from '@/types/jumper-backend';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 import { makeClient } from './client';
 
 export type GetOpportunityTopResult = HttpResponse<
