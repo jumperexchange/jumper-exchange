@@ -35,7 +35,7 @@ export interface CreateUserTrackingDto {
    * The referrer of the tracking event
    * @example "https://example.com/login"
    */
-  referrer: string;
+  referrer?: string;
   /**
    * The value associated with the tracking event
    * @example 1
@@ -75,7 +75,7 @@ export interface CreateUserTrackingDto {
    * Wallet provider of a user
    * @example "MetaMask"
    */
-  walletProvider: string;
+  walletProvider?: string;
 }
 
 export interface RewardEntity {
@@ -524,7 +524,7 @@ export interface CreateWalletTransactionDto {
    * The browser fingerprint of the user
    * @example "abc123"
    */
-  browserFingerprint: string;
+  browserFingerprint?: string;
   action: string;
   /** Type of the transaction, e.g., 'evm', 'svm' */
   type: string;
@@ -555,6 +555,7 @@ export interface CreateWalletTransactionDto {
   routeId: string;
   exchange?: string;
   slippage?: number;
+  maxSlippage?: string;
   tags?: string;
   time?: number;
   /** @default false */
@@ -566,13 +567,13 @@ export interface CreateWalletTransactionDto {
   errorMessage?: string;
   message?: string;
   status?: string;
-  walletAddress: string;
+  walletAddress?: string;
   /**
    * Wallet provider of a user
    * @example "MetaMask"
    */
-  walletProvider: string;
-  integrator: string;
+  walletProvider?: string;
+  integrator?: string;
   url?: string;
   pathname?: string;
   referrer?: string;
@@ -809,6 +810,74 @@ export interface ExecuteSweepQuoteResponseDto {
   transactionHash: string;
 }
 
+export interface Chain {
+  chainId: number;
+  chainKey: string;
+}
+
+export interface Token {
+  name: string;
+  symbol: string;
+  decimals: number;
+  logo?: string;
+  address: string;
+  chain: Chain;
+}
+
+export interface Protocol {
+  name: string;
+  product?: string;
+  version?: string;
+  logo?: string;
+  url?: string;
+}
+
+export interface APYItem {
+  base: number;
+  reward: number;
+  total: number;
+}
+
+export interface EarnOpportunityHistoryItem {
+  /** @format date-time */
+  date: string;
+  /** Total value locked in USD */
+  tvlUsd: string;
+  /** Total value locked in native currency */
+  tvlNative: string;
+  apy: APYItem;
+}
+
+export interface EarnOpportunityWithLatestAnalytics {
+  name: string;
+  asset: Token;
+  protocol: Protocol;
+  url?: string;
+  description: string;
+  tags: string[];
+  rewards: string[];
+  lpToken: Token;
+  slug: string;
+  featured: boolean;
+  lockupMonths?: number;
+  /** The cap in dollar */
+  capInDollar?: string;
+  forYou: boolean;
+  latest: EarnOpportunityHistoryItem;
+}
+
+export interface EarnOpportunityHistoryPoint {
+  /** The timestamp of the data point */
+  t: number;
+  /** The value of the data point */
+  v: number | string;
+}
+
+export interface EarnOpportunityHistory {
+  /** The data points */
+  points: EarnOpportunityHistoryPoint[];
+}
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -838,68 +907,20 @@ export interface TaskVerificationDto {
   additionalFields: object;
 }
 
-export interface Chain {
-  chainId: number;
-  chainKey: string;
-}
-
-export interface Token {
-  name: string;
-  symbol: string;
-  decimals: number;
-  logo: string;
-  address: string;
-  chain: Chain;
-}
-
-export interface Protocol {
-  name: string;
-  product: string;
-  version: string;
-  logo: string;
-}
-
-export interface APYItem {
-  base: number;
-  reward: number;
-  total: number;
-}
-
-export interface EarnOpportunityHistoryItem {
+export interface TokenBalances {
+  balances: string[];
   /** @format date-time */
-  date: string;
-  tvlUsd: string;
-  tvlNative: string;
-  apy: APYItem;
+  updatedAt: string;
 }
 
-export interface EarnOpportunityWithLatestAnalytics {
-  name: string;
-  asset: Token;
-  protocol: Protocol;
-  url?: string;
-  description: string;
-  tags: string[];
-  rewards: string[];
-  lpToken: Token;
-  slug: string;
-  featured: boolean;
-  lockupMonths?: number;
-  capInDollar?: string;
-  forYou: boolean;
-  latest: EarnOpportunityHistoryItem;
+export interface WalletPositions {
+  positions: string[];
 }
 
-export interface EarnOpportunityHistoryPoint {
-  /** The timestamp of the data point */
-  t: number;
-  /** The value of the data point */
-  v: number | string;
-}
-
-export interface EarnOpportunityHistory {
-  /** The data points */
-  points: EarnOpportunityHistoryPoint[];
+export interface RecommendationDto {
+  summary: object;
+  scores: string[];
+  opportunities: string[];
 }
 
 export type WalletVerification = object;
@@ -1570,6 +1591,206 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunityHistory, any>({
         path: `/v1/earn/items/${slug}/analytics`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetTokensForAddressV1
+     * @summary Get tokens for a set of addresses
+     * @request GET:/v1/portfolio/tokens
+     */
+    portfolioControllerGetTokensForAddressV1: (
+      query?: {
+        /** The EVM address to get tokens for */
+        evm?: string;
+        /** The Solana address to get tokens for */
+        solana?: string;
+        /** The SUI address to get tokens for */
+        sui?: string;
+        /** The UTXO address to get tokens for */
+        bitcoin?: string;
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The minimum USD amount to filter for
+         * @example 5.5
+         */
+        minValue?: number;
+        /**
+         * The maximum USD amount to filter for
+         * @example 25
+         */
+        maxValue?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<TokenBalances, any>({
+        path: `/v1/portfolio/tokens`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetPositionsForAddressV1
+     * @summary Get positions for a set of addresses
+     * @request GET:/v1/portfolio/positions
+     */
+    portfolioControllerGetPositionsForAddressV1: (
+      query: {
+        /** The EVM address to get positions for */
+        evm: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<WalletPositions, any>({
+        path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recommendation, Public
+     * @name RecommendationControllerGetTopsV1
+     * @summary Get tops for an address
+     * @request GET:/v1/recommendation/tops
+     */
+    recommendationControllerGetTopsV1: (
+      query?: {
+        /**
+         * The address to get tops for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+        path: `/v1/recommendation/tops`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recommendation, Public
+     * @name RecommendationControllerFilterV1
+     * @summary Filter earn opportunities
+     * @request GET:/v1/recommendation/filter
+     */
+    recommendationControllerFilterV1: (
+      query?: {
+        /**
+         * Sort by field.
+         * @example "apy"
+         */
+        sortBy?: 'apy' | 'tvl' | 'slug' | 'chain' | 'protocol' | 'asset';
+        /**
+         * Sort order.
+         * @example "asc"
+         */
+        order?: 'asc' | 'desc';
+        /**
+         * The address to filter for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address?: string;
+        /**
+         * Whether to filter for "for you" opportunities
+         * @example true
+         */
+        forYou?: boolean;
+        /**
+         * Whether to filter for featured opportunities
+         * @example true
+         */
+        featured?: boolean;
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The protocols to filter for
+         * @example ["Aave","Compound","Yearn"]
+         */
+        protocols?: string[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The tags to filter for
+         * @example ["Lending","Staking","Earn"]
+         */
+        tags?: string[];
+        /**
+         * The minimum APY to filter for
+         * @example 5.5
+         */
+        minAPY?: number;
+        /**
+         * The maximum APY to filter for
+         * @example 25
+         */
+        maxAPY?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+        path: `/v1/recommendation/filter`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recommendation, Public
+     * @name RecommendationControllerScoresV1
+     * @summary Get opportunities scores for an address
+     * @request GET:/v1/recommendation/scores
+     */
+    recommendationControllerScoresV1: (
+      query: {
+        /**
+         * The address to get recommendation for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<RecommendationDto, any>({
+        path: `/v1/recommendation/scores`,
         method: 'GET',
         query: query,
         format: 'json',
