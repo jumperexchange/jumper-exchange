@@ -10,8 +10,8 @@ import {
 import { useQueryStates } from 'nuqs';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { Hex } from 'viem';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { Hex } from 'viem';
 import {
   extractFilteringParams,
   removeNullValuesFromFilter,
@@ -19,20 +19,21 @@ import {
   searchParamsParsers,
 } from './utils';
 import { EMPTY_FILTERING_PARAMS } from './constants';
-import {
+import type {
   EarnFilteringParams,
   EarnOpportunityFilterUI,
   EarnOpportunityFilterWithoutSortByAndOrder,
+  NullableFields,
   SortByEnum,
-  SortByOptions,
 } from './types';
+import { SortByOptions } from './types';
 import { isEqual } from 'lodash';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: EarnOpportunityFilterUI;
-  updateFilter: (filter: EarnOpportunityFilterUI) => void;
+  updateFilter: (filter: NullableFields<EarnOpportunityFilterUI>) => void;
   showForYou: boolean;
   usedYourAddress: boolean;
   toggleForYou: () => void;
@@ -102,7 +103,10 @@ export const EarnFilteringProvider = ({
   });
 
   const all = useEarnFilterOpportunities({
-    filter,
+    filter: {
+      ...filter,
+      sortBy: sortBy,
+    },
   });
 
   const allNoFilter = useEarnFilterOpportunities({
@@ -135,9 +139,9 @@ export const EarnFilteringProvider = ({
   }, [showForYou, setShowForYou, setSearchParamsState]);
 
   const updateFilter = useCallback(
-    (newFilter: EarnOpportunityFilterWithoutSortByAndOrder) => {
+    (newFilter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>) => {
       const newFilterValue = { ...filter, ...newFilter };
-      setFilter(newFilterValue);
+      setFilter(removeNullValuesFromFilter(newFilterValue));
       setSearchParamsState(newFilterValue);
     },
     [filter, setFilter, setSearchParamsState],

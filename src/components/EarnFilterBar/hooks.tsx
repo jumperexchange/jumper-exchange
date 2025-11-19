@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
-import {
+import type {
   EarnOpportunityFilterUI,
   SortByEnum,
-  SortByOptions,
 } from 'src/app/ui/earn/types';
+import { SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 
@@ -110,12 +110,12 @@ export const useEarnFilterBar = () => {
 
   const handleClearAllFilters = () => {
     updateFilter({
-      chains: [],
-      protocols: [],
-      tags: [],
-      assets: [],
-      minAPY: apyMin / 100,
-      maxAPY: apyMax / 100,
+      chains: null,
+      protocols: null,
+      tags: null,
+      assets: null,
+      minAPY: null,
+      maxAPY: null,
     });
   };
 
