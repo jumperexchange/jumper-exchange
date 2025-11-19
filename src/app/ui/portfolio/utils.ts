@@ -7,11 +7,7 @@ import {
 } from 'nuqs';
 import { uniqBy } from 'lodash';
 import type { CacheToken } from 'src/types/portfolio';
-import type {
-  PortfolioFilteringParams,
-  PortfolioTokensFilter,
-  WalletInfo,
-} from './types';
+import type { PortfolioFilteringParams, PortfolioTokensFilter } from './types';
 import type { Account } from '@lifi/wallet-management';
 
 export const searchParamsParsers = {
@@ -26,19 +22,12 @@ export const extractFilteringParams = (
   data: CacheToken[],
   accounts: Account[],
 ): PortfolioFilteringParams => {
-  const allWallets: WalletInfo[] = accounts
-    .map((account) => {
-      if (!account.address) {
-        return null;
-      }
-      const connector = account.connector;
-      return {
-        address: account.address,
-        connectorName: connector?.name || 'Unknown Wallet',
-        connector: connector,
-      };
-    })
-    .filter((account) => account !== null);
+  const allWallets = accounts
+    .filter((account) => account.address)
+    .map((account) => ({
+      ...account,
+      address: account.address!.toString(),
+    }));
 
   const allTokens = data.flatMap((token) => [token, ...(token.chains || [])]);
 

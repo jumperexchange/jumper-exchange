@@ -23,11 +23,11 @@ export const usePortfolioTokensFilterBar = () => {
         const connectorIcon = getConnectorIcon(wallet.connector);
         return {
           value: wallet.address,
-          label: wallet.connectorName,
+          label: wallet.connector?.name || '',
           icon: connectorIcon ? (
             <Avatar
               src={connectorIcon}
-              alt={wallet.connectorName}
+              alt={wallet.connector?.name || ''}
               sx={{ width: 24, height: 24 }}
             />
           ) : undefined,
@@ -58,7 +58,7 @@ export const usePortfolioTokensFilterBar = () => {
                 address: asset.address,
                 chain: {
                   chainId: asset.chainId,
-                  chainKey: asset.symbol,
+                  chainKey: asset.chainName || '',
                 },
               },
             ]}

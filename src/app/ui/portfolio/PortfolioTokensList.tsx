@@ -11,7 +11,7 @@ export const PortfolioTokensList = () => {
   const { data, filter } = usePortfolioTokensFiltering();
 
   const tokens = useMemo(() => {
-    if (data?.length === 0) {
+    if (!data || data.length === 0) {
       return [];
     }
 

@@ -13,6 +13,7 @@ import { PortfolioFilterBarTokensDesktop } from './layouts/PortfolioFilterBarTok
 import { PortfolioFilterBarTokensTablet } from './layouts/PortfolioFilterBarTokensTablet';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence } from 'motion/react';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -64,9 +65,17 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
             backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
           })}
         />
-        {isTablet && <PortfolioFilterBarContentTablet />}
+        {isTablet && (
+          <AnimatePresence mode="wait">
+            <PortfolioFilterBarContentTablet key={value} />
+          </AnimatePresence>
+        )}
       </PortfolioFilterBarHeaderContainer>
-      {!isTablet && <PortfolioFilterBarContentDesktop />}
+      {!isTablet && (
+        <AnimatePresence mode="wait">
+          <PortfolioFilterBarContentDesktop key={value} />
+        </AnimatePresence>
+      )}
     </PortfolioFilterBarContainer>
   );
 };

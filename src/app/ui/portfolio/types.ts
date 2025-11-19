@@ -1,16 +1,11 @@
 import type { CacheToken } from 'src/types/portfolio';
 import type { Chain } from 'src/types/jumper-backend';
+import type { Account } from '@lifi/wallet-management';
 
 export type PortfolioFilterBarTab = 'tokens' | 'defi-protocols';
 
-export interface WalletInfo {
-  address: string;
-  connectorName: string;
-  connector: any;
-}
-
 export interface PortfolioFilteringParams {
-  allWallets: WalletInfo[];
+  allWallets: (Omit<Account, 'address'> & { address: string })[];
   allChains: Chain[];
   allAssets: CacheToken[];
   allValueRange: { min: number; max: number };
