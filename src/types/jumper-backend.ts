@@ -855,7 +855,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   url?: string;
   description: string;
   tags: string[];
-  rewards: string[];
+  rewards: Token[];
   lpToken: Token;
   slug: string;
   featured: boolean;
@@ -889,17 +889,17 @@ export interface TaskVerificationDto {
    * Label on strapi
    * @example "test-quest-label"
    */
-  label: string;
+  label?: string;
   /**
    * Slug on strapi
    * @example "test-quest-slug"
    */
-  slug: string;
+  slug?: string;
   /**
    * Task name on strapi
    * @example "test-quest-task-name"
    */
-  taskName: string;
+  taskName?: string;
   /**
    * Additional dynamic fields
    * @example {"customKey1":"value1","customKey2":"value2"}
@@ -907,14 +907,52 @@ export interface TaskVerificationDto {
   additionalFields: object;
 }
 
+export interface TokenBalance {
+  name: string;
+  symbol: string;
+  decimals: number;
+  logo?: string;
+  address: string;
+  chain: Chain;
+  chainType: string;
+  /** The amount of the token in the native currency */
+  amount: string;
+  amountUSD: number;
+}
+
 export interface TokenBalances {
-  balances: string[];
+  balances: TokenBalance[];
   /** @format date-time */
   updatedAt: string;
 }
 
+export interface DefiToken {
+  chainId: number;
+  symbol: string;
+  logoUrl: string;
+  decimals: number;
+  priceUsd: number;
+  amount: number;
+  amountUsd: number;
+}
+
+export interface DefiPosition {
+  assetUsd: number;
+  debtUsd: number;
+  netUsd: number;
+  address: string;
+  chainId: number;
+  earn: string;
+  type: string;
+  supplyTokens: DefiToken[];
+  borrowTokens: DefiToken[];
+  assetTokens: DefiToken[];
+  collateralTokens: DefiToken[];
+  rewardTokens: DefiToken[];
+}
+
 export interface WalletPositions {
-  positions: string[];
+  positions: DefiPosition[];
 }
 
 export interface RecommendationDto {

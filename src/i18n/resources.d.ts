@@ -423,13 +423,16 @@ interface Resources {
         };
       };
       filter: {
+        apy: 'APY';
         asset: 'Asset';
         chain: 'Chain';
         clearAll: 'Clear all';
         defiProtocols: 'DeFi Protocols';
         filterAndSort: 'Filter and sort';
+        protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         tokens: 'Tokens';
+        type: 'Type';
         value: 'Value';
         wallet: 'Wallet';
       };

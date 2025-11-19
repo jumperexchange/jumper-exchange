@@ -1,3 +1,85 @@
+import { DeFiPositionCard } from '@/components/composite/DeFiPositionCard/DeFiPositionCard';
+import { usePortfolioDeFiPositionsFiltering } from './PortfolioDeFiPositionsFilteringContext';
+import {
+  PortfolioAssetContainer,
+  PortfolioAssetsListContainer,
+} from './PortfolioPage.styles';
+import { useMemo } from 'react';
+import type { MinimalDeFiPosition } from 'src/types/defi';
+import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
+
 export const PortfolioDeFiProtocolsList = () => {
-  return <div>PortfolioDeFiProtocolsList</div>;
+  const { data, isLoading } = usePortfolioDeFiPositionsFiltering();
+
+  // @Note: This is a temporary solution to convert the data to the MinimalDeFiPosition type.
+  const defiPositions = useMemo(() => {
+    return data.map((defiPosition): MinimalDeFiPosition => {
+      const primaryAsset =
+        defiPosition.assetTokens?.[0] ||
+        defiPosition.supplyTokens?.[0] ||
+        defiPosition.collateralTokens?.[0];
+
+      return {
+        name: defiPosition.earn || 'Unknown Position',
+        asset: {
+          name: primaryAsset?.symbol || 'Unknown',
+          symbol: primaryAsset?.symbol || 'Unknown',
+          decimals: primaryAsset?.decimals || 18,
+          logo: primaryAsset?.logoUrl,
+          address: defiPosition.address,
+          chain: {
+            chainId: defiPosition.chainId,
+            chainKey: defiPosition.chainId.toString(),
+          },
+        },
+        protocol: {
+          name: defiPosition.earn || 'Unknown',
+        },
+        lpToken: {
+          name: primaryAsset?.symbol || 'Unknown',
+          symbol: primaryAsset?.symbol || 'Unknown',
+          decimals: primaryAsset?.decimals || 18,
+          logo: primaryAsset?.logoUrl,
+          address: defiPosition.address,
+          chain: {
+            chainId: defiPosition.chainId,
+            chainKey: defiPosition.chainId.toString(),
+          },
+        },
+        tags: [defiPosition.type].filter(Boolean),
+        rewards: [],
+        slug: `${defiPosition.earn}-${defiPosition.address}`,
+        featured: false,
+        forYou: false,
+        description: '',
+        balance: defiPosition.assetTokens?.[0]?.amount || 0,
+        totalPriceUSD: defiPosition.netUsd || defiPosition.assetUsd || 0,
+        latest: {
+          date: new Date().toISOString(),
+          tvlUsd: '0',
+          tvlNative: '0',
+          apy: {
+            total: 0,
+            base: 0,
+            reward: 0,
+          },
+        },
+      };
+    });
+  }, [data]);
+  return (
+    <>
+      <PortfolioAssetsListContainer useFlexGap direction="column">
+        {defiPositions.map((defiPosition) => (
+          <PortfolioAssetContainer key={defiPosition.slug}>
+            <DeFiPositionCard
+              defiPosition={defiPosition}
+              isLoading={isLoading}
+            />
+          </PortfolioAssetContainer>
+        ))}
+      </PortfolioAssetsListContainer>
+      <DepositFlowModal />
+    </>
+  );
 };
