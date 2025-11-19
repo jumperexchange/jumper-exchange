@@ -27,6 +27,7 @@ export const JUMPER_CAMPAIGN_PATH = '/campaign';
 export const JUMPER_LEADERBOARD_PATH = '/leaderboard';
 export const JUMPER_EARN_PATH = '/earn';
 export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
+export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
@@ -62,4 +63,5 @@ export enum AppPaths {
   Leaderboard = JUMPER_LEADERBOARD_PATH,
   Earn = JUMPER_EARN_PATH,
   PrivacyPolicy = JUMPER_PRIVACY_POLICY_PATH,
+  Portfolio = JUMPER_PORTFOLIO_PATH,
 }

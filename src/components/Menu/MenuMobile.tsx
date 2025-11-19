@@ -3,7 +3,13 @@ import { useMenuStore } from '@/stores/menu';
 import type { SxProps, Theme } from '@mui/material';
 import { Typography } from '@mui/material';
 import type { ReactNode } from 'react';
-import { MenuHeaderAppBar, MenuHeaderAppWrapper, MenuList, MenuPaper, MobileDrawer } from './Menu.style';
+import {
+  MenuHeaderAppBar,
+  MenuHeaderAppWrapper,
+  MenuList,
+  MenuPaper,
+  MobileDrawer,
+} from './Menu.style';
 
 const paperProps = {
   sx: (theme: Theme) => ({
@@ -39,18 +45,24 @@ export const MenuMobile = ({
       anchor="bottom"
       open={open}
       onClose={(_, reason) => {
-        reason === 'backdropClick' && setMainMenuState(false);
+        if (reason === 'backdropClick') {
+          setMainMenuState(false);
+        }
       }}
-      PaperProps={paperProps}
+      slotProps={{
+        paper: paperProps,
+      }}
       keepMounted={keepMounted}
       disableScrollLock
+      disableAutoFocus
+      disableEnforceFocus
+      disableRestoreFocus
+      inert={!open}
     >
       <MenuPaper show={open} sx={{ height: '100vh' }}>
         <MenuList
           autoFocusItem={open}
           id="main-burger-menu"
-          // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={open}
           isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
           aria-labelledby="main-burger-menu"
           cardsLayout={cardsLayout}
