@@ -1,5 +1,5 @@
 import { type FC, type ReactNode, useState, useCallback } from 'react';
-import type { MotionProps } from 'motion/react';
+import type { EasingDefinition, MotionProps } from 'motion/react';
 
 export interface HeightAnimatedContainerRenderProps {
   height: number;
@@ -11,18 +11,7 @@ export interface HeightAnimatedContainerProps {
   isOpen: boolean;
   offsetHeight?: number;
   animationDuration?: number;
-  animationEase?:
-    | 'easeInOut'
-    | 'easeIn'
-    | 'easeOut'
-    | 'linear'
-    | 'circIn'
-    | 'circOut'
-    | 'circInOut'
-    | 'backIn'
-    | 'backOut'
-    | 'backInOut'
-    | 'anticipate';
+  animationEase?: EasingDefinition;
   children: (renderProps: HeightAnimatedContainerRenderProps) => ReactNode;
 }
 

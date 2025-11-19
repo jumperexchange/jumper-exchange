@@ -88,23 +88,31 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
     e.preventDefault();
     handleCloseErrorBottomSheet();
 
+    if (!missionId || !currentActiveTaskId) {
+      return;
+    }
+
     if (!isConnected) {
       openWalletMenu();
       return;
     }
 
-    if (account?.address && account?.chainType) {
-      const signature = await signMessageAsync({
-        message: VERIFY_WALLET_MESSAGE,
-        walletAddress: account.address,
-        walletType: account.chainType,
-      });
+    try {
+      if (account?.address && account?.chainType) {
+        const signature = await signMessageAsync({
+          message: VERIFY_WALLET_MESSAGE,
+          walletAddress: account.address,
+          walletType: account.chainType,
+        });
 
-      handleVerifyTask({
-        signature,
-        message: VERIFY_WALLET_MESSAGE,
-        walletType: account?.chainType,
-      });
+        handleVerifyTask({
+          signature,
+          message: VERIFY_WALLET_MESSAGE,
+          walletType: account?.chainType,
+        });
+      }
+    } catch {
+      console.debug('Error verifying wallet ownership');
     }
   };
 
