@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 
 export const useProjectLikeDataFromEarnOpportunity = (
   earnOpportunity: Pick<
