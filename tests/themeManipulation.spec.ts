@@ -33,4 +33,10 @@ test.describe('Switch between dark and light theme and check the background colo
     await page.locator('#main-burger-menu-button').click();
     expectBackgroundColorToHaveCss(page, 'rgb(246, 240, 255)');
   });
-});
+
+  test('Monad theme should appears when Monad chain is selected', async ({ page }) => {
+    await page.goto('/?fromChain=143&fromToken=0xe7cd86e13AC4309349F30B3435a9d337750fC82D');
+    await closeWelcomeScreen(page);
+    await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
+  });
+})
