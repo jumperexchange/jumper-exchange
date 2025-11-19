@@ -26,14 +26,19 @@ export const extractFilteringParams = (
   data: CacheToken[],
   accounts: Account[],
 ): PortfolioFilteringParams => {
-  const allWallets: WalletInfo[] = accounts.map((account) => {
-    const connector = account.connector as any;
-    return {
-      address: account.address!,
-      connectorName: connector?.name || 'Unknown Wallet',
-      connector: account.connector,
-    };
-  });
+  const allWallets: WalletInfo[] = accounts
+    .map((account) => {
+      if (!account.address) {
+        return null;
+      }
+      const connector = account.connector;
+      return {
+        address: account.address,
+        connectorName: connector?.name || 'Unknown Wallet',
+        connector: connector,
+      };
+    })
+    .filter((account) => account !== null);
 
   const allTokens = data.flatMap((token) => [token, ...(token.chains || [])]);
 
