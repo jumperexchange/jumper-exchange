@@ -45,6 +45,11 @@ export const AvatarStack: FC<AvatarStackProps> = ({
             alt={avatar.alt}
             disableBorder={disableBorder}
             variant="circular"
+            slotProps={{
+              img: {
+                loading: 'lazy',
+              },
+            }}
           >
             {avatar.alt ? (
               <AvatarPlaceholder size={size} color="textSecondary">
