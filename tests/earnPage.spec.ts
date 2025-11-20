@@ -203,18 +203,19 @@ test.describe('Tags filters on Earn page', () => {
       });
     },
   );
-  test.describe('Analytics filters on Earn page', () => {
-    test.beforeEach(async ({ page }) => {
-      await page.goto('/earn/hyperbeat-ultra-hype-on-hyperliquid');
-    });
+});
 
-    test(
-      qase(47, 'Should be able to verify analytics buttons are visible'),
-      async ({ page }) => {
-        await test.step('Verify analytics range filters are visible', async () => {
-          await verifyAnalyticsButtonsAreVisible(page);
-        });
-      },
-    );
+test.describe('Analytics filters on Earn page', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/earn/hyperbeat-ultra-hype-on-hyperliquid');
   });
+
+  test(
+    qase(47, 'Should be able to verify analytics buttons are visible'),
+    async ({ page }) => {
+      await test.step('Verify analytics range filters are visible', async () => {
+        await verifyAnalyticsButtonsAreVisible(page);
+      });
+    },
+  );
 });
