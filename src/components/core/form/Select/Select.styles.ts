@@ -26,12 +26,16 @@ export const StyledSelect = styled(Select)(({ theme }) => ({
   },
 }));
 
-export const StyledSelectorContainer = styled(Box)(({ theme }) => ({
+export const StyledSelectorContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'disabled',
+})<{ disabled?: boolean }>(({ theme, disabled }) => ({
   borderRadius: theme.shape.buttonBorderRadius,
   background: (theme.vars || theme).palette.buttonAlphaDarkBg,
-  color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+  color: disabled
+    ? (theme.vars || theme).palette.textDisabled
+    : (theme.vars || theme).palette.buttonAlphaDarkAction,
   padding: theme.spacing(0.75),
-  cursor: 'pointer',
+  cursor: disabled ? 'default' : 'pointer',
 }));
 
 export const StyledSelectorContentContainer = styled(Box)(({ theme }) => ({

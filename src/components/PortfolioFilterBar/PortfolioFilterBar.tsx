@@ -11,6 +11,8 @@ import { PortfolioFilterBarDeFiDesktop } from './layouts/PortfolioFilterBarDeFiD
 import { PortfolioFilterBarDeFiTablet } from './layouts/PortfolioFilterBarDeFiTablet';
 import { PortfolioFilterBarTokensDesktop } from './layouts/PortfolioFilterBarTokensDesktop';
 import { PortfolioFilterBarTokensTablet } from './layouts/PortfolioFilterBarTokensTablet';
+import { PortfolioFilterBarEmptyDesktop } from './layouts/PortfolioFilterBarEmptyDesktop';
+import { PortfolioFilterBarEmptyTablet } from './layouts/PortfolioFilterBarEmptyTablet';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence } from 'motion/react';
@@ -18,10 +20,12 @@ import { AnimatePresence } from 'motion/react';
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
   onChange: (value: PortfolioFilterBarTab) => void;
+  isDisabled: boolean;
 }
 
 export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
   value,
+  isDisabled,
   onChange,
 }) => {
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
@@ -30,22 +34,26 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
     {
       value: 'tokens',
       label: t('portfolio.filter.tokens'),
+      disabled: isDisabled,
       'data-testid': 'portfolio-filter-tab-tokens',
     },
     {
       value: 'defi-protocols',
       label: t('portfolio.filter.defiProtocols'),
+      disabled: isDisabled,
       'data-testid': 'portfolio-filter-tab-defi-protocols',
     },
   ];
 
-  const PortfolioFilterBarContentDesktop =
-    value === 'tokens'
+  const PortfolioFilterBarContentDesktop = isDisabled
+    ? PortfolioFilterBarEmptyDesktop
+    : value === 'tokens'
       ? PortfolioFilterBarTokensDesktop
       : PortfolioFilterBarDeFiDesktop;
 
-  const PortfolioFilterBarContentTablet =
-    value === 'tokens'
+  const PortfolioFilterBarContentTablet = isDisabled
+    ? PortfolioFilterBarEmptyTablet
+    : value === 'tokens'
       ? PortfolioFilterBarTokensTablet
       : PortfolioFilterBarDeFiTablet;
 
@@ -63,6 +71,11 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
           sx={(theme) => ({
             flex: '0 0 auto',
             backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
+            ...(isDisabled && {
+              '& .MuiTabs-indicator': {
+                display: 'none',
+              },
+            }),
           })}
         />
         {isTablet && (

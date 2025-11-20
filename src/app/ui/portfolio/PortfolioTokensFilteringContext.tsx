@@ -29,20 +29,24 @@ export interface PortfolioTokensFilteringContextType
   extends PortfolioTokensFilteringParams {
   filter: PortfolioTokensFilterUI;
   updateFilter: (filter: PortfolioTokensFilterUI) => void;
+  clearFilters: () => void;
   data: CacheToken[];
   isLoading: boolean;
+  isEmpty: boolean;
 }
 
 export const PortfolioTokensFilteringContext =
   createContext<PortfolioTokensFilteringContextType>({
     filter: {},
     updateFilter: () => {},
+    clearFilters: () => {},
     allWallets: [],
     allChains: [],
     allAssets: [],
     allValueRange: { min: 0, max: 0 },
     data: [],
     isLoading: false,
+    isEmpty: false,
   });
 
 export const PortfolioTokensFilteringProvider = ({
@@ -114,11 +118,23 @@ export const PortfolioTokensFilteringProvider = ({
     [filter, stats, setSearchParamsState],
   );
 
+  const clearFilters = useCallback(() => {
+    updateFilter({
+      tokensWallets: undefined,
+      tokensChains: undefined,
+      tokensAssets: undefined,
+      tokensMinValue: undefined,
+      tokensMaxValue: undefined,
+    });
+  }, [updateFilter]);
+
   const context: PortfolioTokensFilteringContextType = {
     filter,
     updateFilter,
+    clearFilters,
     data: filteredData,
     isLoading: isFetching || !isSuccess,
+    isEmpty: !allData || allData.length === 0,
     ...stats,
   };
 
