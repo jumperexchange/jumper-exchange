@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   AvatarStackWrapper,
   Avatar,
@@ -7,12 +7,12 @@ import {
   AvatarPlaceholder,
   OverflowCount,
 } from './AvatarStack.styles';
-import { AvatarSize, AvatarStackDirection } from './AvatarStack.types';
+import type { AvatarSize, AvatarStackDirection } from './AvatarStack.types';
 
 interface AvatarStackProps {
   avatars: {
     id: string;
-    src: string;
+    src?: string;
     alt: string;
   }[];
   size?: AvatarSize;
