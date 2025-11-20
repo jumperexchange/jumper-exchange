@@ -334,6 +334,12 @@
     }
   },
   "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": "",
+      "explorePass": ""
+    },
     "assetOverviewCard": {
       "navigation": {
         "overview": "",
