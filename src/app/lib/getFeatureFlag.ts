@@ -25,3 +25,7 @@ export const getFeatureFlag = async (
 export const isEarnFeatureEnabled = () => {
   return !isProduction;
 };
+
+export const isPortfolioFeatureEnabled = () => {
+  return !isProduction;
+};

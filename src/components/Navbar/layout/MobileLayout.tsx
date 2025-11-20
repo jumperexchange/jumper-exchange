@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Portal from '@mui/material/Portal';
@@ -13,10 +13,12 @@ import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import { useMainLinks } from '../hooks';
 import { HorizontalTabs } from 'src/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from 'src/components/HorizontalTabs/HorizontalTabs.style';
-import { LayoutVariantProps } from './Layout.types';
+import type { LayoutVariantProps } from './Layout.types';
+import { useMenuStore } from '@/stores/menu/MenuStore';
 
 export const MobileLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();
+  const [openMainMenu] = useMenuStore((state) => [state.openMainMenu]);
   const router = useRouter();
   const onChange = (_: React.SyntheticEvent, newValue: string) => {
     const activeLink = links.find(({ value }) => value === newValue);
@@ -28,7 +30,7 @@ export const MobileLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
     <>
       <SecondaryLinksContainer>{secondaryButtons}</SecondaryLinksContainer>
       <Portal>
-        <FloatingMainLinksContainer direction="row">
+        <FloatingMainLinksContainer direction="row" inert={openMainMenu}>
           <HorizontalTabs
             tabs={links}
             onChange={onChange}
