@@ -82,8 +82,14 @@ export function useWidgetConfig<T extends WidgetType>(
 
     // Apply theme overrides if provided
     if (context.theme) {
-      return merge(baseConfig, {
+      merge(baseConfig, {
         theme: context.theme,
+      });
+    }
+
+    if (context.disabledUI) {
+      merge(baseConfig, {
+        disabledUI: context.disabledUI,
       });
     }
 
@@ -95,5 +101,6 @@ export function useWidgetConfig<T extends WidgetType>(
     language,
     widgetSpecific,
     context.theme,
+    context.disabledUI,
   ]);
 }
