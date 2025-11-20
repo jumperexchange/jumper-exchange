@@ -365,6 +365,12 @@
     }
   },
   "portfolio": {
+    "welcome": {
+      "title": "One platform, all of DeFi",
+      "subtitle": "<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>",
+      "getStarted": "Get started",
+      "explorePass": "Explore Jumper Pass"
+    },
     "assetOverviewCard": {
       "navigation": {
         "overview": "Overview",

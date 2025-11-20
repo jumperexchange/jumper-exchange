@@ -32,6 +32,13 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
             });
         },
 
+        // Portfolio Welcome Screen
+        setPortfolioWelcomeScreenClosed: (shown: boolean) => {
+          set({
+            portfolioWelcomeScreenClosed: shown,
+          });
+        },
+
         // Welcome Screen
         setWelcomeScreenClosed: (shown: boolean) => {
           set({
@@ -59,15 +66,15 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
           }
           if (version === 2) {
             const cookies = new Cookies();
-            const cookieName = 'welcomeScreenClosed'
-            const welcomeScreenClosed = cookies.get(cookieName)
+            const cookieName = 'welcomeScreenClosed';
+            const welcomeScreenClosed = cookies.get(cookieName);
             if (!welcomeScreenClosed) {
               return persistedState;
             }
 
             const newStore = { ...persistedState };
-            newStore.welcomeScreenClosed = welcomeScreenClosed
-            cookies.remove(cookieName, { path: '/', sameSite: true })
+            newStore.welcomeScreenClosed = welcomeScreenClosed;
+            cookies.remove(cookieName, { path: '/', sameSite: true });
 
             console.debug('welcomeScreenClosed cookie migrated');
 

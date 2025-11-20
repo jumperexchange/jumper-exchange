@@ -196,8 +196,8 @@ export const MenuPaper = styled(Paper, {
   ],
 }));
 
-export const MobileDrawer = styled(Drawer)(() => ({
-  zIndex: 1400,
+export const MobileDrawer = styled(Drawer)(({ open }) => ({
+  zIndex: open ? 1500 : -10,
 }));
 
 export const MenuHeaderAppWrapper = styled(ListItem)<ListItemProps>(
