@@ -157,7 +157,7 @@ test.describe('Tags filters on Earn page', () => {
   test(
     qase(45, 'Should be able to filter by Synthetic tag'),
     async ({ page }) => {
-      await test.step('Select Lending tag', async () => {
+      await test.step('Select Synthetic tag', async () => {
         await selectOptionFromDropDown(
           page,
           'earn-filter-tag-select',
@@ -183,14 +183,14 @@ test.describe('Tags filters on Earn page', () => {
       });
 
       await test.step('Verify only Yield Aggregator tag is visible', async () => {
-        await verifyOnlySelectedTagIsVisible(page, 'Liquid Staking');
+        await verifyOnlySelectedTagIsVisible(page, 'Yield Aggregator');
       });
     },
   );
   test(
-    qase(46, 'Should be able to filter by Liquid Staking tag'),
+    qase(48, 'Should be able to filter by Liquid Staking tag'),
     async ({ page }) => {
-      await test.step('Select Yield Aggregator tag', async () => {
+      await test.step('Select Liquid Staking tag', async () => {
         await selectOptionFromDropDown(
           page,
           'earn-filter-tag-select',
