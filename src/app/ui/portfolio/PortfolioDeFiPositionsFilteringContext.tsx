@@ -63,8 +63,11 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
   );
 
   const { accounts } = useAccount();
-  const primaryAccount = accounts.find((account) => account.isConnected);
-  const address = primaryAccount?.address as Hex | undefined;
+  const connectedAddresses = useMemo(() => {
+    return accounts
+      .filter((account) => account.isConnected && !!account?.address)
+      .map((account) => account.address as Hex);
+  }, [accounts]);
 
   const initialFilter = useMemo(() => {
     return removeNullValuesFromFilter<PortfolioDeFiPositionsFilter>(
@@ -78,25 +81,17 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     EMPTY_DEFI_POSITIONS_FILTERING_PARAMS,
   );
 
-  const allNoFilterPositions = usePortfolioDeFiPositions({
-    address,
-  });
-
   const allPositions = usePortfolioDeFiPositions({
-    address,
-    ...filter,
+    addresses: connectedAddresses,
   });
 
   const stats = useMemo((): PortfolioDeFiPositionsFilteringParams => {
-    if (
-      !allNoFilterPositions.data ||
-      allNoFilterPositions.data.positions.length === 0
-    ) {
+    if (!allPositions.data || allPositions.data.positions.length === 0) {
       return EMPTY_DEFI_POSITIONS_FILTERING_PARAMS;
     }
 
-    return extractDeFiPositionsFilteringParams(allNoFilterPositions.data);
-  }, [allNoFilterPositions]);
+    return extractDeFiPositionsFilteringParams(allPositions.data);
+  }, [allPositions.data]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -129,7 +124,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     filter,
     updateFilter,
     data: allPositions.data?.positions ?? [],
-    isLoading: allPositions.isLoading || !address,
+    isLoading: allPositions.isLoading || connectedAddresses.length === 0,
     error: allPositions.error ?? null,
     ...stats,
   };
