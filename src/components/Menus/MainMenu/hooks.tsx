@@ -27,6 +27,10 @@ import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenu
 import type { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+  isEarnFeatureEnabled,
+  isPortfolioFeatureEnabled,
+} from '@/app/lib/getFeatureFlag';
 
 interface MenuLink {
   url: string;
@@ -331,6 +335,8 @@ export const useMenuItems = () => {
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon } = useThemeModesMenuContent();
+  const isEarnEnabled = isEarnFeatureEnabled();
+  const isPortfolioEnabled = isPortfolioFeatureEnabled();
 
   const {
     handleLearnClick,
@@ -366,35 +372,41 @@ export const useMenuItems = () => {
     const baseItems: MenuItem[] = [];
 
     if (isMobile) {
-      baseItems.push(
-        {
-          label: t('navbar.links.exchange'),
-          showMoreIcon: false,
-          link: { url: AppPaths.Main },
-          onClick: handleExchangeClick,
-        },
-        {
+      baseItems.push({
+        label: t('navbar.links.exchange'),
+        showMoreIcon: false,
+        link: { url: AppPaths.Main },
+        onClick: handleExchangeClick,
+      });
+
+      if (isPortfolioEnabled) {
+        baseItems.push({
           label: t('navbar.links.portfolio'),
           showMoreIcon: false,
           link: { url: AppPaths.Portfolio, external: false },
           onClick: handlePortfolioClick,
-        },
-        {
-          label: t('navbar.links.missions'),
-          showMoreIcon: false,
-          link: { url: AppPaths.Missions, external: false },
-          onClick: handleMissionsClick,
-        },
-        {
+        });
+      }
+
+      baseItems.push({
+        label: t('navbar.links.missions'),
+        showMoreIcon: false,
+        link: { url: AppPaths.Missions, external: false },
+        onClick: handleMissionsClick,
+      });
+
+      if (isEarnEnabled) {
+        baseItems.push({
           label: t('navbar.links.earn'),
           showMoreIcon: false,
           link: { url: AppPaths.Earn, external: false },
           onClick: handleEarnClick,
-        },
-        {
-          isDivider: true,
-        },
-      );
+        });
+      }
+
+      baseItems.push({
+        isDivider: true,
+      });
     }
 
     baseItems.push(
@@ -453,6 +465,8 @@ export const useMenuItems = () => {
   }, [
     t,
     isMobile,
+    isEarnEnabled,
+    isPortfolioEnabled,
     handleLearnClick,
     handleScanClick,
     handleSupportClick,
