@@ -15,7 +15,7 @@ export const MenuItemContentHeader = ({
       <LogoWrapper sx={{ '& svg.jumper-logo': { height: '28px !important' } }}>
         <JumperLogo />
       </LogoWrapper>
-      <IconButtonTransparent onClick={onClose}>
+      <IconButtonTransparent onClick={onClose} aria-label="Close menu">
         <CloseIcon />
       </IconButtonTransparent>
     </>

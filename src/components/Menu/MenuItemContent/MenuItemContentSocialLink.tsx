@@ -12,6 +12,7 @@ export const MenuItemContentSocialLink = ({
     <Link
       href={link.link.url}
       target="_blank"
+      rel="noopener noreferrer"
       onClick={link.onClick}
       role="link"
       aria-label={`${link.label} social link`}
