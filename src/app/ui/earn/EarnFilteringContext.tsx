@@ -32,8 +32,10 @@ import { isEqual } from 'lodash';
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
-  filter: EarnOpportunityFilterUI;
-  updateFilter: (filter: NullableFields<EarnOpportunityFilterUI>) => void;
+  filter: EarnOpportunityFilterWithoutSortByAndOrder;
+  updateFilter: (
+    filter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>,
+  ) => void;
   showForYou: boolean;
   usedYourAddress: boolean;
   toggleForYou: () => void;
