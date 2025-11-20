@@ -1,6 +1,6 @@
 import { MainMenu } from 'src/components/Menus/MainMenu/MainMenu';
 import { DotsMenuIcon, NavbarMenuToggleButton } from './Buttons.style';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { useMenuStore } from 'src/stores/menu';
 
 export const MainMenuToggle = () => {
@@ -11,15 +11,6 @@ export const MainMenuToggle = () => {
     state.openMainMenu,
     state.setMainMenuState,
   ]);
-  // return focus to the button when we transitioned from !open -> open
-  const prevMainMenu = useRef(openMainMenu);
-  useEffect(() => {
-    if (prevMainMenu.current === true && openMainMenu === false) {
-      mainMenuAnchor.current && (mainMenuAnchor.current as HTMLElement).focus();
-    }
-
-    prevMainMenu.current = openMainMenu;
-  }, [openMainMenu]);
 
   const handleOnOpenNavbarMainMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -27,11 +18,7 @@ export const MainMenuToggle = () => {
     event.preventDefault();
     event.stopPropagation();
     const menuOpen = openedMenu();
-    if (menuOpen) {
-      setMainMenuState(false);
-    } else {
-      setMainMenuState(true);
-    }
+    setMainMenuState(!menuOpen);
   };
 
   return (
@@ -40,8 +27,8 @@ export const MainMenuToggle = () => {
         ref={mainMenuAnchor}
         id="main-burger-menu-button"
         aria-label="Main Menu"
-        aria-controls={openMainMenu ? 'main-burger-menu' : undefined}
-        aria-expanded={openMainMenu ? 'true' : undefined}
+        aria-controls="main-burger-menu"
+        aria-expanded={openMainMenu}
         aria-haspopup="true"
         onClick={handleOnOpenNavbarMainMenu}
       >
