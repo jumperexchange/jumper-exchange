@@ -280,6 +280,7 @@ interface Resources {
         earn: 'Earn';
         exchange: 'Exchange';
         missions: 'Missions';
+        portfolio: 'Portfolio';
         refuel: 'Gas';
       };
       navbarMenu: {
@@ -395,7 +396,7 @@ interface Resources {
       welcome: {
         explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<bold>Bridge, swap, earn,</bold> and <bold>manage</bold> your entire portfolio with <bold>Jumper</bold>';
+        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
         title: 'One platform, all of DeFi';
       };
     };

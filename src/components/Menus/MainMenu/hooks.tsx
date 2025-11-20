@@ -21,14 +21,12 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
-import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
-import SchoolIcon from '@mui/icons-material/School';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
-import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
+import type { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface MenuLink {
   url: string;
@@ -44,9 +42,15 @@ const enum SocialLinkLabel {
   X = 'X',
 }
 
-interface SocialLink {
+export interface SocialLink {
   label: string;
   prefixIcon: React.JSX.Element | string;
+  link: MenuLink;
+  onClick: () => void;
+}
+
+export interface FooterLink {
+  label: string;
   link: MenuLink;
   onClick: () => void;
 }
@@ -127,6 +131,24 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handleEarnClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-earn-link',
+      action: TrackingAction.ClickJumperEarnLink,
+      dataMenuParam: 'jumper_earn',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
+  const handlePortfolioClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-portfolio-link',
+      action: TrackingAction.ClickJumperPortfolioLink,
+      dataMenuParam: 'jumper_portfolio',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   const handleProfileClick = useCallback(() => {
     trackMenuClick({
       label: 'click-jumper-profile-link',
@@ -188,6 +210,8 @@ export const useMenuActions = () => {
   return {
     handleExchangeClick,
     handleMissionsClick,
+    handleEarnClick,
+    handlePortfolioClick,
     handleProfileClick,
     handleLearnClick,
     handleScanClick,
@@ -287,19 +311,23 @@ export const useFooterLinks = () => {
   const { t } = useTranslation();
   const { handlePrivacyPolicyClick } = useMenuActions();
 
-  const footerLinks = useMemo(() => [
-    {
-      label: t('navbar.navbarMenu.privacyPolicy'),
-      link: { url: AppPaths.PrivacyPolicy },
-      onClick: handlePrivacyPolicyClick,
-    },
-  ], [t, handlePrivacyPolicyClick]);
+  const footerLinks = useMemo(
+    () => [
+      {
+        label: t('navbar.navbarMenu.privacyPolicy'),
+        link: { url: AppPaths.PrivacyPolicy },
+        onClick: handlePrivacyPolicyClick,
+      },
+    ],
+    [t, handlePrivacyPolicyClick],
+  );
 
   return { footerLinks };
 };
 
 export const useMenuItems = () => {
   const { t, i18n } = useTranslation();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon } = useThemeModesMenuContent();
@@ -311,6 +339,10 @@ export const useMenuItems = () => {
     handleThemeClick,
     handleLanguageClick,
     handleResourcesClick,
+    handleEarnClick,
+    handlePortfolioClick,
+    handleExchangeClick,
+    handleMissionsClick,
   } = useMenuActions();
 
   const languageSuffixIcon = useMemo(
@@ -330,36 +362,61 @@ export const useMenuItems = () => {
     [i18n.language],
   );
 
-  const discordSupportIcon = useMemo(
-    () => (
-      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
-    ),
-    [theme],
-  );
-
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
+
+    if (isMobile) {
+      baseItems.push(
+        {
+          label: t('navbar.links.exchange'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Main },
+          onClick: handleExchangeClick,
+        },
+        {
+          label: t('navbar.links.portfolio'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Portfolio, external: false },
+          onClick: handlePortfolioClick,
+        },
+        {
+          label: t('navbar.links.missions'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Missions, external: false },
+          onClick: handleMissionsClick,
+        },
+        {
+          label: t('navbar.links.earn'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Earn, external: false },
+          onClick: handleEarnClick,
+        },
+        {
+          isDivider: true,
+        },
+      );
+    }
 
     baseItems.push(
       {
         label: t('navbar.navbarMenu.learn'),
-        prefixIcon: <SchoolIcon />,
         showMoreIcon: false,
         link: { url: AppPaths.Learn },
         onClick: handleLearnClick,
       },
       {
         label: t('navbar.navbarMenu.scan'),
-        prefixIcon: <SearchOutlinedIcon />,
         showMoreIcon: false,
         link: { url: AppPaths.Scan, external: false },
         onClick: handleScanClick,
       },
       {
         label: t('navbar.navbarMenu.support'),
-        prefixIcon: discordSupportIcon,
         showMoreIcon: false,
         onClick: handleSupportClick,
+      },
+      {
+        isDivider: true,
       },
     );
 
@@ -390,17 +447,14 @@ export const useMenuItems = () => {
         triggerSubMenu: MenuKeysEnum.Devs,
         onClick: handleResourcesClick,
       },
-      {
-        isDivider: true,
-      },
     );
 
     return baseItems;
   }, [
     t,
+    isMobile,
     handleLearnClick,
     handleScanClick,
-    discordSupportIcon,
     handleSupportClick,
     configTheme?.hasThemeModeSwitch,
     selectedThemeIcon,
@@ -408,6 +462,10 @@ export const useMenuItems = () => {
     languageSuffixIcon,
     handleLanguageClick,
     handleResourcesClick,
+    handleEarnClick,
+    handlePortfolioClick,
+    handleExchangeClick,
+    handleMissionsClick,
   ]);
 
   return { menuItems: baseMenuItems };
