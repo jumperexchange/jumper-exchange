@@ -392,6 +392,12 @@ interface Resources {
           opened: 'Opened';
         };
       };
+      welcome: {
+        explorePass: 'Explore Jumper Pass';
+        getStarted: 'Get started';
+        subtitle: '<bold>Bridge, swap, earn,</bold> and <bold>manage</bold> your entire portfolio with <bold>Jumper</bold>';
+        title: 'One platform, all of DeFi';
+      };
     };
     profile_page: {
       achievements: 'Achievements';
