@@ -12,7 +12,7 @@ const getApiUrl = (): string => {
   const isBetaEnabled = window?.localStorage.getItem('use-beta');
 
   if (isBetaEnabled) {
-    apiUrl = `${apiUrl.replace('p/lifi', 'pipeline')}/beta`;
+    apiUrl = `${apiUrl}/beta`;
   }
 
   return apiUrl;
