@@ -1,8 +1,4 @@
-import type {
-  EarnOpportunityWithLatestAnalytics,
-  HttpResponse,
-  JumperBackend,
-} from '@/types/jumper-backend';
+import type { JumperBackend } from '@/types/jumper-backend';
 import { makeClient } from './client';
 
 export type GetOpportunityTopResult = ReturnType<
