@@ -393,10 +393,21 @@ interface Resources {
           opened: 'Opened';
         };
       };
+      filter: {
+        asset: 'Asset';
+        chain: 'Chain';
+        clearAll: 'Clear all';
+        defiProtocols: 'DeFi Protocols';
+        filterAndSort: 'Filter and sort';
+        search: 'Search {{filterBy}}...';
+        tokens: 'Tokens';
+        value: 'Value';
+        wallet: 'Wallet';
+      };
       welcome: {
         explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<bold>Bridge, swap, earn,</bold> and <bold>manage</bold> your entire portfolio with <bold>Jumper</bold>';
+        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
         title: 'One platform, all of DeFi';
       };
     };
