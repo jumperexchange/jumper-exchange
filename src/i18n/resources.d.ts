@@ -295,6 +295,7 @@ interface Resources {
         support: 'Support';
         theme: 'Theme';
       };
+      pass: 'Pass';
       seeAllWallets: 'See all wallets';
       statsCards: {
         bridges: 'Bridges';
@@ -337,6 +338,7 @@ interface Resources {
         };
         wallets: 'Wallets';
       };
+      wallets: 'Wallets';
       welcome: {
         cta: 'Get started';
         subtitle: '<0>4x audited</0> multi-chain liquidity aggregator';

@@ -29,6 +29,8 @@
         "noEcosystemAdapter": "No appropriate ecosystem adapter found"
       }
     },
+    "pass": "Pass",
+    "wallets": "Wallets",
     "seeAllWallets": "See all wallets",
     "navbarMenu": {
       "learn": "Learn",
