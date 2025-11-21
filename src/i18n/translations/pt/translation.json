@@ -438,6 +438,9 @@
     },
     "earn": {
       "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie suas posições</bold>"
+    },
+    "withdraw": {
+      "title": ""
     }
   },
   "links": {
@@ -445,6 +448,7 @@
   },
   "buttons": {
     "depositButtonLabel": "Depósito rápido",
+    "withdrawButtonLabel": "",
     "managePositionsButtonLabel": "Gerenciar Posições"
   },
   "modal": {
