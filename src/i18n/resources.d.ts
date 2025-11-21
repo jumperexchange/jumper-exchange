@@ -39,6 +39,7 @@ interface Resources {
     buttons: {
       depositButtonLabel: 'Quick deposit';
       managePositionsButtonLabel: 'Manage Positions';
+      withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
       missions: {
@@ -493,6 +494,9 @@ interface Resources {
           description: 'Your funds have been returned and are now available to use in your wallet.';
           title: 'Funds successfully returned';
         };
+      };
+      withdraw: {
+        title: 'Withdraw';
       };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';

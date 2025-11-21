@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
-import { WidgetConfig, HiddenUI } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
+import { HiddenUI } from '@lifi/widget';
 import { TaskType } from 'src/types/strapi';
-import { MissionWidgetContext, HookDependencies } from './types';
+import type { MissionWidgetContext, HookDependencies } from './types';
 
 /**
  * Configuration hook for the mission widget variant
@@ -12,8 +13,9 @@ export function useMissionWidgetConfig(
 ): Partial<WidgetConfig> {
   return useMemo(() => {
     const isZapTask =
-      context.taskType === TaskType.Zap ||
-      context.taskType === TaskType.Deposit;
+      (context.taskType === TaskType.Zap ||
+        context.taskType === TaskType.Deposit) &&
+      context.subTaskType !== 'withdraw';
 
     return {
       // Variant configuration
