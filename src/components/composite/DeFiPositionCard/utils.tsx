@@ -14,13 +14,13 @@ import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
 import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 import { COLUMN_SPACING } from './constants';
-import {
+import type {
   ApyItem,
   EntityItem,
   RenderCellProps,
   ValueItem,
 } from './DeFiPositionCard.types';
-import {
+import type {
   EarnOpportunityRewardEntity,
   MinimalDeFiPosition,
 } from 'src/types/defi';
@@ -30,7 +30,8 @@ import {
   StyledPositionActions,
   StyledButtonPrimary,
 } from './DeFiPositionCard.styles';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
+import { WithdrawFlowButton } from '../WithdrawFlow/WithdrawFlow';
 
 export const formatTimeDifference = (date: string, t: TFunction) => {
   const now = new Date();
@@ -131,10 +132,18 @@ export const renderPositionActions = <T extends MinimalDeFiPosition>({
   t,
 }: RenderCellProps<T>) => (
   <StyledPositionActions direction="row" useFlexGap>
-    {/** TODO: Add withdraw flow button */}
-    <StyledButtonAlphaDark fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.withdraw')}
-    </StyledButtonAlphaDark>
+    <WithdrawFlowButton
+      label={t('portfolio.defiPositionCard.actions.withdraw')}
+      fullWidth={isMobile}
+      earnOpportunity={{
+        ...item,
+        // TODO: Remove this once we have a proper way to get these props for a de fi position
+        minFromAmountUSD: 0.99,
+        positionUrl: item.url ?? 'unset',
+        address: item.lpToken.address,
+        rewards: [],
+      }}
+    />
     <DepositFlowButton
       displayMode={DepositButtonDisplayMode.LabelOnly}
       label={t('portfolio.defiPositionCard.actions.deposit')}
