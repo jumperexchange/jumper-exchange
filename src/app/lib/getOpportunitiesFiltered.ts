@@ -11,7 +11,7 @@ export type EarnOpportunityFilter = Parameters<
 
 export async function getOpportunitiesFiltered(
   filter: EarnOpportunityFilter,
-): Promise<GetOpportunityTopResult> {
+): GetOpportunityTopResult {
   const client = makeClient();
   const opportunity = await client.v1.recommendationControllerFilterV1(filter);
   return opportunity;
