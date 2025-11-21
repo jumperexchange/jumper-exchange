@@ -389,6 +389,17 @@
         "apy": "APY",
         "rewards": "Rewards"
       }
+    },
+    "filter": {
+      "tokens": "Tokens",
+      "defiProtocols": "DeFi Protocols",
+      "wallet": "Wallet",
+      "chain": "Chain",
+      "asset": "Asset",
+      "value": "Value",
+      "clearAll": "Clear all",
+      "filterAndSort": "Filter and sort",
+      "search": "Search {{filterBy}}..."
     }
   },
   "widget": {
