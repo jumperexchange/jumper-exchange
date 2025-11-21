@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
-import {
+import type {
   EarnOpportunityFilterUI,
   SortByEnum,
-  SortByOptions,
 } from 'src/app/ui/earn/types';
+import { SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 
@@ -85,37 +85,41 @@ export const useEarnFilterBar = () => {
 
   // Handle filter changes
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, chains: values.map(Number) });
+    updateFilter({
+      ...filter,
+      chains: values.length > 0 ? values.map(Number) : null,
+    });
   };
 
   const handleProtocolChange = (values: string[]) => {
-    updateFilter({ ...filter, protocols: values });
+    updateFilter({ ...filter, protocols: values.length > 0 ? values : null });
   };
 
   const handleTagChange = (values: string[]) => {
-    updateFilter({ ...filter, tags: values });
+    updateFilter({ ...filter, tags: values.length > 0 ? values : null });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, assets: values });
+    updateFilter({ ...filter, assets: values.length > 0 ? values : null });
   };
 
   const handleAPYChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      minAPY: values[0] / 100,
-      maxAPY: values[1] / 100,
+      minAPY: hasValues ? values[0] / 100 : null,
+      maxAPY: hasValues ? values[1] / 100 : null,
     });
   };
 
   const handleClearAllFilters = () => {
     updateFilter({
-      chains: [],
-      protocols: [],
-      tags: [],
-      assets: [],
-      minAPY: apyMin / 100,
-      maxAPY: apyMax / 100,
+      chains: null,
+      protocols: null,
+      tags: null,
+      assets: null,
+      minAPY: null,
+      maxAPY: null,
     });
   };
 
