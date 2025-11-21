@@ -30,6 +30,7 @@ export const LineChartSkeleton = () => {
             <mask id="areaMask">
               <Area
                 type="natural"
+                stroke="none"
                 dataKey="value"
                 baseValue={-1}
                 fillOpacity={1}
