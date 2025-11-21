@@ -21,6 +21,8 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
+import SchoolIcon from '@mui/icons-material/School';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
@@ -368,6 +370,13 @@ export const useMenuItems = () => {
     [i18n.language],
   );
 
+  const discordSupportIcon = useMemo(
+    () => (
+      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
+    ),
+    [theme],
+  );
+
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
 
@@ -412,25 +421,31 @@ export const useMenuItems = () => {
     baseItems.push(
       {
         label: t('navbar.navbarMenu.learn'),
+        prefixIcon: !isMobile ? <SchoolIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Learn },
         onClick: handleLearnClick,
       },
       {
         label: t('navbar.navbarMenu.scan'),
+        prefixIcon: !isMobile ? <SearchOutlinedIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Scan, external: false },
         onClick: handleScanClick,
       },
       {
         label: t('navbar.navbarMenu.support'),
+        prefixIcon: !isMobile ? discordSupportIcon : undefined,
         showMoreIcon: false,
         onClick: handleSupportClick,
       },
-      {
-        isDivider: true,
-      },
     );
+
+    if (isMobile) {
+      baseItems.push({
+        isDivider: true,
+      });
+    }
 
     // Conditionally add theme menu item
     if (configTheme?.hasThemeModeSwitch) {
@@ -467,13 +482,14 @@ export const useMenuItems = () => {
     isMobile,
     isEarnEnabled,
     isPortfolioEnabled,
+    configTheme?.hasThemeModeSwitch,
+    selectedThemeIcon,
+    languageSuffixIcon,
+    discordSupportIcon,
     handleLearnClick,
     handleScanClick,
     handleSupportClick,
-    configTheme?.hasThemeModeSwitch,
-    selectedThemeIcon,
     handleThemeClick,
-    languageSuffixIcon,
     handleLanguageClick,
     handleResourcesClick,
     handleEarnClick,

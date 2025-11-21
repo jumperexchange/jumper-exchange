@@ -28,7 +28,12 @@ const socialLinksDividerStyles = (theme: Theme) => ({
   marginBottom: theme.spacing(1),
 });
 
+const socialLinksStyles = {
+  marginTop: '0 !important',
+};
+
 const footerLinksStyles = {
+  height: 'auto !important',
   paddingBottom: '0 !important',
   '& > .MuiStack-root': {
     justifyContent: 'center',
@@ -78,7 +83,12 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
         open
         styles={socialLinksDividerStyles}
       />,
-      <MenuItem key="social-links" open isInteractive={false}>
+      <MenuItem
+        key="social-links"
+        open
+        isInteractive={false}
+        styles={socialLinksStyles}
+      >
         <MenuItemContentWrapper>
           {mainMenuSocialLinks.map((socialLink) => (
             <MenuItemContentSocialLink
