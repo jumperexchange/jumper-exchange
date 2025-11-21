@@ -143,7 +143,7 @@ export const EarnFilteringProvider = ({
       setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
-  }, [stats]);
+  }, [stats, filter, setFilter, setSearchParamsState]);
 
   const toggleForYou = useCallback(() => {
     const newShowForYou = !showForYou;
