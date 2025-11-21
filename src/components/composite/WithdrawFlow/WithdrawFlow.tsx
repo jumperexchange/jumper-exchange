@@ -72,7 +72,7 @@ export const WithdrawFlowOnDemandButton: FC<
   };
   return (
     <WithdrawButton
-      onClick={() => handleClick}
+      onClick={handleClick}
       label={t('buttons.withdrawButtonLabel')}
       {...props}
     />
