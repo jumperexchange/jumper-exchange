@@ -17,7 +17,7 @@ import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
   NullableFields,
-  SortByEnum
+  SortByEnum,
 } from './types';
 import { SortByOptions } from './types';
 import {
@@ -143,7 +143,7 @@ export const EarnFilteringProvider = ({
       setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
-  }, [stats, filter, setFilter, setSearchParamsState]);
+  }, [stats]);
 
   const toggleForYou = useCallback(() => {
     const newShowForYou = !showForYou;
