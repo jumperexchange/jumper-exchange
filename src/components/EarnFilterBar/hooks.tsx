@@ -85,26 +85,30 @@ export const useEarnFilterBar = () => {
 
   // Handle filter changes
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, chains: values.map(Number) });
+    updateFilter({
+      ...filter,
+      chains: values.length > 0 ? values.map(Number) : null,
+    });
   };
 
   const handleProtocolChange = (values: string[]) => {
-    updateFilter({ ...filter, protocols: values });
+    updateFilter({ ...filter, protocols: values.length > 0 ? values : null });
   };
 
   const handleTagChange = (values: string[]) => {
-    updateFilter({ ...filter, tags: values });
+    updateFilter({ ...filter, tags: values.length > 0 ? values : null });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, assets: values });
+    updateFilter({ ...filter, assets: values.length > 0 ? values : null });
   };
 
   const handleAPYChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      minAPY: values[0] / 100,
-      maxAPY: values[1] / 100,
+      minAPY: hasValues ? values[0] / 100 : null,
+      maxAPY: hasValues ? values[1] / 100 : null,
     });
   };
 
