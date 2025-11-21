@@ -1,13 +1,8 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { EarnOpportunityExtended as DepositOpportunityExtended } from '../depositFlow/DepositFlowStore';
 
-export interface EarnOpportunityExtended
-  extends EarnOpportunityWithLatestAnalytics {
-  minFromAmountUSD: number;
-  positionUrl: string;
-  address: string;
-}
+export type EarnOpportunityExtended = DepositOpportunityExtended;
 
 interface WithdrawFlowState {
   isModalOpen: boolean;

@@ -1,22 +1,16 @@
 import type { FC } from 'react';
 import { ZapWithdrawWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapWithdrawWidget';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { TaskType } from 'src/types/strapi';
 import type { ModalContainerProps } from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { ModalContainer } from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
+import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
+
 interface WithdrawModalProps extends ModalContainerProps {
-  earnOpportunity: Pick<
-    EarnOpportunityWithLatestAnalytics,
-    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest' | 'slug'
-  > & {
-    minFromAmountUSD: number;
-    positionUrl: string;
-    address: string;
-  };
+  earnOpportunity: EarnOpportunityExtended;
 }
 
 export const WithdrawModal: FC<WithdrawModalProps> = ({

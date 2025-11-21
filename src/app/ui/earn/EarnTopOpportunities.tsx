@@ -49,7 +49,6 @@ export const EarnTopOpportunities = () => {
                       ...item,
                       minFromAmountUSD: 0.99,
                       positionUrl: item.url ?? 'unset',
-                      address: item.lpToken.address,
                     }}
                     displayMode={
                       isMain && !isMobile
@@ -57,7 +56,6 @@ export const EarnTopOpportunities = () => {
                         : DepositButtonDisplayMode.IconOnly
                     }
                     size="large"
-                    disabled
                   />
                 }
               />

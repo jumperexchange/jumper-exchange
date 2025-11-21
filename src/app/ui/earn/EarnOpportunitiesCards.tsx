@@ -1,11 +1,11 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
-import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import { GridContainer } from 'src/components/Containers/GridContainer';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { AppPaths } from 'src/const/urls';
 
 export const EarnOpportunitiesCards = ({
@@ -56,11 +56,9 @@ export const EarnOpportunitiesCards = ({
                       ...item,
                       minFromAmountUSD: 0.99,
                       positionUrl: item.url ?? 'unset',
-                      address: item.lpToken.address,
                     }}
                     displayMode={DepositButtonDisplayMode.IconOnly}
                     size={isCompact ? 'large' : 'medium'}
-                    disabled
                   />
                 }
               />
