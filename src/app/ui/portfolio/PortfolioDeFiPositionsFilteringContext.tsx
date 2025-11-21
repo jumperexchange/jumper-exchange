@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import {
   createContext,
   useCallback,
@@ -52,9 +53,7 @@ export const PortfolioDeFiPositionsFilteringContext =
 
 export const PortfolioDeFiPositionsFilteringProvider = ({
   children,
-}: {
-  children: React.ReactNode;
-}) => {
+}: PropsWithChildren) => {
   const [searchParamsState, setSearchParamsState] = useQueryStates(
     deFiPositionsSearchParamsParsers,
     {
