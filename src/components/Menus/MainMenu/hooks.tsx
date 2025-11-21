@@ -33,6 +33,9 @@ import {
   isEarnFeatureEnabled,
   isPortfolioFeatureEnabled,
 } from '@/app/lib/getFeatureFlag';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeVariant } from '@/components/Badge/Badge.styles';
+import * as supportedLanguages from '@/i18n/translations';
 
 interface MenuLink {
   url: string;
@@ -336,7 +339,7 @@ export const useMenuItems = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { selectedThemeIcon } = useThemeModesMenuContent();
+  const { selectedThemeIcon, selectedThemeMode } = useThemeModesMenuContent();
   const isEarnEnabled = isEarnFeatureEnabled();
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
 
@@ -353,22 +356,43 @@ export const useMenuItems = () => {
     handleMissionsClick,
   } = useMenuActions();
 
-  const languageSuffixIcon = useMemo(
-    () => (
-      <Typography
-        variant="bodyMedium"
-        textTransform="uppercase"
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 38,
-        }}
-      >
-        {i18n.language}
-      </Typography>
-    ),
-    [i18n.language],
-  );
+  const themeSuffixIcon = useMemo(() => {
+    if (!isMobile) {
+      return undefined;
+    }
+
+    return (
+      <Badge
+        label={t(`navbar.themes.${selectedThemeMode}`)}
+        variant={BadgeVariant.Secondary}
+      />
+    );
+  }, [t, selectedThemeMode, isMobile]);
+
+  const languageSuffixIcon = useMemo(() => {
+    if (!isMobile) {
+      return (
+        <Typography
+          variant="bodyMedium"
+          textTransform="uppercase"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 38,
+          }}
+        >
+          {i18n.language}
+        </Typography>
+      );
+    }
+
+    const selectedLanguage =
+      Object.entries(supportedLanguages).find(
+        ([language]) => language === i18n.language,
+      )?.[1]?.language?.value || i18n.language;
+
+    return <Badge label={selectedLanguage} variant={BadgeVariant.Secondary} />;
+  }, [i18n.language, isMobile]);
 
   const discordSupportIcon = useMemo(
     () => (
@@ -451,9 +475,10 @@ export const useMenuItems = () => {
     if (configTheme?.hasThemeModeSwitch) {
       baseItems.push({
         label: t('navbar.navbarMenu.theme'),
-        prefixIcon: selectedThemeIcon,
+        prefixIcon: !isMobile ? selectedThemeIcon : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.ThemeMode,
+        suffixIcon: themeSuffixIcon,
         onClick: handleThemeClick,
       });
     }
@@ -461,7 +486,7 @@ export const useMenuItems = () => {
     baseItems.push(
       {
         label: t('language.key', { ns: 'language' }),
-        prefixIcon: <LanguageIcon />,
+        prefixIcon: !isMobile ? <LanguageIcon /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Language,
         suffixIcon: languageSuffixIcon,
@@ -469,7 +494,7 @@ export const useMenuItems = () => {
       },
       {
         label: t('navbar.navbarMenu.resources'),
-        prefixIcon: <FolderOpen />,
+        prefixIcon: !isMobile ? <FolderOpen /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Devs,
         onClick: handleResourcesClick,
@@ -484,6 +509,7 @@ export const useMenuItems = () => {
     isPortfolioEnabled,
     configTheme?.hasThemeModeSwitch,
     selectedThemeIcon,
+    themeSuffixIcon,
     languageSuffixIcon,
     discordSupportIcon,
     handleLearnClick,
