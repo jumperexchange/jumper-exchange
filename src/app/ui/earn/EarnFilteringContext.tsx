@@ -116,7 +116,7 @@ export const EarnFilteringProvider = ({
   });
 
   const forYouData = useMemo(() => forYou.data?.data ?? [], [forYou.data]);
-  const fourYouUpdatedAt = forYou.data?.meta?.updatedAt ?? undefined;
+  const forYouUpdatedAt = forYou.data?.meta?.updatedAt ?? undefined;
 
   const allData = useMemo(() => all.data?.data ?? [], [all.data]);
   const allUpdatedAt = all.data?.meta?.updatedAt ?? undefined;
@@ -178,7 +178,7 @@ export const EarnFilteringProvider = ({
     toggleForYou,
     totalMarkets,
     data: showForYou ? forYouData : allData,
-    updatedAt: showForYou ? fourYouUpdatedAt : allUpdatedAt,
+    updatedAt: showForYou ? forYouUpdatedAt : allUpdatedAt,
     isLoading: showForYou ? forYou.isLoading || !address : all.isLoading,
     error: (showForYou ? forYou.error : all.error) ?? null,
     isAllDataLoading: allNoFilter.isLoading,

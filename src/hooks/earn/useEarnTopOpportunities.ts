@@ -1,8 +1,9 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getOpportunitiesTop } from 'src/app/lib/getOpportunitiesTop';
 import { FIVE_MINUTES_MS } from 'src/const/time';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { Hex } from 'viem';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { Hex } from 'viem';
 import { useAccountAddress } from './useAccountAddress';
 
 export interface Props {}
