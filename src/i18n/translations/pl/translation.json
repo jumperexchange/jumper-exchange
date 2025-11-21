@@ -438,6 +438,9 @@
     },
     "earn": {
       "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
     }
   },
   "links": {
@@ -445,6 +448,7 @@
   },
   "buttons": {
     "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
     "managePositionsButtonLabel": ""
   },
   "modal": {
