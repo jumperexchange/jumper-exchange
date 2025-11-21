@@ -7,7 +7,7 @@ import { ModalContainer } from 'src/components/core/modals/ModalContainer/ModalC
 import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
+import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
 
 interface WithdrawModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
