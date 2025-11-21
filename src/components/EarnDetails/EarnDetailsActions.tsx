@@ -3,7 +3,7 @@ import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButt
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
 import {
   EarnDetailsActionsContainer,
-  ManagePositionsButton,
+  // ManagePositionsButton,
 } from './EarnDetails.styles';
 import { Tooltip } from '../core/Tooltip/Tooltip';
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetZapInPoolBalance } from 'src/hooks/zaps/useGetZapInPoolBalance';
 import type { Hex } from 'viem';
 import { useAccount } from '@lifi/wallet-management';
+import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -37,22 +38,42 @@ export const EarnDetailsActions = ({
     );
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
-  const managePositionButton = (
-    <ManagePositionsButton
-      fullWidth
+  // const managePositionButton = (
+  //   <ManagePositionsButton
+  //     fullWidth
+  //     disabled={!hasDeposited}
+  //     data-testid="manage-positions-button"
+  //   >
+  //     {t('buttons.managePositionsButtonLabel')}
+  //   </ManagePositionsButton>
+  // );
+
+  // const managePositionSection = !hasDeposited ? (
+  //   <Tooltip title={t('tooltips.noPositionsToManage')} placement="bottom">
+  //     <Box sx={{ width: '100%' }}>{managePositionButton}</Box>
+  //   </Tooltip>
+  // ) : (
+  //   managePositionButton
+  // );
+
+  const withdrawButton = (
+    <WithdrawFlowButton
+      earnOpportunity={earnOpportunity}
+      size="large"
+      label={t('buttons.withdrawButtonLabel')}
+      refetchCallback={refetchDepositToken}
       disabled={!hasDeposited}
-      data-testid="manage-positions-button"
-    >
-      {t('buttons.managePositionsButtonLabel')}
-    </ManagePositionsButton>
+      data-testid="withdraw-button"
+      fullWidth
+    />
   );
 
-  const managePositionSection = !hasDeposited ? (
+  const withdrawSection = !hasDeposited ? (
     <Tooltip title={t('tooltips.noPositionsToManage')} placement="bottom">
-      <Box sx={{ width: '100%' }}>{managePositionButton}</Box>
+      <Box sx={{ width: '100%' }}>{withdrawButton}</Box>
     </Tooltip>
   ) : (
-    managePositionButton
+    withdrawButton
   );
 
   return (
@@ -65,7 +86,8 @@ export const EarnDetailsActions = ({
         refetchCallback={refetchDepositToken}
         data-testid="quick-deposit-button"
       />
-      {managePositionSection}
+      {withdrawSection}
+      {/* {managePositionSection} */}
     </EarnDetailsActionsContainer>
   );
 };
