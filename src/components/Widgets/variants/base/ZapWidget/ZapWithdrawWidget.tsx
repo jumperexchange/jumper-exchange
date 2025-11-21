@@ -1,68 +1,93 @@
-import { FC, useMemo } from 'react';
-import { WidgetProps } from '../Widget.types';
-import { WithdrawWidget } from 'src/components/ZapWidget/WithdrawWidget/WithdrawWidget';
+import type { FC } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import type { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { useZapQuestIdStorage } from 'src/providers/hooks';
+import type { ZapDataResponse } from '@/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { Hex } from 'viem';
+import envConfig from '@/config/env-config';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import { useMenuStore } from '@/stores/menu';
+import { capitalizeString } from '@/utils/capitalizeString';
+import type { FormState } from '@lifi/widget';
+import {
+  useWidgetEvents,
+  WidgetEvent,
+  LiFiWidget,
+  DisabledUI,
+} from '@lifi/widget';
+import { ZapWithdrawSettings } from './ZapWithdrawSettings';
+import type { ZapWidgetContext } from '../../widgetConfig/types';
+import { TaskType } from '@/types/strapi';
 
-interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {}
+interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
+  ctx: ZapWidgetContext;
+  zapData?: ZapDataResponse | null;
+}
 
 export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
+  zapData,
   customInformation,
   ctx,
 }) => {
-  useZapQuestIdStorage();
-
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
-  const {
-    zapData,
-    isSuccess: isZapDataSuccess,
-    isLoadingDepositTokenData,
-    depositTokenData,
-    depositTokenDecimals,
-    refetchDepositToken,
-  } = useEnhancedZapData(projectData);
+  const formRef = useRef<FormState>(null);
 
-  const poolName = useMemo(() => {
-    return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
-  }, [zapData?.meta.name, zapData?.market?.depositToken?.symbol]);
+  // const { setSourceChainTokenForTracking } = useWidgetTrackingContext();
 
-  const token = useMemo(
-    () =>
-      isZapDataSuccess && zapData
-        ? {
-            chainId: zapData.market?.depositToken.chainId,
-            address: zapData.market?.depositToken.address as `0x${string}`,
-            symbol: zapData.market?.depositToken.symbol,
-            name: zapData.market?.depositToken.name,
-            decimals: zapData.market?.depositToken.decimals,
-            priceUSD: '0',
-            coinKey:
-              zapData.market?.depositToken.symbol ||
-              zapData.market?.depositToken.name ||
-              '',
-            logoURI: zapData.market?.depositToken.logoURI,
-            amount: BigInt(0),
-          }
-        : null,
-    [isZapDataSuccess, zapData],
-  );
+  const [setSupportModalState] = useMenuStore((state) => [
+    state.setSupportModalState,
+  ]);
 
-  const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
+  const fromToken = useMemo(() => {
+    return zapData?.market?.address;
+  }, [zapData?.market?.address]);
 
-  return !isLoadingDepositTokenData && token ? (
-    <WithdrawWidget
-      poolName={poolName}
-      refetchPosition={refetchDepositToken}
-      // @ts-expect-error Not implemented yet, should be fixed in the future
-      token={token}
-      lpTokenDecimals={lpTokenDecimals}
-      projectData={projectData}
-      depositTokenData={depositTokenData}
-      withdrawAbi={zapData?.abi?.withdraw}
+  const fromChain = useMemo(() => {
+    return zapData?.market?.depositToken.chainId;
+  }, [zapData?.market?.depositToken.chainId]);
+
+  const enhancedCtx = useMemo(() => {
+    return {
+      ...ctx,
+      taskType: TaskType.Zap as const,
+      subTaskType: 'withdraw' as const,
+      integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
+      keyPrefix: 'zap.backend',
+      disabledUI: [DisabledUI.FromToken],
+    };
+  }, [ctx]);
+
+  const widgetEvents = useWidgetEvents();
+  // Custom effect to refetch the balance
+  useEffect(() => {
+    const onRouteContactSupport = () => {
+      setSupportModalState(true);
+    };
+
+    widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
+
+    return () => {
+      widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
+    };
+  }, [widgetEvents, setSupportModalState]);
+
+  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+
+  return fromChain && fromToken ? (
+    <LiFiWidget
+      formRef={formRef}
+      config={widgetConfig}
+      integrator={widgetConfig.integrator}
+      contractComponent={
+        <ZapWithdrawSettings
+          fromChain={fromChain}
+          fromToken={fromToken}
+          contractCalls={[]}
+        />
+      }
     />
   ) : (
     <WidgetSkeleton />
