@@ -39,6 +39,7 @@ interface Resources {
     buttons: {
       depositButtonLabel: 'Quick deposit';
       managePositionsButtonLabel: 'Manage Positions';
+      withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
       missions: {
@@ -392,10 +393,21 @@ interface Resources {
           opened: 'Opened';
         };
       };
+      filter: {
+        asset: 'Asset';
+        chain: 'Chain';
+        clearAll: 'Clear all';
+        defiProtocols: 'DeFi Protocols';
+        filterAndSort: 'Filter and sort';
+        search: 'Search {{filterBy}}...';
+        tokens: 'Tokens';
+        value: 'Value';
+        wallet: 'Wallet';
+      };
       welcome: {
         explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<bold>Bridge, swap, earn,</bold> and <bold>manage</bold> your entire portfolio with <bold>Jumper</bold>';
+        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
         title: 'One platform, all of DeFi';
       };
     };
@@ -493,6 +505,9 @@ interface Resources {
           description: 'Your funds have been returned and are now available to use in your wallet.';
           title: 'Funds successfully returned';
         };
+      };
+      withdraw: {
+        title: 'Withdraw';
       };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';

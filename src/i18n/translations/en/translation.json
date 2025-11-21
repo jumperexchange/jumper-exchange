@@ -389,6 +389,17 @@
         "apy": "APY",
         "rewards": "Rewards"
       }
+    },
+    "filter": {
+      "tokens": "Tokens",
+      "defiProtocols": "DeFi Protocols",
+      "wallet": "Wallet",
+      "chain": "Chain",
+      "asset": "Asset",
+      "value": "Value",
+      "clearAll": "Clear all",
+      "filterAndSort": "Filter and sort",
+      "search": "Search {{filterBy}}..."
     }
   },
   "widget": {
@@ -438,6 +449,9 @@
     },
     "earn": {
       "depositSuccess": "You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>"
+    },
+    "withdraw": {
+      "title": "Withdraw"
     }
   },
   "links": {
@@ -445,6 +459,7 @@
   },
   "buttons": {
     "depositButtonLabel": "Quick deposit",
+    "withdrawButtonLabel": "Withdraw",
     "managePositionsButtonLabel": "Manage Positions"
   },
   "modal": {
