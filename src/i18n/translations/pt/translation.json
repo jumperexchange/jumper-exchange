@@ -389,6 +389,17 @@
         "apy": "APY",
         "rewards": "Recompensas"
       }
+    },
+    "filter": {
+      "tokens": "Tokens",
+      "defiProtocols": "Protocolos DeFi",
+      "wallet": "Carteira",
+      "chain": "Rede",
+      "asset": "Ativo",
+      "value": "Valor",
+      "clearAll": "Limpar tudo",
+      "filterAndSort": "Filtrar e ordenar",
+      "search": "Buscar {{filterBy}}..."
     }
   },
   "widget": {
@@ -440,7 +451,7 @@
       "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie suas posições</bold>"
     },
     "withdraw": {
-      "title": ""
+      "title": "Retirar"
     }
   },
   "links": {
@@ -448,7 +459,7 @@
   },
   "buttons": {
     "depositButtonLabel": "Depósito rápido",
-    "withdrawButtonLabel": "",
+    "withdrawButtonLabel": "Retirar",
     "managePositionsButtonLabel": "Gerenciar Posições"
   },
   "modal": {
