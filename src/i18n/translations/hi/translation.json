@@ -389,6 +389,17 @@
         "apy": "",
         "rewards": ""
       }
+    },
+    "filter": {
+      "tokens": "",
+      "defiProtocols": "",
+      "wallet": "",
+      "chain": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
     }
   },
   "widget": {
