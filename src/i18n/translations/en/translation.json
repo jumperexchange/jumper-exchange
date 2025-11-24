@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Exchange",
+      "portfolio": "Portfolio",
       "missions": "Missions",
       "earn": "Earn",
       "dashboard": "Dashboard",
@@ -28,6 +29,8 @@
         "noEcosystemAdapter": "No appropriate ecosystem adapter found"
       }
     },
+    "pass": "Pass",
+    "wallets": "Wallets",
     "seeAllWallets": "See all wallets",
     "navbarMenu": {
       "learn": "Learn",

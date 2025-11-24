@@ -40,13 +40,17 @@ export const MenuList = styled(MuiMenuList, {
     prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
 })<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
   marginTop: 0,
-  display: 'block',
-  flexDirection: 'unset',
+  display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'unset',
   flexWrap: 'inherit',
   padding: 0,
   outline: 'unset',
   gap: 'inherit',
+  height: '100%',
+  [theme.breakpoints.up('md' as Breakpoint)]: {
+    height: 'auto',
+  },
   '& > :first-of-type': {
     marginTop:
       isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
@@ -150,41 +154,31 @@ export const MenuPaper = styled(Paper, {
   background: (theme.vars || theme).palette.surface1.main,
   padding: 0,
   marginTop: 0,
-  // TODO: Fix this
-  boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-    isMobile ? '-' : ''
-  }8px 16px rgba(0, 0, 0, 0.08)`,
-
-  ...theme.applyStyles('light', {
-    boxShadow: `0px ${isMobile ? '-' : ''}2px 4px rgba(0, 0, 0, 0.08), 0px ${
-      isMobile ? '-' : ''
-    }8px 16px rgba(0, 0, 0, 0.16)`,
-  }),
-  borderRadius: '12px 12px 0 0',
+  borderRadius: 0,
   marginBottom: 0,
-  // viewHeight - navbarHeight - offset
-  maxHeight: `calc( 100vh - ${MENU_LABEL_HEIGHT}px - 12px )`,
+  boxShadow: 'none',
   overflowY: 'auto',
   overflowX: 'hidden',
   width: '100%',
   transformOrigin: 'bottom',
-  height: '100% !important',
+  height: '100vh',
   transition:
     'opacity 307ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 204ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
   '.submenu .wallet-select-avatar': {
     width: 32,
     height: 32,
   },
-  '.submenu': { paddingBottom: theme.spacing(1.5) },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    maxHeight: 'calc( 100vh - 72px - 12px )',
+  '.submenu': {
+    paddingBottom: theme.spacing(1.5),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
+    height: 'auto',
     borderRadius: '12px !important',
     width: width ?? 288,
     marginTop: -2,
+    boxShadow: theme.shadows[1],
   },
   variants: [
     {
