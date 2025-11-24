@@ -1,12 +1,12 @@
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AppPaths } from 'src/const/urls';
 import { useThemeStore } from 'src/stores/theme';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
+import { usePathnameWithoutLocale } from '../routing/usePathnameWithoutLocale';
 
 export const useThemeConditionsMet = () => {
   const [shouldShowForChain, setShouldShowForChain] = useState<boolean>(false);
-  const pathname = usePathname();
+  const pathname = usePathnameWithoutLocale();
   const configTheme = useThemeStore((state) => state.configTheme);
   const [fromChainId, toChainId] = useWidgetCacheStore((state) => [
     state.fromChainId,

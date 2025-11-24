@@ -21,14 +21,21 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
-import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
-import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
+import type { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+  isEarnFeatureEnabled,
+  isPortfolioFeatureEnabled,
+} from '@/app/lib/getFeatureFlag';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeVariant } from '@/components/Badge/Badge.styles';
+import * as supportedLanguages from '@/i18n/translations';
 
 interface MenuLink {
   url: string;
@@ -44,9 +51,15 @@ const enum SocialLinkLabel {
   X = 'X',
 }
 
-interface SocialLink {
+export interface SocialLink {
   label: string;
   prefixIcon: React.JSX.Element | string;
+  link: MenuLink;
+  onClick: () => void;
+}
+
+export interface FooterLink {
+  label: string;
   link: MenuLink;
   onClick: () => void;
 }
@@ -127,6 +140,24 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handleEarnClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-earn-link',
+      action: TrackingAction.ClickJumperEarnLink,
+      dataMenuParam: 'jumper_earn',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
+  const handlePortfolioClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-portfolio-link',
+      action: TrackingAction.ClickJumperPortfolioLink,
+      dataMenuParam: 'jumper_portfolio',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   const handleProfileClick = useCallback(() => {
     trackMenuClick({
       label: 'click-jumper-profile-link',
@@ -188,6 +219,8 @@ export const useMenuActions = () => {
   return {
     handleExchangeClick,
     handleMissionsClick,
+    handleEarnClick,
+    handlePortfolioClick,
     handleProfileClick,
     handleLearnClick,
     handleScanClick,
@@ -287,22 +320,28 @@ export const useFooterLinks = () => {
   const { t } = useTranslation();
   const { handlePrivacyPolicyClick } = useMenuActions();
 
-  const footerLinks = useMemo(() => [
-    {
-      label: t('navbar.navbarMenu.privacyPolicy'),
-      link: { url: AppPaths.PrivacyPolicy },
-      onClick: handlePrivacyPolicyClick,
-    },
-  ], [t, handlePrivacyPolicyClick]);
+  const footerLinks = useMemo(
+    () => [
+      {
+        label: t('navbar.navbarMenu.privacyPolicy'),
+        link: { url: AppPaths.PrivacyPolicy },
+        onClick: handlePrivacyPolicyClick,
+      },
+    ],
+    [t, handlePrivacyPolicyClick],
+  );
 
   return { footerLinks };
 };
 
 export const useMenuItems = () => {
   const { t, i18n } = useTranslation();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { selectedThemeIcon } = useThemeModesMenuContent();
+  const { selectedThemeIcon, selectedThemeMode } = useThemeModesMenuContent();
+  const isEarnEnabled = isEarnFeatureEnabled();
+  const isPortfolioEnabled = isPortfolioFeatureEnabled();
 
   const {
     handleLearnClick,
@@ -311,24 +350,49 @@ export const useMenuItems = () => {
     handleThemeClick,
     handleLanguageClick,
     handleResourcesClick,
+    handleEarnClick,
+    handlePortfolioClick,
+    handleExchangeClick,
+    handleMissionsClick,
   } = useMenuActions();
 
-  const languageSuffixIcon = useMemo(
-    () => (
-      <Typography
-        variant="bodyMedium"
-        textTransform="uppercase"
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 38,
-        }}
-      >
-        {i18n.language}
-      </Typography>
-    ),
-    [i18n.language],
-  );
+  const themeSuffixIcon = useMemo(() => {
+    if (!isMobile) {
+      return undefined;
+    }
+
+    return (
+      <Badge
+        label={t(`navbar.themes.${selectedThemeMode}`)}
+        variant={BadgeVariant.Secondary}
+      />
+    );
+  }, [t, selectedThemeMode, isMobile]);
+
+  const languageSuffixIcon = useMemo(() => {
+    if (!isMobile) {
+      return (
+        <Typography
+          variant="bodyMedium"
+          textTransform="uppercase"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 38,
+          }}
+        >
+          {i18n.language}
+        </Typography>
+      );
+    }
+
+    const selectedLanguage =
+      Object.entries(supportedLanguages).find(
+        ([language]) => language === i18n.language,
+      )?.[1]?.language?.value || i18n.language;
+
+    return <Badge label={selectedLanguage} variant={BadgeVariant.Secondary} />;
+  }, [i18n.language, isMobile]);
 
   const discordSupportIcon = useMemo(
     () => (
@@ -340,36 +404,81 @@ export const useMenuItems = () => {
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
 
+    if (isMobile) {
+      baseItems.push({
+        label: t('navbar.links.exchange'),
+        showMoreIcon: false,
+        link: { url: AppPaths.Main },
+        onClick: handleExchangeClick,
+      });
+
+      if (isPortfolioEnabled) {
+        baseItems.push({
+          label: t('navbar.links.portfolio'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Portfolio, external: false },
+          onClick: handlePortfolioClick,
+        });
+      }
+
+      baseItems.push({
+        label: t('navbar.links.missions'),
+        showMoreIcon: false,
+        link: { url: AppPaths.Missions, external: false },
+        onClick: handleMissionsClick,
+      });
+
+      if (isEarnEnabled) {
+        baseItems.push({
+          label: t('navbar.links.earn'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Earn, external: false },
+          onClick: handleEarnClick,
+        });
+      }
+
+      baseItems.push({
+        isDivider: true,
+      });
+    }
+
     baseItems.push(
       {
         label: t('navbar.navbarMenu.learn'),
-        prefixIcon: <SchoolIcon />,
+        prefixIcon: !isMobile ? <SchoolIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Learn },
         onClick: handleLearnClick,
       },
       {
         label: t('navbar.navbarMenu.scan'),
-        prefixIcon: <SearchOutlinedIcon />,
+        prefixIcon: !isMobile ? <SearchOutlinedIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Scan, external: false },
         onClick: handleScanClick,
       },
       {
         label: t('navbar.navbarMenu.support'),
-        prefixIcon: discordSupportIcon,
+        prefixIcon: !isMobile ? discordSupportIcon : undefined,
         showMoreIcon: false,
         onClick: handleSupportClick,
       },
     );
 
+    if (isMobile) {
+      baseItems.push({
+        isDivider: true,
+      });
+    }
+
     // Conditionally add theme menu item
     if (configTheme?.hasThemeModeSwitch) {
       baseItems.push({
         label: t('navbar.navbarMenu.theme'),
-        prefixIcon: selectedThemeIcon,
+        prefixIcon: !isMobile ? selectedThemeIcon : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.ThemeMode,
+        suffixIcon: themeSuffixIcon,
         onClick: handleThemeClick,
       });
     }
@@ -377,7 +486,7 @@ export const useMenuItems = () => {
     baseItems.push(
       {
         label: t('language.key', { ns: 'language' }),
-        prefixIcon: <LanguageIcon />,
+        prefixIcon: !isMobile ? <LanguageIcon /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Language,
         suffixIcon: languageSuffixIcon,
@@ -385,29 +494,34 @@ export const useMenuItems = () => {
       },
       {
         label: t('navbar.navbarMenu.resources'),
-        prefixIcon: <FolderOpen />,
+        prefixIcon: !isMobile ? <FolderOpen /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Devs,
         onClick: handleResourcesClick,
-      },
-      {
-        isDivider: true,
       },
     );
 
     return baseItems;
   }, [
     t,
-    handleLearnClick,
-    handleScanClick,
-    discordSupportIcon,
-    handleSupportClick,
+    isMobile,
+    isEarnEnabled,
+    isPortfolioEnabled,
     configTheme?.hasThemeModeSwitch,
     selectedThemeIcon,
-    handleThemeClick,
+    themeSuffixIcon,
     languageSuffixIcon,
+    discordSupportIcon,
+    handleLearnClick,
+    handleScanClick,
+    handleSupportClick,
+    handleThemeClick,
     handleLanguageClick,
     handleResourcesClick,
+    handleEarnClick,
+    handlePortfolioClick,
+    handleExchangeClick,
+    handleMissionsClick,
   ]);
 
   return { menuItems: baseMenuItems };
