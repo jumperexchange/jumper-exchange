@@ -192,6 +192,35 @@
       "completed": {
         "title": "Tarefa concluída",
         "description": "Esta tarefa foi verificada e concluída."
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
       }
     }
   },
