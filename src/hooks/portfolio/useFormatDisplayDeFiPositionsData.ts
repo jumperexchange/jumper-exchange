@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import type { DefiPosition } from '@/types/jumper-backend';
 import type { MinimalDeFiPosition } from 'src/types/defi';
 
-// @Note: This is a temporary solution to convert the data to the MinimalDeFiPosition type.
+// @Note: temporary solution to convert the data from the backend - See LF-16756
 export const useFormatDisplayDeFiPositionsData = (
   data: DefiPosition[],
 ): MinimalDeFiPosition[] => {
