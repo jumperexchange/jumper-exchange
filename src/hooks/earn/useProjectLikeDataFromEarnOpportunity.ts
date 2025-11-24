@@ -1,16 +1,9 @@
 import { useMemo } from 'react';
 import type { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 
 export const useProjectLikeDataFromEarnOpportunity = (
-  earnOpportunity: Pick<
-    EarnOpportunityWithLatestAnalytics,
-    'name' | 'asset' | 'protocol' | 'url' | 'lpToken' | 'latest'
-  > & {
-    minFromAmountUSD: number;
-    positionUrl: string;
-    address: string;
-  },
+  earnOpportunity: EarnOpportunityExtended,
 ) => {
   return useMemo(() => {
     // Construct ZapDataResponse from earnOpportunity data

@@ -39,6 +39,7 @@ interface Resources {
     buttons: {
       depositButtonLabel: 'Quick deposit';
       managePositionsButtonLabel: 'Manage Positions';
+      withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
       missions: {
@@ -189,6 +190,35 @@ interface Resources {
         type: '{{type}} task';
         typeFallback: 'Task';
         typeOptional: 'Optional task';
+        verifyWallet: {
+          action: {
+            connectAndVerify: 'Connect & verify ownership';
+            verifyWallet: 'Verify ownership';
+          };
+          description: {
+            notConnected: 'Connect and sign a message to verify ownership of your wallet address. If you do not want to do this then reach out on <0>Discord</0>.';
+            notVerified: 'Sign a message to verify ownership of the below wallet address. If you do not want to do this then reach out on <0>Discord</0>.';
+            verified: 'You have successfully verified ownership of your wallet address.';
+          };
+          status: {
+            signatureFailed: {
+              description: 'You need to sign the transaction to confirm ownership of the wallet address.';
+              title: 'Signature required';
+              tryAgain: 'Try again';
+            };
+            unknown: {
+              description: 'An unknown error occurred. Please try again.';
+              title: 'Unknown error';
+              tryAgain: 'Try again';
+            };
+            unsupportedWallet: {
+              description: "We don't support this wallet type. Please use a different wallet to complete this mission.";
+              switchWallet: 'Switch wallet';
+              title: 'Unsupported wallet';
+            };
+          };
+          title: 'Verify ownership';
+        };
       };
       wrapperCard: {
         explore_one: 'Explore {{count}} mission';
@@ -392,10 +422,21 @@ interface Resources {
           opened: 'Opened';
         };
       };
+      filter: {
+        asset: 'Asset';
+        chain: 'Chain';
+        clearAll: 'Clear all';
+        defiProtocols: 'DeFi Protocols';
+        filterAndSort: 'Filter and sort';
+        search: 'Search {{filterBy}}...';
+        tokens: 'Tokens';
+        value: 'Value';
+        wallet: 'Wallet';
+      };
       welcome: {
         explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<bold>Bridge, swap, earn,</bold> and <bold>manage</bold> your entire portfolio with <bold>Jumper</bold>';
+        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
         title: 'One platform, all of DeFi';
       };
     };
@@ -493,6 +534,9 @@ interface Resources {
           description: 'Your funds have been returned and are now available to use in your wallet.';
           title: 'Funds successfully returned';
         };
+      };
+      withdraw: {
+        title: 'Withdraw';
       };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';

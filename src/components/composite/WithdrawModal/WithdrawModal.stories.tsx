@@ -1,0 +1,143 @@
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { useState } from 'react';
+
+import { WithdrawModal } from './WithdrawModal';
+import { fn } from '@storybook/test';
+import { ConnectButton } from 'src/components/ConnectButton';
+import { useIsDisconnected } from 'src/components/Navbar/hooks';
+import { WalletMenuToggle } from 'src/components/Navbar/components/Buttons/WalletMenuToggle';
+import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+
+const meta = {
+  component: WithdrawModal,
+  title: 'Composite/Withdraw Modal',
+  args: {
+    onClose: fn(),
+  },
+} satisfies Meta<typeof WithdrawModal>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    isOpen: true,
+    earnOpportunity: {
+      name: 'morpho',
+      slug: 'morpho',
+      protocol: {
+        name: 'morpho',
+        product: 'morpho',
+        version: '1.0.0',
+        logo: 'logo',
+      },
+      description: 'description',
+      tags: ['tag1', 'tag2'],
+      rewards: ['Reward'],
+      featured: true,
+      forYou: true,
+      url: 'https://morpho.org/',
+      positionUrl:
+        'https://app.morpho.org/katana/vault/0xE4248e2105508FcBad3fe95691551d1AF14015f7/gauntlet-weth',
+      minFromAmountUSD: 0.29,
+      asset: {
+        name: 'Asset',
+        symbol: 'ASSET',
+        decimals: 18,
+        logo: 'logo',
+        address: '0xE4248e2105508FcBad3fe95691551d1AF14015f7',
+        chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      lpToken: {
+        name: 'LP Token',
+        symbol: 'LP',
+        decimals: 18,
+        logo: 'logo',
+        address: '0xE4248e2105508FcBad3fe95691551d1AF14015f7',
+        chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      latest: {
+        date: '2021-01-01',
+        tvlUsd: '1000000',
+        tvlNative: '1000000',
+        apy: {
+          base: 5.5,
+          reward: 0,
+          total: 5.5,
+        },
+      },
+    },
+  },
+};
+
+export const WithToggleAndConnectButton: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const isDisconnected = useIsDisconnected();
+
+    return (
+      <Box sx={{ p: 2 }}>
+        <Stack direction="row" spacing={2}>
+          {isDisconnected ? <ConnectButton /> : <WalletMenuToggle />}
+          <WithdrawButton onClick={() => setIsOpen(!isOpen)} label="Withdraw" />
+        </Stack>
+
+        <WithdrawModal
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        />
+      </Box>
+    );
+  },
+  args: {
+    isOpen: false,
+    earnOpportunity: {
+      slug: 'morpho',
+      name: 'morpho',
+      protocol: {
+        name: 'morpho',
+        product: 'morpho',
+        version: '1.0.0',
+        logo: 'logo',
+      },
+      description: 'description',
+      tags: ['tag1', 'tag2'],
+      rewards: ['Reward'],
+      featured: true,
+      forYou: true,
+      url: 'https://morpho.org/',
+      positionUrl:
+        'https://app.morpho.org/katana/vault/0xE4248e2105508FcBad3fe95691551d1AF14015f7/gauntlet-weth',
+      minFromAmountUSD: 0.29,
+      asset: {
+        name: 'Asset',
+        symbol: 'ASSET',
+        decimals: 18,
+        logo: 'logo',
+        address: '0xE4248e2105508FcBad3fe95691551d1AF14015f7',
+        chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      lpToken: {
+        name: 'LP Token',
+        symbol: 'LP',
+        decimals: 18,
+        logo: 'logo',
+        address: '0xE4248e2105508FcBad3fe95691551d1AF14015f7',
+        chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      latest: {
+        date: '2021-01-01',
+        tvlUsd: '1000000',
+        tvlNative: '1000000',
+        apy: {
+          base: 5.5,
+          reward: 0,
+          total: 5.5,
+        },
+      },
+    },
+  },
+};

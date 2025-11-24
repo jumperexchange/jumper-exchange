@@ -17,9 +17,13 @@ export const useThemeConditionsMet = () => {
     const showForFromChain = configTheme?.showForFromChain;
     const showForToChain = configTheme?.showForToChain;
 
+    if (!showForFromChain && !showForToChain) {
+      setShouldShowForChain(true);
+      return;
+    }
+
     setShouldShowForChain(
-      (!!showForFromChain && fromChainId === showForFromChain) ||
-        (!!showForToChain && toChainId === showForToChain),
+      fromChainId === showForFromChain || toChainId === showForToChain,
     );
   }, [
     fromChainId,

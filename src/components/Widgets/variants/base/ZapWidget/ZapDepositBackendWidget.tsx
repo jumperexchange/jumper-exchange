@@ -1,36 +1,31 @@
 'use client';
 
+import type { FormState } from '@lifi/widget';
 import {
   ChainType,
-  FormState,
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
-import { FC, useEffect, useMemo, useRef } from 'react';
+import type { FC } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
 import { useMenuStore } from 'src/stores/menu/MenuStore';
-import { WidgetProps } from '../Widget.types';
-import { useZapSupportedChains } from 'src/hooks/zaps/useZapSupportedChains';
-import { ChainId } from '@lifi/sdk';
+import type { WidgetProps } from '../Widget.types';
 import { useAccount } from '@lifi/wallet-management';
-import { useSwitchChain } from 'wagmi';
 import { useUrlParams } from 'src/hooks/useUrlParams';
-import uniqBy from 'lodash/uniqBy';
-import { useZapAllLpTokens } from 'src/hooks/zaps/useZapAllLpTokens';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 import { useShowZapPlaceholderWidget } from './hooks';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
-import { ZapWidgetContext } from '../../widgetConfig/types';
+import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import envConfig from 'src/config/env-config';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
-import { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
-import { ZAP_ALLOWED_SOURCE_CHAINS } from './constants';
-import { ParseKeys } from 'i18next';
+import type { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { ParseKeys } from 'i18next';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -56,61 +51,17 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   const formRef = useRef<FormState>(null);
 
-  const { sourceChainToken } = useUrlParams();
-
   const { account } = useAccount();
-  const { chainId, chainType } = account;
+  const { chainType } = account;
   const isEvmWallet = chainType === ChainType.EVM;
-  const { switchChainAsync } = useSwitchChain();
 
   const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
-
-  // const { data: zapSupportedChains } = useZapSupportedChains();
-  const { data: allLpTokens } = useZapAllLpTokens();
 
   const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
 
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
-
-  // @Note: This is commented until we can release more source deposit chains
-  // const allowedChains = useMemo(() => {
-  //   // @Note: This is a fallback for when the zap supported chains are not loaded yet
-  //   if (!zapSupportedChains) {
-  //     return [
-  //       ChainId.ETH,
-  //       ChainId.BSC,
-  //       ChainId.ARB,
-  //       ChainId.BAS,
-  //       ChainId.AVA,
-  //       ChainId.POL,
-  //       ChainId.SCL,
-  //       ChainId.OPT,
-  //       ChainId.DAI,
-  //       ChainId.UNI,
-  //       ChainId.SEI,
-  //       ChainId.SON,
-  //       ChainId.APE,
-  //       ChainId.WCC,
-  //       ChainId.HYP,
-  //       // @Note: Even though docs say they are supported, they are not retrieved from the API
-  //       // https://docs.biconomy.io/supportedNetworks#-supported-chains
-  //       // ChainId.KAT,
-  //       // ChainId.LSK,
-  //     ];
-  //   }
-
-  //   const zapSupportedChainsIds = zapSupportedChains.map(
-  //     (chain) => chain.chainId,
-  //   );
-
-  //   return Object.values(ChainId).filter((chainId): chainId is ChainId =>
-  //     zapSupportedChainsIds?.includes(chainId.toString()),
-  //   );
-  // }, [zapSupportedChains]);
-
-  const allowedChains = ZAP_ALLOWED_SOURCE_CHAINS;
 
   const poolName = useMemo(() => {
     return `${zapData?.meta.name} ${zapData?.market?.depositToken?.symbol.toUpperCase()} Pool`;
@@ -146,31 +97,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       },
     };
   }, [ctx, minFromAmountUSD, poolName]);
-
-  useEffect(() => {
-    if (!chainId || allowedChains.includes(chainId)) {
-      return;
-    }
-
-    switchChainAsync({ chainId: ChainId.ETH });
-  }, [chainId, allowedChains, switchChainAsync]);
-
-  useEffect(() => {
-    if (
-      !formRef.current ||
-      !sourceChainToken?.chainId ||
-      allowedChains.includes(sourceChainToken.chainId)
-    ) {
-      return;
-    }
-
-    formRef.current?.setFieldValue('fromToken', undefined, {
-      setUrlSearchParam: true,
-    });
-    formRef.current?.setFieldValue('fromChain', undefined, {
-      setUrlSearchParam: true,
-    });
-  }, [sourceChainToken, allowedChains]);
 
   useEffect(() => {
     if (toChain && toToken) {
@@ -209,23 +135,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
-
-  // @Note: we want to ensure that the chains are set in the widget config without any delay
-  if (allowedChains) {
-    widgetConfig.chains = {
-      allow: allowedChains,
-    };
-  }
-
-  // @Note: we want to ensure that we exclude the lp token from possible "Pay With" options [LF-15086]
-  if (allLpTokens) {
-    const currentDenyList = widgetConfig.tokens?.deny ?? [];
-    const newDenyList = uniqBy([...currentDenyList, ...allLpTokens], 'address');
-
-    widgetConfig.tokens = widgetConfig.tokens ?? {};
-    widgetConfig.tokens.deny = widgetConfig.tokens.deny ?? [];
-    widgetConfig.tokens.deny = newDenyList;
-  }
 
   if (showZapPlaceholderWidget || !isEvmWallet) {
     return (

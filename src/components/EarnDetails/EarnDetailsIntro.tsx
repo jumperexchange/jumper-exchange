@@ -1,7 +1,8 @@
 'use client';
 
-import { FC, useMemo } from 'react';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { EarnCard } from '../Cards/EarnCard/EarnCard';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
@@ -27,7 +28,9 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const updateBadgeLabel = useMemo(() => {
-    if (!data.latest.date) return '';
+    if (!data.latest.date) {
+      return '';
+    }
 
     const now = Date.now();
     const distance = formatDistance(data.latest.date, now);
@@ -64,7 +67,6 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
                 ...data,
                 minFromAmountUSD: 0.99,
                 positionUrl: '',
-                address: '',
               }}
             />
           </EarnDetailsColumnFlexContainer>

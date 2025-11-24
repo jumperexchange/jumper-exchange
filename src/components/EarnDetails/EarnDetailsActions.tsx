@@ -1,4 +1,4 @@
-import { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
+import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
 import {
@@ -9,10 +9,9 @@ import { Tooltip } from '../core/Tooltip/Tooltip';
 import Box from '@mui/material/Box';
 import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
 import { useMemo } from 'react';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { useTranslation } from 'react-i18next';
 import { useGetZapInPoolBalance } from 'src/hooks/zaps/useGetZapInPoolBalance';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 import { useAccount } from '@lifi/wallet-management';
 
 interface EarnDetailsActionsProps {
