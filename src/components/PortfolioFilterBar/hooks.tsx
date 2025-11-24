@@ -2,7 +2,6 @@ import { usePortfolioTokensFiltering } from 'src/app/ui/portfolio/PortfolioToken
 import { usePortfolioDeFiPositionsFiltering } from 'src/app/ui/portfolio/PortfolioDeFiPositionsFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
-import { MultiSelectOption } from '../core/MultiSelect/MultiSelect.types';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import type {
@@ -10,6 +9,7 @@ import type {
   PortfolioDeFiPositionsFilterUI,
 } from 'src/app/ui/portfolio/types';
 import { useMemo } from 'react';
+import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 
 export const usePortfolioTokensFilterBar = () => {
   const {
@@ -180,13 +180,7 @@ export const usePortfolioDeFiFilterBar = () => {
       allProtocols.map((protocol) => ({
         value: protocol.name,
         label: protocol.name,
-        icon: protocol.logo ? (
-          <Avatar
-            src={protocol.logo}
-            alt={protocol.name}
-            sx={{ width: 24, height: 24 }}
-          />
-        ) : undefined,
+        icon: <ProtocolStack protocols={[protocol]} />,
       })),
     [allProtocols],
   );
@@ -205,19 +199,7 @@ export const usePortfolioDeFiFilterBar = () => {
       allAssets.map((asset) => ({
         value: asset.name,
         label: asset.name,
-        icon: asset.chain ? (
-          <TokenStack
-            tokens={[
-              {
-                address: asset.address || '',
-                chain: {
-                  chainId: asset.chain.chainId,
-                  chainKey: asset.symbol || asset.name,
-                },
-              },
-            ]}
-          />
-        ) : undefined,
+        icon: <TokenStack tokens={[asset]} />,
       })),
     [allAssets],
   );
