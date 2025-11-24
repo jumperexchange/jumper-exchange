@@ -1,10 +1,7 @@
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
-import {
-  EarnDetailsActionsContainer,
-  // ManagePositionsButton,
-} from './EarnDetails.styles';
+import { EarnDetailsActionsContainer } from './EarnDetails.styles';
 import { Tooltip } from '../core/Tooltip/Tooltip';
 import Box from '@mui/material/Box';
 import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
@@ -38,23 +35,6 @@ export const EarnDetailsActions = ({
     );
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
-  // const managePositionButton = (
-  //   <ManagePositionsButton
-  //     fullWidth
-  //     disabled={!hasDeposited}
-  //     data-testid="manage-positions-button"
-  //   >
-  //     {t('buttons.managePositionsButtonLabel')}
-  //   </ManagePositionsButton>
-  // );
-
-  // const managePositionSection = !hasDeposited ? (
-  //   <Tooltip title={t('tooltips.noPositionsToManage')} placement="bottom">
-  //     <Box sx={{ width: '100%' }}>{managePositionButton}</Box>
-  //   </Tooltip>
-  // ) : (
-  //   managePositionButton
-  // );
 
   const withdrawButton = (
     <WithdrawFlowButton
@@ -87,7 +67,6 @@ export const EarnDetailsActions = ({
         data-testid="quick-deposit-button"
       />
       {withdrawSection}
-      {/* {managePositionSection} */}
     </EarnDetailsActionsContainer>
   );
 };
