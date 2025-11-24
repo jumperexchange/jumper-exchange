@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import {
   ProtocolCardContainer,
   ProtocolCardContentContainer,
@@ -20,7 +21,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { ProtocolCardSkeleton } from './ProtocolCardSkeleton';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { useGetContrastTextColor } from 'src/hooks/images/useGetContrastTextColor';
 
 interface CommonCardProps {
@@ -49,7 +50,8 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
   headerBadge,
 }) => {
   const [protocolAvatarLoaded, setProtocolAvatarLoaded] = useState(false);
-  const { protocol, tags, description, url } = data ?? {};
+  const { protocol, tags, description, url, name } = data ?? {};
+  const title = name || protocol?.product || protocol?.name;
   const { t } = useTranslation();
 
   const { contrastTextColor: protocolImageContrastColor } =
@@ -108,9 +110,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
       </ProtocolCardHeaderContainer>
       <ProtocolCardContentContainer>
         <ProtocolCardContentHeaderContainer>
-          <Typography variant="titleMedium">
-            {protocol?.product ?? protocol?.name}
-          </Typography>
+          <Typography variant="titleMedium">{title}</Typography>
           <ProtocolCardTagsContainer>
             {tags?.map((tag) => (
               <Badge
