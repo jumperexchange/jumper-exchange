@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { StepIcon } from '../StepIcon';
-import { BaseStepperProps } from '../../ClaimPerkModal.types';
+import type { BaseStepperProps } from '../../ClaimPerkModal.types';
 import { StepContentFactory } from '../StepContent/StepContentFactory';
 import {
   StyledActiveStepContentContainer,
@@ -16,11 +16,11 @@ import {
   StyledTitleContainer,
   StyledTitleIconButton,
 } from '../../ClaimPerkModal.styles';
+import { StatusBottomSheet } from 'src/components/composite/StatusBottomSheet/StatusBottomSheet';
 import { useClaimPerkForm } from '../../hooks/useClaimPerkForm';
 import { useClaimPerkSteps } from '../../hooks/useClaimPerkSteps';
-import { StatusBottomSheet } from '../StatusBottomSheet/StatusBottomSheet';
-import { MODAL_CONTAINER_ID } from '../../constants';
 import { useStatusSheetContent } from '../../hooks/useStatusSheetContent';
+import { MODAL_CONTAINER_ID } from '../../constants';
 
 interface StepperContentProps extends BaseStepperProps {
   perkId: string;

@@ -1,14 +1,13 @@
+import type { DrawerProps } from '@mui/material/Drawer';
 import Drawer from '@mui/material/Drawer';
+import type { PropsWithChildren, RefObject } from 'react';
 import {
-  FC,
-  PropsWithChildren,
   forwardRef,
   startTransition,
   useCallback,
   useImperativeHandle,
   useRef,
   useState,
-  RefObject,
   useEffect,
   useLayoutEffect,
 } from 'react';
@@ -19,15 +18,16 @@ export interface BottomSheetBase {
   close(): void;
 }
 
-interface BottomSheetProps extends PropsWithChildren {
+export interface BottomSheetProps extends PropsWithChildren {
   open?: boolean;
   onClose?: () => void;
   containerId: string;
   elementRef?: RefObject<HTMLDivElement>;
   backdropFilter?: string;
+  transitionDuration?: DrawerProps['transitionDuration'];
 }
 
-export const BottomSheet = forwardRef<any, BottomSheetProps>(
+export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
   (
     {
       containerId,
@@ -36,6 +36,7 @@ export const BottomSheet = forwardRef<any, BottomSheetProps>(
       open = false,
       onClose,
       backdropFilter,
+      transitionDuration,
     },
     ref,
   ) => {
@@ -96,11 +97,13 @@ export const BottomSheet = forwardRef<any, BottomSheetProps>(
         open={drawerOpen}
         onClose={close}
         disableAutoFocus
+        keepMounted
         inert={isInert}
         ModalProps={{
           container: container,
           style: { position: 'absolute' },
         }}
+        transitionDuration={transitionDuration}
         slotProps={{
           transition: {
             direction: 'up',
