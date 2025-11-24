@@ -39,24 +39,24 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   ]);
 
   const fromToken = useMemo(() => {
-    return zapData?.market?.address;
-  }, [zapData?.market?.address]);
+    if (!zapData?.market?.address) {
+      return undefined;
+    }
+    return {
+      tokenAddress: zapData?.market?.address,
+      tokenSymbol: zapData?.market?.lpToken.symbol,
+    };
+  }, [zapData?.market?.address, zapData?.market?.lpToken.symbol]);
 
   const fromChain = useMemo(() => {
-    return zapData?.market?.depositToken.chainId;
-  }, [zapData?.market?.depositToken.chainId]);
-
-  useEffect(() => {
-    if (!fromToken || !fromChain) {
-      return;
+    if (!projectData?.chainId || !projectData?.chain) {
+      return undefined;
     }
-    formRef.current?.setFieldValue('fromToken', fromToken, {
-      setUrlSearchParam: true,
-    });
-    formRef.current?.setFieldValue('fromChain', fromChain, {
-      setUrlSearchParam: true,
-    });
-  }, [fromToken, fromChain]);
+    return {
+      chainId: projectData?.chainId,
+      chainKey: projectData?.chain,
+    };
+  }, [projectData?.chainId, projectData?.chain]);
 
   const enhancedCtx = useMemo(() => {
     return {
@@ -66,8 +66,12 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
       keyPrefix: 'zap.backend',
       disabledUI: [DisabledUI.FromToken],
+      formData: {
+        sourceToken: fromToken,
+        sourceChain: fromChain,
+      },
     };
-  }, [ctx]);
+  }, [ctx, fromToken, fromChain]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance

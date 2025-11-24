@@ -34,7 +34,7 @@ export const EarnDetailsActions = ({
       projectData.chainId,
     );
 
-  const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
+  const hasDeposited = true; //!isLoadingDepositTokenData && !!depositTokenData;
 
   const withdrawButton = (
     <WithdrawFlowButton
