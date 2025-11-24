@@ -223,11 +223,36 @@ test.describe('Main Menu flows', () => {
       await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Support');
       const iFrameLocator = page.frameLocator(
-        'iframe[title="Discord chat embed"]',
+        'iframe[name="intercom-messenger-frame"]',
       );
-      const openDiscordAppInIframe =
-        await iFrameLocator.getByText('Open Discord App');
-      await expect(openDiscordAppInIframe).toBeVisible();
+
+      const messagesTab = await iFrameLocator.locator(
+        '[aria-label*="Messages"]',
+      );
+      await expect(messagesTab).toBeVisible();
+      await messagesTab.click();
+
+      const contactSupportButton = await iFrameLocator.locator(
+        '[aria-label*="Contact support"]',
+      );
+      await expect(contactSupportButton).toBeVisible();
+      await contactSupportButton.click();
+
+      await page.waitForLoadState('networkidle');
+
+      const sendMessageInIframe = await iFrameLocator.locator(
+        '[aria-label*="Send a message"]',
+      );
+      await expect(sendMessageInIframe).toBeVisible();
+      await expect(sendMessageInIframe).not.toBeEnabled();
+
+      const messageInput = await iFrameLocator.locator(
+        '[aria-label*="Message"]',
+      );
+      await messageInput.focus();
+      await messageInput.fill('Hello, how are you?');
+
+      await expect(sendMessageInIframe).toBeEnabled();
     },
   );
 });
