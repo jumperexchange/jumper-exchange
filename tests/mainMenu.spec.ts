@@ -111,7 +111,7 @@ test.describe('Main Menu flows', () => {
 
   test(
     qase(13, 'Should open Resources section inside menu'),
-    async ({ page, context }) => {
+    async ({ page }) => {
       await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Resources');
       await checkTheNumberOfMenuItems(page, 2);

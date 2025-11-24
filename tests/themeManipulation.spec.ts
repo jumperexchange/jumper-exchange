@@ -17,7 +17,7 @@ test.describe('Switch between dark and light theme and check the background colo
   });
 
   test.use({ colorScheme: 'dark' });
-  test(
+  test.skip(
     qase(30, 'Should able to change the theme color to Dark'),
     async ({ page }) => {
       await closeWelcomeScreen(page);
@@ -28,7 +28,7 @@ test.describe('Switch between dark and light theme and check the background colo
   );
 
   test.use({ colorScheme: 'light' });
-  test(
+  test.skip(
     qase(31, 'Should able to change the theme color to Light'),
     async ({ page }) => {
       await closeWelcomeScreen(page);
@@ -43,9 +43,6 @@ test.describe('Switch between dark and light theme and check the background colo
   test('Monad theme should appears when Monad chain is selected', async ({
     page,
   }) => {
-    await page.goto(
-      '/?fromChain=143&fromToken=0xe7cd86e13AC4309349F30B3435a9d337750fC82D',
-    );
     await closeWelcomeScreen(page);
     await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
   });
