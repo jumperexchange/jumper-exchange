@@ -6,9 +6,6 @@ export const useEarnOpportunityBySlug = (slug: string) => {
     queryKey: ['earn-opportunity-by-slug', slug],
     queryFn: async () => {
       const result = await getOpportunityBySlug(slug);
-      if (result.error) {
-        throw result.error;
-      }
       return result.data;
     },
     enabled: false,

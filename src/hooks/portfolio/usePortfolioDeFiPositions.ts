@@ -22,9 +22,6 @@ export const usePortfolioDeFiPositions = ({ addresses }: Props): Result => {
       queryKey: ['portfolio-defi-positions', address],
       queryFn: async () => {
         const result = await getPositionsForAddress({ evm: address });
-        if (!result.ok) {
-          throw result.error;
-        }
         // @ts-expect-error: see LF-15589 - we are transforming data in the backend
         return result.data.data as WalletPositions;
       },

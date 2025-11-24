@@ -56,19 +56,28 @@ export const WithdrawFlowOnDemandButton: FC<
   const { refetch: fetchEarnOpportunity } =
     useEarnOpportunityBySlug(earnOpportunitySlug);
   const handleClick = async () => {
-    const { data: earnOpportunity } = await fetchEarnOpportunity();
-    if (!earnOpportunity) {
-      return;
+    try {
+      const { data: earnOpportunity } = await fetchEarnOpportunity();
+      if (!earnOpportunity) {
+        return;
+      }
+      if (!earnOpportunity.lpToken?.address) {
+        console.error('Invalid earn opportunity: missing lpToken.address');
+        return;
+      }
+      openModal(
+        {
+          ...earnOpportunity,
+          minFromAmountUSD: 0.99,
+          positionUrl: earnOpportunity.url ?? 'unset',
+          address: earnOpportunity.lpToken.address,
+        },
+        refetchCallback,
+      );
+    } catch (error) {
+      //@Note: we'll add a visual feedback to the user if the opportunity is not found in the future
+      console.error('Failed to fetch earn opportunity:', error);
     }
-    openModal(
-      {
-        ...earnOpportunity,
-        minFromAmountUSD: 0.99,
-        positionUrl: earnOpportunity.url ?? 'unset',
-        address: earnOpportunity.lpToken.address,
-      },
-      refetchCallback,
-    );
   };
   return (
     <WithdrawButton
