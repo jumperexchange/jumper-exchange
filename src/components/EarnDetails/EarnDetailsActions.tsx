@@ -34,8 +34,7 @@ export const EarnDetailsActions = ({
       projectData.chainId,
     );
 
-  // TODO: remove this once the balanceOf call is working or we have an endpoint to determine if the user has deposited
-  const hasDeposited = true; //!isLoadingDepositTokenData && !!depositTokenData;
+  const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
 
   const withdrawButton = (
     <WithdrawFlowButton
