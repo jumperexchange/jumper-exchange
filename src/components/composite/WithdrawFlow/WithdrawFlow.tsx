@@ -70,7 +70,6 @@ export const WithdrawFlowOnDemandButton: FC<
           ...earnOpportunity,
           minFromAmountUSD: 0.99,
           positionUrl: earnOpportunity.url ?? 'unset',
-          address: earnOpportunity.lpToken.address,
         },
         refetchCallback,
       );
