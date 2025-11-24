@@ -5,12 +5,18 @@ import {
   parseAsInteger,
   parseAsString,
 } from 'nuqs';
-import { uniqBy } from 'lodash';
+import { map, uniq, uniqBy } from 'lodash';
 import type { CacheToken } from 'src/types/portfolio';
-import type { PortfolioFilteringParams, PortfolioTokensFilter } from './types';
+import type {
+  PortfolioTokensFilteringParams,
+  PortfolioTokensFilter,
+  PortfolioDeFiPositionsFilteringParams,
+  PortfolioDeFiPositionsFilter,
+} from './types';
 import type { Account } from '@lifi/wallet-management';
+import type { Token, WalletPositions } from '@/types/jumper-backend';
 
-export const searchParamsParsers = {
+export const tokensSearchParamsParsers = {
   tokensWallets: parseAsArrayOf(parseAsString),
   tokensChains: parseAsArrayOf(parseAsInteger),
   tokensAssets: parseAsArrayOf(parseAsString),
@@ -18,10 +24,10 @@ export const searchParamsParsers = {
   tokensMaxValue: parseAsFloat,
 };
 
-export const extractFilteringParams = (
+export const extractTokensFilteringParams = (
   data: CacheToken[],
   accounts: Account[],
-): PortfolioFilteringParams => {
+): PortfolioTokensFilteringParams => {
   const allWallets = accounts
     .filter((account) => account.address)
     .map((account) => ({
@@ -69,17 +75,15 @@ export const extractFilteringParams = (
   };
 };
 
-export const removeNullValuesFromFilter = (
-  filter: Nullable<PortfolioTokensFilter>,
-): PortfolioTokensFilter => {
+export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
   return Object.fromEntries(
     Object.entries(filter).filter(([_, value]) => value !== null),
-  ) as PortfolioTokensFilter;
+  ) as T;
 };
 
-export const sanitizeFilter = (
+export const sanitizeTokensFilter = (
   filter: PortfolioTokensFilter,
-  stats: PortfolioFilteringParams,
+  stats: PortfolioTokensFilteringParams,
 ): Nullable<PortfolioTokensFilter> => {
   if (
     !stats.allWallets.length ||
@@ -113,7 +117,7 @@ export const sanitizeFilter = (
   };
 };
 
-export const filterPortfolioData = (
+export const filterPortfolioTokensData = (
   queriesByAddress: Map<string, { data: CacheToken[] }>,
   filter: PortfolioTokensFilter,
 ): CacheToken[] => {
@@ -159,4 +163,141 @@ export const filterPortfolioData = (
   }
 
   return allData;
+};
+
+export const deFiPositionsSearchParamsParsers = {
+  defiChains: parseAsArrayOf(parseAsInteger),
+  defiProtocols: parseAsArrayOf(parseAsString),
+  defiTypes: parseAsArrayOf(parseAsString),
+  defiAssets: parseAsArrayOf(parseAsString),
+  defiMinAPY: parseAsFloat,
+  defiMaxAPY: parseAsFloat,
+  defiMinValue: parseAsFloat,
+  defiMaxValue: parseAsFloat,
+};
+
+export const extractDeFiPositionsFilteringParams = (
+  data: WalletPositions,
+): PortfolioDeFiPositionsFilteringParams => {
+  const allPositions = data.positions;
+
+  const chainMap = new Map<number, { chainId: number; chainKey: string }>();
+  allPositions.forEach((position) => {
+    if (position?.chainId && !chainMap.has(position.chainId)) {
+      chainMap.set(position.chainId, {
+        chainId: position.chainId,
+        chainKey: position.chainId.toString(),
+      });
+    }
+  });
+  const allChains = Array.from(chainMap.values());
+
+  const protocolMap = new Map<string, { name: string }>();
+  allPositions.forEach((position) => {
+    if (position.earn && !protocolMap.has(position.earn)) {
+      protocolMap.set(position.earn, { name: position.earn });
+    }
+  });
+  const allProtocols = Array.from(protocolMap.values());
+
+  const allTypes = uniq(
+    allPositions.map((position) => position.type).filter(Boolean),
+  );
+
+  const assetMap = new Map<string, Token>();
+  allPositions.forEach((position) => {
+    const allTokens = [
+      ...(position.supplyTokens || []),
+      ...(position.assetTokens || []),
+      ...(position.collateralTokens || []),
+      ...(position.borrowTokens || []),
+      ...(position.rewardTokens || []),
+    ];
+
+    allTokens.forEach((token) => {
+      const key = `${token.chainId}-${token.symbol}`;
+      if (!assetMap.has(key)) {
+        assetMap.set(key, {
+          name: token.symbol,
+          symbol: token.symbol,
+          decimals: token.decimals,
+          logo: token.logoUrl,
+          address: '',
+          chain: {
+            chainId: token.chainId,
+            chainKey: token.chainId.toString(),
+          },
+        });
+      }
+    });
+  });
+  const allAssets = Array.from(assetMap.values());
+
+  const values = allPositions
+    .map((position) => position.netUsd || position.assetUsd || 0)
+    .filter((value) => value > 0);
+  const minValue = values.length > 0 ? Math.min(...values) : 0;
+  const maxValue = values.length > 0 ? Math.max(...values) : 0;
+
+  return {
+    allChains,
+    allProtocols,
+    allTypes,
+    allAssets,
+    allAPYRange: {
+      min: 0,
+      max: 0,
+    },
+    allValueRange: {
+      min: Number(minValue.toFixed(2)),
+      max: Number(maxValue.toFixed(2)),
+    },
+  };
+};
+
+export const sanitizeDeFiPositionsFilter = (
+  filter: PortfolioDeFiPositionsFilter,
+  stats: PortfolioDeFiPositionsFilteringParams,
+): Nullable<PortfolioDeFiPositionsFilter> => {
+  if (
+    !stats.allChains.length ||
+    !stats.allProtocols.length ||
+    !stats.allTypes.length ||
+    !stats.allAssets.length
+  ) {
+    return filter;
+  }
+
+  const validChainIds = new Set(stats.allChains.map((c) => c.chainId));
+  const validProtocols = new Set(stats.allProtocols.map((p) => p.name));
+  const validTypes = new Set(stats.allTypes);
+  const validAssets = new Set(stats.allAssets.map((a) => a.name));
+  const { min: apyMin, max: apyMax } = stats.allAPYRange;
+  const { min: valueMin, max: valueMax } = stats.allValueRange;
+
+  return {
+    ...filter,
+    defiChains:
+      filter.defiChains?.filter((id) => validChainIds.has(id)) ?? null,
+    defiProtocols:
+      filter.defiProtocols?.filter((p) => validProtocols.has(p)) ?? null,
+    defiTypes: filter.defiTypes?.filter((t) => validTypes.has(t)) ?? null,
+    defiAssets: filter.defiAssets?.filter((a) => validAssets.has(a)) ?? null,
+    defiMinAPY:
+      filter.defiMinAPY !== undefined
+        ? Math.max(Math.min(filter.defiMinAPY, apyMax), apyMin)
+        : null,
+    defiMaxAPY:
+      filter.defiMaxAPY !== undefined
+        ? Math.max(Math.min(filter.defiMaxAPY, apyMax), apyMin)
+        : null,
+    defiMinValue:
+      filter.defiMinValue !== undefined
+        ? Math.max(Math.min(filter.defiMinValue, valueMax), valueMin)
+        : null,
+    defiMaxValue:
+      filter.defiMaxValue !== undefined
+        ? Math.max(Math.min(filter.defiMaxValue, valueMax), valueMin)
+        : null,
+  };
 };
