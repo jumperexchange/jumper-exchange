@@ -5,10 +5,8 @@ import {
   differenceInMonths,
   differenceInYears,
 } from 'date-fns';
-import { ButtonTransparent } from 'src/components/Button';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { DepositButton } from '../DepositButton/DepositButton';
 import { DepositButtonDisplayMode } from '../DepositButton/DepositButton.types';
 import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
@@ -24,14 +22,14 @@ import type {
   EarnOpportunityRewardEntity,
   MinimalDeFiPosition,
 } from 'src/types/defi';
-import { DepositFlowButton } from '../DepositFlow/DepositFlow';
+import { DepositFlowOnDemandButton } from '../DepositFlow/DepositFlow';
 import {
   StyledButtonAlphaDark,
   StyledPositionActions,
   StyledButtonPrimary,
 } from './DeFiPositionCard.styles';
 import type { TFunction } from 'i18next';
-import { WithdrawFlowButton } from '../WithdrawFlow/WithdrawFlow';
+import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 
 export const formatTimeDifference = (date: string, t: TFunction) => {
   const now = new Date();
@@ -132,30 +130,16 @@ export const renderPositionActions = <T extends MinimalDeFiPosition>({
   t,
 }: RenderCellProps<T>) => (
   <StyledPositionActions direction="row" useFlexGap>
-    <WithdrawFlowButton
+    <WithdrawFlowOnDemandButton
       label={t('portfolio.defiPositionCard.actions.withdraw')}
       fullWidth={isMobile}
-      earnOpportunity={{
-        ...item,
-        // TODO: Remove this once we have a proper way to get these props for a de fi position
-        minFromAmountUSD: 0.99,
-        positionUrl: item.url ?? 'unset',
-        address: item.lpToken.address,
-        rewards: [],
-      }}
+      earnOpportunitySlug={item.slug}
     />
-    <DepositFlowButton
+    <DepositFlowOnDemandButton
       displayMode={DepositButtonDisplayMode.LabelOnly}
       label={t('portfolio.defiPositionCard.actions.deposit')}
       fullWidth={isMobile}
-      earnOpportunity={{
-        ...item,
-        // TODO: Remove this once we have a proper way to get these props for a de fi position
-        minFromAmountUSD: 0.99,
-        positionUrl: item.url ?? 'unset',
-        address: item.lpToken.address,
-        rewards: [],
-      }}
+      earnOpportunitySlug={item.slug}
     />
   </StyledPositionActions>
 );
