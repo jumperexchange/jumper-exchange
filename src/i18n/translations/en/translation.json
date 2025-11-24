@@ -374,6 +374,10 @@
       "getStarted": "Get started",
       "explorePass": "Explore Jumper Pass"
     },
+    "overviewCard": {
+      "title": "Portfolio",
+      "refreshTooltip": "Click here to restart the indexing of your assets."
+    },
     "emptyList": {
       "title": "No results",
       "description": "Unfortunately there are no results for your search, try clearing your filters.",

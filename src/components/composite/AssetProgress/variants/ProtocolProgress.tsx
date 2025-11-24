@@ -1,8 +1,9 @@
-import { FC } from 'react';
-import { ProtocolAssetProgressProps } from '../AssetProgress.types';
+import type { FC } from 'react';
+import type { ProtocolAssetProgressProps } from '../AssetProgress.types';
 import { BaseProgress } from './BaseProgress';
 import {
   Avatar,
+  AvatarPlaceholder,
   AvatarSkeleton,
 } from 'src/components/core/AvatarStack/AvatarStack.styles';
 
@@ -18,6 +19,11 @@ export const ProtocolProgress: FC<
         disableBorder
         variant="circular"
       >
+        {protocol.name ? (
+          <AvatarPlaceholder color="textSecondary">
+            {protocol.name[0].toUpperCase()}
+          </AvatarPlaceholder>
+        ) : null}
         <AvatarSkeleton
           key={protocol.name}
           variant="circular"

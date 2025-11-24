@@ -49,7 +49,7 @@ const PortfolioRefreshBalance: FC<
   return (
     <LightIconButton onClick={onClick} disabled={isLoading} {...other}>
       <Tooltip
-        title={t('navbar.walletMenu.totalBalanceRefresh')}
+        title={t('portfolio.overviewCard.refreshTooltip')}
         placement="top"
         enterTouchDelay={0}
         arrow

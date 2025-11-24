@@ -444,6 +444,10 @@ interface Resources {
         value: 'Value';
         wallet: 'Wallet';
       };
+      overviewCard: {
+        refreshTooltip: 'Click here to restart the indexing of your assets.';
+        title: 'Portfolio';
+      };
       welcome: {
         explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';

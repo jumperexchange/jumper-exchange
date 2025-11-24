@@ -8,7 +8,6 @@ export const PortfolioHeaderSection = () => {
       <Grid
         size={{
           xs: 12,
-          sm: 6,
           md: 7,
         }}
       >
@@ -17,7 +16,6 @@ export const PortfolioHeaderSection = () => {
       <Grid
         size={{
           xs: 12,
-          sm: 6,
           md: 5,
         }}
       >

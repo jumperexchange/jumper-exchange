@@ -10,6 +10,8 @@ import type { MinimalToken } from 'src/types/tokens';
 import type { MinimalDeFiPosition } from 'src/types/defi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useFormatDisplayDeFiPositionsData } from '@/hooks/portfolio/useFormatDisplayDeFiPositionsData';
+import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
+import { ChainType } from '@lifi/sdk';
 
 export const PortfolioHeaderBreakdown = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
@@ -18,7 +20,12 @@ export const PortfolioHeaderBreakdown = () => {
   const { accounts } = useAccount();
   const connectedAddresses = useMemo(() => {
     return accounts
-      .filter((account) => account.isConnected && !!account?.address)
+      .filter(
+        (account) =>
+          account.isConnected &&
+          !!account?.address &&
+          account.chainType === ChainType.EVM,
+      )
       .map((account) => account.address as Hex);
   }, [accounts]);
   const { data: allPositions, isLoading: isLoadingPositions } =
@@ -30,44 +37,31 @@ export const PortfolioHeaderBreakdown = () => {
 
   const isLoading = isLoadingPositions || isFetchingTokens;
 
+  const formattedTokens = useFormatDisplayWalletTokens(allTokens);
+
   const tokens = useMemo<MinimalToken[]>(() => {
-    if (!allTokens || allTokens.length === 0 || !portfolioWelcomeScreenClosed) {
+    if (
+      !formattedTokens ||
+      formattedTokens.length === 0 ||
+      !portfolioWelcomeScreenClosed
+    ) {
       return [];
     }
 
-    return allTokens.map((token) => ({
-      address: token.address,
-      symbol: token.symbol,
-      chain: {
-        chainId: token.chainId,
-        chainKey: 'chainName' in token ? (token.chainName ?? '') : '',
-      },
-      balance: token.cumulatedBalance ?? 0,
-      totalPriceUSD: token.cumulatedTotalUSD ?? 0,
-      relatedTokens: token.chains.map((chain) => ({
-        address: chain.address,
-        symbol: chain.symbol,
-        chain: {
-          chainId: chain.chainId,
-          chainKey: chain.chainName ?? '',
-        },
-        balance: chain.cumulatedBalance ?? 0,
-        totalPriceUSD: chain.totalPriceUSD ?? 0,
-      })),
-    }));
-  }, [allTokens, portfolioWelcomeScreenClosed]);
+    return formattedTokens;
+  }, [formattedTokens, portfolioWelcomeScreenClosed]);
 
-  const positions = useFormatDisplayDeFiPositionsData(
+  const formattedPositions = useFormatDisplayDeFiPositionsData(
     allPositions?.positions ?? [],
   );
 
   const defiPositions = useMemo<MinimalDeFiPosition[]>(() => {
-    if (positions.length === 0 || !portfolioWelcomeScreenClosed) {
+    if (formattedPositions.length === 0 || !portfolioWelcomeScreenClosed) {
       return [];
     }
 
-    return positions;
-  }, [positions, portfolioWelcomeScreenClosed]);
+    return formattedPositions;
+  }, [formattedPositions, portfolioWelcomeScreenClosed]);
 
   return (
     <AssetOverviewCard

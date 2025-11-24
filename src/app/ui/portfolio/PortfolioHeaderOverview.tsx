@@ -7,6 +7,7 @@ import { AnimatedCounter } from 'react-animated-counter';
 import {
   PortfolioHeaderOverviewContainer,
   PortfolioHeaderOverviewContentContainer,
+  PortfolioHeaderOverviewHeaderContainer,
   PortfolioHeaderOverviewValue,
 } from './PortfolioPage.styles';
 import PortfolioRefreshBalance from './PortfolioRefreshBalance';
@@ -15,26 +16,43 @@ import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPos
 import type { Hex } from 'viem';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import Typography from '@mui/material/Typography';
+import { ChainType } from '@lifi/widget';
 
 export const PortfolioHeaderOverview = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
     (state) => state.portfolioWelcomeScreenClosed,
   );
+  const { t } = useTranslation();
   const theme = useTheme();
   const { accounts } = useAccount();
-  const { refetch: refetchPortfolioTokens } = usePortfolioTokens();
+  const {
+    refetch: refetchPortfolioTokens,
+    isFetching: isFetchingPortfolioTokens,
+  } = usePortfolioTokens();
   const { totalValue: totalValuePortfolioTokens } = usePortfolioStore((state) =>
     state.getFormattedCacheTokens(accounts ?? []),
   );
   const connectedAddresses = useMemo(() => {
     return accounts
-      .filter((account) => account.isConnected && !!account?.address)
+      .filter(
+        (account) =>
+          account.isConnected &&
+          !!account?.address &&
+          account.chainType === ChainType.EVM,
+      )
       .map((account) => account.address as Hex);
   }, [accounts]);
-  const { data: allDeFiPositions, refetch: refetchPortfolioDeFiPositions } =
-    usePortfolioDeFiPositions({
-      addresses: connectedAddresses,
-    });
+  const {
+    data: allDeFiPositions,
+    refetch: refetchPortfolioDeFiPositions,
+    isLoading: isLoadingDeFiPositions,
+  } = usePortfolioDeFiPositions({
+    addresses: connectedAddresses,
+  });
+
+  const isLoading = isLoadingDeFiPositions || isFetchingPortfolioTokens;
 
   const totalValue = useMemo(() => {
     if (!portfolioWelcomeScreenClosed) {
@@ -59,6 +77,17 @@ export const PortfolioHeaderOverview = () => {
 
   return (
     <PortfolioHeaderOverviewContainer>
+      <PortfolioHeaderOverviewHeaderContainer>
+        <Typography variant="bodyMediumStrong" color="text.secondary">
+          {t('portfolio.overviewCard.title')}
+        </Typography>
+        <PortfolioRefreshBalance
+          updatedAt={0}
+          timeToUpdate={0}
+          onClick={handleRefresh}
+          isLoading={isLoading && portfolioWelcomeScreenClosed}
+        />
+      </PortfolioHeaderOverviewHeaderContainer>
       <PortfolioHeaderOverviewContentContainer>
         <PortfolioHeaderOverviewValue as="div">
           <>
@@ -84,11 +113,6 @@ export const PortfolioHeaderOverview = () => {
             />
           </>
         </PortfolioHeaderOverviewValue>
-        <PortfolioRefreshBalance
-          updatedAt={0}
-          timeToUpdate={0}
-          onClick={handleRefresh}
-        />
       </PortfolioHeaderOverviewContentContainer>
     </PortfolioHeaderOverviewContainer>
   );

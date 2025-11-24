@@ -130,10 +130,17 @@ export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
   }),
 );
 
-export const PortfolioHeaderOverviewContentContainer = styled(Stack)(
+export const PortfolioHeaderOverviewHeaderContainer = styled(Stack)(
   ({ theme }) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  }),
+);
+
+export const PortfolioHeaderOverviewContentContainer = styled(Stack)(
+  ({ theme }) => ({
+    flexDirection: 'column',
     alignItems: 'start',
   }),
 );
