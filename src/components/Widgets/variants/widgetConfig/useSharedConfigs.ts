@@ -106,6 +106,7 @@ export function useSharedFormConfig(
     formData?.destinationToken?.tokenAddress,
     formData?.fromAmount,
     formData?.toAddress?.walletAddress,
+    formData?.toAddress?.chainType,
     formData?.minFromAmountUSD,
   ]);
 }

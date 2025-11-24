@@ -3,11 +3,9 @@ import { useEffect, useMemo, useRef } from 'react';
 import type { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import type { ZapDataResponse } from '@/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
-import type { Hex } from 'viem';
 import envConfig from '@/config/env-config';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { useMenuStore } from '@/stores/menu';
-import { capitalizeString } from '@/utils/capitalizeString';
 import type { FormState } from '@lifi/widget';
 import {
   useWidgetEvents,
@@ -15,7 +13,6 @@ import {
   LiFiWidget,
   DisabledUI,
 } from '@lifi/widget';
-import { ZapWithdrawSettings } from './ZapWithdrawSettings';
 import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { TaskType } from '@/types/strapi';
 
@@ -49,6 +46,18 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     return zapData?.market?.depositToken.chainId;
   }, [zapData?.market?.depositToken.chainId]);
 
+  useEffect(() => {
+    if (!fromToken || !fromChain) {
+      return;
+    }
+    formRef.current?.setFieldValue('fromToken', fromToken, {
+      setUrlSearchParam: true,
+    });
+    formRef.current?.setFieldValue('fromChain', fromChain, {
+      setUrlSearchParam: true,
+    });
+  }, [fromToken, fromChain]);
+
   const enhancedCtx = useMemo(() => {
     return {
       ...ctx,
@@ -81,13 +90,6 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
-      contractComponent={
-        <ZapWithdrawSettings
-          fromChain={fromChain}
-          fromToken={fromToken}
-          contractCalls={[]}
-        />
-      }
     />
   ) : (
     <WidgetSkeleton />
