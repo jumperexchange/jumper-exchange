@@ -7,6 +7,7 @@ import { useWithdrawFlowStore } from 'src/stores/withdrawFlow/WithdrawFlowStore'
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
 import { WithdrawModal } from '../WithdrawModal/WithdrawModal';
+import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 
 export const WithdrawFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -39,6 +40,47 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
   return (
     <WithdrawButton
       onClick={() => openModal(earnOpportunity, refetchCallback)}
+      label={t('buttons.withdrawButtonLabel')}
+      {...props}
+    />
+  );
+};
+
+export const WithdrawFlowOnDemandButton: FC<
+  Omit<WithdrawFlowButtonProps, 'earnOpportunity'> & {
+    earnOpportunitySlug: string;
+  }
+> = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
+  const { t } = useTranslation();
+  const openModal = useWithdrawFlowStore((state) => state.openModal);
+  const { refetch: fetchEarnOpportunity } =
+    useEarnOpportunityBySlug(earnOpportunitySlug);
+  const handleClick = async () => {
+    try {
+      const { data: earnOpportunity } = await fetchEarnOpportunity();
+      if (!earnOpportunity) {
+        return;
+      }
+      if (!earnOpportunity.lpToken?.address) {
+        console.error('Invalid earn opportunity: missing lpToken.address');
+        return;
+      }
+      openModal(
+        {
+          ...earnOpportunity,
+          minFromAmountUSD: 0.99,
+          positionUrl: earnOpportunity.url ?? 'unset',
+        },
+        refetchCallback,
+      );
+    } catch (error) {
+      //@Note: we'll add a visual feedback to the user if the opportunity is not found in the future
+      console.error('Failed to fetch earn opportunity:', error);
+    }
+  };
+  return (
+    <WithdrawButton
+      onClick={handleClick}
       label={t('buttons.withdrawButtonLabel')}
       {...props}
     />
