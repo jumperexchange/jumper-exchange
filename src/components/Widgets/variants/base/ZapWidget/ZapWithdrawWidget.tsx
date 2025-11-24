@@ -44,17 +44,17 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     }
     return {
       tokenAddress: zapData?.market?.address,
-      tokenSymbol: zapData?.market?.lpToken.symbol,
+      tokenSymbol: zapData?.market?.lpToken.symbol ?? '',
     };
   }, [zapData?.market?.address, zapData?.market?.lpToken.symbol]);
 
   const fromChain = useMemo(() => {
-    if (!projectData?.chainId || !projectData?.chain) {
+    if (!projectData?.chainId) {
       return undefined;
     }
     return {
       chainId: projectData?.chainId,
-      chainKey: projectData?.chain,
+      chainKey: projectData?.chain ?? '',
     };
   }, [projectData?.chainId, projectData?.chain]);
 
