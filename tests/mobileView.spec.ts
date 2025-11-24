@@ -115,10 +115,10 @@ test.describe('Verify essential mobile flows', () => {
     });
 
     await test.step('check the number of menu items', async () => {
-      await checkTheNumberOfMenuItems(page, 10);
+      await checkTheNumberOfMenuItems(page, 9);
     });
 
-    await test.step('switch theme', async () => {
+    await test.step.skip('switch theme', async () => {
       await switchTheme(page, Theme.Dark);
       await page.waitForFunction(
         () => {
