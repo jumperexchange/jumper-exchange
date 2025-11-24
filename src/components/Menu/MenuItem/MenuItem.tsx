@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { MenuItemProps } from './MenuItem.types';
+import type { FC } from 'react';
+import type { MenuItemProps } from './MenuItem.types';
 import { InteractiveMenuItem } from './InteractiveMenuItem';
 import { NonInteractiveMenuItem } from './NonInteractiveMenuItem';
 import { MenuDelimiter } from './MenuItem.style';
@@ -10,7 +10,7 @@ export const MenuItem: FC<MenuItemProps> = ({
   ...rest
 }) => {
   if (isDivider) {
-    return <MenuDelimiter />;
+    return <MenuDelimiter sx={rest.styles} />;
   }
 
   if (isInteractive) {

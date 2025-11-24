@@ -17,10 +17,10 @@ export const LevelButton = () => {
     <LabelButton
       icon={
         <LevelIconBox>
-          <Typography variant="bodyXSmallStrong">{value}</Typography>
+          <Typography variant="bodyXSmallStrong">{value ?? 0}</Typography>
         </LevelIconBox>
       }
-      label={'Pass'}
+      label={t('navbar.pass')}
       href={AppPaths.Profile}
       id="wallet-digest-button-xp"
       isActive={pathname === AppPaths.Profile}
