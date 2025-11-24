@@ -79,6 +79,8 @@ export enum TrackingAction {
   ClickLink3Link = 'action_click_link3_link',
   ClickJumperExchangeLink = 'action_click_jumper_exchange_link',
   ClickJumperMissionsLink = 'action_click_jumper_missions_link',
+  ClickJumperEarnLink = 'action_click_jumper_earn_link',
+  ClickJumperPortfolioLink = 'action_click_jumper_portfolio_link',
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
   ClickJumperScanLink = 'action_click_jumper-scan_link',

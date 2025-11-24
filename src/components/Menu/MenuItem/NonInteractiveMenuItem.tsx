@@ -1,14 +1,20 @@
+import type { SxProps, Theme } from '@mui/material';
 import { MenuItemBaseContainer } from './MenuItem.style';
 import type { MenuItemProps } from './MenuItem.types';
 
 export const NonInteractiveMenuItem = ({
   children,
-}: Pick<MenuItemProps, 'children'>) => {
+  styles,
+}: Pick<MenuItemProps, 'children' | 'styles'>) => {
+  const combinedStyles: SxProps<Theme> = styles
+    ? ([styles, { cursor: 'auto' }] as SxProps<Theme>)
+    : { cursor: 'auto' };
+
   return (
     <MenuItemBaseContainer
       disableRipple
       role="presentation"
-      sx={{ cursor: 'auto' }}
+      sx={combinedStyles}
     >
       {children}
     </MenuItemBaseContainer>

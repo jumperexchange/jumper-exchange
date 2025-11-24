@@ -1,9 +1,15 @@
 import { MainMenu } from 'src/components/Menus/MainMenu/MainMenu';
-import { DotsMenuIcon, NavbarMenuToggleButton } from './Buttons.style';
+import {
+  DotsMenuIcon,
+  BurgerMenuIcon,
+  NavbarMenuToggleButton,
+} from './Buttons.style';
 import { useRef } from 'react';
 import { useMenuStore } from 'src/stores/menu';
+import { useMediaQuery } from '@mui/material';
 
 export const MainMenuToggle = () => {
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const mainMenuAnchor = useRef(null);
 
   const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [
@@ -32,7 +38,7 @@ export const MainMenuToggle = () => {
         aria-haspopup="true"
         onClick={handleOnOpenNavbarMainMenu}
       >
-        <DotsMenuIcon />
+        {isDesktop ? <DotsMenuIcon /> : <BurgerMenuIcon />}
       </NavbarMenuToggleButton>
       <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
     </>

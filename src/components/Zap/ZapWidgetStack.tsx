@@ -1,19 +1,21 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
-import { CustomInformation, Quest } from 'src/types/loyaltyPass';
+import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
+import envConfig from 'src/config/env-config';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -87,6 +89,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
               refetchDepositToken={refetchDepositToken}
               zapData={zapData}
               isZapDataSuccess={isZapDataSuccess}
+              integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ZAP}
             />
           </ClientOnly>
         </Box>

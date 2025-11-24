@@ -190,6 +190,35 @@ interface Resources {
         type: '{{type}} task';
         typeFallback: 'Task';
         typeOptional: 'Optional task';
+        verifyWallet: {
+          action: {
+            connectAndVerify: 'Connect & verify ownership';
+            verifyWallet: 'Verify ownership';
+          };
+          description: {
+            notConnected: 'Connect and sign a message to verify ownership of your wallet address. If you do not want to do this then reach out on <0>Discord</0>.';
+            notVerified: 'Sign a message to verify ownership of the below wallet address. If you do not want to do this then reach out on <0>Discord</0>.';
+            verified: 'You have successfully verified ownership of your wallet address.';
+          };
+          status: {
+            signatureFailed: {
+              description: 'You need to sign the transaction to confirm ownership of the wallet address.';
+              title: 'Signature required';
+              tryAgain: 'Try again';
+            };
+            unknown: {
+              description: 'An unknown error occurred. Please try again.';
+              title: 'Unknown error';
+              tryAgain: 'Try again';
+            };
+            unsupportedWallet: {
+              description: "We don't support this wallet type. Please use a different wallet to complete this mission.";
+              switchWallet: 'Switch wallet';
+              title: 'Unsupported wallet';
+            };
+          };
+          title: 'Verify ownership';
+        };
       };
       wrapperCard: {
         explore_one: 'Explore {{count}} mission';
@@ -281,6 +310,7 @@ interface Resources {
         earn: 'Earn';
         exchange: 'Exchange';
         missions: 'Missions';
+        portfolio: 'Portfolio';
         refuel: 'Gas';
       };
       navbarMenu: {
@@ -294,6 +324,7 @@ interface Resources {
         support: 'Support';
         theme: 'Theme';
       };
+      pass: 'Pass';
       seeAllWallets: 'See all wallets';
       statsCards: {
         bridges: 'Bridges';
@@ -336,6 +367,7 @@ interface Resources {
         };
         wallets: 'Wallets';
       };
+      wallets: 'Wallets';
       welcome: {
         cta: 'Get started';
         subtitle: '<0>4x audited</0> multi-chain liquidity aggregator';
