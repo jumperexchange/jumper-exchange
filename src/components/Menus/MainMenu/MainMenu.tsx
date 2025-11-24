@@ -1,21 +1,51 @@
 import { Menu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem/MenuItem';
-import { Link } from '@/components/Link';
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
-import { Stack } from '@mui/system';
+import Stack from '@mui/material/Stack';
 import { useMainMenuContent } from './hooks';
 import { DevelopersSubmenu } from '@/components/Menus/DevelopersSubMenu/DevelopersSubMenu';
 import { LanguagesSubmenu } from '@/components/Menus/LanguagesSubMenu/LanguageSubMenu';
 import { ThemeModesSubmenu } from '@/components/Menus/ThemeModesSubMenu/ThemeModesSubMenu';
 import { ThemeSubmenu } from '@/components/Menus/ThemeSubMenu/ThemeSubMenu';
 import { useMemo } from 'react';
+import { MenuItemContentHeader } from '@/components/Menu/MenuItemContent/MenuItemContentHeader';
+import { MenuItemContentSocialLink } from '@/components/Menu/MenuItemContent/MenuItemContentSocialLink';
+import { MenuItemContentFooterLink } from '@/components/Menu/MenuItemContent/MenuItemContentFooterLink';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { MenuItemContentWrapper } from '@/components/Menu/MenuItemContent/MenuItemContentWrapper';
+import type { Theme } from '@mui/material/styles';
 
 interface MainMenuProps {
   anchorEl?: HTMLAnchorElement;
 }
 
+const socialLinksDividerStyles = (theme: Theme) => ({
+  marginTop: {
+    xs: 'auto !important',
+    md: theme.spacing(1),
+  },
+  marginBottom: theme.spacing(1),
+});
+
+const socialLinksStyles = {
+  marginTop: '0 !important',
+};
+
+const footerLinksStyles = {
+  height: 'auto !important',
+  paddingBottom: '0 !important',
+  '& > .MuiStack-root': {
+    justifyContent: 'center',
+  },
+};
+
+const mainItemsStackStyles = {
+  overflowY: 'auto',
+};
+
 export const MainMenu = ({ anchorEl }: MainMenuProps) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { mainMenuItems, mainMenuSocialLinks, mainMenuFooterLinks } =
     useMainMenuContent();
   const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
@@ -46,64 +76,54 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
   );
 
   const renderedSocialLinks = useMemo(
-    () => (
-      <MenuItem open isInteractive={false}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          width="100%"
-        >
+    () => [
+      <MenuItem
+        key="divider-social"
+        isDivider
+        open
+        styles={socialLinksDividerStyles}
+      />,
+      <MenuItem
+        key="social-links"
+        open
+        isInteractive={false}
+        styles={socialLinksStyles}
+      >
+        <MenuItemContentWrapper>
           {mainMenuSocialLinks.map((socialLink) => (
-            <Link
+            <MenuItemContentSocialLink
               key={socialLink.label}
-              href={socialLink.link.url}
-              target="_blank"
-              onClick={socialLink.onClick}
-              role="link"
-              aria-label={`${socialLink.label} social link`}
-            >
-              {socialLink.prefixIcon}
-            </Link>
+              link={socialLink}
+            />
           ))}
-        </Stack>
-      </MenuItem>
-    ),
+        </MenuItemContentWrapper>
+      </MenuItem>,
+    ],
     [mainMenuSocialLinks],
   );
 
   const renderedFooterLinks = useMemo(
     () => (
-      <MenuItem open isInteractive={false}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          width="100%"
-        >
+      <MenuItem open isInteractive={false} styles={footerLinksStyles}>
+        <MenuItemContentWrapper>
           {mainMenuFooterLinks.map((footerLink) => (
-            <Link
+            <MenuItemContentFooterLink
               key={footerLink.label}
-              href={footerLink.link.url}
-              onClick={footerLink.onClick}
-              role="link"
-              aria-label={footerLink.label}
-              sx={{
-                color: 'text.secondary',
-                textDecoration: 'none',
-                fontSize: '0.75rem',
-                '&:hover': {
-                  color: 'primary.main',
-                },
-              }}
-            >
-              {footerLink.label}
-            </Link>
+              link={footerLink}
+            />
           ))}
-        </Stack>
+        </MenuItemContentWrapper>
       </MenuItem>
     ),
     [mainMenuFooterLinks],
+  );
+
+  const renderedMainMenuHeader = (
+    <MenuItem open isInteractive={false}>
+      <MenuItemContentWrapper>
+        <MenuItemContentHeader onClose={() => setMainMenuState(false)} />
+      </MenuItemContentWrapper>
+    </MenuItem>
   );
 
   return (
@@ -114,13 +134,17 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
       isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
       anchorEl={anchorEl}
     >
-      {isMainMenuVisible && renderedMainMenuItems}
-      {isMainMenuVisible && renderedSocialLinks}
-      {isMainMenuVisible && renderedFooterLinks}
+      {isMainMenuVisible && isMobile && renderedMainMenuHeader}
+      <Stack sx={mainItemsStackStyles}>
+        {isMainMenuVisible && renderedMainMenuItems}
+      </Stack>
+
       <LanguagesSubmenu />
       <DevelopersSubmenu />
       <ThemeModesSubmenu />
       <ThemeSubmenu />
+      {(isMainMenuVisible || isMobile) && renderedSocialLinks}
+      {(isMainMenuVisible || isMobile) && renderedFooterLinks}
     </Menu>
   );
 };

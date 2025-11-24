@@ -31,7 +31,7 @@ test.describe('Main Menu flows', () => {
     qase(12, 'Should be able to open menu and close it'),
     async ({ page }) => {
       openOrCloseMainMenu(page);
-      await checkTheNumberOfMenuItems(page, 6);
+      await checkTheNumberOfMenuItems(page, 5);
       await page.locator('body').click();
       await expect(page.getByRole('menu')).not.toBeVisible();
     },
@@ -111,7 +111,7 @@ test.describe('Main Menu flows', () => {
 
   test(
     qase(13, 'Should open Resources section inside menu'),
-    async ({ page, context }) => {
+    async ({ page }) => {
       await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Resources');
       await checkTheNumberOfMenuItems(page, 2);
