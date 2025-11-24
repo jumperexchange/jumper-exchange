@@ -69,8 +69,19 @@ export const IconButtonAlpha = styled(IconButton)(({ theme }) => ({
     backgroundColor: theme.palette.alphaDark100.main,
   }),
 }));
+
+export const IconButtonTransparent = styled(IconButton)(({ theme }) => ({
+  backgroundColor: 'transparent',
+  '&:hover': {
+    backgroundColor: 'transparent',
+  },
+  ...theme.applyStyles('light', {
+    backgroundColor: 'transparent',
+  }),
+}));
+
 type IconButtonDynamicProps = IconButtonProps & {
-  variant?: 'primary' | 'secondary' | 'alpha';
+  variant?: 'primary' | 'secondary' | 'alpha' | 'transparent';
 };
 
 export const IconButtonDynamic: React.FC<IconButtonDynamicProps> = ({
@@ -85,6 +96,8 @@ export const IconButtonDynamic: React.FC<IconButtonDynamicProps> = ({
       return <IconButtonSecondary {...props} />;
     case 'alpha':
       return <IconButtonAlpha {...props} />;
+    case 'transparent':
+      return <IconButtonTransparent {...props} />;
     case undefined:
       return <IconButton {...props} />;
   }

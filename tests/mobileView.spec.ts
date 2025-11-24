@@ -115,7 +115,7 @@ test.describe('Verify essential mobile flows', () => {
     });
 
     await test.step('check the number of menu items', async () => {
-      await checkTheNumberOfMenuItems(page, 5);
+      await checkTheNumberOfMenuItems(page, 10);
     });
 
     await test.step.skip('switch theme', async () => {

@@ -12,12 +12,10 @@ import {
 } from './Menu.style';
 
 const paperProps = {
-  sx: (theme: Theme) => ({
+  sx: {
     position: 'absolute',
     backgroundImage: 'none',
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-  }),
+  },
 };
 
 interface MenuProps {
@@ -59,7 +57,7 @@ export const MenuMobile = ({
       disableRestoreFocus
       inert={!open}
     >
-      <MenuPaper show={open} sx={{ height: '100vh' }}>
+      <MenuPaper show={open} sx={{ height: '100dvh' }}>
         <MenuList
           autoFocusItem={open}
           id="main-burger-menu"

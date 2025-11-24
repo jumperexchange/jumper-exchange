@@ -15,7 +15,10 @@ import { walletDigest } from 'src/utils/walletDigest';
 import { AppPaths } from 'src/const/urls';
 import { useTranslation } from 'react-i18next';
 import { usePathnameWithoutLocale } from 'src/hooks/routing/usePathnameWithoutLocale';
-import { isEarnFeatureEnabled } from 'src/app/lib/getFeatureFlag';
+import {
+  isEarnFeatureEnabled,
+  isPortfolioFeatureEnabled,
+} from 'src/app/lib/getFeatureFlag';
 
 export const useLevelDisplayData = () => {
   const activeAccount = useActiveAccountByChainType();
@@ -82,6 +85,7 @@ export const useMainLinks = () => {
   const pathname = usePathnameWithoutLocale();
 
   const isEarnEnabled = isEarnFeatureEnabled();
+  const isPortfolioEnabled = isPortfolioFeatureEnabled();
 
   const links = useMemo(() => {
     const _links: MainLink[] = [
@@ -91,24 +95,35 @@ export const useMainLinks = () => {
         subLinks: [AppPaths.Gas],
         testId: 'navbar-exchange-button',
       },
-      {
-        value: AppPaths.Missions,
-        label: t('navbar.links.missions'),
-        subLinks: [AppPaths.Missions, AppPaths.Campaign, AppPaths.Zap],
-        testId: 'navbar-missions-button',
-      },
     ];
 
-    // if (isEarnEnabled) {
-    //   _links.push({
-    //     value: AppPaths.Earn,
-    //     label: t('navbar.links.earn'),
-    //     subLinks: [AppPaths.Earn],
-    //     testId: 'navbar-earn-button',
-    //   });
-    // }
+    if (isPortfolioEnabled) {
+      _links.push({
+        value: AppPaths.Portfolio,
+        label: t('navbar.links.portfolio'),
+        subLinks: [AppPaths.Portfolio],
+        testId: 'navbar-portfolio-button',
+      });
+    }
+
+    _links.push({
+      value: AppPaths.Missions,
+      label: t('navbar.links.missions'),
+      subLinks: [AppPaths.Missions, AppPaths.Campaign, AppPaths.Zap],
+      testId: 'navbar-missions-button',
+    });
+
+    if (isEarnEnabled) {
+      _links.push({
+        value: AppPaths.Earn,
+        label: t('navbar.links.earn'),
+        subLinks: [AppPaths.Earn],
+        testId: 'navbar-earn-button',
+      });
+    }
+
     return _links;
-  }, [t, isEarnEnabled]);
+  }, [t, isEarnEnabled, isPortfolioEnabled]);
 
   const activeLink = useMemo(
     () =>
