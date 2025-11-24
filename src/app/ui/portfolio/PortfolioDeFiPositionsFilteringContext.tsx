@@ -26,7 +26,7 @@ import {
   removeNullValuesFromFilter,
   sanitizeDeFiPositionsFilter,
 } from './utils';
-import { ChainId } from '@lifi/sdk';
+import { ChainType } from '@lifi/sdk';
 
 export interface PortfolioDeFiPositionsFilteringContextType
   extends PortfolioDeFiPositionsFilteringParams {
@@ -69,7 +69,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
         (account) =>
           account.isConnected &&
           !!account?.address &&
-          account.chainId === ChainId.EVM,
+          account.chainType === ChainType.EVM,
       )
       .map((account) => account.address as Hex);
   }, [accounts]);
