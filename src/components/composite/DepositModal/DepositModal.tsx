@@ -11,6 +11,7 @@ import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlow
 import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
 import { useTheme } from '@mui/material/styles';
 
+import envConfig from 'src/config/env-config';
 interface DepositModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
 }
@@ -52,6 +53,7 @@ export const DepositModal: FC<DepositModalProps> = ({
             isZapDataSuccess={true}
             refetchDepositToken={refetchCallback}
             depositSuccessMessageKey="widget.earn.depositSuccess"
+            integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN}
           />
         </ClientOnly>
       </ModalContainer>
