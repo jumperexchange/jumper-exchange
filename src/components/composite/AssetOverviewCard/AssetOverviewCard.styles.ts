@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { ButtonProps, ButtonTransparent } from 'src/components/Button';
+import type { ButtonProps } from 'src/components/Button';
+import { ButtonTransparent } from 'src/components/Button';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
 export const AssetOverviewCardContainer = styled(SectionCardContainer)(
@@ -46,6 +47,15 @@ export const AssetOverviewNavigationButton = styled(ButtonTransparent, {
         '&.MuiButton-root.MuiButtonBase-root': {
           backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
           color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+        },
+      },
+    },
+    {
+      props: ({ disabled }) => !!disabled,
+      style: {
+        '&.MuiButton-root.MuiButtonBase-root': {
+          backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+          color: (theme.vars || theme).palette.buttonDisabledAction,
         },
       },
     },

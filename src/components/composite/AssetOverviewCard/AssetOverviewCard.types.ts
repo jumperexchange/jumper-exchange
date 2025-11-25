@@ -1,5 +1,5 @@
-import { MinimalDeFiPosition } from 'src/types/defi';
-import { MinimalToken } from 'src/types/tokens';
+import type { MinimalDeFiPosition } from 'src/types/defi';
+import type { MinimalToken } from 'src/types/tokens';
 
 export enum AssetOverviewCardView {
   Overview = 'overview',
@@ -11,6 +11,7 @@ export interface AssetOverviewCardProps {
   tokens: MinimalToken[];
   defiPositions: MinimalDeFiPosition[];
   isLoading?: boolean;
+  showNoContent?: boolean;
 }
 
 export interface AssetOverviewCardOverviewProps

@@ -914,7 +914,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -930,9 +930,10 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-mql2s3-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
-        tabindex="0"
+        disabled=""
+        tabindex="-1"
         type="button"
       >
         portfolio.assetOverviewCard.navigation.defiPositions
@@ -942,8 +943,94 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
       class="MuiBox-root css-1pds7ma"
     >
       <div
-        class="MuiBox-root css-1t4f022"
-      />
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $46K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <span
+                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $0
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -974,9 +1061,10 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-mql2s3-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
-        tabindex="0"
+        disabled=""
+        tabindex="-1"
         type="button"
       >
         portfolio.assetOverviewCard.navigation.defiPositions
@@ -1257,9 +1345,10 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-mql2s3-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
-        tabindex="0"
+        disabled=""
+        tabindex="-1"
         type="button"
       >
         portfolio.assetOverviewCard.navigation.defiPositions
@@ -1379,9 +1468,10 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-mql2s3-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
-        tabindex="0"
+        disabled=""
+        tabindex="-1"
         type="button"
       >
         portfolio.assetOverviewCard.navigation.tokens
@@ -1660,7 +1750,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -1668,9 +1758,10 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m91r1o-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-mql2s3-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
-        tabindex="0"
+        disabled=""
+        tabindex="-1"
         type="button"
       >
         portfolio.assetOverviewCard.navigation.tokens
@@ -1688,8 +1779,106 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
       class="MuiBox-root css-1pds7ma"
     >
       <div
-        class="MuiBox-root css-1t4f022"
-      />
+        class="MuiBox-root css-515ex2"
+      >
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $0
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.tokens
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            />
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-zhco5e"
+        >
+          <div
+            class="MuiBox-root css-xl0s26"
+          >
+            <span
+              class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
+            >
+              $34K
+            </span>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+            >
+              portfolio.assetOverviewCard.overview.defiPositions
+            </p>
+          </div>
+          <div
+            class="MuiStack-root css-5s31b2-MuiStack-root"
+          >
+            <div
+              class="MuiStack-root css-k0vgmj-MuiStack-root"
+            >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Morpho"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Angle"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png"
+                />
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Frax"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png"
+                />
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
+            >
+              +
+              1
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1712,9 +1901,10 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16k908k-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-mql2s3-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
-        tabindex="0"
+        disabled=""
+        tabindex="-1"
         type="button"
       >
         portfolio.assetOverviewCard.navigation.tokens

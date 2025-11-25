@@ -1,8 +1,7 @@
-import {
-  AssetOverviewCardProps,
-  AssetOverviewCardView,
-} from './AssetOverviewCard.types';
-import { FC, useState } from 'react';
+import type { AssetOverviewCardProps } from './AssetOverviewCard.types';
+import { AssetOverviewCardView } from './AssetOverviewCard.types';
+import type { FC } from 'react';
+import { useState } from 'react';
 import {
   AssetOverviewCardContentContainer,
   AssetOverviewCardContainer,
@@ -16,13 +15,18 @@ import { AssetOverviewCardDeFiPositions } from './views/AssetOverviewCardDeFiPos
 import { AssetOverviewNoContent } from './views/AssetOverviewNoContent';
 import { AssetOverviewLoading } from './views/AssetOverviewLoading';
 
-export const AssetOverviewCard: FC<AssetOverviewCardProps> = (props) => {
+export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
+  tokens,
+  defiPositions,
+  isLoading,
+  showNoContent = true,
+}) => {
   const { t } = useTranslation();
   const [view, setView] = useState<AssetOverviewCardView>(
     AssetOverviewCardView.Overview,
   );
 
-  if (props.isLoading) {
+  if (isLoading) {
     return (
       <AssetOverviewCardContainer>
         <AssetOverviewLoading />
@@ -31,7 +35,7 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = (props) => {
   }
 
   const isNoContent =
-    props.tokens.length === 0 && props.defiPositions.length === 0;
+    showNoContent && tokens.length === 0 && defiPositions.length === 0;
 
   if (isNoContent) {
     return (
@@ -48,21 +52,36 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = (props) => {
       case AssetOverviewCardView.Overview: {
         return (
           <AssetOverviewCardOverview
-            tokens={props.tokens}
-            defiPositions={props.defiPositions}
+            tokens={tokens}
+            defiPositions={defiPositions}
           />
         );
       }
       case AssetOverviewCardView.Tokens: {
-        return <AssetOverviewCardTokens tokens={props.tokens} />;
+        return <AssetOverviewCardTokens tokens={tokens} />;
       }
       case AssetOverviewCardView.DeFiPositions: {
-        return (
-          <AssetOverviewCardDeFiPositions defiPositions={props.defiPositions} />
-        );
+        return <AssetOverviewCardDeFiPositions defiPositions={defiPositions} />;
       }
       default: {
         return null;
+      }
+    }
+  };
+
+  const isNavigationButtonDisabled = (_view: AssetOverviewCardView) => {
+    switch (_view) {
+      case AssetOverviewCardView.Overview: {
+        return false;
+      }
+      case AssetOverviewCardView.Tokens: {
+        return tokens.length === 0;
+      }
+      case AssetOverviewCardView.DeFiPositions: {
+        return defiPositions.length === 0;
+      }
+      default: {
+        return false;
       }
     }
   };
@@ -76,6 +95,7 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = (props) => {
             data-testid={`asset-overview-nav-${_view}`}
             onClick={() => setView(_view)}
             isActive={_view === view}
+            disabled={isNavigationButtonDisabled(_view)}
           >
             {t(`portfolio.assetOverviewCard.navigation.${_view}`)}
           </AssetOverviewNavigationButton>

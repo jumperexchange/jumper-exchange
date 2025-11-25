@@ -81,12 +81,14 @@ export const PortfolioHeaderOverview = () => {
         <Typography variant="bodyMediumStrong" color="text.secondary">
           {t('portfolio.overviewCard.title')}
         </Typography>
-        <PortfolioRefreshBalance
-          updatedAt={0}
-          timeToUpdate={0}
-          onClick={handleRefresh}
-          isLoading={isLoading && portfolioWelcomeScreenClosed}
-        />
+        {portfolioWelcomeScreenClosed && (
+          <PortfolioRefreshBalance
+            updatedAt={0}
+            timeToUpdate={0}
+            onClick={handleRefresh}
+            isLoading={isLoading && portfolioWelcomeScreenClosed}
+          />
+        )}
       </PortfolioHeaderOverviewHeaderContainer>
       <PortfolioHeaderOverviewContentContainer>
         <PortfolioHeaderOverviewValue as="div">

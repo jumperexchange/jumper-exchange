@@ -68,6 +68,7 @@ export const PortfolioHeaderBreakdown = () => {
       tokens={tokens}
       defiPositions={defiPositions}
       isLoading={portfolioWelcomeScreenClosed && isLoading}
+      showNoContent={portfolioWelcomeScreenClosed}
     />
   );
 };
