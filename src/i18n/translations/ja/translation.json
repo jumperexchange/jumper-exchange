@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "スワップ",
+      "portfolio": "",
       "missions": "",
       "earn": "",
       "dashboard": "ダッシュボード",
@@ -28,6 +29,8 @@
         "noEcosystemAdapter": "適切なエコシステムアダプタが見つかりませんでした"
       }
     },
+    "pass": "",
+    "wallets": "",
     "seeAllWallets": "すべてのウォレットを見る",
     "navbarMenu": {
       "learn": "",
@@ -424,7 +427,10 @@
       "defiProtocols": "",
       "wallet": "",
       "chain": "",
+      "protocol": "",
+      "type": "",
       "asset": "",
+      "apy": "",
       "value": "",
       "clearAll": "",
       "filterAndSort": "",
