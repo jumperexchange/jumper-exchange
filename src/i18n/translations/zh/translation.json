@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "兑换",
+      "portfolio": "",
       "missions": "",
       "earn": "",
       "dashboard": "面板",
@@ -28,6 +29,8 @@
         "noEcosystemAdapter": ""
       }
     },
+    "pass": "",
+    "wallets": "",
     "seeAllWallets": "查看所有支持的钱包",
     "navbarMenu": {
       "learn": "",
@@ -424,7 +427,10 @@
       "defiProtocols": "",
       "wallet": "",
       "chain": "",
+      "protocol": "",
+      "type": "",
       "asset": "",
+      "apy": "",
       "value": "",
       "clearAll": "",
       "filterAndSort": "",
