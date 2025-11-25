@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Обмін",
+      "portfolio": "",
       "missions": "",
       "earn": "",
       "dashboard": "Дешборд",
@@ -28,6 +29,8 @@
         "noEcosystemAdapter": "Відповідного адаптера для екосистеми не знайдено"
       }
     },
+    "pass": "",
+    "wallets": "",
     "seeAllWallets": "Переглянути всі гаманці",
     "navbarMenu": {
       "learn": "",
@@ -424,7 +427,10 @@
       "defiProtocols": "",
       "wallet": "",
       "chain": "",
+      "protocol": "",
+      "type": "",
       "asset": "",
+      "apy": "",
       "value": "",
       "clearAll": "",
       "filterAndSort": "",
