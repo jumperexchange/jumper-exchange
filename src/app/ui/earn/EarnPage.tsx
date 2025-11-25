@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
@@ -9,6 +9,7 @@ import { GoBack } from 'src/components/composite/GoBack/GoBack';
 import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 
 interface EarnPageProps {
   slug: string;
@@ -44,6 +45,7 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
         <EarnRelatedMarkets relatedMarkets={relatedMarketsData} />
       </EarnDetailsSection>
       <DepositFlowModal />
+      <WithdrawFlowModal />
     </>
   );
 };
