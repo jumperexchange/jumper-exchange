@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatLockupDuration } from 'src/utils/earn/utils';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
-import {
+import type {
   Chain,
   EarnOpportunityWithLatestAnalytics,
   Protocol,
@@ -11,7 +11,7 @@ import {
 } from 'src/types/jumper-backend';
 import { toCompactValue } from 'src/utils/formatNumbers';
 import { isZeroApprox } from 'src/utils/numbers/utils';
-import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
@@ -37,7 +37,7 @@ const buildApyItem = (
     return null;
   }
 
-  const scaledValue = (apy.total * 100).toLocaleString();
+  const scaledValue = toCompactValue(apy.total * 100);
   const formatted = `${scaledValue}%`;
   return {
     key: 'apy',
