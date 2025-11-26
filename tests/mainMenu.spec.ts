@@ -247,7 +247,7 @@ test.describe('Main Menu flows', () => {
       await expect(sendMessageInIframe).not.toBeEnabled();
 
       const messageInput = await iFrameLocator.locator(
-        '[aria-label*="Message"]',
+        'textarea[aria-label*="Message"]',
       );
       await messageInput.focus();
       await messageInput.fill('Hello, how are you?');
