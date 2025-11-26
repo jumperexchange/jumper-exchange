@@ -970,7 +970,7 @@ export interface EarnOpportunityWithScore {
   url?: string;
   description: string;
   tags: string[];
-  rewards: string[];
+  rewards: Token[];
   lpToken: Token;
   slug: string;
   featured: boolean;
