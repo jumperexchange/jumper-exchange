@@ -927,23 +927,34 @@ export interface TokenBalances {
 }
 
 export interface DefiToken {
-  chainId: number;
+  name: string;
   symbol: string;
-  logoUrl: string;
   decimals: number;
-  priceUsd: number;
-  amount: number;
-  amountUsd: number;
+  logo?: string;
+  address: string;
+  chain: Chain;
+  chainType: string;
+  /** The amount of the token in the native currency */
+  amount: string;
+  amountUSD: number;
+  priceUSD: number;
 }
 
 export interface DefiPosition {
+  name: string;
   assetUsd: number;
   debtUsd: number;
   netUsd: number;
   address: string;
-  chainId: number;
-  earn: string;
+  chain: Chain;
+  earn?: string;
+  latest?: EarnOpportunityHistoryItem;
+  /** @format date-time */
+  unlockAt?: string;
+  /** @format date-time */
+  openedAt?: string;
   type: string;
+  protocol: Protocol;
   supplyTokens: DefiToken[];
   borrowTokens: DefiToken[];
   assetTokens: DefiToken[];
@@ -956,10 +967,7 @@ export interface WalletPositions {
 }
 
 export interface MetadataWithUpdatedAt {
-  /**
-   * @format date-time
-   * @example "2025-11-18T14:23:00.000Z"
-   */
+  /** @format date-time */
   updatedAt: string;
 }
 
