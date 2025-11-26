@@ -21,6 +21,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
+import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
@@ -36,6 +37,7 @@ import {
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeVariant } from '@/components/Badge/Badge.styles';
 import * as supportedLanguages from '@/i18n/translations';
+import MuiBadge from '@mui/material/Badge';
 
 interface MenuLink {
   url: string;
@@ -342,6 +344,7 @@ export const useMenuItems = () => {
   const { selectedThemeIcon, selectedThemeMode } = useThemeModesMenuContent();
   const isEarnEnabled = isEarnFeatureEnabled();
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
+  const { supportModalUnreadCount } = useMenuStore((state) => state);
 
   const {
     handleLearnClick,
@@ -393,13 +396,6 @@ export const useMenuItems = () => {
 
     return <Badge label={selectedLanguage} variant={BadgeVariant.Secondary} />;
   }, [i18n.language, isMobile]);
-
-  const discordSupportIcon = useMemo(
-    () => (
-      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
-    ),
-    [theme],
-  );
 
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
@@ -459,7 +455,25 @@ export const useMenuItems = () => {
       },
       {
         label: t('navbar.navbarMenu.support'),
-        prefixIcon: !isMobile ? discordSupportIcon : undefined,
+        prefixIcon: !isMobile ? (
+          supportModalUnreadCount > 0 ? (
+            <MuiBadge
+              color="secondary"
+              variant="dot"
+              sx={(theme) => ({
+                '.MuiBadge-badge': {
+                  backgroundColor: (theme.vars || theme).palette.borderActive,
+                  mt: 0.5,
+                  mr: 0.25,
+                },
+              })}
+            >
+              <SupportRoundedIcon />
+            </MuiBadge>
+          ) : (
+            <SupportRoundedIcon />
+          )
+        ) : undefined,
         showMoreIcon: false,
         onClick: handleSupportClick,
       },
@@ -511,7 +525,7 @@ export const useMenuItems = () => {
     selectedThemeIcon,
     themeSuffixIcon,
     languageSuffixIcon,
-    discordSupportIcon,
+    supportModalUnreadCount,
     handleLearnClick,
     handleScanClick,
     handleSupportClick,
