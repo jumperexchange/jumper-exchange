@@ -35,7 +35,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
         <span
           class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
         >
-          metamorpho
+          Moonwell Flagship USDC on base
         </span>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
@@ -144,7 +144,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
         <span
           class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
         >
-          metamorpho
+          Moonwell Flagship USDC on base
         </span>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
@@ -272,7 +272,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
         <span
           class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
         >
-          metamorpho
+          Moonwell Flagship USDC on base
         </span>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"

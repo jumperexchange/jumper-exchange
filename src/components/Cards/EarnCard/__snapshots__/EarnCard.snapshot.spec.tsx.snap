@@ -145,7 +145,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
             data-testid="entity-chain-stack-title"
           >
-            metamorpho
+            Moonwell Flagship USDC on base
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -454,7 +454,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
               data-testid="entity-chain-stack-title"
             >
-              metamorpho
+              Moonwell Flagship USDC on base
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -808,7 +808,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
             data-testid="entity-chain-stack-title"
           >
-            metamorpho
+            Moonwell Flagship USDC on base
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1139,7 +1139,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
             data-testid="entity-chain-stack-title"
           >
-            metamorpho
+            Moonwell Flagship USDC on base
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1385,7 +1385,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
             data-testid="entity-chain-stack-title"
           >
-            metamorpho
+            Moonwell Flagship USDC on base
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1606,7 +1606,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
               class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
               data-testid="entity-chain-stack-title"
             >
-              metamorpho
+              Moonwell Flagship USDC on base
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1856,7 +1856,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
             data-testid="entity-chain-stack-title"
           >
-            metamorpho
+            Moonwell Flagship USDC on base
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2042,7 +2042,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
             class="MuiTypography-root MuiTypography-titleXSmall css-10j8ruw-MuiTypography-root"
             data-testid="entity-chain-stack-title"
           >
-            metamorpho
+            Moonwell Flagship USDC on base
           </span>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
