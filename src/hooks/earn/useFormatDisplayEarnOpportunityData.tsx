@@ -9,7 +9,8 @@ import type {
   Protocol,
   Token,
 } from 'src/types/jumper-backend';
-import { toCompactValue } from 'src/utils/formatNumbers';
+import { formatApy } from 'src/utils/numbers/apy';
+import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
 import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
@@ -37,11 +38,10 @@ const buildApyItem = (
     return null;
   }
 
-  const scaledValue = toCompactValue(apy.total * 100);
-  const formatted = `${scaledValue}%`;
+  const formatted = formatApy(apy.total);
   return {
     key: 'apy',
-    dataTestId: `apy-${scaledValue}`,
+    dataTestId: `apy-${apy.total}`,
     label: t('labels.apy'),
     value: formatted,
     tooltip: t('tooltips.apy'),
@@ -80,12 +80,11 @@ const buildTvlItem = (
     return null;
   }
 
-  const compactValue = toCompactValue(tvlUsdNumber);
-  const formatted = `$${compactValue}`;
+  const formatted = formatTvl(tvlUsdNumber);
 
   return {
     key: 'tvl',
-    dataTestId: `tvl-${compactValue}`,
+    dataTestId: `tvl-${tvlUsdNumber}`,
     label: t('labels.tvl'),
     value: formatted,
     tooltip: t('tooltips.tvl'),

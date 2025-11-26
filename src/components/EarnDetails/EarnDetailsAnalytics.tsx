@@ -12,6 +12,9 @@ import { LineChart } from '../core/charts/LineChart/LineChart';
 import { useAnalyticsChartData, useAnalyticsQuery } from './hooks';
 import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 import { capitalizeString } from 'src/utils/capitalizeString';
+import type { ValueFormatConfig } from 'src/utils/formatNumbers';
+import { APY_FORMAT_CONFIG } from 'src/utils/numbers/apy';
+import { TVL_FORMAT_CONFIG } from 'src/utils/numbers/tvl';
 
 interface EarnDetailsAnalyticsProps {
   slug: string;
@@ -22,6 +25,12 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
 }) => {
   const { isLoading, error, data, value, range, setValue, setRange } =
     useAnalyticsQuery(slug);
+
+  const valueFormatConfig = useMemo<ValueFormatConfig>(() => {
+    return value === AnalyticsValueFieldEnum.APY
+      ? APY_FORMAT_CONFIG
+      : TVL_FORMAT_CONFIG;
+  }, [value]);
 
   const {
     data: chartData,
@@ -65,7 +74,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
           data={chartData}
           dateFormat={chartDateFormat}
           dataSetId={value}
-          dataSetValueAppend={value === AnalyticsValueFieldEnum.APY ? '%' : ''}
+          valueFormatConfig={valueFormatConfig}
           theme={chartTheme}
           data-testid="analytics-chart"
         />
