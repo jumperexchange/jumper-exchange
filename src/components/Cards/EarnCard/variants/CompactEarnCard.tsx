@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { chunk } from 'lodash';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -12,7 +12,7 @@ import {
   CompactEarnCardHeaderContainer,
   CompactEarnCardTagContainer,
 } from '../EarnCard.styles';
-import { EarnCardProps } from '../EarnCard.types';
+import type { EarnCardProps } from '../EarnCard.types';
 import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
@@ -31,7 +31,9 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     data,
     'compact',
   );
-  const { protocol, forYou, tags, lpToken } = data ?? {};
+  const { protocol, forYou, tags, lpToken, name } = data ?? {};
+
+  const title = name || protocol?.product || protocol?.name;
 
   const items = overviewItems.map((item, index) => {
     const shouldExpand =
@@ -82,6 +84,9 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
             variant={EntityChainStackVariant.Protocol}
             protocol={protocol}
             chains={chains}
+            content={{
+              title,
+            }}
           />
           {chunk(items, 2).map((itemsChunk, index) => (
             <Grid

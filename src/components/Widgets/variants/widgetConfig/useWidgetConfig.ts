@@ -67,7 +67,7 @@ export function useWidgetConfig<T extends WidgetType>(
       default:
         throw new Error(`Unknown widget type: ${type}`);
     }
-  }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig]);
+  }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig, type]);
 
   // Merge all configurations
   return useMemo(() => {

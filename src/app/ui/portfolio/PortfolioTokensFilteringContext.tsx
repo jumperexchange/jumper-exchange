@@ -12,21 +12,21 @@ import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
 import type { CacheToken } from 'src/types/portfolio';
 import { isEqual } from 'lodash';
 import {
-  extractFilteringParams,
+  extractTokensFilteringParams,
   removeNullValuesFromFilter,
-  sanitizeFilter,
-  searchParamsParsers,
-  filterPortfolioData,
+  sanitizeTokensFilter,
+  tokensSearchParamsParsers,
+  filterPortfolioTokensData,
 } from './utils';
-import { EMPTY_FILTERING_PARAMS } from './constants';
+import { EMPTY_TOKENS_FILTERING_PARAMS } from './constants';
 import type {
-  PortfolioFilteringParams,
+  PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
   PortfolioTokensFilterUI,
 } from './types';
 
 export interface PortfolioTokensFilteringContextType
-  extends PortfolioFilteringParams {
+  extends PortfolioTokensFilteringParams {
   filter: PortfolioTokensFilterUI;
   updateFilter: (filter: PortfolioTokensFilterUI) => void;
   data: CacheToken[];
@@ -51,7 +51,7 @@ export const PortfolioTokensFilteringProvider = ({
   children: React.ReactNode;
 }) => {
   const [searchParamsState, setSearchParamsState] = useQueryStates(
-    searchParamsParsers,
+    tokensSearchParamsParsers,
     {
       history: 'replace',
     },
@@ -62,7 +62,9 @@ export const PortfolioTokensFilteringProvider = ({
   }, [searchParamsState]);
 
   const [filter, setFilter] = useState<PortfolioTokensFilter>(initialFilter);
-  const prevStatsRef = useRef<PortfolioFilteringParams>(EMPTY_FILTERING_PARAMS);
+  const prevStatsRef = useRef<PortfolioTokensFilteringParams>(
+    EMPTY_TOKENS_FILTERING_PARAMS,
+  );
 
   const {
     queriesByAddress,
@@ -73,12 +75,12 @@ export const PortfolioTokensFilteringProvider = ({
   } = usePortfolioTokens();
 
   // Extract filtering parameters from all unfiltered data
-  const stats = useMemo((): PortfolioFilteringParams => {
+  const stats = useMemo((): PortfolioTokensFilteringParams => {
     if (!allData || allData.length === 0) {
-      return EMPTY_FILTERING_PARAMS;
+      return EMPTY_TOKENS_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(allData, accounts);
+    return extractTokensFilteringParams(allData, accounts);
   }, [allData, accounts]);
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export const PortfolioTokensFilteringProvider = ({
 
     prevStatsRef.current = stats;
 
-    const sanitized = sanitizeFilter(filter, stats);
+    const sanitized = sanitizeTokensFilter(filter, stats);
     const cleanedSanitized = removeNullValuesFromFilter(sanitized);
 
     if (!isEqual(cleanedSanitized, filter)) {
@@ -98,13 +100,13 @@ export const PortfolioTokensFilteringProvider = ({
   }, [stats, setSearchParamsState, setFilter, filter]);
 
   const filteredData = useMemo(() => {
-    return filterPortfolioData(queriesByAddress, filter);
+    return filterPortfolioTokensData(queriesByAddress, filter);
   }, [queriesByAddress, filter]);
 
   const updateFilter = useCallback(
     (newFilter: PortfolioTokensFilter) => {
       const newFilterValue = { ...filter, ...newFilter };
-      const sanitized = sanitizeFilter(newFilterValue, stats);
+      const sanitized = sanitizeTokensFilter(newFilterValue, stats);
       const cleanedSanitized = removeNullValuesFromFilter(sanitized);
       setFilter(cleanedSanitized);
       setSearchParamsState(sanitized);

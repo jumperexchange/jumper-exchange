@@ -6,6 +6,7 @@ import { useState } from 'react';
 import type { PortfolioFilterBarTab } from './types';
 import { PortfolioDeFiProtocolsList } from './PortfolioDeFiProtocolsList';
 import { PortfolioTokensList } from './PortfolioTokensList';
+import { PortfolioDeFiPositionsFilteringProvider } from './PortfolioDeFiPositionsFilteringContext';
 
 const PortfolioAssetsSectionInner = () => {
   const [tab, setTab] = useState<PortfolioFilterBarTab>('tokens');
@@ -24,7 +25,9 @@ const PortfolioAssetsSectionInner = () => {
 export const PortfolioAssetsSection = () => {
   return (
     <PortfolioTokensFilteringProvider>
-      <PortfolioAssetsSectionInner />
+      <PortfolioDeFiPositionsFilteringProvider>
+        <PortfolioAssetsSectionInner />
+      </PortfolioDeFiPositionsFilteringProvider>
     </PortfolioTokensFilteringProvider>
   );
 };

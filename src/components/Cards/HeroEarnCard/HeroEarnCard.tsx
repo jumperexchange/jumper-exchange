@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Trans } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
@@ -16,7 +16,7 @@ import {
 import { HeroEarnCardSkeleton } from './HeroEarnCardSkeleton';
 import { HeroHighlight } from './HeroHighlight';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -69,7 +69,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   // TODO: LF-14990: Complex Top Opportunity rendering
   // For now we're rendering the same text all the time, ideally
   // we'd use custom tags like "IsBest" + "Lending" to render different texts
-  const { asset, protocol, forYou, tags, latest } = data;
+  const { asset, protocol, forYou, tags, latest, name } = data;
 
   const assets = [asset];
   const chains = uniqBy(
@@ -77,6 +77,8 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
     'chainId',
   );
   const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
+
+  const title = name || protocol.product || protocol.name;
 
   return (
     <ConditionalLink href={href} sx={{ width: '100%' }}>
@@ -131,6 +133,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
               protocolSize={AvatarSize.XXL}
               chainsSize={AvatarSize.SM}
               content={{
+                title,
                 titleVariant: isMobile ? 'bodyLargeStrong' : 'titleXSmall',
               }}
             />

@@ -23,7 +23,7 @@ export function useZapWidgetConfig(
       },
 
       // Additional zap-specific config
-      buildUrl: true,
+      buildUrl: false,
       useRecommendedRoute: true,
       // contractCompactComponent: <></>,
 
