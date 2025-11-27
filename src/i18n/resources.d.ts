@@ -425,6 +425,11 @@ interface Resources {
           opened: 'Opened';
         };
       };
+      emptyList: {
+        clearFilters: 'Clear filters';
+        description: 'Unfortunately there are no results for your search, try clearing your filters.';
+        title: 'No results';
+      };
       filter: {
         apy: 'APY';
         asset: 'Asset';

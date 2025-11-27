@@ -1,4 +1,4 @@
-import { SxProps, Theme } from '@mui/material/styles';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 export type TData = string | string[] | number[];
 
@@ -35,6 +35,7 @@ export interface SelectBaseProps<T extends TData> {
   debounceMs?: number;
   menuPlacementX?: 'left' | 'right';
   'data-testid'?: string;
+  disabled?: boolean;
 }
 
 export interface MultiSelectProps<T extends string[]>

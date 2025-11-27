@@ -374,6 +374,11 @@
       "getStarted": "Get started",
       "explorePass": "Explore Jumper Pass"
     },
+    "emptyList": {
+      "title": "No results",
+      "description": "Unfortunately there are no results for your search, try clearing your filters.",
+      "clearFilters": "Clear filters"
+    },
     "assetOverviewCard": {
       "navigation": {
         "overview": "Overview",

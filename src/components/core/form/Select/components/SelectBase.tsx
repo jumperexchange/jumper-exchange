@@ -1,5 +1,6 @@
-import { SelectBaseProps, TData } from '../Select.types';
-import { PropsWithChildren, useCallback, useState } from 'react';
+import type { SelectBaseProps, TData } from '../Select.types';
+import type { PropsWithChildren } from 'react';
+import { useCallback, useState } from 'react';
 import {
   StyledSelect,
   StyledSelectorContainer,
@@ -9,7 +10,7 @@ import {
 } from '../Select.styles';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import CheckIcon from '@mui/icons-material/Check';
-import { SelectProps } from '@mui/material/Select';
+import type { SelectProps } from '@mui/material/Select';
 import { SelectorLabel } from './SelectLabel';
 import Fade from '@mui/material/Fade';
 
@@ -25,6 +26,7 @@ export const SelectBase = <T extends TData>({
   children,
   options,
   value,
+  disabled,
   selectorContent,
   menuPlacementX = 'left',
   ...rest
@@ -43,11 +45,12 @@ export const SelectBase = <T extends TData>({
     <StyledSelect
       {...rest}
       value={value}
+      disabled={disabled}
       open={isOpen}
       onOpen={handleOpen}
       onClose={handleClose}
       renderValue={() => (
-        <StyledSelectorContainer>
+        <StyledSelectorContainer disabled={disabled}>
           <StyledSelectorContentContainer>
             {selectorContent}
             <KeyboardArrowDownRoundedIcon
