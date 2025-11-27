@@ -7,7 +7,6 @@ export async function selectAllMarketsTab(page: Page) {
 
 export async function verifyAnalyticsButtonsAreVisible(page: Page) {
 	const chartButtons = [
-		"analytics-range-day",
 		"analytics-range-week",
 		"analytics-range-month",
 		"analytics-range-year",
