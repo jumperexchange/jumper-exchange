@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import Container from '@mui/material/Container';
 
 export const PageContainer: FC<PropsWithChildren> = ({ children }) => {
@@ -7,7 +7,6 @@ export const PageContainer: FC<PropsWithChildren> = ({ children }) => {
       sx={{
         px: { xs: 2, md: 4 },
         mt: 6,
-        pb: { xs: 12, md: 5.5 },
         // We need to cover a width of 1080px + paddingX
         maxWidth: '1144px !important',
         position: 'relative',
