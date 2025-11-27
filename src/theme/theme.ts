@@ -209,6 +209,7 @@ declare module '@mui/material/styles' {
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
+    title2XLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -247,6 +248,7 @@ declare module '@mui/material/styles' {
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
+    title2XLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -286,6 +288,7 @@ declare module '@mui/material/Typography' {
     titleXSmall: true;
     title2XSmall: true;
     titleLarge: true;
+    title2XLarge: true;
     urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
@@ -324,6 +327,7 @@ declare module '@mui/material/Typography' {
     titleXSmall: true;
     title2XSmall: true;
     titleLarge: true;
+    title2XLarge: true;
     urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
@@ -836,6 +840,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         fontStyle: 'normal',
         fontWeight: 700,
         lineHeight: '64px',
+      },
+      title2XLarge: {
+        fontFamily: inter.style.fontFamily,
+        fontSize: '64px',
+        fontStyle: 'normal',
+        fontWeight: 700,
+        lineHeight: '72px',
       },
       titleXSmall: {
         fontFamily: inter.style.fontFamily,

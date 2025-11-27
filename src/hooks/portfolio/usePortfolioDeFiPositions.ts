@@ -14,6 +14,7 @@ export interface Result {
   isLoading: boolean;
   isSuccess: boolean;
   error: unknown | null;
+  refetch: () => void;
 }
 
 export const usePortfolioDeFiPositions = ({ addresses }: Props): Result => {
@@ -46,10 +47,15 @@ export const usePortfolioDeFiPositions = ({ addresses }: Props): Result => {
     return { positions: allPositions };
   }, [queries, isSuccess]);
 
+  const refetch = () => {
+    queries.forEach((query) => query.refetch());
+  };
+
   return {
     data,
     isLoading,
     isSuccess,
     error,
+    refetch,
   };
 };
