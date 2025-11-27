@@ -3,11 +3,9 @@ import { useEffect, useMemo, useRef } from 'react';
 import type { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import type { ZapDataResponse } from '@/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
-import type { Hex } from 'viem';
 import envConfig from '@/config/env-config';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { useMenuStore } from '@/stores/menu';
-import { capitalizeString } from '@/utils/capitalizeString';
 import type { FormState } from '@lifi/widget';
 import {
   useWidgetEvents,
@@ -15,7 +13,6 @@ import {
   LiFiWidget,
   DisabledUI,
 } from '@lifi/widget';
-import { ZapWithdrawSettings } from './ZapWithdrawSettings';
 import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { TaskType } from '@/types/strapi';
 
@@ -42,12 +39,24 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   ]);
 
   const fromToken = useMemo(() => {
-    return zapData?.market?.address;
-  }, [zapData?.market?.address]);
+    if (!zapData?.market?.address) {
+      return undefined;
+    }
+    return {
+      tokenAddress: zapData?.market?.address,
+      tokenSymbol: zapData?.market?.lpToken.symbol ?? '',
+    };
+  }, [zapData?.market?.address, zapData?.market?.lpToken.symbol]);
 
   const fromChain = useMemo(() => {
-    return zapData?.market?.depositToken.chainId;
-  }, [zapData?.market?.depositToken.chainId]);
+    if (!projectData?.chainId) {
+      return undefined;
+    }
+    return {
+      chainId: projectData?.chainId,
+      chainKey: projectData?.chain ?? '',
+    };
+  }, [projectData?.chainId, projectData?.chain]);
 
   const enhancedCtx = useMemo(() => {
     return {
@@ -57,8 +66,12 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
       keyPrefix: 'zap.backend',
       disabledUI: [DisabledUI.FromToken],
+      formData: {
+        sourceToken: fromToken,
+        sourceChain: fromChain,
+      },
     };
-  }, [ctx]);
+  }, [ctx, fromToken, fromChain]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
@@ -81,13 +94,6 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       formRef={formRef}
       config={widgetConfig}
       integrator={widgetConfig.integrator}
-      contractComponent={
-        <ZapWithdrawSettings
-          fromChain={fromChain}
-          fromToken={fromToken}
-          contractCalls={[]}
-        />
-      }
     />
   ) : (
     <WidgetSkeleton />

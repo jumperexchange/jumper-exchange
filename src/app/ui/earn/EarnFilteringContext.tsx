@@ -1,4 +1,5 @@
-import { useRouter, useSearchParams } from 'next/navigation';
+import { isEqual } from 'lodash';
+import { useQueryStates } from 'nuqs';
 import {
   createContext,
   useCallback,
@@ -7,12 +8,12 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useQueryStates } from 'nuqs';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type { Hex } from 'viem';
 import {
+  enrichDataWithFlag,
   extractFilteringParams,
   removeNullValuesFromFilter,
   sanitizeFilter,
@@ -21,13 +22,11 @@ import {
 import { EMPTY_FILTERING_PARAMS } from './constants';
 import type {
   EarnFilteringParams,
-  EarnOpportunityFilterUI,
   EarnOpportunityFilterWithoutSortByAndOrder,
   NullableFields,
   SortByEnum,
 } from './types';
 import { SortByOptions } from './types';
-import { isEqual } from 'lodash';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -41,6 +40,7 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   toggleForYou: () => void;
   totalMarkets: number;
   data: EarnOpportunityWithLatestAnalytics[];
+  updatedAt: Date | undefined;
   isLoading: boolean;
   error: unknown | null;
   isAllDataLoading: boolean;
@@ -61,6 +61,7 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   allTags: [],
   allAPY: {},
   data: [],
+  updatedAt: undefined,
   isLoading: false,
   error: null,
   isAllDataLoading: false,
@@ -115,15 +116,25 @@ export const EarnFilteringProvider = ({
     filter: {},
   });
 
-  const totalMarkets = allNoFilter.data?.length ?? 0;
+  const forYouData = useMemo(() => forYou.data?.data ?? [], [forYou.data]);
+  const forYouUpdatedAt = forYou.data?.meta?.updatedAt ?? undefined;
+
+  const allData = useMemo(() => all.data?.data ?? [], [all.data]);
+
+  const allNoFilterData = useMemo(
+    () => allNoFilter.data?.data ?? [],
+    [allNoFilter.data],
+  );
+
+  const totalMarkets = allNoFilterData.length;
 
   const stats = useMemo((): EarnFilteringParams => {
-    if (!allNoFilter.data || allNoFilter.data.length === 0) {
+    if (allNoFilterData.length === 0) {
       return EMPTY_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(allNoFilter.data);
-  }, [allNoFilter.data]);
+    return extractFilteringParams(allNoFilterData);
+  }, [allNoFilterData]);
 
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);
@@ -157,6 +168,15 @@ export const EarnFilteringProvider = ({
     [setSortBy, setSearchParamsState],
   );
 
+  const data = useMemo(() => {
+    const sourceData = showForYou ? forYou.data?.data : all.data?.data;
+    const forYouSlugsSet = new Set(
+      (forYou.data?.data ?? []).map((item) => item.slug),
+    );
+
+    return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
+  }, [showForYou, forYou.data, all.data]);
+
   const context: EarnFilteringContextType = {
     sortBy,
     setSortBy: updateSortBy,
@@ -166,7 +186,8 @@ export const EarnFilteringProvider = ({
     usedYourAddress,
     toggleForYou,
     totalMarkets,
-    data: (showForYou ? forYou.data : all.data) ?? [],
+    data,
+    updatedAt: showForYou ? forYouUpdatedAt : undefined,
     isLoading: showForYou ? forYou.isLoading || !address : all.isLoading,
     error: (showForYou ? forYou.error : all.error) ?? null,
     isAllDataLoading: allNoFilter.isLoading,

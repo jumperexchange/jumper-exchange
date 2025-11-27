@@ -38,7 +38,7 @@ interface Resources {
     };
     buttons: {
       depositButtonLabel: 'Quick deposit';
-      managePositionsButtonLabel: 'Manage Positions';
+      managePositionsButtonLabel: 'Manage positions';
       withdrawButtonLabel: 'Withdraw';
     };
     campaign: {

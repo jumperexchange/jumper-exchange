@@ -1,5 +1,5 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -11,7 +11,7 @@ import {
   ListItemEarnCardTagContainer,
   ListItemEarnContentWrapper,
 } from '../EarnCard.styles';
-import { EarnCardProps } from '../EarnCard.types';
+import type { EarnCardProps } from '../EarnCard.types';
 import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
@@ -31,7 +31,8 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     data,
     'list-item',
   );
-  const { protocol, forYou, tags, lpToken } = data ?? {};
+  const { protocol, forYou, tags, lpToken, name } = data ?? {};
+  const title = name || protocol?.product || protocol?.name;
 
   const items = overviewItems.map((item) => (
     <ListItemTooltipBadge
@@ -61,6 +62,9 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
             chains={chains}
             protocolSize={AvatarSize.XXL}
             chainsSize={AvatarSize.SM}
+            content={{
+              title,
+            }}
           />
           {isMobile && primaryAction}
           <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">

@@ -1,8 +1,9 @@
 'use client';
 
-import { FC, useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'motion/react';
-import { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
   EarnFilteringProvider,
@@ -12,6 +13,7 @@ import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCa
 import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 
 const EarnOpportunitiesAllInner = () => {
   const { data, isLoading, error, isAllDataLoading } = useEarnFiltering();
@@ -61,6 +63,7 @@ const EarnOpportunitiesAllInner = () => {
         </Stack>
       </SectionCardContainer>
       <DepositFlowModal />
+      <WithdrawFlowModal />
     </>
   );
 };

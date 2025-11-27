@@ -502,7 +502,7 @@
   "buttons": {
     "depositButtonLabel": "Quick deposit",
     "withdrawButtonLabel": "Withdraw",
-    "managePositionsButtonLabel": "Manage Positions"
+    "managePositionsButtonLabel": "Manage positions"
   },
   "modal": {
     "perks": {

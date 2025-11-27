@@ -1,11 +1,11 @@
 import { map, uniqBy, uniq, sortBy, fromPairs } from 'lodash';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import {
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
-  OrderOptions,
-  SortByOptions,
 } from './types';
+import { OrderOptions, SortByOptions } from './types';
+import type { Nullable } from 'nuqs';
 import {
   parseAsStringEnum,
   parseAsBoolean,
@@ -13,7 +13,6 @@ import {
   parseAsInteger,
   parseAsString,
   parseAsFloat,
-  Nullable,
 } from 'nuqs';
 
 export const searchParamsParsers = {
@@ -111,4 +110,19 @@ export const sanitizeFilter = (
         ? Math.max(Math.min(filter.maxAPY, apyMax), apyMin)
         : null,
   };
+};
+
+export const enrichDataWithFlag = <
+  T extends { slug: string },
+  K extends { [P in keyof T]: T[P] extends boolean ? P : never }[keyof T] &
+    string,
+>(
+  data: T[] | undefined,
+  flagName: K,
+  matchingSlugs: Set<string>,
+): T[] => {
+  return (data ?? []).map((item) => ({
+    ...item,
+    [flagName]: matchingSlugs.has(item.slug),
+  })) as T[];
 };
