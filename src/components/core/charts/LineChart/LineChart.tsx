@@ -9,7 +9,10 @@ import {
   ReferenceLine,
 } from 'recharts';
 import { CustomTooltip } from './CustomTooltip';
-import { toCompactValue } from 'src/utils/formatNumbers';
+import {
+  formatValueWithConfig,
+  type ValueFormatConfig,
+} from 'src/utils/formatNumbers';
 import { formatDateLocalized } from 'src/utils/formatDateLocalized';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import {
@@ -21,7 +24,8 @@ import {
 import { useCallback, useMemo, useRef } from 'react';
 import type { HTMLAttributes } from 'react';
 import { AREA_CONFIG } from './constants';
-import { ActiveDotProps } from 'recharts/types/util/types';
+
+import type { ActiveDotProps } from 'recharts/types/util/types';
 
 const StyledResponsiveContainer = styled(ResponsiveContainer, {
   shouldForwardProp: (prop) => prop !== 'enableCrosshair',
@@ -33,13 +37,15 @@ const StyledResponsiveContainer = styled(ResponsiveContainer, {
   },
 }));
 
-export interface ChartDataPoint<V> {
+export interface ChartDataPoint<V extends number | string = number | string> {
   date: string;
   value: V;
 }
 
-export interface LineChartProps<V, T extends ChartDataPoint<V>>
-  extends HTMLAttributes<HTMLDivElement> {
+export interface LineChartProps<
+  V extends number | string = number | string,
+  T extends ChartDataPoint<V> = ChartDataPoint<V>,
+> extends HTMLAttributes<HTMLDivElement> {
   data: T[];
   theme: {
     lineColor?: string;
@@ -49,7 +55,7 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>>
   };
   dateFormat?: string;
   dataSetId?: string;
-  dataSetValueAppend?: string;
+  valueFormatConfig?: ValueFormatConfig;
   isLoading?: boolean;
   enableCrosshair?: boolean;
   enableGridY?: boolean;
@@ -58,12 +64,15 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>>
   enableTooltip?: boolean;
 }
 
-export const LineChart = <V, T extends ChartDataPoint<V>>({
+export const LineChart = <
+  V extends number | string = number | string,
+  T extends ChartDataPoint<V> = ChartDataPoint<V>,
+>({
   data,
   theme,
   dateFormat,
   dataSetId,
-  dataSetValueAppend,
+  valueFormatConfig,
   enableCrosshair = true,
   enableGridY = true,
   enableXAxis = true,
@@ -91,19 +100,28 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
     [dateFormat],
   );
 
-  const valueFormatter = useCallback((value: T) => {
-    if (!value || isNaN(Number(value))) {
-      return value.toString();
-    }
+  const valueFormatter = useCallback(
+    (value: V) => {
+      const numValue = Number(value);
 
-    const numberValue = Number(value);
+      if (!value || isNaN(numValue)) {
+        return '';
+      }
 
-    if (numberValue === 0) {
-      return '';
-    }
+      if (numValue === 0) {
+        return '';
+      }
 
-    return toCompactValue(numberValue).toString();
-  }, []);
+      if (!valueFormatConfig) {
+        return value.toString();
+      }
+
+      return formatValueWithConfig(numValue, valueFormatConfig, {
+        includePrefixSuffix: false,
+      });
+    },
+    [valueFormatConfig],
+  );
 
   const yAxisTickValues = useMemo(() => {
     return calculateEvenYAxisTicks(minValue, maxValue);
@@ -223,7 +241,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
                             y={0}
                             transform={transform}
                             dataSetId={dataSetId}
-                            dataSetValueAppend={dataSetValueAppend}
+                            valueFormatConfig={valueFormatConfig}
                           />
                         </foreignObject>
                       )}

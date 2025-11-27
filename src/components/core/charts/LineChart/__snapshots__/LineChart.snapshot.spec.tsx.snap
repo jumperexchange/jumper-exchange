@@ -728,7 +728,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  84
+                  83.77
                 </tspan>
               </text>
             </g>
@@ -752,7 +752,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  97
+                  97.22749999999999
                 </tspan>
               </text>
             </g>
@@ -776,7 +776,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  111
+                  110.685
                 </tspan>
               </text>
             </g>
@@ -800,7 +800,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  124
+                  124.1425
                 </tspan>
               </text>
             </g>
@@ -824,7 +824,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  138
+                  137.6
                 </tspan>
               </text>
             </g>
@@ -1402,9 +1402,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
             <g
@@ -1961,7 +1959,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  -3.8
+                  -3.75
                 </tspan>
               </text>
             </g>
@@ -2009,7 +2007,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  -1.3
+                  -1.25
                 </tspan>
               </text>
             </g>
@@ -2032,9 +2030,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
           </g>
@@ -2614,9 +2610,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
           </g>
@@ -3170,7 +3164,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  -13
+                  -12.5
                 </tspan>
               </text>
             </g>
@@ -3193,9 +3187,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
             <g
@@ -3218,7 +3210,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  13
+                  12.5
                 </tspan>
               </text>
             </g>
@@ -3727,9 +3719,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
             <g
@@ -4309,9 +4299,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
             <g
@@ -5026,7 +5014,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  1M
+                  1000000
                 </tspan>
               </text>
             </g>
@@ -5050,7 +5038,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  1.5M
+                  1500000
                 </tspan>
               </text>
             </g>
@@ -5074,7 +5062,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  2M
+                  2000000
                 </tspan>
               </text>
             </g>
@@ -5098,7 +5086,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  2.5M
+                  2500000
                 </tspan>
               </text>
             </g>
@@ -5122,7 +5110,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                   dy="0.355em"
                   x="39"
                 >
-                  3M
+                  3000000
                 </tspan>
               </text>
             </g>
@@ -6189,9 +6177,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 <tspan
                   dy="0.355em"
                   x="39"
-                >
-                  0
-                </tspan>
+                />
               </text>
             </g>
             <g
