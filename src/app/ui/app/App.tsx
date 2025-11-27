@@ -22,7 +22,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const element = announcementBannersRef.current;
-    if (!element) {
+    if (!element || !welcomeScreenClosed) {
       return;
     }
 
@@ -39,7 +39,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
       resizeObserver.disconnect();
       setAnnouncementBannerHeight(0);
     };
-  }, []);
+  }, [welcomeScreenClosed]);
 
   return (
     <WelcomeOverlayLayout
@@ -66,6 +66,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
           <Box
             sx={{
               marginTop: `${announcementBannerHeight}px`,
+              transition: 'margin-top 0.3s ease-in-out',
             }}
           >
             <VerticalTabs />
