@@ -4,14 +4,18 @@ import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import type {
-  PortfolioTokensFilterUI,
-  PortfolioDeFiPositionsFilterUI,
+import type { SortByEnum } from 'src/app/ui/portfolio/types';
+import {
+  type PortfolioTokensFilterUI,
+  type PortfolioDeFiPositionsFilterUI,
+  SortByOptions,
 } from 'src/app/ui/portfolio/types';
 import { useMemo } from 'react';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
+import { useTranslation } from 'react-i18next';
 
 export const usePortfolioTokensFilterBar = () => {
+  const { t } = useTranslation();
   const {
     allWallets,
     allChains,
@@ -20,6 +24,8 @@ export const usePortfolioTokensFilterBar = () => {
     filter,
     updateFilter,
     clearFilters,
+    sortBy,
+    setSortBy,
   } = usePortfolioTokensFiltering();
 
   const walletOptions = useMemo(
@@ -76,6 +82,15 @@ export const usePortfolioTokensFilterBar = () => {
   const valueMin = filter?.tokensMinValue ?? allValueRange.min;
   const valueMax = filter?.tokensMaxValue ?? allValueRange.max;
 
+  const sortByOptions = useMemo(
+    () => [
+      { value: SortByOptions.VALUE, label: t('portfolio.sorting.totalValue') },
+      { value: SortByOptions.CHAIN, label: t('portfolio.sorting.chain') },
+      { value: SortByOptions.ASSET, label: t('portfolio.sorting.asset') },
+    ],
+    [t],
+  );
+
   const handleWalletChange = (values: string[]) => {
     updateFilter({ ...filter, tokensWallets: values });
   };
@@ -98,6 +113,10 @@ export const usePortfolioTokensFilterBar = () => {
 
   const handleApplyAllFilters = (values: Partial<PortfolioTokensFilterUI>) => {
     updateFilter({ ...values });
+  };
+
+  const handleSortBy = (value: string) => {
+    setSortBy(value as SortByEnum);
   };
 
   const optionsCount = [
@@ -135,12 +154,15 @@ export const usePortfolioTokensFilterBar = () => {
     valueMax,
     valueRangeMin: allValueRange.min,
     valueRangeMax: allValueRange.max,
+    sortByOptions,
+    sortBy,
     handleWalletChange,
     handleChainChange,
     handleAssetChange,
     handleValueChange,
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
+    handleSortBy,
   };
 };
 

@@ -451,6 +451,13 @@ interface Resources {
         refreshTooltip: 'Click here to restart the indexing of your assets.';
         title: 'Portfolio';
       };
+      sorting: {
+        asset: 'Asset';
+        chain: 'Chain';
+        sort: 'Sort';
+        sortBy: 'Sort by';
+        totalValue: 'Total value';
+      };
       welcome: {
         explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
