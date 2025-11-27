@@ -1,7 +1,7 @@
 import type { AssetOverviewCardProps } from './AssetOverviewCard.types';
 import { AssetOverviewCardView } from './AssetOverviewCard.types';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   AssetOverviewCardContentContainer,
   AssetOverviewCardContainer,
@@ -14,10 +14,11 @@ import { AssetOverviewCardTokens } from './views/AssetOverviewCardTokens';
 import { AssetOverviewCardDeFiPositions } from './views/AssetOverviewCardDeFiPositions';
 import { AssetOverviewNoContent } from './views/AssetOverviewNoContent';
 import { AssetOverviewLoading } from './views/AssetOverviewLoading';
+import { mapPositionGroupsToProtocolData, sortAssetsByPrice } from './utils';
 
 export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
   tokens,
-  defiPositions,
+  defiPositionGroups,
   isLoading,
   showNoContent = true,
 }) => {
@@ -25,6 +26,18 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
   const [view, setView] = useState<AssetOverviewCardView>(
     AssetOverviewCardView.Overview,
   );
+
+  const protocolGroups = useMemo(
+    () => mapPositionGroupsToProtocolData(defiPositionGroups),
+    [defiPositionGroups],
+  );
+
+  const sortedProtocolGroups = useMemo(
+    () => sortAssetsByPrice(protocolGroups),
+    [protocolGroups],
+  );
+
+  const sortedTokens = useMemo(() => sortAssetsByPrice(tokens), [tokens]);
 
   if (isLoading) {
     return (
@@ -35,7 +48,7 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
   }
 
   const isNoContent =
-    showNoContent && tokens.length === 0 && defiPositions.length === 0;
+    showNoContent && tokens.length === 0 && defiPositionGroups.length === 0;
 
   if (isNoContent) {
     return (
@@ -52,16 +65,20 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
       case AssetOverviewCardView.Overview: {
         return (
           <AssetOverviewCardOverview
-            tokens={tokens}
-            defiPositions={defiPositions}
+            tokens={sortedTokens}
+            protocolGroups={sortedProtocolGroups}
           />
         );
       }
       case AssetOverviewCardView.Tokens: {
-        return <AssetOverviewCardTokens tokens={tokens} />;
+        return <AssetOverviewCardTokens tokens={sortedTokens} />;
       }
       case AssetOverviewCardView.DeFiPositions: {
-        return <AssetOverviewCardDeFiPositions defiPositions={defiPositions} />;
+        return (
+          <AssetOverviewCardDeFiPositions
+            protocolGroups={sortedProtocolGroups}
+          />
+        );
       }
       default: {
         return null;
@@ -78,7 +95,7 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
         return tokens.length === 0;
       }
       case AssetOverviewCardView.DeFiPositions: {
-        return defiPositions.length === 0;
+        return defiPositionGroups.length === 0;
       }
       default: {
         return false;
