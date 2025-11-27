@@ -396,13 +396,16 @@ interface Resources {
       };
       defiPositionCard: {
         actions: {
+          borrow: 'Borrow';
           claim: 'Claim';
           compound: 'Compound';
           deposit: 'Deposit';
+          repay: 'Repay';
           withdraw: 'Withdraw';
         };
         header: {
           apy: 'APY';
+          borrowed: 'Borrowed';
           rewards: 'Rewards';
           supplied: 'Supplied';
           value: 'Value';

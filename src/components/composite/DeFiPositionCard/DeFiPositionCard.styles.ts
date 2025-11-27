@@ -105,8 +105,12 @@ export const StyledButtonAlphaDark = styled(ButtonTransparent)(({ theme }) => ({
     height: 'auto',
     padding: theme.spacing(1.5, 2),
     ...theme.typography.bodySmallStrong,
-    backgroundColor: theme.palette.buttonAlphaDarkBg,
-    color: theme.palette.buttonAlphaDarkAction,
+    backgroundColor: theme.palette.buttonAlphaLightBg,
+    color: theme.palette.buttonAlphaLightAction,
+    ...theme.applyStyles('light', {
+      backgroundColor: theme.palette.buttonAlphaDarkBg,
+      color: theme.palette.buttonAlphaDarkAction,
+    }),
   },
 }));
 

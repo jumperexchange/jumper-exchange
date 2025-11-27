@@ -183,19 +183,16 @@ export const extractDeFiPositionsFilteringParams = (
 
   const chainMap = new Map<number, { chainId: number; chainKey: string }>();
   allPositions.forEach((position) => {
-    if (position?.chainId && !chainMap.has(position.chainId)) {
-      chainMap.set(position.chainId, {
-        chainId: position.chainId,
-        chainKey: position.chainId.toString(),
-      });
+    if (position?.chain && !chainMap.has(position.chain.chainId)) {
+      chainMap.set(position.chain.chainId, position.chain);
     }
   });
   const allChains = Array.from(chainMap.values());
 
   const protocolMap = new Map<string, { name: string }>();
   allPositions.forEach((position) => {
-    if (position.earn && !protocolMap.has(position.earn)) {
-      protocolMap.set(position.earn, { name: position.earn });
+    if (position.protocol.name && !protocolMap.has(position.protocol.name)) {
+      protocolMap.set(position.protocol.name, position.protocol);
     }
   });
   const allProtocols = Array.from(protocolMap.values());
@@ -215,18 +212,15 @@ export const extractDeFiPositionsFilteringParams = (
     ];
 
     allTokens.forEach((token) => {
-      const key = `${token.chainId}-${token.symbol}`;
+      const key = `${token.chain.chainId}-${token.symbol}`;
       if (!assetMap.has(key)) {
         assetMap.set(key, {
-          name: token.symbol,
+          name: token.name,
           symbol: token.symbol,
           decimals: token.decimals,
-          logo: token.logoUrl,
-          address: '',
-          chain: {
-            chainId: token.chainId,
-            chainKey: token.chainId.toString(),
-          },
+          logo: token.logo,
+          address: token.address,
+          chain: token.chain,
         });
       }
     });

@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { DeFiPositionCard } from './DeFiPositionCard';
-import { defiPositions } from './fixtures';
+import {
+  aavePositions,
+  morphoPositions,
+  gauntletPositions,
+  merklPositions,
+} from './fixtures';
 
 const meta: Meta<typeof DeFiPositionCard> = {
   title: 'Composite/DeFiPositionCard',
@@ -11,21 +16,27 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+export const AaveMultiplePositions: Story = {
+  args: {
+    defiPositions: aavePositions,
+  },
+};
+
+export const MorphoMultiplePositions: Story = {
+  args: {
+    defiPositions: morphoPositions,
+  },
+};
+
 export const SinglePosition: Story = {
   args: {
-    defiPosition: defiPositions[0],
+    defiPositions: gauntletPositions,
   },
 };
 
-export const MultiplePositions: Story = {
+export const SinglePositionMultipleSuppliedTokens: Story = {
   args: {
-    defiPosition: defiPositions[1],
-  },
-};
-
-export const NoRewards: Story = {
-  args: {
-    defiPosition: defiPositions[2],
+    defiPositions: merklPositions,
   },
 };
 
