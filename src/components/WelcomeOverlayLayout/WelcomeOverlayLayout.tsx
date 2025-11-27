@@ -82,7 +82,6 @@ export const WelcomeOverlayLayout = ({
             sm: 'inherit',
           },
           paddingTop: 3.5,
-          paddingBottom: { xs: 11, md: 0 },
           WebkitOverflowScrolling: 'touch',
           overscrollBehavior: 'none',
         }}

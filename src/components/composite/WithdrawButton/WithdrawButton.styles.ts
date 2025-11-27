@@ -50,16 +50,18 @@ export const WithdrawButtonPrimary = styled(ButtonTransparent)(({ theme }) => ({
   height: 'fit-content',
   flexShrink: 0,
   borderRadius: theme.shape.buttonBorderRadius,
-  '&:disabled': {
-    backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
-    color: (theme.vars || theme).palette.buttonDisabledAction,
+  '&.MuiButtonBase-root': {
+    '&:disabled': {
+      color: (theme.vars || theme).palette.buttonDisabledAction,
+      backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+    },
+    color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+    backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.buttonAlphaLightAction,
+      backgroundColor: (theme.vars || theme).palette.buttonAlphaLightBg,
+    }),
   },
-  color: (theme.vars || theme).palette.buttonAlphaDarkAction,
-  backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.buttonAlphaLightAction,
-    color: (theme.vars || theme).palette.buttonAlphaLightBg,
-  }),
   variants: [
     {
       props: ({ size }) => size === 'small',

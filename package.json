@@ -14,7 +14,6 @@
     "@emotion/styled": "^11.14.0",
     "@fingerprintjs/fingerprintjs": "^5.0.1",
     "@intercom/messenger-js-sdk": "^0.0.18",
-    "@intercom/messenger-js-sdk": "^0.0.18",
     "@lifi/explorer": "^0.4.3",
     "@lifi/sdk": "^3.13.3",
     "@lifi/wallet-management": "^3.19.2",

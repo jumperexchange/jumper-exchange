@@ -41,7 +41,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const DefaultRenderer = <V, T extends ChartDataPoint<V>>(
+const DefaultRenderer = <
+  V extends number | string,
+  T extends ChartDataPoint<V>,
+>(
   args: LineChartProps<V, T>,
 ) => {
   const theme = useTheme();

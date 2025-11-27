@@ -494,6 +494,11 @@ exports[`AssetProgress snapshot > Token variant > token progress matches snapsho
         <div
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
         >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+          >
+            E
+          </p>
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
           />
@@ -624,6 +629,11 @@ exports[`AssetProgress snapshot > Token variant > token progress with large amou
         <div
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
         >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+          >
+            E
+          </p>
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
           />

@@ -1,25 +1,24 @@
+import Stack from '@mui/material/Stack';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { formatDistanceToNow } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
+import { Badge } from '../Badge/Badge';
+import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
+import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import type { HorizontalTabItem } from '../HorizontalTabs/HorizontalTabs';
+import { HorizontalTabs } from '../HorizontalTabs/HorizontalTabs';
+import { HorizontalTabSize } from '../HorizontalTabs/HorizontalTabs.style';
+import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
+import { EarnFilterSort } from './components/EarnFilterSort';
+import { EarnListMode } from './components/EarnListMode';
 import {
   EarnFilterBarContainer,
   EarnFilterBarHeaderContainer,
 } from './EarnFilterBar.styles';
-import {
-  HorizontalTabItem,
-  HorizontalTabs,
-} from '../HorizontalTabs/HorizontalTabs';
-import { HorizontalTabSize } from '../HorizontalTabs/HorizontalTabs.style';
-import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
-import Stack from '@mui/material/Stack';
-import { EarnListMode } from './components/EarnListMode';
-import { EarnFilterSort } from './components/EarnFilterSort';
-import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
-import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
-import { Badge } from '../Badge/Badge';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { EarnFilterBarContentAllTablet } from './layouts/EarnFilterBarContentAllTablet';
 import { EarnFilterBarContentAllDesktop } from './layouts/EarnFilterBarContentAllDesktop';
-import { useTranslation } from 'react-i18next';
+import { EarnFilterBarContentAllTablet } from './layouts/EarnFilterBarContentAllTablet';
 
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
@@ -32,7 +31,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   setVariant,
   isLoading,
 }) => {
-  const { showForYou, toggleForYou } = useEarnFiltering();
+  const { showForYou, toggleForYou, updatedAt } = useEarnFiltering();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { t } = useTranslation();
 
@@ -78,12 +77,12 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             },
           })}
         />
-        {/* TODO: add latest update in backend and render here */}
-        {!isTablet && (
+        {!isTablet && updatedAt && (
           <Badge
             variant={BadgeVariant.Secondary}
             size={BadgeSize.SM}
-            label="Updated 12 hours ago"
+            // TODO: i18n date:
+            label={`Updated ${formatDistanceToNow(updatedAt)} ago`}
           />
         )}
         {isTablet && !showForYou && <EarnFilterBarContentAllTablet />}

@@ -44,6 +44,7 @@ export const PortfolioPageOverlayLayout: FC<PropsWithChildren> = ({
         label: 'portfolio_welcome_dismissed',
       }}
       containerSx={{
+        overflow: portfolioWelcomeScreenClosed ? 'auto' : 'hidden',
         height: {
           xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
           sm: `calc(100dvh - ${HeaderHeight.SM}px)`,

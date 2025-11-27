@@ -6,21 +6,32 @@ import {
   PortfolioAssetsListContainer,
 } from './PortfolioPage.styles';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
+import { PortfolioEmptyList } from './PortfolioEmptyList';
 
 export const PortfolioTokensList = () => {
-  const { data, filter } = usePortfolioTokensFiltering();
+  const { data, isEmpty, clearFilters } = usePortfolioTokensFiltering();
 
   const tokens = useFormatDisplayWalletTokens(data);
 
+  if (isEmpty) {
+    return null;
+  }
+
   return (
     <PortfolioAssetsListContainer useFlexGap direction="column">
-      {tokens.map((token) => (
-        <PortfolioAssetContainer
-          key={`${token.address}-${token.chain.chainId}`}
-        >
-          <TokenListCard size={TokenListCardTokenSize.MD} token={token} />
+      {tokens.length > 0 ? (
+        tokens.map((token) => (
+          <PortfolioAssetContainer
+            key={`${token.address}-${token.chain.chainId}`}
+          >
+            <TokenListCard size={TokenListCardTokenSize.MD} token={token} />
+          </PortfolioAssetContainer>
+        ))
+      ) : (
+        <PortfolioAssetContainer>
+          <PortfolioEmptyList onClearFilters={clearFilters} />
         </PortfolioAssetContainer>
-      ))}
+      )}
     </PortfolioAssetsListContainer>
   );
 };
