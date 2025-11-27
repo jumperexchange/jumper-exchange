@@ -7,11 +7,11 @@ import { useAccount } from '@lifi/wallet-management';
 import type { Hex } from 'viem';
 import { useMemo } from 'react';
 import type { MinimalToken } from 'src/types/tokens';
-import type { MinimalDeFiPosition } from 'src/types/defi';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import { useFormatDisplayDeFiPositionsData } from '@/hooks/portfolio/useFormatDisplayDeFiPositionsData';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { ChainType } from '@lifi/sdk';
+import { groupBy } from 'lodash';
+import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 
 export const PortfolioHeaderBreakdown = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
@@ -51,11 +51,12 @@ export const PortfolioHeaderBreakdown = () => {
     return formattedTokens;
   }, [formattedTokens, portfolioWelcomeScreenClosed]);
 
-  const formattedPositions = useFormatDisplayDeFiPositionsData(
-    allPositions?.positions ?? [],
+  const formattedPositions = useFormatDisplayDeFiPositions(
+    allPositions?.positions,
+    (position) => position.protocol.name,
   );
 
-  const defiPositions = useMemo<MinimalDeFiPosition[]>(() => {
+  const defiPositionGroups = useMemo(() => {
     if (formattedPositions.length === 0 || !portfolioWelcomeScreenClosed) {
       return [];
     }
@@ -66,7 +67,7 @@ export const PortfolioHeaderBreakdown = () => {
   return (
     <AssetOverviewCard
       tokens={tokens}
-      defiPositions={defiPositions}
+      defiPositionGroups={defiPositionGroups}
       isLoading={portfolioWelcomeScreenClosed && isLoading}
       showNoContent={portfolioWelcomeScreenClosed}
     />

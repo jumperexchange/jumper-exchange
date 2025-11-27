@@ -8,19 +8,16 @@ import {
 import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
 import { PortfolioEmptyList } from './PortfolioEmptyList';
 import { groupBy } from 'lodash';
+import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 
 export const PortfolioDeFiProtocolsList = () => {
   const { data, isEmpty, isLoading, clearFilters } =
     usePortfolioDeFiPositionsFiltering();
 
-  const groupByProtocolChain = useMemo(() => {
-    const groupedData = groupBy(
-      data,
-      (position) => `${position.protocol.name}-${position.chain.chainId}`,
-    );
-
-    return Object.values(groupedData);
-  }, [data]);
+  const protocolGroups = useFormatDisplayDeFiPositions(
+    data,
+    (position) => `${position.protocol.name}-${position.chain.chainId}`,
+  );
 
   if (isEmpty) {
     return null;
@@ -29,8 +26,8 @@ export const PortfolioDeFiProtocolsList = () => {
   return (
     <>
       <PortfolioAssetsListContainer useFlexGap direction="column">
-        {groupByProtocolChain.length > 0 ? (
-          groupByProtocolChain.map((positions) => (
+        {protocolGroups.length > 0 ? (
+          protocolGroups.map((positions) => (
             <PortfolioAssetContainer
               key={`${positions[0].protocol.name}-${positions[0].chain.chainId}`}
             >
