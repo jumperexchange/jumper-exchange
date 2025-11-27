@@ -7,7 +7,6 @@ import {
   connectedWalletButton,
   disconnectWalletButton,
   expectSelectWalletOptionToBeVisible,
-  openConnectedWallet,
   selectWalletOption,
 } from './testData/connectWalletFunctions';
 import {
@@ -16,10 +15,7 @@ import {
 } from './testData/landingPageFunctions';
 import { injectMockWallet } from './utils/mockWallet';
 
-const MOCK_WALLET_ADDRESS = '0x0733C1795002b060C440231dd0FcF9E75C789a15';
-
 test.describe('Connect/disconnect Metamask with Jumper app and open /profile page', () => {
-  // Inject mock wallet script at context level so it applies to all pages
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/');
@@ -30,7 +26,6 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       await connectButton(page).click();
       await expectSelectWalletOptionToBeVisible(page);
       await selectWalletOption(page, 'MetaMask');
-      // await openConnectedWallet(page, MOCK_WALLET_ADDRESS);
     });
 
     await test.step('Close welcome screen and navigate to profile', async () => {
