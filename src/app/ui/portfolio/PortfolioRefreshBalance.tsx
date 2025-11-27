@@ -79,11 +79,10 @@ const PortfolioRefreshBalance: FC<
                 })}
               />
               <CircularProgress
-                variant={isLoading ? 'indeterminate' : 'determinate'}
+                variant={'indeterminate'}
                 size={iconSize}
                 value={value}
                 sx={(theme) => ({
-                  opacity: value === 100 && !isLoading ? 0.5 : 1,
                   color: (theme.vars || theme).palette.text.primary,
                 })}
               />
