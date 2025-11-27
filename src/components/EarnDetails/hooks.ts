@@ -8,7 +8,7 @@ import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 export const useAnalyticsQuery = (slug: string) => {
   const [query, setQuery] = useState<EarnOpportunityAnalyticsQuery>({
     value: AnalyticsValueFieldEnum.APY,
-    range: AnalyticsRangeFieldEnum.DAY,
+    range: AnalyticsRangeFieldEnum.WEEK,
   });
 
   const result = useEarnAnalytics({ slug, query });
@@ -59,9 +59,7 @@ export const useAnalyticsChartData = (
     return {
       data,
       dateFormat:
-        range === AnalyticsRangeFieldEnum.DAY
-          ? 'PP @ HH:mm'
-          : range === AnalyticsRangeFieldEnum.WEEK
+          range === AnalyticsRangeFieldEnum.WEEK
             ? 'PP'
             : range === AnalyticsRangeFieldEnum.MONTH
               ? 'PP'
