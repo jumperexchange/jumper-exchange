@@ -1,13 +1,8 @@
-import type {
-  EarnOpportunityWithLatestAnalytics,
-  HttpResponse,
-  JumperBackend,
-} from '@/types/jumper-backend';
+import type { JumperBackend } from '@/types/jumper-backend';
 import { makeClient } from './client';
 
-export type GetOpportunityTopResult = HttpResponse<
-  EarnOpportunityWithLatestAnalytics[],
-  unknown
+export type GetOpportunityTopResult = ReturnType<
+  JumperBackend<unknown>['v1']['recommendationControllerFilterV1']
 >;
 
 export type EarnOpportunityFilter = Parameters<
@@ -16,7 +11,7 @@ export type EarnOpportunityFilter = Parameters<
 
 export async function getOpportunitiesFiltered(
   filter: EarnOpportunityFilter,
-): Promise<GetOpportunityTopResult> {
+): GetOpportunityTopResult {
   const client = makeClient();
   const opportunity = await client.v1.recommendationControllerFilterV1(filter);
   return opportunity;

@@ -1,14 +1,8 @@
-import type {
-  EarnOpportunityWithLatestAnalytics,
-  HttpResponse,
-} from '@/types/jumper-backend';
+import type { EarnOpportunities, HttpResponse } from '@/types/jumper-backend';
 import type { Hex } from 'viem';
 import { makeClient } from './client';
 
-export type GetOpportunityTopResult = HttpResponse<
-  EarnOpportunityWithLatestAnalytics[],
-  unknown
->;
+export type GetOpportunityTopResult = HttpResponse<EarnOpportunities, unknown>;
 
 export async function getOpportunitiesTop(
   address: Hex | undefined,

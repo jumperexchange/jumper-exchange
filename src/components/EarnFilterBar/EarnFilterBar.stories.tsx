@@ -43,6 +43,7 @@ const mockContextValue = () => {
     toggleForYou: () => setShowForYou((current) => !current),
     usedYourAddress: false,
     data: [],
+    updatedAt: undefined,
     isLoading: false,
     error: null,
     isAllDataLoading: false,
