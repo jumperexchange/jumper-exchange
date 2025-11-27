@@ -495,7 +495,7 @@
   "buttons": {
     "depositButtonLabel": "Depósito rápido",
     "withdrawButtonLabel": "Retirar",
-    "managePositionsButtonLabel": "Gerenciar Posições"
+    "managePositionsButtonLabel": ""
   },
   "modal": {
     "perks": {
