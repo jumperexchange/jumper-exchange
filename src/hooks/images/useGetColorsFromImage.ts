@@ -77,7 +77,7 @@ const extractColorsFromFullImage = async (
 export const useGetColorsFromImage = (
   imageUrl: string,
   useCenterCrop = false,
-  cropPercentage = 0.5,
+  cropRatio = 0.5,
 ) => {
   const [colors, setColors] = useState<Color[]>([]);
 
@@ -89,8 +89,17 @@ export const useGetColorsFromImage = (
 
     const extractImageColors = async () => {
       try {
-        const palette = useCenterCrop
-          ? await extractColorsFromCroppedImage(imageUrl, cropPercentage)
+        const isValidCropRatio = cropRatio > 0 && cropRatio < 1;
+        const shouldCrop = useCenterCrop && isValidCropRatio;
+
+        if (useCenterCrop && !isValidCropRatio) {
+          console.warn(
+            'Skipping image crop: cropRatio must be between 0 and 1',
+          );
+        }
+
+        const palette = shouldCrop
+          ? await extractColorsFromCroppedImage(imageUrl, cropRatio)
           : await extractColorsFromFullImage(imageUrl);
 
         setColors(palette);
@@ -101,7 +110,7 @@ export const useGetColorsFromImage = (
     };
 
     extractImageColors();
-  }, [imageUrl, useCenterCrop, cropPercentage]);
+  }, [imageUrl, useCenterCrop, cropRatio]);
 
   return colors;
 };
