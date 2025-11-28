@@ -1,6 +1,6 @@
 import { groupBy, uniq } from 'lodash';
 import { TOOLTIP_CONFIG, Y_AXIS_CONFIG } from './constants';
-import { ChartDataPoint } from './LineChart';
+import type { ChartDataPoint } from './LineChart';
 
 /**
  * Calculates the optimal tooltip position to prevent it from going outside the container bounds
@@ -34,7 +34,10 @@ export const calculateTooltipPosition = (
  * - Handles edge cases (values near zero, negative values)
  * - Proportional to data variation
  */
-export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
+export const calculateVisibleYRange = <
+  V extends number | string,
+  T extends ChartDataPoint<V>,
+>(
   data: T[],
 ) => {
   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
@@ -91,11 +94,16 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
  * Groups data by formatted date values and returns the first date from each group
  * This ensures one tick per unique formatted date (e.g., one per month if using 'MMM yyyy')
  */
-export const calculateEvenXAxisTicks = <V, T extends ChartDataPoint<V>>(
+export const calculateEvenXAxisTicks = <
+  V extends number | string,
+  T extends ChartDataPoint<V>,
+>(
   data: T[],
   dateFormatter: (date: string) => string,
 ): T['date'][] => {
-  if (!data || data.length === 0) return [];
+  if (!data || data.length === 0) {
+    return [];
+  }
 
   // Group data points by their formatted date
   const grouped = groupBy(data, (point) => dateFormatter(point.date));

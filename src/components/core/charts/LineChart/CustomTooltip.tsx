@@ -1,9 +1,12 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { formatDateLocalized } from 'src/utils/formatDateLocalized';
-import { FC } from 'react';
-import { TooltipContentProps } from 'recharts/types/component/Tooltip';
-import { toCompactValue } from 'src/utils/formatNumbers';
+import type { FC } from 'react';
+import type { TooltipContentProps } from 'recharts/types/component/Tooltip';
+import {
+  formatValueWithConfig,
+  type ValueFormatConfig,
+} from 'src/utils/formatNumbers';
 
 type ValueType = string | number;
 type NameType = string;
@@ -14,7 +17,7 @@ interface CustomTooltipProps
     'active' | 'payload' | 'label'
   > {
   dataSetId?: string;
-  dataSetValueAppend?: string;
+  valueFormatConfig?: ValueFormatConfig;
   x: number;
   y: number;
   transform?: string;
@@ -28,7 +31,7 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
   y,
   transform,
   dataSetId,
-  dataSetValueAppend,
+  valueFormatConfig,
 }) => {
   if (!active || !payload || !payload.length) {
     return null;
@@ -64,10 +67,9 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
         {formatDateLocalized(label ?? '', 'PP @ HH:mm')}
       </Typography>
       <Typography variant="bodySmall">
-        {!data.value || isNaN(Number(data.value))
-          ? data.value
-          : toCompactValue(data.value)}
-        {dataSetValueAppend ?? ''}{' '}
+        {valueFormatConfig
+          ? formatValueWithConfig(data.value, valueFormatConfig)
+          : data.value}{' '}
         <strong>{dataSetId?.toString().toUpperCase()}</strong>
       </Typography>
     </Box>

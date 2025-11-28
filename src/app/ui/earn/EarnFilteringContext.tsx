@@ -12,6 +12,13 @@ import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type { Hex } from 'viem';
+import {
+  enrichDataWithFlag,
+  extractFilteringParams,
+  removeNullValuesFromFilter,
+  sanitizeFilter,
+  searchParamsParsers,
+} from './utils';
 import { EMPTY_FILTERING_PARAMS } from './constants';
 import type {
   EarnFilteringParams,
@@ -20,12 +27,6 @@ import type {
   SortByEnum,
 } from './types';
 import { SortByOptions } from './types';
-import {
-  extractFilteringParams,
-  removeNullValuesFromFilter,
-  sanitizeFilter,
-  searchParamsParsers,
-} from './utils';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -167,6 +168,15 @@ export const EarnFilteringProvider = ({
     [setSortBy, setSearchParamsState],
   );
 
+  const data = useMemo(() => {
+    const sourceData = showForYou ? forYou.data?.data : all.data?.data;
+    const forYouSlugsSet = new Set(
+      (forYou.data?.data ?? []).map((item) => item.slug),
+    );
+
+    return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
+  }, [showForYou, forYou.data, all.data]);
+
   const context: EarnFilteringContextType = {
     sortBy,
     setSortBy: updateSortBy,
@@ -176,7 +186,7 @@ export const EarnFilteringProvider = ({
     usedYourAddress,
     toggleForYou,
     totalMarkets,
-    data: showForYou ? forYouData : allData,
+    data,
     updatedAt: showForYou ? forYouUpdatedAt : undefined,
     isLoading: showForYou ? forYou.isLoading || !address : all.isLoading,
     error: (showForYou ? forYou.error : all.error) ?? null,

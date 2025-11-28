@@ -19,6 +19,7 @@ export const usePortfolioTokensFilterBar = () => {
     allValueRange,
     filter,
     updateFilter,
+    clearFilters,
   } = usePortfolioTokensFiltering();
 
   const walletOptions = useMemo(
@@ -95,16 +96,6 @@ export const usePortfolioTokensFilterBar = () => {
     });
   };
 
-  const handleClearAllFilters = () => {
-    updateFilter({
-      tokensWallets: [],
-      tokensChains: [],
-      tokensAssets: [],
-      tokensMinValue: allValueRange.min,
-      tokensMaxValue: allValueRange.max,
-    });
-  };
-
   const handleApplyAllFilters = (values: Partial<PortfolioTokensFilterUI>) => {
     updateFilter({ ...values });
   };
@@ -148,7 +139,7 @@ export const usePortfolioTokensFilterBar = () => {
     handleChainChange,
     handleAssetChange,
     handleValueChange,
-    handleClearAllFilters,
+    handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
   };
 };
@@ -163,6 +154,7 @@ export const usePortfolioDeFiFilterBar = () => {
     allValueRange,
     filter,
     updateFilter,
+    clearFilters,
   } = usePortfolioDeFiPositionsFiltering();
 
   const chainOptions = useMemo(
@@ -241,19 +233,6 @@ export const usePortfolioDeFiFilterBar = () => {
     });
   };
 
-  const handleClearAllFilters = () => {
-    updateFilter({
-      defiChains: [],
-      defiProtocols: [],
-      defiTypes: [],
-      defiAssets: [],
-      defiMinAPY: allAPYRange.min,
-      defiMaxAPY: allAPYRange.max,
-      defiMinValue: allValueRange.min,
-      defiMaxValue: allValueRange.max,
-    });
-  };
-
   const handleApplyAllFilters = (
     values: Partial<PortfolioDeFiPositionsFilterUI>,
   ) => {
@@ -314,7 +293,7 @@ export const usePortfolioDeFiFilterBar = () => {
     handleAssetChange,
     handleAPYChange,
     handleValueChange,
-    handleClearAllFilters,
+    handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
   };
 };

@@ -425,6 +425,11 @@ interface Resources {
           opened: 'Opened';
         };
       };
+      emptyList: {
+        clearFilters: 'Clear filters';
+        description: 'Unfortunately there are no results for your search, try clearing your filters.';
+        title: 'No results';
+      };
       filter: {
         apy: 'APY';
         asset: 'Asset';
@@ -438,6 +443,10 @@ interface Resources {
         type: 'Type';
         value: 'Value';
         wallet: 'Wallet';
+      };
+      overviewCard: {
+        refreshTooltip: 'Click here to restart the indexing of your assets.';
+        title: 'Portfolio';
       };
       welcome: {
         explorePass: 'Explore Jumper Pass';

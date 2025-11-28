@@ -32,8 +32,10 @@ export interface PortfolioDeFiPositionsFilteringContextType
   extends PortfolioDeFiPositionsFilteringParams {
   filter: PortfolioDeFiPositionsFilterUI;
   updateFilter: (filter: PortfolioDeFiPositionsFilterUI) => void;
+  clearFilters: () => void;
   data: DefiPosition[];
   isLoading: boolean;
+  isEmpty: boolean;
   error: unknown | null;
 }
 
@@ -41,6 +43,7 @@ export const PortfolioDeFiPositionsFilteringContext =
   createContext<PortfolioDeFiPositionsFilteringContextType>({
     filter: {},
     updateFilter: () => {},
+    clearFilters: () => {},
     allChains: [],
     allProtocols: [],
     allTypes: [],
@@ -49,6 +52,7 @@ export const PortfolioDeFiPositionsFilteringContext =
     allValueRange: { min: 0, max: 0 },
     data: [],
     isLoading: false,
+    isEmpty: false,
     error: null,
   });
 
@@ -125,11 +129,27 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     [filter, stats, setSearchParamsState],
   );
 
+  const clearFilters = useCallback(() => {
+    updateFilter({
+      defiChains: undefined,
+      defiProtocols: undefined,
+      defiTypes: undefined,
+      defiAssets: undefined,
+      defiMinAPY: undefined,
+      defiMaxAPY: undefined,
+      defiMinValue: undefined,
+      defiMaxValue: undefined,
+    });
+  }, [updateFilter]);
+
   const context: PortfolioDeFiPositionsFilteringContextType = {
     filter,
     updateFilter,
+    clearFilters,
     data: allPositions.data?.positions ?? [],
     isLoading: allPositions.isLoading || connectedAddresses.length === 0,
+    isEmpty:
+      !allPositions.data?.positions || allPositions.data.positions.length === 0,
     error: allPositions.error ?? null,
     ...stats,
   };

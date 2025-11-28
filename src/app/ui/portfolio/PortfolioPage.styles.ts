@@ -5,6 +5,8 @@ import Stack from '@mui/material/Stack';
 import { ButtonPrimary } from '@/components/Button/Button.style';
 import { Link } from '@/components/Link';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import Typography from '@mui/material/Typography';
+import { BaseIconButton } from '@/components/composite/WalletBalanceCard/WalletBalanceCard.styles';
 
 export const PortfolioAssetsListContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(3),
@@ -67,4 +69,91 @@ export const PortfolioWelcomeScreenButton = styled(ButtonPrimary)(
 export const PortfolioWelcomeScreenLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   padding: theme.spacing(1.75, 2.75),
+}));
+
+export const PortfolioEmptyContainer = styled(Stack)(({ theme }) => ({
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100%',
+}));
+
+export const PortfolioEmptyContentContainer = styled(Stack)(({ theme }) => ({
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: theme.spacing(4),
+  marginBottom: theme.spacing(6.5),
+  width: '100%',
+  position: 'relative',
+  zIndex: 1,
+  '&:before': {
+    content: '""',
+    zIndex: -1,
+    position: 'absolute',
+    top: theme.spacing(-2),
+    left: '50%',
+    width: '90%',
+    height: `calc(100% + ${theme.spacing(2)})`,
+    transform: 'translateX(-50%)',
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+    }),
+    filter: 'blur(32px)',
+  },
+}));
+
+export const PortfolioEmptyContentDescriptionContainer = styled(Stack)(
+  ({ theme }) => ({
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: theme.spacing(1),
+  }),
+);
+
+export const PortfolioEmptyContentButton = styled(ButtonPrimary)(
+  ({ theme }) => ({
+    height: 'auto',
+    padding: theme.spacing(1.75, 2.75),
+    ...theme.typography.bodyMediumStrong,
+  }),
+);
+
+export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
+  ({ theme }) => ({
+    height: 312,
+    padding: theme.spacing(3),
+    boxShadow: theme.shadows[2],
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+    }),
+  }),
+);
+
+export const PortfolioHeaderOverviewHeaderContainer = styled(Stack)(
+  ({ theme }) => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }),
+);
+
+export const PortfolioHeaderOverviewContentContainer = styled(Stack)(
+  ({ theme }) => ({
+    flexDirection: 'column',
+    alignItems: 'start',
+  }),
+);
+
+export const PortfolioHeaderOverviewValue = styled(Typography)(({ theme }) => ({
+  ...theme.typography.title2XLarge,
+  textOverflow: 'ellipsis',
+  userSelect: 'none',
+}));
+
+export const LightIconButton = styled(BaseIconButton)(({ theme }) => ({
+  color: (theme.vars || theme).palette.buttonLightAction,
+  backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+  height: 40,
+  width: 40,
 }));
