@@ -424,13 +424,16 @@
         "withdraw": "Withdraw",
         "deposit": "Deposit",
         "claim": "Claim",
-        "compound": "Compound"
+        "compound": "Compound",
+        "repay": "Repay",
+        "borrow": "Borrow"
       },
       "header": {
         "supplied": "Supplied",
         "value": "Value",
         "apy": "APY",
-        "rewards": "Rewards"
+        "rewards": "Rewards",
+        "borrowed": "Borrowed"
       }
     },
     "filter": {
