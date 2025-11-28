@@ -1,14 +1,12 @@
-import { useMemo } from 'react';
 import { DeFiPositionCard } from '@/components/composite/DeFiPositionCard/DeFiPositionCard';
+import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
+import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 import { usePortfolioDeFiPositionsFiltering } from './PortfolioDeFiPositionsFilteringContext';
+import { PortfolioEmptyList } from './PortfolioEmptyList';
 import {
   PortfolioAssetContainer,
   PortfolioAssetsListContainer,
 } from './PortfolioPage.styles';
-import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
-import { PortfolioEmptyList } from './PortfolioEmptyList';
-import { groupBy } from 'lodash';
-import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 
 export const PortfolioDeFiProtocolsList = () => {
   const { data, isEmpty, isLoading, clearFilters } =

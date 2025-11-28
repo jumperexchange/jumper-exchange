@@ -1,17 +1,16 @@
 'use client';
 
 import { AssetOverviewCard } from '@/components/composite/AssetOverviewCard/AssetOverviewCard';
+import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
+import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
+import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-import type { Hex } from 'viem';
 import { useMemo } from 'react';
 import type { MinimalToken } from 'src/types/tokens';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
-import { ChainType } from '@lifi/sdk';
-import { groupBy } from 'lodash';
-import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
+import type { Hex } from 'viem';
 
 export const PortfolioHeaderBreakdown = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
