@@ -12,6 +12,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const LINK3_URL = 'https://link3.to/jumperexchange';
 export const TELEGRAM_URL = 'https://t.me/officialjumperexchange';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
+export const TERMS_OF_SERVICE_URL = 'https://li.fi/terms-of-service';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_GAS_PATH = '/gas';
 export const JUMPER_LEARN_PATH = '/learn';

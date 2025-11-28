@@ -392,6 +392,25 @@ interface Resources {
         title: 'Find the best route';
       };
     };
+    newsletter: {
+      welcome: {
+        emailPlaceholder: 'Enter your email';
+        error: {
+          email: 'This is not a valid email address';
+          emailLength: 'Email must not exceed 80 characters';
+          required: 'This field is required';
+          unknown: 'An unknown error occurred. Please try again.';
+        };
+        hint: "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at anytime from the link in the email footer.";
+        subscribe: 'Subscribe';
+        subtitle: 'Get the latest news and updates directly from <strong>Jumper.</strong>';
+        success: {
+          description: 'You have been subscribed to our newsletter. You will receive the latest news and updates directly from Jumper.';
+          title: 'Newsletter subscribed';
+        };
+        title: 'Make. The. Jump.';
+      };
+    };
     portfolio: {
       assetOverviewCard: {
         navigation: {

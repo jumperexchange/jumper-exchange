@@ -5,6 +5,8 @@ export const UTM_SOURCE = 'jumper';
   GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
+  // Newsletter
+  SubscribeToNewsletter = 'action_subscribe_to_newsletter',
   // Portfolio
   ClosePortfolioScreen = 'action_close_portfolio_screen',
   // WalletMenu
@@ -133,6 +135,7 @@ export enum TrackingEventDataAction {
 
 export enum TrackingCategory {
   Portfolio = 'cat_portfolio',
+  Newsletter = 'cat_newsletter',
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',
   ErrorPage = 'cat_error_page',
