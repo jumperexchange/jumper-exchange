@@ -341,7 +341,7 @@ interface Resources {
         resources: 'Resources';
         scan: 'Scan';
         support: 'Support';
-        termsOfService: 'Terms & Conditions';
+        termsConditions: 'Terms & Conditions';
         theme: 'Theme';
       };
       pass: 'Pass';

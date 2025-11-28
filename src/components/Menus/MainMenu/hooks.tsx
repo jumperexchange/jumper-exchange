@@ -14,7 +14,7 @@ import {
   DISCORD_URL,
   LINK3_URL,
   TELEGRAM_URL,
-  TERMS_OF_SERVICE_URL,
+  TERMS_CONDITIONS_URL,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -219,11 +219,11 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
-  const handleTermsOfServiceClick = useCallback(() => {
+  const handleTermsConditionsClick = useCallback(() => {
     trackMenuClick({
-      label: 'click-jumper-terms-of-service-link',
-      action: TrackingAction.ClickJumperTermsOfServiceLink,
-      dataMenuParam: 'jumper_terms_of_service',
+      label: 'click-jumper-terms-conditions-link',
+      action: TrackingAction.ClickJumperTermsConditionsLink,
+      dataMenuParam: 'jumper_terms_conditions',
     });
   }, [trackMenuClick]);
 
@@ -248,7 +248,7 @@ export const useMenuActions = () => {
     handleLanguageClick,
     handleResourcesClick,
     handlePrivacyPolicyClick,
-    handleTermsOfServiceClick,
+    handleTermsConditionsClick,
     handleNewsletterClick,
   };
 };
@@ -341,16 +341,16 @@ export const useFooterLinks = () => {
   const { t } = useTranslation();
   const {
     handlePrivacyPolicyClick,
-    handleTermsOfServiceClick,
+    handleTermsConditionsClick,
     handleNewsletterClick,
   } = useMenuActions();
 
   const footerLinks = useMemo(
     () => [
       {
-        label: t('navbar.navbarMenu.termsOfService'),
-        link: { url: TERMS_OF_SERVICE_URL },
-        onClick: handleTermsOfServiceClick,
+        label: t('navbar.navbarMenu.termsConditions'),
+        link: { url: TERMS_CONDITIONS_URL },
+        onClick: handleTermsConditionsClick,
         external: true,
       },
       {
@@ -367,7 +367,7 @@ export const useFooterLinks = () => {
     [
       t,
       handlePrivacyPolicyClick,
-      handleTermsOfServiceClick,
+      handleTermsConditionsClick,
       handleNewsletterClick,
     ],
   );

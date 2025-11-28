@@ -12,7 +12,7 @@ import {
   WelcomeContent,
   WelcomeScreenSubtitle,
 } from '@/components/WelcomeScreen/WelcomeScreen.style';
-import { AppPaths, TERMS_OF_SERVICE_URL } from '@/const/urls';
+import { AppPaths, TERMS_CONDITIONS_URL } from '@/const/urls';
 import Typography from '@mui/material/Typography';
 import {
   NewsletterErrorMessage,
@@ -122,7 +122,7 @@ export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = () => {
               i18nKey={'newsletter.welcome.hint'}
               components={[
                 <NewsletterLink
-                  href={TERMS_OF_SERVICE_URL}
+                  href={TERMS_CONDITIONS_URL}
                   target="_blank"
                   rel="noreferrer"
                 />,
