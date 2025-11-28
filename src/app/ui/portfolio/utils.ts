@@ -216,6 +216,13 @@ export const extractDeFiPositionsFilteringParams = (
 
   const allAssets = uniqBy(allTokens, 'name');
 
+  const apyValues = map(
+    allPositions,
+    (position) => position.latest?.apy?.total || 0,
+  );
+  const minAPY = apyValues.length > 0 ? (min(apyValues) ?? 0) : 0;
+  const maxAPY = apyValues.length > 0 ? (max(apyValues) ?? 0) : 0;
+
   const values = map(
     allPositions,
     (position) => position.netUsd || position.assetUsd || 0,
@@ -229,8 +236,8 @@ export const extractDeFiPositionsFilteringParams = (
     allTypes,
     allAssets,
     allAPYRange: {
-      min: 0,
-      max: 0,
+      min: Number(minAPY.toFixed(2)),
+      max: Number(maxAPY.toFixed(2)),
     },
     allValueRange: {
       min: Number(minValue.toFixed(2)),

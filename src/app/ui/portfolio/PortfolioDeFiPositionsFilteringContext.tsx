@@ -27,11 +27,14 @@ import {
   sanitizeDeFiPositionsFilter,
 } from './utils';
 import { ChainType } from '@lifi/sdk';
+import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioDeFiPositionsFilteringContextType
   extends PortfolioDeFiPositionsFilteringParams {
   filter: PortfolioDeFiPositionsFilterUI;
-  updateFilter: (filter: PortfolioDeFiPositionsFilterUI) => void;
+  updateFilter: (
+    filter: NullableFields<PortfolioDeFiPositionsFilterUI>,
+  ) => void;
   clearFilters: () => void;
   data: DefiPosition[];
   isLoading: boolean;
@@ -110,35 +113,32 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     prevStatsRef.current = stats;
 
     const sanitized = sanitizeDeFiPositionsFilter(filter, stats);
-    const cleanedSanitized = removeNullValuesFromFilter(sanitized);
 
-    if (!isEqual(cleanedSanitized, filter)) {
-      setFilter(cleanedSanitized);
+    if (!isEqual(sanitized, filter)) {
+      setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
 
   const updateFilter = useCallback(
-    (newFilter: PortfolioDeFiPositionsFilter) => {
+    (newFilter: NullableFields<PortfolioDeFiPositionsFilter>) => {
       const newFilterValue = { ...filter, ...newFilter };
-      const sanitized = sanitizeDeFiPositionsFilter(newFilterValue, stats);
-      const cleanedSanitized = removeNullValuesFromFilter(sanitized);
-      setFilter(cleanedSanitized);
-      setSearchParamsState(sanitized);
+      setFilter(removeNullValuesFromFilter(newFilterValue));
+      setSearchParamsState(newFilterValue);
     },
-    [filter, stats, setSearchParamsState],
+    [filter, setSearchParamsState],
   );
 
   const clearFilters = useCallback(() => {
     updateFilter({
-      defiChains: undefined,
-      defiProtocols: undefined,
-      defiTypes: undefined,
-      defiAssets: undefined,
-      defiMinAPY: undefined,
-      defiMaxAPY: undefined,
-      defiMinValue: undefined,
-      defiMaxValue: undefined,
+      defiChains: null,
+      defiProtocols: null,
+      defiTypes: null,
+      defiAssets: null,
+      defiMinAPY: null,
+      defiMaxAPY: null,
+      defiMinValue: null,
+      defiMaxValue: null,
     });
   }, [updateFilter]);
 
