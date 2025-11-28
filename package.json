@@ -153,7 +153,7 @@
     "test:qase": "QASE_MODE=testops pnpm test",
     "test:e2e-real": "npx playwright test --headed",
     "test:ci:e2e": "npx playwright test",
-    "test:ci:e2e:qase": "QASE_MODE=testops xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' npx playwright test",
+    "test:ci:e2e:qase": "QASE_MODE=testops npx playwright test",
     "test:unit": "vitest run --project=unit",
     "test:snapshots": "vitest run --project=snapshots",
     "test:snapshots:generate": "vitest run --project=snapshots -u",

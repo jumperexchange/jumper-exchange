@@ -1,6 +1,65 @@
+/**
+ * Mock Wallet Injection Utility
+ *
+ * This module provides functionality to inject a mock Ethereum wallet provider
+ * into the browser environment for end-to-end testing. It simulates MetaMask(or any other supported wallet )
+ * wallet behavior without requiring an actual browser extension.
+ */
+
+import dotenv from 'dotenv';
+
+// Load .env file if it exists (for local development)
+// In CI, environment variables should be set directly
+// Note: dotenv.config() doesn't throw if the file doesn't exist
+dotenv.config({ path: './.env' });
+
+/**
+ * Generates JavaScript code that injects a mock Ethereum wallet provider into the browser.
+ * 
+ * This function creates a comprehensive mock wallet that simulates MetaMask functionality,
+ * allowing tests to interact with Web3 applications without requiring an actual wallet
+ * extension. The generated code supports both legacy and modern wallet discovery standards.
+ * 
+ * **Capabilities:**
+ * 
+ * - **Legacy Wallet Injection**: Injects a mock provider into `window.ethereum` for
+ *   applications using the traditional MetaMask integration pattern
+ * 
+ * - **EIP-6963 Support**: Implements the EIP-6963 standard for wallet discovery, allowing
+ *   modern dApps to discover and connect to the mock wallet through the standardized
+ *   event-based protocol
+ * 
+ * - **Ethereum RPC Methods**: Handles common Ethereum JSON-RPC methods:
+ *   - `eth_requestAccounts`: Initiates wallet connection and returns the mock address
+ *   - `eth_accounts`: Returns connected accounts (empty array when disconnected)
+ *   - `eth_chainId`: Returns the chain ID for Ethereum mainnet (0x1)
+ *   - `net_version`: Returns the network version (1 for mainnet)
+ * 
+ * - **Connection State Management**: Maintains connection state internally, allowing tests
+ *   to simulate wallet connection and disconnection scenarios
+ * 
+ * - **Event Listeners**: Provides stub implementations for `on()` and `removeListener()`
+ *   methods to prevent errors in applications that subscribe to wallet events
+ * 
+ * - **Legacy Enable Method**: Includes the deprecated `enable()` method for backward
+ *   compatibility with older dApp implementations
+ * 
+ * **Usage:**
+ * 
+ * The returned string should be evaluated in the browser context (e.g., using Playwright's
+ * `page.evaluate()` or `page.addInitScript()`). The mock wallet will be available immediately
+ * after injection and will respond to connection requests from the application.
+ * 
+ * **Environment Requirements:**
+ * 
+ * Requires `MOCK_WALLET_ADDRESS` to be set in the `.env` file. This address will be used
+ * as the mock wallet's Ethereum address for all operations.
+
+ */
 export const injectMockWallet = () => {
+  const mockAddress = process.env.MOCK_WALLET_ADDRESS;
   return `
-    const mockAddress = '0x0733C1795002b060C440231dd0FcF9E75C789a15';
+    const mockAddress = '${mockAddress}';
     let isConnected = false;
     
     // Mock provider object
