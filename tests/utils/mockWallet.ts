@@ -28,8 +28,6 @@ dotenv.config({ path: './tests/.env.test' });
  * - **Ethereum RPC Methods**: Handles common Ethereum JSON-RPC methods:
  *   - `eth_requestAccounts`: Initiates wallet connection and returns the mock address
  *   - `eth_accounts`: Returns connected accounts (empty array when disconnected)
- *   - `eth_chainId`: Returns the chain ID for Ethereum mainnet (0x1)
- *   - `net_version`: Returns the network version (1 for mainnet)
  * 
  * - **Connection State Management**: Maintains connection state internally, allowing tests
  *   to simulate wallet connection and disconnection scenarios
@@ -73,12 +71,6 @@ export const injectMockWallet = () => {
             
           case 'eth_accounts':
             return isConnected ? [mockAddress] : [];
-            
-          case 'eth_chainId':
-            return '0x1';
-            
-          case 'net_version':
-            return '1';
 
           default:
             console.warn('Unknown method called on mock wallet:', method);
