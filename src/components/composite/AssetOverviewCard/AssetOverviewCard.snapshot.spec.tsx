@@ -224,7 +224,7 @@ describe('AssetOverviewCard Snapshots', () => {
     });
   });
 
-  describe('NodefiPositionGroups', () => {
+  describe('NoDeFiPositions', () => {
     it('should match snapshot with no DeFi positions', () => {
       const { container } = render(
         <AssetOverviewCard tokens={tokens} defiPositionGroups={[]} />,

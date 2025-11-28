@@ -20,205 +20,6 @@ const tokenAddresses = {
   DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
 };
 
-const assets = {
-  USDC: {
-    name: 'USD Coin',
-    symbol: 'USDC',
-    decimals: 6,
-    logo: 'https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png',
-    address: tokenAddresses.USDC_ETHEREUM,
-    chain: ethereumChain,
-  },
-  WETH: {
-    name: 'Wrapped Ether',
-    symbol: 'WETH',
-    decimals: 18,
-    logo: 'https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
-    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-    chain: ethereumChain,
-  },
-  ETH: {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: 18,
-    logo: 'https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png',
-    address: tokenAddresses.ETH,
-    chain: ethereumChain,
-  },
-  USDA: {
-    name: 'USDA Stablecoin',
-    symbol: 'USDA',
-    decimals: 18,
-    logo: 'https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png',
-    address: '0x0000206329b97db379d5e1bf586bbdb969c63274',
-    chain: ethereumChain,
-  },
-};
-
-const protocols = {
-  morpho: {
-    name: 'Morpho',
-    product: 'metamorpho',
-    version: '1.0.0',
-    logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
-  },
-  aaveLending: {
-    name: 'Aave',
-    product: 'lending',
-    version: '3.0.0',
-    logo: 'https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png',
-  },
-  aaveBorrowing: {
-    name: 'Aave',
-    product: 'borrowing',
-    version: '3.0.0',
-    logo: 'https://strapi-staging.jumper.exchange/uploads/aave_3a6741f1bd.png',
-  },
-  angle: {
-    name: 'Angle',
-    product: 'dex',
-    version: '2.1.0',
-    logo: 'https://strapi-staging.jumper.exchange/uploads/angle_cc79b057df.png',
-  },
-  frax: {
-    name: 'Frax',
-    product: 'frax eth',
-    version: '4.0.0',
-    logo: 'https://strapi-staging.jumper.exchange/uploads/frax_0e286763eb.png',
-  },
-  lido: {
-    name: 'Lido',
-    product: 'liquid-staking',
-    version: '2.0.0',
-    logo: 'https://strapi-staging.jumper.exchange/uploads/lido_47c6f066b5.png',
-  },
-};
-
-const lpTokens = {
-  mUSDC: {
-    name: 'Morpho USDC Vault',
-    symbol: 'mUSDC',
-    decimals: 18,
-    logo: protocols.morpho.logo,
-    address: '0x1234567890abcdef1234567890abcdef12345678',
-    chain: ethereumChain,
-  },
-  aEthWETH: {
-    name: 'Aave Ethereum WETH',
-    symbol: 'aEthWETH',
-    decimals: 18,
-    logo: protocols.aaveLending.logo,
-    address: '0x4d5f47fa6a74757f35c14fd3a6ef8e3c9bc514e8',
-    chain: ethereumChain,
-  },
-  variableDebtEthUSDC: {
-    name: 'Aave Ethereum Variable Debt USDC',
-    symbol: 'variableDebtEthUSDC',
-    decimals: 6,
-    logo: protocols.aaveBorrowing.logo,
-    address: '0x72e95b8931767c79ba4eee721354d6e99a61d004',
-    chain: ethereumChain,
-  },
-  usdaUsdcLP: {
-    name: 'Angle USDA-USDC LP',
-    symbol: 'USDA-USDC-LP',
-    decimals: 18,
-    logo: protocols.angle.logo,
-    address: '0xabcdef1234567890abcdef1234567890abcdef12',
-    chain: ethereumChain,
-  },
-  frxETH: {
-    name: 'Frax Ether',
-    symbol: 'frxETH',
-    decimals: 18,
-    logo: protocols.frax.logo,
-    address: '0x5e8422345238f34275888049021821e8e08caa1f',
-    chain: ethereumChain,
-  },
-  stETH: {
-    name: 'Lido Staked Ether',
-    symbol: 'stETH',
-    decimals: 18,
-    logo: protocols.lido.logo,
-    address: '0xae7ab96520de3a18e5e111b5eaab095312d7fe84',
-    chain: ethereumChain,
-  },
-};
-
-const tags = {
-  lending: ['Lending'],
-  borrowing: ['Borrowing'],
-  dex: ['Dex'],
-  liquidStaking: ['Liquid Staking', 'Yield'],
-};
-
-const rewards = {
-  none: [],
-};
-
-const latestData = {
-  morphoUsdc: {
-    date: '2025-11-07T00:00:00Z',
-    tvlUsd: '125000000',
-    tvlNative: '125000000',
-    apy: {
-      base: 8.5,
-      reward: 0,
-      total: 8.5,
-    },
-  },
-  aaveWeth: {
-    date: '2025-11-07T00:00:00Z',
-    tvlUsd: '850000000',
-    tvlNative: '245000',
-    apy: {
-      base: 2.8,
-      reward: 0.5,
-      total: 3.3,
-    },
-  },
-  aaveUsdcBorrow: {
-    date: '2025-11-07T00:00:00Z',
-    tvlUsd: '350000000',
-    tvlNative: '350000000',
-    apy: {
-      base: -5.2,
-      reward: 0,
-      total: -5.2,
-    },
-  },
-  angleUsda: {
-    date: '2025-11-07T00:00:00Z',
-    tvlUsd: '45000000',
-    tvlNative: '45000000',
-    apy: {
-      base: 4.2,
-      reward: 8.5,
-      total: 12.7,
-    },
-  },
-  fraxEth: {
-    date: '2025-11-07T00:00:00Z',
-    tvlUsd: '380000000',
-    tvlNative: '109000',
-    apy: {
-      base: 3.8,
-      reward: 1.2,
-      total: 5.0,
-    },
-  },
-  lidoStEth: {
-    date: '2025-11-07T00:00:00Z',
-    tvlUsd: '12500000000',
-    tvlNative: '3600000',
-    apy: {
-      base: 3.5,
-      reward: 0,
-      total: 3.5,
-    },
-  },
-};
-
 export const tokens: MinimalToken[] = [
   {
     address: tokenAddresses.ETH,
@@ -320,7 +121,7 @@ export const aavePositions: DefiPosition[] = [
     name: 'Aave V3',
     assetUsd: 7.04781961968e-9,
     debtUsd: 1,
-    netUsd: 6.04781961968e-9,
+    netUsd: -0.99999999295218038,
     address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',
     chain: {
       chainId: 8453,
@@ -364,7 +165,7 @@ export const aavePositions: DefiPosition[] = [
       {
         chainType: 'EVM',
         amount: '2330844',
-        amountUSD: 7.04781961968e-9,
+        amountUSD: 1,
         name: 'Wrapped Ether',
         symbol: 'WETH',
         decimals: 18,

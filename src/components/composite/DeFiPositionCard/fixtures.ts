@@ -54,7 +54,7 @@ export const aavePositions: DefiPosition[] = [
     name: 'Aave V3',
     assetUsd: 7.04781961968e-9,
     debtUsd: 1,
-    netUsd: 6.04781961968e-9,
+    netUsd: -0.99999999295218038,
     address: '0xa238dd80c259a72e81d7e4664a9801593f98d1c5',
     chain: {
       chainId: 8453,
@@ -98,7 +98,7 @@ export const aavePositions: DefiPosition[] = [
       {
         chainType: 'EVM',
         amount: '2330844',
-        amountUSD: 7.04781961968e-9,
+        amountUSD: 1,
         name: 'Wrapped Ether',
         symbol: 'WETH',
         decimals: 18,
