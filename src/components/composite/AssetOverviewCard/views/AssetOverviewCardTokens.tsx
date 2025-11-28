@@ -1,5 +1,6 @@
-import { FC, useMemo } from 'react';
-import { AssetOverviewCardTokensProps } from '../AssetOverviewCard.types';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { AssetOverviewCardTokensProps } from '../AssetOverviewCard.types';
 import { AssetOverviewCardAssetsContainer } from '../AssetOverviewCard.styles';
 import { AssetProgress } from '../../AssetProgress/AssetProgress';
 import { AssetProgressVariant } from '../../AssetProgress/AssetProgress.types';
@@ -17,7 +18,10 @@ export const AssetOverviewCardTokens: FC<AssetOverviewCardTokensProps> = ({
   const maxDisplayCount = isMobile
     ? MAX_DISPLAY_ASSETS_COUNT_MOBILE
     : MAX_DISPLAY_ASSETS_COUNT;
-  const grouped = useMemo(() => groupAssets(tokens, maxDisplayCount), [tokens]);
+  const grouped = useMemo(
+    () => groupAssets(tokens, maxDisplayCount),
+    [tokens, maxDisplayCount],
+  );
 
   return (
     <AssetOverviewCardAssetsContainer>

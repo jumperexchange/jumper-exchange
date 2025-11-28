@@ -1,25 +1,15 @@
-import { TypographyProps } from '@mui/material/Typography';
-import { TFunction } from 'i18next';
-import { ColumnDefinition } from 'src/components/core/ColumnTable/ColumnTable.types';
-import {
-  EarnOpportunityRewardEntity,
-  MinimalDeFiPosition,
-} from 'src/types/defi';
+import type { TypographyProps } from '@mui/material/Typography';
+import type { TFunction } from 'i18next';
+import type { ColumnDefinition } from 'src/components/core/ColumnTable/ColumnTable.types';
+import type { DefiPosition, DefiToken } from 'src/types/jumper-backend';
 
 export interface DeFiPositionCardProps {
-  defiPosition?: MinimalDeFiPosition;
-  onSelect?: (defiPosition: MinimalDeFiPosition) => void;
+  defiPositions?: DefiPosition[];
+  onSelect?: (defiPosition: DefiPosition) => void;
   isLoading?: boolean;
 }
 
-export interface EntityItem extends Pick<MinimalDeFiPosition, 'asset'> {}
-
-export interface ValueItem
-  extends Pick<MinimalDeFiPosition, 'totalPriceUSD' | 'balance' | 'asset'> {}
-
-export interface ApyItem extends Pick<MinimalDeFiPosition, 'latest'> {}
-
-export interface RenderCellProps<T = any> {
+export interface RenderCellProps<T = DefiToken> {
   item: T;
   titleVariant: TypographyProps['variant'];
   descriptionVariant: TypographyProps['variant'];
@@ -29,18 +19,19 @@ export interface RenderCellProps<T = any> {
 
 export interface TableSection<T> {
   id: string;
-  type: 'position' | 'rewards';
+  type: 'supply' | 'borrow' | 'rewards';
   data: T[];
   columns: ColumnDefinition<T>[];
   showHeader: boolean;
 }
 
-export type PositionSection = TableSection<MinimalDeFiPosition>;
-export type RewardSection = TableSection<EarnOpportunityRewardEntity>;
+export type SupplySection = TableSection<DefiToken>;
+export type BorrowSection = TableSection<DefiToken>;
+export type RewardSection = TableSection<DefiToken>;
 
-export type Section = PositionSection | RewardSection;
+export type Section = SupplySection | BorrowSection | RewardSection;
 
 export interface PositionGroup {
-  position: MinimalDeFiPosition;
+  position: DefiPosition;
   sections: Section[];
 }

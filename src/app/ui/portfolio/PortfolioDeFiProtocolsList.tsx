@@ -1,18 +1,21 @@
 import { DeFiPositionCard } from '@/components/composite/DeFiPositionCard/DeFiPositionCard';
+import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
+import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 import { usePortfolioDeFiPositionsFiltering } from './PortfolioDeFiPositionsFilteringContext';
+import { PortfolioEmptyList } from './PortfolioEmptyList';
 import {
   PortfolioAssetContainer,
   PortfolioAssetsListContainer,
 } from './PortfolioPage.styles';
-import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
-import { PortfolioEmptyList } from './PortfolioEmptyList';
-import { useFormatDisplayDeFiPositionsData } from 'src/hooks/portfolio/useFormatDisplayDeFiPositionsData';
 
 export const PortfolioDeFiProtocolsList = () => {
   const { data, isEmpty, isLoading, clearFilters } =
     usePortfolioDeFiPositionsFiltering();
 
-  const defiPositions = useFormatDisplayDeFiPositionsData(data);
+  const protocolGroups = useFormatDisplayDeFiPositions(
+    data,
+    (position) => `${position.protocol.name}-${position.chain.chainId}`,
+  );
 
   if (isEmpty) {
     return null;
@@ -21,11 +24,13 @@ export const PortfolioDeFiProtocolsList = () => {
   return (
     <>
       <PortfolioAssetsListContainer useFlexGap direction="column">
-        {defiPositions.length > 0 ? (
-          defiPositions.map((defiPosition) => (
-            <PortfolioAssetContainer key={defiPosition.slug}>
+        {protocolGroups.length > 0 ? (
+          protocolGroups.map((positions) => (
+            <PortfolioAssetContainer
+              key={`${positions[0].protocol.name}-${positions[0].chain.chainId}`}
+            >
               <DeFiPositionCard
-                defiPosition={defiPosition}
+                defiPositions={positions}
                 isLoading={isLoading}
               />
             </PortfolioAssetContainer>
