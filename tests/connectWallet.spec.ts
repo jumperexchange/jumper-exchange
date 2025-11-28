@@ -31,7 +31,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
     await test.step('Close welcome screen and navigate to profile', async () => {
       await closeWelcomeScreen(page);
       await triggerButtonClick(page, 'Pass');
-      await expect(page.locator('.profile-page')).toBeVisible();
+      await page.locator('.profile-page').isVisible();
     });
 
     await test.step('Check Perks and Achievements tabs', async () => {

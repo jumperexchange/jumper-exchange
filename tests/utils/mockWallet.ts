@@ -7,11 +7,7 @@
  */
 
 import dotenv from 'dotenv';
-
-// Load .env file if it exists (for local development)
-// In CI, environment variables should be set directly
-// Note: dotenv.config() doesn't throw if the file doesn't exist
-dotenv.config({ path: './.env' });
+dotenv.config({ path: './tests/.env.test' });
 
 /**
  * Generates JavaScript code that injects a mock Ethereum wallet provider into the browser.
