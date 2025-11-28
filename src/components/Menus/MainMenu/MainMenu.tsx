@@ -40,6 +40,11 @@ const footerLinksStyles = {
   },
 };
 
+const footerLinksWrapperStyles = (theme: Theme) => ({
+  flexWrap: 'wrap',
+  gap: theme.spacing(0.5),
+});
+
 const mainItemsStackStyles = {
   overflowY: 'auto',
 };
@@ -105,11 +110,12 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
   const renderedFooterLinks = useMemo(
     () => (
       <MenuItem open isInteractive={false} styles={footerLinksStyles}>
-        <MenuItemContentWrapper>
-          {mainMenuFooterLinks.map((footerLink) => (
+        <MenuItemContentWrapper styles={footerLinksWrapperStyles}>
+          {mainMenuFooterLinks.map((footerLink, index) => (
             <MenuItemContentFooterLink
               key={footerLink.label}
               link={footerLink}
+              useDivider={index !== mainMenuFooterLinks.length - 1}
             />
           ))}
         </MenuItemContentWrapper>

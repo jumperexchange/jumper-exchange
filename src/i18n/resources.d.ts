@@ -335,11 +335,13 @@ interface Resources {
         brandAssets: 'Brand Assets';
         developers: 'Developers';
         learn: 'Learn';
+        newsletter: 'Newsletter';
         privacyPolicy: 'Privacy Policy';
         profile: 'Profile';
         resources: 'Resources';
         scan: 'Scan';
         support: 'Support';
+        termsOfService: 'Terms & Conditions';
         theme: 'Theme';
       };
       pass: 'Pass';

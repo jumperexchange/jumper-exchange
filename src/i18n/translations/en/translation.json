@@ -41,7 +41,9 @@
       "support": "Support",
       "resources": "Resources",
       "profile": "Profile",
-      "privacyPolicy": "Privacy Policy"
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms & Conditions",
+      "newsletter": "Newsletter"
     },
     "walletMenu": {
       "disconnect": "Disconnect",

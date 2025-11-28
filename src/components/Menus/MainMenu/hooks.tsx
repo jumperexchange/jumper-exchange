@@ -14,6 +14,7 @@ import {
   DISCORD_URL,
   LINK3_URL,
   TELEGRAM_URL,
+  TERMS_OF_SERVICE_URL,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -218,6 +219,22 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handleTermsOfServiceClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-terms-of-service-link',
+      action: TrackingAction.ClickJumperTermsOfServiceLink,
+      dataMenuParam: 'jumper_terms_of_service',
+    });
+  }, [trackMenuClick]);
+
+  const handleNewsletterClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-newsletter-link',
+      action: TrackingAction.ClickJumperNewsletterLink,
+      dataMenuParam: 'jumper_newsletter',
+    });
+  }, [trackMenuClick]);
+
   return {
     handleExchangeClick,
     handleMissionsClick,
@@ -231,6 +248,8 @@ export const useMenuActions = () => {
     handleLanguageClick,
     handleResourcesClick,
     handlePrivacyPolicyClick,
+    handleTermsOfServiceClick,
+    handleNewsletterClick,
   };
 };
 
@@ -320,17 +339,37 @@ export const useSocialLinks = () => {
 
 export const useFooterLinks = () => {
   const { t } = useTranslation();
-  const { handlePrivacyPolicyClick } = useMenuActions();
+  const {
+    handlePrivacyPolicyClick,
+    handleTermsOfServiceClick,
+    handleNewsletterClick,
+  } = useMenuActions();
 
   const footerLinks = useMemo(
     () => [
+      {
+        label: t('navbar.navbarMenu.termsOfService'),
+        link: { url: TERMS_OF_SERVICE_URL },
+        onClick: handleTermsOfServiceClick,
+        external: true,
+      },
       {
         label: t('navbar.navbarMenu.privacyPolicy'),
         link: { url: AppPaths.PrivacyPolicy },
         onClick: handlePrivacyPolicyClick,
       },
+      {
+        label: t('navbar.navbarMenu.newsletter'),
+        link: { url: AppPaths.Newsletter },
+        onClick: handleNewsletterClick,
+      },
     ],
-    [t, handlePrivacyPolicyClick],
+    [
+      t,
+      handlePrivacyPolicyClick,
+      handleTermsOfServiceClick,
+      handleNewsletterClick,
+    ],
   );
 
   return { footerLinks };
