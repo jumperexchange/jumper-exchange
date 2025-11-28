@@ -372,6 +372,15 @@
       "getStarted": "",
       "explorePass": ""
     },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
     "assetOverviewCard": {
       "navigation": {
         "overview": "",
