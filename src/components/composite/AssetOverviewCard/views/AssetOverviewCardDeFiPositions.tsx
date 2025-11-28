@@ -1,5 +1,6 @@
-import { FC, useMemo } from 'react';
-import { AssetOverviewCardDeFiPositionsProps } from '../AssetOverviewCard.types';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { AssetOverviewCardDeFiPositionsProps } from '../AssetOverviewCard.types';
 import { AssetOverviewCardAssetsContainer } from '../AssetOverviewCard.styles';
 import { AssetProgress } from '../../AssetProgress/AssetProgress';
 import { AssetProgressVariant } from '../../AssetProgress/AssetProgress.types';
@@ -12,28 +13,29 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const AssetOverviewCardDeFiPositions: FC<
   AssetOverviewCardDeFiPositionsProps
-> = ({ defiPositions }) => {
+> = ({ protocolGroups }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const maxDisplayCount = isMobile
     ? MAX_DISPLAY_ASSETS_COUNT_MOBILE
     : MAX_DISPLAY_ASSETS_COUNT;
+
   const grouped = useMemo(
-    () => groupAssets(defiPositions, maxDisplayCount),
-    [defiPositions],
+    () => groupAssets(protocolGroups, maxDisplayCount),
+    [protocolGroups, maxDisplayCount],
   );
 
   return (
     <AssetOverviewCardAssetsContainer>
-      {grouped.displayAssets.map((defiPosition) => (
+      {grouped.displayAssets.map((protocolGroup) => (
         <AssetProgress
-          key={defiPosition.slug}
+          key={protocolGroup.protocol.name}
           variant={AssetProgressVariant.Protocol}
-          protocol={defiPosition.protocol}
+          protocol={protocolGroup.protocol}
           progress={calculateAssetPercentage(
-            defiPosition.totalPriceUSD,
+            protocolGroup.totalPriceUSD,
             grouped.totalPrice,
           )}
-          amount={defiPosition.totalPriceUSD}
+          amount={protocolGroup.totalPriceUSD}
         />
       ))}
       {grouped.overflow && (

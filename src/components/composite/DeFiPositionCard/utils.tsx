@@ -12,16 +12,8 @@ import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
 import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 import { COLUMN_SPACING } from './constants';
-import type {
-  ApyItem,
-  EntityItem,
-  RenderCellProps,
-  ValueItem,
-} from './DeFiPositionCard.types';
-import type {
-  EarnOpportunityRewardEntity,
-  MinimalDeFiPosition,
-} from 'src/types/defi';
+import type { RenderCellProps } from './DeFiPositionCard.types';
+import type { DefiToken, DefiPosition } from 'src/types/jumper-backend';
 import { DepositFlowOnDemandButton } from '../DepositFlow/DepositFlow';
 import {
   StyledButtonAlphaDark,
@@ -30,6 +22,7 @@ import {
 } from './DeFiPositionCard.styles';
 import type { TFunction } from 'i18next';
 import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
+import { formatUnits } from 'viem';
 
 export const formatTimeDifference = (date: string, t: TFunction) => {
   const now = new Date();
@@ -79,17 +72,17 @@ export const formatTimeDifference = (date: string, t: TFunction) => {
   );
 };
 
-export const renderEntityCell = <T extends EntityItem>({
+export const renderEntityCell = ({
   item,
   titleVariant,
   descriptionVariant,
-}: RenderCellProps<T>) => (
+}: RenderCellProps<DefiToken>) => (
   <EntityChainStack
     variant={EntityChainStackVariant.Tokens}
-    tokens={[item.asset]}
+    tokens={[item]}
     tokensSize={AvatarSize.XL}
     content={{
-      title: item.asset.name,
+      title: item.name,
       titleVariant,
       descriptionVariant,
     }}
@@ -100,63 +93,117 @@ export const renderEntityCell = <T extends EntityItem>({
   />
 );
 
-export const renderValueCell = <T extends ValueItem>({
+export const renderValueCell = ({
   item,
   t,
   titleVariant,
   descriptionVariant,
-}: RenderCellProps<T>) => (
+}: RenderCellProps<DefiToken>) => (
   <TitleWithHint
-    title={t('format.currency', { value: item.totalPriceUSD })}
-    hint={`${item.balance.toString()} ${item.asset.symbol}`}
+    title={t('format.currency', { value: item.amountUSD })}
+    hint={`${formatUnits(BigInt(item.amount || '0'), item.decimals)} ${item.symbol}`}
     titleVariant={titleVariant}
     hintVariant={descriptionVariant}
   />
 );
 
-export const renderApyCell = <T extends ApyItem>({
-  item,
+export const renderApyCell = ({
+  position,
   titleVariant,
-}: RenderCellProps<T>) => (
-  <TitleWithHint
-    title={`${toFixedFractionDigits(item.latest.apy.total, 0, 2)}%`}
-    titleVariant={titleVariant}
-  />
-);
+}: {
+  position: DefiPosition;
+  titleVariant: RenderCellProps['titleVariant'];
+}) => {
+  const apyValue = position.latest?.apy?.total;
+  return (
+    <TitleWithHint
+      // TODO: use the APY formatting function once available
+      title={apyValue ? `${toFixedFractionDigits(apyValue, 0, 2)}%` : '-'}
+      titleVariant={titleVariant}
+    />
+  );
+};
 
-export const renderPositionActions = <T extends MinimalDeFiPosition>({
-  item,
+export const renderPositionActions = ({
+  position,
   isMobile,
   t,
-}: RenderCellProps<T>) => (
-  <StyledPositionActions direction="row" useFlexGap>
-    <WithdrawFlowOnDemandButton
-      label={t('portfolio.defiPositionCard.actions.withdraw')}
-      fullWidth={isMobile}
-      earnOpportunitySlug={item.slug}
-    />
-    <DepositFlowOnDemandButton
-      displayMode={DepositButtonDisplayMode.LabelOnly}
-      label={t('portfolio.defiPositionCard.actions.deposit')}
-      fullWidth={isMobile}
-      earnOpportunitySlug={item.slug}
-    />
-  </StyledPositionActions>
-);
+}: {
+  position: DefiPosition;
+  isMobile: boolean;
+  t: TFunction;
+}) => {
+  return (
+    <StyledPositionActions
+      direction={{
+        md: 'row',
+        xs: 'column',
+      }}
+      useFlexGap
+    >
+      <WithdrawFlowOnDemandButton
+        label={t('portfolio.defiPositionCard.actions.withdraw')}
+        fullWidth={isMobile}
+        earnOpportunitySlug={position.earn || ''}
+        disabled={!position.earn}
+      />
+      <DepositFlowOnDemandButton
+        displayMode={DepositButtonDisplayMode.LabelOnly}
+        label={t('portfolio.defiPositionCard.actions.deposit')}
+        fullWidth={isMobile}
+        earnOpportunitySlug={position.earn || ''}
+        disabled={!position.earn}
+      />
+    </StyledPositionActions>
+  );
+};
 
-export const renderRewardActions = <T extends EarnOpportunityRewardEntity>({
-  item,
+export const renderRewardActions = ({
+  position,
   isMobile,
   t,
-}: RenderCellProps<T>) => (
-  <StyledPositionActions direction="row" useFlexGap>
-    {/** TODO: Add claim flow button */}
+}: {
+  position: DefiPosition;
+  isMobile: boolean;
+  t: TFunction;
+}) => (
+  <StyledPositionActions
+    direction={{
+      md: 'row',
+      xs: 'column',
+    }}
+    useFlexGap
+  >
     <StyledButtonAlphaDark fullWidth={isMobile}>
       {t('portfolio.defiPositionCard.actions.claim')}
     </StyledButtonAlphaDark>
-    {/** TODO: Add compound flow button */}
     <StyledButtonPrimary fullWidth={isMobile}>
       {t('portfolio.defiPositionCard.actions.compound')}
+    </StyledButtonPrimary>
+  </StyledPositionActions>
+);
+
+export const renderBorrowedActions = ({
+  position,
+  isMobile,
+  t,
+}: {
+  position: DefiPosition;
+  isMobile: boolean;
+  t: TFunction;
+}) => (
+  <StyledPositionActions
+    direction={{
+      md: 'row',
+      xs: 'column',
+    }}
+    useFlexGap
+  >
+    <StyledButtonAlphaDark fullWidth={isMobile}>
+      {t('portfolio.defiPositionCard.actions.repay')}
+    </StyledButtonAlphaDark>
+    <StyledButtonPrimary fullWidth={isMobile}>
+      {t('portfolio.defiPositionCard.actions.borrow')}
     </StyledButtonPrimary>
   </StyledPositionActions>
 );

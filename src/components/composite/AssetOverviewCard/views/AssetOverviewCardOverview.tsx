@@ -1,6 +1,7 @@
 import { AssetOverviewCardOverviewContainer } from '../AssetOverviewCard.styles';
-import { FC, useMemo } from 'react';
-import { AssetOverviewCardOverviewProps } from '../AssetOverviewCard.types';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { AssetOverviewCardOverviewProps } from '../AssetOverviewCard.types';
 import { TokenStack } from '../../TokenStack/TokenStack';
 import { ProtocolStack } from '../../ProtocolStack/ProtocolStack';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
@@ -11,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
   tokens,
-  defiPositions,
+  protocolGroups,
 }) => {
   const { t } = useTranslation();
   const tokensOverallPriceInUSD = useMemo(
@@ -19,13 +20,13 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
     [tokens],
   );
   const defiPositionsOverallPriceInUSD = useMemo(
-    () => calculateTotalPrice(defiPositions),
-    [defiPositions],
+    () => calculateTotalPrice(protocolGroups),
+    [protocolGroups],
   );
 
   const defiPositionsProtocols = useMemo(
-    () => defiPositions.map((defiPosition) => defiPosition.protocol),
-    [defiPositions],
+    () => protocolGroups.map((group) => group.protocol),
+    [protocolGroups],
   );
 
   return (
