@@ -49,9 +49,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups.slice(0, 1)}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -85,9 +83,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups.slice(0, 2)}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -121,9 +117,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups.slice(0, 3)}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -157,9 +151,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups.slice(0, 4)}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -193,9 +185,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -229,9 +219,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -256,9 +244,7 @@ describe('AssetOverviewCard Snapshots', () => {
       const { container } = render(
         <AssetOverviewCard tokens={tokens} defiPositionGroups={[]} />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -292,9 +278,7 @@ describe('AssetOverviewCard Snapshots', () => {
           defiPositionGroups={defiPositionGroups}
         />,
       );
-      fireEvent.click(
-        screen.getByTestId('asset-overview-nav-defiPositionGroups'),
-      );
+      fireEvent.click(screen.getByTestId('asset-overview-nav-defiPositions'));
       expect(container).toMatchSnapshot();
     });
   });
@@ -319,9 +303,7 @@ describe('AssetOverviewCard Snapshots', () => {
 
       const overviewButton = screen.getByTestId('asset-overview-nav-overview');
       const tokensButton = screen.getByTestId('asset-overview-nav-tokens');
-      const defiButton = screen.getByTestId(
-        'asset-overview-nav-defiPositionGroups',
-      );
+      const defiButton = screen.getByTestId('asset-overview-nav-defiPositions');
 
       fireEvent.click(tokensButton);
       expect(tokensButton).toHaveAttribute('class');
