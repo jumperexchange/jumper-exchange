@@ -422,13 +422,16 @@
         "withdraw": "",
         "deposit": "",
         "claim": "",
-        "compound": ""
+        "compound": "",
+        "repay": "",
+        "borrow": ""
       },
       "header": {
         "supplied": "",
         "value": "",
         "apy": "",
-        "rewards": ""
+        "rewards": "",
+        "borrowed": ""
       }
     },
     "filter": {
