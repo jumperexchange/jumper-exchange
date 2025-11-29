@@ -422,13 +422,16 @@
         "withdraw": "Retirar",
         "deposit": "Depositar",
         "claim": "Reivindicar",
-        "compound": "Composto"
+        "compound": "Composto",
+        "repay": "",
+        "borrow": ""
       },
       "header": {
         "supplied": "Fornecido",
         "value": "Valor",
         "apy": "APY",
-        "rewards": "Recompensas"
+        "rewards": "Recompensas",
+        "borrowed": ""
       }
     },
     "filter": {
