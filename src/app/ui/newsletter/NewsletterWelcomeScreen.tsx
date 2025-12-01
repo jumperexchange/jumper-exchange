@@ -4,7 +4,7 @@ import { CustomColor } from '@/components/CustomColorTypography.style';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
 import {
@@ -26,6 +26,7 @@ import {
 import { useNewsletterSubscribe } from '@/hooks/useNewsletterSubscribe';
 import Input from '@mui/material/Input';
 import { getValidationSchema } from './utils';
+import { useMenuStore } from '@/stores/menu';
 
 interface NewsletterWelcomeScreenProps {}
 
@@ -34,8 +35,14 @@ export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = () => {
   const { trackEvent } = useUserTracking();
   const [email, setEmail] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const setSnackbarState = useMenuStore((state) => state.setSnackbarState);
   const { mutate, isPending, isSuccess } = useNewsletterSubscribe();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSnackbarState(true, t('newsletter.welcome.success.title'), 'success');
+    }
+  }, [isSuccess, setSnackbarState, t]);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);

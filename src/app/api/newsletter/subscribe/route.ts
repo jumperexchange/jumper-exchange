@@ -1,4 +1,5 @@
 import envConfig from '@/config/env-config';
+import { TEN_SECONDS_MS } from '@/const/time';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -33,71 +34,97 @@ interface BeehiivSubscriptionPayload {
 }
 
 export async function POST(request: NextRequest) {
+  let timeoutId: NodeJS.Timeout | null = null;
   try {
+    const controller = new AbortController();
+    timeoutId = setTimeout(() => controller.abort(), TEN_SECONDS_MS);
+
     const body: SubscribeRequestBody = await request.json();
 
     const apiKey = envConfig.BEEHIIV_API_KEY;
     const publicationId = envConfig.BEEHIIV_PUBLICATION_ID;
+    const apiUrl = envConfig.BEEHIIV_API_URL || 'https://api.beehiiv.com/v2';
 
     if (!apiKey || !publicationId) {
-      return NextResponse.json({ error: 'Server error' }, { status: 500 });
+      throw new Error('Server error');
     }
 
-    const payload: BeehiivSubscriptionPayload = {
+    const encodedEmail = encodeURIComponent(body.email);
+    const subscriptionCheckResponse = await fetch(
+      `${apiUrl}/publications/${publicationId}/subscriptions/by_email/${encodedEmail}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+        signal: controller.signal,
+      },
+    );
+
+    if (subscriptionCheckResponse.ok) {
+      throw new Error('Already subscribed');
+    }
+
+    const subscribePayload: BeehiivSubscriptionPayload = {
       email: body.email,
       reactivate_existing: false,
       send_welcome_email: true,
     };
 
     if (body.utmSource) {
-      payload.utm_source = body.utmSource;
+      subscribePayload.utm_source = body.utmSource;
     }
     if (body.utmMedium) {
-      payload.utm_medium = body.utmMedium;
+      subscribePayload.utm_medium = body.utmMedium;
     }
     if (body.utmCampaign) {
-      payload.utm_campaign = body.utmCampaign;
+      subscribePayload.utm_campaign = body.utmCampaign;
     }
     if (body.utmTerm) {
-      payload.utm_term = body.utmTerm;
+      subscribePayload.utm_term = body.utmTerm;
     }
     if (body.utmContent) {
-      payload.utm_content = body.utmContent;
+      subscribePayload.utm_content = body.utmContent;
     }
     if (body.referringSite) {
-      payload.referring_site = body.referringSite;
+      subscribePayload.referring_site = body.referringSite;
     }
     if (body.customFields) {
-      payload.custom_fields = body.customFields;
+      subscribePayload.custom_fields = body.customFields;
     }
 
-    const response = await fetch(
-      `https://api.beehiiv.com/v2/publications/${publicationId}/subscriptions`,
+    const subscribeResponse = await fetch(
+      `${apiUrl}/publications/${publicationId}/subscriptions`,
       {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(subscribePayload),
+        signal: controller.signal,
       },
     );
 
-    const data = await response.json();
-
-    if (!response.ok) {
+    if (!subscribeResponse.ok) {
+      const errorMessage = await subscribeResponse.text();
       return NextResponse.json(
-        { error: data.message || 'Subscription failed' },
-        { status: response.status },
+        { error: errorMessage || 'Subscription failed' },
+        { status: subscribeResponse.status },
       );
     }
 
-    return NextResponse.json({ success: true, data });
+    const subscribeData = await subscribeResponse.json();
+    return NextResponse.json({ success: true, data: subscribeData });
   } catch (error) {
     console.error('Newsletter subscription error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
     );
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
   }
 }

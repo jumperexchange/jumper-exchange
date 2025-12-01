@@ -225,7 +225,8 @@ export const useMenuActions = () => {
       action: TrackingAction.ClickJumperTermsConditionsLink,
       dataMenuParam: 'jumper_terms_conditions',
     });
-  }, [trackMenuClick]);
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
 
   const handleNewsletterClick = useCallback(() => {
     trackMenuClick({
@@ -233,7 +234,8 @@ export const useMenuActions = () => {
       action: TrackingAction.ClickJumperNewsletterLink,
       dataMenuParam: 'jumper_newsletter',
     });
-  }, [trackMenuClick]);
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
 
   return {
     handleExchangeClick,

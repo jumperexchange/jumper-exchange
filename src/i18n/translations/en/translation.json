@@ -467,7 +467,7 @@
     "welcome": {
       "title": "Make. The. Jump.",
       "subtitle": "Get the latest news and updates directly from <strong>Jumper.</strong>",
-      "hint": "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at anytime from the link in the email footer.",
+      "hint": "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at any time from the link in the email footer.",
       "subscribe": "Subscribe",
       "emailPlaceholder": "Enter your email",
       "error": {
@@ -477,7 +477,7 @@
         "unknown": "An unknown error occurred. Please try again."
       },
       "success": {
-        "title": "Newsletter subscribed",
+        "title": "Newsletter subscription successful!",
         "description": "You have been subscribed to our newsletter. You will receive the latest news and updates directly from Jumper."
       }
     }

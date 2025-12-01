@@ -23,7 +23,7 @@ export const NewsletterPage = () => {
         <Box key={src} sx={{ display }}>
           <Image
             src={src}
-            alt="Newsletter"
+            alt="Newsletter hero image"
             width={0}
             height={0}
             sizes="100vw"

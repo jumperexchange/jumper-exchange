@@ -403,12 +403,12 @@ interface Resources {
           required: 'This field is required';
           unknown: 'An unknown error occurred. Please try again.';
         };
-        hint: "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at anytime from the link in the email footer.";
+        hint: "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at any time from the link in the email footer.";
         subscribe: 'Subscribe';
         subtitle: 'Get the latest news and updates directly from <strong>Jumper.</strong>';
         success: {
           description: 'You have been subscribed to our newsletter. You will receive the latest news and updates directly from Jumper.';
-          title: 'Newsletter subscribed';
+          title: 'Newsletter subscription successful!';
         };
         title: 'Make. The. Jump.';
       };
