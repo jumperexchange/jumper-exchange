@@ -1,7 +1,5 @@
-import type { Page, BrowserContext } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { MetaMask } from '@synthetixio/synpress/playwright';
-import basicSetup from '../wallet-setup/basic.setup';
 
 export const getRankValue = async (page: Page) => {
   const rankSelector = 'xpath=(//div[@class="MuiBox-root mui-19kp780"]//p)[1]';
@@ -29,6 +27,32 @@ export const connectedWalletButton = async (page: Page) => {
 export const connectButton = (page: Page) => {
   return page.locator('#connect-wallet-button');
 };
+export const selectWalletDialog = (page: Page) => {
+  return page.getByRole('dialog', { name: 'Select a wallet' });
+};
+
+export const expectSelectWalletOptionToBeVisible = async (page: Page) => {
+  await expect(selectWalletDialog(page)).toBeVisible();
+  const selectWalletTitle = await selectWalletDialog(page).getByRole(
+    'heading',
+    {
+      name: 'Select a wallet',
+    },
+  );
+  await expect(selectWalletTitle).toBeVisible();
+};
+
+export const selectWalletOption = async (page: Page, option: string) => {
+  await selectWalletDialog(page).getByText(option).click();
+};
+
+export const openConnectedWallet = async (page: Page, address: string) => {
+  const truncatedAddress = `${address.slice(0, 7)}...${address.slice(-5)}`;
+  const connectedWalletButton = page.getByRole('button', {
+    name: `wallet-avatar chain-avatar ${truncatedAddress}`,
+  });
+  await connectedWalletButton.click();
+};
 
 export const connectAnotherWalletButton = (page: Page) => {
   return page.locator('#connect-another-wallet-button');
@@ -36,34 +60,4 @@ export const connectAnotherWalletButton = (page: Page) => {
 
 export const disconnectWalletButton = (page: Page) => {
   return page.locator('#disconnect-wallet-button');
-};
-
-/**
- * Reusable function to connect MetaMask wallet to the application
- * @param context - Browser context
- * @param page - Playwright page
- * @param extensionId - MetaMask extension ID
- * @param targetUrl - URL to navigate to (defaults to '/')
- */
-export const connectMetaMaskWallet = async (
-  context: BrowserContext,
-  page: Page,
-  extensionId: string,
-  targetUrl: string = '/',
-) => {
-  const metamask = new MetaMask(
-    context,
-    page,
-    basicSetup.walletPassword,
-    extensionId,
-  );
-  const metaMaskWalletOption = page.locator(
-    'xpath=//span[normalize-space(text())="MetaMask"]',
-  );
-
-  await page.goto(targetUrl);
-  await expect(connectButton(page)).toBeEnabled();
-  await connectButton(page).click();
-  await metaMaskWalletOption.click();
-  await metamask.connectToDapp(['Account 1']);
 };
