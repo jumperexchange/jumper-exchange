@@ -26,13 +26,14 @@ import type {
   SortByEnum,
 } from './types';
 import { SortByOptions } from './types';
+import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioTokensFilteringContextType
   extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioTokensFilterUI;
-  updateFilter: (filter: PortfolioTokensFilterUI) => void;
+  updateFilter: (filter: NullableFields<PortfolioTokensFilterUI>) => void;
   clearFilters: () => void;
   data: CacheToken[];
   isLoading: boolean;
@@ -104,10 +105,9 @@ export const PortfolioTokensFilteringProvider = ({
     prevStatsRef.current = stats;
 
     const sanitized = sanitizeTokensFilter(filter, stats);
-    const cleanedSanitized = removeNullValuesFromFilter(sanitized);
 
-    if (!isEqual(cleanedSanitized, filter)) {
-      setFilter(cleanedSanitized);
+    if (!isEqual(sanitized, filter)) {
+      setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
@@ -117,23 +117,21 @@ export const PortfolioTokensFilteringProvider = ({
   }, [queriesByAddress, filter, sortBy]);
 
   const updateFilter = useCallback(
-    (newFilter: PortfolioTokensFilter) => {
+    (newFilter: NullableFields<PortfolioTokensFilter>) => {
       const newFilterValue = { ...filter, ...newFilter };
-      const sanitized = sanitizeTokensFilter(newFilterValue, stats);
-      const cleanedSanitized = removeNullValuesFromFilter(sanitized);
-      setFilter(cleanedSanitized);
-      setSearchParamsState(sanitized);
+      setFilter(removeNullValuesFromFilter(newFilterValue));
+      setSearchParamsState(newFilterValue);
     },
-    [filter, stats, setSearchParamsState],
+    [filter, setSearchParamsState],
   );
 
   const clearFilters = useCallback(() => {
     updateFilter({
-      tokensWallets: undefined,
-      tokensChains: undefined,
-      tokensAssets: undefined,
-      tokensMinValue: undefined,
-      tokensMaxValue: undefined,
+      tokensWallets: null,
+      tokensChains: null,
+      tokensAssets: null,
+      tokensMinValue: null,
+      tokensMaxValue: null,
     });
   }, [updateFilter]);
 

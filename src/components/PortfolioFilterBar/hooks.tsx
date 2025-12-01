@@ -92,22 +92,32 @@ export const usePortfolioTokensFilterBar = () => {
   );
 
   const handleWalletChange = (values: string[]) => {
-    updateFilter({ ...filter, tokensWallets: values });
+    updateFilter({
+      ...filter,
+      tokensWallets: values.length > 0 ? values : null,
+    });
   };
 
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, tokensChains: values.map(Number) });
+    updateFilter({
+      ...filter,
+      tokensChains: values.length > 0 ? values.map(Number) : null,
+    });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, tokensAssets: values });
+    updateFilter({
+      ...filter,
+      tokensAssets: values.length > 0 ? values : null,
+    });
   };
 
   const handleValueChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      tokensMinValue: values[0],
-      tokensMaxValue: values[1],
+      tokensMinValue: hasValues ? values[0] : null,
+      tokensMaxValue: hasValues ? values[1] : null,
     });
   };
 
@@ -224,26 +234,33 @@ export const usePortfolioDeFiFilterBar = () => {
   const valueMax = filter?.defiMaxValue ?? allValueRange.max;
 
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, defiChains: values.map(Number) });
+    updateFilter({
+      ...filter,
+      defiChains: values.length > 0 ? values.map(Number) : null,
+    });
   };
 
   const handleProtocolChange = (values: string[]) => {
-    updateFilter({ ...filter, defiProtocols: values });
+    updateFilter({
+      ...filter,
+      defiProtocols: values.length > 0 ? values : null,
+    });
   };
 
   const handleTypeChange = (values: string[]) => {
-    updateFilter({ ...filter, defiTypes: values });
+    updateFilter({ ...filter, defiTypes: values.length > 0 ? values : null });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, defiAssets: values });
+    updateFilter({ ...filter, defiAssets: values.length > 0 ? values : null });
   };
 
   const handleAPYChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      defiMinAPY: values[0],
-      defiMaxAPY: values[1],
+      defiMinAPY: hasValues ? values[0] : null,
+      defiMaxAPY: hasValues ? values[1] : null,
     });
   };
 

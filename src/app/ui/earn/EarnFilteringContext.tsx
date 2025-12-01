@@ -23,10 +23,10 @@ import { EMPTY_FILTERING_PARAMS } from './constants';
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
-  NullableFields,
   SortByEnum,
 } from './types';
 import { SortByOptions } from './types';
+import type { NullableFields } from 'src/types/internal';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
