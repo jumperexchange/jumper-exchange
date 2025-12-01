@@ -4,6 +4,16 @@ import type { Account } from '@lifi/wallet-management';
 
 export type PortfolioFilterBarTab = 'tokens' | 'defi-protocols';
 
+export type SortByType = 'value' | 'chain' | 'asset';
+
+export const SortByOptions = {
+  VALUE: 'value',
+  CHAIN: 'chain',
+  ASSET: 'asset',
+} as const satisfies Record<string, SortByType>;
+
+export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
+
 export interface PortfolioTokensFilteringParams {
   allWallets: (Omit<Account, 'address'> & { address: string })[];
   allChains: Chain[];

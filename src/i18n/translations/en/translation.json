@@ -449,6 +449,13 @@
       "clearAll": "Clear all",
       "filterAndSort": "Filter and sort",
       "search": "Search {{filterBy}}..."
+    },
+    "sorting": {
+      "sortBy": "Sort by",
+      "sort": "Sort",
+      "totalValue": "Total value",
+      "chain": "Chain",
+      "asset": "Asset"
     }
   },
   "widget": {

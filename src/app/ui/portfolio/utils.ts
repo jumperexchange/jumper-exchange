@@ -4,19 +4,25 @@ import {
   parseAsFloat,
   parseAsInteger,
   parseAsString,
+  parseAsStringEnum,
 } from 'nuqs';
-import { map, uniq, uniqBy } from 'lodash';
+import { uniq, uniqBy, sortBy } from 'lodash';
 import type { CacheToken } from 'src/types/portfolio';
 import type {
   PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
   PortfolioDeFiPositionsFilteringParams,
   PortfolioDeFiPositionsFilter,
+  SortByEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
 import type { Token, WalletPositions } from '@/types/jumper-backend';
+import { SortByOptions } from './types';
 
 export const tokensSearchParamsParsers = {
+  tokensSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
+    SortByOptions.VALUE,
+  ),
   tokensWallets: parseAsArrayOf(parseAsString),
   tokensChains: parseAsArrayOf(parseAsInteger),
   tokensAssets: parseAsArrayOf(parseAsString),
@@ -117,9 +123,10 @@ export const sanitizeTokensFilter = (
   };
 };
 
-export const filterPortfolioTokensData = (
+export const filterSortPortfolioTokensData = (
   queriesByAddress: Map<string, { data: CacheToken[] }>,
   filter: PortfolioTokensFilter,
+  sortByValue: SortByEnum,
 ): CacheToken[] => {
   let allData: CacheToken[] = [];
 
@@ -160,6 +167,17 @@ export const filterPortfolioTokensData = (
         filter.tokensMaxValue === undefined || value <= filter.tokensMaxValue;
       return meetsMin && meetsMax;
     });
+  }
+
+  if (sortByValue === SortByOptions.VALUE) {
+    allData = sortBy(
+      allData,
+      (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
+    );
+  } else if (sortByValue === SortByOptions.CHAIN) {
+    allData = sortBy(allData, (token) => token.chainName);
+  } else if (sortByValue === SortByOptions.ASSET) {
+    allData = sortBy(allData, (token) => token.name);
   }
 
   return allData;
