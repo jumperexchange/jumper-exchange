@@ -1,6 +1,7 @@
 import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
+import { searchParamsLoader } from '@/app/ui/earn/utils';
 import { AppPaths, getSiteUrl } from '@/const/urls';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
@@ -11,10 +12,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page() {
+export default async function Page(props: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+  const parsedSearchParams = await searchParamsLoader(props.searchParams);
   return (
     <Suspense fallback={<EarnsPageSkeleton />}>
-      <EarnsPage />
+      <EarnsPage searchParams={parsedSearchParams} />
     </Suspense>
   );
 }

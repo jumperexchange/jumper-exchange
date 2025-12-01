@@ -1,32 +1,45 @@
 import type { EarnOpportunityFilter } from '@/app/lib/getOpportunitiesFiltered';
 import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
-import type { EarnOpportunities } from '@/types/jumper-backend';
+import type {
+  EarnOpportunities,
+  EarnOpportunityWithLatestAnalytics,
+} from '@/types/jumper-backend';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
-import { ONE_HOUR_MS } from 'src/const/time';
+import { ONE_HOUR_MS } from '@/const/time';
+import { useEarnQuery } from './useEarnQuery';
 
-export interface Props {
+export interface UseEarnFilterOpportunitiesProps {
   filter: EarnOpportunityFilter;
+  initialData?: EarnOpportunities;
 }
 
 type MetadataWithUpdatedAt = Omit<EarnOpportunities['meta'], 'updatedAt'> & {
   updatedAt: Date;
 };
 
-export type Result = UseQueryResult<
-  Omit<EarnOpportunities, 'meta'> & {
-    meta: MetadataWithUpdatedAt;
-  },
+type EarnOpportunitiesWithDateMeta = Omit<EarnOpportunities, 'meta'> & {
+  meta: MetadataWithUpdatedAt;
+};
+
+export type UseEarnFilterOpportunitiesResult = UseQueryResult<
+  EarnOpportunitiesWithDateMeta,
   unknown
 >;
 
-export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
-  return useQuery({
+export const useEarnFilterOpportunities = ({
+  filter,
+  initialData,
+}: UseEarnFilterOpportunitiesProps): UseEarnFilterOpportunitiesResult => {
+  return useEarnQuery<
+    EarnOpportunities,
+    EarnOpportunityFilter,
+    EarnOpportunitiesWithDateMeta
+  >({
     queryKey: ['earn-filter-opportunities', filter],
-    queryFn: async () => {
-      const result = await getOpportunitiesFiltered(filter);
-      return result.data;
-    },
+    fetcher: getOpportunitiesFiltered,
+    filter: filter,
+    placeholderData: filter?.address ? undefined : initialData,
+    refetchInterval: ONE_HOUR_MS,
     select: (payload) => {
       return {
         ...payload,
@@ -36,7 +49,5 @@ export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
         },
       };
     },
-    refetchInterval: ONE_HOUR_MS,
-    placeholderData: (previousData) => previousData,
   });
 };

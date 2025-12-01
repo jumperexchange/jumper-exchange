@@ -5,7 +5,7 @@ import type {
   EarnOpportunityFilterWithoutSortByAndOrder,
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
-import type { Nullable } from 'nuqs';
+import type { Nullable } from 'nuqs/server';
 import {
   parseAsStringEnum,
   parseAsBoolean,
@@ -13,7 +13,8 @@ import {
   parseAsInteger,
   parseAsString,
   parseAsFloat,
-} from 'nuqs';
+  createLoader,
+} from 'nuqs/server';
 
 export const searchParamsParsers = {
   sortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
@@ -30,6 +31,9 @@ export const searchParamsParsers = {
   minAPY: parseAsFloat,
   maxAPY: parseAsFloat,
 };
+
+export const searchParamsLoader =
+  createLoader<typeof searchParamsParsers>(searchParamsParsers);
 
 export const extractFilteringParams = (
   data: EarnOpportunityWithLatestAnalytics[],

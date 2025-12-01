@@ -31,6 +31,7 @@ import {
   WalletInfoContainer,
 } from '../WalletBalanceCard.styles';
 import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
+import { useCookies } from 'react-cookie';
 
 interface WalletWithActionsProps {
   account: Account;
@@ -38,6 +39,7 @@ interface WalletWithActionsProps {
 export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
   const { t } = useTranslation();
   const disconnectWallet = useAccountDisconnect();
+  const [_cookies, _setCookie, removeCookie] = useCookies();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
   const { checkMultisigEnvironment } = useMultisig();
@@ -127,6 +129,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     if (!walletAddress) {
       return;
     }
+
+    removeCookie(`wallet:${account.chainType}`, { path: '/' });
 
     disconnectWallet(account).then(() => {
       deleteCacheTokenAddress(walletAddress);

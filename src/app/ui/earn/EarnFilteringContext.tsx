@@ -10,7 +10,10 @@ import {
 } from 'react';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type {
+  EarnOpportunities,
+  EarnOpportunityWithLatestAnalytics,
+} from 'src/types/jumper-backend';
 import type { Hex } from 'viem';
 import {
   enrichDataWithFlag,
@@ -27,6 +30,8 @@ import type {
 } from './types';
 import { SortByOptions } from './types';
 import type { NullableFields } from 'src/types/internal';
+import { useWalletCookie } from '@/hooks/earn/useWalletCookie';
+import { ChainType } from '@lifi/sdk';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -69,8 +74,14 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
 
 export const EarnFilteringProvider = ({
   children,
+  initialData,
 }: {
   children: React.ReactNode;
+  initialData: {
+    filtered?: EarnOpportunities;
+    forYou?: EarnOpportunities;
+    all?: EarnOpportunities;
+  };
 }) => {
   const [searchParamsState, setSearchParamsState] = useQueryStates(
     searchParamsParsers,
@@ -79,7 +90,9 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  const address: Hex | undefined = useAccountAddress();
+  const connectedAddress = useAccountAddress();
+  const walletCookie = useWalletCookie(ChainType.EVM) as Hex | undefined;
+  const address = connectedAddress ?? walletCookie;
   const usedYourAddress = address !== undefined;
 
   const {
@@ -103,6 +116,7 @@ export const EarnFilteringProvider = ({
       forYou: true,
       address,
     },
+    initialData: initialData?.forYou,
   });
 
   const all = useEarnFilterOpportunities({
@@ -110,10 +124,12 @@ export const EarnFilteringProvider = ({
       ...filter,
       sortBy: sortBy,
     },
+    initialData: initialData?.filtered,
   });
 
   const allNoFilter = useEarnFilterOpportunities({
     filter: {},
+    initialData: initialData?.all,
   });
 
   const forYouData = useMemo(() => forYou.data?.data ?? [], [forYou.data]);
@@ -143,6 +159,7 @@ export const EarnFilteringProvider = ({
       setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stats]);
 
   const toggleForYou = useCallback(() => {

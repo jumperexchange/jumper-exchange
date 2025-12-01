@@ -18,6 +18,7 @@ import type {
   WalletManagementConfig,
 } from '@lifi/wallet-management';
 import {
+  useAccount,
   useWalletManagementEvents,
   WalletManagementEvent,
   WalletManagementProvider,
@@ -30,6 +31,8 @@ import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { walletEcosystemsOrder } from './constants';
+import { CookiesProvider, useCookies } from 'react-cookie';
+import { SECONDS_IN_A_DAY } from '@/const/time';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   createConfig({
@@ -51,7 +54,9 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
           <SuiProvider>
             <WalletManagementThemeProvider>
               <WalletMenuProvider>
-                <WalletTrackingProvider>{children}</WalletTrackingProvider>
+                <WalletTrackingProvider>
+                  <WalletCookiesProvider>{children}</WalletCookiesProvider>
+                </WalletTrackingProvider>
               </WalletMenuProvider>
             </WalletManagementThemeProvider>
           </SuiProvider>
@@ -119,6 +124,39 @@ const WalletTrackingClient = () => {
         handleWalletConnected,
       );
   }, [trackEvent, walletManagementEvents]);
+
+  return null;
+};
+
+const WalletCookiesProvider: FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <>
+      {children}
+      <ClientOnly>
+        <CookiesProvider>
+          <WalletCookiesClient />
+        </CookiesProvider>
+      </ClientOnly>
+    </>
+  );
+};
+
+const WalletCookiesClient = () => {
+  const { accounts } = useAccount();
+  const [_cookies, setCookie] = useCookies();
+
+  useEffect(() => {
+    accounts.forEach((account) => {
+      if (!account.isConnected) {
+        return;
+      }
+      setCookie(`wallet:${account.chainType}`, `${account.address}`, {
+        path: '/',
+        sameSite: true,
+        maxAge: SECONDS_IN_A_DAY * 7,
+      });
+    });
+  }, [accounts, setCookie]);
 
   return null;
 };

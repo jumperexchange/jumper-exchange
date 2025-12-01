@@ -5,7 +5,7 @@ import { makeClient } from './client';
 export type GetOpportunityTopResult = HttpResponse<EarnOpportunities, unknown>;
 
 export async function getOpportunitiesTop(
-  address: Hex | undefined,
+  address?: Hex | undefined,
 ): Promise<GetOpportunityTopResult> {
   const client = makeClient();
   const opportunity = await client.v1.recommendationControllerGetTopsV1({

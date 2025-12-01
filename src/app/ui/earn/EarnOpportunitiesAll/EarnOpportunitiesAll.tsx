@@ -14,6 +14,7 @@ import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import type { EarnOpportunities } from '@/types/jumper-backend';
 
 const EarnOpportunitiesAllInner = () => {
   const { data, isLoading, error, isAllDataLoading } = useEarnFiltering();
@@ -68,11 +69,19 @@ const EarnOpportunitiesAllInner = () => {
   );
 };
 
-interface EarnOpportunitiesAllProps {}
+interface EarnOpportunitiesAllProps {
+  initialData: {
+    filtered?: EarnOpportunities;
+    forYou?: EarnOpportunities;
+    all?: EarnOpportunities;
+  };
+}
 
-export const EarnOpportunitiesAll: FC<EarnOpportunitiesAllProps> = () => {
+export const EarnOpportunitiesAll: FC<EarnOpportunitiesAllProps> = ({
+  initialData,
+}) => {
   return (
-    <EarnFilteringProvider>
+    <EarnFilteringProvider initialData={initialData}>
       <EarnOpportunitiesAllInner />
     </EarnFilteringProvider>
   );

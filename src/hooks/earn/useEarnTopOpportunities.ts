@@ -1,31 +1,42 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
-import { getOpportunitiesTop } from 'src/app/lib/getOpportunitiesTop';
-import { FIVE_MINUTES_MS } from 'src/const/time';
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import { getOpportunitiesTop } from '@/app/lib/getOpportunitiesTop';
+import { FIVE_MINUTES_MS } from '@/const/time';
+import type {
+  EarnOpportunities,
+  EarnOpportunityWithLatestAnalytics,
+} from '@/types/jumper-backend';
 import type { Hex } from 'viem';
 import { useAccountAddress } from './useAccountAddress';
+import { useEarnQuery } from './useEarnQuery';
+import { useWalletCookie } from './useWalletCookie';
+import { ChainType } from '@lifi/sdk';
 
-export interface Props {}
+export interface UseEarnTopOpportunitiesProps {
+  initialData?: EarnOpportunities;
+}
 
-export type Result = UseQueryResult<
+export type UseEarnTopOpportunitiesResult = UseQueryResult<
   EarnOpportunityWithLatestAnalytics[],
   unknown
 >;
 
-export const useEarnTopOpportunities = ({}: Props): Result => {
-  const address: Hex | undefined = useAccountAddress();
+export const useEarnTopOpportunities = ({
+  initialData,
+}: UseEarnTopOpportunitiesProps): UseEarnTopOpportunitiesResult => {
+  const connectedAddress = useAccountAddress();
+  const walletCookie = useWalletCookie(ChainType.EVM) as Hex | undefined;
+  const address = connectedAddress ?? walletCookie;
 
-  return useQuery<EarnOpportunityWithLatestAnalytics[], unknown>({
+  return useEarnQuery<
+    EarnOpportunities,
+    Hex | undefined,
+    EarnOpportunityWithLatestAnalytics[]
+  >({
     queryKey: ['earn-top-opportunities', address],
-    queryFn: async () => {
-      const result = await getOpportunitiesTop(address);
-      if (!result.ok) {
-        throw result.error;
-      }
-      return result.data.data;
-    },
+    fetcher: getOpportunitiesTop,
+    filter: address,
+    placeholderData: address ? undefined : initialData,
     refetchInterval: FIVE_MINUTES_MS,
-    placeholderData: (previousData) => previousData,
+    select: (payload) => payload.data,
   });
 };

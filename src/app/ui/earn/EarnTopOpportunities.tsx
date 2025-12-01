@@ -8,12 +8,19 @@ import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositF
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
 import { AppPaths } from 'src/const/urls';
+import type { EarnOpportunities } from '@/types/jumper-backend';
 
-interface EarnTopOpportunities {}
+interface EarnTopOpportunitiesProps {
+  initialData?: EarnOpportunities;
+}
 
-export const EarnTopOpportunities = () => {
+export const EarnTopOpportunities = ({
+  initialData,
+}: EarnTopOpportunitiesProps) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const { data, isLoading, error, isError } = useEarnTopOpportunities({});
+  const { data, isLoading, error, isError } = useEarnTopOpportunities({
+    initialData,
+  });
   const items = AtLeastNWhenLoading(data, isLoading, 2);
   const isSingleItem = items?.length === 1;
 
