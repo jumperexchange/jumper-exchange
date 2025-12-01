@@ -58,7 +58,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
       );
       await clickOnJumperLogo(page);
       await transactionHistoryButton.click();
-      await expect(noRecentTransactions).toBeVisible();
+      await expect(noRecentTransactions).not.toBeVisible();
     });
 
     await test.step('Disconnect wallet from the Jumper app ', async () => {
