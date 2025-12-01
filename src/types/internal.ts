@@ -74,3 +74,7 @@ export interface TransformedRoute {
   [TrackingEventParameter.Time]: number;
   [TrackingEventParameter.Slippage]: number;
 }
+
+export type NullableFields<T> = {
+  [K in keyof T]: T[K] | null;
+};

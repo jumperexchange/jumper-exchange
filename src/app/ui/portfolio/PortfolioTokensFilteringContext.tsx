@@ -16,19 +16,24 @@ import {
   removeNullValuesFromFilter,
   sanitizeTokensFilter,
   tokensSearchParamsParsers,
-  filterPortfolioTokensData,
+  filterSortPortfolioTokensData,
 } from './utils';
 import { EMPTY_TOKENS_FILTERING_PARAMS } from './constants';
 import type {
   PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
   PortfolioTokensFilterUI,
+  SortByEnum,
 } from './types';
+import { SortByOptions } from './types';
+import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioTokensFilteringContextType
   extends PortfolioTokensFilteringParams {
+  sortBy: SortByEnum;
+  setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioTokensFilterUI;
-  updateFilter: (filter: PortfolioTokensFilterUI) => void;
+  updateFilter: (filter: NullableFields<PortfolioTokensFilterUI>) => void;
   clearFilters: () => void;
   data: CacheToken[];
   isLoading: boolean;
@@ -37,6 +42,8 @@ export interface PortfolioTokensFilteringContextType
 
 export const PortfolioTokensFilteringContext =
   createContext<PortfolioTokensFilteringContextType>({
+    sortBy: SortByOptions.VALUE,
+    setSortBy: () => {},
     filter: {},
     updateFilter: () => {},
     clearFilters: () => {},
@@ -61,10 +68,13 @@ export const PortfolioTokensFilteringProvider = ({
     },
   );
 
-  const initialFilter = useMemo(() => {
-    return removeNullValuesFromFilter(searchParamsState);
-  }, [searchParamsState]);
+  const { tokensSortBy: initialSortBy, ...rest } = searchParamsState;
 
+  const initialFilter = useMemo(() => {
+    return removeNullValuesFromFilter(rest);
+  }, [rest]);
+
+  const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] = useState<PortfolioTokensFilter>(initialFilter);
   const prevStatsRef = useRef<PortfolioTokensFilteringParams>(
     EMPTY_TOKENS_FILTERING_PARAMS,
@@ -95,44 +105,51 @@ export const PortfolioTokensFilteringProvider = ({
     prevStatsRef.current = stats;
 
     const sanitized = sanitizeTokensFilter(filter, stats);
-    const cleanedSanitized = removeNullValuesFromFilter(sanitized);
 
-    if (!isEqual(cleanedSanitized, filter)) {
-      setFilter(cleanedSanitized);
+    if (!isEqual(sanitized, filter)) {
+      setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
 
-  const filteredData = useMemo(() => {
-    return filterPortfolioTokensData(queriesByAddress, filter);
-  }, [queriesByAddress, filter]);
+  const filteredSortedData = useMemo(() => {
+    return filterSortPortfolioTokensData(queriesByAddress, filter, sortBy);
+  }, [queriesByAddress, filter, sortBy]);
 
   const updateFilter = useCallback(
-    (newFilter: PortfolioTokensFilter) => {
+    (newFilter: NullableFields<PortfolioTokensFilter>) => {
       const newFilterValue = { ...filter, ...newFilter };
-      const sanitized = sanitizeTokensFilter(newFilterValue, stats);
-      const cleanedSanitized = removeNullValuesFromFilter(sanitized);
-      setFilter(cleanedSanitized);
-      setSearchParamsState(sanitized);
+      setFilter(removeNullValuesFromFilter(newFilterValue));
+      setSearchParamsState(newFilterValue);
     },
-    [filter, stats, setSearchParamsState],
+    [filter, setSearchParamsState],
   );
 
   const clearFilters = useCallback(() => {
     updateFilter({
-      tokensWallets: undefined,
-      tokensChains: undefined,
-      tokensAssets: undefined,
-      tokensMinValue: undefined,
-      tokensMaxValue: undefined,
+      tokensWallets: null,
+      tokensChains: null,
+      tokensAssets: null,
+      tokensMinValue: null,
+      tokensMaxValue: null,
     });
   }, [updateFilter]);
 
+  const updateSortBy = useCallback(
+    (newSortBy: SortByEnum) => {
+      setSortBy(newSortBy);
+      setSearchParamsState({ tokensSortBy: newSortBy });
+    },
+    [setSortBy, setSearchParamsState],
+  );
+
   const context: PortfolioTokensFilteringContextType = {
+    sortBy,
+    setSortBy: updateSortBy,
     filter,
     updateFilter,
     clearFilters,
-    data: filteredData,
+    data: filteredSortedData,
     isLoading: isFetching || !isSuccess,
     isEmpty: !allData || allData.length === 0,
     ...stats,

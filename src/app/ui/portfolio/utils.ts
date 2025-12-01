@@ -4,19 +4,25 @@ import {
   parseAsFloat,
   parseAsInteger,
   parseAsString,
+  parseAsStringEnum,
 } from 'nuqs';
-import { map, uniq, uniqBy } from 'lodash';
+import { map, uniq, uniqBy, flatMap, min, max, sortBy } from 'lodash';
 import type { CacheToken } from 'src/types/portfolio';
 import type {
   PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
   PortfolioDeFiPositionsFilteringParams,
   PortfolioDeFiPositionsFilter,
+  SortByEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
-import type { Token, WalletPositions } from '@/types/jumper-backend';
+import type { WalletPositions } from '@/types/jumper-backend';
+import { SortByOptions } from './types';
 
 export const tokensSearchParamsParsers = {
+  tokensSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
+    SortByOptions.VALUE,
+  ),
   tokensWallets: parseAsArrayOf(parseAsString),
   tokensChains: parseAsArrayOf(parseAsInteger),
   tokensAssets: parseAsArrayOf(parseAsString),
@@ -35,34 +41,29 @@ export const extractTokensFilteringParams = (
       address: account.address!.toString(),
     }));
 
-  const allTokens = data.flatMap((token) => [token, ...(token.chains || [])]);
-
-  const chainMap = new Map<
-    number,
-    { chainId: number; chainKey: string; name: string; logoURI?: string }
-  >();
-
-  allTokens.forEach((token) => {
-    if (token.chainId && token.chainName && !chainMap.has(token.chainId)) {
-      chainMap.set(token.chainId, {
-        chainId: token.chainId,
-        chainKey: token.chainName || '',
-        name: token.chainName,
-        logoURI: token.chainLogoURI,
-      });
-    }
-  });
-
-  const allChains = Array.from(chainMap.values());
+  const allChains = uniqBy(
+    flatMap(data, (token) => [
+      ...(token.chainId && token.chainName
+        ? [{ chainId: token.chainId, chainKey: token.chainName || '' }]
+        : []),
+      ...flatMap(token.chains || [], (chain) =>
+        chain.chainId && chain.chainName
+          ? [{ chainId: chain.chainId, chainKey: chain.chainName || '' }]
+          : [],
+      ),
+    ]),
+    'chainId',
+  );
 
   const allAssets = uniqBy(data, 'address');
 
-  const allValues = data
-    .map((token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0)
-    .filter((value) => value > 0);
+  const allValues = map(
+    data,
+    (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
+  );
 
-  const minValue = allValues.length > 0 ? Math.min(...allValues) : 0;
-  const maxValue = allValues.length > 0 ? Math.max(...allValues) : 0;
+  const minValue = allValues.length > 0 ? (min(allValues) ?? 0) : 0;
+  const maxValue = allValues.length > 0 ? (max(allValues) ?? 0) : 0;
 
   return {
     allWallets,
@@ -117,9 +118,10 @@ export const sanitizeTokensFilter = (
   };
 };
 
-export const filterPortfolioTokensData = (
+export const filterSortPortfolioTokensData = (
   queriesByAddress: Map<string, { data: CacheToken[] }>,
   filter: PortfolioTokensFilter,
+  sortByValue: SortByEnum,
 ): CacheToken[] => {
   let allData: CacheToken[] = [];
 
@@ -162,6 +164,17 @@ export const filterPortfolioTokensData = (
     });
   }
 
+  if (sortByValue === SortByOptions.VALUE) {
+    allData = sortBy(
+      allData,
+      (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
+    );
+  } else if (sortByValue === SortByOptions.CHAIN) {
+    allData = sortBy(allData, (token) => token.chainName);
+  } else if (sortByValue === SortByOptions.ASSET) {
+    allData = sortBy(allData, (token) => token.name);
+  }
+
   return allData;
 };
 
@@ -181,57 +194,41 @@ export const extractDeFiPositionsFilteringParams = (
 ): PortfolioDeFiPositionsFilteringParams => {
   const allPositions = data.positions;
 
-  const chainMap = new Map<number, { chainId: number; chainKey: string }>();
-  allPositions.forEach((position) => {
-    if (position?.chain && !chainMap.has(position.chain.chainId)) {
-      chainMap.set(position.chain.chainId, position.chain);
-    }
-  });
-  const allChains = Array.from(chainMap.values());
-
-  const protocolMap = new Map<string, { name: string }>();
-  allPositions.forEach((position) => {
-    if (position.protocol.name && !protocolMap.has(position.protocol.name)) {
-      protocolMap.set(position.protocol.name, position.protocol);
-    }
-  });
-  const allProtocols = Array.from(protocolMap.values());
-
-  const allTypes = uniq(
-    allPositions.map((position) => position.type).filter(Boolean),
+  const allChains = uniqBy(
+    map(allPositions, (position) => position.chain).filter(Boolean),
+    'chainId',
   );
 
-  const assetMap = new Map<string, Token>();
-  allPositions.forEach((position) => {
-    const allTokens = [
-      ...(position.supplyTokens || []),
-      ...(position.assetTokens || []),
-      ...(position.collateralTokens || []),
-      ...(position.borrowTokens || []),
-      ...(position.rewardTokens || []),
-    ];
+  const allProtocols = uniqBy(
+    map(allPositions, (position) => position.protocol).filter(Boolean),
+    'name',
+  );
 
-    allTokens.forEach((token) => {
-      const key = `${token.chain.chainId}-${token.symbol}`;
-      if (!assetMap.has(key)) {
-        assetMap.set(key, {
-          name: token.name,
-          symbol: token.symbol,
-          decimals: token.decimals,
-          logo: token.logo,
-          address: token.address,
-          chain: token.chain,
-        });
-      }
-    });
-  });
-  const allAssets = Array.from(assetMap.values());
+  const allTypes = uniq(map(allPositions, 'type').filter(Boolean));
 
-  const values = allPositions
-    .map((position) => position.netUsd || position.assetUsd || 0)
-    .filter((value) => value > 0);
-  const minValue = values.length > 0 ? Math.min(...values) : 0;
-  const maxValue = values.length > 0 ? Math.max(...values) : 0;
+  const allTokens = flatMap(allPositions, (position) => [
+    ...(position.supplyTokens || []),
+    ...(position.assetTokens || []),
+    ...(position.collateralTokens || []),
+    ...(position.borrowTokens || []),
+    ...(position.rewardTokens || []),
+  ]);
+
+  const allAssets = uniqBy(allTokens, 'name');
+
+  const apyValues = map(
+    allPositions,
+    (position) => position.latest?.apy?.total || 0,
+  );
+  const minAPY = apyValues.length > 0 ? (min(apyValues) ?? 0) : 0;
+  const maxAPY = apyValues.length > 0 ? (max(apyValues) ?? 0) : 0;
+
+  const values = map(
+    allPositions,
+    (position) => position.netUsd || position.assetUsd || 0,
+  );
+  const minValue = values.length > 0 ? (min(values) ?? 0) : 0;
+  const maxValue = values.length > 0 ? (max(values) ?? 0) : 0;
 
   return {
     allChains,
@@ -239,8 +236,8 @@ export const extractDeFiPositionsFilteringParams = (
     allTypes,
     allAssets,
     allAPYRange: {
-      min: 0,
-      max: 0,
+      min: Number(minAPY.toFixed(2)),
+      max: Number(maxAPY.toFixed(2)),
     },
     allValueRange: {
       min: Number(minValue.toFixed(2)),

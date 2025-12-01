@@ -1,4 +1,6 @@
 import { format } from 'date-fns';
+import * as locales from 'date-fns/locale';
+import { getLocale } from './getLocale';
 
 /**
  * Formats a date with localized pattern and ensures days are zero-padded.
@@ -18,7 +20,10 @@ export const formatDateLocalized = (
   date: Date | number | string,
   formatString: string,
 ): string => {
-  const formattedDate = format(date, formatString);
+  const userLocale = getLocale();
+  const localeKey = userLocale.split('-').join('');
+  const locale = locales[localeKey as keyof typeof locales] || locales.enUS;
+  const formattedDate = format(date, formatString, { locale });
 
   // Replace single-digit days with zero-padded equivalents
   // This regex matches:

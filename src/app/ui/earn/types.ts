@@ -3,10 +3,6 @@ import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
 
 type SortByType = NonNullable<NonNullable<EarnOpportunityFilter>['sortBy']>;
 
-export type NullableFields<T> = {
-  [K in keyof T]: T[K] | null;
-};
-
 export const SortByOptions = {
   APY: 'apy',
   TVL: 'tvl',

@@ -16,6 +16,10 @@ import { PortfolioFilterBarEmptyTablet } from './layouts/PortfolioFilterBarEmpty
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence } from 'motion/react';
+import { PortfolioSortTokensDesktop } from './layouts/PortfolioSortTokensDesktop';
+import { PortfolioSortEmptyDesktop } from './layouts/PortfolioSortEmptyDesktop';
+import { PortfolioSortDeFiDesktop } from './layouts/PortfolioSortDeFiDesktop';
+import { PortfolioAnimatedLayoutContainer } from './components/PortfolioAnimatedLayoutContainer';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -57,6 +61,12 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
       ? PortfolioFilterBarTokensTablet
       : PortfolioFilterBarDeFiTablet;
 
+  const PortfolioSortDesktop = isDisabled
+    ? PortfolioSortEmptyDesktop
+    : value === 'tokens'
+      ? PortfolioSortTokensDesktop
+      : PortfolioSortDeFiDesktop;
+
   return (
     <PortfolioFilterBarContainer>
       <PortfolioFilterBarHeaderContainer>
@@ -86,7 +96,9 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
       </PortfolioFilterBarHeaderContainer>
       {!isTablet && (
         <AnimatePresence mode="wait">
-          <PortfolioFilterBarContentDesktop key={value} />
+          <PortfolioFilterBarContentDesktop key={value}>
+            <PortfolioSortDesktop />
+          </PortfolioFilterBarContentDesktop>
         </AnimatePresence>
       )}
     </PortfolioFilterBarContainer>

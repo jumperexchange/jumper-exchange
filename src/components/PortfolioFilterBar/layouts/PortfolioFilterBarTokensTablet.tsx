@@ -9,15 +9,18 @@ import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimate
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
   createMultiSelectCategory,
+  createSingleSelectCategory,
   createSliderCategory,
 } from 'src/components/composite/MultiLayerDrawer/utils';
 import { useTranslation } from 'react-i18next';
+import type { SortByEnum } from '@/app/ui/portfolio/types';
 
 interface PendingFilterValues {
   tokensWallets: string[];
   tokensChains: string[];
   tokensAssets: string[];
   tokensValue: number[];
+  tokensSortBy: SortByEnum;
 }
 
 export const PortfolioFilterBarTokensTablet: FC = () => {
@@ -31,8 +34,11 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     valueRangeMin,
     valueRangeMax,
     filtersCount,
+    sortByOptions,
+    sortBy,
     handleClearAllFilters,
     handleApplyAllFilters,
+    handleSortBy,
   } = usePortfolioTokensFilterBar();
 
   const { t } = useTranslation();
@@ -49,6 +55,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
       tokensChains: filter?.tokensChains?.map(String) ?? [],
       tokensAssets: filter?.tokensAssets ?? [],
       tokensValue: [valueMin, valueMax],
+      tokensSortBy: sortBy,
     },
     onApply: (values) => {
       handleApplyAllFilters({
@@ -168,6 +175,24 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
         min: valueRangeMin,
         max: valueRangeMax,
         testId: 'portfolio-filter-value-select-mobile',
+      }),
+    );
+  }
+
+  if (sortByOptions.length > 0) {
+    categories.push(
+      createSingleSelectCategory<SortByEnum>({
+        id: 'sortBy',
+        label: t('portfolio.sorting.sortBy'),
+        value: pendingValues.tokensSortBy,
+        onChange: (value) => {
+          if (!value) {
+            return;
+          }
+          setPendingValue('tokensSortBy', value);
+        },
+        options: sortByOptions,
+        testId: 'portfolio-filter-sort-select-mobile',
       }),
     );
   }

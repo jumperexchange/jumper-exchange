@@ -88,14 +88,9 @@ jobs:
         run: npm install -g pnpm
       - name: Install dependencies
         run: pnpm install
-      - name: Install xvfb server
-        run: sudo apt-get install xvfb
       - name: Install Playwright Browsers
         run: |
           pnpm exec playwright install --with-deps chromium
-      - name: Setup Playwright Cache
-        run: |
-          pnpm build:cache:ci
       - name: Run Playwright tests
         env:
           QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}

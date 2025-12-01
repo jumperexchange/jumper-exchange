@@ -4,14 +4,18 @@ import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon } from '@lifi/wallet-management';
-import type {
-  PortfolioTokensFilterUI,
-  PortfolioDeFiPositionsFilterUI,
+import type { SortByEnum } from 'src/app/ui/portfolio/types';
+import {
+  type PortfolioTokensFilterUI,
+  type PortfolioDeFiPositionsFilterUI,
+  SortByOptions,
 } from 'src/app/ui/portfolio/types';
 import { useMemo } from 'react';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
+import { useTranslation } from 'react-i18next';
 
 export const usePortfolioTokensFilterBar = () => {
+  const { t } = useTranslation();
   const {
     allWallets,
     allChains,
@@ -20,6 +24,8 @@ export const usePortfolioTokensFilterBar = () => {
     filter,
     updateFilter,
     clearFilters,
+    sortBy,
+    setSortBy,
   } = usePortfolioTokensFiltering();
 
   const walletOptions = useMemo(
@@ -76,28 +82,51 @@ export const usePortfolioTokensFilterBar = () => {
   const valueMin = filter?.tokensMinValue ?? allValueRange.min;
   const valueMax = filter?.tokensMaxValue ?? allValueRange.max;
 
+  const sortByOptions = useMemo(
+    () => [
+      { value: SortByOptions.VALUE, label: t('portfolio.sorting.totalValue') },
+      { value: SortByOptions.CHAIN, label: t('portfolio.sorting.chain') },
+      { value: SortByOptions.ASSET, label: t('portfolio.sorting.asset') },
+    ],
+    [t],
+  );
+
   const handleWalletChange = (values: string[]) => {
-    updateFilter({ ...filter, tokensWallets: values });
+    updateFilter({
+      ...filter,
+      tokensWallets: values.length > 0 ? values : null,
+    });
   };
 
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, tokensChains: values.map(Number) });
+    updateFilter({
+      ...filter,
+      tokensChains: values.length > 0 ? values.map(Number) : null,
+    });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, tokensAssets: values });
+    updateFilter({
+      ...filter,
+      tokensAssets: values.length > 0 ? values : null,
+    });
   };
 
   const handleValueChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      tokensMinValue: values[0],
-      tokensMaxValue: values[1],
+      tokensMinValue: hasValues ? values[0] : null,
+      tokensMaxValue: hasValues ? values[1] : null,
     });
   };
 
   const handleApplyAllFilters = (values: Partial<PortfolioTokensFilterUI>) => {
     updateFilter({ ...values });
+  };
+
+  const handleSortBy = (value: string) => {
+    setSortBy(value as SortByEnum);
   };
 
   const optionsCount = [
@@ -135,12 +164,15 @@ export const usePortfolioTokensFilterBar = () => {
     valueMax,
     valueRangeMin: allValueRange.min,
     valueRangeMax: allValueRange.max,
+    sortByOptions,
+    sortBy,
     handleWalletChange,
     handleChainChange,
     handleAssetChange,
     handleValueChange,
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
+    handleSortBy,
   };
 };
 
@@ -202,26 +234,33 @@ export const usePortfolioDeFiFilterBar = () => {
   const valueMax = filter?.defiMaxValue ?? allValueRange.max;
 
   const handleChainChange = (values: string[]) => {
-    updateFilter({ ...filter, defiChains: values.map(Number) });
+    updateFilter({
+      ...filter,
+      defiChains: values.length > 0 ? values.map(Number) : null,
+    });
   };
 
   const handleProtocolChange = (values: string[]) => {
-    updateFilter({ ...filter, defiProtocols: values });
+    updateFilter({
+      ...filter,
+      defiProtocols: values.length > 0 ? values : null,
+    });
   };
 
   const handleTypeChange = (values: string[]) => {
-    updateFilter({ ...filter, defiTypes: values });
+    updateFilter({ ...filter, defiTypes: values.length > 0 ? values : null });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, defiAssets: values });
+    updateFilter({ ...filter, defiAssets: values.length > 0 ? values : null });
   };
 
   const handleAPYChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      defiMinAPY: values[0],
-      defiMaxAPY: values[1],
+      defiMinAPY: hasValues ? values[0] : null,
+      defiMaxAPY: hasValues ? values[1] : null,
     });
   };
 
