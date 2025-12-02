@@ -141,7 +141,7 @@ export const useThemeModesMenuContent = () => {
               sx={{
                 height: 24,
                 width: 24,
-                filter: 'grayscale(100%)',
+                filter: 'grayscale(100%) contrast(2)',
               }}
             />
           ) : (

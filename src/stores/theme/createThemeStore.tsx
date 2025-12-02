@@ -10,73 +10,10 @@ import type {
 import type { WidgetConfig } from '@lifi/widget';
 import { addDays, isBefore } from 'date-fns';
 import { isEqual } from 'lodash';
+import superjson from 'superjson';
 import Cookies from 'universal-cookie';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
-
-interface TaggedValue<T extends string = string> {
-  __type: T;
-  value: string;
-}
-
-const isTaggedValue = (val: unknown): val is TaggedValue =>
-  val !== null && typeof val === 'object' && '__type' in val && 'value' in val;
-
-const serializers = {
-  URL: {
-    test: (val: unknown): val is URL => val instanceof URL,
-    serialize: (val: URL): TaggedValue<'URL'> => ({
-      __type: 'URL',
-      value: val.href,
-    }),
-    deserialize: (val: string) => new URL(val),
-  },
-  Date: {
-    test: (val: unknown): val is Date => val instanceof Date,
-    serialize: (val: Date): TaggedValue<'Date'> => ({
-      __type: 'Date',
-      value: val.toISOString(),
-    }),
-    deserialize: (val: string) => new Date(val),
-  },
-} as const;
-
-type SerializerKey = keyof typeof serializers;
-
-const serialize = (_key: string, value: unknown): unknown => {
-  for (const [, handler] of Object.entries(serializers)) {
-    if (handler.test(value)) {
-      return handler.serialize(value as never);
-    }
-  }
-  if (Array.isArray(value)) {
-    return value.map((item, index) => serialize(String(index), item));
-  }
-  if (value !== null && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value).map(([k, v]) => [k, serialize(k, v)]),
-    );
-  }
-  return value;
-};
-
-const deserialize = (_key: string, value: unknown): unknown => {
-  if (value instanceof Date || value instanceof URL) {
-    return value;
-  }
-  if (isTaggedValue(value) && value.__type in serializers) {
-    return serializers[value.__type as SerializerKey].deserialize(value.value);
-  }
-  if (Array.isArray(value)) {
-    return value.map((item, index) => deserialize(String(index), item));
-  }
-  if (value !== null && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value).map(([k, v]) => [k, deserialize(k, v)]),
-    );
-  }
-  return value;
-};
 
 export const selectAvailablePartnerThemes = (
   state: ThemeState,
@@ -180,10 +117,21 @@ export const createThemeStore = (props: ThemeProps) =>
       {
         name: 'jumper-theme-store',
         version: 2,
-        storage: createJSONStorage(() => localStorage, {
-          reviver: deserialize,
-          replacer: serialize,
-        }),
+        storage: {
+          getItem: (name) => {
+            const str = localStorage.getItem(name);
+            if (!str) {
+              return null;
+            }
+            return superjson.parse(str);
+          },
+          setItem: (name, value) => {
+            localStorage.setItem(name, superjson.stringify(value));
+          },
+          removeItem: (name) => {
+            localStorage.removeItem(name);
+          },
+        },
         migrate: (
           persistedState: unknown,
           version: number,
