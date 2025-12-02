@@ -61,6 +61,9 @@ const serialize = (_key: string, value: unknown): unknown => {
 };
 
 const deserialize = (_key: string, value: unknown): unknown => {
+  if (value instanceof Date || value instanceof URL) {
+    return value;
+  }
   if (isTaggedValue(value) && value.__type in serializers) {
     return serializers[value.__type as SerializerKey].deserialize(value.value);
   }
