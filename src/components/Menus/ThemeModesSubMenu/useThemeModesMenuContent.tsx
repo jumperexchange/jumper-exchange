@@ -16,7 +16,6 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import { useThemeConditionsMet } from '@/hooks/theme/useThemeConditionsMet';
 import Avatar from '@mui/material/Avatar';
 
 interface SubmenuItem {
@@ -49,7 +48,6 @@ export const useThemeModesMenuContent = () => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const { isMainPaths } = useMainPaths();
-  const { shouldShowForChain, shouldShowForPath } = useThemeConditionsMet();
 
   const [setConfigThemeState, configThemeStates, getAvailablePartnerThemes] =
     useThemeStore((state) => [
@@ -114,16 +112,9 @@ export const useThemeModesMenuContent = () => {
         prefixIcon: MODE_OPTIONS[themeMode].icon,
         checkIcon: !activeConfigThemeUid && mode === themeMode,
         onClick: () => handleSwitchMode(themeMode),
-        disabled: shouldShowForChain && shouldShowForPath,
+        disabled: false,
       })),
-    [
-      t,
-      activeConfigThemeUid,
-      mode,
-      handleSwitchMode,
-      shouldShowForChain,
-      shouldShowForPath,
-    ],
+    [t, activeConfigThemeUid, mode, handleSwitchMode],
   );
 
   const displayablePartnerThemes = useMemo(() => {
@@ -143,7 +134,11 @@ export const useThemeModesMenuContent = () => {
             <Avatar
               src={themeModeIcon}
               alt={theme.PartnerName}
-              sx={{ height: 24, width: 24, filter: 'grayscale(100%)' }}
+              sx={{
+                height: 24,
+                width: 24,
+                filter: 'grayscale(100%)',
+              }}
             />
           ) : (
             <FlareRoundedIcon />

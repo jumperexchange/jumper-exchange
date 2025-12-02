@@ -39,6 +39,4 @@ export interface PartnerThemeConfig {
   hasBlurredNavigation: boolean;
   allowedBridges: string[];
   allowedExchanges: string[];
-  showForFromChain: number;
-  showForToChain: number;
 }
