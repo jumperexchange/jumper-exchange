@@ -190,22 +190,21 @@ export const createThemeStore = (props: ThemeProps) =>
           widgetTheme: state.widgetTheme,
           configThemeStates: state.configThemeStates,
         }),
-        onRehydrateStorage: () => {
-          return (state) => {
-            if (!state) {
-              return;
-            }
+        merge: (persistedState, currentState) => {
+          const persisted = (persistedState || {}) as PersistedThemeState;
 
-            state.configTheme = state.configTheme;
+          const mergedConfigThemeStates = {
+            ...(persisted.configThemeStates ?? {}),
+            ...currentState.configThemeStates,
+          };
 
-            const mergedStates = initializeConfigThemeStates(
-              state.configTheme,
-              state.configThemeStates,
-            );
-
-            if (!isEqual(mergedStates, state.configThemeStates)) {
-              state.configThemeStates = mergedStates;
-            }
+          return {
+            ...persisted,
+            ...currentState,
+            configThemeStates: initializeConfigThemeStates(
+              currentState.configTheme,
+              mergedConfigThemeStates,
+            ),
           };
         },
       },
