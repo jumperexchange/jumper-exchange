@@ -250,6 +250,7 @@ export interface Customization {
   showForFromChain?: number;
   showForToChain?: number;
   hasThemeModeSwitch?: boolean;
+  themeModeIcon?: string;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &

@@ -1,39 +1,57 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import { isBefore } from 'date-fns';
 import { AppPaths } from 'src/const/urls';
 import { useThemeStore } from 'src/stores/theme';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
 import { usePathnameWithoutLocale } from '../routing/usePathnameWithoutLocale';
 
+const ALLOWED_PATHS = [AppPaths.Main, AppPaths.Gas];
+
 export const useThemeConditionsMet = () => {
-  const [shouldShowForChain, setShouldShowForChain] = useState<boolean>(false);
   const pathname = usePathnameWithoutLocale();
-  const configTheme = useThemeStore((state) => state.configTheme);
+  const [configTheme, configThemeStates] = useThemeStore((state) => [
+    state.configTheme,
+    state.configThemeStates,
+  ]);
   const [fromChainId, toChainId] = useWidgetCacheStore((state) => [
     state.fromChainId,
     state.toChainId,
   ]);
 
-  useEffect(() => {
-    const showForFromChain = configTheme?.showForFromChain;
-    const showForToChain = configTheme?.showForToChain;
+  const activeConfigThemeState = useMemo(() => {
+    const entry = Object.entries(configThemeStates).find(
+      ([uid]) => uid === configTheme?.uid,
+    );
+    return entry?.[1];
+  }, [configThemeStates, configTheme]);
 
-    if (!showForFromChain && !showForToChain) {
-      setShouldShowForChain(true);
-      return;
+  const shouldShowForTheme = useMemo(() => {
+    if (!activeConfigThemeState?.isSelected) {
+      return false;
     }
 
-    setShouldShowForChain(
-      fromChainId === showForFromChain || toChainId === showForToChain,
-    );
-  }, [
-    fromChainId,
-    toChainId,
-    configTheme.showForFromChain,
-    configTheme.showForToChain,
-  ]);
+    if (!activeConfigThemeState.expirationDate) {
+      return false;
+    }
 
-  const shouldShowForPath = [AppPaths.Main, AppPaths.Gas].includes(
-    pathname as AppPaths,
-  );
-  return shouldShowForChain && shouldShowForPath;
+    return isBefore(new Date(), activeConfigThemeState.expirationDate);
+  }, [activeConfigThemeState]);
+
+  const shouldShowForChain = useMemo(() => {
+    const { showForFromChain, showForToChain } = configTheme || {};
+
+    if (!showForFromChain && !showForToChain) {
+      return true;
+    }
+
+    return fromChainId === showForFromChain || toChainId === showForToChain;
+  }, [fromChainId, toChainId, configTheme]);
+
+  const shouldShowForPath = ALLOWED_PATHS.includes(pathname as AppPaths);
+
+  return {
+    shouldShowForTheme,
+    shouldShowForChain,
+    shouldShowForPath,
+  };
 };

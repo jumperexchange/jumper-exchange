@@ -37,7 +37,7 @@ export function getAvailableThemeModes(
   return result;
 }
 
-function getLogoData(theme: PartnerThemesAttributes) {
+export function getLogoData(theme: PartnerThemesAttributes) {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
   const logo = theme.LogoDark || theme.LogoLight || null;
 
@@ -82,7 +82,10 @@ export function formatConfig(
     partnerUrl: theme.PartnerURL,
     selectableInMenu: theme.SelectableInMenu || false,
     createdAt: theme.createdAt,
+    publishedAt: theme.publishedAt,
     uid: theme.uid,
+    themeModeIcon: (theme.lightConfig || theme.darkConfig)?.customization
+      ?.themeModeIcon,
     defaultThemeMode: (theme.lightConfig || theme.darkConfig)?.config
       ?.appearance as 'light' | 'dark',
     hasThemeModeSwitch:
