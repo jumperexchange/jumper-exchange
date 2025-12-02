@@ -447,6 +447,13 @@
       "clearAll": "",
       "filterAndSort": "",
       "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
     }
   },
   "widget": {
