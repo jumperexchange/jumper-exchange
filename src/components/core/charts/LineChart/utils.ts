@@ -104,6 +104,18 @@ export const calculateVisibleYRange = <
   data: T[],
 ) => {
   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
+
+  if (values.length === 0) {
+    return {
+      minValue: 0,
+      maxValue: 1,
+      minValueWithOffset: 0,
+      maxValueWithOffset: 1,
+      isSymmetricRange: false,
+      isNegative: false,
+    };
+  }
+
   const dataMinValue = Math.min(...values);
   const dataMaxValue = Math.max(...values);
 
