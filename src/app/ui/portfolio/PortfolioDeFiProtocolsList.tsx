@@ -8,6 +8,7 @@ import {
   PortfolioAssetContainer,
   PortfolioAssetsListContainer,
 } from './PortfolioPage.styles';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { DeFiPositionCardSkeleton } from '@/components/composite/DeFiPositionCard/DeFiPositionCardSkeleton';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -68,6 +69,7 @@ export const PortfolioDeFiProtocolsList = () => {
         <AnimatePresence mode="popLayout">{renderContent()}</AnimatePresence>
       </PortfolioAssetsListContainer>
       <DepositFlowModal />
+      <WithdrawFlowModal />
     </>
   );
 };
