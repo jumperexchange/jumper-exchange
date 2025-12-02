@@ -6,9 +6,6 @@ export const getValidationSchema = (t: TFunction) => {
     email: z
       .email(t('newsletter.welcome.error.email'))
       .min(1, t('newsletter.welcome.error.required'))
-      .refine(
-        (val) => val.length <= 80,
-        t('newsletter.welcome.error.emailLength'),
-      ),
+      .max(80, t('newsletter.welcome.error.emailLength')),
   });
 };

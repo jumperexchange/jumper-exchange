@@ -2,20 +2,20 @@ import envConfig from '@/config/env-config';
 import { TEN_SECONDS_MS } from '@/const/time';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
-interface SubscribeRequestBody {
-  email: string;
-  utmSource?: string;
-  utmMedium?: string;
-  utmCampaign?: string;
-  utmTerm?: string;
-  utmContent?: string;
-  referringSite?: string;
-  customFields?: Array<{
-    name: string;
-    value: string;
-  }>;
-}
+const subscribeSchema = z.object({
+  email: z.string().email().max(80),
+  utmSource: z.string().optional(),
+  utmMedium: z.string().optional(),
+  utmCampaign: z.string().optional(),
+  utmTerm: z.string().optional(),
+  utmContent: z.string().optional(),
+  referringSite: z.string().optional(),
+  customFields: z
+    .array(z.object({ name: z.string(), value: z.string() }))
+    .optional(),
+});
 
 interface BeehiivSubscriptionPayload {
   email: string;
@@ -39,7 +39,15 @@ export async function POST(request: NextRequest) {
     const controller = new AbortController();
     timeoutId = setTimeout(() => controller.abort(), TEN_SECONDS_MS);
 
-    const body: SubscribeRequestBody = await request.json();
+    const rawBody = await request.json();
+
+    const parseResult = subscribeSchema.safeParse(rawBody);
+
+    if (!parseResult.success) {
+      throw new Error(parseResult.error.message);
+    }
+
+    const body = parseResult.data;
 
     const apiKey = envConfig.BEEHIIV_API_KEY;
     const publicationId = envConfig.BEEHIIV_PUBLICATION_ID;
