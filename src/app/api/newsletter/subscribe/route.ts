@@ -70,7 +70,10 @@ export async function POST(request: NextRequest) {
     );
 
     if (subscriptionCheckResponse.ok) {
-      throw new Error('Already subscribed');
+      return NextResponse.json({
+        success: true,
+        message: 'Subscription successful',
+      });
     }
 
     const subscribePayload: BeehiivSubscriptionPayload = {
