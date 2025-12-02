@@ -170,7 +170,7 @@ const buildProtocolItem = (
     key: 'protocol',
     dataTestId: `protocol-${protocolValue}`,
     label: t('labels.protocol'),
-    value: protocolValue,
+    value: capitalizeString(protocolValue),
     tooltip: t('tooltips.protocol'),
     valuePrepend: (
       <EntityChainStack

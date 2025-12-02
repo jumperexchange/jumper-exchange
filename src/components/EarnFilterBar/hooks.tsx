@@ -9,6 +9,7 @@ import type {
 import { SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
+import { capitalizeString } from '@/utils/capitalizeString';
 
 export const useEarnFilterBar = () => {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ export const useEarnFilterBar = () => {
     () =>
       allChains.map((chain) => ({
         value: `${chain.chainId}`,
-        label: chain.chainKey,
+        label: capitalizeString(chain.chainKey),
         icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
       })),
     [allChains],
@@ -38,7 +39,7 @@ export const useEarnFilterBar = () => {
     () =>
       allProtocols.map((protocol) => ({
         value: protocol.name,
-        label: protocol.name,
+        label: capitalizeString(protocol.name),
         icon: <ProtocolStack protocols={[protocol]} />,
       })),
     [allProtocols],
