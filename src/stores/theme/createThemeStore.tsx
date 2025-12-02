@@ -75,6 +75,22 @@ const deserialize = (_key: string, value: unknown): unknown => {
   return value;
 };
 
+export const selectAvailablePartnerThemes = (
+  state: ThemeState,
+): PartnerThemesData[] => {
+  const availableUids = Object.entries(state.configThemeStates)
+    .filter(
+      ([_, themeState]) =>
+        themeState.expirationDate &&
+        isBefore(new Date(), themeState.expirationDate),
+    )
+    .map(([uid]) => uid);
+
+  return state.partnerThemes.filter((theme) =>
+    availableUids.some((uid) => uid === theme.uid),
+  );
+};
+
 const CONFIG_THEME_EXPIRATION_DAYS = 7;
 
 const defaultConfigThemeState: ConfigThemeState = {
@@ -156,20 +172,6 @@ export const createThemeStore = (props: ThemeProps) =>
         },
         getConfigThemeState: (uid: string): ConfigThemeState => {
           return getOrCreateConfigThemeState(get().configThemeStates, uid);
-        },
-        getAvailablePartnerThemes: (): PartnerThemesData[] => {
-          const currentStates = get().configThemeStates;
-          const availableUids = Object.entries(currentStates)
-            .filter(
-              ([_, state]) =>
-                state.expirationDate &&
-                isBefore(new Date(), state.expirationDate),
-            )
-            .map(([uid]) => uid);
-
-          return get().partnerThemes.filter((theme) =>
-            availableUids.some((uid) => uid === theme.uid),
-          );
         },
       }),
       {

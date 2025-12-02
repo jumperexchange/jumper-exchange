@@ -17,6 +17,7 @@ import {
 } from '@/const/trackingKeys';
 import { isDarkOrLightThemeMode } from '@/utils/formatTheme';
 import Avatar from '@mui/material/Avatar';
+import { selectAvailablePartnerThemes } from '@/stores/theme/createThemeStore';
 
 interface SubmenuItem {
   label: string;
@@ -49,12 +50,11 @@ export const useThemeModesMenuContent = () => {
   const { trackEvent } = useUserTracking();
   const { isMainPaths } = useMainPaths();
 
-  const [setConfigThemeState, configThemeStates, getAvailablePartnerThemes] =
-    useThemeStore((state) => [
-      state.setConfigThemeState,
-      state.configThemeStates,
-      state.getAvailablePartnerThemes,
-    ]);
+  const [setConfigThemeState, configThemeStates] = useThemeStore((state) => [
+    state.setConfigThemeState,
+    state.configThemeStates,
+  ]);
+  const availablePartnerThemes = useThemeStore(selectAvailablePartnerThemes);
 
   const defaultMode = isMainPaths ? 'system' : 'light';
   const selectedThemeMode = mode ?? defaultMode;
@@ -122,10 +122,10 @@ export const useThemeModesMenuContent = () => {
   );
 
   const displayablePartnerThemes = useMemo(() => {
-    return getAvailablePartnerThemes().filter(
+    return availablePartnerThemes.filter(
       (theme) => theme.SelectableInMenu && theme.PartnerName,
     );
-  }, [getAvailablePartnerThemes]);
+  }, [availablePartnerThemes]);
 
   const partnerThemeItems = useMemo<SubmenuItem[]>(
     () =>
