@@ -1,11 +1,14 @@
 'use client';
 
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import { useQuery } from '@tanstack/react-query';
 import type { Address } from 'viem';
 import { useReadContract } from 'wagmi';
 import { base } from 'wagmi/chains';
 
-interface GatekeeperProps extends React.PropsWithChildren {}
+interface GatekeeperProps extends React.PropsWithChildren {
+  flag: string;
+}
 
 enum GatekeeperStatus {
   LOADING = 'loading',
@@ -21,39 +24,21 @@ interface GatekeeperData {
   error?: unknown;
 }
 
-// https://basescan.org/tx/0x05f541bca11bcdf24508bdba5f3d5d8b0705b754ca3b9c82d910020066c77ea9
-const NFT_ADDRESS: Address = '0x67092c874b307d26c2f8cbdfadba08d10c965779';
-
-const erc1155Abi = [
-  {
-    type: 'function',
-    name: 'balanceOf',
-    stateMutability: 'view',
-    inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'id', type: 'uint256' },
-    ],
-    outputs: [{ type: 'uint256' }],
-  },
-] as const;
-
-const TOKEN_ID = 1n;
-
-const useGatekeeperStatus = (): GatekeeperData => {
+const useGatekeeperStatus = (flag: string): GatekeeperData => {
   const accountAddress = useAccountAddress();
 
-  const ownerArg: Address = (accountAddress ?? NFT_ADDRESS) as Address;
-  const {
-    data: balance,
-    isLoading,
-    error,
-  } = useReadContract({
-    address: NFT_ADDRESS,
-    abi: erc1155Abi,
-    functionName: 'balanceOf',
-    args: [ownerArg, TOKEN_ID],
-    chainId: base.id,
-    query: { enabled: Boolean(accountAddress) },
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['flags', accountAddress, flag],
+    queryFn: async () => {
+      const response = await fetch(`/api/profile/${accountAddress}/flags`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch wallet flags');
+      }
+
+      return response.json();
+    },
+    enabled: !!accountAddress,
   });
 
   if (!accountAddress) {
@@ -68,15 +53,15 @@ const useGatekeeperStatus = (): GatekeeperData => {
     return { status: GatekeeperStatus.ERROR, error };
   }
 
-  const hasAccess = (balance ?? 0n) > 0n;
+  const hasAccess = Boolean(data?.[flag]) ?? false;
 
   return {
     status: hasAccess ? GatekeeperStatus.SUCCESS : GatekeeperStatus.NOT_ALLOWED,
   };
 };
 
-export const Gatekeeper: React.FC<GatekeeperProps> = ({ children }) => {
-  const { status, error } = useGatekeeperStatus();
+export const Gatekeeper: React.FC<GatekeeperProps> = ({ children, flag }) => {
+  const { status, error } = useGatekeeperStatus(flag);
 
   if (status === GatekeeperStatus.LOADING) {
     return <div>Loading...</div>;

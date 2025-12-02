@@ -10,7 +10,7 @@ interface EarnsPageProps {}
 
 export const EarnsPage: FC<EarnsPageProps> = () => {
   return (
-    <Gatekeeper>
+    <Gatekeeper flag="hasEarn">
       <EarnTopOpportunities />
       <EarnOpportunitiesAll />
     </Gatekeeper>
