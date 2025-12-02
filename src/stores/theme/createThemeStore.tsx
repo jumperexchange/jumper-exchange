@@ -33,6 +33,9 @@ export const selectAvailablePartnerThemes = (
 
 const CONFIG_THEME_EXPIRATION_DAYS = 7;
 
+const getLocalStorage = () =>
+  typeof window === 'undefined' ? undefined : localStorage;
+
 const defaultConfigThemeState: ConfigThemeState = {
   expirationDate: undefined,
   isSelected: false,
@@ -119,17 +122,14 @@ export const createThemeStore = (props: ThemeProps) =>
         version: 2,
         storage: {
           getItem: (name) => {
-            const str = localStorage.getItem(name);
-            if (!str) {
-              return null;
-            }
-            return superjson.parse(str);
+            const str = getLocalStorage()?.getItem(name);
+            return str ? superjson.parse(str) : null;
           },
           setItem: (name, value) => {
-            localStorage.setItem(name, superjson.stringify(value));
+            getLocalStorage()?.setItem(name, superjson.stringify(value));
           },
           removeItem: (name) => {
-            localStorage.removeItem(name);
+            getLocalStorage()?.removeItem(name);
           },
         },
         migrate: (
