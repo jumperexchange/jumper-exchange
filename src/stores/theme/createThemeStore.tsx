@@ -230,8 +230,6 @@ export const createThemeStore = (props: ThemeProps) =>
             }
           });
 
-          newStore.configTheme = newStore.configTheme;
-
           return newStore;
         },
         partialize: (state: ThemeState): PersistedThemeState => ({

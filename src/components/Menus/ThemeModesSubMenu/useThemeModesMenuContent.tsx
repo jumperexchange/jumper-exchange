@@ -97,12 +97,16 @@ export const useThemeModesMenuContent = () => {
         },
       });
 
+      if (activeConfigThemeUid && activeConfigThemeUid !== theme.uid) {
+        setConfigThemeState(activeConfigThemeUid, { isSelected: false });
+      }
+
       setConfigThemeState(theme.uid, { isSelected: true });
 
       const themeMode = isDarkOrLightThemeMode(theme);
       setMode(themeMode);
     },
-    [trackEvent, setConfigThemeState, setMode],
+    [trackEvent, setConfigThemeState, setMode, activeConfigThemeUid],
   );
 
   const standardModeItems = useMemo<SubmenuItem[]>(
