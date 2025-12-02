@@ -447,6 +447,13 @@
       "clearAll": "Limpar tudo",
       "filterAndSort": "Filtrar e ordenar",
       "search": "Buscar {{filterBy}}..."
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
     }
   },
   "widget": {
