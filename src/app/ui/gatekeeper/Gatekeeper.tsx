@@ -3,6 +3,7 @@
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import type { Address } from 'viem';
 import { useReadContract } from 'wagmi';
+import { base } from 'wagmi/chains';
 
 interface GatekeeperProps extends React.PropsWithChildren {}
 
@@ -29,7 +30,7 @@ const erc1155Abi = [
     name: 'balanceOf',
     stateMutability: 'view',
     inputs: [
-      { name: 'account', type: 'address' },
+      { name: 'owner', type: 'address' },
       { name: 'id', type: 'uint256' },
     ],
     outputs: [{ type: 'uint256' }],
@@ -51,7 +52,7 @@ const useGatekeeperStatus = (): GatekeeperData => {
     abi: erc1155Abi,
     functionName: 'balanceOf',
     args: [ownerArg, TOKEN_ID],
-    // only run when we have an address
+    chainId: base.id,
     query: { enabled: Boolean(accountAddress) },
   });
 
@@ -90,7 +91,11 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({ children }) => {
   }
 
   if (status === GatekeeperStatus.ERROR) {
-    return <div>Error: {error?.toString()}</div>;
+    return (
+      <div>
+        <pre>Error: {error?.toString()}</pre>
+      </div>
+    );
   }
 
   if (status === GatekeeperStatus.NOT_ALLOWED) {
