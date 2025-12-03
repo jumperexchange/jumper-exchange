@@ -14,6 +14,8 @@ import { useMemo } from 'react';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from '@/utils/capitalizeString';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
 
 export const usePortfolioTokensFilterBar = () => {
   const { t } = useTranslation();
@@ -28,6 +30,7 @@ export const usePortfolioTokensFilterBar = () => {
     sortBy,
     setSortBy,
   } = usePortfolioTokensFiltering();
+  const { getChainById } = useChains();
 
   const walletOptions = useMemo(
     () =>
@@ -52,10 +55,10 @@ export const usePortfolioTokensFilterBar = () => {
     () =>
       allChains.map((chain) => ({
         value: `${chain.chainId}`,
-        label: chain.chainKey,
+        label: getChainName(chain, getChainById),
         icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
       })),
-    [allChains],
+    [allChains, getChainById],
   );
 
   const assetOptions = useMemo(
@@ -192,15 +195,16 @@ export const usePortfolioDeFiFilterBar = () => {
     sortBy,
     setSortBy,
   } = usePortfolioDeFiPositionsFiltering();
+  const { getChainById } = useChains();
 
   const chainOptions = useMemo(
     () =>
       allChains.map((chain) => ({
         value: `${chain.chainId}`,
-        label: capitalizeString(chain.chainKey),
+        label: getChainName(chain, getChainById),
         icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
       })),
-    [allChains],
+    [allChains, getChainById],
   );
 
   const protocolOptions = useMemo(

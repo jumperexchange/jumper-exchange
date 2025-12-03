@@ -10,6 +10,8 @@ import { SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { capitalizeString } from '@/utils/capitalizeString';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
 
 export const useEarnFilterBar = () => {
   const { t } = useTranslation();
@@ -24,15 +26,16 @@ export const useEarnFilterBar = () => {
     sortBy,
     setSortBy,
   } = useEarnFiltering();
+  const { getChainById } = useChains();
 
   const chainOptions = useMemo(
     () =>
       allChains.map((chain) => ({
         value: `${chain.chainId}`,
-        label: capitalizeString(chain.chainKey),
+        label: getChainName(chain, getChainById),
         icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
       })),
-    [allChains],
+    [allChains, getChainById],
   );
 
   const protocolOptions = useMemo(
