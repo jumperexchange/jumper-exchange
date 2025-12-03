@@ -7,7 +7,7 @@
     },
     "links": {
       "exchange": "Conversão",
-      "portfolio": "",
+      "portfolio": "Portfólio",
       "missions": "Missões",
       "earn": "Ganhe",
       "dashboard": "Painel de controle",
@@ -29,8 +29,8 @@
         "noEcosystemAdapter": "Não foi encontrado nenhum adaptador de ecossistema adequado"
       }
     },
-    "pass": "",
-    "wallets": "",
+    "pass": "Passar",
+    "wallets": "Carteiras",
     "seeAllWallets": "Ver todas as carteiras",
     "navbarMenu": {
       "learn": "Aprenda",
@@ -197,7 +197,7 @@
         "description": "Esta tarefa foi verificada e concluída."
       },
       "verifyWallet": {
-        "title": "",
+        "title": "Verificar propriedade",
         "description": {
           "notConnected": "",
           "notVerified": "",
