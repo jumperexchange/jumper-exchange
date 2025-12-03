@@ -1,3 +1,4 @@
+import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import { PortfolioPageOverlayLayout } from '@/app/ui/portfolio/PortfolioPageOverlayLayout';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PortfolioLayout({ children }: PropsWithChildren) {
+export default function PortfolioLayout({ children }: PropsWithChildren) {
   if (!isPortfolioFeatureEnabled()) {
     return notFound();
   }
@@ -23,9 +24,11 @@ export default async function PortfolioLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <PortfolioPageOverlayLayout>
-        <PageContainer>{children}</PageContainer>
-      </PortfolioPageOverlayLayout>
+      <Gatekeeper flag="hasEarn">
+        <PortfolioPageOverlayLayout>
+          <PageContainer>{children}</PageContainer>
+        </PortfolioPageOverlayLayout>
+      </Gatekeeper>
     </Layout>
   );
 }
