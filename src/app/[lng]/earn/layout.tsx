@@ -23,9 +23,26 @@ export default function EarnLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <PageContainer>
-        <Gatekeeper flag="hasEarn">{children}</Gatekeeper>
-      </PageContainer>
+      <Gatekeeper
+        flag="hasEarn"
+        pageTitle="Jumper Earn"
+        illustrations={{
+          mobile: {
+            src: '/earn-gatekeeper-hero-mobile.png',
+            sx: {
+              maxWidth: '343px',
+            },
+          },
+          desktop: {
+            src: '/earn-gatekeeper-hero-desktop.png',
+            sx: {
+              maxWidth: '728px',
+            },
+          },
+        }}
+      >
+        <PageContainer>{children}</PageContainer>
+      </Gatekeeper>
     </Layout>
   );
 }

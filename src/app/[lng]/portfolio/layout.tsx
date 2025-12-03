@@ -24,7 +24,24 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <Gatekeeper flag="hasEarn">
+      <Gatekeeper
+        flag="hasEarn"
+        pageTitle="Jumper Portfolio"
+        illustrations={{
+          mobile: {
+            src: '/portfolio-gatekeeper-hero-mobile.png',
+            sx: {
+              maxWidth: '343px',
+            },
+          },
+          desktop: {
+            src: '/portfolio-gatekeeper-hero-desktop.png',
+            sx: {
+              maxWidth: '1080px',
+            },
+          },
+        }}
+      >
         <PortfolioPageOverlayLayout>
           <PageContainer>{children}</PageContainer>
         </PortfolioPageOverlayLayout>

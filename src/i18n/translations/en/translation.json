@@ -583,5 +583,13 @@
         "submitting": "Waiting for verification"
       }
     }
+  },
+  "gatekeeper": {
+    "title": "Welcome to {{pageTitle}}!",
+    "subtitle": {
+      "notConnected": "We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.",
+      "noAccess": "We are currently in a <strong>closed beta.</strong>\nYou currently do not have access."
+    },
+    "requestAccess": "Request access"
   }
 }
