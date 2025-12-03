@@ -1735,6 +1735,46 @@ export class JumperBackend<
       query: {
         /** The EVM address to get positions for */
         evm: string;
+        /**
+         * Sort by field.
+         * @example "value"
+         */
+        sortBy?: 'value' | 'chain' | 'asset';
+        /**
+         * Sort order.
+         * @example "asc"
+         */
+        order?: 'asc' | 'desc';
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The protocols to filter for
+         * @example ["Aave","Compound","Yearn"]
+         */
+        protocols?: string[];
+        /**
+         * The position types to filter for
+         * @example ["lending","staking"]
+         */
+        type?: string[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The minimum USD total value to filter for
+         * @example 5.5
+         */
+        minValue?: number;
+        /**
+         * The maximum USD total value to filter for
+         * @example 25
+         */
+        maxValue?: number;
       },
       params: RequestParams = {},
     ) =>

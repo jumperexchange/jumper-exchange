@@ -179,6 +179,9 @@ export const filterSortPortfolioTokensData = (
 };
 
 export const deFiPositionsSearchParamsParsers = {
+  defiSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
+    SortByOptions.VALUE,
+  ),
   defiChains: parseAsArrayOf(parseAsInteger),
   defiProtocols: parseAsArrayOf(parseAsString),
   defiTypes: parseAsArrayOf(parseAsString),

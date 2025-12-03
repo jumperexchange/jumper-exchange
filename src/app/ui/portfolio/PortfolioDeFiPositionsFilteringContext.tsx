@@ -18,7 +18,9 @@ import type {
   PortfolioDeFiPositionsFilter,
   PortfolioDeFiPositionsFilteringParams,
   PortfolioDeFiPositionsFilterUI,
+  SortByEnum,
 } from './types';
+import { SortByOptions } from './types';
 import { EMPTY_DEFI_POSITIONS_FILTERING_PARAMS } from './constants';
 import {
   deFiPositionsSearchParamsParsers,
@@ -31,6 +33,8 @@ import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioDeFiPositionsFilteringContextType
   extends PortfolioDeFiPositionsFilteringParams {
+  sortBy: SortByEnum;
+  setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioDeFiPositionsFilterUI;
   updateFilter: (
     filter: NullableFields<PortfolioDeFiPositionsFilterUI>,
@@ -38,12 +42,14 @@ export interface PortfolioDeFiPositionsFilteringContextType
   clearFilters: () => void;
   data: DefiPosition[];
   isLoading: boolean;
-  isEmpty: boolean;
+  isAllDataEmpty: boolean;
   error: unknown | null;
 }
 
 export const PortfolioDeFiPositionsFilteringContext =
   createContext<PortfolioDeFiPositionsFilteringContextType>({
+    sortBy: SortByOptions.VALUE,
+    setSortBy: () => {},
     filter: {},
     updateFilter: () => {},
     clearFilters: () => {},
@@ -55,7 +61,7 @@ export const PortfolioDeFiPositionsFilteringContext =
     allValueRange: { min: 0, max: 0 },
     data: [],
     isLoading: false,
-    isEmpty: false,
+    isAllDataEmpty: false,
     error: null,
   });
 
@@ -68,6 +74,8 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
       history: 'replace',
     },
   );
+
+  const { defiSortBy: initialSortBy, ...rest } = searchParamsState;
 
   const { accounts } = useAccount();
   const connectedAddresses = useMemo(() => {
@@ -82,28 +90,46 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
   }, [accounts]);
 
   const initialFilter = useMemo(() => {
-    return removeNullValuesFromFilter<PortfolioDeFiPositionsFilter>(
-      searchParamsState,
-    );
-  }, [searchParamsState]);
+    return removeNullValuesFromFilter<PortfolioDeFiPositionsFilter>(rest);
+  }, [rest]);
 
+  const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<PortfolioDeFiPositionsFilter>(initialFilter);
   const prevStatsRef = useRef<PortfolioDeFiPositionsFilteringParams>(
     EMPTY_DEFI_POSITIONS_FILTERING_PARAMS,
   );
 
-  const allPositions = usePortfolioDeFiPositions({
+  const allPositionsNoFilter = usePortfolioDeFiPositions({
     addresses: connectedAddresses,
   });
 
+  const allPositions = usePortfolioDeFiPositions({
+    addresses: connectedAddresses,
+    filter: {
+      chains: filter?.defiChains,
+      protocols: filter?.defiProtocols,
+      type: filter?.defiTypes,
+      assets: filter?.defiAssets,
+      // TODO: enable min/max APY filtering when backend supports it
+      // minAPY: filter?.defiMinAPY,
+      // maxAPY: filter?.defiMaxAPY,
+      minValue: filter?.defiMinValue,
+      maxValue: filter?.defiMaxValue,
+      sortBy: sortBy,
+    },
+  });
+
   const stats = useMemo((): PortfolioDeFiPositionsFilteringParams => {
-    if (!allPositions.data || allPositions.data.positions.length === 0) {
+    if (
+      !allPositionsNoFilter.data ||
+      allPositionsNoFilter.data.positions.length === 0
+    ) {
       return EMPTY_DEFI_POSITIONS_FILTERING_PARAMS;
     }
 
-    return extractDeFiPositionsFilteringParams(allPositions.data);
-  }, [allPositions.data]);
+    return extractDeFiPositionsFilteringParams(allPositionsNoFilter.data);
+  }, [allPositionsNoFilter.data]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -142,15 +168,29 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     });
   }, [updateFilter]);
 
+  const updateSortBy = useCallback(
+    (newSortBy: SortByEnum) => {
+      setSortBy(newSortBy);
+      setSearchParamsState({ defiSortBy: newSortBy });
+    },
+    [setSortBy, setSearchParamsState],
+  );
+
   const context: PortfolioDeFiPositionsFilteringContextType = {
+    sortBy,
+    setSortBy: updateSortBy,
     filter,
     updateFilter,
     clearFilters,
     data: allPositions.data?.positions ?? [],
-    isLoading: allPositions.isLoading || connectedAddresses.length === 0,
-    isEmpty:
-      !allPositions.data?.positions || allPositions.data.positions.length === 0,
-    error: allPositions.error ?? null,
+    isLoading:
+      allPositionsNoFilter.isLoading ||
+      allPositions.isLoading ||
+      connectedAddresses.length === 0,
+    isAllDataEmpty:
+      !allPositionsNoFilter.data?.positions ||
+      allPositionsNoFilter.data.positions.length === 0,
+    error: allPositionsNoFilter.error ?? null,
     ...stats,
   };
 
