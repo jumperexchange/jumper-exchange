@@ -1,3 +1,4 @@
+import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function EarnLayout({ children }: PropsWithChildren) {
+export default function EarnLayout({ children }: PropsWithChildren) {
   if (!isEarnFeatureEnabled()) {
     return notFound();
   }
@@ -22,7 +23,9 @@ export default async function EarnLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <PageContainer>{children}</PageContainer>
+      <PageContainer>
+        <Gatekeeper flag="hasEarn">{children}</Gatekeeper>
+      </PageContainer>
     </Layout>
   );
 }
