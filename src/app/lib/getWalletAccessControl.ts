@@ -15,9 +15,6 @@ export async function getWalletAccessControl(
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-    next: {
-      revalidate: 60 * 5,
-    },
   });
 
   if (!res.ok) {
