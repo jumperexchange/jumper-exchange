@@ -31,8 +31,7 @@ import {
 import { ChainType } from '@lifi/sdk';
 import type { NullableFields } from '@/types/internal';
 
-export interface PortfolioDeFiPositionsFilteringContextType
-  extends PortfolioDeFiPositionsFilteringParams {
+export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioDeFiPositionsFilterUI;
