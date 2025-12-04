@@ -247,9 +247,8 @@ export interface Customization {
   typography?: string;
   hasBackgroundGradient?: boolean;
   hasBlurredNavigation?: boolean;
-  showForFromChain?: number;
-  showForToChain?: number;
   hasThemeModeSwitch?: boolean;
+  themeModeIcon?: string;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
