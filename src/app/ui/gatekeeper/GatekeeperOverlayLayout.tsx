@@ -3,11 +3,7 @@
 import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
 import { HeaderHeight } from '@/const/headerHeight';
 import type { FC, PropsWithChildren } from 'react';
-import {
-  GatekeeperDesktopImage,
-  GatekeeperMobileImage,
-  GatekeeperOverlayContentContainer,
-} from './Gatekeeper.style';
+import { GatekeeperIllustrationWrapper } from './Gatekeeper.style';
 import { GatekeeperOverlayContent } from './GatekeeperOverlayContent';
 import { noop } from 'lodash';
 import type { GatekeeperIllustrations } from './types';
@@ -44,26 +40,16 @@ export const GatekeeperOverlayLayout: FC<GatekeeperOverlayLayoutProps> = ({
       }}
       fullWidthGlowEffect
     >
-      <GatekeeperOverlayContentContainer>
-        <GatekeeperMobileImage
-          src={illustrations.mobile.src}
-          alt={title}
-          width={0}
-          height={0}
-          sizes="100vw"
-          priority
-          sx={illustrations.mobile.sx}
-        />
-        <GatekeeperDesktopImage
-          src={illustrations.desktop.src}
-          alt={title}
-          width={0}
-          height={0}
-          sizes="100vw"
-          priority
-          sx={illustrations.desktop.sx}
-        />
-      </GatekeeperOverlayContentContainer>
+      <GatekeeperIllustrationWrapper
+        sx={(theme) => ({
+          ...illustrations.mobile.sx,
+          [theme.breakpoints.up('md')]: {
+            ...illustrations.desktop.sx,
+          },
+        })}
+      >
+        {illustrations.illustration}
+      </GatekeeperIllustrationWrapper>
     </WelcomeOverlayLayout>
   );
 };

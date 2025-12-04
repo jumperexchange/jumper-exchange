@@ -1,5 +1,6 @@
 import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import { PortfolioPageOverlayLayout } from '@/app/ui/portfolio/PortfolioPageOverlayLayout';
+import PortfolioBetaIllustration from '@/components/illustrations/PortfolioBetaIllustration';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
@@ -28,16 +29,17 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
         flag="hasEarn"
         pageTitle="Jumper Portfolio"
         illustrations={{
+          illustration: <PortfolioBetaIllustration />,
           mobile: {
-            src: '/portfolio-gatekeeper-hero-mobile.png',
             sx: {
-              maxWidth: '343px',
+              maxWidth: 343,
+              marginTop: 8,
             },
           },
           desktop: {
-            src: '/portfolio-gatekeeper-hero-desktop.png',
             sx: {
-              maxWidth: '1080px',
+              maxWidth: 1080,
+              marginTop: 15,
             },
           },
         }}

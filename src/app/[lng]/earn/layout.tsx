@@ -1,4 +1,5 @@
 import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
+import EarnBetaIllustration from '@/components/illustrations/EarnBetaIllustration';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
@@ -27,16 +28,17 @@ export default function EarnLayout({ children }: PropsWithChildren) {
         flag="hasEarn"
         pageTitle="Jumper Earn"
         illustrations={{
+          illustration: <EarnBetaIllustration />,
           mobile: {
-            src: '/earn-gatekeeper-hero-mobile.png',
             sx: {
-              maxWidth: '343px',
+              maxWidth: 343,
+              marginTop: 8,
             },
           },
           desktop: {
-            src: '/earn-gatekeeper-hero-desktop.png',
             sx: {
-              maxWidth: '728px',
+              maxWidth: 728,
+              marginTop: 20,
             },
           },
         }}

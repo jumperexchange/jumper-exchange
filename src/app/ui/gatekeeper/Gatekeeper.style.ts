@@ -1,39 +1,17 @@
 import { ButtonPrimary } from '@/components/Button/Button.style';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import Image from 'next/image';
 import { Link } from '@/components/Link';
 
-export const GatekeeperOverlayContentContainer = styled(Box)(({ theme }) => ({
+export const GatekeeperIllustrationWrapper = styled(Box)(({}) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  marginRight: 'auto',
+  marginLeft: 'auto',
   transition: 'margin-top 0.3s ease-in-out',
   willChange: 'margin-top',
-  marginTop: theme.spacing(8),
-  [theme.breakpoints.up('sm')]: {
-    marginTop: theme.spacing(20),
-  },
-}));
-
-const responsiveImageStyles = {
-  width: '100%',
-  height: 'auto',
-  margin: '0 auto',
-};
-
-export const GatekeeperMobileImage = styled(Image)(({ theme }) => ({
-  ...responsiveImageStyles,
-  display: 'block',
-  [theme.breakpoints.up('sm')]: {
-    display: 'none',
-  },
-}));
-
-export const GatekeeperDesktopImage = styled(Image)(({ theme }) => ({
-  ...responsiveImageStyles,
-  display: 'none',
-  [theme.breakpoints.up('sm')]: {
-    display: 'block',
-  },
 }));
 
 export const GatekeeperRequestAccessLink = styled(Link)(({ theme }) => ({
