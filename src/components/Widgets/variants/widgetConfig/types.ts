@@ -53,6 +53,7 @@ export interface CommonWidgetContext {
   allowToChains?: number[];
   theme?: WidgetConfig['theme'];
   disabledUI?: WidgetConfig['disabledUI'];
+  hiddenUI?: WidgetConfig['hiddenUI'];
 }
 
 // Widget-specific context interfaces
