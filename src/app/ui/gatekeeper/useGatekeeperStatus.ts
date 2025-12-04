@@ -2,7 +2,6 @@ import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useQuery } from '@tanstack/react-query';
 
 export enum GatekeeperStatus {
-  LOADING = 'loading',
   REQUIRES_CONNECT = 'requires_wallet',
   LOADING_ACCESS = 'loading_access',
   SUCCESS = 'success',
