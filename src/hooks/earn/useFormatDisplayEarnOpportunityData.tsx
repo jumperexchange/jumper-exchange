@@ -19,6 +19,8 @@ import { capitalizeString } from 'src/utils/capitalizeString';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import type { TFunction } from 'i18next';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -130,6 +132,7 @@ const buildChainsItem = (
   chains: Chain[],
   variant: EarnCardVariant,
   t: TFunction,
+  formatter: (chain: Chain) => string,
 ): EarnCardOverviewItem | null => {
   if (variant !== 'overview') {
     return null;
@@ -140,7 +143,7 @@ const buildChainsItem = (
     key: 'chains',
     dataTestId: `chains-${chains.map((chain) => chain.chainId).join('-')}`,
     label: t('labels.chains', { count: chainsCount }),
-    value: chains.map((chain) => capitalizeString(chain.chainKey)).join(', '),
+    value: chains.map((chain) => formatter(chain)).join(', '),
     tooltip: t('tooltips.chains', { count: chainsCount }),
     valuePrepend: (
       <ChainStack
@@ -190,6 +193,7 @@ export const useFormatDisplayEarnOpportunityData = (
   variant: EarnCardVariant,
 ) => {
   const { t } = useTranslation();
+  const { getChainById } = useChains();
 
   return useMemo(() => {
     const lockupMonths = earnOpportunity?.lockupMonths;
@@ -209,7 +213,9 @@ export const useFormatDisplayEarnOpportunityData = (
       buildLockupItem(lockupMonths, variant, t),
       buildTvlItem(tvlUsd, variant, t),
       buildAssetsItem(assets, variant, t),
-      buildChainsItem(chains, variant, t),
+      buildChainsItem(chains, variant, t, (chain) =>
+        getChainName(chain, getChainById),
+      ),
       buildProtocolItem(protocol, chains, variant, t),
     ].filter((item): item is EarnCardOverviewItem => item !== null);
 
@@ -217,5 +223,5 @@ export const useFormatDisplayEarnOpportunityData = (
       overviewItems,
       chains,
     };
-  }, [earnOpportunity, variant, t]);
+  }, [earnOpportunity, variant, t, getChainById]);
 };

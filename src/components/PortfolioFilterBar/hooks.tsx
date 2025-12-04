@@ -14,6 +14,9 @@ import { useMemo } from 'react';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from '@/utils/capitalizeString';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
+import { sortSelectOptions } from '@/utils/sortSelectOptions';
 
 export const usePortfolioTokensFilterBar = () => {
   const { t } = useTranslation();
@@ -28,55 +31,62 @@ export const usePortfolioTokensFilterBar = () => {
     sortBy,
     setSortBy,
   } = usePortfolioTokensFiltering();
+  const { getChainById } = useChains();
 
   const walletOptions = useMemo(
     () =>
-      allWallets.map((wallet) => {
-        const connectorIcon = getConnectorIcon(wallet.connector);
-        return {
-          value: wallet.address,
-          label: wallet.connector?.name || '',
-          icon: connectorIcon ? (
-            <Avatar
-              src={connectorIcon}
-              alt={wallet.connector?.name || ''}
-              sx={{ width: 24, height: 24 }}
-            />
-          ) : undefined,
-        };
-      }),
+      sortSelectOptions(
+        allWallets.map((wallet) => {
+          const connectorIcon = getConnectorIcon(wallet.connector);
+          return {
+            value: wallet.address,
+            label: wallet.connector?.name || '',
+            icon: connectorIcon ? (
+              <Avatar
+                src={connectorIcon}
+                alt={wallet.connector?.name || ''}
+                sx={{ width: 24, height: 24 }}
+              />
+            ) : undefined,
+          };
+        }),
+      ),
     [allWallets],
   );
 
   const chainOptions = useMemo(
     () =>
-      allChains.map((chain) => ({
-        value: `${chain.chainId}`,
-        label: chain.chainKey,
-        icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
-      })),
-    [allChains],
+      sortSelectOptions(
+        allChains.map((chain) => ({
+          value: `${chain.chainId}`,
+          label: getChainName(chain, getChainById),
+          icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
+        })),
+      ),
+    [allChains, getChainById],
   );
 
   const assetOptions = useMemo(
     () =>
-      allAssets.map((asset) => ({
-        value: asset.address,
-        label: asset.name,
-        icon: (
-          <TokenStack
-            tokens={[
-              {
-                address: asset.address,
-                chain: {
-                  chainId: asset.chainId,
-                  chainKey: asset.chainName || '',
+      sortSelectOptions(
+        allAssets.map((asset) => ({
+          value: asset.address,
+          label: asset.name,
+          icon: (
+            <TokenStack
+              tokens={[
+                {
+                  address: asset.address,
+                  chain: {
+                    chainId: asset.chainId,
+                    chainKey: asset.chainName || '',
+                  },
                 },
-              },
-            ]}
-          />
-        ),
-      })),
+              ]}
+            />
+          ),
+        })),
+      ),
     [allAssets],
   );
 
@@ -192,43 +202,52 @@ export const usePortfolioDeFiFilterBar = () => {
     sortBy,
     setSortBy,
   } = usePortfolioDeFiPositionsFiltering();
+  const { getChainById } = useChains();
 
   const chainOptions = useMemo(
     () =>
-      allChains.map((chain) => ({
-        value: `${chain.chainId}`,
-        label: capitalizeString(chain.chainKey),
-        icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
-      })),
-    [allChains],
+      sortSelectOptions(
+        allChains.map((chain) => ({
+          value: `${chain.chainId}`,
+          label: getChainName(chain, getChainById),
+          icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
+        })),
+      ),
+    [allChains, getChainById],
   );
 
   const protocolOptions = useMemo(
     () =>
-      allProtocols.map((protocol) => ({
-        value: protocol.name,
-        label: capitalizeString(protocol.name),
-        icon: <ProtocolStack protocols={[protocol]} />,
-      })),
+      sortSelectOptions(
+        allProtocols.map((protocol) => ({
+          value: protocol.name,
+          label: capitalizeString(protocol.name),
+          icon: <ProtocolStack protocols={[protocol]} />,
+        })),
+      ),
     [allProtocols],
   );
 
   const typeOptions = useMemo(
     () =>
-      allTypes.map((type) => ({
-        value: type,
-        label: type,
-      })),
+      sortSelectOptions(
+        allTypes.map((type) => ({
+          value: type,
+          label: type,
+        })),
+      ),
     [allTypes],
   );
 
   const assetOptions = useMemo(
     () =>
-      allAssets.map((asset) => ({
-        value: asset.name,
-        label: asset.name,
-        icon: <TokenStack tokens={[asset]} />,
-      })),
+      sortSelectOptions(
+        allAssets.map((asset) => ({
+          value: asset.name,
+          label: asset.name,
+          icon: <TokenStack tokens={[asset]} />,
+        })),
+      ),
     [allAssets],
   );
 

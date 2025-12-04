@@ -74,18 +74,18 @@ test.describe('Chains filters on Earn page', () => {
   );
 
   test(
-    qase(43, 'Should be able to filter by mainnet chain'),
+    qase(43, 'Should be able to filter by ethereum chain'),
     async ({ page }) => {
-      await test.step('Select mainnet chain', async () => {
+      await test.step('Select ethereum chain', async () => {
         await selectOptionFromDropDown(
           page,
           'earn-filter-chain-select',
-          'mainnet',
+          'ethereum',
         );
       });
 
-      await test.step('Verify all cards show Mainnet chain name', async () => {
-        await verifyAllCardsShowChain(page, 'Mainnet');
+      await test.step('Verify all cards show Ethereum chain name', async () => {
+        await verifyAllCardsShowChain(page, 'Ethereum');
       });
     },
   );
