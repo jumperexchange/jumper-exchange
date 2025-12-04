@@ -7,7 +7,6 @@ import type {
   MissionWidgetContext,
   ZapWidgetContext,
 } from './types';
-import { WidgetContext } from './types';
 import { useWidgetDependencies } from './useWidgetDependencies';
 import {
   useSharedRPCConfig,
@@ -88,9 +87,17 @@ export function useWidgetConfig<T extends WidgetType>(
     }
 
     if (context.disabledUI) {
-      merge(baseConfig, {
-        disabledUI: context.disabledUI,
-      });
+      baseConfig.disabledUI = [
+        ...(baseConfig.disabledUI ?? []),
+        ...context.disabledUI,
+      ];
+    }
+
+    if (context.hiddenUI) {
+      baseConfig.hiddenUI = [
+        ...(baseConfig.hiddenUI ?? []),
+        ...context.hiddenUI,
+      ];
     }
 
     return baseConfig;
@@ -102,5 +109,6 @@ export function useWidgetConfig<T extends WidgetType>(
     widgetSpecific,
     context.theme,
     context.disabledUI,
+    context.hiddenUI,
   ]);
 }

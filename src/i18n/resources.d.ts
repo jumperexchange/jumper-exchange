@@ -73,6 +73,9 @@ interface Resources {
       ctaHeadline: 'Join our Discord to learn more';
     };
     earn: {
+      actions: {
+        viewAllMarkets: 'View all markets';
+      };
       copy: {
         forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';

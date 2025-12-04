@@ -16,7 +16,7 @@ export type Result = UseQueryResult<
 export const useEarnTopOpportunities = ({}: Props): Result => {
   const address: Hex | undefined = useAccountAddress();
 
-  return useQuery({
+  return useQuery<EarnOpportunityWithLatestAnalytics[], unknown>({
     queryKey: ['earn-top-opportunities', address],
     queryFn: async () => {
       const result = await getOpportunitiesTop(address);
@@ -26,5 +26,6 @@ export const useEarnTopOpportunities = ({}: Props): Result => {
       return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,
+    placeholderData: (previousData) => previousData,
   });
 };

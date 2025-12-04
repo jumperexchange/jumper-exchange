@@ -9,6 +9,10 @@ import type {
 import { SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
+import { capitalizeString } from '@/utils/capitalizeString';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
+import { sortSelectOptions } from '@/utils/sortSelectOptions';
 
 export const useEarnFilterBar = () => {
   const { t } = useTranslation();
@@ -23,52 +27,63 @@ export const useEarnFilterBar = () => {
     sortBy,
     setSortBy,
   } = useEarnFiltering();
+  const { getChainById } = useChains();
 
   const chainOptions = useMemo(
     () =>
-      allChains.map((chain) => ({
-        value: `${chain.chainId}`,
-        label: chain.chainKey,
-        icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
-      })),
-    [allChains],
+      sortSelectOptions(
+        allChains.map((chain) => ({
+          value: `${chain.chainId}`,
+          label: getChainName(chain, getChainById),
+          icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
+        })),
+      ),
+    [allChains, getChainById],
   );
 
   const protocolOptions = useMemo(
     () =>
-      allProtocols.map((protocol) => ({
-        value: protocol.name,
-        label: protocol.name,
-        icon: <ProtocolStack protocols={[protocol]} />,
-      })),
+      sortSelectOptions(
+        allProtocols.map((protocol) => ({
+          value: protocol.name,
+          label: capitalizeString(protocol.name),
+          icon: <ProtocolStack protocols={[protocol]} />,
+        })),
+      ),
     [allProtocols],
   );
 
   const tagOptions = useMemo(
     () =>
-      allTags.map((tag) => ({
-        value: tag,
-        label: tag,
-      })),
+      sortSelectOptions(
+        allTags.map((tag) => ({
+          value: tag,
+          label: tag,
+        })),
+      ),
     [allTags],
   );
 
   const assetOptions = useMemo(
     () =>
-      allAssets.map((asset) => ({
-        value: asset.name,
-        label: asset.name,
-        icon: <TokenStack tokens={[asset]} />,
-      })),
+      sortSelectOptions(
+        allAssets.map((asset) => ({
+          value: asset.name,
+          label: asset.name,
+          icon: <TokenStack tokens={[asset]} />,
+        })),
+      ),
     [allAssets],
   );
 
   const apyOptions = useMemo(
     () =>
-      Object.entries(allAPY).map(([key, value]) => ({
-        value: key,
-        label: `${key}: ${value}`,
-      })),
+      sortSelectOptions(
+        Object.entries(allAPY).map(([key, value]) => ({
+          value: key,
+          label: `${key}: ${value}`,
+        })),
+      ),
     [allAPY],
   );
 

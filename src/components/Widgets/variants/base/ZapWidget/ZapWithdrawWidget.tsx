@@ -12,6 +12,7 @@ import {
   WidgetEvent,
   LiFiWidget,
   DisabledUI,
+  HiddenUI,
 } from '@lifi/widget';
 import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { TaskType } from '@/types/strapi';
@@ -66,6 +67,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
       keyPrefix: 'zap.backend',
       disabledUI: [DisabledUI.FromToken],
+      hiddenUI: [HiddenUI.FromToken],
       formData: {
         sourceToken: fromToken,
         sourceChain: fromChain,
