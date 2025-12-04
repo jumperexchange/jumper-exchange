@@ -1,14 +1,14 @@
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { ThemeProps, ThemeState } from '@/types/theme';
 import type { WidgetConfig } from '@lifi/widget';
-import type { StateCreator } from 'zustand';
+import { createStore, type StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { createWithEqualityFn } from 'zustand/traditional';
 import Cookies from 'universal-cookie';
 import { cookieName } from 'src/i18n';
 
 export const createThemeStore = (props: ThemeProps) =>
-  createWithEqualityFn<ThemeState>(
+  createStore<ThemeState>(
     persist(
       (set, get) => ({
         ...props,
@@ -29,18 +29,18 @@ export const createThemeStore = (props: ThemeProps) =>
         migrate: (persistedState: any, version: number) => {
           if (version === 0) {
             const cookies = new Cookies();
-            const theme = cookies.get('theme')
-            const themeMode = cookies.get('themeMode')
+            const theme = cookies.get('theme');
+            const themeMode = cookies.get('themeMode');
             const newStore = { ...persistedState };
 
             if (theme) {
               newStore.activeTheme = theme;
-              cookies.remove('theme', { path: '/', sameSite: true })
+              cookies.remove('theme', { path: '/', sameSite: true });
             }
 
             if (themeMode) {
               newStore.themeMode = themeMode;
-              cookies.remove('themeMode', { path: '/', sameSite: true })
+              cookies.remove('themeMode', { path: '/', sameSite: true });
             }
 
             console.debug('theme/themeMode cookies migrated');
@@ -63,5 +63,4 @@ export const createThemeStore = (props: ThemeProps) =>
         },
       },
     ) as StateCreator<ThemeState, [], [], ThemeState>,
-    Object.is,
   );
