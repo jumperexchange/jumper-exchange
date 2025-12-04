@@ -37,5 +37,6 @@ export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
       };
     },
     refetchInterval: ONE_HOUR_MS,
+    placeholderData: (previousData) => previousData,
   });
 };

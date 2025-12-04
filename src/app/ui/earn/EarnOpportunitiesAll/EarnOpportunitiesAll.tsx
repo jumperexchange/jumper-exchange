@@ -21,7 +21,7 @@ const EarnOpportunitiesAllInner = () => {
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { amount: 0 });
+  const isInView = useInView(sectionRef, { amount: 0, initial: true });
 
   useEffect(() => {
     if (isLoading && !isInView) {
