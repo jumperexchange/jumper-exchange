@@ -1,5 +1,6 @@
 import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import { PortfolioPageOverlayLayout } from '@/app/ui/portfolio/PortfolioPageOverlayLayout';
+import PortfolioBetaIllustration from '@/components/illustrations/PortfolioBetaIllustration';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
@@ -24,7 +25,25 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <Gatekeeper flag="hasEarn">
+      <Gatekeeper
+        flag="hasEarn"
+        pageTitle="Jumper Portfolio"
+        illustrations={{
+          illustration: <PortfolioBetaIllustration />,
+          mobile: {
+            sx: {
+              maxWidth: 343,
+              marginTop: 8,
+            },
+          },
+          desktop: {
+            sx: {
+              maxWidth: 1080,
+              marginTop: 15,
+            },
+          },
+        }}
+      >
         <PortfolioPageOverlayLayout>
           <PageContainer>{children}</PageContainer>
         </PortfolioPageOverlayLayout>
