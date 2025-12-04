@@ -6,8 +6,12 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const NewsletterPageContainer = styled(Box)(({ theme }) => ({
+  marginRight: 'auto',
+  marginLeft: 'auto',
+  maxWidth: 344,
   marginTop: theme.spacing(7),
   [theme.breakpoints.up('md')]: {
+    maxWidth: 600,
     marginTop: theme.spacing(14.25),
   },
 }));
