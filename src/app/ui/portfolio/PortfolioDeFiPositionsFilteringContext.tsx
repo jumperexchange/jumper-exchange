@@ -57,7 +57,6 @@ export const PortfolioDeFiPositionsFilteringContext =
     allProtocols: [],
     allTypes: [],
     allAssets: [],
-    allAPYRange: { min: 0, max: 0 },
     allValueRange: { min: 0, max: 0 },
     data: [],
     isLoading: false,
@@ -116,9 +115,6 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
       protocols: filter?.defiProtocols,
       type: filter?.defiTypes,
       assets: filter?.defiAssets,
-      // TODO: enable min/max APY filtering when backend supports it
-      // minAPY: filter?.defiMinAPY,
-      // maxAPY: filter?.defiMaxAPY,
       minValue: filter?.defiMinValue,
       maxValue: filter?.defiMaxValue,
       sortBy: sortBy,
@@ -167,8 +163,6 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
       defiProtocols: null,
       defiTypes: null,
       defiAssets: null,
-      defiMinAPY: null,
-      defiMaxAPY: null,
       defiMinValue: null,
       defiMaxValue: null,
     });
