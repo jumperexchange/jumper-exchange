@@ -8,9 +8,11 @@ import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimate
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
   createMultiSelectCategory,
+  createSingleSelectCategory,
   createSliderCategory,
 } from 'src/components/composite/MultiLayerDrawer/utils';
 import { useTranslation } from 'react-i18next';
+import type { SortByEnum } from '@/app/ui/portfolio/types';
 
 interface PendingFilterValues {
   defiChains: string[];
@@ -19,6 +21,7 @@ interface PendingFilterValues {
   defiAssets: string[];
   defiAPY: number[];
   defiValue: number[];
+  defiSortBy: SortByEnum;
 }
 
 export const PortfolioFilterBarDeFiTablet: FC = () => {
@@ -37,6 +40,8 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     valueRangeMin,
     valueRangeMax,
     filtersCount,
+    sortByOptions,
+    sortBy,
     handleClearAllFilters,
     handleApplyAllFilters,
   } = usePortfolioDeFiFilterBar();
@@ -57,6 +62,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
       defiAssets: filter?.defiAssets ?? [],
       defiAPY: [apyMin, apyMax],
       defiValue: [valueMin, valueMax],
+      defiSortBy: sortBy,
     },
     onApply: (values) => {
       handleApplyAllFilters({
@@ -235,6 +241,24 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         min: valueRangeMin,
         max: valueRangeMax,
         testId: 'portfolio-defi-filter-value-select-mobile',
+      }),
+    );
+  }
+
+  if (sortByOptions.length > 0) {
+    categories.push(
+      createSingleSelectCategory<SortByEnum>({
+        id: 'sortBy',
+        label: t('portfolio.sorting.sortBy'),
+        value: pendingValues.defiSortBy,
+        onChange: (value) => {
+          if (!value) {
+            return;
+          }
+          setPendingValue('defiSortBy', value);
+        },
+        options: sortByOptions,
+        testId: 'portfolio-filter-sort-select-mobile',
       }),
     );
   }

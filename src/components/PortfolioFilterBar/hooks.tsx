@@ -13,6 +13,7 @@ import {
 import { useMemo } from 'react';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { useTranslation } from 'react-i18next';
+import { capitalizeString } from '@/utils/capitalizeString';
 
 export const usePortfolioTokensFilterBar = () => {
   const { t } = useTranslation();
@@ -177,6 +178,7 @@ export const usePortfolioTokensFilterBar = () => {
 };
 
 export const usePortfolioDeFiFilterBar = () => {
+  const { t } = useTranslation();
   const {
     allChains,
     allProtocols,
@@ -187,13 +189,15 @@ export const usePortfolioDeFiFilterBar = () => {
     filter,
     updateFilter,
     clearFilters,
+    sortBy,
+    setSortBy,
   } = usePortfolioDeFiPositionsFiltering();
 
   const chainOptions = useMemo(
     () =>
       allChains.map((chain) => ({
         value: `${chain.chainId}`,
-        label: chain.chainKey,
+        label: capitalizeString(chain.chainKey),
         icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
       })),
     [allChains],
@@ -203,7 +207,7 @@ export const usePortfolioDeFiFilterBar = () => {
     () =>
       allProtocols.map((protocol) => ({
         value: protocol.name,
-        label: protocol.name,
+        label: capitalizeString(protocol.name),
         icon: <ProtocolStack protocols={[protocol]} />,
       })),
     [allProtocols],
@@ -232,6 +236,15 @@ export const usePortfolioDeFiFilterBar = () => {
   const apyMax = filter?.defiMaxAPY ?? allAPYRange.max;
   const valueMin = filter?.defiMinValue ?? allValueRange.min;
   const valueMax = filter?.defiMaxValue ?? allValueRange.max;
+
+  const sortByOptions = useMemo(
+    () => [
+      { value: SortByOptions.VALUE, label: t('portfolio.sorting.totalValue') },
+      { value: SortByOptions.CHAIN, label: t('portfolio.sorting.chain') },
+      { value: SortByOptions.ASSET, label: t('portfolio.sorting.asset') },
+    ],
+    [t],
+  );
 
   const handleChainChange = (values: string[]) => {
     updateFilter({
@@ -276,6 +289,10 @@ export const usePortfolioDeFiFilterBar = () => {
     values: Partial<PortfolioDeFiPositionsFilterUI>,
   ) => {
     updateFilter({ ...values });
+  };
+
+  const handleSortBy = (value: string) => {
+    setSortBy(value as SortByEnum);
   };
 
   const optionsCount = [
@@ -326,6 +343,8 @@ export const usePortfolioDeFiFilterBar = () => {
     valueMax,
     valueRangeMin: allValueRange.min,
     valueRangeMax: allValueRange.max,
+    sortByOptions,
+    sortBy,
     handleChainChange,
     handleProtocolChange,
     handleTypeChange,
@@ -334,5 +353,6 @@ export const usePortfolioDeFiFilterBar = () => {
     handleValueChange,
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
+    handleSortBy,
   };
 };
