@@ -1,11 +1,11 @@
 'use client';
 
-import { GatekeeperStatus, useGatekeeperStatus } from './useGatekeeperStatus';
-import { GatekeeperOverlayLayout } from './GatekeeperOverlayLayout';
-import { useTranslation } from 'react-i18next';
 import { ConnectButton } from '@/components/ConnectButton';
-import type { GatekeeperIllustrations } from './types';
+import { useTranslation } from 'react-i18next';
 import { GatekeeperRequestAccessLink, LoadingButton } from './Gatekeeper.style';
+import { GatekeeperOverlayLayout } from './GatekeeperOverlayLayout';
+import type { GatekeeperIllustrations } from './types';
+import { GatekeeperStatus, useGatekeeperStatus } from './useGatekeeperStatus';
 
 interface GatekeeperProps extends React.PropsWithChildren {
   flag: 'hasEarn';
