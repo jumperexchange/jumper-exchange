@@ -1,3 +1,5 @@
+import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
+import EarnBetaIllustration from '@/components/illustrations/EarnBetaIllustration';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function EarnLayout({ children }: PropsWithChildren) {
+export default function EarnLayout({ children }: PropsWithChildren) {
   if (!isEarnFeatureEnabled()) {
     return notFound();
   }
@@ -22,7 +24,27 @@ export default async function EarnLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <PageContainer>{children}</PageContainer>
+      <Gatekeeper
+        flag="hasEarn"
+        pageTitle="Jumper Earn"
+        illustrations={{
+          illustration: <EarnBetaIllustration />,
+          mobile: {
+            sx: {
+              maxWidth: 343,
+              marginTop: 8,
+            },
+          },
+          desktop: {
+            sx: {
+              maxWidth: 728,
+              marginTop: 20,
+            },
+          },
+        }}
+      >
+        <PageContainer>{children}</PageContainer>
+      </Gatekeeper>
     </Layout>
   );
 }

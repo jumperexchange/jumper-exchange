@@ -130,6 +130,14 @@ interface Resources {
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
+    gatekeeper: {
+      requestAccess: 'Request access';
+      subtitle: {
+        noAccess: 'We are currently in a <strong>closed beta.</strong>\nYou currently do not have access.';
+        notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
+      };
+      title: 'Welcome to {{pageTitle}}!';
+    };
     labels: {
       apy: 'APY';
       assets_one: 'Asset';
