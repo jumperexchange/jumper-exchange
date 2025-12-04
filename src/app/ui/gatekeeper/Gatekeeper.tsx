@@ -22,18 +22,6 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   const { status, error } = useGatekeeperStatus(flag);
   const { t } = useTranslation();
 
-  if (status === GatekeeperStatus.LOADING) {
-    return (
-      <GatekeeperOverlayLayout
-        title={t('gatekeeper.title', { pageTitle })}
-        subtitle={t('gatekeeper.subtitle.notConnected')}
-        illustrations={illustrations}
-      >
-        <LoadingButton disabled>Loading...</LoadingButton>
-      </GatekeeperOverlayLayout>
-    );
-  }
-
   if (status === GatekeeperStatus.REQUIRES_CONNECT) {
     return (
       <GatekeeperOverlayLayout
@@ -46,7 +34,7 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
     );
   }
 
-  if (status === GatekeeperStatus.LOADING_NFT) {
+  if (status === GatekeeperStatus.LOADING_ACCESS) {
     return (
       <GatekeeperOverlayLayout
         title={t('gatekeeper.title', { pageTitle })}

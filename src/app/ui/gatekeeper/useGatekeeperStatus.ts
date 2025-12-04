@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 export enum GatekeeperStatus {
   LOADING = 'loading',
   REQUIRES_CONNECT = 'requires_wallet',
-  LOADING_NFT = 'loading_access',
+  LOADING_ACCESS = 'loading_access',
   SUCCESS = 'success',
   ERROR = 'error',
   NOT_ALLOWED = 'not_allowed',
@@ -37,7 +37,7 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
   }
 
   if (isLoading) {
-    return { status: GatekeeperStatus.LOADING_NFT };
+    return { status: GatekeeperStatus.LOADING_ACCESS };
   }
 
   if (error) {
