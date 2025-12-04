@@ -1,5 +1,6 @@
-import { Account } from '@lifi/wallet-management';
-import { FC, useEffect, useState } from 'react';
+import type { Account } from '@lifi/wallet-management';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatedCounter } from 'react-animated-counter';
 import {
   WalletBalanceSharedContainer,
@@ -72,6 +73,7 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
               $
               <AnimatedCounter
                 value={totalValue}
+                fontSize={theme.typography.titleLarge.fontSize?.toString()}
                 includeDecimals
                 decimalPrecision={2}
                 includeCommas
@@ -84,9 +86,6 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
                 }}
                 digitStyles={{
                   textOverflow: 'inherit',
-                  fontWeight: 'inherit',
-                  fontSize: 'inherit',
-                  lineHeight: 'inherit',
                 }}
               />
             </>

@@ -96,6 +96,7 @@ export const PortfolioHeaderOverview = () => {
             $
             <AnimatedCounter
               value={totalValue}
+              fontSize={theme.typography.title2XLarge.fontSize?.toString()}
               includeDecimals
               decimalPrecision={2}
               includeCommas
@@ -108,9 +109,6 @@ export const PortfolioHeaderOverview = () => {
               }}
               digitStyles={{
                 textOverflow: 'inherit',
-                fontWeight: 'inherit',
-                fontSize: 'inherit',
-                lineHeight: 'inherit',
               }}
             />
           </>
