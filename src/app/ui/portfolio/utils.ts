@@ -14,14 +14,18 @@ import type {
   PortfolioDeFiPositionsFilteringParams,
   PortfolioDeFiPositionsFilter,
   SortByEnum,
+  OrderEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
 import type { WalletPositions } from '@/types/jumper-backend';
-import { SortByOptions } from './types';
+import { OrderOptions, SortByOptions } from './types';
 
 export const tokensSearchParamsParsers = {
   tokensSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.VALUE,
+  ),
+  tokensOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
+    OrderOptions.DESC,
   ),
   tokensWallets: parseAsArrayOf(parseAsString),
   tokensChains: parseAsArrayOf(parseAsInteger),
@@ -122,6 +126,7 @@ export const filterSortPortfolioTokensData = (
   queriesByAddress: Map<string, { data: CacheToken[] }>,
   filter: PortfolioTokensFilter,
   sortByValue: SortByEnum,
+  order: OrderEnum,
 ): CacheToken[] => {
   let allData: CacheToken[] = [];
 
@@ -175,12 +180,19 @@ export const filterSortPortfolioTokensData = (
     allData = sortBy(allData, (token) => token.name);
   }
 
+  if (order === OrderOptions.DESC) {
+    allData = allData.reverse();
+  }
+
   return allData;
 };
 
 export const deFiPositionsSearchParamsParsers = {
   defiSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.VALUE,
+  ),
+  defiOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
+    OrderOptions.DESC,
   ),
   defiChains: parseAsArrayOf(parseAsInteger),
   defiProtocols: parseAsArrayOf(parseAsString),
