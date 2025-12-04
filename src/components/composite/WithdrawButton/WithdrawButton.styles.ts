@@ -57,10 +57,6 @@ export const WithdrawButtonPrimary = styled(ButtonTransparent)(({ theme }) => ({
     },
     color: (theme.vars || theme).palette.buttonAlphaDarkAction,
     backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
-    ...theme.applyStyles('light', {
-      color: (theme.vars || theme).palette.buttonAlphaLightAction,
-      backgroundColor: (theme.vars || theme).palette.buttonAlphaLightBg,
-    }),
   },
   variants: [
     {

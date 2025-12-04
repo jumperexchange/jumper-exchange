@@ -2529,7 +2529,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
             >
-              morpho
+              Morpho
             </p>
           </div>
         </div>
@@ -2898,7 +2898,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1b6mt9t-MuiTypography-root"
             >
-              morpho
+              Morpho
             </p>
           </div>
         </div>

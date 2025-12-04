@@ -6,17 +6,17 @@ export async function selectAllMarketsTab(page: Page) {
 }
 
 export async function verifyAnalyticsButtonsAreVisible(page: Page) {
-	const chartButtons = [
-		"analytics-range-week",
-		"analytics-range-month",
-		"analytics-range-year",
-		"analytics-value-apy",
-		"analytics-value-tvl",
-	];
-	for (const chartButton of chartButtons) {
-		await page.waitForLoadState("networkidle");
-		await expect(page.getByTestId(chartButton)).toBeVisible();
-	}
+  const chartButtons = [
+    'analytics-range-week',
+    'analytics-range-month',
+    'analytics-range-year',
+    'analytics-value-apy',
+    'analytics-value-tvl',
+  ];
+  for (const chartButton of chartButtons) {
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId(chartButton)).toBeVisible();
+  }
 }
 export async function verifyNoSelectedChainsAreVisible(
   page: Page,
@@ -53,36 +53,6 @@ export async function verifyNoSelectedProtocolsAreVisible(
   protocol1: string,
 ) {
   await verifyNoSelectedItemsAreVisible(page, [protocol1]);
-}
-
-export async function verifyNoSelectedAssetsAreVisible(
-  page: Page,
-  asset1: string,
-) {
-  await verifyNoSelectedItemsAreVisible(page, [asset1]);
-}
-
-export async function getAllAssetsFromDropdown(page: Page): Promise<string[]> {
-  // Wait for the dropdown to be visible and options to load
-  await page.waitForLoadState('networkidle');
-
-  const options = page.locator('[role="option"]');
-
-  // Wait for at least one option to be available
-  await options.first().waitFor({ state: 'visible', timeout: 10000 });
-
-  // Get the actual count of available options
-  const optionCount = await options.count();
-  console.debug(`Found ${optionCount} options in the dropdown`);
-
-  const assets: string[] = [];
-  for (let i = 0; i < optionCount; i++) {
-    const optionText = await options.nth(i).textContent();
-    if (optionText?.trim()) {
-      assets.push(optionText.trim());
-    }
-  }
-  return assets;
 }
 
 export async function verifyOnlySelectedAssetIsVisible(
@@ -141,7 +111,9 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
   const childElements = earnOpportunitiesContainer.locator('*');
   const childCount = await childElements.count();
 
-  console.debug(`Checking ${childCount} elements for items: ${items.join(', ')}`);
+  console.debug(
+    `Checking ${childCount} elements for items: ${items.join(', ')}`,
+  );
 
   const patterns = items.map(
     (item) => new RegExp(`\\b${item.toLowerCase()}\\b`),
@@ -157,7 +129,9 @@ async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
       for (let j = 0; j < patterns.length; j++) {
         const pattern = patterns[j];
         if (lowerText.match(pattern)) {
-          console.debug(`Found matching text in element ${i}: "${textContent}"`);
+          console.debug(
+            `Found matching text in element ${i}: "${textContent}"`,
+          );
         }
         expect(lowerText).not.toMatch(pattern);
       }

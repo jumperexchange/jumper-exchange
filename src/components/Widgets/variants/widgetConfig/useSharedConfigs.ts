@@ -13,6 +13,7 @@ import type {
 import { isMissionContext, isZapContext } from './types';
 import { TaskType } from 'src/types/strapi';
 import type { LanguageKey } from 'src/types/i18n';
+import { AppPaths, getSiteUrl } from '@/const/urls';
 
 /**
  * Shared base configuration that's common across all widget types
@@ -23,6 +24,9 @@ export function useSharedBaseConfig(
 ): Partial<WidgetConfig> {
   return useMemo(
     () => ({
+      explorerUrls: {
+        internal: [`${getSiteUrl()}${AppPaths.Scan}`],
+      },
       integrator: context.integrator ?? envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       keyPrefix: context.keyPrefix,
       apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,

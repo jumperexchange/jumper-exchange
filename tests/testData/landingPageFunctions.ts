@@ -6,10 +6,6 @@ export const LANDING_PAGE = {
   GET_STARTED_BUTTON: '#get-started-button',
 };
 
-export async function findTheBestRoute(page) {
-  await page.getByRole('heading', { name: 'Find the best route' });
-}
-
 export async function closeWelcomeScreen(page: Page) {
   return page.locator(LANDING_PAGE.GET_STARTED_BUTTON).click();
 }
@@ -19,15 +15,6 @@ export async function itemInMenu(page, option: string) {
 
 export async function itemInNavigation(page, option: string) {
   await page.getByRole('link', { name: option }).click();
-}
-
-export async function tabInHeader(page, tabname1: string, tabname2: string) {
-  const gasTab = await page.locator('#tab-key-1');
-  const exchangeTab = await page.locator('#tab-key-0');
-  await gasTab.click();
-  await expect(page.locator(`xpath=//p[text()="${tabname1}"]`)).toBeVisible();
-  await exchangeTab.click();
-  await expect(page.locator(`xpath=//p[text()=${tabname2}]`)).toBeVisible();
 }
 
 export async function clickOnJumperLogo(page: Page) {
