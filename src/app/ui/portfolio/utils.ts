@@ -233,8 +233,6 @@ export const deFiPositionsSearchParamsParsers = {
   defiProtocols: parseAsArrayOf(parseAsString),
   defiTypes: parseAsArrayOf(parseAsString),
   defiAssets: parseAsArrayOf(parseAsString),
-  defiMinAPY: parseAsFloat,
-  defiMaxAPY: parseAsFloat,
   defiMinValue: parseAsFloat,
   defiMaxValue: parseAsFloat,
 };
@@ -266,13 +264,6 @@ export const extractDeFiPositionsFilteringParams = (
 
   const allAssets = uniqBy(allTokens, 'name');
 
-  const apyValues = map(
-    allPositions,
-    (position) => position.latest?.apy?.total || 0,
-  );
-  const minAPY = apyValues.length > 0 ? (min(apyValues) ?? 0) : 0;
-  const maxAPY = apyValues.length > 0 ? (max(apyValues) ?? 0) : 0;
-
   const values = map(
     allPositions,
     (position) => position.netUsd || position.assetUsd || 0,
@@ -285,10 +276,6 @@ export const extractDeFiPositionsFilteringParams = (
     allProtocols,
     allTypes,
     allAssets,
-    allAPYRange: {
-      min: Number(minAPY.toFixed(2)),
-      max: Number(maxAPY.toFixed(2)),
-    },
     allValueRange: {
       min: Number(minValue.toFixed(2)),
       max: Number(maxValue.toFixed(2)),
@@ -313,7 +300,6 @@ export const sanitizeDeFiPositionsFilter = (
   const validProtocols = new Set(stats.allProtocols.map((p) => p.name));
   const validTypes = new Set(stats.allTypes);
   const validAssets = new Set(stats.allAssets.map((a) => a.name));
-  const { min: apyMin, max: apyMax } = stats.allAPYRange;
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
   return {
@@ -324,14 +310,6 @@ export const sanitizeDeFiPositionsFilter = (
       filter.defiProtocols?.filter((p) => validProtocols.has(p)) ?? null,
     defiTypes: filter.defiTypes?.filter((t) => validTypes.has(t)) ?? null,
     defiAssets: filter.defiAssets?.filter((a) => validAssets.has(a)) ?? null,
-    defiMinAPY:
-      filter.defiMinAPY !== undefined
-        ? Math.max(Math.min(filter.defiMinAPY, apyMax), apyMin)
-        : null,
-    defiMaxAPY:
-      filter.defiMaxAPY !== undefined
-        ? Math.max(Math.min(filter.defiMaxAPY, apyMax), apyMin)
-        : null,
     defiMinValue:
       filter.defiMinValue !== undefined
         ? Math.max(Math.min(filter.defiMinValue, valueMax), valueMin)

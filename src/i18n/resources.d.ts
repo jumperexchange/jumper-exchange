@@ -437,7 +437,6 @@ interface Resources {
         title: 'No results';
       };
       filter: {
-        apy: 'APY';
         asset: 'Asset';
         chain: 'Chain';
         clearAll: 'Clear all';

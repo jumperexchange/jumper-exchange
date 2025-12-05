@@ -45,7 +45,6 @@ export interface PortfolioDeFiPositionsFilteringParams {
   allProtocols: Protocol[];
   allTypes: string[];
   allAssets: Token[];
-  allAPYRange: { min: number; max: number };
   allValueRange: { min: number; max: number };
 }
 
@@ -54,8 +53,6 @@ export interface PortfolioDeFiPositionsFilter {
   defiProtocols?: string[];
   defiTypes?: string[];
   defiAssets?: string[];
-  defiMinAPY?: number;
-  defiMaxAPY?: number;
   defiMinValue?: number;
   defiMaxValue?: number;
 }
