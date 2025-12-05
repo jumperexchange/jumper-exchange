@@ -73,6 +73,9 @@ interface Resources {
       ctaHeadline: 'Join our Discord to learn more';
     };
     earn: {
+      actions: {
+        viewAllMarkets: 'View all markets';
+      };
       copy: {
         forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
@@ -126,6 +129,14 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
+    };
+    gatekeeper: {
+      requestAccess: 'Request access';
+      subtitle: {
+        noAccess: 'We are currently in a <strong>closed beta.</strong>\nYou currently do not have access.';
+        notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
+      };
+      title: 'Welcome to {{pageTitle}}!';
     };
     labels: {
       apy: 'APY';

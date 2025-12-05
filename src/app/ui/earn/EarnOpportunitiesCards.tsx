@@ -1,12 +1,13 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { EarnCard } from 'src/components/Cards/EarnCard/EarnCard';
 import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import { GridContainer } from 'src/components/Containers/GridContainer';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { AppPaths } from 'src/const/urls';
+import { AtLeastNWhenLoading } from '@/utils/earn/utils';
+import { useMemo } from 'react';
 
 export const EarnOpportunitiesCards = ({
   items,
@@ -18,7 +19,10 @@ export const EarnOpportunitiesCards = ({
   variant: EarnCardVariant;
 }) => {
   const isCompact = variant === 'compact';
-  const gridItems = AtLeastNWhenLoading(items, isLoading, 3, Infinity);
+  const gridItems = useMemo(
+    () => AtLeastNWhenLoading(items, isLoading, 3, Infinity),
+    [items, isLoading],
+  );
 
   return (
     <GridContainer
@@ -38,8 +42,8 @@ export const EarnOpportunitiesCards = ({
             whileInView={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.3 }}
-            key={item?.slug || index}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            key={`${item?.slug}-${index}`}
           >
             {item == null ? (
               <EarnCard variant={variant} isLoading={true} data={null} />

@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { EarnTopOpportunities } from './EarnTopOpportunities';
 import { EarnOpportunitiesAll } from './EarnOpportunitiesAll/EarnOpportunitiesAll';
+import { EarnTopOpportunities } from './EarnTopOpportunities';
 
 interface EarnsPageProps {}
 

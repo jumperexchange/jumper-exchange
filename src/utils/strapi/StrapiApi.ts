@@ -14,7 +14,8 @@ interface GetStrapiBaseUrlProps {
     | 'campaigns'
     | 'perks'
     | 'merkl-rewards'
-    | 'announcements';
+    | 'announcements'
+    | 'wallet-access-controls';
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -790,6 +791,17 @@ class AnnouncementStrapiApi extends StrapiApi {
   }
 }
 
+class WalletAccessControlStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'wallet-access-controls' });
+  }
+
+  filterByAddress(address: string): this {
+    this.apiUrl.searchParams.set('filters[address][$eqi]', address);
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
@@ -802,4 +814,5 @@ export {
   PerkStrapiApi,
   MerklRewardsStrapiApi,
   AnnouncementStrapiApi,
+  WalletAccessControlStrapiApi,
 };

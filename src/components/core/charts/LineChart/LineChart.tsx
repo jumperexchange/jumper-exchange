@@ -17,9 +17,9 @@ import { formatDateLocalized } from 'src/utils/formatDateLocalized';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import {
   calculateTooltipPosition,
-  calculateVisibleYRange,
   calculateEvenXAxisTicks,
   calculateEvenYAxisTicks,
+  calculateVisibleYRange,
 } from './utils';
 import { useCallback, useMemo, useRef } from 'react';
 import type { HTMLAttributes } from 'react';
@@ -104,12 +104,8 @@ export const LineChart = <
     (value: V) => {
       const numValue = Number(value);
 
-      if (!value || isNaN(numValue)) {
-        return '';
-      }
-
-      if (numValue === 0) {
-        return '';
+      if (!value || isNaN(numValue) || numValue === 0) {
+        return '0';
       }
 
       if (!valueFormatConfig) {
@@ -117,7 +113,7 @@ export const LineChart = <
       }
 
       return formatValueWithConfig(numValue, valueFormatConfig, {
-        includePrefixSuffix: false,
+        includePrefixSuffix: true,
       });
     },
     [valueFormatConfig],
@@ -186,8 +182,8 @@ export const LineChart = <
             axisLine={false}
             tickLine={false}
             ticks={yAxisTickValues}
-            width={48}
             tickMargin={8}
+            width={60}
             domain={[minValueWithOffset, maxValueWithOffset]}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
