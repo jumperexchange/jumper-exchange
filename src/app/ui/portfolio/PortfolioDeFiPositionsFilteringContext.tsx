@@ -34,6 +34,7 @@ import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
   sortBy: SortByEnum;
+  order: OrderEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioDeFiPositionsFilterUI;
   updateFilter: (
@@ -49,6 +50,7 @@ export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeF
 export const PortfolioDeFiPositionsFilteringContext =
   createContext<PortfolioDeFiPositionsFilteringContextType>({
     sortBy: SortByOptions.VALUE,
+    order: OrderOptions.DESC,
     setSortBy: () => {},
     filter: {},
     updateFilter: () => {},
@@ -189,6 +191,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
 
   const context: PortfolioDeFiPositionsFilteringContextType = {
     sortBy,
+    order,
     setSortBy: updateSortBy,
     filter,
     updateFilter,

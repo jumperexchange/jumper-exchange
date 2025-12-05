@@ -6,7 +6,7 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
-import { map, uniq, uniqBy, flatMap, min, max, sortBy } from 'lodash';
+import { map, uniq, uniqBy, flatMap, min, max, sortBy, sumBy } from 'lodash';
 import type { CacheToken } from 'src/types/portfolio';
 import type {
   PortfolioTokensFilteringParams,
@@ -17,8 +17,49 @@ import type {
   OrderEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
-import type { WalletPositions } from '@/types/jumper-backend';
+import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
 import { OrderOptions, SortByOptions } from './types';
+
+export interface SortAccessors<T> {
+  getValue: (item: T) => number;
+  getChain: (item: T) => string;
+  getAsset: (item: T) => string;
+}
+
+export const sortPortfolioItems = <T>(
+  items: T[],
+  sortByValue: SortByEnum,
+  order: OrderEnum,
+  accessors: SortAccessors<T>,
+): T[] => {
+  let sorted = [...items];
+
+  if (sortByValue === SortByOptions.VALUE) {
+    sorted = sortBy(sorted, accessors.getValue);
+  } else if (sortByValue === SortByOptions.CHAIN) {
+    sorted = sortBy(sorted, accessors.getChain);
+  } else if (sortByValue === SortByOptions.ASSET) {
+    sorted = sortBy(sorted, accessors.getAsset);
+  }
+
+  if (order === OrderOptions.DESC) {
+    sorted = sorted.reverse();
+  }
+
+  return sorted;
+};
+
+export const tokenSortAccessors: SortAccessors<CacheToken> = {
+  getValue: (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
+  getChain: (token) => token.chainName ?? '',
+  getAsset: (token) => token.name ?? '',
+};
+
+export const defiGroupSortAccessors: SortAccessors<DefiPosition[]> = {
+  getValue: (group) => sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
+  getChain: (group) => group[0]?.chain?.chainKey ?? '',
+  getAsset: (group) => group[0]?.protocol?.name ?? '',
+};
 
 export const tokensSearchParamsParsers = {
   tokensSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
@@ -169,20 +210,14 @@ export const filterSortPortfolioTokensData = (
     });
   }
 
-  if (sortByValue === SortByOptions.VALUE) {
-    allData = sortBy(
-      allData,
-      (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
-    );
-  } else if (sortByValue === SortByOptions.CHAIN) {
-    allData = sortBy(allData, (token) => token.chainName);
-  } else if (sortByValue === SortByOptions.ASSET) {
-    allData = sortBy(allData, (token) => token.name);
-  }
+  allData = sortPortfolioItems(allData, sortByValue, order, tokenSortAccessors);
 
-  if (order === OrderOptions.DESC) {
-    allData = allData.reverse();
-  }
+  allData = allData.map((token) => ({
+    ...token,
+    chains: token.chains
+      ? sortPortfolioItems(token.chains, sortByValue, order, tokenSortAccessors)
+      : [],
+  }));
 
   return allData;
 };
