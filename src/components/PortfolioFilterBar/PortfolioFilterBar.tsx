@@ -19,7 +19,6 @@ import { AnimatePresence } from 'motion/react';
 import { PortfolioSortTokensDesktop } from './layouts/PortfolioSortTokensDesktop';
 import { PortfolioSortEmptyDesktop } from './layouts/PortfolioSortEmptyDesktop';
 import { PortfolioSortDeFiDesktop } from './layouts/PortfolioSortDeFiDesktop';
-import { PortfolioAnimatedLayoutContainer } from './components/PortfolioAnimatedLayoutContainer';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;

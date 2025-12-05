@@ -19,7 +19,6 @@ interface PendingFilterValues {
   defiProtocols: string[];
   defiTypes: string[];
   defiAssets: string[];
-  defiAPY: number[];
   defiValue: number[];
   defiSortBy: SortByEnum;
 }
@@ -31,10 +30,6 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     typeOptions,
     assetOptions,
     filter,
-    apyMin,
-    apyMax,
-    apyRangeMin,
-    apyRangeMax,
     valueMin,
     valueMax,
     valueRangeMin,
@@ -60,7 +55,6 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
       defiProtocols: filter?.defiProtocols ?? [],
       defiTypes: filter?.defiTypes ?? [],
       defiAssets: filter?.defiAssets ?? [],
-      defiAPY: [apyMin, apyMax],
       defiValue: [valueMin, valueMax],
       defiSortBy: sortBy,
     },
@@ -70,8 +64,6 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         defiProtocols: values.defiProtocols,
         defiTypes: values.defiTypes,
         defiAssets: values.defiAssets,
-        defiMinAPY: values.defiAPY[0],
-        defiMaxAPY: values.defiAPY[1],
         defiMinValue: values.defiValue[0],
         defiMaxValue: values.defiValue[1],
       });
@@ -83,16 +75,12 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         values.defiProtocols.length > 0 ||
         values.defiTypes.length > 0 ||
         values.defiAssets.length > 0 ||
-        values.defiAPY[0] !== apyRangeMin ||
-        values.defiAPY[1] !== apyRangeMax ||
         values.defiValue[0] !== valueRangeMin ||
         values.defiValue[1] !== valueRangeMax
       );
     },
   });
 
-  const usedAPYMin = pendingValues.defiAPY[0] ?? apyMin;
-  const usedAPYMax = pendingValues.defiAPY[1] ?? apyMax;
   const usedValueMin = pendingValues.defiValue[0] ?? valueMin;
   const usedValueMax = pendingValues.defiValue[1] ?? valueMax;
 
@@ -111,16 +99,6 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
   const assetBadge =
     pendingValues.defiAssets.length > 0
       ? pendingValues.defiAssets.length.toString()
-      : undefined;
-  const apyBadge =
-    !isNaN(usedAPYMin) &&
-    !isNaN(usedAPYMax) &&
-    (usedAPYMin !== apyRangeMin || usedAPYMax !== apyRangeMax)
-      ? formatSliderValue(
-          pendingValues.defiAPY.map((value) =>
-            toFixedFractionDigits(value, 0, 2),
-          ),
-        )
       : undefined;
   const valueBadge =
     !isNaN(usedValueMin) &&
@@ -203,25 +181,6 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
           filterBy: t('portfolio.filter.asset').toLowerCase(),
         }),
         testId: 'portfolio-defi-filter-asset-select-mobile',
-      }),
-    );
-  }
-
-  if (
-    !isNaN(apyRangeMin) &&
-    !isNaN(apyRangeMax) &&
-    apyRangeMin !== apyRangeMax
-  ) {
-    categories.push(
-      createSliderCategory({
-        id: 'apy',
-        label: t('portfolio.filter.apy'),
-        badgeLabel: apyBadge,
-        value: pendingValues.defiAPY,
-        onChange: (value) => setPendingValue('defiAPY', value),
-        min: apyRangeMin,
-        max: apyRangeMax,
-        testId: 'portfolio-defi-filter-apy-select-mobile',
       }),
     );
   }
