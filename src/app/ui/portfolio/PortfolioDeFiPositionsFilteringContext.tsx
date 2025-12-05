@@ -15,12 +15,13 @@ import { isEqual } from 'lodash';
 import type { Hex } from 'viem';
 import type { DefiPosition } from '@/types/jumper-backend';
 import type {
+  OrderEnum,
   PortfolioDeFiPositionsFilter,
   PortfolioDeFiPositionsFilteringParams,
   PortfolioDeFiPositionsFilterUI,
   SortByEnum,
 } from './types';
-import { SortByOptions } from './types';
+import { OrderOptions, SortByOptions } from './types';
 import { EMPTY_DEFI_POSITIONS_FILTERING_PARAMS } from './constants';
 import {
   deFiPositionsSearchParamsParsers,
@@ -33,6 +34,7 @@ import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
   sortBy: SortByEnum;
+  order: OrderEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioDeFiPositionsFilterUI;
   updateFilter: (
@@ -48,6 +50,7 @@ export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeF
 export const PortfolioDeFiPositionsFilteringContext =
   createContext<PortfolioDeFiPositionsFilteringContextType>({
     sortBy: SortByOptions.VALUE,
+    order: OrderOptions.DESC,
     setSortBy: () => {},
     filter: {},
     updateFilter: () => {},
@@ -56,7 +59,6 @@ export const PortfolioDeFiPositionsFilteringContext =
     allProtocols: [],
     allTypes: [],
     allAssets: [],
-    allAPYRange: { min: 0, max: 0 },
     allValueRange: { min: 0, max: 0 },
     data: [],
     isLoading: false,
@@ -74,7 +76,11 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     },
   );
 
-  const { defiSortBy: initialSortBy, ...rest } = searchParamsState;
+  const {
+    defiSortBy: initialSortBy,
+    defiOrder: initialOrder,
+    ...rest
+  } = searchParamsState;
 
   const { accounts } = useAccount();
   const connectedAddresses = useMemo(() => {
@@ -92,6 +98,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     return removeNullValuesFromFilter<PortfolioDeFiPositionsFilter>(rest);
   }, [rest]);
 
+  const [order, setOrder] = useState<OrderEnum>(initialOrder);
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<PortfolioDeFiPositionsFilter>(initialFilter);
@@ -110,12 +117,10 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
       protocols: filter?.defiProtocols,
       type: filter?.defiTypes,
       assets: filter?.defiAssets,
-      // TODO: enable min/max APY filtering when backend supports it
-      // minAPY: filter?.defiMinAPY,
-      // maxAPY: filter?.defiMaxAPY,
       minValue: filter?.defiMinValue,
       maxValue: filter?.defiMaxValue,
       sortBy: sortBy,
+      order: order,
     },
   });
 
@@ -160,8 +165,6 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
       defiProtocols: null,
       defiTypes: null,
       defiAssets: null,
-      defiMinAPY: null,
-      defiMaxAPY: null,
       defiMinValue: null,
       defiMaxValue: null,
     });
@@ -169,14 +172,20 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
 
   const updateSortBy = useCallback(
     (newSortBy: SortByEnum) => {
+      const newOrder =
+        newSortBy === SortByOptions.VALUE
+          ? OrderOptions.DESC
+          : OrderOptions.ASC;
+      setOrder(newOrder);
       setSortBy(newSortBy);
-      setSearchParamsState({ defiSortBy: newSortBy });
+      setSearchParamsState({ defiSortBy: newSortBy, defiOrder: newOrder });
     },
     [setSortBy, setSearchParamsState],
   );
 
   const context: PortfolioDeFiPositionsFilteringContextType = {
     sortBy,
+    order,
     setSortBy: updateSortBy,
     filter,
     updateFilter,

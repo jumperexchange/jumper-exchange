@@ -447,7 +447,6 @@
       "protocol": "Protocol",
       "type": "Type",
       "asset": "Asset",
-      "apy": "APY",
       "value": "Value",
       "clearAll": "Clear all",
       "filterAndSort": "Filter and sort",
@@ -593,6 +592,8 @@
       "notConnected": "We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.",
       "noAccess": "We are currently in a <strong>closed beta.</strong>\nYou currently do not have access."
     },
-    "requestAccess": "Request access"
+    "requestAccess": "Request access",
+    "connecting": "Connecting...",
+    "error": "An unknown error occurred. Please try again or request access."
   }
 }

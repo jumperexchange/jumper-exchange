@@ -12,6 +12,15 @@ export const SortByOptions = {
   ASSET: 'asset',
 } as const satisfies Record<string, SortByType>;
 
+type OrderType = 'asc' | 'desc';
+
+export const OrderOptions = {
+  ASC: 'asc',
+  DESC: 'desc',
+} as const satisfies Record<string, OrderType>;
+
+export type OrderEnum = (typeof OrderOptions)[keyof typeof OrderOptions];
+
 export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
 
 export interface PortfolioTokensFilteringParams {
@@ -36,7 +45,6 @@ export interface PortfolioDeFiPositionsFilteringParams {
   allProtocols: Protocol[];
   allTypes: string[];
   allAssets: Token[];
-  allAPYRange: { min: number; max: number };
   allValueRange: { min: number; max: number };
 }
 
@@ -45,11 +53,8 @@ export interface PortfolioDeFiPositionsFilter {
   defiProtocols?: string[];
   defiTypes?: string[];
   defiAssets?: string[];
-  defiMinAPY?: number;
-  defiMaxAPY?: number;
   defiMinValue?: number;
   defiMaxValue?: number;
 }
 
-export interface PortfolioDeFiPositionsFilterUI
-  extends PortfolioDeFiPositionsFilter {}
+export interface PortfolioDeFiPositionsFilterUI extends PortfolioDeFiPositionsFilter {}
