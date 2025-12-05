@@ -22,6 +22,9 @@ export const ConnectNavbarButton = styled(ButtonPrimary)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     height: 40,
   },
+  [theme.breakpoints.up('lg')]: {
+    height: 48,
+  },
 }));
 
 export const ConnectNavbarButtonLabel = styled(Typography)(() => ({
