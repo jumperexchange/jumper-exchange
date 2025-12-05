@@ -182,8 +182,8 @@ export const LineChart = <
             axisLine={false}
             tickLine={false}
             ticks={yAxisTickValues}
-            width={48}
             tickMargin={8}
+            width={60}
             domain={[minValueWithOffset, maxValueWithOffset]}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
