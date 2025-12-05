@@ -74,6 +74,7 @@ interface Resources {
     };
     earn: {
       actions: {
+        seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
       copy: {
