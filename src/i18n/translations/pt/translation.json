@@ -363,6 +363,9 @@
     },
     "overview": {
       "updated": "Atualizado há {{time}} atrás"
+    },
+    "actions": {
+      "viewAllMarkets": ""
     }
   },
   "portfolio": {
@@ -576,5 +579,13 @@
         "submitting": "Aguardando verificação"
       }
     }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": ""
   }
 }
