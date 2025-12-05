@@ -228,8 +228,12 @@ test.describe('Tags filters on Earn page', () => {
 });
 
 test.describe('Analytics filters on Earn page', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context }) => {
+    await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn/hyperbeat-ultra-hype-on-hyperliquid');
+    await connectButton(page).click();
+    await expectSelectWalletOptionToBeVisible(page);
+    await selectWalletOption(page, 'MetaMask');
   });
 
   test(
