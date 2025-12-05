@@ -13,12 +13,14 @@ import { LabelButton } from './LabelButton';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from '@lifi/wallet-management';
 import { useMemo } from 'react';
+import { useDominantColorFromImage } from '@/hooks/images/useGetColorsFromImage';
 
 export const WalletMenuToggle = () => {
   const { t } = useTranslation();
   const { accounts } = useAccount();
   const numberOfWallets = accounts.length;
   const { avatarSrc, badgeSrc, label: walletLabel } = useWalletDisplayData();
+  const dominantColor = useDominantColorFromImage(avatarSrc ?? '', false, true);
 
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
@@ -57,21 +59,16 @@ export const WalletMenuToggle = () => {
         sx={(theme) => ({
           border: '2px solid',
           borderColor: (theme.vars || theme).palette.surface1.main,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          // Use backgroundImage to repeat non-SVG icons in the padding ring; fallback to backgroundColor for SVGs
-          backgroundImage:
-            avatarSrc && !avatarSrc.includes('svg')
-              ? `url(${avatarSrc})`
-              : 'none',
-          backgroundColor: (theme.vars || theme).palette.black.main,
+          backgroundColor:
+            dominantColor ?? (theme.vars || theme).palette.black.main,
           ...theme.applyStyles('light', {
-            backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
+            backgroundColor:
+              dominantColor ?? (theme.vars || theme).palette.alphaDark900.main,
           }),
         })}
       />
     ) : null;
-  }, [avatarSrc, badgeSrc, numberOfWallets]);
+  }, [avatarSrc, badgeSrc, numberOfWallets, dominantColor]);
 
   const label = useMemo(() => {
     if (numberOfWallets > 1) {

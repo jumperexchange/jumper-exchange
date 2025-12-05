@@ -31,6 +31,7 @@ import {
   WalletInfoContainer,
 } from '../WalletBalanceCard.styles';
 import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
+import { useDominantColorFromImage } from '@/hooks/images/useGetColorsFromImage';
 
 interface WalletWithActionsProps {
   account: Account;
@@ -52,6 +53,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     () => getConnectorIcon(account?.connector),
     [account?.connector],
   );
+
+  const dominantColor = useDominantColorFromImage(walletSrc ?? '', false, true);
 
   const chainSrc = activeChain?.logoURI;
 
@@ -165,16 +168,12 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
           sx={(theme) => ({
             border: '2px solid',
             borderColor: (theme.vars || theme).palette.surface1.main,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            // Use backgroundImage to repeat non-SVG icons in the padding ring; fallback to backgroundColor for SVGs
-            backgroundImage:
-              walletSrc && !walletSrc.includes('svg')
-                ? `url(${walletSrc})`
-                : 'none',
-            backgroundColor: (theme.vars || theme).palette.black.main,
+            backgroundColor:
+              dominantColor ?? (theme.vars || theme).palette.black.main,
             ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.alphaDark900.main,
+              backgroundColor:
+                dominantColor ??
+                (theme.vars || theme).palette.alphaDark900.main,
             }),
           })}
         />
