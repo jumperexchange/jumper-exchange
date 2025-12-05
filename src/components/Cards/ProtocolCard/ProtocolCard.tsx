@@ -66,6 +66,22 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
     return <ProtocolCardSkeleton fullWidth={fullWidth} />;
   }
 
+  const headerContent = (
+    <ProtocolCardContentHeaderContainer>
+      <Typography variant="titleMedium">{title}</Typography>
+      <ProtocolCardTagsContainer>
+        {tags?.map((tag) => (
+          <Badge
+            variant={BadgeVariant.Secondary}
+            size={BadgeSize.MD}
+            label={tag}
+            key={tag}
+          />
+        ))}
+      </ProtocolCardTagsContainer>
+    </ProtocolCardContentHeaderContainer>
+  );
+
   return (
     <>
       <ProtocolCardContainer
@@ -113,19 +129,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
           </ProtocolCardHeaderContentContainer>
         </ProtocolCardHeaderContainer>
         <ProtocolCardContentContainer>
-          <ProtocolCardContentHeaderContainer>
-            <Typography variant="titleMedium">{title}</Typography>
-            <ProtocolCardTagsContainer>
-              {tags?.map((tag) => (
-                <Badge
-                  variant={BadgeVariant.Secondary}
-                  size={BadgeSize.MD}
-                  label={tag}
-                  key={tag}
-                />
-              ))}
-            </ProtocolCardTagsContainer>
-          </ProtocolCardContentHeaderContainer>
+          {headerContent}
           <ProtocolCardDescription
             text={description}
             onSeeMoreClick={() => setIsDescriptionModalOpen(true)}
@@ -142,19 +146,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
         isOpen={isDescriptionModalOpen}
         onClose={() => setIsDescriptionModalOpen(false)}
       >
-        <ProtocolCardContentHeaderContainer>
-          <Typography variant="titleMedium">{title}</Typography>
-          <ProtocolCardTagsContainer>
-            {tags?.map((tag) => (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.MD}
-                label={tag}
-                key={tag}
-              />
-            ))}
-          </ProtocolCardTagsContainer>
-        </ProtocolCardContentHeaderContainer>
+        {headerContent}
         <ProtocolCardDescriptionContainer variant="bodyMediumParagraph">
           {description}
         </ProtocolCardDescriptionContainer>
