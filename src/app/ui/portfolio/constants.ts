@@ -16,6 +16,5 @@ export const EMPTY_DEFI_POSITIONS_FILTERING_PARAMS: PortfolioDeFiPositionsFilter
     allProtocols: [],
     allTypes: [],
     allAssets: [],
-    allAPYRange: { min: 0, max: 0 },
     allValueRange: { min: 0, max: 0 },
   };

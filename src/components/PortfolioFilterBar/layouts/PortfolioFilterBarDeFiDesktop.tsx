@@ -21,10 +21,6 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
     assetOptions,
     hasFilterApplied,
     filter,
-    apyMin,
-    apyMax,
-    apyRangeMin,
-    apyRangeMax,
     valueMin,
     valueMax,
     valueRangeMin,
@@ -33,7 +29,6 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
     handleProtocolChange,
     handleTypeChange,
     handleAssetChange,
-    handleAPYChange,
     handleValueChange,
     handleClearAllFilters,
   } = usePortfolioDeFiFilterBar();
@@ -88,21 +83,6 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
             data-testid="portfolio-defi-filter-asset-select"
           />
         )}
-
-        {!isNaN(apyRangeMin) &&
-          !isNaN(apyRangeMax) &&
-          apyRangeMin !== apyRangeMax && (
-            <Select
-              options={[]}
-              value={[apyMin, apyMax]}
-              min={apyRangeMin}
-              max={apyRangeMax}
-              onChange={handleAPYChange}
-              label={t('portfolio.filter.apy')}
-              variant={SelectVariant.Slider}
-              data-testid="portfolio-defi-filter-apy-select"
-            />
-          )}
 
         {!isNaN(valueRangeMin) &&
           !isNaN(valueRangeMax) &&

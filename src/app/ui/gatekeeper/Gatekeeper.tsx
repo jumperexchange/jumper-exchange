@@ -6,6 +6,8 @@ import { GatekeeperRequestAccessLink, LoadingButton } from './Gatekeeper.style';
 import { GatekeeperOverlayLayout } from './GatekeeperOverlayLayout';
 import type { GatekeeperIllustrations } from './types';
 import { GatekeeperStatus, useGatekeeperStatus } from './useGatekeeperStatus';
+import { useMenuStore } from '@/stores/menu/MenuStore';
+import { useEffect } from 'react';
 
 interface GatekeeperProps extends React.PropsWithChildren {
   flag: 'hasEarn';
@@ -21,6 +23,17 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
 }) => {
   const { status, error } = useGatekeeperStatus(flag);
   const { t } = useTranslation();
+  const setSnackbarState = useMenuStore((state) => state.setSnackbarState);
+
+  useEffect(() => {
+    if (status === GatekeeperStatus.ERROR) {
+      setSnackbarState(
+        true,
+        error?.toString() || t('gatekeeper.error'),
+        'error',
+      );
+    }
+  }, [status, setSnackbarState, t, error]);
 
   if (status === GatekeeperStatus.REQUIRES_CONNECT) {
     return (
@@ -41,24 +54,15 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
         subtitle={t('gatekeeper.subtitle.notConnected')}
         illustrations={illustrations}
       >
-        <LoadingButton disabled>Loading NFT...</LoadingButton>
+        <LoadingButton disabled>{t('gatekeeper.connecting')}</LoadingButton>
       </GatekeeperOverlayLayout>
     );
   }
 
-  if (status === GatekeeperStatus.ERROR) {
-    return (
-      <GatekeeperOverlayLayout
-        title={t('gatekeeper.title', { pageTitle })}
-        subtitle={t('gatekeeper.subtitle.notConnected')}
-        illustrations={illustrations}
-      >
-        <pre>Error: {error?.toString()}</pre>
-      </GatekeeperOverlayLayout>
-    );
-  }
-
-  if (status === GatekeeperStatus.NOT_ALLOWED) {
+  if (
+    status === GatekeeperStatus.NOT_ALLOWED ||
+    status === GatekeeperStatus.ERROR
+  ) {
     return (
       <GatekeeperOverlayLayout
         title={t('gatekeeper.title', { pageTitle })}

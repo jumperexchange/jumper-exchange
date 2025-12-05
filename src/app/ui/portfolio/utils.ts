@@ -6,7 +6,7 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
-import { map, uniq, uniqBy, flatMap, min, max, sortBy } from 'lodash';
+import { map, uniq, uniqBy, flatMap, min, max, sortBy, sumBy } from 'lodash';
 import type { CacheToken } from 'src/types/portfolio';
 import type {
   PortfolioTokensFilteringParams,
@@ -14,14 +14,49 @@ import type {
   PortfolioDeFiPositionsFilteringParams,
   PortfolioDeFiPositionsFilter,
   SortByEnum,
+  OrderEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
-import type { WalletPositions } from '@/types/jumper-backend';
-import { SortByOptions } from './types';
+import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
+import { OrderOptions, SortByOptions } from './types';
+
+export type SortAccessors<T> = Record<SortByEnum, (item: T) => string | number>;
+
+export const sortPortfolioItems = <T>(
+  items: T[],
+  sortByValue: SortByEnum,
+  order: OrderEnum,
+  accessors: SortAccessors<T>,
+): T[] => {
+  const sorted = sortBy(items, accessors[sortByValue]);
+
+  if (order === OrderOptions.DESC) {
+    return sorted.reverse();
+  }
+
+  return sorted;
+};
+
+export const tokenSortAccessors: SortAccessors<CacheToken> = {
+  [SortByOptions.VALUE]: (token) =>
+    token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
+  [SortByOptions.CHAIN]: (token) => token.chainName ?? '',
+  [SortByOptions.ASSET]: (token) => token.name ?? '',
+};
+
+export const defiGroupSortAccessors: SortAccessors<DefiPosition[]> = {
+  [SortByOptions.VALUE]: (group) =>
+    sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
+  [SortByOptions.CHAIN]: (group) => group[0]?.chain?.chainKey ?? '',
+  [SortByOptions.ASSET]: (group) => group[0]?.protocol?.name ?? '',
+};
 
 export const tokensSearchParamsParsers = {
   tokensSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.VALUE,
+  ),
+  tokensOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
+    OrderOptions.DESC,
   ),
   tokensWallets: parseAsArrayOf(parseAsString),
   tokensChains: parseAsArrayOf(parseAsInteger),
@@ -122,6 +157,7 @@ export const filterSortPortfolioTokensData = (
   queriesByAddress: Map<string, { data: CacheToken[] }>,
   filter: PortfolioTokensFilter,
   sortByValue: SortByEnum,
+  order: OrderEnum,
 ): CacheToken[] => {
   let allData: CacheToken[] = [];
 
@@ -164,16 +200,14 @@ export const filterSortPortfolioTokensData = (
     });
   }
 
-  if (sortByValue === SortByOptions.VALUE) {
-    allData = sortBy(
-      allData,
-      (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
-    );
-  } else if (sortByValue === SortByOptions.CHAIN) {
-    allData = sortBy(allData, (token) => token.chainName);
-  } else if (sortByValue === SortByOptions.ASSET) {
-    allData = sortBy(allData, (token) => token.name);
-  }
+  allData = sortPortfolioItems(allData, sortByValue, order, tokenSortAccessors);
+
+  allData = allData.map((token) => ({
+    ...token,
+    chains: token.chains
+      ? sortPortfolioItems(token.chains, sortByValue, order, tokenSortAccessors)
+      : [],
+  }));
 
   return allData;
 };
@@ -182,12 +216,13 @@ export const deFiPositionsSearchParamsParsers = {
   defiSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.VALUE,
   ),
+  defiOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
+    OrderOptions.DESC,
+  ),
   defiChains: parseAsArrayOf(parseAsInteger),
   defiProtocols: parseAsArrayOf(parseAsString),
   defiTypes: parseAsArrayOf(parseAsString),
   defiAssets: parseAsArrayOf(parseAsString),
-  defiMinAPY: parseAsFloat,
-  defiMaxAPY: parseAsFloat,
   defiMinValue: parseAsFloat,
   defiMaxValue: parseAsFloat,
 };
@@ -219,13 +254,6 @@ export const extractDeFiPositionsFilteringParams = (
 
   const allAssets = uniqBy(allTokens, 'name');
 
-  const apyValues = map(
-    allPositions,
-    (position) => position.latest?.apy?.total || 0,
-  );
-  const minAPY = apyValues.length > 0 ? (min(apyValues) ?? 0) : 0;
-  const maxAPY = apyValues.length > 0 ? (max(apyValues) ?? 0) : 0;
-
   const values = map(
     allPositions,
     (position) => position.netUsd || position.assetUsd || 0,
@@ -238,10 +266,6 @@ export const extractDeFiPositionsFilteringParams = (
     allProtocols,
     allTypes,
     allAssets,
-    allAPYRange: {
-      min: Number(minAPY.toFixed(2)),
-      max: Number(maxAPY.toFixed(2)),
-    },
     allValueRange: {
       min: Number(minValue.toFixed(2)),
       max: Number(maxValue.toFixed(2)),
@@ -266,7 +290,6 @@ export const sanitizeDeFiPositionsFilter = (
   const validProtocols = new Set(stats.allProtocols.map((p) => p.name));
   const validTypes = new Set(stats.allTypes);
   const validAssets = new Set(stats.allAssets.map((a) => a.name));
-  const { min: apyMin, max: apyMax } = stats.allAPYRange;
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
   return {
@@ -277,14 +300,6 @@ export const sanitizeDeFiPositionsFilter = (
       filter.defiProtocols?.filter((p) => validProtocols.has(p)) ?? null,
     defiTypes: filter.defiTypes?.filter((t) => validTypes.has(t)) ?? null,
     defiAssets: filter.defiAssets?.filter((a) => validAssets.has(a)) ?? null,
-    defiMinAPY:
-      filter.defiMinAPY !== undefined
-        ? Math.max(Math.min(filter.defiMinAPY, apyMax), apyMin)
-        : null,
-    defiMaxAPY:
-      filter.defiMaxAPY !== undefined
-        ? Math.max(Math.min(filter.defiMaxAPY, apyMax), apyMin)
-        : null,
     defiMinValue:
       filter.defiMinValue !== undefined
         ? Math.max(Math.min(filter.defiMinValue, valueMax), valueMin)
