@@ -20,11 +20,7 @@ import type { Account } from '@lifi/wallet-management';
 import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
 import { OrderOptions, SortByOptions } from './types';
 
-export interface SortAccessors<T> {
-  getValue: (item: T) => number;
-  getChain: (item: T) => string;
-  getAsset: (item: T) => string;
-}
+export type SortAccessors<T> = Record<SortByEnum, (item: T) => string | number>;
 
 export const sortPortfolioItems = <T>(
   items: T[],
@@ -32,33 +28,27 @@ export const sortPortfolioItems = <T>(
   order: OrderEnum,
   accessors: SortAccessors<T>,
 ): T[] => {
-  let sorted = [...items];
-
-  if (sortByValue === SortByOptions.VALUE) {
-    sorted = sortBy(sorted, accessors.getValue);
-  } else if (sortByValue === SortByOptions.CHAIN) {
-    sorted = sortBy(sorted, accessors.getChain);
-  } else if (sortByValue === SortByOptions.ASSET) {
-    sorted = sortBy(sorted, accessors.getAsset);
-  }
+  const sorted = sortBy(items, accessors[sortByValue]);
 
   if (order === OrderOptions.DESC) {
-    sorted = sorted.reverse();
+    return sorted.reverse();
   }
 
   return sorted;
 };
 
 export const tokenSortAccessors: SortAccessors<CacheToken> = {
-  getValue: (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
-  getChain: (token) => token.chainName ?? '',
-  getAsset: (token) => token.name ?? '',
+  [SortByOptions.VALUE]: (token) =>
+    token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
+  [SortByOptions.CHAIN]: (token) => token.chainName ?? '',
+  [SortByOptions.ASSET]: (token) => token.name ?? '',
 };
 
 export const defiGroupSortAccessors: SortAccessors<DefiPosition[]> = {
-  getValue: (group) => sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
-  getChain: (group) => group[0]?.chain?.chainKey ?? '',
-  getAsset: (group) => group[0]?.protocol?.name ?? '',
+  [SortByOptions.VALUE]: (group) =>
+    sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
+  [SortByOptions.CHAIN]: (group) => group[0]?.chain?.chainKey ?? '',
+  [SortByOptions.ASSET]: (group) => group[0]?.protocol?.name ?? '',
 };
 
 export const tokensSearchParamsParsers = {
