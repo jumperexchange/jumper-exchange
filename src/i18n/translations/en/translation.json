@@ -367,7 +367,8 @@
       "updated": "Updated {{time}} ago"
     },
     "actions": {
-      "viewAllMarkets": "View all markets"
+      "viewAllMarkets": "View all markets",
+      "seeMore": "see more"
     }
   },
   "portfolio": {
