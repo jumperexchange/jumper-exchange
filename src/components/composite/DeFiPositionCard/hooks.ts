@@ -24,8 +24,8 @@ export const useColumnDefinitions = (
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
-  const supplyColumns = useMemo<ColumnDefinition<DefiToken>[]>(
-    () => [
+  const supplyColumns = useMemo<ColumnDefinition<DefiToken>[]>(() => {
+    const columns: ColumnDefinition<DefiToken>[] = [
       {
         id: 'supplied',
         header: t('portfolio.defiPositionCard.header.supplied'),
@@ -64,11 +64,14 @@ export const useColumnDefinitions = (
             : null,
         gridProps: { size: GRID_SIZES.apyColumn },
       },
-      {
+    ];
+
+    if (position?.earn || !isMobile) {
+      columns.push({
         id: 'actions',
         hideHeader: true,
         render: (_token, rowIndex) =>
-          rowIndex === 0 && position
+          rowIndex === 0 && position && position.earn
             ? renderPositionActions({
                 position,
                 t,
@@ -84,10 +87,11 @@ export const useColumnDefinitions = (
         }),
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
-      },
-    ],
-    [t, titleVariant, descriptionVariant, isMobile, position],
-  );
+      });
+    }
+
+    return columns;
+  }, [t, titleVariant, descriptionVariant, isMobile, position]);
 
   const borrowColumns = useMemo<ColumnDefinition<DefiToken>[]>(
     () => [
