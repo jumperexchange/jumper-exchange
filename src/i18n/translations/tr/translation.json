@@ -363,6 +363,9 @@
     },
     "overview": {
       "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": ""
     }
   },
   "portfolio": {
@@ -576,5 +579,13 @@
         "submitting": ""
       }
     }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": ""
   }
 }
