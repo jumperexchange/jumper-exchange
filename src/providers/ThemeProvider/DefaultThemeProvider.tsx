@@ -28,6 +28,7 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
       configTheme: formatConfig(partnerThemeConfig),
       partnerThemes: themes!,
       widgetTheme: widgetTheme,
+      configThemeStates: {},
     };
   }, [mode, themes, partnerThemeConfig, prefersDarkMode]);
 

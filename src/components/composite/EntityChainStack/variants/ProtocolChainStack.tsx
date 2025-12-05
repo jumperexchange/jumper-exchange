@@ -1,20 +1,24 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { BaseChainStack } from './BaseChainStack';
 import { ProtocolStack } from 'src/components/composite/ProtocolStack/ProtocolStack';
-import { ProtocolChainStackProps } from '../EntityChainStack.types';
+import type { ProtocolChainStackProps } from '../EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from 'src/utils/chains/getChainName';
 
 export const ProtocolChainStack: FC<ProtocolChainStackProps> = (props) => {
+  const { getChainById } = useChains();
   const { chainIds, chainKeys } = useMemo(() => {
     const chainMap = new Map();
     props.chains?.forEach((chain) => {
-      chainMap.set(chain.chainId.toString(), chain.chainKey);
+      chainMap.set(chain.chainId.toString(), getChainName(chain, getChainById));
     });
     return {
       chainIds: Array.from(chainMap.keys()),
       chainKeys: Array.from(chainMap.values()),
     };
-  }, [props.chains]);
+  }, [props.chains, getChainById]);
 
   const mainStack = (
     <ProtocolStack

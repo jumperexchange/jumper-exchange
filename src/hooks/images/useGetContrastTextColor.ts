@@ -5,7 +5,7 @@ import { readableColor } from 'polished';
 import { useGetColorsFromImage } from './useGetColorsFromImage';
 
 export const useGetContrastTextColor = (imageUrl: string) => {
-  const colors = useGetColorsFromImage(imageUrl);
+  const colors = useGetColorsFromImage(imageUrl, true);
   const theme = useTheme();
   const colorScheme = useColorScheme();
   const basePalette = theme.palette;
@@ -24,6 +24,13 @@ export const useGetContrastTextColor = (imageUrl: string) => {
     const highestPopulationColor = maxBy(colors, 'area');
 
     if (!highestPopulationColor) {
+      return currentPalette.textPrimary;
+    }
+
+    const coloredArea = colors.reduce((acc, color) => acc + color.area, 0);
+    const remainingArea = 1 - coloredArea;
+
+    if (remainingArea > highestPopulationColor.area) {
       return currentPalette.textPrimary;
     }
 

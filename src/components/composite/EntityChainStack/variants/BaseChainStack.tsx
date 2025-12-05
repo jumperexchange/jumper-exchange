@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { ChainStack } from '../../ChainStack/ChainStack';
 import {
   ChainStackWrapper,
@@ -6,15 +6,11 @@ import {
   EntityChainStackWrapper,
 } from '../EntityChainStack.styles';
 import { BaseChainStackSkeleton } from './BaseChainStackSkeleton';
-import {
-  AvatarSize,
-  AvatarStackDirection,
-} from 'src/components/core/AvatarStack/AvatarStack.types';
+import type { AvatarStackDirection } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
-import {
-  BaseProps,
-  EntityChainStackChainsPlacement,
-} from '../EntityChainStack.types';
+import type { BaseProps } from '../EntityChainStack.types';
+import { EntityChainStackChainsPlacement } from '../EntityChainStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { TitleWithHint } from '../../TitleWithHint/TitleWithHint';
 
@@ -96,7 +92,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
         <TitleWithHint
           gap={spacing.infoContainerGap}
           titleVariant={content.titleVariant}
-          title={content.title}
+          title={capitalizeString(content.title)}
           hintVariant={content.descriptionVariant}
           hint={chainKeys.map(capitalizeString).join(' ')}
           titleDataTestId="entity-chain-stack-title"

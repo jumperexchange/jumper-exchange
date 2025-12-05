@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'motion/react';
 import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
@@ -14,23 +14,34 @@ import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 
 const EarnOpportunitiesAllInner = () => {
-  const { data, isLoading, error, isAllDataLoading } = useEarnFiltering();
+  const { data, isLoading, isAllDataLoading, showForYou, toggleForYou } =
+    useEarnFiltering();
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { amount: 0 });
+  const isInView = useInView(sectionRef, { amount: 0, initial: true });
+
+  const scrollToSectionTop = useCallback(() => {
+    sectionRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, []);
+
+  const handleNavigateToAllMarkets = useCallback(() => {
+    toggleForYou();
+    scrollToSectionTop();
+  }, [toggleForYou, scrollToSectionTop]);
 
   useEffect(() => {
     if (isLoading && !isInView) {
-      sectionRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+      scrollToSectionTop();
     }
-  }, [isLoading, isInView]);
+  }, [isLoading, isInView, scrollToSectionTop]);
 
   return (
     <>
@@ -60,6 +71,9 @@ const EarnOpportunitiesAllInner = () => {
             isLoading={isLoading}
             variant={variant}
           />
+          {showForYou && (
+            <EarnViewAllMarketsButton onClick={handleNavigateToAllMarkets} />
+          )}
         </Stack>
       </SectionCardContainer>
       <DepositFlowModal />

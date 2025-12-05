@@ -45,6 +45,7 @@ export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
 }));
 
 export const WelcomeContent = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(0, 3),
   minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.xs,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,

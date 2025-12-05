@@ -18,7 +18,7 @@ import { useAccount } from '@lifi/wallet-management';
 const PortfolioAssetsSectionInner = () => {
   const [tab, setTab] = useState<PortfolioFilterBarTab>('tokens');
   const { isEmpty: isTokensEmpty } = usePortfolioTokensFiltering();
-  const { isEmpty: isDeFiEmpty } = usePortfolioDeFiPositionsFiltering();
+  const { isAllDataEmpty: isDeFiEmpty } = usePortfolioDeFiPositionsFiltering();
   const { account } = useAccount();
   const isDisconnected = !account.isConnected;
   const isEmpty = isTokensEmpty && isDeFiEmpty;

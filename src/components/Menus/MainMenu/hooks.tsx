@@ -341,7 +341,8 @@ export const useMenuItems = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { selectedThemeIcon, selectedThemeMode } = useThemeModesMenuContent();
+  const { selectedThemeIcon, selectedThemeMode, selectedPartnerTheme } =
+    useThemeModesMenuContent();
   const isEarnEnabled = isEarnFeatureEnabled();
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
   const { supportModalUnreadCount } = useMenuStore((state) => state);
@@ -366,11 +367,11 @@ export const useMenuItems = () => {
 
     return (
       <Badge
-        label={t(`navbar.themes.${selectedThemeMode}`)}
+        label={selectedPartnerTheme ?? t(`navbar.themes.${selectedThemeMode}`)}
         variant={BadgeVariant.Secondary}
       />
     );
-  }, [t, selectedThemeMode, isMobile]);
+  }, [t, selectedThemeMode, selectedPartnerTheme, isMobile]);
 
   const languageSuffixIcon = useMemo(() => {
     if (!isMobile) {

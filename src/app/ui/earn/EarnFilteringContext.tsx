@@ -177,22 +177,45 @@ export const EarnFilteringProvider = ({
     return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
   }, [showForYou, forYou.data, all.data]);
 
-  const context: EarnFilteringContextType = {
+  const context: EarnFilteringContextType = useMemo(() => {
+    const hasData = !!data && data.length > 0;
+    const isLoading =
+      !hasData && (showForYou ? forYou.isLoading || !address : all.isLoading);
+    return {
+      sortBy,
+      setSortBy: updateSortBy,
+      filter,
+      updateFilter,
+      showForYou,
+      usedYourAddress,
+      toggleForYou,
+      totalMarkets,
+      data,
+      updatedAt: showForYou ? forYouUpdatedAt : undefined,
+      isLoading,
+      error: (showForYou ? forYou.error : all.error) ?? null,
+      isAllDataLoading: allNoFilter.isLoading,
+      ...stats,
+    };
+  }, [
     sortBy,
-    setSortBy: updateSortBy,
     filter,
     updateFilter,
+    updateSortBy,
     showForYou,
     usedYourAddress,
     toggleForYou,
     totalMarkets,
     data,
-    updatedAt: showForYou ? forYouUpdatedAt : undefined,
-    isLoading: showForYou ? forYou.isLoading || !address : all.isLoading,
-    error: (showForYou ? forYou.error : all.error) ?? null,
-    isAllDataLoading: allNoFilter.isLoading,
-    ...stats,
-  };
+    forYouUpdatedAt,
+    address,
+    all.isLoading,
+    all.error,
+    allNoFilter.isLoading,
+    forYou.isLoading,
+    forYou.error,
+    stats,
+  ]);
 
   return (
     <EarnFilteringContext.Provider value={context}>
