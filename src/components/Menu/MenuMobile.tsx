@@ -1,7 +1,8 @@
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
-import type { SxProps, Theme } from '@mui/material';
-import { Typography } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Fade from '@mui/material/Fade';
 import type { ReactNode } from 'react';
 import {
   MenuHeaderAppBar,
@@ -16,6 +17,11 @@ const paperProps = {
     position: 'absolute',
     backgroundImage: 'none',
   },
+};
+
+const rootProps = {
+  TransitionComponent: Fade,
+  transitionDuration: 300,
 };
 
 interface MenuProps {
@@ -49,6 +55,7 @@ export const MenuMobile = ({
       }}
       slotProps={{
         paper: paperProps,
+        root: rootProps,
       }}
       keepMounted={keepMounted}
       disableScrollLock

@@ -338,7 +338,7 @@ export const useFooterLinks = () => {
 
 export const useMenuItems = () => {
   const { t, i18n } = useTranslation();
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const { selectedThemeIcon, selectedThemeMode, selectedPartnerTheme } =
@@ -361,7 +361,7 @@ export const useMenuItems = () => {
   } = useMenuActions();
 
   const themeSuffixIcon = useMemo(() => {
-    if (!isMobile) {
+    if (!isTablet) {
       return undefined;
     }
 
@@ -371,10 +371,10 @@ export const useMenuItems = () => {
         variant={BadgeVariant.Secondary}
       />
     );
-  }, [t, selectedThemeMode, selectedPartnerTheme, isMobile]);
+  }, [t, selectedThemeMode, selectedPartnerTheme, isTablet]);
 
   const languageSuffixIcon = useMemo(() => {
-    if (!isMobile) {
+    if (!isTablet) {
       return (
         <Typography
           variant="bodyMedium"
@@ -396,12 +396,12 @@ export const useMenuItems = () => {
       )?.[1]?.language?.value || i18n.language;
 
     return <Badge label={selectedLanguage} variant={BadgeVariant.Secondary} />;
-  }, [i18n.language, isMobile]);
+  }, [i18n.language, isTablet]);
 
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
 
-    if (isMobile) {
+    if (isTablet) {
       baseItems.push({
         label: t('navbar.links.exchange'),
         showMoreIcon: false,
@@ -442,21 +442,21 @@ export const useMenuItems = () => {
     baseItems.push(
       {
         label: t('navbar.navbarMenu.learn'),
-        prefixIcon: !isMobile ? <SchoolIcon /> : undefined,
+        prefixIcon: !isTablet ? <SchoolIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Learn },
         onClick: handleLearnClick,
       },
       {
         label: t('navbar.navbarMenu.scan'),
-        prefixIcon: !isMobile ? <SearchOutlinedIcon /> : undefined,
+        prefixIcon: !isTablet ? <SearchOutlinedIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Scan, external: false },
         onClick: handleScanClick,
       },
       {
         label: t('navbar.navbarMenu.support'),
-        prefixIcon: !isMobile ? (
+        prefixIcon: !isTablet ? (
           supportModalUnreadCount > 0 ? (
             <MuiBadge
               color="secondary"
@@ -480,7 +480,7 @@ export const useMenuItems = () => {
       },
     );
 
-    if (isMobile) {
+    if (isTablet) {
       baseItems.push({
         isDivider: true,
       });
@@ -490,7 +490,7 @@ export const useMenuItems = () => {
     if (configTheme?.hasThemeModeSwitch) {
       baseItems.push({
         label: t('navbar.navbarMenu.theme'),
-        prefixIcon: !isMobile ? selectedThemeIcon : undefined,
+        prefixIcon: !isTablet ? selectedThemeIcon : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.ThemeMode,
         suffixIcon: themeSuffixIcon,
@@ -501,7 +501,7 @@ export const useMenuItems = () => {
     baseItems.push(
       {
         label: t('language.key', { ns: 'language' }),
-        prefixIcon: !isMobile ? <LanguageIcon /> : undefined,
+        prefixIcon: !isTablet ? <LanguageIcon /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Language,
         suffixIcon: languageSuffixIcon,
@@ -509,7 +509,7 @@ export const useMenuItems = () => {
       },
       {
         label: t('navbar.navbarMenu.resources'),
-        prefixIcon: !isMobile ? <FolderOpen /> : undefined,
+        prefixIcon: !isTablet ? <FolderOpen /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Devs,
         onClick: handleResourcesClick,
@@ -519,7 +519,7 @@ export const useMenuItems = () => {
     return baseItems;
   }, [
     t,
-    isMobile,
+    isTablet,
     isEarnEnabled,
     isPortfolioEnabled,
     configTheme?.hasThemeModeSwitch,
