@@ -13,7 +13,7 @@ import {
   getElementByText,
   triggerButtonClick,
 } from './testData/commonFunctions';
-import values from '../tests/testData/values.json' assert { type: 'json' };
+import values from './testData/values.json' with { type: 'json' };
 import {
   closeWelcomeScreen,
   itemInMenu,
