@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 import { motion } from 'motion/react';
 
@@ -40,7 +40,17 @@ export const ModalContainer: FC<ModalContainerProps> = ({
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
-    <Modal open={isOpen} onClose={onClose}>
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+      slotProps={{
+        backdrop: {
+          sx: {
+            backdropFilter: 'blur(8px)',
+          },
+        },
+      }}
+    >
       <CenteredWrapper>
         {!isMobile && (
           <motion.div {...motionConfig}>
