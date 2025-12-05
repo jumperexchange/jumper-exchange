@@ -19,11 +19,6 @@ const paperProps = {
   },
 };
 
-const rootProps = {
-  TransitionComponent: Fade,
-  transitionDuration: 300,
-};
-
 interface MenuProps {
   isOpenSubMenu: boolean;
   keepMounted?: boolean;
@@ -53,9 +48,14 @@ export const MenuMobile = ({
           setMainMenuState(false);
         }
       }}
+      slots={{
+        transition: Fade,
+      }}
       slotProps={{
         paper: paperProps,
-        root: rootProps,
+        transition: {
+          timeout: 300,
+        },
       }}
       keepMounted={keepMounted}
       disableScrollLock
