@@ -365,7 +365,8 @@
       "updated": ""
     },
     "actions": {
-      "viewAllMarkets": ""
+      "viewAllMarkets": "",
+      "seeMore": ""
     }
   },
   "portfolio": {
@@ -445,7 +446,6 @@
       "protocol": "",
       "type": "",
       "asset": "",
-      "apy": "",
       "value": "",
       "clearAll": "",
       "filterAndSort": "",
@@ -586,6 +586,8 @@
       "notConnected": "",
       "noAccess": ""
     },
-    "requestAccess": ""
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
   }
 }
