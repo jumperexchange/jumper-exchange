@@ -199,29 +199,29 @@
       "verifyWallet": {
         "title": "Verificar propriedade",
         "description": {
-          "notConnected": "",
-          "notVerified": "",
-          "verified": ""
+          "notConnected": "Conecte e assine uma mensagem para verificar a propriedade de seu endereço de carteira. Se você não quiser fazer isso, entre em contato no <0>Discord</0>.",
+          "notVerified": "Conecte e assine uma mensagem para verificar a propriedade de seu endereço de carteira abaixo. Se você não quiser fazer isso, entre em contato no <0>Discord</0>.",
+          "verified": "Você verificou com sucesso a propriedade do endereço da sua carteira."
         },
         "action": {
-          "connectAndVerify": "",
-          "verifyWallet": ""
+          "connectAndVerify": "Conecte e verifique a propriedade",
+          "verifyWallet": "Verificar propriedade"
         },
         "status": {
           "signatureFailed": {
-            "title": "",
-            "description": "",
-            "tryAgain": ""
+            "title": "Necessário assinatura",
+            "description": "Você precisa assinar a transação para confirmar a propriedade do endereço da carteira.",
+            "tryAgain": "Tente novamente"
           },
           "unsupportedWallet": {
-            "title": "",
-            "description": "",
-            "switchWallet": ""
+            "title": "Carteira não suportada",
+            "description": "Nós não atendemos este tipo de carteira. Por favor, use uma carteira diferente para completar esta missão.",
+            "switchWallet": "Mudar de carteira"
           },
           "unknown": {
-            "title": "",
-            "description": "",
-            "tryAgain": ""
+            "title": "Erro desconhecido",
+            "description": "Ocorreu um erro desconhecido. Por favor, tente novamente.",
+            "tryAgain": "Tente novamente"
           }
         }
       }
@@ -365,7 +365,8 @@
       "updated": "Atualizado há {{time}} atrás"
     },
     "actions": {
-      "viewAllMarkets": ""
+      "viewAllMarkets": "",
+      "seeMore": "veja mais"
     }
   },
   "portfolio": {
@@ -376,13 +377,13 @@
       "explorePass": "Explore o passe Jumper"
     },
     "overviewCard": {
-      "title": "",
-      "refreshTooltip": ""
+      "title": "Portfólio",
+      "refreshTooltip": "Clique aqui para reiniciar a indexação de seus tokens agora."
     },
     "emptyList": {
-      "title": "",
-      "description": "",
-      "clearFilters": ""
+      "title": "Sem resultados",
+      "description": "Infelizmente, não há resultados para sua pesquisa, tente limpar seus filtros.",
+      "clearFilters": "Limpar filtros"
     },
     "assetOverviewCard": {
       "navigation": {
@@ -426,15 +427,15 @@
         "deposit": "Depositar",
         "claim": "Reivindicar",
         "compound": "Composto",
-        "repay": "",
-        "borrow": ""
+        "repay": "Reembolsar",
+        "borrow": "Pedir emprestado"
       },
       "header": {
         "supplied": "Fornecido",
         "value": "Valor",
         "apy": "APY",
         "rewards": "Recompensas",
-        "borrowed": ""
+        "borrowed": "Emprestado"
       }
     },
     "filter": {
@@ -442,21 +443,20 @@
       "defiProtocols": "Protocolos DeFi",
       "wallet": "Carteira",
       "chain": "Rede",
-      "protocol": "",
-      "type": "",
+      "protocol": "Protocolo",
+      "type": "Tipo",
       "asset": "Ativo",
-      "apy": "",
       "value": "Valor",
       "clearAll": "Limpar tudo",
       "filterAndSort": "Filtrar e ordenar",
       "search": "Buscar {{filterBy}}..."
     },
     "sorting": {
-      "sortBy": "",
-      "sort": "",
-      "totalValue": "",
-      "chain": "",
-      "asset": ""
+      "sortBy": "Ordenar por",
+      "sort": "Ordenar",
+      "totalValue": "Valor total",
+      "chain": "Rede",
+      "asset": "Ativo"
     }
   },
   "widget": {
@@ -517,7 +517,7 @@
   "buttons": {
     "depositButtonLabel": "Depósito rápido",
     "withdrawButtonLabel": "Retirar",
-    "managePositionsButtonLabel": ""
+    "managePositionsButtonLabel": "Gerenciar Posições"
   },
   "modal": {
     "perks": {
@@ -581,11 +581,13 @@
     }
   },
   "gatekeeper": {
-    "title": "",
+    "title": "Bem-vindo a {{pageTitle}}!",
     "subtitle": {
-      "notConnected": "",
-      "noAccess": ""
+      "notConnected": "Estamos atualmente em um Beta fechado <strong></strong>.\nConecte-se para descobrir se você tem acesso.",
+      "noAccess": "Estamos atualmente em um Beta fechado <strong></strong>.\nConecte-se para descobrir se você tem acesso."
     },
-    "requestAccess": ""
+    "requestAccess": "Solicitar acesso",
+    "connecting": "Conectando...",
+    "error": "Ocorreu um erro desconhecido. Por favor tente novamente ou solicite acesso."
   }
 }
