@@ -20,6 +20,7 @@ export const searchParamsParsers = {
     SortByOptions.APY,
   ),
   forYou: parseAsBoolean.withDefault(true),
+  withPositions: parseAsBoolean.withDefault(false),
   order: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
     OrderOptions.DESC,
   ),

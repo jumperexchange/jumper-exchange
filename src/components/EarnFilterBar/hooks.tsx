@@ -24,6 +24,7 @@ export const useEarnFilterBar = () => {
     allAPY,
     filter,
     updateFilter,
+    clearFilters,
     sortBy,
     setSortBy,
   } = useEarnFiltering();
@@ -127,17 +128,6 @@ export const useEarnFilterBar = () => {
     });
   };
 
-  const handleClearAllFilters = () => {
-    updateFilter({
-      chains: null,
-      protocols: null,
-      tags: null,
-      assets: null,
-      minAPY: null,
-      maxAPY: null,
-    });
-  };
-
   const handleSortBy = (value: string) => {
     setSortBy(value as SortByEnum);
   };
@@ -189,7 +179,7 @@ export const useEarnFilterBar = () => {
     handleTagChange,
     handleAssetChange,
     handleAPYChange,
-    handleClearAllFilters,
+    handleClearAllFilters: clearFilters,
     handleSortBy,
     handleApplyAllFilters,
   };

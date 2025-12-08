@@ -25,7 +25,7 @@ import type {
   EarnOpportunityFilterWithoutSortByAndOrder,
   SortByEnum,
 } from './types';
-import { SortByOptions } from './types';
+import { EarnFilterTab, SortByOptions } from './types';
 import type { NullableFields } from 'src/types/internal';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
@@ -35,9 +35,11 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   updateFilter: (
     filter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>,
   ) => void;
+  clearFilters: () => void;
   showForYou: boolean;
+  showYourPositions: boolean;
   usedYourAddress: boolean;
-  toggleForYou: () => void;
+  changeTab: (tab: EarnFilterTab) => void;
   totalMarkets: number;
   data: EarnOpportunityWithLatestAnalytics[];
   updatedAt: Date | undefined;
@@ -51,9 +53,11 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   setSortBy: () => {},
   filter: {},
   updateFilter: () => {},
+  clearFilters: () => {},
   showForYou: false,
+  showYourPositions: false,
   usedYourAddress: false,
-  toggleForYou: () => {},
+  changeTab: () => {},
   totalMarkets: 0,
   allChains: [],
   allProtocols: [],
@@ -85,6 +89,7 @@ export const EarnFilteringProvider = ({
   const {
     forYou: initialForYou,
     sortBy: initialSortBy,
+    withPositions: initialWithPositions,
     ...rest
   } = searchParamsState;
 
@@ -97,6 +102,8 @@ export const EarnFilteringProvider = ({
   const [filter, setFilter] =
     useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
   const [showForYou, setShowForYou] = useState(initialForYou);
+  const [showYourPositions, setShowYourPositions] =
+    useState(initialWithPositions);
 
   const forYou = useEarnFilterOpportunities({
     filter: {
@@ -116,10 +123,7 @@ export const EarnFilteringProvider = ({
     filter: {},
   });
 
-  const forYouData = useMemo(() => forYou.data?.data ?? [], [forYou.data]);
   const forYouUpdatedAt = forYou.data?.meta?.updatedAt ?? undefined;
-
-  const allData = useMemo(() => all.data?.data ?? [], [all.data]);
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],
@@ -145,11 +149,40 @@ export const EarnFilteringProvider = ({
     }
   }, [stats]);
 
-  const toggleForYou = useCallback(() => {
-    const newShowForYou = !showForYou;
-    setShowForYou(newShowForYou);
-    setSearchParamsState({ forYou: newShowForYou });
-  }, [showForYou, setShowForYou, setSearchParamsState]);
+  const changeTab = useCallback(
+    (tab: EarnFilterTab) => {
+      let _newShowForYou;
+      let _newShowYourPositions;
+      switch (tab) {
+        case EarnFilterTab.FOR_YOU: {
+          _newShowForYou = true;
+          _newShowYourPositions = false;
+          break;
+        }
+        case EarnFilterTab.YOUR_POSITIONS: {
+          _newShowForYou = false;
+          _newShowYourPositions = true;
+          break;
+        }
+        case EarnFilterTab.ALL: {
+          _newShowForYou = false;
+          _newShowYourPositions = false;
+          break;
+        }
+        default: {
+          throw new Error(`Invalid tab: ${tab}`);
+        }
+      }
+
+      setShowForYou(_newShowForYou);
+      setShowYourPositions(_newShowYourPositions);
+      setSearchParamsState({
+        forYou: _newShowForYou,
+        withPositions: _newShowYourPositions,
+      });
+    },
+    [setShowForYou, setShowYourPositions, setSearchParamsState],
+  );
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>) => {
@@ -168,14 +201,29 @@ export const EarnFilteringProvider = ({
     [setSortBy, setSearchParamsState],
   );
 
+  const clearFilters = useCallback(() => {
+    updateFilter({
+      chains: null,
+      protocols: null,
+      tags: null,
+      assets: null,
+      minAPY: null,
+      maxAPY: null,
+    });
+  }, [updateFilter]);
+
   const data = useMemo(() => {
-    const sourceData = showForYou ? forYou.data?.data : all.data?.data;
+    const sourceData = showForYou
+      ? forYou.data?.data
+      : showYourPositions
+        ? []
+        : all.data?.data;
     const forYouSlugsSet = new Set(
       (forYou.data?.data ?? []).map((item) => item.slug),
     );
 
     return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
-  }, [showForYou, forYou.data, all.data]);
+  }, [showForYou, showYourPositions, forYou.data, all.data]);
 
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
@@ -186,9 +234,11 @@ export const EarnFilteringProvider = ({
       setSortBy: updateSortBy,
       filter,
       updateFilter,
+      clearFilters,
       showForYou,
+      showYourPositions,
       usedYourAddress,
-      toggleForYou,
+      changeTab,
       totalMarkets,
       data,
       updatedAt: showForYou ? forYouUpdatedAt : undefined,
@@ -202,9 +252,10 @@ export const EarnFilteringProvider = ({
     filter,
     updateFilter,
     updateSortBy,
+    clearFilters,
     showForYou,
+    showYourPositions,
     usedYourAddress,
-    toggleForYou,
     totalMarkets,
     data,
     forYouUpdatedAt,
@@ -215,6 +266,7 @@ export const EarnFilteringProvider = ({
     forYou.isLoading,
     forYou.error,
     stats,
+    changeTab,
   ]);
 
   return (
