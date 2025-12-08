@@ -1,5 +1,5 @@
-import { test, expect, Locator } from '@playwright/test';
-import enTranslation from '../src/i18n/translations/en/translation.json' assert { type: 'json' };
+import { test, expect } from '@playwright/test';
+import enTranslation from '../src/i18n/translations/en/translation.json' with { type: 'json' };
 import { removeFormattingTags } from '../tests/utils/translationUtils';
 import { closeWelcomeScreen } from './testData/landingPageFunctions';
 import { isFullyInViewport } from './utils/elementUtils';
@@ -115,7 +115,7 @@ test.describe('Verify essential mobile flows', () => {
     });
 
     await test.step('check the number of menu items', async () => {
-      await checkTheNumberOfMenuItems(page, 9);
+      await checkTheNumberOfMenuItems(page, 10);
     });
 
     await test.step.skip('switch theme', async () => {
