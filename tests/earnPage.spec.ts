@@ -20,6 +20,7 @@ test.describe('Chains filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await expect(connectButton(page)).toBeVisible();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -105,6 +106,7 @@ test.describe('Protocols filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await expect(connectButton(page)).toBeVisible();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -150,6 +152,7 @@ test.describe('Assets filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await expect(connectButton(page)).toBeVisible();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -170,6 +173,7 @@ test.describe('Tags filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await expect(connectButton(page)).toBeVisible();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -231,6 +235,7 @@ test.describe('Analytics filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn/hyperbeat-ultra-hype-on-hyperliquid');
+    await expect(connectButton(page)).toBeVisible();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
