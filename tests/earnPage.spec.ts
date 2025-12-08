@@ -177,7 +177,7 @@ test.describe('Tags filters on Earn page', () => {
   });
 
   test(
-    qase(45, 'Should be able to filter by Synthetic tag'),
+    qase(51, 'Should be able to filter by Synthetic tag'),
     async ({ page }) => {
       await test.step('Select Synthetic tag', async () => {
         await selectOptionFromDropDown(
