@@ -2,9 +2,8 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-
 import type { ButtonProps } from '../Button';
-import { ButtonPrimary, ButtonTransparent } from '../Button';
+import { ButtonPrimary } from '../Button';
 
 export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -118,16 +117,13 @@ export const EarnDetailsActionsContainer = styled(EarnDetailsSectionContainer)(
   }),
 );
 
-export const ManagePositionsButton = styled(ButtonTransparent)(({ theme }) => ({
-  padding: theme.spacing(1),
-  background: (theme.vars || theme.palette).palette.buttonLightBg,
-  color: (theme.vars || theme.palette).palette.buttonLightAction,
-  '&:hover': {
-    background: (theme.vars || theme.palette).palette.buttonPrimaryBg,
-    color: (theme.vars || theme.palette).palette.buttonPrimaryAction,
-  },
-  '&.MuiButtonBase-root.Mui-disabled, &.MuiButtonBase-root:disabled': {
-    background: (theme.vars || theme.palette).palette.buttonDisabledBg,
-    color: (theme.vars || theme.palette).palette.buttonDisabledAction,
+export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  gap: theme.spacing(2),
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
   },
 }));

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   SelectCardContainer,
   SelectCardLabel,
@@ -7,25 +7,33 @@ import {
   SelectCardInputField,
   SelectCardDescription,
 } from '../SelectCard.styles';
-import { SelectCardInputProps } from '../SelectCard.types';
+import type { SelectCardInputProps } from '../SelectCard.types';
 
 export const SelectCardInput: FC<SelectCardInputProps> = ({
   id,
   name,
   label,
+  labelVariant,
   value,
+  valueVariant,
   description,
   placeholder,
+  placeholderVariant,
   startAdornment,
   endAdornment,
   isAmount,
   onChange,
   onFocus,
   onBlur,
+  sx,
 }) => {
   return (
-    <SelectCardContainer>
-      {label && <SelectCardLabel htmlFor={id}>{label}</SelectCardLabel>}
+    <SelectCardContainer sx={sx}>
+      {label && (
+        <SelectCardLabel htmlFor={id} textVariant={labelVariant}>
+          {label}
+        </SelectCardLabel>
+      )}
       <SelectCardContentContainer>
         {startAdornment}
         <SelectCardValueContainer>
@@ -41,6 +49,8 @@ export const SelectCardInput: FC<SelectCardInputProps> = ({
             onBlur={onBlur}
             onFocus={onFocus}
             isAmount={isAmount}
+            placeholderVariant={placeholderVariant}
+            valueVariant={valueVariant}
           />
           {description &&
             (typeof description === 'string' ? (

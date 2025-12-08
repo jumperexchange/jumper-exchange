@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import { SelectCardMode } from './SelectCard.styles';
-import { SelectCardProps } from './SelectCard.types';
+import type { SelectCardProps } from './SelectCard.types';
 import { SelectCardDisplay } from './mode/SelectCardDisplay';
 import { SelectCardInput } from './mode/SelectCardInput';
 

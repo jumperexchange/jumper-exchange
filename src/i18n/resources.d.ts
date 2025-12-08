@@ -37,7 +37,9 @@ interface Resources {
       okay: 'Okay';
     };
     buttons: {
+      deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
+      depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
       withdrawButtonLabel: 'Withdraw';
     };
@@ -95,6 +97,9 @@ interface Resources {
       };
       overview: {
         updated: 'Updated {{time}} ago';
+      };
+      position: {
+        label: 'Your position';
       };
       relatedMarkets: {
         title: 'Related Markets';
