@@ -37,7 +37,9 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
   const items = overviewItems.map((item, index) => {
     const shouldExpand =
-      index === overviewItems.length - 1 && overviewItems.length % 2 !== 0;
+      overviewItems.length === 2 ||
+      (index === overviewItems.length - 1 && overviewItems.length % 2 !== 0);
+
     return (
       <CompactEarnCardItem
         key={item.key}
@@ -88,7 +90,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
               title,
             }}
           />
-          {chunk(items, 2).map((itemsChunk, index) => (
+          {chunk(items, items.length > 2 ? 2 : 1).map((itemsChunk, index) => (
             <Grid
               container
               rowSpacing={2}
