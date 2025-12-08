@@ -74,6 +74,7 @@ interface Resources {
     };
     earn: {
       actions: {
+        seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
       copy: {
@@ -447,7 +448,6 @@ interface Resources {
         title: 'No results';
       };
       filter: {
-        apy: 'APY';
         asset: 'Asset';
         chain: 'Chain';
         clearAll: 'Clear all';

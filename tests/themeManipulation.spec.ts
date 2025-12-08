@@ -40,10 +40,11 @@ test.describe('Switch between dark and light theme and check the background colo
     },
   );
 
-  test('Monad theme should appears when Monad chain is selected', async ({
-    page,
-  }) => {
-    await closeWelcomeScreen(page);
-    await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
-  });
+  test(
+    qase(49, 'Monad theme should appears when Monad chain is selected'),
+    async ({ page }) => {
+      await closeWelcomeScreen(page);
+      await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
+    },
+  );
 });

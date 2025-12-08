@@ -145,6 +145,30 @@ describe('EarnCard snapshot', () => {
     );
     expect(container).toMatchSnapshot();
   });
+  it('compact card with two items matches snapshot', async () => {
+    const { container } = render(
+      <EarnCard
+        {...commonArgs}
+        data={{
+          ...commonArgs.data,
+          lockupMonths: undefined,
+          latest: {
+            date: '2021-01-01',
+            tvlUsd: '',
+            tvlNative: '',
+            apy: {
+              base: 0.0558,
+              reward: 0,
+              total: 0.0558,
+            },
+          },
+        }}
+        variant="compact"
+        primaryAction={compactPrimaryAction}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
   it('list item card matches snapshot', async () => {
     const { container } = render(
       <EarnCard

@@ -367,7 +367,8 @@
       "updated": "Updated {{time}} ago"
     },
     "actions": {
-      "viewAllMarkets": "View all markets"
+      "viewAllMarkets": "View all markets",
+      "seeMore": "see more"
     }
   },
   "portfolio": {
@@ -447,7 +448,6 @@
       "protocol": "Protocol",
       "type": "Type",
       "asset": "Asset",
-      "apy": "APY",
       "value": "Value",
       "clearAll": "Clear all",
       "filterAndSort": "Filter and sort",
