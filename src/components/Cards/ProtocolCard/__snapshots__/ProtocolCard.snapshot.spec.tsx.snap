@@ -30,13 +30,17 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
       class="MuiBox-root css-pqmg6p"
     >
       <div
-        class="MuiBox-root css-yiuipt"
+        class="MuiBox-root css-15r232g"
       >
-        <span
-          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        <div
+          class="MuiStack-root css-h176g1-MuiStack-root"
         >
-          Moonwell Flagship USDC on base
-        </span>
+          <span
+            class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+          >
+            Moonwell Flagship USDC on base
+          </span>
+        </div>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
         >
@@ -141,13 +145,17 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
       class="MuiBox-root css-pqmg6p"
     >
       <div
-        class="MuiBox-root css-yiuipt"
+        class="MuiBox-root css-15r232g"
       >
-        <span
-          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        <div
+          class="MuiStack-root css-h176g1-MuiStack-root"
         >
-          Moonwell Flagship USDC on base
-        </span>
+          <span
+            class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+          >
+            Moonwell Flagship USDC on base
+          </span>
+        </div>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
         >
@@ -271,13 +279,17 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
       class="MuiBox-root css-pqmg6p"
     >
       <div
-        class="MuiBox-root css-yiuipt"
+        class="MuiBox-root css-15r232g"
       >
-        <span
-          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        <div
+          class="MuiStack-root css-h176g1-MuiStack-root"
         >
-          Moonwell Flagship USDC on base
-        </span>
+          <span
+            class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+          >
+            Moonwell Flagship USDC on base
+          </span>
+        </div>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
         >

@@ -12,12 +12,14 @@ import {
   ProtocolCardProtocolAvatar,
   ProtocolCardProtocolTitle,
   ProtocolCardTagsContainer,
+  ProtocolCardTitleContainer,
 } from './ProtocolCard.styles';
 import { PROTOCOL_CARD_SIZES } from './constants';
 import Typography from '@mui/material/Typography';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { ProtocolCardSkeleton } from './ProtocolCardSkeleton';
@@ -25,6 +27,8 @@ import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backen
 import { useGetContrastTextColor } from 'src/hooks/images/useGetContrastTextColor';
 import { ProtocolCardDescription } from './components/ProtocolCardDescription';
 import { ProtocolCardDescriptionModal } from './components/ProtocolCardDescriptionModal';
+import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
+import { openInNewTab } from '@/utils/openInNewTab';
 
 interface CommonCardProps {
   fullWidth?: boolean;
@@ -53,10 +57,13 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
 }) => {
   const [protocolAvatarLoaded, setProtocolAvatarLoaded] = useState(false);
   const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
-  const { protocol, tags, description, url, name } = data ?? {};
+  const { protocol, tags, description, url, name, lpToken } = data ?? {};
   const title = name || protocol?.product || protocol?.name;
   const { t } = useTranslation();
-
+  const addressExplorerUrl = useBlockchainExplorerURL(
+    lpToken?.chain.chainId,
+    lpToken?.address,
+  );
   const { contrastTextColor: protocolImageContrastColor } =
     useGetContrastTextColor(protocol?.logo || '');
 
@@ -68,7 +75,18 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
 
   const headerContent = (
     <ProtocolCardContentHeaderContainer>
-      <Typography variant="titleMedium">{title}</Typography>
+      <ProtocolCardTitleContainer>
+        <Typography variant="titleMedium">{title}</Typography>
+        {addressExplorerUrl && (
+          <Badge
+            variant={BadgeVariant.Alpha}
+            size={BadgeSize.MD}
+            label="Contract"
+            startIcon={<CodeRoundedIcon />}
+            onClick={() => openInNewTab(addressExplorerUrl)}
+          />
+        )}
+      </ProtocolCardTitleContainer>
       <ProtocolCardTagsContainer>
         {tags?.map((tag) => (
           <Badge
