@@ -74,6 +74,7 @@ interface Resources {
     };
     earn: {
       actions: {
+        seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
       copy: {
@@ -131,6 +132,8 @@ interface Resources {
       shortDate: '{{value, dateExt(month: short)}}';
     };
     gatekeeper: {
+      connecting: 'Connecting...';
+      error: 'An unknown error occurred. Please try again or request access.';
       requestAccess: 'Request access';
       subtitle: {
         noAccess: 'We are currently in a <strong>closed beta.</strong>\nYou currently do not have access.';
@@ -445,7 +448,6 @@ interface Resources {
         title: 'No results';
       };
       filter: {
-        apy: 'APY';
         asset: 'Asset';
         chain: 'Chain';
         clearAll: 'Clear all';

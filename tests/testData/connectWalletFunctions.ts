@@ -6,7 +6,7 @@ export const connectedWalletButton = async (page: Page) => {
 };
 
 export const connectButton = (page: Page) => {
-  return page.locator('#connect-wallet-button');
+  return page.locator('#connect-wallet-button').first();
 };
 export const selectWalletDialog = (page: Page) => {
   return page.getByRole('dialog', { name: 'Select a wallet' });

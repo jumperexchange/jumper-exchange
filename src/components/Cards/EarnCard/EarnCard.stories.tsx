@@ -65,6 +65,29 @@ export const CompactWithHref: Story = {
     href: `${AppPaths.Earn}/${commonArgs.data.slug}`,
   },
 };
+
+export const CompactWithTwoItems: Story = {
+  args: {
+    ...commonArgs,
+    data: {
+      ...commonArgs.data,
+      lockupMonths: undefined,
+      latest: {
+        date: '2021-01-01',
+        tvlUsd: '',
+        tvlNative: '',
+        apy: {
+          base: 0.0558,
+          reward: 0,
+          total: 0.0558,
+        },
+      },
+    },
+    variant: 'compact',
+    primaryAction: compactPrimaryAction,
+  },
+};
+
 export const ListItem: Story = {
   args: {
     ...commonArgs,

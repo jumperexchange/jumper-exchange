@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { Link } from 'src/components/Link/Link';
 import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
+import { SectionCardContainer } from '../SectionCard/SectionCard.style';
+import Button from '@mui/material/Button';
 
 export const ProtocolCardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
@@ -103,10 +105,15 @@ export const ProtocolCardContentContainer = styled(Box)(({ theme }) => ({
 
 export const ProtocolCardContentHeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
   justifyContent: 'space-between',
-  gap: theme.spacing(3),
+  gap: theme.spacing(1),
+  [theme.breakpoints.up('sm')]: {
+    gap: theme.spacing(3),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 }));
 
 export const ProtocolCardTagsContainer = styled(Stack)(({ theme }) => ({
@@ -119,9 +126,6 @@ export const ProtocolCardTagsContainer = styled(Stack)(({ theme }) => ({
 export const ProtocolCardDescriptionContainer = styled(Typography)(
   ({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
-    ...getTextEllipsisStyles(4),
-    overflow: 'hidden',
-    whiteSpace: 'break-spaces',
     marginBottom: 'auto',
   }),
 );
@@ -145,3 +149,24 @@ export const ProtocolCardLink = styled(Link)(({ theme }) => ({
 }));
 
 export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));
+
+export const ProtocolDescriptionModalContentContainer = styled(
+  SectionCardContainer,
+)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(3),
+  width: 440,
+  maxWidth: 'calc(100vw - 32px)',
+}));
+
+export const ProtocolCardDescriptionSeeMoreButton = styled(Button)(
+  ({ theme }) => ({
+    ...theme.typography.bodyMediumParagraph,
+    fontWeight: 700,
+    color: (theme.vars || theme).palette.text.secondary,
+    padding: 0,
+    height: 'auto',
+    marginBottom: '2px',
+  }),
+);

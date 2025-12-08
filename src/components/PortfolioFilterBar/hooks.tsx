@@ -194,7 +194,6 @@ export const usePortfolioDeFiFilterBar = () => {
     allProtocols,
     allTypes,
     allAssets,
-    allAPYRange,
     allValueRange,
     filter,
     updateFilter,
@@ -251,8 +250,6 @@ export const usePortfolioDeFiFilterBar = () => {
     [allAssets],
   );
 
-  const apyMin = filter?.defiMinAPY ?? allAPYRange.min;
-  const apyMax = filter?.defiMaxAPY ?? allAPYRange.max;
   const valueMin = filter?.defiMinValue ?? allValueRange.min;
   const valueMax = filter?.defiMaxValue ?? allValueRange.max;
 
@@ -287,15 +284,6 @@ export const usePortfolioDeFiFilterBar = () => {
     updateFilter({ ...filter, defiAssets: values.length > 0 ? values : null });
   };
 
-  const handleAPYChange = (values: number[]) => {
-    const hasValues = values.length > 0;
-    updateFilter({
-      ...filter,
-      defiMinAPY: hasValues ? values[0] : null,
-      defiMaxAPY: hasValues ? values[1] : null,
-    });
-  };
-
   const handleValueChange = (values: number[]) => {
     updateFilter({
       ...filter,
@@ -319,9 +307,6 @@ export const usePortfolioDeFiFilterBar = () => {
     protocolOptions.length,
     typeOptions.length,
     assetOptions.length,
-    allAPYRange.min !== allAPYRange.max && !isNaN(apyMin) && !isNaN(apyMax)
-      ? 1
-      : 0,
     allValueRange.min !== allValueRange.max &&
     !isNaN(valueMin) &&
     !isNaN(valueMax)
@@ -336,12 +321,9 @@ export const usePortfolioDeFiFilterBar = () => {
     filter?.defiAssets,
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
-  const hasAPYFilterApplied =
-    apyMin !== allAPYRange.min || apyMax !== allAPYRange.max;
   const hasValueFilterApplied =
     valueMin !== allValueRange.min || valueMax !== allValueRange.max;
-  const rangeFiltersCount =
-    (hasAPYFilterApplied ? 1 : 0) + (hasValueFilterApplied ? 1 : 0);
+  const rangeFiltersCount = hasValueFilterApplied ? 1 : 0;
 
   const filtersCount = arrayFiltersCount + rangeFiltersCount;
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
@@ -354,10 +336,6 @@ export const usePortfolioDeFiFilterBar = () => {
     hasFilterApplied,
     filtersCount,
     filter,
-    apyMin,
-    apyMax,
-    apyRangeMin: allAPYRange.min,
-    apyRangeMax: allAPYRange.max,
     valueMin,
     valueMax,
     valueRangeMin: allValueRange.min,
@@ -368,7 +346,6 @@ export const usePortfolioDeFiFilterBar = () => {
     handleProtocolChange,
     handleTypeChange,
     handleAssetChange,
-    handleAPYChange,
     handleValueChange,
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
