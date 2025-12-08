@@ -358,7 +358,8 @@
     "views": {
       "forYou": "For you",
       "allMarkets": "All markets",
-      "all": "All"
+      "all": "All",
+      "yourPositions": "Your positions"
     },
     "relatedMarkets": {
       "title": "Related Markets"

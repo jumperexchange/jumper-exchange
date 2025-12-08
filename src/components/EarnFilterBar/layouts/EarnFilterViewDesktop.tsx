@@ -22,7 +22,7 @@ export const EarnFilterViewDesktop = () => {
     },
     {
       value: EarnFilterTab.YOUR_POSITIONS,
-      label: 'Your Positions',
+      label: t('earn.views.yourPositions'),
       'data-testid': 'earn-filter-tab-your-positions',
     },
   ];
