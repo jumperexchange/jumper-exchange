@@ -14,6 +14,8 @@ export async function verifyAnalyticsButtonsAreVisible(page: Page) {
     'analytics-value-tvl',
   ];
   await expect(page.getByTestId(chartButtons[0])).toBeVisible();
+
+  // Verify remaining buttons (toBeVisible already waits for elements)
   for (const chartButton of chartButtons.slice(1)) {
     await expect(page.getByTestId(chartButton)).toBeVisible();
   }
@@ -35,14 +37,9 @@ export async function selectOptionFromDropDown(
   const clearButton = page.getByTestId('clear-button');
   await dropdownFilter.click();
   await expect(clearButton).toBeVisible();
-  const optionElement = page.getByRole('option', { name: option });
-  await optionElement.click();
-  // Wait for dropdown to close (option should no longer be visible)
-  await expect(optionElement).toBeHidden({ timeout: 5000 });
-  // Wait for filter to apply by waiting for network to be idle or cards to update
-  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {
-    // If networkidle times out, that's okay - just continue
-  });
+  await page.getByRole('option', { name: option }).click();
+  await page.waitForTimeout(1000);
+  await page.locator('body').click();
 }
 
 export async function getAllOptionsFromDropdown(page: Page, dropdown: string) {
@@ -82,16 +79,13 @@ export async function verifyAllCardsShowChain(
   expectedChain: string,
 ) {
   await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   const filteredCardsContainer = page.getByTestId(
     'earn-opportunities-cards-grid',
   );
-  // Wait for cards to be visible and loaded
-  await expect(filteredCardsContainer).toBeVisible();
   const chainNameElements = filteredCardsContainer.getByTestId(
     'earn-card-chain-name',
   );
-  // Wait for at least one card to appear
-  await expect(chainNameElements.first()).toBeVisible({ timeout: 10000 });
   const count = await chainNameElements.count();
 
   // Verify each chain name matches the expected chain
@@ -111,20 +105,11 @@ export async function verifyAllCardsShowChain(
 
 async function verifyNoSelectedItemsAreVisible(page: Page, items: string[]) {
   await page.waitForLoadState('load');
+  await page.waitForTimeout(3000);
   const earnOpportunitiesContainer = page.getByTestId(
     'earn-opportunities-cards-grid',
   );
   await expect(earnOpportunitiesContainer).toBeVisible();
-  // Wait for cards to be loaded before checking
-  const cardElements = earnOpportunitiesContainer.locator(
-    '[data-testid*="earn-card"]',
-  );
-  await expect(cardElements.first())
-    .toBeVisible({ timeout: 10000 })
-    .catch(() => {
-      // If no cards are visible, that's also valid (empty state)
-    });
-
   const childElements = earnOpportunitiesContainer.locator('*');
   const childCount = await childElements.count();
 

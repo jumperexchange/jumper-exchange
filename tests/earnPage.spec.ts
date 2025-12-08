@@ -59,7 +59,7 @@ test.describe('Chains filters on Earn page', () => {
   );
   test(qase(41, 'Should be able to filter by base chain'), async ({ page }) => {
     await test.step('Select base chain', async () => {
-      await selectOptionFromDropDown(page, 'earn-filter-chain-select', 'base');
+      await selectOptionFromDropDown(page, 'earn-filter-chain-select', 'Base');
     });
 
     await test.step('Verify all cards show Base chain name', async () => {
