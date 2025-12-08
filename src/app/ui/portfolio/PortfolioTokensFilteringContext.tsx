@@ -24,12 +24,12 @@ import type {
   PortfolioTokensFilter,
   PortfolioTokensFilterUI,
   SortByEnum,
+  OrderEnum,
 } from './types';
-import { SortByOptions } from './types';
+import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
 
-export interface PortfolioTokensFilteringContextType
-  extends PortfolioTokensFilteringParams {
+export interface PortfolioTokensFilteringContextType extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: PortfolioTokensFilterUI;
@@ -68,12 +68,17 @@ export const PortfolioTokensFilteringProvider = ({
     },
   );
 
-  const { tokensSortBy: initialSortBy, ...rest } = searchParamsState;
+  const {
+    tokensSortBy: initialSortBy,
+    tokensOrder: initialOrder,
+    ...rest
+  } = searchParamsState;
 
   const initialFilter = useMemo(() => {
     return removeNullValuesFromFilter(rest);
   }, [rest]);
 
+  const [order, setOrder] = useState<OrderEnum>(initialOrder);
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] = useState<PortfolioTokensFilter>(initialFilter);
   const prevStatsRef = useRef<PortfolioTokensFilteringParams>(
@@ -113,8 +118,13 @@ export const PortfolioTokensFilteringProvider = ({
   }, [stats, setSearchParamsState, setFilter, filter]);
 
   const filteredSortedData = useMemo(() => {
-    return filterSortPortfolioTokensData(queriesByAddress, filter, sortBy);
-  }, [queriesByAddress, filter, sortBy]);
+    return filterSortPortfolioTokensData(
+      queriesByAddress,
+      filter,
+      sortBy,
+      order,
+    );
+  }, [queriesByAddress, filter, sortBy, order]);
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<PortfolioTokensFilter>) => {
@@ -137,8 +147,13 @@ export const PortfolioTokensFilteringProvider = ({
 
   const updateSortBy = useCallback(
     (newSortBy: SortByEnum) => {
+      const newOrder =
+        newSortBy === SortByOptions.VALUE
+          ? OrderOptions.DESC
+          : OrderOptions.ASC;
+      setOrder(newOrder);
       setSortBy(newSortBy);
-      setSearchParamsState({ tokensSortBy: newSortBy });
+      setSearchParamsState({ tokensSortBy: newSortBy, tokensOrder: newOrder });
     },
     [setSortBy, setSearchParamsState],
   );

@@ -16,7 +16,8 @@ export const GatekeeperIllustrationWrapper = styled(Box)(({}) => ({
 
 export const GatekeeperRequestAccessLink = styled(Link)(({ theme }) => ({
   ...theme.typography.bodyMediumStrong,
-  borderRadius: '24px',
+  display: 'inline-block',
+  borderRadius: theme.shape.buttonBorderRadius,
   textTransform: 'none',
   textDecoration: 'none',
   transition: 'background-color 250ms',
