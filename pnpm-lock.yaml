@@ -39,8 +39,8 @@ importers:
         specifier: ^0.0.18
         version: 0.0.18
       '@lifi/explorer':
-        specifier: 0.6.1-beta.0
-        version: 0.6.1-beta.0(360ad25140b677485884ee9efac82808)
+        specifier: 0.6.3
+        version: 0.6.3(360ad25140b677485884ee9efac82808)
       '@lifi/sdk':
         specifier: ^3.13.6
         version: 3.13.6(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.0.9)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.7)(bufferutil@4.0.9)(immer@10.2.0)(react@19.2.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.1))(utf-8-validate@5.0.10)(viem@2.41.2(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.1.13))(zod@4.1.13)
@@ -2076,8 +2076,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lifi/explorer@0.6.1-beta.0':
-    resolution: {integrity: sha512-M04YAh0uowi19BZfWrdX6K02YC+aBfxcCfiMO0SXJH4pREbPKnCMv4xdPhj0jMZ/6qeVONjVrzUEJIkYj7aHqg==}
+  '@lifi/explorer@0.6.3':
+    resolution: {integrity: sha512-/7NosUaQg0/aO8g11jRBH853YWlE2tui+WR0ywO6CmEd1MeOIRjso5/4ok6y/ul4kjlaDecZD0zrE6s2ahDSww==}
     peerDependencies:
       '@emotion/react': ^11.11.1
       '@emotion/styled': ^11.11.0
@@ -11983,7 +11983,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lifi/explorer@0.6.1-beta.0(360ad25140b677485884ee9efac82808)':
+  '@lifi/explorer@0.6.3(360ad25140b677485884ee9efac82808)':
     dependencies:
       '@bigmi/core': 0.6.3(@types/react@19.2.7)(bs58@6.0.0)(immer@10.2.0)(react@19.2.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.1))
       '@emotion/react': 11.14.0(@types/react@19.2.7)(react@19.2.1)
