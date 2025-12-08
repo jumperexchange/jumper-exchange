@@ -36,7 +36,7 @@ export const EarnDetailsActionsPosition: FC<
     );
 
     return {
-      formattedAmount: `${tokenAmount} ${token?.symbol}`,
+      formattedAmount: `${tokenAmount} ${token?.symbol ?? ''}`,
       formattedAmountUSD: currencyFormatter('en-US', {
         notation: 'compact',
         currency: 'USD',
