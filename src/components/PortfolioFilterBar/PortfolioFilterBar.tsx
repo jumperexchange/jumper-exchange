@@ -1,5 +1,5 @@
 import type { PortfolioFilterBarTab } from 'src/app/ui/portfolio/types';
-import type { FC } from 'react';
+import { Fragment, type FC } from 'react';
 import {
   PortfolioFilterBarContainer,
   PortfolioFilterBarHeaderContainer,
@@ -17,6 +17,7 @@ import { PortfolioSortEmptyDesktop } from './layouts/PortfolioSortEmptyDesktop';
 import { PortfolioSortDeFiDesktop } from './layouts/PortfolioSortDeFiDesktop';
 import { PortfolioFilterViewDesktop } from './layouts/PortfolioFilterViewDesktop';
 import { PortfolioFilterViewTablet } from './layouts/PortfolioFilterViewTablet';
+import { PortfolioFilterBarTokensLastUpdatedBadge } from './layouts/PortfolioFilterBarTokensLastUpdatedBadge';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -53,6 +54,12 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
     ? PortfolioFilterViewTablet
     : PortfolioFilterViewDesktop;
 
+  const PortfolioFilterBarLastUpdatedBadge = isDisabled
+    ? Fragment
+    : value === 'tokens'
+      ? PortfolioFilterBarTokensLastUpdatedBadge
+      : Fragment;
+
   return (
     <PortfolioFilterBarContainer>
       <PortfolioFilterBarHeaderContainer>
@@ -61,6 +68,7 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
           value={value}
           onChange={onChange}
         />
+        {!isTablet && <PortfolioFilterBarLastUpdatedBadge />}
         {isTablet && (
           <AnimatePresence mode="wait">
             <PortfolioFilterBarContentTablet key={value} />
