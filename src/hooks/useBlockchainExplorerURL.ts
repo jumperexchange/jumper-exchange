@@ -18,6 +18,11 @@ export const useBlockchainExplorerURL = (
       return undefined;
     }
 
-    return `${chain.metamask?.blockExplorerUrls?.[0]}${prefix ? prefix : ''}/${address}`;
+    const explorerUrl = chain.metamask?.blockExplorerUrls?.[0];
+    if (!explorerUrl) {
+      return undefined;
+    }
+
+    return `${explorerUrl}${prefix ? prefix : ''}/${address}`;
   }, [chainId, address, prefix, getChainById, isSuccess]);
 };
