@@ -1,3 +1,12 @@
+'use client';
+import { PortfolioAssetsSectionSkeleton } from './PortfolioAssetsSectionSkeleton';
+import { PortfolioHeaderSectionSkeleton } from './PortfolioHeaderSectionSkeleton';
+
 export const PortfolioPageSkeleton = () => {
-  return <div>PortfolioPageSkeleton</div>;
+  return (
+    <>
+      <PortfolioHeaderSectionSkeleton />
+      <PortfolioAssetsSectionSkeleton />
+    </>
+  );
 };
