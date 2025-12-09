@@ -21,7 +21,7 @@ export const searchParamsParsers = {
   ),
   forYou: parseAsBoolean.withDefault(true),
   order: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
-    OrderOptions.ASC,
+    OrderOptions.DESC,
   ),
   chains: parseAsArrayOf(parseAsInteger),
   protocols: parseAsArrayOf(parseAsString),
