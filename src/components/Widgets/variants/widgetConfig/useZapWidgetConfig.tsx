@@ -28,7 +28,7 @@ export function useZapWidgetConfig(
       // contractCompactComponent: <></>,
 
       bridges: {
-        allow: ['across', 'relay'],
+        allow: ['across', 'relay', 'mayan'],
       },
       // Chain configuration
       chains: {
