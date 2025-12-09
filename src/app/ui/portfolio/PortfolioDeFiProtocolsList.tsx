@@ -11,6 +11,7 @@ import {
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { DeFiPositionCardSkeleton } from '@/components/composite/DeFiPositionCard/DeFiPositionCardSkeleton';
 import { motion, AnimatePresence } from 'motion/react';
+import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 
 const AnimatedAssetItem = ({ children }: PropsWithChildren) => (
   <motion.div
@@ -25,6 +26,7 @@ const AnimatedAssetItem = ({ children }: PropsWithChildren) => (
 );
 
 export const PortfolioDeFiProtocolsList = () => {
+  useContactSupportEvent();
   const { data, isAllDataEmpty, isLoading, clearFilters, sortBy, order } =
     usePortfolioDeFiPositionsFiltering();
 

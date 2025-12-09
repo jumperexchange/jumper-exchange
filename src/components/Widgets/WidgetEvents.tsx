@@ -5,14 +5,12 @@ import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useActiveTabStore } from '@/stores/activeTab';
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
-import { useMenuStore } from '@/stores/menu';
 import { useMultisigStore } from '@/stores/multisig';
 import { usePortfolioStore } from '@/stores/portfolio';
 import type { RouteExtended } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
-  ContactSupport,
   FormFieldChanged,
   RouteExecutionUpdate,
 } from '@lifi/widget';
@@ -25,16 +23,15 @@ import { getRouteStatus } from 'src/utils/routes';
 import type { WidgetEventsConfig } from './WidgetEventsManager';
 import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
+import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
 
 export function WidgetEvents() {
+  useContactSupportEvent();
   const { activeTab } = useActiveTabStore();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
   const { setFromChainId, setFromToken, setToChainId, setToToken } =
     useWidgetCacheStore((state) => state);
-  const [setSupportModalState] = useMenuStore((state) => [
-    state.setSupportModalState,
-  ]);
   const widgetEvents = useWidgetEvents();
   const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
   const [setDestinationChain] = useMultisigStore((state) => [
@@ -129,10 +126,6 @@ export function WidgetEvents() {
       }
     };
 
-    const contactSupport = (supportId: ContactSupport) => {
-      setSupportModalState(true);
-    };
-
     const sourceChainTokenSelected = async (
       sourceChainData: ChainTokenSelected,
     ) => {
@@ -186,7 +179,6 @@ export function WidgetEvents() {
     const config: WidgetEventsConfig = {
       routeExecutionUpdated,
       routeExecutionCompleted,
-      contactSupport,
       sourceChainTokenSelected,
       destinationChainTokenSelected,
       pageEntered,
@@ -204,7 +196,6 @@ export function WidgetEvents() {
     setDestinationChain,
     setDestinationChainToken,
     setSourceChainToken,
-    setSupportModalState,
     shouldOpenMultisigSignatureModal,
     setCompletedRoute,
     setContributed,
