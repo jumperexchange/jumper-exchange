@@ -46,14 +46,14 @@ export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = ({
     if (!confirmSubscription) {
       return;
     }
-    setSnackbarState(true, t('newsletter.welcome.success.title'), 'success');
+    setSnackbarState(true, t('newsletter.welcome.success'), 'success');
   }, [confirmSubscription, setSnackbarState, t]);
 
   useEffect(() => {
     if (!isSuccess) {
       return;
     }
-    setSnackbarState(true, t('newsletter.welcome.success.title'), 'success');
+    setSnackbarState(true, t('newsletter.welcome.pending'), 'success');
   }, [isSuccess, setSnackbarState, t]);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {

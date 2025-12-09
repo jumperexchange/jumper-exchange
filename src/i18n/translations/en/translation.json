@@ -476,10 +476,8 @@
         "required": "This field is required",
         "unknown": "An unknown error occurred. Please try again."
       },
-      "success": {
-        "title": "Newsletter subscription successful!",
-        "description": "You have been subscribed to our newsletter. You will receive the latest news and updates directly from Jumper."
-      }
+      "pending": "Pending subscription confirmation...",
+      "success": "Newsletter subscription successful!"
     }
   },
   "widget": {
