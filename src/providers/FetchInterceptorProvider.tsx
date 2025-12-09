@@ -9,9 +9,11 @@ import {
 } from 'src/const/quests';
 import envConfig from '../config/env-config';
 import { AppPaths } from 'src/const/urls';
+import getApiUrl from '@/utils/getApiUrl';
 
 export function FetchInterceptorProvider() {
   const pathname = usePathname();
+  const apiUrl = getApiUrl();
 
   useEffect(() => {
     const interceptor = new FetchInterceptor();
@@ -26,7 +28,7 @@ export function FetchInterceptorProvider() {
         ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
       );
       if (
-        request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) ||
+        request.url.startsWith(apiUrl) ||
         request.url.includes('pipeline')
       ) {
         if (earnOpportunitySlug) {
@@ -41,7 +43,7 @@ export function FetchInterceptorProvider() {
       }
       // scan page flow
       if (
-        request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) &&
+        request.url.startsWith(apiUrl) &&
         request.url.includes('status') &&
         pathname?.includes(AppPaths.Scan)
       ) {
@@ -52,7 +54,7 @@ export function FetchInterceptorProvider() {
     return () => {
       interceptor.dispose();
     };
-  }, []);
+  }, [apiUrl]);
 
   return null;
 }
