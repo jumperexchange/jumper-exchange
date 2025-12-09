@@ -9,7 +9,7 @@ import { useMenuStore } from 'src/stores/menu';
 import { useMediaQuery } from '@mui/material';
 
 export const MainMenuToggle = () => {
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const mainMenuAnchor = useRef(null);
 
   const [openedMenu, openMainMenu, setMainMenuState] = useMenuStore((state) => [

@@ -23,7 +23,7 @@ interface MainMenuProps {
 const socialLinksDividerStyles = (theme: Theme) => ({
   marginTop: {
     xs: 'auto !important',
-    md: theme.spacing(1),
+    lg: theme.spacing(1),
   },
   marginBottom: theme.spacing(1),
 });
@@ -45,7 +45,7 @@ const mainItemsStackStyles = {
 };
 
 export const MainMenu = ({ anchorEl }: MainMenuProps) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const isTablet = useMediaQuery((theme) => theme.breakpoints.down('lg'));
   const { mainMenuItems, mainMenuSocialLinks, mainMenuFooterLinks } =
     useMainMenuContent();
   const { openMainMenu, setMainMenuState, openSubMenu } = useMenuStore(
@@ -134,7 +134,7 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
       isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
       anchorEl={anchorEl}
     >
-      {isMainMenuVisible && isMobile && renderedMainMenuHeader}
+      {isMainMenuVisible && isTablet && renderedMainMenuHeader}
       <Stack sx={mainItemsStackStyles}>
         {isMainMenuVisible && renderedMainMenuItems}
       </Stack>
@@ -143,8 +143,8 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
       <DevelopersSubmenu />
       <ThemeModesSubmenu />
       <ThemeSubmenu />
-      {(isMainMenuVisible || isMobile) && renderedSocialLinks}
-      {(isMainMenuVisible || isMobile) && renderedFooterLinks}
+      {(isMainMenuVisible || isTablet) && renderedSocialLinks}
+      {(isMainMenuVisible || isTablet) && renderedFooterLinks}
     </Menu>
   );
 };
