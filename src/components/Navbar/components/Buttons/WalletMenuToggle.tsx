@@ -46,7 +46,7 @@ export const WalletMenuToggle = () => {
         badgeAlt={'chain-avatar'}
         maskEnabled={false}
         sxAvatar={(theme) => ({
-          padding: theme.spacing(0.5),
+          padding: theme.spacing(0.1),
         })}
         sxBadge={(theme) => ({
           border: '2px solid',
