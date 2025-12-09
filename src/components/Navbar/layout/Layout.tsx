@@ -11,7 +11,7 @@ import { WalletButtons } from '../components/Buttons/WalletButtons';
 import { CookiesProvider } from 'react-cookie';
 
 export const Layout = () => {
-  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   const secondaryButtons = (
     <Box display="flex" flexDirection="row" gap={1}>

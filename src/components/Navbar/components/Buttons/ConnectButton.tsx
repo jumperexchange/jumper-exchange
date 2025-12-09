@@ -20,6 +20,7 @@ function ConnectButton() {
           typography: {
             xs: 'bodyXSmallStrong',
             sm: 'bodySmallStrong',
+            lg: 'bodyMediumStrong',
           },
         }}
       >

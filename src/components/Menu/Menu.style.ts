@@ -38,91 +38,104 @@ export interface MenuListProps extends Omit<MuiMenuListProps, 'component'> {
 export const MenuList = styled(MuiMenuList, {
   shouldForwardProp: (prop) =>
     prop !== 'isOpenSubMenu' && prop !== 'hasLabel' && prop !== 'cardsLayout',
-})<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => ({
-  marginTop: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'unset',
-  flexWrap: 'inherit',
-  padding: 0,
-  outline: 'unset',
-  gap: 'inherit',
-  height: '100%',
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    height: 'auto',
-  },
-  '& > :first-of-type': {
-    marginTop:
-      isOpenSubMenu || hasLabel || cardsLayout ? 'inherit' : theme.spacing(1.5),
-  },
-  '& > li:last-of-type': {
-    marginBottom: theme.spacing(3),
-    paddingBottom: 'inherit',
-    paddingTop: 'inherit',
-  },
-  variants: [
-    {
-      props: ({ cardsLayout }) => cardsLayout,
-      style: {
-        display: 'flex',
+})<MenuListProps>(({ theme, isOpenSubMenu, hasLabel, cardsLayout }) => {
+  const shouldShowMarginTop = isOpenSubMenu || hasLabel || cardsLayout;
+  return {
+    marginTop: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'unset',
+    flexWrap: 'inherit',
+    padding: 0,
+    outline: 'unset',
+    gap: 'inherit',
+    height: '100%',
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      height: 'auto',
+    },
+    '& > :first-of-type': {
+      marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(1),
+
+      [theme.breakpoints.up('sm' as Breakpoint)]: {
+        marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(1.5),
+      },
+
+      [theme.breakpoints.up('md' as Breakpoint)]: {
+        marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(2),
+      },
+      [theme.breakpoints.up('lg' as Breakpoint)]: {
+        marginTop: shouldShowMarginTop ? 'inherit' : theme.spacing(1.5),
       },
     },
-    {
-      props: ({ cardsLayout }) => cardsLayout,
-      style: {
-        flexDirection: 'column',
-      },
+    '& > li:last-of-type': {
+      marginBottom: theme.spacing(3),
+      paddingBottom: 'inherit',
+      paddingTop: 'inherit',
     },
-    {
-      props: ({ cardsLayout }) => cardsLayout,
-      style: {
-        justifyContent: 'center',
-      },
-    },
-    {
-      props: ({ cardsLayout }) => cardsLayout,
-      style: {
-        flexWrap: 'wrap',
-      },
-    },
-    {
-      props: ({ cardsLayout }) => cardsLayout,
-      style: {
-        padding: theme.spacing(0, 3),
-      },
-    },
-    {
-      props: ({ cardsLayout }) => cardsLayout,
-      style: {
-        gap: '12px',
-      },
-    },
-    {
-      props: ({ isOpenSubMenu }) => isOpenSubMenu,
-      style: {
-        '& > li:last-of-type': {
-          marginBottom: 'inherit',
+    variants: [
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          display: 'flex',
         },
       },
-    },
-    {
-      props: ({ isOpenSubMenu }) => isOpenSubMenu,
-      style: {
-        '& > li:last-of-type': {
-          paddingBottom: theme.spacing(1.5),
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          flexDirection: 'column',
         },
       },
-    },
-    {
-      props: ({ hasLabel }) => hasLabel,
-      style: {
-        '& > li:last-of-type': {
-          paddingTop: 0,
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          justifyContent: 'center',
         },
       },
-    },
-  ],
-}));
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          flexWrap: 'wrap',
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          padding: theme.spacing(0, 3),
+        },
+      },
+      {
+        props: ({ cardsLayout }) => cardsLayout,
+        style: {
+          gap: '12px',
+        },
+      },
+      {
+        props: ({ isOpenSubMenu }) => isOpenSubMenu,
+        style: {
+          '& > li:last-of-type': {
+            marginBottom: 'inherit',
+          },
+        },
+      },
+      {
+        props: ({ isOpenSubMenu }) => isOpenSubMenu,
+        style: {
+          '& > li:last-of-type': {
+            paddingBottom: theme.spacing(1.5),
+          },
+        },
+      },
+      {
+        props: ({ hasLabel }) => hasLabel,
+        style: {
+          '& > li:last-of-type': {
+            paddingTop: 0,
+          },
+        },
+      },
+    ],
+  };
+});
 
 export const MenuHeaderLabel = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodyMediumStrong,
@@ -171,7 +184,7 @@ export const MenuPaper = styled(Paper, {
   '.submenu': {
     paddingBottom: theme.spacing(1.5),
   },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
+  [theme.breakpoints.up('lg' as Breakpoint)]: {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
     height: 'auto',

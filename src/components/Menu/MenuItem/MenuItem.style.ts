@@ -20,10 +20,10 @@ export const MenuItemBaseContainer = styled(MUIMenuItem)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'inherit',
-  padding: theme.spacing(0, 1.5),
+  padding: theme.spacing(0, 1),
   backgroundColor: 'inherit',
   justifyContent: 'space-between',
-  margin: theme.spacing(0, 1.5),
+  margin: theme.spacing(0, 1),
   height: 48,
   borderRadius: '12px',
   width: 'auto',
@@ -36,6 +36,8 @@ export const MenuItemBaseContainer = styled(MUIMenuItem)(({ theme }) => ({
     backgroundColor: 'inherit',
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
+    padding: theme.spacing(0, 1.5),
+    margin: theme.spacing(0, 1.5),
     height: 48,
   },
 }));

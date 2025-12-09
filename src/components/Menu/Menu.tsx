@@ -28,7 +28,7 @@ export const Menu = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   return isDesktop ? (
     <MenuDesktop
