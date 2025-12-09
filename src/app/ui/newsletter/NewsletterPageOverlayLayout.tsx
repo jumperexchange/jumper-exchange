@@ -1,20 +1,20 @@
 'use client';
 
 import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
-import { TrackingCategory, TrackingAction } from '@/const/trackingKeys';
 import { HeaderHeight } from '@/const/headerHeight';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { NewsletterWelcomeScreen } from './NewsletterWelcomeScreen';
-import { useAccount } from '@lifi/wallet-management';
-import { useEffect } from 'react';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 
-export const NewsletterPageOverlayLayout: FC<PropsWithChildren> = ({
-  children,
-}) => {
+interface NewsletterPageOverlayLayoutProps extends PropsWithChildren {
+  overlayContent: ReactNode;
+}
+
+export const NewsletterPageOverlayLayout: FC<
+  NewsletterPageOverlayLayoutProps
+> = ({ children, overlayContent }) => {
   return (
     <WelcomeOverlayLayout
-      overlayContent={<NewsletterWelcomeScreen />}
+      overlayContent={overlayContent}
       isOverlayOpen={true}
       onOverlayClose={() => {}}
       enabled

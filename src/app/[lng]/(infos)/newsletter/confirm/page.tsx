@@ -4,7 +4,9 @@ import { NewsletterWelcomeScreen } from '@/app/ui/newsletter/NewsletterWelcomeSc
 
 export default function Page() {
   return (
-    <NewsletterPageOverlayLayout overlayContent={<NewsletterWelcomeScreen />}>
+    <NewsletterPageOverlayLayout
+      overlayContent={<NewsletterWelcomeScreen confirmSubscription />}
+    >
       <NewsletterPage />
     </NewsletterPageOverlayLayout>
   );

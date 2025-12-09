@@ -28,9 +28,13 @@ import Input from '@mui/material/Input';
 import { getValidationSchema } from './utils';
 import { useMenuStore } from '@/stores/menu';
 
-interface NewsletterWelcomeScreenProps {}
+interface NewsletterWelcomeScreenProps {
+  confirmSubscription?: boolean;
+}
 
-export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = () => {
+export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = ({
+  confirmSubscription = false,
+}) => {
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [email, setEmail] = useState<string>('');
@@ -39,9 +43,17 @@ export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = () => {
   const { mutate, isPending, isSuccess } = useNewsletterSubscribe();
 
   useEffect(() => {
-    if (isSuccess) {
-      setSnackbarState(true, t('newsletter.welcome.success.title'), 'success');
+    if (!confirmSubscription) {
+      return;
     }
+    setSnackbarState(true, t('newsletter.welcome.success.title'), 'success');
+  }, [confirmSubscription, setSnackbarState, t]);
+
+  useEffect(() => {
+    if (!isSuccess) {
+      return;
+    }
+    setSnackbarState(true, t('newsletter.welcome.success.title'), 'success');
   }, [isSuccess, setSnackbarState, t]);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
