@@ -136,7 +136,11 @@ interface Resources {
       error: 'An unknown error occurred. Please try again or request access.';
       requestAccess: 'Request access';
       subtitle: {
-        noAccess: 'We are currently in a <strong>closed beta.</strong>\nYou currently do not have access.';
+        intro: {
+          earn: '<strong>Smart earning, zero complexity.</strong>';
+          portfolio: "<strong>DeFi's interactive portfolio.</strong>";
+        };
+        noAccess: 'We are currently in a <strong>closed beta.</strong>\nYou do not have access.';
         notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
       };
       title: 'Welcome to {{pageTitle}}!';

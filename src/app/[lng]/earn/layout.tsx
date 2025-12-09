@@ -27,6 +27,7 @@ export default function EarnLayout({ children }: PropsWithChildren) {
       <Gatekeeper
         flag="hasEarn"
         pageTitle="Jumper Earn"
+        subtitleIntroKey="earn"
         illustrations={{
           illustration: <EarnBetaIllustration />,
           mobile: {

@@ -590,8 +590,12 @@
   "gatekeeper": {
     "title": "Welcome to {{pageTitle}}!",
     "subtitle": {
+      "intro": {
+        "earn": "<strong>Smart earning, zero complexity.</strong>",
+        "portfolio": "<strong>DeFi's interactive portfolio.</strong>"
+      },
       "notConnected": "We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.",
-      "noAccess": "We are currently in a <strong>closed beta.</strong>\nYou currently do not have access."
+      "noAccess": "We are currently in a <strong>closed beta.</strong>\nYou do not have access."
     },
     "requestAccess": "Request access",
     "connecting": "Connecting...",

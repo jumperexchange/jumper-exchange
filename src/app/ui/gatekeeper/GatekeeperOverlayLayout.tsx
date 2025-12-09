@@ -10,12 +10,14 @@ import type { GatekeeperIllustrations } from './types';
 
 interface GatekeeperOverlayLayoutProps extends PropsWithChildren {
   title: string;
+  subtitleIntro: string;
   subtitle: string;
   illustrations: GatekeeperIllustrations;
 }
 
 export const GatekeeperOverlayLayout: FC<GatekeeperOverlayLayoutProps> = ({
   title,
+  subtitleIntro,
   subtitle,
   children,
   illustrations,
@@ -23,7 +25,10 @@ export const GatekeeperOverlayLayout: FC<GatekeeperOverlayLayoutProps> = ({
   return (
     <WelcomeOverlayLayout
       overlayContent={
-        <GatekeeperOverlayContent title={title} subtitle={subtitle}>
+        <GatekeeperOverlayContent
+          title={title}
+          subtitle={[subtitleIntro, subtitle].join('<br/><br/>')}
+        >
           {children}
         </GatekeeperOverlayContent>
       }

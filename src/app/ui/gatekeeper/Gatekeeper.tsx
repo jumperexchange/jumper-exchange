@@ -8,11 +8,13 @@ import type { GatekeeperIllustrations } from './types';
 import { GatekeeperStatus, useGatekeeperStatus } from './useGatekeeperStatus';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import { useEffect } from 'react';
+import { GATEKEEPER_REQUEST_ACCESS_URL } from '@/const/urls';
 
 interface GatekeeperProps extends React.PropsWithChildren {
   flag: 'hasEarn';
   pageTitle: string;
   illustrations: GatekeeperIllustrations;
+  subtitleIntroKey: 'earn' | 'portfolio';
 }
 
 export const Gatekeeper: React.FC<GatekeeperProps> = ({
@@ -20,6 +22,7 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   flag,
   pageTitle,
   illustrations,
+  subtitleIntroKey,
 }) => {
   const { status, error } = useGatekeeperStatus(flag);
   const { t } = useTranslation();
@@ -35,11 +38,17 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
     }
   }, [status, setSnackbarState, t, error]);
 
+  const title = t('gatekeeper.title', { pageTitle });
+  const subtitleIntro = t(`gatekeeper.subtitle.intro.${subtitleIntroKey}`);
+  const notConnectedSubtitle = t('gatekeeper.subtitle.notConnected');
+  const noAccessSubtitle = t('gatekeeper.subtitle.noAccess');
+
   if (status === GatekeeperStatus.REQUIRES_CONNECT) {
     return (
       <GatekeeperOverlayLayout
-        title={t('gatekeeper.title', { pageTitle })}
-        subtitle={t('gatekeeper.subtitle.notConnected')}
+        title={title}
+        subtitleIntro={subtitleIntro}
+        subtitle={notConnectedSubtitle}
         illustrations={illustrations}
       >
         <ConnectButton />
@@ -50,8 +59,9 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   if (status === GatekeeperStatus.LOADING_ACCESS) {
     return (
       <GatekeeperOverlayLayout
-        title={t('gatekeeper.title', { pageTitle })}
-        subtitle={t('gatekeeper.subtitle.notConnected')}
+        title={title}
+        subtitleIntro={subtitleIntro}
+        subtitle={notConnectedSubtitle}
         illustrations={illustrations}
       >
         <LoadingButton disabled>{t('gatekeeper.connecting')}</LoadingButton>
@@ -65,12 +75,13 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   ) {
     return (
       <GatekeeperOverlayLayout
-        title={t('gatekeeper.title', { pageTitle })}
-        subtitle={t('gatekeeper.subtitle.noAccess')}
+        title={title}
+        subtitleIntro={subtitleIntro}
+        subtitle={noAccessSubtitle}
         illustrations={illustrations}
       >
         <GatekeeperRequestAccessLink
-          href="/"
+          href={GATEKEEPER_REQUEST_ACCESS_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
