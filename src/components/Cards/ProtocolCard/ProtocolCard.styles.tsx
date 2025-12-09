@@ -105,15 +105,25 @@ export const ProtocolCardContentContainer = styled(Box)(({ theme }) => ({
 
 export const ProtocolCardContentHeaderContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexWrap: 'wrap',
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'space-between',
   gap: theme.spacing(1),
   [theme.breakpoints.up('sm')]: {
-    gap: theme.spacing(3),
+    columnGap: theme.spacing(3),
     flexDirection: 'row',
     alignItems: 'center',
   },
+}));
+
+export const ProtocolCardTitleContainer = styled(Stack)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  columnGap: theme.spacing(1.5),
+  rowGap: theme.spacing(1),
 }));
 
 export const ProtocolCardTagsContainer = styled(Stack)(({ theme }) => ({
@@ -156,7 +166,7 @@ export const ProtocolDescriptionModalContentContainer = styled(
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
-  width: 440,
+  width: 488,
   maxWidth: 'calc(100vw - 32px)',
 }));
 
