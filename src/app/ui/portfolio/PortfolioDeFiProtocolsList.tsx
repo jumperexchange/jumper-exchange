@@ -25,12 +25,13 @@ const AnimatedAssetItem = ({ children }: PropsWithChildren) => (
 );
 
 export const PortfolioDeFiProtocolsList = () => {
-  const { data, isAllDataEmpty, isLoading, clearFilters } =
+  const { data, isAllDataEmpty, isLoading, clearFilters, sortBy, order } =
     usePortfolioDeFiPositionsFiltering();
 
   const protocolGroups = useFormatDisplayDeFiPositions(
     data,
     (position) => `${position.protocol.name}-${position.chain.chainId}`,
+    { sortBy, order },
   );
 
   const renderContent = () => {

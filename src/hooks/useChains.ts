@@ -2,6 +2,7 @@ import type { ChainId, ExtendedChain } from '@lifi/sdk';
 import { ChainType, getChains } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
+import { useCallback } from 'react';
 
 export const queryKey = ['chainStats'];
 
@@ -27,9 +28,12 @@ export const useChains = (): ChainProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const getChainById = (id: ChainId) => {
-    return getChainByIdHelper(data?.chains ?? [], id);
-  };
+  const getChainById = useCallback(
+    (id: ChainId) => {
+      return getChainByIdHelper(data?.chains ?? [], id);
+    },
+    [data?.chains],
+  );
 
   return {
     getChainById,

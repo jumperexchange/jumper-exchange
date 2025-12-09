@@ -13,8 +13,10 @@ export async function verifyAnalyticsButtonsAreVisible(page: Page) {
     'analytics-value-apy',
     'analytics-value-tvl',
   ];
-  for (const chartButton of chartButtons) {
-    await page.waitForLoadState('networkidle');
+  await expect(page.getByTestId(chartButtons[0])).toBeVisible();
+
+  // Verify remaining buttons (toBeVisible already waits for elements)
+  for (const chartButton of chartButtons.slice(1)) {
     await expect(page.getByTestId(chartButton)).toBeVisible();
   }
 }

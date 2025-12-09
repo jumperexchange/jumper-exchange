@@ -13,7 +13,7 @@ import {
   getElementByText,
   triggerButtonClick,
 } from './testData/commonFunctions';
-import values from '../tests/testData/values.json' assert { type: 'json' };
+import values from './testData/values.json' with { type: 'json' };
 import {
   closeWelcomeScreen,
   itemInMenu,
@@ -31,7 +31,7 @@ test.describe('Main Menu flows', () => {
     qase(12, 'Should be able to open menu and close it'),
     async ({ page }) => {
       await openOrCloseMainMenu(page);
-      await checkTheNumberOfMenuItems(page, 5);
+      await checkTheNumberOfMenuItems(page, 6);
       await page.locator('body').click();
       await expect(page.getByRole('menu')).not.toBeVisible();
     },

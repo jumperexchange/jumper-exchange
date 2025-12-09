@@ -30,13 +30,17 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
       class="MuiBox-root css-pqmg6p"
     >
       <div
-        class="MuiBox-root css-7tc8bc"
+        class="MuiBox-root css-15r232g"
       >
-        <span
-          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        <div
+          class="MuiStack-root css-h176g1-MuiStack-root"
         >
-          Moonwell Flagship USDC on base
-        </span>
+          <span
+            class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+          >
+            Moonwell Flagship USDC on base
+          </span>
+        </div>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
         >
@@ -61,17 +65,19 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1iv6zei-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1cwb1i5-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
-Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).
-
-Description from vault manager:
-
-The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.
-
-[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)
+Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://a...
+         
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-xtrp8g-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          earn.actions.seeMore
+        </button>
       </p>
       <a
         class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
@@ -139,13 +145,17 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
       class="MuiBox-root css-pqmg6p"
     >
       <div
-        class="MuiBox-root css-7tc8bc"
+        class="MuiBox-root css-15r232g"
       >
-        <span
-          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        <div
+          class="MuiStack-root css-h176g1-MuiStack-root"
         >
-          Moonwell Flagship USDC on base
-        </span>
+          <span
+            class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+          >
+            Moonwell Flagship USDC on base
+          </span>
+        </div>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
         >
@@ -170,17 +180,19 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1iv6zei-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1cwb1i5-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
-Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).
-
-Description from vault manager:
-
-The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.
-
-[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)
+Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://a...
+         
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-xtrp8g-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          earn.actions.seeMore
+        </button>
       </p>
       <a
         class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
@@ -267,13 +279,17 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
       class="MuiBox-root css-pqmg6p"
     >
       <div
-        class="MuiBox-root css-7tc8bc"
+        class="MuiBox-root css-15r232g"
       >
-        <span
-          class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+        <div
+          class="MuiStack-root css-h176g1-MuiStack-root"
         >
-          Moonwell Flagship USDC on base
-        </span>
+          <span
+            class="MuiTypography-root MuiTypography-titleMedium css-leioi1-MuiTypography-root"
+          >
+            Moonwell Flagship USDC on base
+          </span>
+        </div>
         <div
           class="MuiStack-root css-qzuiar-MuiStack-root"
         >
@@ -298,17 +314,19 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
         </div>
       </div>
       <p
-        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1iv6zei-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyMediumParagraph css-1cwb1i5-MuiTypography-root"
       >
         Development Value - This value is used in our e2e tests workflows!!!
 
-Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).
-
-Description from vault manager:
-
-The Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.
-
-[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)
+Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://a...
+         
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-xtrp8g-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          earn.actions.seeMore
+        </button>
       </p>
       <a
         class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"

@@ -23,9 +23,11 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_f_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex--50-_r_g_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -61,6 +63,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_i_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -95,6 +98,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                     height="90"
                     id="recharts-area-_r_h_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
                     width="90"
                   />
@@ -105,6 +109,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                     fill-opacity="1"
                     height="90"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
                     width="90"
                   />
@@ -115,30 +120,39 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_j_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_k_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_l_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_m_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-600-_r_n_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_o_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_p_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_q_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_r_"
+          tabindex="-1"
         />
       </svg>
     </div>
@@ -169,6 +183,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_1_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -181,8 +196,8 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -190,8 +205,8 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -199,8 +214,8 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -208,8 +223,8 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -221,9 +236,9 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -234,9 +249,9 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -247,9 +262,9 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -260,9 +275,9 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -273,9 +288,9 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -286,6 +301,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_2_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -293,8 +309,8 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -321,6 +337,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_4_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -335,7 +352,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -349,24 +366,26 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,29.418604651162788C53.583333333333336,24.598473837209298,54.166666666666664,19.778343023255804,54.75,19.778343023255804C55.333333333333336,19.778343023255804,55.916666666666664,33.65552325581395,56.5,33.65552325581395C57.083333333333336,33.65552325581395,57.666666666666664,29.651162790697672,58.25,29.651162790697672C58.833333333333336,29.651162790697672,59.416666666666664,31.744186046511622,60,31.744186046511622C60.583333333333336,31.744186046511622,61.166666666666664,17.634447674418603,61.75,17.634447674418603C62.333333333333336,17.634447674418603,62.916666666666664,34.56031976744186,63.5,34.56031976744186C64.08333333333333,34.56031976744186,64.66666666666667,27.36555232558139,65.25,27.36555232558139C65.83333333333333,27.36555232558139,66.41666666666667,27.82340116279069,67,27.82340116279069C67.58333333333333,27.82340116279069,68.16666666666667,21.529796511627904,68.75,21.529796511627904C69.33333333333333,21.529796511627904,69.91666666666667,26.448643410852707,70.5,28.34665697674418C71.08333333333333,30.24467054263565,71.66666666666667,32.917877906976734,72.25,32.917877906976734C72.83333333333333,32.917877906976734,73.41666666666667,27.361918604651162,74,27.361918604651162C74.58333333333333,27.361918604651162,75.16666666666667,33.03415697674418,75.75,33.03415697674418C76.33333333333333,33.03415697674418,76.91666666666667,32.697432170542626,77.5,32.02398255813953C78.08333333333333,31.35053294573643,78.66666666666667,24.553052325581383,79.25,24.553052325581383C79.83333333333333,24.553052325581383,80.41666666666667,25.228318798449607,81,25.577761627906973C81.58333333333333,25.92720445736434,82.16666666666667,25.935077519379842,82.75,26.649709302325576C83.33333333333333,27.36434108527131,83.91666666666667,33.862645348837205,84.5,33.862645348837205C85.08333333333333,33.862645348837205,85.66666666666667,25.64316860465116,86.25,25.64316860465116C86.83333333333333,25.64316860465116,87.41666666666667,32.278343023255815,88,32.278343023255815C88.58333333333333,32.278343023255815,89.16666666666667,26.63154069767441,89.75,26.63154069767441C90.33333333333333,26.63154069767441,90.91666666666667,27.85731589147286,91.5,28.4047965116279C92.08333333333333,28.95227713178294,92.66666666666667,29.91642441860465,93.25,29.91642441860465C93.83333333333333,29.91642441860465,94.41666666666667,22.458212209302324,95,14.999999999999996L95,65C94.41666666666667,65,93.83333333333333,65,93.25,65C92.66666666666667,65,92.08333333333333,65,91.5,65C90.91666666666667,65,90.33333333333333,65,89.75,65C89.16666666666667,65,88.58333333333333,65,88,65C87.41666666666667,65,86.83333333333333,65,86.25,65C85.66666666666667,65,85.08333333333333,65,84.5,65C83.91666666666667,65,83.33333333333333,65,82.75,65C82.16666666666667,65,81.58333333333333,65,81,65C80.41666666666667,65,79.83333333333333,65,79.25,65C78.66666666666667,65,78.08333333333333,65,77.5,65C76.91666666666667,65,76.33333333333333,65,75.75,65C75.16666666666667,65,74.58333333333333,65,74,65C73.41666666666667,65,72.83333333333333,65,72.25,65C71.66666666666667,65,71.08333333333333,65,70.5,65C69.91666666666667,65,69.33333333333333,65,68.75,65C68.16666666666667,65,67.58333333333333,65,67,65C66.41666666666667,65,65.83333333333333,65,65.25,65C64.66666666666667,65,64.08333333333333,65,63.5,65C62.916666666666664,65,62.333333333333336,65,61.75,65C61.166666666666664,65,60.583333333333336,65,60,65C59.416666666666664,65,58.833333333333336,65,58.25,65C57.666666666666664,65,57.083333333333336,65,56.5,65C55.916666666666664,65,55.333333333333336,65,54.75,65C54.166666666666664,65,53.583333333333336,65,53,65Z"
+                    d="M65,29.418604651162788C65.41666666666667,24.598473837209294,65.83333333333333,19.778343023255804,66.25,19.778343023255804C66.66666666666667,19.778343023255804,67.08333333333333,33.65552325581395,67.5,33.65552325581395C67.91666666666667,33.65552325581395,68.33333333333333,29.651162790697672,68.75,29.651162790697672C69.16666666666667,29.651162790697672,69.58333333333333,31.744186046511622,70,31.744186046511622C70.41666666666667,31.744186046511622,70.83333333333333,17.634447674418603,71.25,17.634447674418603C71.66666666666667,17.634447674418603,72.08333333333333,34.56031976744186,72.5,34.56031976744186C72.91666666666667,34.56031976744186,73.33333333333333,27.36555232558139,73.75,27.36555232558139C74.16666666666667,27.36555232558139,74.58333333333333,27.82340116279069,75,27.82340116279069C75.41666666666667,27.82340116279069,75.83333333333333,21.529796511627904,76.25,21.529796511627904C76.66666666666667,21.529796511627904,77.08333333333333,26.448643410852707,77.5,28.34665697674418C77.91666666666667,30.24467054263565,78.33333333333333,32.917877906976734,78.75,32.917877906976734C79.16666666666667,32.917877906976734,79.58333333333333,27.361918604651162,80,27.361918604651162C80.41666666666667,27.361918604651162,80.83333333333333,33.03415697674418,81.25,33.03415697674418C81.66666666666667,33.03415697674418,82.08333333333333,32.697432170542626,82.5,32.02398255813953C82.91666666666667,31.35053294573643,83.33333333333333,24.553052325581383,83.75,24.553052325581383C84.16666666666667,24.553052325581383,84.58333333333333,25.228318798449607,85,25.577761627906973C85.41666666666667,25.92720445736434,85.83333333333333,25.935077519379842,86.25,26.649709302325576C86.66666666666667,27.36434108527131,87.08333333333333,33.862645348837205,87.5,33.862645348837205C87.91666666666667,33.862645348837205,88.33333333333333,25.64316860465116,88.75,25.64316860465116C89.16666666666667,25.64316860465116,89.58333333333333,32.278343023255815,90,32.278343023255815C90.41666666666667,32.278343023255815,90.83333333333333,26.63154069767441,91.25,26.63154069767441C91.66666666666667,26.63154069767441,92.08333333333333,27.85731589147286,92.5,28.4047965116279C92.91666666666667,28.95227713178294,93.33333333333333,29.91642441860465,93.75,29.91642441860465C94.16666666666667,29.91642441860465,94.58333333333333,22.458212209302324,95,14.999999999999996L95,65C94.58333333333333,65,94.16666666666667,65,93.75,65C93.33333333333333,65,92.91666666666667,65,92.5,65C92.08333333333333,65,91.66666666666667,65,91.25,65C90.83333333333333,65,90.41666666666667,65,90,65C89.58333333333333,65,89.16666666666667,65,88.75,65C88.33333333333333,65,87.91666666666667,65,87.5,65C87.08333333333333,65,86.66666666666667,65,86.25,65C85.83333333333333,65,85.41666666666667,65,85,65C84.58333333333333,65,84.16666666666667,65,83.75,65C83.33333333333333,65,82.91666666666667,65,82.5,65C82.08333333333333,65,81.66666666666667,65,81.25,65C80.83333333333333,65,80.41666666666667,65,80,65C79.58333333333333,65,79.16666666666667,65,78.75,65C78.33333333333333,65,77.91666666666667,65,77.5,65C77.08333333333333,65,76.66666666666667,65,76.25,65C75.83333333333333,65,75.41666666666667,65,75,65C74.58333333333333,65,74.16666666666667,65,73.75,65C73.33333333333333,65,72.91666666666667,65,72.5,65C72.08333333333333,65,71.66666666666667,65,71.25,65C70.83333333333333,65,70.41666666666667,65,70,65C69.58333333333333,65,69.16666666666667,65,68.75,65C68.33333333333333,65,67.91666666666667,65,67.5,65C67.08333333333333,65,66.66666666666667,65,66.25,65C65.83333333333333,65,65.41666666666667,65,65,65Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_3_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,29.418604651162788C53.583333333333336,24.598473837209298,54.166666666666664,19.778343023255804,54.75,19.778343023255804C55.333333333333336,19.778343023255804,55.916666666666664,33.65552325581395,56.5,33.65552325581395C57.083333333333336,33.65552325581395,57.666666666666664,29.651162790697672,58.25,29.651162790697672C58.833333333333336,29.651162790697672,59.416666666666664,31.744186046511622,60,31.744186046511622C60.583333333333336,31.744186046511622,61.166666666666664,17.634447674418603,61.75,17.634447674418603C62.333333333333336,17.634447674418603,62.916666666666664,34.56031976744186,63.5,34.56031976744186C64.08333333333333,34.56031976744186,64.66666666666667,27.36555232558139,65.25,27.36555232558139C65.83333333333333,27.36555232558139,66.41666666666667,27.82340116279069,67,27.82340116279069C67.58333333333333,27.82340116279069,68.16666666666667,21.529796511627904,68.75,21.529796511627904C69.33333333333333,21.529796511627904,69.91666666666667,26.448643410852707,70.5,28.34665697674418C71.08333333333333,30.24467054263565,71.66666666666667,32.917877906976734,72.25,32.917877906976734C72.83333333333333,32.917877906976734,73.41666666666667,27.361918604651162,74,27.361918604651162C74.58333333333333,27.361918604651162,75.16666666666667,33.03415697674418,75.75,33.03415697674418C76.33333333333333,33.03415697674418,76.91666666666667,32.697432170542626,77.5,32.02398255813953C78.08333333333333,31.35053294573643,78.66666666666667,24.553052325581383,79.25,24.553052325581383C79.83333333333333,24.553052325581383,80.41666666666667,25.228318798449607,81,25.577761627906973C81.58333333333333,25.92720445736434,82.16666666666667,25.935077519379842,82.75,26.649709302325576C83.33333333333333,27.36434108527131,83.91666666666667,33.862645348837205,84.5,33.862645348837205C85.08333333333333,33.862645348837205,85.66666666666667,25.64316860465116,86.25,25.64316860465116C86.83333333333333,25.64316860465116,87.41666666666667,32.278343023255815,88,32.278343023255815C88.58333333333333,32.278343023255815,89.16666666666667,26.63154069767441,89.75,26.63154069767441C90.33333333333333,26.63154069767441,90.91666666666667,27.85731589147286,91.5,28.4047965116279C92.08333333333333,28.95227713178294,92.66666666666667,29.91642441860465,93.25,29.91642441860465C93.83333333333333,29.91642441860465,94.41666666666667,22.458212209302324,95,14.999999999999996"
+                    d="M65,29.418604651162788C65.41666666666667,24.598473837209294,65.83333333333333,19.778343023255804,66.25,19.778343023255804C66.66666666666667,19.778343023255804,67.08333333333333,33.65552325581395,67.5,33.65552325581395C67.91666666666667,33.65552325581395,68.33333333333333,29.651162790697672,68.75,29.651162790697672C69.16666666666667,29.651162790697672,69.58333333333333,31.744186046511622,70,31.744186046511622C70.41666666666667,31.744186046511622,70.83333333333333,17.634447674418603,71.25,17.634447674418603C71.66666666666667,17.634447674418603,72.08333333333333,34.56031976744186,72.5,34.56031976744186C72.91666666666667,34.56031976744186,73.33333333333333,27.36555232558139,73.75,27.36555232558139C74.16666666666667,27.36555232558139,74.58333333333333,27.82340116279069,75,27.82340116279069C75.41666666666667,27.82340116279069,75.83333333333333,21.529796511627904,76.25,21.529796511627904C76.66666666666667,21.529796511627904,77.08333333333333,26.448643410852707,77.5,28.34665697674418C77.91666666666667,30.24467054263565,78.33333333333333,32.917877906976734,78.75,32.917877906976734C79.16666666666667,32.917877906976734,79.58333333333333,27.361918604651162,80,27.361918604651162C80.41666666666667,27.361918604651162,80.83333333333333,33.03415697674418,81.25,33.03415697674418C81.66666666666667,33.03415697674418,82.08333333333333,32.697432170542626,82.5,32.02398255813953C82.91666666666667,31.35053294573643,83.33333333333333,24.553052325581383,83.75,24.553052325581383C84.16666666666667,24.553052325581383,84.58333333333333,25.228318798449607,85,25.577761627906973C85.41666666666667,25.92720445736434,85.83333333333333,25.935077519379842,86.25,26.649709302325576C86.66666666666667,27.36434108527131,87.08333333333333,33.862645348837205,87.5,33.862645348837205C87.91666666666667,33.862645348837205,88.33333333333333,25.64316860465116,88.75,25.64316860465116C89.16666666666667,25.64316860465116,89.58333333333333,32.278343023255815,90,32.278343023255815C90.41666666666667,32.278343023255815,90.83333333333333,26.63154069767441,91.25,26.63154069767441C91.66666666666667,26.63154069767441,92.08333333333333,27.85731589147286,92.5,28.4047965116279C92.91666666666667,28.95227713178294,93.33333333333333,29.91642441860465,93.75,29.91642441860465C94.16666666666667,29.91642441860465,94.58333333333333,22.458212209302324,95,14.999999999999996"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -375,15 +394,19 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_5_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_6_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_7_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_8_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -394,12 +417,6 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
               <g
                 class="recharts-cartesian-axis-tick-lines recharts-xAxis-tick-lines"
               >
-                <g
-                  class="recharts-layer recharts-cartesian-axis-tick"
-                />
-                <g
-                  class="recharts-layer recharts-cartesian-axis-tick"
-                />
                 <g
                   class="recharts-layer recharts-cartesian-axis-tick"
                 />
@@ -454,18 +471,23 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_9_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_a_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_b_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_c_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_d_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -482,13 +504,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -506,15 +528,15 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="58.25"
+                width="30"
+                x="70"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="58.25"
+                  x="70"
                 >
-                  04 Jan 2023
+                  05 Jan 2023
                 </tspan>
               </text>
             </g>
@@ -530,15 +552,15 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="75"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="75"
                 >
-                  08 Jan 2023
+                  10 Jan 2023
                 </tspan>
               </text>
             </g>
@@ -554,37 +576,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="68.75"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="68.75"
-                >
-                  11 Jan 2023
-                </tspan>
-              </text>
-            </g>
-            <g
-              class="recharts-layer recharts-cartesian-axis-tick-label"
-            >
-              <text
-                class="recharts-text recharts-cartesian-axis-tick-value"
-                fill="var(--jumper-palette-text-secondary)"
-                font-size="10"
-                font-weight="400"
-                height="30"
-                orientation="bottom"
-                stroke="none"
-                text-anchor="middle"
-                width="42"
-                x="74"
-                y="85"
-              >
-                <tspan
-                  dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   15 Jan 2023
                 </tspan>
@@ -602,15 +600,15 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="79.25"
+                width="30"
+                x="85"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="79.25"
+                  x="85"
                 >
-                  18 Jan 2023
+                  20 Jan 2023
                 </tspan>
               </text>
             </g>
@@ -626,15 +624,15 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="90"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="90"
                 >
-                  22 Jan 2023
+                  24 Jan 2023
                 </tspan>
               </text>
             </g>
@@ -650,31 +648,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="89.75"
-                y="85"
-              >
-                <tspan
-                  dy="0.71em"
-                  x="89.75"
-                >
-                  25 Jan 2023
-                </tspan>
-              </text>
-            </g>
-            <g
-              class="recharts-layer recharts-cartesian-axis-tick-label"
-            >
-              <text
-                class="recharts-text recharts-cartesian-axis-tick-value"
-                fill="var(--jumper-palette-text-secondary)"
-                font-size="10"
-                font-weight="400"
-                height="30"
-                orientation="bottom"
-                stroke="none"
-                text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -702,13 +676,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -726,13 +700,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   41.279999999999994
                 </tspan>
@@ -750,13 +724,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   82.55999999999999
                 </tspan>
@@ -774,13 +748,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   123.83999999999997
                 </tspan>
@@ -798,13 +772,13 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   165.11999999999998
                 </tspan>
@@ -841,6 +815,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_3h_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -853,8 +828,8 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -862,8 +837,8 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -871,8 +846,8 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -880,8 +855,8 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -893,9 +868,9 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -906,9 +881,9 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -919,9 +894,9 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -932,9 +907,9 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -945,9 +920,9 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -958,6 +933,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_3i_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -965,8 +941,8 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -993,6 +969,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_3k_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -1007,7 +984,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -1021,24 +998,26 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,11.66666666666667C55.8,35,58.6,58.33333333333333,61.4,58.33333333333333C64.2,58.33333333333333,67,25,69.8,25C72.6,25,75.4,51.66666666666667,78.2,51.66666666666667C81,51.66666666666667,83.8,18.333333333333332,86.6,18.333333333333332C89.39999999999999,18.333333333333332,92.2,41.66666666666667,95,65L95,45C92.2,45,89.39999999999999,45,86.6,45C83.8,45,81,45,78.2,45C75.4,45,72.6,45,69.8,45C67,45,64.2,45,61.4,45C58.6,45,55.8,45,53,45Z"
+                    d="M65,11.66666666666667C67,35,69,58.33333333333333,71,58.33333333333333C73,58.33333333333333,75,25,77,25C79,25,81,51.66666666666667,83,51.66666666666667C85,51.66666666666667,87,18.333333333333332,89,18.333333333333332C91,18.333333333333332,93,41.66666666666667,95,65L95,45C93,45,91,45,89,45C87,45,85,45,83,45C81,45,79,45,77,45C75,45,73,45,71,45C69,45,67,45,65,45Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_3j_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,11.66666666666667C55.8,35,58.6,58.33333333333333,61.4,58.33333333333333C64.2,58.33333333333333,67,25,69.8,25C72.6,25,75.4,51.66666666666667,78.2,51.66666666666667C81,51.66666666666667,83.8,18.333333333333332,86.6,18.333333333333332C89.39999999999999,18.333333333333332,92.2,41.66666666666667,95,65"
+                    d="M65,11.66666666666667C67,35,69,58.33333333333333,71,58.33333333333333C73,58.33333333333333,75,25,77,25C79,25,81,51.66666666666667,83,51.66666666666667C85,51.66666666666667,87,18.333333333333332,89,18.333333333333332C91,18.333333333333332,93,41.66666666666667,95,65"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -1047,15 +1026,19 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_3l_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_3m_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_3n_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_3o_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -1117,18 +1100,23 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_3p_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_3q_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_3r_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_3s_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_3t_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -1145,13 +1133,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -1169,13 +1157,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="61.4"
+                width="30"
+                x="71"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="61.4"
+                  x="71"
                 >
                   02 Jan 2023
                 </tspan>
@@ -1193,13 +1181,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="69.8"
+                width="30"
+                x="77"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="69.8"
+                  x="77"
                 >
                   03 Jan 2023
                 </tspan>
@@ -1217,13 +1205,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="78.2"
+                width="30"
+                x="83"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="78.2"
+                  x="83"
                 >
                   04 Jan 2023
                 </tspan>
@@ -1241,13 +1229,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="86.6"
+                width="30"
+                x="89"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="86.6"
+                  x="89"
                 >
                   05 Jan 2023
                 </tspan>
@@ -1265,7 +1253,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -1293,13 +1281,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -30
                 </tspan>
@@ -1317,13 +1305,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -7.5
                 </tspan>
@@ -1341,13 +1329,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   15
                 </tspan>
@@ -1365,13 +1353,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   37.5
                 </tspan>
@@ -1389,13 +1377,13 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   60
                 </tspan>
@@ -1432,6 +1420,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_1b_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -1444,8 +1433,8 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -1453,8 +1442,8 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -1462,8 +1451,8 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -1471,8 +1460,8 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -1484,9 +1473,9 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -1497,9 +1486,9 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -1510,9 +1499,9 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -1523,9 +1512,9 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -1536,9 +1525,9 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -1549,6 +1538,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_1c_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -1556,8 +1546,8 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -1584,6 +1574,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_1e_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -1598,7 +1589,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -1612,24 +1603,26 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,65C56.5,65,60,65,63.5,65C67,65,70.5,65,74,65C77.5,65,81,65,84.5,65C88,65,91.5,65,95,65L95,5C91.5,5,88,5,84.5,5C81,5,77.5,5,74,5C70.5,5,67,5,63.5,5C60,5,56.5,5,53,5Z"
+                    d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65L95,5C92.5,5,90,5,87.5,5C85,5,82.5,5,80,5C77.5,5,75,5,72.5,5C70,5,67.5,5,65,5Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_1d_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,65C56.5,65,60,65,63.5,65C67,65,70.5,65,74,65C77.5,65,81,65,84.5,65C88,65,91.5,65,95,65"
+                    d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -1638,15 +1631,19 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_1f_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_1g_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_1h_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_1i_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -1705,18 +1702,23 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_1j_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_1k_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_1l_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_1m_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_1n_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -1733,13 +1735,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -1757,13 +1759,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -1781,13 +1783,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -1805,13 +1807,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -1829,7 +1831,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -1857,13 +1859,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -5
                 </tspan>
@@ -1881,13 +1883,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -3.75
                 </tspan>
@@ -1905,13 +1907,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -2.5
                 </tspan>
@@ -1929,13 +1931,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -1.25
                 </tspan>
@@ -1953,13 +1955,13 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -1996,6 +1998,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
         <desc />
         <g
           id="recharts-zindex--100-_r_1p_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -2008,8 +2011,8 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -2017,8 +2020,8 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -2026,8 +2029,8 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -2035,8 +2038,8 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -2048,9 +2051,9 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -2061,9 +2064,9 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -2074,9 +2077,9 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -2087,9 +2090,9 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -2100,9 +2103,9 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -2113,6 +2116,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
         </g>
         <g
           id="recharts-zindex--50-_r_1q_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -2120,8 +2124,8 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -2148,6 +2152,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
         </defs>
         <g
           id="recharts-zindex-100-_r_1s_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -2162,7 +2167,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                   <rect
                     height="36"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -2176,24 +2181,26 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,35C56.5,35,60,35,63.5,35C67,35,70.5,35,74,35C77.5,35,81,35,84.5,35C88,35,91.5,35,95,35L95,5C91.5,5,88,5,84.5,5C81,5,77.5,5,74,5C70.5,5,67,5,63.5,5C60,5,56.5,5,53,5Z"
+                    d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,5C92.5,5,90,5,87.5,5C85,5,82.5,5,80,5C77.5,5,75,5,72.5,5C70,5,67.5,5,65,5Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_1r_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,35C56.5,35,60,35,63.5,35C67,35,70.5,35,74,35C77.5,35,81,35,84.5,35C88,35,91.5,35,95,35"
+                    d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -2202,15 +2209,19 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
         </g>
         <g
           id="recharts-zindex-200-_r_1t_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_1u_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_1v_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_20_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -2269,18 +2280,23 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
         </g>
         <g
           id="recharts-zindex-600-_r_21_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_22_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_23_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_24_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_25_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -2297,13 +2313,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -2321,13 +2337,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -2345,13 +2361,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -2369,13 +2385,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -2393,7 +2409,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -2421,13 +2437,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -1
                 </tspan>
@@ -2445,13 +2461,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -0.75
                 </tspan>
@@ -2469,13 +2485,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -0.5
                 </tspan>
@@ -2493,13 +2509,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -0.25
                 </tspan>
@@ -2517,13 +2533,13 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -2560,6 +2576,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_27_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -2572,8 +2589,8 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -2581,8 +2598,8 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -2590,8 +2607,8 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -2599,8 +2616,8 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -2612,9 +2629,9 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -2625,9 +2642,9 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -2638,9 +2655,9 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -2651,9 +2668,9 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -2664,9 +2681,9 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -2677,6 +2694,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_28_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -2684,8 +2702,8 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -2712,6 +2730,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_2a_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -2726,7 +2745,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -2740,24 +2759,26 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,29C55.8,47,58.6,65,61.4,65C64.2,65,67,16.999999999999996,69.8,16.999999999999996C72.6,16.999999999999996,75.4,35,78.2,41C81,46.99999999999999,83.8,53,86.6,53C89.39999999999999,53,92.2,38.599999999999994,95,24.199999999999996L95,5C92.2,5,89.39999999999999,5,86.6,5C83.8,5,81,5,78.2,5C75.4,5,72.6,5,69.8,5C67,5,64.2,5,61.4,5C58.6,5,55.8,5,53,5Z"
+                    d="M65,29C67,47,69,65,71,65C73,65,75,16.999999999999996,77,16.999999999999996C79,16.999999999999996,81,35,83,41C85,47,87,53,89,53C91,53,93,38.599999999999994,95,24.199999999999996L95,5C93,5,91,5,89,5C87,5,85,5,83,5C81,5,79,5,77,5C75,5,73,5,71,5C69,5,67,5,65,5Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_29_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,29C55.8,47,58.6,65,61.4,65C64.2,65,67,16.999999999999996,69.8,16.999999999999996C72.6,16.999999999999996,75.4,35,78.2,41C81,46.99999999999999,83.8,53,86.6,53C89.39999999999999,53,92.2,38.599999999999994,95,24.199999999999996"
+                    d="M65,29C67,47,69,65,71,65C73,65,75,16.999999999999996,77,16.999999999999996C79,16.999999999999996,81,35,83,41C85,47,87,53,89,53C91,53,93,38.599999999999994,95,24.199999999999996"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -2766,15 +2787,19 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_2b_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_2c_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_2d_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_2e_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -2836,18 +2861,23 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_2f_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_2g_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_2h_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_2i_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_2j_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -2864,13 +2894,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -2888,13 +2918,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="61.4"
+                width="30"
+                x="71"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="61.4"
+                  x="71"
                 >
                   02 Jan 2023
                 </tspan>
@@ -2912,13 +2942,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="69.8"
+                width="30"
+                x="77"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="69.8"
+                  x="77"
                 >
                   03 Jan 2023
                 </tspan>
@@ -2936,13 +2966,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="78.2"
+                width="30"
+                x="83"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="78.2"
+                  x="83"
                 >
                   04 Jan 2023
                 </tspan>
@@ -2960,13 +2990,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="86.6"
+                width="30"
+                x="89"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="86.6"
+                  x="89"
                 >
                   05 Jan 2023
                 </tspan>
@@ -2984,7 +3014,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -3012,13 +3042,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -25
                 </tspan>
@@ -3036,13 +3066,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -18.75
                 </tspan>
@@ -3060,13 +3090,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -12.5
                 </tspan>
@@ -3084,13 +3114,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   -6.25
                 </tspan>
@@ -3108,13 +3138,13 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -3151,6 +3181,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_2l_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -3163,8 +3194,8 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -3172,8 +3203,8 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -3181,8 +3212,8 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -3190,8 +3221,8 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -3203,9 +3234,9 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -3216,9 +3247,9 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -3229,9 +3260,9 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -3242,9 +3273,9 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -3255,9 +3286,9 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -3268,6 +3299,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_2m_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -3275,8 +3307,8 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -3303,6 +3335,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_2o_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -3317,7 +3350,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -3331,24 +3364,26 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,14.999999999999996C56.5,14.999999999999996,60,14.999999999999996,63.5,14.999999999999996C67,14.999999999999996,70.5,14.999999999999996,74,14.999999999999996C77.5,14.999999999999996,81,14.999999999999996,84.5,14.999999999999996C88,14.999999999999996,91.5,14.999999999999996,95,14.999999999999996L95,65C91.5,65,88,65,84.5,65C81,65,77.5,65,74,65C70.5,65,67,65,63.5,65C60,65,56.5,65,53,65Z"
+                    d="M65,14.999999999999996C67.5,14.999999999999996,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,14.999999999999996,80,14.999999999999996C82.5,14.999999999999996,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,14.999999999999996,95,14.999999999999996L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_2n_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,14.999999999999996C56.5,14.999999999999996,60,14.999999999999996,63.5,14.999999999999996C67,14.999999999999996,70.5,14.999999999999996,74,14.999999999999996C77.5,14.999999999999996,81,14.999999999999996,84.5,14.999999999999996C88,14.999999999999996,91.5,14.999999999999996,95,14.999999999999996"
+                    d="M65,14.999999999999996C67.5,14.999999999999996,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,14.999999999999996,80,14.999999999999996C82.5,14.999999999999996,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,14.999999999999996,95,14.999999999999996"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -3357,15 +3392,19 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_2p_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_2q_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_2r_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_2s_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -3424,18 +3463,23 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_2t_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_2u_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_2v_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_30_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_31_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -3452,13 +3496,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -3476,13 +3520,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -3500,13 +3544,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -3524,13 +3568,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -3548,7 +3592,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -3576,13 +3620,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -3600,13 +3644,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   30
                 </tspan>
@@ -3624,13 +3668,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   60
                 </tspan>
@@ -3648,13 +3692,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   90
                 </tspan>
@@ -3672,13 +3716,13 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   120
                 </tspan>
@@ -3715,6 +3759,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
         <desc />
         <g
           id="recharts-zindex--100-_r_33_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -3727,8 +3772,8 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -3736,8 +3781,8 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -3745,8 +3790,8 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -3754,8 +3799,8 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -3767,9 +3812,9 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -3780,9 +3825,9 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -3793,9 +3838,9 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -3806,9 +3851,9 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -3819,9 +3864,9 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -3832,6 +3877,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
         </g>
         <g
           id="recharts-zindex--50-_r_34_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -3839,8 +3885,8 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -3867,6 +3913,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
         </defs>
         <g
           id="recharts-zindex-100-_r_36_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -3881,7 +3928,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -3895,24 +3942,26 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,35C56.5,35,60,35,63.5,35C67,35,70.5,35,74,35C77.5,35,81,35,84.5,35C88,35,91.5,35,95,35L95,65C91.5,65,88,65,84.5,65C81,65,77.5,65,74,65C70.5,65,67,65,63.5,65C60,65,56.5,65,53,65Z"
+                    d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_35_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,35C56.5,35,60,35,63.5,35C67,35,70.5,35,74,35C77.5,35,81,35,84.5,35C88,35,91.5,35,95,35"
+                    d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -3921,15 +3970,19 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
         </g>
         <g
           id="recharts-zindex-200-_r_37_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_38_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_39_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_3a_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -3988,18 +4041,23 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
         </g>
         <g
           id="recharts-zindex-600-_r_3b_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_3c_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_3d_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_3e_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_3f_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -4016,13 +4074,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -4040,13 +4098,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -4064,13 +4122,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -4088,13 +4146,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -4112,7 +4170,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -4140,13 +4198,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -4164,13 +4222,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.25
                 </tspan>
@@ -4188,13 +4246,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.5
                 </tspan>
@@ -4212,13 +4270,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.75
                 </tspan>
@@ -4236,13 +4294,13 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   1
                 </tspan>
@@ -4284,9 +4342,11 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
           <desc />
           <g
             id="recharts-zindex--100-_r_t_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex--50-_r_u_"
+            tabindex="-1"
           />
           <defs>
             <clippath
@@ -4307,6 +4367,7 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
           </defs>
           <g
             id="recharts-zindex-100-_r_10_"
+            tabindex="-1"
           >
             <g
               class="recharts-layer recharts-area"
@@ -4341,6 +4402,7 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
                       height="90"
                       id="recharts-area-_r_v_"
                       stroke="none"
+                      stroke-width="1"
                       width="90"
                     />
                   </g>
@@ -4350,30 +4412,39 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
           </g>
           <g
             id="recharts-zindex-200-_r_11_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-300-_r_12_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-400-_r_13_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-500-_r_14_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-600-_r_15_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-1000-_r_16_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-1100-_r_17_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-1200-_r_18_"
+            tabindex="-1"
           />
           <g
             id="recharts-zindex-2000-_r_19_"
+            tabindex="-1"
           />
         </svg>
       </div>
@@ -4413,6 +4484,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_4r_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -4425,8 +4497,8 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -4434,8 +4506,8 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -4443,8 +4515,8 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -4452,8 +4524,8 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -4465,9 +4537,9 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -4478,9 +4550,9 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -4491,9 +4563,9 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -4504,9 +4576,9 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -4517,9 +4589,9 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -4530,6 +4602,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_4s_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -4537,8 +4610,8 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -4565,6 +4638,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_4u_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -4579,7 +4653,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -4593,24 +4667,26 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,48.33333333333333C56.5,35.83333333333333,60,23.333333333333336,63.5,23.333333333333336C67,23.333333333333336,70.5,40,74,40C77.5,40,81,14.999999999999996,84.5,14.999999999999996C88,14.999999999999996,91.5,23.33333333333333,95,31.666666666666664L95,65C91.5,65,88,65,84.5,65C81,65,77.5,65,74,65C70.5,65,67,65,63.5,65C60,65,56.5,65,53,65Z"
+                    d="M65,48.33333333333333C67.5,35.83333333333333,70,23.333333333333336,72.5,23.333333333333336C75,23.333333333333336,77.5,40,80,40C82.5,40,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,23.33333333333333,95,31.666666666666664L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_4t_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,48.33333333333333C56.5,35.83333333333333,60,23.333333333333336,63.5,23.333333333333336C67,23.333333333333336,70.5,40,74,40C77.5,40,81,14.999999999999996,84.5,14.999999999999996C88,14.999999999999996,91.5,23.33333333333333,95,31.666666666666664"
+                    d="M65,48.33333333333333C67.5,35.83333333333333,70,23.333333333333336,72.5,23.333333333333336C75,23.333333333333336,77.5,40,80,40C82.5,40,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,23.33333333333333,95,31.666666666666664"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -4619,15 +4695,19 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_4v_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_50_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_51_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_52_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -4686,18 +4766,23 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_53_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_54_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_55_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_56_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_57_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -4714,13 +4799,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -4738,13 +4823,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -4762,13 +4847,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -4786,13 +4871,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -4810,7 +4895,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -4838,13 +4923,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -4862,13 +4947,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   900000
                 </tspan>
@@ -4886,13 +4971,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   1800000
                 </tspan>
@@ -4910,13 +4995,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   2700000
                 </tspan>
@@ -4934,13 +5019,13 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   3600000
                 </tspan>
@@ -4977,6 +5062,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_4d_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -4989,8 +5075,8 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -4998,8 +5084,8 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -5007,8 +5093,8 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -5016,8 +5102,8 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -5029,9 +5115,9 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -5042,9 +5128,9 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -5055,9 +5141,9 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -5068,9 +5154,9 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="19.999999999999993"
@@ -5081,9 +5167,9 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -5094,6 +5180,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_4e_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -5101,8 +5188,8 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -5129,6 +5216,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_4g_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -5143,7 +5231,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -5157,24 +5245,26 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,48.33333333333333C56.5,31.666666666666664,60,14.999999999999996,63.5,14.999999999999996C67,14.999999999999996,70.5,27.499999999999996,74,31.666666666666664C77.5,35.83333333333333,81,40,84.5,40C88,40,91.5,31.666666666666664,95,23.33333333333333L95,65C91.5,65,88,65,84.5,65C81,65,77.5,65,74,65C70.5,65,67,65,63.5,65C60,65,56.5,65,53,65Z"
+                    d="M65,48.33333333333333C67.5,31.666666666666664,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,27.499999999999996,80,31.666666666666664C82.5,35.83333333333333,85,40,87.5,40C90,40,92.5,31.666666666666664,95,23.33333333333333L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_4f_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,48.33333333333333C56.5,31.666666666666664,60,14.999999999999996,63.5,14.999999999999996C67,14.999999999999996,70.5,27.499999999999996,74,31.666666666666664C77.5,35.83333333333333,81,40,84.5,40C88,40,91.5,31.666666666666664,95,23.33333333333333"
+                    d="M65,48.33333333333333C67.5,31.666666666666664,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,27.499999999999996,80,31.666666666666664C82.5,35.83333333333333,85,40,87.5,40C90,40,92.5,31.666666666666664,95,23.33333333333333"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -5183,15 +5273,19 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_4h_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_4i_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_4j_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_4k_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -5250,18 +5344,23 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_4l_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_4m_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_4n_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_4o_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_4p_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -5278,13 +5377,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -5302,13 +5401,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -5326,13 +5425,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -5350,13 +5449,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -5374,7 +5473,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -5402,13 +5501,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -5426,13 +5525,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.0009
                 </tspan>
@@ -5450,13 +5549,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.0018
                 </tspan>
@@ -5474,13 +5573,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="19.999999999999993"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.0027
                 </tspan>
@@ -5498,13 +5597,13 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.0036
                 </tspan>
@@ -5541,6 +5640,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
         <desc />
         <g
           id="recharts-zindex--100-_r_3v_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-grid"
@@ -5553,8 +5653,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="5"
               />
               <rect
@@ -5562,8 +5662,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="20"
               />
               <rect
@@ -5571,8 +5671,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="35"
               />
               <rect
@@ -5580,8 +5680,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 fill="transparent"
                 height="15"
                 stroke="none"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="50"
               />
             </g>
@@ -5593,9 +5693,9 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="65"
@@ -5606,9 +5706,9 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="50"
@@ -5619,9 +5719,9 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="35"
@@ -5632,9 +5732,9 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="20"
@@ -5645,9 +5745,9 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 height="60"
                 stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
                 stroke-dasharray="0"
-                width="42"
-                x="53"
-                x1="53"
+                width="30"
+                x="65"
+                x1="65"
                 x2="95"
                 y="5"
                 y1="5"
@@ -5658,6 +5758,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex--50-_r_40_"
+          tabindex="-1"
         />
         <defs>
           <clippath
@@ -5665,8 +5766,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
           >
             <rect
               height="60"
-              width="42"
-              x="53"
+              width="30"
+              x="65"
               y="5"
             />
           </clippath>
@@ -5693,6 +5794,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
         </defs>
         <g
           id="recharts-zindex-100-_r_42_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-area"
@@ -5707,7 +5809,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   <rect
                     height="66"
                     width="0"
-                    x="53"
+                    x="65"
                     y="0"
                   />
                 </clippath>
@@ -5721,24 +5823,26 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 >
                   <path
                     class="recharts-curve recharts-area-area"
-                    d="M53,65C56.5,65,60,65,63.5,65C67,65,70.5,65,74,65C77.5,65,81,65,84.5,65C88,65,91.5,65,95,65L95,65C91.5,65,88,65,84.5,65C81,65,77.5,65,74,65C70.5,65,67,65,63.5,65C60,65,56.5,65,53,65Z"
+                    d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                     fill="url(#areaGradient)"
                     fill-opacity="1"
                     height="60"
                     id="recharts-area-_r_41_"
                     stroke="none"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                   <path
                     class="recharts-curve recharts-area-curve"
-                    d="M53,65C56.5,65,60,65,63.5,65C67,65,70.5,65,74,65C77.5,65,81,65,84.5,65C88,65,91.5,65,95,65"
+                    d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65"
                     fill="none"
                     fill-opacity="1"
                     height="60"
                     stroke="#E65100"
+                    stroke-width="1"
                     style="transform: translateY(0);"
-                    width="42"
+                    width="30"
                   />
                 </g>
               </g>
@@ -5747,15 +5851,19 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-200-_r_43_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-300-_r_44_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-400-_r_45_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-500-_r_46_"
+          tabindex="-1"
         >
           <g
             class="recharts-layer recharts-cartesian-axis recharts-xAxis xAxis"
@@ -5814,18 +5922,23 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
         </g>
         <g
           id="recharts-zindex-600-_r_47_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1000-_r_48_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1100-_r_49_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-1200-_r_4a_"
+          tabindex="-1"
         />
         <g
           id="recharts-zindex-2000-_r_4b_"
+          tabindex="-1"
         >
           <g
             class="recharts-cartesian-axis-tick-labels recharts-xAxis-tick-labels"
@@ -5842,13 +5955,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="53"
+                width="30"
+                x="65"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="53"
+                  x="65"
                 >
                   01 Jan 2023
                 </tspan>
@@ -5866,13 +5979,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="63.5"
+                width="30"
+                x="72.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="63.5"
+                  x="72.5"
                 >
                   02 Jan 2023
                 </tspan>
@@ -5890,13 +6003,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="74"
+                width="30"
+                x="80"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="74"
+                  x="80"
                 >
                   03 Jan 2023
                 </tspan>
@@ -5914,13 +6027,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
-                x="84.5"
+                width="30"
+                x="87.5"
                 y="85"
               >
                 <tspan
                   dy="0.71em"
-                  x="84.5"
+                  x="87.5"
                 >
                   04 Jan 2023
                 </tspan>
@@ -5938,7 +6051,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="bottom"
                 stroke="none"
                 text-anchor="middle"
-                width="42"
+                width="30"
                 x="95"
                 y="85"
               >
@@ -5966,13 +6079,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="65"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0
                 </tspan>
@@ -5990,13 +6103,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="50"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.25
                 </tspan>
@@ -6014,13 +6127,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="35"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.5
                 </tspan>
@@ -6038,13 +6151,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="20"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   0.75
                 </tspan>
@@ -6062,13 +6175,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 orientation="left"
                 stroke="none"
                 text-anchor="end"
-                width="48"
-                x="39"
+                width="60"
+                x="51"
                 y="5"
               >
                 <tspan
                   dy="0.355em"
-                  x="39"
+                  x="51"
                 >
                   1
                 </tspan>
