@@ -75,7 +75,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     handleMultisigEnvironmentCheck();
   }, [account, handleMultisigEnvironmentCheck]);
 
-  const handleExploreButton = () => {
+  const handleExploreButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     const blockchainExplorerUrl = activeChain?.metamask?.blockExplorerUrls?.[0];
     const url = `${blockchainExplorerUrl}/address/${account.address}`;
 
@@ -100,7 +101,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     }
   };
 
-  const handleScanButton = () => {
+  const handleScanButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     account.chainId && closeAllMenus();
     const url = `${JUMPER_SCAN_PATH}/wallet/${account.address}`;
 
@@ -112,7 +114,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     router.push(url);
   };
 
-  const handleCopyButton = () => {
+  const handleCopyButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     if (isMultisigEnvironment) {
       return;
     }
@@ -125,7 +128,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     });
   };
 
-  const handleDisconnect = () => {
+  const handleDisconnect = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     const walletAddress = account.address;
     if (!walletAddress) {
       return;
@@ -181,7 +185,7 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
         <ButtonTransparent
           size="small"
           disabled={isMultisigEnvironment}
-          onClick={() => handleCopyButton()}
+          onClick={handleCopyButton}
           sx={(theme) => ({
             background: 'transparent !important',
           })}
@@ -192,18 +196,16 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
         </ButtonTransparent>
       </WalletInfoContainer>
       <Stack direction="row" alignItems="flex-end" spacing={1}>
-        <DarkIconButton size="small" onClick={() => handleExploreButton()}>
+        <DarkIconButton size="small" onClick={handleExploreButton}>
           <OpenInNewIcon sx={{ height: 20, width: 20 }} />
         </DarkIconButton>
-        <DarkIconButton size="small" onClick={() => handleScanButton()}>
+        <DarkIconButton size="small" onClick={handleScanButton}>
           <ReceiptLongIcon sx={{ height: 20, width: 20 }} />
         </DarkIconButton>
         <SecondaryIconButton
           id="disconnect-wallet-button"
           size="small"
-          onClick={() => {
-            handleDisconnect();
-          }}
+          onClick={handleDisconnect}
           sx={{ minWidth: 'auto' }}
         >
           <PowerSettingsNewIcon sx={{ height: 20, width: 20 }} />
