@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { WidgetConfig, HiddenUI, RequiredUI, ChainId } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
+import { HiddenUI, RequiredUI, ChainId } from '@lifi/widget';
 import { ThemesMap } from 'src/const/themesMap';
-import { MainWidgetContext, HookDependencies } from './types';
+import type { MainWidgetContext, HookDependencies } from './types';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { tokens } from 'src/config/tokens';
 import { generateRouteLabel } from './utils';
 import { themeAllowChains } from '../../Widget.types';
-import { getSiteUrl, AppPaths } from 'src/const/urls';
 
 /**
  * Configuration hook for the main widget variant
@@ -36,9 +36,6 @@ export function useMainWidgetConfig(
     }
 
     const config: Partial<WidgetConfig> = {
-      explorerUrls: {
-        internal: [`${getSiteUrl()}${AppPaths.Scan}`],
-      },
       keyPrefix: `jumper-${context.starterVariant}`,
       // Variant configuration
       variant: context.starterVariant === 'refuel' ? 'compact' : 'wide',
@@ -95,8 +92,18 @@ export function useMainWidgetConfig(
         : undefined,
 
       routeLabels: [
-        generateRouteLabel('1.5x points', 'hyperbloom', deps.theme.muiTheme, 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg'),
-        generateRouteLabel('1.5x points', 'hyperflow', deps.theme.muiTheme, 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg'),
+        generateRouteLabel(
+          '1.5x points',
+          'hyperbloom',
+          deps.theme.muiTheme,
+          'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg',
+        ),
+        generateRouteLabel(
+          '1.5x points',
+          'hyperflow',
+          deps.theme.muiTheme,
+          'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg',
+        ),
       ],
     };
 

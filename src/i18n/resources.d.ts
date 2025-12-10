@@ -38,7 +38,8 @@ interface Resources {
     };
     buttons: {
       depositButtonLabel: 'Quick deposit';
-      managePositionsButtonLabel: 'Manage Positions';
+      managePositionsButtonLabel: 'Manage positions';
+      withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
       missions: {
@@ -72,14 +73,25 @@ interface Resources {
       ctaHeadline: 'Join our Discord to learn more';
     };
     earn: {
+      actions: {
+        seeMore: 'see more';
+        viewAllMarkets: 'View all markets';
+      };
       copy: {
         forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       filter: {
+        apy: 'APY';
+        asset: 'Asset';
+        chain: 'Chain';
         clear: 'Clear';
+        clearAll: 'Clear all';
+        filterAndSort: 'Filter and sort';
+        protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
+        tag: 'Type';
       };
       overview: {
         updated: 'Updated {{time}} ago';
@@ -89,6 +101,7 @@ interface Resources {
       };
       sorting: {
         apy: 'APY';
+        sort: 'Sort';
         sortBy: 'Sort By';
         tvl: 'TVL';
       };
@@ -97,6 +110,11 @@ interface Resources {
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
         useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+      };
+      views: {
+        all: 'All';
+        allMarkets: 'All markets';
+        forYou: 'For you';
       };
     };
     error: {
@@ -112,6 +130,16 @@ interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
+    };
+    gatekeeper: {
+      connecting: 'Connecting...';
+      error: 'An unknown error occurred. Please try again or request access.';
+      requestAccess: 'Request access';
+      subtitle: {
+        noAccess: 'We are currently in a <strong>closed beta.</strong>\nYou currently do not have access.';
+        notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
+      };
+      title: 'Welcome to {{pageTitle}}!';
     };
     labels: {
       apy: 'APY';
@@ -143,10 +171,16 @@ interface Resources {
           description: 'All tasks in this mission have been verified and completed.';
           title: 'Mission completed';
         };
+        ended: {
+          cta: 'Go back to missions';
+          description: 'Mission has ended, go back to the main missions page to explore other missions!';
+          title: 'Mission has ended';
+        };
       };
       status: {
         daysLeft_one: '{{count}} day left';
         daysLeft_other: '{{count}} days left';
+        ended: 'Ended';
         hoursLeft_one: '{{count}} hour left';
         hoursLeft_other: '{{count}} hours left';
         minutesLeft_one: '{{count}} minute left';
@@ -170,11 +204,101 @@ interface Resources {
         type: '{{type}} task';
         typeFallback: 'Task';
         typeOptional: 'Optional task';
+        verifyWallet: {
+          action: {
+            connectAndVerify: 'Connect & verify ownership';
+            verifyWallet: 'Verify ownership';
+          };
+          description: {
+            notConnected: 'Connect and sign a message to verify ownership of your wallet address. If you do not want to do this then reach out on <0>Discord</0>.';
+            notVerified: 'Sign a message to verify ownership of the below wallet address. If you do not want to do this then reach out on <0>Discord</0>.';
+            verified: 'You have successfully verified ownership of your wallet address.';
+          };
+          status: {
+            signatureFailed: {
+              description: 'You need to sign the transaction to confirm ownership of the wallet address.';
+              title: 'Signature required';
+              tryAgain: 'Try again';
+            };
+            unknown: {
+              description: 'An unknown error occurred. Please try again.';
+              title: 'Unknown error';
+              tryAgain: 'Try again';
+            };
+            unsupportedWallet: {
+              description: "We don't support this wallet type. Please use a different wallet to complete this mission.";
+              switchWallet: 'Switch wallet';
+              title: 'Unsupported wallet';
+            };
+          };
+          title: 'Verify ownership';
+        };
       };
       wrapperCard: {
         explore_one: 'Explore {{count}} mission';
         explore_other: 'Explore {{count}} missions';
         title: 'Missions';
+      };
+    };
+    modal: {
+      perks: {
+        claimedPerk: {
+          description: 'You have verified this perk with the following address';
+          howToUsePerk: 'How to use your perk ?';
+          howToUsePerkDescription: 'Simply add the code we provide you in the checkout of the Nansen website.';
+          nextSteps: 'Next steps';
+          title: 'Perk claimed!';
+        };
+        signatureFailed: {
+          description: 'You need to sign the transaction to confirm ownership of the wallet address.';
+          title: 'Signature required';
+          tryAgain: 'Try again';
+        };
+        stepper: {
+          continue: 'Continue';
+          steps: {
+            email: {
+              description_one: '{{position}} you must first share your email address.';
+              description_other: '{{position}} you must share your email address.';
+              title: 'Enter email';
+            };
+            position: {
+              finally: 'Finally';
+              first: 'To claim your perk';
+              next: 'Next';
+            };
+            username: {
+              description_one: '{{position}} you must first share your {{usernameType}} username.';
+              description_other: '{{position}} you must share your {{usernameType}} username.';
+              title: 'Enter username';
+            };
+            wallet: {
+              description_one: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
+              description_other: '{{position}} you must sign a message to verify ownership of the below connected wallet address.';
+              title: 'Verify wallet';
+            };
+          };
+          submit: 'Verify wallet and claim perk';
+          submitting: 'Waiting for verification';
+        };
+        unclaimedPerk: {
+          title: 'Claim perk';
+        };
+        unknown: {
+          description: 'An unknown error occurred. Please try again.';
+          title: 'Unknown error';
+          tryAgain: 'Try again';
+        };
+        unsupportedWallet: {
+          description: "We don't support this wallet type. Please use a different wallet to complete this mission.";
+          switchWallet: 'Switch wallet';
+          title: 'Unsupported wallet';
+        };
+        validationFailed: {
+          close: 'Close';
+          description: 'Please check the fields and try again.';
+          title: 'Validation failed';
+        };
       };
     };
     multisig: {
@@ -200,6 +324,7 @@ interface Resources {
         earn: 'Earn';
         exchange: 'Exchange';
         missions: 'Missions';
+        portfolio: 'Portfolio';
         refuel: 'Gas';
       };
       navbarMenu: {
@@ -213,6 +338,7 @@ interface Resources {
         support: 'Support';
         theme: 'Theme';
       };
+      pass: 'Pass';
       seeAllWallets: 'See all wallets';
       statsCards: {
         bridges: 'Bridges';
@@ -244,6 +370,7 @@ interface Resources {
         totalBalance: 'Total balance';
         totalBalanceRefresh: 'Click here to restart the indexing of your tokens now.';
         totalBalanceTooltip: "Your total balance may not always be accurate due to potential indexing issues. We're on it!";
+        walletBalance: 'Wallet balance';
         walletNotInstalled: '{{wallet}} is not installed';
       };
       walletSelectMenu: {
@@ -254,10 +381,101 @@ interface Resources {
         };
         wallets: 'Wallets';
       };
+      wallets: 'Wallets';
       welcome: {
         cta: 'Get started';
         subtitle: '<0>4x audited</0> multi-chain liquidity aggregator';
         title: 'Find the best route';
+      };
+    };
+    portfolio: {
+      assetOverviewCard: {
+        navigation: {
+          defiPositions: 'DeFi Protocols';
+          overview: 'Overview';
+          tokens: 'Tokens';
+        };
+        noContent: {
+          cta: {
+            startEarning: 'Start Earning';
+            startSwapping: 'Start Swapping';
+          };
+          description: 'Use Earn or Exchange and jump start your DeFi journey!';
+          title: 'This is looking a bit empty!';
+        };
+        overview: {
+          defiPositions: 'DeFi Protocols';
+          tokens: 'Tokens';
+        };
+      };
+      defiPositionCard: {
+        actions: {
+          borrow: 'Borrow';
+          claim: 'Claim';
+          compound: 'Compound';
+          deposit: 'Deposit';
+          repay: 'Repay';
+          withdraw: 'Withdraw';
+        };
+        header: {
+          apy: 'APY';
+          borrowed: 'Borrowed';
+          rewards: 'Rewards';
+          supplied: 'Supplied';
+          value: 'Value';
+        };
+        overview: {
+          lockup: 'Lockup';
+          lockupPeriod: {
+            days_one: '{{count}} day ago';
+            days_other: '{{count}} days ago';
+            hours_one: '{{count}} hour ago';
+            hours_other: '{{count}} hours ago';
+            lessThanOneMinute: '<1 minute ago';
+            minutes_one: '{{count}} minute ago';
+            minutes_other: '{{count}} minutes ago';
+            months_one: '{{count}} month ago';
+            months_other: '{{count}} months ago';
+            years_one: '{{count}} year ago';
+            years_other: '{{count}} years ago';
+          };
+          opened: 'Opened';
+        };
+      };
+      emptyList: {
+        clearFilters: 'Clear filters';
+        description: 'Unfortunately there are no results for your search, try clearing your filters.';
+        title: 'No results';
+      };
+      filter: {
+        asset: 'Asset';
+        chain: 'Chain';
+        clearAll: 'Clear all';
+        defiProtocols: 'DeFi Protocols';
+        filterAndSort: 'Filter and sort';
+        protocol: 'Protocol';
+        search: 'Search {{filterBy}}...';
+        tokens: 'Tokens';
+        type: 'Type';
+        value: 'Value';
+        wallet: 'Wallet';
+      };
+      overviewCard: {
+        refreshTooltip: 'Click here to restart the indexing of your assets.';
+        title: 'Portfolio';
+      };
+      sorting: {
+        asset: 'Asset';
+        chain: 'Chain';
+        sort: 'Sort';
+        sortBy: 'Sort by';
+        totalValue: 'Total value';
+      };
+      welcome: {
+        explorePass: 'Explore Jumper Pass';
+        getStarted: 'Get started';
+        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
+        title: 'One platform, all of DeFi';
       };
     };
     profile_page: {
@@ -335,6 +553,9 @@ interface Resources {
         token: 'Asset';
         tvl: 'TVL';
       };
+      earn: {
+        depositSuccess: 'You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>';
+      };
       sweepTokensCard: {
         button: {
           claim: 'Claim returned funds';
@@ -351,6 +572,9 @@ interface Resources {
           description: 'Your funds have been returned and are now available to use in your wallet.';
           title: 'Funds successfully returned';
         };
+      };
+      withdraw: {
+        title: 'Withdraw';
       };
       zap: {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';

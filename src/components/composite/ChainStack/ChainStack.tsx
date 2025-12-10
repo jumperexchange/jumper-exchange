@@ -9,6 +9,7 @@ import {
 interface ChainStackProps {
   chainIds: string[];
   size?: AvatarSize;
+  limit?: number;
   spacing?: number;
   direction?: AvatarStackDirection;
   disableBorder?: boolean;
@@ -18,6 +19,7 @@ interface ChainStackProps {
 export const ChainStack: FC<ChainStackProps> = ({
   chainIds,
   size,
+  limit,
   spacing = -1.5,
   direction = 'row',
   disableBorder = false,
@@ -38,6 +40,7 @@ export const ChainStack: FC<ChainStackProps> = ({
     <AvatarStack
       avatars={enhancedChains}
       size={size}
+      limit={limit}
       spacing={spacing}
       direction={direction}
       disableBorder={disableBorder}

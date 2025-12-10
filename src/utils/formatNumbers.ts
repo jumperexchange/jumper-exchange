@@ -73,3 +73,49 @@ export const toCompactValue = (value: number) => {
     compactDisplay: 'short',
   }).format(value);
 };
+
+export interface ValueFormatConfig {
+  type: 'percentage' | 'currency' | 'compact' | 'decimal';
+  options?: Intl.NumberFormatOptions;
+}
+
+export const formatValueWithConfig = (
+  value: number | string,
+  config: ValueFormatConfig,
+  options?: { includePrefixSuffix?: boolean },
+): string => {
+  const numValue = Number(value);
+
+  if (isNaN(numValue) || numValue === 0) {
+    return numValue === 0 ? '0' : value.toString();
+  }
+
+  const includePrefixSuffix = options?.includePrefixSuffix ?? true;
+  const formatOptions: Intl.NumberFormatOptions = { ...config.options };
+
+  switch (config.type) {
+    case 'percentage':
+      formatOptions.style = includePrefixSuffix ? 'percent' : 'decimal';
+      return new Intl.NumberFormat('en-US', formatOptions).format(
+        includePrefixSuffix ? numValue : numValue * 100,
+      );
+
+    case 'currency':
+      formatOptions.style = includePrefixSuffix ? 'currency' : 'decimal';
+      formatOptions.currency = 'USD';
+      formatOptions.notation = 'compact';
+      formatOptions.compactDisplay = 'short';
+      break;
+
+    case 'compact':
+      formatOptions.notation = 'compact';
+      formatOptions.compactDisplay = 'short';
+      break;
+
+    case 'decimal':
+      formatOptions.style = 'decimal';
+      break;
+  }
+
+  return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
+};

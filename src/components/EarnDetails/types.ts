@@ -4,7 +4,6 @@ export enum AnalyticsValueFieldEnum {
 }
 
 export enum AnalyticsRangeFieldEnum {
-  DAY = 'day',
   WEEK = 'week',
   MONTH = 'month',
   YEAR = 'year',

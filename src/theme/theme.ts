@@ -197,6 +197,7 @@ declare module '@mui/material/styles' {
     bodyMedium: React.CSSProperties;
     bodyMediumParagraph: React.CSSProperties;
     bodySmallStrong: React.CSSProperties;
+    bodySmallParagraph: React.CSSProperties;
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
@@ -208,6 +209,7 @@ declare module '@mui/material/styles' {
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
+    title2XLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -234,6 +236,7 @@ declare module '@mui/material/styles' {
     bodyMedium: React.CSSProperties;
     bodyMediumParagraph: React.CSSProperties;
     bodySmallStrong: React.CSSProperties;
+    bodySmallParagraph: React.CSSProperties;
     bodySmall: React.CSSProperties;
     bodyXSmallStrong: React.CSSProperties;
     bodyXSmall: React.CSSProperties;
@@ -245,6 +248,7 @@ declare module '@mui/material/styles' {
     titleXSmall: React.CSSProperties;
     title2XSmall: React.CSSProperties;
     titleLarge: React.CSSProperties;
+    title2XLarge: React.CSSProperties;
     urbanistTitleXSmall: React.CSSProperties;
     urbanistTitleLarge: React.CSSProperties;
     urbanistTitleXLarge: React.CSSProperties;
@@ -273,6 +277,7 @@ declare module '@mui/material/Typography' {
     bodyMedium: true;
     bodyMediumParagraph: true;
     bodySmallStrong: true;
+    bodySmallParagraph: true;
     bodySmall: true;
     bodyXSmallStrong: true;
     bodyXSmall: true;
@@ -283,6 +288,7 @@ declare module '@mui/material/Typography' {
     titleXSmall: true;
     title2XSmall: true;
     titleLarge: true;
+    title2XLarge: true;
     urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
@@ -309,6 +315,7 @@ declare module '@mui/material/Typography' {
     bodyMedium: true;
     bodyMediumParagraph: true;
     bodySmallStrong: true;
+    bodySmallParagraph: true;
     bodySmall: true;
     bodyXSmallStrong: true;
     bodyXSmall: true;
@@ -320,6 +327,7 @@ declare module '@mui/material/Typography' {
     titleXSmall: true;
     title2XSmall: true;
     titleLarge: true;
+    title2XLarge: true;
     urbanistTitleXSmall: true;
     urbanistTitleLarge: true;
     urbanistTitle2XLarge: true;
@@ -536,7 +544,17 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       MuiCssBaseline: {
         styleOverrides: {
           '@supports': { fontVariationSettings: 'normal' },
-          body: { scrollBehavior: 'smooth' },
+          html: {
+            height: '100%',
+            margin: 0,
+            padding: 0,
+          },
+          body: {
+            height: '100%',
+            scrollBehavior: 'smooth',
+            margin: 0,
+            padding: 0,
+          },
         },
       },
       MuiButton: {
@@ -607,6 +625,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bodyMedium: 'p',
             bodyMediumParagraph: 'p',
             bodySmallStrong: 'p',
+            bodySmallParagraph: 'p',
             bodySmall: 'p',
             bodyXSmallStrong: 'p',
             bodyXSmall: 'p',
@@ -746,6 +765,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         lineHeight: '18px',
         letterSpacing: 0,
       },
+      bodySmallParagraph: {
+        fontStyle: 'normal',
+        fontWeight: 500,
+        fontSize: '14px',
+        lineHeight: '20px',
+        letterSpacing: 0,
+      },
       bodySmall: {
         fontStyle: 'normal',
         fontWeight: 400,
@@ -814,6 +840,13 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
         fontStyle: 'normal',
         fontWeight: 700,
         lineHeight: '64px',
+      },
+      title2XLarge: {
+        fontFamily: inter.style.fontFamily,
+        fontSize: '64px',
+        fontStyle: 'normal',
+        fontWeight: 700,
+        lineHeight: '72px',
       },
       titleXSmall: {
         fontFamily: inter.style.fontFamily,
@@ -1016,7 +1049,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: paletteLight.surface4,
           },
         },
-        // @ts-expect-error
+        // @ts-expect-error TODO: Fix this
         shadows: [
           'none',
           '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.08)',
@@ -1116,7 +1149,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: paletteDark.surface4,
           },
         },
-        // @ts-expect-error
+        // @ts-expect-error TODO: Fix this
         shadows: [
           'none',
           '0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 16px rgba(0, 0, 0, 0.16)',

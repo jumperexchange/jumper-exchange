@@ -14,8 +14,7 @@ export const ETHEREUM_TRANSACTION_REGEX = /^0x[a-f0-9]{64}$/;
 
 // Solana patterns
 export const SOLANA_ADDRESS_REGEX = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
-export const SOLANA_TRANSACTION_REGEX = /^[1-9A-HJ-NP-Za-km-z]{88}$/;
-
+export const SOLANA_TRANSACTION_REGEX = /^[1-9A-HJ-NP-Za-km-z]{86,89}$/;
 // Bitcoin/UTXO patterns
 export const UTXO_ADDRESS_REGEX = /^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{25,39}$/;
 export const UTXO_TRANSACTION_REGEX = /^[a-fA-F0-9]{64}$/;

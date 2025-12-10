@@ -9,18 +9,23 @@ import {
   ReferenceLine,
 } from 'recharts';
 import { CustomTooltip } from './CustomTooltip';
-import { toCompactValue } from 'src/utils/formatNumbers';
+import {
+  formatValueWithConfig,
+  type ValueFormatConfig,
+} from 'src/utils/formatNumbers';
+import { formatDateLocalized } from 'src/utils/formatDateLocalized';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import {
   calculateTooltipPosition,
-  calculateVisibleYRange,
   calculateEvenXAxisTicks,
   calculateEvenYAxisTicks,
+  calculateVisibleYRange,
 } from './utils';
 import { useCallback, useMemo, useRef } from 'react';
-import { format } from 'date-fns';
+import type { HTMLAttributes } from 'react';
 import { AREA_CONFIG } from './constants';
-import { ActiveDotProps } from 'recharts/types/util/types';
+
+import type { ActiveDotProps } from 'recharts/types/util/types';
 
 const StyledResponsiveContainer = styled(ResponsiveContainer, {
   shouldForwardProp: (prop) => prop !== 'enableCrosshair',
@@ -32,12 +37,15 @@ const StyledResponsiveContainer = styled(ResponsiveContainer, {
   },
 }));
 
-export interface ChartDataPoint<V> {
+export interface ChartDataPoint<V extends number | string = number | string> {
   date: string;
   value: V;
 }
 
-export interface LineChartProps<V, T extends ChartDataPoint<V>> {
+export interface LineChartProps<
+  V extends number | string = number | string,
+  T extends ChartDataPoint<V> = ChartDataPoint<V>,
+> extends HTMLAttributes<HTMLDivElement> {
   data: T[];
   theme: {
     lineColor?: string;
@@ -47,6 +55,7 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>> {
   };
   dateFormat?: string;
   dataSetId?: string;
+  valueFormatConfig?: ValueFormatConfig;
   isLoading?: boolean;
   enableCrosshair?: boolean;
   enableGridY?: boolean;
@@ -55,17 +64,22 @@ export interface LineChartProps<V, T extends ChartDataPoint<V>> {
   enableTooltip?: boolean;
 }
 
-export const LineChart = <V, T extends ChartDataPoint<V>>({
+export const LineChart = <
+  V extends number | string = number | string,
+  T extends ChartDataPoint<V> = ChartDataPoint<V>,
+>({
   data,
   theme,
   dateFormat,
   dataSetId,
+  valueFormatConfig,
   enableCrosshair = true,
   enableGridY = true,
   enableXAxis = true,
   enableYAxis = true,
   enableTooltip = true,
   isLoading,
+  ...props
 }: LineChartProps<V, T>) => {
   const muiTheme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -81,24 +95,29 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
 
   const dateFormatter = useCallback(
     (date: string) => {
-      return format(date ?? '', dateFormat ?? 'MMM yyyy');
+      return formatDateLocalized(date ?? '', dateFormat ?? 'MMM yyyy');
     },
     [dateFormat],
   );
 
-  const valueFormatter = useCallback((value: T) => {
-    if (!value || isNaN(Number(value))) {
-      return value.toString();
-    }
+  const valueFormatter = useCallback(
+    (value: V) => {
+      const numValue = Number(value);
 
-    const numberValue = Number(value);
+      if (!value || isNaN(numValue) || numValue === 0) {
+        return '0';
+      }
 
-    if (numberValue === 0) {
-      return '';
-    }
+      if (!valueFormatConfig) {
+        return value.toString();
+      }
 
-    return toCompactValue(numberValue).toString();
-  }, []);
+      return formatValueWithConfig(numValue, valueFormatConfig, {
+        includePrefixSuffix: true,
+      });
+    },
+    [valueFormatConfig],
+  );
 
   const yAxisTickValues = useMemo(() => {
     return calculateEvenYAxisTicks(minValue, maxValue);
@@ -118,6 +137,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
       width="100%"
       height="100%"
       enableCrosshair={enableCrosshair}
+      {...props}
     >
       <AreaChart data={data} accessibilityLayer={false}>
         <defs>
@@ -162,8 +182,8 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
             axisLine={false}
             tickLine={false}
             ticks={yAxisTickValues}
-            width={48}
             tickMargin={8}
+            width={60}
             domain={[minValueWithOffset, maxValueWithOffset]}
             tick={{
               fill: (muiTheme.vars || muiTheme).palette.text.secondary,
@@ -183,8 +203,8 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
               ? (props: ActiveDotProps) => {
                   const { cx, cy, payload } = props;
                   const { x, y, transform } = calculateTooltipPosition(
-                    cx,
-                    cy,
+                    cx ?? 0,
+                    cy ?? 0,
                     chartContainerRef.current?.clientWidth ?? 0,
                     chartContainerRef.current?.clientHeight ?? 0,
                   );
@@ -217,6 +237,7 @@ export const LineChart = <V, T extends ChartDataPoint<V>>({
                             y={0}
                             transform={transform}
                             dataSetId={dataSetId}
+                            valueFormatConfig={valueFormatConfig}
                           />
                         </foreignObject>
                       )}

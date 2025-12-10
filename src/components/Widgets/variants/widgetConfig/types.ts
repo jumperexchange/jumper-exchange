@@ -1,15 +1,15 @@
-import { EVMProvider, WidgetConfig } from '@lifi/widget';
-import { StarterVariantType } from 'src/types/internal';
-import {
-  TaskType,
+import type { EVMProvider, WidgetConfig } from '@lifi/widget';
+import type { StarterVariantType } from 'src/types/internal';
+import type {
   TaskWidgetInformationChainData,
   TaskWidgetInformationTokenData,
   TaskWidgetInformationWalletData,
 } from 'src/types/strapi';
-import { ThemeProps } from 'src/types/theme';
-import { TFunction, i18n } from 'i18next';
-import { Hex } from 'viem';
-import { Theme as MuiTheme } from '@mui/material/styles';
+import { TaskType } from 'src/types/strapi';
+import type { ThemeProps } from 'src/types/theme';
+import type { TFunction, i18n } from 'i18next';
+import type { Hex } from 'viem';
+import type { Theme as MuiTheme } from '@mui/material/styles';
 
 export type EnglishLanguageResource = NonNullable<
   WidgetConfig['languageResources']
@@ -52,6 +52,8 @@ export interface CommonWidgetContext {
   allowFromChains?: number[];
   allowToChains?: number[];
   theme?: WidgetConfig['theme'];
+  disabledUI?: WidgetConfig['disabledUI'];
+  hiddenUI?: WidgetConfig['hiddenUI'];
 }
 
 // Widget-specific context interfaces
@@ -68,6 +70,7 @@ export interface MainWidgetContext extends CommonWidgetContext {
 
 export interface MissionWidgetContext extends CommonWidgetContext {
   taskType?: TaskType;
+  subTaskType?: 'withdraw' | 'deposit';
   allowBridge?: string | null;
   allowExchange?: string | null;
   overrideHeader?: string;

@@ -1,7 +1,7 @@
 // For now this is copied and pasted from the jumper-backend's zap.interface.ts
 // TODO: Eventually share the types.
 
-import { AbiFunction } from 'viem';
+import type { AbiFunction } from 'viem';
 
 export enum Chain {
   ETHEREUM = 'ethereum',
@@ -34,7 +34,7 @@ interface MarketEntry {
     decimals: number;
     chainId: number;
     coinKey: string;
-    logoURI: string;
+    logoURI?: string;
   };
   lpToken: {
     symbol: string;
@@ -105,6 +105,7 @@ export interface ZapAnalytics {
   boosted_apy: number;
   total_apy: number;
   tvl_usd: number;
+  lockup_period?: number;
 }
 
 export interface ZapDataResponse {

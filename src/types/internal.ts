@@ -1,7 +1,7 @@
+import type { MenuItemLinkType } from '@/components/Menu/MenuItem/MenuItem.types';
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
-import type { MenuItemLinkType } from 'src/components/Menu';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
 
@@ -32,6 +32,7 @@ export interface MenuListItem {
   link?: MenuItemLinkType;
   onClick?: () => void;
   showButton?: boolean;
+  disabled?: boolean;
 }
 
 export interface ChainsMenuListItem {
@@ -73,3 +74,7 @@ export interface TransformedRoute {
   [TrackingEventParameter.Time]: number;
   [TrackingEventParameter.Slippage]: number;
 }
+
+export type NullableFields<T> = {
+  [K in keyof T]: T[K] | null;
+};

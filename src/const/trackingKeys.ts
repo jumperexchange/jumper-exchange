@@ -5,6 +5,8 @@ export const UTM_SOURCE = 'jumper';
   GA: in GA this is the name of the event that is fired
 */
 export enum TrackingAction {
+  // Portfolio
+  ClosePortfolioScreen = 'action_close_portfolio_screen',
   // WalletMenu
   ConnectWallet = 'action_connect_wallet',
   ClickConnectWallet = 'action_click_connect_wallet',
@@ -77,6 +79,8 @@ export enum TrackingAction {
   ClickLink3Link = 'action_click_link3_link',
   ClickJumperExchangeLink = 'action_click_jumper_exchange_link',
   ClickJumperMissionsLink = 'action_click_jumper_missions_link',
+  ClickJumperEarnLink = 'action_click_jumper_earn_link',
+  ClickJumperPortfolioLink = 'action_click_jumper_portfolio_link',
   ClickJumperLearnLink = 'action_click_jumper_learn_link',
   ClickJumperProfileLink = 'action_click_jumper_profile_link',
   ClickJumperScanLink = 'action_click_jumper-scan_link',
@@ -128,6 +132,7 @@ export enum TrackingEventDataAction {
 }
 
 export enum TrackingCategory {
+  Portfolio = 'cat_portfolio',
   MainMenu = 'cat_main_menu',
   Menu = 'cat_menu',
   ErrorPage = 'cat_error_page',

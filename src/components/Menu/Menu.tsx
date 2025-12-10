@@ -1,6 +1,7 @@
 import type { SxProps, Theme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { MenuDesktop, MenuMobile } from '.';
+import { MenuDesktop } from './MenuDesktop';
+import { MenuMobile } from './MenuMobile';
 
 interface MenuProps {
   isOpenSubMenu?: boolean;
@@ -27,7 +28,7 @@ export const Menu = ({
   children,
   anchorEl,
 }: MenuProps) => {
-  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'));
+  const isDesktop = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   return isDesktop ? (
     <MenuDesktop

@@ -4,9 +4,6 @@ declare namespace NodeJS {
   interface ProcessEnv {
     BASE_URL: string;
     DEV: boolean;
-    MODE: 'development' | 'production' | 'staging' | 'localhost';
-    PROD: boolean;
-    SSR: boolean;
     NEXT_PUBLIC_ENVIRONMENT: string;
     NEXT_PUBLIC_SITE_URL: string;
     NEXT_PUBLIC_ADDRESSABLE_TID: string;
@@ -16,16 +13,12 @@ declare namespace NodeJS {
     NEXT_PUBLIC_DKEY: string;
     NEXT_PUBLIC_WIDGET_INTEGRATOR: string;
     NEXT_PUBLIC_INTEGRATOR_REFUEL: string;
-    NEXT_PUBLIC_INTEGRATOR_MOBILE: string;
     NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN: string;
-    NEXT_PUBLIC_LIFI_API_URL: string;
-    NEXT_PUBLIC_STRAPI_DEVELOP: string;
+    NEXT_PUBLIC_LIFI_BACKEND_URL: string;
     NEXT_PUBLIC_STRAPI_URL: string;
     NEXT_PUBLIC_STRAPI_API_TOKEN: string;
-    NEXT_PRIVATE_STRAPI_LOCAL_URL: string;
-    NEXT_PUBLIC_LOCAL_STRAPI_API_TOKEN: string;
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: string;
     NEXT_PUBLIC_BACKEND_URL: string;
-    NEXT_PUBLIC_SOLANA_RPC_URI: string;
+    NEXT_PUBLIC_INTERCOM_APP_ID: string;
   }
 }

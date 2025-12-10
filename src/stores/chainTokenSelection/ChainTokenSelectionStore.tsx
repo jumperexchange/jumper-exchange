@@ -27,7 +27,7 @@ const toToken = queryParameters && queryParameters.get('toToken');
 
 export const useChainTokenSelectionStore =
   createWithEqualityFn<ChainTokenSelectionState>(
-    (set) => ({
+    (set, get) => ({
       sourceChainToken: {
         tokenAddress: fromToken || undefined,
         chainId: (fromChain && (parseInt(fromChain) as ChainId)) || undefined,

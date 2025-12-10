@@ -1,18 +1,21 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
-import { CustomInformation, Quest } from 'src/types/loyaltyPass';
+import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
+import { useZapQuestIdStorage } from 'src/providers/hooks';
+import envConfig from 'src/config/env-config';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -23,43 +26,32 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   customInformation,
   market,
 }) => {
+  useZapQuestIdStorage();
   const { t } = useTranslation();
 
   if (!customInformation || !customInformation.projectData) {
     return <WidgetSkeleton />;
   }
 
-  const ctx = useMemo(() => {
-    return {
-      taskType: TaskType.Zap as const,
-    };
-  }, []);
+  const ctx = {
+    taskType: TaskType.Zap as const,
+  };
 
-  const projectData = useMemo(() => {
-    return customInformation?.projectData;
-  }, [customInformation?.projectData]);
+  const projectData = customInformation?.projectData;
 
   // Get zap data to check if user has deposited and if withdraw is available
-  const { zapData, depositTokenData, isLoadingDepositTokenData } =
-    useEnhancedZapData(projectData);
+  const {
+    zapData,
+    depositTokenData,
+    depositTokenDecimals,
+    isLoadingDepositTokenData,
+    isSuccess: isZapDataSuccess,
+    refetchDepositToken,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useEnhancedZapData(projectData);
 
   const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
   const hasWithdrawAbi = !!zapData?.abi?.withdraw;
-
-  const tabs = useMemo(
-    () => [
-      {
-        value: 'deposit',
-        label: t('widget.zap.tabs.deposit'),
-      },
-      {
-        value: 'withdraw',
-        label: t('widget.zap.tabs.withdraw'),
-        disabled: !hasDeposited || !hasWithdrawAbi,
-      },
-    ],
-    [hasDeposited, hasWithdrawAbi, t],
-  );
 
   return (
     <WidgetTrackingProvider>
@@ -72,7 +64,14 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
         }}
       >
         <SweepTokensCard customInformation={customInformation} />
-        <DepositPoolCard customInformation={customInformation} />
+        <DepositPoolCard
+          customInformation={customInformation}
+          zapData={zapData}
+          isZapDataSuccess={isZapDataSuccess}
+          depositTokenData={depositTokenData}
+          depositTokenDecimals={depositTokenDecimals}
+          isLoadingDepositTokenData={isLoadingDepositTokenData}
+        />
         <Box
           id={MISSION_WIDGET_ELEMENT_ID}
           data-testid="zap-widget-container"
@@ -87,6 +86,10 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
             <ZapDepositBackendWidget
               ctx={ctx}
               customInformation={customInformation}
+              refetchDepositToken={refetchDepositToken}
+              zapData={zapData}
+              isZapDataSuccess={isZapDataSuccess}
+              integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ZAP}
             />
           </ClientOnly>
         </Box>

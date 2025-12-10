@@ -5,7 +5,9 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 const nextConfig = {
   output: 'standalone',
   trailingSlash: false,
+  reactCompiler: true,
   productionBrowserSourceMaps: false,
+  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
     serverSourceMaps: false,
     optimizePackageImports: ['recharts'],
@@ -16,7 +18,7 @@ const nextConfig = {
     };
     config.resolve.fallback = { fs: false, net: false, tls: false };
     // Walletconnect configuration is blocking the build, pino-pretty needs to be added as an external
-    config.externals.push('pino-pretty');
+    config.externals.push('pino-pretty', 'pino', 'thread-stream');
     //trying to reduce RAM usage
     if (config.cache) {
       config.cache = Object.freeze({
@@ -173,13 +175,13 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // Suppresses source map uploading logs during build
-  silent: true,
+  silent: false,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
-  widenClientFileUpload: true,
+  widenClientFileUpload: false,
 
   // Transpiles SDK to be compatible with IE11 (increases bundle size)
-  transpileClientSDK: true,
+  transpileClientSDK: false,
 
   // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
   // This can increase your server load as well as your hosting bill.
@@ -188,7 +190,7 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // tunnelRoute: "/monitoring",
 
   sourcemaps: {
-    disable: false, // Source maps are enabled by default
+    disable: process.env.VERCEL === '1', // Disable on Vercel to avoid timeouts
     assets: ['**/*.js', '**/*.js.map'], // Specify which files to upload
     ignore: ['**/node_modules/**'], // Files to exclude
     deleteSourcemapsAfterUpload: true, // Security: delete after upload

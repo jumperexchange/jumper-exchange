@@ -1,5 +1,6 @@
-import { FC, useCallback, useEffect, useRef } from 'react';
-import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import type { FC } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskCard } from 'src/components/Cards/TaskCard/TaskCard';
 import { Badge } from 'src/components/Badge/Badge';
 
@@ -10,6 +11,7 @@ import { useMissionStore } from 'src/stores/mission';
 import { useFormatDisplayTaskData } from 'src/hooks/tasksVerification/useFormatDisplayTaskData';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
+import { TaskType } from 'src/types/strapi';
 
 interface MissionTaskProps {
   task: TaskVerificationWithApy & {
@@ -73,14 +75,22 @@ export const MissionTask: FC<MissionTaskProps> = ({
   );
 
   const getVariant = () => {
-    if (isSuccess || isVerified) return BadgeVariant.Success;
-    if (isPending || (hasForm && !isFormValid)) return BadgeVariant.Disabled;
-    if (isError) return BadgeVariant.Error;
+    if (isSuccess || isVerified) {
+      return BadgeVariant.Success;
+    }
+    if (isPending || (hasForm && !isFormValid)) {
+      return BadgeVariant.Disabled;
+    }
+    if (isError) {
+      return BadgeVariant.Error;
+    }
     return BadgeVariant.Secondary;
   };
 
   const getIcon = () => {
-    if (isSuccess || isVerified) return <CheckIcon />;
+    if (isSuccess || isVerified) {
+      return <CheckIcon />;
+    }
     return (
       <RefreshIcon
         sx={{
@@ -95,19 +105,29 @@ export const MissionTask: FC<MissionTaskProps> = ({
     );
   };
 
+  const getTypeLabel = () => {
+    if (!isRequired) {
+      return t('missions.tasks.typeOptional');
+    }
+    if (!taskType) {
+      return t('missions.tasks.typeFallback');
+    }
+
+    const displayType =
+      taskType === TaskType.OnChainWalletOwnership
+        ? TaskType.OnChain
+        : taskType;
+
+    return t('missions.tasks.type', { type: displayType });
+  };
+
   return (
     <TaskCard
       onClick={onClick}
       title={title}
       description={description}
       isActive={isActive}
-      type={
-        !isRequired
-          ? t('missions.tasks.typeOptional')
-          : taskType
-            ? t('missions.tasks.type', { type: taskType })
-            : t('missions.tasks.typeFallback')
-      }
+      type={getTypeLabel()}
       statusBadge={
         shouldVerify && (
           <Badge

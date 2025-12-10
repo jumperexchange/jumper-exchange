@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { chunk } from 'lodash';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -12,7 +12,7 @@ import {
   CompactEarnCardHeaderContainer,
   CompactEarnCardTagContainer,
 } from '../EarnCard.styles';
-import { EarnCardProps } from '../EarnCard.types';
+import type { EarnCardProps } from '../EarnCard.types';
 import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
@@ -31,11 +31,15 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     data,
     'compact',
   );
-  const { protocol, forYou, tags, lpToken } = data ?? {};
+  const { protocol, forYou, tags, lpToken, name } = data ?? {};
+
+  const title = name || protocol?.product || protocol?.name;
 
   const items = overviewItems.map((item, index) => {
     const shouldExpand =
-      index === overviewItems.length - 1 && overviewItems.length % 2 !== 0;
+      overviewItems.length === 2 ||
+      (index === overviewItems.length - 1 && overviewItems.length % 2 !== 0);
+
     return (
       <CompactEarnCardItem
         key={item.key}
@@ -71,6 +75,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
                 size={BadgeSize.SM}
                 label={tag}
                 key={tag}
+                data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
               />
             ))}
           </CompactEarnCardTagContainer>
@@ -81,8 +86,11 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
             variant={EntityChainStackVariant.Protocol}
             protocol={protocol}
             chains={chains}
+            content={{
+              title,
+            }}
           />
-          {chunk(items, 2).map((itemsChunk, index) => (
+          {chunk(items, items.length > 2 ? 2 : 1).map((itemsChunk, index) => (
             <Grid
               container
               rowSpacing={2}

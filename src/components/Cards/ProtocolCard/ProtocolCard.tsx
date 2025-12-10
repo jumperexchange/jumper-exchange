@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import {
   ProtocolCardContainer,
   ProtocolCardContentContainer,
@@ -11,17 +12,23 @@ import {
   ProtocolCardProtocolAvatar,
   ProtocolCardProtocolTitle,
   ProtocolCardTagsContainer,
+  ProtocolCardTitleContainer,
 } from './ProtocolCard.styles';
 import { PROTOCOL_CARD_SIZES } from './constants';
 import Typography from '@mui/material/Typography';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { ProtocolCardSkeleton } from './ProtocolCardSkeleton';
-import { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { useGetContrastTextColor } from 'src/hooks/images/useGetContrastTextColor';
+import { ProtocolCardDescription } from './components/ProtocolCardDescription';
+import { ProtocolCardDescriptionModal } from './components/ProtocolCardDescriptionModal';
+import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
+import { openInNewTab } from '@/utils/openInNewTab';
 
 interface CommonCardProps {
   fullWidth?: boolean;
@@ -49,9 +56,14 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
   headerBadge,
 }) => {
   const [protocolAvatarLoaded, setProtocolAvatarLoaded] = useState(false);
-  const { protocol, tags, description, url } = data ?? {};
+  const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
+  const { protocol, tags, description, url, name, lpToken } = data ?? {};
+  const title = name || protocol?.product || protocol?.name;
   const { t } = useTranslation();
-
+  const addressExplorerUrl = useBlockchainExplorerURL(
+    lpToken?.chain.chainId,
+    lpToken?.address,
+  );
   const { contrastTextColor: protocolImageContrastColor } =
     useGetContrastTextColor(protocol?.logo || '');
 
@@ -61,77 +73,102 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
     return <ProtocolCardSkeleton fullWidth={fullWidth} />;
   }
 
+  const headerContent = (
+    <ProtocolCardContentHeaderContainer>
+      <ProtocolCardTitleContainer>
+        <Typography variant="titleMedium">{title}</Typography>
+        {addressExplorerUrl && (
+          <Badge
+            variant={BadgeVariant.Alpha}
+            size={BadgeSize.MD}
+            label="Contract"
+            startIcon={<CodeRoundedIcon />}
+            onClick={() => openInNewTab(addressExplorerUrl)}
+          />
+        )}
+      </ProtocolCardTitleContainer>
+      <ProtocolCardTagsContainer>
+        {tags?.map((tag) => (
+          <Badge
+            variant={BadgeVariant.Secondary}
+            size={BadgeSize.MD}
+            label={tag}
+            key={tag}
+          />
+        ))}
+      </ProtocolCardTagsContainer>
+    </ProtocolCardContentHeaderContainer>
+  );
+
   return (
-    <ProtocolCardContainer
-      data-testid="protocol-card"
-      sx={{
-        width: '100%',
-        maxWidth: fullWidth ? '100%' : PROTOCOL_CARD_SIZES.CARD_WIDTH,
-      }}
-    >
-      <ProtocolCardHeaderContainer
-        backgroundUrl={protocol?.logo || ''}
+    <>
+      <ProtocolCardContainer
+        data-testid="protocol-card"
         sx={{
           width: '100%',
           maxWidth: fullWidth ? '100%' : PROTOCOL_CARD_SIZES.CARD_WIDTH,
-          height: PROTOCOL_CARD_SIZES.IMAGE_HEIGHT,
         }}
       >
-        {headerBadge && (
-          <ProtocolCardHeaderBadgeContainer>
-            {headerBadge}
-          </ProtocolCardHeaderBadgeContainer>
-        )}
-        <ProtocolCardHeaderContentContainer
+        <ProtocolCardHeaderContainer
+          backgroundUrl={protocol?.logo || ''}
           sx={{
-            opacity: isAvatarLoading ? 0 : 1,
-            transition: 'opacity 0.2s ease-in',
+            width: '100%',
+            maxWidth: fullWidth ? '100%' : PROTOCOL_CARD_SIZES.CARD_WIDTH,
+            height: PROTOCOL_CARD_SIZES.IMAGE_HEIGHT,
           }}
         >
-          {protocol?.logo && (
-            <ProtocolCardProtocolAvatar
-              src={protocol?.logo || ''}
-              alt={protocol?.name || 'Protocol Logo'}
-              height={56}
-              width={56}
-              onLoad={() => setProtocolAvatarLoaded(true)}
-            />
+          {headerBadge && (
+            <ProtocolCardHeaderBadgeContainer>
+              {headerBadge}
+            </ProtocolCardHeaderBadgeContainer>
           )}
-          <ProtocolCardProtocolTitle
+          <ProtocolCardHeaderContentContainer
             sx={{
-              color: protocolImageContrastColor,
+              opacity: isAvatarLoading ? 0 : 1,
+              transition: 'opacity 0.2s ease-in',
             }}
           >
-            {protocol?.name}
-          </ProtocolCardProtocolTitle>
-        </ProtocolCardHeaderContentContainer>
-      </ProtocolCardHeaderContainer>
-      <ProtocolCardContentContainer>
-        <ProtocolCardContentHeaderContainer>
-          <Typography variant="titleMedium">
-            {protocol?.product ?? protocol?.name}
-          </Typography>
-          <ProtocolCardTagsContainer>
-            {tags?.map((tag) => (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.MD}
-                label={tag}
-                key={tag}
+            {protocol?.logo && (
+              <ProtocolCardProtocolAvatar
+                src={protocol?.logo || ''}
+                alt={protocol?.name || 'Protocol Logo'}
+                height={56}
+                width={56}
+                onLoad={() => setProtocolAvatarLoaded(true)}
               />
-            ))}
-          </ProtocolCardTagsContainer>
-        </ProtocolCardContentHeaderContainer>
+            )}
+            <ProtocolCardProtocolTitle
+              sx={{
+                color: protocolImageContrastColor,
+              }}
+            >
+              {protocol?.name}
+            </ProtocolCardProtocolTitle>
+          </ProtocolCardHeaderContentContainer>
+        </ProtocolCardHeaderContainer>
+        <ProtocolCardContentContainer>
+          {headerContent}
+          <ProtocolCardDescription
+            text={description}
+            onSeeMoreClick={() => setIsDescriptionModalOpen(true)}
+          />
+          {protocol?.name && url && (
+            <ProtocolCardLink target="_blank" href={url}>
+              {t('links.discover', { name: capitalizeString(protocol?.name) })}
+              <ArrowForwardIcon />
+            </ProtocolCardLink>
+          )}
+        </ProtocolCardContentContainer>
+      </ProtocolCardContainer>
+      <ProtocolCardDescriptionModal
+        isOpen={isDescriptionModalOpen}
+        onClose={() => setIsDescriptionModalOpen(false)}
+      >
+        {headerContent}
         <ProtocolCardDescriptionContainer variant="bodyMediumParagraph">
           {description}
         </ProtocolCardDescriptionContainer>
-        {protocol?.name && url && (
-          <ProtocolCardLink target="_blank" href={url}>
-            {t('links.discover', { name: capitalizeString(protocol?.name) })}
-            <ArrowForwardIcon />
-          </ProtocolCardLink>
-        )}
-      </ProtocolCardContentContainer>
-    </ProtocolCardContainer>
+      </ProtocolCardDescriptionModal>
+    </>
   );
 };

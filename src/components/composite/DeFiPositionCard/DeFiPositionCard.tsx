@@ -1,0 +1,197 @@
+import ArrowDownIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpIcon from '@mui/icons-material/ArrowUpward';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import LockOutlineRoundedIcon from '@mui/icons-material/LockOutlineRounded';
+import type { FC } from 'react';
+import { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Badge } from 'src/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { ColumnTable } from 'src/components/core/ColumnTable/ColumnTable';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { toFixedFractionDigits } from 'src/utils/formatNumbers';
+import { formatLockupDuration } from 'src/utils/earn/utils';
+import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
+import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
+import { DeFiPositionOverview } from './components/DeFiPositionOverview';
+import { COLUMN_SPACING, ICON_STYLES, TYPOGRAPHY_VARIANTS } from './constants';
+import {
+  StyledAccordion,
+  StyledAccordionDetails,
+  StyledAccordionSummary,
+  StyledDetailsContainer,
+  StyledOverviewColumn,
+  StyledSectionContent,
+  StyledSectionDivider,
+  StyledSummaryContent,
+  StyledTablesColumn,
+  StyledTagsRow,
+} from './DeFiPositionCard.styles';
+import type {
+  DeFiPositionCardProps,
+  PositionGroup,
+} from './DeFiPositionCard.types';
+import { useColumnDefinitions, usePositionGroups } from './hooks';
+import { formatTimeDifference } from './utils';
+import { RewardIcon } from 'src/components/illustrations/RewardIcon';
+import { DeFiPositionCardSkeleton } from './DeFiPositionCardSkeleton';
+import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
+
+export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
+  defiPositions,
+  onSelect,
+  isLoading,
+}) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const { t } = useTranslation();
+
+  const handleMainPositionClick = () => {
+    setIsExpanded((prevExpanded) => !prevExpanded);
+  };
+
+  const handleExpandedPositionClick = (group: PositionGroup) => {
+    onSelect?.(group.position);
+  };
+
+  const { supplyColumns, rewardColumns, borrowColumns } = useColumnDefinitions(
+    TYPOGRAPHY_VARIANTS.title,
+    TYPOGRAPHY_VARIANTS.description,
+    defiPositions?.[0],
+  );
+
+  const positionGroups = usePositionGroups(
+    defiPositions,
+    supplyColumns,
+    borrowColumns,
+    rewardColumns,
+  );
+
+  const firstPosition = defiPositions?.[0];
+  const totalNetUsd =
+    defiPositions?.reduce((sum, pos) => sum + pos.netUsd, 0) ?? 0;
+  const hasRewards = positionGroups.some((group) =>
+    group.sections.some((section) => section.type === 'rewards'),
+  );
+
+  if (isLoading || !firstPosition) {
+    return <DeFiPositionCardSkeleton />;
+  }
+
+  return (
+    <StyledAccordion expanded={isExpanded} disableGutters>
+      <StyledAccordionSummary>
+        <StyledSummaryContent onClick={() => handleMainPositionClick()}>
+          <EntityChainStack
+            variant={EntityChainStackVariant.Protocol}
+            protocol={firstPosition.protocol}
+            protocolSize={AvatarSize.XXL}
+            chains={[firstPosition.chain]}
+            content={{
+              title: firstPosition.protocol.name,
+              titleVariant: TYPOGRAPHY_VARIANTS.title,
+              descriptionVariant: TYPOGRAPHY_VARIANTS.description,
+            }}
+            spacing={COLUMN_SPACING}
+          />
+          <StyledTagsRow>
+            <Badge
+              variant={BadgeVariant.Secondary}
+              size={BadgeSize.MD}
+              label={firstPosition.type}
+              data-testid={`earn-card-tag-${firstPosition.type.toLowerCase().replace(/\s+/g, '-')}`}
+            />
+            {hasRewards && (
+              <Badge
+                variant={BadgeVariant.Alpha}
+                size={BadgeSize.MD}
+                startIcon={<RewardIcon sx={ICON_STYLES} />}
+              />
+            )}
+            {/* {defiPosition.performance && (
+              <Badge
+                variant={
+                  defiPosition.performance > 0
+                    ? BadgeVariant.Success
+                    : BadgeVariant.Error
+                }
+                startIcon={
+                  defiPosition.performance > 0 ? (
+                    <ArrowUpIcon sx={ICON_STYLES} />
+                  ) : (
+                    <ArrowDownIcon sx={ICON_STYLES} />
+                  )
+                }
+                size={BadgeSize.MD}
+                label={`$${toFixedFractionDigits(Math.abs(defiPosition.performance), 0, 2)}`}
+              />
+            )} */}
+            <TitleWithHint
+              title={t('format.currency', {
+                value: totalNetUsd,
+              })}
+              titleVariant={TYPOGRAPHY_VARIANTS.title}
+              sx={(theme) => ({
+                textAlign: 'left',
+                flex: '1 0 100%',
+                [theme.breakpoints.up('md')]: {
+                  textAlign: 'right',
+                  flex: '0 0 auto',
+                },
+              })}
+            />
+          </StyledTagsRow>
+        </StyledSummaryContent>
+      </StyledAccordionSummary>
+
+      <StyledAccordionDetails>
+        <StyledDetailsContainer>
+          {positionGroups.map((positionGroup, index) => (
+            <Fragment key={positionGroup.position.address}>
+              <StyledSectionDivider sx={{ marginTop: index === 0 ? 3 : 0 }} />
+              <StyledSectionContent>
+                <StyledOverviewColumn>
+                  {!!positionGroup.position.openedAt && (
+                    <DeFiPositionOverview
+                      icon={<CalendarMonthRoundedIcon sx={ICON_STYLES} />}
+                      header={t('portfolio.defiPositionCard.overview.opened')}
+                      description={formatTimeDifference(
+                        positionGroup.position.openedAt,
+                        t,
+                      )}
+                    />
+                  )}
+                  {!!positionGroup.position.unlockAt && (
+                    <DeFiPositionOverview
+                      icon={<LockOutlineRoundedIcon sx={ICON_STYLES} />}
+                      header={t('portfolio.defiPositionCard.overview.lockup')}
+                      description={formatTimeDifference(
+                        positionGroup.position.unlockAt,
+                        t,
+                      )}
+                    />
+                  )}
+                </StyledOverviewColumn>
+
+                <StyledTablesColumn>
+                  {positionGroup.sections.map((section) => (
+                    <ColumnTable
+                      key={section.id}
+                      columns={section.columns}
+                      data={section.data}
+                      spacing={3}
+                      headerGap={1.25}
+                      dataRowGap={2}
+                      onRowClick={() =>
+                        handleExpandedPositionClick(positionGroup)
+                      }
+                    />
+                  ))}
+                </StyledTablesColumn>
+              </StyledSectionContent>
+            </Fragment>
+          ))}
+        </StyledDetailsContainer>
+      </StyledAccordionDetails>
+    </StyledAccordion>
+  );
+};

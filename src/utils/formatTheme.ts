@@ -37,7 +37,7 @@ export function getAvailableThemeModes(
   return result;
 }
 
-function getLogoData(theme: PartnerThemesAttributes) {
+export function getLogoData(theme: PartnerThemesAttributes) {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
   const logo = theme.LogoDark || theme.LogoLight || null;
 
@@ -60,26 +60,37 @@ export function formatConfig(
   if (!theme) {
     return {
       uid: 'default',
-      availableThemeModes: getAvailableThemeModes(theme),
+      availableThemeModes: getAvailableThemeModes(),
       hasThemeModeSwitch: true,
       hasBackgroundGradient: true,
     };
   }
 
   const defaultMode = isDarkOrLightThemeMode(theme);
+  const themeModes = getAvailableThemeModes(theme);
   const result = {
-    availableThemeModes: getAvailableThemeModes(theme),
+    availableThemeModes: themeModes,
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
     backgroundImageUrl: getImageUrl(theme, 'BackgroundImage', defaultMode),
+    backgroundImagePosition:
+      (theme.lightConfig || theme.darkConfig)?.customization
+        ?.backgroundImagePosition || 'center',
     footerImageUrl: getImageUrl(theme, 'FooterImage', defaultMode),
     logo: getLogoData(theme),
     partnerName: theme.PartnerName,
     partnerUrl: theme.PartnerURL,
     selectableInMenu: theme.SelectableInMenu || false,
     createdAt: theme.createdAt,
+    publishedAt: theme.publishedAt,
     uid: theme.uid,
-    hasThemeModeSwitch: false,
+    themeModeIcon: (theme.lightConfig || theme.darkConfig)?.customization
+      ?.themeModeIcon,
+    defaultThemeMode: (theme.lightConfig || theme.darkConfig)?.config
+      ?.appearance as 'light' | 'dark',
+    hasThemeModeSwitch:
+      (theme.lightConfig || theme.darkConfig)?.customization
+        ?.hasThemeModeSwitch || false,
     hasBlurredNavigation:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.hasBlurredNavigation ?? false,
@@ -113,7 +124,7 @@ export function formatTheme(theme: PartnerThemesAttributes) {
   const config = formatConfig(theme);
 
   const formattedMUITheme = {
-    // @ts-expect-error
+    // @ts-expect-error TODO: Fix this
     ...(theme.lightConfig || theme.darkConfig).customization,
     components: {
       Background: {
@@ -151,5 +162,6 @@ export function formatTheme(theme: PartnerThemesAttributes) {
   };
 }
 
-export const isDarkOrLightThemeMode = (theme: PartnerThemesAttributes) =>
-  theme.lightConfig ? 'light' : 'dark';
+export const isDarkOrLightThemeMode = (
+  theme: PartnerThemesAttributes,
+): 'light' | 'dark' => (theme.lightConfig ? 'light' : 'dark');

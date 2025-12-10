@@ -14,41 +14,34 @@ This is the [jumper.exchange](https://jumper.exchange) repository that gets depl
 
 In the root directory run the following commands to get started:
 
-```
+```sh
 pnpm install
 ```
 
 to install all dependencies, and choose one of these start commands to start the development vite server and to start building packages in watch mode.
 
-```
+```sh
 pnpm dev
 pnpm dev:local
 pnpm dev:staging
 pnpm dev:production
 ```
 
-Please refer to the following descriptions of the dev serve scripts:
+## Tools
 
-    dev - starts the app using the backend develop stage
-    dev:local - starts the app using a locally running backend
-    dev:staging - starts the app using the backend staging stage
-    dev:production - starts the app using the backend production stage
+Most recent parts of the code rely on API generated from our backend's swagger configuration. With the backend running locally (on localhost:3001), you can generate the latest version of the API using:
 
-### Husky Scripts
-
-In addition to these commands you should also run
-
-```
-yarn add husky
+```sh
+pnpm api
 ```
 
-if you plan to commit to this repository please use all necessary husky hooks. If you have trouble running a script try modifying the permissions for the scripts with
+The generated file requires linting, this should be automatic.
 
-```
-chmod ug+x .husky/
-```
+## Lint and checks
 
-to mark them as executables.
+We use [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/lint-staged/lint-staged) to run checks and linting on your code before you commit.
+
+Husky should be installed automatically when you run `pnpm install`.
 
 ### lint-staged
 

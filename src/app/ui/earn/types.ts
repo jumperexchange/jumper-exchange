@@ -1,5 +1,5 @@
-import { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
-import { Chain, Protocol, Token } from 'src/types/jumper-backend';
+import type { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
+import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
 
 type SortByType = NonNullable<NonNullable<EarnOpportunityFilter>['sortBy']>;
 

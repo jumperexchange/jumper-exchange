@@ -58,7 +58,7 @@ export const buildContractComposableWithdrawal = async (
       }),
       chainId: chainId,
       tokenAddress: tokenAddress as Hex,
-    }
+    },
   });
 };
 
@@ -103,5 +103,5 @@ export const getGasLimitEstimate = async ({
 // The following functions are deprecated and should not be used:
 // - hasTokensToSweep
 // - createSweepTransferInstructions
-// 
+//
 // Use the useSweepTokens hook instead, which calls the backend API endpoints.

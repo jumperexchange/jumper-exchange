@@ -1,22 +1,29 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { BaseChainStack } from './BaseChainStack';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
-import { TokenChainStackProps } from '../EntityChainStack.types';
+import type { TokenChainStackProps } from '../EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from 'src/utils/chains/getChainName';
 
 export const TokenChainStack: FC<TokenChainStackProps> = (props) => {
+  const { getChainById } = useChains();
   const { chainIds, chainKeys } = useMemo(() => {
     const chainMap = new Map();
     props.tokens?.forEach((token) => {
       if (!chainMap.has(token.chain.chainId.toString())) {
-        chainMap.set(token.chain.chainId.toString(), token.chain.chainKey);
+        chainMap.set(
+          token.chain.chainId.toString(),
+          getChainName(token.chain, getChainById),
+        );
       }
     });
     return {
       chainIds: Array.from(chainMap.keys()),
       chainKeys: Array.from(chainMap.values()),
     };
-  }, [props.tokens]);
+  }, [props.tokens, getChainById]);
 
   const mainStack = (
     <TokenStack
@@ -24,6 +31,7 @@ export const TokenChainStack: FC<TokenChainStackProps> = (props) => {
       size={props.tokensSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}
+      limit={props.tokensLimit}
     />
   );
 

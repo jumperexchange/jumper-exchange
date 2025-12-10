@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 import Stack from '@mui/system/Stack';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { FC, PropsWithChildren } from 'react';
 
 const LayoutContainer = styled(motion.div)({
@@ -8,9 +8,13 @@ const LayoutContainer = styled(motion.div)({
   height: '100%',
 });
 
-export const EarnAnimatedLayoutContainer: FC<PropsWithChildren> = ({
-  children,
-}) => {
+interface EarnAnimatedLayoutContainerProps extends PropsWithChildren {
+  useStackWrapper?: boolean;
+}
+
+export const EarnAnimatedLayoutContainer: FC<
+  EarnAnimatedLayoutContainerProps
+> = ({ children, useStackWrapper = true }) => {
   return (
     <AnimatePresence>
       <LayoutContainer
@@ -20,13 +24,17 @@ export const EarnAnimatedLayoutContainer: FC<PropsWithChildren> = ({
         }}
         exit={{ opacity: 0 }}
         transition={{
-          type: 'fade',
+          type: 'tween',
           duration: 0.3,
         }}
       >
-        <Stack direction="row" gap={1} alignItems="center" flex={1}>
-          {children}
-        </Stack>
+        {useStackWrapper ? (
+          <Stack direction="row" gap={1} alignItems="center" flex={1}>
+            {children}
+          </Stack>
+        ) : (
+          children
+        )}
       </LayoutContainer>
     </AnimatePresence>
   );

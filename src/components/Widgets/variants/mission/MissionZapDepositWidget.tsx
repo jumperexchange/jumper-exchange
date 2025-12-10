@@ -1,9 +1,11 @@
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import { EntityWidgetProps } from '../base/Widget.types';
-import { FC, useMemo } from 'react';
-import { ZapDepositWidget } from '../base/ZapWidget/ZapDepositWidget';
-import { ZapWidgetContext } from '../widgetConfig/types';
+import type { EntityWidgetProps } from '../base/Widget.types';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import { ZapDepositBackendWidget } from '../base/ZapWidget/ZapDepositBackendWidget';
+import type { ZapWidgetContext } from '../widgetConfig/types';
 import { TaskType } from 'src/types/strapi';
+import envConfig from 'src/config/env-config';
 
 interface MissionZapDepositWidgetProps extends EntityWidgetProps {}
 
@@ -43,5 +45,11 @@ export const MissionZapDepositWidget: FC<MissionZapDepositWidgetProps> = ({
     currentActiveTaskType,
   ]);
 
-  return <ZapDepositWidget ctx={ctx} customInformation={customInformation} />;
+  return (
+    <ZapDepositBackendWidget
+      ctx={ctx}
+      customInformation={customInformation}
+      integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ZAP}
+    />
+  );
 };

@@ -35,7 +35,7 @@ export interface CreateUserTrackingDto {
    * The referrer of the tracking event
    * @example "https://example.com/login"
    */
-  referrer: string;
+  referrer?: string;
   /**
    * The value associated with the tracking event
    * @example 1
@@ -75,7 +75,7 @@ export interface CreateUserTrackingDto {
    * Wallet provider of a user
    * @example "MetaMask"
    */
-  walletProvider: string;
+  walletProvider?: string;
 }
 
 export interface RewardEntity {
@@ -524,7 +524,7 @@ export interface CreateWalletTransactionDto {
    * The browser fingerprint of the user
    * @example "abc123"
    */
-  browserFingerprint: string;
+  browserFingerprint?: string;
   action: string;
   /** Type of the transaction, e.g., 'evm', 'svm' */
   type: string;
@@ -555,6 +555,7 @@ export interface CreateWalletTransactionDto {
   routeId: string;
   exchange?: string;
   slippage?: number;
+  maxSlippage?: string;
   tags?: string;
   time?: number;
   /** @default false */
@@ -566,13 +567,13 @@ export interface CreateWalletTransactionDto {
   errorMessage?: string;
   message?: string;
   status?: string;
-  walletAddress: string;
+  walletAddress?: string;
   /**
    * Wallet provider of a user
    * @example "MetaMask"
    */
-  walletProvider: string;
-  integrator: string;
+  walletProvider?: string;
+  integrator?: string;
   url?: string;
   pathname?: string;
   referrer?: string;
@@ -809,35 +810,6 @@ export interface ExecuteSweepQuoteResponseDto {
   transactionHash: string;
 }
 
-export interface TaskVerificationDto {
-  /** Users wallet address */
-  address: string;
-  /** Quest id */
-  questId: string;
-  /** Step id */
-  stepId: string;
-  /**
-   * Label on strapi
-   * @example "test-quest-label"
-   */
-  label: string;
-  /**
-   * Slug on strapi
-   * @example "test-quest-slug"
-   */
-  slug: string;
-  /**
-   * Task name on strapi
-   * @example "test-quest-task-name"
-   */
-  taskName: string;
-  /**
-   * Additional dynamic fields
-   * @example {"customKey1":"value1","customKey2":"value2"}
-   */
-  additionalFields: object;
-}
-
 export interface Chain {
   chainId: number;
   chainKey: string;
@@ -847,16 +819,17 @@ export interface Token {
   name: string;
   symbol: string;
   decimals: number;
-  logo: string;
+  logo?: string;
   address: string;
   chain: Chain;
 }
 
 export interface Protocol {
   name: string;
-  product: string;
-  version: string;
-  logo: string;
+  product?: string;
+  version?: string;
+  logo?: string;
+  url?: string;
 }
 
 export interface APYItem {
@@ -868,7 +841,9 @@ export interface APYItem {
 export interface EarnOpportunityHistoryItem {
   /** @format date-time */
   date: string;
+  /** Total value locked in USD */
   tvlUsd: string;
+  /** Total value locked in native currency */
   tvlNative: string;
   apy: APYItem;
 }
@@ -880,11 +855,12 @@ export interface EarnOpportunityWithLatestAnalytics {
   url?: string;
   description: string;
   tags: string[];
-  rewards: string[];
+  rewards: Token[];
   lpToken: Token;
   slug: string;
   featured: boolean;
   lockupMonths?: number;
+  /** The cap in dollar */
   capInDollar?: string;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
@@ -902,10 +878,180 @@ export interface EarnOpportunityHistory {
   points: EarnOpportunityHistoryPoint[];
 }
 
+export interface TaskVerificationDto {
+  /** Users wallet address */
+  address: string;
+  /** Quest id */
+  questId: string;
+  /** Step id */
+  stepId: string;
+  /**
+   * Label on strapi
+   * @example "test-quest-label"
+   */
+  label?: string;
+  /**
+   * Slug on strapi
+   * @example "test-quest-slug"
+   */
+  slug?: string;
+  /**
+   * Task name on strapi
+   * @example "test-quest-task-name"
+   */
+  taskName?: string;
+  /**
+   * Additional dynamic fields
+   * @example {"customKey1":"value1","customKey2":"value2"}
+   */
+  additionalFields: object;
+}
+
+export interface TokenBalance {
+  name: string;
+  symbol: string;
+  decimals: number;
+  logo?: string;
+  address: string;
+  chain: Chain;
+  chainType: string;
+  /** The amount of the token in the native currency */
+  amount: string;
+  amountUSD: number;
+}
+
+export interface TokenBalances {
+  balances: TokenBalance[];
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface DefiToken {
+  name: string;
+  symbol: string;
+  decimals: number;
+  logo?: string;
+  address: string;
+  chain: Chain;
+  chainType: string;
+  /** The amount of the token in the native currency */
+  amount: string;
+  amountUSD: number;
+  priceUSD: number;
+}
+
+export interface DefiPosition {
+  name: string;
+  assetUsd: number;
+  debtUsd: number;
+  netUsd: number;
+  address: string;
+  chain: Chain;
+  earn?: string;
+  latest?: EarnOpportunityHistoryItem;
+  /** @format date-time */
+  unlockAt?: string;
+  /** @format date-time */
+  openedAt?: string;
+  type: string;
+  protocol: Protocol;
+  supplyTokens: DefiToken[];
+  borrowTokens: DefiToken[];
+  assetTokens: DefiToken[];
+  collateralTokens: DefiToken[];
+  rewardTokens: DefiToken[];
+}
+
+export interface WalletPositions {
+  positions: DefiPosition[];
+}
+
+export interface MetadataWithUpdatedAt {
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface EarnOpportunityWithScore {
+  name: string;
+  asset: Token;
+  protocol: Protocol;
+  url?: string;
+  description: string;
+  tags: string[];
+  rewards: Token[];
+  lpToken: Token;
+  slug: string;
+  featured: boolean;
+  lockupMonths?: number;
+  /** The cap in dollar */
+  capInDollar?: string;
+  forYou: boolean;
+  latest: EarnOpportunityHistoryItem;
+}
+
+export interface EarnOpportunities {
+  meta: MetadataWithUpdatedAt;
+  data: EarnOpportunityWithScore[];
+}
+
+export interface RecommendationDto {
+  summary: object;
+  scores: string[];
+  opportunities: string[];
+}
+
 export type WalletVerification = object;
 
 export interface UpdateValidityDto {
   valid: boolean;
+}
+
+export interface PerkClaimDto {
+  /** Users wallet address */
+  address: string;
+  /** Message to sign */
+  message: string;
+  /** Wallet type */
+  walletType?: string;
+  /** Perk id */
+  perkId: string;
+  /** Inserted username for the perk claim */
+  username?: string;
+  /** Inserted email for the perk claim */
+  email?: string;
+  /** Signature of the user for the perk claim */
+  signature: string;
+}
+
+export interface PerkClaimEntity {
+  /**
+   * Unique identifier for the perk
+   * @example 1
+   */
+  id: number;
+  /**
+   * Timestamp when the perk claim was created
+   * @format date-time
+   * @example "2023-01-01T00:00:00Z"
+   */
+  timestamp: string;
+  /**
+   * Perk id on strapi
+   * @example "test-perk-id"
+   */
+  perkId: string;
+  /** Wallet associated with the perk claim */
+  wallet: WalletEntity;
+  /**
+   * Inserted username for the perk claim
+   * @example "test-username"
+   */
+  username: string;
+  /**
+   * Inserted email for the perk claim
+   * @example "test-email@example.com"
+   */
+  email: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -944,8 +1090,10 @@ export interface ApiConfig<SecurityDataType = unknown> {
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D extends unknown, E extends unknown = unknown>
-  extends Response {
+export interface HttpResponse<
+  D extends unknown,
+  E extends unknown = unknown,
+> extends Response {
   data: D;
   error: E;
 }
@@ -1522,6 +1670,246 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunityHistory, any>({
         path: `/v1/earn/items/${slug}/analytics`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetTokensForAddressV1
+     * @summary Get tokens for a set of addresses
+     * @request GET:/v1/portfolio/tokens
+     */
+    portfolioControllerGetTokensForAddressV1: (
+      query?: {
+        /** The EVM address to get tokens for */
+        evm?: string;
+        /** The Solana address to get tokens for */
+        solana?: string;
+        /** The SUI address to get tokens for */
+        sui?: string;
+        /** The UTXO address to get tokens for */
+        bitcoin?: string;
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The minimum USD amount to filter for
+         * @example 5.5
+         */
+        minValue?: number;
+        /**
+         * The maximum USD amount to filter for
+         * @example 25
+         */
+        maxValue?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<TokenBalances, any>({
+        path: `/v1/portfolio/tokens`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetPositionsForAddressV1
+     * @summary Get positions for a set of addresses
+     * @request GET:/v1/portfolio/positions
+     */
+    portfolioControllerGetPositionsForAddressV1: (
+      query: {
+        /** The EVM address to get positions for */
+        evm: string;
+        /**
+         * Sort by field.
+         * @example "value"
+         */
+        sortBy?: 'value' | 'chain' | 'asset';
+        /**
+         * Sort order.
+         * @example "asc"
+         */
+        order?: 'asc' | 'desc';
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The protocols to filter for
+         * @example ["Aave","Compound","Yearn"]
+         */
+        protocols?: string[];
+        /**
+         * The position types to filter for
+         * @example ["lending","staking"]
+         */
+        type?: string[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The minimum USD total value to filter for
+         * @example 5.5
+         */
+        minValue?: number;
+        /**
+         * The maximum USD total value to filter for
+         * @example 25
+         */
+        maxValue?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<WalletPositions, any>({
+        path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recommendation, Public
+     * @name RecommendationControllerGetTopsV1
+     * @summary Get tops for an address
+     * @request GET:/v1/recommendation/tops
+     */
+    recommendationControllerGetTopsV1: (
+      query?: {
+        /**
+         * The address to get tops for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EarnOpportunities, any>({
+        path: `/v1/recommendation/tops`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recommendation, Public
+     * @name RecommendationControllerFilterV1
+     * @summary Filter earn opportunities
+     * @request GET:/v1/recommendation/filter
+     */
+    recommendationControllerFilterV1: (
+      query?: {
+        /**
+         * Sort by field.
+         * @example "apy"
+         */
+        sortBy?: 'apy' | 'tvl' | 'slug' | 'chain' | 'protocol' | 'asset';
+        /**
+         * Sort order.
+         * @example "asc"
+         */
+        order?: 'asc' | 'desc';
+        /**
+         * The address to filter for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address?: string;
+        /**
+         * Whether to filter for "for you" opportunities
+         * @example true
+         */
+        forYou?: boolean;
+        /**
+         * Whether to filter for featured opportunities
+         * @example true
+         */
+        featured?: boolean;
+        /**
+         * The chain ids to filter for
+         * @example [1,10,137]
+         */
+        chains?: number[];
+        /**
+         * The protocols to filter for
+         * @example ["Aave","Compound","Yearn"]
+         */
+        protocols?: string[];
+        /**
+         * The assets to filter for
+         * @example ["USDC","USDT","DAI"]
+         */
+        assets?: string[];
+        /**
+         * The tags to filter for
+         * @example ["Lending","Staking","Earn"]
+         */
+        tags?: string[];
+        /**
+         * The minimum APY to filter for
+         * @example 5.5
+         */
+        minAPY?: number;
+        /**
+         * The maximum APY to filter for
+         * @example 25
+         */
+        maxAPY?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<EarnOpportunities, any>({
+        path: `/v1/recommendation/filter`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Recommendation, Public
+     * @name RecommendationControllerScoresV1
+     * @summary Get opportunities scores for an address
+     * @request GET:/v1/recommendation/scores
+     */
+    recommendationControllerScoresV1: (
+      query: {
+        /**
+         * The address to get recommendation for
+         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+         */
+        address: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<RecommendationDto, any>({
+        path: `/v1/recommendation/scores`,
         method: 'GET',
         query: query,
         format: 'json',

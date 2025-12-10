@@ -1,7 +1,7 @@
 'use client';
 
 import Box from '@mui/material/Box';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
@@ -13,10 +13,12 @@ import {
 } from 'src/const/trackingKeys';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import { CustomInformation } from 'src/types/loyaltyPass';
+import type { CustomInformation } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { MissionFormWidget } from './MissionFormWidget';
 import { MissionTaskComplete } from './MissionTaskComplete';
+import { MissionEnded } from './MissionEnded';
+import { MissionVerifyWallet } from './MissionVerifyWallet';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -25,11 +27,24 @@ export interface MissionWidgetProps {
 export const MissionWidget: FC<MissionWidgetProps> = ({
   customInformation,
 }) => {
-  const { currentActiveTaskType, isCurrentActiveTaskCompleted } =
-    useMissionStore();
+  const {
+    currentActiveTaskType,
+    isCurrentActiveTaskCompleted,
+    missionHasEnded,
+  } = useMissionStore();
 
   const renderContent = (): ReactNode => {
-    if (isCurrentActiveTaskCompleted) return <MissionTaskComplete />;
+    if (missionHasEnded) {
+      return <MissionEnded />;
+    }
+
+    if (currentActiveTaskType === TaskType.OnChainWalletOwnership) {
+      return <MissionVerifyWallet isComplete={isCurrentActiveTaskCompleted} />;
+    }
+
+    if (isCurrentActiveTaskCompleted) {
+      return <MissionTaskComplete />;
+    }
 
     if (
       currentActiveTaskType === TaskType.OnChain ||

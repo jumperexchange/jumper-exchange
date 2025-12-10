@@ -13,7 +13,9 @@ interface GetStrapiBaseUrlProps {
     | 'quests'
     | 'campaigns'
     | 'perks'
-    | 'merkl-rewards';
+    | 'merkl-rewards'
+    | 'announcements'
+    | 'wallet-access-controls';
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -377,6 +379,9 @@ type PerkField =
   | 'Link'
   | 'StartDate'
   | 'EndDate'
+  | 'ClaimableSteps'
+  | 'HowToUseDescription'
+  | 'NextStepsDescription'
   | 'createdAt'
   | 'updatedAt'
   | 'publishedAt';
@@ -390,11 +395,18 @@ class PerkParams {
     'EndDate',
     'Link',
     'UnlockLevel',
+    'ClaimableSteps',
+    'HowToUseDescription',
+    'NextStepsDescription',
     'createdAt',
     'updatedAt',
   ];
 
-  private static defaultPopulates = ['Image', 'PerkItems'];
+  private static defaultPopulates = [
+    'Image',
+    'PerkItems',
+    'ClaimableStepsProps',
+  ];
 
   constructor(private apiUrl: URL) {
     this.apiUrl = apiUrl;
@@ -750,6 +762,46 @@ class MerklRewardsStrapiApi extends StrapiApi {
   }
 }
 
+class AnnouncementStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'announcements' });
+    this.addAnnouncementParams();
+  }
+
+  private addAnnouncementParams(): void {
+    // Populate Logo media field
+    this.apiUrl.searchParams.set('populate[0]', 'Logo');
+  }
+
+  sort(order: SortOrder = 'desc'): this {
+    this.apiUrl.searchParams.set('sort[0]', `Priority:${order}`);
+    return this;
+  }
+
+  sortBy(field: string, order: SortOrder = 'desc'): this {
+    this.apiUrl.searchParams.set('sort', `${field}:${order}`);
+    return this;
+  }
+
+  filterByActiveDate(): this {
+    const today = new Date().toISOString().split('T')[0];
+    this.apiUrl.searchParams.set('filters[StartDate][$lte]', today);
+    this.apiUrl.searchParams.set('filters[EndDate][$gte]', today);
+    return this;
+  }
+}
+
+class WalletAccessControlStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'wallet-access-controls' });
+  }
+
+  filterByAddress(address: string): this {
+    this.apiUrl.searchParams.set('filters[address][$eqi]', address);
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
@@ -761,4 +813,6 @@ export {
   TagStrapiApi,
   PerkStrapiApi,
   MerklRewardsStrapiApi,
+  AnnouncementStrapiApi,
+  WalletAccessControlStrapiApi,
 };

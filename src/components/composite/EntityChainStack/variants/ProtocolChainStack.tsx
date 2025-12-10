@@ -1,38 +1,32 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { BaseChainStack } from './BaseChainStack';
-import { AvatarStack } from 'src/components/core/AvatarStack/AvatarStack';
-import { ProtocolChainStackProps } from '../EntityChainStack.types';
+import { ProtocolStack } from 'src/components/composite/ProtocolStack/ProtocolStack';
+import type { ProtocolChainStackProps } from '../EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from 'src/utils/chains/getChainName';
 
 export const ProtocolChainStack: FC<ProtocolChainStackProps> = (props) => {
+  const { getChainById } = useChains();
   const { chainIds, chainKeys } = useMemo(() => {
     const chainMap = new Map();
     props.chains?.forEach((chain) => {
-      chainMap.set(chain.chainId.toString(), chain.chainKey);
+      chainMap.set(chain.chainId.toString(), getChainName(chain, getChainById));
     });
     return {
       chainIds: Array.from(chainMap.keys()),
       chainKeys: Array.from(chainMap.values()),
     };
-  }, [props.chains]);
+  }, [props.chains, getChainById]);
 
   const mainStack = (
-    <AvatarStack
+    <ProtocolStack
+      protocols={props.protocol ? [props.protocol] : []}
       size={props.protocolSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}
-      disableBorder
-      avatars={
-        props.protocol
-          ? [
-              {
-                id: props.protocol.name,
-                src: props.protocol.logo,
-                alt: props.protocol.name,
-              },
-            ]
-          : []
-      }
+      limit={props.protocolLimit}
     />
   );
 

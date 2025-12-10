@@ -13,6 +13,7 @@ import { useAccount } from '@lifi/wallet-management';
 import type {
   ChainTokenSelected,
   ContactSupport,
+  FormFieldChanged,
   RouteExecutionUpdate,
 } from '@lifi/widget';
 import { useWidgetEvents } from '@lifi/widget';
@@ -21,16 +22,16 @@ import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteMod
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { getRouteStatus } from 'src/utils/routes';
-import {
-  setupWidgetEvents,
-  teardownWidgetEvents,
-  WidgetEventsConfig,
-} from './WidgetEventsManager';
+import type { WidgetEventsConfig } from './WidgetEventsManager';
+import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
+import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 
 export function WidgetEvents() {
   const { activeTab } = useActiveTabStore();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();
+  const { setFromChainId, setFromToken, setToChainId, setToToken } =
+    useWidgetCacheStore((state) => state);
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
   ]);
@@ -79,8 +80,14 @@ export function WidgetEvents() {
       // Store the completed route
       setCompletedRoute(route);
 
+      const fromAddress = route.fromAddress;
+      const toAddress = route.toAddress;
+
       // Refresh portfolio value
-      setForceRefresh(true);
+      setForceRefresh(fromAddress ?? '', true);
+      if (fromAddress !== toAddress) {
+        setForceRefresh(toAddress ?? '', true);
+      }
 
       const routeStatus = getRouteStatus(route);
 
@@ -90,9 +97,13 @@ export function WidgetEvents() {
           return;
         }
 
-        const txHash = route.steps[0].execution?.process.find(
-          (process) => !!process.txHash,
-        )?.txHash;
+        const process = route.steps[0].execution?.process;
+
+        if (!Array.isArray(process) || process.length === 0) {
+          return;
+        }
+
+        const txHash = process[process.length - 1]?.txHash;
 
         if (txHash) {
           const { winner, position } = await checkWinningSwap({
@@ -153,6 +164,25 @@ export function WidgetEvents() {
       setContributionDisplayed(false);
     };
 
+    const formFieldChanged = (formFieldData: FormFieldChanged) => {
+      if (formFieldData?.fieldName === 'fromChain') {
+        setFromChainId(formFieldData.newValue);
+        return;
+      }
+      if (formFieldData?.fieldName === 'toChain') {
+        setToChainId(formFieldData.newValue);
+        return;
+      }
+      if (formFieldData?.fieldName === 'fromToken') {
+        setFromToken(formFieldData.newValue);
+        return;
+      }
+      if (formFieldData?.fieldName === 'toToken') {
+        setToToken(formFieldData.newValue);
+        return;
+      }
+    };
+
     const config: WidgetEventsConfig = {
       routeExecutionUpdated,
       routeExecutionCompleted,
@@ -160,6 +190,7 @@ export function WidgetEvents() {
       sourceChainTokenSelected,
       destinationChainTokenSelected,
       pageEntered,
+      formFieldChanged,
     };
 
     setupWidgetEvents(config, widgetEvents);
@@ -178,6 +209,10 @@ export function WidgetEvents() {
     setCompletedRoute,
     setContributed,
     setContributionDisplayed,
+    setFromChainId,
+    setToChainId,
+    setFromToken,
+    setToToken,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {

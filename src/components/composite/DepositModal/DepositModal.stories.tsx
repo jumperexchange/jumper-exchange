@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 
 import { DepositModal } from './DepositModal';
-import { action } from 'storybook/internal/actions';
+import { fn } from '@storybook/test';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { useIsDisconnected } from 'src/components/Navbar/hooks';
 import { WalletMenuToggle } from 'src/components/Navbar/components/Buttons/WalletMenuToggle';
@@ -14,7 +14,7 @@ const meta = {
   component: DepositModal,
   title: 'Composite/Deposit Modal',
   args: {
-    onClose: action('on-close'),
+    onClose: fn(),
   },
 } satisfies Meta<typeof DepositModal>;
 
@@ -26,13 +26,27 @@ export const Default: Story = {
     isOpen: true,
     earnOpportunity: {
       name: 'morpho',
+      slug: 'morpho',
       protocol: {
         name: 'morpho',
         product: 'morpho',
         version: '1.0.0',
         logo: 'logo',
       },
-      address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
+      description: 'description',
+      tags: ['tag1', 'tag2'],
+      rewards: [
+        {
+          name: 'Reward',
+          symbol: 'REWARD',
+          decimals: 18,
+          logo: 'logo',
+          address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
+          chain: { chainId: 747474, chainKey: 'katana' },
+        },
+      ],
+      featured: true,
+      forYou: true,
       url: 'https://morpho.org/',
       positionUrl:
         'https://app.morpho.org/katana/vault/0xC5e7AB07030305fc925175b25B93b285d40dCdFf/gauntlet-weth',
@@ -44,6 +58,24 @@ export const Default: Story = {
         logo: 'logo',
         address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
         chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      lpToken: {
+        name: 'LP Token',
+        symbol: 'LP',
+        decimals: 18,
+        logo: 'logo',
+        address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
+        chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      latest: {
+        date: '2021-01-01',
+        tvlUsd: '1000000',
+        tvlNative: '1000000',
+        apy: {
+          base: 5.5,
+          reward: 0,
+          total: 5.5,
+        },
       },
     },
   },
@@ -75,6 +107,7 @@ export const WithToggleAndConnectButton: Story = {
   args: {
     isOpen: false,
     earnOpportunity: {
+      slug: 'morpho',
       name: 'morpho',
       protocol: {
         name: 'morpho',
@@ -82,7 +115,20 @@ export const WithToggleAndConnectButton: Story = {
         version: '1.0.0',
         logo: 'logo',
       },
-      address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
+      description: 'description',
+      tags: ['tag1', 'tag2'],
+      rewards: [
+        {
+          name: 'Reward',
+          symbol: 'REWARD',
+          decimals: 18,
+          logo: 'logo',
+          address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
+          chain: { chainId: 747474, chainKey: 'katana' },
+        },
+      ],
+      featured: true,
+      forYou: true,
       url: 'https://morpho.org/',
       positionUrl:
         'https://app.morpho.org/katana/vault/0xC5e7AB07030305fc925175b25B93b285d40dCdFf/gauntlet-weth',
@@ -94,6 +140,24 @@ export const WithToggleAndConnectButton: Story = {
         logo: 'logo',
         address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
         chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      lpToken: {
+        name: 'LP Token',
+        symbol: 'LP',
+        decimals: 18,
+        logo: 'logo',
+        address: '0xC5e7AB07030305fc925175b25B93b285d40dCdFf',
+        chain: { chainId: 747474, chainKey: 'katana' },
+      },
+      latest: {
+        date: '2021-01-01',
+        tvlUsd: '1000000',
+        tvlNative: '1000000',
+        apy: {
+          base: 5.5,
+          reward: 0,
+          total: 5.5,
+        },
       },
     },
   },

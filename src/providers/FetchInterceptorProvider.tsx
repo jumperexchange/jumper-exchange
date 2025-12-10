@@ -3,13 +3,18 @@
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { ZAP_QUEST_ID_SESSION_STORAGE_KEY } from 'src/const/quests';
+import {
+  ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
+  ZAP_QUEST_ID_SESSION_STORAGE_KEY,
+} from 'src/const/quests';
 import envConfig from '../config/env-config';
 import { AppPaths } from 'src/const/urls';
+import getApiUrl from '@/utils/getApiUrl';
 
 export function FetchInterceptorProvider() {
   const pathname = usePathname();
-  
+  const apiUrl = getApiUrl();
+
   useEffect(() => {
     const interceptor = new FetchInterceptor();
     interceptor.apply();
@@ -19,11 +24,29 @@ export function FetchInterceptorProvider() {
         ZAP_QUEST_ID_SESSION_STORAGE_KEY,
       );
       // zaps flow
-      if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL)) {
-        request.headers.append('x-zap-quest-id', zapQuestId || '');
+      const earnOpportunitySlug = sessionStorage.getItem(
+        ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
+      );
+      if (
+        request.url.startsWith(apiUrl) ||
+        request.url.includes('pipeline')
+      ) {
+        if (earnOpportunitySlug) {
+          request.headers.append(
+            'x-earn-opportunity-slug',
+            earnOpportunitySlug,
+          );
+        }
+        if (zapQuestId) {
+          request.headers.append('x-zap-quest-id', zapQuestId);
+        }
       }
       // scan page flow
-      if (request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_API_URL) && request.url.includes('status') && pathname?.includes(AppPaths.Scan)) {
+      if (
+        request.url.startsWith(apiUrl) &&
+        request.url.includes('status') &&
+        pathname?.includes(AppPaths.Scan)
+      ) {
         request.headers.append('x-zap-scan-id', 'biconomy-powered-tx');
       }
     });
@@ -31,7 +54,7 @@ export function FetchInterceptorProvider() {
     return () => {
       interceptor.dispose();
     };
-  }, []);
+  }, [apiUrl]);
 
   return null;
 }

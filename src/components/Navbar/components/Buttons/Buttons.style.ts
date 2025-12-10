@@ -2,13 +2,15 @@ import { ButtonPrimary } from '@/components/Button';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
+import type { ButtonProps } from '@mui/material/Button';
+import type { Theme } from '@mui/material/styles';
 import {
   ButtonSecondary,
   ButtonTransparent,
 } from '@/components/Button/Button.style';
-import type { ButtonProps } from '@mui/material';
 
 import MuiMoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MuiMenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 import { styled } from '@mui/material/styles';
 
@@ -19,6 +21,9 @@ export const ConnectNavbarButton = styled(ButtonPrimary)(({ theme }) => ({
   height: 32,
   [theme.breakpoints.up('sm')]: {
     height: 40,
+  },
+  [theme.breakpoints.up('lg')]: {
+    height: 48,
   },
 }));
 
@@ -131,10 +136,28 @@ export const NavbarMenuToggleButton = styled(ButtonSecondary)<ButtonProps>(({
   };
 });
 
-export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) => ({
+const getIconProps = (theme: Theme) => ({
   fontSize: '24px',
-  color: theme.palette.white.main,
+  color: (theme.vars || theme).palette.white.main,
   ...theme.applyStyles('light', {
-    color: theme.palette.black.main,
+    color: (theme.vars || theme).palette.black.main,
   }),
+});
+
+export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) =>
+  getIconProps(theme),
+);
+
+export const BurgerMenuIcon = styled(MuiMenuRoundedIcon)(({ theme }) =>
+  getIconProps(theme),
+);
+
+export const LevelIconBox = styled(Box)(({ theme }) => ({
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  backgroundColor: (theme.vars || theme).palette.accent1.main,
+  color: (theme.vars || theme).palette.white.main,
+  alignContent: 'center',
+  justifySelf: 'center',
 }));

@@ -1,7 +1,8 @@
 import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
-import type { SxProps, Theme } from '@mui/material';
-import { Typography } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Fade from '@mui/material/Fade';
 import type { ReactNode } from 'react';
 import {
   MenuHeaderAppBar,
@@ -9,15 +10,13 @@ import {
   MenuList,
   MenuPaper,
   MobileDrawer,
-} from '.';
+} from './Menu.style';
 
 const paperProps = {
-  sx: (theme: Theme) => ({
+  sx: {
     position: 'absolute',
     backgroundImage: 'none',
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-  }),
+  },
 };
 
 interface MenuProps {
@@ -45,17 +44,30 @@ export const MenuMobile = ({
       anchor="bottom"
       open={open}
       onClose={(_, reason) => {
-        reason === 'backdropClick' && setMainMenuState(false);
+        if (reason === 'backdropClick') {
+          setMainMenuState(false);
+        }
       }}
-      PaperProps={paperProps}
+      slots={{
+        transition: Fade,
+      }}
+      slotProps={{
+        paper: paperProps,
+        transition: {
+          timeout: 300,
+        },
+      }}
       keepMounted={keepMounted}
       disableScrollLock
+      disableAutoFocus
+      disableEnforceFocus
+      disableRestoreFocus
+      inert={!open}
     >
-      <MenuPaper show={open} sx={{ height: '100vh' }}>
+      <MenuPaper show={open} sx={{ height: '100dvh' }}>
         <MenuList
           autoFocusItem={open}
           id="main-burger-menu"
-          autoFocus={open}
           isOpenSubMenu={openSubMenu !== MenuKeysEnum.None}
           aria-labelledby="main-burger-menu"
           cardsLayout={cardsLayout}

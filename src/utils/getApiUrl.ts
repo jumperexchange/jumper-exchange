@@ -1,8 +1,10 @@
 import config from '@/config/env-config';
+
 const getApiUrl = (): string => {
-  let apiUrl = config.NEXT_PUBLIC_LIFI_API_URL;
+  const suffix = '/v1';
+  let apiUrl = config.NEXT_PUBLIC_LIFI_BACKEND_URL;
   if (typeof window === 'undefined') {
-    return apiUrl;
+    return `${apiUrl}${suffix}`;
   }
 
   const isBetaEnabled = window?.localStorage.getItem('use-beta');
@@ -11,7 +13,7 @@ const getApiUrl = (): string => {
     apiUrl = `${apiUrl}/beta`;
   }
 
-  return apiUrl;
+  return `${apiUrl}${suffix}`;
 };
 
 export default getApiUrl;

@@ -1,9 +1,11 @@
-import { FC, useMemo } from 'react';
-import { TokenAssetProgressProps } from '../AssetProgress.types';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { TokenAssetProgressProps } from '../AssetProgress.types';
 import { BaseProgress } from './BaseProgress';
 import { useTokens } from 'src/hooks/useTokens';
 import {
   Avatar,
+  AvatarPlaceholder,
   AvatarSkeleton,
 } from 'src/components/core/AvatarStack/AvatarStack.styles';
 
@@ -34,6 +36,11 @@ export const TokenProgress: FC<Omit<TokenAssetProgressProps, 'variant'>> = ({
         disableBorder
         variant="circular"
       >
+        {enhancedToken.alt ? (
+          <AvatarPlaceholder color="textSecondary">
+            {enhancedToken.alt[0].toUpperCase()}
+          </AvatarPlaceholder>
+        ) : null}
         <AvatarSkeleton
           key={enhancedToken.id}
           variant="circular"

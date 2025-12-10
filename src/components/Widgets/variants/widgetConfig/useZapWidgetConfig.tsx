@@ -1,10 +1,7 @@
 import { useMemo } from 'react';
-import { WidgetConfig, RequiredUI } from '@lifi/widget';
-import { ZapWidgetContext, HookDependencies } from './types';
-
-const BICONOMY_EXPLORER_URL = 'https://meescan.biconomy.io';
-const BICONOMY_EXPLORER_TX_PATH = 'details';
-const BICONOMY_EXPLORER_ADDRESS_PATH = 'address';
+import type { WidgetConfig } from '@lifi/widget';
+import { RequiredUI } from '@lifi/widget';
+import type { ZapWidgetContext, HookDependencies } from './types';
 
 /**
  * Configuration hook for the zap widget variant
@@ -14,30 +11,10 @@ export function useZapWidgetConfig(
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
   return useMemo(() => {
-    const explorerConfig = [
-      {
-        url: BICONOMY_EXPLORER_URL,
-        txPath: BICONOMY_EXPLORER_TX_PATH,
-        addressPath: BICONOMY_EXPLORER_ADDRESS_PATH,
-      },
-    ];
-
-    const explorerChainIds = ['internal'];
-    const explorerUrls = explorerChainIds.reduce(
-      (acc, id) => {
-        acc[String(id)] = explorerConfig;
-        return acc;
-      },
-      {} as Record<string, typeof explorerConfig>,
-    );
-
     return {
       // UI configuration
       requiredUI: [RequiredUI.ToAddress],
       keyPrefix: context.keyPrefix ?? 'jumper-custom-zap',
-
-      // Explorer configuration
-      explorerUrls,
 
       sdkConfig: {
         routeOptions: {
@@ -46,14 +23,13 @@ export function useZapWidgetConfig(
       },
 
       // Additional zap-specific config
-      buildUrl: true,
+      buildUrl: false,
       useRecommendedRoute: true,
       // contractCompactComponent: <></>,
 
       bridges: {
-        allow: ['across', 'relay'],
+        allow: ['across', 'relay', 'mayan'],
       },
-
       // Chain configuration
       chains: {
         allow: context.allowChains,
@@ -67,5 +43,10 @@ export function useZapWidgetConfig(
           : undefined,
       },
     };
-  }, [context.allowChains, context.allowToChains, context.keyPrefix]);
+  }, [
+    context.allowChains,
+    context.allowFromChains,
+    context.allowToChains,
+    context.keyPrefix,
+  ]);
 }

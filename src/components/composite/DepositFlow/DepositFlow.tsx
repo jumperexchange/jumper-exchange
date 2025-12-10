@@ -1,14 +1,13 @@
 'use client';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-  EarnOpportunityExtended,
-  useDepositFlowStore,
-} from 'src/stores/depositFlow/DepositFlowStore';
+import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
+import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButton } from '../DepositButton/DepositButton';
-import { DepositButtonProps } from '../DepositButton/DepositButton.types';
+import type { DepositButtonProps } from '../DepositButton/DepositButton.types';
 import { DepositModal } from '../DepositModal/DepositModal';
+import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 
 export const DepositFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -29,16 +28,50 @@ export const DepositFlowModal = () => {
 
 interface DepositFlowButtonProps extends Omit<DepositButtonProps, 'onClick'> {
   earnOpportunity: EarnOpportunityExtended;
+  refetchCallback?: () => void;
 }
 export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
   earnOpportunity,
+  refetchCallback,
   ...props
 }) => {
   const { t } = useTranslation();
   const openModal = useDepositFlowStore((state) => state.openModal);
   return (
     <DepositButton
-      onClick={() => openModal(earnOpportunity)}
+      onClick={() => openModal(earnOpportunity, refetchCallback)}
+      label={t('buttons.depositButtonLabel')}
+      {...props}
+    />
+  );
+};
+
+export const DepositFlowOnDemandButton: FC<
+  Omit<DepositFlowButtonProps, 'earnOpportunity'> & {
+    earnOpportunitySlug: string;
+  }
+> = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
+  const { t } = useTranslation();
+  const openModal = useDepositFlowStore((state) => state.openModal);
+  const { refetch: fetchEarnOpportunity } =
+    useEarnOpportunityBySlug(earnOpportunitySlug);
+  const handleClick = async () => {
+    const { data: earnOpportunity } = await fetchEarnOpportunity();
+    if (!earnOpportunity) {
+      return;
+    }
+    openModal(
+      {
+        ...earnOpportunity,
+        minFromAmountUSD: 0.99,
+        positionUrl: earnOpportunity.url ?? 'unset',
+      },
+      refetchCallback,
+    );
+  };
+  return (
+    <DepositButton
+      onClick={handleClick}
       label={t('buttons.depositButtonLabel')}
       {...props}
     />

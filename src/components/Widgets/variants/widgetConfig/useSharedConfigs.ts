@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
-import { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
 import { ChainType } from '@lifi/sdk';
 import envConfig from '@/config/env-config';
 import { publicRPCList } from 'src/const/rpcList';
 import getApiUrl from 'src/utils/getApiUrl';
-import {
+import type {
   EnglishLanguageResource,
   FormData,
   HookDependencies,
-  isMissionContext,
-  isZapContext,
   WidgetContext,
 } from './types';
+import { isMissionContext, isZapContext } from './types';
 import { TaskType } from 'src/types/strapi';
-import { LanguageKey } from 'src/types/i18n';
+import type { LanguageKey } from 'src/types/i18n';
+import { AppPaths, getSiteUrl } from '@/const/urls';
 
 /**
  * Shared base configuration that's common across all widget types
@@ -24,6 +24,9 @@ export function useSharedBaseConfig(
 ): Partial<WidgetConfig> {
   return useMemo(
     () => ({
+      explorerUrls: {
+        internal: [`${getSiteUrl()}${AppPaths.Scan}`],
+      },
       integrator: context.integrator ?? envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       keyPrefix: context.keyPrefix,
       apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
@@ -107,6 +110,7 @@ export function useSharedFormConfig(
     formData?.destinationToken?.tokenAddress,
     formData?.fromAmount,
     formData?.toAddress?.walletAddress,
+    formData?.toAddress?.chainType,
     formData?.minFromAmountUSD,
   ]);
 }
@@ -189,6 +193,14 @@ export function useLanguageConfig(
         sendToAddress: deps.translation.t('widget.zap.sendToAddressName', {
           name: context.zapPoolName,
         }),
+      };
+    }
+
+    if (isZapContext(context) && context.subTaskType === 'withdraw') {
+      languageResourcesEN.button = {
+        exchange: deps.translation.t('buttons.withdrawButtonLabel'),
+        swap: deps.translation.t('buttons.withdrawButtonLabel'),
+        deposit: deps.translation.t('buttons.withdrawButtonLabel'),
       };
     }
 

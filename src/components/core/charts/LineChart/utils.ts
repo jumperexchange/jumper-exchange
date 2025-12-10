@@ -1,6 +1,6 @@
 import { groupBy, uniq } from 'lodash';
 import { TOOLTIP_CONFIG, Y_AXIS_CONFIG } from './constants';
-import { ChartDataPoint } from './LineChart';
+import type { ChartDataPoint } from './LineChart';
 
 /**
  * Calculates the optimal tooltip position to prevent it from going outside the container bounds
@@ -28,13 +28,17 @@ export const calculateTooltipPosition = (
 };
 
 /**
+ * @deprecated
  * Calculates the visible y range for the chart with padding to prevent curve clipping
  * Uses range-based padding which is more mathematically sound than value-based padding:
  * - Scale-independent (works with any magnitude of values)
  * - Handles edge cases (values near zero, negative values)
  * - Proportional to data variation
  */
-export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
+export const calculateVisibleYRangeOld = <
+  V extends number | string,
+  T extends ChartDataPoint<V>,
+>(
   data: T[],
 ) => {
   const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
@@ -88,14 +92,71 @@ export const calculateVisibleYRange = <V, T extends ChartDataPoint<V>>(
 };
 
 /**
+ * Calculates the visible y-axis range for the chart.
+ * - Min value: min(0, dataMinValue) - starts at 0 for positive data, or the negative minimum
+ * - Max value: dataMaxValue * 1.2 when positive (20% headroom), or 0 when all values are negative
+ * - When all values are identical, ensures a reasonable range (min -1 to 0 for negatives, 0 to 1 for small positives)
+ */
+export const calculateVisibleYRange = <
+  V extends number | string,
+  T extends ChartDataPoint<V>,
+>(
+  data: T[],
+) => {
+  const values = data.map((d) => Number(d.value)).filter((v) => !isNaN(v));
+
+  if (values.length === 0) {
+    return {
+      minValue: 0,
+      maxValue: 1,
+      minValueWithOffset: 0,
+      maxValueWithOffset: 1,
+      isSymmetricRange: false,
+      isNegative: false,
+    };
+  }
+
+  const dataMinValue = Math.min(...values);
+  const dataMaxValue = Math.max(...values);
+
+  const isNegative = dataMinValue < 0;
+  const isSame = Math.abs(dataMinValue - dataMaxValue) < Number.EPSILON;
+
+  let minValue = Math.min(0, dataMinValue);
+  let maxValue = dataMaxValue > 0 ? dataMaxValue * 1.2 : 0;
+
+  if (isSame && Math.abs(dataMinValue) < 1) {
+    if (isNegative) {
+      minValue = -1;
+    } else {
+      maxValue = 1;
+    }
+  }
+
+  return {
+    minValue,
+    maxValue,
+    minValueWithOffset: minValue,
+    maxValueWithOffset: maxValue,
+    isSymmetricRange: false,
+    isNegative,
+  };
+};
+
+/**
  * Groups data by formatted date values and returns the first date from each group
  * This ensures one tick per unique formatted date (e.g., one per month if using 'MMM yyyy')
  */
-export const calculateEvenXAxisTicks = <V, T extends ChartDataPoint<V>>(
+export const calculateEvenXAxisTicks = <
+  V extends number | string,
+  T extends ChartDataPoint<V>,
+>(
   data: T[],
   dateFormatter: (date: string) => string,
 ): T['date'][] => {
-  if (!data || data.length === 0) return [];
+  if (!data || data.length === 0) {
+    return [];
+  }
 
   // Group data points by their formatted date
   const grouped = groupBy(data, (point) => dateFormatter(point.date));

@@ -1,14 +1,14 @@
 import { useColorScheme, useTheme } from '@mui/material/styles';
 import { useState, useCallback, useMemo } from 'react';
-import { EarnOpportunityAnalyticsQuery } from 'src/app/lib/getOpportunityAnalytics';
+import type { EarnOpportunityAnalyticsQuery } from 'src/app/lib/getOpportunityAnalytics';
 import { useEarnAnalytics } from 'src/hooks/earn/useEarnAnalytics';
-import { EarnOpportunityHistory } from 'src/types/jumper-backend';
+import type { EarnOpportunityHistory } from 'src/types/jumper-backend';
 import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 
 export const useAnalyticsQuery = (slug: string) => {
   const [query, setQuery] = useState<EarnOpportunityAnalyticsQuery>({
     value: AnalyticsValueFieldEnum.APY,
-    range: AnalyticsRangeFieldEnum.DAY,
+    range: AnalyticsRangeFieldEnum.WEEK,
   });
 
   const result = useEarnAnalytics({ slug, query });
@@ -59,13 +59,10 @@ export const useAnalyticsChartData = (
     return {
       data,
       dateFormat:
-        range === AnalyticsRangeFieldEnum.DAY
-          ? 'PP p'
-          : range === AnalyticsRangeFieldEnum.WEEK
-            ? 'PP'
-            : range === AnalyticsRangeFieldEnum.MONTH
-              ? 'MMM yyyy'
-              : 'yyyy',
+        range === AnalyticsRangeFieldEnum.WEEK ||
+        range === AnalyticsRangeFieldEnum.MONTH
+          ? 'dd MMM'
+          : 'MMM yyyy',
       theme: {
         areaTopColor: isLightTheme
           ? `#F2D9F6`

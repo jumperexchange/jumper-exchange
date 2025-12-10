@@ -5,12 +5,14 @@ import {
   differenceInHours,
   differenceInMinutes,
   isBefore,
+  isAfter,
 } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
 export const useMissionTimeStatus = (
   publishedAt: string,
   endsAt: string,
+  hasEnded: boolean,
   sensitivity = 5,
 ) => {
   const { t } = useTranslation();
@@ -59,9 +61,16 @@ export const useMissionTimeStatus = (
       }
     }
 
+    if (hasEnded || isAfter(now, endsDate)) {
+      return {
+        status: t('missions.status.ended'),
+        isDisabled: false,
+      };
+    }
+
     return {
       status: undefined,
       isDisabled: false,
     };
-  }, [t, publishedAt, endsAt, sensitivity]);
+  }, [t, publishedAt, endsAt, sensitivity, hasEnded]);
 };

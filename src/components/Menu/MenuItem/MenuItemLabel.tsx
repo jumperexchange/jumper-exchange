@@ -33,7 +33,7 @@ export const MenuItemLabel = ({
         {label ? (
           <Typography
             variant={'bodyMedium'}
-            ml={theme.spacing(1.5)}
+            ml={prefixIcon ? theme.spacing(1.5) : 0}
             sx={[
               {
                 overflow: 'hidden',

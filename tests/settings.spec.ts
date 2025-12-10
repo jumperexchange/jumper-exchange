@@ -18,7 +18,7 @@ for (const { name, size } of [
   { name: 'Desktop', size: { width: 1920, height: 1080 } },
 ]) {
   test.describe(`Settings menu [Viewport: ${name}]`, () => {
-    test.use({ viewport: { width: size.width, height: size.height } }
+    test.use({ viewport: { width: size.width, height: size.height } },
     );
 
     test.beforeEach(async ({ page }) => {

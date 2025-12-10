@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, ReactElement, useMemo, cloneElement } from 'react';
 import { EntityCardProps } from '../EntityCard.types';
+import { useOverflowItems } from '../../../../hooks/useOverflowItems';
 import {
   StyledEntityCard,
   StyledEntityCardContentContainer,
@@ -19,6 +20,11 @@ import {
 import { CompactEntityCardSkeleton } from './CompactEntityCardSkeleton';
 import { ENTITY_CARD_SIZES } from '../constants';
 
+type FlattenedReward = {
+  key: string;
+  content: ReactElement;
+};
+
 export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   imageUrl,
   title,
@@ -29,6 +35,91 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   isLoading,
   fullWidth,
 }) => {
+  const flattenedRewards = useMemo(() => {
+    // Flatten rewards into a single array for easier measurement
+    const _flattenedRewards: FlattenedReward[] = [];
+
+    Object.entries(rewardGroups || {}).forEach(([rewardKey, rewards]) => {
+      if (rewards.length === 0) return;
+
+      if (rewardKey === 'generic') {
+        rewards.forEach((reward, index) => {
+          _flattenedRewards.push({
+            key: `${rewardKey}-${index}`,
+            content: (
+              <StyledCompactRewardChipContainer
+                clickable={false}
+                label={
+                  <StyledCompactRewardLabel>
+                    {reward.label}
+                  </StyledCompactRewardLabel>
+                }
+              />
+            ),
+          });
+        });
+      } else if (rewardKey !== 'coins') {
+        _flattenedRewards.push({
+          key: rewardKey,
+          content: (
+            <StyledCompactRewardChipContainer
+              clickable={false}
+              label={
+                <StyledCompactRewardLabel>
+                  {rewards[0].value} {rewards[0].label}
+                </StyledCompactRewardLabel>
+              }
+            />
+          ),
+        });
+      } else {
+        const hasMultipleRewards = rewards.length > 1;
+        _flattenedRewards.push({
+          key: rewardKey,
+          content: (
+            <StyledCompactRewardChipContainer
+              clickable={false}
+              avatar={
+                <StyledRewardsAvatarsContainer>
+                  {rewards
+                    .filter((reward) => !!reward.avatarUrl)
+                    .map((reward, rewardIndex) => (
+                      <StyledRewardAvatar
+                        key={reward.label}
+                        src={reward.avatarUrl || ''}
+                        alt={reward.label}
+                        sx={{
+                          zIndex: rewards.length - rewardIndex,
+                        }}
+                      />
+                    ))}
+                </StyledRewardsAvatarsContainer>
+              }
+              hideLabel={hasMultipleRewards}
+              label={
+                !hasMultipleRewards ? (
+                  <StyledCompactRewardLabel>
+                    {rewards[0].value}
+                  </StyledCompactRewardLabel>
+                ) : undefined
+              }
+            />
+          ),
+        });
+      }
+    });
+
+    return _flattenedRewards;
+  }, [rewardGroups]);
+
+  // Use custom hook to handle overflow detection
+  const { containerRef, getItemRef, visibleCount, hiddenCount, isReady } =
+    useOverflowItems({
+      itemCount: flattenedRewards.length,
+      gap: 8, // theme.spacing(1) = 8px
+      overflowIndicatorWidth: 60,
+    });
+
   if (isLoading) {
     return <CompactEntityCardSkeleton fullWidth={fullWidth} />;
   }
@@ -91,51 +182,40 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
           ))}
         </StyledParticipantsContainer>
         <StyledCompactEntityCardTitle>{title}</StyledCompactEntityCardTitle>
-        {Object.keys(rewardGroups || {}).length > 0 && (
-          <StyledRewardsContainer direction="row">
-            {Object.entries(rewardGroups || {}).map(([rewardKey, rewards]) => {
-              if (rewards.length === 0) return null;
+        {flattenedRewards.length > 0 && (
+          <StyledRewardsContainer
+            direction="row"
+            ref={containerRef}
+            sx={{
+              opacity: isReady ? 1 : 0,
+              transition: 'opacity 0.2s ease-in-out',
+            }}
+          >
+            {flattenedRewards.map((reward, index) => {
+              const isVisible = visibleCount === null || index < visibleCount;
+              const sx = (reward.content.props as any)?.sx || {};
 
-              if (rewardKey !== 'coins') {
-                return (
-                  <StyledCompactRewardChipContainer
-                    clickable={false}
-                    key={rewardKey}
-                    label={
-                      <StyledCompactRewardLabel>
-                        {rewards[0].value} {rewards[0].label}
-                      </StyledCompactRewardLabel>
-                    }
-                  />
-                );
-              }
-
-              return (
-                <StyledCompactRewardChipContainer
-                  clickable={false}
-                  key={rewardKey}
-                  sx={{
-                    display: 'inline-block',
-                  }}
-                  avatar={
-                    <StyledRewardsAvatarsContainer>
-                      {rewards
-                        .filter((reward) => !!reward.avatarUrl)
-                        .map((reward, rewardIndex) => (
-                          <StyledRewardAvatar
-                            key={reward.label}
-                            src={reward.avatarUrl || ''}
-                            alt={reward.label}
-                            sx={{
-                              zIndex: rewards.length - rewardIndex,
-                            }}
-                          />
-                        ))}
-                    </StyledRewardsAvatarsContainer>
-                  }
-                />
-              );
+              return cloneElement(reward.content as ReactElement<any>, {
+                key: reward.key,
+                ref: getItemRef(index),
+                sx: {
+                  ...sx,
+                  visibility: isVisible ? 'visible' : 'hidden',
+                  position: isVisible ? 'relative' : 'absolute',
+                  pointerEvents: isVisible ? 'auto' : 'none',
+                },
+              });
             })}
+            {hiddenCount > 0 && (
+              <StyledCompactRewardChipContainer
+                clickable={false}
+                label={
+                  <StyledCompactRewardLabel>
+                    +{hiddenCount}
+                  </StyledCompactRewardLabel>
+                }
+              />
+            )}
           </StyledRewardsContainer>
         )}
       </StyledEntityCardContentContainer>

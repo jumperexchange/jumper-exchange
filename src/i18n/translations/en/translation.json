@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Exchange",
+      "portfolio": "Portfolio",
       "missions": "Missions",
       "earn": "Earn",
       "dashboard": "Dashboard",
@@ -28,6 +29,8 @@
         "noEcosystemAdapter": "No appropriate ecosystem adapter found"
       }
     },
+    "pass": "Pass",
+    "wallets": "Wallets",
     "seeAllWallets": "See all wallets",
     "navbarMenu": {
       "learn": "Learn",
@@ -51,6 +54,7 @@
       "connectAnotherWallet": "Connect another wallet",
       "refreshBalances": "Refresh balances",
       "totalBalance": "Total balance",
+      "walletBalance": "Wallet balance",
       "totalBalanceTooltip": "Your total balance may not always be accurate due to potential indexing issues. We're on it!",
       "totalBalanceRefresh": "Click here to restart the indexing of your tokens now.",
       "numberOfChains": "{{numberOfChains}} chains"
@@ -158,6 +162,11 @@
       "completed": {
         "title": "Mission completed",
         "description": "All tasks in this mission have been verified and completed."
+      },
+      "ended": {
+        "title": "Mission has ended",
+        "description": "Mission has ended, go back to the main missions page to explore other missions!",
+        "cta": "Go back to missions"
       }
     },
     "status": {
@@ -168,7 +177,8 @@
       "hoursLeft_one": "{{count}} hour left",
       "hoursLeft_other": "{{count}} hours left",
       "daysLeft_one": "{{count}} day left",
-      "daysLeft_other": "{{count}} days left"
+      "daysLeft_other": "{{count}} days left",
+      "ended": "Ended"
     },
     "tasks": {
       "type": "{{type}} task",
@@ -185,6 +195,37 @@
       "completed": {
         "title": "Task completed",
         "description": "This task has been verified and completed."
+      },
+      "verifyWallet": {
+        "title": "Verify ownership",
+        "description": {
+          "notConnected": "Connect and sign a message to verify ownership of your wallet address. If you do not want to do this then reach out on <0>Discord</0>.",
+          "notVerified": "Sign a message to verify ownership of the below wallet address. If you do not want to do this then reach out on <0>Discord</0>.",
+          "verified": "You have successfully verified ownership of your wallet address."
+        },
+        "action": {
+          "connectAndVerify": "Connect & verify ownership",
+          "verifyWallet": "Verify ownership"
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "Signature required",
+            "description": "You need to sign the transaction to confirm ownership of the wallet address.",
+            "tryAgain": "Try again"
+          },
+
+          "unsupportedWallet": {
+            "title": "Unsupported wallet",
+            "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
+            "switchWallet": "Switch wallet"
+          },
+
+          "unknown": {
+            "title": "Unknown error",
+            "description": "An unknown error occurred. Please try again.",
+            "tryAgain": "Try again"
+          }
+        }
       }
     }
   },
@@ -298,19 +339,126 @@
     },
     "sorting": {
       "sortBy": "Sort By",
+      "sort": "Sort",
       "apy": "APY",
       "tvl": "TVL"
     },
     "filter": {
       "clear": "Clear",
       "selected": "{{count}} selected",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "filterAndSort": "Filter and sort",
+      "clearAll": "Clear all",
+      "chain": "Chain",
+      "protocol": "Protocol",
+      "tag": "Type",
+      "asset": "Asset",
+      "apy": "APY"
+    },
+    "views": {
+      "forYou": "For you",
+      "allMarkets": "All markets",
+      "all": "All"
     },
     "relatedMarkets": {
       "title": "Related Markets"
     },
     "overview": {
       "updated": "Updated {{time}} ago"
+    },
+    "actions": {
+      "viewAllMarkets": "View all markets",
+      "seeMore": "see more"
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "One platform, all of DeFi",
+      "subtitle": "<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>",
+      "getStarted": "Get started",
+      "explorePass": "Explore Jumper Pass"
+    },
+    "overviewCard": {
+      "title": "Portfolio",
+      "refreshTooltip": "Click here to restart the indexing of your assets."
+    },
+    "emptyList": {
+      "title": "No results",
+      "description": "Unfortunately there are no results for your search, try clearing your filters.",
+      "clearFilters": "Clear filters"
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "Overview",
+        "tokens": "Tokens",
+        "defiPositions": "DeFi Protocols"
+      },
+      "overview": {
+        "tokens": "Tokens",
+        "defiPositions": "DeFi Protocols"
+      },
+      "noContent": {
+        "title": "This is looking a bit empty!",
+        "description": "Use Earn or Exchange and jump start your DeFi journey!",
+        "cta": {
+          "startEarning": "Start Earning",
+          "startSwapping": "Start Swapping"
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "Opened",
+        "lockup": "Lockup",
+        "lockupPeriod": {
+          "lessThanOneMinute": "<1 minute ago",
+          "minutes_one": "{{count}} minute ago",
+          "minutes_other": "{{count}} minutes ago",
+          "hours_one": "{{count}} hour ago",
+          "hours_other": "{{count}} hours ago",
+          "days_one": "{{count}} day ago",
+          "days_other": "{{count}} days ago",
+          "months_one": "{{count}} month ago",
+          "months_other": "{{count}} months ago",
+          "years_one": "{{count}} year ago",
+          "years_other": "{{count}} years ago"
+        }
+      },
+      "actions": {
+        "withdraw": "Withdraw",
+        "deposit": "Deposit",
+        "claim": "Claim",
+        "compound": "Compound",
+        "repay": "Repay",
+        "borrow": "Borrow"
+      },
+      "header": {
+        "supplied": "Supplied",
+        "value": "Value",
+        "apy": "APY",
+        "rewards": "Rewards",
+        "borrowed": "Borrowed"
+      }
+    },
+    "filter": {
+      "tokens": "Tokens",
+      "defiProtocols": "DeFi Protocols",
+      "wallet": "Wallet",
+      "chain": "Chain",
+      "protocol": "Protocol",
+      "type": "Type",
+      "asset": "Asset",
+      "value": "Value",
+      "clearAll": "Clear all",
+      "filterAndSort": "Filter and sort",
+      "search": "Search {{filterBy}}..."
+    },
+    "sorting": {
+      "sortBy": "Sort by",
+      "sort": "Sort",
+      "totalValue": "Total value",
+      "chain": "Chain",
+      "asset": "Asset"
     }
   },
   "widget": {
@@ -357,6 +505,12 @@
           "description": "We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission."
         }
       }
+    },
+    "earn": {
+      "depositSuccess": "You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>"
+    },
+    "withdraw": {
+      "title": "Withdraw"
     }
   },
   "links": {
@@ -364,6 +518,83 @@
   },
   "buttons": {
     "depositButtonLabel": "Quick deposit",
-    "managePositionsButtonLabel": "Manage Positions"
+    "withdrawButtonLabel": "Withdraw",
+    "managePositionsButtonLabel": "Manage positions"
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": "Claim perk"
+      },
+      "claimedPerk": {
+        "title": "Perk claimed!",
+        "description": "You have verified this perk with the following address",
+        "nextSteps": "Next steps",
+        "howToUsePerk": "How to use your perk ?",
+        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
+      },
+
+      "signatureFailed": {
+        "title": "Signature required",
+        "description": "You need to sign the transaction to confirm ownership of the wallet address.",
+        "tryAgain": "Try again"
+      },
+
+      "validationFailed": {
+        "title": "Validation failed",
+        "description": "Please check the fields and try again.",
+        "close": "Close"
+      },
+
+      "unsupportedWallet": {
+        "title": "Unsupported wallet",
+        "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
+        "switchWallet": "Switch wallet"
+      },
+
+      "unknown": {
+        "title": "Unknown error",
+        "description": "An unknown error occurred. Please try again.",
+        "tryAgain": "Try again"
+      },
+
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "Enter username",
+            "description_one": "{{position}} you must first share your {{usernameType}} username.",
+            "description_other": "{{position}} you must share your {{usernameType}} username."
+          },
+          "email": {
+            "title": "Enter email",
+            "description_one": "{{position}} you must first share your email address.",
+            "description_other": "{{position}} you must share your email address."
+          },
+          "wallet": {
+            "title": "Verify wallet",
+            "description_one": "{{position}} you must sign a message to verify ownership of the below connected wallet address.",
+            "description_other": "{{position}} you must sign a message to verify ownership of the below connected wallet address."
+          },
+          "position": {
+            "first": "To claim your perk",
+            "next": "Next",
+            "finally": "Finally"
+          }
+        },
+        "continue": "Continue",
+        "submit": "Verify wallet and claim perk",
+        "submitting": "Waiting for verification"
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "Welcome to {{pageTitle}}!",
+    "subtitle": {
+      "notConnected": "We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.",
+      "noAccess": "We are currently in a <strong>closed beta.</strong>\nYou currently do not have access."
+    },
+    "requestAccess": "Request access",
+    "connecting": "Connecting...",
+    "error": "An unknown error occurred. Please try again or request access."
   }
 }

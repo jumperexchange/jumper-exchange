@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 import merge from 'lodash/merge';
-import { WidgetConfig } from '@lifi/widget';
-import {
+import type { WidgetConfig } from '@lifi/widget';
+import type {
   WidgetType,
-  WidgetContext,
   MainWidgetContext,
   MissionWidgetContext,
   ZapWidgetContext,
@@ -63,15 +62,16 @@ export function useWidgetConfig<T extends WidgetType>(
         return missionWidgetConfig;
       case 'zap':
         // For zap widgets, we use both mission and zap configurations
-        return merge(missionWidgetConfig, zapWidgetConfig);
+        return merge({}, missionWidgetConfig, zapWidgetConfig);
       default:
         throw new Error(`Unknown widget type: ${type}`);
     }
-  }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig]);
+  }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig, type]);
 
   // Merge all configurations
   return useMemo(() => {
     const baseConfig = merge(
+      {},
       sharedBase,
       sharedRPC,
       sharedForm,
@@ -81,9 +81,23 @@ export function useWidgetConfig<T extends WidgetType>(
 
     // Apply theme overrides if provided
     if (context.theme) {
-      return merge(baseConfig, {
+      merge(baseConfig, {
         theme: context.theme,
       });
+    }
+
+    if (context.disabledUI) {
+      baseConfig.disabledUI = [
+        ...(baseConfig.disabledUI ?? []),
+        ...context.disabledUI,
+      ];
+    }
+
+    if (context.hiddenUI) {
+      baseConfig.hiddenUI = [
+        ...(baseConfig.hiddenUI ?? []),
+        ...context.hiddenUI,
+      ];
     }
 
     return baseConfig;
@@ -94,5 +108,7 @@ export function useWidgetConfig<T extends WidgetType>(
     language,
     widgetSpecific,
     context.theme,
+    context.disabledUI,
+    context.hiddenUI,
   ]);
 }

@@ -21,14 +21,23 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
-import PrivacyTipIcon from '@mui/icons-material/PrivacyTip';
+import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useThemeModesMenuContent } from '../ThemeModesSubMenu/useThemeModesMenuContent';
-import { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
+import type { MenuItemProps } from 'src/components/Menu/MenuItem/MenuItem.types';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+  isEarnFeatureEnabled,
+  isPortfolioFeatureEnabled,
+} from '@/app/lib/getFeatureFlag';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeVariant } from '@/components/Badge/Badge.styles';
+import * as supportedLanguages from '@/i18n/translations';
+import MuiBadge from '@mui/material/Badge';
 
 interface MenuLink {
   url: string;
@@ -44,9 +53,15 @@ const enum SocialLinkLabel {
   X = 'X',
 }
 
-interface SocialLink {
+export interface SocialLink {
   label: string;
   prefixIcon: React.JSX.Element | string;
+  link: MenuLink;
+  onClick: () => void;
+}
+
+export interface FooterLink {
+  label: string;
   link: MenuLink;
   onClick: () => void;
 }
@@ -127,6 +142,24 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handleEarnClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-earn-link',
+      action: TrackingAction.ClickJumperEarnLink,
+      dataMenuParam: 'jumper_earn',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
+  const handlePortfolioClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-portfolio-link',
+      action: TrackingAction.ClickJumperPortfolioLink,
+      dataMenuParam: 'jumper_portfolio',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   const handleProfileClick = useCallback(() => {
     trackMenuClick({
       label: 'click-jumper-profile-link',
@@ -188,6 +221,8 @@ export const useMenuActions = () => {
   return {
     handleExchangeClick,
     handleMissionsClick,
+    handleEarnClick,
+    handlePortfolioClick,
     handleProfileClick,
     handleLearnClick,
     handleScanClick,
@@ -287,22 +322,30 @@ export const useFooterLinks = () => {
   const { t } = useTranslation();
   const { handlePrivacyPolicyClick } = useMenuActions();
 
-  const footerLinks = useMemo(() => [
-    {
-      label: t('navbar.navbarMenu.privacyPolicy'),
-      link: { url: AppPaths.PrivacyPolicy },
-      onClick: handlePrivacyPolicyClick,
-    },
-  ], [t, handlePrivacyPolicyClick]);
+  const footerLinks = useMemo(
+    () => [
+      {
+        label: t('navbar.navbarMenu.privacyPolicy'),
+        link: { url: AppPaths.PrivacyPolicy },
+        onClick: handlePrivacyPolicyClick,
+      },
+    ],
+    [t, handlePrivacyPolicyClick],
+  );
 
   return { footerLinks };
 };
 
 export const useMenuItems = () => {
   const { t, i18n } = useTranslation();
+  const isTablet = useMediaQuery((theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
-  const { selectedThemeIcon } = useThemeModesMenuContent();
+  const { selectedThemeIcon, selectedThemeMode, selectedPartnerTheme } =
+    useThemeModesMenuContent();
+  const isEarnEnabled = isEarnFeatureEnabled();
+  const isPortfolioEnabled = isPortfolioFeatureEnabled();
+  const { supportModalUnreadCount } = useMenuStore((state) => state);
 
   const {
     handleLearnClick,
@@ -311,65 +354,146 @@ export const useMenuItems = () => {
     handleThemeClick,
     handleLanguageClick,
     handleResourcesClick,
+    handleEarnClick,
+    handlePortfolioClick,
+    handleExchangeClick,
+    handleMissionsClick,
   } = useMenuActions();
 
-  const languageSuffixIcon = useMemo(
-    () => (
-      <Typography
-        variant="bodyMedium"
-        textTransform="uppercase"
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 38,
-        }}
-      >
-        {i18n.language}
-      </Typography>
-    ),
-    [i18n.language],
-  );
+  const themeSuffixIcon = useMemo(() => {
+    if (!isTablet) {
+      return undefined;
+    }
 
-  const discordSupportIcon = useMemo(
-    () => (
-      <Discord sx={{ color: (theme.vars || theme).palette.text.primary }} />
-    ),
-    [theme],
-  );
+    return (
+      <Badge
+        label={selectedPartnerTheme ?? t(`navbar.themes.${selectedThemeMode}`)}
+        variant={BadgeVariant.Secondary}
+      />
+    );
+  }, [t, selectedThemeMode, selectedPartnerTheme, isTablet]);
+
+  const languageSuffixIcon = useMemo(() => {
+    if (!isTablet) {
+      return (
+        <Typography
+          variant="bodyMedium"
+          textTransform="uppercase"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: 38,
+          }}
+        >
+          {i18n.language}
+        </Typography>
+      );
+    }
+
+    const selectedLanguage =
+      Object.entries(supportedLanguages).find(
+        ([language]) => language === i18n.language,
+      )?.[1]?.language?.value || i18n.language;
+
+    return <Badge label={selectedLanguage} variant={BadgeVariant.Secondary} />;
+  }, [i18n.language, isTablet]);
 
   const baseMenuItems: MenuItem[] = useMemo(() => {
     const baseItems: MenuItem[] = [];
 
+    if (isTablet) {
+      baseItems.push({
+        label: t('navbar.links.exchange'),
+        showMoreIcon: false,
+        link: { url: AppPaths.Main },
+        onClick: handleExchangeClick,
+      });
+
+      if (isPortfolioEnabled) {
+        baseItems.push({
+          label: t('navbar.links.portfolio'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Portfolio, external: false },
+          onClick: handlePortfolioClick,
+        });
+      }
+
+      baseItems.push({
+        label: t('navbar.links.missions'),
+        showMoreIcon: false,
+        link: { url: AppPaths.Missions, external: false },
+        onClick: handleMissionsClick,
+      });
+
+      if (isEarnEnabled) {
+        baseItems.push({
+          label: t('navbar.links.earn'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Earn, external: false },
+          onClick: handleEarnClick,
+        });
+      }
+
+      baseItems.push({
+        isDivider: true,
+      });
+    }
+
     baseItems.push(
       {
         label: t('navbar.navbarMenu.learn'),
-        prefixIcon: <SchoolIcon />,
+        prefixIcon: !isTablet ? <SchoolIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Learn },
         onClick: handleLearnClick,
       },
       {
         label: t('navbar.navbarMenu.scan'),
-        prefixIcon: <SearchOutlinedIcon />,
+        prefixIcon: !isTablet ? <SearchOutlinedIcon /> : undefined,
         showMoreIcon: false,
         link: { url: AppPaths.Scan, external: false },
         onClick: handleScanClick,
       },
       {
         label: t('navbar.navbarMenu.support'),
-        prefixIcon: discordSupportIcon,
+        prefixIcon: !isTablet ? (
+          supportModalUnreadCount > 0 ? (
+            <MuiBadge
+              color="secondary"
+              variant="dot"
+              sx={(theme) => ({
+                '.MuiBadge-badge': {
+                  backgroundColor: (theme.vars || theme).palette.borderActive,
+                  mt: 0.5,
+                  mr: 0.25,
+                },
+              })}
+            >
+              <SupportRoundedIcon />
+            </MuiBadge>
+          ) : (
+            <SupportRoundedIcon />
+          )
+        ) : undefined,
         showMoreIcon: false,
         onClick: handleSupportClick,
       },
     );
 
+    if (isTablet) {
+      baseItems.push({
+        isDivider: true,
+      });
+    }
+
     // Conditionally add theme menu item
     if (configTheme?.hasThemeModeSwitch) {
       baseItems.push({
         label: t('navbar.navbarMenu.theme'),
-        prefixIcon: selectedThemeIcon,
+        prefixIcon: !isTablet ? selectedThemeIcon : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.ThemeMode,
+        suffixIcon: themeSuffixIcon,
         onClick: handleThemeClick,
       });
     }
@@ -377,7 +501,7 @@ export const useMenuItems = () => {
     baseItems.push(
       {
         label: t('language.key', { ns: 'language' }),
-        prefixIcon: <LanguageIcon />,
+        prefixIcon: !isTablet ? <LanguageIcon /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Language,
         suffixIcon: languageSuffixIcon,
@@ -385,29 +509,34 @@ export const useMenuItems = () => {
       },
       {
         label: t('navbar.navbarMenu.resources'),
-        prefixIcon: <FolderOpen />,
+        prefixIcon: !isTablet ? <FolderOpen /> : undefined,
         showMoreIcon: true,
         triggerSubMenu: MenuKeysEnum.Devs,
         onClick: handleResourcesClick,
-      },
-      {
-        isDivider: true,
       },
     );
 
     return baseItems;
   }, [
     t,
-    handleLearnClick,
-    handleScanClick,
-    discordSupportIcon,
-    handleSupportClick,
+    isTablet,
+    isEarnEnabled,
+    isPortfolioEnabled,
     configTheme?.hasThemeModeSwitch,
     selectedThemeIcon,
-    handleThemeClick,
+    themeSuffixIcon,
     languageSuffixIcon,
+    supportModalUnreadCount,
+    handleLearnClick,
+    handleScanClick,
+    handleSupportClick,
+    handleThemeClick,
     handleLanguageClick,
     handleResourcesClick,
+    handleEarnClick,
+    handlePortfolioClick,
+    handleExchangeClick,
+    handleMissionsClick,
   ]);
 
   return { menuItems: baseMenuItems };
