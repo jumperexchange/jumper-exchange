@@ -28,6 +28,7 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
       <Gatekeeper
         flag="hasEarn"
         pageTitle="Jumper Portfolio"
+        subtitleIntroKey="portfolio"
         illustrations={{
           illustration: <PortfolioBetaIllustration />,
           mobile: {

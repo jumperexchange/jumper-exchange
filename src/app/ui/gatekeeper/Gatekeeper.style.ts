@@ -23,7 +23,7 @@ export const GatekeeperRequestAccessLink = styled(Link)(({ theme }) => ({
   transition: 'background-color 250ms',
   overflow: 'hidden',
   padding: theme.spacing(1.75, 2),
-  color: (theme.vars || theme).palette.text.primary,
+  color: (theme.vars || theme).palette.white.main,
   backgroundColor: (theme.vars || theme).palette.primary.main,
   '&:hover': {
     backgroundColor: (theme.vars || theme).palette.primary.main,
