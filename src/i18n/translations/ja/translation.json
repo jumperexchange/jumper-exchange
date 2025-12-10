@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "スワップ",
+      "portfolio": "",
       "missions": "",
       "earn": "",
       "dashboard": "ダッシュボード",
@@ -28,6 +29,8 @@
         "noEcosystemAdapter": "適切なエコシステムアダプタが見つかりませんでした"
       }
     },
+    "pass": "",
+    "wallets": "",
     "seeAllWallets": "すべてのウォレットを見る",
     "navbarMenu": {
       "learn": "",
@@ -51,6 +54,7 @@
       "connectAnotherWallet": "別のウォレットを接続する",
       "refreshBalances": "",
       "totalBalance": "",
+      "walletBalance": "",
       "totalBalanceTooltip": "",
       "totalBalanceRefresh": "",
       "numberOfChains": ""
@@ -158,6 +162,11 @@
       "completed": {
         "title": "",
         "description": ""
+      },
+      "ended": {
+        "title": "",
+        "description": "",
+        "cta": ""
       }
     },
     "status": {
@@ -168,7 +177,8 @@
       "hoursLeft_one": "",
       "hoursLeft_other": "",
       "daysLeft_one": "",
-      "daysLeft_other": ""
+      "daysLeft_other": "",
+      "ended": ""
     },
     "tasks": {
       "type": "",
@@ -185,6 +195,35 @@
       "completed": {
         "title": "",
         "description": ""
+      },
+      "verifyWallet": {
+        "title": "",
+        "description": {
+          "notConnected": "",
+          "notVerified": "",
+          "verified": ""
+        },
+        "action": {
+          "connectAndVerify": "",
+          "verifyWallet": ""
+        },
+        "status": {
+          "signatureFailed": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          },
+          "unsupportedWallet": {
+            "title": "",
+            "description": "",
+            "switchWallet": ""
+          },
+          "unknown": {
+            "title": "",
+            "description": "",
+            "tryAgain": ""
+          }
+        }
       }
     }
   },
@@ -298,19 +337,126 @@
     },
     "sorting": {
       "sortBy": "",
+      "sort": "",
       "apy": "",
       "tvl": ""
     },
     "filter": {
       "clear": "",
       "selected": "",
-      "search": ""
+      "search": "",
+      "filterAndSort": "",
+      "clearAll": "",
+      "chain": "",
+      "protocol": "",
+      "tag": "",
+      "asset": "",
+      "apy": ""
+    },
+    "views": {
+      "forYou": "",
+      "allMarkets": "",
+      "all": ""
     },
     "relatedMarkets": {
       "title": ""
     },
     "overview": {
       "updated": ""
+    },
+    "actions": {
+      "viewAllMarkets": "",
+      "seeMore": ""
+    }
+  },
+  "portfolio": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "getStarted": "",
+      "explorePass": ""
+    },
+    "overviewCard": {
+      "title": "",
+      "refreshTooltip": ""
+    },
+    "emptyList": {
+      "title": "",
+      "description": "",
+      "clearFilters": ""
+    },
+    "assetOverviewCard": {
+      "navigation": {
+        "overview": "",
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "overview": {
+        "tokens": "",
+        "defiPositions": ""
+      },
+      "noContent": {
+        "title": "",
+        "description": "",
+        "cta": {
+          "startEarning": "",
+          "startSwapping": ""
+        }
+      }
+    },
+    "defiPositionCard": {
+      "overview": {
+        "opened": "",
+        "lockup": "",
+        "lockupPeriod": {
+          "lessThanOneMinute": "",
+          "minutes_one": "",
+          "minutes_other": "",
+          "hours_one": "",
+          "hours_other": "",
+          "days_one": "",
+          "days_other": "",
+          "months_one": "",
+          "months_other": "",
+          "years_one": "",
+          "years_other": ""
+        }
+      },
+      "actions": {
+        "withdraw": "",
+        "deposit": "",
+        "claim": "",
+        "compound": "",
+        "repay": "",
+        "borrow": ""
+      },
+      "header": {
+        "supplied": "",
+        "value": "",
+        "apy": "",
+        "rewards": "",
+        "borrowed": ""
+      }
+    },
+    "filter": {
+      "tokens": "",
+      "defiProtocols": "",
+      "wallet": "",
+      "chain": "",
+      "protocol": "",
+      "type": "",
+      "asset": "",
+      "value": "",
+      "clearAll": "",
+      "filterAndSort": "",
+      "search": ""
+    },
+    "sorting": {
+      "sortBy": "",
+      "sort": "",
+      "totalValue": "",
+      "chain": "",
+      "asset": ""
     }
   },
   "widget": {
@@ -357,6 +503,12 @@
           "description": ""
         }
       }
+    },
+    "earn": {
+      "depositSuccess": ""
+    },
+    "withdraw": {
+      "title": ""
     }
   },
   "links": {
@@ -364,6 +516,78 @@
   },
   "buttons": {
     "depositButtonLabel": "",
+    "withdrawButtonLabel": "",
     "managePositionsButtonLabel": ""
+  },
+  "modal": {
+    "perks": {
+      "unclaimedPerk": {
+        "title": ""
+      },
+      "claimedPerk": {
+        "title": "",
+        "description": "",
+        "nextSteps": "",
+        "howToUsePerk": "",
+        "howToUsePerkDescription": ""
+      },
+      "signatureFailed": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "validationFailed": {
+        "title": "",
+        "description": "",
+        "close": ""
+      },
+      "unsupportedWallet": {
+        "title": "",
+        "description": "",
+        "switchWallet": ""
+      },
+      "unknown": {
+        "title": "",
+        "description": "",
+        "tryAgain": ""
+      },
+      "stepper": {
+        "steps": {
+          "username": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "email": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "wallet": {
+            "title": "",
+            "description_one": "",
+            "description_other": ""
+          },
+          "position": {
+            "first": "",
+            "next": "",
+            "finally": ""
+          }
+        },
+        "continue": "",
+        "submit": "",
+        "submitting": ""
+      }
+    }
+  },
+  "gatekeeper": {
+    "title": "",
+    "subtitle": {
+      "notConnected": "",
+      "noAccess": ""
+    },
+    "requestAccess": "",
+    "connecting": "",
+    "error": ""
   }
 }
