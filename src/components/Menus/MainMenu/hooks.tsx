@@ -33,6 +33,7 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   isEarnFeatureEnabled,
+  isNewsletterFeatureEnabled,
   isPortfolioFeatureEnabled,
 } from '@/app/lib/getFeatureFlag';
 import { Badge } from '@/components/Badge/Badge';
@@ -65,6 +66,7 @@ export interface FooterLink {
   label: string;
   link: MenuLink;
   onClick: () => void;
+  external?: boolean;
 }
 
 interface TrackPageloadParams {
@@ -341,14 +343,15 @@ export const useSocialLinks = () => {
 
 export const useFooterLinks = () => {
   const { t } = useTranslation();
+  const isNewsletterEnabled = isNewsletterFeatureEnabled();
   const {
     handlePrivacyPolicyClick,
     handleTermsConditionsClick,
     handleNewsletterClick,
   } = useMenuActions();
 
-  const footerLinks = useMemo(
-    () => [
+  const footerLinks = useMemo(() => {
+    const _footerLinks: FooterLink[] = [
       {
         label: t('navbar.navbarMenu.termsConditions'),
         link: { url: TERMS_CONDITIONS_URL },
@@ -360,19 +363,21 @@ export const useFooterLinks = () => {
         link: { url: AppPaths.PrivacyPolicy },
         onClick: handlePrivacyPolicyClick,
       },
-      {
+    ];
+    if (isNewsletterEnabled) {
+      _footerLinks.push({
         label: t('navbar.navbarMenu.newsletter'),
         link: { url: AppPaths.Newsletter },
         onClick: handleNewsletterClick,
-      },
-    ],
-    [
-      t,
-      handlePrivacyPolicyClick,
-      handleTermsConditionsClick,
-      handleNewsletterClick,
-    ],
-  );
+      });
+    }
+    return _footerLinks;
+  }, [
+    t,
+    handlePrivacyPolicyClick,
+    handleTermsConditionsClick,
+    handleNewsletterClick,
+  ]);
 
   return { footerLinks };
 };
