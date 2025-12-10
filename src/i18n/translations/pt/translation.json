@@ -487,7 +487,7 @@
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
-      "depositSuccess": "Você será capaz de ver sua posição em alguns segundos ou alternativamente clicando em <bold>Gerenciar sua posição</bold> que redireciona para a interface do usuário {{partnerName}}",
+      "depositSuccess": "Você será capaz de ver sua posição em alguns segundos ou alternativamente clicando em <bold>Gerencie sua posição</bold> que redireciona para a interface do usuário {{partnerName}}",
       "tabs": {
         "deposit": "Depositar",
         "withdraw": "Retirar"
@@ -505,7 +505,7 @@
       }
     },
     "earn": {
-      "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie suas posições</bold>"
+      "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie sua posição</bold>"
     },
     "withdraw": {
       "title": "Retirar"
