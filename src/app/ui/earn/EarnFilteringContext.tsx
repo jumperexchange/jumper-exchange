@@ -115,6 +115,7 @@ export const EarnFilteringProvider = ({
   const all = useEarnFilterOpportunities({
     filter: {
       ...filter,
+      ...(showYourPositions ? { hasPositions: true, address } : {}),
       sortBy: sortBy,
     },
   });
@@ -213,17 +214,13 @@ export const EarnFilteringProvider = ({
   }, [updateFilter]);
 
   const data = useMemo(() => {
-    const sourceData = showForYou
-      ? forYou.data?.data
-      : showYourPositions
-        ? []
-        : all.data?.data;
+    const sourceData = showForYou ? forYou.data?.data : all.data?.data;
     const forYouSlugsSet = new Set(
       (forYou.data?.data ?? []).map((item) => item.slug),
     );
 
     return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
-  }, [showForYou, showYourPositions, forYou.data, all.data]);
+  }, [showForYou, forYou.data, all.data]);
 
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
