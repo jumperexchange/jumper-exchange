@@ -27,11 +27,12 @@ export async function postConfirmSubscription(
       },
     );
 
-    const data = await response.json();
-
     if (!response.ok) {
-      throw new Error(data.error || 'Subscription failed');
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || 'Subscription failed');
     }
+
+    const data = await response.json();
 
     return data;
   } catch (error) {
