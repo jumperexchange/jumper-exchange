@@ -10,6 +10,7 @@ type GetTokenUSDPrice = (token: {
   address: string;
 }) => Promise<number>;
 
+// TODO: this function is probably somewhere in the codebase already
 const amountToUSD = (
   amount: bigint,
   decimals: number | string | bigint,
