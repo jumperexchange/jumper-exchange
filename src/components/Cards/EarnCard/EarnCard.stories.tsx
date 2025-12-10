@@ -72,6 +72,7 @@ export const CompactWithTwoItems: Story = {
     data: {
       ...commonArgs.data,
       lockupMonths: undefined,
+      capInDollar: undefined,
       latest: {
         date: '2021-01-01',
         tvlUsd: '',

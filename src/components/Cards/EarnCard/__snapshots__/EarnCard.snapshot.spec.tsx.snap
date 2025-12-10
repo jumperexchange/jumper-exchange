@@ -2399,7 +2399,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
         class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-1gk85zv-MuiGrid-root"
       >
         <div
-          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-12 css-xvszvy-MuiGrid-root"
           data-testid="apy-0.0558"
         >
           <div
@@ -2431,42 +2431,6 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
               class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
             >
               5.58%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
-          data-testid="capInDollar-1000000000000000000"
-        >
-          <div
-            class="MuiBox-root css-5ul7dk"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-ooebcp-MuiTypography-root"
-            >
-              labels.capInDollar
-            </p>
-            <svg
-              aria-hidden="true"
-              aria-label="tooltips.capInDollar"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
-              data-mui-internal-clone-element="true"
-              data-testid="InfoIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
-              />
-            </svg>
-          </div>
-          <div
-            class="MuiBox-root css-nqls9x"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-bodyLargeStrong css-h1a9re-MuiTypography-root"
-            >
-              $1,000,000T
             </p>
           </div>
         </div>
