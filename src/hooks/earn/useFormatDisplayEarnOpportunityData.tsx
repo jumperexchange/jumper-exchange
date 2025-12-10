@@ -21,6 +21,7 @@ import { EntityChainStackVariant } from 'src/components/composite/EntityChainSta
 import type { TFunction } from 'i18next';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
+import { formatCapInDollar } from '@/utils/numbers/capInDollar';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -69,6 +70,26 @@ const buildLockupItem = (
     tooltip: t('tooltips.lockupPeriod', {
       formattedLockupPeriod: formatted,
     }),
+  };
+};
+
+const buildCapInDollarItem = (
+  capInDollar: number | string | undefined,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem | null => {
+  const capInDollarNumber = Number(capInDollar);
+  if (isNaN(capInDollarNumber) || !capInDollarNumber) {
+    return null;
+  }
+
+  const formatted = formatCapInDollar(capInDollarNumber);
+  return {
+    key: 'capInDollar',
+    dataTestId: `capInDollar-${capInDollarNumber}`,
+    label: t('labels.capInDollar'),
+    value: formatted,
+    tooltip: t('tooltips.capInDollar'),
   };
 };
 
@@ -197,6 +218,7 @@ export const useFormatDisplayEarnOpportunityData = (
 
   return useMemo(() => {
     const lockupMonths = earnOpportunity?.lockupMonths;
+    const capInDollar = earnOpportunity?.capInDollar;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
 
@@ -210,7 +232,9 @@ export const useFormatDisplayEarnOpportunityData = (
     // Build all items, passing variant to each builder
     const overviewItems = [
       buildApyItem(apy, variant, t),
-      buildLockupItem(lockupMonths, variant, t),
+      lockupMonths
+        ? buildLockupItem(lockupMonths, variant, t)
+        : buildCapInDollarItem(capInDollar, variant, t),
       buildTvlItem(tvlUsd, variant, t),
       buildAssetsItem(assets, variant, t),
       buildChainsItem(chains, variant, t, (chain) =>

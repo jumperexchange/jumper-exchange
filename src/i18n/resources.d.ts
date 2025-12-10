@@ -187,6 +187,7 @@ interface Resources {
       assets_one: 'Asset';
       assets_other: 'Assets';
       assets_other_one: 'Asset';
+      capInDollar: 'Capacity';
       chains_one: 'Chain';
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
@@ -595,6 +596,7 @@ interface Resources {
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';
       boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
+      capInDollar: 'Available liquidity capacity of the market';
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       deposit: 'The token on which the market is defined and yield accrues on.';
