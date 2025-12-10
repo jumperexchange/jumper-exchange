@@ -8,7 +8,6 @@ import {
   ProtocolCardHeaderBadgeContainer,
   ProtocolCardHeaderContainer,
   ProtocolCardHeaderContentContainer,
-  ProtocolCardLink,
   ProtocolCardProtocolAvatar,
   ProtocolCardProtocolTitle,
   ProtocolCardTagsContainer,
@@ -17,6 +16,7 @@ import {
 import { PROTOCOL_CARD_SIZES } from './constants';
 import Typography from '@mui/material/Typography';
 import { Badge } from 'src/components/Badge/Badge';
+import { ExternalLink } from 'src/components/Link/ExternalLink';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
@@ -153,10 +153,10 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
             onSeeMoreClick={() => setIsDescriptionModalOpen(true)}
           />
           {protocol?.name && url && (
-            <ProtocolCardLink target="_blank" href={url}>
+            <ExternalLink href={url}>
               {t('links.discover', { name: capitalizeString(protocol?.name) })}
               <ArrowForwardIcon />
-            </ProtocolCardLink>
+            </ExternalLink>
           )}
         </ProtocolCardContentContainer>
       </ProtocolCardContainer>

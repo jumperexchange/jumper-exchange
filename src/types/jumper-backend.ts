@@ -831,6 +831,7 @@ export interface Protocol {
   product?: string;
   version?: string;
   logo?: string;
+  riskDescription?: string;
   url?: string;
 }
 

@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
-import { Link } from 'src/components/Link/Link';
 import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 import { SectionCardContainer } from '../SectionCard/SectionCard.style';
 import Button from '@mui/material/Button';
@@ -139,24 +138,6 @@ export const ProtocolCardDescriptionContainer = styled(Typography)(
     marginBottom: 'auto',
   }),
 );
-
-export const ProtocolCardLink = styled(Link)(({ theme }) => ({
-  color: (theme.vars || theme).palette.text.primary,
-  ...theme.typography.bodyMediumStrong,
-  textDecoration: 'none',
-  display: 'inline-flex',
-  width: 'fit-content',
-  alignItems: 'center',
-  gap: theme.spacing(0.75),
-  transition: 'color 0.3s ease',
-  '&:hover': {
-    color: (theme.vars || theme).palette.primary.main,
-  },
-  '& svg': {
-    width: 20,
-    height: 20,
-  },
-}));
 
 export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));
 

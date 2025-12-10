@@ -99,6 +99,27 @@ interface Resources {
       relatedMarkets: {
         title: 'Related Markets';
       };
+      riskDescriptions: {
+        risk: 'Risk';
+        riskTag: {
+          'Basis Trading': 'Basis Trading Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Bridge: 'Bridge Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          CDP: 'CDP Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Credit: 'Credit Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Farming: 'Farming Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Lending: 'Lending Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          'Liquid Staking': 'Liquid Staking Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Liquidity: 'Liquidity Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          RWA: 'RWA Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Staking: 'Staking Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Structured: 'Structured Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Synthetic: 'Synthetic Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          'Top Opportunity': 'Top Opportunity Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          'Top Performing': 'Top Performing Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          'Yield Aggregator': 'Yield Aggregator Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+        };
+        website: 'website';
+      };
       sorting: {
         apy: 'APY';
         sort: 'Sort';

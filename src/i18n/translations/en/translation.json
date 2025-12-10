@@ -215,13 +215,11 @@
             "description": "You need to sign the transaction to confirm ownership of the wallet address.",
             "tryAgain": "Try again"
           },
-
           "unsupportedWallet": {
             "title": "Unsupported wallet",
             "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
             "switchWallet": "Switch wallet"
           },
-
           "unknown": {
             "title": "Unknown error",
             "description": "An unknown error occurred. Please try again.",
@@ -364,6 +362,27 @@
     },
     "relatedMarkets": {
       "title": "Related Markets"
+    },
+    "riskDescriptions": {
+      "risk": "Risk",
+      "riskTag": {
+        "Lending": "Lending Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Staking": "Staking Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Liquidity": "Liquidity Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Farming": "Farming Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Structured": "Structured Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "CDP": "CDP Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "RWA": "RWA Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Yield Aggregator": "Yield Aggregator Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Top Opportunity": "Top Opportunity Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Top Performing": "Top Performing Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Liquid Staking": "Liquid Staking Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Synthetic": "Synthetic Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Bridge": "Bridge Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Credit": "Credit Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.",
+        "Basis Trading": "Basis Trading Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation."
+      },
+      "website": "website"
     },
     "overview": {
       "updated": "Updated {{time}} ago"
@@ -552,31 +571,26 @@
         "howToUsePerk": "How to use your perk ?",
         "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
       },
-
       "signatureFailed": {
         "title": "Signature required",
         "description": "You need to sign the transaction to confirm ownership of the wallet address.",
         "tryAgain": "Try again"
       },
-
       "validationFailed": {
         "title": "Validation failed",
         "description": "Please check the fields and try again.",
         "close": "Close"
       },
-
       "unsupportedWallet": {
         "title": "Unsupported wallet",
         "description": "We don't support this wallet type. Please use a different wallet to complete this mission.",
         "switchWallet": "Switch wallet"
       },
-
       "unknown": {
         "title": "Unknown error",
         "description": "An unknown error occurred. Please try again.",
         "tryAgain": "Try again"
       },
-
       "stepper": {
         "steps": {
           "username": {

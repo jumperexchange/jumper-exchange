@@ -1,8 +1,10 @@
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonProps, ButtonTransparent } from '../Button';
-import Skeleton from '@mui/material/Skeleton';
+
+import type { ButtonProps } from '../Button';
+import { ButtonPrimary, ButtonTransparent } from '../Button';
 
 export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -20,6 +22,57 @@ export const EarnDetailsAnalyticsContainer = styled(
   EarnDetailsSectionContainer,
 )(({ theme }) => ({
   gap: theme.spacing(3),
+}));
+
+export const EarnDetailsRisksContainer = styled(EarnDetailsSectionContainer)(
+  ({ theme }) => ({
+    gap: theme.spacing(3),
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  }),
+);
+
+interface EarnDetailsRisksNavButtonProps extends ButtonProps {
+  isActive: boolean;
+}
+
+export const EarnDetailsRisksNavButton = styled(ButtonTransparent, {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<EarnDetailsRisksNavButtonProps>(({ theme }) => ({
+  ...theme.applyStyles('light', {
+    backgroundColor: 'transparent',
+  }),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  height: theme.spacing(5),
+  fontSize: theme.typography.body2.fontSize,
+  '&:not(:first-of-type)': {
+    marginLeft: theme.spacing(1),
+  },
+  variants: [
+    {
+      props: ({ isActive }) => isActive,
+      style: {
+        ...theme.applyStyles('light', {
+          backgroundColor: theme.palette.alpha100.main,
+        }),
+      },
+    },
+  ],
+}));
+
+export const EarnRiskTagsContainer = styled(Stack)(({ theme }) => ({
+  backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  padding: theme.spacing(3),
+  borderRadius: theme.spacing(2),
+  [theme.breakpoints.up('md')]: {
+    flex: 1,
+  },
+}));
+
+export const EarnRiskMissingWarning = styled('span')(({ theme }) => ({
+  color: theme.palette.error.main,
 }));
 
 export const EarnDetailsAnalyticsHeaderContainer = styled(Stack)(
