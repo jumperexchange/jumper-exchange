@@ -1,4 +1,4 @@
-import { formatTokenPrice, formatTokenAmount } from '@lifi/widget';
+import { priceToTokenAmount } from '@lifi/widget';
 import { useMemo, type FC } from 'react';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
@@ -12,12 +12,12 @@ import { useTranslation } from 'react-i18next';
 
 interface EarnDetailsActionsPositionProps {
   token: Token;
-  amount?: string;
+  amountUSD?: number;
 }
 
 export const EarnDetailsActionsPosition: FC<
   EarnDetailsActionsPositionProps
-> = ({ token, amount }) => {
+> = ({ token, amountUSD }) => {
   const { t } = useTranslation();
   const { getTokenByAddressAndChain } = useTokens();
 
@@ -25,15 +25,10 @@ export const EarnDetailsActionsPosition: FC<
     const priceUSD =
       getTokenByAddressAndChain(token.address, token.chain.chainId)?.priceUSD ??
       0;
-    const amountBigInt = amount ? BigInt(amount) : 0n;
-    const decimals = token?.decimals ?? 0;
 
-    const tokenAmount = formatTokenAmount(amountBigInt, decimals);
-    const tokenAmountUSD = formatTokenPrice(
-      amountBigInt,
-      priceUSD.toString(),
-      decimals,
-    );
+    const tokenAmount = amountUSD
+      ? priceToTokenAmount(amountUSD.toString(), priceUSD.toString())
+      : '0';
 
     return {
       formattedAmount: `${tokenAmount} ${token?.symbol ?? ''}`,
@@ -43,9 +38,9 @@ export const EarnDetailsActionsPosition: FC<
         useGrouping: true,
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })(tokenAmountUSD),
+      })(amountUSD),
     };
-  }, [amount, token, getTokenByAddressAndChain]);
+  }, [amountUSD, token, getTokenByAddressAndChain]);
 
   return (
     <SelectCard

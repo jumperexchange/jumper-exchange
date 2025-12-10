@@ -881,35 +881,6 @@ export interface EarnOpportunityHistory {
   points: EarnOpportunityHistoryPoint[];
 }
 
-export interface TaskVerificationDto {
-  /** Users wallet address */
-  address: string;
-  /** Quest id */
-  questId: string;
-  /** Step id */
-  stepId: string;
-  /**
-   * Label on strapi
-   * @example "test-quest-label"
-   */
-  label?: string;
-  /**
-   * Slug on strapi
-   * @example "test-quest-slug"
-   */
-  slug?: string;
-  /**
-   * Task name on strapi
-   * @example "test-quest-task-name"
-   */
-  taskName?: string;
-  /**
-   * Additional dynamic fields
-   * @example {"customKey1":"value1","customKey2":"value2"}
-   */
-  additionalFields: object;
-}
-
 export interface TokenBalance {
   name: string;
   symbol: string;
@@ -967,6 +938,35 @@ export interface DefiPosition {
 
 export interface WalletPositions {
   positions: DefiPosition[];
+}
+
+export interface TaskVerificationDto {
+  /** Users wallet address */
+  address: string;
+  /** Quest id */
+  questId: string;
+  /** Step id */
+  stepId: string;
+  /**
+   * Label on strapi
+   * @example "test-quest-label"
+   */
+  label?: string;
+  /**
+   * Slug on strapi
+   * @example "test-quest-slug"
+   */
+  slug?: string;
+  /**
+   * Task name on strapi
+   * @example "test-quest-task-name"
+   */
+  taskName?: string;
+  /**
+   * Additional dynamic fields
+   * @example {"customKey1":"value1","customKey2":"value2"}
+   */
+  additionalFields: object;
 }
 
 export interface MetadataWithUpdatedAt {
@@ -1603,6 +1603,11 @@ export class JumperBackend<
          * @example 25
          */
         maxAPY?: number;
+        /**
+         * Filter for opportunities where the user has positions
+         * @example true
+         */
+        hasPositions?: boolean;
       },
       params: RequestParams = {},
     ) =>
@@ -1782,6 +1787,11 @@ export class JumperBackend<
          * @example 25
          */
         maxValue?: number;
+        /**
+         * The earn opportunity slug to filter for
+         * @example "gauntlet-usdc-prime-on-base"
+         */
+        earn?: string;
       },
       params: RequestParams = {},
     ) =>
@@ -1884,6 +1894,11 @@ export class JumperBackend<
          * @example 25
          */
         maxAPY?: number;
+        /**
+         * Filter for opportunities where the user has positions
+         * @example true
+         */
+        hasPositions?: boolean;
       },
       params: RequestParams = {},
     ) =>

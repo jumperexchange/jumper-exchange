@@ -5,14 +5,12 @@ import {
   EarnDetailsActionsButtonsContainer,
   EarnDetailsActionsContainer,
 } from './EarnDetails.styles';
-import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetZapInPoolBalance } from 'src/hooks/zaps/useGetZapInPoolBalance';
-import type { Hex } from 'viem';
-import { useAccount } from '@lifi/wallet-management';
 import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
+import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -22,27 +20,36 @@ export const EarnDetailsActions = ({
   earnOpportunity,
 }: EarnDetailsActionsProps) => {
   const { t } = useTranslation();
-  const { account } = useAccount();
-  const customInformation =
-    useProjectLikeDataFromEarnOpportunity(earnOpportunity);
-  const projectData = useMemo(() => {
-    return customInformation?.projectData;
-  }, [customInformation?.projectData]);
+  const accountAddress = useAccountAddress();
 
-  const { depositTokenData, refetchDepositToken, isLoadingDepositTokenData } =
-    useGetZapInPoolBalance(
-      account.address as Hex,
-      projectData.address as Hex,
-      projectData.chainId,
-    );
+  const {
+    data: positionsData,
+    isLoading: isLoadingPositions,
+    refetch: refetchPositions,
+  } = usePortfolioDeFiPositions({
+    addresses: accountAddress ? [accountAddress] : [],
+    filter: {
+      earn: earnOpportunity.slug,
+    },
+  });
 
-  const hasDeposited = !isLoadingDepositTokenData && !!depositTokenData;
+  const depositAmountUSD = useMemo(() => {
+    if (isLoadingPositions || !positionsData || !positionsData.positions) {
+      return;
+    }
+
+    return positionsData.positions[0]?.netUsd;
+  }, [positionsData, isLoadingPositions]);
+
+  const hasDeposited = !!depositAmountUSD;
+
+  console.log(positionsData?.positions);
 
   return (
     <EarnDetailsActionsContainer>
       <EarnDetailsActionsPosition
         token={earnOpportunity.lpToken}
-        amount={depositTokenData?.toString()}
+        amountUSD={depositAmountUSD}
       />
       <EarnDetailsActionsButtonsContainer>
         <DepositFlowButton
@@ -50,7 +57,7 @@ export const EarnDetailsActions = ({
           displayMode={DepositButtonDisplayMode.LabelOnly}
           size="large"
           label={t(hasDeposited ? 'buttons.deposit' : 'buttons.depositNow')}
-          refetchCallback={refetchDepositToken}
+          refetchCallback={refetchPositions}
           data-testid="quick-deposit-button"
           sx={{ flex: 1 }}
         />
@@ -59,7 +66,7 @@ export const EarnDetailsActions = ({
             earnOpportunity={earnOpportunity}
             size="large"
             label={t('buttons.withdrawButtonLabel')}
-            refetchCallback={refetchDepositToken}
+            refetchCallback={refetchPositions}
             data-testid="withdraw-button"
             sx={{ flex: 1 }}
           />
