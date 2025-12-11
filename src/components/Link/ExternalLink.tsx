@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 
+import { OpenInNew } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
 import { Link, type LinkProps } from './Link';
@@ -22,10 +23,12 @@ const StyledExternalLink = styled(Link)(({ theme }) => ({
   },
 })) as ComponentType<LinkProps>;
 
-export const ExternalLink = (props: LinkProps) => (
+export const ExternalLink = ({ children, ...props }: LinkProps) => (
   <StyledExternalLink
     target="_blank"
     rel="noopener noreferrer nofollow"
     {...props}
-  />
+  >
+    {children} <OpenInNew />
+  </StyledExternalLink>
 );

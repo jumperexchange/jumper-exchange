@@ -3,7 +3,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Stack from '@mui/material/Stack';
-import OpenInNew from '@mui/icons-material/OpenInNew';
 import { Typography, useMediaQuery, type Theme } from '@mui/material';
 
 import type { Protocol } from '@/types/jumper-backend';
@@ -94,9 +93,7 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
           {riskDescription}
         </Typography>
         {protocol.url && (
-          <ExternalLink href={protocol.url}>
-            {linkText} <OpenInNew />
-          </ExternalLink>
+          <ExternalLink href={protocol.url}>{linkText}</ExternalLink>
         )}
       </Stack>
       {selectedTag && (
