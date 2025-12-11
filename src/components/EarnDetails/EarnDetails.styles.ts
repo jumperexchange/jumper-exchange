@@ -78,7 +78,7 @@ export const EarnRiskTagsContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export const EarnRiskMissingWarning = styled('span')(({ theme }) => ({
-  color: theme.palette.error.main,
+  color: (theme.vars || theme).palette.statusError,
 }));
 
 export const EarnDetailsAnalyticsHeaderContainer = styled(Stack)(
