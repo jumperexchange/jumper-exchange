@@ -1120,7 +1120,7 @@ export class HttpClient<SecurityDataType = unknown> {
     credentials: 'same-origin',
     headers: {},
     redirect: 'follow',
-    referrerPolicy: 'no-referrer',
+    referrerPolicy: 'strict-origin-when-cross-origin',
   };
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {
