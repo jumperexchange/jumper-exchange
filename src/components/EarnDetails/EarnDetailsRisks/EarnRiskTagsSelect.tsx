@@ -19,6 +19,7 @@ export const EarnRiskTagsSelect = ({
   return (
     <Box sx={(theme) => ({ marginBottom: theme.spacing(2) })}>
       <Select
+        debounceMs={0}
         options={options}
         value={selectedTag}
         onChange={onTagChange}
