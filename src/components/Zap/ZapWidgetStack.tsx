@@ -16,6 +16,7 @@ import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 import envConfig from 'src/config/env-config';
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -54,7 +55,22 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   const hasWithdrawAbi = !!zapData?.abi?.withdraw;
 
   return (
-    <WidgetTrackingProvider>
+    <WidgetTrackingProvider
+      trackingActionKeys={{
+        sourceChainAndTokenSelection:
+          TrackingAction.OnSourceChainAndTokenSelectionZap,
+        availableRoutes: TrackingAction.OnAvailableRoutesZap,
+        routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
+        routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
+        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
+        changeSettings: TrackingAction.OnChangeSettingsZap,
+      }}
+      trackingDataActionKeys={{
+        routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
+        routeExecutionCompleted: TrackingEventDataAction.ExecutionCompletedZap,
+        routeExecutionFailed: TrackingEventDataAction.ExecutionFailedZap,
+      }}
+    >
       <Box
         sx={{
           height: '100%',

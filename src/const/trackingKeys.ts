@@ -19,6 +19,7 @@ export enum TrackingAction {
   SwitchChain = 'action_switch_chain',
   PortfolioLoaded = 'action_portfolio_loaded',
   PortfolioOverview = 'action_portfolio_balance_overview',
+  PortfolioPageOverview = 'action_portfolio_page_overview',
 
   // Widget
   OnRouteSelected = 'action_on_route_selected',
@@ -54,6 +55,22 @@ export enum TrackingAction {
   OnRouteExecutionCompletedZap = 'action_on_route_exec_completed_zap',
   OnRouteExecutionFailedZap = 'action_on_route_exec_failed_zap',
   OnChangeSettingsZap = 'action_change_settings_zap',
+
+  // Earn Deposit Widget
+  OnSourceChainAndTokenSelectionEarnDeposit = 'action_on_source_selection_earn_deposit',
+  OnAvailableRoutesEarnDeposit = 'action_available_routes_earn_deposit',
+  OnRouteExecutionStartedEarnDeposit = 'action_on_route_exec_started_earn_deposit',
+  OnRouteExecutionCompletedEarnDeposit = 'action_on_route_exec_completed_earn_deposit',
+  OnRouteExecutionFailedEarnDeposit = 'action_on_route_exec_failed_earn_deposit',
+  OnChangeSettingsEarnDeposit = 'action_change_settings_earn_deposit',
+
+  // Earn Withdraw Widget
+  OnDestinationChainAndTokenSelectionEarnWithdraw = 'action_on_destination_selection_earn_withdraw',
+  OnAvailableRoutesEarnWithdraw = 'action_available_routes_earn_withdraw',
+  OnRouteExecutionStartedEarnWithdraw = 'action_on_route_exec_started_earn_withdraw',
+  OnRouteExecutionCompletedEarnWithdraw = 'action_on_route_exec_completed_earn_withdraw',
+  OnRouteExecutionFailedEarnWithdraw = 'action_on_route_exec_failed_earn_withdraw',
+  OnChangeSettingsEarnWithdraw = 'action_change_settings_earn_withdraw',
 
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
@@ -120,6 +137,10 @@ export enum TrackingAction {
   //Banner
   ClickBanner = 'action_click_banner',
   ClickCampaignBanner = 'action_click_campaign_banner',
+
+  // Earn
+  ClickEarnDepositButton = 'action_click_earn_deposit_button',
+  ClickEarnWithdrawButton = 'action_click_earn_withdraw_button',
 }
 
 export enum TrackingEventDataAction {
@@ -133,6 +154,12 @@ export enum TrackingEventDataAction {
   ExecutionStartMission = 'execution_start_mission',
   ExecutionCompletedMission = 'execution_completed_mission',
   ExecutionFailedMission = 'execution_failed_mission',
+  ExecutionStartEarnDeposit = 'execution_start_earn_deposit',
+  ExecutionCompletedEarnDeposit = 'execution_completed_earn_deposit',
+  ExecutionFailedEarnDeposit = 'execution_failed_earn_deposit',
+  ExecutionStartEarnWithdraw = 'execution_start_earn_withdraw',
+  ExecutionCompletedEarnWithdraw = 'execution_completed_earn_withdraw',
+  ExecutionFailedEarnWithdraw = 'execution_failed_earn_withdraw',
 }
 
 export enum TrackingCategory {
@@ -167,6 +194,7 @@ export enum TrackingCategory {
   Quests = 'cat_quests',
   Banner = 'cat_banner',
   CampaignBanner = 'cat_campaign_banner',
+  Earn = 'cat_earn',
 }
 
 // can be used as custom dimensions / metrics
@@ -184,6 +212,7 @@ export enum TrackingEventParameter {
   SwitchedLanguage = 'param_switched_language',
   Wallet = 'param_wallet',
   WalletAddress = 'param_wallet_address',
+  WalletAddresses = 'param_wallet_addresses',
   Ecosystem = 'param_ecosystem',
   Integrator = 'param_integrator',
 
@@ -314,4 +343,15 @@ export enum TrackingEventParameter {
   PortfolioNativeTokensBalanceUSD = 'param_portfolio_native_tokens_balance_usd',
   PortfolioStableTokensBalanceUSD = 'param_portfolio_stable_tokens_balance_usd',
   PortfolioOtherTokensBalanceUSD = 'param_portfolio_other_tokens_balance_usd',
+  PortfolioTokenAmountUSD = 'param_portfolio_token_amount_usd',
+  PortfolioPositionsAmountUSD = 'param_portfolio_positions_amount_usd',
+  PortfolioTop3Tokens = 'param_portfolio_top_3_tokens',
+  PortfolioTop3Protocols = 'param_portfolio_top_3_protocols',
+  ProtocolName = 'param_protocol_name',
+  ProtocolTotalPriceUSD = 'param_protocol_total_price_usd',
+  TokenName = 'param_token_name',
+  TokenTotalPriceUSD = 'param_token_total_price_usd',
+
+  // Earn
+  EarnOpportunitySlug = 'param_earn_opportunity_slug',
 }

@@ -1,6 +1,13 @@
-import { ChainId } from '@lifi/widget';
+import {
+  calculateTotalPrice,
+  mapPositionGroupsToProtocolData,
+  sortAssetsByPrice,
+} from '@/components/composite/AssetOverviewCard/utils';
+import type { DefiPosition } from '@/types/jumper-backend';
+import type { MinimalToken } from '@/types/tokens';
+import type { ChainId } from '@lifi/widget';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
-import { CacheToken } from 'src/types/portfolio';
+import type { CacheToken } from 'src/types/portfolio';
 
 const FLEXIBLE_STABLE_COINS_REGEX =
   /^.*(USD|EUR|XAU|YEN|IDR|CHF|CAD|CNH|MXN).*$/;
@@ -59,5 +66,63 @@ export const parsePortfolioDataToTrackingData = (
       stableTokensBalanceUSD.toFixed(2),
     [TrackingEventParameter.PortfolioOtherTokensBalanceUSD]:
       otherTokensBalanceUSD.toFixed(2),
+  };
+};
+
+export const parseEarnPortfolioDataToTrackingData = (
+  addresses: string[],
+  tokens: MinimalToken[],
+  defiPositionGroups: DefiPosition[][],
+) => {
+  const protocolGroups = mapPositionGroupsToProtocolData(defiPositionGroups);
+  const sortedProtocolGroups = sortAssetsByPrice(protocolGroups);
+  const sortedTokens = sortAssetsByPrice(tokens);
+
+  const top3ProtocolGroups = sortedProtocolGroups.slice(0, 3);
+  const top3Tokens = sortedTokens.slice(0, 3);
+
+  const tokensOverallPriceInUSD = calculateTotalPrice(tokens);
+  const positionsOverallPriceInUSD = calculateTotalPrice(protocolGroups);
+
+  const totalBalanceUSD = tokensOverallPriceInUSD + positionsOverallPriceInUSD;
+
+  const chainIds = new Set<ChainId>();
+
+  for (const token of tokens) {
+    chainIds.add(token.chain.chainId);
+    for (const relatedToken of token.relatedTokens ?? []) {
+      chainIds.add(relatedToken.chain.chainId);
+    }
+  }
+
+  for (const positionGroup of defiPositionGroups) {
+    for (const position of positionGroup) {
+      chainIds.add(position.chain.chainId);
+    }
+  }
+
+  return {
+    [TrackingEventParameter.PortfolioTotalBalanceUSD]:
+      totalBalanceUSD.toFixed(2),
+    [TrackingEventParameter.PortfolioTokenAmountUSD]:
+      tokensOverallPriceInUSD.toFixed(2),
+    [TrackingEventParameter.PortfolioPositionsAmountUSD]:
+      positionsOverallPriceInUSD.toFixed(2),
+    [TrackingEventParameter.PortfolioNumberOfChains]: chainIds.size,
+    [TrackingEventParameter.PortfolioTop3Tokens]: JSON.stringify(
+      top3Tokens.map((token) => ({
+        [TrackingEventParameter.TokenName]: token.symbol,
+        [TrackingEventParameter.TokenTotalPriceUSD]:
+          token.totalPriceUSD.toFixed(2),
+      })),
+    ),
+    [TrackingEventParameter.PortfolioTop3Protocols]: JSON.stringify(
+      top3ProtocolGroups.map((group) => ({
+        [TrackingEventParameter.ProtocolName]: group.protocol.name,
+        [TrackingEventParameter.ProtocolTotalPriceUSD]:
+          group.totalPriceUSD.toFixed(2),
+      })),
+    ),
+    [TrackingEventParameter.WalletAddresses]: addresses.join(','),
   };
 };
