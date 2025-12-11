@@ -1,11 +1,13 @@
 import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
 import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
+import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useQueries } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ONE_HOUR_MS } from 'src/const/time';
 import type { Hex } from 'viem';
+import { useTokens } from '../useTokens';
 
 export interface Props {
   addresses: Hex[];
@@ -20,18 +22,33 @@ export interface Result {
   refetch: () => void;
 }
 
-const getTokenUSDPrice = async (token: {
-  chainId: number;
-  address: string;
-}): Promise<number> => {
-  // TODO: this data is probably somewhere in the codebase already
-  return Promise.resolve(4.2);
-};
-
 export const usePortfolioDeFiPositions = ({
   addresses,
   filter,
 }: Props): Result => {
+  const { getTokenByAddressAndChain } = useTokens();
+
+  const getTokenUSDPrice: GetTokenUSDPrice = useCallback(
+    (token: { chainId: number; address: string }) => {
+      try {
+        const tokenFound = getTokenByAddressAndChain(
+          token.address,
+          token.chainId,
+        );
+
+        if (!tokenFound) {
+          return undefined;
+        }
+
+        return parseFloat(tokenFound.priceUSD);
+      } catch (error) {
+        console.warn('Could not get token USD price', token, error);
+        return undefined;
+      }
+    },
+    [getTokenByAddressAndChain],
+  );
+
   const queries = useQueries({
     queries: addresses.map((address) => ({
       queryKey: ['portfolio-defi-positions', address, filter],

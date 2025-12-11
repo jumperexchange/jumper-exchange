@@ -5,10 +5,10 @@ import type {
 } from '@/types/jumper-backend';
 import { sumBy } from 'lodash';
 
-type GetTokenUSDPrice = (token: {
+export type GetTokenUSDPrice = (token: {
   chainId: number;
   address: string;
-}) => Promise<number>;
+}) => undefined | number | Promise<number | undefined>;
 
 // TODO: this function is probably somewhere in the codebase already
 const amountToUSD = (
@@ -34,6 +34,10 @@ const updateTokenPrice = async (
     chainId: token.chain.chainId,
     address: token.address,
   });
+
+  if (!priceUSD) {
+    return token;
+  }
 
   const amountUSD = amountToUSD(BigInt(token.amount), token.decimals, priceUSD);
 
