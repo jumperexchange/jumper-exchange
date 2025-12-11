@@ -5,7 +5,7 @@ import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMa
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
-import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks';
+import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
 import { AppPaths } from 'src/const/urls';
 import { GoBack } from 'src/components/composite/GoBack/GoBack';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';

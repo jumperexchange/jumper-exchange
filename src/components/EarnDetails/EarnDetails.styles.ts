@@ -24,63 +24,6 @@ export const EarnDetailsAnalyticsContainer = styled(
   gap: theme.spacing(3),
 }));
 
-export const EarnDetailsRisksContainer = styled(EarnDetailsSectionContainer)(
-  ({ theme }) => ({
-    gap: theme.spacing(3),
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-    },
-  }),
-);
-
-interface EarnDetailsRisksNavButtonProps extends ButtonProps {
-  isActive: boolean;
-}
-
-export const EarnDetailsRisksNavButton = styled(ButtonTransparent, {
-  shouldForwardProp: (prop) => prop !== 'isActive',
-})<EarnDetailsRisksNavButtonProps>(({ theme }) => ({
-  ...theme.applyStyles('light', {
-    backgroundColor: 'transparent',
-  }),
-  ...theme.applyStyles('dark', {
-    backgroundColor: 'transparent',
-  }),
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(2),
-  height: theme.spacing(5),
-  fontSize: theme.typography.body2.fontSize,
-  '&:not(:first-of-type)': {
-    marginLeft: theme.spacing(1),
-  },
-  variants: [
-    {
-      props: ({ isActive }) => isActive,
-      style: {
-        ...theme.applyStyles('light', {
-          backgroundColor: theme.palette.alpha100.main,
-        }),
-        ...theme.applyStyles('dark', {
-          backgroundColor: theme.palette.alpha100.main,
-        }),
-      },
-    },
-  ],
-}));
-
-export const EarnRiskTagsContainer = styled(Stack)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.alpha100.main,
-  padding: theme.spacing(3),
-  borderRadius: theme.spacing(2),
-  [theme.breakpoints.up('md')]: {
-    flex: 1,
-  },
-}));
-
-export const EarnRiskMissingWarning = styled('span')(({ theme }) => ({
-  color: (theme.vars || theme).palette.statusError,
-}));
-
 export const EarnDetailsAnalyticsHeaderContainer = styled(Stack)(
   ({ theme }) => ({
     gap: theme.spacing(2),

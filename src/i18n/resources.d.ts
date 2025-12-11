@@ -102,21 +102,19 @@ interface Resources {
       riskDescriptions: {
         risk: 'Risk';
         riskTag: {
-          'Basis Trading': 'Basis Trading Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          'Basis Trading': 'Basis Trading may encounter several risk vectors that could influence the vault’s performance: funding rate inversion, spread compression, execution slippage, liquidation risk, exchange solvency risk, smart-contract risk, market volatility disrupting hedges, counterparty risk.';
           Bridge: 'Bridge Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
           CDP: 'CDP Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          Credit: 'Credit Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Credit: 'Credit may encounter several risk vectors that could influence the vault’s performance: borrower default, counterparty insolvency, collateral devaluation, liquidation failure, liquidity risk, interest-rate volatility, smart contract exploits';
           Farming: 'Farming Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          Lending: 'Lending Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          'Liquid Staking': 'Liquid Staking Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Lending: 'Lending may encounter several risk vectors that could influence the vault’s performance: oracle manipulation, collateral price crashes leading to borrower liquidation events, liquidity withdrawal constraints, depegs, interest-rate instability, smart contract exploits';
+          'Liquid Staking': 'Liquid Staking may encounter several risk vectors that could influence the vault’s performance: slashing events, validator downtime, liquid staking token peg instability, liquidity shortages, smart contract exploits';
           Liquidity: 'Liquidity Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
           RWA: 'RWA Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
           Staking: 'Staking Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
           Structured: 'Structured Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          Synthetic: 'Synthetic Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          'Top Opportunity': 'Top Opportunity Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          'Top Performing': 'Top Performing Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
-          'Yield Aggregator': 'Yield Aggregator Do eiusmod ipsum minim irure aliqua aliqua ad occaecat cupidatat officia nisi exercitation.';
+          Synthetic: 'Synthetic may encounter several risk vectors that could influence the vault’s performance: oracle manipulation, under-collateralization,  market dislocations impacting peg, liquidity gaps, counterparty risk, smart contract exploits';
+          'Yield Aggregator': 'Yield Aggregator may encounter several risk vectors that could influence the vault’s performance: auto-compounder logic failures, rebalancing errors, strategy misconfiguration, dependency risk from integrated protocols, multisig or governance compromise, stacked smart-contract risk across underlying protocols';
         };
         website: 'website';
       };
