@@ -11,7 +11,6 @@ export const WidgetSkeleton = () => {
     <LiFiWidgetSkeleton
       config={{
         variant: 'compact',
-        appearance: widgetTheme.config.appearance,
         theme: {
           ...widgetTheme.config.theme,
           container: {
