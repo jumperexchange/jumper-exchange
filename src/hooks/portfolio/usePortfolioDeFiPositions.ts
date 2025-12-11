@@ -26,7 +26,11 @@ export const usePortfolioDeFiPositions = ({
   addresses,
   filter,
 }: Props): Result => {
-  const { getTokenByAddressAndChain, updatedAt } = useTokens();
+  const {
+    getTokenByAddressAndChain,
+    isLoading: isLoadingTokens,
+    updatedAt,
+  } = useTokens();
 
   const getTokenUSDPrice: GetTokenUSDPrice = useCallback(
     (token: { chainId: number; address: string }) => {
@@ -72,12 +76,12 @@ export const usePortfolioDeFiPositions = ({
 
         return updateWalletPositionsPrice(positions, getTokenUSDPrice);
       },
-      enabled: !!address,
+      enabled: !!address && !isLoadingTokens,
       refetchInterval: ONE_HOUR_MS,
     })),
   });
 
-  const isLoading = queries.some((query) => query.isLoading);
+  const isLoading = isLoadingTokens || queries.some((query) => query.isLoading);
   const isSuccess = queries.every((query) => query.isSuccess);
   const error = queries.find((query) => query.error)?.error ?? null;
 
