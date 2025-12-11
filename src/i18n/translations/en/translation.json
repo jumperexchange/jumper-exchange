@@ -377,7 +377,7 @@
         "RWA": "RWA strategies may face risks such as issuer default, legal or jurisdictional issues, custodial failure, redemption delays, liquidity constraints, and valuation mismatches between on-chain and off-chain markets.",
         "Staking": "Staking strategies may face risks including validator downtime, slashing, LST peg instability, withdrawal delays, governance shifts, and smart-contract exploits.",
         "Structured": "Structured products may face risks such as model errors, volatility shifts, barrier breaches, rebalancing slippage, liquidity gaps, counterparty defaults, and oracle failures.",
-        "Synthetic": "Synthetic may encounter several risk vectors that could influence the vault’s performance: oracle manipulation, under-collateralization,  market dislocations impacting peg, liquidity gaps, counterparty risk, smart contract exploits",
+        "Synthetic": "Synthetic may encounter several risk vectors that could influence the vault's performance: oracle manipulation, under-collateralization, market dislocations impacting peg, liquidity gaps, counterparty risk, smart contract exploits",
         "Yield Aggregator": "Yield Aggregator may encounter several risk vectors that could influence the vault’s performance: auto-compounder logic failures, rebalancing errors, strategy misconfiguration, dependency risk from integrated protocols, multisig or governance compromise, stacked smart-contract risk across underlying protocols"
       },
       "website": "website"
