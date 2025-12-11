@@ -42,7 +42,15 @@ export const usePortfolioDeFiPositions = ({
           );
         }
 
-        return parseFloat(tokenFound.priceUSD);
+        const priceUSD = parseFloat(tokenFound.priceUSD);
+
+        if (isNaN(priceUSD)) {
+          throw new Error(
+            `Price USD is NaN for token ${token.address} on chain ${token.chainId}`,
+          );
+        }
+
+        return priceUSD;
       } catch (error) {
         console.warn('Could not get token USD price', token, error);
         return undefined;
