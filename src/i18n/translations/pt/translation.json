@@ -365,7 +365,7 @@
       "updated": "Atualizado há {{time}} atrás"
     },
     "actions": {
-      "viewAllMarkets": "",
+      "viewAllMarkets": "Visualizar todos os mercados",
       "seeMore": "veja mais"
     }
   },
@@ -584,11 +584,11 @@
     "title": "Bem-vindo a {{pageTitle}}!",
     "subtitle": {
       "intro": {
-        "earn": "",
-        "portfolio": ""
+        "earn": "<strong>Ganho inteligente, complexidade zero.</strong>",
+        "portfolio": "<strong>portfólio interativo DeFi.</strong>"
       },
       "notConnected": "Estamos atualmente em um Beta fechado <strong></strong>.\nConecte-se para descobrir se você tem acesso.",
-      "noAccess": ""
+      "noAccess": "Estamos atualmente em um beta fechado <strong>.</strong> Você não tem acesso."
     },
     "requestAccess": "Solicitar acesso",
     "connecting": "Conectando...",
