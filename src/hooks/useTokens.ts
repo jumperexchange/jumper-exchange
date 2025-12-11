@@ -30,8 +30,8 @@ export const useTokens = () => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const tokens = useMemo(
-    () => data?.tokens ?? ({} as TokensResponse),
+  const tokens = useMemo<TokensResponse['tokens']>(
+    () => data?.tokens ?? {},
     [data?.tokens],
   );
 
