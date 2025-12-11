@@ -3,28 +3,13 @@ import type {
   DefiToken,
   WalletPositions,
 } from '@/types/jumper-backend';
+import { formatTokenPrice } from '@lifi/widget';
 import { sumBy } from 'lodash';
 
 export type GetTokenUSDPrice = (token: {
   chainId: number;
   address: string;
 }) => undefined | number | Promise<number | undefined>;
-
-// TODO: this function is probably somewhere in the codebase already
-const amountToUSD = (
-  amount: bigint,
-  decimals: number | string | bigint,
-  usdPricePerOne: number,
-): number => {
-  const base = 10n ** BigInt(decimals);
-  const whole = amount / base;
-  const remainder = amount % base;
-
-  const wholeUSD = Number(whole) * usdPricePerOne;
-  const remainderUSD = (Number(remainder) / Number(base)) * usdPricePerOne;
-
-  return wholeUSD + remainderUSD;
-};
 
 const updateTokenPrice = async (
   token: DefiToken,
@@ -39,7 +24,11 @@ const updateTokenPrice = async (
     return token;
   }
 
-  const amountUSD = amountToUSD(BigInt(token.amount), token.decimals, priceUSD);
+  const amountUSD = formatTokenPrice(
+    BigInt(token.amount),
+    `${priceUSD}`,
+    token.decimals,
+  );
 
   return {
     ...token,
