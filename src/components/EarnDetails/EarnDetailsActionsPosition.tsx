@@ -24,11 +24,12 @@ export const EarnDetailsActionsPosition: FC<
   const { formattedAmount, formattedAmountUSD } = useMemo(() => {
     const priceUSD =
       getTokenByAddressAndChain(token.address, token.chain.chainId)?.priceUSD ??
-      0;
+      '0';
 
-    const tokenAmount = amountUSD
-      ? priceToTokenAmount(amountUSD.toString(), priceUSD.toString())
-      : '0';
+    const tokenAmount =
+      amountUSD && Number(priceUSD) > 0
+        ? priceToTokenAmount(amountUSD.toString(), priceUSD.toString())
+        : '0';
 
     return {
       formattedAmount: `${tokenAmount} ${token?.symbol ?? ''}`,
