@@ -36,21 +36,32 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
 
   const [selectedTag, setSelectedTag] = useState<RiskTag>(tags[0] as RiskTag);
 
+  const handleTabChange = useCallback((value: string) => {
+    setSelectedTag(value as RiskTag);
+  }, []);
+
+  const protocolName = useMemo(
+    () => capitalizeString(protocol.name),
+    [protocol.name],
+  );
+
+  if (!tags.length) {
+    return null;
+  }
+
+  const linkText = `${protocolName} ${t('earn.riskDescriptions.website')}`;
+
   const tabOptions = tags.map((tag) => {
-    const label = `${tag} ${t('earn.riskDescriptions.risk')}` || (
+    const label = t('earn.riskDescriptions.risk') || (
       <EarnRiskMissingWarning>
         ATTENTION! Risk description for {tag} is missing! Please provide this.
       </EarnRiskMissingWarning>
     );
     return {
       value: tag,
-      label,
+      label: `${tag} ${label}`,
     };
   });
-
-  const handleTabChange = useCallback((value: string) => {
-    setSelectedTag(value as RiskTag);
-  }, []);
 
   const riskDescription = protocol.riskDescription || (
     <EarnRiskMissingWarning>
@@ -58,11 +69,6 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
     </EarnRiskMissingWarning>
   );
   const tagRiskDescription = t(`earn.riskDescriptions.riskTag.${selectedTag}`);
-  const protocolName = useMemo(
-    () => capitalizeString(protocol.name),
-    [protocol.name],
-  );
-  const linkText = `${protocolName} ${t('earn.riskDescriptions.website')}`;
 
   return (
     <EarnDetailsRisksContainer>
@@ -90,19 +96,22 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
           </ExternalLink>
         )}
       </Stack>
-      <EarnRiskTagsContainer>
-        <Box sx={(theme) => ({ marginBottom: theme.spacing(4) })}>
-          {tabOptions.map((tab) => (
-            <EarnDetailsRisksNavButton
-              isActive={selectedTag === tab.value}
-              onClick={() => handleTabChange(tab.value)}
-            >
-              {tab.label}
-            </EarnDetailsRisksNavButton>
-          ))}
-        </Box>
-        <Typography variant="body2">{tagRiskDescription}</Typography>
-      </EarnRiskTagsContainer>
+      {selectedTag && (
+        <EarnRiskTagsContainer>
+          <Box sx={(theme) => ({ marginBottom: theme.spacing(4) })}>
+            {tabOptions.map((tab) => (
+              <EarnDetailsRisksNavButton
+                key={tab.value}
+                isActive={selectedTag === tab.value}
+                onClick={() => handleTabChange(tab.value)}
+              >
+                {tab.label}
+              </EarnDetailsRisksNavButton>
+            ))}
+          </Box>
+          <Typography variant="body2">{tagRiskDescription}</Typography>
+        </EarnRiskTagsContainer>
+      )}
     </EarnDetailsRisksContainer>
   );
 };
