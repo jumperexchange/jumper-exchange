@@ -37,7 +37,9 @@ export const usePortfolioDeFiPositions = ({
         );
 
         if (!tokenFound) {
-          return undefined;
+          throw new Error(
+            `Token not found for address ${token.address} on chain ${token.chainId}`,
+          );
         }
 
         return parseFloat(tokenFound.priceUSD);
