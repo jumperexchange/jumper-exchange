@@ -43,6 +43,9 @@ export const EarnDetailsRisksNavButton = styled(ButtonTransparent, {
   ...theme.applyStyles('light', {
     backgroundColor: 'transparent',
   }),
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'transparent',
+  }),
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
   height: theme.spacing(5),
@@ -55,6 +58,9 @@ export const EarnDetailsRisksNavButton = styled(ButtonTransparent, {
       props: ({ isActive }) => isActive,
       style: {
         ...theme.applyStyles('light', {
+          backgroundColor: theme.palette.alpha100.main,
+        }),
+        ...theme.applyStyles('dark', {
           backgroundColor: theme.palette.alpha100.main,
         }),
       },
