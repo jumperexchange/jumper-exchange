@@ -79,25 +79,6 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
           earn.actions.seeMore
         </button>
       </p>
-      <a
-        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
-        href="https://app.morpho.org"
-        rel="noopener noreferrer nofollow"
-        target="_blank"
-      >
-        links.discover
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
-          data-testid="ArrowForwardIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
-          />
-        </svg>
-      </a>
     </div>
   </div>
 </div>
@@ -195,25 +176,6 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
           earn.actions.seeMore
         </button>
       </p>
-      <a
-        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
-        href="https://app.morpho.org"
-        rel="noopener noreferrer nofollow"
-        target="_blank"
-      >
-        links.discover
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
-          data-testid="ArrowForwardIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
-          />
-        </svg>
-      </a>
     </div>
   </div>
 </div>
@@ -330,25 +292,6 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
           earn.actions.seeMore
         </button>
       </p>
-      <a
-        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
-        href="https://app.morpho.org"
-        rel="noopener noreferrer nofollow"
-        target="_blank"
-      >
-        links.discover
-        <svg
-          aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
-          data-testid="ArrowForwardIcon"
-          focusable="false"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
-          />
-        </svg>
-      </a>
     </div>
   </div>
 </div>
