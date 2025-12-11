@@ -15,11 +15,15 @@ export const getTokensQuery = async () => {
   const tokens = await getTokens({
     chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
   });
+  console.log(
+    'tokens',
+    tokens.tokens[1].filter((token) => token.address.startsWith('0x00')),
+  );
   return tokens;
 };
 
 export const useTokens = () => {
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, isSuccess, isLoading, dataUpdatedAt } = useQuery({
     queryKey,
     queryFn: getTokensQuery,
     enabled: true,
@@ -67,5 +71,6 @@ export const useTokens = () => {
     tokens,
     isSuccess,
     isLoading,
+    updatedAt: dataUpdatedAt,
   };
 };

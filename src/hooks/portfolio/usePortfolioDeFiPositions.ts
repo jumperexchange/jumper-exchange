@@ -26,7 +26,7 @@ export const usePortfolioDeFiPositions = ({
   addresses,
   filter,
 }: Props): Result => {
-  const { getTokenByAddressAndChain } = useTokens();
+  const { getTokenByAddressAndChain, updatedAt } = useTokens();
 
   const getTokenUSDPrice: GetTokenUSDPrice = useCallback(
     (token: { chainId: number; address: string }) => {
@@ -53,7 +53,7 @@ export const usePortfolioDeFiPositions = ({
 
   const queries = useQueries({
     queries: addresses.map((address) => ({
-      queryKey: ['portfolio-defi-positions', address, filter],
+      queryKey: ['portfolio-defi-positions', address, filter, updatedAt],
       queryFn: async () => {
         const result = await getPositionsForAddress({
           evm: address,
