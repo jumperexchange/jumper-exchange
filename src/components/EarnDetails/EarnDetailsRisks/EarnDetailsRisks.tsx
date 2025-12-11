@@ -84,7 +84,7 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
           variant="headerXSmall"
           sx={(theme) => ({ marginBottom: theme.spacing(1) })}
         >
-          {capitalizeString(protocol.name)}
+          {protocolName}
         </Typography>
         <Typography
           variant="body1"

@@ -29,6 +29,7 @@ export const ExternalLink = ({ children, ...props }: LinkProps) => (
     rel="noopener noreferrer nofollow"
     {...props}
   >
-    {children} <OpenInNew />
+    {children}
+    <OpenInNew aria-hidden />
   </StyledExternalLink>
 );

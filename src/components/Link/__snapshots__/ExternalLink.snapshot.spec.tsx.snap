@@ -9,7 +9,6 @@ exports[`ExternalLink snapshot > external link matches snapshot 1`] = `
     target="_blank"
   >
     Goes outside...
-     
     <svg
       aria-hidden="true"
       class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
