@@ -42,3 +42,28 @@ export const connectAnotherWalletButton = (page: Page) => {
 export const disconnectWalletButton = (page: Page) => {
   return page.locator('#disconnect-wallet-button');
 };
+
+export const walletDrawer = (page: Page) => {
+  return page.getByTestId('wallet-drawer');
+};
+
+export const walletCards = (page: Page) => {
+  return walletDrawer(page).getByTestId('wallet-balance-card');
+};
+
+export const openWalletDrawer = async (page: Page) => {
+  await page.locator('#wallet-digest-button').click();
+  await expect(walletDrawer(page)).toBeVisible();
+};
+
+export const getConnectedWalletCount = async (page: Page) => {
+  return walletCards(page).count();
+};
+
+export const expectConnectedWalletCount = async (page: Page, count: number) => {
+  await expect(walletCards(page)).toHaveCount(count);
+};
+
+export const closeWalletDrawer = async (page: Page) => {
+  await walletDrawer(page).getByRole('button', { name: 'close' }).click();
+};

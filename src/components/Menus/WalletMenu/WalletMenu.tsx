@@ -44,6 +44,7 @@ export const WalletMenu = () => {
 
   return (
     <CustomDrawer
+      data-testid="wallet-drawer"
       open={_openWalletMenu}
       anchor="right"
       onClose={() => {
@@ -83,6 +84,7 @@ export const WalletMenu = () => {
         ([walletAddress, account]) => (
           <WalletBalanceCard
             key={walletAddress}
+            data-testid="wallet-balance-card"
             walletAddress={walletAddress}
             refetch={account.refetch}
             isFetching={account.isFetching}
