@@ -1118,7 +1118,10 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
-    headers: {},
+    headers: {
+      Origin: envConfig.NEXT_PUBLIC_SITE_URL,
+      Referer: envConfig.NEXT_PUBLIC_SITE_URL,
+    },
     redirect: 'follow',
     referrerPolicy: 'strict-origin-when-cross-origin',
   };
