@@ -1,6 +1,6 @@
 import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
 import { notFound } from 'next/navigation';
-import { Metadata } from 'next/types';
+import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
@@ -32,9 +32,14 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  return (
-    <Suspense fallback={<EarnPageSkeleton />}>
-      <EarnPage slug={slug} />
-    </Suspense>
-  );
+  try {
+    return (
+      <Suspense fallback={<EarnPageSkeleton />}>
+        <EarnPage slug={slug} />
+      </Suspense>
+    );
+  } catch (error) {
+    console.error('Failed to fetch earn page', error);
+    throw error;
+  }
 }
