@@ -7,11 +7,16 @@ interceptor.apply();
 
 interceptor.on('request', ({ request }) => {
   if (
-    request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL) ||
-    request.url.startsWith(envConfig.NEXT_PUBLIC_BACKEND_URL)
+    (envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL &&
+      request.url.startsWith(envConfig.NEXT_PUBLIC_BACKEND_URL)) ||
+    (envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL &&
+      request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL))
   ) {
     for (const [key, value] of Object.entries(GLOBAL_HEADERS)) {
-      request.headers.set(key, value);
+      if (!key || !value) {
+        continue;
+      }
+      request.headers.append(key, value);
     }
     console.log('Headers modified by global interceptor');
   }
