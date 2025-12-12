@@ -5,6 +5,8 @@ import { HeroEarnCardSkeleton } from 'src/components/Cards/HeroEarnCard/HeroEarn
 import { EarnOpportunitiesAllSkeleton } from './EarnOpportunitiesAll/EarnOpportunitiesAllSkeleton';
 
 export const EarnsPageSkeleton = () => {
+  console.log('2. EarnsPageSkeleton');
+
   return (
     <>
       <Grid container spacing={2}>

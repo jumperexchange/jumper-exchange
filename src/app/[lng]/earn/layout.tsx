@@ -12,10 +12,14 @@ import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider
 export const fetchCache = 'default-cache';
 
 export default function EarnLayout({ children }: PropsWithChildren) {
+  console.log('1. EarnLayout');
+
   if (!isEarnFeatureEnabled()) {
+    console.log('2. EarnLayout not found');
     return notFound();
   }
 
+  console.log('3. EarnLayout found');
   return (
     <Layout>
       <FetchInterceptorProvider />

@@ -24,7 +24,11 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   illustrations,
   subtitleIntroKey,
 }) => {
+  console.log('6. Gatekeeper');
+
   const { status, error } = useGatekeeperStatus(flag);
+  console.log('9. Gatekeeper status', status);
+
   const { t } = useTranslation();
   const setSnackbarState = useMenuStore((state) => state.setSnackbarState);
 
@@ -44,6 +48,7 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   const noAccessSubtitle = t('gatekeeper.subtitle.noAccess');
 
   if (status === GatekeeperStatus.REQUIRES_CONNECT) {
+    console.log('10. Gatekeeper requires connect');
     return (
       <GatekeeperOverlayLayout
         title={title}
@@ -57,6 +62,7 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
   }
 
   if (status === GatekeeperStatus.LOADING_ACCESS) {
+    console.log('11. Gatekeeper loading access');
     return (
       <GatekeeperOverlayLayout
         title={title}
@@ -73,6 +79,7 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
     status === GatekeeperStatus.NOT_ALLOWED ||
     status === GatekeeperStatus.ERROR
   ) {
+    console.log('12. Gatekeeper not allowed or error');
     return (
       <GatekeeperOverlayLayout
         title={title}
@@ -91,5 +98,6 @@ export const Gatekeeper: React.FC<GatekeeperProps> = ({
     );
   }
 
+  console.log('13. Gatekeeper success');
   return <>{children}</>;
 };

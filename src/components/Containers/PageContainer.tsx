@@ -2,6 +2,8 @@ import type { FC, PropsWithChildren } from 'react';
 import Container from '@mui/material/Container';
 
 export const PageContainer: FC<PropsWithChildren> = ({ children }) => {
+  console.log('14. PageContainer');
+
   return (
     <Container
       sx={{
