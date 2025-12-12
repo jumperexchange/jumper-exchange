@@ -36,7 +36,7 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
   return (
     <PortfolioFilterBarContentContainer>
       <PortfolioAnimatedLayoutContainer>
-        {chainOptions.length > 0 && (
+        {chainOptions.length > 1 && (
           <Select
             options={chainOptions}
             value={filter?.defiChains?.map(String) ?? []}
@@ -48,7 +48,7 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {protocolOptions.length > 0 && (
+        {protocolOptions.length > 1 && (
           <Select
             options={protocolOptions}
             value={filter?.defiProtocols || []}
@@ -60,7 +60,7 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {typeOptions.length > 0 && (
+        {typeOptions.length > 1 && (
           <Select
             options={typeOptions}
             value={filter?.defiTypes || []}
@@ -72,7 +72,7 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {assetOptions.length > 0 && (
+        {assetOptions.length > 1 && (
           <Select
             options={assetOptions}
             value={filter?.defiAssets || []}

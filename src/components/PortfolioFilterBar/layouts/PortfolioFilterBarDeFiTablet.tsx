@@ -113,7 +113,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
 
   const categories: CategoryConfig[] = [];
 
-  if (chainOptions.length > 0) {
+  if (chainOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'chain',
@@ -131,7 +131,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     );
   }
 
-  if (protocolOptions.length > 0) {
+  if (protocolOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'protocol',
@@ -149,7 +149,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     );
   }
 
-  if (typeOptions.length > 0) {
+  if (typeOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'type',
@@ -167,7 +167,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     );
   }
 
-  if (assetOptions.length > 0) {
+  if (assetOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'asset',
@@ -204,7 +204,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     );
   }
 
-  if (sortByOptions.length > 0) {
+  if (sortByOptions.length > 1) {
     categories.push(
       createSingleSelectCategory<SortByEnum>({
         id: 'sortBy',

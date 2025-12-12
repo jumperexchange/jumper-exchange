@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
@@ -36,7 +36,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
   return (
     <EarnFilterBarContentContainer>
       <EarnAnimatedLayoutContainer>
-        {chainOptions.length > 0 && (
+        {chainOptions.length > 1 && (
           <Select
             options={chainOptions}
             value={filter?.chains?.map(String) ?? []}
@@ -47,7 +47,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             data-testid="earn-filter-chain-select"
           />
         )}
-        {protocolOptions.length > 0 && (
+        {protocolOptions.length > 1 && (
           <Select
             options={protocolOptions}
             value={filter?.protocols || []}
@@ -59,7 +59,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {tagOptions.length > 0 && (
+        {tagOptions.length > 1 && (
           <Select
             options={tagOptions}
             value={filter?.tags || []}
@@ -71,7 +71,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {assetOptions.length > 0 && (
+        {assetOptions.length > 1 && (
           <Select
             options={assetOptions}
             value={filter?.assets || []}
