@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from 'react';
-import { BaseAssetProgressProps } from '../AssetProgress.types';
+import type { FC, PropsWithChildren } from 'react';
+import type { BaseAssetProgressProps } from '../AssetProgress.types';
 import { BaseProgressContainer } from '../AssetProgress.styles';
 import { Percent } from 'src/components/core/Percent/Percent';
 import { PercentSize } from 'src/components/core/Percent/Percent.types';
@@ -27,7 +27,10 @@ export const BaseProgress: FC<BaseProgressProps> = ({
       <Percent percent={progress} size={PercentSize.XXL}>
         {children}
       </Percent>
-      <Tooltip title={isBelowThreshold ? formattedActualAmount : null}>
+      <Tooltip
+        title={isBelowThreshold ? formattedActualAmount : null}
+        placement="bottom"
+      >
         <Typography variant="bodyXLargeStrong">{formattedAmount}</Typography>
       </Tooltip>
       <Typography variant="bodyXSmall" color="textSecondary">
