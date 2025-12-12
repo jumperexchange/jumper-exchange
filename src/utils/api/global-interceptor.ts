@@ -7,7 +7,7 @@ interceptor.apply();
 
 interceptor.on('request', ({ request }) => {
   if (
-    (envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL &&
+    (envConfig.NEXT_PUBLIC_BACKEND_URL &&
       request.url.startsWith(envConfig.NEXT_PUBLIC_BACKEND_URL)) ||
     (envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL &&
       request.url.startsWith(envConfig.NEXT_PUBLIC_LIFI_BACKEND_URL))
