@@ -29,6 +29,8 @@ import { ProtocolCardDescription } from './components/ProtocolCardDescription';
 import { ProtocolCardDescriptionModal } from './components/ProtocolCardDescriptionModal';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
 import { openInNewTab } from '@/utils/openInNewTab';
+import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
+import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 interface CommonCardProps {
   fullWidth?: boolean;
@@ -72,6 +74,50 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
   if (isLoading) {
     return <ProtocolCardSkeleton fullWidth={fullWidth} />;
   }
+
+  // @TODO: remove this once descriptionRichText is available in the API & strapi
+  const descriptionRichText = [
+    {
+      type: 'paragraph',
+      children: [
+        {
+          type: 'text',
+          text: 'Aerodrome is a decentralized exchange where you can execute ',
+        },
+        {
+          type: 'text',
+          text: 'low-fee swaps, ',
+          bold: true,
+        },
+        {
+          type: 'text',
+          text: 'deposit tokens to ',
+        },
+        {
+          type: 'text',
+          text: 'earn rewards',
+          bold: true,
+        },
+        {
+          type: 'text',
+          text: ', and ',
+        },
+        {
+          type: 'text',
+          text: '<span style="color: var(--jumper-palette-textAccent2)">actively participate</span> ',
+          bold: true,
+        },
+        {
+          type: 'text',
+          text: 'in the onchain economy.',
+        },
+        {
+          type: 'text',
+          text: description || '',
+        },
+      ],
+    },
+  ] as RootNode[];
 
   const headerContent = (
     <ProtocolCardContentHeaderContainer>
@@ -149,7 +195,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
         <ProtocolCardContentContainer>
           {headerContent}
           <ProtocolCardDescription
-            text={description}
+            richBlocksContent={descriptionRichText}
             onSeeMoreClick={() => setIsDescriptionModalOpen(true)}
           />
           {protocol?.name && url && (
@@ -165,9 +211,16 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
         onClose={() => setIsDescriptionModalOpen(false)}
       >
         {headerContent}
-        <ProtocolCardDescriptionContainer variant="bodyMediumParagraph">
-          {description}
-        </ProtocolCardDescriptionContainer>
+        <RichBlocks
+          content={descriptionRichText}
+          blockSx={{
+            paragraph: (theme) => ({
+              ...theme.typography.bodyMediumParagraph,
+              color: (theme.vars || theme).palette.text.secondary,
+              overflowWrap: 'break-word',
+            }),
+          }}
+        />
       </ProtocolCardDescriptionModal>
     </>
   );

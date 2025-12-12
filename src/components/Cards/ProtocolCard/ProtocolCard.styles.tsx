@@ -133,12 +133,9 @@ export const ProtocolCardTagsContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const ProtocolCardDescriptionContainer = styled(Typography)(
-  ({ theme }) => ({
-    color: (theme.vars || theme).palette.text.secondary,
-    marginBottom: 'auto',
-  }),
-);
+export const ProtocolCardDescriptionContainer = styled(Box)(({ theme }) => ({
+  marginBottom: 'auto',
+}));
 
 export const ProtocolCardLink = styled(Link)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,

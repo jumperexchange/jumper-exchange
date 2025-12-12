@@ -6,16 +6,18 @@ import {
 } from '../ProtocolCard.styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { PROTOCOL_CARD_DESCRIPTION_MAX_CHARS } from '../constants';
-import { stringLenShortener } from '@/utils/stringLenShortener';
 import { useTranslation } from 'react-i18next';
+import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
+import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { truncateRichText } from '@/components/RichBlocks/utils';
 
 interface ProtocolCardDescriptionProps {
-  text?: string;
+  richBlocksContent?: RootNode[];
   onSeeMoreClick: () => void;
 }
 
 export const ProtocolCardDescription: FC<ProtocolCardDescriptionProps> = ({
-  text,
+  richBlocksContent,
   onSeeMoreClick,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -24,29 +26,38 @@ export const ProtocolCardDescription: FC<ProtocolCardDescriptionProps> = ({
     ? PROTOCOL_CARD_DESCRIPTION_MAX_CHARS.MOBILE
     : PROTOCOL_CARD_DESCRIPTION_MAX_CHARS.DESKTOP;
 
-  const { shortenedText, isTruncated } = useMemo(() => {
-    if (!text) {
-      return { shortenedText: '', isTruncated: false };
+  const { content, isTruncated } = useMemo(() => {
+    if (!richBlocksContent) {
+      return { content: [], isTruncated: false };
     }
-    return {
-      shortenedText: stringLenShortener(text, maxChars),
-      isTruncated: text.length > maxChars,
-    };
-  }, [text, maxChars]);
+    return truncateRichText(richBlocksContent, maxChars);
+  }, [richBlocksContent, maxChars]);
 
   return (
-    <ProtocolCardDescriptionContainer variant="bodyMediumParagraph">
-      {shortenedText}
-      {` `}
+    <ProtocolCardDescriptionContainer>
+      <RichBlocks
+        content={content}
+        blockSx={{
+          paragraph: (theme) => ({
+            ...theme.typography.bodyMediumParagraph,
+            color: (theme.vars || theme).palette.text.secondary,
+            overflowWrap: 'break-word',
+            display: 'inline',
+          }),
+        }}
+      />
       {isTruncated && (
-        <ProtocolCardDescriptionSeeMoreButton
-          variant="text"
-          size="small"
-          onClick={onSeeMoreClick}
-          disableRipple
-        >
-          {t('earn.actions.seeMore')}
-        </ProtocolCardDescriptionSeeMoreButton>
+        <>
+          {` `}
+          <ProtocolCardDescriptionSeeMoreButton
+            variant="text"
+            size="small"
+            onClick={onSeeMoreClick}
+            disableRipple
+          >
+            {t('earn.actions.seeMore')}
+          </ProtocolCardDescriptionSeeMoreButton>
+        </>
       )}
     </ProtocolCardDescriptionContainer>
   );
