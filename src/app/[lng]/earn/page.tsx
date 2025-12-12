@@ -1,6 +1,6 @@
 import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+  console.log('1. Earn page');
+
   return (
     <Suspense fallback={<EarnsPageSkeleton />}>
       <EarnsPage />

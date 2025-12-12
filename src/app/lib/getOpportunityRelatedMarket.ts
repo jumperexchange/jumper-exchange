@@ -1,4 +1,4 @@
-import {
+import type {
   EarnOpportunityWithLatestAnalytics,
   HttpResponse,
 } from '@/types/jumper-backend';
@@ -18,6 +18,7 @@ export async function getOpportunityRelatedMarket(
     // @ts-expect-error: see LF-15589 - we are transforming data in the backend
     return data.data;
   } catch (error) {
-    return error as GetOpportunityRelatedMarketResult;
+    console.error('getOpportunityRelatedMarket failed for slug', slug, error);
+    throw error;
   }
 }

@@ -1,6 +1,7 @@
+'use client';
+
 import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import EarnBetaIllustration from '@/components/illustrations/EarnBetaIllustration';
-import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
 import { isEarnFeatureEnabled } from 'src/app/lib/getFeatureFlag';
@@ -10,17 +11,15 @@ import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider
 
 export const fetchCache = 'default-cache';
 
-export const metadata: Metadata = {
-  other: {
-    'partner-theme': 'default',
-  },
-};
-
 export default function EarnLayout({ children }: PropsWithChildren) {
+  console.log('1. EarnLayout');
+
   if (!isEarnFeatureEnabled()) {
+    console.log('2. EarnLayout not found');
     return notFound();
   }
 
+  console.log('3. EarnLayout found');
   return (
     <Layout>
       <FetchInterceptorProvider />

@@ -1,6 +1,6 @@
 import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
 import { notFound } from 'next/navigation';
-import { Metadata } from 'next/types';
+import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
@@ -9,6 +9,8 @@ export const dynamicParams = true;
 export const revalidate = 300;
 
 export async function generateStaticParams(): Promise<Params[]> {
+  console.log('21. Earn page generateStaticParams');
+
   // TODO: LF-14853: list available opportunities
   return [];
 }
@@ -18,6 +20,8 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
+  console.log('20. Earn page metadata');
+
   // TODO: LF-14987: Implement Metadata
   return {
     title: 'Jumper Earn',
@@ -26,15 +30,24 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: Params }) {
+  console.log('22. Earn page');
   const { slug } = await params;
 
+  console.log('24. Earn page slug', slug);
+
   if (!slug) {
+    console.log('23. Earn page not found');
     return notFound();
   }
 
-  return (
-    <Suspense fallback={<EarnPageSkeleton />}>
-      <EarnPage slug={slug} />
-    </Suspense>
-  );
+  try {
+    return (
+      <Suspense fallback={<EarnPageSkeleton />}>
+        <EarnPage slug={slug} />
+      </Suspense>
+    );
+  } catch (error) {
+    console.error('26. Failed to fetch earn page', error);
+    throw error;
+  }
 }

@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { BadgeSize } from 'src/components/Badge/Badge.styles';
 import { BadgeSkeleton } from 'src/components/Badge/BadgeSkeleton';
 import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
@@ -15,6 +15,8 @@ import {
 } from './HeroEarnCard.styles';
 
 export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
+  console.log('3. HeroEarnCardSkeleton');
+
   return (
     <HeroEarnCardContainer sx={{ width: '100%' }}>
       <HeroEarnCardHeaderContainer direction="row">
