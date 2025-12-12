@@ -530,7 +530,7 @@ interface Resources {
         chain: 'Chain';
         sort: 'Sort';
         sortBy: 'Sort by';
-        totalValue: 'Total value';
+        totalValue: 'Total Value';
       };
       welcome: {
         explorePass: 'Explore Jumper Pass';
