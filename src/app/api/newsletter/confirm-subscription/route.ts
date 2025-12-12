@@ -50,6 +50,11 @@ export async function POST(request: NextRequest) {
     if (`${PUBLICATION_ID_PREFIX}${decoded.publication_id}` !== publicationId) {
       throw new Error('Invalid publication');
     }
+
+    if (!decoded.subscriber_id) {
+      throw new Error('Invalid token: missing subscriber_id');
+    }
+
     const subscriptionCheckResponse = await fetch(
       `${apiUrl}/publications/${publicationId}/subscriptions/by_subscriber_id/${decoded.subscriber_id}`,
       {
