@@ -106,7 +106,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
 
   const categories: CategoryConfig[] = [];
 
-  if (walletOptions.length > 0) {
+  if (walletOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'wallet',
