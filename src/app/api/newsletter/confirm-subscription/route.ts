@@ -1,4 +1,5 @@
 import envConfig from '@/config/env-config';
+import { TEN_SECONDS_MS } from '@/const/time';
 import jwt from 'jsonwebtoken';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
@@ -17,7 +18,11 @@ interface DecodedBeehiivToken {
 const PUBLICATION_ID_PREFIX = 'pub_';
 
 export async function POST(request: NextRequest) {
+  let timeoutId: NodeJS.Timeout | null = null;
   try {
+    const controller = new AbortController();
+    timeoutId = setTimeout(() => controller.abort(), TEN_SECONDS_MS);
+
     const rawBody = await request.json();
 
     const parseResult = confirmSubscriptionSchema.safeParse(rawBody);
@@ -39,7 +44,7 @@ export async function POST(request: NextRequest) {
     const apiUrl = envConfig.BEEHIIV_API_URL || 'https://api.beehiiv.com/v2';
 
     if (!apiKey || !publicationId) {
-      return NextResponse.json({ error: 'Server error' }, { status: 500 });
+      throw new Error('Missing environment variables');
     }
 
     if (`${PUBLICATION_ID_PREFIX}${decoded.publication_id}` !== publicationId) {
@@ -52,6 +57,7 @@ export async function POST(request: NextRequest) {
         headers: {
           Authorization: `Bearer ${apiKey}`,
         },
+        signal: controller.signal,
       },
     );
 
@@ -65,5 +71,9 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Confirm subscription error:', error);
     return NextResponse.json({ success: false }, { status: 500 });
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
   }
 }
