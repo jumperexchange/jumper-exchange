@@ -4,26 +4,12 @@ import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow
 import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 import { usePortfolioDeFiPositionsFiltering } from './PortfolioDeFiPositionsFilteringContext';
 import { PortfolioEmptyList } from './PortfolioEmptyList';
-import {
-  PortfolioAssetContainer,
-  PortfolioAssetsListContainer,
-} from './PortfolioPage.styles';
+import { PortfolioAssetsListContainer } from './PortfolioPage.styles';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { DeFiPositionCardSkeleton } from '@/components/composite/DeFiPositionCard/DeFiPositionCardSkeleton';
-import { motion, AnimatePresence } from 'motion/react';
+import { AnimatePresence } from 'motion/react';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
-
-const AnimatedAssetItem = ({ children }: PropsWithChildren) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    viewport={{ once: true, margin: '-50px' }}
-    transition={{ duration: 0.3 }}
-  >
-    <PortfolioAssetContainer>{children}</PortfolioAssetContainer>
-  </motion.div>
-);
+import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
 
 export const PortfolioDeFiProtocolsList = () => {
   useContactSupportEvent();
@@ -39,26 +25,26 @@ export const PortfolioDeFiProtocolsList = () => {
   const renderContent = () => {
     if (isLoading) {
       return Array.from({ length: 3 }).map((_, index) => (
-        <AnimatedAssetItem key={index}>
+        <PortfolioAnimatedAssetContainer key={index}>
           <DeFiPositionCardSkeleton />
-        </AnimatedAssetItem>
+        </PortfolioAnimatedAssetContainer>
       ));
     }
 
     if (protocolGroups.length > 0) {
-      return protocolGroups.map((positions) => (
-        <AnimatedAssetItem
-          key={`${positions[0].protocol.name}-${positions[0].chain.chainId}`}
+      return protocolGroups.map((positions, index) => (
+        <PortfolioAnimatedAssetContainer
+          key={`${positions[0].protocol.name}-${positions[0].chain.chainId}-${index}`}
         >
           <DeFiPositionCard defiPositions={positions} isLoading={isLoading} />
-        </AnimatedAssetItem>
+        </PortfolioAnimatedAssetContainer>
       ));
     }
 
     return (
-      <AnimatedAssetItem>
+      <PortfolioAnimatedAssetContainer>
         <PortfolioEmptyList onClearFilters={clearFilters} />
-      </AnimatedAssetItem>
+      </PortfolioAnimatedAssetContainer>
     );
   };
 
