@@ -7,6 +7,10 @@ import {
   getTokenByAddressOnSpecificChain as getTokenByAddressOnSpecificChainHelper,
   getNativeTokenForChain as getNativeTokenForChainHelper,
 } from '@/utils/tokenAndChain';
+// Ensure global interceptor is loaded for server-side API calls.
+// Note: instrumentation.ts doesn't run in Turbopack build workers, so we import directly here.
+// See: https://github.com/vercel/next.js/discussions/77776
+import '@/utils/api/global-interceptor';
 
 export const queryKey = ['tokenStats'];
 

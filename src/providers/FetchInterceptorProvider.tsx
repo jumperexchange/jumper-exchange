@@ -1,27 +1,26 @@
 'use client';
 
-import { FetchInterceptor } from '@mswjs/interceptors/fetch';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
   ZAP_QUEST_ID_SESSION_STORAGE_KEY,
 } from 'src/const/quests';
-import envConfig from '../config/env-config';
 import { AppPaths } from 'src/const/urls';
 import getApiUrl from '@/utils/getApiUrl';
+import { globalInterceptor } from '@/utils/api/global-interceptor';
 
 export function FetchInterceptorProvider() {
   console.log('4. FetchInterceptorProvider');
 
   const pathname = usePathname();
-  const apiUrl = getApiUrl();
+  const pathnameRef = useRef(pathname);
+  pathnameRef.current = pathname;
 
   useEffect(() => {
-    const interceptor = new FetchInterceptor();
-    interceptor.apply();
+    const handleRequest = ({ request }: { request: Request }) => {
+      const apiUrl = getApiUrl();
 
-    interceptor.on('request', ({ request }) => {
       const zapQuestId = sessionStorage.getItem(
         ZAP_QUEST_ID_SESSION_STORAGE_KEY,
       );
@@ -44,16 +43,21 @@ export function FetchInterceptorProvider() {
       if (
         request.url.startsWith(apiUrl) &&
         request.url.includes('status') &&
-        pathname?.includes(AppPaths.Scan)
+        pathnameRef.current?.includes(AppPaths.Scan)
       ) {
         request.headers.append('x-zap-scan-id', 'biconomy-powered-tx');
       }
-    });
+
+      console.log('Headers modified by FetchInterceptorProvider');
+    };
+
+    globalInterceptor.on('request', handleRequest);
 
     return () => {
-      interceptor.dispose();
+      console.log('Removing request listener');
+      globalInterceptor.off('request', handleRequest);
     };
-  }, [apiUrl]);
+  }, []);
 
   console.log('5. FetchInterceptorProvider done');
 

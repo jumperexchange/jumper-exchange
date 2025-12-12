@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     await import('./sentry.server.config');
+    await import('./src/utils/api/global-interceptor');
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {

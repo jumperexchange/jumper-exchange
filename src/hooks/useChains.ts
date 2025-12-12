@@ -3,6 +3,10 @@ import { ChainType, getChains } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
 import { useCallback } from 'react';
+// Ensure global interceptor is loaded for server-side API calls.
+// Note: instrumentation.ts doesn't run in Turbopack build workers, so we import directly here.
+// See: https://github.com/vercel/next.js/discussions/77776
+import '@/utils/api/global-interceptor';
 
 export const queryKey = ['chainStats'];
 
