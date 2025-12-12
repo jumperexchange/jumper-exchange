@@ -23,6 +23,7 @@ import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { SettingsStoreProvider } from 'src/stores/settings';
 import { description, siteName, title } from '../lib/metadata';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
+import '@/utils/api/global-interceptor';
 
 export const metadata: Metadata = {
   title,
