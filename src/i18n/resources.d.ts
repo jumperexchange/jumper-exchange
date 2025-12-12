@@ -80,7 +80,7 @@ interface Resources {
         viewAllMarkets: 'View all markets';
       };
       copy: {
-        forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
+        forYouBasedOnActivity: 'Handpicked from over {{totalMarkets}}+ markets based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       emptyList: {
