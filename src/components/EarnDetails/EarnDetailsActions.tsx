@@ -43,7 +43,6 @@ export const EarnDetailsActions = ({
 
   const hasDeposited = !!depositAmountUSD;
 
-
   return (
     <EarnDetailsActionsContainer>
       <EarnDetailsActionsPosition
