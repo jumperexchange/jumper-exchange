@@ -87,8 +87,9 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
           {protocolName}
         </Typography>
         <Typography
-          variant="body1"
-          sx={(theme) => ({ marginBottom: theme.spacing(2) })}
+          variant="bodyMediumParagraph"
+          color="textSecondary"
+          sx={(theme) => ({ marginBottom: theme.spacing(3) })}
         >
           {riskDescription}
         </Typography>
@@ -111,7 +112,9 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
               selectedTag={selectedTag}
             />
           )}
-          <Typography variant="body2">{tagRiskDescription}</Typography>
+          <Typography variant="bodySmallParagraph" color="textSecondary">
+            {tagRiskDescription}
+          </Typography>
         </EarnRiskTagsContainer>
       )}
     </EarnDetailsRisksContainer>
