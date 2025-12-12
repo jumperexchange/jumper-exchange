@@ -373,6 +373,7 @@ export const useFooterLinks = () => {
     }
     return _footerLinks;
   }, [
+    isNewsletterEnabled,
     t,
     handlePrivacyPolicyClick,
     handleTermsConditionsClick,
