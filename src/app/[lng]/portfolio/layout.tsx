@@ -33,7 +33,6 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
           illustration: <PortfolioBetaIllustration />,
           mobile: {
             sx: {
-              maxWidth: 343,
               marginTop: 8,
             },
           },
