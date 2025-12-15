@@ -28,3 +28,7 @@ export const isEarnFeatureEnabled = () => {
 export const isPortfolioFeatureEnabled = () => {
   return true;
 };
+
+export const isNewsletterFeatureEnabled = () => {
+  return !isProduction;
+};
