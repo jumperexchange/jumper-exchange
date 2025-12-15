@@ -59,7 +59,7 @@
     "i18next-resources-to-backend": "^1.2.1",
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
-    "next": "^15.3.3",
+    "next": "15.3.8",
     "next-i18n-router": "^5.5.2",
     "react": "^19.1.0",
     "react-animated-counter": "^1.7.9",
