@@ -1,5 +1,6 @@
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import type { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -96,7 +97,13 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   },
 }));
 
-export const StyledAccordionSummary = styled(AccordionSummary)({
+interface StyledAccordionSummaryProps extends AccordionSummaryProps {
+  hasMultipleAccountsConnected: boolean;
+}
+
+export const StyledAccordionSummary = styled(AccordionSummary, {
+  shouldForwardProp: (prop) => prop !== 'hasMultipleAccountsConnected',
+})<StyledAccordionSummaryProps>(({ theme, hasMultipleAccountsConnected }) => ({
   '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
     {
       padding: 0,
@@ -104,8 +111,11 @@ export const StyledAccordionSummary = styled(AccordionSummary)({
     },
   '&.MuiAccordionSummary-root, &.MuiAccordionSummary-root.Mui-expanded': {
     minHeight: 'auto',
+    '&:hover': {
+      cursor: hasMultipleAccountsConnected ? 'pointer' : 'default',
+    },
   },
-});
+}));
 
 export const StyledAccordionDetails = styled(AccordionDetails)({
   padding: 0,

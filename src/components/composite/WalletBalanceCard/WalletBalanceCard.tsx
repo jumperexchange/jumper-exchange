@@ -3,7 +3,7 @@ import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useMenuStore } from 'src/stores/menu';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
 import type { WalletBalanceCardProps } from './WalletBalanceCard.types';
-import type { FC } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import { useAccount } from '@lifi/wallet-management';
 import Divider from '@mui/material/Divider';
 import {
@@ -33,6 +33,11 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const account = accounts?.find(
     (account) => account.address === walletAddress,
   );
+  const hasMultipleAccountsConnected = useMemo(
+    () => accounts?.filter((account) => account.isConnected).length > 1,
+    [accounts],
+  );
+  const [isExpanded, setIsExpanded] = useState(!hasMultipleAccountsConnected);
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
@@ -40,9 +45,23 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
 
   const tokens = useFormatDisplayWalletTokens(data);
 
+  useEffect(() => {
+    if (hasMultipleAccountsConnected) {
+      return;
+    }
+    setIsExpanded(true);
+  }, [hasMultipleAccountsConnected]);
+
   if (!account) {
     return null;
   }
+
+  const handleToggleAccordion = () => {
+    if (!hasMultipleAccountsConnected) {
+      return;
+    }
+    setIsExpanded((prev) => !prev);
+  };
 
   const handleSelectToken = (token: MinimalToken) => {
     setFrom(token.address, token.chain.chainId);
@@ -54,8 +73,14 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   };
   return (
     <WalletBalanceCardContainer>
-      <StyledAccordion>
-        <StyledAccordionSummary>
+      <StyledAccordion
+        defaultExpanded={!hasMultipleAccountsConnected}
+        expanded={isExpanded}
+        onChange={handleToggleAccordion}
+      >
+        <StyledAccordionSummary
+          hasMultipleAccountsConnected={hasMultipleAccountsConnected}
+        >
           <WalletBalanceCardContentContainer>
             <WalletWithActions account={account} />
             <WalletTotalBalance
