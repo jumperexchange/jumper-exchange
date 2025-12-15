@@ -20,7 +20,8 @@ export const createStepSchema = (step: AvailableSteps) => {
         );
 
     case AvailableSteps.Email:
-      return z.email('Invalid email address')
+      return z
+        .email('Invalid email address')
         .refine(
           (val) => val.length <= 80,
           'Email must not exceed 80 characters',
@@ -29,7 +30,16 @@ export const createStepSchema = (step: AvailableSteps) => {
     case AvailableSteps.Wallet:
       return z
         .string()
-        .transform((val) => (val ? sanitizeAddress(val) : ''))
+        .transform((val) => {
+          if (!val) {
+            return '';
+          }
+          try {
+            return sanitizeAddress(val);
+          } catch (error) {
+            return '';
+          }
+        })
         .refine((val) => isValidAddress(val), 'Invalid wallet address');
 
     default:
