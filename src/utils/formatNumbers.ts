@@ -105,6 +105,7 @@ export const formatValueWithConfig = (
       formatOptions.currency = 'USD';
       formatOptions.notation = 'compact';
       formatOptions.compactDisplay = 'short';
+      formatOptions.trailingZeroDisplay = 'stripIfInteger';
       break;
 
     case 'compact':

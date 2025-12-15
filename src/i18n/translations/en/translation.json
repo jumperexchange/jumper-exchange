@@ -312,7 +312,8 @@
     "chains_one": "The chain you will earn from",
     "chains_other": "The chains you will earn from",
     "protocol": "The protocol you will earn from",
-    "noPositionsToManage": "You do not have any positions to manage"
+    "noPositionsToManage": "You do not have any positions to manage",
+    "capInDollar": "Available liquidity capacity of the market"
   },
   "labels": {
     "apy": "APY",
@@ -324,7 +325,8 @@
     "chains_one": "Chain",
     "chains_other": "Chains",
     "protocol": "Protocol",
-    "overview": "Overview"
+    "overview": "Overview",
+    "capInDollar": "Capacity"
   },
   "earn": {
     "top": {
