@@ -12,6 +12,8 @@ import { AppPaths } from 'src/const/urls';
 import getApiUrl from '@/utils/getApiUrl';
 
 export function FetchInterceptorProvider() {
+  console.log('4. FetchInterceptorProvider');
+
   const pathname = usePathname();
   const apiUrl = getApiUrl();
 
@@ -27,10 +29,7 @@ export function FetchInterceptorProvider() {
       const earnOpportunitySlug = sessionStorage.getItem(
         ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
       );
-      if (
-        request.url.startsWith(apiUrl) ||
-        request.url.includes('pipeline')
-      ) {
+      if (request.url.startsWith(apiUrl) || request.url.includes('pipeline')) {
         if (earnOpportunitySlug) {
           request.headers.append(
             'x-earn-opportunity-slug',
@@ -55,6 +54,8 @@ export function FetchInterceptorProvider() {
       interceptor.dispose();
     };
   }, [apiUrl]);
+
+  console.log('5. FetchInterceptorProvider done');
 
   return null;
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import type { TokenAmount } from '@lifi/sdk';
 import { getChains, getTokens as LifiGetTokens } from '@lifi/sdk';
 import type { Account } from '@lifi/wallet-management';

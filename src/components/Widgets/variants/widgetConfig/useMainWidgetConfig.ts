@@ -59,7 +59,6 @@ export function useMainWidgetConfig(
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
       ],
-      appearance: deps.theme.widgetTheme.config.appearance,
 
       // Theme configuration
       theme: {

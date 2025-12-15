@@ -1,5 +1,4 @@
 import config from '@/config/env-config';
-import { isProduction } from 'src/utils/isProduction';
 
 const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 

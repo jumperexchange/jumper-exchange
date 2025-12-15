@@ -1,3 +1,5 @@
+import config from '@/config/env-config';
+
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
@@ -1118,9 +1120,11 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
-    headers: {},
+    headers: {
+      Referer: config.NEXT_PUBLIC_SITE_URL,
+    },
     redirect: 'follow',
-    referrerPolicy: 'no-referrer',
+    referrerPolicy: 'strict-origin-when-cross-origin',
   };
 
   constructor(apiConfig: ApiConfig<SecurityDataType> = {}) {

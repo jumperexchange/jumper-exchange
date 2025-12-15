@@ -4,7 +4,7 @@ import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import FlareRoundedIcon from '@mui/icons-material/FlareRounded';
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import type { Appearance } from '@lifi/widget';
 import type { PartnerThemesData } from '@/types/strapi';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -66,6 +66,29 @@ export const useThemeModesMenuContent = () => {
     return entry?.[0];
   }, [configThemeStates]);
 
+  const displayablePartnerThemes = useMemo(() => {
+    return availablePartnerThemes.filter(
+      (theme) => theme.SelectableInMenu && theme.PartnerName,
+    );
+  }, [availablePartnerThemes]);
+
+  const activeConfigTheme = useMemo(() => {
+    return displayablePartnerThemes.find(
+      (theme) => theme.uid === activeConfigThemeUid,
+    );
+  }, [displayablePartnerThemes, activeConfigThemeUid]);
+
+  useEffect(() => {
+    if (!activeConfigTheme) {
+      return;
+    }
+    const themeMode = isDarkOrLightThemeMode(activeConfigTheme);
+
+    if (themeMode !== mode) {
+      setMode(themeMode);
+    }
+  }, [activeConfigTheme, mode, setMode]);
+
   const handleSwitchMode = useCallback(
     (newMode: Appearance) => {
       trackEvent({
@@ -120,12 +143,6 @@ export const useThemeModesMenuContent = () => {
       })),
     [t, activeConfigThemeUid, mode, handleSwitchMode],
   );
-
-  const displayablePartnerThemes = useMemo(() => {
-    return availablePartnerThemes.filter(
-      (theme) => theme.SelectableInMenu && theme.PartnerName,
-    );
-  }, [availablePartnerThemes]);
 
   const partnerThemeItems = useMemo<SubmenuItem[]>(
     () =>

@@ -15,6 +15,8 @@ interface GatekeeperData {
 }
 
 export const useGatekeeperStatus = (flag: string): GatekeeperData => {
+  console.log('7. useGatekeeperStatus');
+
   const accountAddress = useAccountAddress();
 
   const { data, isLoading, error } = useQuery({
@@ -44,6 +46,8 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
   }
 
   const hasAccess = Boolean(data?.[flag]);
+
+  console.log('8. useGatekeeperStatus done', hasAccess);
 
   return {
     status: hasAccess ? GatekeeperStatus.SUCCESS : GatekeeperStatus.NOT_ALLOWED,
