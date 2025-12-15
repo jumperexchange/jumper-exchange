@@ -55,18 +55,29 @@ export async function POST(request: NextRequest) {
       throw new Error('Invalid token: missing subscriber_id');
     }
 
-    const subscriptionCheckResponse = await fetch(
-      `${apiUrl}/publications/${publicationId}/subscriptions/by_subscriber_id/${decoded.subscriber_id}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-        },
-        signal: controller.signal,
+    const subscriptionCheckUrl = `${apiUrl}/publications/${publicationId}/subscriptions/by_subscriber_id/${decoded.subscriber_id}`;
+    console.log(
+      '[confirm-subscription] Checking subscription at:',
+      subscriptionCheckUrl,
+    );
+
+    const subscriptionCheckResponse = await fetch(subscriptionCheckUrl, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
       },
+      signal: controller.signal,
+      cache: 'no-store',
+    });
+
+    console.log(
+      '[confirm-subscription] Beehiiv response status:',
+      subscriptionCheckResponse.status,
     );
 
     if (!subscriptionCheckResponse.ok) {
+      const errorText = await subscriptionCheckResponse.text();
+      console.log('[confirm-subscription] Beehiiv error:', errorText);
       throw new Error('Subscription not found');
     }
 

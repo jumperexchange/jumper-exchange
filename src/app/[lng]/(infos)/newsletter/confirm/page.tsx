@@ -16,9 +16,16 @@ export default async function Page({ searchParams }: PageProps) {
     return notFound();
   }
   const { jwt_token } = await searchParams;
+  console.log('[NewsletterConfirmPage] jwt_token present:', !!jwt_token);
+
   const response = await postConfirmSubscription({ jwtToken: jwt_token ?? '' });
+  console.log('[NewsletterConfirmPage] response:', response);
 
   const isSubscriptionConfirmed = response.success;
+  console.log(
+    '[NewsletterConfirmPage] isSubscriptionConfirmed:',
+    isSubscriptionConfirmed,
+  );
 
   return (
     <NewsletterPageOverlayLayout

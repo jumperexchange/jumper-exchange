@@ -35,6 +35,10 @@ interface NewsletterWelcomeScreenProps {
 export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = ({
   confirmSubscription = false,
 }) => {
+  console.log(
+    '[NewsletterWelcomeScreen] confirmSubscription:',
+    confirmSubscription,
+  );
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
   const [email, setEmail] = useState<string>('');
