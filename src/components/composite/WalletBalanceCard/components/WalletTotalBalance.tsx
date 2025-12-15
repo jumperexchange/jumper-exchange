@@ -119,7 +119,10 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
         updatedAt={lastDate}
         timeToUpdate={0}
         isLoading={!isComplete}
-        onClick={refetch}
+        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+          event.stopPropagation();
+          refetch();
+        }}
       />
     </WalletBalanceSharedContainer>
   );

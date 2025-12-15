@@ -3,10 +3,16 @@ import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useMenuStore } from 'src/stores/menu';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
 import type { WalletBalanceCardProps } from './WalletBalanceCard.types';
-import type { FC } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import { useAccount } from '@lifi/wallet-management';
 import Divider from '@mui/material/Divider';
-import { WalletBalanceCardContainer } from './WalletBalanceCard.styles';
+import {
+  StyledAccordion,
+  StyledAccordionDetails,
+  StyledAccordionSummary,
+  WalletBalanceCardContainer,
+  WalletBalanceCardContentContainer,
+} from './WalletBalanceCard.styles';
 import Stack from '@mui/material/Stack';
 import generateKey from 'src/app/lib/generateKey';
 import { TokenListCardSkeleton } from '../TokenListCard/TokenListCardSkeleton';
@@ -27,6 +33,11 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const account = accounts?.find(
     (account) => account.address === walletAddress,
   );
+  const hasMultipleAccountsConnected = useMemo(
+    () => accounts?.filter((account) => account.isConnected).length > 1,
+    [accounts],
+  );
+  const [isExpanded, setIsExpanded] = useState(!hasMultipleAccountsConnected);
   const { isMainPaths } = useMainPaths();
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
@@ -34,9 +45,23 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
 
   const tokens = useFormatDisplayWalletTokens(data);
 
+  useEffect(() => {
+    if (hasMultipleAccountsConnected) {
+      return;
+    }
+    setIsExpanded(true);
+  }, [hasMultipleAccountsConnected]);
+
   if (!account) {
     return null;
   }
+
+  const handleToggleAccordion = () => {
+    if (!hasMultipleAccountsConnected) {
+      return;
+    }
+    setIsExpanded((prev) => !prev);
+  };
 
   const handleSelectToken = (token: MinimalToken) => {
     setFrom(token.address, token.chain.chainId);
@@ -48,32 +73,49 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   };
   return (
     <WalletBalanceCardContainer>
-      <WalletWithActions account={account} />
-      <WalletTotalBalance
-        refetch={refetch}
-        isFetching={isFetching}
-        isComplete={isSuccess}
-        account={account}
-      />
-      <Divider
-        sx={(theme) => ({
-          borderColor: (theme.vars || theme).palette.alpha100.main,
-        })}
-      />
-      <Stack>
-        {!isSuccess &&
-          tokens.length == 0 &&
-          Array.from({ length: 8 }).map(() => (
-            <TokenListCardSkeleton key={generateKey('token')} />
-          ))}
-        {tokens.map((token) => (
-          <TokenListCard
-            token={token}
-            key={`${token.chain.chainId}-${token.address}`}
-            onSelect={handleSelectToken}
-          />
-        ))}
-      </Stack>
+      <StyledAccordion
+        defaultExpanded={!hasMultipleAccountsConnected}
+        expanded={isExpanded}
+        onChange={handleToggleAccordion}
+      >
+        <StyledAccordionSummary
+          hasMultipleAccountsConnected={hasMultipleAccountsConnected}
+        >
+          <WalletBalanceCardContentContainer>
+            <WalletWithActions account={account} />
+            <WalletTotalBalance
+              refetch={refetch}
+              isFetching={isFetching}
+              isComplete={isSuccess}
+              account={account}
+            />
+          </WalletBalanceCardContentContainer>
+        </StyledAccordionSummary>
+        <StyledAccordionDetails>
+          <WalletBalanceCardContentContainer>
+            <Divider
+              sx={(theme) => ({
+                marginTop: theme.spacing(3),
+                borderColor: (theme.vars || theme).palette.alpha100.main,
+              })}
+            />
+            <Stack>
+              {!isSuccess &&
+                tokens.length == 0 &&
+                Array.from({ length: 8 }).map(() => (
+                  <TokenListCardSkeleton key={generateKey('token')} />
+                ))}
+              {tokens.map((token) => (
+                <TokenListCard
+                  token={token}
+                  key={`${token.chain.chainId}-${token.address}`}
+                  onSelect={handleSelectToken}
+                />
+              ))}
+            </Stack>
+          </WalletBalanceCardContentContainer>
+        </StyledAccordionDetails>
+      </StyledAccordion>
     </WalletBalanceCardContainer>
   );
 };

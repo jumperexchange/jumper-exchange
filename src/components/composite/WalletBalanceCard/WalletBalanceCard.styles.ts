@@ -1,3 +1,7 @@
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import type { AccordionSummaryProps } from '@mui/material/AccordionSummary';
+import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +17,10 @@ export const WalletBalanceCardContainer = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.cardBorderRadius,
   padding: theme.spacing(2),
+}));
+
+export const WalletBalanceCardContentContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(3),
@@ -77,3 +85,39 @@ export const WalletInfoContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(2),
 }));
+
+export const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  background: 'transparent',
+  border: 0,
+  boxShadow: 'none',
+  width: '100%',
+  padding: 0,
+  '&.MuiAccordion-root::before': {
+    display: 'none',
+  },
+}));
+
+interface StyledAccordionSummaryProps extends AccordionSummaryProps {
+  hasMultipleAccountsConnected: boolean;
+}
+
+export const StyledAccordionSummary = styled(AccordionSummary, {
+  shouldForwardProp: (prop) => prop !== 'hasMultipleAccountsConnected',
+})<StyledAccordionSummaryProps>(({ theme, hasMultipleAccountsConnected }) => ({
+  '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
+    {
+      padding: 0,
+      margin: 0,
+    },
+  '&.MuiAccordionSummary-root, &.MuiAccordionSummary-root.Mui-expanded': {
+    minHeight: 'auto',
+    '&:hover': {
+      cursor: hasMultipleAccountsConnected ? 'pointer' : 'default',
+    },
+  },
+}));
+
+export const StyledAccordionDetails = styled(AccordionDetails)({
+  padding: 0,
+  margin: 0,
+});
