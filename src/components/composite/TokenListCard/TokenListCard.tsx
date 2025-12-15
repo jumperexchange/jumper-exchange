@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import {
   EntityChainStackChainsPlacement,
   EntityChainStackVariant,
@@ -13,11 +14,9 @@ import {
   StyledAccordionSummary,
 } from './TokenListCard.styles';
 import { useTranslation } from 'react-i18next';
-import {
-  TokenListCardProps,
-  TokenListCardTokenSize,
-} from './TokenListCard.types';
-import { MinimalToken } from 'src/types/tokens';
+import type { TokenListCardProps } from './TokenListCard.types';
+import { TokenListCardTokenSize } from './TokenListCard.types';
+import type { MinimalToken } from 'src/types/tokens';
 import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 
 export const TokenListCard: FC<TokenListCardProps> = ({
@@ -53,6 +52,7 @@ export const TokenListCard: FC<TokenListCardProps> = ({
   const renderTokenStack = (
     token: MinimalToken,
     onClick: (token: MinimalToken) => void,
+    hideCursor: boolean,
   ) => {
     return (
       <Stack
@@ -60,7 +60,7 @@ export const TokenListCard: FC<TokenListCardProps> = ({
         spacing={2}
         useFlexGap
         justifyContent="space-between"
-        sx={{ width: '100%', cursor: 'pointer' }}
+        sx={{ width: '100%', cursor: hideCursor ? 'default' : 'pointer' }}
         onClick={() => onClick(token)}
         key={`${token.address}-${token.chain.chainId}`}
       >
@@ -95,10 +95,16 @@ export const TokenListCard: FC<TokenListCardProps> = ({
     <StyledAccordion
       expanded={isExpanded}
       disableGutters
-      sx={{ ':not(:last-child)': { paddingBottom: spacing } }}
+      sx={{
+        ':not(:last-child)': { paddingBottom: spacing },
+      }}
     >
       <StyledAccordionSummary>
-        {renderTokenStack(portfolioToken, handleMainTokenClick)}
+        {renderTokenStack(
+          portfolioToken,
+          handleMainTokenClick,
+          !hasMultipleChains && !onSelect,
+        )}
       </StyledAccordionSummary>
       <StyledAccordionDetails>
         <Stack direction="column" spacing={spacing} useFlexGap>
@@ -109,7 +115,7 @@ export const TokenListCard: FC<TokenListCardProps> = ({
             })}
           />
           {portfolioToken.relatedTokens?.map((token) =>
-            renderTokenStack(token, handleExpandedTokenClick),
+            renderTokenStack(token, handleExpandedTokenClick, !onSelect),
           )}
         </Stack>
       </StyledAccordionDetails>
