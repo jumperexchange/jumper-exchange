@@ -19,6 +19,7 @@ export interface WelcomeOverlayLayoutProps {
   overlayClassName?: string;
   overlayZIndex?: number;
   containerSx?: SxProps<Theme>;
+  contentSx?: SxProps<Theme>;
   leftSideContent?: ReactNode;
   fullWidthGlowEffect?: boolean;
 }

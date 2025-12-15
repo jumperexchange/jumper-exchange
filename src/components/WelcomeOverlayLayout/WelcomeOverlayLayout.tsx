@@ -19,6 +19,7 @@ export const WelcomeOverlayLayout = ({
   overlayClassName,
   overlayZIndex = 999,
   containerSx,
+  contentSx = {},
   leftSideContent,
   fullWidthGlowEffect = false,
 }: WelcomeOverlayLayoutProps) => {
@@ -74,17 +75,19 @@ export const WelcomeOverlayLayout = ({
         direction="row"
         justifyContent="center"
         alignItems="start"
-        paddingTop={3.5}
-        sx={{
-          height: !isOverlayOpen ? '100%' : 'auto',
-          overflow: {
-            xs: !isOverlayOpen ? 'scroll' : 'hidden',
-            sm: 'inherit',
+        sx={[
+          {
+            height: !isOverlayOpen ? '100%' : 'auto',
+            overflow: {
+              xs: !isOverlayOpen ? 'scroll' : 'hidden',
+              sm: 'inherit',
+            },
+            paddingTop: 3.5,
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'none',
           },
-          paddingTop: 3.5,
-          WebkitOverflowScrolling: 'touch',
-          overscrollBehavior: 'none',
-        }}
+          ...(Array.isArray(contentSx) ? contentSx : [contentSx]),
+        ]}
       >
         {leftSideContent}
         <GlowContainer

@@ -52,6 +52,9 @@ export const PortfolioPageOverlayLayout: FC<PropsWithChildren> = ({
           md: `calc(100dvh - ${HeaderHeight.MD}px)`,
         },
       }}
+      contentSx={{
+        paddingTop: portfolioWelcomeScreenClosed ? 0 : 3.5,
+      }}
       fullWidthGlowEffect
     >
       <PortfolioPageOverlayContentContainer
