@@ -5,6 +5,8 @@ import { NewsletterPageOverlayLayout } from '@/app/ui/newsletter/NewsletterPageO
 import { NewsletterWelcomeScreen } from '@/app/ui/newsletter/NewsletterWelcomeScreen';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   searchParams: Promise<{ jwt_token?: string }>;
 }
