@@ -83,6 +83,18 @@ interface Resources {
         forYouBasedOnActivity: 'Handpicked markets selected across {{totalMarkets}}+ based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
+      emptyList: {
+        noResults: {
+          clearFilters: 'Clear filters';
+          description: 'Unfortunately there are no results for your search, try clearing your filters.';
+          title: 'No results';
+        };
+        yourPositions: {
+          description: "Looks like you don't have any active positions in any market yet. Let's change that!";
+          title: 'No positions';
+          viewAllMarkets: 'View all markets';
+        };
+      };
       filter: {
         apy: 'APY';
         asset: 'Asset';
@@ -139,6 +151,7 @@ interface Resources {
         all: 'All';
         allMarkets: 'All markets';
         forYou: 'For you';
+        yourPositions: 'Your positions';
       };
     };
     error: {

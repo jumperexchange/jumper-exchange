@@ -1,14 +1,10 @@
 import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { formatDistanceToNow } from 'date-fns';
-import { useTranslation } from 'react-i18next';
 import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
-import type { HorizontalTabItem } from '../HorizontalTabs/HorizontalTabs';
-import { HorizontalTabs } from '../HorizontalTabs/HorizontalTabs';
-import { HorizontalTabSize } from '../HorizontalTabs/HorizontalTabs.style';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';
@@ -19,6 +15,8 @@ import {
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 import { EarnFilterBarContentAllDesktop } from './layouts/EarnFilterBarContentAllDesktop';
 import { EarnFilterBarContentAllTablet } from './layouts/EarnFilterBarContentAllTablet';
+import { EarnFilterViewTablet } from './layouts/EarnFilterViewTablet';
+import { EarnFilterViewDesktop } from './layouts/EarnFilterViewDesktop';
 
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
@@ -31,26 +29,8 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   setVariant,
   isLoading,
 }) => {
-  const { showForYou, toggleForYou, updatedAt } = useEarnFiltering();
+  const { showForYou, updatedAt } = useEarnFiltering();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const { t } = useTranslation();
-
-  const tabOptions: HorizontalTabItem[] = [
-    {
-      value: 'foryou',
-      label: t('earn.views.forYou'),
-      'data-testid': 'earn-filter-tab-foryou',
-    },
-    {
-      value: 'all',
-      label: t(`earn.views.${isTablet ? 'all' : 'allMarkets'}`),
-      'data-testid': 'earn-filter-tab-all',
-    },
-  ];
-
-  const handleTabChange = (_: React.SyntheticEvent, value: string) => {
-    toggleForYou();
-  };
 
   if (isLoading) {
     return <EarnFilterBarSkeleton />;
@@ -63,20 +43,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   return (
     <EarnFilterBarContainer>
       <EarnFilterBarHeaderContainer>
-        <HorizontalTabs
-          tabs={tabOptions}
-          value={showForYou ? 'foryou' : 'all'}
-          size={HorizontalTabSize.MD}
-          data-testid="earn-filter-tabs"
-          onChange={handleTabChange}
-          sx={(theme) => ({
-            flex: '0 0 auto',
-            backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
-            '.MuiTabs-list': {
-              gap: theme.spacing(0.5),
-            },
-          })}
-        />
+        {isTablet ? <EarnFilterViewTablet /> : <EarnFilterViewDesktop />}
         {!isTablet && updatedAt && (
           <Badge
             variant={BadgeVariant.Secondary}

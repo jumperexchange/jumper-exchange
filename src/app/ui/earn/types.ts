@@ -38,3 +38,9 @@ export type EarnOpportunityFilterUI =
     order?: OrderEnum;
     forYou?: boolean;
   };
+
+export enum EarnFilterTab {
+  FOR_YOU = 'foryou',
+  ALL = 'all',
+  YOUR_POSITIONS = 'yourpositions',
+}

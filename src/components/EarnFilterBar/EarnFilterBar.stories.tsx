@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
-import { SortByEnum, SortByOptions } from '../../app/ui/earn/types';
+import {
+  EarnFilterTab,
+  SortByEnum,
+  SortByOptions,
+} from '../../app/ui/earn/types';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
@@ -32,6 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 const mockContextValue = () => {
   const [showForYou, setShowForYou] = useState(false);
+  const [showYourPositions, setShowYourPositions] = useState(false);
   const [sortBy, setSortBy] = useState<SortByEnum>(SortByOptions.APY);
 
   return {
@@ -39,8 +44,23 @@ const mockContextValue = () => {
     setSortBy,
     filter: {},
     updateFilter: () => {},
+    clearFilters: () => {},
     showForYou,
-    toggleForYou: () => setShowForYou((current) => !current),
+    showYourPositions,
+    changeTab: (tab: EarnFilterTab) => {
+      if (tab === EarnFilterTab.FOR_YOU) {
+        setShowForYou(true);
+        setShowYourPositions(false);
+      } else if (tab === EarnFilterTab.YOUR_POSITIONS) {
+        setShowForYou(false);
+        setShowYourPositions(true);
+      } else if (tab === EarnFilterTab.ALL) {
+        setShowForYou(false);
+        setShowYourPositions(false);
+      } else {
+        throw new Error(`Invalid tab: ${tab}`);
+      }
+    },
     usedYourAddress: false,
     data: [],
     updatedAt: undefined,

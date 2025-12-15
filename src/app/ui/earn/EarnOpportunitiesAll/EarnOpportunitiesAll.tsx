@@ -15,11 +15,13 @@ import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
+import { EarnFilterTab } from '../types';
+import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
-  const { data, isLoading, isAllDataLoading, showForYou, toggleForYou } =
+  const { data, isLoading, isAllDataLoading, showForYou, changeTab } =
     useEarnFiltering();
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
@@ -35,9 +37,9 @@ const EarnOpportunitiesAllInner = () => {
   }, []);
 
   const handleNavigateToAllMarkets = useCallback(() => {
-    toggleForYou();
+    changeTab(EarnFilterTab.ALL);
     scrollToSectionTop();
-  }, [toggleForYou, scrollToSectionTop]);
+  }, [changeTab, scrollToSectionTop]);
 
   useEffect(() => {
     if (isLoading && !isInView) {
@@ -73,6 +75,7 @@ const EarnOpportunitiesAllInner = () => {
             isLoading={isLoading}
             variant={variant}
           />
+          <EarnEmptyList />
           {showForYou && (
             <EarnViewAllMarketsButton onClick={handleNavigateToAllMarkets} />
           )}

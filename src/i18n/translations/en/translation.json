@@ -358,7 +358,8 @@
     "views": {
       "forYou": "For you",
       "allMarkets": "All markets",
-      "all": "All"
+      "all": "All",
+      "yourPositions": "Your positions"
     },
     "relatedMarkets": {
       "title": "Related Markets"
@@ -391,6 +392,18 @@
     },
     "position": {
       "label": "Your position"
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "No positions",
+        "description": "Looks like you don't have any active positions in any market yet. Let's change that!",
+        "viewAllMarkets": "View all markets"
+      },
+      "noResults": {
+        "title": "No results",
+        "description": "Unfortunately there are no results for your search, try clearing your filters.",
+        "clearFilters": "Clear filters"
+      }
     }
   },
   "portfolio": {
