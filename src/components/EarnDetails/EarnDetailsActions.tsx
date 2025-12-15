@@ -1,16 +1,16 @@
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
-import { EarnDetailsActionsContainer } from './EarnDetails.styles';
-import { Tooltip } from '../core/Tooltip/Tooltip';
-import Box from '@mui/material/Box';
-import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProjectLikeDataFromEarnOpportunity';
+import {
+  EarnDetailsActionsButtonsContainer,
+  EarnDetailsActionsContainer,
+} from './EarnDetails.styles';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetZapInPoolBalance } from 'src/hooks/zaps/useGetZapInPoolBalance';
-import type { Hex } from 'viem';
-import { useAccount } from '@lifi/wallet-management';
 import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
+import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
+import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -20,53 +20,56 @@ export const EarnDetailsActions = ({
   earnOpportunity,
 }: EarnDetailsActionsProps) => {
   const { t } = useTranslation();
-  const { account } = useAccount();
-  const customInformation =
-    useProjectLikeDataFromEarnOpportunity(earnOpportunity);
-  const projectData = useMemo(() => {
-    return customInformation?.projectData;
-  }, [customInformation?.projectData]);
+  const accountAddress = useAccountAddress();
 
-  const { depositTokenData, refetchDepositToken, isLoadingDepositTokenData } =
-    useGetZapInPoolBalance(
-      account.address as Hex,
-      projectData.address as Hex,
-      projectData.chainId,
-    );
+  const {
+    data: positionsData,
+    isLoading: isLoadingPositions,
+    refetch: refetchPositions,
+  } = usePortfolioDeFiPositions({
+    addresses: accountAddress ? [accountAddress] : [],
+    filter: {
+      earn: earnOpportunity.slug,
+    },
+  });
 
-  const hasDeposited = true; //!isLoadingDepositTokenData && !!depositTokenData;
+  const depositAmountUSD = useMemo(() => {
+    if (isLoadingPositions || !positionsData || !positionsData.positions) {
+      return;
+    }
 
-  const withdrawButton = (
-    <WithdrawFlowButton
-      earnOpportunity={earnOpportunity}
-      size="large"
-      label={t('buttons.withdrawButtonLabel')}
-      refetchCallback={refetchDepositToken}
-      disabled={!hasDeposited}
-      data-testid="withdraw-button"
-      fullWidth
-    />
-  );
+    return positionsData.positions[0]?.netUsd;
+  }, [positionsData, isLoadingPositions]);
 
-  const withdrawSection = !hasDeposited ? (
-    <Tooltip title={t('tooltips.noPositionsToManage')} placement="bottom">
-      <Box sx={{ width: '100%' }}>{withdrawButton}</Box>
-    </Tooltip>
-  ) : (
-    withdrawButton
-  );
+  const hasDeposited = !!depositAmountUSD;
 
   return (
     <EarnDetailsActionsContainer>
-      <DepositFlowButton
-        earnOpportunity={earnOpportunity}
-        displayMode={DepositButtonDisplayMode.LabelOnly}
-        size="large"
-        label={t('buttons.depositButtonLabel')}
-        refetchCallback={refetchDepositToken}
-        data-testid="quick-deposit-button"
+      <EarnDetailsActionsPosition
+        token={earnOpportunity.lpToken}
+        amountUSD={depositAmountUSD}
       />
-      {withdrawSection}
+      <EarnDetailsActionsButtonsContainer>
+        <DepositFlowButton
+          earnOpportunity={earnOpportunity}
+          displayMode={DepositButtonDisplayMode.LabelOnly}
+          size="large"
+          label={t(hasDeposited ? 'buttons.deposit' : 'buttons.depositNow')}
+          refetchCallback={refetchPositions}
+          data-testid="quick-deposit-button"
+          sx={{ flex: 1 }}
+        />
+        {hasDeposited && (
+          <WithdrawFlowButton
+            earnOpportunity={earnOpportunity}
+            size="large"
+            label={t('buttons.withdrawButtonLabel')}
+            refetchCallback={refetchPositions}
+            data-testid="withdraw-button"
+            sx={{ flex: 1 }}
+          />
+        )}
+      </EarnDetailsActionsButtonsContainer>
     </EarnDetailsActionsContainer>
   );
 };

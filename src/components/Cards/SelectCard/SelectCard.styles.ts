@@ -1,13 +1,31 @@
-import Box, { BoxProps } from '@mui/material/Box';
+import type { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import InputBase, { InputBaseProps } from '@mui/material/InputBase';
-import InputLabel from '@mui/material/InputLabel';
+import type { InputBaseProps } from '@mui/material/InputBase';
+import InputBase from '@mui/material/InputBase';
+import InputLabel, { type InputLabelProps } from '@mui/material/InputLabel';
+import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
-import { styled, Theme } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 export enum SelectCardMode {
   Display = 'display',
   Input = 'input',
+}
+
+export type TypographyVariantKey = TypographyProps['variant'];
+
+type TypographyThemeKey = Exclude<TypographyVariantKey, 'inherit' | undefined>;
+
+const getTypographyStyles = (
+  theme: Theme,
+  variant: TypographyVariantKey,
+  fallback: TypographyThemeKey,
+) => theme.typography[variant === 'inherit' || !variant ? fallback : variant];
+
+interface TextVariantProps {
+  textVariant?: TypographyVariantKey;
 }
 
 interface SelectCardContainerProps extends BoxProps {
@@ -17,6 +35,7 @@ interface SelectCardContainerProps extends BoxProps {
 export const SelectCardContainer = styled(Card, {
   shouldForwardProp: (prop) => prop !== 'isClickable',
 })<SelectCardContainerProps>(({ theme, isClickable }) => ({
+  width: '100%',
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
   background: (theme.vars || theme).palette.surface2.main,
@@ -34,7 +53,7 @@ export const SelectCardContainer = styled(Card, {
 export const SelectCardContentContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
-  gap: theme.spacing(1.25),
+  gap: theme.spacing(2),
   alignItems: 'center',
 }));
 
@@ -42,18 +61,35 @@ export const SelectCardValueContainer = styled(Box)(() => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
+  overflow: 'hidden',
 }));
 
-export const SelectCardLabel = styled(InputLabel)(({ theme }) => ({
-  ...theme.typography.bodySmallStrong,
+export const SelectCardLabel = styled(InputLabel, {
+  shouldForwardProp: (prop) => prop !== 'textVariant',
+})<InputLabelProps & TextVariantProps>(({ theme, textVariant }) => ({
+  ...getTypographyStyles(theme, textVariant, 'bodySmallStrong'),
 }));
 
-export const SelectCardDescription = styled(Typography)(({ theme }) => ({
-  color: (theme.vars || theme).palette.alpha800.main,
+interface SelectCardDescriptionProps extends TypographyProps {
+  hideOverflow?: boolean;
+}
+
+export const SelectCardDescription = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'hideOverflow',
+})<SelectCardDescriptionProps>(({ theme, hideOverflow }) => ({
+  color: (theme.vars || theme).palette.text.secondary,
+  ...(hideOverflow && {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  }),
 }));
 
-export const getPlaceholderTextStyles = (theme: Theme) => ({
-  ...theme.typography.bodyLarge,
+export const getPlaceholderTextStyles = (
+  theme: Theme,
+  placeholderVariant?: TextVariantProps['textVariant'],
+) => ({
+  ...getTypographyStyles(theme, placeholderVariant, 'bodyXLarge'),
   fontWeight: '500',
   color: (theme.vars || theme).palette.alphaLight600.main,
   ...theme.applyStyles?.('light', {
@@ -63,37 +99,50 @@ export const getPlaceholderTextStyles = (theme: Theme) => ({
 
 interface SelectCardInputFieldProps extends InputBaseProps {
   isAmount?: boolean;
+  valueVariant?: TextVariantProps['textVariant'];
+  placeholderVariant?: TextVariantProps['textVariant'];
 }
 
 export const SelectCardInputField = styled(InputBase, {
-  shouldForwardProp: (prop) => prop !== 'isAmount',
-})<SelectCardInputFieldProps>(({ theme, isAmount }) => ({
-  '& input': {
-    ...theme.typography.bodyLargeStrong,
-    paddingTop: 0,
-    paddingBottom: theme.spacing(0.25),
-  },
-  '& input::placeholder': {
-    opacity: 1,
-    ...getPlaceholderTextStyles(theme),
-  },
-  ...(isAmount && {
-    '& input, & input::placeholder': {
-      fontSize: 24,
-      fontWeight: 700,
+  shouldForwardProp: (prop) =>
+    prop !== 'isAmount' &&
+    prop !== 'valueVariant' &&
+    prop !== 'placeholderVariant',
+})<SelectCardInputFieldProps>(
+  ({ theme, isAmount, valueVariant, placeholderVariant }) => ({
+    '& input': {
+      ...getTypographyStyles(theme, valueVariant, 'bodyLargeStrong'),
+      height: 'auto',
+      paddingTop: 0,
+      paddingBottom: theme.spacing(0.25),
     },
+    '& input::placeholder': {
+      opacity: 1,
+      ...getPlaceholderTextStyles(theme, placeholderVariant),
+    },
+    ...(isAmount && {
+      '& input, & input::placeholder': {
+        fontSize: 24,
+        fontWeight: 700,
+      },
+    }),
   }),
-}));
+);
 
-interface SelectCardDisplayValueProps {
+interface SelectCardDisplayValueProps extends TextVariantProps {
   showPlaceholder: boolean;
+  placeholderVariant?: TextVariantProps['textVariant'];
 }
 
 export const SelectCardDisplayValue = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'showPlaceholder',
-})<SelectCardDisplayValueProps>(({ theme, showPlaceholder }) => ({
-  ...theme.typography.bodyLargeStrong,
-  paddingTop: 0,
-  paddingBottom: theme.spacing(0.25),
-  ...(showPlaceholder && getPlaceholderTextStyles(theme)),
-}));
+  shouldForwardProp: (prop) =>
+    prop !== 'showPlaceholder' &&
+    prop !== 'textVariant' &&
+    prop !== 'placeholderVariant',
+})<SelectCardDisplayValueProps>(
+  ({ theme, showPlaceholder, textVariant, placeholderVariant }) => ({
+    ...getTypographyStyles(theme, textVariant, 'bodyXLargeStrong'),
+    paddingTop: 0,
+    ...(showPlaceholder && getPlaceholderTextStyles(theme, placeholderVariant)),
+  }),
+);

@@ -388,6 +388,9 @@
     "actions": {
       "viewAllMarkets": "View all markets",
       "seeMore": "see more"
+    },
+    "position": {
+      "label": "Your position"
     }
   },
   "portfolio": {
@@ -555,7 +558,9 @@
   "buttons": {
     "depositButtonLabel": "Quick deposit",
     "withdrawButtonLabel": "Withdraw",
-    "managePositionsButtonLabel": "Manage positions"
+    "managePositionsButtonLabel": "Manage positions",
+    "deposit": "Deposit",
+    "depositNow": "Deposit now"
   },
   "modal": {
     "perks": {
