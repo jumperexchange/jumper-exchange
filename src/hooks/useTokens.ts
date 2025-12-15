@@ -15,10 +15,6 @@ export const getTokensQuery = async () => {
   const tokens = await getTokens({
     chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
   });
-  console.log(
-    'tokens',
-    tokens.tokens[1].filter((token) => token.address.startsWith('0x00')),
-  );
   return tokens;
 };
 
