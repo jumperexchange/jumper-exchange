@@ -17,3 +17,14 @@ Sentry.init({
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: !isProduction,
 });
+
+// Log Sentry initialization status
+const client = Sentry.getClient();
+console.log('[Sentry Edge] Initialized:', {
+  enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN
+    ? '✓ DSN configured'
+    : '✗ DSN missing',
+  environment: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
+  isClientActive: !!client,
+});
