@@ -30,6 +30,8 @@ export const searchParamsParsers = {
   tags: parseAsArrayOf(parseAsString),
   minAPY: parseAsFloat,
   maxAPY: parseAsFloat,
+  minTVL: parseAsFloat,
+  maxTVL: parseAsFloat,
 };
 
 export const extractFilteringParams = (
@@ -56,12 +58,22 @@ export const extractFilteringParams = (
   ]);
   const allAPY = fromPairs(stepAPYPairs);
 
+  let formattedTVL = map(data, 'latest.tvlUsd').filter(Boolean);
+  formattedTVL = uniq(formattedTVL).filter(Boolean);
+  formattedTVL = sortBy(formattedTVL);
+  const stepTVLPairs = map(formattedTVL, (tvl, index) => [
+    index / (formattedTVL.length - 1),
+    tvl,
+  ]);
+  const allTVL = fromPairs(stepTVLPairs);
+
   return {
     allChains,
     allProtocols,
     allAssets,
     allTags,
     allAPY,
+    allTVL,
   };
 };
 
@@ -96,6 +108,10 @@ export const sanitizeFilter = (
   const apyMin = Math.min(...validAPY, 0);
   const apyMax = Math.max(...validAPY, 0);
 
+  const validTVL = new Set(Object.values(stats.allTVL ?? []).map((tvl) => tvl));
+  const tvlMin = Math.min(...validTVL, 0);
+  const tvlMax = Math.max(...validTVL, 0);
+
   return {
     ...filter,
     chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
@@ -109,6 +125,14 @@ export const sanitizeFilter = (
     maxAPY:
       filter.maxAPY !== undefined
         ? Math.max(Math.min(filter.maxAPY, apyMax), apyMin)
+        : null,
+    minTVL:
+      filter.minTVL !== undefined
+        ? Math.max(Math.min(filter.minTVL, tvlMax), tvlMin)
+        : null,
+    maxTVL:
+      filter.maxTVL !== undefined
+        ? Math.max(Math.min(filter.maxTVL, tvlMax), tvlMin)
         : null,
   };
 };

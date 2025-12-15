@@ -64,6 +64,7 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   allAssets: [],
   allTags: [],
   allAPY: {},
+  allTVL: {},
   data: [],
   updatedAt: undefined,
   isLoading: false,
@@ -210,6 +211,8 @@ export const EarnFilteringProvider = ({
       assets: null,
       minAPY: null,
       maxAPY: null,
+      minTVL: null,
+      maxTVL: null,
     });
   }, [updateFilter]);
 

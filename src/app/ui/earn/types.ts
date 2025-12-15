@@ -25,6 +25,7 @@ export interface EarnFilteringParams {
   allAssets: Token[];
   allTags: string[];
   allAPY: Record<number, number>; // histogram of apy
+  allTVL: Record<number, number>; // histogram of tvl
 }
 
 export type EarnOpportunityFilterWithoutSortByAndOrder = Omit<
