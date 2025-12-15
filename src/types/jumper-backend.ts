@@ -910,6 +910,11 @@ export interface TokenBalances {
   updatedAt: string;
 }
 
+export interface MetadataWithUpdatedAt {
+  /** @format date-time */
+  updatedAt: string;
+}
+
 export interface DefiToken {
   name: string;
   symbol: string;
@@ -947,7 +952,8 @@ export interface DefiPosition {
 }
 
 export interface WalletPositions {
-  positions: DefiPosition[];
+  meta: MetadataWithUpdatedAt;
+  data: DefiPosition[];
 }
 
 export interface TaskVerificationDto {
@@ -1843,6 +1849,24 @@ export class JumperBackend<
         method: 'GET',
         query: query,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerInvalidatePortfolioV1
+     * @summary Invalidate portfolio cache for an address (dev only)
+     * @request DELETE:/v1/portfolio/invalidate/{address}
+     */
+    portfolioControllerInvalidatePortfolioV1: (
+      address: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/v1/portfolio/invalidate/${address}`,
+        method: 'DELETE',
         ...params,
       }),
 

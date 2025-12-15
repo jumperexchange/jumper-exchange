@@ -54,7 +54,7 @@ export const PortfolioHeaderBreakdown = () => {
   }, [formattedTokens, portfolioWelcomeScreenClosed]);
 
   const formattedPositions = useFormatDisplayDeFiPositions(
-    allPositions?.positions,
+    allPositions?.data,
     (position) => position.protocol.name,
   );
 

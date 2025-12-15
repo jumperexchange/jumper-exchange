@@ -128,7 +128,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
   const stats = useMemo((): PortfolioDeFiPositionsFilteringParams => {
     if (
       !allPositionsNoFilter.data ||
-      allPositionsNoFilter.data.positions.length === 0
+      allPositionsNoFilter.data.data.length === 0
     ) {
       return EMPTY_DEFI_POSITIONS_FILTERING_PARAMS;
     }
@@ -197,14 +197,14 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     filter,
     updateFilter,
     clearFilters,
-    data: allPositions.data?.positions ?? [],
+    data: allPositions.data?.data ?? [],
     isLoading:
       allPositionsNoFilter.isLoading ||
       allPositions.isLoading ||
       connectedAddresses.length === 0,
     isAllDataEmpty:
-      !allPositionsNoFilter.data?.positions ||
-      allPositionsNoFilter.data.positions.length === 0,
+      !allPositionsNoFilter.data?.data ||
+      allPositionsNoFilter.data.data.length === 0,
     error: allPositionsNoFilter.error ?? null,
     ...stats,
   };
