@@ -12,6 +12,7 @@ export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const LINK3_URL = 'https://link3.to/jumperexchange';
 export const TELEGRAM_URL = 'https://t.me/officialjumperexchange';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
+export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_GAS_PATH = '/gas';
 export const JUMPER_LEARN_PATH = '/learn';
@@ -29,6 +30,7 @@ export const JUMPER_LEADERBOARD_PATH = '/leaderboard';
 export const JUMPER_EARN_PATH = '/earn';
 export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
+export const JUMPER_NEWSLETTER_PATH = '/newsletter';
 
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
@@ -65,4 +67,5 @@ export enum AppPaths {
   Earn = JUMPER_EARN_PATH,
   PrivacyPolicy = JUMPER_PRIVACY_POLICY_PATH,
   Portfolio = JUMPER_PORTFOLIO_PATH,
+  Newsletter = JUMPER_NEWSLETTER_PATH,
 }

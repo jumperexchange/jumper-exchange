@@ -14,6 +14,7 @@ import {
   DISCORD_URL,
   LINK3_URL,
   TELEGRAM_URL,
+  TERMS_CONDITIONS_URL,
   X_URL,
 } from '@/const/urls';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -32,6 +33,7 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   isEarnFeatureEnabled,
+  isNewsletterFeatureEnabled,
   isPortfolioFeatureEnabled,
 } from '@/app/lib/getFeatureFlag';
 import { Badge } from '@/components/Badge/Badge';
@@ -64,6 +66,7 @@ export interface FooterLink {
   label: string;
   link: MenuLink;
   onClick: () => void;
+  external?: boolean;
 }
 
 interface TrackPageloadParams {
@@ -218,6 +221,24 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handleTermsConditionsClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-terms-conditions-link',
+      action: TrackingAction.ClickJumperTermsConditionsLink,
+      dataMenuParam: 'jumper_terms_conditions',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
+  const handleNewsletterClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-newsletter-link',
+      action: TrackingAction.ClickJumperNewsletterLink,
+      dataMenuParam: 'jumper_newsletter',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   return {
     handleExchangeClick,
     handleMissionsClick,
@@ -231,6 +252,8 @@ export const useMenuActions = () => {
     handleLanguageClick,
     handleResourcesClick,
     handlePrivacyPolicyClick,
+    handleTermsConditionsClick,
+    handleNewsletterClick,
   };
 };
 
@@ -320,18 +343,42 @@ export const useSocialLinks = () => {
 
 export const useFooterLinks = () => {
   const { t } = useTranslation();
-  const { handlePrivacyPolicyClick } = useMenuActions();
+  const isNewsletterEnabled = isNewsletterFeatureEnabled();
+  const {
+    handlePrivacyPolicyClick,
+    handleTermsConditionsClick,
+    handleNewsletterClick,
+  } = useMenuActions();
 
-  const footerLinks = useMemo(
-    () => [
+  const footerLinks = useMemo(() => {
+    const _footerLinks: FooterLink[] = [
+      {
+        label: t('navbar.navbarMenu.termsConditions'),
+        link: { url: TERMS_CONDITIONS_URL },
+        onClick: handleTermsConditionsClick,
+        external: true,
+      },
       {
         label: t('navbar.navbarMenu.privacyPolicy'),
         link: { url: AppPaths.PrivacyPolicy },
         onClick: handlePrivacyPolicyClick,
       },
-    ],
-    [t, handlePrivacyPolicyClick],
-  );
+    ];
+    if (isNewsletterEnabled) {
+      _footerLinks.push({
+        label: t('navbar.navbarMenu.newsletter'),
+        link: { url: AppPaths.Newsletter },
+        onClick: handleNewsletterClick,
+      });
+    }
+    return _footerLinks;
+  }, [
+    isNewsletterEnabled,
+    t,
+    handlePrivacyPolicyClick,
+    handleTermsConditionsClick,
+    handleNewsletterClick,
+  ]);
 
   return { footerLinks };
 };

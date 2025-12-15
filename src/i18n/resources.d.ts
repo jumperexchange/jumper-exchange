@@ -335,11 +335,13 @@ interface Resources {
         brandAssets: 'Brand Assets';
         developers: 'Developers';
         learn: 'Learn';
+        newsletter: 'Newsletter';
         privacyPolicy: 'Privacy Policy';
         profile: 'Profile';
         resources: 'Resources';
         scan: 'Scan';
         support: 'Support';
+        termsConditions: 'Terms & Conditions';
         theme: 'Theme';
       };
       pass: 'Pass';
@@ -390,6 +392,23 @@ interface Resources {
         cta: 'Get started';
         subtitle: '<0>4x audited</0> multi-chain liquidity aggregator';
         title: 'Find the best route';
+      };
+    };
+    newsletter: {
+      welcome: {
+        emailPlaceholder: 'Enter your email';
+        error: {
+          email: 'This is not a valid email address';
+          emailLength: 'Email must not exceed 80 characters';
+          required: 'This field is required';
+          unknown: 'An unknown error occurred. Please try again.';
+        };
+        hint: "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at any time from the link in the email footer.";
+        pending: 'Pending subscription confirmation...';
+        subscribe: 'Subscribe';
+        subtitle: 'Get the latest news and updates directly from <strong>Jumper.</strong>';
+        success: 'Newsletter subscription successful!';
+        title: 'Make. The. Jump.';
       };
     };
     portfolio: {

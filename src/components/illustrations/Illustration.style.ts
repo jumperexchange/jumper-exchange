@@ -27,5 +27,14 @@ export const IllustrationWrapper = styled('div')(({ theme }) => {
     '.secondary-badge-fg': {
       fill: (theme.vars || theme).palette.badgeAccent1MutedFg,
     },
+    '.main-logo-color': {
+      fill: (theme.vars || theme).palette.accent1Alt.main,
+      ...theme.applyStyles('light', {
+        fill: (theme.vars || theme).palette.accent1.main,
+      }),
+    },
+    '.sub-logo-color': {
+      fill: (theme.vars || theme).palette.accent2.main,
+    },
   };
 });
