@@ -8,7 +8,6 @@ import {
   ProtocolCardHeaderBadgeContainer,
   ProtocolCardHeaderContainer,
   ProtocolCardHeaderContentContainer,
-  ProtocolCardLink,
   ProtocolCardProtocolAvatar,
   ProtocolCardProtocolTitle,
   ProtocolCardTagsContainer,
@@ -152,12 +151,6 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
             text={description}
             onSeeMoreClick={() => setIsDescriptionModalOpen(true)}
           />
-          {protocol?.name && url && (
-            <ProtocolCardLink target="_blank" href={url}>
-              {t('links.discover', { name: capitalizeString(protocol?.name) })}
-              <ArrowForwardIcon />
-            </ProtocolCardLink>
-          )}
         </ProtocolCardContentContainer>
       </ProtocolCardContainer>
       <ProtocolCardDescriptionModal

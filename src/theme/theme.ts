@@ -705,8 +705,8 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
       headerXSmall: {
         fontStyle: 'normal',
         fontWeight: 700,
-        fontSize: '18px',
-        lineHeight: '24px',
+        fontSize: '16px',
+        lineHeight: '20px',
         letterSpacing: 0,
       },
       bodyXLargeStrong: {

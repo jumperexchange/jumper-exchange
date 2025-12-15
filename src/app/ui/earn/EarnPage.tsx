@@ -4,9 +4,10 @@ import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
+import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
+import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
 import { AppPaths } from 'src/const/urls';
 import { GoBack } from 'src/components/composite/GoBack/GoBack';
-import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
@@ -41,12 +42,15 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
 
   console.log('29. EarnPage relatedMarkets', relatedMarketsData);
 
+  const { tags, protocol } = opportunity.data;
+
   return (
     <>
       <EarnDetailsSection>
         <GoBack path={AppPaths.Earn} dataTestId="earn-back-button" />
         <EarnDetailsIntro data={opportunity.data} isLoading={false} />
         <EarnDetailsAnalytics slug={slug} />
+        <EarnDetailsRisks protocol={protocol} tags={tags} />
       </EarnDetailsSection>
       <EarnDetailsSection>
         <EarnRelatedMarkets relatedMarkets={relatedMarketsData} />

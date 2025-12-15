@@ -1,8 +1,10 @@
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import { ButtonPrimary, ButtonProps, ButtonTransparent } from '../Button';
-import Skeleton from '@mui/material/Skeleton';
+
+import type { ButtonProps } from '../Button';
+import { ButtonPrimary, ButtonTransparent } from '../Button';
 
 export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
