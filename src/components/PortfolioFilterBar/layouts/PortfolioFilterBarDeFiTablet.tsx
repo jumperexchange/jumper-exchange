@@ -126,7 +126,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         searchPlaceholder: t('portfolio.filter.search', {
           filterBy: t('portfolio.filter.chain').toLowerCase(),
         }),
-        testId: 'portfolio-defi-filter-chain-select-mobile',
+        testId: 'portfolio-filter-chain-select-mobile',
       }),
     );
   }
@@ -144,7 +144,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         searchPlaceholder: t('portfolio.filter.search', {
           filterBy: t('portfolio.filter.protocol').toLowerCase(),
         }),
-        testId: 'portfolio-defi-filter-protocol-select-mobile',
+        testId: 'portfolio-filter-protocol-select-mobile',
       }),
     );
   }
@@ -162,7 +162,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         searchPlaceholder: t('portfolio.filter.search', {
           filterBy: t('portfolio.filter.type').toLowerCase(),
         }),
-        testId: 'portfolio-defi-filter-type-select-mobile',
+        testId: 'portfolio-filter-type-select-mobile',
       }),
     );
   }
@@ -180,7 +180,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         searchPlaceholder: t('portfolio.filter.search', {
           filterBy: t('portfolio.filter.asset').toLowerCase(),
         }),
-        testId: 'portfolio-defi-filter-asset-select-mobile',
+        testId: 'portfolio-filter-asset-select-mobile',
       }),
     );
   }
@@ -199,7 +199,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         onChange: (value) => setPendingValue('defiValue', value),
         min: valueRangeMin,
         max: valueRangeMax,
-        testId: 'portfolio-defi-filter-value-select-mobile',
+        testId: 'portfolio-filter-value-select-mobile',
       }),
     );
   }
@@ -235,7 +235,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         appliedFiltersCount={filtersCount}
         disableApply={!hasPendingFiltersApplied}
         disableClear={!hasPendingFiltersApplied}
-        testId="portfolio-defi-filters-mobile-drawer"
+        testId="portfolio-filters-mobile-drawer"
         defaultTriggerSx={{ justifyContent: 'flex-end' }}
       />
     </PortfolioAnimatedLayoutContainer>
