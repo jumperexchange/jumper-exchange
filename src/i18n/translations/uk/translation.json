@@ -41,7 +41,9 @@
       "support": "Підтримка",
       "resources": "",
       "profile": "Профіль Jumper",
-      "privacyPolicy": ""
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
     },
     "walletMenu": {
       "disconnect": "Від'єднатись",
@@ -310,7 +312,8 @@
     "chains_one": "",
     "chains_other": "",
     "protocol": "",
-    "noPositionsToManage": ""
+    "noPositionsToManage": "",
+    "capInDollar": ""
   },
   "labels": {
     "apy": "",
@@ -322,7 +325,8 @@
     "chains_one": "",
     "chains_other": "",
     "protocol": "",
-    "overview": ""
+    "overview": "",
+    "capInDollar": ""
   },
   "earn": {
     "top": {
@@ -356,10 +360,30 @@
     "views": {
       "forYou": "",
       "allMarkets": "",
-      "all": ""
+      "all": "",
+      "yourPositions": ""
     },
     "relatedMarkets": {
       "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
     },
     "overview": {
       "updated": ""
@@ -367,6 +391,21 @@
     "actions": {
       "viewAllMarkets": "",
       "seeMore": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
     }
   },
   "portfolio": {
@@ -459,6 +498,23 @@
       "asset": ""
     }
   },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
+    }
+  },
   "widget": {
     "depositCard": {
       "apy": "",
@@ -517,7 +573,9 @@
   "buttons": {
     "depositButtonLabel": "",
     "withdrawButtonLabel": "",
-    "managePositionsButtonLabel": ""
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
   },
   "modal": {
     "perks": {
