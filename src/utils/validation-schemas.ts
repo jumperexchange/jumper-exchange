@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import {
-  sanitizeAddress,
+  sanitizeAddressOrEmpty,
   sanitizeNumeric,
 } from './image-generation/sanitizeParams';
 import { isValidAddress, isValidTransaction } from './regex-patterns';
@@ -41,7 +41,7 @@ export const amountSchema = z
  */
 const baseAddressSchema = z
   .string()
-  .transform((val) => sanitizeAddress(val))
+  .transform((val) => sanitizeAddressOrEmpty(val))
   .refine((val) => {
     return isValidAddress(val);
   }, 'Invalid address format. Must be either an Ethereum address (0x...), a Solana address (base58), a UTXO address (1..., 3..., or bc1...), or a SUI address');
@@ -106,10 +106,10 @@ export function slugify(text: string): string {
  */
 export const walletAddressSchema = z
   .string()
-  .transform((val) => sanitizeAddress(val))
+  .transform((val) => sanitizeAddressOrEmpty(val))
   .refine((val) => val.length > 0, {
-      error: 'Wallet address cannot be empty'
-});
+    error: 'Wallet address cannot be empty',
+  });
 
 /**
  * Schema for quest slugs (alphanumeric, hyphens, and underscores)
@@ -134,7 +134,8 @@ export const transactionHashSchema = z
       return isValidTransaction(val);
     },
     {
-        error: 'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a UTXO transaction hash (64 hex chars), a Solana transaction signature, or a SUI transaction digest'
+      error:
+        'Invalid transaction hash format. Must be either an Ethereum transaction hash (0x...), a UTXO transaction hash (64 hex chars), a Solana transaction signature, or a SUI transaction digest',
     },
   );
 
@@ -181,8 +182,8 @@ export const scanParamsSchema = z.object({
         return scanAddressSchema.safeParse(value).success;
       },
       {
-          error: 'Invalid scan segments format'
-    },
+        error: 'Invalid scan segments format',
+      },
     ),
 });
 
@@ -198,7 +199,8 @@ export const bridgeSegmentsSchema = z
       return parts.length === 2;
     },
     {
-        error: 'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken'
+      error:
+        'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken',
     },
   )
   .transform((val) => {
@@ -217,14 +219,14 @@ export const bridgeSegmentsSchema = z
     (val) =>
       isAlphanumeric(val.sourceToken) && isAlphanumeric(val.destinationToken),
     {
-        error: 'Token names must contain only alphanumeric characters'
+      error: 'Token names must contain only alphanumeric characters',
     },
   )
   .refine(
     (val) =>
       isAlphanumeric(val.sourceChain) && isAlphanumeric(val.destinationChain),
     {
-        error: 'Chain names must contain only alphanumeric characters'
+      error: 'Chain names must contain only alphanumeric characters',
     },
   );
 
