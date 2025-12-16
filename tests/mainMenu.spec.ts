@@ -256,16 +256,16 @@ test.describe('Main Menu flows', () => {
     },
   );
 
-  test('Should be able to navigate to the Terms & Conditions page', async ({
-    page,
-    context,
-  }) => {
-    await openOrCloseMainMenu(page);
-    await itemInNavigation(page, 'Terms & Conditions');
-    await openNewTabAndVerifyUrl(context, values.termsConditionsURL);
-  });
+  test(
+    qase(54, 'Should be able to navigate to the Terms & Conditions page'),
+    async ({ page, context }) => {
+      await openOrCloseMainMenu(page);
+      await itemInNavigation(page, 'Terms & Conditions');
+      await openNewTabAndVerifyUrl(context, values.termsConditionsURL);
+    },
+  );
 
-  test('Should be able to open newsletter page', async ({ page }) => {
+  test(qase(55, 'Should be able to open newsletter page'), async ({ page }) => {
     await openOrCloseMainMenu(page);
     await itemInNavigation(page, 'Newsletter');
     await expect(page).toHaveURL(values.newsletterPageURL);
