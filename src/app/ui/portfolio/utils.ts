@@ -19,6 +19,7 @@ import type {
 import type { Account } from '@lifi/wallet-management';
 import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
 import { OrderOptions, SortByOptions } from './types';
+import { DEFAULT_DEFI_POSITIONS_MIN_VALUE } from './constants';
 
 export type SortAccessors<T> = Record<SortByEnum, (item: T) => string | number>;
 
@@ -310,3 +311,11 @@ export const sanitizeDeFiPositionsFilter = (
         : null,
   };
 };
+
+export const getEffectiveValueRange = (
+  allValueRange: { min: number; max: number },
+  defaultMinValue: number = DEFAULT_DEFI_POSITIONS_MIN_VALUE,
+) => ({
+  min: Math.max(defaultMinValue, allValueRange.min),
+  max: Math.max(defaultMinValue, allValueRange.max),
+});

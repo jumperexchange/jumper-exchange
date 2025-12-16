@@ -26,6 +26,7 @@ import { EMPTY_DEFI_POSITIONS_FILTERING_PARAMS } from './constants';
 import {
   deFiPositionsSearchParamsParsers,
   extractDeFiPositionsFilteringParams,
+  getEffectiveValueRange,
   removeNullValuesFromFilter,
   sanitizeDeFiPositionsFilter,
 } from './utils';
@@ -143,10 +144,17 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     prevStatsRef.current = stats;
 
     const sanitized = sanitizeDeFiPositionsFilter(filter, stats);
+    const effectiveValueRange = getEffectiveValueRange(stats.allValueRange);
 
-    if (!isEqual(sanitized, filter)) {
-      setFilter(removeNullValuesFromFilter(sanitized));
-      setSearchParamsState(sanitized);
+    // Apply default min value if not set
+    const withDefaults = {
+      ...sanitized,
+      defiMinValue: sanitized.defiMinValue ?? effectiveValueRange.min,
+    };
+
+    if (!isEqual(withDefaults, filter)) {
+      setFilter(removeNullValuesFromFilter(withDefaults));
+      setSearchParamsState(withDefaults);
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
 
