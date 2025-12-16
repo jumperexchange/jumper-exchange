@@ -22,10 +22,9 @@ export const PortfolioPageOverlayLayout: FC<PropsWithChildren> = ({
     ]);
 
   useEffect(() => {
-    // @TODO Uncomment this after gatekeeper is disabled
-    // if (account?.address) {
-    //   return;
-    // }
+    if (account?.address) {
+      return;
+    }
     setPortfolioWelcomeScreenClosed(false);
   }, [account?.address, setPortfolioWelcomeScreenClosed]);
 

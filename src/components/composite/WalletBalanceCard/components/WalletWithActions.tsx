@@ -32,12 +32,16 @@ import {
 } from '../WalletBalanceCard.styles';
 import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
 import { useDominantColorFromImage } from '@/hooks/images/useGetColorsFromImage';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
 interface WalletWithActionsProps {
   account: Account;
 }
 export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
   const { t } = useTranslation();
+  const setPortfolioWelcomeScreenClosed = useSettingsStore(
+    (state) => state.setPortfolioWelcomeScreenClosed,
+  );
   const disconnectWallet = useAccountDisconnect();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
@@ -137,6 +141,7 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
 
     disconnectWallet(account).then(() => {
       deleteCacheTokenAddress(walletAddress);
+      setPortfolioWelcomeScreenClosed(false);
     });
 
     trackEvent({
