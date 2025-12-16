@@ -12,9 +12,9 @@ export const useTokensLastState = () => {
       .filter((account) => account.isConnected && account.address)
       .map((account) => getLast(account.address!));
 
-    sortBy(states, 'date').reverse();
+    const sortedStates = sortBy(states, 'date').reverse();
 
-    return states[0];
+    return sortedStates[0];
   }, [accounts, getLast]);
 
   return lastState;
