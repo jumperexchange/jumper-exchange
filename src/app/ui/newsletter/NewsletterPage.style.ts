@@ -35,8 +35,8 @@ export const NewsletterForm = styled(Box)(({ theme }) => ({
 }));
 
 export const NewsletterFormGroup = styled(FormGroup, {
-  shouldForwardProp: (prop) => prop !== 'error',
-})<{ error?: boolean }>(({ theme, error }) => ({
+  shouldForwardProp: (prop) => prop !== 'error' && prop !== 'disabled',
+})<{ error?: boolean; disabled?: boolean }>(({ theme }) => ({
   width: '100%',
   boxShadow: theme.shadows[2],
   verticalAlign: 'middle',
@@ -83,6 +83,15 @@ export const NewsletterFormGroup = styled(FormGroup, {
         borderColor: (theme.vars || theme).palette.grey[100],
         '&:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
           borderColor: (theme.vars || theme).palette.borderActive,
+        },
+      },
+    },
+    {
+      props: { disabled: true },
+      style: {
+        '&, &:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
+          borderColor: (theme.vars || theme).palette.grey[100],
+          backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
         },
       },
     },
