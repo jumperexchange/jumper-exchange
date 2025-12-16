@@ -6,6 +6,8 @@
   "telegramURL": "https://t.me/officialjumperexchange",
   "link3URL": "https://link3.to/jumperexchange",
   "privacyPolicyURL": "/privacy-policy",
+  "termsConditionsURL": "https://li.fi/legal/terms-and-conditions/",
+  "newsletterPageURL": "/newsletter",
   "scanQRCodeTitle": "Scan this QR Code with your phone",
   "exploreFilamentURL": "/quests/rewards-from-filament",
   "aerodromeQuestsURL": "/quests/rewards-from-aerodrome-on-base",
