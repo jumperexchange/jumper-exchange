@@ -106,7 +106,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
 
   const categories: CategoryConfig[] = [];
 
-  if (walletOptions.length > 0) {
+  if (walletOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'wallet',
@@ -124,7 +124,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     );
   }
 
-  if (chainOptions.length > 0) {
+  if (chainOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'chain',
@@ -142,7 +142,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     );
   }
 
-  if (assetOptions.length > 0) {
+  if (assetOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'asset',
@@ -179,7 +179,7 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
     );
   }
 
-  if (sortByOptions.length > 0) {
+  if (sortByOptions.length > 1) {
     categories.push(
       createSingleSelectCategory<SortByEnum>({
         id: 'sortBy',

@@ -1,10 +1,10 @@
 import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
 import { useEarnFilterBar } from '../hooks';
-import { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
+import type { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
 import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hooks';
 import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
-import { SortByEnum } from 'src/app/ui/earn/types';
+import type { SortByEnum } from 'src/app/ui/earn/types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
@@ -111,7 +111,7 @@ export const EarnFilterBarContentAllTablet = () => {
 
   const categories: CategoryConfig[] = [];
 
-  if (chainOptions.length > 0) {
+  if (chainOptions.length > 1) {
     categories.push(
       createMultiSelectCategory<string>({
         id: 'chain',
@@ -128,7 +128,7 @@ export const EarnFilterBarContentAllTablet = () => {
       }),
     );
   }
-  if (protocolOptions.length > 0) {
+  if (protocolOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'protocol',
@@ -145,7 +145,7 @@ export const EarnFilterBarContentAllTablet = () => {
       }),
     );
   }
-  if (tagOptions.length > 0) {
+  if (tagOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'tag',
@@ -162,7 +162,7 @@ export const EarnFilterBarContentAllTablet = () => {
       }),
     );
   }
-  if (assetOptions.length > 0) {
+  if (assetOptions.length > 1) {
     categories.push(
       createMultiSelectCategory({
         id: 'asset',
@@ -195,7 +195,7 @@ export const EarnFilterBarContentAllTablet = () => {
     );
   }
 
-  if (sortByOptions.length > 0) {
+  if (sortByOptions.length > 1) {
     categories.push(
       createSingleSelectCategory<SortByEnum>({
         id: 'sortBy',

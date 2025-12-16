@@ -28,6 +28,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   isFetching,
   isSuccess,
   data,
+  'data-testid': dataTestId,
 }) => {
   const { accounts } = useAccount();
   const account = accounts?.find(
@@ -72,7 +73,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
     }
   };
   return (
-    <WalletBalanceCardContainer>
+    <WalletBalanceCardContainer data-testid={dataTestId}>
       <StyledAccordion
         defaultExpanded={!hasMultipleAccountsConnected}
         expanded={isExpanded}

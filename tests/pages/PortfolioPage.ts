@@ -1,4 +1,9 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import {
+  openWalletDrawer,
+  getConnectedWalletCount,
+  closeWalletDrawer,
+} from '../testData/connectWalletFunctions';
 
 export class PortfolioPage {
   private readonly getStartedButton: Locator;
@@ -77,11 +82,33 @@ export class PortfolioPage {
   }
 
   async verifyFiltersAreVisibleOnTokensTab(): Promise<void> {
-    await this.verifyFiltersVisible(this.tokensFilterLocators);
+    await openWalletDrawer(this.page);
+    const connectedWalletCount = await getConnectedWalletCount(this.page);
+    await closeWalletDrawer(this.page);
+
+    const filtersToCheck =
+      connectedWalletCount > 1
+        ? this.tokensFilterLocators
+        : this.tokensFilterLocators.filter(
+            (f) => f !== this.walletSelectFilter,
+          );
+
+    await this.verifyFiltersVisible(filtersToCheck);
   }
 
   async verifyFiltersAreVisibleOnDefiProtocolsTab(): Promise<void> {
-    await this.verifyFiltersVisible(this.defiProtocolsFilterLocators);
+    await openWalletDrawer(this.page);
+    const connectedWalletCount = await getConnectedWalletCount(this.page);
+    await closeWalletDrawer(this.page);
+
+    const filtersToCheck =
+      connectedWalletCount > 1
+        ? this.defiProtocolsFilterLocators
+        : this.defiProtocolsFilterLocators.filter(
+            (f) => f !== this.walletSelectFilter,
+          );
+
+    await this.verifyFiltersVisible(filtersToCheck);
   }
 
   async verifyAllFiltersAreVisible(): Promise<void> {

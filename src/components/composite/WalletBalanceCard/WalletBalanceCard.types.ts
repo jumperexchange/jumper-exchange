@@ -1,5 +1,5 @@
-import { CacheToken } from 'src/types/portfolio';
-import { ExtendedTokenAmount } from 'src/utils/getTokens';
+import type { CacheToken } from 'src/types/portfolio';
+import type { ExtendedTokenAmount } from 'src/utils/getTokens';
 
 export interface WalletBalanceCardProps {
   walletAddress: string;
@@ -7,4 +7,5 @@ export interface WalletBalanceCardProps {
   isFetching: boolean;
   isSuccess: boolean;
   data: (ExtendedTokenAmount | CacheToken)[];
+  ['data-testid']?: string;
 }

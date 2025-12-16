@@ -34,7 +34,7 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
   return (
     <PortfolioFilterBarContentContainer>
       <PortfolioAnimatedLayoutContainer>
-        {walletOptions.length > 0 && (
+        {walletOptions.length > 1 && (
           <Select
             options={walletOptions}
             value={filter?.tokensWallets || []}
@@ -46,7 +46,7 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {chainOptions.length > 0 && (
+        {chainOptions.length > 1 && (
           <Select
             options={chainOptions}
             value={filter?.tokensChains?.map(String) ?? []}
@@ -58,7 +58,7 @@ export const PortfolioFilterBarTokensDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
-        {assetOptions.length > 0 && (
+        {assetOptions.length > 1 && (
           <Select
             options={assetOptions}
             value={filter?.tokensAssets || []}
