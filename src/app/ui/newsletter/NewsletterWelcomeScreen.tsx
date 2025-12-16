@@ -53,6 +53,7 @@ export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = ({
     if (!isSuccess) {
       return;
     }
+    setEmail('');
     setSnackbarState(true, t('newsletter.welcome.pending'), 'success');
   }, [isSuccess, setSnackbarState, t]);
 
@@ -110,18 +111,21 @@ export const NewsletterWelcomeScreen: FC<NewsletterWelcomeScreenProps> = ({
             </WelcomeScreenSubtitle>
           </NewsletterWelcomeContentTitleContainer>
           <NewsletterForm as="form" onSubmit={handleSubscribe}>
-            <NewsletterFormGroup error={!!errorMessage}>
+            <NewsletterFormGroup error={!!errorMessage} disabled={isPending}>
               <Input
                 name="email"
                 id="email"
                 placeholder={t('newsletter.welcome.emailPlaceholder')}
                 fullWidth
                 value={email}
+                disabled={isPending}
                 onChange={handleEmailChange}
               />
               <NewsletterFormButton
                 type="submit"
                 disabled={!email || isPending}
+                loading={isPending}
+                loadingPosition="start"
               >
                 {t('newsletter.welcome.subscribe')}
               </NewsletterFormButton>
