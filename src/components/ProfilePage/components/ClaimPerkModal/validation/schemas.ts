@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { sanitizeAddress } from 'src/utils/image-generation/sanitizeParams';
+import { sanitizeAddressOrEmpty } from 'src/utils/image-generation/sanitizeParams';
 import { isValidAddress } from 'src/utils/regex-patterns';
 import { AvailableSteps } from '../ClaimPerkModal.types';
 
@@ -30,16 +30,7 @@ export const createStepSchema = (step: AvailableSteps) => {
     case AvailableSteps.Wallet:
       return z
         .string()
-        .transform((val) => {
-          if (!val) {
-            return '';
-          }
-          try {
-            return sanitizeAddress(val);
-          } catch (error) {
-            return '';
-          }
-        })
+        .transform((val) => sanitizeAddressOrEmpty(val))
         .refine((val) => isValidAddress(val), 'Invalid wallet address');
 
     default:

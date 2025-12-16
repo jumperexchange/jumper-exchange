@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import {
-  sanitizeAddress,
+  sanitizeAddressOrEmpty,
   sanitizeNumeric,
 } from './image-generation/sanitizeParams';
 import { isValidAddress, isValidTransaction } from './regex-patterns';
@@ -41,13 +41,7 @@ export const amountSchema = z
  */
 const baseAddressSchema = z
   .string()
-  .transform((val) => {
-    try {
-      return sanitizeAddress(val);
-    } catch (error) {
-      return '';
-    }
-  })
+  .transform((val) => sanitizeAddressOrEmpty(val))
   .refine((val) => {
     return isValidAddress(val);
   }, 'Invalid address format. Must be either an Ethereum address (0x...), a Solana address (base58), a UTXO address (1..., 3..., or bc1...), or a SUI address');
@@ -112,7 +106,7 @@ export function slugify(text: string): string {
  */
 export const walletAddressSchema = z
   .string()
-  .transform((val) => sanitizeAddress(val))
+  .transform((val) => sanitizeAddressOrEmpty(val))
   .refine((val) => val.length > 0, {
     error: 'Wallet address cannot be empty',
   });

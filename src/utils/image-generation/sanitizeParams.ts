@@ -55,3 +55,11 @@ export const sanitizeAddress = (address: string): string => {
     'Invalid address: Must be a valid Ethereum, Solana, UTXO, or SUI address',
   );
 };
+
+export const sanitizeAddressOrEmpty = (address: string): string => {
+  try {
+    return sanitizeAddress(address);
+  } catch (error) {
+    return '';
+  }
+};
