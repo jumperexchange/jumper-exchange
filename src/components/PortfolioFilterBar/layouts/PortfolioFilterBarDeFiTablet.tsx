@@ -13,6 +13,7 @@ import {
 } from 'src/components/composite/MultiLayerDrawer/utils';
 import { useTranslation } from 'react-i18next';
 import type { SortByEnum } from '@/app/ui/portfolio/types';
+import { PortfolioFilterOptionsSkeleton } from './PortfolioFilterOptionsSkeleton';
 
 interface PendingFilterValues {
   defiChains: string[];
@@ -25,6 +26,7 @@ interface PendingFilterValues {
 
 export const PortfolioFilterBarDeFiTablet: FC = () => {
   const {
+    isLoading,
     chainOptions,
     protocolOptions,
     typeOptions,
@@ -39,6 +41,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
     sortBy,
     handleClearAllFilters,
     handleApplyAllFilters,
+    handleSortBy,
   } = usePortfolioDeFiFilterBar();
 
   const { t } = useTranslation();
@@ -67,6 +70,7 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         defiMinValue: values.defiValue[0],
         defiMaxValue: values.defiValue[1],
       });
+      handleSortBy(values.defiSortBy);
     },
     onClear: handleClearAllFilters,
     isFilterApplied: (values) => {
@@ -224,20 +228,24 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
 
   return (
     <PortfolioAnimatedLayoutContainer useStackWrapper={false}>
-      <MultiLayerDrawer
-        categories={categories}
-        title={t('portfolio.filter.filterAndSort')}
-        applyButtonLabel={t('portfolio.filter.filterAndSort')}
-        clearButtonLabel={t('portfolio.filter.clearAll')}
-        onApply={applyFilters}
-        onClear={clearAll}
-        onClose={resetPending}
-        appliedFiltersCount={filtersCount}
-        disableApply={!hasPendingFiltersApplied}
-        disableClear={!hasPendingFiltersApplied}
-        testId="portfolio-filters-mobile-drawer"
-        defaultTriggerSx={{ justifyContent: 'flex-end' }}
-      />
+      {isLoading ? (
+        <PortfolioFilterOptionsSkeleton />
+      ) : (
+        <MultiLayerDrawer
+          categories={categories}
+          title={t('portfolio.filter.filterAndSort')}
+          applyButtonLabel={t('portfolio.filter.filterAndSort')}
+          clearButtonLabel={t('portfolio.filter.clearAll')}
+          onApply={applyFilters}
+          onClear={clearAll}
+          onClose={resetPending}
+          appliedFiltersCount={filtersCount}
+          disableApply={!hasPendingFiltersApplied}
+          disableClear={!hasPendingFiltersApplied}
+          testId="portfolio-filters-mobile-drawer"
+          defaultTriggerSx={{ justifyContent: 'flex-end' }}
+        />
+      )}
     </PortfolioAnimatedLayoutContainer>
   );
 };
