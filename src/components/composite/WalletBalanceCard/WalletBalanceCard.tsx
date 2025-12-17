@@ -81,6 +81,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
       >
         <StyledAccordionSummary
           hasMultipleAccountsConnected={hasMultipleAccountsConnected}
+          slots={{ root: 'div' }}
         >
           <WalletBalanceCardContentContainer>
             <WalletWithActions account={account} />
