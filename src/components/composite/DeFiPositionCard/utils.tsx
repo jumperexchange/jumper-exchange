@@ -174,12 +174,12 @@ export const renderRewardActions = ({
     }}
     useFlexGap
   >
-    <StyledButtonAlphaDark fullWidth={isMobile}>
+    {/* <StyledButtonAlphaDark fullWidth={isMobile}>
       {t('portfolio.defiPositionCard.actions.claim')}
     </StyledButtonAlphaDark>
     <StyledButtonPrimary fullWidth={isMobile}>
       {t('portfolio.defiPositionCard.actions.compound')}
-    </StyledButtonPrimary>
+    </StyledButtonPrimary> */}
   </StyledPositionActions>
 );
 
@@ -199,11 +199,11 @@ export const renderBorrowedActions = ({
     }}
     useFlexGap
   >
-    <StyledButtonAlphaDark fullWidth={isMobile}>
+    {/* <StyledButtonAlphaDark fullWidth={isMobile}>
       {t('portfolio.defiPositionCard.actions.repay')}
     </StyledButtonAlphaDark>
     <StyledButtonPrimary fullWidth={isMobile}>
       {t('portfolio.defiPositionCard.actions.borrow')}
-    </StyledButtonPrimary>
+    </StyledButtonPrimary> */}
   </StyledPositionActions>
 );

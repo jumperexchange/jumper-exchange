@@ -93,8 +93,8 @@ export const useColumnDefinitions = (
     return columns;
   }, [t, titleVariant, descriptionVariant, isMobile, position]);
 
-  const borrowColumns = useMemo<ColumnDefinition<DefiToken>[]>(
-    () => [
+  const borrowColumns = useMemo<ColumnDefinition<DefiToken>[]>(() => {
+    const columns: ColumnDefinition<DefiToken>[] = [
       {
         id: 'borrowed',
         header: t('portfolio.defiPositionCard.header.borrowed'),
@@ -124,7 +124,11 @@ export const useColumnDefinitions = (
       createEmptyColumn<DefiToken>('empty-column', {
         size: GRID_SIZES.apyColumn,
       }),
-      {
+    ];
+
+    // Note: The position?.earn condition might change
+    if (position?.earn || !isMobile) {
+      columns.push({
         id: 'actions',
         hideHeader: true,
         render: (_token, rowIndex) =>
@@ -144,13 +148,14 @@ export const useColumnDefinitions = (
         }),
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
-      },
-    ],
-    [t, titleVariant, descriptionVariant, isMobile, position],
-  );
+      });
+    }
 
-  const rewardColumns = useMemo<ColumnDefinition<DefiToken>[]>(
-    () => [
+    return columns;
+  }, [t, titleVariant, descriptionVariant, isMobile, position]);
+
+  const rewardColumns = useMemo<ColumnDefinition<DefiToken>[]>(() => {
+    const columns: ColumnDefinition<DefiToken>[] = [
       {
         id: 'rewards',
         header: t('portfolio.defiPositionCard.header.rewards'),
@@ -180,7 +185,11 @@ export const useColumnDefinitions = (
       createEmptyColumn<DefiToken>('empty-column', {
         size: GRID_SIZES.apyColumn,
       }),
-      {
+    ];
+
+    // Note: The position?.earn condition might change
+    if (position?.earn || !isMobile) {
+      columns.push({
         id: 'actions',
         hideHeader: true,
         render: (_token, rowIndex) =>
@@ -200,10 +209,11 @@ export const useColumnDefinitions = (
         }),
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
-      },
-    ],
-    [t, titleVariant, descriptionVariant, isMobile, position],
-  );
+      });
+    }
+
+    return columns;
+  }, [t, titleVariant, descriptionVariant, isMobile, position]);
 
   return {
     supplyColumns,
