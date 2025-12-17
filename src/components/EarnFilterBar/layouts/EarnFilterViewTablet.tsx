@@ -47,7 +47,7 @@ export const EarnFilterViewTablet = () => {
       options={options}
       value={value}
       onChange={handleChange}
-      label={t('earn.sorting.sortBy')}
+      label={t('earn.views.viewBy')}
       variant={SelectVariant.Single}
       data-testid="earn-filter-tab"
       menuPlacementX="right"
