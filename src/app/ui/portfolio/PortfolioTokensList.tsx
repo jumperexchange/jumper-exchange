@@ -1,15 +1,16 @@
 import { TokenListCard } from 'src/components/composite/TokenListCard/TokenListCard';
 import { usePortfolioTokensFiltering } from './PortfolioTokensFilteringContext';
 import { TokenListCardTokenSize } from 'src/components/composite/TokenListCard/TokenListCard.types';
-import {
-  PortfolioAssetContainer,
-  PortfolioAssetsListContainer,
-} from './PortfolioPage.styles';
+import { PortfolioAssetsListContainer } from './PortfolioPage.styles';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { PortfolioEmptyList } from './PortfolioEmptyList';
+import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
+import { TokenListCardSkeleton } from '@/components/composite/TokenListCard/TokenListCardSkeleton';
+import { AnimatePresence } from 'motion/react';
 
 export const PortfolioTokensList = () => {
-  const { data, isEmpty, clearFilters } = usePortfolioTokensFiltering();
+  const { data, isLoading, isEmpty, clearFilters } =
+    usePortfolioTokensFiltering();
 
   const tokens = useFormatDisplayWalletTokens(data);
 
@@ -17,21 +18,35 @@ export const PortfolioTokensList = () => {
     return null;
   }
 
+  const renderContent = () => {
+    if (isLoading && tokens.length === 0) {
+      return Array.from({ length: 3 }).map((_, index) => (
+        <PortfolioAnimatedAssetContainer key={index}>
+          <TokenListCardSkeleton size={TokenListCardTokenSize.MD} />
+        </PortfolioAnimatedAssetContainer>
+      ));
+    }
+
+    if (tokens.length > 0) {
+      return tokens.map((token, index) => (
+        <PortfolioAnimatedAssetContainer
+          key={`${token.address}-${token.chain.chainId}-${index}`}
+        >
+          <TokenListCard size={TokenListCardTokenSize.MD} token={token} />
+        </PortfolioAnimatedAssetContainer>
+      ));
+    }
+
+    return (
+      <PortfolioAnimatedAssetContainer>
+        <PortfolioEmptyList onClearFilters={clearFilters} />
+      </PortfolioAnimatedAssetContainer>
+    );
+  };
+
   return (
     <PortfolioAssetsListContainer useFlexGap direction="column">
-      {tokens.length > 0 ? (
-        tokens.map((token) => (
-          <PortfolioAssetContainer
-            key={`${token.address}-${token.chain.chainId}`}
-          >
-            <TokenListCard size={TokenListCardTokenSize.MD} token={token} />
-          </PortfolioAssetContainer>
-        ))
-      ) : (
-        <PortfolioAssetContainer>
-          <PortfolioEmptyList onClearFilters={clearFilters} />
-        </PortfolioAssetContainer>
-      )}
+      <AnimatePresence mode="popLayout">{renderContent()}</AnimatePresence>
     </PortfolioAssetsListContainer>
   );
 };
