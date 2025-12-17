@@ -1,14 +1,12 @@
 'use client';
 
 import { AssetOverviewCard } from '@/components/composite/AssetOverviewCard/AssetOverviewCard';
-import { TrackingCategory, TrackingAction } from '@/const/trackingKeys';
 import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
-import { parseEarnPortfolioDataToTrackingData } from '@/utils/tracking/portfolio';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import { useEffect, useMemo, useRef } from 'react';
@@ -19,7 +17,7 @@ export const PortfolioHeaderBreakdown = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
     (state) => state.portfolioWelcomeScreenClosed,
   );
-  const { trackEvent } = useUserTracking();
+  const { trackPortfolioPageOverviewEvent } = usePortfolioTracking();
   const portfolioHasBeenTracked = useRef(false);
   const { accounts } = useAccount();
   const connectedAddresses = useMemo(() => {
@@ -39,9 +37,7 @@ export const PortfolioHeaderBreakdown = () => {
   const { data: allTokens, isFetching: isFetchingTokens } =
     usePortfolioTokens();
 
-  const isLoading = useMemo(() => {
-    return isLoadingPositions || isFetchingTokens;
-  }, [isLoadingPositions, isFetchingTokens]);
+  const isLoading = isLoadingPositions || isFetchingTokens;
 
   const formattedTokens = useFormatDisplayWalletTokens(allTokens);
 
@@ -72,32 +68,20 @@ export const PortfolioHeaderBreakdown = () => {
 
   useEffect(() => {
     if (
-      isLoading ||
       portfolioHasBeenTracked.current ||
-      !portfolioWelcomeScreenClosed
+      isLoading ||
+      !portfolioWelcomeScreenClosed ||
+      !connectedAddresses.length
     ) {
       return;
     }
-    portfolioHasBeenTracked.current = true;
-    const trackingData = parseEarnPortfolioDataToTrackingData(
+    trackPortfolioPageOverviewEvent(
       connectedAddresses,
       tokens,
       defiPositionGroups,
     );
-    trackEvent({
-      category: TrackingCategory.Portfolio,
-      action: TrackingAction.PortfolioPageOverview,
-      label: 'portfolio_page_overview',
-      data: trackingData,
-    });
-  }, [
-    trackEvent,
-    portfolioWelcomeScreenClosed,
-    isLoading,
-    tokens,
-    defiPositionGroups,
-    connectedAddresses,
-  ]);
+    portfolioHasBeenTracked.current = true;
+  });
 
   return (
     <AssetOverviewCard

@@ -8,14 +8,9 @@ import { DepositButton } from '../DepositButton/DepositButton';
 import type { DepositButtonProps } from '../DepositButton/DepositButton.types';
 import { DepositModal } from '../DepositModal/DepositModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventDataAction,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
+import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 
 export const DepositFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -66,19 +61,11 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
   ...props
 }) => {
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEarnDepositClickEvent } = useEarnTracking();
   const openModal = useDepositFlowStore((state) => state.openModal);
 
   const handleClick = () => {
-    trackEvent({
-      category: TrackingCategory.Earn,
-      action: TrackingAction.ClickEarnDepositButton,
-      label: 'click-earn-deposit-button',
-      data: {
-        [TrackingEventParameter.EarnOpportunitySlug]:
-          earnOpportunity.slug || '',
-      },
-    });
+    trackEarnDepositClickEvent(earnOpportunity.slug);
     openModal(earnOpportunity, refetchCallback);
   };
   return (
@@ -96,7 +83,7 @@ export const DepositFlowOnDemandButton: FC<
   }
 > = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEarnDepositClickEvent } = useEarnTracking();
   const openModal = useDepositFlowStore((state) => state.openModal);
   const { refetch: fetchEarnOpportunity } =
     useEarnOpportunityBySlug(earnOpportunitySlug);
@@ -105,15 +92,7 @@ export const DepositFlowOnDemandButton: FC<
     if (!earnOpportunity) {
       return;
     }
-    trackEvent({
-      category: TrackingCategory.Earn,
-      action: TrackingAction.ClickEarnDepositButton,
-      label: 'click-earn-deposit-button',
-      data: {
-        [TrackingEventParameter.EarnOpportunitySlug]:
-          earnOpportunity.slug || '',
-      },
-    });
+    trackEarnDepositClickEvent(earnOpportunity.slug);
     openModal(
       {
         ...earnOpportunity,

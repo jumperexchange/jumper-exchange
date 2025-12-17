@@ -9,13 +9,8 @@ import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types
 import { WithdrawModal } from '../WithdrawModal/WithdrawModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventDataAction,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
+import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 
 export const WithdrawFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -66,18 +61,10 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
   ...props
 }) => {
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
   const handleClick = () => {
-    trackEvent({
-      category: TrackingCategory.Earn,
-      action: TrackingAction.ClickEarnWithdrawButton,
-      label: 'click-earn-withdraw-button',
-      data: {
-        [TrackingEventParameter.EarnOpportunitySlug]:
-          earnOpportunity.slug || '',
-      },
-    });
+    trackEarnWithdrawClickEvent(earnOpportunity.slug);
     openModal(earnOpportunity, refetchCallback);
   };
   return (
@@ -95,7 +82,7 @@ export const WithdrawFlowOnDemandButton: FC<
   }
 > = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
   const { t } = useTranslation();
-  const { trackEvent } = useUserTracking();
+  const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
   const { refetch: fetchEarnOpportunity } =
     useEarnOpportunityBySlug(earnOpportunitySlug);
@@ -109,15 +96,7 @@ export const WithdrawFlowOnDemandButton: FC<
         console.error('Invalid earn opportunity: missing lpToken.address');
         return;
       }
-      trackEvent({
-        category: TrackingCategory.Earn,
-        action: TrackingAction.ClickEarnWithdrawButton,
-        label: 'click-earn-withdraw-button',
-        data: {
-          [TrackingEventParameter.EarnOpportunitySlug]:
-            earnOpportunity.slug || '',
-        },
-      });
+      trackEarnWithdrawClickEvent(earnOpportunity.slug);
       openModal(
         {
           ...earnOpportunity,
