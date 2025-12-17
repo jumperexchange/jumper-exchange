@@ -15,11 +15,7 @@ import { COLUMN_SPACING } from './constants';
 import type { RenderCellProps } from './DeFiPositionCard.types';
 import type { DefiToken, DefiPosition } from 'src/types/jumper-backend';
 import { DepositFlowOnDemandButton } from '../DepositFlow/DepositFlow';
-import {
-  StyledButtonAlphaDark,
-  StyledPositionActions,
-  StyledButtonPrimary,
-} from './DeFiPositionCard.styles';
+import { StyledPositionActions } from './DeFiPositionCard.styles';
 import type { TFunction } from 'i18next';
 import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 import { formatUnits } from 'viem';
@@ -174,12 +170,7 @@ export const renderRewardActions = ({
     }}
     useFlexGap
   >
-    {/* <StyledButtonAlphaDark fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.claim')}
-    </StyledButtonAlphaDark>
-    <StyledButtonPrimary fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.compound')}
-    </StyledButtonPrimary> */}
+    {/** TODO: Add claim and compound actions */}
   </StyledPositionActions>
 );
 
@@ -199,11 +190,6 @@ export const renderBorrowedActions = ({
     }}
     useFlexGap
   >
-    {/* <StyledButtonAlphaDark fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.repay')}
-    </StyledButtonAlphaDark>
-    <StyledButtonPrimary fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.borrow')}
-    </StyledButtonPrimary> */}
+    {/** TODO: Add repay and borrow actions */}
   </StyledPositionActions>
 );

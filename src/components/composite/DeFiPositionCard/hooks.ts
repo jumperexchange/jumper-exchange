@@ -66,12 +66,12 @@ export const useColumnDefinitions = (
       },
     ];
 
-    if (position?.earn || !isMobile) {
+    if (position?.earn) {
       columns.push({
         id: 'actions',
         hideHeader: true,
         render: (_token, rowIndex) =>
-          rowIndex === 0 && position && position.earn
+          rowIndex === 0
             ? renderPositionActions({
                 position,
                 t,
@@ -88,6 +88,12 @@ export const useColumnDefinitions = (
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
       });
+    } else if (!isMobile) {
+      columns.push(
+        createEmptyColumn<DefiToken>('empty-actions-column', {
+          size: GRID_SIZES.actionsColumn,
+        }),
+      );
     }
 
     return columns;
@@ -127,12 +133,12 @@ export const useColumnDefinitions = (
     ];
 
     // Note: The position?.earn condition might change
-    if (position?.earn || !isMobile) {
+    if (position?.earn) {
       columns.push({
         id: 'actions',
         hideHeader: true,
         render: (_token, rowIndex) =>
-          rowIndex === 0 && position
+          rowIndex === 0
             ? renderBorrowedActions({
                 position,
                 t,
@@ -149,6 +155,12 @@ export const useColumnDefinitions = (
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
       });
+    } else if (!isMobile) {
+      columns.push(
+        createEmptyColumn<DefiToken>('empty-actions-column', {
+          size: GRID_SIZES.actionsColumn,
+        }),
+      );
     }
 
     return columns;
@@ -188,12 +200,12 @@ export const useColumnDefinitions = (
     ];
 
     // Note: The position?.earn condition might change
-    if (position?.earn || !isMobile) {
+    if (position?.earn) {
       columns.push({
         id: 'actions',
         hideHeader: true,
         render: (_token, rowIndex) =>
-          rowIndex === 0 && position
+          rowIndex === 0
             ? renderRewardActions({
                 position,
                 t,
@@ -210,6 +222,12 @@ export const useColumnDefinitions = (
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
       });
+    } else if (!isMobile) {
+      columns.push(
+        createEmptyColumn<DefiToken>('empty-actions-column', {
+          size: GRID_SIZES.actionsColumn,
+        }),
+      );
     }
 
     return columns;
