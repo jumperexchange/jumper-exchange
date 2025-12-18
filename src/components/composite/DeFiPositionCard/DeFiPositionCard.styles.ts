@@ -1,3 +1,4 @@
+import { IconButton } from '@/components/IconButton.style';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -118,4 +119,25 @@ export const StyledButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
   height: 'auto',
   padding: theme.spacing(1.5, 2),
   ...theme.typography.bodySmallStrong,
+}));
+
+export const StyledIconButtonAlphaDark = styled(IconButton)(({ theme }) => ({
+  '&.MuiIconButton-root.MuiButtonBase-root': {
+    height: 'auto',
+    width: 'auto',
+    padding: theme.spacing(1),
+    ...theme.typography.bodySmallStrong,
+    backgroundColor: theme.palette.buttonAlphaLightBg,
+    color: theme.palette.buttonAlphaLightAction,
+    ...theme.applyStyles('light', {
+      backgroundColor: theme.palette.buttonAlphaDarkBg,
+      color: theme.palette.buttonAlphaDarkAction,
+    }),
+  },
+}));
+
+export const StyledOverviewActions = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1),
+  flexDirection: 'row',
+  alignItems: 'center',
 }));

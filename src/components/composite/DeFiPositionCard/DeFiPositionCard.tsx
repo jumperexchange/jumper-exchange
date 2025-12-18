@@ -1,5 +1,3 @@
-import ArrowDownIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpIcon from '@mui/icons-material/ArrowUpward';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LockOutlineRoundedIcon from '@mui/icons-material/LockOutlineRounded';
 import type { FC } from 'react';
@@ -9,8 +7,6 @@ import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { ColumnTable } from 'src/components/core/ColumnTable/ColumnTable';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
-import { toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { formatLockupDuration } from 'src/utils/earn/utils';
 import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
 import { DeFiPositionOverview } from './components/DeFiPositionOverview';
@@ -20,6 +16,7 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
   StyledDetailsContainer,
+  StyledOverviewActions,
   StyledOverviewColumn,
   StyledSectionContent,
   StyledSectionDivider,
@@ -36,6 +33,13 @@ import { formatTimeDifference } from './utils';
 import { RewardIcon } from 'src/components/illustrations/RewardIcon';
 import { DeFiPositionCardSkeleton } from './DeFiPositionCardSkeleton';
 import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
+import InfoOutlineRoundedIcon from '@mui/icons-material/InfoOutlineRounded';
+import { useGetAddressExplorerUrl } from '@/hooks/useBlockchainExplorerURL';
+import { openInNewTab } from '@/utils/openInNewTab';
+import { AppPaths } from '@/const/urls';
+import { useRouter } from 'next/navigation';
+import { DeFiPositionOverviewButton } from './components/DeFiPositionOverviewButton';
 
 export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
   defiPositions,
@@ -44,6 +48,8 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const { t } = useTranslation();
+  const router = useRouter();
+  const getAddressExplorerUrl = useGetAddressExplorerUrl();
 
   const handleMainPositionClick = () => {
     setIsExpanded((prevExpanded) => !prevExpanded);
@@ -51,6 +57,21 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
 
   const handleExpandedPositionClick = (group: PositionGroup) => {
     onSelect?.(group.position);
+  };
+
+  const handleAddressExplorerClick = (chainId: number, address: string) => {
+    const url = getAddressExplorerUrl(chainId, address);
+    if (!url) {
+      return;
+    }
+    openInNewTab(url);
+  };
+
+  const handleInfoClick = (earn?: string) => {
+    if (!earn) {
+      return;
+    }
+    router.push(`${AppPaths.Earn}/${earn}`);
   };
 
   const { supplyColumns, rewardColumns, borrowColumns } = useColumnDefinitions(
@@ -169,6 +190,33 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
                       )}
                     />
                   )}
+                  <StyledOverviewActions>
+                    <DeFiPositionOverviewButton
+                      tooltip={t(
+                        'portfolio.defiPositionCard.overview.tooltip.address',
+                      )}
+                      onClick={() =>
+                        handleAddressExplorerClick(
+                          positionGroup.position.chain.chainId,
+                          positionGroup.position.address,
+                        )
+                      }
+                      slots={{
+                        icon: CodeRoundedIcon,
+                      }}
+                    />
+                    <DeFiPositionOverviewButton
+                      tooltip={t(
+                        'portfolio.defiPositionCard.overview.tooltip.info',
+                      )}
+                      onClick={() =>
+                        handleInfoClick(positionGroup.position.earn)
+                      }
+                      slots={{
+                        icon: InfoOutlineRoundedIcon,
+                      }}
+                    />
+                  </StyledOverviewActions>
                 </StyledOverviewColumn>
 
                 <StyledTablesColumn>
