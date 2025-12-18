@@ -30,7 +30,10 @@ export function useSharedBaseConfig(
       integrator: context.integrator ?? envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR,
       keyPrefix: context.keyPrefix,
       apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
-      defaultUI: { navigationHeaderTitleNoWrap: false },
+      defaultUI: {
+        navigationHeaderTitleNoWrap: false,
+        transactionDetailsExpanded: true,
+      },
       walletConfig: {
         onConnect() {
           deps.wallet.openWalletMenu();
