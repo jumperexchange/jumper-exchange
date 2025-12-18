@@ -189,6 +189,5 @@ export const renderBorrowedActions = ({
     }}
     useFlexGap
   >
-    {/** TODO: Add repay and borrow actions */}
   </StyledPositionActions>
 );
