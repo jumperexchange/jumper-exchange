@@ -358,6 +358,7 @@
       "apy": ""
     },
     "views": {
+      "viewBy": "",
       "forYou": "",
       "allMarkets": "",
       "all": "",
@@ -478,8 +479,6 @@
       }
     },
     "filter": {
-      "tokens": "",
-      "defiProtocols": "",
       "wallet": "",
       "chain": "",
       "protocol": "",
@@ -496,6 +495,11 @@
       "totalValue": "",
       "chain": "",
       "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
     }
   },
   "newsletter": {
