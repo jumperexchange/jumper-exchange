@@ -19,6 +19,7 @@ import { StyledPositionActions } from './DeFiPositionCard.styles';
 import type { TFunction } from 'i18next';
 import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 import { formatUnits } from 'viem';
+import { formatApy } from '@/utils/numbers/apy';
 
 export const formatTimeDifference = (date: string, t: TFunction) => {
   const now = new Date();
@@ -113,8 +114,7 @@ export const renderApyCell = ({
   const apyValue = position.latest?.apy?.total;
   return (
     <TitleWithHint
-      // TODO: use the APY formatting function once available
-      title={apyValue ? `${toFixedFractionDigits(apyValue, 0, 2)}%` : '-'}
+      title={apyValue ? formatApy(apyValue) : '-'}
       titleVariant={titleVariant}
     />
   );
