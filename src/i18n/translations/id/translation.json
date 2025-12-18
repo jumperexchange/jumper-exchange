@@ -41,7 +41,9 @@
       "support": "Bantuan",
       "resources": "",
       "profile": "Profil Jumper",
-      "privacyPolicy": ""
+      "privacyPolicy": "",
+      "termsConditions": "",
+      "newsletter": ""
     },
     "walletMenu": {
       "disconnect": "Tidak terkoneksi",
@@ -310,7 +312,8 @@
     "chains_one": "",
     "chains_other": "",
     "protocol": "",
-    "noPositionsToManage": ""
+    "noPositionsToManage": "",
+    "capInDollar": ""
   },
   "labels": {
     "apy": "",
@@ -322,7 +325,8 @@
     "chains_one": "",
     "chains_other": "",
     "protocol": "",
-    "overview": ""
+    "overview": "",
+    "capInDollar": ""
   },
   "earn": {
     "top": {
@@ -354,12 +358,33 @@
       "apy": ""
     },
     "views": {
+      "viewBy": "",
       "forYou": "",
       "allMarkets": "",
-      "all": ""
+      "all": "",
+      "yourPositions": ""
     },
     "relatedMarkets": {
       "title": ""
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
     },
     "overview": {
       "updated": ""
@@ -367,6 +392,21 @@
     "actions": {
       "viewAllMarkets": "",
       "seeMore": ""
+    },
+    "position": {
+      "label": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
     }
   },
   "portfolio": {
@@ -439,8 +479,6 @@
       }
     },
     "filter": {
-      "tokens": "",
-      "defiProtocols": "",
       "wallet": "",
       "chain": "",
       "protocol": "",
@@ -457,6 +495,28 @@
       "totalValue": "",
       "chain": "",
       "asset": ""
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
     }
   },
   "widget": {
@@ -517,7 +577,9 @@
   "buttons": {
     "depositButtonLabel": "",
     "withdrawButtonLabel": "",
-    "managePositionsButtonLabel": ""
+    "managePositionsButtonLabel": "",
+    "deposit": "",
+    "depositNow": ""
   },
   "modal": {
     "perks": {
@@ -583,6 +645,10 @@
   "gatekeeper": {
     "title": "",
     "subtitle": {
+      "intro": {
+        "earn": "",
+        "portfolio": ""
+      },
       "notConnected": "",
       "noAccess": ""
     },
