@@ -8,6 +8,9 @@ import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
 import { WithdrawModal } from '../WithdrawModal/WithdrawModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
+import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
+import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 
 export const WithdrawFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -18,11 +21,33 @@ export const WithdrawFlowModal = () => {
   }
 
   return (
-    <WithdrawModal
-      isOpen={isModalOpen}
-      onClose={closeModal}
-      earnOpportunity={selectedEarnOpportunity!}
-    />
+    <WidgetTrackingProvider
+      trackingActionKeys={{
+        destinationChainAndTokenSelection:
+          TrackingAction.OnDestinationChainAndTokenSelectionEarnWithdraw,
+        availableRoutes: TrackingAction.OnAvailableRoutesEarnWithdraw,
+        routeExecutionStarted:
+          TrackingAction.OnRouteExecutionStartedEarnWithdraw,
+        routeExecutionCompleted:
+          TrackingAction.OnRouteExecutionCompletedEarnWithdraw,
+        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedEarnWithdraw,
+        changeSettings: TrackingAction.OnChangeSettingsEarnWithdraw,
+      }}
+      trackingDataActionKeys={{
+        routeExecutionStarted:
+          TrackingEventDataAction.ExecutionStartEarnWithdraw,
+        routeExecutionCompleted:
+          TrackingEventDataAction.ExecutionCompletedEarnWithdraw,
+        routeExecutionFailed:
+          TrackingEventDataAction.ExecutionFailedEarnWithdraw,
+      }}
+    >
+      <WithdrawModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        earnOpportunity={selectedEarnOpportunity!}
+      />
+    </WidgetTrackingProvider>
   );
 };
 
@@ -36,10 +61,15 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
   ...props
 }) => {
   const { t } = useTranslation();
+  const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
+  const handleClick = () => {
+    trackEarnWithdrawClickEvent(earnOpportunity.slug);
+    openModal(earnOpportunity, refetchCallback);
+  };
   return (
     <WithdrawButton
-      onClick={() => openModal(earnOpportunity, refetchCallback)}
+      onClick={handleClick}
       label={t('buttons.withdrawButtonLabel')}
       {...props}
     />
@@ -52,6 +82,7 @@ export const WithdrawFlowOnDemandButton: FC<
   }
 > = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
   const { t } = useTranslation();
+  const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
   const { refetch: fetchEarnOpportunity } =
     useEarnOpportunityBySlug(earnOpportunitySlug);
@@ -65,6 +96,7 @@ export const WithdrawFlowOnDemandButton: FC<
         console.error('Invalid earn opportunity: missing lpToken.address');
         return;
       }
+      trackEarnWithdrawClickEvent(earnOpportunity.slug);
       openModal(
         {
           ...earnOpportunity,

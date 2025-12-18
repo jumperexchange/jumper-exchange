@@ -4,11 +4,12 @@ import { AssetOverviewCard } from '@/components/composite/AssetOverviewCard/Asse
 import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
 import { ChainType } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { MinimalToken } from 'src/types/tokens';
 import type { Hex } from 'viem';
 
@@ -16,6 +17,8 @@ export const PortfolioHeaderBreakdown = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
     (state) => state.portfolioWelcomeScreenClosed,
   );
+  const { trackPortfolioPageOverviewEvent } = usePortfolioTracking();
+  const portfolioHasBeenTracked = useRef(false);
   const { accounts } = useAccount();
   const connectedAddresses = useMemo(() => {
     return accounts
@@ -62,6 +65,23 @@ export const PortfolioHeaderBreakdown = () => {
 
     return formattedPositions;
   }, [formattedPositions, portfolioWelcomeScreenClosed]);
+
+  useEffect(() => {
+    if (
+      portfolioHasBeenTracked.current ||
+      isLoading ||
+      !portfolioWelcomeScreenClosed ||
+      !connectedAddresses.length
+    ) {
+      return;
+    }
+    trackPortfolioPageOverviewEvent(
+      connectedAddresses,
+      tokens,
+      defiPositionGroups,
+    );
+    portfolioHasBeenTracked.current = true;
+  });
 
   return (
     <AssetOverviewCard

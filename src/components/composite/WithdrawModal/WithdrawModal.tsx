@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { ZapWithdrawWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapWithdrawWidget';
-import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { TaskType } from 'src/types/strapi';
 import type { ModalContainerProps } from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { ModalContainer } from 'src/components/core/modals/ModalContainer/ModalContainer';
@@ -26,28 +25,26 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
   //   const refetchCallback = useDepositFlowStore((state) => state.refetchCallback);
 
   return (
-    <WidgetTrackingProvider>
-      <ModalContainer isOpen={isOpen} onClose={onClose}>
-        <ZapWithdrawWidget
-          customInformation={{ projectData }}
-          zapData={zapData}
-          ctx={{
-            theme: {
-              container: {
-                maxHeight: 'calc(100vh - 6rem)',
-                minWidth: '100%',
-                maxWidth: 400,
-                borderRadius: '24px',
-                [theme.breakpoints.up('sm')]: {
-                  minWidth: 400,
-                },
+    <ModalContainer isOpen={isOpen} onClose={onClose}>
+      <ZapWithdrawWidget
+        customInformation={{ projectData }}
+        zapData={zapData}
+        ctx={{
+          theme: {
+            container: {
+              maxHeight: 'calc(100vh - 6rem)',
+              minWidth: '100%',
+              maxWidth: 400,
+              borderRadius: '24px',
+              [theme.breakpoints.up('sm')]: {
+                minWidth: 400,
               },
             },
-            taskType: TaskType.Zap,
-            overrideHeader: t('widget.withdraw.title'),
-          }}
-        />
-      </ModalContainer>
-    </WidgetTrackingProvider>
+          },
+          taskType: TaskType.Zap,
+          overrideHeader: t('widget.withdraw.title'),
+        }}
+      />
+    </ModalContainer>
   );
 };

@@ -1,16 +1,15 @@
-import {
+import type {
   ChainTokenSelected,
   Route,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
   SettingUpdated,
-  useWidgetEvents,
 } from '@lifi/widget';
+import { useWidgetEvents } from '@lifi/widget';
 import { isEqual, omit } from 'lodash';
+import type { FC, PropsWithChildren } from 'react';
 import {
   createContext,
-  FC,
-  PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
@@ -18,10 +17,10 @@ import {
   useRef,
 } from 'react';
 import { makePosthogTracker } from 'src/components/Widgets/PosthogTracker';
+import type { WidgetEventsConfig } from 'src/components/Widgets/WidgetEventsManager';
 import {
   setupWidgetEvents,
   teardownWidgetEvents,
-  WidgetEventsConfig,
 } from 'src/components/Widgets/WidgetEventsManager';
 import {
   TrackingAction,
@@ -30,8 +29,8 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { TransformedRoute } from 'src/types/internal';
-import { TrackTransactionDataProps } from 'src/types/userTracking';
+import type { TransformedRoute } from 'src/types/internal';
+import type { TrackTransactionDataProps } from 'src/types/userTracking';
 import { handleRouteData } from 'src/utils/routes';
 import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
 
@@ -60,7 +59,7 @@ export const useWidgetTrackingContext = () => {
 interface WidgetTrackingProviderProps extends PropsWithChildren {
   trackingActionKeys?: {
     destinationChainAndTokenSelection?: TrackingAction;
-    sourceChainAndTokenSelection: TrackingAction;
+    sourceChainAndTokenSelection?: TrackingAction;
     availableRoutes: TrackingAction;
     routeExecutionStarted: TrackingAction;
     routeExecutionCompleted: TrackingAction;
@@ -82,8 +81,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   children,
   trackingActionKeys = {
     destinationChainAndTokenSelection: '',
-    sourceChainAndTokenSelection:
-      TrackingAction.OnSourceChainAndTokenSelectionZap,
+    sourceChainAndTokenSelection: '',
     availableRoutes: TrackingAction.OnAvailableRoutesZap,
     routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
     routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
@@ -116,6 +114,9 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
   const sourceChainTokenSelected = useCallback(
     (sourceToken: ChainTokenSelected) => {
+      if (!trackingActionKeys.sourceChainAndTokenSelection) {
+        return;
+      }
       trackEvent({
         category: TrackingCategory.WidgetEvent,
         action: trackingActionKeys.sourceChainAndTokenSelection,

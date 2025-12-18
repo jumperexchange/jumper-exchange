@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
-import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { TaskType } from 'src/types/strapi';
 import type { ModalContainerProps } from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { ModalContainer } from 'src/components/core/modals/ModalContainer/ModalContainer';
@@ -29,34 +28,32 @@ export const DepositModal: FC<DepositModalProps> = ({
   const refetchCallback = useDepositFlowStore((state) => state.refetchCallback);
 
   return (
-    <WidgetTrackingProvider>
-      <ModalContainer isOpen={isOpen} onClose={onClose}>
-        <ClientOnly>
-          <ZapDepositBackendWidget
-            ctx={{
-              theme: {
-                container: {
-                  maxHeight: 'calc(100vh - 6rem)',
-                  minWidth: '100%',
-                  maxWidth: 400,
-                  borderRadius: '24px',
-                  [theme.breakpoints.up('sm')]: {
-                    minWidth: 400,
-                  },
+    <ModalContainer isOpen={isOpen} onClose={onClose}>
+      <ClientOnly>
+        <ZapDepositBackendWidget
+          ctx={{
+            theme: {
+              container: {
+                maxHeight: 'calc(100vh - 6rem)',
+                minWidth: '100%',
+                maxWidth: 400,
+                borderRadius: '24px',
+                [theme.breakpoints.up('sm')]: {
+                  minWidth: 400,
                 },
               },
-              taskType: TaskType.Zap,
-              overrideHeader: 'Quick deposit',
-            }}
-            customInformation={{ projectData }}
-            zapData={zapData}
-            isZapDataSuccess={true}
-            refetchDepositToken={refetchCallback}
-            depositSuccessMessageKey="widget.earn.depositSuccess"
-            integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN}
-          />
-        </ClientOnly>
-      </ModalContainer>
-    </WidgetTrackingProvider>
+            },
+            taskType: TaskType.Zap,
+            overrideHeader: 'Quick deposit',
+          }}
+          customInformation={{ projectData }}
+          zapData={zapData}
+          isZapDataSuccess={true}
+          refetchDepositToken={refetchCallback}
+          depositSuccessMessageKey="widget.earn.depositSuccess"
+          integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN}
+        />
+      </ClientOnly>
+    </ModalContainer>
   );
 };
