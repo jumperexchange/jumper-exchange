@@ -13,6 +13,7 @@ import { useTokens } from '@/hooks/useTokens';
 import type { Token } from '@/types/jumper-backend';
 import { currencyFormatter } from '@/utils/formatNumbers';
 import { useTranslation } from 'react-i18next';
+import { useToken } from '@/hooks/useToken';
 
 interface EarnDetailsActionsPositionProps {
   token: Token;
@@ -20,21 +21,52 @@ interface EarnDetailsActionsPositionProps {
   amount?: bigint | number;
 }
 
+const formatUSD = currencyFormatter('en-US', {
+  notation: 'compact',
+  currency: 'USD',
+  useGrouping: true,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+const selectCardStyles = {
+  padding: 0,
+  borderRadius: 0,
+  boxShadow: 'none',
+  background: 'transparent',
+  '& .MuiInputLabel-root': {
+    color: 'text.secondary',
+  },
+} as const;
+
 export const EarnDetailsActionsPosition: FC<
   EarnDetailsActionsPositionProps
 > = ({ token, amountUSD, amount }) => {
   const { t } = useTranslation();
-  const { getTokenByAddressAndChain } = useTokens();
+  const { getTokenByAddressAndChain, isSuccess: isSuccessTokens } = useTokens();
+
+  const tokenPriceUSD =
+    getTokenByAddressAndChain(token.address, token.chain.chainId)?.priceUSD ??
+    '0';
+  const hasTokenPriceUSD = Number(tokenPriceUSD) > 0;
+  const shouldActivateFallbackToken = !hasTokenPriceUSD && isSuccessTokens;
+
+  const { token: fallbackToken } = useToken(
+    token.chain.chainId,
+    token.address,
+    shouldActivateFallbackToken,
+  );
+
+  const effectivePriceUSD = hasTokenPriceUSD
+    ? tokenPriceUSD
+    : (fallbackToken?.priceUSD ?? '0');
+
+  const hasEffectivePriceUSD = Number(effectivePriceUSD) > 0;
 
   const { formattedAmount, formattedAmountUSD } = useMemo(() => {
-    const priceUSD =
-      getTokenByAddressAndChain(token.address, token.chain.chainId)?.priceUSD ??
-      '0';
-    const hasPriceUSD = Number(priceUSD) > 0;
-
-    const getTokenAmount = (): string => {
-      if (amountUSD && hasPriceUSD) {
-        return priceToTokenAmount(amountUSD.toString(), priceUSD.toString());
+    const calculateTokenAmount = (): string => {
+      if (amountUSD && hasEffectivePriceUSD) {
+        return priceToTokenAmount(amountUSD.toString(), effectivePriceUSD);
       }
       if (amount) {
         return formatTokenAmount(BigInt(amount), token.decimals);
@@ -42,31 +74,32 @@ export const EarnDetailsActionsPosition: FC<
       return '0';
     };
 
-    const getTokenAmountUSD = (): number => {
+    const calculateAmountUSD = (): number => {
       if (amountUSD) {
         return amountUSD;
       }
-      if (amount && hasPriceUSD) {
-        const formattedFallback = formatTokenAmount(
+      if (amount && hasEffectivePriceUSD) {
+        const formattedTokenAmount = formatTokenAmount(
           BigInt(amount),
           token.decimals,
         );
-        return formatTokenPrice(formattedFallback, priceUSD);
+        return formatTokenPrice(formattedTokenAmount, effectivePriceUSD);
       }
       return 0;
     };
 
     return {
-      formattedAmount: `${getTokenAmount()} ${token?.symbol ?? ''}`,
-      formattedAmountUSD: currencyFormatter('en-US', {
-        notation: 'compact',
-        currency: 'USD',
-        useGrouping: true,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })(getTokenAmountUSD()),
+      formattedAmount: `${calculateTokenAmount()} ${token.symbol ?? ''}`,
+      formattedAmountUSD: formatUSD(calculateAmountUSD()),
     };
-  }, [amountUSD, amount, token, getTokenByAddressAndChain]);
+  }, [
+    amountUSD,
+    amount,
+    token.decimals,
+    token.symbol,
+    hasEffectivePriceUSD,
+    effectivePriceUSD,
+  ]);
 
   return (
     <SelectCard
@@ -78,25 +111,15 @@ export const EarnDetailsActionsPosition: FC<
       placeholder="0"
       isClickable={false}
       startAdornment={
-        token && (
-          <EntityChainStack
-            variant={EntityChainStackVariant.Tokens}
-            tokens={[token]}
-            tokensSize={AvatarSize.XL}
-            chainsSize={AvatarSize.XXS}
-            isContentVisible={false}
-          />
-        )
+        <EntityChainStack
+          variant={EntityChainStackVariant.Tokens}
+          tokens={[token]}
+          tokensSize={AvatarSize.XL}
+          chainsSize={AvatarSize.XXS}
+          isContentVisible={false}
+        />
       }
-      sx={(theme) => ({
-        padding: 0,
-        borderRadius: 0,
-        boxShadow: 'none',
-        background: 'transparent',
-        '& .MuiInputLabel-root': {
-          color: (theme.vars || theme).palette.text.secondary,
-        },
-      })}
+      sx={selectCardStyles}
     />
   );
 };
