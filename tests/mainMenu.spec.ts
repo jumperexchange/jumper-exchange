@@ -25,12 +25,12 @@ test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await closeWelcomeScreen(page);
+    await openOrCloseMainMenu(page);
   });
 
   test(
     qase(12, 'Should be able to open menu and close it'),
     async ({ page }) => {
-      await openOrCloseMainMenu(page);
       await checkTheNumberOfMenuItems(page, 6);
       await page.locator('body').click();
       await expect(page.getByRole('menu')).not.toBeVisible();
@@ -94,8 +94,6 @@ test.describe('Main Menu flows', () => {
       const articleTitle = await page.locator(
         'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
       );
-
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Learn');
       await expect(page).toHaveURL(values.localLearnURL);
       await page.waitForLoadState('load');
@@ -112,7 +110,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(13, 'Should open Resources section inside menu'),
     async ({ page }) => {
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Resources');
       await checkTheNumberOfMenuItems(page, 2);
     },
@@ -121,7 +118,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(14, 'Should open Language section inside menu'),
     async ({ page }) => {
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Language');
       await checkTheNumberOfMenuItems(page, 14);
     },
@@ -133,7 +129,6 @@ test.describe('Main Menu flows', () => {
       const searchBar = await page.locator(
         'xpath=//div[@class="MuiBox-root mui-1nhlr6a"]',
       );
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Scan');
       await expect(page).toHaveURL(values.localJumperScanURL);
       await checkTabsInHeader(page);
@@ -151,7 +146,6 @@ test.describe('Main Menu flows', () => {
 
       await page.goto(values.aerodromeQuestsURL);
       expect(jumperProfileBackButton).toBeVisible();
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Theme');
       await itemInMenu(page, 'Light');
       await itemInMenu(page, 'Dark');
@@ -165,7 +159,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(15, 'Should open Github page inside Resources section'),
     async ({ page, context }) => {
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Resources');
       await itemInMenu(page, 'Github');
       await openNewTabAndVerifyUrl(context, values.githubURL);
@@ -175,7 +168,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(16, 'Should be able to navigate to X'),
     async ({ page, context }) => {
-      await openOrCloseMainMenu(page);
       await itemInNavigation(page, 'X social link');
       await openNewTabAndVerifyUrl(context, values.xUrl);
     },
@@ -184,7 +176,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(17, 'Should be able to navigate to Discord'),
     async ({ page, context }) => {
-      await openOrCloseMainMenu(page);
       await itemInNavigation(page, 'Discord social link');
       await openNewTabAndVerifyUrl(context, values.discordURL);
     },
@@ -193,7 +184,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(18, 'Should be able to navigate to Telegram'),
     async ({ page, context }) => {
-      await openOrCloseMainMenu(page);
       await itemInNavigation(page, 'Telegram social link');
       await openNewTabAndVerifyUrl(context, values.telegramURL);
     },
@@ -202,7 +192,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(19, 'Should be able to navigate to Link3'),
     async ({ page, context }) => {
-      await openOrCloseMainMenu(page);
       await itemInNavigation(page, 'Link3 social link');
       await openNewTabAndVerifyUrl(context, values.link3URL);
     },
@@ -211,7 +200,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(37, 'Should be able to navigate to the Privacy Policy page'),
     async ({ page }) => {
-      await openOrCloseMainMenu(page);
       await itemInNavigation(page, 'Privacy Policy');
       await expect(page).toHaveURL(values.privacyPolicyURL);
     },
@@ -220,7 +208,6 @@ test.describe('Main Menu flows', () => {
   test(
     qase(20, 'Should be able to click on the Support button'),
     async ({ page }) => {
-      await openOrCloseMainMenu(page);
       await itemInMenu(page, 'Support');
       const iFrameLocator = page.frameLocator(
         'iframe[name="intercom-messenger-frame"]',
@@ -255,4 +242,17 @@ test.describe('Main Menu flows', () => {
       await expect(sendMessageInIframe).toBeEnabled();
     },
   );
+
+  test(
+    qase(54, 'Should be able to navigate to the Terms & Conditions page'),
+    async ({ page, context }) => {
+      await itemInNavigation(page, 'Terms & Conditions');
+      await openNewTabAndVerifyUrl(context, values.termsConditionsURL);
+    },
+  );
+
+  test(qase(55, 'Should be able to open newsletter page'), async ({ page }) => {
+    await itemInNavigation(page, 'Newsletter');
+    await expect(page).toHaveURL(values.newsletterPageURL);
+  });
 });

@@ -151,6 +151,7 @@ interface Resources {
         all: 'All';
         allMarkets: 'All markets';
         forYou: 'For you';
+        viewBy: 'View by';
         yourPositions: 'Your positions';
       };
     };
@@ -512,11 +513,9 @@ interface Resources {
         asset: 'Asset';
         chain: 'Chain';
         clearAll: 'Clear all';
-        defiProtocols: 'DeFi Protocols';
         filterAndSort: 'Filter and sort';
         protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
-        tokens: 'Tokens';
         type: 'Type';
         value: 'Value';
         wallet: 'Wallet';
@@ -531,6 +530,11 @@ interface Resources {
         sort: 'Sort';
         sortBy: 'Sort by';
         totalValue: 'Total Value';
+      };
+      views: {
+        defiProtocols: 'DeFi Protocols';
+        tokens: 'Tokens';
+        viewBy: 'View by';
       };
       welcome: {
         explorePass: 'Explore Jumper Pass';
