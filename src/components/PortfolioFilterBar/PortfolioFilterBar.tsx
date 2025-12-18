@@ -1,7 +1,4 @@
 import type { PortfolioFilterBarTab } from 'src/app/ui/portfolio/types';
-import type { HorizontalTabItem } from '../HorizontalTabs/HorizontalTabs';
-import { HorizontalTabs } from '../HorizontalTabs/HorizontalTabs';
-import { HorizontalTabSize } from '../HorizontalTabs/HorizontalTabs.style';
 import type { FC } from 'react';
 import {
   PortfolioFilterBarContainer,
@@ -14,11 +11,12 @@ import { PortfolioFilterBarTokensTablet } from './layouts/PortfolioFilterBarToke
 import { PortfolioFilterBarEmptyDesktop } from './layouts/PortfolioFilterBarEmptyDesktop';
 import { PortfolioFilterBarEmptyTablet } from './layouts/PortfolioFilterBarEmptyTablet';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTranslation } from 'react-i18next';
 import { AnimatePresence } from 'motion/react';
 import { PortfolioSortTokensDesktop } from './layouts/PortfolioSortTokensDesktop';
 import { PortfolioSortEmptyDesktop } from './layouts/PortfolioSortEmptyDesktop';
 import { PortfolioSortDeFiDesktop } from './layouts/PortfolioSortDeFiDesktop';
+import { PortfolioFilterViewDesktop } from './layouts/PortfolioFilterViewDesktop';
+import { PortfolioFilterViewTablet } from './layouts/PortfolioFilterViewTablet';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -32,21 +30,6 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
   onChange,
 }) => {
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const { t } = useTranslation();
-  const tabOptions: HorizontalTabItem[] = [
-    {
-      value: 'tokens',
-      label: t('portfolio.filter.tokens'),
-      disabled: isDisabled,
-      'data-testid': 'portfolio-filter-tab-tokens',
-    },
-    {
-      value: 'defi-protocols',
-      label: t('portfolio.filter.defiProtocols'),
-      disabled: isDisabled,
-      'data-testid': 'portfolio-filter-tab-defi-protocols',
-    },
-  ];
 
   const PortfolioFilterBarContentDesktop = isDisabled
     ? PortfolioFilterBarEmptyDesktop
@@ -66,26 +49,17 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
       ? PortfolioSortTokensDesktop
       : PortfolioSortDeFiDesktop;
 
+  const PortfolioFilterView = isTablet
+    ? PortfolioFilterViewTablet
+    : PortfolioFilterViewDesktop;
+
   return (
     <PortfolioFilterBarContainer>
       <PortfolioFilterBarHeaderContainer>
-        <HorizontalTabs
-          tabs={tabOptions}
-          size={HorizontalTabSize.MD}
-          data-testid="portfolio-filter-tabs"
-          onChange={(_event, newValue) =>
-            onChange(newValue as PortfolioFilterBarTab)
-          }
+        <PortfolioFilterView
+          isDisabled={isDisabled}
           value={value}
-          sx={(theme) => ({
-            flex: '0 0 auto',
-            backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
-            ...(isDisabled && {
-              '& .MuiTabs-indicator': {
-                display: 'none',
-              },
-            }),
-          })}
+          onChange={onChange}
         />
         {isTablet && (
           <AnimatePresence mode="wait">

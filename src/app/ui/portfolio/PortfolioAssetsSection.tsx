@@ -6,7 +6,7 @@ import {
 } from './PortfolioTokensFilteringContext';
 import { PortfolioFilterBar } from 'src/components/PortfolioFilterBar/PortfolioFilterBar';
 import { useState } from 'react';
-import type { PortfolioFilterBarTab } from './types';
+import { PortfolioFilterBarTab } from './types';
 import { PortfolioDeFiProtocolsList } from './PortfolioDeFiProtocolsList';
 import { PortfolioTokensList } from './PortfolioTokensList';
 import {
@@ -16,7 +16,9 @@ import {
 import { useAccount } from '@lifi/wallet-management';
 
 const PortfolioAssetsSectionInner = () => {
-  const [tab, setTab] = useState<PortfolioFilterBarTab>('tokens');
+  const [tab, setTab] = useState<PortfolioFilterBarTab>(
+    PortfolioFilterBarTab.TOKENS,
+  );
   const { isEmpty: isTokensEmpty } = usePortfolioTokensFiltering();
   const { isAllDataEmpty: isDeFiEmpty } = usePortfolioDeFiPositionsFiltering();
   const { account } = useAccount();

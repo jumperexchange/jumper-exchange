@@ -21,6 +21,7 @@ import { sortSelectOptions } from '@/utils/sortSelectOptions';
 export const usePortfolioTokensFilterBar = () => {
   const { t } = useTranslation();
   const {
+    isLoading,
     allWallets,
     allChains,
     allAssets,
@@ -165,6 +166,7 @@ export const usePortfolioTokensFilterBar = () => {
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
 
   return {
+    isLoading,
     walletOptions,
     chainOptions,
     assetOptions,
@@ -190,6 +192,7 @@ export const usePortfolioTokensFilterBar = () => {
 export const usePortfolioDeFiFilterBar = () => {
   const { t } = useTranslation();
   const {
+    isLoading,
     allChains,
     allProtocols,
     allTypes,
@@ -329,6 +332,7 @@ export const usePortfolioDeFiFilterBar = () => {
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
 
   return {
+    isLoading,
     chainOptions,
     protocolOptions,
     typeOptions,

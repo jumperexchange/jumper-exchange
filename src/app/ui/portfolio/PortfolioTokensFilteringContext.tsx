@@ -166,7 +166,7 @@ export const PortfolioTokensFilteringProvider = ({
     clearFilters,
     data: filteredSortedData,
     isLoading: isFetching || !isSuccess,
-    isEmpty: !allData || allData.length === 0,
+    isEmpty: !isFetching && (!allData || allData.length === 0),
     ...stats,
   };
 
