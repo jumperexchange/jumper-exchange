@@ -1,4 +1,8 @@
-import { priceToTokenAmount } from '@lifi/widget';
+import {
+  priceToTokenAmount,
+  formatTokenPrice,
+  formatTokenAmount,
+} from '@lifi/widget';
 import { useMemo, type FC } from 'react';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
@@ -13,11 +17,12 @@ import { useTranslation } from 'react-i18next';
 interface EarnDetailsActionsPositionProps {
   token: Token;
   amountUSD?: number;
+  amount?: bigint | number;
 }
 
 export const EarnDetailsActionsPosition: FC<
   EarnDetailsActionsPositionProps
-> = ({ token, amountUSD }) => {
+> = ({ token, amountUSD, amount }) => {
   const { t } = useTranslation();
   const { getTokenByAddressAndChain } = useTokens();
 
@@ -25,23 +30,43 @@ export const EarnDetailsActionsPosition: FC<
     const priceUSD =
       getTokenByAddressAndChain(token.address, token.chain.chainId)?.priceUSD ??
       '0';
+    const hasPriceUSD = Number(priceUSD) > 0;
 
-    const tokenAmount =
-      amountUSD && Number(priceUSD) > 0
-        ? priceToTokenAmount(amountUSD.toString(), priceUSD.toString())
-        : '0';
+    const getTokenAmount = (): string => {
+      if (amountUSD && hasPriceUSD) {
+        return priceToTokenAmount(amountUSD.toString(), priceUSD.toString());
+      }
+      if (amount) {
+        return formatTokenAmount(BigInt(amount), token.decimals);
+      }
+      return '0';
+    };
+
+    const getTokenAmountUSD = (): number => {
+      if (amountUSD) {
+        return amountUSD;
+      }
+      if (amount && hasPriceUSD) {
+        const formattedFallback = formatTokenAmount(
+          BigInt(amount),
+          token.decimals,
+        );
+        return formatTokenPrice(formattedFallback, priceUSD);
+      }
+      return 0;
+    };
 
     return {
-      formattedAmount: `${tokenAmount} ${token?.symbol ?? ''}`,
+      formattedAmount: `${getTokenAmount()} ${token?.symbol ?? ''}`,
       formattedAmountUSD: currencyFormatter('en-US', {
         notation: 'compact',
         currency: 'USD',
         useGrouping: true,
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })(amountUSD),
+      })(getTokenAmountUSD()),
     };
-  }, [amountUSD, token, getTokenByAddressAndChain]);
+  }, [amountUSD, amount, token, getTokenByAddressAndChain]);
 
   return (
     <SelectCard
