@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import merge from 'lodash/merge';
-import type { WidgetConfig } from '@lifi/widget';
+import { HiddenUI, type WidgetConfig } from '@lifi/widget';
 import type {
   WidgetType,
   MainWidgetContext,
@@ -17,6 +17,9 @@ import {
 import { useMainWidgetConfig } from './useMainWidgetConfig';
 import { useMissionWidgetConfig } from './useMissionWidgetConfig';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
+import { useABTest } from '@/hooks/useABTest';
+import { useAccount } from '@lifi/wallet-management';
+import { AB_TEST_NAME } from '@/const/abtests';
 
 /**
  * Main widget configuration hook that orchestrates all configuration logic
@@ -33,6 +36,11 @@ export function useWidgetConfig<T extends WidgetType>(
   const sharedBase = useSharedBaseConfig(context, deps);
   const sharedRPC = useSharedRPCConfig();
   const sharedForm = useSharedFormConfig(context.formData);
+  const { account } = useAccount();
+  const priceImpactABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_PRICE_IMPACT_DISPLAY,
+    address: account?.address ?? '',
+  });
 
   // Language configuration
   const language = useLanguageConfig(
@@ -100,6 +108,13 @@ export function useWidgetConfig<T extends WidgetType>(
       ];
     }
 
+    if (priceImpactABTest.isEnabled && priceImpactABTest.value === 'test') {
+      baseConfig.hiddenUI = [
+        ...(baseConfig.hiddenUI ?? []),
+        HiddenUI.RouteCardPriceImpact,
+      ];
+    }
+
     return baseConfig;
   }, [
     sharedBase,
@@ -110,5 +125,7 @@ export function useWidgetConfig<T extends WidgetType>(
     context.theme,
     context.disabledUI,
     context.hiddenUI,
+    priceImpactABTest.isEnabled,
+    priceImpactABTest.value,
   ]);
 }

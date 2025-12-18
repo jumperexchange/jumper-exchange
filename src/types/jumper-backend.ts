@@ -489,6 +489,16 @@ export interface WalletEntity {
   user: UserEntity;
 }
 
+export interface PosthogFeatureFlag {
+  /**
+   * The metadata of the feature flag
+   * @example {"timestamp":"2021-01-01T00:00:00.000Z","path":"/api/feature-flag","method":"GET"}
+   */
+  meta: object;
+  /** The data of the feature flag */
+  data: string | boolean;
+}
+
 export interface WalletEVM {
   address: string;
   message: string;
@@ -1330,6 +1340,29 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags PostHog, Public
+     * @name PostHogControllerGetFeatureFlagV1
+     * @summary Get a feature flag
+     * @request GET:/v1/posthog/feature-flag
+     */
+    postHogControllerGetFeatureFlagV1: (
+      query: {
+        key: string;
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PosthogFeatureFlag, any>({
+        path: `/v1/posthog/feature-flag`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Leaderboard, Public
      * @name LeaderboardControllerFindManyV1
      * @summary Get all leaderboard entries with pagination
@@ -1603,6 +1636,16 @@ export class JumperBackend<
          * @example 25
          */
         maxAPY?: number;
+        /**
+         * The minimum TVL to filter for
+         * @example 5.5
+         */
+        minTVL?: number;
+        /**
+         * The maximum TVL to filter for
+         * @example 25
+         */
+        maxTVL?: number;
         /**
          * Filter for opportunities where the user has positions
          * @example true
@@ -1894,6 +1937,16 @@ export class JumperBackend<
          * @example 25
          */
         maxAPY?: number;
+        /**
+         * The minimum TVL to filter for
+         * @example 5.5
+         */
+        minTVL?: number;
+        /**
+         * The maximum TVL to filter for
+         * @example 25
+         */
+        maxTVL?: number;
         /**
          * Filter for opportunities where the user has positions
          * @example true
