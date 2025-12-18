@@ -358,6 +358,7 @@
       "apy": "APY"
     },
     "views": {
+      "viewBy": "",
       "forYou": "Para você",
       "allMarkets": "Todos os mercados",
       "all": "Tudo",
@@ -478,8 +479,6 @@
       }
     },
     "filter": {
-      "tokens": "Tokens",
-      "defiProtocols": "Protocolos DeFi",
       "wallet": "Carteira",
       "chain": "Rede",
       "protocol": "Protocolo",
@@ -496,6 +495,11 @@
       "totalValue": "",
       "chain": "Rede",
       "asset": "Ativo"
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
     }
   },
   "newsletter": {
