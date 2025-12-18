@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ColumnTableProps } from './ColumnTable.types';
+import type { ColumnTableProps } from './ColumnTable.types';
 
 export const ColumnTable: FC<ColumnTableProps> = ({
   columns,
@@ -40,8 +40,8 @@ export const ColumnTable: FC<ColumnTableProps> = ({
                   return null;
                 }
 
-                const headerSx = column.headerSx?.(rowIndex);
-                const cellSx = column.cellSx?.(rowIndex);
+                const headerSx = column.headerSx?.(row, rowIndex);
+                const cellSx = column.cellSx?.(row, rowIndex);
 
                 return (
                   <Stack

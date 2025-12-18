@@ -6,24 +6,22 @@ import {
   differenceInYears,
 } from 'date-fns';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
-import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import { DepositButtonDisplayMode } from '../DepositButton/DepositButton.types';
 import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
 import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 import { COLUMN_SPACING } from './constants';
-import type { RenderCellProps } from './DeFiPositionCard.types';
-import type { DefiToken, DefiPosition } from 'src/types/jumper-backend';
+import type {
+  EnhancedDefiTokenWithPositionData,
+  RenderCellProps,
+} from './DeFiPositionCard.types';
 import { DepositFlowOnDemandButton } from '../DepositFlow/DepositFlow';
-import {
-  StyledButtonAlphaDark,
-  StyledPositionActions,
-  StyledButtonPrimary,
-} from './DeFiPositionCard.styles';
+import { StyledPositionActions } from './DeFiPositionCard.styles';
 import type { TFunction } from 'i18next';
 import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 import { formatUnits } from 'viem';
 import { formatApy } from '@/utils/numbers/apy';
+import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
 
 export const formatTimeDifference = (date: string, t: TFunction) => {
   const now = new Date();
@@ -73,11 +71,20 @@ export const formatTimeDifference = (date: string, t: TFunction) => {
   );
 };
 
+export const createEnhancedToken = (
+  token: DefiToken,
+  position: DefiPosition,
+): EnhancedDefiTokenWithPositionData => ({
+  ...token,
+  latest: position.latest,
+  earn: position.earn,
+});
+
 export const renderEntityCell = ({
   item,
   titleVariant,
   descriptionVariant,
-}: RenderCellProps<DefiToken>) => (
+}: RenderCellProps<EnhancedDefiTokenWithPositionData>) => (
   <EntityChainStack
     variant={EntityChainStackVariant.Tokens}
     tokens={[item]}
@@ -99,7 +106,7 @@ export const renderValueCell = ({
   t,
   titleVariant,
   descriptionVariant,
-}: RenderCellProps<DefiToken>) => (
+}: RenderCellProps<EnhancedDefiTokenWithPositionData>) => (
   <TitleWithHint
     title={t('format.currency', { value: item.amountUSD })}
     hint={`${formatUnits(BigInt(item.amount || '0'), item.decimals)} ${item.symbol}`}
@@ -109,13 +116,13 @@ export const renderValueCell = ({
 );
 
 export const renderApyCell = ({
-  position,
+  item,
   titleVariant,
 }: {
-  position: DefiPosition;
+  item: EnhancedDefiTokenWithPositionData;
   titleVariant: RenderCellProps['titleVariant'];
 }) => {
-  const apyValue = position.latest?.apy?.total;
+  const apyValue = item.latest?.apy?.total;
   return (
     <TitleWithHint
       title={apyValue ? formatApy(apyValue) : '-'}
@@ -125,11 +132,11 @@ export const renderApyCell = ({
 };
 
 export const renderPositionActions = ({
-  position,
+  item,
   isMobile,
   t,
 }: {
-  position: DefiPosition;
+  item: EnhancedDefiTokenWithPositionData;
   isMobile: boolean;
   t: TFunction;
 }) => {
@@ -144,26 +151,22 @@ export const renderPositionActions = ({
       <WithdrawFlowOnDemandButton
         label={t('portfolio.defiPositionCard.actions.withdraw')}
         fullWidth={isMobile}
-        earnOpportunitySlug={position.earn || ''}
-        disabled={!position.earn}
+        earnOpportunitySlug={item.earn || ''}
+        disabled={!item.earn}
       />
       <DepositFlowOnDemandButton
         displayMode={DepositButtonDisplayMode.LabelOnly}
         label={t('portfolio.defiPositionCard.actions.deposit')}
         fullWidth={isMobile}
-        earnOpportunitySlug={position.earn || ''}
-        disabled={!position.earn}
+        earnOpportunitySlug={item.earn || ''}
+        disabled={!item.earn}
       />
     </StyledPositionActions>
   );
 };
 
-export const renderRewardActions = ({
-  position,
-  isMobile,
-  t,
-}: {
-  position: DefiPosition;
+export const renderRewardActions = ({}: {
+  item: EnhancedDefiTokenWithPositionData;
   isMobile: boolean;
   t: TFunction;
 }) => (
@@ -173,22 +176,11 @@ export const renderRewardActions = ({
       xs: 'column',
     }}
     useFlexGap
-  >
-    <StyledButtonAlphaDark fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.claim')}
-    </StyledButtonAlphaDark>
-    <StyledButtonPrimary fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.compound')}
-    </StyledButtonPrimary>
-  </StyledPositionActions>
+  ></StyledPositionActions>
 );
 
-export const renderBorrowedActions = ({
-  position,
-  isMobile,
-  t,
-}: {
-  position: DefiPosition;
+export const renderBorrowedActions = ({}: {
+  item: EnhancedDefiTokenWithPositionData;
   isMobile: boolean;
   t: TFunction;
 }) => (
@@ -198,12 +190,5 @@ export const renderBorrowedActions = ({
       xs: 'column',
     }}
     useFlexGap
-  >
-    <StyledButtonAlphaDark fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.repay')}
-    </StyledButtonAlphaDark>
-    <StyledButtonPrimary fullWidth={isMobile}>
-      {t('portfolio.defiPositionCard.actions.borrow')}
-    </StyledButtonPrimary>
-  </StyledPositionActions>
+  ></StyledPositionActions>
 );

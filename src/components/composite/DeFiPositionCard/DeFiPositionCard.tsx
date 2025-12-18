@@ -56,7 +56,6 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
   const { supplyColumns, rewardColumns, borrowColumns } = useColumnDefinitions(
     TYPOGRAPHY_VARIANTS.title,
     TYPOGRAPHY_VARIANTS.description,
-    defiPositions?.[0],
   );
 
   const positionGroups = usePositionGroups(
