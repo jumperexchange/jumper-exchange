@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { type AbTestName } from 'src/const/abtests';
 import { useAbTestsStore } from 'src/stores/abTests';
-import config from '@/config/env-config';
+import { getPosthogFeatureFlag } from '@/app/lib/getPosthogFeatureFlag';
+import { TEN_MINUTES_MS, THIRTY_MINUTES_MS } from '@/const/time';
+import type { PosthogFeatureFlag } from '@/types/jumper-backend';
 
 export interface UseABTestProps {
   isEnabled: boolean;
   isLoading: boolean;
+  value?: PosthogFeatureFlag['data'];
 }
 
 export const useABTest = ({
@@ -16,34 +19,33 @@ export const useABTest = ({
   address: string;
 }): UseABTestProps => {
   const { activeAbTests, setActiveAbTest } = useAbTestsStore();
-  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
   const { data, isLoading } = useQuery({
     queryKey: ['abtest', feature, address],
     queryFn: async () => {
-      const response = await fetch(
-        `${apiBaseUrl}/posthog/feature-flag?key=${feature}&distinctId=${address}`,
-      );
-      const resFormatted = await response.json();
-
-      if (resFormatted && feature) {
-        setActiveAbTest(feature, resFormatted.data);
+      const result = await getPosthogFeatureFlag(feature, address);
+      if (!result.ok) {
+        throw result.error;
       }
 
-      return resFormatted;
+      const resultData = result.data.data;
+
+      if (resultData && feature) {
+        setActiveAbTest(feature, !!resultData);
+      }
+
+      return resultData;
     },
     enabled: !!feature && !!address,
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 15 * 60 * 1000, // 15 minutes
+    staleTime: TEN_MINUTES_MS,
+    gcTime: THIRTY_MINUTES_MS,
   });
 
-  const isEnabled =
-    feature in activeAbTests
-      ? activeAbTests[feature]
-      : (data?.isEnabled ?? false);
+  const isEnabled = feature in activeAbTests ? activeAbTests[feature] : !!data;
 
   return {
     isEnabled,
     isLoading,
+    value: data,
   };
 };
