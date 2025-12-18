@@ -1,12 +1,11 @@
 import type { Appearance, WidgetConfig } from '@lifi/widget';
-import {
+import type {
   ColorSystem,
   CssVarsTheme,
   Palette,
   PaletteMode,
-  type Breakpoint,
-  type Theme,
 } from '@mui/material';
+import { type Breakpoint, type Theme } from '@mui/material';
 import { themeCustomized } from 'src/theme/theme';
 
 export const WIDGET_WIDTH = 416;
@@ -119,11 +118,12 @@ export const getDefaultWidgetThemeV2 = (
         container: {
           borderRadius: '24px',
           maxWidth: '100%',
+          height: 'fit-content',
           [copiedTheme.breakpoints.up('sm' as Breakpoint)]: {
             borderRadius: '24px',
             maxWidth: WIDGET_WIDTH,
             minWidth: WIDGET_WIDTH,
-            maxHeight: WIDGET_HEIGHT,
+            height: 'fit-content',
             boxShadow: copiedTheme.shadows[1],
           },
         },
@@ -132,7 +132,6 @@ export const getDefaultWidgetThemeV2 = (
             borderRadius: '24px',
             maxWidth: 256,
             minWidth: 256,
-            maxHeight: WIDGET_HEIGHT,
             boxShadow: copiedTheme.shadows[1],
           },
         },

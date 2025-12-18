@@ -80,7 +80,7 @@ export const WelcomeOverlayLayout = ({
             height: !isOverlayOpen ? '100%' : 'auto',
             overflow: {
               xs: !isOverlayOpen ? 'scroll' : 'hidden',
-              sm: 'inherit',
+              sm: !isOverlayOpen ? 'inherit' : 'hidden',
             },
             paddingTop: 3.5,
             WebkitOverflowScrolling: 'touch',

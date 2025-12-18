@@ -36,7 +36,6 @@ export const WidgetWrapper = styled(Box, {
     position: 'relative',
     margin: theme.spacing(0, 'auto'),
     zIndex: 2,
-    height: 'auto',
     display: 'contents',
     '& > div:not(.alert)': {
       position: 'relative',
@@ -44,13 +43,10 @@ export const WidgetWrapper = styled(Box, {
       transitionDuration: '.3s',
       transitionTimingFunction: 'ease-in-out',
       marginTop: 0,
-      maxHeight: '50vh',
       [theme.breakpoints.up('sm' as Breakpoint)]: {
-        height: 'auto',
         marginTop: 0,
         [`@media screen and (min-height: 700px)`]: {
           // set default widget height
-          height: '50vh',
           marginTop: 0,
         },
         [`@media screen and (min-height: 900px)`]: {
@@ -94,6 +90,9 @@ export const WidgetWrapper = styled(Box, {
         height: '600px',
       },
     }),
+    '& [id^="widget-scrollable-container-"]:has(.long-list)': {
+      height: widgetHeight,
+    },
     variants: [
       {
         props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
@@ -101,14 +100,6 @@ export const WidgetWrapper = styled(Box, {
           overflow: 'hidden',
           [`@media screen and (min-height: 700px)`]: {
             overflow: 'visible',
-          },
-        },
-      },
-      {
-        props: ({ welcomeScreenClosed }) => welcomeScreenClosed,
-        style: {
-          '& > div:not(.alert)': {
-            maxHeight: '100%',
           },
         },
       },
@@ -147,18 +138,6 @@ export const WidgetWrapper = styled(Box, {
             marginTop: DEFAULT_WIDGET_TOP_OFFSET_VARS.xs,
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               marginTop: DEFAULT_WIDGET_TOP_OFFSET_VARS.md,
-            },
-          },
-        },
-      },
-      {
-        props: ({ welcomeScreenClosed }) => welcomeScreenClosed,
-        style: {
-          '& > div:not(.alert)': {
-            [theme.breakpoints.up('sm' as Breakpoint)]: {
-              [`@media screen and (min-height: 700px)`]: {
-                height: widgetHeight,
-              },
             },
           },
         },
