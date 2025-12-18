@@ -34,6 +34,7 @@ export const useCheckWalletLinking = ({
           order: 'CHEAPEST',
           slippage: 0.005,
           maxPriceImpact: 0.4,
+          jitoBundle: true,
           allowSwitchChain: true,
         },
       };
