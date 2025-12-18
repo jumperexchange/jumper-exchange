@@ -170,7 +170,6 @@ export const renderRewardActions = ({
     }}
     useFlexGap
   >
-    {/** TODO: Add claim and compound actions */}
   </StyledPositionActions>
 );
 
