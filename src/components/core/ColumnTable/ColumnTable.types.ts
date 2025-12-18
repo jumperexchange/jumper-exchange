@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { GridProps, GridSize } from '@mui/material/Grid';
-import { SxProps, Theme } from '@mui/material/styles';
-import { TypographyProps } from '@mui/material/Typography';
+import type { ReactNode } from 'react';
+import type { GridProps, GridSize } from '@mui/material/Grid';
+import type { SxProps, Theme } from '@mui/material/styles';
+import type { TypographyProps } from '@mui/material/Typography';
 
 export type ColumnAlignment = 'left' | 'center' | 'right' | 'end' | 'start';
 
@@ -22,8 +22,8 @@ export interface ColumnDefinition<TData = any> {
   cellGridProps?: ResponsiveGridProps;
   hideHeader?: boolean;
   align?: ColumnAlignment;
-  headerSx?: (index: number) => SxProps<Theme>;
-  cellSx?: (index: number) => SxProps<Theme>;
+  headerSx?: (row: TData, index: number) => SxProps<Theme>;
+  cellSx?: (row: TData, index: number) => SxProps<Theme>;
 }
 
 export interface ColumnTableProps<TData = any> {

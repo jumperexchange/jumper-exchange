@@ -6,6 +6,7 @@ import type { ColumnDefinition } from 'src/components/core/ColumnTable/ColumnTab
 import { createEmptyColumn } from 'src/components/core/ColumnTable/utils';
 import type { DefiPosition, DefiToken } from 'src/types/jumper-backend';
 import {
+  createEnhancedToken,
   renderApyCell,
   renderBorrowedActions,
   renderEntityCell,
@@ -14,18 +15,23 @@ import {
   renderValueCell,
 } from './utils';
 import { GRID_SIZES } from './constants';
-import type { PositionGroup, Section } from './DeFiPositionCard.types';
+import type {
+  EnhancedDefiTokenWithPositionData,
+  PositionGroup,
+  Section,
+} from './DeFiPositionCard.types';
 
 export const useColumnDefinitions = (
   titleVariant: TypographyProps['variant'],
   descriptionVariant: TypographyProps['variant'],
-  position?: DefiPosition,
 ) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
-  const supplyColumns = useMemo<ColumnDefinition<DefiToken>[]>(() => {
-    const columns: ColumnDefinition<DefiToken>[] = [
+  const supplyColumns = useMemo<
+    ColumnDefinition<EnhancedDefiTokenWithPositionData>[]
+  >(() => {
+    const columns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[] = [
       {
         id: 'supplied',
         header: t('portfolio.defiPositionCard.header.supplied'),
@@ -55,45 +61,48 @@ export const useColumnDefinitions = (
       {
         id: 'apy',
         header: t('portfolio.defiPositionCard.header.apy'),
-        render: (_token, rowIndex) =>
-          rowIndex === 0 && position
+        render: (token, rowIndex) =>
+          rowIndex === 0 && token
             ? renderApyCell({
-                position,
+                item: token,
                 titleVariant,
               })
             : null,
         gridProps: { size: GRID_SIZES.apyColumn },
       },
-    ];
-
-    if (position?.earn || !isMobile) {
-      columns.push({
+      {
         id: 'actions',
         hideHeader: true,
-        render: (_token, rowIndex) =>
-          rowIndex === 0 && position && position.earn
+        render: (token, rowIndex) =>
+          rowIndex === 0 && token.earn
             ? renderPositionActions({
-                position,
+                item: token,
                 t,
                 isMobile,
               })
             : null,
-        cellSx: (rowIndex) => ({
+        cellSx: (token, rowIndex) => ({
           ...(rowIndex === 0 && {
             marginTop: {
               md: 3,
             },
           }),
+          ...(!token.earn &&
+            isMobile && {
+              display: 'none',
+            }),
         }),
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
-      });
-    }
+      },
+    ];
 
     return columns;
-  }, [t, titleVariant, descriptionVariant, isMobile, position]);
+  }, [t, titleVariant, descriptionVariant, isMobile]);
 
-  const borrowColumns = useMemo<ColumnDefinition<DefiToken>[]>(
+  const borrowColumns = useMemo<
+    ColumnDefinition<EnhancedDefiTokenWithPositionData>[]
+  >(
     () => [
       {
         id: 'borrowed',
@@ -121,35 +130,41 @@ export const useColumnDefinitions = (
           }),
         gridProps: { size: GRID_SIZES.valueColumn },
       },
-      createEmptyColumn<DefiToken>('empty-column', {
+      createEmptyColumn<EnhancedDefiTokenWithPositionData>('empty-column', {
         size: GRID_SIZES.apyColumn,
       }),
       {
         id: 'actions',
         hideHeader: true,
-        render: (_token, rowIndex) =>
-          rowIndex === 0 && position
+        render: (token, rowIndex) =>
+          rowIndex === 0 && token.earn
             ? renderBorrowedActions({
-                position,
+                item: token,
                 t,
                 isMobile,
               })
             : null,
-        cellSx: (rowIndex) => ({
+        cellSx: (token, rowIndex) => ({
           ...(rowIndex === 0 && {
             marginTop: {
               md: 3,
             },
+            ...(!token.earn &&
+              isMobile && {
+                display: 'none',
+              }),
           }),
         }),
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
       },
     ],
-    [t, titleVariant, descriptionVariant, isMobile, position],
+    [t, titleVariant, descriptionVariant, isMobile],
   );
 
-  const rewardColumns = useMemo<ColumnDefinition<DefiToken>[]>(
+  const rewardColumns = useMemo<
+    ColumnDefinition<EnhancedDefiTokenWithPositionData>[]
+  >(
     () => [
       {
         id: 'rewards',
@@ -177,32 +192,36 @@ export const useColumnDefinitions = (
           }),
         gridProps: { size: GRID_SIZES.valueColumn },
       },
-      createEmptyColumn<DefiToken>('empty-column', {
+      createEmptyColumn<EnhancedDefiTokenWithPositionData>('empty-column', {
         size: GRID_SIZES.apyColumn,
       }),
       {
         id: 'actions',
         hideHeader: true,
-        render: (_token, rowIndex) =>
-          rowIndex === 0 && position
+        render: (token, rowIndex) =>
+          rowIndex === 0 && token.earn
             ? renderRewardActions({
-                position,
+                item: token,
                 t,
                 isMobile,
               })
             : null,
-        cellSx: (rowIndex) => ({
+        cellSx: (token, rowIndex) => ({
           ...(rowIndex === 0 && {
             marginTop: {
               md: 3,
             },
+            ...(!token.earn &&
+              isMobile && {
+                display: 'none',
+              }),
           }),
         }),
         gridProps: { size: GRID_SIZES.actionsColumn },
         align: 'end',
       },
     ],
-    [t, titleVariant, descriptionVariant, isMobile, position],
+    [t, titleVariant, descriptionVariant, isMobile],
   );
 
   return {
@@ -210,53 +229,6 @@ export const useColumnDefinitions = (
     borrowColumns,
     rewardColumns,
   };
-};
-
-export const usePositionSections = (
-  position: DefiPosition | undefined,
-  supplyColumns: ColumnDefinition<DefiToken>[],
-  borrowColumns: ColumnDefinition<DefiToken>[],
-  rewardColumns: ColumnDefinition<DefiToken>[],
-): Section[] => {
-  return useMemo(() => {
-    if (!position) {
-      return [];
-    }
-
-    const sections: Section[] = [];
-
-    if (position.supplyTokens && position.supplyTokens.length > 0) {
-      sections.push({
-        id: `${position.address}-supply`,
-        type: 'supply',
-        data: position.supplyTokens,
-        columns: supplyColumns,
-        showHeader: true,
-      });
-    }
-
-    if (position.borrowTokens && position.borrowTokens.length > 0) {
-      sections.push({
-        id: `${position.address}-borrow`,
-        type: 'borrow',
-        data: position.borrowTokens,
-        columns: borrowColumns,
-        showHeader: true,
-      });
-    }
-
-    if (position.rewardTokens && position.rewardTokens.length > 0) {
-      sections.push({
-        id: `${position.address}-rewards`,
-        type: 'rewards',
-        data: position.rewardTokens,
-        columns: rewardColumns,
-        showHeader: true,
-      });
-    }
-
-    return sections;
-  }, [position, supplyColumns, borrowColumns, rewardColumns]);
 };
 
 export const usePositionGroups = (
@@ -277,7 +249,9 @@ export const usePositionGroups = (
         sections.push({
           id: `${position.address}-supply`,
           type: 'supply',
-          data: position.supplyTokens,
+          data: position.supplyTokens.map((token) =>
+            createEnhancedToken(token, position),
+          ),
           columns: supplyColumns,
           showHeader: true,
         });
@@ -287,7 +261,9 @@ export const usePositionGroups = (
         sections.push({
           id: `${position.address}-borrow`,
           type: 'borrow',
-          data: position.borrowTokens,
+          data: position.borrowTokens.map((token) =>
+            createEnhancedToken(token, position),
+          ),
           columns: borrowColumns,
           showHeader: true,
         });
@@ -297,7 +273,9 @@ export const usePositionGroups = (
         sections.push({
           id: `${position.address}-rewards`,
           type: 'rewards',
-          data: position.rewardTokens,
+          data: position.rewardTokens.map((token) =>
+            createEnhancedToken(token, position),
+          ),
           columns: rewardColumns,
           showHeader: true,
         });

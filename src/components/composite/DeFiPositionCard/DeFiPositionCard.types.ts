@@ -25,9 +25,12 @@ export interface TableSection<T> {
   showHeader: boolean;
 }
 
-export type SupplySection = TableSection<DefiToken>;
-export type BorrowSection = TableSection<DefiToken>;
-export type RewardSection = TableSection<DefiToken>;
+export type EnhancedDefiTokenWithPositionData = DefiToken &
+  Pick<DefiPosition, 'latest' | 'earn'>;
+
+export type SupplySection = TableSection<EnhancedDefiTokenWithPositionData>;
+export type BorrowSection = TableSection<EnhancedDefiTokenWithPositionData>;
+export type RewardSection = TableSection<EnhancedDefiTokenWithPositionData>;
 
 export type Section = SupplySection | BorrowSection | RewardSection;
 
