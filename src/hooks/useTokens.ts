@@ -1,12 +1,13 @@
-import { ChainType, getTokens } from '@lifi/sdk';
-import type { TokensResponse } from '@lifi/sdk';
-import { useQuery } from '@tanstack/react-query';
 import {
-  getTokenBySymbol as getTokenBySymbolHelper,
-  getTokenByName as getTokenByNameHelper,
-  getTokenByAddressOnSpecificChain as getTokenByAddressOnSpecificChainHelper,
   getNativeTokenForChain as getNativeTokenForChainHelper,
+  getTokenByAddressOnSpecificChain as getTokenByAddressOnSpecificChainHelper,
+  getTokenByName as getTokenByNameHelper,
+  getTokenBySymbol as getTokenBySymbolHelper,
 } from '@/utils/tokenAndChain';
+import type { TokensResponse } from '@lifi/sdk';
+import { ChainType, getTokens } from '@lifi/sdk';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
 
 export const queryKey = ['tokenStats'];
 
@@ -18,50 +19,54 @@ export const getTokensQuery = async () => {
 };
 
 export const useTokens = () => {
-  const { data, isSuccess } = useQuery({
+  const { data, isSuccess, isLoading, dataUpdatedAt } = useQuery({
     queryKey,
     queryFn: getTokensQuery,
     enabled: true,
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const getTokenBySymbol = (symbol: string) => {
-    if (!data?.tokens) {
-      return;
-    }
-    return getTokenBySymbolHelper(data?.tokens, symbol);
-  };
+  const tokens = useMemo<TokensResponse['tokens']>(
+    () => data?.tokens ?? {},
+    [data?.tokens],
+  );
 
-  const getTokenByName = (name: string) => {
-    if (!data?.tokens) {
-      return;
-    }
-    return getTokenByNameHelper(data?.tokens, name);
-  };
+  const getTokenBySymbol = useCallback(
+    (symbol: string) => {
+      return getTokenBySymbolHelper(tokens, symbol);
+    },
+    [tokens],
+  );
 
-  const getTokenByAddressAndChain = (address: string, chainId: number) => {
-    if (!data?.tokens) {
-      return;
-    }
-    return getTokenByAddressOnSpecificChainHelper(
-      data?.tokens,
-      chainId,
-      address,
-    );
-  };
-  const getNativeTokenForChain = (chainId: number) => {
-    if (!data?.tokens) {
-      return;
-    }
-    return getNativeTokenForChainHelper(data?.tokens, chainId);
-  };
+  const getTokenByName = useCallback(
+    (name: string) => {
+      return getTokenByNameHelper(tokens, name);
+    },
+    [tokens],
+  );
+
+  const getTokenByAddressAndChain = useCallback(
+    (address: string, chainId: number) => {
+      return getTokenByAddressOnSpecificChainHelper(tokens, chainId, address);
+    },
+    [tokens],
+  );
+
+  const getNativeTokenForChain = useCallback(
+    (chainId: number) => {
+      return getNativeTokenForChainHelper(tokens, chainId);
+    },
+    [tokens],
+  );
 
   return {
     getTokenBySymbol,
     getTokenByName,
     getTokenByAddressAndChain,
     getNativeTokenForChain,
-    tokens: data || ({} as TokensResponse),
+    tokens,
     isSuccess,
+    isLoading,
+    updatedAt: dataUpdatedAt,
   };
 };
