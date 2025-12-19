@@ -40,8 +40,7 @@ export interface HeroEarnCardNotEmptyProps extends CommonHeroEarnCardProps {
   isLoading?: boolean;
 }
 
-export interface HeroEarnCardEmptyAndLoadingProps
-  extends CommonHeroEarnCardProps {
+export interface HeroEarnCardEmptyAndLoadingProps extends CommonHeroEarnCardProps {
   data: null;
   isLoading: true;
 }
@@ -69,7 +68,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   // TODO: LF-14990: Complex Top Opportunity rendering
   // For now we're rendering the same text all the time, ideally
   // we'd use custom tags like "IsBest" + "Lending" to render different texts
-  const { asset, protocol, forYou, tags, latest, name } = data;
+  const { asset, protocol, forYou, tags, latest, name, lpToken } = data;
 
   const assets = [asset];
   const chains = uniqBy(
@@ -128,6 +127,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
           <HeroEarnCardFooterContentContainer>
             <EntityChainStack
               variant={EntityChainStackVariant.Protocol}
+              address={lpToken?.address}
               protocol={protocol}
               chains={chains}
               protocolSize={AvatarSize.XXL}

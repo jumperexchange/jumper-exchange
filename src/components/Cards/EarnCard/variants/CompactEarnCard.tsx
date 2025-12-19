@@ -84,6 +84,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
         <CompactEarnCardContentContainer>
           <EntityChainStack
             variant={EntityChainStackVariant.Protocol}
+            address={lpToken?.address}
             protocol={protocol}
             chains={chains}
             content={{

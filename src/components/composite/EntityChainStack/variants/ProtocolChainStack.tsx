@@ -32,6 +32,7 @@ export const ProtocolChainStack: FC<ProtocolChainStackProps> = (props) => {
 
   return (
     <BaseChainStack
+      assetAddresses={props.address ? [props.address] : []}
       dataTestId={`protocol-${props.protocol?.name}`}
       mainStack={mainStack}
       chainIds={chainIds}

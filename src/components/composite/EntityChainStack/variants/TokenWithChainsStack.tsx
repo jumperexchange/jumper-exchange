@@ -51,6 +51,7 @@ export const TokenWithChainsStack: FC<TokenWithChainsChainStackProps> = (
 
   return (
     <BaseChainStack
+      assetAddresses={props.token?.address ? [props.token.address] : []}
       mainStack={mainStack}
       chainIds={chainIds}
       chainKeys={chainKeys}
