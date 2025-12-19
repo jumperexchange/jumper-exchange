@@ -7,6 +7,7 @@ import {
   verifyAllCardsShowChain,
   verifyOnlySelectedTagIsVisible,
   verifyAnalyticsButtonsAreVisible,
+  verifyFiltersAreVisible,
 } from './testData/earnPageFunctions';
 import { qase } from 'playwright-qase-reporter';
 import { injectMockWallet } from './utils/mockWallet';
@@ -37,23 +38,24 @@ test.describe('Chains filters on Earn page', () => {
       await test.step('Verify Earn tabs are visible', async () => {
         const allMarketsTab = page.getByTestId('earn-filter-tab-all');
         const forYouTab = page.getByTestId('earn-filter-tab-foryou');
-        const tabs = [allMarketsTab, forYouTab];
+        const yourPositionsTab = page.getByTestId(
+          'earn-filter-tab-your-positions',
+        );
+        const tabs = [allMarketsTab, forYouTab, yourPositionsTab];
         for (const tab of tabs) {
           await expect(tab).toBeVisible();
         }
       });
+      await test.step('Verify if all filters are visible on Your Positions tab', async () => {
+        const yourPositionsTab = page.getByTestId(
+          'earn-filter-tab-your-positions',
+        );
+        await yourPositionsTab.click();
+        await verifyFiltersAreVisible(page);
+      });
 
       await test.step('Validate if filters are visible on All Markets tab', async () => {
-        const filterIds = [
-          'earn-filter-chain-select',
-          'earn-filter-protocol-select',
-          'earn-filter-tag-select',
-          'earn-filter-asset-select',
-          'earn-filter-apy-select',
-        ];
-        for (const filterId of filterIds) {
-          await expect(page.getByTestId(filterId)).toBeVisible();
-        }
+        await verifyFiltersAreVisible(page);
       });
     },
   );
