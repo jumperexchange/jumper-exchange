@@ -20,6 +20,7 @@ export async function getTokenQuery(chainId?: ChainId, tokenAddress?: string) {
 export const useToken = (
   chainId?: ChainId,
   tokenAddress?: string,
+  enabled: boolean = true,
 ): TokenProps => {
   const {
     data: token,
@@ -29,7 +30,7 @@ export const useToken = (
   } = useQuery({
     queryKey: ['token', chainId, tokenAddress],
     queryFn: () => getTokenQuery(chainId, tokenAddress),
-    enabled: !!chainId && !!tokenAddress,
+    enabled: !!chainId && !!tokenAddress && !!enabled,
     refetchInterval: 1000 * 60 * 60, // Refetch every hour
   });
 

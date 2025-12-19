@@ -11,6 +11,8 @@ import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
+import type { Hex } from 'viem';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -33,6 +35,12 @@ export const EarnDetailsActions = ({
     },
   });
 
+  const { depositTokenData: depositAmount } = useGetZapInPoolBalance(
+    accountAddress as Hex,
+    earnOpportunity.lpToken.address as Hex,
+    earnOpportunity.lpToken.chain.chainId,
+  );
+
   const depositAmountUSD = useMemo(() => {
     if (isLoadingPositions || !positionsData || !positionsData.positions) {
       return;
@@ -41,13 +49,14 @@ export const EarnDetailsActions = ({
     return positionsData.positions[0]?.netUsd;
   }, [positionsData, isLoadingPositions]);
 
-  const hasDeposited = !!depositAmountUSD;
+  const hasDeposited = !!depositAmountUSD || !!depositAmount;
 
   return (
     <EarnDetailsActionsContainer>
       <EarnDetailsActionsPosition
         token={earnOpportunity.lpToken}
         amountUSD={depositAmountUSD}
+        amount={depositAmount}
       />
       <EarnDetailsActionsButtonsContainer>
         <DepositFlowButton

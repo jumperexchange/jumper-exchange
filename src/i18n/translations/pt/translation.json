@@ -41,7 +41,9 @@
       "support": "Suporte",
       "resources": "Recursos",
       "profile": "Perfil Jumper",
-      "privacyPolicy": "Política de Privacidade"
+      "privacyPolicy": "Política de Privacidade",
+      "termsConditions": "",
+      "newsletter": ""
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -310,7 +312,8 @@
     "chains_one": "A cadeia da qual você ganhará",
     "chains_other": "As cadeias das quais você ganhará",
     "protocol": "O protocolo do qual você ganhará",
-    "noPositionsToManage": "Você não tem nenhuma posição para gerenciar"
+    "noPositionsToManage": "Você não tem nenhuma posição para gerenciar",
+    "capInDollar": ""
   },
   "labels": {
     "apy": "APY",
@@ -322,7 +325,8 @@
     "chains_one": "Rede",
     "chains_other": "Redes",
     "protocol": "Protocolo",
-    "overview": "Visão geral"
+    "overview": "Visão geral",
+    "capInDollar": ""
   },
   "earn": {
     "top": {
@@ -332,7 +336,7 @@
       "earnUpTo": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> por ano se for colocado em <protocol/>"
     },
     "copy": {
-      "forYouBasedOnActivity": "Mercado escolhido a dedo em {{totalMarkets}}+ baseado na atividade da sua conta",
+      "forYouBasedOnActivity": "",
       "forYouDefault": "Explore formas precisas e abrangentes de colocar seus ativos para trabalhar em {{totalMarkets}}+ mercados"
     },
     "sorting": {
@@ -354,19 +358,55 @@
       "apy": "APY"
     },
     "views": {
+      "viewBy": "",
       "forYou": "Para você",
       "allMarkets": "Todos os mercados",
-      "all": "Tudo"
+      "all": "Tudo",
+      "yourPositions": ""
     },
     "relatedMarkets": {
       "title": "Mercados relacionados"
+    },
+    "riskDescriptions": {
+      "risk": "",
+      "riskTag": {
+        "Basis Trading": "",
+        "Bridge": "",
+        "CDP": "",
+        "Credit": "",
+        "Farming": "",
+        "Lending": "",
+        "Liquid Staking": "",
+        "Liquidity": "",
+        "RWA": "",
+        "Staking": "",
+        "Structured": "",
+        "Synthetic": "",
+        "Yield Aggregator": ""
+      },
+      "website": ""
     },
     "overview": {
       "updated": "Atualizado há {{time}} atrás"
     },
     "actions": {
-      "viewAllMarkets": "",
+      "viewAllMarkets": "Visualizar todos os mercados",
       "seeMore": "veja mais"
+    },
+    "position": {
+      "label": ""
+    },
+    "emptyList": {
+      "yourPositions": {
+        "title": "",
+        "description": "",
+        "viewAllMarkets": ""
+      },
+      "noResults": {
+        "title": "",
+        "description": "",
+        "clearFilters": ""
+      }
     }
   },
   "portfolio": {
@@ -439,8 +479,6 @@
       }
     },
     "filter": {
-      "tokens": "Tokens",
-      "defiProtocols": "Protocolos DeFi",
       "wallet": "Carteira",
       "chain": "Rede",
       "protocol": "Protocolo",
@@ -454,9 +492,31 @@
     "sorting": {
       "sortBy": "Ordenar por",
       "sort": "Ordenar",
-      "totalValue": "Valor total",
+      "totalValue": "",
       "chain": "Rede",
       "asset": "Ativo"
+    },
+    "views": {
+      "viewBy": "",
+      "tokens": "",
+      "defiProtocols": ""
+    }
+  },
+  "newsletter": {
+    "welcome": {
+      "title": "",
+      "subtitle": "",
+      "hint": "",
+      "subscribe": "",
+      "emailPlaceholder": "",
+      "error": {
+        "email": "",
+        "emailLength": "",
+        "required": "",
+        "unknown": ""
+      },
+      "pending": "",
+      "success": ""
     }
   },
   "widget": {
@@ -487,7 +547,7 @@
     "zap": {
       "sendToAddressName": "Depositar em {{name}}",
       "sentToAddressName": "Depositado em {{name}}",
-      "depositSuccess": "Você será capaz de ver sua posição em alguns segundos ou alternativamente clicando em <bold>Gerencie sua posição</bold> que redireciona para a interface do usuário {{partnerName}}",
+      "depositSuccess": "Você será capaz de ver sua posição em alguns segundos ou alternativamente clicando em <bold>Gerenciar sua posição</bold> que redireciona para a interface do usuário {{partnerName}}",
       "tabs": {
         "deposit": "Depositar",
         "withdraw": "Retirar"
@@ -505,7 +565,7 @@
       }
     },
     "earn": {
-      "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie sua posição</bold>"
+      "depositSuccess": "Você poderá ver e gerenciar sua posição em poucos segundos clicando em <bold>Gerencie suas posições</bold>"
     },
     "withdraw": {
       "title": "Retirar"
@@ -517,7 +577,9 @@
   "buttons": {
     "depositButtonLabel": "Depósito rápido",
     "withdrawButtonLabel": "Retirar",
-    "managePositionsButtonLabel": "Gerenciar Posições"
+    "managePositionsButtonLabel": "Gerenciar Posições",
+    "deposit": "",
+    "depositNow": ""
   },
   "modal": {
     "perks": {
@@ -583,8 +645,12 @@
   "gatekeeper": {
     "title": "Bem-vindo a {{pageTitle}}!",
     "subtitle": {
+      "intro": {
+        "earn": "<strong>Ganho inteligente, complexidade zero.</strong>",
+        "portfolio": "<strong>portfólio interativo DeFi.</strong>"
+      },
       "notConnected": "Estamos atualmente em um Beta fechado <strong></strong>.\nConecte-se para descobrir se você tem acesso.",
-      "noAccess": "Estamos atualmente em um Beta fechado <strong></strong>.\nConecte-se para descobrir se você tem acesso."
+      "noAccess": "Estamos atualmente em um beta fechado <strong>.</strong> Você não tem acesso."
     },
     "requestAccess": "Solicitar acesso",
     "connecting": "Conectando...",
