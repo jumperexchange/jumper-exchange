@@ -65,25 +65,25 @@ export const EarnDetailsActionsPosition: FC<
 
   const { formattedAmount, formattedAmountUSD } = useMemo(() => {
     const calculateTokenAmount = (): string => {
-      if (amountUSD && hasEffectivePriceUSD) {
-        return priceToTokenAmount(amountUSD.toString(), effectivePriceUSD);
-      }
       if (amount) {
         return formatTokenAmount(BigInt(amount), token.decimals);
+      }
+      if (amountUSD && hasEffectivePriceUSD) {
+        return priceToTokenAmount(amountUSD.toString(), effectivePriceUSD);
       }
       return '0';
     };
 
     const calculateAmountUSD = (): number => {
-      if (amountUSD) {
-        return amountUSD;
-      }
       if (amount && hasEffectivePriceUSD) {
         const formattedTokenAmount = formatTokenAmount(
           BigInt(amount),
           token.decimals,
         );
         return formatTokenPrice(formattedTokenAmount, effectivePriceUSD);
+      }
+      if (amountUSD) {
+        return amountUSD;
       }
       return 0;
     };
