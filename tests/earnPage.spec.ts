@@ -46,15 +46,16 @@ test.describe('Chains filters on Earn page', () => {
           await expect(tab).toBeVisible();
         }
       });
+
+      await test.step('Validate if filters are visible on All Markets tab', async () => {
+        await verifyFiltersAreVisible(page);
+      });
+
       await test.step('Verify if all filters are visible on Your Positions tab', async () => {
         const yourPositionsTab = page.getByTestId(
           'earn-filter-tab-your-positions',
         );
         await yourPositionsTab.click();
-        await verifyFiltersAreVisible(page);
-      });
-
-      await test.step('Validate if filters are visible on All Markets tab', async () => {
         await verifyFiltersAreVisible(page);
       });
     },
