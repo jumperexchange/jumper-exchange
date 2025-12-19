@@ -10,8 +10,8 @@ export const EarnEmptyListAllMarkets = () => {
     <PortfolioEmptyList
       title={t('earn.emptyList.noResults.title')}
       description={t('earn.emptyList.noResults.description')}
-      buttonLabel={t('earn.emptyList.noResults.clearFilters')}
-      onClick={clearFilters}
+      primaryButtonLabel={t('earn.emptyList.noResults.clearFilters')}
+      onPrimaryButtonClick={clearFilters}
     />
   );
 };

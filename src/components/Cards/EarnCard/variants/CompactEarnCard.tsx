@@ -18,11 +18,13 @@ import { CompactEarnCardItem } from './CompactEarnCardItem';
 import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
+import { CompactEarnCardMissingPosition } from './CompactEarnCardMissingPosition';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
   data,
   isLoading,
+  isMissingPosition,
   href,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
@@ -53,6 +55,10 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       />
     );
   });
+
+  if (isMissingPosition) {
+    return <CompactEarnCardMissingPosition />;
+  }
 
   if (isEmpty) {
     return <CompactEarnCardSkeleton />;

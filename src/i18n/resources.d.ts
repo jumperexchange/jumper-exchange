@@ -76,6 +76,7 @@ interface Resources {
     };
     earn: {
       actions: {
+        goToPortfolio: 'Go to Portfolio';
         seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
@@ -90,7 +91,7 @@ interface Resources {
           title: 'No results';
         };
         yourPositions: {
-          description: "Looks like you don't have any active positions in any market yet. Let's change that!";
+          description: "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.";
           title: 'No positions';
           viewAllMarkets: 'View all markets';
         };
@@ -107,6 +108,10 @@ interface Resources {
         selected: '{{count}} selected';
         tag: 'Type';
         tvl: 'TVL';
+      };
+      missingPosition: {
+        description: 'Check your portfolio tokens before contacting support.';
+        title: 'Missing a position ?';
       };
       overview: {
         updated: 'Updated {{time}} ago';

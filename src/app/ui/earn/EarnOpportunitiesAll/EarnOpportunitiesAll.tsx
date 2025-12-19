@@ -21,8 +21,14 @@ import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useCon
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
-  const { data, isLoading, isAllDataLoading, showForYou, changeTab } =
-    useEarnFiltering();
+  const {
+    data,
+    isLoading,
+    isAllDataLoading,
+    showForYou,
+    changeTab,
+    showYourPositions,
+  } = useEarnFiltering();
 
   const [variant, setVariant] = useState<EarnCardVariant>('compact');
 
@@ -73,6 +79,7 @@ const EarnOpportunitiesAllInner = () => {
           <EarnOpportunitiesCards
             items={data}
             isLoading={isLoading}
+            showPlaceholderCard={showYourPositions}
             variant={variant}
           />
           <EarnEmptyList />

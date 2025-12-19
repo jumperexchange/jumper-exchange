@@ -17,11 +17,13 @@ import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
+import { ListItemEarnCardMissingPosition } from './ListItemEarnCardMissingPosition';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
   primaryAction,
   isLoading,
+  isMissingPosition,
   href,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
@@ -48,6 +50,10 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       startIcon={item.valuePrepend}
     />
   ));
+
+  if (isMissingPosition) {
+    return <ListItemEarnCardMissingPosition />;
+  }
 
   if (isEmpty) {
     return <ListItemEarnCardSkeleton />;

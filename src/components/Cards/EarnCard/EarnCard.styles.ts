@@ -1,9 +1,11 @@
 import Box from '@mui/material/Box';
+import type { StackProps } from '@mui/material/Stack';
 import Stack from '@mui/material/Stack';
 import InfoIcon from '@mui/icons-material/Info';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { ButtonPrimary } from '@/components/Button/Button.style';
 
 interface EarnCardContainerProps {
   hasLink?: boolean;
@@ -191,5 +193,46 @@ export const OverviewEarnCardItemValueAppend = styled(Typography)(
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.alphaDark800.main,
     }),
+  }),
+);
+
+export const EarnCardMissingPositionContent = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1.5),
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+interface EarnCardMissingPositionStackProps extends StackProps {
+  isCentered?: boolean;
+}
+
+export const EarnCardMissingPositionInteractiveContent = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isCentered',
+})<EarnCardMissingPositionStackProps>(({ theme, isCentered }) => ({
+  gap: theme.spacing(1.5),
+  alignItems: 'center',
+  justifyContent: isCentered ? 'center' : 'space-between',
+}));
+
+export const EarnCardMissingPositionDescription = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isCentered',
+})<EarnCardMissingPositionStackProps>(({ theme, isCentered }) => ({
+  gap: theme.spacing(1),
+  alignItems: isCentered ? 'center' : 'flex-start',
+  justifyContent: isCentered ? 'center' : 'flex-start',
+}));
+
+export const EarnCardMissingPositionButton = styled(ButtonPrimary)(
+  ({ theme }) => ({
+    ...theme.typography.bodyXSmallStrong,
+    padding: theme.spacing(1),
+    height: 'auto',
+    width: '100%',
+    minWidth: 'fit-content',
+    textAlign: 'center',
+    textDecoration: 'none',
+    [theme.breakpoints.up('sm')]: {
+      width: 'fit-content',
+    },
   }),
 );

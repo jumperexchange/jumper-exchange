@@ -392,15 +392,20 @@
     },
     "actions": {
       "viewAllMarkets": "View all markets",
-      "seeMore": "see more"
+      "seeMore": "see more",
+      "goToPortfolio": "Go to Portfolio"
     },
     "position": {
       "label": "Your position"
     },
+    "missingPosition": {
+      "title": "Missing a position ?",
+      "description": "Check your portfolio tokens before contacting support."
+    },
     "emptyList": {
       "yourPositions": {
         "title": "No positions",
-        "description": "Looks like you don't have any active positions in any market yet. Let's change that!",
+        "description": "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.",
         "viewAllMarkets": "View all markets"
       },
       "noResults": {

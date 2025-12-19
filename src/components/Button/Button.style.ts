@@ -3,7 +3,7 @@ import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import MuiButton, { buttonClasses } from '@mui/material/Button';
 
-const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
+export const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   borderRadius: '24px',
   fontSize: '16px',
   letterSpacing: 0,
