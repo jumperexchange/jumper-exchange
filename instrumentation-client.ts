@@ -4,6 +4,7 @@
 
 import * as Sentry from '@sentry/nextjs';
 import { isProduction } from './src/utils/isProduction';
+import './src/utils/instrumentation/lifiSdkConfig';
 
 Sentry.init({
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
