@@ -29,21 +29,11 @@ export const getTokenBySymbolOnSpecificChain = (
   chainId: number,
   symbol: string,
 ) => {
-  const chainTokens = tokens[chainId];
-  if (!chainTokens) {
-    return;
-  }
-
+  const chainTokens = tokens[chainId] ?? [];
   const filteredToken = chainTokens.find(
     (el) => el.symbol.toLowerCase() === symbol.toLowerCase(),
   );
-  if (filteredToken) {
-    return filteredToken;
-  } else {
-    console.error(
-      `Token symbol ${symbol} is not available on chain ${chainId}`,
-    );
-  }
+  return filteredToken;
 };
 
 export const getTokenBySymbol = (
@@ -73,21 +63,11 @@ export const getTokenByAddressOnSpecificChain = (
   chainId: number,
   address: string,
 ) => {
-  const chainTokens = tokens[chainId];
-  if (!chainTokens) {
-    return;
-  }
-
+  const chainTokens = tokens[chainId] ?? [];
   const filteredToken = chainTokens.find(
     (el) => el.address.toLowerCase() === address.toLowerCase(),
   );
-  if (filteredToken) {
-    return filteredToken;
-  } else {
-    console.error(
-      `Token address ${address} is not available on chain ${chainId}`,
-    );
-  }
+  return filteredToken;
 };
 
 // @Note: this works only for EVM chains
@@ -95,9 +75,6 @@ export const getNativeTokenForChain = (
   tokens: TokensResponse['tokens'],
   chainId: number,
 ) => {
-  const chainTokens = tokens[chainId];
-  if (!chainTokens) {
-    return;
-  }
+  const chainTokens = tokens[chainId] ?? [];
   return chainTokens.find((token) => token.address === zeroAddress);
 };

@@ -165,3 +165,16 @@ export async function verifyOnlySelectedTagIsVisible(
 
   expect(selectedTagCount).toBeGreaterThan(0); //verify that at least one tag is visible
 }
+
+export async function verifyFiltersAreVisible(page: Page) {
+  const filterIds = [
+    'earn-filter-chain-select',
+    'earn-filter-protocol-select',
+    'earn-filter-tag-select',
+    'earn-filter-asset-select',
+    'earn-filter-apy-select',
+  ];
+  for (const filterId of filterIds) {
+    await expect(page.getByTestId(filterId)).toBeVisible();
+  }
+}

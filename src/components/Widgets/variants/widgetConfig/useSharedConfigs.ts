@@ -58,6 +58,7 @@ export function useSharedRPCConfig(): Partial<WidgetConfig> {
         },
         routeOptions: {
           maxPriceImpact: 0.4,
+          jitoBundle: true,
         },
       },
     }),

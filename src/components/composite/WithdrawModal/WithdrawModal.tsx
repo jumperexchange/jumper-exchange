@@ -7,6 +7,7 @@ import { useProjectLikeDataFromEarnOpportunity } from 'src/hooks/earn/useProject
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
+import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
 
 interface WithdrawModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -17,6 +18,7 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
   isOpen,
   earnOpportunity,
 }) => {
+  useZapEarnOpportunitySlugStorage(earnOpportunity.slug);
   const { t } = useTranslation();
   const theme = useTheme();
   const { projectData, zapData } =

@@ -1,9 +1,7 @@
 'use client';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
-import config from '@/config/env-config';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
-import { publicRPCList } from '@/const/rpcList';
 import {
   TrackingAction,
   TrackingCategory,
@@ -11,8 +9,6 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider/WalletManagementThemeProvider';
-import getApiUrl from '@/utils/getApiUrl';
-import { createConfig, EVM, Solana, Sui, UTXO } from '@lifi/sdk';
 import type {
   WalletConnected,
   WalletManagementConfig,
@@ -32,18 +28,6 @@ import { ClientOnly } from 'src/components/ClientOnly';
 import { walletEcosystemsOrder } from './constants';
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  createConfig({
-    apiKey: config.NEXT_PUBLIC_LIFI_API_KEY,
-    apiUrl: getApiUrl(),
-    providers: [EVM(), Solana(), UTXO(), Sui()],
-    integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR,
-    rpcUrls: {
-      ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? {}),
-      ...publicRPCList,
-    },
-    preloadChains: true,
-  });
-
   return (
     <EVMProvider>
       <UTXOProvider>
