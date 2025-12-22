@@ -28,35 +28,48 @@ const snowfall = keyframes`
 
 const sway = keyframes`
   0%, 100% {
-    margin-left: 0;
+    transform: translateX(0);
   }
   50% {
-    margin-left: 30px;
+    transform: translateX(30px);
   }
 `;
 
-export interface SnowflakeStyleProps {
+export interface SnowflakeWrapperStyleProps {
   $left: number;
-  $size: number;
-  $duration: number;
   $delay: number;
   $swayDuration: number;
 }
 
+export const SnowflakeWrapper = styled('div', {
+  shouldForwardProp: (prop) =>
+    !['$left', '$delay', '$swayDuration'].includes(prop as string),
+})<SnowflakeWrapperStyleProps>(({ $left, $delay, $swayDuration }) => ({
+  position: 'absolute',
+  top: '-5vh',
+  left: `${$left}%`,
+  willChange: 'transform',
+  animation: `${sway} ${$swayDuration}s ease-in-out ${$delay}s infinite`,
+}));
+
+export interface SnowflakeStyleProps {
+  $size: number;
+  $duration: number;
+  $delay: number;
+}
+
 export const Snowflake = styled(AcUnitRoundedIcon, {
   shouldForwardProp: (prop) =>
-    !['$left', '$size', '$duration', '$delay', '$swayDuration'].includes(
-      prop as string,
-    ),
-})<SnowflakeStyleProps>(
-  ({ $left, $size, $duration, $delay, $swayDuration }) => ({
-    position: 'absolute',
-    top: '-5vh',
-    left: `${$left}%`,
-    fontSize: `${$size}rem`,
-    color: 'rgba(255, 255, 255, 0.8)',
-    filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.5))',
-    willChange: 'transform, opacity',
-    animation: `${snowfall} ${$duration}s linear ${$delay}s infinite, ${sway} ${$swayDuration}s ease-in-out ${$delay}s infinite`,
+    !['$size', '$duration', '$delay'].includes(prop as string),
+})<SnowflakeStyleProps>(({ $size, $duration, $delay, theme }) => ({
+  display: 'block',
+  fontSize: `${$size}rem`,
+  color: `color-mix(in srgb, ${(theme.vars || theme).palette.white.main} / 80%, transparent)`,
+  filter: `drop-shadow(0 0 4px color-mix(in srgb, ${(theme.vars || theme).palette.white.main} / 50%, transparent))`,
+  willChange: 'transform, opacity',
+  animation: `${snowfall} ${$duration}s linear ${$delay}s infinite`,
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.lavenderDark[0],
+    filter: `drop-shadow(0 0 4px ${(theme.vars || theme).palette.lavenderLight[400]})`,
   }),
-);
+}));

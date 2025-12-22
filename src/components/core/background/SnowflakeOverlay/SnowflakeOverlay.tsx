@@ -2,6 +2,7 @@
 import { useMemo } from 'react';
 import {
   SnowflakeOverlayContainer,
+  SnowflakeWrapper,
   Snowflake,
 } from './SnowflakeOverlay.styles';
 import { generateSnowflakes } from './utils';
@@ -12,14 +13,14 @@ export function SnowflakeOverlay() {
   return (
     <SnowflakeOverlayContainer aria-hidden="true">
       {snowflakes.map(({ id, left, size, duration, delay, swayDuration }) => (
-        <Snowflake
+        <SnowflakeWrapper
           key={id}
           $left={left}
-          $size={size}
-          $duration={duration}
           $delay={delay}
           $swayDuration={swayDuration}
-        />
+        >
+          <Snowflake $size={size} $duration={duration} $delay={delay} />
+        </SnowflakeWrapper>
       ))}
     </SnowflakeOverlayContainer>
   );
