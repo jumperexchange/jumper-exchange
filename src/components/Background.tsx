@@ -6,6 +6,7 @@ import {
   BackgroundGradientBottomRight,
 } from './BackgroundGradient';
 import { AnimatedBackgroundImage } from './core/AnimatedBackgroundImage/AnimatedBackgroundImage';
+import { SnowflakeOverlay } from './core/background/SnowflakeOverlay/SnowflakeOverlay';
 import { useGetPartnerThemeImage } from 'src/hooks/theme/useGetPartnerThemeImage';
 
 export interface BackgroundContainerProps {
@@ -34,6 +35,8 @@ function Background() {
           },
         }}
       />
+
+      <SnowflakeOverlay />
 
       {configTheme?.hasBackgroundGradient && (
         <>
