@@ -17,6 +17,12 @@ export const LogoWrapper = styled('div')(({ theme }) => {
     '.sub-color': {
       fill: subCol,
     },
+    '.candy-cane-color': {
+      fill: (theme.vars || theme).palette.white.main,
+      ...theme.applyStyles('light', {
+        fill: (theme.vars || theme).palette.lavenderLight[400],
+      }),
+    },
   };
 });
 
