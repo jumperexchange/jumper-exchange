@@ -6,6 +6,8 @@ permissions:
   checks: write
   pull-requests: write
   contents: write
+  pages: write
+  id-token: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -153,8 +155,33 @@ jobs:
           path: playwright-report
           retention-days: 2
 
+  publish-report:
+    if: ${{ !cancelled() }}
+    needs: [merge-reports]
+    runs-on: ubuntu-latest
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download HTML report
+        uses: actions/download-artifact@v4
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: playwright-report
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   post-comment:
-    needs: [create-qase-run, merge-reports]
+    needs: [create-qase-run, merge-reports, publish-report]
     if: ${{ !cancelled() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
@@ -164,3 +191,5 @@ jobs:
             ${{ needs.merge-reports.outputs.summary }}
 
             ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}
+
+            ${{ needs.publish-report.outputs.page_url != '' && needs.publish-report.outputs.page_url != null && format('📊 [View HTML Test Report]({0})', needs.publish-report.outputs.page_url) || '📊 HTML Test Report will be available after deployment' }}
