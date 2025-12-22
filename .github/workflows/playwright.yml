@@ -6,8 +6,6 @@ permissions:
   checks: write
   pull-requests: write
   contents: write
-  pages: write
-  id-token: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -160,25 +158,55 @@ jobs:
     needs: [merge-reports]
     runs-on: ubuntu-latest
     outputs:
-      page_url: ${{ steps.deployment.outputs.page_url }}
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      page_url: ${{ steps.set-url.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
       - name: Download HTML report
         uses: actions/download-artifact@v4
         with:
           name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Determine report destination
+        id: report-dest
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            DEST_DIR="${{ github.event.pull_request.number }}"
+          else
+            DEST_DIR="${{ github.run_id }}"
+          fi
+          echo "destination=$DEST_DIR" >> "$GITHUB_OUTPUT"
+          echo "Report will be published to: $DEST_DIR"
+      - name: Deploy report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: playwright-report
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./playwright-report
+          destination_dir: ${{ steps.report-dest.outputs.destination }}
+      - name: Set page URL
+        id: set-url
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            REPORT_PATH="${{ github.event.pull_request.number }}"
+          else
+            REPORT_PATH="${{ github.run_id }}"
+          fi
+          PAGE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$REPORT_PATH/"
+          echo "page_url=$PAGE_URL" >> "$GITHUB_OUTPUT"
+          echo "Report URL: $PAGE_URL"
+      - name: Add report link to summary
+        if: always()
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            REPORT_PATH="${{ github.event.pull_request.number }}"
+          else
+            REPORT_PATH="${{ github.run_id }}"
+          fi
+          PAGES_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$REPORT_PATH/"
+          echo "## 📊 Playwright Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **[View Report](${PAGES_URL})**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
   post-comment:
     needs: [create-qase-run, merge-reports, publish-report]
