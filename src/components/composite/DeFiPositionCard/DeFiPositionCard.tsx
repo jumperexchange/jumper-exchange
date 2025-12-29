@@ -170,7 +170,7 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
         <StyledDetailsContainer>
           {positionGroups.map((positionGroup, index) => (
             <Fragment key={positionGroup.position.address}>
-              <StyledSectionDivider sx={{ marginTop: index === 0 ? 3 : 0 }} />
+              <StyledSectionDivider sx={{ marginTop: index === 0 ? 1.5 : 0 }} />
               <StyledSectionContent>
                 <StyledOverviewColumn>
                   {!!positionGroup.position.openedAt && (

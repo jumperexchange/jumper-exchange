@@ -24,7 +24,7 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   },
 }));
 
-export const StyledAccordionSummary = styled(AccordionSummary)({
+export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
     {
       padding: 0,
@@ -33,7 +33,12 @@ export const StyledAccordionSummary = styled(AccordionSummary)({
   '&.MuiAccordionSummary-root, &.MuiAccordionSummary-root.Mui-expanded': {
     minHeight: 'auto',
   },
-});
+  '& .MuiAccordionSummary-content > *': {
+    '&:hover, &:focus-visible, &:focus': {
+      backgroundColor: (theme.vars || theme).palette.alpha100.main,
+    },
+  },
+}));
 
 export const StyledAccordionDetails = styled(AccordionDetails)({
   padding: 0,
@@ -53,6 +58,8 @@ export const StyledPositionActions = styled(Stack)(({ theme }) => ({
 }));
 
 export const StyledSummaryContent = styled(Stack)(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
   gap: theme.spacing(2),
   justifyContent: 'space-between',
   width: '100%',
@@ -73,6 +80,7 @@ export const StyledTagsRow = styled(Stack)(({ theme }) => ({
 export const StyledDetailsContainer = styled(Stack)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(3),
+  padding: theme.spacing(0, 1.5, 1.5),
 }));
 
 export const StyledSectionDivider = styled(Divider)(({ theme }) => ({

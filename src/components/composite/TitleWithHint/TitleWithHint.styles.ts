@@ -13,7 +13,7 @@ export const TitleWithHintContainer = styled(Box, {
 })<TitleWithHintContainerProps>(({ gap }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: gap || 2,
+  gap: gap != null ? gap : 2,
   overflow: 'hidden',
 }));
 

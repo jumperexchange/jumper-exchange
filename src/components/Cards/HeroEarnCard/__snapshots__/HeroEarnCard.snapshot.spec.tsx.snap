@@ -124,7 +124,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
               Moonwell Flagship USDC on base
             </span>
             <div
-              class="MuiBox-root css-1bvt5sw"
+              class="MuiBox-root css-zbt97w"
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -270,7 +270,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                 Moonwell Flagship USDC on base
               </span>
               <div
-                class="MuiBox-root css-1bvt5sw"
+                class="MuiBox-root css-zbt97w"
               >
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -456,7 +456,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
               Moonwell Flagship USDC on base
             </span>
             <div
-              class="MuiBox-root css-1bvt5sw"
+              class="MuiBox-root css-zbt97w"
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"

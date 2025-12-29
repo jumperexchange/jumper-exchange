@@ -7,12 +7,24 @@ import { PortfolioEmptyList } from './PortfolioEmptyList';
 import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
 import { TokenListCardSkeleton } from '@/components/composite/TokenListCard/TokenListCardSkeleton';
 import { AnimatePresence } from 'motion/react';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
+import type { MinimalToken } from '@/types/tokens';
+import { useRouter } from 'next/navigation';
 
 export const PortfolioTokensList = () => {
   const { data, isLoading, isEmpty, clearFilters } =
     usePortfolioTokensFiltering();
 
   const tokens = useFormatDisplayWalletTokens(data);
+
+  const router = useRouter();
+
+  const setFrom = useWidgetCacheStore((state) => state.setFrom);
+
+  const handleSelectToken = (token: MinimalToken) => {
+    setFrom(token.address, token.chain.chainId);
+    router.push('/');
+  };
 
   if (isEmpty) {
     return null;
@@ -32,7 +44,11 @@ export const PortfolioTokensList = () => {
         <PortfolioAnimatedAssetContainer
           key={`${token.address}-${token.chain.chainId}-${index}`}
         >
-          <TokenListCard size={TokenListCardTokenSize.MD} token={token} />
+          <TokenListCard
+            size={TokenListCardTokenSize.MD}
+            token={token}
+            onSelect={handleSelectToken}
+          />
         </PortfolioAnimatedAssetContainer>
       ));
     }

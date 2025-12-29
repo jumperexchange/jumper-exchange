@@ -148,7 +148,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -458,7 +458,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -772,7 +772,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
               Moonwell Flagship USDC on base
             </span>
             <div
-              class="MuiBox-root css-1bvt5sw"
+              class="MuiBox-root css-zbt97w"
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1136,7 +1136,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1446,7 +1446,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1751,7 +1751,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2087,7 +2087,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2423,7 +2423,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2602,7 +2602,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2824,7 +2824,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3024,7 +3024,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
               Moonwell Flagship USDC on base
             </span>
             <div
-              class="MuiBox-root css-1bvt5sw"
+              class="MuiBox-root css-zbt97w"
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3279,7 +3279,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3475,7 +3475,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3671,7 +3671,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3862,7 +3862,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
             Moonwell Flagship USDC on base
           </span>
           <div
-            class="MuiBox-root css-1bvt5sw"
+            class="MuiBox-root css-zbt97w"
           >
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"

@@ -1,13 +1,13 @@
-import Stack from '@mui/material/Stack';
+import type { FC } from 'react';
 import {
   EntityChainStackChainsPlacement,
   EntityChainStackVariant,
 } from '../EntityChainStack/EntityChainStack.types';
-import { FC } from 'react';
-import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { TokenListCardTokenSize } from './TokenListCard.types';
 import { TitleWithHintSkeleton } from '../TitleWithHint/TitleWithHintSkeleton';
+import { TOKEN_LIST_CARD_CONFIG } from './constants';
+import Stack from '@mui/material/Stack';
 
 interface TokenListCardSkeletonProps {
   size?: TokenListCardTokenSize;
@@ -16,10 +16,7 @@ interface TokenListCardSkeletonProps {
 export const TokenListCardSkeleton: FC<TokenListCardSkeletonProps> = ({
   size = TokenListCardTokenSize.SM,
 }) => {
-  const isSmallVariant = size === TokenListCardTokenSize.SM;
-  const tokenSize = isSmallVariant ? AvatarSize.LG : AvatarSize.XXL;
-  const chainsSize = isSmallVariant ? AvatarSize.XXS : AvatarSize.SM;
-  const spacing = isSmallVariant ? 2 : 3;
+  const config = TOKEN_LIST_CARD_CONFIG[size];
 
   return (
     <Stack
@@ -27,15 +24,18 @@ export const TokenListCardSkeleton: FC<TokenListCardSkeletonProps> = ({
       spacing={2}
       useFlexGap
       justifyContent="space-between"
-      sx={{ width: '100%', ':not(:last-child)': { paddingBottom: spacing } }}
+      sx={{
+        padding: config.primary.padding,
+        width: '100%',
+      }}
     >
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}
-        tokenSize={tokenSize}
+        tokenSize={config.primary.tokenSize}
         chainsPlacement={EntityChainStackChainsPlacement.Inline}
-        chainsSize={chainsSize}
+        chainsSize={config.primary.chainsSize}
         spacing={{
-          chains: -0.8,
+          chains: config.chainsSpacing,
         }}
         isLoading
       />
