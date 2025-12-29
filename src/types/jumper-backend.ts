@@ -949,6 +949,7 @@ export interface DefiPosition {
   assetTokens: DefiToken[];
   collateralTokens: DefiToken[];
   rewardTokens: DefiToken[];
+  lpToken?: Token;
 }
 
 export interface WalletPositions {
@@ -983,11 +984,6 @@ export interface TaskVerificationDto {
    * @example {"customKey1":"value1","customKey2":"value2"}
    */
   additionalFields: object;
-}
-
-export interface MetadataWithUpdatedAt {
-  /** @format date-time */
-  updatedAt: string;
 }
 
 export interface EarnOpportunityWithScore {
