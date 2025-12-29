@@ -399,7 +399,7 @@
       "label": "Your position"
     },
     "missingPosition": {
-      "title": "Missing a position ?",
+      "title": "Missing a position?",
       "description": "Check your portfolio tokens before contacting support."
     },
     "emptyList": {

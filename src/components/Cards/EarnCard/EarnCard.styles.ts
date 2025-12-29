@@ -212,6 +212,23 @@ export const EarnCardMissingPositionInteractiveContent = styled(Stack, {
   gap: theme.spacing(1.5),
   alignItems: 'center',
   justifyContent: isCentered ? 'center' : 'space-between',
+  position: 'relative',
+  zIndex: 1,
+  '&:before': {
+    content: '""',
+    display: 'inline-block',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: -1,
+    filter: 'blur(32px)',
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+    }),
+  },
 }));
 
 export const EarnCardMissingPositionDescription = styled(Stack, {
