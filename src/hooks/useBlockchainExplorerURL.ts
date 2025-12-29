@@ -4,7 +4,10 @@ import { useChains } from './useChains';
 const DEFAULT_PREFIX = 'address';
 
 const buildExplorerUrl = (baseUrl: string, address: string, prefix: string) => {
-  return `${baseUrl}${prefix}/${address}`;
+  const normalizedBaseUrl = baseUrl.endsWith('/')
+    ? baseUrl.slice(0, -1)
+    : baseUrl;
+  return `${normalizedBaseUrl}/${prefix}/${address}`;
 };
 
 export const useGetAddressExplorerUrl = (prefix: string = DEFAULT_PREFIX) => {
