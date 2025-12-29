@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { useQueryStates } from 'nuqs';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
+import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import type { CacheToken } from 'src/types/portfolio';
 import { isEqual } from 'lodash';
 import {
@@ -90,17 +91,18 @@ export const PortfolioTokensFilteringProvider = ({
     isFetching,
     isSuccess,
     data: allData,
-    accounts,
+    accounts: portfolioAccounts,
   } = usePortfolioTokens();
 
-  // Extract filtering parameters from all unfiltered data
+  const filteredData = useTokensWithoutLpPositions(allData ?? []);
+
   const stats = useMemo((): PortfolioTokensFilteringParams => {
-    if (!allData || allData.length === 0) {
+    if (filteredData.length === 0) {
       return EMPTY_TOKENS_FILTERING_PARAMS;
     }
 
-    return extractTokensFilteringParams(allData, accounts);
-  }, [allData, accounts]);
+    return extractTokensFilteringParams(filteredData, portfolioAccounts);
+  }, [filteredData, portfolioAccounts]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -117,7 +119,7 @@ export const PortfolioTokensFilteringProvider = ({
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
 
-  const filteredSortedData = useMemo(() => {
+  const sortedData = useMemo(() => {
     return filterSortPortfolioTokensData(
       queriesByAddress,
       filter,
@@ -125,6 +127,8 @@ export const PortfolioTokensFilteringProvider = ({
       order,
     );
   }, [queriesByAddress, filter, sortBy, order]);
+
+  const filteredSortedData = useTokensWithoutLpPositions(sortedData);
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<PortfolioTokensFilter>) => {
@@ -166,7 +170,7 @@ export const PortfolioTokensFilteringProvider = ({
     clearFilters,
     data: filteredSortedData,
     isLoading: isFetching || !isSuccess,
-    isEmpty: !isFetching && (!allData || allData.length === 0),
+    isEmpty: !isFetching && filteredData.length === 0,
     ...stats,
   };
 
