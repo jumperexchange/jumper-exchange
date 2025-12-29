@@ -20,18 +20,18 @@ export const EntityExplorerLink: FC<EntityExplorerLinkProps> = ({
     return null;
   }
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    openInNewTab(explorerUrl);
-  };
-
   return (
     <Stack
+      component="a"
+      href={explorerUrl}
+      target="_blank"
+      rel="noopener noreferrer"
       direction="row"
       spacing={0.5}
       alignItems="center"
-      onClick={handleClick}
+      aria-label={`View on blockchain explorer for ${address}`}
+      onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      sx={{ cursor: 'pointer', textDecoration: 'none' }}
     >
       <Typography variant="bodyXSmall" color="text.secondary">
         {truncateAddress(address, 5, 3)}
