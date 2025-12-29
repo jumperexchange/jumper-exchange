@@ -19,6 +19,7 @@ interface PendingFilterValues {
   tags: string[];
   assets: string[];
   apy: number[];
+  tvl: number[];
   sortBy: SortByEnum;
 }
 
@@ -34,6 +35,10 @@ export const EarnFilterBarContentAllTablet = () => {
     apyMaxValue,
     apyMin,
     apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
     sortByOptions,
     sortBy,
     filtersCount,
@@ -55,6 +60,7 @@ export const EarnFilterBarContentAllTablet = () => {
       tags: filter?.tags ?? [],
       assets: filter?.assets ?? [],
       apy: [apyMinValue, apyMaxValue],
+      tvl: [tvlMinValue, tvlMaxValue],
       sortBy: sortBy ?? '',
     },
     onApply: (values) => {
@@ -65,6 +71,8 @@ export const EarnFilterBarContentAllTablet = () => {
         assets: values.assets ?? [],
         minAPY: values.apy[0] / 100,
         maxAPY: values.apy[1] / 100,
+        minTVL: values.tvl[0],
+        maxTVL: values.tvl[1],
         sortBy: values.sortBy ?? '',
       });
     },
@@ -76,13 +84,17 @@ export const EarnFilterBarContentAllTablet = () => {
         values.tags.length > 0 ||
         values.assets.length > 0 ||
         values.apy[0] !== apyMin ||
-        values.apy[1] !== apyMax
+        values.apy[1] !== apyMax ||
+        values.tvl[0] !== tvlMin ||
+        values.tvl[1] !== tvlMax
       );
     },
   });
 
   const usedApyMinValue = pendingValues.apy[0] ?? apyMinValue;
   const usedApyMaxValue = pendingValues.apy[1] ?? apyMaxValue;
+  const usedTvlMinValue = pendingValues.tvl[0] ?? tvlMinValue;
+  const usedTvlMaxValue = pendingValues.tvl[1] ?? tvlMaxValue;
 
   const chainBadge =
     pendingValues.chains.length > 0
@@ -106,6 +118,14 @@ export const EarnFilterBarContentAllTablet = () => {
     (usedApyMinValue !== apyMin || usedApyMaxValue !== apyMax)
       ? formatSliderValue(
           pendingValues.apy.map((value) => toFixedFractionDigits(value, 0, 2)),
+        )
+      : undefined;
+  const tvlBadge =
+    !isNaN(usedTvlMinValue) &&
+    !isNaN(usedTvlMaxValue) &&
+    (usedTvlMinValue !== tvlMin || usedTvlMaxValue !== tvlMax)
+      ? formatSliderValue(
+          pendingValues.tvl.map((value) => toFixedFractionDigits(value, 0, 2)),
         )
       : undefined;
 
@@ -191,6 +211,21 @@ export const EarnFilterBarContentAllTablet = () => {
         min: apyMin,
         max: apyMax,
         testId: 'earn-filter-apy-select-mobile',
+      }),
+    );
+  }
+
+  if (!isNaN(tvlMin) && !isNaN(tvlMax) && tvlMin !== tvlMax) {
+    categories.push(
+      createSliderCategory({
+        id: 'tvl',
+        label: t('earn.filter.tvl'),
+        badgeLabel: tvlBadge,
+        value: pendingValues.tvl,
+        onChange: (value: number[]) => setPendingValue('tvl', value),
+        min: tvlMin,
+        max: tvlMax,
+        testId: 'earn-filter-tvl-select-mobile',
       }),
     );
   }
