@@ -103,6 +103,9 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
         <StyledSummaryContent onClick={() => handleMainPositionClick()}>
           <EntityChainStack
             variant={EntityChainStackVariant.Protocol}
+            address={
+              defiPositions.length === 1 ? firstPosition.address : undefined
+            }
             protocol={firstPosition.protocol}
             protocolSize={AvatarSize.XXL}
             chains={[firstPosition.chain]}

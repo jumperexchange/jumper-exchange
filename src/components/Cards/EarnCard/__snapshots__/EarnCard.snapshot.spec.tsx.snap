@@ -147,12 +147,17 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -452,12 +457,17 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -761,12 +771,17 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
             >
               Moonwell Flagship USDC on base
             </span>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-              data-testid="entity-chain-stack-chain-name"
+            <div
+              class="MuiBox-root css-1bvt5sw"
             >
-              Base
-            </p>
+              <p
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                data-testid="entity-chain-stack-chain-name"
+                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+              >
+                Base
+              </p>
+            </div>
           </div>
         </div>
         <div
@@ -1120,12 +1135,17 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -1425,12 +1445,17 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -1725,12 +1750,17 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -2056,12 +2086,17 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -2387,12 +2422,17 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -2561,12 +2601,17 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -2778,12 +2823,17 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -2973,12 +3023,17 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             >
               Moonwell Flagship USDC on base
             </span>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-              data-testid="entity-chain-stack-chain-name"
+            <div
+              class="MuiBox-root css-1bvt5sw"
             >
-              Base
-            </p>
+              <p
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                data-testid="entity-chain-stack-chain-name"
+                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+              >
+                Base
+              </p>
+            </div>
           </div>
         </div>
         <div
@@ -3223,12 +3278,17 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -3414,12 +3474,17 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -3605,12 +3670,17 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -3791,12 +3861,17 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           >
             Moonwell Flagship USDC on base
           </span>
-          <p
-            class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
-            data-testid="entity-chain-stack-chain-name"
+          <div
+            class="MuiBox-root css-1bvt5sw"
           >
-            Base
-          </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+              data-testid="entity-chain-stack-chain-name"
+              style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+            >
+              Base
+            </p>
+          </div>
         </div>
       </div>
       <div

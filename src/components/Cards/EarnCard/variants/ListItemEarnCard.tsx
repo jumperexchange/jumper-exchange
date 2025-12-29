@@ -58,6 +58,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
         <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
           <EntityChainStack
             variant={EntityChainStackVariant.Protocol}
+            address={lpToken?.address}
             protocol={protocol}
             chains={chains}
             protocolSize={AvatarSize.XXL}
