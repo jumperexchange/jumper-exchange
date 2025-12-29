@@ -503,6 +503,10 @@ interface Resources {
             years_other: '{{count}} years ago';
           };
           opened: 'Opened';
+          tooltip: {
+            address: 'View contract';
+            info: 'View earn detail';
+          };
         };
       };
       emptyList: {
