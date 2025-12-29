@@ -25,11 +25,16 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
     apyMaxValue,
     apyMin,
     apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
     handleChainChange,
     handleProtocolChange,
     handleTagChange,
     handleAssetChange,
     handleAPYChange,
+    handleTVLChange,
     handleClearAllFilters,
   } = useEarnFilterBar();
 
@@ -93,6 +98,19 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             label={t('earn.filter.apy')}
             variant={SelectVariant.Slider}
             data-testid="earn-filter-apy-select"
+          />
+        )}
+
+        {!isNaN(tvlMin) && !isNaN(tvlMax) && tvlMin !== tvlMax && (
+          <Select
+            options={[]}
+            value={[tvlMinValue, tvlMaxValue]}
+            min={tvlMin}
+            max={tvlMax}
+            onChange={handleTVLChange}
+            label={t('earn.filter.tvl')}
+            variant={SelectVariant.Slider}
+            data-testid="earn-filter-tvl-select"
           />
         )}
 

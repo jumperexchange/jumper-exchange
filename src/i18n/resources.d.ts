@@ -106,6 +106,7 @@ interface Resources {
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
         tag: 'Type';
+        tvl: 'TVL';
       };
       overview: {
         updated: 'Updated {{time}} ago';

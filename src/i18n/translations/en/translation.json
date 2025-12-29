@@ -355,7 +355,8 @@
       "protocol": "Protocol",
       "tag": "Type",
       "asset": "Asset",
-      "apy": "APY"
+      "apy": "APY",
+      "tvl": "TVL"
     },
     "views": {
       "viewBy": "View by",

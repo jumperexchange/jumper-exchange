@@ -22,6 +22,7 @@ export const useEarnFilterBar = () => {
     allAssets,
     allTags,
     allAPY,
+    allTVL,
     filter,
     updateFilter,
     clearFilters,
@@ -91,6 +92,20 @@ export const useEarnFilterBar = () => {
   const apyMin = Math.min(...Object.values(allAPY), 0);
   const apyMax = Math.max(...Object.values(allAPY), 0);
 
+  const tvlOptions = useMemo(
+    () =>
+      sortSelectOptions(
+        Object.entries(allTVL).map(([key, value]) => ({
+          value: key,
+          label: `${key}: ${value}`,
+        })),
+      ),
+    [allTVL],
+  );
+
+  const tvlMin = Math.min(...Object.values(allTVL), 0);
+  const tvlMax = Math.max(...Object.values(allTVL), 0);
+
   const sortByOptions = useMemo(
     () => [
       { value: SortByOptions.APY, label: t('earn.sorting.apy') },
@@ -128,6 +143,15 @@ export const useEarnFilterBar = () => {
     });
   };
 
+  const handleTVLChange = (values: number[]) => {
+    const hasValues = values.length > 0;
+    updateFilter({
+      ...filter,
+      minTVL: hasValues ? values[0] : null,
+      maxTVL: hasValues ? values[1] : null,
+    });
+  };
+
   const handleSortBy = (value: string) => {
     setSortBy(value as SortByEnum);
   };
@@ -143,6 +167,9 @@ export const useEarnFilterBar = () => {
     ? Math.trunc(filter.maxAPY * 10000) / 100
     : apyMax;
 
+  const tvlMinValue = filter?.minTVL ? filter.minTVL : tvlMin;
+  const tvlMaxValue = filter?.maxTVL ? filter.maxTVL : tvlMax;
+
   const arrayFiltersCount = [
     filter?.chains,
     filter?.protocols,
@@ -154,9 +181,17 @@ export const useEarnFilterBar = () => {
     !isNaN(apyMinValue) &&
     !isNaN(apyMaxValue) &&
     (apyMinValue !== apyMin || apyMaxValue !== apyMax);
+
   const apyFilterCount = hasAPYFilterApplied ? 1 : 0;
 
-  const filtersCount = arrayFiltersCount + apyFilterCount;
+  const hasTVLFilterApplied =
+    !isNaN(tvlMinValue) &&
+    !isNaN(tvlMaxValue) &&
+    (tvlMinValue !== tvlMin || tvlMaxValue !== tvlMax);
+
+  const tvlFilterCount = hasTVLFilterApplied ? 1 : 0;
+
+  const filtersCount = arrayFiltersCount + apyFilterCount + tvlFilterCount;
   const hasFilterApplied = filtersCount > 0;
 
   return {
@@ -165,6 +200,7 @@ export const useEarnFilterBar = () => {
     tagOptions,
     assetOptions,
     apyOptions,
+    tvlOptions,
     hasFilterApplied,
     filtersCount,
     filter,
@@ -172,6 +208,10 @@ export const useEarnFilterBar = () => {
     apyMaxValue,
     apyMin,
     apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
     sortByOptions,
     sortBy,
     handleChainChange,
@@ -179,6 +219,7 @@ export const useEarnFilterBar = () => {
     handleTagChange,
     handleAssetChange,
     handleAPYChange,
+    handleTVLChange,
     handleClearAllFilters: clearFilters,
     handleSortBy,
     handleApplyAllFilters,
