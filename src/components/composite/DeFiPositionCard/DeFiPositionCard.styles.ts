@@ -33,9 +33,12 @@ export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   '&.MuiAccordionSummary-root, &.MuiAccordionSummary-root.Mui-expanded': {
     minHeight: 'auto',
   },
-  '& .MuiAccordionSummary-content > *:not(:has([data-hint-hover-active]))': {
-    '&:hover, &:focus-visible, &:focus': {
-      backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  '& .MuiAccordionSummary-content > *': {
+    transition: 'background-color 300ms ease-in-out',
+    '&:not(:has([data-hint-hover-active]))': {
+      '&:hover, &:focus-visible, &:focus': {
+        backgroundColor: (theme.vars || theme).palette.alpha100.main,
+      },
     },
   },
 }));

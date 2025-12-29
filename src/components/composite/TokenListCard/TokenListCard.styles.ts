@@ -42,7 +42,8 @@ export const StyledContent = styled(Stack, {
   width: '100%',
   cursor: hideCursor ? 'default' : 'pointer',
   borderRadius: theme.shape.borderRadius,
-  ':not(:has([data-hint-hover-active]))': {
+  transition: 'background-color 300ms ease-in-out',
+  '&:not(:has([data-hint-hover-active]))': {
     '&:hover, &:focus-visible, &:focus': {
       backgroundColor: (theme.vars || theme).palette.alpha100.main,
     },
