@@ -11,14 +11,25 @@ import {
 } from './PortfolioEmptyList.style';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-interface PortfolioEmptyListProps {
+interface PortfolioEmptyListBaseProps {
   title: string;
   description: string;
   primaryButtonLabel: string;
   onPrimaryButtonClick: () => void;
-  secondaryButtonLabel?: string;
-  onSecondaryButtonClick?: () => void;
 }
+
+interface WithSecondaryButton {
+  secondaryButtonLabel: string;
+  onSecondaryButtonClick: () => void;
+}
+
+interface WithoutSecondaryButton {
+  secondaryButtonLabel?: never;
+  onSecondaryButtonClick?: never;
+}
+
+type PortfolioEmptyListProps = PortfolioEmptyListBaseProps &
+  (WithSecondaryButton | WithoutSecondaryButton);
 
 export const PortfolioEmptyList: FC<PortfolioEmptyListProps> = ({
   title,
