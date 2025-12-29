@@ -1,6 +1,6 @@
 import type { TypographyProps } from '@mui/material/Typography';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   TitleWithHintContainer,
   TitleWithHintTitle,
@@ -52,6 +52,14 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
     typeof typographyStyles === 'object' && 'lineHeight' in typographyStyles
       ? typographyStyles.lineHeight
       : '1.5em';
+
+  useEffect(() => {
+    return () => {
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
+      }
+    };
+  }, []);
 
   const onMouseEnter = () => {
     timeoutId.current = setTimeout(() => {
