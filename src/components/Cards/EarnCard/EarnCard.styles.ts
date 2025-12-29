@@ -1,9 +1,11 @@
 import Box from '@mui/material/Box';
+import type { StackProps } from '@mui/material/Stack';
 import Stack from '@mui/material/Stack';
 import InfoIcon from '@mui/icons-material/Info';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { ButtonPrimary } from '@/components/Button/Button.style';
 
 interface EarnCardContainerProps {
   hasLink?: boolean;
@@ -191,5 +193,63 @@ export const OverviewEarnCardItemValueAppend = styled(Typography)(
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.alphaDark800.main,
     }),
+  }),
+);
+
+export const EarnCardMissingPositionContent = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1.5),
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+interface EarnCardMissingPositionStackProps extends StackProps {
+  isCentered?: boolean;
+}
+
+export const EarnCardMissingPositionInteractiveContent = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isCentered',
+})<EarnCardMissingPositionStackProps>(({ theme, isCentered }) => ({
+  gap: theme.spacing(1.5),
+  alignItems: 'center',
+  justifyContent: isCentered ? 'center' : 'space-between',
+  position: 'relative',
+  zIndex: 1,
+  '&:before': {
+    content: '""',
+    display: 'inline-block',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: -1,
+    filter: 'blur(32px)',
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+    }),
+  },
+}));
+
+export const EarnCardMissingPositionDescription = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'isCentered',
+})<EarnCardMissingPositionStackProps>(({ theme, isCentered }) => ({
+  gap: theme.spacing(1),
+  alignItems: isCentered ? 'center' : 'flex-start',
+  justifyContent: isCentered ? 'center' : 'flex-start',
+}));
+
+export const EarnCardMissingPositionButton = styled(ButtonPrimary)(
+  ({ theme }) => ({
+    ...theme.typography.bodyXSmallStrong,
+    padding: theme.spacing(1),
+    height: 'auto',
+    width: '100%',
+    minWidth: 'fit-content',
+    textAlign: 'center',
+    textDecoration: 'none',
+    [theme.breakpoints.up('sm')]: {
+      width: 'fit-content',
+    },
   }),
 );

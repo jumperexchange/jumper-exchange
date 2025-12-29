@@ -13,10 +13,12 @@ export const EarnOpportunitiesCards = ({
   items,
   isLoading,
   variant,
+  showPlaceholderCard,
 }: {
   items: EarnOpportunityWithLatestAnalytics[];
   isLoading: boolean;
   variant: EarnCardVariant;
+  showPlaceholderCard: boolean;
 }) => {
   const isCompact = variant === 'compact';
   const gridItems = useMemo(
@@ -69,6 +71,22 @@ export const EarnOpportunitiesCards = ({
             )}
           </motion.div>
         ))}
+        {showPlaceholderCard && gridItems.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          >
+            <EarnCard
+              variant={variant}
+              data={null}
+              isLoading={false}
+              isMissingPosition={true}
+            />
+          </motion.div>
+        )}
       </AnimatePresence>
     </GridContainer>
   );
