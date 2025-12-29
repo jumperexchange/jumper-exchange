@@ -79,9 +79,20 @@ export function usePortfolioTokens() {
     connectedAccounts.forEach((account, index) => {
       const query = queries[index];
 
-      if (!query?.isSuccess || !account.address) {
+      if (!query?.isSuccess || query.isFetching || !account.address) {
         return;
       }
+
+      const { totalValue } = getFormattedCacheTokens([account]);
+      const { date: lastDate } = getLast(account.address);
+
+      if (lastDate && differenceInHours(new Date(), lastDate) < 24) {
+        return;
+      }
+
+      const now = Date.now();
+
+      setLast(account.address, totalValue, now);
 
       // Only update cache if this address doesn't already have cached data
       if (!cacheTokens.has(account.address)) {
@@ -90,17 +101,6 @@ export function usePortfolioTokens() {
           (query.data as ExtendedTokenAmount[]) ?? [],
         );
       }
-
-      const { totalValue } = getFormattedCacheTokens([account]);
-      const { date: lastDate } = getLast(account.address);
-
-      if (lastDate && differenceInHours(lastDate, new Date()) < 24) {
-        return;
-      }
-
-      const now = Date.now();
-
-      setLast(account.address, totalValue, now);
     });
   }, [
     queries,
