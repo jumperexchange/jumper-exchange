@@ -42,7 +42,9 @@ export const StyledContent = styled(Stack, {
   width: '100%',
   cursor: hideCursor ? 'default' : 'pointer',
   borderRadius: theme.shape.borderRadius,
-  ':hover, :focus-visible, :focus': {
-    backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  ':not(:has([data-hint-hover-active]))': {
+    '&:hover, &:focus-visible, &:focus': {
+      backgroundColor: (theme.vars || theme).palette.alpha100.main,
+    },
   },
 }));

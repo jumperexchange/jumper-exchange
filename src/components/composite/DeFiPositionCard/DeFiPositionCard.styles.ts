@@ -33,7 +33,7 @@ export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   '&.MuiAccordionSummary-root, &.MuiAccordionSummary-root.Mui-expanded': {
     minHeight: 'auto',
   },
-  '& .MuiAccordionSummary-content > *': {
+  '& .MuiAccordionSummary-content > *:not(:has([data-hint-hover-active]))': {
     '&:hover, &:focus-visible, &:focus': {
       backgroundColor: (theme.vars || theme).palette.alpha100.main,
     },
