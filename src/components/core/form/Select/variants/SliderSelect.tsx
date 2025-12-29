@@ -9,7 +9,7 @@ import {
   StyledSliderContainer,
   StyledSliderRangeContainer,
 } from '../Select.styles';
-import { SliderSelectProps } from '../Select.types';
+import type { SliderSelectProps } from '../Select.types';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { SelectBadge } from '../components/SelectBadge';
@@ -55,7 +55,7 @@ export const SliderSelect = <T extends number[]>({
       event.preventDefault();
       event.stopPropagation();
       setValue(fallbackValue);
-      handleDebounceChange(fallbackValue);
+      handleDebounceChange([] as unknown as T);
     },
     [handleDebounceChange, setValue, fallbackValue],
   );
