@@ -146,7 +146,6 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     const sanitized = sanitizeDeFiPositionsFilter(filter, stats);
     const effectiveValueRange = getEffectiveValueRange(stats.allValueRange);
 
-    // Apply default min value if not set
     const withDefaults = {
       ...sanitized,
       defiMinValue: sanitized.defiMinValue ?? effectiveValueRange.min,
