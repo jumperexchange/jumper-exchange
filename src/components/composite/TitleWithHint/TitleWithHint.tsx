@@ -44,6 +44,7 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
   const theme = useTheme();
   const timeoutId = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [showHintOnHover, setShowHintOnHover] = useState(false);
+  const [isHoveringHintContent, setIsHoveringHintContent] = useState(false);
   const container = useRef<HTMLDivElement>(null);
 
   const typographyStyles =
@@ -61,7 +62,7 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
     };
   }, []);
 
-  const onMouseEnter = () => {
+  const handleMouseEnter = () => {
     timeoutId.current = setTimeout(() => {
       if (hintOnHover) {
         setShowHintOnHover(true);
@@ -69,19 +70,29 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
     }, 350);
   };
 
-  const onMouseLeave = () => {
+  const handleMouseLeave = () => {
     clearTimeout(timeoutId.current);
     if (showHintOnHover) {
       setShowHintOnHover(false);
     }
+    setIsHoveringHintContent(false);
+  };
+
+  const handleHintMouseEnter = () => {
+    setIsHoveringHintContent(true);
+  };
+
+  const handleHintMouseLeave = () => {
+    setIsHoveringHintContent(false);
   };
 
   return (
     <TitleWithHintContainer
       gap={gap}
       sx={sx}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      data-hint-hover-active={isHoveringHintContent || undefined}
     >
       <TitleWithHintTitle variant={titleVariant} data-testid={titleDataTestId}>
         {titleTooltip ? (
@@ -132,7 +143,13 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
                 appear={false}
                 mountOnEnter
               >
-                <Box sx={{ display: 'inline-flex' }}>{hintOnHover}</Box>
+                <Box
+                  sx={{ display: 'inline-flex' }}
+                  onMouseEnter={handleHintMouseEnter}
+                  onMouseLeave={handleHintMouseLeave}
+                >
+                  {hintOnHover}
+                </Box>
               </Slide>
             </Box>
           ) : (

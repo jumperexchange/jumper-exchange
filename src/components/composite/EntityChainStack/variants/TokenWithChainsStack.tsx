@@ -55,7 +55,11 @@ export const TokenWithChainsStack: FC<TokenWithChainsChainStackProps> = (
       mainStack={mainStack}
       chainIds={chainIds}
       chainKeys={chainKeys}
-      chainsSize={props.chainsSize}
+      chainsSize={
+        chainIds.length > 1 && props.chainsInlineSize
+          ? props.chainsInlineSize
+          : props.chainsSize
+      }
       isLoading={props.isLoading || !props.token}
       spacing={props.spacing}
       layout={props.layout}

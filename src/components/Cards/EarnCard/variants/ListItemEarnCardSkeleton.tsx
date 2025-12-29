@@ -1,6 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   BaseSkeleton,
+  ListItemEarnCardBody,
   ListItemEarnCardContainer,
   ListItemEarnCardTagContainer,
   ListItemEarnContentWrapper,
@@ -16,22 +17,26 @@ export const ListItemEarnCardSkeleton: FC<{}> = ({}) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <ListItemEarnCardContainer>
-      <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
-        <EntityChainStack
-          variant={EntityChainStackVariant.Protocol}
-          isLoading
-          protocolSize={AvatarSize.XXL}
-        />
-        {isMobile && <BaseSkeleton variant="circular" width={40} height={40} />}
-        <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <BadgeSkeleton key={index} size={BadgeSize.MD} />
-          ))}
-          {!isMobile && (
+      <ListItemEarnCardBody>
+        <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
+          <EntityChainStack
+            variant={EntityChainStackVariant.Protocol}
+            isLoading
+            protocolSize={AvatarSize.XXL}
+          />
+          {isMobile && (
             <BaseSkeleton variant="circular" width={40} height={40} />
           )}
-        </ListItemEarnCardTagContainer>
-      </ListItemEarnContentWrapper>
+          <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <BadgeSkeleton key={index} size={BadgeSize.MD} />
+            ))}
+            {!isMobile && (
+              <BaseSkeleton variant="circular" width={40} height={40} />
+            )}
+          </ListItemEarnCardTagContainer>
+        </ListItemEarnContentWrapper>
+      </ListItemEarnCardBody>
     </ListItemEarnCardContainer>
   );
 };

@@ -50,6 +50,7 @@ export interface TokenChainStackProps extends BaseProps {
 export interface TokenWithChainsChainStackProps extends BaseProps {
   token?: MinimalToken;
   tokenSize?: AvatarSize;
+  chainsInlineSize?: AvatarSize;
 }
 
 export enum EntityChainStackVariant {

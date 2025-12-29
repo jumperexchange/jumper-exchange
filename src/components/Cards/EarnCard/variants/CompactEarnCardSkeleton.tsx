@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   BaseSkeleton,
   CompactEarnCardContentContainer,
   CompactEarnCardHeaderContainer,
   CompactEarnCardTagContainer,
   CompactEarnCardContainer,
+  CompactEarnCardBody,
 } from '../EarnCard.styles';
 import { BadgeSize } from 'src/components/Badge/Badge.styles';
 import { BadgeSkeleton } from 'src/components/Badge/BadgeSkeleton';
@@ -14,26 +15,28 @@ import { EntityChainStackVariant } from 'src/components/composite/EntityChainSta
 export const CompactEarnCardSkeleton: FC<{}> = ({}) => {
   return (
     <CompactEarnCardContainer>
-      <CompactEarnCardHeaderContainer direction="row">
-        <CompactEarnCardTagContainer direction="row">
-          <BadgeSkeleton size={BadgeSize.SM} width={96} />
-        </CompactEarnCardTagContainer>
-        <BaseSkeleton variant="circular" width={48} height={48} />
-      </CompactEarnCardHeaderContainer>
-      <CompactEarnCardContentContainer>
-        <EntityChainStack
-          variant={EntityChainStackVariant.Protocol}
-          isLoading
-        />
-        <BaseSkeleton
-          variant="rounded"
-          sx={{ height: 76, width: '100%', borderRadius: 2 }}
-        />
-        <BaseSkeleton
-          variant="rounded"
-          sx={{ height: 76, width: '100%', borderRadius: 2 }}
-        />
-      </CompactEarnCardContentContainer>
+      <CompactEarnCardBody>
+        <CompactEarnCardHeaderContainer direction="row">
+          <CompactEarnCardTagContainer direction="row">
+            <BadgeSkeleton size={BadgeSize.SM} width={96} />
+          </CompactEarnCardTagContainer>
+          <BaseSkeleton variant="circular" width={48} height={48} />
+        </CompactEarnCardHeaderContainer>
+        <CompactEarnCardContentContainer>
+          <EntityChainStack
+            variant={EntityChainStackVariant.Protocol}
+            isLoading
+          />
+          <BaseSkeleton
+            variant="rounded"
+            sx={{ height: 76, width: '100%', borderRadius: 2 }}
+          />
+          <BaseSkeleton
+            variant="rounded"
+            sx={{ height: 76, width: '100%', borderRadius: 2 }}
+          />
+        </CompactEarnCardContentContainer>
+      </CompactEarnCardBody>
     </CompactEarnCardContainer>
   );
 };

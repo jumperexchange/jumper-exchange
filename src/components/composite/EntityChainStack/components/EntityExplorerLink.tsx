@@ -3,17 +3,20 @@ import { truncateAddress } from '@/utils/addresses/truncateAddress';
 import { openInNewTab } from '@/utils/openInNewTab';
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import Stack from '@mui/material/Stack';
+import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 
 interface EntityExplorerLinkProps {
   address: string;
   chainId: string;
+  hintVariant?: TypographyProps['variant'];
 }
 
 export const EntityExplorerLink: FC<EntityExplorerLinkProps> = ({
   address,
   chainId,
+  hintVariant = 'bodyXSmall',
 }) => {
   const explorerUrl = useBlockchainExplorerURL(Number(chainId), address);
   if (!explorerUrl) {
@@ -33,7 +36,7 @@ export const EntityExplorerLink: FC<EntityExplorerLinkProps> = ({
       onClick={(e: React.MouseEvent) => e.stopPropagation()}
       sx={{ cursor: 'pointer', textDecoration: 'none' }}
     >
-      <Typography variant="bodyXSmall" color="text.secondary">
+      <Typography variant={hintVariant} color="text.secondary">
         {truncateAddress(address, 5, 3)}
       </Typography>
       <OpenInNewRoundedIcon sx={{ width: 12, height: 12, color: 'iconHint' }} />

@@ -25,13 +25,39 @@ const EarnCardContainer = styled(Box, {
   }),
 }));
 
+interface EarnCardBodyProps {
+  hasHintHoverActive?: boolean;
+}
+
+export const EarnCardBody = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'hasHintHoverActive',
+})<EarnCardBodyProps>(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
+  transition: 'background-color 300ms ease-in-out',
+  variants: [
+    {
+      props: ({ hasHintHoverActive }) => !!hasHintHoverActive,
+      style: {
+        ':not(:has([data-hint-hover-active]))': {
+          '&:hover, &:focus-visible, &:focus': {
+            backgroundColor: (theme.vars || theme).palette.alpha100.main,
+          },
+        },
+      },
+    },
+  ],
+}));
+
 export const CompactEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
-    padding: theme.spacing(4, 3, 3),
-    minHeight: 330,
+    padding: theme.spacing(1.5),
+    minHeight: 266,
     height: '-webkit-fill-available',
   }),
 );
+
+export const CompactEarnCardBody = styled(EarnCardBody)(({ theme }) => ({}));
 
 export const CompactEarnCardHeaderContainer = styled(Stack)(({ theme }) => ({
   justifyContent: 'space-between',
@@ -91,9 +117,11 @@ export const BaseSkeleton = styled(BaseSurfaceSkeleton)(({ theme }) => ({}));
 
 export const ListItemEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
-    padding: theme.spacing(3),
+    padding: theme.spacing(1.5),
   }),
 );
+
+export const ListItemEarnCardBody = styled(EarnCardBody)(() => ({}));
 
 export const ListItemEarnContentWrapper = styled(Stack)(({ theme }) => ({
   justifyContent: 'space-between',

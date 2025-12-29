@@ -81,7 +81,11 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
 
   const hintOnHover =
     assetAddresses && assetAddresses.length === 1 && chainIds.length === 1 ? (
-      <EntityExplorerLink address={assetAddresses[0]} chainId={chainIds[0]} />
+      <EntityExplorerLink
+        address={assetAddresses[0]}
+        chainId={chainIds[0]}
+        hintVariant={content.descriptionVariant}
+      />
     ) : null;
 
   return (
