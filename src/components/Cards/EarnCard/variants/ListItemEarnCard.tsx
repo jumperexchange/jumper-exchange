@@ -7,6 +7,7 @@ import { EntityChainStackVariant } from 'src/components/composite/EntityChainSta
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
+  ListItemEarnCardBody,
   ListItemEarnCardContainer,
   ListItemEarnCardTagContainer,
   ListItemEarnContentWrapper,
@@ -55,39 +56,41 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   return (
     <ConditionalLink href={href}>
       <ListItemEarnCardContainer hasLink={!!href}>
-        <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
-          <EntityChainStack
-            variant={EntityChainStackVariant.Protocol}
-            address={lpToken?.address}
-            protocol={protocol}
-            chains={chains}
-            protocolSize={AvatarSize.XXL}
-            chainsSize={AvatarSize.SM}
-            content={{
-              title,
-            }}
-          />
-          {isMobile && primaryAction}
-          <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
-            {forYou && (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.MD}
-                startIcon={<RecommendationIcon height={16} width={16} />}
-              />
-            )}
-            {tags?.map((tag) => (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.MD}
-                label={tag}
-                key={tag}
-              />
-            ))}
-            {items}
-            {!isMobile && primaryAction}
-          </ListItemEarnCardTagContainer>
-        </ListItemEarnContentWrapper>
+        <ListItemEarnCardBody hasHintHoverActive>
+          <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
+            <EntityChainStack
+              variant={EntityChainStackVariant.Protocol}
+              address={lpToken?.address}
+              protocol={protocol}
+              chains={chains}
+              protocolSize={AvatarSize.XXL}
+              chainsSize={AvatarSize.SM}
+              content={{
+                title,
+              }}
+            />
+            {isMobile && primaryAction}
+            <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
+              {forYou && (
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.MD}
+                  startIcon={<RecommendationIcon height={16} width={16} />}
+                />
+              )}
+              {tags?.map((tag) => (
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.MD}
+                  label={tag}
+                  key={tag}
+                />
+              ))}
+              {items}
+              {!isMobile && primaryAction}
+            </ListItemEarnCardTagContainer>
+          </ListItemEarnContentWrapper>
+        </ListItemEarnCardBody>
       </ListItemEarnCardContainer>
     </ConditionalLink>
   );

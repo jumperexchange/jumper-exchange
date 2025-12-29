@@ -7,6 +7,7 @@ import { EntityChainStack } from 'src/components/composite/EntityChainStack/Enti
 import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
+  CompactEarnCardBody,
   CompactEarnCardContainer,
   CompactEarnCardContentContainer,
   CompactEarnCardHeaderContainer,
@@ -60,53 +61,45 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   return (
     <ConditionalLink href={href}>
       <CompactEarnCardContainer hasLink={!!href}>
-        <CompactEarnCardHeaderContainer direction="row">
-          <CompactEarnCardTagContainer direction="row">
-            {forYou && (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.SM}
-                startIcon={<RecommendationIcon height={12} width={12} />}
-              />
-            )}
-            {tags?.map((tag) => (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.SM}
-                label={tag}
-                key={tag}
-                data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
-              />
+        <CompactEarnCardBody hasHintHoverActive>
+          <CompactEarnCardHeaderContainer direction="row">
+            <CompactEarnCardTagContainer direction="row">
+              {forYou && (
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.SM}
+                  startIcon={<RecommendationIcon height={12} width={12} />}
+                />
+              )}
+              {tags?.map((tag) => (
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.SM}
+                  label={tag}
+                  key={tag}
+                  data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                />
+              ))}
+            </CompactEarnCardTagContainer>
+            {primaryAction}
+          </CompactEarnCardHeaderContainer>
+          <CompactEarnCardContentContainer>
+            <EntityChainStack
+              variant={EntityChainStackVariant.Protocol}
+              address={lpToken?.address}
+              protocol={protocol}
+              chains={chains}
+              content={{
+                title,
+              }}
+            />
+            {chunk(items, items.length > 2 ? 2 : 1).map((itemsChunk, index) => (
+              <Grid container rowSpacing={2} columnSpacing={2} key={index}>
+                {itemsChunk}
+              </Grid>
             ))}
-          </CompactEarnCardTagContainer>
-          {primaryAction}
-        </CompactEarnCardHeaderContainer>
-        <CompactEarnCardContentContainer>
-          <EntityChainStack
-            variant={EntityChainStackVariant.Protocol}
-            address={lpToken?.address}
-            protocol={protocol}
-            chains={chains}
-            content={{
-              title,
-            }}
-          />
-          {chunk(items, items.length > 2 ? 2 : 1).map((itemsChunk, index) => (
-            <Grid
-              container
-              rowSpacing={2}
-              columnSpacing={2}
-              key={index}
-              sx={(theme) => ({
-                backgroundColor: (theme.vars || theme).palette.alpha100.main,
-                padding: theme.spacing(2),
-                borderRadius: theme.spacing(2),
-              })}
-            >
-              {itemsChunk}
-            </Grid>
-          ))}
-        </CompactEarnCardContentContainer>
+          </CompactEarnCardContentContainer>
+        </CompactEarnCardBody>
       </CompactEarnCardContainer>
     </ConditionalLink>
   );
