@@ -14,6 +14,9 @@ import type { Token } from '@/types/jumper-backend';
 import { currencyFormatter } from '@/utils/formatNumbers';
 import { useTranslation } from 'react-i18next';
 import { useToken } from '@/hooks/useToken';
+import { Tooltip } from '../core/Tooltip/Tooltip';
+import Box from '@mui/material/Box';
+import type { TooltipProps } from '@mui/material/Tooltip';
 
 interface EarnDetailsActionsPositionProps {
   token: Token;
@@ -36,6 +39,19 @@ const selectCardStyles = {
   background: 'transparent',
   '& .MuiInputLabel-root': {
     color: 'text.secondary',
+  },
+} as const;
+
+const tooltipSlotProps: TooltipProps['slotProps'] = {
+  popper: {
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, -12],
+        },
+      },
+    ],
   },
 } as const;
 
@@ -63,7 +79,7 @@ export const EarnDetailsActionsPosition: FC<
 
   const hasEffectivePriceUSD = Number(effectivePriceUSD) > 0;
 
-  const { formattedAmount, formattedAmountUSD } = useMemo(() => {
+  const { formattedAmount, formattedAmountUSD, hasAmount } = useMemo(() => {
     const calculateTokenAmount = (): string => {
       if (amount) {
         return formatTokenAmount(BigInt(amount), token.decimals);
@@ -88,9 +104,14 @@ export const EarnDetailsActionsPosition: FC<
       return 0;
     };
 
+    const computedAmount = calculateTokenAmount();
+    const computedAmountUSD = calculateAmountUSD();
+    const hasAmount = computedAmount !== '0' || computedAmountUSD !== 0;
+
     return {
-      formattedAmount: `${calculateTokenAmount()} ${token.symbol ?? ''}`,
-      formattedAmountUSD: formatUSD(calculateAmountUSD()),
+      formattedAmount: `${computedAmount} ${token.symbol ?? ''}`,
+      formattedAmountUSD: formatUSD(computedAmountUSD),
+      hasAmount,
     };
   }, [
     amountUSD,
@@ -102,24 +123,38 @@ export const EarnDetailsActionsPosition: FC<
   ]);
 
   return (
-    <SelectCard
-      mode={SelectCardMode.Display}
-      label={t('earn.position.label')}
-      labelVariant="bodyXSmall"
-      value={formattedAmountUSD}
-      description={formattedAmount}
-      placeholder="0"
-      isClickable={false}
-      startAdornment={
-        <EntityChainStack
-          variant={EntityChainStackVariant.Tokens}
-          tokens={[token]}
-          tokensSize={AvatarSize.XL}
-          chainsSize={AvatarSize.XXS}
-          isContentVisible={false}
+    <Tooltip
+      title={!hasAmount ? t('tooltips.noPositionsToManage') : undefined}
+      placement="top"
+      enterTouchDelay={0}
+      arrow
+      slotProps={tooltipSlotProps}
+    >
+      <Box>
+        <SelectCard
+          mode={SelectCardMode.Display}
+          label={t('earn.position.label')}
+          labelVariant="bodyXSmall"
+          value={formattedAmountUSD}
+          description={formattedAmount}
+          placeholder="0"
+          isClickable={false}
+          startAdornment={
+            <EntityChainStack
+              variant={EntityChainStackVariant.Tokens}
+              tokens={[token]}
+              tokensSize={AvatarSize.XL}
+              chainsSize={AvatarSize.XXS}
+              isContentVisible={false}
+            />
+          }
+          sx={
+            hasAmount
+              ? selectCardStyles
+              : { ...selectCardStyles, cursor: 'not-allowed' }
+          }
         />
-      }
-      sx={selectCardStyles}
-    />
+      </Box>
+    </Tooltip>
   );
 };
