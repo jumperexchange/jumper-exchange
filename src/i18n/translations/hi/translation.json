@@ -355,7 +355,8 @@
       "protocol": "",
       "tag": "",
       "asset": "",
-      "apy": ""
+      "apy": "",
+      "tvl": ""
     },
     "views": {
       "viewBy": "",
@@ -391,10 +392,15 @@
     },
     "actions": {
       "viewAllMarkets": "",
-      "seeMore": ""
+      "seeMore": "",
+      "goToPortfolio": ""
     },
     "position": {
       "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
     },
     "emptyList": {
       "yourPositions": {
@@ -460,6 +466,10 @@
           "months_other": "",
           "years_one": "",
           "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
         }
       },
       "actions": {
