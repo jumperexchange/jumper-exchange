@@ -111,7 +111,7 @@ interface Resources {
       };
       missingPosition: {
         description: 'Check your portfolio tokens before contacting support.';
-        title: 'Missing a position ?';
+        title: 'Missing a position?';
       };
       overview: {
         updated: 'Updated {{time}} ago';
@@ -657,11 +657,11 @@ interface Resources {
         placeholder: {
           comingSoon: 'Coming soon';
           'embedded-multisig': {
-            description: 'We are working on adding support for embedded and smart contract wallets. In the mean time please use a different wallet to complete this mission.';
+            description: 'We are working on adding support for embedded and smart contract wallets (incl. Safe). In the mean time please use an EOA wallet to execute transactions.';
             title: 'Your wallet is currently not supported';
           };
           'non-evm': {
-            description: 'We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission.';
+            description: 'We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions.';
             title: 'Your wallet is currently not supported';
           };
         };
