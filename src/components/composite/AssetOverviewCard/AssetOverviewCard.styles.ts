@@ -21,8 +21,10 @@ export const AssetOverviewNavigationContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-interface AssetOverviewNavigationButtonProps
-  extends Omit<ButtonProps, 'variant'> {
+interface AssetOverviewNavigationButtonProps extends Omit<
+  ButtonProps,
+  'variant'
+> {
   isActive: boolean;
 }
 
@@ -34,7 +36,7 @@ export const AssetOverviewNavigationButton = styled(ButtonTransparent, {
     padding: theme.spacing(1),
     height: 'auto',
     backgroundColor: 'transparent',
-    color: (theme.vars || theme).palette.buttonAlphaLightAction,
+    color: (theme.vars || theme).palette.buttonAlphaDarkAction,
     '&:hover': {
       backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
       color: (theme.vars || theme).palette.buttonAlphaDarkAction,

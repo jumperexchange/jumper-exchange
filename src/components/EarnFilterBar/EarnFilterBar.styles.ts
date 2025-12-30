@@ -45,7 +45,7 @@ export const EarnFilterBarClearFiltersButton = styled(IconButton)(
     height: 40,
     width: 40,
     backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
-    color: (theme.vars || theme).palette.buttonAlphaLightAction,
+    color: (theme.vars || theme).palette.buttonAlphaDarkAction,
     '&:hover': {
       backgroundColor: (theme.vars || theme).palette.buttonActiveBg,
       color: (theme.vars || theme).palette.buttonActiveAction,
