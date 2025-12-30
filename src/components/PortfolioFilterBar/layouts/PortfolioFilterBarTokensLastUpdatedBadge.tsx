@@ -3,8 +3,9 @@ import { Badge } from '@/components/Badge/Badge';
 import { BadgeVariant, BadgeSize } from '@/components/Badge/Badge.styles';
 import { useTokensLastState } from '@/hooks/portfolio/useTokensLastState';
 import { formatDistanceToNow } from 'date-fns';
-
+import { useTranslation } from 'react-i18next';
 export const PortfolioFilterBarTokensLastUpdatedBadge = () => {
+  const { t } = useTranslation();
   const { isLoading } = usePortfolioTokensFiltering();
   const lastTokensState = useTokensLastState();
   const updatedAt = lastTokensState?.date;
@@ -15,8 +16,7 @@ export const PortfolioFilterBarTokensLastUpdatedBadge = () => {
     <Badge
       variant={BadgeVariant.Secondary}
       size={BadgeSize.SM}
-      // TODO: i18n date:
-      label={`Updated ${formatDistanceToNow(updatedAt)} ago`}
+      label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
     />
   );
 };

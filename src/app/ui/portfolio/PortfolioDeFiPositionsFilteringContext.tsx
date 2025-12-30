@@ -42,6 +42,7 @@ export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeF
   ) => void;
   clearFilters: () => void;
   data: DefiPosition[];
+  allDataUpdatedAt: string | undefined;
   isLoading: boolean;
   isAllDataEmpty: boolean;
   error: unknown | null;
@@ -61,6 +62,7 @@ export const PortfolioDeFiPositionsFilteringContext =
     allAssets: [],
     allValueRange: { min: 0, max: 0 },
     data: [],
+    allDataUpdatedAt: undefined,
     isLoading: false,
     isAllDataEmpty: false,
     error: null,
@@ -198,6 +200,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     updateFilter,
     clearFilters,
     data: filteredSortedData,
+    allDataUpdatedAt: allPositionsNoFilter.data?.meta?.updatedAt ?? undefined,
     isLoading:
       allPositionsNoFilter.isLoading ||
       allPositions.isLoading ||

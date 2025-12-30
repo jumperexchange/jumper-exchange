@@ -17,6 +17,7 @@ import { EarnFilterBarContentAllDesktop } from './layouts/EarnFilterBarContentAl
 import { EarnFilterBarContentAllTablet } from './layouts/EarnFilterBarContentAllTablet';
 import { EarnFilterViewTablet } from './layouts/EarnFilterViewTablet';
 import { EarnFilterViewDesktop } from './layouts/EarnFilterViewDesktop';
+import { useTranslation } from 'react-i18next';
 
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
@@ -29,6 +30,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   setVariant,
   isLoading,
 }) => {
+  const { t } = useTranslation();
   const { showForYou, updatedAt } = useEarnFiltering();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
@@ -48,8 +50,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
           <Badge
             variant={BadgeVariant.Secondary}
             size={BadgeSize.SM}
-            // TODO: i18n date:
-            label={`Updated ${formatDistanceToNow(updatedAt)} ago`}
+            label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
           />
         )}
         {isTablet && !showForYou && <EarnFilterBarContentAllTablet />}

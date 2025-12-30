@@ -18,6 +18,7 @@ import { PortfolioSortDeFiDesktop } from './layouts/PortfolioSortDeFiDesktop';
 import { PortfolioFilterViewDesktop } from './layouts/PortfolioFilterViewDesktop';
 import { PortfolioFilterViewTablet } from './layouts/PortfolioFilterViewTablet';
 import { PortfolioFilterBarTokensLastUpdatedBadge } from './layouts/PortfolioFilterBarTokensLastUpdatedBadge';
+import { PortfolioFilterBarDeFiLastUpdatedBadge } from './layouts/PortfolioFilterBarDeFiLastUpdatedBadge';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -58,7 +59,7 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
     ? Fragment
     : value === 'tokens'
       ? PortfolioFilterBarTokensLastUpdatedBadge
-      : Fragment;
+      : PortfolioFilterBarDeFiLastUpdatedBadge;
 
   return (
     <PortfolioFilterBarContainer>
