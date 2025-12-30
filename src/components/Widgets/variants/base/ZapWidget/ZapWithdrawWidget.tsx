@@ -13,9 +13,13 @@ import {
   LiFiWidget,
   DisabledUI,
   HiddenUI,
+  ChainType,
 } from '@lifi/widget';
 import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { TaskType } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
+import { useShowZapPlaceholderWidget } from './hooks';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -32,6 +36,12 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   }, [customInformation?.projectData]);
 
   const formRef = useRef<FormState>(null);
+
+  const { account } = useAccount();
+  const { chainType } = account;
+  const isEvmWallet = chainType === ChainType.EVM;
+
+  const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
 
   // const { setSourceChainTokenForTracking } = useWidgetTrackingContext();
 
@@ -90,6 +100,23 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   }, [widgetEvents, setSupportModalState]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+
+  if (showZapPlaceholderWidget || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+      />
+    );
+  }
 
   return fromChain && fromToken ? (
     <LiFiWidget
