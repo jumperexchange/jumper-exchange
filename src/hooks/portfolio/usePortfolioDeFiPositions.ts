@@ -105,12 +105,12 @@ export const usePortfolioDeFiPositions = ({
         : new Date(query.dataUpdatedAt);
     });
 
-    const oldestUpdatedAt =
-      dates.length > 0 ? min(dates).toISOString() : undefined;
+    const oldestUpdatedAtOrFallback =
+      dates.length > 0 ? min(dates).toISOString() : new Date().toISOString();
 
     return {
       data: allPositions,
-      meta: { updatedAt: oldestUpdatedAt ?? new Date().toISOString() },
+      meta: { updatedAt: oldestUpdatedAtOrFallback },
     };
   }, [queries, isSuccess]);
 
