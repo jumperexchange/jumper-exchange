@@ -38,7 +38,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   const formRef = useRef<FormState>(null);
 
   const { account } = useAccount();
-  const { chainType } = account;
+  const chainType = account?.chainType;
   const isEvmWallet = chainType === ChainType.EVM;
 
   const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
