@@ -150,6 +150,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
             ? 'widget.zap.placeholder.non-evm.description'
             : 'widget.zap.placeholder.embedded-multisig.description'
         }
+        style={widgetConfig.theme?.container}
       />
     );
   }

@@ -114,6 +114,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
             ? 'widget.zap.placeholder.non-evm.description'
             : 'widget.zap.placeholder.embedded-multisig.description'
         }
+        style={widgetConfig.theme?.container}
       />
     );
   }
