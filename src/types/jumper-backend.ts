@@ -1851,24 +1851,6 @@ export class JumperBackend<
     /**
      * No description
      *
-     * @tags Portfolio, Public
-     * @name PortfolioControllerInvalidatePortfolioV1
-     * @summary Invalidate portfolio cache for an address (dev only)
-     * @request DELETE:/v1/portfolio/invalidate/{address}
-     */
-    portfolioControllerInvalidatePortfolioV1: (
-      address: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/v1/portfolio/invalidate/${address}`,
-        method: 'DELETE',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Recommendation, Public
      * @name RecommendationControllerGetTopsV1
      * @summary Get tops for an address
@@ -1977,32 +1959,6 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/filter`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Recommendation, Public
-     * @name RecommendationControllerScoresV1
-     * @summary Get opportunities scores for an address
-     * @request GET:/v1/recommendation/scores
-     */
-    recommendationControllerScoresV1: (
-      query: {
-        /**
-         * The address to get recommendation for
-         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
-         */
-        address: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<RecommendationDto, any>({
-        path: `/v1/recommendation/scores`,
         method: 'GET',
         query: query,
         format: 'json',
