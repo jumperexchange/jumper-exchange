@@ -288,10 +288,11 @@ export const usePortfolioDeFiFilterBar = () => {
   };
 
   const handleValueChange = (values: number[]) => {
+    const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      defiMinValue: values[0],
-      defiMaxValue: values[1],
+      defiMinValue: hasValues ? values[0] : null,
+      defiMaxValue: hasValues ? values[1] : null,
     });
   };
 
