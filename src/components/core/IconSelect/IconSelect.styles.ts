@@ -1,10 +1,11 @@
 import { styled } from '@mui/material/styles';
-import type { ToggleButtonProps } from '@mui/material/ToggleButton';
-import ToggleButton from '@mui/material/ToggleButton';
-import type { ToggleButtonGroupProps } from '@mui/material/ToggleButtonGroup';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import type { IconButtonProps } from '@mui/material/IconButton';
-import IconButton from '@mui/material/IconButton';
+import ToggleButton, {
+  type ToggleButtonProps,
+} from '@mui/material/ToggleButton';
+import ToggleButtonGroup, {
+  type ToggleButtonGroupProps,
+} from '@mui/material/ToggleButtonGroup';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
