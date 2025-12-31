@@ -25,6 +25,7 @@ import { EMPTY_DEFI_POSITIONS_FILTERING_PARAMS } from './constants';
 import {
   deFiPositionsSearchParamsParsers,
   extractDeFiPositionsFilteringParams,
+  filterSortDeFiPositionsData,
   getEffectiveValueRange,
   removeNullValuesFromFilter,
   sanitizeDeFiPositionsFilter,
@@ -106,12 +107,23 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
       protocols: filter?.defiProtocols,
       type: filter?.defiTypes,
       assets: filter?.defiAssets,
-      minValue: filter?.defiMinValue,
-      maxValue: filter?.defiMaxValue,
       sortBy: sortBy,
       order: order,
     },
   });
+
+  const filteredSortedData = useMemo(() => {
+    if (!allPositions.data?.data) {
+      return [];
+    }
+
+    return filterSortDeFiPositionsData(
+      allPositions.data.data,
+      filter,
+      sortBy,
+      order,
+    );
+  }, [allPositions.data?.data, filter, sortBy, order]);
 
   const stats = useMemo((): PortfolioDeFiPositionsFilteringParams => {
     if (
@@ -185,7 +197,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     filter,
     updateFilter,
     clearFilters,
-    data: allPositions.data?.data ?? [],
+    data: filteredSortedData,
     isLoading:
       allPositionsNoFilter.isLoading ||
       allPositions.isLoading ||

@@ -53,7 +53,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   const formRef = useRef<FormState>(null);
 
   const { account } = useAccount();
-  const { chainType } = account;
+  const chainType = account?.chainType;
   const isEvmWallet = chainType === ChainType.EVM;
 
   const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
@@ -150,6 +150,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
             ? 'widget.zap.placeholder.non-evm.description'
             : 'widget.zap.placeholder.embedded-multisig.description'
         }
+        style={widgetConfig.theme?.container}
       />
     );
   }
