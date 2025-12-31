@@ -470,6 +470,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
         </div>
         <button
           class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
+          data-mui-internal-clone-element="true"
           tabindex="0"
           type="button"
         >

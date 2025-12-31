@@ -8,6 +8,21 @@ import {
   DepositButtonIconWrapper,
 } from './DepositButton.styles';
 import BoltIcon from 'src/components/illustrations/BoltIcon';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
+import type { TooltipProps } from '@mui/material/Tooltip';
+
+const tooltipSlotProps: TooltipProps['slotProps'] = {
+  popper: {
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: [0, -6],
+        },
+      },
+    ],
+  },
+} as const;
 
 export const DepositButton: FC<DepositButtonProps> = ({
   displayMode = DepositButtonDisplayMode.IconAndLabel,
@@ -34,16 +49,24 @@ export const DepositButton: FC<DepositButtonProps> = ({
   };
 
   return (
-    <DepositButtonPrimary
-      {...props}
-      sx={props.sx}
-      size={size}
-      onClick={clickHandler}
+    <Tooltip
+      title={!showLabel ? label : undefined}
+      placement="top"
+      enterTouchDelay={0}
+      arrow
+      slotProps={tooltipSlotProps}
     >
-      <DepositButtonContentWrapper>
-        {showLabel && renderedLabel}
-        {showIcon && renderedIcon}
-      </DepositButtonContentWrapper>
-    </DepositButtonPrimary>
+      <DepositButtonPrimary
+        {...props}
+        sx={props.sx}
+        size={size}
+        onClick={clickHandler}
+      >
+        <DepositButtonContentWrapper>
+          {showLabel && renderedLabel}
+          {showIcon && renderedIcon}
+        </DepositButtonContentWrapper>
+      </DepositButtonPrimary>
+    </Tooltip>
   );
 };
