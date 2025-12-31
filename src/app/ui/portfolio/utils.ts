@@ -229,9 +229,9 @@ export const deFiPositionsSearchParamsParsers = {
 };
 
 export const extractDeFiPositionsFilteringParams = (
-  data: WalletPositions,
+  wallet: WalletPositions,
 ): PortfolioDeFiPositionsFilteringParams => {
-  const allPositions = data.positions;
+  const allPositions = wallet.data;
 
   const allChains = uniqBy(
     map(allPositions, (position) => position.chain).filter(Boolean),

@@ -42,11 +42,11 @@ export const EarnDetailsActions = ({
   );
 
   const depositAmountUSD = useMemo(() => {
-    if (isLoadingPositions || !positionsData || !positionsData.positions) {
+    if (isLoadingPositions || !positionsData || !positionsData.data) {
       return;
     }
 
-    return positionsData.positions[0]?.netUsd;
+    return positionsData.data[0]?.netUsd;
   }, [positionsData, isLoadingPositions]);
 
   const hasDeposited = !!depositAmountUSD || !!depositAmount;

@@ -91,8 +91,8 @@ export const updateWalletPositionsPrice = async (
 ): Promise<WalletPositions> => {
   return {
     ...wallet,
-    positions: await Promise.all(
-      wallet.positions.map((position) =>
+    data: await Promise.all(
+      wallet.data.map((position) =>
         updatePositionPrice(position, getTokenUSDPrice),
       ),
     ),

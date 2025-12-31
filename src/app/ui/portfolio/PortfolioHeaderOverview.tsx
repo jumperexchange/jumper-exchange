@@ -59,7 +59,7 @@ export const PortfolioHeaderOverview = () => {
       return 0;
     }
     const totalDeFiPositionsValue =
-      allDeFiPositions?.positions?.reduce(
+      allDeFiPositions?.data?.reduce(
         (acc, position) => acc + (position.netUsd ?? 0),
         0,
       ) ?? 0;
