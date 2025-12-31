@@ -1,9 +1,15 @@
 'use client';
 
 import type { TokenAmount } from '@lifi/sdk';
-import { getChains, getTokens as LifiGetTokens } from '@lifi/sdk';
+import {
+  ChainType,
+  getChains,
+  getWalletBalances,
+  getTokens as LifiGetTokens,
+} from '@lifi/sdk';
 import type { Account } from '@lifi/wallet-management';
 import { fetchAllTokensBalanceByChain } from '@/utils/getTokens/fetchAllTokensBalanceByChain';
+import { transformWalletBalances } from '@/utils/getTokens/transformWalletBalances';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -39,6 +45,13 @@ async function getTokens(
     const chains = await getChains({
       chainTypes: [account.chainType],
     });
+
+    if (account.chainType === ChainType.EVM && account.address) {
+      const walletBalances = await getWalletBalances(account.address);
+
+      return transformWalletBalances(walletBalances, chains);
+    }
+
     const { tokens } = await LifiGetTokens({
       chainTypes: [account.chainType],
     });
