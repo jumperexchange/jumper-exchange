@@ -383,9 +383,9 @@
         "Staking": "Estratégias de Staking podem enfrentar riscos, incluindo inatividade do validador, penalização, instabilidade no pareamento de LST, atrasos na retirada de LST, mudanças na governação, e exploração de contratos inteligentes.",
         "Structured": "Produtos estruturados podem enfrentar riscos como erros de modelo, mudanças de volatilidade, violações de barreiras, rebalanceamento do slippage, lacunas de liquidez, inadimplência da contraparte e falhas no oráculo.",
         "Synthetic": "Synthetic pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: manipulação de oráculo, sub-colateralização, deslocamentos de mercado afetando pareamento, lacunas de liquidez, risco de contraparte, exploits de contrato inteligentes",
-        "Yield Aggregator": ""
+        "Yield Aggregator": "Agregador de Rendimento pode encontrar vários vetores de risco que podem influenciar a performance do cofre: falhas na lógica de auto-composto, erros de reequilíbrio, desconfiguração de estratégia, risco de dependência de protocolos integrados, multisig ou governança corrompida, risco de stake de contrato inteligente entre protocolos subjacentes"
       },
-      "website": ""
+      "website": "página web"
     },
     "overview": {
       "updated": "Atualizado há {{time}} atrás"
@@ -396,7 +396,7 @@
       "goToPortfolio": "Ir para Portfólio"
     },
     "position": {
-      "label": ""
+      "label": "Sua posição"
     },
     "missingPosition": {
       "title": "Faltando uma posição?",
@@ -404,14 +404,14 @@
     },
     "emptyList": {
       "yourPositions": {
-        "title": "",
+        "title": "Sem posições",
         "description": "Parece que você ainda não tem nenhuma posição ativa em nenhum mercado.\nSe você acha que esta faltando uma posição, tente visitar seu portfólio.",
-        "viewAllMarkets": ""
+        "viewAllMarkets": "Visualizar todos os mercados"
       },
       "noResults": {
-        "title": "",
-        "description": "",
-        "clearFilters": ""
+        "title": "Sem resultados",
+        "description": "Infelizmente, não há resultados para sua pesquisa, tente limpar seus filtros.",
+        "clearFilters": "Limpar filtros"
       }
     }
   },
@@ -468,8 +468,8 @@
           "years_other": "{{count}} anos atrás"
         },
         "tooltip": {
-          "address": "",
-          "info": ""
+          "address": "Mostrar contrato",
+          "info": "Visualizar detalhes do ganho"
         }
       },
       "actions": {
@@ -502,31 +502,31 @@
     "sorting": {
       "sortBy": "Ordenar por",
       "sort": "Ordenar",
-      "totalValue": "",
+      "totalValue": "Valor Total",
       "chain": "Rede",
       "asset": "Ativo"
     },
     "views": {
-      "viewBy": "",
-      "tokens": "",
-      "defiProtocols": ""
+      "viewBy": "Visualizar por",
+      "tokens": "Tokens",
+      "defiProtocols": "Protocolos DeFi"
     }
   },
   "newsletter": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "hint": "",
-      "subscribe": "",
-      "emailPlaceholder": "",
+      "title": "Faça. O. Salto.",
+      "subtitle": "Receba as últimas notícias e atualizações diretamente de <strong>Jumper.</strong>",
+      "hint": "Ao se inscrever em nosso boletim informativo, você está concordando implicitamente com os <0>termos de serviço</0> e a <1>política de privacidade</1> da Jumper. Você pode cancelar a inscrição a qualquer momento do link no rodapé do e-mail.",
+      "subscribe": "Inscrever-se",
+      "emailPlaceholder": "Digite seu e-mail",
       "error": {
-        "email": "",
-        "emailLength": "",
-        "required": "",
-        "unknown": ""
+        "email": "Este não é um endereço de e-mail válido",
+        "emailLength": "O e-mail não deve exceder 80 caracteres",
+        "required": "Este campo é obrigatório",
+        "unknown": "Ocorreu um erro desconhecido. Por favor, tente novamente."
       },
-      "pending": "",
-      "success": ""
+      "pending": "Confirmação de inscrição pendente...",
+      "success": "Boletim Informativo assinado com sucesso!"
     }
   },
   "widget": {
@@ -588,8 +588,8 @@
     "depositButtonLabel": "Depósito rápido",
     "withdrawButtonLabel": "Retirar",
     "managePositionsButtonLabel": "Gerenciar Posições",
-    "deposit": "",
-    "depositNow": ""
+    "deposit": "Depositar",
+    "depositNow": "Deposite agora"
   },
   "modal": {
     "perks": {
