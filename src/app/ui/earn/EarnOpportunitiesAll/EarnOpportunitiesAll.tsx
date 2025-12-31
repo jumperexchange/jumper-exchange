@@ -18,6 +18,7 @@ import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
 import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
+import { HeaderHeight } from '@/const/headerHeight';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
@@ -58,6 +59,11 @@ const EarnOpportunitiesAllInner = () => {
       <SectionCardContainer
         ref={sectionRef}
         sx={(theme) => ({
+          scrollMarginTop: {
+            xs: HeaderHeight.XS,
+            sm: HeaderHeight.SM,
+            md: HeaderHeight.MD,
+          },
           padding: theme.spacing(2),
           [theme.breakpoints.up('md')]: {
             padding: theme.spacing(3),
