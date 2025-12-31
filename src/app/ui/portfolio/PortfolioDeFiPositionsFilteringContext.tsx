@@ -9,10 +9,9 @@ import {
   useState,
 } from 'react';
 import { useQueryStates } from 'nuqs';
-import { useAccount } from '@lifi/wallet-management';
+import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { usePortfolioDeFiPositions } from 'src/hooks/portfolio/usePortfolioDeFiPositions';
 import { isEqual } from 'lodash';
-import type { Hex } from 'viem';
 import type { DefiPosition } from '@/types/jumper-backend';
 import type {
   OrderEnum,
@@ -30,7 +29,6 @@ import {
   removeNullValuesFromFilter,
   sanitizeDeFiPositionsFilter,
 } from './utils';
-import { ChainType } from '@lifi/sdk';
 import type { NullableFields } from '@/types/internal';
 
 export interface PortfolioDeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
@@ -83,17 +81,7 @@ export const PortfolioDeFiPositionsFilteringProvider = ({
     ...rest
   } = searchParamsState;
 
-  const { accounts } = useAccount();
-  const connectedAddresses = useMemo(() => {
-    return accounts
-      .filter(
-        (account) =>
-          account.isConnected &&
-          !!account?.address &&
-          account.chainType === ChainType.EVM,
-      )
-      .map((account) => account.address as Hex);
-  }, [accounts]);
+  const connectedAddresses = useConnectedEvmAddresses();
 
   const initialFilter = useMemo(() => {
     return removeNullValuesFromFilter<PortfolioDeFiPositionsFilter>(rest);

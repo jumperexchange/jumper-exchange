@@ -21,6 +21,7 @@ import type { MinimalToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
 import { WalletWithActions } from './components/WalletWithActions';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
+import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
@@ -44,7 +45,8 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
 
-  const tokens = useFormatDisplayWalletTokens(data);
+  const formattedTokens = useFormatDisplayWalletTokens(data);
+  const tokens = useTokensWithoutLpPositions(formattedTokens);
 
   useEffect(() => {
     if (hasMultipleAccountsConnected) {
