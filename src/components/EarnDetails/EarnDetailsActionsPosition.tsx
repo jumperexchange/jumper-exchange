@@ -59,11 +59,13 @@ export const EarnDetailsActionsPosition: FC<
   EarnDetailsActionsPositionProps
 > = ({ token, amountUSD, amount }) => {
   const { t } = useTranslation();
-  const { getTokenByAddressAndChain, isSuccess: isSuccessTokens } = useTokens();
+  // IMPORTANT: We use the useToken hook to get the token data instead of the useTokens hook as the override is only present on /token for now
+  const { token: tokenData, isSuccess: isSuccessTokens } = useToken(
+    token.chain.chainId,
+    token.address,
+  );
 
-  const tokenPriceUSD =
-    getTokenByAddressAndChain(token.address, token.chain.chainId)?.priceUSD ??
-    '0';
+  const tokenPriceUSD = tokenData?.priceUSD ?? '0';
   const hasTokenPriceUSD = Number(tokenPriceUSD) > 0;
   const shouldActivateFallbackToken = !hasTokenPriceUSD && isSuccessTokens;
 
