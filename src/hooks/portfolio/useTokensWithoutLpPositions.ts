@@ -19,7 +19,7 @@ export const useTokensWithoutLpPositions = <
   });
 
   const lpTokens = useMemo(() => {
-    const positions = allPositions?.positions;
+    const positions = allPositions?.data;
     if (!positions || positions.length === 0) {
       return [];
     }
@@ -29,7 +29,7 @@ export const useTokensWithoutLpPositions = <
         address: p.lpToken!.address,
         chainId: p.lpToken!.chain.chainId,
       }));
-  }, [allPositions?.positions]);
+  }, [allPositions?.data]);
 
   return useMemo(() => {
     if (tokens.length === 0 || lpTokens.length === 0) {

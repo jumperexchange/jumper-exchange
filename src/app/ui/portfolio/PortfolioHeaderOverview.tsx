@@ -58,11 +58,7 @@ export const PortfolioHeaderOverview = () => {
         0,
       ) ?? 0;
     return totalFilteredTokensValue + totalDeFiPositionsValue;
-  }, [
-    portfolioWelcomeScreenClosed,
-    filteredTokens,
-    allDeFiPositions?.positions,
-  ]);
+  }, [portfolioWelcomeScreenClosed, filteredTokens, allDeFiPositions?.data]);
 
   const handleRefresh = () => {
     refetchPortfolioTokens();
