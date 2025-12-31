@@ -9,7 +9,18 @@ BACKEND_SWAGGER_URL=http://localhost:3001/swagger-json
 curl -s "$BACKEND_SWAGGER_URL" > /tmp/swagger.json
 
 # Keep endpoints that are public
-jq '.paths |= with_entries(select(.value | tojson | contains("\"Public\"")))' /tmp/swagger.json > /tmp/swagger-filtered.json
+jq '
+  .paths |= with_entries(
+    .value |= with_entries(
+      select(
+        (.value.tags // [] | index("Public"))
+        and
+        (.value.tags // [] | index("Development") | not)
+      )
+    )
+    | select(.value != {})
+  )
+' /tmp/swagger.json > /tmp/swagger-filtered.json
 
 # generate api
 npx swagger-typescript-api generate \

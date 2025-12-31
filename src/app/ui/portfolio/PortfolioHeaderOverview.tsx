@@ -1,7 +1,6 @@
 'use client';
 
-import { usePortfolioStore } from '@/stores/portfolio/PortfolioStore';
-import { useAccount } from '@lifi/wallet-management';
+import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { useTheme } from '@mui/material/styles';
 import { AnimatedCounter } from 'react-animated-counter';
 import {
@@ -12,13 +11,13 @@ import {
 } from './PortfolioPage.styles';
 import PortfolioRefreshBalance from './PortfolioRefreshBalance';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
+import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import type { Hex } from 'viem';
+import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
-import { ChainType } from '@lifi/widget';
 
 export const PortfolioHeaderOverview = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
@@ -26,24 +25,13 @@ export const PortfolioHeaderOverview = () => {
   );
   const { t } = useTranslation();
   const theme = useTheme();
-  const { accounts } = useAccount();
+  const connectedAddresses = useConnectedEvmAddresses();
   const {
+    data: allTokens,
     refetch: refetchPortfolioTokens,
     isFetching: isFetchingPortfolioTokens,
   } = usePortfolioTokens();
-  const { totalValue: totalValuePortfolioTokens } = usePortfolioStore((state) =>
-    state.getFormattedCacheTokens(accounts ?? []),
-  );
-  const connectedAddresses = useMemo(() => {
-    return accounts
-      .filter(
-        (account) =>
-          account.isConnected &&
-          !!account?.address &&
-          account.chainType === ChainType.EVM,
-      )
-      .map((account) => account.address as Hex);
-  }, [accounts]);
+  const formattedTokens = useFormatDisplayWalletTokens(allTokens);
   const {
     data: allDeFiPositions,
     refetch: refetchPortfolioDeFiPositions,
@@ -52,23 +40,25 @@ export const PortfolioHeaderOverview = () => {
     addresses: connectedAddresses,
   });
 
+  const filteredTokens = useTokensWithoutLpPositions(formattedTokens);
+
   const isLoading = isLoadingDeFiPositions || isFetchingPortfolioTokens;
 
   const totalValue = useMemo(() => {
     if (!portfolioWelcomeScreenClosed) {
       return 0;
     }
+    const totalFilteredTokensValue = filteredTokens.reduce(
+      (acc, token) => acc + (token.totalPriceUSD ?? 0),
+      0,
+    );
     const totalDeFiPositionsValue =
-      allDeFiPositions?.positions?.reduce(
+      allDeFiPositions?.data?.reduce(
         (acc, position) => acc + (position.netUsd ?? 0),
         0,
       ) ?? 0;
-    return totalValuePortfolioTokens + totalDeFiPositionsValue;
-  }, [
-    portfolioWelcomeScreenClosed,
-    totalValuePortfolioTokens,
-    allDeFiPositions,
-  ]);
+    return totalFilteredTokensValue + totalDeFiPositionsValue;
+  }, [portfolioWelcomeScreenClosed, filteredTokens, allDeFiPositions?.data]);
 
   const handleRefresh = () => {
     refetchPortfolioTokens();

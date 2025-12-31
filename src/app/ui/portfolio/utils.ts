@@ -21,7 +21,9 @@ import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_DEFI_POSITIONS_MIN_VALUE } from './constants';
 
-export type SortAccessors<T> = Record<SortByEnum, (item: T) => string | number>;
+export type SortAccessors<T> = Partial<
+  Record<SortByEnum, (item: T) => string | number>
+>;
 
 export const sortPortfolioItems = <T>(
   items: T[],
@@ -29,6 +31,10 @@ export const sortPortfolioItems = <T>(
   order: OrderEnum,
   accessors: SortAccessors<T>,
 ): T[] => {
+  if (!accessors[sortByValue]) {
+    return items;
+  }
+
   const sorted = sortBy(items, accessors[sortByValue]);
 
   if (order === OrderOptions.DESC) {
@@ -50,6 +56,21 @@ export const defiGroupSortAccessors: SortAccessors<DefiPosition[]> = {
     sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
   [SortByOptions.CHAIN]: (group) => group[0]?.chain?.chainKey ?? '',
   [SortByOptions.ASSET]: (group) => group[0]?.protocol?.name ?? '',
+};
+
+export const defiPositionsSortAccessors: SortAccessors<DefiPosition> = {
+  [SortByOptions.VALUE]: (position) =>
+    position.netUsd || position.assetUsd || 0,
+};
+
+export const isWithinValueRange = (
+  value: number,
+  minValue?: number,
+  maxValue?: number,
+): boolean => {
+  const meetsMin = minValue === undefined || value >= minValue;
+  const meetsMax = maxValue === undefined || value <= maxValue;
+  return meetsMin && meetsMax;
 };
 
 export const tokensSearchParamsParsers = {
@@ -193,11 +214,11 @@ export const filterSortPortfolioTokensData = (
   ) {
     allData = allData.filter((token) => {
       const value = token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0;
-      const meetsMin =
-        filter.tokensMinValue === undefined || value >= filter.tokensMinValue;
-      const meetsMax =
-        filter.tokensMaxValue === undefined || value <= filter.tokensMaxValue;
-      return meetsMin && meetsMax;
+      return isWithinValueRange(
+        value,
+        filter.tokensMinValue,
+        filter.tokensMaxValue,
+      );
     });
   }
 
@@ -229,9 +250,9 @@ export const deFiPositionsSearchParamsParsers = {
 };
 
 export const extractDeFiPositionsFilteringParams = (
-  data: WalletPositions,
+  wallet: WalletPositions,
 ): PortfolioDeFiPositionsFilteringParams => {
-  const allPositions = data.positions;
+  const allPositions = wallet.data;
 
   const allChains = uniqBy(
     map(allPositions, (position) => position.chain).filter(Boolean),
@@ -319,3 +340,34 @@ export const getEffectiveValueRange = (
   min: Math.max(defaultMinValue, allValueRange.min),
   max: Math.max(defaultMinValue, allValueRange.max),
 });
+
+export const filterSortDeFiPositionsData = (
+  positions: DefiPosition[],
+  filter: PortfolioDeFiPositionsFilter,
+  sortByValue: SortByEnum,
+  order: OrderEnum,
+): DefiPosition[] => {
+  let result = [...positions];
+
+  if (filter.defiMinValue !== undefined || filter.defiMaxValue !== undefined) {
+    result = result.filter((position) => {
+      const value = position.netUsd || position.assetUsd || 0;
+      return isWithinValueRange(
+        value,
+        filter.defiMinValue,
+        filter.defiMaxValue,
+      );
+    });
+  }
+
+  if (sortByValue === SortByOptions.VALUE) {
+    result = sortPortfolioItems(
+      result,
+      sortByValue,
+      order,
+      defiPositionsSortAccessors,
+    );
+  }
+
+  return result;
+};

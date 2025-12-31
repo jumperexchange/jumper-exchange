@@ -4,6 +4,7 @@ import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
 import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useQueries } from '@tanstack/react-query';
+import { min } from 'date-fns';
 import { useCallback, useMemo } from 'react';
 import { ONE_HOUR_MS } from 'src/const/time';
 import type { Hex } from 'viem';
@@ -71,9 +72,7 @@ export const usePortfolioDeFiPositions = ({
           evm: address,
           ...filter,
         });
-        // @ts-expect-error: see LF-15589 - we are transforming data in the backend
-        const positions = result.data.data as WalletPositions;
-
+        const positions = result.data;
         return updateWalletPositionsPrice(positions, getTokenUSDPrice);
       },
       enabled: !!address && !isLoadingTokens,
@@ -90,11 +89,29 @@ export const usePortfolioDeFiPositions = ({
       return undefined;
     }
 
-    const allPositions: DefiPosition[] = queries
-      .filter((query) => query.isSuccess && query.data)
-      .flatMap((query) => query.data?.positions ?? []);
+    const successfulQueries = queries.filter(
+      (query) => query.isSuccess && query.data,
+    );
 
-    return { positions: allPositions };
+    const allPositions: DefiPosition[] = successfulQueries.flatMap(
+      (query) => query.data?.data ?? [],
+    );
+
+    // Extract dates from all queries (meta.updatedAt is ISO string, dataUpdatedAt is timestamp)
+    const dates = successfulQueries.map((query) => {
+      const metaUpdatedAt = query.data?.meta?.updatedAt;
+      return metaUpdatedAt
+        ? new Date(metaUpdatedAt)
+        : new Date(query.dataUpdatedAt);
+    });
+
+    const oldestUpdatedAtOrFallback =
+      dates.length > 0 ? min(dates).toISOString() : new Date().toISOString();
+
+    return {
+      data: allPositions,
+      meta: { updatedAt: oldestUpdatedAtOrFallback },
+    };
   }, [queries, isSuccess]);
 
   const refetch = () => {
