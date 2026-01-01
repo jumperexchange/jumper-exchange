@@ -566,11 +566,11 @@
         "comingSoon": "Em breve",
         "embedded-multisig": {
           "title": "Sua carteira não é suportada atualmente",
-          "description": "Estamos trabalhando para adicionar suporte para carteiras incorporadas e de contrato inteligente. Por enquanto, por favor use uma carteira diferente para completar esta missão."
+          "description": "Estamos trabalhando para adicionar suporte em carteiras incorporadas e de contrato inteligente (incluindo SAFE). Por enquanto, por favor use uma carteira EOA para completar esta missão."
         },
         "non-evm": {
           "title": "Sua carteira não é suportada atualmente",
-          "description": "Estamos trabalhando para adicionar suporte para carteiras não-EVM. Por enquanto, por favor use uma carteira diferente para completar esta missão."
+          "description": "Estamos trabalhando para adicionar suporte em carteiras não-EVM. Por enquanto, por favor use uma carteira EVM (Ethereum) para completar esta missão."
         }
       }
     },
