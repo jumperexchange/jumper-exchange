@@ -51,6 +51,25 @@ const buildApyItem = (
   };
 };
 
+const buildRewardsApyItem = (
+  rewardsApy: number | undefined,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem | null => {
+  if (!rewardsApy || isZeroApprox(rewardsApy)) {
+    return null;
+  }
+
+  const formatted = formatApy(rewardsApy);
+  return {
+    key: 'rewardsApy',
+    dataTestId: `rewardsApy-${rewardsApy}`,
+    label: t('labels.rewardsApy'),
+    value: formatted,
+    tooltip: t('tooltips.rewardsApy'),
+  };
+};
+
 const buildLockupItem = (
   lockupMonths: number | string | undefined,
   variant: EarnCardVariant,
@@ -221,6 +240,7 @@ export const useFormatDisplayEarnOpportunityData = (
     const capInDollar = earnOpportunity?.capInDollar;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
+    const rewardsApy = earnOpportunity?.rewardsApy;
 
     const chains = uniqBy(
       assets.map((asset) => asset.chain),
@@ -234,7 +254,9 @@ export const useFormatDisplayEarnOpportunityData = (
       buildApyItem(apy, variant, t),
       lockupMonths
         ? buildLockupItem(lockupMonths, variant, t)
-        : buildCapInDollarItem(capInDollar, variant, t),
+        : capInDollar
+          ? buildCapInDollarItem(capInDollar, variant, t)
+          : buildRewardsApyItem(rewardsApy, variant, t),
       buildTvlItem(tvlUsd, variant, t),
       buildAssetsItem(assets, variant, t),
       buildChainsItem(chains, variant, t, (chain) =>

@@ -4,7 +4,11 @@ import type { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/M
 import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hooks';
 import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
-import type { SortByEnum } from 'src/app/ui/earn/types';
+import {
+  RewardsAPYOptions,
+  type RewardsAPYEnum,
+  type SortByEnum,
+} from 'src/app/ui/earn/types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
@@ -21,6 +25,7 @@ interface PendingFilterValues {
   apy: number[];
   tvl: number[];
   sortBy: SortByEnum;
+  rewardsAPY: RewardsAPYEnum[];
 }
 
 export const EarnFilterBarContentAllTablet = () => {
@@ -39,6 +44,8 @@ export const EarnFilterBarContentAllTablet = () => {
     tvlMaxValue,
     tvlMin,
     tvlMax,
+    rewardsAPYValue,
+    rewardsAPYOptions,
     sortByOptions,
     sortBy,
     filtersCount,
@@ -62,8 +69,14 @@ export const EarnFilterBarContentAllTablet = () => {
       apy: [apyMinValue, apyMaxValue],
       tvl: [tvlMinValue, tvlMaxValue],
       sortBy: sortBy ?? '',
+      rewardsAPY: rewardsAPYValue ? [rewardsAPYValue] : [],
     },
     onApply: (values) => {
+      const minRewardsAPY = values.rewardsAPY.includes(
+        RewardsAPYOptions.WITH_REWARDS,
+      )
+        ? 0.0
+        : undefined;
       handleApplyAllFilters({
         chains: values.chains.map(Number) ?? [],
         protocols: values.protocols ?? [],
@@ -74,6 +87,7 @@ export const EarnFilterBarContentAllTablet = () => {
         minTVL: values.tvl[0],
         maxTVL: values.tvl[1],
         sortBy: values.sortBy ?? '',
+        minRewardsAPY,
       });
     },
     onClear: handleClearAllFilters,
@@ -86,7 +100,8 @@ export const EarnFilterBarContentAllTablet = () => {
         values.apy[0] !== apyMin ||
         values.apy[1] !== apyMax ||
         values.tvl[0] !== tvlMin ||
-        values.tvl[1] !== tvlMax
+        values.tvl[1] !== tvlMax ||
+        values.rewardsAPY.length > 0
       );
     },
   });
@@ -226,6 +241,20 @@ export const EarnFilterBarContentAllTablet = () => {
         min: tvlMin,
         max: tvlMax,
         testId: 'earn-filter-tvl-select-mobile',
+      }),
+    );
+  }
+
+  if (rewardsAPYOptions.length > 0) {
+    categories.push(
+      createMultiSelectCategory<RewardsAPYEnum>({
+        id: 'rewardsAPY',
+        label: t('earn.filter.rewards.label'),
+        value: pendingValues.rewardsAPY ?? [],
+        onChange: (value: RewardsAPYEnum[]) =>
+          setPendingValue('rewardsAPY', value),
+        options: rewardsAPYOptions,
+        testId: 'earn-filter-rewards-select-mobile',
       }),
     );
   }

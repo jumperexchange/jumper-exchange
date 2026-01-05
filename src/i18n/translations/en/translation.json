@@ -304,6 +304,7 @@
   "tooltips": {
     "tvl": "Total value of crypto assets deposited in this market.",
     "apy": "Expected yearly return rate of the tokens invested.",
+    "rewardsApy": "Expected yearly return rate of the rewards tokens invested.",
     "deposit": "The token on which the market is defined and yield accrues on.",
     "deposited": "The token you have deposited into this market.",
     "boostedApy": "{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.",
@@ -320,6 +321,7 @@
   },
   "labels": {
     "apy": "APY",
+    "rewardsApy": "Rewards APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",
     "assets_one": "Asset",
@@ -359,7 +361,11 @@
       "tag": "Type",
       "asset": "Asset",
       "apy": "APY",
-      "tvl": "TVL"
+      "tvl": "TVL",
+      "rewards": {
+        "label": "Rewards",
+        "withRewards": "Include only pools with rewards"
+      }
     },
     "views": {
       "viewBy": "View by",

@@ -107,6 +107,10 @@ interface Resources {
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
         protocol: 'Protocol';
+        rewards: {
+          label: 'Rewards';
+          withRewards: 'Include only pools with rewards';
+        };
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
         tag: 'Type';
@@ -203,6 +207,7 @@ interface Resources {
       lockupPeriod: 'Lockup Period';
       overview: 'Overview';
       protocol: 'Protocol';
+      rewardsApy: 'Rewards APY';
       tvl: 'TVL';
     };
     leaderboard: {
@@ -622,6 +627,7 @@ interface Resources {
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
       noPositionsToManage: 'You do not have any positions to manage';
       protocol: 'The protocol you will earn from';
+      rewardsApy: 'Expected yearly return rate of the rewards tokens invested.';
       tvl: 'Total value of crypto assets deposited in this market.';
     };
     widget: {

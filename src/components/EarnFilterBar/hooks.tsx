@@ -4,9 +4,10 @@ import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
 import type {
   EarnOpportunityFilterUI,
+  RewardsAPYEnum,
   SortByEnum,
 } from 'src/app/ui/earn/types';
-import { SortByOptions } from 'src/app/ui/earn/types';
+import { RewardsAPYOptions, SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { capitalizeString } from '@/utils/capitalizeString';
@@ -23,6 +24,7 @@ export const useEarnFilterBar = () => {
     allTags,
     allAPY,
     allTVL,
+    allRewardsOptions,
     filter,
     updateFilter,
     clearFilters,
@@ -106,6 +108,14 @@ export const useEarnFilterBar = () => {
   const tvlMin = Math.min(...Object.values(allTVL), 0);
   const tvlMax = Math.max(...Object.values(allTVL), 0);
 
+  const rewardsAPYOptions = allRewardsOptions.map((option) => {
+    const _option = option as RewardsAPYEnum;
+    return {
+      value: _option,
+      label: t(`earn.filter.rewards.${_option}`),
+    };
+  });
+
   const sortByOptions = useMemo(
     () => [
       { value: SortByOptions.APY, label: t('earn.sorting.apy') },
@@ -152,6 +162,13 @@ export const useEarnFilterBar = () => {
     });
   };
 
+  const handleRewardsAPYChange = (values: string[]) => {
+    const hasValues = values.length > 0;
+    const minRewardsAPY =
+      hasValues && values[0] === RewardsAPYOptions.WITH_REWARDS ? 0.0 : null;
+    updateFilter({ ...filter, minRewardsAPY });
+  };
+
   const handleSortBy = (value: string) => {
     setSortBy(value as SortByEnum);
   };
@@ -169,6 +186,9 @@ export const useEarnFilterBar = () => {
 
   const tvlMinValue = filter?.minTVL ? filter.minTVL : tvlMin;
   const tvlMaxValue = filter?.maxTVL ? filter.maxTVL : tvlMax;
+
+  const rewardsAPYValue =
+    filter?.minRewardsAPY !== undefined ? RewardsAPYOptions.WITH_REWARDS : null;
 
   const arrayFiltersCount = [
     filter?.chains,
@@ -191,7 +211,11 @@ export const useEarnFilterBar = () => {
 
   const tvlFilterCount = hasTVLFilterApplied ? 1 : 0;
 
-  const filtersCount = arrayFiltersCount + apyFilterCount + tvlFilterCount;
+  const hasRewardsAPYFilterApplied = filter?.minRewardsAPY !== undefined;
+  const rewardsAPYFilterCount = hasRewardsAPYFilterApplied ? 1 : 0;
+
+  const filtersCount =
+    arrayFiltersCount + apyFilterCount + tvlFilterCount + rewardsAPYFilterCount;
   const hasFilterApplied = filtersCount > 0;
 
   return {
@@ -201,6 +225,7 @@ export const useEarnFilterBar = () => {
     assetOptions,
     apyOptions,
     tvlOptions,
+    rewardsAPYOptions,
     hasFilterApplied,
     filtersCount,
     filter,
@@ -212,6 +237,7 @@ export const useEarnFilterBar = () => {
     tvlMaxValue,
     tvlMin,
     tvlMax,
+    rewardsAPYValue,
     sortByOptions,
     sortBy,
     handleChainChange,
@@ -220,6 +246,7 @@ export const useEarnFilterBar = () => {
     handleAssetChange,
     handleAPYChange,
     handleTVLChange,
+    handleRewardsAPYChange,
     handleClearAllFilters: clearFilters,
     handleSortBy,
     handleApplyAllFilters,

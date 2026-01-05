@@ -1,10 +1,10 @@
-import { map, uniqBy, uniq, sortBy, fromPairs } from 'lodash';
+import { map, uniqBy, uniq, sortBy, fromPairs, some } from 'lodash';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
 } from './types';
-import { OrderOptions, SortByOptions } from './types';
+import { OrderOptions, RewardsAPYOptions, SortByOptions } from './types';
 import type { Nullable } from 'nuqs';
 import {
   parseAsStringEnum,
@@ -32,6 +32,8 @@ export const searchParamsParsers = {
   maxAPY: parseAsFloat,
   minTVL: parseAsFloat,
   maxTVL: parseAsFloat,
+  minRewardsAPY: parseAsFloat,
+  maxRewardsAPY: parseAsFloat,
 };
 
 export const extractFilteringParams = (
@@ -67,6 +69,13 @@ export const extractFilteringParams = (
   ]);
   const allTVL = fromPairs(stepTVLPairs);
 
+  const withRewards = some(
+    data,
+    (item) => item.rewardsApy && item.rewardsApy > 0,
+  );
+
+  const allRewardsOptions = withRewards ? [RewardsAPYOptions.WITH_REWARDS] : [];
+
   return {
     allChains,
     allProtocols,
@@ -74,6 +83,7 @@ export const extractFilteringParams = (
     allTags,
     allAPY,
     allTVL,
+    allRewardsOptions,
   };
 };
 
@@ -93,7 +103,8 @@ export const sanitizeFilter = (
     !stats.allChains.length ||
     !stats.allProtocols.length ||
     !stats.allAssets.length ||
-    !stats.allTags.length
+    !stats.allTags.length ||
+    !stats.allRewardsOptions.length
   ) {
     return filter;
   }
@@ -111,6 +122,8 @@ export const sanitizeFilter = (
   const validTVL = new Set(Object.values(stats.allTVL ?? []).map((tvl) => tvl));
   const tvlMin = Math.min(...validTVL, 0);
   const tvlMax = Math.max(...validTVL, 0);
+
+  const validRewardsOptions = new Set(stats.allRewardsOptions);
 
   return {
     ...filter,
@@ -133,6 +146,16 @@ export const sanitizeFilter = (
     maxTVL:
       filter.maxTVL !== undefined
         ? Math.max(Math.min(filter.maxTVL, tvlMax), tvlMin)
+        : null,
+    minRewardsAPY:
+      filter.minRewardsAPY !== undefined &&
+      validRewardsOptions.has(RewardsAPYOptions.WITH_REWARDS)
+        ? filter.minRewardsAPY
+        : null,
+    maxRewardsAPY:
+      filter.maxRewardsAPY !== undefined &&
+      validRewardsOptions.has(RewardsAPYOptions.WITH_REWARDS)
+        ? filter.maxRewardsAPY
         : null,
   };
 };
