@@ -3,13 +3,21 @@ import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens/index';
 import { getBalance } from '@/utils/getTokens/utils';
 import { find, flatMap, sumBy, orderBy, map, groupBy, first } from 'lodash';
 
+const safeBigInt = (value: string): bigint => {
+  try {
+    return BigInt(value);
+  } catch {
+    return 0n;
+  }
+};
+
 function calculateFormattedBalance(token: WalletTokenExtended): number {
   if ('balance' in token && typeof token.balance === 'number') {
     return token.balance;
   }
 
   return getBalance({
-    amount: BigInt(token.amount),
+    amount: safeBigInt(token.amount),
     decimals: token.decimals,
   });
 }
@@ -19,11 +27,12 @@ function createChainToken(
   chain: ExtendedChain | undefined,
   formattedBalance: number,
 ): ExtendedTokenAmountWithChain {
-  const totalPriceUSD = formattedBalance * parseFloat(token.priceUSD);
+  const priceUSD = parseFloat(token.priceUSD);
+  const totalPriceUSD = isNaN(priceUSD) ? 0 : formattedBalance * priceUSD;
 
   return {
     ...token,
-    amount: BigInt(token.amount),
+    amount: safeBigInt(token.amount),
     cumulatedBalance: formattedBalance,
     totalPriceUSD,
     chainLogoURI: chain?.logoURI,
@@ -54,7 +63,7 @@ function createTokenGroup(
     address: firstBalance.address,
     symbol: firstBalance.symbol,
     chainId: primaryChain?.chainId ?? firstBalance.chainId,
-    amount: BigInt(firstBalance.amount),
+    amount: safeBigInt(firstBalance.amount),
     name: firstBalance.name,
     priceUSD: firstBalance.priceUSD,
     decimals: firstBalance.decimals,
