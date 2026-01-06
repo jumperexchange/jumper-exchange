@@ -18,6 +18,7 @@ import {
   sanitizeTokensFilter,
   tokensSearchParamsParsers,
   filterSortPortfolioTokensData,
+  getEffectiveValueRange,
 } from './utils';
 import { EMPTY_TOKENS_FILTERING_PARAMS } from './constants';
 import type {
@@ -112,10 +113,16 @@ export const PortfolioTokensFilteringProvider = ({
     prevStatsRef.current = stats;
 
     const sanitized = sanitizeTokensFilter(filter, stats);
+    const effectiveValueRange = getEffectiveValueRange(stats.allValueRange);
 
-    if (!isEqual(sanitized, filter)) {
-      setFilter(removeNullValuesFromFilter(sanitized));
-      setSearchParamsState(sanitized);
+    const withDefaults = {
+      ...sanitized,
+      tokensMinValue: sanitized.tokensMinValue ?? effectiveValueRange.min,
+    };
+
+    if (!isEqual(withDefaults, filter)) {
+      setFilter(removeNullValuesFromFilter(withDefaults));
+      setSearchParamsState(withDefaults);
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
 
