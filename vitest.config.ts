@@ -24,6 +24,12 @@ export default defineConfig({
           include: ['src/**/*.spec.ts'],
           globals: true,
         },
+        resolve: {
+          alias: {
+            '@': path.resolve(dirname, './src'),
+            src: path.resolve(dirname, './src'),
+          },
+        },
       },
       {
         plugins: [react()],

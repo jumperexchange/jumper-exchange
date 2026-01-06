@@ -1,6 +1,6 @@
 // This file works on both server and client automatically
 
-interface RuntimeConfig {
+export interface RuntimeConfig {
   [key: string]: string;
 }
 

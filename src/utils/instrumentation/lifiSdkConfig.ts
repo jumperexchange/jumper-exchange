@@ -21,7 +21,7 @@ export const lifiSdkConfig = createConfig({
   preloadChains: true,
   requestInterceptor: (request) => {
     const pathname = getPathname();
-    const integrator = getPathBasedIntegrator(pathname);
+    const integrator = getPathBasedIntegrator(pathname, config);
     request.headers = {
       ...(request.headers ?? {}),
       Referer: GLOBAL_HEADERS.Referer,
