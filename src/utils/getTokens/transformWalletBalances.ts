@@ -1,6 +1,7 @@
 import type { ExtendedChain, WalletTokenExtended } from '@lifi/sdk';
 import type { ExtendedTokenAmountWithChain } from '@/utils/getTokens/index';
 import { getBalance } from '@/utils/getTokens/utils';
+import { find, flatMap, sumBy, orderBy, map, groupBy, first } from 'lodash';
 
 function calculateFormattedBalance(token: WalletTokenExtended): number {
   if ('balance' in token && typeof token.balance === 'number') {
@@ -31,89 +32,40 @@ function createChainToken(
   };
 }
 
-function updateCumulatedValues(token: ExtendedTokenAmountWithChain): void {
-  token.cumulatedBalance = token.chains.reduce(
-    (sum, chain) => sum + (chain.cumulatedBalance ?? 0),
-    0,
-  );
-
-  token.cumulatedTotalUSD = token.chains.reduce(
-    (sum, chain) => sum + (chain.totalPriceUSD ?? 0),
-    0,
-  );
-}
-
-function addChainToToken(
-  token: ExtendedTokenAmountWithChain,
-  chainToken: ExtendedTokenAmountWithChain,
-): void {
-  token.chains.push(chainToken);
-  token.chains.sort((a, b) => (b.totalPriceUSD ?? 0) - (a.totalPriceUSD ?? 0));
-  updateCumulatedValues(token);
-}
-
 function createTokenGroup(
-  token: WalletTokenExtended,
-  chainToken: ExtendedTokenAmountWithChain,
-): ExtendedTokenAmountWithChain {
-  return {
-    address: token.address,
-    symbol: token.symbol,
-    chainId: token.chainId,
-    amount: BigInt(token.amount),
-    name: token.name,
-    priceUSD: token.priceUSD,
-    decimals: token.decimals,
-    logoURI: token.logoURI,
-    cumulatedBalance: chainToken.cumulatedBalance ?? 0,
-    cumulatedTotalUSD: chainToken.totalPriceUSD ?? 0,
-    totalPriceUSD: chainToken.totalPriceUSD ?? 0,
-    chains: [chainToken],
-  };
-}
-
-function groupTokensBySymbol(
   balances: WalletTokenExtended[],
   chains: ExtendedChain[],
-): Record<string, ExtendedTokenAmountWithChain> {
-  const symbolMap: Record<string, ExtendedTokenAmountWithChain> = {};
-
-  for (const balance of balances) {
-    const chain = chains.find((c) => c.id === balance.chainId);
-    const formattedBalance = calculateFormattedBalance(balance);
-    const chainToken = createChainToken(balance, chain, formattedBalance);
-
-    const existingToken = symbolMap[balance.symbol];
-
-    if (existingToken) {
-      addChainToToken(existingToken, chainToken);
-    } else {
-      symbolMap[balance.symbol] = createTokenGroup(balance, chainToken);
-    }
-  }
-
-  return symbolMap;
-}
-
-function enrichWithPrimaryChain(
-  token: ExtendedTokenAmountWithChain,
 ): ExtendedTokenAmountWithChain {
-  const primaryChain = token.chains[0];
+  const chainTokens = map(balances, (balance) => {
+    const chain = find(chains, { id: balance.chainId });
+    const formattedBalance = calculateFormattedBalance(balance);
+    return createChainToken(balance, chain, formattedBalance);
+  });
+
+  const sortedChains = orderBy(
+    chainTokens,
+    [(c) => c.totalPriceUSD ?? 0],
+    ['desc'],
+  );
+  const primaryChain = first(sortedChains);
+  const firstBalance = first(balances)!;
 
   return {
-    ...token,
-    chainId: primaryChain?.chainId ?? token.chainId,
+    address: firstBalance.address,
+    symbol: firstBalance.symbol,
+    chainId: primaryChain?.chainId ?? firstBalance.chainId,
+    amount: BigInt(firstBalance.amount),
+    name: firstBalance.name,
+    priceUSD: firstBalance.priceUSD,
+    decimals: firstBalance.decimals,
+    logoURI: firstBalance.logoURI,
     chainLogoURI: primaryChain?.chainLogoURI,
     chainName: primaryChain?.chainName,
+    cumulatedBalance: sumBy(sortedChains, (c) => c.cumulatedBalance ?? 0),
+    cumulatedTotalUSD: sumBy(sortedChains, (c) => c.totalPriceUSD ?? 0),
+    totalPriceUSD: primaryChain?.totalPriceUSD ?? 0,
+    chains: sortedChains,
   };
-}
-
-function sortByTotalValue(
-  tokens: ExtendedTokenAmountWithChain[],
-): ExtendedTokenAmountWithChain[] {
-  return tokens.sort(
-    (a, b) => (b.cumulatedTotalUSD ?? 0) - (a.cumulatedTotalUSD ?? 0),
-  );
 }
 
 /**
@@ -128,9 +80,10 @@ export function transformWalletBalances(
   walletBalances: Record<number, WalletTokenExtended[]>,
   chains: ExtendedChain[],
 ): ExtendedTokenAmountWithChain[] {
-  const allBalances = Object.values(walletBalances).flat();
-  const symbolMap = groupTokensBySymbol(allBalances, chains);
-  const tokens = Object.values(symbolMap).map(enrichWithPrimaryChain);
-
-  return sortByTotalValue(tokens);
+  const allBalances = flatMap(walletBalances);
+  const groupedBySymbol = groupBy(allBalances, 'symbol');
+  const tokens = map(groupedBySymbol, (balances) =>
+    createTokenGroup(balances, chains),
+  );
+  return orderBy(tokens, [(t) => t.cumulatedTotalUSD ?? 0], ['desc']);
 }
