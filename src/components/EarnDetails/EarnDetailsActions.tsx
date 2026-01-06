@@ -35,7 +35,10 @@ export const EarnDetailsActions = ({
     },
   });
 
-  const { depositTokenData: depositAmount } = useGetZapInPoolBalance(
+  const {
+    depositTokenData: depositAmount,
+    refetchDepositToken: refetchDepositAmount,
+  } = useGetZapInPoolBalance(
     accountAddress as Hex,
     earnOpportunity.lpToken.address as Hex,
     earnOpportunity.lpToken.chain.chainId,
@@ -51,6 +54,11 @@ export const EarnDetailsActions = ({
 
   const hasDeposited = !!depositAmountUSD || !!depositAmount;
 
+  const handleRefreshBalances = () => {
+    refetchPositions();
+    refetchDepositAmount();
+  };
+
   return (
     <EarnDetailsActionsContainer>
       <EarnDetailsActionsPosition
@@ -64,7 +72,7 @@ export const EarnDetailsActions = ({
           displayMode={DepositButtonDisplayMode.LabelOnly}
           size="large"
           label={t(hasDeposited ? 'buttons.deposit' : 'buttons.depositNow')}
-          refetchCallback={refetchPositions}
+          refetchCallback={handleRefreshBalances}
           data-testid="quick-deposit-button"
           sx={{ flex: 1 }}
         />
@@ -73,7 +81,7 @@ export const EarnDetailsActions = ({
             earnOpportunity={earnOpportunity}
             size="large"
             label={t('buttons.withdrawButtonLabel')}
-            refetchCallback={refetchPositions}
+            refetchCallback={handleRefreshBalances}
             data-testid="withdraw-button"
             sx={{ flex: 1 }}
           />
