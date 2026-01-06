@@ -39,6 +39,7 @@ export function usePortfolioTokens() {
     totalPriceUSD: number,
     fetchedBalances: ExtendedTokenAmount[],
   ) => {
+    console.log('usePortfolioTokens - fetchedBalances', fetchedBalances);
     setCacheTokens(account, fetchedBalances);
   };
 
@@ -64,6 +65,8 @@ export function usePortfolioTokens() {
 
   const data = useMemo(() => {
     const cached = getFormattedCacheTokens(accounts);
+
+    console.log('usePortfolioTokens - cached', cached);
 
     if (cached.cache.length === 0) {
       return queries
