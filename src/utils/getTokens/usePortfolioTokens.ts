@@ -207,6 +207,9 @@ export function usePortfolioTokens() {
     );
   }, [connectedAccounts, queries, getFormattedCacheTokens]);
 
+  console.log('usePortfolioTokens - data', data);
+  console.log('usePortfolioTokens - queriesByAddress', queriesByAddress);
+
   return {
     queries,
     queriesByAddress,
