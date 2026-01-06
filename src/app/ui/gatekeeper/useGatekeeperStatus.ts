@@ -1,4 +1,5 @@
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import { isProduction } from '@/utils/isProduction';
 import { useQuery } from '@tanstack/react-query';
 
 export enum GatekeeperStatus {
@@ -14,10 +15,20 @@ interface GatekeeperData {
   error?: unknown;
 }
 
+const EARN_PUBLIC_RELEASE_DATE = new Date('2026-01-12T13:00:00Z');
+
+const isEarnEnabledByDefault = (): boolean => {
+  if (!isProduction) {
+    return true;
+  }
+  return new Date() >= EARN_PUBLIC_RELEASE_DATE;
+};
+
 export const useGatekeeperStatus = (flag: string): GatekeeperData => {
   console.log('7. useGatekeeperStatus');
 
   const accountAddress = useAccountAddress();
+  const earnEnabledByDefault = flag === 'hasEarn' && isEarnEnabledByDefault();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['flags', accountAddress, flag],
@@ -30,8 +41,13 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
 
       return response.json();
     },
-    enabled: !!accountAddress,
+    enabled: !!accountAddress && !earnEnabledByDefault,
   });
+
+  // Enable hasEarn by default after the public release date (or always in non-production)
+  if (earnEnabledByDefault) {
+    return { status: GatekeeperStatus.SUCCESS };
+  }
 
   if (!accountAddress) {
     return { status: GatekeeperStatus.REQUIRES_CONNECT };
