@@ -15,14 +15,8 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
   protocolGroups,
 }) => {
   const { t } = useTranslation();
-  const tokensOverallPriceInUSD = useMemo(
-    () => calculateTotalPrice(tokens),
-    [tokens],
-  );
-  const defiPositionsOverallPriceInUSD = useMemo(
-    () => calculateTotalPrice(protocolGroups),
-    [protocolGroups],
-  );
+  const tokensOverallPriceInUSD = calculateTotalPrice(tokens);
+  const defiPositionsOverallPriceInUSD = calculateTotalPrice(protocolGroups);
 
   const defiPositionsProtocols = useMemo(
     () => protocolGroups.map((group) => group.protocol),

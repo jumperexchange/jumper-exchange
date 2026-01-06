@@ -44,10 +44,9 @@ export const PortfolioHeaderOverview = () => {
 
   const isLoading = isLoadingDeFiPositions || isFetchingPortfolioTokens;
 
-  const totalValue = useMemo(() => {
-    if (!portfolioWelcomeScreenClosed) {
-      return 0;
-    }
+  let totalValue = 0;
+
+  if (portfolioWelcomeScreenClosed) {
     const totalFilteredTokensValue = filteredTokens.reduce(
       (acc, token) => acc + (token.totalPriceUSD ?? 0),
       0,
@@ -57,8 +56,8 @@ export const PortfolioHeaderOverview = () => {
         (acc, position) => acc + (position.netUsd ?? 0),
         0,
       ) ?? 0;
-    return totalFilteredTokensValue + totalDeFiPositionsValue;
-  }, [portfolioWelcomeScreenClosed, filteredTokens, allDeFiPositions?.data]);
+    totalValue = totalFilteredTokensValue + totalDeFiPositionsValue;
+  }
 
   const handleRefresh = () => {
     refetchPortfolioTokens();

@@ -16,6 +16,12 @@ export const PortfolioTokensList = () => {
     usePortfolioTokensFiltering();
 
   const tokens = useFormatDisplayWalletTokens(data);
+  const totalValue = tokens.reduce(
+    (acc, token) => acc + (token.totalPriceUSD ?? 0),
+    0,
+  );
+  console.log('PortfolioTokensList - tokens', tokens);
+  console.log('PortfolioTokensList - totalValue', totalValue);
 
   const router = useRouter();
 
