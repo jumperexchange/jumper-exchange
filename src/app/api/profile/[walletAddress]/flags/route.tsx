@@ -1,5 +1,4 @@
-import { getWalletAccessControl } from '@/app/lib/getWalletAccessControl';
-import { pick } from 'lodash';
+import { getWalletFlags } from '@/jumperFlags/api/getWalletFlags';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -17,19 +16,13 @@ export async function GET(
       );
     }
 
-    const data = await getWalletAccessControl(walletAddress);
+    const flags = await getWalletFlags(walletAddress);
 
-    if (!data.data || data.data.length === 0) {
-      return NextResponse.json({ hasEarn: false });
-    }
-
-    const flags = data.data[0];
-
-    return NextResponse.json(pick(flags, ['hasEarn']));
+    return NextResponse.json(flags);
   } catch (error) {
-    console.error('Error fetching wallet access control:', error);
+    console.error('Error fetching wallet flags:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch wallet access control data' },
+      { error: 'Failed to fetch wallet flags' },
       { status: 500 },
     );
   }

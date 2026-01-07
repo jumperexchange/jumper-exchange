@@ -3,6 +3,7 @@ import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
 import config from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
+import { JumperFlagsProvider } from '@/jumperFlags/JumperFlagsProvider';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
 import {
@@ -163,13 +164,15 @@ export default async function RootLayout({
                   activeTheme={'default'}
                 >
                   <WalletProvider>
-                    <MUIThemeProvider>
-                      <SettingsStoreProvider>
-                        <NavbarWrapper />
-                        <IntercomProvider />
-                        {children}
-                      </SettingsStoreProvider>
-                    </MUIThemeProvider>
+                    <JumperFlagsProvider>
+                      <MUIThemeProvider>
+                        <SettingsStoreProvider>
+                          <NavbarWrapper />
+                          <IntercomProvider />
+                          {children}
+                        </SettingsStoreProvider>
+                      </MUIThemeProvider>
+                    </JumperFlagsProvider>
                   </WalletProvider>
                 </DefaultThemeProvider>
               </TranslationsProvider>

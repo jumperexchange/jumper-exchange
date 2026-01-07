@@ -1,6 +1,8 @@
+'use client';
+
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { isProduction } from '@/utils/isProduction';
-import { useQuery } from '@tanstack/react-query';
+import { useJumperFlags } from '../useJumperFlags';
 
 export enum GatekeeperStatus {
   REQUIRES_CONNECT = 'requires_wallet',
@@ -24,27 +26,11 @@ const isEarnEnabledByDefault = (): boolean => {
   return new Date() >= EARN_PUBLIC_RELEASE_DATE;
 };
 
-export const useGatekeeperStatus = (flag: string): GatekeeperData => {
-  console.log('7. useGatekeeperStatus');
-
+export const useGatekeeper = (flag: string): GatekeeperData => {
   const accountAddress = useAccountAddress();
+  const { flags, isLoading, error } = useJumperFlags();
   const earnEnabledByDefault = flag === 'hasEarn' && isEarnEnabledByDefault();
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['flags', accountAddress, flag],
-    queryFn: async () => {
-      const response = await fetch(`/api/profile/${accountAddress}/flags`);
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch wallet flags');
-      }
-
-      return response.json();
-    },
-    enabled: !!accountAddress && !earnEnabledByDefault,
-  });
-
-  // Enable hasEarn by default after the public release date (or always in non-production)
   if (earnEnabledByDefault) {
     return { status: GatekeeperStatus.SUCCESS };
   }
@@ -53,7 +39,7 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
     return { status: GatekeeperStatus.REQUIRES_CONNECT };
   }
 
-  if (isLoading) {
+  if (isLoading || !flags) {
     return { status: GatekeeperStatus.LOADING_ACCESS };
   }
 
@@ -61,9 +47,7 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
     return { status: GatekeeperStatus.ERROR, error };
   }
 
-  const hasAccess = Boolean(data?.[flag]);
-
-  console.log('8. useGatekeeperStatus done', hasAccess);
+  const hasAccess = Boolean(flags[flag as keyof typeof flags]);
 
   return {
     status: hasAccess ? GatekeeperStatus.SUCCESS : GatekeeperStatus.NOT_ALLOWED,

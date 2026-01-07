@@ -1,6 +1,7 @@
-import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import { PortfolioPageOverlayLayout } from '@/app/ui/portfolio/PortfolioPageOverlayLayout';
 import PortfolioBetaIllustration from '@/components/illustrations/PortfolioBetaIllustration';
+import { Bouncer } from '@/jumperFlags/bouncer/Bouncer';
+import { Gatekeeper } from '@/jumperFlags/gatekeeper/Gatekeeper';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
@@ -25,29 +26,36 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <Gatekeeper
-        flag="hasEarn"
-        pageTitle="Jumper Portfolio"
-        subtitleIntroKey="portfolio"
-        illustrations={{
-          illustration: <PortfolioBetaIllustration />,
-          mobile: {
-            sx: {
-              marginTop: 8,
+      <Bouncer loading allowed>
+        <Gatekeeper
+          flag="hasEarn"
+          pageTitle="Jumper Portfolio"
+          subtitleIntroKey="portfolio"
+          illustrations={{
+            illustration: <PortfolioBetaIllustration />,
+            mobile: {
+              sx: {
+                marginTop: 8,
+              },
             },
-          },
-          desktop: {
-            sx: {
-              maxWidth: 1080,
-              marginTop: 15,
+            desktop: {
+              sx: {
+                maxWidth: 1080,
+                marginTop: 15,
+              },
             },
-          },
-        }}
-      >
-        <PortfolioPageOverlayLayout>
-          <PageContainer>{children}</PageContainer>
-        </PortfolioPageOverlayLayout>
-      </Gatekeeper>
+          }}
+        >
+          <PortfolioPageOverlayLayout>
+            <PageContainer>{children}</PageContainer>
+          </PortfolioPageOverlayLayout>
+        </Gatekeeper>
+      </Bouncer>
+      <Bouncer blocked>
+        <PageContainer>
+          <div>Access restricted for this wallet.</div>
+        </PageContainer>
+      </Bouncer>
     </Layout>
   );
 }
