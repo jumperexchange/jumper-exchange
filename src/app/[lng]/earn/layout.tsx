@@ -1,6 +1,7 @@
 'use client';
 
 import EarnBetaIllustration from '@/components/illustrations/EarnBetaIllustration';
+import { BlockedAccountCallout } from '@/jumperFlags/bouncer/BlockedAccountCallout';
 import { Bouncer } from '@/jumperFlags/bouncer/Bouncer';
 import { Gatekeeper } from '@/jumperFlags/gatekeeper/Gatekeeper';
 import { notFound } from 'next/navigation';
@@ -46,7 +47,7 @@ export default function EarnLayout({ children }: PropsWithChildren) {
       </Bouncer>
       <Bouncer blocked>
         <PageContainer>
-          <div>Access restricted for this wallet.</div>
+          <BlockedAccountCallout />
         </PageContainer>
       </Bouncer>
     </Layout>

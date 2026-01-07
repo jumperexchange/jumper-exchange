@@ -1,5 +1,6 @@
 import { PortfolioPageOverlayLayout } from '@/app/ui/portfolio/PortfolioPageOverlayLayout';
 import PortfolioBetaIllustration from '@/components/illustrations/PortfolioBetaIllustration';
+import { BlockedAccountCallout } from '@/jumperFlags/bouncer/BlockedAccountCallout';
 import { Bouncer } from '@/jumperFlags/bouncer/Bouncer';
 import { Gatekeeper } from '@/jumperFlags/gatekeeper/Gatekeeper';
 import type { Metadata } from 'next';
@@ -53,7 +54,7 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
       </Bouncer>
       <Bouncer blocked>
         <PageContainer>
-          <div>Access restricted for this wallet.</div>
+          <BlockedAccountCallout />
         </PageContainer>
       </Bouncer>
     </Layout>
