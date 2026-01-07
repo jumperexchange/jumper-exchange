@@ -4,9 +4,7 @@ on:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 permissions:
-  checks: write
   pull-requests: write
-  contents: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
