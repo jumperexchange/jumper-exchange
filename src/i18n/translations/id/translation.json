@@ -82,6 +82,9 @@
     "ctaHeadline": "Gabung ke Discord untuk mengetahui lebih lanjut",
     "ctaButton": "Bergabunglah ke Discord kami"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "Tips dan tutorial",
     "categories": "Kategori",
