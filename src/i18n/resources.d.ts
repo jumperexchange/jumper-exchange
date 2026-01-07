@@ -11,6 +11,9 @@ interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    badge: {
+      updated: 'Updated {{time}} ago';
+    };
     blog: {
       allCategories: 'All';
       categories: 'Categories';

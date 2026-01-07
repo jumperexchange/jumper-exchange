@@ -82,6 +82,9 @@
     "ctaHeadline": "Join our Discord to learn more",
     "ctaButton": "Join our Discord"
   },
+  "badge": {
+    "updated": "Updated {{time}} ago"
+  },
   "blog": {
     "title": "Tips and tutorials",
     "categories": "Categories",
