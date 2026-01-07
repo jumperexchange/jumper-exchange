@@ -10,6 +10,7 @@ import {
 import type { Account } from '@lifi/wallet-management';
 import { fetchAllTokensBalanceByChain } from '@/utils/getTokens/fetchAllTokensBalanceByChain';
 import { transformWalletBalances } from '@/utils/getTokens/transformWalletBalances';
+import { sumBy } from 'lodash';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -48,8 +49,13 @@ async function getTokens(
 
     if (account.chainType === ChainType.EVM && account.address) {
       const walletBalances = await getWalletBalances(account.address);
+      const transformed = transformWalletBalances(walletBalances, chains);
 
-      return transformWalletBalances(walletBalances, chains);
+      const cumulativePriceUSD = sumBy(transformed, 'totalPriceUSD');
+
+      events.onProgress(account.address, 1, cumulativePriceUSD, transformed);
+
+      return transformed;
     }
 
     const { tokens } = await LifiGetTokens({
