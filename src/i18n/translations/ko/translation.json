@@ -82,6 +82,9 @@
     "ctaHeadline": "",
     "ctaButton": ""
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "",
     "categories": "",
