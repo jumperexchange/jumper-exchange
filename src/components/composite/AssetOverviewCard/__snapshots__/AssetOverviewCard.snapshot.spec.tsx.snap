@@ -93,7 +93,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $137
+            $136.62
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -155,7 +155,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $17
+            $17.15
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -217,7 +217,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $0.033
+            $0.03
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -385,7 +385,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $19K
+            $18.56K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -445,7 +445,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $9.8K
+            $9.85K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -505,7 +505,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $8.6K
+            $8.63K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -565,7 +565,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $6.2K
+            $6.21K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -627,7 +627,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $43.25K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -681,7 +681,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $153.81
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -955,7 +955,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $46.46K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1015,7 +1015,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1129,7 +1129,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $19K
+            $18.56K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1189,7 +1189,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $9.8K
+            $9.85K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1249,7 +1249,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $8.6K
+            $8.63K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1307,7 +1307,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $9.4K
+            $9.42K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1370,7 +1370,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $46.46K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1430,7 +1430,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1546,7 +1546,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $137
+            $136.62
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1608,7 +1608,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $17
+            $17.15
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1670,7 +1670,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $12
+            $12.02
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1728,7 +1728,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $0.035
+            $0.03
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -1791,7 +1791,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1816,7 +1816,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $165.83
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1934,7 +1934,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1959,7 +1959,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $165.83
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2227,7 +2227,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $19K
+            $18.56K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2289,7 +2289,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $18.56K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2323,7 +2323,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
               <span
-                aria-label="format.currency"
+                aria-label="$0"
                 class=""
                 data-mui-internal-clone-element="true"
               >
@@ -2454,7 +2454,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $137
+            $136.62
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2516,7 +2516,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $17
+            $17.15
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2578,7 +2578,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $12
+            $12.02
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2636,7 +2636,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $0.035
+            $0.03
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2741,7 +2741,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $19K
+            $18.56K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2801,7 +2801,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $9.8K
+            $9.85K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2861,7 +2861,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $8.6K
+            $8.63K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2919,7 +2919,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $9.4K
+            $9.42K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -2981,7 +2981,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $46.46K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3041,7 +3041,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $165.83
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3203,7 +3203,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $137
+            $136.62
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3265,7 +3265,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $17
+            $17.15
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3433,7 +3433,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $19K
+            $18.56K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3493,7 +3493,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $8.6K
+            $8.63K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3553,7 +3553,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $6.2K
+            $6.21K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3615,7 +3615,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $33.4K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3662,7 +3662,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $153.77
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3808,7 +3808,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $137
+            $136.62
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3870,7 +3870,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $17
+            $17.15
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3932,7 +3932,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $12
+            $12.02
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -3990,7 +3990,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $0.035
+            $0.03
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -4342,7 +4342,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
               <span
-                aria-label="format.currency"
+                aria-label="$0"
                 class=""
                 data-mui-internal-clone-element="true"
               >
@@ -4401,7 +4401,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $165.83
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4563,7 +4563,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $137
+            $136.62
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -4731,7 +4731,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $19K
+            $18.56K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -4791,7 +4791,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
             class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
             data-mui-internal-clone-element="true"
           >
-            $8.6K
+            $8.63K
           </p>
           <p
             class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -4853,7 +4853,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $27.19K
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4893,7 +4893,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              format.currency
+              $136.63
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
