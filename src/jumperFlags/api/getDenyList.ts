@@ -2,6 +2,8 @@ import 'server-only';
 
 import config from '@/config/env-config';
 import { App } from '@octokit/app';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 import { parse } from 'yaml';
 
 interface DenyListData {
@@ -18,6 +20,30 @@ let octokitApp: App | null = null;
 
 function normalizeAddress(address: string): string {
   return address.toLowerCase().trim();
+}
+
+function getDenyListFileName(): string {
+  const nodeEnv = config.NODE_ENV || 'development';
+  return `denied.${nodeEnv}.yaml`;
+}
+
+function getDenyListFilePath(): string {
+  return `users/${getDenyListFileName()}`;
+}
+
+function isGithubConfigured(): boolean {
+  return !!(
+    config.ALLOWLIST_APP_ID &&
+    config.ALLOWLIST_PRIVATE_KEY &&
+    config.ALLOWLIST_INSTALLATION_ID &&
+    config.ALLOWLIST_REPO_OWNER &&
+    config.ALLOWLIST_REPO_NAME
+  );
+}
+
+function isDevelopmentOrTest(): boolean {
+  const nodeEnv = config.NODE_ENV || 'development';
+  return nodeEnv === 'development' || nodeEnv === 'test';
 }
 
 function getOctokitApp(): App {
@@ -42,22 +68,21 @@ function getOctokitApp(): App {
   return octokitApp;
 }
 
-function getDenyListFilePath(): string {
-  const nodeEnv = config.NODE_ENV || 'development';
-  return `users/denied.${nodeEnv}.yaml`;
+function parseDenyListData(content: string): DenyListData {
+  const data = parse(content) as DenyListData;
+
+  if (!data || !Array.isArray(data.wallets)) {
+    throw new Error('Invalid deny list format: missing wallets array');
+  }
+
+  return data;
 }
 
-async function fetchDenyList(): Promise<DenyListData> {
+async function fetchDenyListFromGithub(): Promise<DenyListData> {
   const installationId = config.ALLOWLIST_INSTALLATION_ID;
   const repoOwner = config.ALLOWLIST_REPO_OWNER;
   const repoName = config.ALLOWLIST_REPO_NAME;
   const filePath = getDenyListFilePath();
-
-  if (!installationId || !repoOwner || !repoName) {
-    throw new Error(
-      'ALLOWLIST_INSTALLATION_ID, ALLOWLIST_REPO_OWNER, and ALLOWLIST_REPO_NAME are required',
-    );
-  }
 
   const app = getOctokitApp();
   const octokit = await app.getInstallationOctokit(Number(installationId));
@@ -65,8 +90,8 @@ async function fetchDenyList(): Promise<DenyListData> {
   const response = await octokit.request(
     'GET /repos/{owner}/{repo}/contents/{path}',
     {
-      owner: repoOwner,
-      repo: repoName,
+      owner: repoOwner!,
+      repo: repoName!,
       path: filePath,
       headers: {
         Accept: 'application/vnd.github.raw+json',
@@ -78,13 +103,42 @@ async function fetchDenyList(): Promise<DenyListData> {
     throw new Error('Unexpected response format from GitHub API');
   }
 
-  const data = parse(response.data) as DenyListData;
+  return parseDenyListData(response.data);
+}
 
-  if (!data || !Array.isArray(data.wallets)) {
-    throw new Error('Invalid deny list format: missing wallets array');
+async function fetchDenyListLocally(): Promise<DenyListData> {
+  const localPath = join(process.cwd(), 'data', getDenyListFileName());
+  const content = await readFile(localPath, 'utf-8');
+  return parseDenyListData(content);
+}
+
+function getEmptyDenyList(): DenyListData {
+  return {
+    wallets: [],
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+async function fetchDenyList(): Promise<DenyListData> {
+  if (isGithubConfigured()) {
+    return fetchDenyListFromGithub();
   }
 
-  return data;
+  if (isDevelopmentOrTest()) {
+    try {
+      return await fetchDenyListLocally();
+    } catch (error) {
+      console.warn(
+        'GitHub not configured and local deny list not found, using empty list:',
+        error,
+      );
+      return getEmptyDenyList();
+    }
+  }
+
+  throw new Error(
+    'ALLOWLIST_APP_ID, ALLOWLIST_PRIVATE_KEY, ALLOWLIST_INSTALLATION_ID, ALLOWLIST_REPO_OWNER, and ALLOWLIST_REPO_NAME are required in production',
+  );
 }
 
 export async function refreshDenyList(): Promise<void> {
