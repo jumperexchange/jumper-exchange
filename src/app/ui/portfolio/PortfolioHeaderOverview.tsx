@@ -2,6 +2,7 @@
 
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { useTheme } from '@mui/material/styles';
+import { sumBy } from 'lodash';
 import { AnimatedCounter } from 'react-animated-counter';
 import {
   PortfolioHeaderOverviewContainer,
@@ -10,14 +11,12 @@ import {
   PortfolioHeaderOverviewValue,
 } from './PortfolioPage.styles';
 import PortfolioRefreshBalance from './PortfolioRefreshBalance';
-import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
-import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
+import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
+import { useMemo } from 'react';
 
 export const PortfolioHeaderOverview = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
@@ -27,11 +26,10 @@ export const PortfolioHeaderOverview = () => {
   const theme = useTheme();
   const connectedAddresses = useConnectedEvmAddresses();
   const {
-    data: allTokens,
-    refetch: refetchPortfolioTokens,
-    isFetching: isFetchingPortfolioTokens,
-  } = usePortfolioTokens();
-  const formattedTokens = useFormatDisplayWalletTokens(allTokens);
+    formattedData: formattedTokens,
+    isFetching: isFetchingPortfolioDisplayTokens,
+    refetch: refetchPortfolioDisplayTokens,
+  } = usePortfolioDisplayTokens();
   const {
     data: allDeFiPositions,
     refetch: refetchPortfolioDeFiPositions,
@@ -40,28 +38,26 @@ export const PortfolioHeaderOverview = () => {
     addresses: connectedAddresses,
   });
 
-  const filteredTokens = useTokensWithoutLpPositions(formattedTokens);
-
-  const isLoading = isLoadingDeFiPositions || isFetchingPortfolioTokens;
+  const isLoading = isLoadingDeFiPositions || isFetchingPortfolioDisplayTokens;
 
   const totalValue = useMemo(() => {
     if (!portfolioWelcomeScreenClosed) {
       return 0;
     }
-    const totalFilteredTokensValue = filteredTokens.reduce(
-      (acc, token) => acc + (token.totalPriceUSD ?? 0),
-      0,
+    const totalFilteredTokensValue = sumBy(
+      formattedTokens,
+      (token) => token.totalPriceUSD ?? 0,
     );
-    const totalDeFiPositionsValue =
-      allDeFiPositions?.data?.reduce(
-        (acc, position) => acc + (position.netUsd ?? 0),
-        0,
-      ) ?? 0;
+    const totalDeFiPositionsValue = sumBy(
+      allDeFiPositions?.data ?? [],
+      (position) => position.netUsd ?? 0,
+    );
+
     return totalFilteredTokensValue + totalDeFiPositionsValue;
-  }, [portfolioWelcomeScreenClosed, filteredTokens, allDeFiPositions?.data]);
+  }, [portfolioWelcomeScreenClosed, formattedTokens, allDeFiPositions?.data]);
 
   const handleRefresh = () => {
-    refetchPortfolioTokens();
+    refetchPortfolioDisplayTokens();
     refetchPortfolioDeFiPositions();
   };
 

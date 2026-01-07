@@ -627,7 +627,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $43K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -681,7 +681,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $154
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -955,7 +955,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $46K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1015,7 +1015,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $0
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1370,7 +1370,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $46K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1430,7 +1430,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $0
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1791,7 +1791,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $0
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1816,7 +1816,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $166
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1934,7 +1934,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $0
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1959,7 +1959,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $166
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2289,7 +2289,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $19K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2323,7 +2323,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
               <span
-                aria-label="$0.0018"
+                aria-label="format.currency"
                 class=""
                 data-mui-internal-clone-element="true"
               >
@@ -2981,7 +2981,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $46K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3041,7 +3041,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $166
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3615,7 +3615,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $33K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3662,7 +3662,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $154
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4342,7 +4342,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
               <span
-                aria-label="$0.001"
+                aria-label="format.currency"
                 class=""
                 data-mui-internal-clone-element="true"
               >
@@ -4401,7 +4401,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $166
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4853,7 +4853,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $27K
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4893,7 +4893,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $137
+              format.currency
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
