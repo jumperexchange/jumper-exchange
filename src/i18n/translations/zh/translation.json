@@ -82,6 +82,9 @@
     "ctaHeadline": "加入我们的Discord来学习更多",
     "ctaButton": "加入我们的 Discord"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "指南和教程",
     "categories": "分类",
