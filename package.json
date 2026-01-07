@@ -27,6 +27,7 @@
     "@mui/utils": "^7.3.7",
     "@mysten/dapp-kit": "^0.19.11",
     "@mysten/sui": "^1.45.2",
+    "@octokit/app": "^16.1.2",
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@sentry/browser": "^10.33.0",
     "@sentry/nextjs": "^10.33.0",

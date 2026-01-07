@@ -1,6 +1,7 @@
 import 'server-only';
 
 import config from '@/config/env-config';
+import { App } from '@octokit/app';
 import { parse } from 'yaml';
 
 interface DenyListData {
@@ -13,45 +14,71 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 let cachedList: Set<string> = new Set();
 let lastFetchTime = 0;
 let isRefreshing = false;
+let octokitApp: App | null = null;
 
 function normalizeAddress(address: string): string {
   return address.toLowerCase().trim();
 }
 
-function getDenyListUrl(): string {
-  const url = config.DENY_LIST_URL;
-  if (!url) {
-    throw new Error('DENY_LIST_URL environment variable is not set');
-  }
-  return url;
-}
-
-function getGithubToken(): string | undefined {
-  return config.DENY_LIST_GITHUB_TOKEN;
-}
-
-async function fetchDenyList(): Promise<DenyListData> {
-  const url = getDenyListUrl();
-  const token = getGithubToken();
-
-  const headers: HeadersInit = {
-    Accept: 'application/vnd.github.v3.raw',
-  };
-
-  if (token) {
-    headers.Authorization = `token ${token}`;
+function getOctokitApp(): App {
+  if (octokitApp) {
+    return octokitApp;
   }
 
-  const response = await fetch(url, { headers });
+  const appId = config.ALLOWLIST_APP_ID;
+  const privateKey = config.ALLOWLIST_PRIVATE_KEY;
 
-  if (!response.ok) {
+  if (!appId || !privateKey) {
     throw new Error(
-      `Failed to fetch deny list: ${response.status} ${response.statusText}`,
+      'ALLOWLIST_APP_ID and ALLOWLIST_PRIVATE_KEY environment variables are required',
     );
   }
 
-  const text = await response.text();
-  const data = parse(text) as DenyListData;
+  octokitApp = new App({
+    appId,
+    privateKey: privateKey.replace(/\\n/g, '\n'),
+  });
+
+  return octokitApp;
+}
+
+function getDenyListFilePath(): string {
+  const nodeEnv = config.NODE_ENV || 'development';
+  return `users/denied.${nodeEnv}.yaml`;
+}
+
+async function fetchDenyList(): Promise<DenyListData> {
+  const installationId = config.ALLOWLIST_INSTALLATION_ID;
+  const repoOwner = config.ALLOWLIST_REPO_OWNER;
+  const repoName = config.ALLOWLIST_REPO_NAME;
+  const filePath = getDenyListFilePath();
+
+  if (!installationId || !repoOwner || !repoName) {
+    throw new Error(
+      'ALLOWLIST_INSTALLATION_ID, ALLOWLIST_REPO_OWNER, and ALLOWLIST_REPO_NAME are required',
+    );
+  }
+
+  const app = getOctokitApp();
+  const octokit = await app.getInstallationOctokit(Number(installationId));
+
+  const response = await octokit.request(
+    'GET /repos/{owner}/{repo}/contents/{path}',
+    {
+      owner: repoOwner,
+      repo: repoName,
+      path: filePath,
+      headers: {
+        Accept: 'application/vnd.github.raw+json',
+      },
+    },
+  );
+
+  if (typeof response.data !== 'string') {
+    throw new Error('Unexpected response format from GitHub API');
+  }
+
+  const data = parse(response.data) as DenyListData;
 
   if (!data || !Array.isArray(data.wallets)) {
     throw new Error('Invalid deny list format: missing wallets array');
@@ -73,7 +100,6 @@ export async function refreshDenyList(): Promise<void> {
     lastFetchTime = Date.now();
   } catch (error) {
     console.error('Failed to refresh deny list, keeping previous:', error);
-    // Keep using cachedList - no update on error (graceful degradation)
   } finally {
     isRefreshing = false;
   }
