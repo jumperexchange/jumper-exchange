@@ -61,7 +61,7 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
         title={t('format.currency', { value: token.totalPriceUSD })}
         titleVariant={config.titleVariant}
         hintVariant={config.descriptionVariant}
-        hint={t('format.decimal', { value: token.balance })}
+        hint={`${t('format.decimal', { value: token.balance })} ${token.symbol}`}
         sx={{ textAlign: 'right', alignSelf: 'center' }}
         gap={config.infoContainerGap}
       />
