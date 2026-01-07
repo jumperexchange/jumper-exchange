@@ -82,6 +82,9 @@
     "ctaHeadline": "เข้าร่วม Discord ของเราเพื่อเรียนรู้เพิ่มเติม",
     "ctaButton": "เข้าร่วมเซิฟเวอร์ Discord ของเรา"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "เคล็ดลับและบทแนะนำ",
     "categories": "หมวดหมู่",
