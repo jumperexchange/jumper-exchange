@@ -1,11 +1,13 @@
-import type { FC } from 'react';
-import { useMemo } from 'react';
-import { AvatarStack } from 'src/components/core/AvatarStack/AvatarStack';
+import { type FC, useMemo } from 'react';
+import type { Address } from 'viem';
+
+import { AvatarStack } from '@/components/core/AvatarStack/AvatarStack';
 import type {
   AvatarSize,
   AvatarStackDirection,
-} from 'src/components/core/AvatarStack/AvatarStack.types';
-import { useTokens } from 'src/hooks/useTokens';
+} from '@/components/core/AvatarStack/AvatarStack.types';
+import { useTokens } from '@/hooks/useTokens';
+
 import type { TokenStackToken } from './types';
 
 interface TokenStackProps {
@@ -23,24 +25,21 @@ export const TokenStack: FC<TokenStackProps> = ({
   direction = 'row',
   limit,
 }) => {
-  const { getTokenByAddressAndChain } = useTokens();
+  const { getToken } = useTokens();
   const enhancedTokens = useMemo(() => {
     return tokens.map((token) => {
-      const _token = getTokenByAddressAndChain(
-        token.address,
+      const tokenInner = getToken(
         token.chain.chainId,
+        token.address as Address,
       );
 
-      const id = token.address + token.chain.chainId;
-      const src = _token?.logoURI || token.logoURI;
-      const alt = token.name || token.symbol || token.address;
       return {
-        id,
-        src,
-        alt,
+        id: (tokenInner?.address ?? token.address) + token.chain.chainId,
+        src: tokenInner?.logoURI || token.logoURI,
+        alt: token.name || token.symbol || token.address,
       };
     });
-  }, [tokens, getTokenByAddressAndChain]);
+  }, [tokens, getToken]);
 
   return (
     <AvatarStack
