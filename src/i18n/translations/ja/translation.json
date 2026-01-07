@@ -82,6 +82,9 @@
     "ctaHeadline": "Discordに参加してもっと知る",
     "ctaButton": "Discordに参加する"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "ヒントとチュートリアル",
     "categories": "カテゴリー",
