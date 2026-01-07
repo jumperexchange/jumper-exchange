@@ -160,7 +160,7 @@ const mockContextValue = () => {
       0.9: 9000000,
       1: 10000000,
     },
-    allRewardsOptions: ['all', 'withRewards', 'withoutRewards'],
+    allRewardsOptions: ['withRewards'],
   };
 };
 

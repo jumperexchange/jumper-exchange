@@ -103,8 +103,7 @@ export const sanitizeFilter = (
     !stats.allChains.length ||
     !stats.allProtocols.length ||
     !stats.allAssets.length ||
-    !stats.allTags.length ||
-    !stats.allRewardsOptions.length
+    !stats.allTags.length
   ) {
     return filter;
   }

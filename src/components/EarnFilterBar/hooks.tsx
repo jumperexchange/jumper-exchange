@@ -108,13 +108,17 @@ export const useEarnFilterBar = () => {
   const tvlMin = Math.min(...Object.values(allTVL), 0);
   const tvlMax = Math.max(...Object.values(allTVL), 0);
 
-  const rewardsAPYOptions = allRewardsOptions.map((option) => {
-    const _option = option as RewardsAPYEnum;
-    return {
-      value: _option,
-      label: t(`earn.filter.rewards.${_option}`),
-    };
-  });
+  const rewardsAPYOptions = useMemo(
+    () =>
+      allRewardsOptions.map((option) => {
+        const _option = option as RewardsAPYEnum;
+        return {
+          value: _option,
+          label: t(`earn.filter.rewards.${_option}`),
+        };
+      }),
+    [allRewardsOptions, t],
+  );
 
   const sortByOptions = useMemo(
     () => [
