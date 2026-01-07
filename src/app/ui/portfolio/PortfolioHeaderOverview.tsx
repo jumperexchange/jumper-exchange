@@ -16,6 +16,7 @@ import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
+import { useMemo } from 'react';
 
 export const PortfolioHeaderOverview = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
@@ -39,9 +40,10 @@ export const PortfolioHeaderOverview = () => {
 
   const isLoading = isLoadingDeFiPositions || isFetchingPortfolioDisplayTokens;
 
-  let totalValue = 0;
-
-  if (portfolioWelcomeScreenClosed) {
+  const totalValue = useMemo(() => {
+    if (!portfolioWelcomeScreenClosed) {
+      return 0;
+    }
     const totalFilteredTokensValue = sumBy(
       formattedTokens,
       (token) => token.totalPriceUSD ?? 0,
@@ -50,8 +52,9 @@ export const PortfolioHeaderOverview = () => {
       allDeFiPositions?.data ?? [],
       (position) => position.netUsd ?? 0,
     );
-    totalValue = totalFilteredTokensValue + totalDeFiPositionsValue;
-  }
+
+    return totalFilteredTokensValue + totalDeFiPositionsValue;
+  }, [portfolioWelcomeScreenClosed, formattedTokens, allDeFiPositions?.data]);
 
   const handleRefresh = () => {
     refetchPortfolioDisplayTokens();
