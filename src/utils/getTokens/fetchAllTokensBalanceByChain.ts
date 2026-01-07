@@ -122,11 +122,16 @@ export function fetchAllTokensBalanceByChain(
     totalPriceUSD += roundPriceUSD;
 
     for (const balance of detailedBalances) {
+      const formattedBalance = getBalance(balance);
+      const chainToken: ExtendedTokenAmountWithChain = {
+        ...balance,
+        cumulatedBalance: formattedBalance,
+      };
       const tokenWithChain: ExtendedTokenAmountWithChain = {
         ...balance,
-        cumulatedBalance: getBalance(balance),
+        cumulatedBalance: formattedBalance,
         cumulatedTotalUSD: balance.totalPriceUSD,
-        chains: [balance],
+        chains: [chainToken],
       };
       mergeTokenIntoSymbolMap(symbolMap, tokenWithChain);
     }
