@@ -1,15 +1,12 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useSettingsStore } from '@/stores/settings';
-import { useThemeStore } from '@/stores/theme';
 
 interface usePortfolioWelcomeScreenResult {
   portfolioWelcomeScreenClosed: boolean | undefined;
   setPortfolioWelcomeScreenClosed: (closed: boolean) => void;
   enabled: boolean;
 }
-
-export const validThemes = ['default', 'light', 'dark', 'system'];
 
 export const usePortfolioWelcomeScreen =
   (): usePortfolioWelcomeScreenResult => {
