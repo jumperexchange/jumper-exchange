@@ -2,15 +2,19 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
+import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
+import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
+import { BlockedAccountCallout } from '@/jumperFlags/bouncer/BlockedAccountCallout';
+import { Bouncer } from '@/jumperFlags/bouncer/Bouncer';
+import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
+import Box from '@mui/material/Box';
 import type { EarnOpportunityExtended } from 'src/stores/withdrawFlow/WithdrawFlowStore';
 import { useWithdrawFlowStore } from 'src/stores/withdrawFlow/WithdrawFlowStore';
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
 import { WithdrawModal } from '../WithdrawModal/WithdrawModal';
-import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
-import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
-import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
-import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 
 export const WithdrawFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -21,33 +25,45 @@ export const WithdrawFlowModal = () => {
   }
 
   return (
-    <WidgetTrackingProvider
-      trackingActionKeys={{
-        destinationChainAndTokenSelection:
-          TrackingAction.OnDestinationChainAndTokenSelectionEarnWithdraw,
-        availableRoutes: TrackingAction.OnAvailableRoutesEarnWithdraw,
-        routeExecutionStarted:
-          TrackingAction.OnRouteExecutionStartedEarnWithdraw,
-        routeExecutionCompleted:
-          TrackingAction.OnRouteExecutionCompletedEarnWithdraw,
-        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedEarnWithdraw,
-        changeSettings: TrackingAction.OnChangeSettingsEarnWithdraw,
-      }}
-      trackingDataActionKeys={{
-        routeExecutionStarted:
-          TrackingEventDataAction.ExecutionStartEarnWithdraw,
-        routeExecutionCompleted:
-          TrackingEventDataAction.ExecutionCompletedEarnWithdraw,
-        routeExecutionFailed:
-          TrackingEventDataAction.ExecutionFailedEarnWithdraw,
-      }}
-    >
-      <WithdrawModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        earnOpportunity={selectedEarnOpportunity!}
-      />
-    </WidgetTrackingProvider>
+    <>
+      <Bouncer loading allowed>
+        <WidgetTrackingProvider
+          trackingActionKeys={{
+            destinationChainAndTokenSelection:
+              TrackingAction.OnDestinationChainAndTokenSelectionEarnWithdraw,
+            availableRoutes: TrackingAction.OnAvailableRoutesEarnWithdraw,
+            routeExecutionStarted:
+              TrackingAction.OnRouteExecutionStartedEarnWithdraw,
+            routeExecutionCompleted:
+              TrackingAction.OnRouteExecutionCompletedEarnWithdraw,
+            routeExecutionFailed:
+              TrackingAction.OnRouteExecutionFailedEarnWithdraw,
+            changeSettings: TrackingAction.OnChangeSettingsEarnWithdraw,
+          }}
+          trackingDataActionKeys={{
+            routeExecutionStarted:
+              TrackingEventDataAction.ExecutionStartEarnWithdraw,
+            routeExecutionCompleted:
+              TrackingEventDataAction.ExecutionCompletedEarnWithdraw,
+            routeExecutionFailed:
+              TrackingEventDataAction.ExecutionFailedEarnWithdraw,
+          }}
+        >
+          <WithdrawModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            earnOpportunity={selectedEarnOpportunity!}
+          />
+        </WidgetTrackingProvider>
+      </Bouncer>
+      <Bouncer blocked>
+        <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
+          <Box sx={{ p: 3, maxWidth: 400 }}>
+            <BlockedAccountCallout />
+          </Box>
+        </ModalContainer>
+      </Bouncer>
+    </>
   );
 };
 

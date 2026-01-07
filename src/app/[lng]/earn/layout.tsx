@@ -21,35 +21,28 @@ export default function EarnLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <Bouncer loading allowed>
-        <Gatekeeper
-          flag="hasEarn"
-          pageTitle="Jumper Earn"
-          subtitleIntroKey="earn"
-          illustrations={{
-            illustration: <EarnBetaIllustration />,
-            mobile: {
-              sx: {
-                maxWidth: 343,
-                marginTop: 8,
-              },
+      <Gatekeeper
+        flag="hasEarn"
+        pageTitle="Jumper Earn"
+        subtitleIntroKey="earn"
+        illustrations={{
+          illustration: <EarnBetaIllustration />,
+          mobile: {
+            sx: {
+              maxWidth: 343,
+              marginTop: 8,
             },
-            desktop: {
-              sx: {
-                maxWidth: 728,
-                marginTop: 20,
-              },
+          },
+          desktop: {
+            sx: {
+              maxWidth: 728,
+              marginTop: 20,
             },
-          }}
-        >
-          <PageContainer>{children}</PageContainer>
-        </Gatekeeper>
-      </Bouncer>
-      <Bouncer blocked>
-        <PageContainer>
-          <BlockedAccountCallout />
-        </PageContainer>
-      </Bouncer>
+          },
+        }}
+      >
+        <PageContainer>{children}</PageContainer>
+      </Gatekeeper>
     </Layout>
   );
 }

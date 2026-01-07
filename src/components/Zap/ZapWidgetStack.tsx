@@ -1,22 +1,23 @@
 'use client';
 
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
+import { BlockedAccountCallout } from '@/jumperFlags/bouncer/BlockedAccountCallout';
+import { Bouncer } from '@/jumperFlags/bouncer/Bouncer';
 import Box from '@mui/material/Box';
 import type { FC } from 'react';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
+import envConfig from 'src/config/env-config';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
+import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
+import { useZapQuestIdStorage } from 'src/providers/hooks';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
-import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
 import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
-import { useZapQuestIdStorage } from 'src/providers/hooks';
-import envConfig from 'src/config/env-config';
-import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 
 export interface ZapWidgetStackProps {
   customInformation?: CustomInformation;
@@ -55,61 +56,69 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
   const hasWithdrawAbi = !!zapData?.abi?.withdraw;
 
   return (
-    <WidgetTrackingProvider
-      trackingActionKeys={{
-        sourceChainAndTokenSelection:
-          TrackingAction.OnSourceChainAndTokenSelectionZap,
-        availableRoutes: TrackingAction.OnAvailableRoutesZap,
-        routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
-        routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
-        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
-        changeSettings: TrackingAction.OnChangeSettingsZap,
-      }}
-      trackingDataActionKeys={{
-        routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
-        routeExecutionCompleted: TrackingEventDataAction.ExecutionCompletedZap,
-        routeExecutionFailed: TrackingEventDataAction.ExecutionFailedZap,
-      }}
-    >
-      <Box
-        sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 4,
+    <>
+      <WidgetTrackingProvider
+        trackingActionKeys={{
+          sourceChainAndTokenSelection:
+            TrackingAction.OnSourceChainAndTokenSelectionZap,
+          availableRoutes: TrackingAction.OnAvailableRoutesZap,
+          routeExecutionStarted: TrackingAction.OnRouteExecutionStartedZap,
+          routeExecutionCompleted: TrackingAction.OnRouteExecutionCompletedZap,
+          routeExecutionFailed: TrackingAction.OnRouteExecutionFailedZap,
+          changeSettings: TrackingAction.OnChangeSettingsZap,
+        }}
+        trackingDataActionKeys={{
+          routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
+          routeExecutionCompleted:
+            TrackingEventDataAction.ExecutionCompletedZap,
+          routeExecutionFailed: TrackingEventDataAction.ExecutionFailedZap,
         }}
       >
-        <SweepTokensCard customInformation={customInformation} />
-        <DepositPoolCard
-          customInformation={customInformation}
-          zapData={zapData}
-          isZapDataSuccess={isZapDataSuccess}
-          depositTokenData={depositTokenData}
-          depositTokenDecimals={depositTokenDecimals}
-          isLoadingDepositTokenData={isLoadingDepositTokenData}
-        />
         <Box
-          id={MISSION_WIDGET_ELEMENT_ID}
-          data-testid="zap-widget-container"
           sx={{
-            position: { lg: 'sticky' },
-            top: {
-              lg: 124,
-            },
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
           }}
         >
-          <ClientOnly>
-            <ZapDepositBackendWidget
-              ctx={ctx}
-              customInformation={customInformation}
-              refetchDepositToken={refetchDepositToken}
-              zapData={zapData}
-              isZapDataSuccess={isZapDataSuccess}
-              integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ZAP}
-            />
-          </ClientOnly>
+          <SweepTokensCard customInformation={customInformation} />
+          <DepositPoolCard
+            customInformation={customInformation}
+            zapData={zapData}
+            isZapDataSuccess={isZapDataSuccess}
+            depositTokenData={depositTokenData}
+            depositTokenDecimals={depositTokenDecimals}
+            isLoadingDepositTokenData={isLoadingDepositTokenData}
+          />
+          <Box
+            id={MISSION_WIDGET_ELEMENT_ID}
+            data-testid="zap-widget-container"
+            sx={{
+              position: { lg: 'sticky' },
+              top: {
+                lg: 124,
+              },
+            }}
+          >
+            <ClientOnly>
+              <Bouncer loading allowed>
+                <ZapDepositBackendWidget
+                  ctx={ctx}
+                  customInformation={customInformation}
+                  refetchDepositToken={refetchDepositToken}
+                  zapData={zapData}
+                  isZapDataSuccess={isZapDataSuccess}
+                  integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ZAP}
+                />
+              </Bouncer>
+            </ClientOnly>
+          </Box>
         </Box>
-      </Box>
-    </WidgetTrackingProvider>
+      </WidgetTrackingProvider>
+      <Bouncer blocked>
+        <BlockedAccountCallout />
+      </Bouncer>
+    </>
   );
 };

@@ -198,6 +198,12 @@ interface Resources {
       };
       title: 'Welcome to {{pageTitle}}!';
     };
+    bouncer: {
+      bannerMessage: 'Your account has been locked. Please contact support if you need to make an appeal.';
+      blockedAccountTitle: 'Account Locked';
+      blockedAccountDescription: 'Your account has been locked. Please contact support if you need to make an appeal.';
+      contactSupport: 'Contact Support';
+    };
     labels: {
       apy: 'APY';
       assets_one: 'Asset';

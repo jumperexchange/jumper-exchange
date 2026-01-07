@@ -9,17 +9,15 @@ import { Bouncer } from './Bouncer';
 
 export const BlockedAccountCallout = () => {
   const { t } = useTranslation();
+  const tString = t as (key: string) => string;
 
   return (
     <Bouncer blocked>
       <Box sx={{ mb: 2 }}>
         <BaseAlert
           variant={BaseAlertVariant.Error}
-          title={t('bouncer.blocked.title', 'Account Restricted')}
-          description={t(
-            'bouncer.blocked.description',
-            'Your account has been restricted. If you believe this is an error, please contact support.',
-          )}
+          title={tString('bouncer.blockedAccountTitle')}
+          description={tString('bouncer.blockedAccountDescription')}
         >
           <Link
             href="https://jumper.exchange/support"
@@ -33,7 +31,7 @@ export const BlockedAccountCallout = () => {
               },
             })}
           >
-            {t('bouncer.blocked.contactSupport', 'Contact Support')}
+            {tString('bouncer.contactSupport')}
           </Link>
         </BaseAlert>
       </Box>

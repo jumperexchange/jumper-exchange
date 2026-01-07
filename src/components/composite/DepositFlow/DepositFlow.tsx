@@ -2,15 +2,19 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
+import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
+import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
+import { BlockedAccountCallout } from '@/jumperFlags/bouncer/BlockedAccountCallout';
+import { Bouncer } from '@/jumperFlags/bouncer/Bouncer';
+import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
+import Box from '@mui/material/Box';
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButton } from '../DepositButton/DepositButton';
 import type { DepositButtonProps } from '../DepositButton/DepositButton.types';
 import { DepositModal } from '../DepositModal/DepositModal';
-import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
-import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
-import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
-import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
+import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 
 export const DepositFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -21,33 +25,45 @@ export const DepositFlowModal = () => {
   }
 
   return (
-    <WidgetTrackingProvider
-      trackingActionKeys={{
-        sourceChainAndTokenSelection:
-          TrackingAction.OnSourceChainAndTokenSelectionEarnDeposit,
-        availableRoutes: TrackingAction.OnAvailableRoutesEarnDeposit,
-        routeExecutionStarted:
-          TrackingAction.OnRouteExecutionStartedEarnDeposit,
-        routeExecutionCompleted:
-          TrackingAction.OnRouteExecutionCompletedEarnDeposit,
-        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedEarnDeposit,
-        changeSettings: TrackingAction.OnChangeSettingsEarnDeposit,
-      }}
-      trackingDataActionKeys={{
-        routeExecutionStarted:
-          TrackingEventDataAction.ExecutionStartEarnDeposit,
-        routeExecutionCompleted:
-          TrackingEventDataAction.ExecutionCompletedEarnDeposit,
-        routeExecutionFailed:
-          TrackingEventDataAction.ExecutionFailedEarnDeposit,
-      }}
-    >
-      <DepositModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        earnOpportunity={selectedEarnOpportunity!}
-      />
-    </WidgetTrackingProvider>
+    <>
+      <Bouncer loading allowed>
+        <WidgetTrackingProvider
+          trackingActionKeys={{
+            sourceChainAndTokenSelection:
+              TrackingAction.OnSourceChainAndTokenSelectionEarnDeposit,
+            availableRoutes: TrackingAction.OnAvailableRoutesEarnDeposit,
+            routeExecutionStarted:
+              TrackingAction.OnRouteExecutionStartedEarnDeposit,
+            routeExecutionCompleted:
+              TrackingAction.OnRouteExecutionCompletedEarnDeposit,
+            routeExecutionFailed:
+              TrackingAction.OnRouteExecutionFailedEarnDeposit,
+            changeSettings: TrackingAction.OnChangeSettingsEarnDeposit,
+          }}
+          trackingDataActionKeys={{
+            routeExecutionStarted:
+              TrackingEventDataAction.ExecutionStartEarnDeposit,
+            routeExecutionCompleted:
+              TrackingEventDataAction.ExecutionCompletedEarnDeposit,
+            routeExecutionFailed:
+              TrackingEventDataAction.ExecutionFailedEarnDeposit,
+          }}
+        >
+          <DepositModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            earnOpportunity={selectedEarnOpportunity!}
+          />
+        </WidgetTrackingProvider>
+      </Bouncer>
+      <Bouncer blocked>
+        <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
+          <Box sx={{ p: 3, maxWidth: 400 }}>
+            <BlockedAccountCallout />
+          </Box>
+        </ModalContainer>
+      </Bouncer>
+    </>
   );
 };
 

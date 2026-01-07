@@ -27,36 +27,29 @@ export default function PortfolioLayout({ children }: PropsWithChildren) {
   return (
     <Layout>
       <FetchInterceptorProvider />
-      <Bouncer loading allowed>
-        <Gatekeeper
-          flag="hasEarn"
-          pageTitle="Jumper Portfolio"
-          subtitleIntroKey="portfolio"
-          illustrations={{
-            illustration: <PortfolioBetaIllustration />,
-            mobile: {
-              sx: {
-                marginTop: 8,
-              },
+      <Gatekeeper
+        flag="hasEarn"
+        pageTitle="Jumper Portfolio"
+        subtitleIntroKey="portfolio"
+        illustrations={{
+          illustration: <PortfolioBetaIllustration />,
+          mobile: {
+            sx: {
+              marginTop: 8,
             },
-            desktop: {
-              sx: {
-                maxWidth: 1080,
-                marginTop: 15,
-              },
+          },
+          desktop: {
+            sx: {
+              maxWidth: 1080,
+              marginTop: 15,
             },
-          }}
-        >
-          <PortfolioPageOverlayLayout>
-            <PageContainer>{children}</PageContainer>
-          </PortfolioPageOverlayLayout>
-        </Gatekeeper>
-      </Bouncer>
-      <Bouncer blocked>
-        <PageContainer>
-          <BlockedAccountCallout />
-        </PageContainer>
-      </Bouncer>
+          },
+        }}
+      >
+        <PortfolioPageOverlayLayout>
+          <PageContainer>{children}</PageContainer>
+        </PortfolioPageOverlayLayout>
+      </Gatekeeper>
     </Layout>
   );
 }
