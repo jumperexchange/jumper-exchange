@@ -2,8 +2,11 @@ name: PR Checks
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 permissions:
+  checks: write
   pull-requests: write
+  contents: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -15,15 +18,19 @@ jobs:
         run: |
           git config --global user.name github-actions[bot]
           git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - uses: actions/checkout@v4
+      - &checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@v4
+      - &pnpm-setup
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - &node-setup
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
-      - name: Install dependencies
+      - &install-dependencies
+        name: Install dependencies
         run: pnpm install
       - name: Lint Staged
         run: |
@@ -61,3 +68,47 @@ jobs:
           header: "Lint-staged"
           hide: true
           hide_classify: "RESOLVED"
+
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *pnpm-setup
+      - *node-setup
+      - *install-dependencies
+      - name: Run unit tests
+        run: pnpm test:unit
+
+  test-snapshots:
+    runs-on: ubuntu-latest
+    outputs:
+      summary: ${{ steps.results.outputs.summary }}
+    steps:
+      - *checkout
+      - *pnpm-setup
+      - *node-setup
+      - *install-dependencies
+      - name: Run tests
+        id: test
+        run: pnpm test:snapshots
+        continue-on-error: true
+      - name: Get test results
+        id: results
+        run: |
+          if [ ${{ steps.test.outcome }} == 'success' ]; then
+            echo "summary=✅ All snapshot tests passed" >> "$GITHUB_OUTPUT"
+          else
+            echo "summary=❌ Some snapshot tests failed. Check the logs for details." >> "$GITHUB_OUTPUT"
+          fi
+
+  post-snapshot-comment:
+    needs: [test-snapshots]
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2.9.4
+        env:
+          SUMMARY: ${{ needs.test-snapshots.outputs.summary }}
+        with:
+          header: Snapshot Tests Summary
+          message: ${{ env.SUMMARY }}
