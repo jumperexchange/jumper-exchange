@@ -1,0 +1,11 @@
+# Deny list for development/testing only.
+# This file is used when GitHub App credentials are not configured.
+# In production, the deny list is fetched from a private GitHub repository.
+
+- address: "0x0000000000000000000000000000000000000001"
+  reason: "Test blocked wallet"
+  status: "blocked"
+
+- address: "0x0000000000000000000000000000000000000002"
+  reason: "Another test wallet"
+

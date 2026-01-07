@@ -6,10 +6,13 @@ import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { parse } from 'yaml';
 
-interface DenyListData {
-  wallets: string[];
-  updatedAt: string;
+interface DenyListEntry {
+  address: string;
+  reason?: string;
+  status?: string;
 }
+
+type DenyListData = DenyListEntry[];
 
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
@@ -69,13 +72,13 @@ function getOctokitApp(): App {
 }
 
 function parseDenyListData(content: string): DenyListData {
-  const data = parse(content) as DenyListData;
+  const data = parse(content);
 
-  if (!data || !Array.isArray(data.wallets)) {
-    throw new Error('Invalid deny list format: missing wallets array');
+  if (!Array.isArray(data)) {
+    throw new Error('Invalid deny list format: expected an array');
   }
 
-  return data;
+  return data as DenyListData;
 }
 
 async function fetchDenyListFromGithub(): Promise<DenyListData> {
@@ -113,10 +116,7 @@ async function fetchDenyListLocally(): Promise<DenyListData> {
 }
 
 function getEmptyDenyList(): DenyListData {
-  return {
-    wallets: [],
-    updatedAt: new Date().toISOString(),
-  };
+  return [];
 }
 
 async function fetchDenyList(): Promise<DenyListData> {
@@ -150,7 +150,7 @@ export async function refreshDenyList(): Promise<void> {
 
   try {
     const data = await fetchDenyList();
-    cachedList = new Set(data.wallets.map(normalizeAddress));
+    cachedList = new Set(data.map((entry) => normalizeAddress(entry.address)));
     lastFetchTime = Date.now();
   } catch (error) {
     console.error('Failed to refresh deny list, keeping previous:', error);
