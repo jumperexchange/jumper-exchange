@@ -6,7 +6,7 @@ import {
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { usePortfolioStore } from '@/stores/portfolio';
 import type { ExtendedTokenAmount } from '@/utils/getTokens';
-import index from '@/utils/getTokens';
+import getTokens from '@/utils/getTokens';
 import { useAccount } from '@lifi/wallet-management';
 import type { ChainId } from '@lifi/widget';
 import { useQueries } from '@tanstack/react-query';
@@ -51,7 +51,7 @@ export function usePortfolioTokens() {
   const queries = useQueries({
     queries: connectedAccounts.map((account) => ({
       queryKey: ['tokens', account.chainType, account.address],
-      queryFn: () => index(account, { onProgress: handleProgress }),
+      queryFn: () => getTokens(account, { onProgress: handleProgress }),
     })),
   });
 
