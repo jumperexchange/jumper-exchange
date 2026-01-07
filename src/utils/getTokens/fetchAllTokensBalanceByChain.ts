@@ -9,7 +9,11 @@ import type {
   ExtendedTokenAmount,
   ExtendedTokenAmountWithChain,
 } from '@/utils/getTokens/index';
-import { getBalance, mergeTokenIntoSymbolMap } from '@/utils/getTokens/utils';
+import {
+  getBalance,
+  mergeTokenIntoSymbolMap,
+  deduplicateByChainAndAddress,
+} from '@/utils/getTokens/utils';
 
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
@@ -98,8 +102,8 @@ export function fetchAllTokensBalanceByChain(
 
     const fetchResults = await Promise.all(fetchPromises);
 
-    const detailedBalances: ExtendedTokenAmount[] = fetchResults
-      .flat()
+    const uniqueResults = deduplicateByChainAndAddress(fetchResults.flat());
+    const detailedBalances: ExtendedTokenAmount[] = uniqueResults
       .filter((t) => t.amount && t.amount > BigInt(0))
       .map((balance) => {
         const humanReadableBalance = getBalance(balance);

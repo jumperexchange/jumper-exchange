@@ -13,6 +13,7 @@ import { transformWalletBalances } from '@/utils/getTokens/transformWalletBalanc
 import {
   mergeTokenBalances,
   filterExcludedTokens,
+  deduplicateWalletBalances,
 } from '@/utils/getTokens/utils';
 import { sumBy, some } from 'lodash';
 
@@ -56,12 +57,16 @@ async function getTokens(
     ]);
 
     if (isEVM && walletBalances) {
-      const transformed = transformWalletBalances(walletBalances, chains);
+      const uniqueWalletBalances = deduplicateWalletBalances(walletBalances);
+      const transformed = transformWalletBalances(uniqueWalletBalances, chains);
       const cumulativePriceUSD = sumBy(transformed, 'totalPriceUSD');
 
       events.onProgress(account.address!, 1, cumulativePriceUSD, transformed);
 
-      const remainingTokens = filterExcludedTokens(allTokens, walletBalances);
+      const remainingTokens = filterExcludedTokens(
+        allTokens,
+        uniqueWalletBalances,
+      );
       const hasRemainingTokens = some(
         remainingTokens,
         (tokens) => tokens.length > 0,

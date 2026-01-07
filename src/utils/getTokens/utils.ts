@@ -10,6 +10,8 @@ import {
   map,
   reduce,
   filter,
+  uniqBy,
+  mapValues,
 } from 'lodash';
 
 export function getBalance(tokenBalance: Partial<TokenAmount>): number {
@@ -84,6 +86,20 @@ export function mergeTokenBalances(
     Object.values(symbolMap),
     [(t) => t.cumulatedTotalUSD ?? 0],
     ['desc'],
+  );
+}
+
+export function deduplicateByChainAndAddress<
+  T extends { chainId: number; address: string },
+>(tokens: T[]): T[] {
+  return uniqBy(tokens, (t) => `${t.chainId}:${t.address.toLowerCase()}`);
+}
+
+export function deduplicateWalletBalances<
+  T extends { chainId: number; address: string },
+>(walletBalances: Record<number, T[]>): Record<number, T[]> {
+  return mapValues(walletBalances, (tokens) =>
+    deduplicateByChainAndAddress(tokens),
   );
 }
 
