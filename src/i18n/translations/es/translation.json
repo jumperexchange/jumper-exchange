@@ -82,6 +82,9 @@
     "ctaHeadline": "Únete a nuestro Discord para aprender más",
     "ctaButton": "Únete a nuestro Discord"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "Consejos y tutoriales",
     "categories": "Categorías",
