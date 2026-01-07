@@ -336,10 +336,16 @@ export const sanitizeDeFiPositionsFilter = (
 export const getEffectiveValueRange = (
   allValueRange: { min: number; max: number },
   defaultMinValue: number = DEFAULT_DEFI_POSITIONS_MIN_VALUE,
-) => ({
-  min: Math.max(defaultMinValue, allValueRange.min),
-  max: Math.max(defaultMinValue, allValueRange.max),
-});
+) => {
+  if (allValueRange.max < defaultMinValue) {
+    return allValueRange;
+  }
+
+  return {
+    min: Math.max(defaultMinValue, allValueRange.min),
+    max: Math.max(defaultMinValue, allValueRange.max),
+  };
+};
 
 export const filterSortDeFiPositionsData = (
   positions: DefiPosition[],

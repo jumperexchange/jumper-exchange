@@ -29,6 +29,13 @@ export const usePendingFilters = <T extends PendingFilterState>({
 }: UsePendingFiltersOptions<T>): UsePendingFiltersResult<T> => {
   const [pendingValues, setPendingValues] = useState<T>(initialValues);
 
+  useEffect(() => {
+    if (isEqual(initialValues, pendingValues)) {
+      return;
+    }
+    setPendingValues(initialValues);
+  }, [initialValues, pendingValues]);
+
   const setPendingValue = useCallback(
     <K extends keyof T>(key: K, value: T[K]) => {
       setPendingValues((prev) => ({
