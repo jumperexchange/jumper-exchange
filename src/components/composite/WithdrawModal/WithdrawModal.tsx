@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
 import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
+import { useWithdrawFlowStore } from '@/stores/withdrawFlow/WithdrawFlowStore';
 
 interface WithdrawModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -24,13 +25,16 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
   const { projectData, zapData } =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
 
-  //   const refetchCallback = useDepositFlowStore((state) => state.refetchCallback);
+  const refetchCallback = useWithdrawFlowStore(
+    (state) => state.refetchCallback,
+  );
 
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
       <ZapWithdrawWidget
         customInformation={{ projectData }}
         zapData={zapData}
+        refetchWithdrawToken={refetchCallback}
         ctx={{
           theme: {
             container: {
