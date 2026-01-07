@@ -82,6 +82,9 @@
     "ctaHeadline": "Daha fazlası için Discord sunucumuza katıl",
     "ctaButton": "Discord'a katıl"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "İpuçları ve öğreticiler",
     "categories": "Kategoriler",
