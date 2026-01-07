@@ -41,10 +41,6 @@ export function usePortfolioTokens() {
       queryFn: () =>
         getTokens(account, {
           onProgress: (acc, round, totalPriceUSD, fetchedBalances) => {
-            console.log(
-              'usePortfolioTokens - fetchedBalances',
-              fetchedBalances,
-            );
             setCacheTokens(acc, fetchedBalances);
           },
         }),
@@ -58,12 +54,20 @@ export function usePortfolioTokens() {
   const isPrevFetching = usePrevious(isFetching);
   const queriesJustCompleted = isPrevFetching && !isFetching && isSuccess;
 
+  const accountQueries = useMemo(() => {
+    if (connectedAccounts.length !== queries.length) {
+      return [];
+    }
+    return connectedAccounts.map((account, index) => ({
+      account,
+      address: account.address!,
+      query: queries[index],
+    }));
+  }, [connectedAccounts, queries]);
+
   const queriesByAddress = useMemo(() => {
     return new Map(
-      connectedAccounts.map((account, index) => {
-        const accountAddress = account.address!;
-        const query = queries[index];
-
+      accountQueries.map(({ account, address, query }) => {
         let accountData: (ExtendedTokenAmountWithChain | CacheToken)[] =
           query?.isSuccess && query.data ? query.data : [];
 
@@ -73,7 +77,7 @@ export function usePortfolioTokens() {
         }
 
         return [
-          accountAddress,
+          address,
           {
             refetch: () => query?.refetch(),
             isFetching: query?.isFetching ?? false,
@@ -83,7 +87,7 @@ export function usePortfolioTokens() {
         ];
       }),
     );
-  }, [connectedAccounts, queries, getFormattedCacheTokens]);
+  }, [accountQueries, getFormattedCacheTokens]);
 
   const data = useMemo(() => {
     return flatMap(
@@ -101,10 +105,8 @@ export function usePortfolioTokens() {
       return;
     }
 
-    connectedAccounts.forEach((account, index) => {
-      const query = queries[index];
-
-      if (!query?.isSuccess || !account.address) {
+    accountQueries.forEach(({ address, query }) => {
+      if (!query?.isSuccess || !address) {
         return;
       }
 
@@ -114,38 +116,31 @@ export function usePortfolioTokens() {
         (token) => token.cumulatedTotalUSD ?? 0,
       );
 
-      const { date: lastDate } = getLast(account.address);
+      const { date: lastDate } = getLast(address);
 
-      setCacheTokens(account.address, accountData);
+      setCacheTokens(address, accountData);
 
       if (
         !lastDate ||
         differenceInHours(new Date(), new Date(lastDate)) >= 24
       ) {
-        setLast(account.address, accountTotalValue, Date.now());
+        setLast(address, accountTotalValue, Date.now());
       }
     });
-  }, [
-    queriesJustCompleted,
-    connectedAccounts,
-    queries,
-    getLast,
-    setLast,
-    setCacheTokens,
-  ]);
+  }, [queriesJustCompleted, accountQueries, getLast, setLast, setCacheTokens]);
 
   useEffect(() => {
     if (forceRefresh.size === 0) {
       return;
     }
 
-    connectedAccounts.forEach((account, index) => {
-      if (account.address && forceRefresh.has(account.address)) {
-        queries[index]?.refetch();
-        setForceRefresh(account.address, false);
+    accountQueries.forEach(({ address, query }) => {
+      if (address && forceRefresh.has(address)) {
+        query?.refetch();
+        setForceRefresh(address, false);
       }
     });
-  }, [forceRefresh, connectedAccounts, queries, setForceRefresh]);
+  }, [forceRefresh, accountQueries, setForceRefresh]);
 
   useEffect(() => {
     if (hasTrackedSuccess.current || !queriesJustCompleted) {
@@ -159,11 +154,11 @@ export function usePortfolioTokens() {
 
   useEffect(() => {
     hasTrackedSuccess.current = false;
-  }, [connectedAccounts]);
+  }, [accountQueries]);
 
   useEffect(() => {
     const connectedAddresses = new Set(
-      connectedAccounts.map((account) => account.address).filter(Boolean),
+      accountQueries.map(({ address }) => address).filter(Boolean),
     );
 
     const { cacheTokens } = usePortfolioStore.getState();
@@ -174,13 +169,9 @@ export function usePortfolioTokens() {
         deleteCacheTokenAddress(address);
       }
     });
-  }, [connectedAccounts, deleteCacheTokenAddress]);
+  }, [accountQueries, deleteCacheTokenAddress]);
 
   const refetch = () => queries.forEach((query) => query.refetch());
-
-  console.log('usePortfolioTokens - data', data);
-  console.log('usePortfolioTokens - totalValue', totalValue);
-  console.log('usePortfolioTokens - queriesByAddress', queriesByAddress);
 
   return {
     queries,
