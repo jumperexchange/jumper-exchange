@@ -1,47 +1,33 @@
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { usePortfolioStore } from '@/stores/portfolio';
-import type { ExtendedTokenAmount } from '@/utils/getTokens';
+import type {
+  ExtendedTokenAmount,
+  ExtendedTokenAmountWithChain,
+} from '@/utils/getTokens';
 import getTokens from '@/utils/getTokens';
 import { useAccount } from '@lifi/wallet-management';
-import type { ChainId } from '@lifi/widget';
 import { useQueries } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef } from 'react';
-import { useChains } from 'src/hooks/useChains';
-import { parsePortfolioDataToTrackingData } from '../tracking/portfolio';
-import { zeroAddress } from 'viem';
 import { usePrevious } from 'src/hooks/usePrevious';
 import { differenceInHours } from 'date-fns';
+import { flatMap, sumBy } from 'lodash';
+import type { CacheToken } from '@/types/portfolio';
+import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 
 export function usePortfolioTokens() {
-  const { trackEvent } = useUserTracking();
   const { accounts } = useAccount();
-  const { getChainById } = useChains();
   const {
     getFormattedCacheTokens,
     setCacheTokens,
     forceRefresh,
     setForceRefresh,
-    cacheTokens,
     setLast,
     getLast,
+    deleteCacheTokenAddress,
   } = usePortfolioStore((state) => state);
-  const hasTrackedSuccess = useRef(false);
-  const hasTrackedPortfolioOverview = useRef(false);
 
-  const handleProgress = (
-    account: string,
-    round: number,
-    totalPriceUSD: number,
-    fetchedBalances: ExtendedTokenAmount[],
-  ) => {
-    console.log('usePortfolioTokens - fetchedBalances', fetchedBalances);
-    setCacheTokens(account, fetchedBalances);
-  };
+  const { trackPortfolioBalanceLoadedEvent } = usePortfolioTracking();
+
+  const hasTrackedSuccess = useRef(false);
 
   const connectedAccounts = useMemo(() => {
     return accounts.filter(
@@ -52,7 +38,16 @@ export function usePortfolioTokens() {
   const queries = useQueries({
     queries: connectedAccounts.map((account) => ({
       queryKey: ['tokens', account.chainType, account.address],
-      queryFn: () => getTokens(account, { onProgress: handleProgress }),
+      queryFn: () =>
+        getTokens(account, {
+          onProgress: (acc, round, totalPriceUSD, fetchedBalances) => {
+            console.log(
+              'usePortfolioTokens - fetchedBalances',
+              fetchedBalances,
+            );
+            setCacheTokens(acc, fetchedBalances);
+          },
+        }),
     })),
   });
 
@@ -63,56 +58,80 @@ export function usePortfolioTokens() {
   const isPrevFetching = usePrevious(isFetching);
   const queriesJustCompleted = isPrevFetching && !isFetching && isSuccess;
 
+  const queriesByAddress = useMemo(() => {
+    return new Map(
+      connectedAccounts.map((account, index) => {
+        const accountAddress = account.address!;
+        const query = queries[index];
+
+        let accountData: (ExtendedTokenAmountWithChain | CacheToken)[] =
+          query?.isSuccess && query.data ? query.data : [];
+
+        if (accountData.length === 0) {
+          const cached = getFormattedCacheTokens([account]);
+          accountData = cached.cache;
+        }
+
+        return [
+          accountAddress,
+          {
+            refetch: () => query?.refetch(),
+            isFetching: query?.isFetching ?? false,
+            isSuccess: !query?.isFetching && (query?.isSuccess ?? false),
+            data: accountData,
+          },
+        ];
+      }),
+    );
+  }, [connectedAccounts, queries, getFormattedCacheTokens]);
+
   const data = useMemo(() => {
-    const cached = getFormattedCacheTokens(accounts);
+    return flatMap(
+      Array.from(queriesByAddress.values()),
+      (query) => query.data,
+    );
+  }, [queriesByAddress]);
 
-    console.log('usePortfolioTokens - cached', cached);
-
-    if (cached.cache.length === 0) {
-      return queries
-        .filter((query) => query.isSuccess)
-        .map((query) => query.data ?? [])
-        .flat();
-    }
-
-    return cached.cache;
-  }, [queries, accounts, getFormattedCacheTokens]);
+  const totalValue = useMemo(() => {
+    return sumBy(data, (token) => token.cumulatedTotalUSD ?? 0);
+  }, [data]);
 
   useEffect(() => {
+    if (!queriesJustCompleted) {
+      return;
+    }
+
     connectedAccounts.forEach((account, index) => {
       const query = queries[index];
 
-      if (!query?.isSuccess || query.isFetching || !account.address) {
+      if (!query?.isSuccess || !account.address) {
         return;
       }
 
-      const { totalValue } = getFormattedCacheTokens([account]);
+      const accountData = (query.data as ExtendedTokenAmount[]) ?? [];
+      const accountTotalValue = sumBy(
+        accountData,
+        (token) => token.cumulatedTotalUSD ?? 0,
+      );
+
       const { date: lastDate } = getLast(account.address);
 
-      if (lastDate && differenceInHours(new Date(), lastDate) < 24) {
-        return;
-      }
+      setCacheTokens(account.address, accountData);
 
-      const now = Date.now();
-
-      setLast(account.address, totalValue, now);
-
-      // Only update cache if this address doesn't already have cached data
-      if (!cacheTokens.has(account.address)) {
-        setCacheTokens(
-          account.address,
-          (query.data as ExtendedTokenAmount[]) ?? [],
-        );
+      if (
+        !lastDate ||
+        differenceInHours(new Date(), new Date(lastDate)) >= 24
+      ) {
+        setLast(account.address, accountTotalValue, Date.now());
       }
     });
   }, [
-    queries,
+    queriesJustCompleted,
     connectedAccounts,
-    setCacheTokens,
-    getFormattedCacheTokens,
+    queries,
     getLast,
     setLast,
-    cacheTokens,
+    setCacheTokens,
   ]);
 
   useEffect(() => {
@@ -135,91 +154,43 @@ export function usePortfolioTokens() {
 
     hasTrackedSuccess.current = true;
 
-    trackEvent({
-      category: TrackingCategory.Wallet,
-      action: TrackingAction.PortfolioLoaded,
-      label: 'portfolio_balance_loaded',
-      data: {
-        [TrackingEventParameter.Status]: 'success',
-        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-      },
-    });
-  }, [queriesJustCompleted, trackEvent]);
-
-  useEffect(() => {
-    if (hasTrackedPortfolioOverview.current || !queriesJustCompleted) {
-      return;
-    }
-
-    hasTrackedPortfolioOverview.current = true;
-
-    const { totalValue: totalBalanceUSD } = getFormattedCacheTokens(accounts);
-
-    const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
-      chainsIds.map(
-        (chainId) => getChainById(chainId)?.nativeToken?.address ?? zeroAddress,
-      );
-
-    const trackingData = parsePortfolioDataToTrackingData(
-      totalBalanceUSD,
-      data,
-      returnNativeTokenAddresses,
-    );
-
-    trackEvent({
-      category: TrackingCategory.WalletMenu,
-      action: TrackingAction.PortfolioOverview,
-      label: 'portfolio_balance_overview',
-      enableAddressable: true,
-      data: trackingData,
-    });
-  }, [
-    queriesJustCompleted,
-    accounts,
-    data,
-    getFormattedCacheTokens,
-    getChainById,
-    trackEvent,
-  ]);
+    trackPortfolioBalanceLoadedEvent();
+  }, [queriesJustCompleted, trackPortfolioBalanceLoadedEvent]);
 
   useEffect(() => {
     hasTrackedSuccess.current = false;
-    hasTrackedPortfolioOverview.current = false;
-  }, [accounts]);
+  }, [connectedAccounts]);
 
-  const refetch = () => queries.map((query) => query.refetch());
-
-  const queriesByAddress = useMemo(() => {
-    return new Map(
-      connectedAccounts.map((account, index) => {
-        const accountAddress = account.address!;
-        const cachedData = getFormattedCacheTokens([account]);
-
-        return [
-          accountAddress,
-          {
-            refetch: () => queries[index]?.refetch(),
-            isFetching: queries[index]?.isFetching ?? false,
-            isSuccess:
-              !queries[index]?.isFetching &&
-              (queries[index]?.isSuccess ?? false),
-            data: cachedData.cache,
-          },
-        ];
-      }),
+  useEffect(() => {
+    const connectedAddresses = new Set(
+      connectedAccounts.map((account) => account.address).filter(Boolean),
     );
-  }, [connectedAccounts, queries, getFormattedCacheTokens]);
+
+    const { cacheTokens } = usePortfolioStore.getState();
+    const cachedAddresses = Array.from(cacheTokens.keys());
+
+    cachedAddresses.forEach((address) => {
+      if (!connectedAddresses.has(address)) {
+        deleteCacheTokenAddress(address);
+      }
+    });
+  }, [connectedAccounts, deleteCacheTokenAddress]);
+
+  const refetch = () => queries.forEach((query) => query.refetch());
 
   console.log('usePortfolioTokens - data', data);
+  console.log('usePortfolioTokens - totalValue', totalValue);
   console.log('usePortfolioTokens - queriesByAddress', queriesByAddress);
 
   return {
     queries,
     queriesByAddress,
+    queriesJustCompleted,
     isSuccess,
     isFetching,
     refetch,
     data,
+    totalValue,
     accounts: connectedAccounts,
   };
 }

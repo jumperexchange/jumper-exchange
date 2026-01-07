@@ -3,11 +3,12 @@ import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton, CustomDrawer } from './WalletMenu.style';
 import { usePortfolioTokens } from 'src/utils/getTokens/usePortfolioTokens';
 import { WalletBalanceCard } from 'src/components/composite/WalletBalanceCard/WalletBalanceCard';
+import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 
 export const WalletMenu = () => {
   const { t } = useTranslation();
@@ -19,7 +20,23 @@ export const WalletMenu = () => {
     setWalletMenuState,
     setSnackbarState,
   } = useMenuStore((state) => state);
-  const { queriesByAddress } = usePortfolioTokens();
+  const { queriesByAddress, queriesJustCompleted, totalValue, data } =
+    usePortfolioTokens();
+  const { trackPortfolioMenuOverviewEvent } = usePortfolioTracking();
+  const hasTrackedPortfolioOverview = useRef(false);
+
+  useEffect(() => {
+    if (hasTrackedPortfolioOverview.current || !queriesJustCompleted) {
+      return;
+    }
+
+    hasTrackedPortfolioOverview.current = true;
+    trackPortfolioMenuOverviewEvent(totalValue, data);
+  }, [queriesJustCompleted, data, totalValue, trackPortfolioMenuOverviewEvent]);
+
+  useEffect(() => {
+    hasTrackedPortfolioOverview.current = false;
+  }, [accounts]);
 
   const handleOpenWalletMenu: MouseEventHandler<HTMLButtonElement> = (
     event,
