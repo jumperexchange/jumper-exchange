@@ -82,6 +82,9 @@
     "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
     "ctaButton": "Доєднуйся до нас у Discord"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "Поради та навчальні матеріали",
     "categories": "Категорії",
