@@ -1,4 +1,3 @@
-// Constants
 import type {
   ExtendedChain,
   Token,
@@ -10,7 +9,7 @@ import type {
   ExtendedTokenAmount,
   ExtendedTokenAmountWithChain,
 } from '@/utils/getTokens/index';
-import { getBalance } from '@/utils/getTokens/utils';
+import { getBalance, mergeTokenIntoSymbolMap } from '@/utils/getTokens/utils';
 
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
@@ -45,8 +44,7 @@ export function fetchAllTokensBalanceByChain(
   let totalPriceUSD: number = 0;
   let round = 1;
 
-  // This will store all fetched tokens indexed by their symbol
-  const symbolMap: Record<string, ExtendedTokenAmount> = {};
+  const symbolMap: Record<string, ExtendedTokenAmountWithChain> = {};
 
   const tokensByChain: Record<string, Token[]> = Object.keys(tokens).reduce(
     (acc, chainId) => {
@@ -123,53 +121,14 @@ export function fetchAllTokensBalanceByChain(
 
     totalPriceUSD += roundPriceUSD;
 
-    // Update symbolMap with fetched tokens and compute cumulated totals
     for (const balance of detailedBalances) {
-      let existingToken = symbolMap[balance.symbol];
-
-      if (existingToken) {
-        // If this symbol already exists, add this balance as a "chain" entry
-        existingToken.chains = existingToken.chains || [];
-        const chain = chains.find((c) => c.id === balance.chainId);
-        const humanReadableBalance = getBalance(balance);
-
-        existingToken = {
-          ...existingToken,
-          chains: [
-            ...existingToken.chains,
-            {
-              ...balance,
-              chainLogoURI: chain?.logoURI,
-              chainName: chain?.name,
-              cumulatedBalance: humanReadableBalance,
-              totalPriceUSD:
-                humanReadableBalance * parseFloat(balance.priceUSD),
-            },
-          ],
-        };
-
-        existingToken.chains = existingToken.chains.sort(
-          (a, b) => (b.totalPriceUSD ?? 0) - (a.totalPriceUSD ?? 0),
-        );
-        existingToken.cumulatedBalance = existingToken.chains.reduce(
-          (sum, chain) => sum + (chain.cumulatedBalance ?? 0),
-          0,
-        );
-        existingToken.cumulatedTotalUSD = existingToken.chains.reduce(
-          (sum, chain) => sum + (chain.totalPriceUSD ?? 0),
-          0,
-        );
-        symbolMap[balance.symbol] = existingToken;
-      } else {
-        balance.cumulatedBalance = getBalance(balance);
-
-        // If this symbol is new, store it in the symbol map
-        symbolMap[balance.symbol] = {
-          ...balance,
-          chains: [balance],
-          cumulatedTotalUSD: balance.totalPriceUSD!,
-        };
-      }
+      const tokenWithChain: ExtendedTokenAmountWithChain = {
+        ...balance,
+        cumulatedBalance: getBalance(balance),
+        cumulatedTotalUSD: balance.totalPriceUSD,
+        chains: [balance],
+      };
+      mergeTokenIntoSymbolMap(symbolMap, tokenWithChain);
     }
 
     // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress

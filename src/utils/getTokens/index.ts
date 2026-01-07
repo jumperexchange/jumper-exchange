@@ -10,7 +10,11 @@ import {
 import type { Account } from '@lifi/wallet-management';
 import { fetchAllTokensBalanceByChain } from '@/utils/getTokens/fetchAllTokensBalanceByChain';
 import { transformWalletBalances } from '@/utils/getTokens/transformWalletBalances';
-import { sumBy } from 'lodash';
+import {
+  mergeTokenBalances,
+  filterExcludedTokens,
+} from '@/utils/getTokens/utils';
+import { sumBy, some } from 'lodash';
 
 export interface ExtendedTokenAmountWithChain extends ExtendedTokenAmount {
   chainLogoURI?: string;
@@ -43,31 +47,54 @@ async function getTokens(
   events: Events,
 ): Promise<undefined | ExtendedTokenAmountWithChain[]> {
   try {
-    const chains = await getChains({
-      chainTypes: [account.chainType],
-    });
+    const isEVM = account.chainType === ChainType.EVM && account.address;
 
-    if (account.chainType === ChainType.EVM && account.address) {
-      const walletBalances = await getWalletBalances(account.address);
+    const [chains, { tokens: allTokens }, walletBalances] = await Promise.all([
+      getChains({ chainTypes: [account.chainType] }),
+      LifiGetTokens({ chainTypes: [account.chainType] }),
+      isEVM ? getWalletBalances(account.address!) : Promise.resolve(null),
+    ]);
+
+    if (isEVM && walletBalances) {
       const transformed = transformWalletBalances(walletBalances, chains);
-
       const cumulativePriceUSD = sumBy(transformed, 'totalPriceUSD');
 
-      events.onProgress(account.address, 1, cumulativePriceUSD, transformed);
+      events.onProgress(account.address!, 1, cumulativePriceUSD, transformed);
 
-      return transformed;
+      const remainingTokens = filterExcludedTokens(allTokens, walletBalances);
+      const hasRemainingTokens = some(
+        remainingTokens,
+        (tokens) => tokens.length > 0,
+      );
+
+      if (!hasRemainingTokens) {
+        return transformed;
+      }
+
+      return new Promise((resolve) => {
+        fetchAllTokensBalanceByChain(
+          account.address!,
+          chains,
+          remainingTokens,
+          (addr, round, additionalPriceUSD, additionalBalances) => {
+            const merged = mergeTokenBalances(transformed, additionalBalances);
+            const totalPriceUSD = sumBy(merged, 'cumulatedTotalUSD');
+            events.onProgress(addr, round + 1, totalPriceUSD, merged);
+          },
+          (additionalBalances) => {
+            const merged = mergeTokenBalances(transformed, additionalBalances);
+            resolve(merged);
+          },
+        );
+      });
     }
-
-    const { tokens } = await LifiGetTokens({
-      chainTypes: [account.chainType],
-    });
 
     return new Promise((resolve, reject) => {
       try {
         fetchAllTokensBalanceByChain(
           account.address!,
           chains,
-          tokens,
+          allTokens,
           events.onProgress,
           (combinedBalance) => {
             resolve(combinedBalance);
