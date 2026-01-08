@@ -282,7 +282,9 @@
   },
   "format": {
     "currency": "",
+    "currencyCompact": "",
     "decimal": "",
+    "decimalCompact": "",
     "percent": "",
     "decimal2Digit": "",
     "date": "",
@@ -304,6 +306,7 @@
   "tooltips": {
     "tvl": "",
     "apy": "",
+    "rewardsApy": "",
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
@@ -320,6 +323,7 @@
   },
   "labels": {
     "apy": "",
+    "rewardsApy": "",
     "lockupPeriod": "",
     "tvl": "",
     "assets_one": "",
@@ -359,7 +363,11 @@
       "tag": "",
       "asset": "",
       "apy": "",
-      "tvl": ""
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
     },
     "views": {
       "viewBy": "",
