@@ -1,5 +1,5 @@
 import type { Account } from '@lifi/wallet-management';
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import { AnimatedCounter } from 'react-animated-counter';
 import {
@@ -13,8 +13,15 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { usePortfolioStore } from 'src/stores/portfolio';
 import RefreshBalance from './RefreshBalance';
+import { toCompactValue } from 'src/utils/formatNumbers';
 
-interface WalletTotalBalanceProps {
+const sharedStackProps = {
+  direction: 'row',
+  alignItems: 'center',
+  useFlexGap: true,
+} as const;
+
+interface WalletTotalBalanceProps extends PropsWithChildren {
   isComplete: boolean;
   isFetching: boolean;
   refetch: () => void;
@@ -26,6 +33,7 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
   isFetching,
   refetch,
   account,
+  children,
 }) => {
   const theme = useTheme();
   const walletAddress = account.address!;
@@ -59,39 +67,49 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
     return <WalletTotalBalanceSkeleton />;
   }
 
+  const compactString = toCompactValue(totalValue);
+  const match = compactString.match(/^([\d,.]+)([A-Za-z]*)$/);
+  const numericPart = match
+    ? parseFloat(match[1].replace(/,/g, ''))
+    : totalValue;
+  const suffix = match ? match[2] : '';
+
   return (
     <WalletBalanceSharedContainer disableGutters>
-      <Stack>
+      <Stack sx={{ width: '100%' }}>
         <Typography variant="bodyXSmallStrong" color="textSecondary">
           {t('navbar.walletMenu.walletBalance')}
         </Typography>
-        <WalletTotalBalanceValue as="div">
-          {lastTotalValue && !isComplete ? (
-            t('format.currency', { value: lastTotalValue })
-          ) : (
-            <>
-              $
-              <AnimatedCounter
-                value={totalValue}
-                fontSize={theme.typography.titleLarge.fontSize?.toString()}
-                includeDecimals
-                decimalPrecision={2}
-                includeCommas
-                incrementColor={(theme.vars || theme).palette.text.primary}
-                decrementColor={(theme.vars || theme).palette.text.primary}
-                color={(theme.vars || theme).palette.text.primary}
-                containerStyles={{
-                  display: 'inline-flex',
-                  textAlign: 'center',
-                }}
-                digitStyles={{
-                  textOverflow: 'inherit',
-                }}
-              />
-            </>
-          )}
-        </WalletTotalBalanceValue>
-        {/*
+        <Stack {...sharedStackProps} gap={2} justifyContent="space-between">
+          <Stack {...sharedStackProps} gap={1}>
+            <WalletTotalBalanceValue as="div">
+              {lastTotalValue && isComplete ? (
+                `$${compactString}`
+              ) : (
+                <>
+                  $
+                  <AnimatedCounter
+                    value={numericPart}
+                    fontSize={theme.typography.titleLarge.fontSize?.toString()}
+                    includeDecimals
+                    decimalPrecision={suffix ? 1 : 2}
+                    includeCommas={!suffix}
+                    incrementColor={(theme.vars || theme).palette.text.primary}
+                    decrementColor={(theme.vars || theme).palette.text.primary}
+                    color={(theme.vars || theme).palette.text.primary}
+                    containerStyles={{
+                      display: 'inline-flex',
+                      textAlign: 'center',
+                    }}
+                    digitStyles={{
+                      textOverflow: 'inherit',
+                    }}
+                  />
+                  {suffix}
+                </>
+              )}
+            </WalletTotalBalanceValue>
+            {/*
           Todo: to add back later when we can review the time calculation
           <Stack direction="row" gap="0.5rem" justifyContent="space-between">
             {differenceValue !== 0 && (
@@ -114,16 +132,19 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
               </Stack>
             )}
           </Stack> */}
+            <RefreshBalance
+              updatedAt={lastDate}
+              timeToUpdate={0}
+              isLoading={!isComplete}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                event.stopPropagation();
+                refetch();
+              }}
+            />
+          </Stack>
+          {children}
+        </Stack>
       </Stack>
-      <RefreshBalance
-        updatedAt={lastDate}
-        timeToUpdate={0}
-        isLoading={!isComplete}
-        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-          event.stopPropagation();
-          refetch();
-        }}
-      />
     </WalletBalanceSharedContainer>
   );
 };
