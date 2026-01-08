@@ -172,9 +172,11 @@ interface Resources {
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
+      currencyCompact: '{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}';
       date: '{{value, dateExt(month: long)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
+      decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
