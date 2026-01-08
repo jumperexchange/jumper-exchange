@@ -1,20 +1,18 @@
-import type { FC } from 'react';
+import { type FC } from 'react';
 import {
   AvatarStackWrapper,
-  Avatar,
-  AvatarSkeleton,
   AvatarStackContainer,
-  AvatarPlaceholder,
   OverflowCount,
 } from './AvatarStack.styles';
-import type { AvatarSize, AvatarStackDirection } from './AvatarStack.types';
+import type {
+  AvatarSize,
+  AvatarStackDirection,
+  AvatarData,
+} from './AvatarStack.types';
+import { AvatarItem } from './AvatarItem';
 
 interface AvatarStackProps {
-  avatars: {
-    id: string;
-    src?: string;
-    alt: string;
-  }[];
+  avatars: AvatarData[];
   size?: AvatarSize;
   spacing?: number;
   direction?: AvatarStackDirection;
@@ -38,26 +36,12 @@ export const AvatarStack: FC<AvatarStackProps> = ({
     <AvatarStackContainer direction={direction} useFlexGap>
       <AvatarStackWrapper direction={direction} spacing={spacing}>
         {displayAvatars.map((avatar) => (
-          <Avatar
-            size={size}
+          <AvatarItem
             key={avatar.id}
-            src={avatar.src}
-            alt={avatar.alt}
+            avatar={avatar}
+            size={size}
             disableBorder={disableBorder}
-            variant="circular"
-            slotProps={{
-              img: {
-                loading: 'lazy',
-              },
-            }}
-          >
-            {avatar.alt ? (
-              <AvatarPlaceholder size={size} color="textSecondary">
-                {avatar.alt[0].toUpperCase()}
-              </AvatarPlaceholder>
-            ) : null}
-            <AvatarSkeleton size={size} key={avatar.id} variant="circular" />
-          </Avatar>
+          />
         ))}
       </AvatarStackWrapper>
       {overflowCount > 0 && (
