@@ -26,6 +26,9 @@ export type SortAccessors<T> = Partial<
 >;
 
 export const sanitizeValue = (value: number): number => {
+  if (!isFinite(value)) {
+    return value;
+  }
   return Number(value.toFixed(2));
 };
 
