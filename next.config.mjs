@@ -8,6 +8,9 @@ const nextConfig = {
   reactCompiler: true,
   productionBrowserSourceMaps: false,
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
+  outputFileTracingIncludes: {
+    '/api/profile/*/flags': ['./data/denied.development.yaml'],
+  },
   experimental: {
     serverSourceMaps: false,
     optimizePackageImports: ['recharts'],
