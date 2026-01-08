@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 import { useMemo } from 'react';
+import { getNumberParts } from '@/utils/numbers/getNumberParts';
+import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 
 export const PortfolioHeaderOverview = () => {
   const portfolioWelcomeScreenClosed = useSettingsStore(
@@ -56,6 +58,9 @@ export const PortfolioHeaderOverview = () => {
     return totalFilteredTokensValue + totalDeFiPositionsValue;
   }, [portfolioWelcomeScreenClosed, formattedTokens, allDeFiPositions?.data]);
 
+  const { prefix, suffix, numericValue } =
+    getPortfolioValueInDollarParts(totalValue);
+
   const handleRefresh = () => {
     refetchPortfolioDisplayTokens();
     refetchPortfolioDeFiPositions();
@@ -79,9 +84,9 @@ export const PortfolioHeaderOverview = () => {
       <PortfolioHeaderOverviewContentContainer>
         <PortfolioHeaderOverviewValue as="div">
           <>
-            $
+            {prefix}
             <AnimatedCounter
-              value={totalValue}
+              value={Number(numericValue)}
               fontSize={theme.typography.title2XLarge.fontSize?.toString()}
               includeDecimals
               decimalPrecision={2}
@@ -97,6 +102,7 @@ export const PortfolioHeaderOverview = () => {
                 textOverflow: 'inherit',
               }}
             />
+            {suffix}
           </>
         </PortfolioHeaderOverviewValue>
       </PortfolioHeaderOverviewContentContainer>

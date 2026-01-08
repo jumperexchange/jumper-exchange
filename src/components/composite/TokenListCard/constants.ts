@@ -1,4 +1,5 @@
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import type { ResponsiveValue } from '@/types/responsive';
 import { TokenListCardTokenSize } from './TokenListCard.types';
 import type { TypographyProps } from '@mui/material/Typography';
 
@@ -17,7 +18,7 @@ interface TokenListCardConfig {
   expanded: TokenStackConfig;
   dividerSpacing: number;
   paddingBottom: number;
-  chainsLimit: number;
+  chainsLimit: ResponsiveValue<number>;
   chainsSpacing: number;
 }
 
@@ -65,7 +66,7 @@ const MD_CONFIG: TokenListCardConfig = {
   },
   dividerSpacing: 1.5,
   paddingBottom: 1.5,
-  chainsLimit: 8,
+  chainsLimit: { mobile: 2, desktop: 8 },
   chainsSpacing: -0.8,
 };
 
