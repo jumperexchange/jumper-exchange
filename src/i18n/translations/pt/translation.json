@@ -282,7 +282,9 @@
   },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
+    "currencyCompact": "",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "decimalCompact": "",
     "percent": "{{value, percentExt()}}",
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
@@ -304,6 +306,7 @@
   "tooltips": {
     "tvl": "Valor total de ativos cripto depositados neste mercado.",
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
+    "rewardsApy": "",
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
     "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
@@ -320,6 +323,7 @@
   },
   "labels": {
     "apy": "APY",
+    "rewardsApy": "",
     "lockupPeriod": "Período de bloqueio",
     "tvl": "TVL",
     "assets_one": "Ativo",
@@ -359,7 +363,11 @@
       "tag": "Tipo",
       "asset": "Ativo",
       "apy": "APY",
-      "tvl": "TVL — Valor Total Bloqueado"
+      "tvl": "TVL — Valor Total Bloqueado",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
     },
     "views": {
       "viewBy": "Visualizar por",
