@@ -38,7 +38,7 @@ function createChainToken(
     logo: token.logoURI,
     chain: {
       chainId: token.chainId,
-      chainKey: chain?.name ?? '',
+      chainKey: chain?.key ?? chain?.name ?? '',
     },
     balance: formattedBalance,
     totalPriceUSD,
