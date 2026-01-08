@@ -39,9 +39,13 @@ function isGithubConfigured(): boolean {
     config.ALLOWLIST_APP_ID &&
     config.ALLOWLIST_PRIVATE_KEY &&
     config.ALLOWLIST_INSTALLATION_ID &&
-    config.ALLOWLIST_REPO_OWNER &&
-    config.ALLOWLIST_REPO_NAME
+    config.ALLOWLIST_REPO
   );
+}
+
+function parseOrgAndRepo(): { owner: string; repo: string } {
+  const [owner, repo] = config.ALLOWLIST_REPO!.split('/');
+  return { owner, repo };
 }
 
 function isDevelopmentOrTest(): boolean {
@@ -83,8 +87,7 @@ function parseDenyListData(content: string): DenyListData {
 
 async function fetchDenyListFromGithub(): Promise<DenyListData> {
   const installationId = config.ALLOWLIST_INSTALLATION_ID;
-  const repoOwner = config.ALLOWLIST_REPO_OWNER;
-  const repoName = config.ALLOWLIST_REPO_NAME;
+  const { owner, repo } = parseOrgAndRepo();
   const filePath = getDenyListFilePath();
 
   const app = getOctokitApp();
@@ -93,8 +96,8 @@ async function fetchDenyListFromGithub(): Promise<DenyListData> {
   const response = await octokit.request(
     'GET /repos/{owner}/{repo}/contents/{path}',
     {
-      owner: repoOwner!,
-      repo: repoName!,
+      owner,
+      repo,
       path: filePath,
       headers: {
         Accept: 'application/vnd.github.raw+json',
@@ -137,7 +140,7 @@ async function fetchDenyList(): Promise<DenyListData> {
   }
 
   throw new Error(
-    'ALLOWLIST_APP_ID, ALLOWLIST_PRIVATE_KEY, ALLOWLIST_INSTALLATION_ID, ALLOWLIST_REPO_OWNER, and ALLOWLIST_REPO_NAME are required in production',
+    'ALLOWLIST_APP_ID, ALLOWLIST_PRIVATE_KEY, ALLOWLIST_INSTALLATION_ID, and ALLOWLIST_REPO are required in production',
   );
 }
 

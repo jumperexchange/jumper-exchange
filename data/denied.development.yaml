@@ -2,7 +2,7 @@
 # This file is used when GitHub App credentials are not configured.
 # In production, the deny list is fetched from a private GitHub repository.
 
-- address: "0x3A18b8e1e653DF2a60e312e342084604F5E3e876"
+- address: "0xfC39d594723EDC19a1EF5287f26c94142417243b"
   reason: "Test blocked wallet"
   status: "blocked"
 
