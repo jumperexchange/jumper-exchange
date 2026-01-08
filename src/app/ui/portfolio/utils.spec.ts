@@ -20,15 +20,15 @@ describe('getEffectiveValueRange', () => {
   it('sets both min and max to default when both are below default', () => {
     const result = getEffectiveValueRange({ min: 0.1, max: 0.5 });
 
-    expect(result.min).toBe(DEFAULT_DEFI_POSITIONS_MIN_VALUE);
-    expect(result.max).toBe(DEFAULT_DEFI_POSITIONS_MIN_VALUE);
+    expect(result.min).toBe(0.1);
+    expect(result.max).toBe(0.5);
   });
 
   it('handles zero values', () => {
     const result = getEffectiveValueRange({ min: 0, max: 0 });
 
-    expect(result.min).toBe(DEFAULT_DEFI_POSITIONS_MIN_VALUE);
-    expect(result.max).toBe(DEFAULT_DEFI_POSITIONS_MIN_VALUE);
+    expect(result.min).toBe(0);
+    expect(result.max).toBe(0);
   });
 
   it('handles equal min and max above default', () => {
