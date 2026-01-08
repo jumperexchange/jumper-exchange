@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { usePortfolioStore } from 'src/stores/portfolio';
 import RefreshBalance from './RefreshBalance';
 import { toCompactValue } from 'src/utils/formatNumbers';
+import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 
 const sharedStackProps = {
   direction: 'row',
@@ -67,12 +68,8 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
     return <WalletTotalBalanceSkeleton />;
   }
 
-  const compactString = toCompactValue(totalValue);
-  const match = compactString.match(/^([\d,.]+)([A-Za-z]*)$/);
-  const numericPart = match
-    ? parseFloat(match[1].replace(/,/g, ''))
-    : totalValue;
-  const suffix = match ? match[2] : '';
+  const { prefix, suffix, formattedValue, numericValue } =
+    getPortfolioValueInDollarParts(totalValue);
 
   return (
     <WalletBalanceSharedContainer disableGutters>
@@ -84,12 +81,12 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
           <Stack {...sharedStackProps} gap={1}>
             <WalletTotalBalanceValue as="div">
               {lastTotalValue && isComplete ? (
-                `$${compactString}`
+                formattedValue
               ) : (
                 <>
-                  $
+                  {prefix}
                   <AnimatedCounter
-                    value={numericPart}
+                    value={Number(numericValue)}
                     fontSize={theme.typography.titleLarge.fontSize?.toString()}
                     includeDecimals
                     decimalPrecision={suffix ? 1 : 2}
