@@ -1,25 +1,22 @@
 'use client';
 
-import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
-import { TrackingCategory, TrackingAction } from '@/const/trackingKeys';
-import { HeaderHeight } from '@/const/headerHeight';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import { PortfolioWelcomeScreen } from './PortfolioWelcomeScreen';
 import { useAccount } from '@lifi/wallet-management';
-import { useEffect } from 'react';
 import type { FC, PropsWithChildren } from 'react';
+import { useEffect } from 'react';
+import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
+import { HeaderHeight } from '@/const/headerHeight';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
+import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { PortfolioPageOverlayContentContainer } from './PortfolioPage.styles';
+import { PortfolioWelcomeScreen } from './PortfolioWelcomeScreen';
 
 export const PortfolioPageOverlayLayout: FC<PropsWithChildren> = ({
   children,
 }) => {
   const { account } = useAccount();
 
-  const [portfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed] =
-    useSettingsStore((state) => [
-      state.portfolioWelcomeScreenClosed,
-      state.setPortfolioWelcomeScreenClosed,
-    ]);
+  const { portfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed } =
+    usePortfolioWelcomeScreen();
 
   useEffect(() => {
     if (account?.address) {
@@ -57,7 +54,7 @@ export const PortfolioPageOverlayLayout: FC<PropsWithChildren> = ({
       fullWidthGlowEffect
     >
       <PortfolioPageOverlayContentContainer
-        portfolioWelcomeScreenClosed={portfolioWelcomeScreenClosed}
+        portfolioWelcomeScreenClosed={portfolioWelcomeScreenClosed ?? false}
       >
         {children}
       </PortfolioPageOverlayContentContainer>

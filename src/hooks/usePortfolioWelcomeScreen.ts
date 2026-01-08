@@ -2,14 +2,14 @@ import { useCallback } from 'react';
 import { useMainPaths } from '@/hooks/useMainPaths';
 import { useSettingsStore } from '@/stores/settings';
 
-interface usePortfolioWelcomeScreenResult {
+interface UsePortfolioWelcomeScreenResult {
   portfolioWelcomeScreenClosed: boolean | undefined;
   setPortfolioWelcomeScreenClosed: (closed: boolean) => void;
   enabled: boolean;
 }
 
 export const usePortfolioWelcomeScreen =
-  (): usePortfolioWelcomeScreenResult => {
+  (): UsePortfolioWelcomeScreenResult => {
     const { isMainPaths } = useMainPaths();
 
     const [portfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed] =

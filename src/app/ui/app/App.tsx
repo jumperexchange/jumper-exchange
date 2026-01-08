@@ -1,13 +1,14 @@
 'use client';
+import { Box } from '@mui/material';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AnnouncementBanner } from 'src/components/AnnouncementBanner/AnnouncementBanner';
+import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
+import { HeaderHeight } from 'src/const/headerHeight';
+import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
-import { Box } from '@mui/material';
-import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
-import React, { useEffect, useRef, useState } from 'react';
-import { AnnouncementBanner } from 'src/components/AnnouncementBanner/AnnouncementBanner';
-import { HeaderHeight } from 'src/const/headerHeight';
-import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
 
 export interface AppProps {
   children: React.ReactNode;
