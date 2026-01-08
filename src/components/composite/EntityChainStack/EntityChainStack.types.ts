@@ -4,7 +4,7 @@ import type {
   AvatarStackDirection,
 } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 
 export interface BaseProps {
   chainsSize?: AvatarSize;
@@ -48,7 +48,7 @@ export interface TokenChainStackProps extends BaseProps {
 }
 
 export interface TokenWithChainsChainStackProps extends BaseProps {
-  token?: MinimalToken;
+  token?: PortfolioToken;
   tokenSize?: AvatarSize;
   chainsInlineSize?: AvatarSize;
 }

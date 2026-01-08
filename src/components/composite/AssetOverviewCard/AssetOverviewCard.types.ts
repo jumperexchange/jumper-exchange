@@ -1,5 +1,5 @@
 import type { DefiPosition, Protocol } from 'src/types/jumper-backend';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 
 export enum AssetOverviewCardView {
   Overview = 'overview',
@@ -13,19 +13,21 @@ export interface ProtocolGroupData {
 }
 
 export interface AssetOverviewCardProps {
-  tokens: MinimalToken[];
+  tokens: PortfolioToken[];
   defiPositionGroups: DefiPosition[][];
   isLoading?: boolean;
   showNoContent?: boolean;
 }
 
 export interface AssetOverviewCardOverviewProps {
-  tokens: MinimalToken[];
+  tokens: PortfolioToken[];
   protocolGroups: ProtocolGroupData[];
 }
 
-export interface AssetOverviewCardTokensProps
-  extends Pick<AssetOverviewCardProps, 'tokens'> {}
+export interface AssetOverviewCardTokensProps extends Pick<
+  AssetOverviewCardProps,
+  'tokens'
+> {}
 
 export interface AssetOverviewCardDeFiPositionsProps {
   protocolGroups: ProtocolGroupData[];

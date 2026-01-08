@@ -73,19 +73,7 @@ export const usePortfolioTokensFilterBar = () => {
         allAssets.map((asset) => ({
           value: asset.address,
           label: asset.name,
-          icon: (
-            <TokenStack
-              tokens={[
-                {
-                  address: asset.address,
-                  chain: {
-                    chainId: asset.chainId,
-                    chainKey: asset.chainName || '',
-                  },
-                },
-              ]}
-            />
-          ),
+          icon: <TokenStack tokens={[asset]} />,
         })),
       ),
     [allAssets],

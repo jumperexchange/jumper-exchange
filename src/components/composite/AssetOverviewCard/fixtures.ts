@@ -1,5 +1,5 @@
 import type { DefiPosition } from 'src/types/jumper-backend';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 
 const ethereumChain = {
   chainId: 1,
@@ -20,11 +20,13 @@ const tokenAddresses = {
   DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
 };
 
-export const tokens: MinimalToken[] = [
+export const tokens: PortfolioToken[] = [
   {
     address: tokenAddresses.ETH,
     chain: ethereumChain,
     symbol: 'ETH',
+    name: 'Ethereum',
+    decimals: 18,
     balance: 5.25,
     totalPriceUSD: 18562.5,
   },
@@ -32,6 +34,8 @@ export const tokens: MinimalToken[] = [
     address: tokenAddresses.USDC_ETHEREUM,
     chain: ethereumChain,
     symbol: 'USDC',
+    name: 'USD Coin',
+    decimals: 6,
     balance: 2.5,
     totalPriceUSD: 8625.3,
     relatedTokens: [
@@ -39,6 +43,8 @@ export const tokens: MinimalToken[] = [
         address: tokenAddresses.USDC_BASE,
         chain: baseChain,
         symbol: 'USDC',
+        name: 'USD Coin',
+        decimals: 6,
         balance: 1.0,
         totalPriceUSD: 3450.12,
       },
@@ -48,6 +54,8 @@ export const tokens: MinimalToken[] = [
     address: tokenAddresses.USDT,
     chain: ethereumChain,
     symbol: 'USDT',
+    name: 'Tether USD',
+    decimals: 6,
     balance: 1.8,
     totalPriceUSD: 6210.24,
   },
@@ -55,6 +63,8 @@ export const tokens: MinimalToken[] = [
     address: tokenAddresses.WBTC,
     chain: ethereumChain,
     symbol: 'WBTC',
+    name: 'Wrapped Bitcoin',
+    decimals: 8,
     balance: 0.15,
     totalPriceUSD: 9847.5,
   },
@@ -62,6 +72,8 @@ export const tokens: MinimalToken[] = [
     address: tokenAddresses.DAI,
     chain: ethereumChain,
     symbol: 'DAI',
+    name: 'Dai Stablecoin',
+    decimals: 18,
     balance: 3.2,
     totalPriceUSD: 3211.84,
   },
@@ -557,11 +569,13 @@ export const defiPositionGroups: DefiPosition[][] = [
   eulerPositions,
 ];
 
-export const tokenTinyAmounts: MinimalToken[] = [
+export const tokenTinyAmounts: PortfolioToken[] = [
   {
     address: tokenAddresses.ETH,
     chain: ethereumChain,
     symbol: 'ETH',
+    name: 'Ethereum',
+    decimals: 18,
     balance: 5.25,
     totalPriceUSD: 0.0005,
   },
@@ -569,6 +583,8 @@ export const tokenTinyAmounts: MinimalToken[] = [
     address: tokenAddresses.USDC_ETHEREUM,
     chain: ethereumChain,
     symbol: 'USDC',
+    name: 'USD Coin',
+    decimals: 6,
     balance: 2.5,
     totalPriceUSD: 0.0001,
     relatedTokens: [
@@ -576,6 +592,8 @@ export const tokenTinyAmounts: MinimalToken[] = [
         address: tokenAddresses.USDC_BASE,
         chain: baseChain,
         symbol: 'USDC',
+        name: 'USD Coin',
+        decimals: 6,
         balance: 1.0,
         totalPriceUSD: 0.0001,
       },
@@ -585,6 +603,8 @@ export const tokenTinyAmounts: MinimalToken[] = [
     address: tokenAddresses.USDT,
     chain: ethereumChain,
     symbol: 'USDT',
+    name: 'Tether USD',
+    decimals: 6,
     balance: 1.8,
     totalPriceUSD: 0.0001,
   },
@@ -592,6 +612,8 @@ export const tokenTinyAmounts: MinimalToken[] = [
     address: tokenAddresses.WBTC,
     chain: ethereumChain,
     symbol: 'WBTC',
+    name: 'Wrapped Bitcoin',
+    decimals: 8,
     balance: 0.15,
     totalPriceUSD: 0.0003,
   },
