@@ -25,6 +25,10 @@ export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
 >;
 
+export const sanitizeValue = (value: number): number => {
+  return Number(value.toFixed(2));
+};
+
 export const sortPortfolioItems = <T>(
   items: T[],
   sortByValue: SortByEnum,
@@ -127,8 +131,8 @@ export const extractTokensFilteringParams = (
     allChains,
     allAssets,
     allValueRange: {
-      min: Number(minValue.toFixed(2)),
-      max: Number(maxValue.toFixed(2)),
+      min: sanitizeValue(minValue),
+      max: sanitizeValue(maxValue),
     },
   };
 };
@@ -215,7 +219,7 @@ export const filterSortPortfolioTokensData = (
     allData = allData.filter((token) => {
       const value = token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0;
       return isWithinValueRange(
-        value,
+        sanitizeValue(value),
         filter.tokensMinValue,
         filter.tokensMaxValue,
       );
@@ -289,8 +293,8 @@ export const extractDeFiPositionsFilteringParams = (
     allTypes,
     allAssets,
     allValueRange: {
-      min: Number(minValue.toFixed(2)),
-      max: Number(maxValue.toFixed(2)),
+      min: sanitizeValue(minValue),
+      max: sanitizeValue(maxValue),
     },
   };
 };
@@ -359,7 +363,7 @@ export const filterSortDeFiPositionsData = (
     result = result.filter((position) => {
       const value = position.netUsd || position.assetUsd || 0;
       return isWithinValueRange(
-        value,
+        sanitizeValue(value),
         filter.defiMinValue,
         filter.defiMaxValue,
       );
