@@ -96,6 +96,8 @@ export const AssetOverviewCardAssetsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-around',
+  gap: theme.spacing(1),
+  overflow: 'hidden',
 }));
 
 export const AssetOverviewCardSharedContentContainer = styled(Box)(
