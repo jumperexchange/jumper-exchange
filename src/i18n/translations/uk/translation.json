@@ -282,7 +282,9 @@
   },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
+    "currencyCompact": "",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "decimalCompact": "",
     "percent": "{{value, percentExt()}}",
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
@@ -304,6 +306,7 @@
   "tooltips": {
     "tvl": "Загальна вартість криптовалютних активів на цьому ринку.",
     "apy": "Очікувана річна ставка токенів що вкладені.",
+    "rewardsApy": "",
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
@@ -320,6 +323,7 @@
   },
   "labels": {
     "apy": "",
+    "rewardsApy": "",
     "lockupPeriod": "",
     "tvl": "",
     "assets_one": "",
@@ -359,7 +363,11 @@
       "tag": "",
       "asset": "",
       "apy": "",
-      "tvl": ""
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
     },
     "views": {
       "viewBy": "",
