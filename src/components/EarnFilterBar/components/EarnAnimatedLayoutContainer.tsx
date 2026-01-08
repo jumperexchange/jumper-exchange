@@ -1,7 +1,7 @@
 import { styled } from '@mui/material';
 import Stack from '@mui/system/Stack';
 import { AnimatePresence, motion } from 'motion/react';
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 const LayoutContainer = styled(motion.div)({
   width: '100%',
@@ -29,7 +29,13 @@ export const EarnAnimatedLayoutContainer: FC<
         }}
       >
         {useStackWrapper ? (
-          <Stack direction="row" gap={1} alignItems="center" flex={1}>
+          <Stack
+            direction="row"
+            gap={1}
+            alignItems="center"
+            flex={1}
+            flexWrap="wrap"
+          >
             {children}
           </Stack>
         ) : (

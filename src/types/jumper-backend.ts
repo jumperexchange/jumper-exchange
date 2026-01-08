@@ -875,6 +875,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  rewardsApy?: number;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
 }
@@ -1000,6 +1001,7 @@ export interface EarnOpportunityWithScore {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  rewardsApy?: number;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
 }
@@ -1653,6 +1655,16 @@ export class JumperBackend<
          * @example true
          */
         hasPositions?: boolean;
+        /**
+         * The minimum rewards APY to filter for
+         * @example 5.5
+         */
+        minRewardsAPY?: number;
+        /**
+         * The maximum rewards APY to filter for
+         * @example 5.5
+         */
+        maxRewardsAPY?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -1954,6 +1966,16 @@ export class JumperBackend<
          * @example true
          */
         hasPositions?: boolean;
+        /**
+         * The minimum rewards APY to filter for
+         * @example 5.5
+         */
+        minRewardsAPY?: number;
+        /**
+         * The maximum rewards APY to filter for
+         * @example 5.5
+         */
+        maxRewardsAPY?: number;
       },
       params: RequestParams = {},
     ) =>

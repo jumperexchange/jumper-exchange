@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback, ChangeEvent, useEffect } from 'react';
-import { MultiSelectProps } from '../Select.types';
+import type { ChangeEvent } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import type { MultiSelectProps } from '../Select.types';
 import { SelectBase } from '../components/SelectBase';
 import Typography from '@mui/material/Typography';
 import {
@@ -21,6 +22,7 @@ export const MultiSelect = <T extends string[]>({
   options,
   filterBy,
   label,
+  labelIcon,
   debounceMs,
   ...rest
 }: MultiSelectProps<T>) => {
@@ -74,7 +76,7 @@ export const MultiSelect = <T extends string[]>({
       onChange={handleChange}
       selectorContent={
         <>
-          <SelectorLabel label={label} />
+          <SelectorLabel label={label} icon={labelIcon} />
           {isValueSelected && <SelectBadge label={value.length.toString()} />}
         </>
       }

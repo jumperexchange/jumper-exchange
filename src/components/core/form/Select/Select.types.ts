@@ -30,6 +30,7 @@ export interface SelectBaseProps<T extends TData> {
   error?: boolean;
   helperText?: string;
   label?: string;
+  labelIcon?: React.ReactNode;
   title?: string;
   required?: boolean;
   debounceMs?: number;
@@ -38,17 +39,21 @@ export interface SelectBaseProps<T extends TData> {
   disabled?: boolean;
 }
 
-export interface MultiSelectProps<T extends string[]>
-  extends SelectBaseProps<T> {
+export interface MultiSelectProps<
+  T extends string[],
+> extends SelectBaseProps<T> {
   filterBy?: string;
   label: string;
 }
 
-export interface SingleSelectProps<T extends string>
-  extends SelectBaseProps<T> {}
+export interface SingleSelectProps<
+  T extends string,
+> extends SelectBaseProps<T> {}
 
-export interface SliderSelectProps<T extends number[]>
-  extends Omit<SelectBaseProps<T>, 'options'> {
+export interface SliderSelectProps<T extends number[]> extends Omit<
+  SelectBaseProps<T>,
+  'options'
+> {
   options: never[];
   min: number;
   max: number;
