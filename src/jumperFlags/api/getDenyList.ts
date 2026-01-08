@@ -2,6 +2,7 @@ import 'server-only';
 
 import config from '@/config/env-config';
 import { App } from '@octokit/app';
+import { existsSync, readdirSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { parse } from 'yaml';
@@ -113,7 +114,31 @@ async function fetchDenyListFromGithub(): Promise<DenyListData> {
 }
 
 async function fetchDenyListLocally(): Promise<DenyListData> {
-  const localPath = join(process.cwd(), 'data', getDenyListFileName());
+  const cwd = process.cwd();
+  const dataFolder = join(cwd, 'data');
+  const fileName = getDenyListFileName();
+  const localPath = join(dataFolder, fileName);
+
+  console.log('[DenyList Debug] Environment info:', {
+    NODE_ENV: config.NODE_ENV,
+    NEXT_PUBLIC_ENVIRONMENT: config.NEXT_PUBLIC_ENVIRONMENT,
+    cwd,
+    dataFolder,
+    fileName,
+    localPath,
+    dataFolderExists: existsSync(dataFolder),
+    yamlFileExists: existsSync(localPath),
+  });
+
+  if (existsSync(dataFolder)) {
+    try {
+      const files = readdirSync(dataFolder);
+      console.log('[DenyList Debug] Files in data folder:', files);
+    } catch (e) {
+      console.log('[DenyList Debug] Could not list data folder:', e);
+    }
+  }
+
   const content = await readFile(localPath, 'utf-8');
   return parseDenyListData(content);
 }
