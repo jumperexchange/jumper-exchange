@@ -9,7 +9,7 @@ import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 import { StyledContent } from './TokenListCard.styles';
 import type { MinimalToken } from 'src/types/tokens';
 import type { TokenStackConfig } from './constants';
-import type { ResponsiveValue } from './TokenListCard.types';
+import type { ResponsiveValue } from '@/types/responsive';
 import { getResponsiveValue } from './utils';
 import useMediaQuery from '@mui/material/useMediaQuery';
 

@@ -1,4 +1,4 @@
-import type { ResponsiveValue } from './TokenListCard.types';
+import type { ResponsiveValue } from '@/types/responsive';
 
 export const getResponsiveValue = <T>(
   value: ResponsiveValue<T>,
