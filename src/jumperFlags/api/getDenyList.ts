@@ -118,19 +118,21 @@ async function fetchDenyListLocally(): Promise<DenyListData> {
   const dataFolder = join(cwd, 'data');
   const fileName = getDenyListFileName();
   const localPath = join(dataFolder, fileName);
+  const hasDataFolder = existsSync(dataFolder);
+  const hasYamlFile = existsSync(localPath);
 
-  console.log('[DenyList Debug] Environment info:', {
+  console.log('[DenyList Debug] Local fetch info:', {
     NODE_ENV: config.NODE_ENV,
     NEXT_PUBLIC_ENVIRONMENT: config.NEXT_PUBLIC_ENVIRONMENT,
     cwd,
     dataFolder,
     fileName,
     localPath,
-    dataFolderExists: existsSync(dataFolder),
-    yamlFileExists: existsSync(localPath),
+    dataFolderExists: hasDataFolder,
+    yamlFileExists: hasYamlFile,
   });
 
-  if (existsSync(dataFolder)) {
+  if (hasDataFolder) {
     try {
       const files = readdirSync(dataFolder);
       console.log('[DenyList Debug] Files in data folder:', files);
@@ -148,6 +150,13 @@ function getEmptyDenyList(): DenyListData {
 }
 
 async function fetchDenyList(): Promise<DenyListData> {
+  console.log('[DenyList Debug] Environment info:', {
+    NODE_ENV: config.NODE_ENV,
+    NEXT_PUBLIC_ENVIRONMENT: config.NEXT_PUBLIC_ENVIRONMENT,
+    isGithubConfigured: isGithubConfigured(),
+    isDevelopmentOrTest: isDevelopmentOrTest(),
+  });
+
   if (isGithubConfigured()) {
     return fetchDenyListFromGithub();
   }
