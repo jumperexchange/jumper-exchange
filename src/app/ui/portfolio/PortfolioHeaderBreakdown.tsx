@@ -2,16 +2,14 @@
 
 import { AssetOverviewCard } from '@/components/composite/AssetOverviewCard/AssetOverviewCard';
 import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
-import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
 import { useEffect, useMemo, useRef } from 'react';
 import type { MinimalToken } from 'src/types/tokens';
 import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
+import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 
 export const PortfolioHeaderBreakdown = () => {
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
@@ -22,26 +20,23 @@ export const PortfolioHeaderBreakdown = () => {
     usePortfolioDeFiPositions({
       addresses: connectedAddresses,
     });
-  const { data: allTokens, isFetching: isFetchingTokens } =
-    usePortfolioTokens();
+  const { formattedData: formattedTokens, isFetching: isFetchingTokens } =
+    usePortfolioDisplayTokens();
 
   const isLoading = isLoadingPositions || isFetchingTokens;
 
-  const formattedTokens = useFormatDisplayWalletTokens(allTokens);
-  const filteredTokens = useTokensWithoutLpPositions(formattedTokens);
-
   const tokens = useMemo<MinimalToken[]>(() => {
     if (
-      !filteredTokens ||
-      filteredTokens.length === 0 ||
+      !formattedTokens ||
+      formattedTokens.length === 0 ||
       !portfolioWelcomeScreenClosed ||
       isFetchingTokens
     ) {
       return [];
     }
 
-    return filteredTokens;
-  }, [isFetchingTokens, filteredTokens, portfolioWelcomeScreenClosed]);
+    return formattedTokens;
+  }, [isFetchingTokens, formattedTokens, portfolioWelcomeScreenClosed]);
 
   const formattedPositions = useFormatDisplayDeFiPositions(
     allPositions?.data,

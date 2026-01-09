@@ -19,6 +19,13 @@ export const OrderOptions = {
 
 export type OrderEnum = (typeof OrderOptions)[keyof typeof OrderOptions];
 
+export const RewardsAPYOptions = {
+  WITH_REWARDS: 'withRewards',
+} as const satisfies Record<string, string>;
+
+export type RewardsAPYEnum =
+  (typeof RewardsAPYOptions)[keyof typeof RewardsAPYOptions];
+
 export interface EarnFilteringParams {
   allChains: Chain[];
   allProtocols: Protocol[];
@@ -26,6 +33,7 @@ export interface EarnFilteringParams {
   allTags: string[];
   allAPY: Record<number, number>; // histogram of apy
   allTVL: Record<number, number>; // histogram of tvl
+  allRewardsOptions: string[];
 }
 
 export type EarnOpportunityFilterWithoutSortByAndOrder = Omit<

@@ -10,6 +10,7 @@ import { DeFiPositionCardSkeleton } from '@/components/composite/DeFiPositionCar
 import { AnimatePresence } from 'motion/react';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
+import { hasPositionDataToDisplay } from '@/components/composite/DeFiPositionCard/utils';
 
 export const PortfolioDeFiProtocolsList = () => {
   useContactSupportEvent();

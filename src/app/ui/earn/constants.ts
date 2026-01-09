@@ -7,4 +7,5 @@ export const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
   allTags: [],
   allAPY: {},
   allTVL: {},
+  allRewardsOptions: [],
 };

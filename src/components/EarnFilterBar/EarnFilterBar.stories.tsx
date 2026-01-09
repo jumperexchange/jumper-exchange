@@ -160,6 +160,7 @@ const mockContextValue = () => {
       0.9: 9000000,
       1: 10000000,
     },
+    allRewardsOptions: ['withRewards'],
   };
 };
 
@@ -194,6 +195,7 @@ export const EmptyState: Story = {
             allAssets: [],
             allTags: [],
             allAPY: {},
+            allRewardsOptions: [],
             totalMarkets: 0,
           }}
         >

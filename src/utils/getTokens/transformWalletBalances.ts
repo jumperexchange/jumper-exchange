@@ -57,17 +57,18 @@ function createTokenGroup(
     ['desc'],
   );
   const primaryChain = first(sortedChains);
-  const firstBalance = first(balances)!;
+  const primaryBalance =
+    find(balances, { chainId: primaryChain?.chainId }) ?? first(balances)!;
 
   return {
-    address: firstBalance.address,
-    symbol: firstBalance.symbol,
-    chainId: primaryChain?.chainId ?? firstBalance.chainId,
-    amount: safeBigInt(firstBalance.amount),
-    name: firstBalance.name,
-    priceUSD: firstBalance.priceUSD,
-    decimals: firstBalance.decimals,
-    logoURI: firstBalance.logoURI,
+    address: primaryBalance.address,
+    symbol: primaryBalance.symbol,
+    chainId: primaryChain?.chainId ?? primaryBalance.chainId,
+    amount: safeBigInt(primaryBalance.amount),
+    name: primaryBalance.name,
+    priceUSD: primaryBalance.priceUSD,
+    decimals: primaryBalance.decimals,
+    logoURI: primaryBalance.logoURI,
     chainLogoURI: primaryChain?.chainLogoURI,
     chainName: primaryChain?.chainName,
     cumulatedBalance: sumBy(sortedChains, (c) => c.cumulatedBalance ?? 0),
