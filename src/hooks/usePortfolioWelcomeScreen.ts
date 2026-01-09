@@ -21,6 +21,29 @@ export const usePortfolioWelcomeScreen =
         state.setPortfolioWelcomeScreenClosed,
       ]);
 
+    const updateState = useCallback(
+      (closed: boolean) => {
+        setTemporaryPortfolioWelcomeClosed(closed);
+        setPortfolioWelcomeScreenClosed(account.address, closed);
+      },
+      [account.address, setPortfolioWelcomeScreenClosed],
+    );
+
+    useEffect(() => {
+      if (
+        temporaryPortfolioWelcomeClosed &&
+        account?.address &&
+        !allPortfolioWelcomeScreenClosed[account.address]
+      ) {
+        updateState(true);
+      }
+    }, [
+      account.address,
+      allPortfolioWelcomeScreenClosed,
+      temporaryPortfolioWelcomeClosed,
+      updateState,
+    ]);
+
     const portfolioWelcomeScreenClosed = useMemo(() => {
       if (!account.address) {
         return false;
@@ -33,28 +56,6 @@ export const usePortfolioWelcomeScreen =
       account.address,
       temporaryPortfolioWelcomeClosed,
       allPortfolioWelcomeScreenClosed,
-    ]);
-    const updateState = useCallback(
-      (closed: boolean) => {
-        setTemporaryPortfolioWelcomeClosed(closed);
-        setPortfolioWelcomeScreenClosed(account.address, closed);
-      },
-      [account.address, setPortfolioWelcomeScreenClosed],
-    );
-
-    useEffect(() => {
-      if (
-        temporaryPortfolioWelcomeClosed &&
-        account &&
-        !portfolioWelcomeScreenClosed
-      ) {
-        updateState(true);
-      }
-    }, [
-      account,
-      portfolioWelcomeScreenClosed,
-      temporaryPortfolioWelcomeClosed,
-      updateState,
     ]);
 
     return {
