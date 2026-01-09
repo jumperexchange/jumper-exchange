@@ -83,7 +83,7 @@
     "ctaButton": "Entre no nosso Discord"
   },
   "badge": {
-    "updated": ""
+    "updated": "Atualizado há {{time}} atrás"
   },
   "blog": {
     "title": "Dicas e tutoriais",
@@ -282,9 +282,9 @@
   },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
-    "currencyCompact": "",
+    "currencyCompact": "{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
-    "decimalCompact": "",
+    "decimalCompact": "{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}",
     "percent": "{{value, percentExt()}}",
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
@@ -306,7 +306,7 @@
   "tooltips": {
     "tvl": "Valor total de ativos cripto depositados neste mercado.",
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
-    "rewardsApy": "",
+    "rewardsApy": "Taxa de retorno anual esperada dos tokens de recompensas investidos.",
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
     "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
@@ -323,7 +323,7 @@
   },
   "labels": {
     "apy": "APY",
-    "rewardsApy": "",
+    "rewardsApy": "APY das Recompensas",
     "lockupPeriod": "Período de bloqueio",
     "tvl": "TVL",
     "assets_one": "Ativo",
@@ -365,8 +365,8 @@
       "apy": "APY",
       "tvl": "TVL — Valor Total Bloqueado",
       "rewards": {
-        "label": "",
-        "withRewards": ""
+        "label": "Recompensas",
+        "withRewards": "Incluir apenas pools com recompensas"
       }
     },
     "views": {
