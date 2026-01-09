@@ -18,11 +18,10 @@ import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
+import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 
 export const PortfolioHeaderOverview = () => {
-  const portfolioWelcomeScreenClosed = useSettingsStore(
-    (state) => state.portfolioWelcomeScreenClosed,
-  );
+  const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { t } = useTranslation();
   const theme = useTheme();
   const connectedAddresses = useConnectedEvmAddresses();

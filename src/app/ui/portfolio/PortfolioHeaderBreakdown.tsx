@@ -11,11 +11,10 @@ import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
 import { useEffect, useMemo, useRef } from 'react';
 import type { MinimalToken } from 'src/types/tokens';
+import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 
 export const PortfolioHeaderBreakdown = () => {
-  const portfolioWelcomeScreenClosed = useSettingsStore(
-    (state) => state.portfolioWelcomeScreenClosed,
-  );
+  const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { trackPortfolioPageOverviewEvent } = usePortfolioTracking();
   const portfolioHasBeenTracked = useRef(false);
   const connectedAddresses = useConnectedEvmAddresses();

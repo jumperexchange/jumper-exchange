@@ -1,38 +1,64 @@
-import { useCallback } from 'react';
-import { useMainPaths } from '@/hooks/useMainPaths';
+import { useAccount } from '@lifi/wallet-management';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSettingsStore } from '@/stores/settings';
 
 interface UsePortfolioWelcomeScreenResult {
   portfolioWelcomeScreenClosed: boolean | undefined;
   setPortfolioWelcomeScreenClosed: (closed: boolean) => void;
-  enabled: boolean;
 }
 
 export const usePortfolioWelcomeScreen =
   (): UsePortfolioWelcomeScreenResult => {
-    const { isMainPaths } = useMainPaths();
+    const { account } = useAccount();
+    const [
+      temporaryPortfolioWelcomeClosed,
+      setTemporaryPortfolioWelcomeClosed,
+    ] = useState(false);
 
-    const [portfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed] =
+    const [allPortfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed] =
       useSettingsStore((state) => [
         state.portfolioWelcomeScreenClosed,
         state.setPortfolioWelcomeScreenClosed,
       ]);
 
-    const enabled = !!isMainPaths;
-
+    const portfolioWelcomeScreenClosed = useMemo(() => {
+      if (!account.address) {
+        return false;
+      }
+      return (
+        allPortfolioWelcomeScreenClosed[account.address] ||
+        temporaryPortfolioWelcomeClosed
+      );
+    }, [
+      account.address,
+      temporaryPortfolioWelcomeClosed,
+      allPortfolioWelcomeScreenClosed,
+    ]);
     const updateState = useCallback(
       (closed: boolean) => {
-        if (!enabled) {
-          return;
-        }
-        setPortfolioWelcomeScreenClosed(closed);
+        setTemporaryPortfolioWelcomeClosed(closed);
+        setPortfolioWelcomeScreenClosed(account.address, closed);
       },
-      [enabled, setPortfolioWelcomeScreenClosed],
+      [account.address, setPortfolioWelcomeScreenClosed],
     );
+
+    useEffect(() => {
+      if (
+        temporaryPortfolioWelcomeClosed &&
+        account &&
+        !portfolioWelcomeScreenClosed
+      ) {
+        updateState(true);
+      }
+    }, [
+      account,
+      portfolioWelcomeScreenClosed,
+      temporaryPortfolioWelcomeClosed,
+      updateState,
+    ]);
 
     return {
       portfolioWelcomeScreenClosed,
       setPortfolioWelcomeScreenClosed: updateState,
-      enabled,
     };
   };

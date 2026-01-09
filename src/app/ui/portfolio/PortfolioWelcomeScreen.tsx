@@ -21,6 +21,7 @@ import {
   PortfolioWelcomeScreenButtonsContainer,
   PortfolioWelcomeScreenLink,
 } from './PortfolioPage.styles';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 
 interface PortfolioWelcomeScreenProps {
   onClose: () => void;
@@ -33,6 +34,9 @@ export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
     usePortfolioWelcomeScreen();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { account } = useAccount();
+  const { openWalletMenu } = useWalletMenu();
+
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
@@ -47,6 +51,10 @@ export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
   }, [trackEvent, portfolioWelcomeScreenClosed]);
 
   const handleGetStarted: MouseEventHandler<HTMLButtonElement> = (event) => {
+    if (!account.address) {
+      openWalletMenu();
+    }
+
     event.stopPropagation();
     onClose();
     if (!portfolioWelcomeScreenClosed) {

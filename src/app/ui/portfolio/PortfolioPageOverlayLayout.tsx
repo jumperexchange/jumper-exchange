@@ -2,7 +2,6 @@
 
 import { useAccount } from '@lifi/wallet-management';
 import type { FC, PropsWithChildren } from 'react';
-import { useEffect } from 'react';
 import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
 import { HeaderHeight } from '@/const/headerHeight';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
@@ -17,13 +16,6 @@ export const PortfolioPageOverlayLayout: FC<PropsWithChildren> = ({
 
   const { portfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed } =
     usePortfolioWelcomeScreen();
-
-  useEffect(() => {
-    if (account?.address) {
-      return;
-    }
-    setPortfolioWelcomeScreenClosed(false);
-  }, [account?.address, setPortfolioWelcomeScreenClosed]);
 
   const handleOverlayClose = () => {
     setPortfolioWelcomeScreenClosed(true);
