@@ -14,11 +14,21 @@ import {
   HeroEarnCardHeaderContainer,
 } from './HeroEarnCard.styles';
 import { HeroEarnCardSkeleton } from './HeroEarnCardSkeleton';
-import { HeroHighlight } from './HeroHighlight';
+import { HeroHighlight, type HeroHighlightType } from './HeroHighlight';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import type { SxProps, Theme } from '@mui/material/styles';
+
+const heroHighlightSx: Record<HeroHighlightType, SxProps<Theme>> = {
+  asset: {},
+  protocol: { textTransform: 'capitalize' },
+  apy: {},
+  token: {},
+  tag: {},
+  chain: {},
+};
 
 export enum EarnHeroCardCopyKey {
   USE_YOUR_SPARE = 'earn.top.useYourSpare',
@@ -104,19 +114,33 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
           <Trans
             i18nKey={copy}
             components={{
-              asset: <HeroHighlight type="asset">{asset.symbol}</HeroHighlight>,
-              protocol: (
-                <HeroHighlight type="protocol">{protocol.name}</HeroHighlight>
+              asset: (
+                <HeroHighlight type="asset" sx={heroHighlightSx.asset}>
+                  {asset.symbol}
+                </HeroHighlight>
               ),
-              apy: <HeroHighlight type="apy">{formattedApy}</HeroHighlight>,
-              token: <HeroHighlight type="token">{asset.symbol}</HeroHighlight>,
+              protocol: (
+                <HeroHighlight type="protocol" sx={heroHighlightSx.protocol}>
+                  {protocol.name}
+                </HeroHighlight>
+              ),
+              apy: (
+                <HeroHighlight type="apy" sx={heroHighlightSx.apy}>
+                  {formattedApy}
+                </HeroHighlight>
+              ),
+              token: (
+                <HeroHighlight type="token" sx={heroHighlightSx.token}>
+                  {asset.symbol}
+                </HeroHighlight>
+              ),
               tag: (
-                <HeroHighlight type="tag">
+                <HeroHighlight type="tag" sx={heroHighlightSx.tag}>
                   {tags?.[0] ?? 'Crypto'}
                 </HeroHighlight>
               ),
               chain: (
-                <HeroHighlight type="chain">
+                <HeroHighlight type="chain" sx={heroHighlightSx.chain}>
                   {asset.chain.chainKey}
                 </HeroHighlight>
               ),
