@@ -32,15 +32,17 @@ export const usePortfolioWelcomeScreen =
     useEffect(() => {
       if (
         temporaryPortfolioWelcomeClosed &&
-        account?.address &&
+        account.address &&
         !allPortfolioWelcomeScreenClosed[account.address]
       ) {
         updateState(true);
+        setTemporaryPortfolioWelcomeClosed(false);
       }
     }, [
       account.address,
       allPortfolioWelcomeScreenClosed,
       temporaryPortfolioWelcomeClosed,
+      setTemporaryPortfolioWelcomeClosed,
       updateState,
     ]);
 
