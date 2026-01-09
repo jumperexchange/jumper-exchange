@@ -50,7 +50,7 @@ function parseOrgAndRepo(): { owner: string; repo: string } {
 }
 
 function isDevelopmentOrTest(): boolean {
-  const nodeEnv = config.NODE_ENV || 'development';
+  const nodeEnv = config.NEXT_PUBLIC_ENVIRONMENT || 'development';
   return nodeEnv === 'development' || nodeEnv === 'test';
 }
 
