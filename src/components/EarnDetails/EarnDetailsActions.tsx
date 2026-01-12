@@ -46,13 +46,13 @@ export const EarnDetailsActions = ({
 
   const depositAmountUSD = useMemo(() => {
     if (isLoadingPositions || !positionsData || !positionsData.data) {
-      return;
+      return undefined;
     }
 
     // If the deposit amount is defined, we don't need to use the positions data which might be outdated
     // The depositAmountUSD will be derived from the deposit amount
     if (depositAmount !== undefined) {
-      return;
+      return undefined;
     }
 
     return positionsData.data[0]?.netUsd;
