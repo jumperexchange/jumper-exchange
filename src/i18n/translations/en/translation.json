@@ -428,10 +428,9 @@
   },
   "portfolio": {
     "welcome": {
-      "title": "One platform, all of DeFi",
-      "subtitle": "<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>",
-      "getStarted": "Get started",
-      "explorePass": "Explore Jumper Pass"
+      "title": "Welcome to Jumper Portfolio!",
+      "subtitle": "<strong>DeFi's interactive portfolio.</strong>",
+      "getStarted": "Get started"
     },
     "overviewCard": {
       "title": "Portfolio",
