@@ -64,7 +64,7 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
       }),
       {
         name: 'jumper-store',
-        version: 3,
+        version: 4,
         migrate: (persistedState: any, version: number) => {
           if (version === 0) {
             const newStore = { ...persistedState };
@@ -87,6 +87,15 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
 
             console.debug('welcomeScreenClosed cookie migrated');
 
+            return newStore;
+          }
+          if (version === 3) {
+            const newStore = { ...persistedState };
+            if (
+              typeof persistedState.portfolioWelcomeScreenClosed !== 'object'
+            ) {
+              newStore.portfolioWelcomeScreenClosed = {};
+            }
             return newStore;
           }
           return persistedState;
