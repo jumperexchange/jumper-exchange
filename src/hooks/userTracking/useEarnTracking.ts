@@ -5,12 +5,13 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from './useUserTracking';
 import type { JumperEventData } from '../useJumperTracking';
+import { useCallback } from 'react';
 
 export const useEarnTracking = () => {
   const { trackEvent } = useUserTracking();
 
-  return {
-    trackEarnPageOverviewEvent: (slug?: string) => {
+  const trackEarnPageOverviewEvent = useCallback(
+    (slug?: string) => {
       const data: JumperEventData = slug
         ? {
             [TrackingEventParameter.EarnOpportunitySlug]: slug,
@@ -23,25 +24,46 @@ export const useEarnTracking = () => {
         data,
       });
     },
-    trackEarnDepositClickEvent: (slug?: string) => {
+    [trackEvent],
+  );
+
+  const trackEarnDepositClickEvent = useCallback(
+    (slug?: string) => {
+      const data: JumperEventData = slug
+        ? {
+            [TrackingEventParameter.EarnOpportunitySlug]: slug,
+          }
+        : {};
       trackEvent({
         category: TrackingCategory.Earn,
         action: TrackingAction.ClickEarnDepositButton,
         label: 'click-earn-deposit-button',
-        data: {
-          [TrackingEventParameter.EarnOpportunitySlug]: slug || '',
-        },
+        data,
       });
     },
-    trackEarnWithdrawClickEvent: (slug?: string) => {
+    [trackEvent],
+  );
+
+  const trackEarnWithdrawClickEvent = useCallback(
+    (slug?: string) => {
+      const data: JumperEventData = slug
+        ? {
+            [TrackingEventParameter.EarnOpportunitySlug]: slug,
+          }
+        : {};
       trackEvent({
         category: TrackingCategory.Earn,
         action: TrackingAction.ClickEarnWithdrawButton,
         label: 'click-earn-withdraw-button',
-        data: {
-          [TrackingEventParameter.EarnOpportunitySlug]: slug || '',
-        },
+        data,
       });
     },
+    [trackEvent],
+  );
+
+  return {
+    trackEarnPageOverviewEvent,
+    trackEarnDepositClickEvent,
+    trackEarnWithdrawClickEvent,
   };
 };

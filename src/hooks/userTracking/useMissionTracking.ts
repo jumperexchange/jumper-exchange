@@ -5,12 +5,13 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from './useUserTracking';
 import type { JumperEventData } from '../useJumperTracking';
+import { useCallback } from 'react';
 
 export const useMissionTracking = () => {
   const { trackEvent } = useUserTracking();
 
-  return {
-    trackMissionPageOverviewEvent: (slug?: string) => {
+  const trackMissionPageOverviewEvent = useCallback(
+    (slug?: string) => {
       const data: JumperEventData = slug
         ? {
             [TrackingEventParameter.MissionSlug]: slug,
@@ -23,5 +24,10 @@ export const useMissionTracking = () => {
         data,
       });
     },
+    [trackEvent],
+  );
+
+  return {
+    trackMissionPageOverviewEvent,
   };
 };
