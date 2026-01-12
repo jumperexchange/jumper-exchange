@@ -21,20 +21,15 @@ interface EarnPageProps {
 export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   console.log('27. EarnPage');
 
-  let opportunity, relatedMarkets;
-
-  try {
-    // TODO: LF-14853: Opportunity Details
-    [opportunity, relatedMarkets] = await Promise.all([
-      getOpportunityBySlug(slug),
-      getOpportunityRelatedMarket(slug),
-    ]);
-  } catch (error: any) {
-    if (error?.response?.status === 404 || error?.status === 404) {
-      return notFound();
-    }
-    throw error;
-  }
+  // TODO: LF-14853: Opportunity Details
+  const [opportunity, relatedMarkets] = await Promise.all([
+    getOpportunityBySlug(slug).catch((error) => {
+      return { error, data: undefined };
+    }),
+    getOpportunityRelatedMarket(slug).catch((error) => {
+      return { error, data: [] };
+    }),
+  ]);
 
   console.log('28. EarnPage opportunity', opportunity);
 
