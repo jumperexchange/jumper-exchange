@@ -1,6 +1,8 @@
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import type { StackProps } from '@mui/material/Stack';
+import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 
 export const StyledAccordion = styled(Accordion)(({ theme }) => ({
@@ -29,3 +31,21 @@ export const StyledAccordionDetails = styled(AccordionDetails)({
   padding: 0,
   margin: 0,
 });
+
+interface StyledContentProps extends StackProps {
+  hideCursor: boolean;
+}
+
+export const StyledContent = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'hideCursor',
+})<StyledContentProps>(({ theme, hideCursor }) => ({
+  width: '100%',
+  cursor: hideCursor ? 'default' : 'pointer',
+  borderRadius: theme.shape.borderRadius,
+  transition: 'background-color 300ms ease-in-out',
+  '&:not(:has([data-hint-hover-active]))': {
+    '&:hover, &:focus-visible, &:focus': {
+      backgroundColor: (theme.vars || theme).palette.alpha100.main,
+    },
+  },
+}));

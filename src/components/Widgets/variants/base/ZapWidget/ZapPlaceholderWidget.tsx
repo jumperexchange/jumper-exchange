@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from 'react';
+import type { CSSProperties, FC, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletMenu } from '@lifi/wallet-management';
 import type { ParseKeys } from 'i18next';
@@ -15,11 +15,13 @@ import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 interface ZapPlaceholderWidgetProps {
   titleKey: ParseKeys<'translation'>;
   descriptionKey: ParseKeys<'translation'>;
+  style?: CSSProperties;
 }
 
 export const ZapPlaceholderWidget: FC<ZapPlaceholderWidgetProps> = ({
   titleKey,
   descriptionKey,
+  style,
 }) => {
   const { t } = useTranslation();
   const { openWalletMenu } = useWalletMenu();
@@ -29,7 +31,7 @@ export const ZapPlaceholderWidget: FC<ZapPlaceholderWidgetProps> = ({
     openWalletMenu();
   };
   return (
-    <SectionCard>
+    <SectionCard sx={style}>
       <Stack sx={{ gap: 3 }}>
         <Badge
           startIcon={<AccessTimeIcon />}

@@ -15,6 +15,7 @@ import {
 import { EarnDetailsActions } from './EarnDetailsActions';
 import { formatDistance } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -25,6 +26,7 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
   data,
   isLoading,
 }) => {
+  useZapEarnOpportunitySlugStorage(data.slug);
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const updateBadgeLabel = useMemo(() => {

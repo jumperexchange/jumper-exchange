@@ -1,8 +1,7 @@
 import { useColorScheme, useTheme } from '@mui/material/styles';
-import * as React from 'react';
+import { useId } from 'react';
 
-interface PortfolioEmptyIllustrationProps
-  extends React.SVGProps<SVGSVGElement> {
+interface PortfolioEmptyIllustrationProps extends React.SVGProps<SVGSVGElement> {
   width?: number;
   height?: number;
 }
@@ -14,6 +13,13 @@ const PortfolioEmptyIllustration = ({
 }: PortfolioEmptyIllustrationProps) => {
   const theme = useTheme();
   const { mode } = useColorScheme();
+  const uniqueId = useId();
+  const clipPathId = `${uniqueId}-clip`;
+  const filterId = `${uniqueId}-filter`;
+  const gradientCId = `${uniqueId}-gradient-c`;
+  const gradientDId = `${uniqueId}-gradient-d`;
+  const gradientEId = `${uniqueId}-gradient-e`;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -22,8 +28,13 @@ const PortfolioEmptyIllustration = ({
       fill="none"
       {...rest}
     >
-      <g clipPath="url(#a)">
-        <g stroke="#F7C2FF" strokeWidth={0.769} filter="url(#b)" opacity={0.3}>
+      <g clipPath={`url(#${clipPathId})`}>
+        <g
+          stroke="#F7C2FF"
+          strokeWidth={0.769}
+          filter={`url(#${filterId})`}
+          opacity={0.3}
+        >
           <circle cx={123} cy={123} r={54.197} />
           <circle cx={123} cy={123} r={78.028} />
           <circle cx={123} cy={123} r={101.091} />
@@ -43,7 +54,7 @@ const PortfolioEmptyIllustration = ({
           <circle cx={123} cy={123} r={100.706} opacity={0.5} />
           <circle cx={123} cy={123} r={122.231} opacity={0.2} />
         </g>
-        <circle cx={123} cy={123} r={27.675} fill="url(#c)" />
+        <circle cx={123} cy={123} r={27.675} fill={`url(#${gradientCId})`} />
         <path
           fill="#D35CFF"
           d="m118.053 116.377 5.504-5.504-1.376-1.376c-2.752-2.752-5.504-2.752-8.256 0l-1.376 1.376 5.504 5.504Z"
@@ -52,7 +63,12 @@ const PortfolioEmptyIllustration = ({
           fill="#BEA0EB"
           d="M123.557 124.633c-.609.624-11.008 11.007-11.008 11.007l1.376 1.376c1.376 1.376 5.504 2.752 8.256 0l11.007-11.007c1.376-1.376 1.376-4.128 0-5.504l-6.879-6.88-5.504 5.504 2.752 2.752c.688.688.608 2.127 0 2.752Z"
         />
-        <circle cx={59.194} cy={76.106} r={15.375} fill="url(#d)" />
+        <circle
+          cx={59.194}
+          cy={76.106}
+          r={15.375}
+          fill={`url(#${gradientDId})`}
+        />
         <path
           fill="#fff"
           d="M68.31 73.57h-1.824c-1.004-2.788-3.705-4.7-7.267-4.7h-5.858v4.7h-2.034v1.686h2.034v1.768h-2.034v1.686h2.034v4.643h5.858c3.521 0 6.201-1.896 7.232-4.643h1.86v-1.686h-1.45c.035-.297.056-.605.056-.912v-.041c0-.277-.016-.549-.041-.815h1.44V73.57h-.005Zm-13.309-3.198h4.218c2.614 0 4.556 1.286 5.453 3.193h-9.67v-3.193Zm4.218 11.464h-4.218v-3.131h9.66c-.901 1.876-2.838 3.131-5.442 3.131Zm6.002-5.688c0 .297-.021.589-.062.87H55.001v-1.767h10.163c.036.276.056.563.056.856v.04Z"
@@ -79,7 +95,7 @@ const PortfolioEmptyIllustration = ({
         />
         <circle cx={27.675} cy={147.6} r={9.225} fill="#000" />
         <path
-          fill="url(#e)"
+          fill={`url(#${gradientEId})`}
           d="m32.24 149.901-1.523 1.591a.36.36 0 0 1-.259.11H23.24a.176.176 0 0 1-.097-.029.169.169 0 0 1-.032-.261l1.524-1.591a.35.35 0 0 1 .258-.11h7.219c.034 0 .068.01.097.029a.17.17 0 0 1 .077.173.168.168 0 0 1-.045.088Zm-1.523-3.204a.365.365 0 0 0-.259-.109H23.24a.175.175 0 0 0-.162.103.168.168 0 0 0 .033.186l1.524 1.591a.35.35 0 0 0 .258.11h7.219c.034 0 .068-.01.097-.028a.178.178 0 0 0 .065-.076.167.167 0 0 0-.033-.186l-1.523-1.591Zm-7.478-1.143h7.22a.36.36 0 0 0 .258-.109l1.523-1.591a.174.174 0 0 0 .045-.089.164.164 0 0 0-.012-.097.178.178 0 0 0-.065-.076.184.184 0 0 0-.097-.028h-7.219a.358.358 0 0 0-.258.109l-1.524 1.591a.174.174 0 0 0-.044.089.164.164 0 0 0 .012.097.176.176 0 0 0 .161.104Z"
         />
         <circle cx={172.968} cy={63.038} r={15.375} fill="#40477A" />
@@ -122,7 +138,7 @@ const PortfolioEmptyIllustration = ({
       </g>
       <defs>
         <linearGradient
-          id="c"
+          id={gradientCId}
           x1={125.306}
           x2={125.306}
           y1={150.675}
@@ -133,7 +149,7 @@ const PortfolioEmptyIllustration = ({
           <stop offset={1} stopColor="#1E0A3D" />
         </linearGradient>
         <linearGradient
-          id="d"
+          id={gradientDId}
           x1={59.194}
           x2={59.194}
           y1={56.375}
@@ -144,7 +160,7 @@ const PortfolioEmptyIllustration = ({
           <stop offset={1} stopColor="#FBCC5F" />
         </linearGradient>
         <linearGradient
-          id="e"
+          id={gradientEId}
           x1={23.841}
           x2={31.191}
           y1={151.793}
@@ -158,11 +174,11 @@ const PortfolioEmptyIllustration = ({
           <stop offset={0.72} stopColor="#28E0B9" />
           <stop offset={0.97} stopColor="#19FB9B" />
         </linearGradient>
-        <clipPath id="a">
+        <clipPath id={clipPathId}>
           <path fill="#fff" d="M0 0h246v246H0z" />
         </clipPath>
         <filter
-          id="b"
+          id={filterId}
           width={221.4}
           height={221.4}
           x={12.3}

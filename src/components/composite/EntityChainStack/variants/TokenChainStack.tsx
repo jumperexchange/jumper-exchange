@@ -37,6 +37,9 @@ export const TokenChainStack: FC<TokenChainStackProps> = (props) => {
 
   return (
     <BaseChainStack
+      assetAddresses={props.tokens
+        ?.map((token) => token.address)
+        .filter(Boolean)}
       dataTestId={`tokens-${props.tokens?.map((token) => token.name).join('-')}`}
       mainStack={mainStack}
       chainIds={chainIds}

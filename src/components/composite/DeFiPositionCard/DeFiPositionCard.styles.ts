@@ -1,3 +1,4 @@
+import { IconButton } from '@/components/IconButton.style';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -23,7 +24,7 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   },
 }));
 
-export const StyledAccordionSummary = styled(AccordionSummary)({
+export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
   '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
     {
       padding: 0,
@@ -32,7 +33,15 @@ export const StyledAccordionSummary = styled(AccordionSummary)({
   '&.MuiAccordionSummary-root, &.MuiAccordionSummary-root.Mui-expanded': {
     minHeight: 'auto',
   },
-});
+  '& .MuiAccordionSummary-content > *': {
+    transition: 'background-color 300ms ease-in-out',
+    '&:not(:has([data-hint-hover-active]))': {
+      '&:hover, &:focus-visible, &:focus': {
+        backgroundColor: (theme.vars || theme).palette.alpha100.main,
+      },
+    },
+  },
+}));
 
 export const StyledAccordionDetails = styled(AccordionDetails)({
   padding: 0,
@@ -52,6 +61,8 @@ export const StyledPositionActions = styled(Stack)(({ theme }) => ({
 }));
 
 export const StyledSummaryContent = styled(Stack)(({ theme }) => ({
+  padding: theme.spacing(1.5),
+  borderRadius: theme.shape.borderRadius,
   gap: theme.spacing(2),
   justifyContent: 'space-between',
   width: '100%',
@@ -72,6 +83,7 @@ export const StyledTagsRow = styled(Stack)(({ theme }) => ({
 export const StyledDetailsContainer = styled(Stack)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(3),
+  padding: theme.spacing(0, 1.5, 1.5),
 }));
 
 export const StyledSectionDivider = styled(Divider)(({ theme }) => ({
@@ -118,4 +130,25 @@ export const StyledButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
   height: 'auto',
   padding: theme.spacing(1.5, 2),
   ...theme.typography.bodySmallStrong,
+}));
+
+export const StyledIconButtonAlphaDark = styled(IconButton)(({ theme }) => ({
+  '&.MuiIconButton-root.MuiButtonBase-root': {
+    height: 'auto',
+    width: 'auto',
+    padding: theme.spacing(1),
+    ...theme.typography.bodySmallStrong,
+    backgroundColor: theme.palette.buttonAlphaLightBg,
+    color: theme.palette.buttonAlphaLightAction,
+    ...theme.applyStyles('light', {
+      backgroundColor: theme.palette.buttonAlphaDarkBg,
+      color: theme.palette.buttonAlphaDarkAction,
+    }),
+  },
+}));
+
+export const StyledOverviewActions = styled(Stack)(({ theme }) => ({
+  gap: theme.spacing(1),
+  flexDirection: 'row',
+  alignItems: 'center',
 }));

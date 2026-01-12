@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import { ChainStack } from '../../ChainStack/ChainStack';
 import {
   ChainStackWrapper,
@@ -13,6 +13,7 @@ import type { BaseProps } from '../EntityChainStack.types';
 import { EntityChainStackChainsPlacement } from '../EntityChainStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { TitleWithHint } from '../../TitleWithHint/TitleWithHint';
+import { EntityExplorerLink } from '../components/EntityExplorerLink';
 
 interface BaseChainStackProps extends BaseProps {
   mainStack: ReactNode;
@@ -20,9 +21,11 @@ interface BaseChainStackProps extends BaseProps {
   chainKeys: string[];
   skeletonSize?: AvatarSize;
   dataTestId?: string;
+  assetAddresses?: string[];
 }
 
 export const BaseChainStack: FC<BaseChainStackProps> = ({
+  assetAddresses,
   dataTestId,
   mainStack,
   chainIds,
@@ -76,6 +79,15 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
     />
   );
 
+  const hintOnHover =
+    assetAddresses && assetAddresses.length === 1 && chainIds.length === 1 ? (
+      <EntityExplorerLink
+        address={assetAddresses[0]}
+        chainId={chainIds[0]}
+        hintVariant={content.descriptionVariant}
+      />
+    ) : null;
+
   return (
     <EntityChainContainer
       gap={spacing.containerGap}
@@ -95,6 +107,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
           title={capitalizeString(content.title)}
           hintVariant={content.descriptionVariant}
           hint={chainKeys.map(capitalizeString).join(' ')}
+          hintOnHover={hintOnHover}
           titleDataTestId="entity-chain-stack-title"
           hintDataTestId="entity-chain-stack-chain-name"
         >

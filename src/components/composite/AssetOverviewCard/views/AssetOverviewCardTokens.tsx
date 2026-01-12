@@ -1,50 +1,59 @@
 import type { FC } from 'react';
-import { useMemo } from 'react';
+import Box from '@mui/material/Box';
 import type { AssetOverviewCardTokensProps } from '../AssetOverviewCard.types';
 import { AssetOverviewCardAssetsContainer } from '../AssetOverviewCard.styles';
 import { AssetProgress } from '../../AssetProgress/AssetProgress';
 import { AssetProgressVariant } from '../../AssetProgress/AssetProgress.types';
-import { groupAssets, calculateAssetPercentage } from '../utils';
-import {
-  MAX_DISPLAY_ASSETS_COUNT,
-  MAX_DISPLAY_ASSETS_COUNT_MOBILE,
-} from '../constants';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { calculateAssetPercentage } from '../utils';
+import { useAssetOverflow } from '../hooks';
 
 export const AssetOverviewCardTokens: FC<AssetOverviewCardTokensProps> = ({
   tokens,
 }) => {
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const maxDisplayCount = isMobile
-    ? MAX_DISPLAY_ASSETS_COUNT_MOBILE
-    : MAX_DISPLAY_ASSETS_COUNT;
-  const grouped = useMemo(
-    () => groupAssets(tokens, maxDisplayCount),
-    [tokens, maxDisplayCount],
-  );
+  const {
+    containerRef,
+    getItemRef,
+    overflowIndicatorRef,
+    isReady,
+    totalPrice,
+    overflowInfo,
+    getItemSx,
+  } = useAssetOverflow({ items: tokens });
 
   return (
-    <AssetOverviewCardAssetsContainer>
-      {grouped.displayAssets.map((token) => (
-        <AssetProgress
+    <AssetOverviewCardAssetsContainer
+      ref={containerRef}
+      sx={{ opacity: isReady ? 1 : 0 }}
+    >
+      {tokens.map((token, index) => (
+        <Box
           key={`${token.address}-${token.chain.chainId}`}
-          variant={AssetProgressVariant.Token}
-          token={token}
-          progress={calculateAssetPercentage(
-            token.totalPriceUSD,
-            grouped.totalPrice,
-          )}
-          amount={token.totalPriceUSD}
-        />
+          ref={getItemRef(index)}
+          sx={getItemSx(index)}
+        >
+          <AssetProgress
+            variant={AssetProgressVariant.Token}
+            token={token}
+            progress={calculateAssetPercentage(token.totalPriceUSD, totalPrice)}
+            amount={token.totalPriceUSD}
+          />
+        </Box>
       ))}
-      {grouped.overflow && (
+      <Box
+        ref={overflowIndicatorRef}
+        sx={{
+          visibility: overflowInfo ? 'visible' : 'hidden',
+          position: overflowInfo ? 'relative' : 'absolute',
+          pointerEvents: overflowInfo ? 'auto' : 'none',
+        }}
+      >
         <AssetProgress
           variant={AssetProgressVariant.Text}
-          text={`+${grouped.overflow.count}`}
-          progress={grouped.overflow.percentage}
-          amount={grouped.overflow.price}
+          text={`+${overflowInfo?.count ?? 0}`}
+          progress={overflowInfo?.percentage ?? 0}
+          amount={overflowInfo?.price ?? 0}
         />
-      )}
+      </Box>
     </AssetOverviewCardAssetsContainer>
   );
 };

@@ -4,9 +4,10 @@ import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
 import type {
   EarnOpportunityFilterUI,
+  RewardsAPYEnum,
   SortByEnum,
 } from 'src/app/ui/earn/types';
-import { SortByOptions } from 'src/app/ui/earn/types';
+import { RewardsAPYOptions, SortByOptions } from 'src/app/ui/earn/types';
 import { useTranslation } from 'react-i18next';
 import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { capitalizeString } from '@/utils/capitalizeString';
@@ -22,6 +23,8 @@ export const useEarnFilterBar = () => {
     allAssets,
     allTags,
     allAPY,
+    allTVL,
+    allRewardsOptions,
     filter,
     updateFilter,
     clearFilters,
@@ -91,6 +94,32 @@ export const useEarnFilterBar = () => {
   const apyMin = Math.min(...Object.values(allAPY), 0);
   const apyMax = Math.max(...Object.values(allAPY), 0);
 
+  const tvlOptions = useMemo(
+    () =>
+      sortSelectOptions(
+        Object.entries(allTVL).map(([key, value]) => ({
+          value: key,
+          label: `${key}: ${value}`,
+        })),
+      ),
+    [allTVL],
+  );
+
+  const tvlMin = Math.min(...Object.values(allTVL), 0);
+  const tvlMax = Math.max(...Object.values(allTVL), 0);
+
+  const rewardsAPYOptions = useMemo(
+    () =>
+      allRewardsOptions.map((option) => {
+        const _option = option as RewardsAPYEnum;
+        return {
+          value: _option,
+          label: t(`earn.filter.rewards.${_option}`),
+        };
+      }),
+    [allRewardsOptions, t],
+  );
+
   const sortByOptions = useMemo(
     () => [
       { value: SortByOptions.APY, label: t('earn.sorting.apy') },
@@ -128,6 +157,22 @@ export const useEarnFilterBar = () => {
     });
   };
 
+  const handleTVLChange = (values: number[]) => {
+    const hasValues = values.length > 0;
+    updateFilter({
+      ...filter,
+      minTVL: hasValues ? values[0] : null,
+      maxTVL: hasValues ? values[1] : null,
+    });
+  };
+
+  const handleRewardsAPYChange = (values: string[]) => {
+    const hasValues = values.length > 0;
+    const minRewardsAPY =
+      hasValues && values[0] === RewardsAPYOptions.WITH_REWARDS ? 0.0 : null;
+    updateFilter({ ...filter, minRewardsAPY });
+  };
+
   const handleSortBy = (value: string) => {
     setSortBy(value as SortByEnum);
   };
@@ -143,6 +188,12 @@ export const useEarnFilterBar = () => {
     ? Math.trunc(filter.maxAPY * 10000) / 100
     : apyMax;
 
+  const tvlMinValue = filter?.minTVL ? filter.minTVL : tvlMin;
+  const tvlMaxValue = filter?.maxTVL ? filter.maxTVL : tvlMax;
+
+  const rewardsAPYValue =
+    filter?.minRewardsAPY !== undefined ? RewardsAPYOptions.WITH_REWARDS : null;
+
   const arrayFiltersCount = [
     filter?.chains,
     filter?.protocols,
@@ -154,9 +205,21 @@ export const useEarnFilterBar = () => {
     !isNaN(apyMinValue) &&
     !isNaN(apyMaxValue) &&
     (apyMinValue !== apyMin || apyMaxValue !== apyMax);
+
   const apyFilterCount = hasAPYFilterApplied ? 1 : 0;
 
-  const filtersCount = arrayFiltersCount + apyFilterCount;
+  const hasTVLFilterApplied =
+    !isNaN(tvlMinValue) &&
+    !isNaN(tvlMaxValue) &&
+    (tvlMinValue !== tvlMin || tvlMaxValue !== tvlMax);
+
+  const tvlFilterCount = hasTVLFilterApplied ? 1 : 0;
+
+  const hasRewardsAPYFilterApplied = filter?.minRewardsAPY !== undefined;
+  const rewardsAPYFilterCount = hasRewardsAPYFilterApplied ? 1 : 0;
+
+  const filtersCount =
+    arrayFiltersCount + apyFilterCount + tvlFilterCount + rewardsAPYFilterCount;
   const hasFilterApplied = filtersCount > 0;
 
   return {
@@ -165,6 +228,8 @@ export const useEarnFilterBar = () => {
     tagOptions,
     assetOptions,
     apyOptions,
+    tvlOptions,
+    rewardsAPYOptions,
     hasFilterApplied,
     filtersCount,
     filter,
@@ -172,6 +237,11 @@ export const useEarnFilterBar = () => {
     apyMaxValue,
     apyMin,
     apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
+    rewardsAPYValue,
     sortByOptions,
     sortBy,
     handleChainChange,
@@ -179,6 +249,8 @@ export const useEarnFilterBar = () => {
     handleTagChange,
     handleAssetChange,
     handleAPYChange,
+    handleTVLChange,
+    handleRewardsAPYChange,
     handleClearAllFilters: clearFilters,
     handleSortBy,
     handleApplyAllFilters,

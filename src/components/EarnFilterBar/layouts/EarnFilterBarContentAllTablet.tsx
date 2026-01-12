@@ -4,7 +4,11 @@ import type { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/M
 import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hooks';
 import { useTranslation } from 'react-i18next';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
-import type { SortByEnum } from 'src/app/ui/earn/types';
+import {
+  RewardsAPYOptions,
+  type RewardsAPYEnum,
+  type SortByEnum,
+} from 'src/app/ui/earn/types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
 import {
@@ -19,7 +23,9 @@ interface PendingFilterValues {
   tags: string[];
   assets: string[];
   apy: number[];
+  tvl: number[];
   sortBy: SortByEnum;
+  rewardsAPY: RewardsAPYEnum[];
 }
 
 export const EarnFilterBarContentAllTablet = () => {
@@ -34,6 +40,12 @@ export const EarnFilterBarContentAllTablet = () => {
     apyMaxValue,
     apyMin,
     apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
+    rewardsAPYValue,
+    rewardsAPYOptions,
     sortByOptions,
     sortBy,
     filtersCount,
@@ -55,9 +67,16 @@ export const EarnFilterBarContentAllTablet = () => {
       tags: filter?.tags ?? [],
       assets: filter?.assets ?? [],
       apy: [apyMinValue, apyMaxValue],
+      tvl: [tvlMinValue, tvlMaxValue],
       sortBy: sortBy ?? '',
+      rewardsAPY: rewardsAPYValue ? [rewardsAPYValue] : [],
     },
     onApply: (values) => {
+      const minRewardsAPY = values.rewardsAPY.includes(
+        RewardsAPYOptions.WITH_REWARDS,
+      )
+        ? 0.0
+        : undefined;
       handleApplyAllFilters({
         chains: values.chains.map(Number) ?? [],
         protocols: values.protocols ?? [],
@@ -65,7 +84,10 @@ export const EarnFilterBarContentAllTablet = () => {
         assets: values.assets ?? [],
         minAPY: values.apy[0] / 100,
         maxAPY: values.apy[1] / 100,
+        minTVL: values.tvl[0],
+        maxTVL: values.tvl[1],
         sortBy: values.sortBy ?? '',
+        minRewardsAPY,
       });
     },
     onClear: handleClearAllFilters,
@@ -76,13 +98,18 @@ export const EarnFilterBarContentAllTablet = () => {
         values.tags.length > 0 ||
         values.assets.length > 0 ||
         values.apy[0] !== apyMin ||
-        values.apy[1] !== apyMax
+        values.apy[1] !== apyMax ||
+        values.tvl[0] !== tvlMin ||
+        values.tvl[1] !== tvlMax ||
+        values.rewardsAPY.length > 0
       );
     },
   });
 
   const usedApyMinValue = pendingValues.apy[0] ?? apyMinValue;
   const usedApyMaxValue = pendingValues.apy[1] ?? apyMaxValue;
+  const usedTvlMinValue = pendingValues.tvl[0] ?? tvlMinValue;
+  const usedTvlMaxValue = pendingValues.tvl[1] ?? tvlMaxValue;
 
   const chainBadge =
     pendingValues.chains.length > 0
@@ -106,6 +133,14 @@ export const EarnFilterBarContentAllTablet = () => {
     (usedApyMinValue !== apyMin || usedApyMaxValue !== apyMax)
       ? formatSliderValue(
           pendingValues.apy.map((value) => toFixedFractionDigits(value, 0, 2)),
+        )
+      : undefined;
+  const tvlBadge =
+    !isNaN(usedTvlMinValue) &&
+    !isNaN(usedTvlMaxValue) &&
+    (usedTvlMinValue !== tvlMin || usedTvlMaxValue !== tvlMax)
+      ? formatSliderValue(
+          pendingValues.tvl.map((value) => toFixedFractionDigits(value, 0, 2)),
         )
       : undefined;
 
@@ -191,6 +226,35 @@ export const EarnFilterBarContentAllTablet = () => {
         min: apyMin,
         max: apyMax,
         testId: 'earn-filter-apy-select-mobile',
+      }),
+    );
+  }
+
+  if (!isNaN(tvlMin) && !isNaN(tvlMax) && tvlMin !== tvlMax) {
+    categories.push(
+      createSliderCategory({
+        id: 'tvl',
+        label: t('earn.filter.tvl'),
+        badgeLabel: tvlBadge,
+        value: pendingValues.tvl,
+        onChange: (value: number[]) => setPendingValue('tvl', value),
+        min: tvlMin,
+        max: tvlMax,
+        testId: 'earn-filter-tvl-select-mobile',
+      }),
+    );
+  }
+
+  if (rewardsAPYOptions.length > 0) {
+    categories.push(
+      createMultiSelectCategory<RewardsAPYEnum>({
+        id: 'rewardsAPY',
+        label: t('earn.filter.rewards.label'),
+        value: pendingValues.rewardsAPY ?? [],
+        onChange: (value: RewardsAPYEnum[]) =>
+          setPendingValue('rewardsAPY', value),
+        options: rewardsAPYOptions,
+        testId: 'earn-filter-rewards-select-mobile',
       }),
     );
   }

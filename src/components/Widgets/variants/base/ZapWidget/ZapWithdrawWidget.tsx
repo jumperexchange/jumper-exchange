@@ -13,25 +13,37 @@ import {
   LiFiWidget,
   DisabledUI,
   HiddenUI,
+  ChainType,
 } from '@lifi/widget';
 import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { TaskType } from '@/types/strapi';
+import { useAccount } from '@lifi/wallet-management';
+import { useShowZapPlaceholderWidget } from './hooks';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
   zapData?: ZapDataResponse | null;
+  refetchWithdrawToken?: () => void;
 }
 
 export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   zapData,
   customInformation,
   ctx,
+  refetchWithdrawToken,
 }) => {
   const projectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
   const formRef = useRef<FormState>(null);
+
+  const { account } = useAccount();
+  const chainType = account?.chainType;
+  const isEvmWallet = chainType === ChainType.EVM;
+
+  const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
 
   // const { setSourceChainTokenForTracking } = useWidgetTrackingContext();
 
@@ -78,18 +90,48 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
   useEffect(() => {
+    function onRouteExecutionCompleted() {
+      refetchWithdrawToken?.();
+    }
     const onRouteContactSupport = () => {
       setSupportModalState(true);
     };
 
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionCompleted,
+      onRouteExecutionCompleted,
+    );
+
     widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
 
     return () => {
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
       widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
     };
-  }, [widgetEvents, setSupportModalState]);
+  }, [widgetEvents, refetchWithdrawToken, setSupportModalState]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+
+  if (showZapPlaceholderWidget || !isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.title'
+            : 'widget.zap.placeholder.embedded-multisig.title'
+        }
+        descriptionKey={
+          !isEvmWallet
+            ? 'widget.zap.placeholder.non-evm.description'
+            : 'widget.zap.placeholder.embedded-multisig.description'
+        }
+        style={widgetConfig.theme?.container}
+      />
+    );
+  }
 
   return fromChain && fromToken ? (
     <LiFiWidget

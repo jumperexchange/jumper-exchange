@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { toCompactValue, toFixedFractionDigits } from 'src/utils/formatNumbers';
 import { THRESHOLD_MIN_AMOUNT } from '../constants';
 import { Tooltip } from 'src/components/core/Tooltip/Tooltip';
+import { formatPortfolioValueInDollar } from '@/utils/numbers/portfolioValueInDollar';
 
 interface BaseProgressProps extends BaseAssetProgressProps, PropsWithChildren {}
 
@@ -16,7 +17,9 @@ export const BaseProgress: FC<BaseProgressProps> = ({
   children,
 }) => {
   const isBelowThreshold = amount < THRESHOLD_MIN_AMOUNT;
-  const formattedActualAmount = `$${toCompactValue(amount)}`;
+  const formattedActualAmount = isBelowThreshold
+    ? `$${toCompactValue(amount)}`
+    : formatPortfolioValueInDollar(amount);
   const formattedAmount = isBelowThreshold
     ? `<$${THRESHOLD_MIN_AMOUNT}`
     : formattedActualAmount;

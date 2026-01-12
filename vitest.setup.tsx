@@ -73,6 +73,24 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
+// Intl.NumberFormat behaves differently between OSes due to ICU library differences.
+// This mock ensures consistent number formatting by stripping trailing zeros (e.g., $33.40K → $33.4K).
+vi.mock('src/utils/formatNumbers', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('src/utils/formatNumbers')>();
+  return {
+    ...actual,
+    formatValueWithConfig: (
+      ...args: Parameters<typeof actual.formatValueWithConfig>
+    ): string => {
+      const result = actual.formatValueWithConfig(...args);
+      return result
+        .replace(/(\.\d*?)0+([A-Za-z%]*)$/, '$1$2')
+        .replace(/\.([A-Za-z%]*)$/, '$1');
+    },
+  };
+});
+
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),

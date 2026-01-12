@@ -1,5 +1,4 @@
-import { Token } from 'src/types/jumper-backend';
-import { MinimalToken } from 'src/types/tokens';
+import type { MinimalToken } from 'src/types/tokens';
 
 export enum TokenListCardTokenSize {
   SM = 'sm',

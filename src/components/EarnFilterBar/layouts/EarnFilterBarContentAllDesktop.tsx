@@ -9,6 +9,7 @@ import {
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useEarnFilterBar } from '../hooks';
 import { useTranslation } from 'react-i18next';
+import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 
 export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
   children,
@@ -25,16 +26,26 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
     apyMaxValue,
     apyMin,
     apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
+    rewardsAPYOptions,
+    rewardsAPYValue,
     handleChainChange,
     handleProtocolChange,
     handleTagChange,
     handleAssetChange,
     handleAPYChange,
+    handleTVLChange,
+    handleRewardsAPYChange,
     handleClearAllFilters,
   } = useEarnFilterBar();
 
   return (
-    <EarnFilterBarContentContainer>
+    <EarnFilterBarContentContainer
+      sx={{ alignItems: hasFilterApplied ? 'flex-start' : 'center' }}
+    >
       <EarnAnimatedLayoutContainer>
         {chainOptions.length > 1 && (
           <Select
@@ -96,6 +107,31 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
           />
         )}
 
+        {!isNaN(tvlMin) && !isNaN(tvlMax) && tvlMin !== tvlMax && (
+          <Select
+            options={[]}
+            value={[tvlMinValue, tvlMaxValue]}
+            min={tvlMin}
+            max={tvlMax}
+            onChange={handleTVLChange}
+            label={t('earn.filter.tvl')}
+            variant={SelectVariant.Slider}
+            data-testid="earn-filter-tvl-select"
+          />
+        )}
+        {rewardsAPYOptions.length > 0 && (
+          <Select
+            options={rewardsAPYOptions}
+            value={rewardsAPYValue ? [rewardsAPYValue] : []}
+            onChange={handleRewardsAPYChange}
+            label={t('earn.filter.rewards.label')}
+            labelIcon={
+              <AutoAwesomeRoundedIcon sx={{ height: 16, width: 16 }} />
+            }
+            variant={SelectVariant.Multi}
+            data-testid="earn-filter-rewards-select"
+          />
+        )}
         {hasFilterApplied && (
           <EarnFilterBarClearFiltersButton
             onClick={handleClearAllFilters}

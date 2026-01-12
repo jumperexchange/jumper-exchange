@@ -2,25 +2,44 @@ import PortfolioEmptyIllustration from '@/components/illustrations/PortfolioEmpt
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import {
-  PortfolioEmptyListButton,
+  PortfolioEmptyListPrimaryButton,
   PortfolioEmptyListContainer,
   PortfolioEmptyListContentContainer,
   PortfolioEmptyListDescriptionContainer,
+  PortfolioEmptyListButtonsContainer,
+  PortfolioEmptyListSecondaryButton,
 } from './PortfolioEmptyList.style';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
-interface PortfolioEmptyListProps {
+interface PortfolioEmptyListBaseProps {
   title: string;
   description: string;
-  buttonLabel: string;
-  onClick: () => void;
+  primaryButtonLabel: string;
+  onPrimaryButtonClick: () => void;
 }
+
+interface WithSecondaryButton {
+  secondaryButtonLabel: string;
+  onSecondaryButtonClick: () => void;
+}
+
+interface WithoutSecondaryButton {
+  secondaryButtonLabel?: never;
+  onSecondaryButtonClick?: never;
+}
+
+type PortfolioEmptyListProps = PortfolioEmptyListBaseProps &
+  (WithSecondaryButton | WithoutSecondaryButton);
 
 export const PortfolioEmptyList: FC<PortfolioEmptyListProps> = ({
   title,
   description,
-  buttonLabel,
-  onClick,
+  primaryButtonLabel,
+  onPrimaryButtonClick,
+  secondaryButtonLabel,
+  onSecondaryButtonClick,
 }) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <PortfolioEmptyListContainer>
       <PortfolioEmptyIllustration style={{ marginBottom: -48 }} />
@@ -30,14 +49,27 @@ export const PortfolioEmptyList: FC<PortfolioEmptyListProps> = ({
           <Typography
             variant="bodyMedium"
             color="textSecondary"
-            sx={{ textAlign: 'center' }}
+            sx={{ textAlign: 'center', whiteSpace: 'pre-line' }}
           >
             {description}
           </Typography>
         </PortfolioEmptyListDescriptionContainer>
-        <PortfolioEmptyListButton onClick={onClick}>
-          {buttonLabel}
-        </PortfolioEmptyListButton>
+        <PortfolioEmptyListButtonsContainer direction="row">
+          <PortfolioEmptyListPrimaryButton
+            onClick={onPrimaryButtonClick}
+            fullWidth={isMobile}
+          >
+            {primaryButtonLabel}
+          </PortfolioEmptyListPrimaryButton>
+          {secondaryButtonLabel && (
+            <PortfolioEmptyListSecondaryButton
+              onClick={onSecondaryButtonClick}
+              fullWidth={isMobile}
+            >
+              {secondaryButtonLabel}
+            </PortfolioEmptyListSecondaryButton>
+          )}
+        </PortfolioEmptyListButtonsContainer>
       </PortfolioEmptyListContentContainer>
     </PortfolioEmptyListContainer>
   );

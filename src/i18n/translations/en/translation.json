@@ -82,6 +82,9 @@
     "ctaHeadline": "Join our Discord to learn more",
     "ctaButton": "Join our Discord"
   },
+  "badge": {
+    "updated": "Updated {{time}} ago"
+  },
   "blog": {
     "title": "Tips and tutorials",
     "categories": "Categories",
@@ -279,7 +282,9 @@
   },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
+    "currencyCompact": "{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
+    "decimalCompact": "{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}",
     "percent": "{{value, percentExt()}}",
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
@@ -301,6 +306,7 @@
   "tooltips": {
     "tvl": "Total value of crypto assets deposited in this market.",
     "apy": "Expected yearly return rate of the tokens invested.",
+    "rewardsApy": "Expected yearly return rate of the rewards tokens invested.",
     "deposit": "The token on which the market is defined and yield accrues on.",
     "deposited": "The token you have deposited into this market.",
     "boostedApy": "{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.",
@@ -317,6 +323,7 @@
   },
   "labels": {
     "apy": "APY",
+    "rewardsApy": "Rewards APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",
     "assets_one": "Asset",
@@ -355,7 +362,12 @@
       "protocol": "Protocol",
       "tag": "Type",
       "asset": "Asset",
-      "apy": "APY"
+      "apy": "APY",
+      "tvl": "TVL",
+      "rewards": {
+        "label": "Rewards",
+        "withRewards": "Include only pools with rewards"
+      }
     },
     "views": {
       "viewBy": "View by",
@@ -391,15 +403,20 @@
     },
     "actions": {
       "viewAllMarkets": "View all markets",
-      "seeMore": "see more"
+      "seeMore": "see more",
+      "goToPortfolio": "Go to Portfolio"
     },
     "position": {
       "label": "Your position"
     },
+    "missingPosition": {
+      "title": "Missing a position?",
+      "description": "Check your portfolio tokens before contacting support."
+    },
     "emptyList": {
       "yourPositions": {
         "title": "No positions",
-        "description": "Looks like you don't have any active positions in any market yet. Let's change that!",
+        "description": "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.",
         "viewAllMarkets": "View all markets"
       },
       "noResults": {
@@ -460,6 +477,10 @@
           "months_other": "{{count}} months ago",
           "years_one": "{{count}} year ago",
           "years_other": "{{count}} years ago"
+        },
+        "tooltip": {
+          "address": "View contract",
+          "info": "View earn detail"
         }
       },
       "actions": {
@@ -556,11 +577,11 @@
         "comingSoon": "Coming soon",
         "embedded-multisig": {
           "title": "Your wallet is currently not supported",
-          "description": "We are working on adding support for embedded and smart contract wallets. In the mean time please use a different wallet to complete this mission."
+          "description": "We are working on adding support for embedded and smart contract wallets (incl. Safe). In the mean time please use an EOA wallet to execute transactions."
         },
         "non-evm": {
           "title": "Your wallet is currently not supported",
-          "description": "We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission."
+          "description": "We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions."
         }
       }
     },

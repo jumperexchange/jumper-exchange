@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { isEqual } from 'lodash';
 
 export interface PendingFilterState<T = any> {
@@ -28,6 +28,15 @@ export const usePendingFilters = <T extends PendingFilterState>({
   isFilterApplied,
 }: UsePendingFiltersOptions<T>): UsePendingFiltersResult<T> => {
   const [pendingValues, setPendingValues] = useState<T>(initialValues);
+  const prevInitialValuesRef = useRef<T>(initialValues);
+
+  useEffect(() => {
+    if (isEqual(initialValues, prevInitialValuesRef.current)) {
+      return;
+    }
+    setPendingValues(initialValues);
+    prevInitialValuesRef.current = initialValues;
+  }, [initialValues]);
 
   const setPendingValue = useCallback(
     <K extends keyof T>(key: K, value: T[K]) => {

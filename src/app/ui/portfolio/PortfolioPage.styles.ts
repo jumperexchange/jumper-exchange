@@ -15,7 +15,7 @@ export const PortfolioAssetsListContainer = styled(Stack)(({ theme }) => ({
 
 export const PortfolioAssetContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
-    padding: theme.spacing(3),
+    padding: theme.spacing(1.5),
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface2.main,
     ...theme.applyStyles('light', {

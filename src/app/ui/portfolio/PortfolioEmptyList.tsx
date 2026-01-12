@@ -14,8 +14,8 @@ export const PortfolioEmptyList: FC<PortfolioEmptyListProps> = ({
     <BasePortfolioEmptyList
       title={t('portfolio.emptyList.title')}
       description={t('portfolio.emptyList.description')}
-      buttonLabel={t('portfolio.emptyList.clearFilters')}
-      onClick={onClearFilters}
+      primaryButtonLabel={t('portfolio.emptyList.clearFilters')}
+      onPrimaryButtonClick={onClearFilters}
     />
   );
 };

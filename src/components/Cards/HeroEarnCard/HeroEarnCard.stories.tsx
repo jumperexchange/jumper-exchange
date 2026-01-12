@@ -9,6 +9,13 @@ const meta = {
     primaryAction: {
       control: false,
     },
+    copy: {
+      control: {
+        type: 'select',
+        options: Object.values(EarnHeroCardCopyKey),
+        defaultValue: EarnHeroCardCopyKey.USE_YOUR_SPARE,
+      },
+    },
   },
 } satisfies Meta<typeof HeroEarnCard>;
 

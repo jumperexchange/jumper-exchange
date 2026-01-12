@@ -7,6 +7,7 @@ import {
   defiGroupSortAccessors,
   sortPortfolioItems,
 } from '@/app/ui/portfolio/utils';
+import { hasPositionDataToDisplay } from '@/components/composite/DeFiPositionCard/utils';
 
 const defaultGroupByProtocolName = (position: DefiPosition) =>
   position.protocol.name;
@@ -35,6 +36,10 @@ export const useFormatDisplayDeFiPositions = (
         defiGroupSortAccessors,
       );
     }
+
+    groups = groups
+      .map((positions) => positions.filter(hasPositionDataToDisplay))
+      .filter((positions) => positions.length > 0);
 
     return groups;
   }, [positions, groupByFn, sortBy, order]);
