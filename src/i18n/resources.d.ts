@@ -557,10 +557,9 @@ interface Resources {
         viewBy: 'View by';
       };
       welcome: {
-        explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
-        title: 'One platform, all of DeFi';
+        subtitle: "<strong>DeFi's interactive portfolio.</strong>";
+        title: 'Welcome to Jumper Portfolio!';
       };
     };
     profile_page: {

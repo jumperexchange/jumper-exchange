@@ -2,14 +2,14 @@ interface DefaultSettingsType {
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
-  portfolioWelcomeScreenClosed: boolean;
+  portfolioWelcomeScreenClosed: Record<string, boolean>;
 }
 
 export const defaultSettings: DefaultSettingsType = {
   clientWallets: [],
   disabledFeatureCards: [],
   welcomeScreenClosed: false,
-  portfolioWelcomeScreenClosed: false,
+  portfolioWelcomeScreenClosed: {},
 };
 
 interface DefaultFpType {
