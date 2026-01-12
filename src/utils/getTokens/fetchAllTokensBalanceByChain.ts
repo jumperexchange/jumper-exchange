@@ -101,6 +101,10 @@ export function fetchAllTokensBalanceByChain(
       .filter((t) => t.amount && t.amount > BigInt(0))
       .map((tokenBalance) => {
         const humanReadableBalance = getBalance(tokenBalance);
+        const priceUSD = parseFloat(tokenBalance.priceUSD);
+        const totalPriceUSD = isNaN(priceUSD)
+          ? 0
+          : humanReadableBalance * priceUSD;
         const chain = chains.find((c) => c.id === tokenBalance.chainId);
 
         return {
@@ -111,11 +115,10 @@ export function fetchAllTokensBalanceByChain(
           logo: tokenBalance.logoURI,
           chain: {
             chainId: tokenBalance.chainId,
-            chainKey: chain?.name ?? '',
+            chainKey: chain?.key ?? chain?.name ?? '',
           },
           balance: humanReadableBalance,
-          totalPriceUSD:
-            humanReadableBalance * parseFloat(tokenBalance.priceUSD),
+          totalPriceUSD,
         };
       });
 
