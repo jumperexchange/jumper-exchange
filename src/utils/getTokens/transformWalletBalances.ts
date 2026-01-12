@@ -1,6 +1,6 @@
 import type { ExtendedChain, WalletTokenExtended } from '@lifi/sdk';
-import type { PortfolioToken } from '@/types/tokens';
-import { getBalance } from '@/utils/getTokens/utils';
+import type { PortfolioToken, PortfolioTokenWithRelated } from '@/types/tokens';
+import { getBalance, transformToPortfolioToken } from '@/utils/getTokens/utils';
 import { find, flatMap, sumBy, orderBy, map, groupBy, first } from 'lodash';
 
 const safeBigInt = (value: string): bigint => {
@@ -22,33 +22,6 @@ function calculateFormattedBalance(token: WalletTokenExtended): number {
   });
 }
 
-function createChainToken(
-  token: WalletTokenExtended,
-  chain: ExtendedChain | undefined,
-  formattedBalance: number,
-): Omit<PortfolioToken, 'relatedTokens'> {
-  const priceUSD = parseFloat(token.priceUSD);
-  const totalPriceUSD = isNaN(priceUSD) ? 0 : formattedBalance * priceUSD;
-
-  return {
-    address: token.address,
-    name: token.name,
-    symbol: token.symbol,
-    decimals: token.decimals,
-    logo: token.logoURI,
-    chain: {
-      chainId: token.chainId,
-      chainKey: chain?.key ?? chain?.name ?? '',
-    },
-    balance: formattedBalance,
-    totalPriceUSD,
-  };
-}
-
-type PortfolioTokenWithRelated = PortfolioToken & {
-  relatedTokens: Omit<PortfolioToken, 'relatedTokens'>[];
-};
-
 function createTokenGroup(
   balances: WalletTokenExtended[],
   chains: ExtendedChain[],
@@ -56,7 +29,7 @@ function createTokenGroup(
   const chainTokens = map(balances, (balance) => {
     const chain = find(chains, { id: balance.chainId });
     const formattedBalance = calculateFormattedBalance(balance);
-    return createChainToken(balance, chain, formattedBalance);
+    return transformToPortfolioToken(balance, chain, formattedBalance);
   });
 
   const sortedRelatedTokens = orderBy(
@@ -68,6 +41,7 @@ function createTokenGroup(
   const primaryBalance =
     find(balances, { chainId: primaryToken?.chain?.chainId }) ??
     first(balances)!;
+  const primaryChain = find(chains, { id: primaryBalance.chainId });
 
   const cumulatedBalance = sumBy(sortedRelatedTokens, (t) => t.balance ?? 0);
   const cumulatedTotalUSD = sumBy(
@@ -76,17 +50,12 @@ function createTokenGroup(
   );
 
   return {
-    address: primaryBalance.address,
-    symbol: primaryBalance.symbol,
-    name: primaryBalance.name,
-    decimals: primaryBalance.decimals,
-    logo: primaryBalance.logoURI,
-    chain: {
-      chainId: primaryToken?.chain.chainId ?? primaryBalance.chainId,
-      chainKey: primaryToken?.chain.chainKey ?? '',
-    },
-    balance: cumulatedBalance,
-    totalPriceUSD: cumulatedTotalUSD,
+    ...transformToPortfolioToken(
+      primaryBalance,
+      primaryChain,
+      cumulatedBalance,
+      cumulatedTotalUSD,
+    ),
     relatedTokens: sortedRelatedTokens,
   };
 }

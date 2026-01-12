@@ -5,12 +5,8 @@ import type {
   TokensResponse,
 } from '@lifi/sdk';
 import { getTokenBalances as LifiGetTokenBalances } from '@lifi/sdk';
-import type { PortfolioToken } from '@/types/tokens';
-import { getBalance } from '@/utils/getTokens/utils';
-
-type PortfolioTokenWithRelated = PortfolioToken & {
-  relatedTokens: Omit<PortfolioToken, 'relatedTokens'>[];
-};
+import type { PortfolioToken, PortfolioTokenWithRelated } from '@/types/tokens';
+import { getBalance, transformToPortfolioToken } from '@/utils/getTokens/utils';
 
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
@@ -101,25 +97,12 @@ export function fetchAllTokensBalanceByChain(
       .filter((t) => t.amount && t.amount > BigInt(0))
       .map((tokenBalance) => {
         const humanReadableBalance = getBalance(tokenBalance);
-        const priceUSD = parseFloat(tokenBalance.priceUSD);
-        const totalPriceUSD = isNaN(priceUSD)
-          ? 0
-          : humanReadableBalance * priceUSD;
         const chain = chains.find((c) => c.id === tokenBalance.chainId);
-
-        return {
-          address: tokenBalance.address,
-          name: tokenBalance.name,
-          symbol: tokenBalance.symbol,
-          decimals: tokenBalance.decimals,
-          logo: tokenBalance.logoURI,
-          chain: {
-            chainId: tokenBalance.chainId,
-            chainKey: chain?.key ?? chain?.name ?? '',
-          },
-          balance: humanReadableBalance,
-          totalPriceUSD,
-        };
+        return transformToPortfolioToken(
+          tokenBalance,
+          chain,
+          humanReadableBalance,
+        );
       });
 
     const roundPriceUSD = detailedBalances.reduce(

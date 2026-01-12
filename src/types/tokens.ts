@@ -6,3 +6,7 @@ export interface PortfolioToken extends Token {
   totalPriceUSD: number;
   relatedTokens?: Omit<PortfolioToken, 'relatedTokens'>[];
 }
+
+export type PortfolioTokenWithRelated = PortfolioToken & {
+  relatedTokens: Omit<PortfolioToken, 'relatedTokens'>[];
+};
