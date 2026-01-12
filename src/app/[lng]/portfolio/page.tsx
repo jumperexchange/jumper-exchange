@@ -1,3 +1,4 @@
+import { pageMetadataFields, pageOpenGraph } from '@/app/lib/metadata';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -5,10 +6,14 @@ import { PortfolioPage } from 'src/app/ui/portfolio/PortfolioPage';
 import { PortfolioPageSkeleton } from 'src/app/ui/portfolio/PortfolioPageSkeleton';
 
 export const metadata: Metadata = {
-  title: 'Jumper Portfolio',
-  description: `Manage your Jumper portfolio and track your assets across all chains.`,
+  title: pageMetadataFields.portfolio.title,
+  description: pageMetadataFields.portfolio.description,
   alternates: {
     canonical: `${getSiteUrl()}${AppPaths.Portfolio}`,
+  },
+  openGraph: {
+    ...pageOpenGraph.portfolio,
+    url: `${getSiteUrl()}${AppPaths.Portfolio}`,
   },
 };
 

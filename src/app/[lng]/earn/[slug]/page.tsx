@@ -1,4 +1,6 @@
+import { pageMetadataFields, pageOpenGraph } from '@/app/lib/metadata';
 import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
+import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
@@ -21,11 +23,21 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   console.log('20. Earn page metadata');
+  const { slug } = await params;
 
-  // TODO: LF-14987: Implement Metadata
+  const openGraph: Metadata['openGraph'] = {
+    ...pageOpenGraph.earn,
+    url: `${getSiteUrl()}${AppPaths.Earn}/${slug}`,
+  };
+
+  // TODO: LF-14987: Implement Metadata; use pageMetadataFields.earnOpportunity.title properly
   return {
-    title: 'Jumper Earn',
-    description: 'Jumper Earn',
+    title: pageMetadataFields.earn.title,
+    description: pageMetadataFields.earn.description,
+    alternates: {
+      canonical: `${getSiteUrl()}${AppPaths.Earn}/${slug}`,
+    },
+    openGraph,
   };
 }
 

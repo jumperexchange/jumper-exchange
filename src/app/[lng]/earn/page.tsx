@@ -1,13 +1,18 @@
+import { pageMetadataFields, pageOpenGraph } from '@/app/lib/metadata';
 import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Jumper Earn Opportunities',
-  description: `Discover, interact, and grow in DeFi with Jumper's earning opportunities.`,
+  title: pageMetadataFields.earn.title,
+  description: pageMetadataFields.earn.description,
   alternates: {
     canonical: `${getSiteUrl()}${AppPaths.Earn}`,
+  },
+  openGraph: {
+    ...pageOpenGraph.earn,
+    url: `${getSiteUrl()}${AppPaths.Earn}`,
   },
 };
 
