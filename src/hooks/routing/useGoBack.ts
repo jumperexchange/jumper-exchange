@@ -1,11 +1,11 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { AppPaths } from 'src/const/urls';
-import { useEarnSearchParamsStorage } from '../../stores/earn/useStoreQueryStates';
+import { useSearchParamsStorageFor } from '../../stores/earn/useStoreQueryStates';
+import { type AppPaths } from '@/const/urls';
 
 export const useGoBack = (fallbackPath: AppPaths) => {
   const router = useRouter();
-  const { query: lastEarnQuery } = useEarnSearchParamsStorage();
+  const lastSearchParams = useSearchParamsStorageFor(fallbackPath);
   const handleGoBack = useCallback(() => {
     const referrer = document.referrer;
     const isInternalNavigation =
@@ -13,13 +13,9 @@ export const useGoBack = (fallbackPath: AppPaths) => {
     if (isInternalNavigation) {
       router.back();
     } else {
-      if (fallbackPath === AppPaths.Earn) {
-        const queryString = lastEarnQuery ? `?${lastEarnQuery}` : '';
-        router.push(`${fallbackPath}${queryString}`);
-        return;
-      }
-      router.push(fallbackPath);
+      const queryString = lastSearchParams ? `?${lastSearchParams}` : '';
+      router.push(`${fallbackPath}${queryString}`);
     }
-  }, [lastEarnQuery, fallbackPath, router]);
+  }, [lastSearchParams, fallbackPath, router]);
   return handleGoBack;
 };

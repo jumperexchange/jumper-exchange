@@ -2,30 +2,41 @@
 import { create } from 'zustand';
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { AppPaths } from '@/const/urls';
 
 interface QueryStateStoreType {
-  query: string | undefined;
+  query: Partial<Record<AppPaths, string | undefined>>;
 }
 
-const earnSearchParamsStore = create<QueryStateStoreType>((set) => ({
-  query: undefined,
+const searchParamsStore = create<QueryStateStoreType>((set) => ({
+  query: {},
 }));
 
-export const useEarnSearchParamsStorage = () =>
-  earnSearchParamsStore((state) => state);
+export const useSearchParamsStorage = () => searchParamsStore((state) => state);
+export const useSearchParamsStorageFor = (appPath: AppPaths) =>
+  searchParamsStore((state) => state).query[appPath];
 
-export const getEarnSearchParamsStorage = () => {
-  return earnSearchParamsStore.getState();
+export const getSearchParamsStorage = () => {
+  return searchParamsStore.getState();
 };
 
-export const useStoreEarnSearchParams = () => {
+export const useStoreSearchParams = () => {
   const searchParams = useSearchParams();
   const route = usePathname();
-  const { query } = useEarnSearchParamsStorage();
 
   useEffect(() => {
-    if (route.match(/^\/[^/]+\/earn$/)) {
-      earnSearchParamsStore.setState({ query: searchParams.toString() });
+    const routeMatch = route.match(/^\/[a-zA-Z]+(\/[a-zA-Z]+)$/);
+    if (routeMatch) {
+      const pagePath = routeMatch[1];
+      const isValidPagePath = pagePath in AppPaths;
+      if (!isValidPagePath) {
+        throw new Error('Invalid page path for storing search params');
+      }
+      searchParamsStore.setState((state) => ({
+        query: { ...state.query, [pagePath]: searchParams.toString() },
+      }));
+    } else {
+      throw new Error('Invalid page path for storing search params');
     }
-  }, [query, searchParams, route]);
+  }, [searchParams, route]);
 };
