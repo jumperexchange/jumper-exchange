@@ -24,12 +24,14 @@ import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
   zapData?: ZapDataResponse | null;
+  refetchWithdrawToken?: () => void;
 }
 
 export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   zapData,
   customInformation,
   ctx,
+  refetchWithdrawToken,
 }) => {
   const projectData = useMemo(() => {
     return customInformation?.projectData;
@@ -88,16 +90,28 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
   useEffect(() => {
+    function onRouteExecutionCompleted() {
+      refetchWithdrawToken?.();
+    }
     const onRouteContactSupport = () => {
       setSupportModalState(true);
     };
 
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionCompleted,
+      onRouteExecutionCompleted,
+    );
+
     widgetEvents.on(WidgetEvent.ContactSupport, onRouteContactSupport);
 
     return () => {
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionCompleted,
+        onRouteExecutionCompleted,
+      );
       widgetEvents.off(WidgetEvent.ContactSupport, onRouteContactSupport);
     };
-  }, [widgetEvents, setSupportModalState]);
+  }, [widgetEvents, refetchWithdrawToken, setSupportModalState]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 

@@ -47,6 +47,9 @@ export const StyledSelectorContentContainer = styled(Box)(({ theme }) => ({
 export const StyledLabelContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'size',
 })<BaseSizeProps>(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(0.5),
   padding: theme.spacing(0.5, 1),
   variants: [
     {

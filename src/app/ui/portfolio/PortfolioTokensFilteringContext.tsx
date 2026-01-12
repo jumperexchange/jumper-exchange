@@ -8,8 +8,6 @@ import {
   useState,
 } from 'react';
 import { useQueryStates } from 'nuqs';
-import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
-import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import type { CacheToken } from 'src/types/portfolio';
 import { isEqual } from 'lodash';
 import {
@@ -30,6 +28,7 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
+import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 
 export interface PortfolioTokensFilteringContextType extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;
@@ -93,17 +92,15 @@ export const PortfolioTokensFilteringProvider = ({
     isSuccess,
     data: allData,
     accounts: portfolioAccounts,
-  } = usePortfolioTokens();
-
-  const filteredData = useTokensWithoutLpPositions(allData ?? []);
+  } = usePortfolioDisplayTokens();
 
   const stats = useMemo((): PortfolioTokensFilteringParams => {
-    if (filteredData.length === 0) {
+    if (allData.length === 0) {
       return EMPTY_TOKENS_FILTERING_PARAMS;
     }
 
-    return extractTokensFilteringParams(filteredData, portfolioAccounts);
-  }, [filteredData, portfolioAccounts]);
+    return extractTokensFilteringParams(allData, portfolioAccounts);
+  }, [allData, portfolioAccounts]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -134,8 +131,6 @@ export const PortfolioTokensFilteringProvider = ({
       order,
     );
   }, [queriesByAddress, filter, sortBy, order]);
-
-  const filteredSortedData = useTokensWithoutLpPositions(sortedData);
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<PortfolioTokensFilter>) => {
@@ -175,9 +170,9 @@ export const PortfolioTokensFilteringProvider = ({
     filter,
     updateFilter,
     clearFilters,
-    data: filteredSortedData,
+    data: sortedData,
     isLoading: isFetching || !isSuccess,
-    isEmpty: !isFetching && filteredData.length === 0,
+    isEmpty: !isFetching && allData.length === 0,
     ...stats,
   };
 

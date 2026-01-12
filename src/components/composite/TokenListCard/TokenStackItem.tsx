@@ -9,11 +9,14 @@ import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 import { StyledContent } from './TokenListCard.styles';
 import type { MinimalToken } from 'src/types/tokens';
 import type { TokenStackConfig } from './constants';
+import type { ResponsiveValue } from '@/types/responsive';
+import { getResponsiveValue } from './utils';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface TokenStackItemProps {
   token: MinimalToken;
   config: TokenStackConfig;
-  chainsLimit: number;
+  chainsLimit: ResponsiveValue<number>;
   chainsSpacing: number;
   isClickable: boolean;
   onClick: () => void;
@@ -28,6 +31,8 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const resolvedChainsLimit = getResponsiveValue(chainsLimit, isMobile);
 
   return (
     <StyledContent
@@ -46,7 +51,7 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
         chainsPlacement={EntityChainStackChainsPlacement.Inline}
         chainsSize={config.chainsSize}
         chainsInlineSize={config.chainsInlineSize}
-        chainsLimit={chainsLimit}
+        chainsLimit={resolvedChainsLimit}
         content={{
           title: token.symbol,
           titleVariant: config.titleVariant,
@@ -58,10 +63,12 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
         }}
       />
       <TitleWithHint
-        title={t('format.currency', { value: token.totalPriceUSD })}
+        title={t(`format.${isMobile ? 'currencyCompact' : 'currency'}`, {
+          value: token.totalPriceUSD,
+        })}
         titleVariant={config.titleVariant}
         hintVariant={config.descriptionVariant}
-        hint={`${t('format.decimal', { value: token.balance })} ${token.symbol}`}
+        hint={`${t(`format.${isMobile ? 'decimalCompact' : 'decimal'}`, { value: token.balance })} ${token.symbol}`}
         sx={{ textAlign: 'right', alignSelf: 'center' }}
         gap={config.infoContainerGap}
       />
