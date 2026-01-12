@@ -1,7 +1,7 @@
 'use client';
 import { create } from 'zustand';
 import { useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 interface QueryStateStoreType {
   query: string | undefined;
@@ -20,9 +20,12 @@ export const getEarnSearchParamsStorage = () => {
 
 export const useStoreEarnSearchParams = () => {
   const searchParams = useSearchParams();
+  const route = usePathname();
   const { query } = useEarnSearchParamsStorage();
 
   useEffect(() => {
-    earnSearchParamsStore.setState({ query: searchParams.toString() });
-  }, [query, searchParams]);
+    if (route.match(/^\/[^/]+\/earn$/)) {
+      earnSearchParamsStore.setState({ query: searchParams.toString() });
+    }
+  }, [query, searchParams, route]);
 };
