@@ -6,6 +6,8 @@ permissions:
   checks: write
   pull-requests: write
   contents: write
+  pages: write
+  id-token: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -159,6 +161,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       page_url: ${{ steps.set-url.outputs.page_url }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - name: Download HTML report
@@ -176,13 +181,19 @@ jobs:
           fi
           echo "destination=$DEST_DIR" >> "$GITHUB_OUTPUT"
           echo "Report will be published to: $DEST_DIR"
-      - name: Deploy report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Prepare report for Pages
+        run: |
+          mkdir -p pages-artifact/${{ steps.report-dest.outputs.destination }}
+          cp -r playwright-report/* pages-artifact/${{ steps.report-dest.outputs.destination }}/
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./playwright-report
-          destination_dir: ${{ steps.report-dest.outputs.destination }}
+          path: ./pages-artifact
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
       - name: Set page URL
         id: set-url
         run: |
@@ -191,7 +202,9 @@ jobs:
           else
             REPORT_PATH="${{ github.run_id }}"
           fi
-          PAGE_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$REPORT_PATH/"
+          # Extract repo name from github.repository (format: owner/repo)
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          PAGE_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/${REPORT_PATH}/"
           echo "page_url=$PAGE_URL" >> "$GITHUB_OUTPUT"
           echo "Report URL: $PAGE_URL"
       - name: Add report link to summary
@@ -202,7 +215,9 @@ jobs:
           else
             REPORT_PATH="${{ github.run_id }}"
           fi
-          PAGES_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/$REPORT_PATH/"
+          # Extract repo name from github.repository (format: owner/repo)
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          PAGES_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/${REPORT_PATH}/"
           echo "## 📊 Playwright Test Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "🔗 **[View Report](${PAGES_URL})**" >> $GITHUB_STEP_SUMMARY
