@@ -38,6 +38,7 @@ export const EarnDetailsActions = ({
   const {
     depositTokenData: depositAmount,
     refetchDepositToken: refetchDepositAmount,
+    isLoadingDepositTokenData: isLoadingDepositTokenData,
   } = useGetZapInPoolBalance(
     accountAddress as Hex,
     earnOpportunity.lpToken.address as Hex,
@@ -51,12 +52,17 @@ export const EarnDetailsActions = ({
 
     // If the deposit amount is defined, we don't need to use the positions data which might be outdated
     // The depositAmountUSD will be derived from the deposit amount
-    if (depositAmount !== undefined) {
+    if (isLoadingDepositTokenData || depositAmount !== undefined) {
       return undefined;
     }
 
     return positionsData.data[0]?.netUsd;
-  }, [depositAmount, positionsData, isLoadingPositions]);
+  }, [
+    depositAmount,
+    isLoadingDepositTokenData,
+    positionsData,
+    isLoadingPositions,
+  ]);
 
   const hasDeposited = !!depositAmount || !!depositAmountUSD;
 
