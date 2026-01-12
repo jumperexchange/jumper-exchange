@@ -1,10 +1,10 @@
 'use client';
 import type { SettingsState, SettingsStore } from '@/types/settings';
 import type { PropsWithChildren } from 'react';
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
 import { shallow } from 'zustand/shallow';
 import { createSettingsStore } from './createSettingsStore';
-import { useColorScheme, useMediaQuery } from '@mui/material';
+import { useColorScheme } from '@mui/material';
 
 export const SettingsStoreContext = createContext<SettingsStore | null>(null);
 

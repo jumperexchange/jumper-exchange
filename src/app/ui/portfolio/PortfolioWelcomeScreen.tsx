@@ -1,25 +1,27 @@
 'use client';
 
-import { CustomColor } from '@/components/CustomColorTypography.style';
-import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import Typography from '@mui/material/Typography';
 import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
+import { CustomColor } from '@/components/CustomColorTypography.style';
 import { ToolCards } from '@/components/WelcomeScreen/ToolCard/ToolCards';
 import {
   ContentWrapper,
   WelcomeContent,
   WelcomeScreenSubtitle,
 } from '@/components/WelcomeScreen/WelcomeScreen.style';
+import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { AppPaths } from '@/const/urls';
-import Typography from '@mui/material/Typography';
+import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import {
   PortfolioWelcomeScreenButton,
   PortfolioWelcomeScreenButtonsContainer,
   PortfolioWelcomeScreenLink,
 } from './PortfolioPage.styles';
+import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 
 interface PortfolioWelcomeScreenProps {
   onClose: () => void;
@@ -28,28 +30,42 @@ interface PortfolioWelcomeScreenProps {
 export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
   onClose,
 }) => {
+  const { portfolioWelcomeScreenClosed, setPortfolioWelcomeScreenClosed } =
+    usePortfolioWelcomeScreen();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
+  const { account } = useAccount();
+  const { openWalletMenu } = useWalletMenu();
+
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
   useEffect(() => {
-    trackEvent({
-      category: TrackingCategory.Portfolio,
-      action: TrackingAction.ShowWelcomeMessageScreen,
-      label: 'open-welcome-screen',
-    });
-  }, [trackEvent]);
+    if (portfolioWelcomeScreenClosed) {
+      trackEvent({
+        category: TrackingCategory.Portfolio,
+        action: TrackingAction.ShowWelcomeMessageScreen,
+        label: 'open-portfolio-welcome-screen',
+      });
+    }
+  }, [trackEvent, portfolioWelcomeScreenClosed]);
 
   const handleGetStarted: MouseEventHandler<HTMLButtonElement> = (event) => {
+    if (!account.address) {
+      openWalletMenu();
+    }
+
     event.stopPropagation();
     onClose();
-    trackEvent({
-      category: TrackingCategory.Portfolio,
-      action: TrackingAction.CloseWelcomeScreen,
-      label: 'enter_portfolio_welcome_screen',
-      enableAddressable: true,
-    });
+    if (!portfolioWelcomeScreenClosed) {
+      setPortfolioWelcomeScreenClosed(true);
+      trackEvent({
+        category: TrackingCategory.Portfolio,
+        action: TrackingAction.CloseWelcomeScreen,
+        label: 'enter_portfolio_welcome_screen',
+        enableAddressable: true,
+      });
+    }
   };
 
   return (

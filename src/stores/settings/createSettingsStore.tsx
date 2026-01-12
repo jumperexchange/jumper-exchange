@@ -1,10 +1,10 @@
-import { defaultSettings } from '@/config/config';
-import type { SettingsProps, SettingsState } from '@/types/settings';
+import Cookies from 'universal-cookie';
 import type { StateCreator } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import Cookies from 'universal-cookie';
+import { defaultSettings } from '@/config/config';
+import type { SettingsProps, SettingsState } from '@/types/settings';
 
 export const createSettingsStore = (props: Partial<SettingsProps>) =>
   createWithEqualityFn(
@@ -33,9 +33,18 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
         },
 
         // Portfolio Welcome Screen
-        setPortfolioWelcomeScreenClosed: (shown: boolean) => {
+        setPortfolioWelcomeScreenClosed: (
+          address: string | undefined,
+          shown: boolean,
+        ) => {
+          if (!address) {
+            return;
+          }
           set({
-            portfolioWelcomeScreenClosed: shown,
+            portfolioWelcomeScreenClosed: {
+              ...(get() as SettingsProps).portfolioWelcomeScreenClosed,
+              [address]: shown,
+            },
           });
         },
 
@@ -55,7 +64,7 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
       }),
       {
         name: 'jumper-store',
-        version: 3,
+        version: 4,
         migrate: (persistedState: any, version: number) => {
           if (version === 0) {
             const newStore = { ...persistedState };
@@ -78,6 +87,15 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
 
             console.debug('welcomeScreenClosed cookie migrated');
 
+            return newStore;
+          }
+          if (version === 3) {
+            const newStore = { ...persistedState };
+            if (
+              typeof persistedState.portfolioWelcomeScreenClosed === 'boolean'
+            ) {
+              newStore.portfolioWelcomeScreenClosed = {};
+            }
             return newStore;
           }
           return persistedState;

@@ -7,7 +7,7 @@ export interface SettingsProps {
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
-  portfolioWelcomeScreenClosed: boolean;
+  portfolioWelcomeScreenClosed: Record<string, boolean>;
 }
 
 export interface SettingsActions {
@@ -24,7 +24,10 @@ export interface SettingsActions {
   setWelcomeScreenClosed: (shown: boolean) => void;
 
   // Portfolio Welcome Screen
-  setPortfolioWelcomeScreenClosed: (shown: boolean) => void;
+  setPortfolioWelcomeScreenClosed: (
+    address: string | undefined,
+    shown: boolean,
+  ) => void;
 }
 
 export type SettingsState = SettingsActions & SettingsProps;

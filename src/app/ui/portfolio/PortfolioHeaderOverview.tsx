@@ -15,15 +15,14 @@ import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPos
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
+import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 import { useMemo } from 'react';
 import { getNumberParts } from '@/utils/numbers/getNumberParts';
 import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 
 export const PortfolioHeaderOverview = () => {
-  const portfolioWelcomeScreenClosed = useSettingsStore(
-    (state) => state.portfolioWelcomeScreenClosed,
-  );
+  const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { t } = useTranslation();
   const theme = useTheme();
   const connectedAddresses = useConnectedEvmAddresses();
