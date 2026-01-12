@@ -125,6 +125,7 @@ export enum TrackingAction {
   ClickMissionCta = 'action_click_mission_cta',
   ClickMissionCtaSteps = 'action_click_mission_cta_steps',
   ClickMissionVerify = 'action_click_mission_task_verify',
+  MissionPageOverview = 'action_mission_page_overview',
 
   // Pagination
   ClickPagination = 'action_click_pagination',
@@ -141,6 +142,7 @@ export enum TrackingAction {
   // Earn
   ClickEarnDepositButton = 'action_click_earn_deposit_button',
   ClickEarnWithdrawButton = 'action_click_earn_withdraw_button',
+  EarnPageOverview = 'action_earn_page_overview',
 }
 
 export enum TrackingEventDataAction {
@@ -320,6 +322,7 @@ export enum TrackingEventParameter {
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
   MissionTaskInputPrepend = 'param_mission_task_input_field_',
+  MissionSlug = 'param_mission_slug',
 
   // Search
   SearchValue = 'param_search_value',
