@@ -1,4 +1,8 @@
-import { pageMetadataFields, pageOpenGraph } from '@/app/lib/metadata';
+import {
+  pageMetadataFields,
+  pageOpenGraph,
+  pageTwitter,
+} from '@/app/lib/metadata';
 import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
@@ -38,6 +42,9 @@ export async function generateMetadata({
       canonical: `${getSiteUrl()}${AppPaths.Earn}/${slug}`,
     },
     openGraph,
+    twitter: {
+      ...pageTwitter.earn,
+    },
   };
 }
 

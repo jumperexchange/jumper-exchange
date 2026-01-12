@@ -1,4 +1,8 @@
-import { pageMetadataFields, pageOpenGraph } from '@/app/lib/metadata';
+import {
+  pageMetadataFields,
+  pageOpenGraph,
+  pageTwitter,
+} from '@/app/lib/metadata';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -17,6 +21,9 @@ export const metadata: Metadata = {
   openGraph: {
     ...pageOpenGraph.profile,
     url: `${getSiteUrl()}${AppPaths.Profile}`,
+  },
+  twitter: {
+    ...pageTwitter.profile,
   },
 };
 

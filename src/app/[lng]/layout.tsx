@@ -21,7 +21,11 @@ import type { ReactNode } from 'react';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { SettingsStoreProvider } from 'src/stores/settings';
-import { pageOpenGraph, pageMetadataFields } from '../lib/metadata';
+import {
+  pageOpenGraph,
+  pageMetadataFields,
+  pageTwitter,
+} from '../lib/metadata';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
 
 export const metadata: Metadata = {
@@ -35,12 +39,7 @@ export const metadata: Metadata = {
     url: `${getSiteUrl()}`,
   },
   twitter: {
-    // Twitter metadata
-    // cardType: 'summary_large_image',
-    site: '@JumperExchange',
-    title: pageMetadataFields.default.title, // Twitter title
-    description: pageMetadataFields.default.description,
-    images: 'https://jumper.exchange/preview.png', // Twitter image
+    ...pageTwitter.default,
   },
   icons: {
     // Icons metadata

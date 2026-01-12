@@ -1,4 +1,8 @@
-import { pageMetadataFields, pageOpenGraph } from '@/app/lib/metadata';
+import {
+  pageMetadataFields,
+  pageOpenGraph,
+  pageTwitter,
+} from '@/app/lib/metadata';
 import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
@@ -13,6 +17,9 @@ export const metadata: Metadata = {
   openGraph: {
     ...pageOpenGraph.earn,
     url: `${getSiteUrl()}${AppPaths.Earn}`,
+  },
+  twitter: {
+    ...pageTwitter.earn,
   },
 };
 
