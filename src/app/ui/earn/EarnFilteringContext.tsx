@@ -27,6 +27,7 @@ import type {
 } from './types';
 import { EarnFilterTab, SortByOptions } from './types';
 import type { NullableFields } from 'src/types/internal';
+import { useStoreEarnSearchParams } from '@/stores/earn/useStoreQueryStates';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -78,6 +79,7 @@ export const EarnFilteringProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  useStoreEarnSearchParams();
   const [searchParamsState, setSearchParamsState] = useQueryStates(
     searchParamsParsers,
     {
