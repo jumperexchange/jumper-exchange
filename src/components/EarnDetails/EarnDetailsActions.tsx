@@ -49,10 +49,16 @@ export const EarnDetailsActions = ({
       return;
     }
 
-    return positionsData.data[0]?.netUsd;
-  }, [positionsData, isLoadingPositions]);
+    // If the deposit amount is defined, we don't need to use the positions data which might be outdated
+    // The depositAmountUSD will be derived from the deposit amount
+    if (depositAmount !== undefined) {
+      return;
+    }
 
-  const hasDeposited = !!depositAmountUSD || !!depositAmount;
+    return positionsData.data[0]?.netUsd;
+  }, [depositAmount, positionsData, isLoadingPositions]);
+
+  const hasDeposited = !!depositAmount || !!depositAmountUSD;
 
   const handleRefreshBalances = () => {
     refetchPositions();
