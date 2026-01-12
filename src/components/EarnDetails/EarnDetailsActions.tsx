@@ -46,13 +46,19 @@ export const EarnDetailsActions = ({
 
   const depositAmountUSD = useMemo(() => {
     if (isLoadingPositions || !positionsData || !positionsData.data) {
-      return;
+      return undefined;
+    }
+
+    // If the deposit amount is defined, we don't need to use the positions data which might be outdated
+    // The depositAmountUSD will be derived from the deposit amount
+    if (depositAmount !== undefined) {
+      return undefined;
     }
 
     return positionsData.data[0]?.netUsd;
-  }, [positionsData, isLoadingPositions]);
+  }, [depositAmount, positionsData, isLoadingPositions]);
 
-  const hasDeposited = !!depositAmountUSD || !!depositAmount;
+  const hasDeposited = !!depositAmount || !!depositAmountUSD;
 
   const handleRefreshBalances = () => {
     refetchPositions();
