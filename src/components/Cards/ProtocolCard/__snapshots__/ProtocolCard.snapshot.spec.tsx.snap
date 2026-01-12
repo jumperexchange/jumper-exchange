@@ -22,7 +22,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
         <p
           class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
         >
-          morpho
+          Morpho
         </p>
       </div>
     </div>
@@ -119,7 +119,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
         <p
           class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
         >
-          morpho
+          Morpho
         </p>
       </div>
     </div>
@@ -235,7 +235,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
         <p
           class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
         >
-          this is a very long protocol name that should be truncated
+          This is a very long protocol name that should be truncated
         </p>
       </div>
     </div>
