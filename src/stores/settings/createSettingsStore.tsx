@@ -92,7 +92,7 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
           if (version === 3) {
             const newStore = { ...persistedState };
             if (
-              typeof persistedState.portfolioWelcomeScreenClosed !== 'object'
+              typeof persistedState.portfolioWelcomeScreenClosed === 'boolean'
             ) {
               newStore.portfolioWelcomeScreenClosed = {};
             }
