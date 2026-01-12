@@ -14,13 +14,14 @@ import type { CacheToken } from '@/types/portfolio';
 import { zeroAddress } from 'viem';
 import type { ChainId } from '@lifi/sdk';
 import { useChains } from '../useChains';
+import { useCallback } from 'react';
 
 export const usePortfolioTracking = () => {
   const { trackEvent } = useUserTracking();
   const { getChainById } = useChains();
 
-  return {
-    trackPortfolioPageOverviewEvent: (
+  const trackPortfolioPageOverviewEvent = useCallback(
+    (
       addresses: string[],
       tokens: MinimalToken[],
       defiPositionGroups: DefiPosition[][],
@@ -37,21 +38,23 @@ export const usePortfolioTracking = () => {
         data: trackingData,
       });
     },
-    trackPortfolioBalanceLoadedEvent: () => {
-      trackEvent({
-        category: TrackingCategory.Wallet,
-        action: TrackingAction.PortfolioLoaded,
-        label: 'portfolio_balance_loaded',
-        data: {
-          [TrackingEventParameter.Status]: 'success',
-          [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-        },
-      });
-    },
-    trackPortfolioMenuOverviewEvent: (
-      totalValue: number,
-      data: CacheToken[],
-    ) => {
+    [trackEvent],
+  );
+
+  const trackPortfolioBalanceLoadedEvent = useCallback(() => {
+    trackEvent({
+      category: TrackingCategory.Wallet,
+      action: TrackingAction.PortfolioLoaded,
+      label: 'portfolio_balance_loaded',
+      data: {
+        [TrackingEventParameter.Status]: 'success',
+        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+      },
+    });
+  }, [trackEvent]);
+
+  const trackPortfolioMenuOverviewEvent = useCallback(
+    (totalValue: number, data: CacheToken[]) => {
       const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
         chainsIds.map(
           (chainId) =>
@@ -72,5 +75,12 @@ export const usePortfolioTracking = () => {
         data: trackingData,
       });
     },
+    [trackEvent, getChainById],
+  );
+
+  return {
+    trackPortfolioPageOverviewEvent,
+    trackPortfolioBalanceLoadedEvent,
+    trackPortfolioMenuOverviewEvent,
   };
 };

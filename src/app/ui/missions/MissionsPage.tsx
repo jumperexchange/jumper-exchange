@@ -6,6 +6,7 @@ import { isBannerCampaign } from 'src/utils/isBannerCampaign';
 import { BannerCampaign } from './BannerCampaign/BannerCampaign';
 import { GridContainer } from 'src/components/Containers/GridContainer';
 import { MissionsSection } from './MissionsSection';
+import { MissionPageTracking } from '@/components/headless/tracking/MissionPageTracking';
 
 export const MissionsPage = async () => {
   const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all([
@@ -36,6 +37,7 @@ export const MissionsPage = async () => {
           />
         </GridContainer>
       </MissionsSection>
+      <MissionPageTracking />
     </>
   );
 };
