@@ -20,6 +20,6 @@ export const useGoBack = (fallbackPath: AppPaths) => {
       }
       router.push(fallbackPath);
     }
-  }, []);
+  }, [lastEarnQuery, fallbackPath, router]);
   return handleGoBack;
 };
