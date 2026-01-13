@@ -42,8 +42,8 @@
       "resources": "Recursos",
       "profile": "Perfil Jumper",
       "privacyPolicy": "Política de Privacidade",
-      "termsConditions": "",
-      "newsletter": ""
+      "termsConditions": "Termos e Condições",
+      "newsletter": "Boletim informativo"
     },
     "walletMenu": {
       "disconnect": "Desconectar",
@@ -81,6 +81,9 @@
   "discordBanner": {
     "ctaHeadline": "Entre no nosso Discord para saber mais",
     "ctaButton": "Entre no nosso Discord"
+  },
+  "badge": {
+    "updated": "Atualizado há {{time}} atrás"
   },
   "blog": {
     "title": "Dicas e tutoriais",
@@ -303,6 +306,7 @@
   "tooltips": {
     "tvl": "Valor total de ativos cripto depositados neste mercado.",
     "apy": "Taxa de retorno anual esperada dos tokens investidos.",
+    "rewardsApy": "Taxa de retorno anual esperada dos tokens de recompensas investidos.",
     "deposit": "O token em que o mercado está definido e o rendimento se acumula.",
     "deposited": "O token que você depositou neste mercado.",
     "boostedApy": "{{baseApy}}% é a taxa de retorno anual esperada dos tokens subjacentes investidos. O {{boostedApy}}% extra em recompensas - distribuído em outro token - são pagos exclusivamente para o participante desta campanha zap.",
@@ -315,10 +319,11 @@
     "chains_other": "As cadeias das quais você ganhará",
     "protocol": "O protocolo do qual você ganhará",
     "noPositionsToManage": "Você não tem nenhuma posição para gerenciar",
-    "capInDollar": ""
+    "capInDollar": "Capacidade de liquidez disponível do mercado"
   },
   "labels": {
     "apy": "APY",
+    "rewardsApy": "APY das Recompensas",
     "lockupPeriod": "Período de bloqueio",
     "tvl": "TVL",
     "assets_one": "Ativo",
@@ -328,7 +333,7 @@
     "chains_other": "Redes",
     "protocol": "Protocolo",
     "overview": "Visão geral",
-    "capInDollar": ""
+    "capInDollar": "Capacidade"
   },
   "earn": {
     "top": {
@@ -338,7 +343,7 @@
       "earnUpTo": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> por ano se for colocado em <protocol/>"
     },
     "copy": {
-      "forYouBasedOnActivity": "",
+      "forYouBasedOnActivity": "Escolhido a dedo de mais de {{totalMarkets}}+ mercados com base na atividade da sua conta",
       "forYouDefault": "Explore formas precisas e abrangentes de colocar seus ativos para trabalhar em {{totalMarkets}}+ mercados"
     },
     "sorting": {
@@ -357,66 +362,75 @@
       "protocol": "Protocolo",
       "tag": "Tipo",
       "asset": "Ativo",
-      "apy": "APY"
+      "apy": "APY",
+      "tvl": "TVL — Valor Total Bloqueado",
+      "rewards": {
+        "label": "Recompensas",
+        "withRewards": "Incluir apenas pools com recompensas"
+      }
     },
     "views": {
-      "viewBy": "",
+      "viewBy": "Visualizar por",
       "forYou": "Para você",
       "allMarkets": "Todos os mercados",
       "all": "Tudo",
-      "yourPositions": ""
+      "yourPositions": "Suas posições"
     },
     "relatedMarkets": {
       "title": "Mercados relacionados"
     },
     "riskDescriptions": {
-      "risk": "",
+      "risk": "Risco",
       "riskTag": {
-        "Basis Trading": "",
-        "Bridge": "",
-        "CDP": "",
-        "Credit": "",
-        "Farming": "",
-        "Lending": "",
-        "Liquid Staking": "",
-        "Liquidity": "",
-        "RWA": "",
-        "Staking": "",
-        "Structured": "",
-        "Synthetic": "",
-        "Yield Aggregator": ""
+        "Basis Trading": "Basis Trading pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: inversão da taxa de financiamento, compressão do spread, falhas de execução, risco de liquidação, risco de solvência na conversão, risco de contrato inteligente, volatilidade do mercado que atrapalha hedges, risco de contrapartida.",
+        "Bridge": "O provisionamento de liquidez na ponte pode enfrentar riscos como falha de mensagens entre cadeias, vulnerabilidade de contratos, comportamento de validadores, reorganizações de cadeia, escassez de liquidez, descolamento de ativos lastreados e insolvência de contrapartida.",
+        "CDP": "Estratégias de CDP podem enfrentar riscos, incluindo falhas de preços em colaterais, manipulação de oráculo, liquidações falhadas, volatilidade da taxa, concentração de colateral, mudanças no protocolo e descolamento de moedas lastreadas.",
+        "Credit": "Crédito pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: tomador de crédito padrão, insolvência de contraparte, desvalorização colateral, falha de liquidação, risco de liquidez, volatilidade da taxa de juros, brechas do contrato inteligente",
+        "Farming": "Estratégias de investimento podem enfrentar riscos como: volatilidade de um token de recompensa, perda impermanente, diluição de emissões, migração de liquidez, spread de execução e brechas de contrato inteligente.",
+        "Lending": "Empréstimos podem encontrar vários vetores de risco que poderiam influenciar a performance do cofre: manipulação de oráculo, falhas de preço dos colaterais levando a eventos de liquidação de tomadores de emprestimos, restrições de retirada de liquidez, descolamentos, instabilidade de juros, brechas de contrato inteligente",
+        "Liquid Staking": "Liquid Staking pode encontrar vários vetores de risco que poderiam influenciar o desempenho do cofre: eventos de penalização, tempo de inatividade de validador, instabilidade no pareamento de token de stake líquido, escassez de liquidez, brechas de contrato inteligente",
+        "Liquidity": "O provisionamento de liquidez pode enfrentar riscos, incluindo perda impermanente, desequilíbrio no pool, drenagem de liquidez, volatilidade perturbando intervalos, falhas do oráculo e brechas de contrato inteligente.",
+        "RWA": "Estratégias RWA podem enfrentar riscos como inadimplência do emissor, problemas legais ou jurisdicionais, falha da custódia, atrasos no resgate, restrições de liquidez e diferenças de valoração entre mercados on-chain e off-chain.",
+        "Staking": "Estratégias de Staking podem enfrentar riscos, incluindo inatividade do validador, penalização, instabilidade no pareamento de LST, atrasos na retirada de LST, mudanças na governação, e exploração de contratos inteligentes.",
+        "Structured": "Produtos estruturados podem enfrentar riscos como erros de modelo, mudanças de volatilidade, violações de barreiras, rebalanceamento do slippage, lacunas de liquidez, inadimplência da contraparte e falhas no oráculo.",
+        "Synthetic": "Synthetic pode encontrar vários vetores de risco que poderiam influenciar a performance do cofre: manipulação de oráculo, sub-colateralização, deslocamentos de mercado afetando pareamento, lacunas de liquidez, risco de contraparte, exploits de contrato inteligentes",
+        "Yield Aggregator": "Agregador de Rendimento pode encontrar vários vetores de risco que podem influenciar a performance do cofre: falhas na lógica de auto-composto, erros de reequilíbrio, desconfiguração de estratégia, risco de dependência de protocolos integrados, multisig ou governança corrompida, risco de stake de contrato inteligente entre protocolos subjacentes"
       },
-      "website": ""
+      "website": "página web"
     },
     "overview": {
       "updated": "Atualizado há {{time}} atrás"
     },
     "actions": {
       "viewAllMarkets": "Visualizar todos os mercados",
-      "seeMore": "veja mais"
+      "seeMore": "veja mais",
+      "goToPortfolio": "Ir para Portfólio"
     },
     "position": {
-      "label": ""
+      "label": "Sua posição"
+    },
+    "missingPosition": {
+      "title": "Faltando uma posição?",
+      "description": "Verifique seus tokens no portfólio antes de entrar em contato com o suporte."
     },
     "emptyList": {
       "yourPositions": {
-        "title": "",
-        "description": "",
-        "viewAllMarkets": ""
+        "title": "Sem posições",
+        "description": "Parece que você ainda não tem nenhuma posição ativa em nenhum mercado.\nSe você acha que esta faltando uma posição, tente visitar seu portfólio.",
+        "viewAllMarkets": "Visualizar todos os mercados"
       },
       "noResults": {
-        "title": "",
-        "description": "",
-        "clearFilters": ""
+        "title": "Sem resultados",
+        "description": "Infelizmente, não há resultados para sua pesquisa, tente limpar seus filtros.",
+        "clearFilters": "Limpar filtros"
       }
     }
   },
   "portfolio": {
     "welcome": {
-      "title": "Uma plataforma, tudo de DeFi",
-      "subtitle": "<strong>Faça ponte entre cadeias, troque, ganhe,</strong> e <strong>gerencie</strong> todo o seu portfólio com <strong>Jumper</strong>",
-      "getStarted": "Comece Agora",
-      "explorePass": "Explore o passe Jumper"
+      "title": "",
+      "subtitle": "",
+      "getStarted": "Comece Agora"
     },
     "overviewCard": {
       "title": "Portfólio",
@@ -462,6 +476,10 @@
           "months_other": "{{count}} meses atrás",
           "years_one": "{{count}} ano atrás",
           "years_other": "{{count}} anos atrás"
+        },
+        "tooltip": {
+          "address": "Mostrar contrato",
+          "info": "Visualizar detalhes do ganho"
         }
       },
       "actions": {
@@ -494,31 +512,31 @@
     "sorting": {
       "sortBy": "Ordenar por",
       "sort": "Ordenar",
-      "totalValue": "",
+      "totalValue": "Valor Total",
       "chain": "Rede",
       "asset": "Ativo"
     },
     "views": {
-      "viewBy": "",
-      "tokens": "",
-      "defiProtocols": ""
+      "viewBy": "Visualizar por",
+      "tokens": "Tokens",
+      "defiProtocols": "Protocolos DeFi"
     }
   },
   "newsletter": {
     "welcome": {
-      "title": "",
-      "subtitle": "",
-      "hint": "",
-      "subscribe": "",
-      "emailPlaceholder": "",
+      "title": "Faça. O. Salto.",
+      "subtitle": "Receba as últimas notícias e atualizações diretamente de <strong>Jumper.</strong>",
+      "hint": "Ao se inscrever em nosso boletim informativo, você está concordando implicitamente com os <0>termos de serviço</0> e a <1>política de privacidade</1> da Jumper. Você pode cancelar a inscrição a qualquer momento do link no rodapé do e-mail.",
+      "subscribe": "Inscrever-se",
+      "emailPlaceholder": "Digite seu e-mail",
       "error": {
-        "email": "",
-        "emailLength": "",
-        "required": "",
-        "unknown": ""
+        "email": "Este não é um endereço de e-mail válido",
+        "emailLength": "O e-mail não deve exceder 80 caracteres",
+        "required": "Este campo é obrigatório",
+        "unknown": "Ocorreu um erro desconhecido. Por favor, tente novamente."
       },
-      "pending": "",
-      "success": ""
+      "pending": "Confirmação de inscrição pendente...",
+      "success": "Boletim Informativo assinado com sucesso!"
     }
   },
   "widget": {
@@ -558,11 +576,11 @@
         "comingSoon": "Em breve",
         "embedded-multisig": {
           "title": "Sua carteira não é suportada atualmente",
-          "description": "Estamos trabalhando para adicionar suporte para carteiras incorporadas e de contrato inteligente. Por enquanto, por favor use uma carteira diferente para completar esta missão."
+          "description": "Estamos trabalhando para adicionar suporte em carteiras incorporadas e de contrato inteligente (incluindo SAFE). Por enquanto, por favor use uma carteira EOA para completar esta missão."
         },
         "non-evm": {
           "title": "Sua carteira não é suportada atualmente",
-          "description": "Estamos trabalhando para adicionar suporte para carteiras não-EVM. Por enquanto, por favor use uma carteira diferente para completar esta missão."
+          "description": "Estamos trabalhando para adicionar suporte em carteiras não-EVM. Por enquanto, por favor use uma carteira EVM (Ethereum) para completar esta missão."
         }
       }
     },
@@ -580,8 +598,8 @@
     "depositButtonLabel": "Depósito rápido",
     "withdrawButtonLabel": "Retirar",
     "managePositionsButtonLabel": "Gerenciar Posições",
-    "deposit": "",
-    "depositNow": ""
+    "deposit": "Depositar",
+    "depositNow": "Deposite agora"
   },
   "modal": {
     "perks": {
