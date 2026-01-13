@@ -1,10 +1,10 @@
 import type { TokenAmount, ExtendedChain } from '@lifi/sdk';
-import { formatUnits } from 'viem';
 import type { PortfolioToken } from '@/types/tokens';
+import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 
 export function getBalance(tokenBalance: Partial<TokenAmount>): number {
   return tokenBalance?.amount && tokenBalance?.decimals
-    ? Number(formatUnits(tokenBalance.amount, tokenBalance.decimals))
+    ? Number(formatTokenAmount(tokenBalance.amount, tokenBalance.decimals))
     : 0;
 }
 
@@ -43,10 +43,9 @@ export function transformToPortfolioToken<T extends TransformableToken>(
   formattedBalance: number,
   formattedTotalPriceUSD?: number,
 ): Omit<PortfolioToken, 'relatedTokens'> {
-  const priceUSD = parseFloat(token.priceUSD);
   const totalPriceUSD =
     formattedTotalPriceUSD ??
-    (isNaN(priceUSD) ? 0 : formattedBalance * priceUSD);
+    formatTokenPrice(formattedBalance.toString(), token.priceUSD);
 
   return {
     address: token.address,
