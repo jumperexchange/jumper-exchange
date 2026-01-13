@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { render } from '../../../../vitest.setup';
 
-import { HeroEarnCard } from './HeroEarnCard';
+import { EarnHeroCardCopyKey, HeroEarnCard } from './HeroEarnCard';
 import { commonArgs, heroEarnCardPrimaryAction } from './fixtures';
 import { AppPaths } from 'src/const/urls';
 
@@ -115,6 +115,27 @@ describe('HeroEarnCard snapshot', () => {
         {...commonArgs}
         href={`${AppPaths.Earn}/${commonArgs.data.slug}`}
       />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('hero card with MAXIMIZE_YOUR_REVENUE copy matches snapshot', async () => {
+    const { container } = render(
+      <HeroEarnCard
+        {...commonArgs}
+        copy={EarnHeroCardCopyKey.MAXIMIZE_YOUR_REVENUE}
+      />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('hero card with MAKE_THE_JUMP copy matches snapshot', async () => {
+    const { container } = render(
+      <HeroEarnCard {...commonArgs} copy={EarnHeroCardCopyKey.MAKE_THE_JUMP} />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('hero card with EARN_UP_TO copy matches snapshot', async () => {
+    const { container } = render(
+      <HeroEarnCard {...commonArgs} copy={EarnHeroCardCopyKey.EARN_UP_TO} />,
     );
     expect(container).toMatchSnapshot();
   });

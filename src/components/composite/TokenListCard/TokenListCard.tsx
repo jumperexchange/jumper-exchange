@@ -1,11 +1,5 @@
 import type { FC } from 'react';
 import { useState } from 'react';
-import {
-  EntityChainStackChainsPlacement,
-  EntityChainStackVariant,
-} from '../EntityChainStack/EntityChainStack.types';
-import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
-import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import {
@@ -13,11 +7,11 @@ import {
   StyledAccordionDetails,
   StyledAccordionSummary,
 } from './TokenListCard.styles';
-import { useTranslation } from 'react-i18next';
 import type { TokenListCardProps } from './TokenListCard.types';
 import { TokenListCardTokenSize } from './TokenListCard.types';
 import type { MinimalToken } from 'src/types/tokens';
-import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
+import { TOKEN_LIST_CARD_CONFIG } from './constants';
+import { TokenStackItem } from './TokenStackItem';
 
 export const TokenListCard: FC<TokenListCardProps> = ({
   token: portfolioToken,
@@ -25,70 +19,21 @@ export const TokenListCard: FC<TokenListCardProps> = ({
   onSelect,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { t } = useTranslation();
 
-  const isSmallVariant = size === TokenListCardTokenSize.SM;
-  const tokenSize = isSmallVariant ? AvatarSize.LG : AvatarSize.XXL;
-  const chainsSize = isSmallVariant ? AvatarSize.XXS : AvatarSize.SM;
-  const titleVariant = isSmallVariant ? 'bodySmallStrong' : 'bodyMediumStrong';
-  const descriptionVariant = isSmallVariant ? 'bodyXXSmall' : 'bodyXSmall';
-  const spacing = isSmallVariant ? 2 : 3;
-
+  const config = TOKEN_LIST_CARD_CONFIG[size];
   const hasMultipleChains =
     portfolioToken.relatedTokens && portfolioToken.relatedTokens.length > 1;
 
-  const handleMainTokenClick = (token: MinimalToken) => {
+  const handlePrimaryTokenClick = () => {
     if (!hasMultipleChains) {
-      onSelect?.(token);
+      onSelect?.(portfolioToken);
       return;
     }
-    setIsExpanded((prevExpanded) => !prevExpanded);
+    setIsExpanded((prev) => !prev);
   };
 
   const handleExpandedTokenClick = (token: MinimalToken) => {
     onSelect?.(token);
-  };
-
-  const renderTokenStack = (
-    token: MinimalToken,
-    onClick: (token: MinimalToken) => void,
-    hideCursor: boolean,
-  ) => {
-    return (
-      <Stack
-        direction="row"
-        spacing={2}
-        useFlexGap
-        justifyContent="space-between"
-        sx={{ width: '100%', cursor: hideCursor ? 'default' : 'pointer' }}
-        onClick={() => onClick(token)}
-        key={`${token.address}-${token.chain.chainId}`}
-      >
-        <EntityChainStack
-          variant={EntityChainStackVariant.TokenWithChains}
-          token={token}
-          tokenSize={tokenSize}
-          chainsPlacement={EntityChainStackChainsPlacement.Inline}
-          chainsSize={chainsSize}
-          chainsLimit={8}
-          content={{
-            title: token.symbol,
-            titleVariant,
-            descriptionVariant,
-          }}
-          spacing={{
-            chains: -0.8,
-          }}
-        />
-        <TitleWithHint
-          title={t('format.currency', { value: token.totalPriceUSD })}
-          titleVariant={titleVariant}
-          hintVariant={descriptionVariant}
-          hint={t('format.decimal', { value: token.balance })}
-          sx={{ textAlign: 'right' }}
-        />
-      </Stack>
-    );
   };
 
   return (
@@ -96,27 +41,38 @@ export const TokenListCard: FC<TokenListCardProps> = ({
       expanded={isExpanded}
       disableGutters
       sx={{
-        ':not(:last-child)': { paddingBottom: spacing },
+        ':not(:last-child)': { paddingBottom: config.paddingBottom },
       }}
     >
       <StyledAccordionSummary>
-        {renderTokenStack(
-          portfolioToken,
-          handleMainTokenClick,
-          !hasMultipleChains && !onSelect,
-        )}
+        <TokenStackItem
+          token={portfolioToken}
+          config={config.primary}
+          chainsLimit={config.chainsLimit}
+          chainsSpacing={config.chainsSpacing}
+          isClickable={hasMultipleChains || !!onSelect}
+          onClick={handlePrimaryTokenClick}
+        />
       </StyledAccordionSummary>
       <StyledAccordionDetails>
-        <Stack direction="column" spacing={spacing} useFlexGap>
+        <Stack direction="column" useFlexGap>
           <Divider
             sx={(theme) => ({
               borderColor: (theme.vars || theme).palette.alpha100.main,
-              marginTop: spacing,
+              marginY: config.dividerSpacing,
             })}
           />
-          {portfolioToken.relatedTokens?.map((token) =>
-            renderTokenStack(token, handleExpandedTokenClick, !onSelect),
-          )}
+          {portfolioToken.relatedTokens?.map((token) => (
+            <TokenStackItem
+              key={`${token.address}-${token.chain.chainId}`}
+              token={token}
+              config={config.expanded}
+              chainsLimit={config.chainsLimit}
+              chainsSpacing={config.chainsSpacing}
+              isClickable={!!onSelect}
+              onClick={() => handleExpandedTokenClick(token)}
+            />
+          ))}
         </Stack>
       </StyledAccordionDetails>
     </StyledAccordion>

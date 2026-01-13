@@ -1,10 +1,10 @@
-import { TypographyProps } from '@mui/material/Typography';
-import {
+import type { TypographyProps } from '@mui/material/Typography';
+import type {
   AvatarSize,
   AvatarStackDirection,
 } from 'src/components/core/AvatarStack/AvatarStack.types';
-import { Chain, Protocol, Token } from 'src/types/jumper-backend';
-import { MinimalToken } from 'src/types/tokens';
+import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
+import type { MinimalToken } from 'src/types/tokens';
 
 export interface BaseProps {
   chainsSize?: AvatarSize;
@@ -34,6 +34,7 @@ export enum EntityChainStackChainsPlacement {
 }
 
 export interface ProtocolChainStackProps extends BaseProps {
+  address?: string;
   protocol?: Protocol;
   chains?: Chain[];
   protocolSize?: AvatarSize;
@@ -49,6 +50,7 @@ export interface TokenChainStackProps extends BaseProps {
 export interface TokenWithChainsChainStackProps extends BaseProps {
   token?: MinimalToken;
   tokenSize?: AvatarSize;
+  chainsInlineSize?: AvatarSize;
 }
 
 export enum EntityChainStackVariant {

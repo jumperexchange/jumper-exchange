@@ -7,6 +7,7 @@ import { EntityChainStackVariant } from 'src/components/composite/EntityChainSta
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
+  ListItemEarnCardBody,
   ListItemEarnCardContainer,
   ListItemEarnCardTagContainer,
   ListItemEarnContentWrapper,
@@ -16,11 +17,13 @@ import { ListItemEarnCardSkeleton } from './ListItemEarnCardSkeleton';
 import { ListItemTooltipBadge } from './ListItemTooltipBadge';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
+import { ListItemEarnCardMissingPosition } from './ListItemEarnCardMissingPosition';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
   primaryAction,
   isLoading,
+  isMissingPosition,
   href,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
@@ -48,6 +51,10 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     />
   ));
 
+  if (isMissingPosition) {
+    return <ListItemEarnCardMissingPosition />;
+  }
+
   if (isEmpty) {
     return <ListItemEarnCardSkeleton />;
   }
@@ -55,38 +62,41 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   return (
     <ConditionalLink href={href}>
       <ListItemEarnCardContainer hasLink={!!href}>
-        <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
-          <EntityChainStack
-            variant={EntityChainStackVariant.Protocol}
-            protocol={protocol}
-            chains={chains}
-            protocolSize={AvatarSize.XXL}
-            chainsSize={AvatarSize.SM}
-            content={{
-              title,
-            }}
-          />
-          {isMobile && primaryAction}
-          <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
-            {forYou && (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.MD}
-                startIcon={<RecommendationIcon height={16} width={16} />}
-              />
-            )}
-            {tags?.map((tag) => (
-              <Badge
-                variant={BadgeVariant.Secondary}
-                size={BadgeSize.MD}
-                label={tag}
-                key={tag}
-              />
-            ))}
-            {items}
-            {!isMobile && primaryAction}
-          </ListItemEarnCardTagContainer>
-        </ListItemEarnContentWrapper>
+        <ListItemEarnCardBody hasHintHoverActive>
+          <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
+            <EntityChainStack
+              variant={EntityChainStackVariant.Protocol}
+              address={lpToken?.address}
+              protocol={protocol}
+              chains={chains}
+              protocolSize={AvatarSize.XXL}
+              chainsSize={AvatarSize.SM}
+              content={{
+                title,
+              }}
+            />
+            {isMobile && primaryAction}
+            <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
+              {forYou && (
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.MD}
+                  startIcon={<RecommendationIcon height={16} width={16} />}
+                />
+              )}
+              {tags?.map((tag) => (
+                <Badge
+                  variant={BadgeVariant.Secondary}
+                  size={BadgeSize.MD}
+                  label={tag}
+                  key={tag}
+                />
+              ))}
+              {items}
+              {!isMobile && primaryAction}
+            </ListItemEarnCardTagContainer>
+          </ListItemEarnContentWrapper>
+        </ListItemEarnCardBody>
       </ListItemEarnCardContainer>
     </ConditionalLink>
   );

@@ -1,4 +1,4 @@
-import { EarnFilteringParams } from './types';
+import type { EarnFilteringParams } from './types';
 
 export const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
   allChains: [],
@@ -6,4 +6,6 @@ export const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
   allAssets: [],
   allTags: [],
   allAPY: {},
+  allTVL: {},
+  allRewardsOptions: [],
 };

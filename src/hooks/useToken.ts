@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 export interface TokenProps {
   token: Token | null;
   isLoading: boolean;
+  isSuccess: boolean;
   isError: boolean;
   error: unknown;
 }
@@ -25,6 +26,7 @@ export const useToken = (
   const {
     data: token,
     isLoading,
+    isSuccess,
     isError,
     error,
   } = useQuery({
@@ -37,6 +39,7 @@ export const useToken = (
   return {
     token: token || null,
     isLoading,
+    isSuccess,
     isError,
     error,
   };

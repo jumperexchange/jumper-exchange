@@ -19,8 +19,10 @@ const PortfolioAssetsSectionInner = () => {
   const [tab, setTab] = useState<PortfolioFilterBarTab>(
     PortfolioFilterBarTab.TOKENS,
   );
-  const { isEmpty: isTokensEmpty } = usePortfolioTokensFiltering();
-  const { isAllDataEmpty: isDeFiEmpty } = usePortfolioDeFiPositionsFiltering();
+  const { isEmpty: isTokensEmpty, isLoading: isTokensLoading } =
+    usePortfolioTokensFiltering();
+  const { isAllDataEmpty: isDeFiEmpty, isLoading: isDeFiLoading } =
+    usePortfolioDeFiPositionsFiltering();
   const { account } = useAccount();
   const isDisconnected = !account.isConnected;
   const isEmpty = isTokensEmpty && isDeFiEmpty;

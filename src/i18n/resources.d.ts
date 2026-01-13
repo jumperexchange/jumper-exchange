@@ -11,6 +11,9 @@ interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    badge: {
+      updated: 'Updated {{time}} ago';
+    };
     blog: {
       allCategories: 'All';
       categories: 'Categories';
@@ -76,6 +79,7 @@ interface Resources {
     };
     earn: {
       actions: {
+        goToPortfolio: 'Go to Portfolio';
         seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
@@ -90,7 +94,7 @@ interface Resources {
           title: 'No results';
         };
         yourPositions: {
-          description: "Looks like you don't have any active positions in any market yet. Let's change that!";
+          description: "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.";
           title: 'No positions';
           viewAllMarkets: 'View all markets';
         };
@@ -103,9 +107,18 @@ interface Resources {
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
         protocol: 'Protocol';
+        rewards: {
+          label: 'Rewards';
+          withRewards: 'Include only pools with rewards';
+        };
         search: 'Search {{filterBy}}...';
         selected: '{{count}} selected';
         tag: 'Type';
+        tvl: 'TVL';
+      };
+      missingPosition: {
+        description: 'Check your portfolio tokens before contacting support.';
+        title: 'Missing a position?';
       };
       overview: {
         updated: 'Updated {{time}} ago';
@@ -163,9 +176,11 @@ interface Resources {
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
+      currencyCompact: '{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}';
       date: '{{value, dateExt(month: long)}}';
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
+      decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
@@ -194,6 +209,7 @@ interface Resources {
       lockupPeriod: 'Lockup Period';
       overview: 'Overview';
       protocol: 'Protocol';
+      rewardsApy: 'Rewards APY';
       tvl: 'TVL';
     };
     leaderboard: {
@@ -502,6 +518,10 @@ interface Resources {
             years_other: '{{count}} years ago';
           };
           opened: 'Opened';
+          tooltip: {
+            address: 'View contract';
+            info: 'View earn detail';
+          };
         };
       };
       emptyList: {
@@ -537,10 +557,9 @@ interface Resources {
         viewBy: 'View by';
       };
       welcome: {
-        explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
-        title: 'One platform, all of DeFi';
+        subtitle: "<strong>DeFi's interactive portfolio.</strong>";
+        title: 'Welcome to Jumper Portfolio!';
       };
     };
     profile_page: {
@@ -609,6 +628,7 @@ interface Resources {
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
       noPositionsToManage: 'You do not have any positions to manage';
       protocol: 'The protocol you will earn from';
+      rewardsApy: 'Expected yearly return rate of the rewards tokens invested.';
       tvl: 'Total value of crypto assets deposited in this market.';
     };
     widget: {
@@ -647,11 +667,11 @@ interface Resources {
         placeholder: {
           comingSoon: 'Coming soon';
           'embedded-multisig': {
-            description: 'We are working on adding support for embedded and smart contract wallets. In the mean time please use a different wallet to complete this mission.';
+            description: 'We are working on adding support for embedded and smart contract wallets (incl. Safe). In the mean time please use an EOA wallet to execute transactions.';
             title: 'Your wallet is currently not supported';
           };
           'non-evm': {
-            description: 'We are working on adding support for non-EVM wallets. In the mean time please use a different wallet to complete this mission.';
+            description: 'We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions.';
             title: 'Your wallet is currently not supported';
           };
         };

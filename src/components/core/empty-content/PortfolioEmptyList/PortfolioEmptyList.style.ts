@@ -1,6 +1,7 @@
+import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
-import { ButtonPrimary } from '@/components/Button/Button.style';
+import { ButtonBase, ButtonPrimary } from '@/components/Button/Button.style';
 
 export const PortfolioEmptyListContainer = styled(Stack)(({ theme }) => ({
   alignItems: 'center',
@@ -43,8 +44,39 @@ export const PortfolioEmptyListDescriptionContainer = styled(Stack)(
   }),
 );
 
-export const PortfolioEmptyListButton = styled(ButtonPrimary)(({ theme }) => ({
+export const PortfolioEmptyListButtonsContainer = styled(Stack)(
+  ({ theme }) => ({
+    width: '100%',
+    gap: theme.spacing(2),
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+    },
+  }),
+);
+
+const getButtonStyles = (theme: Theme) => ({
   height: 'auto',
   padding: theme.spacing(1.75, 2.75),
   ...theme.typography.bodyMediumStrong,
-}));
+});
+
+export const PortfolioEmptyListPrimaryButton = styled(ButtonPrimary)(
+  ({ theme }) => ({
+    ...getButtonStyles(theme),
+  }),
+);
+
+export const PortfolioEmptyListSecondaryButton = styled(ButtonBase)(
+  ({ theme }) => ({
+    ...getButtonStyles(theme),
+    color: (theme.vars || theme).palette.buttonLightAction,
+    backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+    '&:hover': {
+      color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+      backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
+    },
+  }),
+);

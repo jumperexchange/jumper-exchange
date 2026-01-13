@@ -875,6 +875,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  rewardsApy?: number;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
 }
@@ -906,6 +907,11 @@ export interface TokenBalance {
 
 export interface TokenBalances {
   balances: TokenBalance[];
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface MetadataWithUpdatedAt {
   /** @format date-time */
   updatedAt: string;
 }
@@ -944,10 +950,12 @@ export interface DefiPosition {
   assetTokens: DefiToken[];
   collateralTokens: DefiToken[];
   rewardTokens: DefiToken[];
+  lpToken?: Token;
 }
 
 export interface WalletPositions {
-  positions: DefiPosition[];
+  meta: MetadataWithUpdatedAt;
+  data: DefiPosition[];
 }
 
 export interface TaskVerificationDto {
@@ -979,11 +987,6 @@ export interface TaskVerificationDto {
   additionalFields: object;
 }
 
-export interface MetadataWithUpdatedAt {
-  /** @format date-time */
-  updatedAt: string;
-}
-
 export interface EarnOpportunityWithScore {
   name: string;
   asset: Token;
@@ -998,6 +1001,7 @@ export interface EarnOpportunityWithScore {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  rewardsApy?: number;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
 }
@@ -1651,6 +1655,16 @@ export class JumperBackend<
          * @example true
          */
         hasPositions?: boolean;
+        /**
+         * The minimum rewards APY to filter for
+         * @example 5.5
+         */
+        minRewardsAPY?: number;
+        /**
+         * The maximum rewards APY to filter for
+         * @example 5.5
+         */
+        maxRewardsAPY?: number;
       },
       params: RequestParams = {},
     ) =>
@@ -1952,37 +1966,21 @@ export class JumperBackend<
          * @example true
          */
         hasPositions?: boolean;
+        /**
+         * The minimum rewards APY to filter for
+         * @example 5.5
+         */
+        minRewardsAPY?: number;
+        /**
+         * The maximum rewards APY to filter for
+         * @example 5.5
+         */
+        maxRewardsAPY?: number;
       },
       params: RequestParams = {},
     ) =>
       this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/filter`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Recommendation, Public
-     * @name RecommendationControllerScoresV1
-     * @summary Get opportunities scores for an address
-     * @request GET:/v1/recommendation/scores
-     */
-    recommendationControllerScoresV1: (
-      query: {
-        /**
-         * The address to get recommendation for
-         * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
-         */
-        address: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<RecommendationDto, any>({
-        path: `/v1/recommendation/scores`,
         method: 'GET',
         query: query,
         format: 'json',

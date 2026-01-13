@@ -1,10 +1,10 @@
-import { map, uniqBy, uniq, sortBy, fromPairs } from 'lodash';
+import { map, uniqBy, uniq, sortBy, fromPairs, some } from 'lodash';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
 } from './types';
-import { OrderOptions, SortByOptions } from './types';
+import { OrderOptions, RewardsAPYOptions, SortByOptions } from './types';
 import type { Nullable } from 'nuqs';
 import {
   parseAsStringEnum,
@@ -30,6 +30,10 @@ export const searchParamsParsers = {
   tags: parseAsArrayOf(parseAsString),
   minAPY: parseAsFloat,
   maxAPY: parseAsFloat,
+  minTVL: parseAsFloat,
+  maxTVL: parseAsFloat,
+  minRewardsAPY: parseAsFloat,
+  maxRewardsAPY: parseAsFloat,
 };
 
 export const extractFilteringParams = (
@@ -56,12 +60,30 @@ export const extractFilteringParams = (
   ]);
   const allAPY = fromPairs(stepAPYPairs);
 
+  let formattedTVL = map(data, 'latest.tvlUsd').filter(Boolean);
+  formattedTVL = uniq(formattedTVL).filter(Boolean);
+  formattedTVL = sortBy(formattedTVL);
+  const stepTVLPairs = map(formattedTVL, (tvl, index) => [
+    index / (formattedTVL.length - 1),
+    tvl,
+  ]);
+  const allTVL = fromPairs(stepTVLPairs);
+
+  const withRewards = some(
+    data,
+    (item) => item.rewardsApy && item.rewardsApy > 0,
+  );
+
+  const allRewardsOptions = withRewards ? [RewardsAPYOptions.WITH_REWARDS] : [];
+
   return {
     allChains,
     allProtocols,
     allAssets,
     allTags,
     allAPY,
+    allTVL,
+    allRewardsOptions,
   };
 };
 
@@ -96,6 +118,12 @@ export const sanitizeFilter = (
   const apyMin = Math.min(...validAPY, 0);
   const apyMax = Math.max(...validAPY, 0);
 
+  const validTVL = new Set(Object.values(stats.allTVL ?? []).map((tvl) => tvl));
+  const tvlMin = Math.min(...validTVL, 0);
+  const tvlMax = Math.max(...validTVL, 0);
+
+  const validRewardsOptions = new Set(stats.allRewardsOptions);
+
   return {
     ...filter,
     chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
@@ -109,6 +137,24 @@ export const sanitizeFilter = (
     maxAPY:
       filter.maxAPY !== undefined
         ? Math.max(Math.min(filter.maxAPY, apyMax), apyMin)
+        : null,
+    minTVL:
+      filter.minTVL !== undefined
+        ? Math.max(Math.min(filter.minTVL, tvlMax), tvlMin)
+        : null,
+    maxTVL:
+      filter.maxTVL !== undefined
+        ? Math.max(Math.min(filter.maxTVL, tvlMax), tvlMin)
+        : null,
+    minRewardsAPY:
+      filter.minRewardsAPY !== undefined &&
+      validRewardsOptions.has(RewardsAPYOptions.WITH_REWARDS)
+        ? filter.minRewardsAPY
+        : null,
+    maxRewardsAPY:
+      filter.maxRewardsAPY !== undefined &&
+      validRewardsOptions.has(RewardsAPYOptions.WITH_REWARDS)
+        ? filter.maxRewardsAPY
         : null,
   };
 };

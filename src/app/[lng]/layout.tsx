@@ -21,36 +21,25 @@ import type { ReactNode } from 'react';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { SettingsStoreProvider } from 'src/stores/settings';
-import { description, siteName, title } from '../lib/metadata';
+import {
+  pageOpenGraph,
+  pageMetadataFields,
+  pageTwitter,
+} from '../lib/metadata';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
 
 export const metadata: Metadata = {
-  title,
-  description,
+  title: pageMetadataFields.default.title,
+  description: pageMetadataFields.default.description,
   alternates: {
     canonical: `${getSiteUrl()}`,
   },
   openGraph: {
-    title: title,
-    description,
-    siteName,
+    ...pageOpenGraph.default,
     url: `${getSiteUrl()}`,
-    images: [
-      {
-        url: 'https://jumper.exchange/preview.png', // Default image
-        width: 900,
-        height: 450,
-      },
-    ],
-    type: 'website', // Override type
   },
   twitter: {
-    // Twitter metadata
-    // cardType: 'summary_large_image',
-    site: '@JumperExchange',
-    title: title, // Twitter title
-    description,
-    images: 'https://jumper.exchange/preview.png', // Twitter image
+    ...pageTwitter.default,
   },
   icons: {
     // Icons metadata

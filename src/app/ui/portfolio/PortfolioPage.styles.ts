@@ -3,7 +3,6 @@ import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { ButtonPrimary } from '@/components/Button/Button.style';
-import { Link } from '@/components/Link';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import Typography from '@mui/material/Typography';
 import { BaseIconButton } from '@/components/composite/WalletBalanceCard/WalletBalanceCard.styles';
@@ -15,7 +14,7 @@ export const PortfolioAssetsListContainer = styled(Stack)(({ theme }) => ({
 
 export const PortfolioAssetContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
-    padding: theme.spacing(3),
+    padding: theme.spacing(1.5),
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface2.main,
     ...theme.applyStyles('light', {
@@ -65,11 +64,6 @@ export const PortfolioWelcomeScreenButton = styled(ButtonPrimary)(
     padding: theme.spacing(1.75, 2.75),
   }),
 );
-
-export const PortfolioWelcomeScreenLink = styled(Link)(({ theme }) => ({
-  textDecoration: 'none',
-  padding: theme.spacing(1.75, 2.75),
-}));
 
 export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
   ({ theme }) => ({

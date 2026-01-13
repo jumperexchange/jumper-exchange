@@ -1,9 +1,11 @@
 import { styled } from '@mui/material/styles';
-import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
+import ToggleButton, {
+  type ToggleButtonProps,
+} from '@mui/material/ToggleButton';
 import ToggleButtonGroup, {
-  ToggleButtonGroupProps,
+  type ToggleButtonGroupProps,
 } from '@mui/material/ToggleButtonGroup';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -164,7 +166,7 @@ export const StyledIconButton = styled(IconButton, {
       ? selectedColor === 'primary' || selectedColor === 'secondary'
         ? selectedContrastText
         : selectedColorValue
-      : (theme.vars || theme).palette.buttonAlphaLightAction,
+      : (theme.vars || theme).palette.buttonAlphaDarkAction,
     backgroundColor: isSelected
       ? selectedColor === 'primary' || selectedColor === 'secondary'
         ? selectedColorValue

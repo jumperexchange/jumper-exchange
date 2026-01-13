@@ -1,0 +1,78 @@
+import { useMemo } from 'react';
+import { differenceWith } from 'lodash';
+import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
+import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import type { MinimalToken } from 'src/types/tokens';
+import type { CacheToken } from 'src/types/portfolio';
+
+const getTokenKey = (address: string, chainId: number) =>
+  `${address.toLowerCase()}-${chainId}`;
+
+export const filterTokensWithoutLpPositions = <
+  T extends MinimalToken | CacheToken,
+>(
+  tokens: T[],
+  lpTokens: { address: string; chainId: number }[],
+) => {
+  if (tokens.length === 0 || lpTokens.length === 0) {
+    return tokens;
+  }
+
+  return differenceWith(tokens, lpTokens, (token, lpToken) => {
+    const chainId = 'chainId' in token ? token.chainId : token.chain.chainId;
+    const tokenKey = getTokenKey(token.address, chainId);
+    const lpKey = getTokenKey(lpToken.address, lpToken.chainId);
+
+    if (tokenKey === lpKey) {
+      return true;
+    }
+
+    if ('relatedTokens' in token && token.relatedTokens) {
+      return token.relatedTokens.some(
+        (rt) => getTokenKey(rt.address, rt.chain.chainId) === lpKey,
+      );
+    }
+
+    if ('chains' in token && token.chains) {
+      return token.chains.some(
+        (ct) => getTokenKey(ct.address, ct.chainId) === lpKey,
+      );
+    }
+
+    return false;
+  });
+};
+
+export const useLpPositions = () => {
+  const connectedAddresses = useConnectedEvmAddresses();
+  const { data: allPositions } = usePortfolioDeFiPositions({
+    addresses: connectedAddresses,
+  });
+
+  const lpTokens = useMemo(() => {
+    const positions = allPositions?.data;
+    if (!positions || positions.length === 0) {
+      return [];
+    }
+    return positions
+      .filter((p) => p.lpToken?.address && p.lpToken?.chain.chainId)
+      .map((p) => ({
+        address: p.lpToken!.address,
+        chainId: p.lpToken!.chain.chainId,
+      }));
+  }, [allPositions?.data]);
+
+  return lpTokens;
+};
+
+export const useTokensWithoutLpPositions = <
+  T extends MinimalToken | CacheToken,
+>(
+  tokens: T[],
+): T[] => {
+  const lpTokens = useLpPositions();
+  return useMemo(
+    () => filterTokensWithoutLpPositions(tokens, lpTokens),
+    [tokens, lpTokens],
+  );
+};

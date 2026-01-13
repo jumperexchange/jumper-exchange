@@ -18,3 +18,5 @@ export const EMPTY_DEFI_POSITIONS_FILTERING_PARAMS: PortfolioDeFiPositionsFilter
     allAssets: [],
     allValueRange: { min: 0, max: 0 },
   };
+
+export const DEFAULT_DEFI_POSITIONS_MIN_VALUE = 1;

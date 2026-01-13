@@ -64,6 +64,8 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   allAssets: [],
   allTags: [],
   allAPY: {},
+  allTVL: {},
+  allRewardsOptions: [],
   data: [],
   updatedAt: undefined,
   isLoading: false,
@@ -143,7 +145,6 @@ export const EarnFilteringProvider = ({
 
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);
-
     if (!isEqual(sanitized, filter)) {
       setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
@@ -210,6 +211,10 @@ export const EarnFilteringProvider = ({
       assets: null,
       minAPY: null,
       maxAPY: null,
+      minTVL: null,
+      maxTVL: null,
+      minRewardsAPY: null,
+      maxRewardsAPY: null,
     });
   }, [updateFilter]);
 

@@ -192,3 +192,11 @@ export const renderBorrowedActions = ({}: {
     useFlexGap
   ></StyledPositionActions>
 );
+
+export const hasPositionDataToDisplay = (position: DefiPosition) => {
+  return (
+    position.supplyTokens?.length > 0 ||
+    position.borrowTokens?.length > 0 ||
+    position.rewardTokens?.length > 0
+  );
+};

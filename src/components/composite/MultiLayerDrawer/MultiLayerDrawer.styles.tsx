@@ -12,7 +12,7 @@ export const MultiLayerDrawerIconButton = styled(IconButton)(({ theme }) => ({
   width: 'fit-content',
   borderRadius: theme.shape.buttonBorderRadius,
   backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
-  color: (theme.vars || theme).palette.buttonAlphaLightAction,
+  color: (theme.vars || theme).palette.buttonAlphaDarkAction,
   '&:hover': {
     backgroundColor: (theme.vars || theme).palette.buttonActiveBg,
     color: (theme.vars || theme).palette.buttonActiveAction,
@@ -36,8 +36,11 @@ export const MultiLayerDrawerPrimaryButton = styled(ButtonPrimary)(
 
 export const MultiLayerDrawerAlphaButton = styled(ButtonTransparent)(
   ({ theme }) => ({
-    backgroundColor: (theme.vars || theme).palette.buttonAlphaLightBg,
-    color: (theme.vars || theme).palette.buttonAlphaLightAction,
+    backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,
+    color: (theme.vars || theme).palette.buttonAlphaDarkAction,
+    ...theme.applyStyles('light', {
+      color: (theme.vars || theme).palette.buttonAlphaLightAction,
+    }),
     '&:hover': {
       backgroundColor: (theme.vars || theme).palette.buttonActiveBg,
       color: (theme.vars || theme).palette.buttonActiveAction,

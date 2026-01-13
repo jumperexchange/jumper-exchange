@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState, type FC } from 'react';
 import { useAccount } from '@lifi/wallet-management';
 import Divider from '@mui/material/Divider';
 import {
+  LightIconButton,
   StyledAccordion,
   StyledAccordionDetails,
   StyledAccordionSummary,
@@ -21,6 +22,8 @@ import type { MinimalToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
 import { WalletWithActions } from './components/WalletWithActions';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
+import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
@@ -44,7 +47,8 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
 
-  const tokens = useFormatDisplayWalletTokens(data);
+  const formattedTokens = useFormatDisplayWalletTokens(data);
+  const tokens = useTokensWithoutLpPositions(formattedTokens);
 
   useEffect(() => {
     if (hasMultipleAccountsConnected) {
@@ -77,12 +81,8 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
       <StyledAccordion
         defaultExpanded={!hasMultipleAccountsConnected}
         expanded={isExpanded}
-        onChange={handleToggleAccordion}
       >
-        <StyledAccordionSummary
-          hasMultipleAccountsConnected={hasMultipleAccountsConnected}
-          slots={{ root: 'div' }}
-        >
+        <StyledAccordionSummary slots={{ root: 'div' }}>
           <WalletBalanceCardContentContainer>
             <WalletWithActions account={account} />
             <WalletTotalBalance
@@ -90,7 +90,19 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
               isFetching={isFetching}
               isComplete={isSuccess}
               account={account}
-            />
+            >
+              {hasMultipleAccountsConnected && (
+                <LightIconButton
+                  onClick={handleToggleAccordion}
+                  sx={{
+                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease-in-out',
+                  }}
+                >
+                  <KeyboardArrowDownRoundedIcon />
+                </LightIconButton>
+              )}
+            </WalletTotalBalance>
           </WalletBalanceCardContentContainer>
         </StyledAccordionSummary>
         <StyledAccordionDetails>

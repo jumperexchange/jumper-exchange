@@ -8,7 +8,6 @@ import {
   useState,
 } from 'react';
 import { useQueryStates } from 'nuqs';
-import { usePortfolioTokens } from '@/utils/getTokens/usePortfolioTokens';
 import type { CacheToken } from 'src/types/portfolio';
 import { isEqual } from 'lodash';
 import {
@@ -17,6 +16,7 @@ import {
   sanitizeTokensFilter,
   tokensSearchParamsParsers,
   filterSortPortfolioTokensData,
+  getEffectiveValueRange,
 } from './utils';
 import { EMPTY_TOKENS_FILTERING_PARAMS } from './constants';
 import type {
@@ -28,6 +28,7 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
+import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 
 export interface PortfolioTokensFilteringContextType extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;
@@ -90,17 +91,16 @@ export const PortfolioTokensFilteringProvider = ({
     isFetching,
     isSuccess,
     data: allData,
-    accounts,
-  } = usePortfolioTokens();
+    accounts: portfolioAccounts,
+  } = usePortfolioDisplayTokens();
 
-  // Extract filtering parameters from all unfiltered data
   const stats = useMemo((): PortfolioTokensFilteringParams => {
-    if (!allData || allData.length === 0) {
+    if (allData.length === 0) {
       return EMPTY_TOKENS_FILTERING_PARAMS;
     }
 
-    return extractTokensFilteringParams(allData, accounts);
-  }, [allData, accounts]);
+    return extractTokensFilteringParams(allData, portfolioAccounts);
+  }, [allData, portfolioAccounts]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -110,14 +110,20 @@ export const PortfolioTokensFilteringProvider = ({
     prevStatsRef.current = stats;
 
     const sanitized = sanitizeTokensFilter(filter, stats);
+    const effectiveValueRange = getEffectiveValueRange(stats.allValueRange);
 
-    if (!isEqual(sanitized, filter)) {
-      setFilter(removeNullValuesFromFilter(sanitized));
-      setSearchParamsState(sanitized);
+    const withDefaults = {
+      ...sanitized,
+      tokensMinValue: sanitized.tokensMinValue ?? effectiveValueRange.min,
+    };
+
+    if (!isEqual(withDefaults, filter)) {
+      setFilter(removeNullValuesFromFilter(withDefaults));
+      setSearchParamsState(withDefaults);
     }
   }, [stats, setSearchParamsState, setFilter, filter]);
 
-  const filteredSortedData = useMemo(() => {
+  const sortedData = useMemo(() => {
     return filterSortPortfolioTokensData(
       queriesByAddress,
       filter,
@@ -164,9 +170,9 @@ export const PortfolioTokensFilteringProvider = ({
     filter,
     updateFilter,
     clearFilters,
-    data: filteredSortedData,
+    data: sortedData,
     isLoading: isFetching || !isSuccess,
-    isEmpty: !isFetching && (!allData || allData.length === 0),
+    isEmpty: !isFetching && allData.length === 0,
     ...stats,
   };
 

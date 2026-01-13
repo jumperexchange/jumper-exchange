@@ -56,7 +56,7 @@ exports[`AssetProgress snapshot > Protocol variant > protocol progress at 100% m
       class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
       data-mui-internal-clone-element="true"
     >
-      $11K
+      $10.5K
     </p>
     <p
       class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -574,7 +574,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with USDC match
       class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
       data-mui-internal-clone-element="true"
     >
-      $251
+      $250.5
     </p>
     <p
       class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
@@ -644,7 +644,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with large amou
       class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
       data-mui-internal-clone-element="true"
     >
-      $1.2M
+      $1.23M
     </p>
     <p
       class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"

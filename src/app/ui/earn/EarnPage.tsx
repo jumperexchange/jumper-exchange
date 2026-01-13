@@ -12,6 +12,7 @@ import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelate
 import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
+import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
 
 interface EarnPageProps {
   slug: string;
@@ -58,6 +59,7 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
       <DepositFlowModal />
       <WithdrawFlowModal />
       <ContactSupportEventProvider />
+      <EarnPageTracking slug={slug} />
     </>
   );
 };
