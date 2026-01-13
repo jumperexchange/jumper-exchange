@@ -2,10 +2,11 @@
 import { create } from 'zustand';
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { AppPaths } from '@/const/urls';
+import { type AppPaths } from '@/const/urls';
+import { stripLocaleFromPathname } from '@/utils/urls/stripLocaleFromPathname';
 
 interface QueryStateStoreType {
-  query: Partial<Record<AppPaths, string | undefined>>;
+  query: Partial<Record<string, string | undefined>>;
 }
 
 const searchParamsStore = create<QueryStateStoreType>((set) => ({
@@ -13,7 +14,7 @@ const searchParamsStore = create<QueryStateStoreType>((set) => ({
 }));
 
 export const useSearchParamsStorage = () => searchParamsStore((state) => state);
-export const useSearchParamsStorageFor = (appPath: AppPaths) =>
+export const useSearchParamsStorageFor = (appPath: AppPaths | string) =>
   searchParamsStore((state) => state).query[appPath];
 
 export const getSearchParamsStorage = () => {
@@ -25,18 +26,9 @@ export const useStoreSearchParams = () => {
   const route = usePathname();
 
   useEffect(() => {
-    const routeMatch = route.match(/^\/[a-zA-Z]+(\/[a-zA-Z]+)$/);
-    if (routeMatch) {
-      const pagePath = routeMatch[1];
-      const isValidPagePath = pagePath in AppPaths;
-      if (!isValidPagePath) {
-        throw new Error('Invalid page path for storing search params');
-      }
-      searchParamsStore.setState((state) => ({
-        query: { ...state.query, [pagePath]: searchParams.toString() },
-      }));
-    } else {
-      throw new Error('Invalid page path for storing search params');
-    }
+    const pathWithoutLocale = stripLocaleFromPathname(route);
+    searchParamsStore.setState((state) => ({
+      query: { ...state.query, [pathWithoutLocale]: searchParams.toString() },
+    }));
   }, [searchParams, route]);
 };
