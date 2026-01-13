@@ -22,7 +22,6 @@ yarn-error.log*
 # dependencies
 **node_modules**
 **dist**
-**next**
 /.pnp
 .pnp.js
 
