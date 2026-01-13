@@ -15,7 +15,7 @@ const searchParamsStore = create<QueryStateStoreType>((set) => ({
 
 export const useSearchParamsStorage = () => searchParamsStore((state) => state);
 export const useSearchParamsStorageFor = (appPath: AppPaths | string) =>
-  searchParamsStore((state) => state).query[appPath];
+  searchParamsStore((state) => state.query[appPath]);
 
 export const getSearchParamsStorage = () => {
   return searchParamsStore.getState();

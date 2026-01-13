@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { useSearchParamsStorageFor } from '../../stores/earn/useStoreQueryStates';
+import { useSearchParamsStorageFor } from '../../stores/earn/SearchParamsStore';
 import { type AppPaths } from '@/const/urls';
 
 export const useGoBack = (fallbackPath: AppPaths) => {
