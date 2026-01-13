@@ -24,7 +24,12 @@ async function getLoyaltyPassData(
   walletAddress: string,
 ): Promise<undefined | UseLoyaltyPassProps> {
   const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
-  const res = await fetch(`${apiBaseUrl}/wallets/${walletAddress}/rewards`);
+  const res = await fetch(`${apiBaseUrl}/wallets/${walletAddress}/rewards`, {
+    headers: {
+      'Content-Type': 'application/json',
+      referer: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://jumper.exchange',
+    },
+  });
 
   if (!res.ok) {
     return undefined;
