@@ -82,6 +82,9 @@
     "ctaHeadline": "เข้าร่วม Discord ของเราเพื่อเรียนรู้เพิ่มเติม",
     "ctaButton": "เข้าร่วมเซิฟเวอร์ Discord ของเรา"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "เคล็ดลับและบทแนะนำ",
     "categories": "หมวดหมู่",
@@ -303,6 +306,7 @@
   "tooltips": {
     "tvl": "",
     "apy": "",
+    "rewardsApy": "",
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
@@ -319,6 +323,7 @@
   },
   "labels": {
     "apy": "",
+    "rewardsApy": "",
     "lockupPeriod": "",
     "tvl": "",
     "assets_one": "",
@@ -357,7 +362,12 @@
       "protocol": "",
       "tag": "",
       "asset": "",
-      "apy": ""
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
     },
     "views": {
       "viewBy": "",
@@ -393,10 +403,15 @@
     },
     "actions": {
       "viewAllMarkets": "",
-      "seeMore": ""
+      "seeMore": "",
+      "goToPortfolio": ""
     },
     "position": {
       "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
     },
     "emptyList": {
       "yourPositions": {
@@ -415,8 +430,7 @@
     "welcome": {
       "title": "",
       "subtitle": "",
-      "getStarted": "",
-      "explorePass": ""
+      "getStarted": ""
     },
     "overviewCard": {
       "title": "",
@@ -462,6 +476,10 @@
           "months_other": "",
           "years_one": "",
           "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
         }
       },
       "actions": {
