@@ -36,7 +36,7 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
     description: pageMetadataFields.default.description,
     images: [
       {
-        url: 'https://jumper.exchange/preview.png',
+        url: 'https://jumper.exchange/preview-default.png',
         width: 900,
         height: 450,
       },
@@ -103,7 +103,7 @@ export const pageTwitter: Record<string, Metadata['twitter']> = {
     site: '@JumperExchange',
     title: pageMetadataFields.default.title,
     description: pageMetadataFields.default.description,
-    images: 'https://jumper.exchange/preview.png',
+    images: 'https://jumper.exchange/preview-default.png',
   },
   earn: {
     site: '@JumperExchange',
