@@ -11,17 +11,17 @@ export const pageMetadataFields = {
   earn: {
     title: 'Jumper Earn | Earn Smarter Across Chains',
     description:
-      'Earn smarter across chains with Jumper Earn. Access curated earn opportunities, seamless swaps, and capital management in one smart app.',
+      'Earn smarter across chains with Jumper Earn. Access DeFi earn opportunities, seamless swaps, and a consolidated portfolio view in one smart app.',
   },
   earnOpportunity: {
     title: 'Jumper Earn | {{opportunityName}}',
     description:
-      'Earn smarter across chains with Jumper Earn. Access curated earn opportunities, seamless swaps, and capital management in one smart app.',
+      'Earn smarter across chains with Jumper Earn. Access DeFi earn opportunities, seamless swaps, and a consolidated portfolio view in one smart app.',
   },
   portfolio: {
-    title: 'Jumper Portfolio | Smarter Portfolio Management',
+    title: 'Jumper Portfolio | Smarter Portfolio Overview',
     description:
-      'Smarter portfolio management with Jumper Portfolio. Track assets, understand positions, and manage capital in one smart app.',
+      'Smarter cross-chain portfolio aggregation with Jumper Portfolio. Track assets in one smart app.',
   },
   profile: {
     title: 'Jumper Loyalty Pass',
