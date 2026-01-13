@@ -6,6 +6,10 @@ export async function register() {
     await import('next-logger');
 
     await import('./sentry.server.config');
+
+    // Initialize structured logging (must happen before other imports)
+    await import('pino');
+    await import('next-logger');
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
