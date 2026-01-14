@@ -55,7 +55,7 @@ export const CompactEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(1.5),
     minHeight: 266,
-    height: '-webkit-fill-available',
+    height: '100%',
   }),
 );
 
