@@ -42,44 +42,6 @@ export const useTokensData = (): UseTokensDataResult => {
     [accounts],
   );
 
-  // Seed cache from PortfolioCacheStore for connected accounts
-  useEffect(() => {
-    connectedAccounts.forEach((acc) => {
-      const cachedTokens = getTokens(acc.address!);
-      if (cachedTokens.length > 0) {
-        queryClient.setQueryData<TokenQueryData>(
-          ['portfolio-tokens', acc.address],
-          {
-            tokens: cachedTokens,
-            round: 0,
-            updatedAt: Date.now(),
-          },
-        );
-      }
-    });
-  }, [connectedAccounts, getTokens, queryClient]);
-
-  const refetch = useCallback(async () => {
-    intervalIdsRef.current.forEach((id) => clearInterval(id));
-    intervalIdsRef.current = [];
-    await queryClient.invalidateQueries({ queryKey: ['portfolio-tokens'] });
-  }, [queryClient]);
-
-  // Auto-fetch on mount or when refresh is needed
-  useEffect(() => {
-    const shouldFetch = connectedAccounts.some(
-      (acc) =>
-        needsRefresh(acc.address!) || getTokens(acc.address!).length === 0,
-    );
-    if (shouldFetch && connectedAccounts.length > 0) {
-      refetch();
-    }
-  }, [connectedAccounts, needsRefresh, getTokens, refetch]);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
-
   const queries = useQueries({
     queries: connectedAccounts.map((account) => ({
       queryKey: ['portfolio-tokens', account.address],
@@ -132,6 +94,29 @@ export const useTokensData = (): UseTokensDataResult => {
       refetchInterval: false,
     })),
   });
+
+  // Seed cache from PortfolioCacheStore for connected accounts
+  useEffect(() => {
+    connectedAccounts.forEach((acc) => {
+      const cachedTokens = getTokens(acc.address!);
+      if (cachedTokens.length > 0) {
+        queryClient.setQueryData<TokenQueryData>(
+          ['portfolio-tokens', acc.address],
+          {
+            tokens: cachedTokens,
+            round: 0,
+            updatedAt: Date.now(),
+          },
+        );
+      }
+    });
+  }, [connectedAccounts, getTokens, queryClient]);
+
+  const refetch = useCallback(async () => {
+    intervalIdsRef.current.forEach((id) => clearInterval(id));
+    intervalIdsRef.current = [];
+    queries.forEach((q) => q.refetch());
+  }, [queries]);
 
   const cancel = useCallback(() => {
     intervalIdsRef.current.forEach((id) => clearInterval(id));
