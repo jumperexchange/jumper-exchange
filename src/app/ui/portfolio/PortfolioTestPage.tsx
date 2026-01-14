@@ -13,7 +13,12 @@ import {
   CircularProgress,
   Divider,
   LinearProgress,
+  Button,
 } from '@mui/material';
+import { useState } from 'react';
+import { useAccount } from '@lifi/wallet-management';
+import { usePositionUpdate } from '@/providers/PortfolioProvider/hooks/usePositionUpdate';
+import type { Hex } from 'viem';
 import { PortfolioProvider } from '@/providers/PortfolioProvider/PortfolioProvider';
 import {
   usePortfolioState,
@@ -353,11 +358,42 @@ const TokensSection = () => {
 };
 
 const PositionsList = () => {
+  const { account } = useAccount();
+  const { updatePositionFromContract, isUpdating } = usePositionUpdate();
   const {
     data: groups,
     isLoading,
     isAllDataEmpty,
   } = useDeFiPositionsFiltering();
+
+  const [updatingPositionKey, setUpdatingPositionKey] = useState<string | null>(
+    null,
+  );
+
+  const handleUpdatePosition = async (position: {
+    lpToken?: { address: string; chain?: { chainId: number } };
+  }) => {
+    if (
+      !account?.address ||
+      !position.lpToken?.address ||
+      !position.lpToken?.chain?.chainId
+    ) {
+      return;
+    }
+
+    const positionKey = `${position.lpToken.chain.chainId}-${position.lpToken.address}`;
+    setUpdatingPositionKey(positionKey);
+
+    try {
+      await updatePositionFromContract({
+        walletAddress: account.address as Hex,
+        chainId: position.lpToken.chain.chainId,
+        lpTokenAddress: position.lpToken.address as Hex,
+      });
+    } finally {
+      setUpdatingPositionKey(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -426,51 +462,88 @@ const PositionsList = () => {
 
           {/* Positions within group */}
           <Stack spacing={1}>
-            {group.positions.map((position, index) => (
-              <Box
-                key={`${position.type}-${index}`}
-                sx={{
-                  pl: 2,
-                  py: 0.5,
-                  borderLeft: 2,
-                  borderColor: 'divider',
-                }}
-              >
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="center"
+            {group.positions.map((position, index) => {
+              const positionKey = position.lpToken
+                ? `${position.lpToken.chain?.chainId}-${position.lpToken.address}`
+                : null;
+              const isThisUpdating =
+                positionKey && updatingPositionKey === positionKey;
+              const hasLpToken = Boolean(
+                position.lpToken?.address && position.lpToken?.chain?.chainId,
+              );
+
+              return (
+                <Box
+                  key={`${position.type}-${index}`}
+                  sx={{
+                    pl: 2,
+                    py: 0.5,
+                    borderLeft: 2,
+                    borderColor: 'divider',
+                  }}
                 >
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Chip
-                      label={position.type}
-                      size="small"
-                      variant="outlined"
-                    />
-                    <Stack direction="row" spacing={0.5}>
-                      {position.supplyTokens?.slice(0, 3).map((token, i) => (
-                        <Chip
-                          key={`supply-${i}`}
-                          label={token.symbol}
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Chip
+                        label={position.type}
+                        size="small"
+                        variant="outlined"
+                      />
+                      <Stack direction="row" spacing={0.5}>
+                        {position.supplyTokens?.slice(0, 3).map((token, i) => (
+                          <Chip
+                            key={`supply-${i}`}
+                            label={token.symbol}
+                            size="small"
+                            sx={{ fontSize: '0.7rem' }}
+                          />
+                        ))}
+                      </Stack>
+                      {position.lpToken && (
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{ ml: 1 }}
+                        >
+                          LP: {position.lpToken.symbol}
+                        </Typography>
+                      )}
+                    </Stack>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      {hasLpToken && account?.address && (
+                        <Button
                           size="small"
-                          sx={{ fontSize: '0.7rem' }}
-                        />
-                      ))}
+                          variant="outlined"
+                          onClick={() => handleUpdatePosition(position)}
+                          disabled={isUpdating}
+                          sx={{ minWidth: 'auto', px: 1, py: 0.25 }}
+                        >
+                          {isThisUpdating ? (
+                            <CircularProgress size={14} />
+                          ) : (
+                            'Update'
+                          )}
+                        </Button>
+                      )}
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography variant="body2">
+                          {formatUSD(position.netUsd ?? 0)}
+                        </Typography>
+                        {position.debtUsd > 0 && (
+                          <Typography variant="caption" color="error.main">
+                            Debt: {formatUSD(position.debtUsd)}
+                          </Typography>
+                        )}
+                      </Box>
                     </Stack>
                   </Stack>
-                  <Box sx={{ textAlign: 'right' }}>
-                    <Typography variant="body2">
-                      {formatUSD(position.netUsd ?? 0)}
-                    </Typography>
-                    {position.debtUsd > 0 && (
-                      <Typography variant="caption" color="error.main">
-                        Debt: {formatUSD(position.debtUsd)}
-                      </Typography>
-                    )}
-                  </Box>
-                </Stack>
-              </Box>
-            ))}
+                </Box>
+              );
+            })}
           </Stack>
         </Box>
       ))}

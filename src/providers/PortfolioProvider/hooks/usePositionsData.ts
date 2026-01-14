@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQueries } from '@tanstack/react-query';
 import { useAccount } from '@lifi/wallet-management';
 import type { Hex } from 'viem';
@@ -46,6 +46,15 @@ export const usePositionsData = ({
   const { accounts } = useAccount();
   const getPositions = usePortfolioCacheStore((s) => s.getPositions);
   const setPositionsCache = usePortfolioCacheStore((s) => s.setPositions);
+  const positionPatchVersion = usePortfolioCacheStore(
+    (s) => s.positionPatchVersion,
+  );
+
+  const [lastPatchVersion, setLastPatchVersion] =
+    useState(positionPatchVersion);
+  const wasCachePatched = positionPatchVersion !== lastPatchVersion;
+
+  const shouldSetCacheRef = useRef<boolean>(false);
 
   const evmAddresses = useMemo(
     () =>
@@ -62,7 +71,10 @@ export const usePositionsData = ({
   const queries = useQueries({
     queries: evmAddresses.map((address) => ({
       queryKey: ['portfolio-positions', address, filter],
-      queryFn: () => fetchPositionsForAddress({ address, filter }),
+      queryFn: () => {
+        shouldSetCacheRef.current = shouldUseCache;
+        return fetchPositionsForAddress({ address, filter });
+      },
       enabled: !!address,
       refetchInterval: ONE_HOUR_MS,
       placeholderData: shouldUseCache
@@ -78,9 +90,11 @@ export const usePositionsData = ({
   });
 
   useEffect(() => {
-    if (!shouldUseCache) {
+    if (!shouldUseCache || !shouldSetCacheRef.current) {
       return;
     }
+
+    shouldSetCacheRef.current = false;
 
     queries.forEach((query) => {
       if (query.isSuccess && query.data) {
@@ -97,22 +111,53 @@ export const usePositionsData = ({
     .filter((q) => q.data)
     .map((q) => q.data as FetchPositionsResult);
 
-  const positions = useMemo(
-    () => fetchResults.flatMap((r) => r.positions),
-    [fetchResults],
-  );
+  // Update last patch version when it changes
+  useEffect(() => {
+    if (wasCachePatched) {
+      setLastPatchVersion(positionPatchVersion);
+    }
+  }, [positionPatchVersion, wasCachePatched]);
 
-  const positionsByAddress = useMemo(
-    () =>
-      fetchResults.reduce(
-        (acc, result) => {
-          acc[result.address] = result.positions;
+  // Use cached positions when cache was patched, otherwise use query results
+  const positions = useMemo(() => {
+    if (wasCachePatched && shouldUseCache) {
+      // Read fresh positions from cache after a patch
+      return evmAddresses.flatMap((address) => getPositions(address));
+    }
+    return fetchResults.flatMap((r) => r.positions);
+  }, [
+    fetchResults,
+    wasCachePatched,
+    shouldUseCache,
+    evmAddresses,
+    getPositions,
+  ]);
+
+  const positionsByAddress = useMemo(() => {
+    if (wasCachePatched && shouldUseCache) {
+      // Read fresh positions from cache after a patch
+      return evmAddresses.reduce(
+        (acc, address) => {
+          acc[address] = getPositions(address);
           return acc;
         },
         {} as Record<string, DefiPosition[]>,
-      ),
-    [fetchResults],
-  );
+      );
+    }
+    return fetchResults.reduce(
+      (acc, result) => {
+        acc[result.address] = result.positions;
+        return acc;
+      },
+      {} as Record<string, DefiPosition[]>,
+    );
+  }, [
+    fetchResults,
+    wasCachePatched,
+    shouldUseCache,
+    evmAddresses,
+    getPositions,
+  ]);
 
   const updatedAt = useMemo(() => {
     const metaTimestamps = compact(
