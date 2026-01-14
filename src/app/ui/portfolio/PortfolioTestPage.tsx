@@ -13,12 +13,7 @@ import {
   CircularProgress,
   Divider,
   LinearProgress,
-  Button,
 } from '@mui/material';
-import { useState } from 'react';
-import { useAccount } from '@lifi/wallet-management';
-import { usePositionUpdate } from '@/providers/PortfolioProvider/hooks/usePositionUpdate';
-import type { Hex } from 'viem';
 import { PortfolioProvider } from '@/providers/PortfolioProvider/PortfolioProvider';
 import {
   usePortfolioState,
@@ -32,6 +27,14 @@ import { useTokensFiltering } from '@/providers/PortfolioProvider/filtering/Toke
 import { TokensFilterControls } from '@/providers/PortfolioProvider/filtering/TokensFilterControls';
 import { useDeFiPositionsFiltering } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilteringContext';
 import { DeFiPositionsFilterControls } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilterControls';
+import { TokenListCard } from '@/components/composite/TokenListCard/TokenListCard';
+import { TokenListCardTokenSize } from '@/components/composite/TokenListCard/TokenListCard.types';
+import { DeFiPositionCard } from './new-components/DeFiPositionCard/DeFiPositionCard';
+import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
+import { useRouter } from 'next/navigation';
+import { PortfolioAssetsSection } from './new-components/PortfolioAssetsSection';
+import { PortfolioHeaderSection } from './new-components/PortfolioHeaderSection';
 
 const formatUSD = (value: number) => {
   return new Intl.NumberFormat('en-US', {
@@ -245,6 +248,15 @@ const SummaryCard = () => {
 
 const TokensList = () => {
   const { data: tokens, isLoading, isEmpty } = useTokensFiltering();
+  const router = useRouter();
+  const setFrom = useWidgetCacheStore((state) => state.setFrom);
+
+  const formattedTokens = useFormatDisplayWalletTokens(tokens);
+
+  const handleSelectToken = (token: any) => {
+    setFrom(token.address, token.chain.chainId);
+    router.push('/');
+  };
 
   if (isLoading) {
     return (
@@ -272,47 +284,14 @@ const TokensList = () => {
   }
 
   return (
-    <Stack spacing={1} sx={{ maxHeight: 400, overflow: 'auto' }}>
+    <Stack spacing={1.5} sx={{ maxHeight: 500, overflow: 'auto' }}>
       {tokens.slice(0, 20).map((token, index) => (
-        <Box
-          key={`${token.chain?.chainId}-${token.address}-${index}`}
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            p: 1,
-            borderRadius: 1,
-            bgcolor: 'action.hover',
-          }}
-        >
-          <Stack direction="row" spacing={2} alignItems="center">
-            {token.logo && (
-              <Box
-                component="img"
-                src={token.logo}
-                alt={token.symbol}
-                sx={{ width: 32, height: 32, borderRadius: '50%' }}
-              />
-            )}
-            <Box>
-              <Typography variant="body1">{token.symbol}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {token.chain?.chainKey}
-                {token.relatedTokens && token.relatedTokens.length > 0 && (
-                  <> (+{token.relatedTokens.length} chains)</>
-                )}
-              </Typography>
-            </Box>
-          </Stack>
-          <Box sx={{ textAlign: 'right' }}>
-            <Typography variant="body2">
-              {formatUSD(token.totalPriceUSD ?? 0)}
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {token.balance?.toFixed(4)} {token.symbol}
-            </Typography>
-          </Box>
-        </Box>
+        <TokenListCard
+          key={`${token.address}-${token.chain.chainId}-${index}`}
+          size={TokenListCardTokenSize.MD}
+          token={token}
+          onSelect={handleSelectToken}
+        />
       ))}
       {tokens.length > 20 && (
         <Typography
@@ -320,7 +299,7 @@ const TokensList = () => {
           color="text.secondary"
           sx={{ textAlign: 'center', py: 1 }}
         >
-          ... and {tokens.length - 20} more tokens
+          ... and {formattedTokens.length - 20} more tokens
         </Typography>
       )}
     </Stack>
@@ -358,42 +337,11 @@ const TokensSection = () => {
 };
 
 const PositionsList = () => {
-  const { account } = useAccount();
-  const { updatePositionFromContract, isUpdating } = usePositionUpdate();
   const {
     data: groups,
     isLoading,
     isAllDataEmpty,
   } = useDeFiPositionsFiltering();
-
-  const [updatingPositionKey, setUpdatingPositionKey] = useState<string | null>(
-    null,
-  );
-
-  const handleUpdatePosition = async (position: {
-    lpToken?: { address: string; chain?: { chainId: number } };
-  }) => {
-    if (
-      !account?.address ||
-      !position.lpToken?.address ||
-      !position.lpToken?.chain?.chainId
-    ) {
-      return;
-    }
-
-    const positionKey = `${position.lpToken.chain.chainId}-${position.lpToken.address}`;
-    setUpdatingPositionKey(positionKey);
-
-    try {
-      await updatePositionFromContract({
-        walletAddress: account.address as Hex,
-        chainId: position.lpToken.chain.chainId,
-        lpTokenAddress: position.lpToken.address as Hex,
-      });
-    } finally {
-      setUpdatingPositionKey(null);
-    }
-  };
 
   if (isLoading) {
     return (
@@ -420,132 +368,12 @@ const PositionsList = () => {
 
   return (
     <Stack spacing={2} sx={{ maxHeight: 500, overflow: 'auto' }}>
-      {groups.map((group) => (
-        <Box
-          key={group.key}
-          sx={{
-            p: 2,
-            borderRadius: 1,
-            bgcolor: 'action.hover',
-          }}
-        >
-          {/* Group Header */}
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ mb: 1 }}
-          >
-            <Stack direction="row" spacing={1} alignItems="center">
-              {group.protocol?.logo && (
-                <Box
-                  component="img"
-                  src={group.protocol.logo}
-                  alt={group.protocol.name}
-                  sx={{ width: 28, height: 28, borderRadius: '50%' }}
-                />
-              )}
-              <Box>
-                <Typography variant="body1" fontWeight="medium">
-                  {group.protocol?.name}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {group.chain?.chainKey} · {group.positions.length} position
-                  {group.positions.length !== 1 ? 's' : ''}
-                </Typography>
-              </Box>
-            </Stack>
-            <Typography variant="h6">{formatUSD(group.totalNetUsd)}</Typography>
-          </Stack>
-
-          <Divider sx={{ my: 1 }} />
-
-          {/* Positions within group */}
-          <Stack spacing={1}>
-            {group.positions.map((position, index) => {
-              const positionKey = position.lpToken
-                ? `${position.lpToken.chain?.chainId}-${position.lpToken.address}`
-                : null;
-              const isThisUpdating =
-                positionKey && updatingPositionKey === positionKey;
-              const hasLpToken = Boolean(
-                position.lpToken?.address && position.lpToken?.chain?.chainId,
-              );
-
-              return (
-                <Box
-                  key={`${position.type}-${index}`}
-                  sx={{
-                    pl: 2,
-                    py: 0.5,
-                    borderLeft: 2,
-                    borderColor: 'divider',
-                  }}
-                >
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Chip
-                        label={position.type}
-                        size="small"
-                        variant="outlined"
-                      />
-                      <Stack direction="row" spacing={0.5}>
-                        {position.supplyTokens?.slice(0, 3).map((token, i) => (
-                          <Chip
-                            key={`supply-${i}`}
-                            label={token.symbol}
-                            size="small"
-                            sx={{ fontSize: '0.7rem' }}
-                          />
-                        ))}
-                      </Stack>
-                      {position.lpToken && (
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{ ml: 1 }}
-                        >
-                          LP: {position.lpToken.symbol}
-                        </Typography>
-                      )}
-                    </Stack>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      {hasLpToken && account?.address && (
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          onClick={() => handleUpdatePosition(position)}
-                          disabled={isUpdating}
-                          sx={{ minWidth: 'auto', px: 1, py: 0.25 }}
-                        >
-                          {isThisUpdating ? (
-                            <CircularProgress size={14} />
-                          ) : (
-                            'Update'
-                          )}
-                        </Button>
-                      )}
-                      <Box sx={{ textAlign: 'right' }}>
-                        <Typography variant="body2">
-                          {formatUSD(position.netUsd ?? 0)}
-                        </Typography>
-                        {position.debtUsd > 0 && (
-                          <Typography variant="caption" color="error.main">
-                            Debt: {formatUSD(position.debtUsd)}
-                          </Typography>
-                        )}
-                      </Box>
-                    </Stack>
-                  </Stack>
-                </Box>
-              );
-            })}
-          </Stack>
-        </Box>
+      {groups.map((group, index) => (
+        <DeFiPositionCard
+          key={`${group.protocol?.name}-${group.chain?.chainId}-${index}`}
+          defiPositions={group.positions}
+          isLoading={isLoading}
+        />
       ))}
     </Stack>
   );
@@ -585,35 +413,43 @@ const PortfolioTestContent = () => {
   const state = usePortfolioState();
 
   return (
-    <Box sx={{ p: 3, maxWidth: 800, mx: 'auto' }}>
-      <Typography variant="h4" gutterBottom>
-        Portfolio Test Page
-      </Typography>
-      <Typography variant="body2" color="text.secondary" gutterBottom>
-        This page displays data from the new PortfolioProvider architecture.
-      </Typography>
+    <>
+      <Box sx={{ p: 3, maxWidth: 800, mx: 'auto' }}>
+        <Typography variant="h4" gutterBottom>
+          Portfolio Test Page
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          This page displays data from the new PortfolioProvider architecture.
+        </Typography>
+      </Box>
 
-      {state.hasError && (
-        <Card sx={{ mb: 3, bgcolor: 'error.dark' }}>
-          <CardContent>
-            <Typography color="error.contrastText">
-              Error loading portfolio data. Please try again.
-            </Typography>
-          </CardContent>
-        </Card>
-      )}
+      <PortfolioHeaderSection />
 
-      <Divider sx={{ my: 3 }} />
+      <PortfolioAssetsSection />
 
-      <SummaryCard />
+      <Box sx={{ p: 3, maxWidth: 800, mx: 'auto' }}>
+        {state.hasError && (
+          <Card sx={{ mb: 3, bgcolor: 'error.dark' }}>
+            <CardContent>
+              <Typography color="error.contrastText">
+                Error loading portfolio data. Please try again.
+              </Typography>
+            </CardContent>
+          </Card>
+        )}
 
-      <TokensFilteringProvider>
-        <TokensSection />
-      </TokensFilteringProvider>
-      <DeFiPositionsFilteringProvider>
-        <PositionsSection />
-      </DeFiPositionsFilteringProvider>
-    </Box>
+        <Divider sx={{ my: 3 }} />
+
+        <SummaryCard />
+
+        <TokensFilteringProvider>
+          <TokensSection />
+        </TokensFilteringProvider>
+        <DeFiPositionsFilteringProvider>
+          <PositionsSection />
+        </DeFiPositionsFilteringProvider>
+      </Box>
+    </>
   );
 };
 
