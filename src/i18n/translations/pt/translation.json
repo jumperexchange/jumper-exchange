@@ -337,7 +337,7 @@
   },
   "earn": {
     "top": {
-      "useYourSpare": "Use seu saldo <asset/> com <protocol/> e ganhe até <apy/> APY",
+      "useYourSpare": "",
       "maximizeYourRevenue": "Maximize sua receita de <tag/> depositando em <protocol/> <token/> Pool",
       "makeTheJump": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> em <protocol/>, pule dentro!",
       "earnUpTo": "Seu <asset/> ocioso em <chain/> pode ganhar até <apy/> por ano se for colocado em <protocol/>"
