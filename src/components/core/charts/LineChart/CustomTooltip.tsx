@@ -11,11 +11,10 @@ import {
 type ValueType = string | number;
 type NameType = string;
 
-interface CustomTooltipProps
-  extends Pick<
-    TooltipContentProps<ValueType, NameType>,
-    'active' | 'payload' | 'label'
-  > {
+interface CustomTooltipProps extends Pick<
+  TooltipContentProps<ValueType, NameType>,
+  'active' | 'payload' | 'label'
+> {
   dataSetId?: string;
   valueFormatConfig?: ValueFormatConfig;
   x: number;
@@ -58,6 +57,8 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
         pointerEvents: 'none',
         zIndex: 1000,
         transform,
+        willChange: 'transform',
+        backfaceVisibility: 'hidden',
       })}
     >
       <Typography

@@ -21,14 +21,7 @@ import {
   calculateEvenYAxisTicks,
   calculateVisibleYRange,
 } from './utils';
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useId, useMemo, useRef, useState } from 'react';
 import type { HTMLAttributes } from 'react';
 import Box from '@mui/material/Box';
 import { AREA_CONFIG } from './constants';
@@ -99,7 +92,6 @@ export const LineChart = <
   const muiTheme = useTheme();
   const gradientId = useId();
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const rafIdRef = useRef<number | null>(null);
   const [activeDot, setActiveDot] = useState<{
     cx: number;
     cy: number;
@@ -150,18 +142,7 @@ export const LineChart = <
   }, [data, dateFormatter]);
 
   const handleMouseLeave = useCallback(() => {
-    if (rafIdRef.current) {
-      cancelAnimationFrame(rafIdRef.current);
-    }
     setActiveDot(null);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (rafIdRef.current) {
-        cancelAnimationFrame(rafIdRef.current);
-      }
-    };
   }, []);
 
   if (isLoading) {
@@ -259,28 +240,28 @@ export const LineChart = <
                     const { cx, cy, payload } = props;
 
                     if (enableTooltip) {
-                      if (rafIdRef.current) {
-                        cancelAnimationFrame(rafIdRef.current);
-                      }
-                      rafIdRef.current = requestAnimationFrame(() => {
-                        setActiveDot((prev) => {
-                          if (
-                            prev?.payload.date === payload.date &&
-                            prev?.payload.value === payload.value
-                          ) {
-                            return prev;
-                          }
-                          return {
-                            cx: cx ?? 0,
-                            cy: cy ?? 0,
-                            payload,
-                          };
-                        });
+                      setActiveDot((prev) => {
+                        if (
+                          prev?.payload.date === payload.date &&
+                          prev?.payload.value === payload.value
+                        ) {
+                          return prev;
+                        }
+                        return {
+                          cx: cx ?? 0,
+                          cy: cy ?? 0,
+                          payload,
+                        };
                       });
                     }
 
                     return (
-                      <g style={{ cursor: 'crosshair' }}>
+                      <g
+                        style={{
+                          cursor: 'crosshair',
+                          transform: AREA_CONFIG.TRANSFORM,
+                        }}
+                      >
                         <circle
                           cx={cx}
                           cy={cy}
@@ -297,6 +278,9 @@ export const LineChart = <
             fill={`url(#${gradientId})`}
             isAnimationActive
             baseValue={isNegative ? 0 : 'dataMin'}
+            style={{
+              transform: AREA_CONFIG.TRANSFORM,
+            }}
           />
           {isSymmetricRange && (
             <ReferenceLine

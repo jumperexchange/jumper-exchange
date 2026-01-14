@@ -99,6 +99,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                       id="recharts-area-_r_5_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="90"
                     />
                     <path
@@ -109,6 +110,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                       height="90"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="90"
                     />
                   </g>
@@ -363,6 +365,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                       id="recharts-area-_r_2_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -373,6 +376,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -985,6 +989,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                       id="recharts-area-_r_q_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -995,6 +1000,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -1580,6 +1586,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                       id="recharts-area-_r_b_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -1590,6 +1597,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -2148,6 +2156,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                       id="recharts-area-_r_e_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -2158,6 +2167,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -2716,6 +2726,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                       id="recharts-area-_r_h_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -2726,6 +2737,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -3311,6 +3323,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                       id="recharts-area-_r_k_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -3321,6 +3334,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -3879,6 +3893,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                       id="recharts-area-_r_n_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -3889,6 +3904,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -4582,6 +4598,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                       id="recharts-area-_r_13_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -4592,6 +4609,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -5150,6 +5168,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                       id="recharts-area-_r_10_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -5160,6 +5179,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
@@ -5718,6 +5738,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                       id="recharts-area-_r_t_"
                       stroke="none"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                     <path
@@ -5728,6 +5749,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
+                      style="transform: translate3d(0, 0, 0);"
                       width="30"
                     />
                   </g>
