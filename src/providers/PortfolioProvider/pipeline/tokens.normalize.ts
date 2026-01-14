@@ -57,7 +57,7 @@ const normalizeTokenGroup = (
     ...mainToken,
     totalPriceUSD: cumulatedAmountUSD,
     balance: cumulatedAmount,
-    relatedTokens: isEmpty(rest) ? undefined : map(rest, normalizeToken),
+    relatedTokens: isEmpty(rest) ? undefined : map(sorted, normalizeToken),
   };
 };
 
