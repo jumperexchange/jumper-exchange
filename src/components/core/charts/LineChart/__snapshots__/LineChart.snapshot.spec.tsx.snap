@@ -44,7 +44,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_4_"
               x1="0"
               x2="0"
               y1="0"
@@ -73,7 +73,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_3_"
+                    id="animationClipPath-recharts-area-_r_5_"
                   >
                     <rect
                       height="96"
@@ -85,7 +85,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_3_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_5_)"
                 >
                   <g
                     class="recharts-layer"
@@ -93,13 +93,12 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M5,32.05142857142857C6.25,23.523928571428574,7.5,14.996428571428574,8.75,14.996428571428574C10,14.996428571428574,11.25,39.54714285714285,12.5,39.54714285714285C13.75,39.54714285714285,15,32.462857142857146,16.25,32.462857142857146C17.5,32.462857142857146,18.75,36.16571428571429,20,36.16571428571429C21.25,36.16571428571429,22.5,11.20357142857143,23.75,11.20357142857143C25,11.20357142857143,26.25,41.14785714285714,27.5,41.14785714285714C28.75,41.14785714285714,30,28.419285714285714,31.25,28.419285714285714C32.5,28.419285714285714,33.75,29.22928571428572,35,29.22928571428572C36.25,29.22928571428572,37.5,18.095000000000006,38.75,18.095000000000006C40,18.095000000000006,41.25,26.797142857142855,42.5,30.154999999999998C43.75,33.512857142857136,45,38.24214285714285,46.25,38.24214285714285C47.5,38.24214285714285,48.75,28.412857142857142,50,28.412857142857142C51.25,28.412857142857142,52.5,38.447857142857146,53.75,38.447857142857146C55,38.447857142857146,56.25,37.85214285714286,57.5,36.660714285714285C58.75,35.46928571428571,60,23.44357142857143,61.25,23.44357142857143C62.5,23.44357142857143,63.75,24.638214285714287,65,25.25642857142857C66.25,25.874642857142856,67.5,25.888571428571428,68.75,27.15285714285714C70,28.417142857142853,71.25,39.91357142857142,72.5,39.91357142857142C73.75,39.91357142857142,75,25.372142857142855,76.25,25.372142857142855C77.5,25.372142857142855,78.75,37.11071428571428,80,37.11071428571428C81.25,37.11071428571428,82.5,27.120714285714286,83.75,27.120714285714286C85,27.120714285714286,86.25,29.289285714285718,87.5,30.257857142857148C88.75,31.226428571428578,90,32.93214285714286,91.25,32.93214285714286C92.5,32.93214285714286,93.75,19.737500000000004,95,6.542857142857152L95,95C93.75,95,92.5,95,91.25,95C90,95,88.75,95,87.5,95C86.25,95,85,95,83.75,95C82.5,95,81.25,95,80,95C78.75,95,77.5,95,76.25,95C75,95,73.75,95,72.5,95C71.25,95,70,95,68.75,95C67.5,95,66.25,95,65,95C63.75,95,62.5,95,61.25,95C60,95,58.75,95,57.5,95C56.25,95,55,95,53.75,95C52.5,95,51.25,95,50,95C48.75,95,47.5,95,46.25,95C45,95,43.75,95,42.5,95C41.25,95,40,95,38.75,95C37.5,95,36.25,95,35,95C33.75,95,32.5,95,31.25,95C30,95,28.75,95,27.5,95C26.25,95,25,95,23.75,95C22.5,95,21.25,95,20,95C18.75,95,17.5,95,16.25,95C15,95,13.75,95,12.5,95C11.25,95,10,95,8.75,95C7.5,95,6.25,95,5,95Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_4_)"
                       fill-opacity="1"
                       height="90"
-                      id="recharts-area-_r_3_"
+                      id="recharts-area-_r_5_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="90"
                     />
                     <path
@@ -110,7 +109,6 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
                       height="90"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="90"
                     />
                   </g>
@@ -310,7 +308,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_1_"
               x1="0"
               x2="0"
               y1="0"
@@ -339,7 +337,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_1_"
+                    id="animationClipPath-recharts-area-_r_2_"
                   >
                     <rect
                       height="66"
@@ -351,7 +349,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_1_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_2_)"
                 >
                   <g
                     class="recharts-layer"
@@ -359,13 +357,12 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,29.418604651162788C65.41666666666667,24.598473837209294,65.83333333333333,19.778343023255804,66.25,19.778343023255804C66.66666666666667,19.778343023255804,67.08333333333333,33.65552325581395,67.5,33.65552325581395C67.91666666666667,33.65552325581395,68.33333333333333,29.651162790697672,68.75,29.651162790697672C69.16666666666667,29.651162790697672,69.58333333333333,31.744186046511622,70,31.744186046511622C70.41666666666667,31.744186046511622,70.83333333333333,17.634447674418603,71.25,17.634447674418603C71.66666666666667,17.634447674418603,72.08333333333333,34.56031976744186,72.5,34.56031976744186C72.91666666666667,34.56031976744186,73.33333333333333,27.36555232558139,73.75,27.36555232558139C74.16666666666667,27.36555232558139,74.58333333333333,27.82340116279069,75,27.82340116279069C75.41666666666667,27.82340116279069,75.83333333333333,21.529796511627904,76.25,21.529796511627904C76.66666666666667,21.529796511627904,77.08333333333333,26.448643410852707,77.5,28.34665697674418C77.91666666666667,30.24467054263565,78.33333333333333,32.917877906976734,78.75,32.917877906976734C79.16666666666667,32.917877906976734,79.58333333333333,27.361918604651162,80,27.361918604651162C80.41666666666667,27.361918604651162,80.83333333333333,33.03415697674418,81.25,33.03415697674418C81.66666666666667,33.03415697674418,82.08333333333333,32.697432170542626,82.5,32.02398255813953C82.91666666666667,31.35053294573643,83.33333333333333,24.553052325581383,83.75,24.553052325581383C84.16666666666667,24.553052325581383,84.58333333333333,25.228318798449607,85,25.577761627906973C85.41666666666667,25.92720445736434,85.83333333333333,25.935077519379842,86.25,26.649709302325576C86.66666666666667,27.36434108527131,87.08333333333333,33.862645348837205,87.5,33.862645348837205C87.91666666666667,33.862645348837205,88.33333333333333,25.64316860465116,88.75,25.64316860465116C89.16666666666667,25.64316860465116,89.58333333333333,32.278343023255815,90,32.278343023255815C90.41666666666667,32.278343023255815,90.83333333333333,26.63154069767441,91.25,26.63154069767441C91.66666666666667,26.63154069767441,92.08333333333333,27.85731589147286,92.5,28.4047965116279C92.91666666666667,28.95227713178294,93.33333333333333,29.91642441860465,93.75,29.91642441860465C94.16666666666667,29.91642441860465,94.58333333333333,22.458212209302324,95,14.999999999999996L95,65C94.58333333333333,65,94.16666666666667,65,93.75,65C93.33333333333333,65,92.91666666666667,65,92.5,65C92.08333333333333,65,91.66666666666667,65,91.25,65C90.83333333333333,65,90.41666666666667,65,90,65C89.58333333333333,65,89.16666666666667,65,88.75,65C88.33333333333333,65,87.91666666666667,65,87.5,65C87.08333333333333,65,86.66666666666667,65,86.25,65C85.83333333333333,65,85.41666666666667,65,85,65C84.58333333333333,65,84.16666666666667,65,83.75,65C83.33333333333333,65,82.91666666666667,65,82.5,65C82.08333333333333,65,81.66666666666667,65,81.25,65C80.83333333333333,65,80.41666666666667,65,80,65C79.58333333333333,65,79.16666666666667,65,78.75,65C78.33333333333333,65,77.91666666666667,65,77.5,65C77.08333333333333,65,76.66666666666667,65,76.25,65C75.83333333333333,65,75.41666666666667,65,75,65C74.58333333333333,65,74.16666666666667,65,73.75,65C73.33333333333333,65,72.91666666666667,65,72.5,65C72.08333333333333,65,71.66666666666667,65,71.25,65C70.83333333333333,65,70.41666666666667,65,70,65C69.58333333333333,65,69.16666666666667,65,68.75,65C68.33333333333333,65,67.91666666666667,65,67.5,65C67.08333333333333,65,66.66666666666667,65,66.25,65C65.83333333333333,65,65.41666666666667,65,65,65Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_1_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_1_"
+                      id="recharts-area-_r_2_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -376,7 +373,6 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -934,7 +930,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_p_"
               x1="0"
               x2="0"
               y1="0"
@@ -963,7 +959,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_h_"
+                    id="animationClipPath-recharts-area-_r_q_"
                   >
                     <rect
                       height="66"
@@ -975,7 +971,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_h_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_q_)"
                 >
                   <g
                     class="recharts-layer"
@@ -983,13 +979,12 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,11.66666666666667C67,35,69,58.33333333333333,71,58.33333333333333C73,58.33333333333333,75,25,77,25C79,25,81,51.66666666666667,83,51.66666666666667C85,51.66666666666667,87,18.333333333333332,89,18.333333333333332C91,18.333333333333332,93,41.66666666666667,95,65L95,45C93,45,91,45,89,45C87,45,85,45,83,45C81,45,79,45,77,45C75,45,73,45,71,45C69,45,67,45,65,45Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_p_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_h_"
+                      id="recharts-area-_r_q_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -1000,7 +995,6 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -1531,7 +1525,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_a_"
               x1="0"
               x2="0"
               y1="0"
@@ -1560,7 +1554,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_7_"
+                    id="animationClipPath-recharts-area-_r_b_"
                   >
                     <rect
                       height="66"
@@ -1572,7 +1566,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_7_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_b_)"
                 >
                   <g
                     class="recharts-layer"
@@ -1580,13 +1574,12 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65L95,5C92.5,5,90,5,87.5,5C85,5,82.5,5,80,5C77.5,5,75,5,72.5,5C70,5,67.5,5,65,5Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_a_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_7_"
+                      id="recharts-area-_r_b_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -1597,7 +1590,6 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -2101,7 +2093,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_d_"
               x1="0"
               x2="0"
               y1="0"
@@ -2130,7 +2122,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_9_"
+                    id="animationClipPath-recharts-area-_r_e_"
                   >
                     <rect
                       height="36"
@@ -2142,7 +2134,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_9_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_e_)"
                 >
                   <g
                     class="recharts-layer"
@@ -2150,13 +2142,12 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,5C92.5,5,90,5,87.5,5C85,5,82.5,5,80,5C77.5,5,75,5,72.5,5C70,5,67.5,5,65,5Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_d_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_9_"
+                      id="recharts-area-_r_e_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -2167,7 +2158,6 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -2671,7 +2661,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_g_"
               x1="0"
               x2="0"
               y1="0"
@@ -2700,7 +2690,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_b_"
+                    id="animationClipPath-recharts-area-_r_h_"
                   >
                     <rect
                       height="66"
@@ -2712,7 +2702,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_b_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_h_)"
                 >
                   <g
                     class="recharts-layer"
@@ -2720,13 +2710,12 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,29C67,47,69,65,71,65C73,65,75,16.999999999999996,77,16.999999999999996C79,16.999999999999996,81,35,83,41C85,47,87,53,89,53C91,53,93,38.599999999999994,95,24.199999999999996L95,5C93,5,91,5,89,5C87,5,85,5,83,5C81,5,79,5,77,5C75,5,73,5,71,5C69,5,67,5,65,5Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_g_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_b_"
+                      id="recharts-area-_r_h_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -2737,7 +2726,6 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -3268,7 +3256,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_j_"
               x1="0"
               x2="0"
               y1="0"
@@ -3297,7 +3285,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_d_"
+                    id="animationClipPath-recharts-area-_r_k_"
                   >
                     <rect
                       height="66"
@@ -3309,7 +3297,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_d_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_k_)"
                 >
                   <g
                     class="recharts-layer"
@@ -3317,13 +3305,12 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,14.999999999999996C67.5,14.999999999999996,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,14.999999999999996,80,14.999999999999996C82.5,14.999999999999996,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,14.999999999999996,95,14.999999999999996L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_j_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_d_"
+                      id="recharts-area-_r_k_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -3334,7 +3321,6 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -3838,7 +3824,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_m_"
               x1="0"
               x2="0"
               y1="0"
@@ -3867,7 +3853,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_f_"
+                    id="animationClipPath-recharts-area-_r_n_"
                   >
                     <rect
                       height="66"
@@ -3879,7 +3865,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_f_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_n_)"
                 >
                   <g
                     class="recharts-layer"
@@ -3887,13 +3873,12 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_m_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_f_"
+                      id="recharts-area-_r_n_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -3904,7 +3889,6 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -4310,7 +4294,7 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_5_"
+                    id="animationClipPath-recharts-area-_r_8_"
                   >
                     <rect
                       height="97"
@@ -4322,7 +4306,7 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_5_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_8_)"
                 >
                   <g
                     class="recharts-layer"
@@ -4333,7 +4317,7 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
                       fill="var(--jumper-palette-surface2-main)"
                       fill-opacity="1"
                       height="90"
-                      id="recharts-area-_r_5_"
+                      id="recharts-area-_r_8_"
                       stroke="none"
                       stroke-width="1"
                       width="90"
@@ -4543,7 +4527,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_12_"
               x1="0"
               x2="0"
               y1="0"
@@ -4572,7 +4556,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_n_"
+                    id="animationClipPath-recharts-area-_r_13_"
                   >
                     <rect
                       height="66"
@@ -4584,7 +4568,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_n_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_13_)"
                 >
                   <g
                     class="recharts-layer"
@@ -4592,13 +4576,12 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,48.33333333333333C67.5,35.83333333333333,70,23.333333333333336,72.5,23.333333333333336C75,23.333333333333336,77.5,40,80,40C82.5,40,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,23.33333333333333,95,31.666666666666664L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_12_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_n_"
+                      id="recharts-area-_r_13_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -4609,7 +4592,6 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -5113,7 +5095,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_v_"
               x1="0"
               x2="0"
               y1="0"
@@ -5142,7 +5124,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_l_"
+                    id="animationClipPath-recharts-area-_r_10_"
                   >
                     <rect
                       height="66"
@@ -5154,7 +5136,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_l_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_10_)"
                 >
                   <g
                     class="recharts-layer"
@@ -5162,13 +5144,12 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,48.33333333333333C67.5,31.666666666666664,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,27.499999999999996,80,31.666666666666664C82.5,35.83333333333333,85,40,87.5,40C90,40,92.5,31.666666666666664,95,23.33333333333333L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_v_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_l_"
+                      id="recharts-area-_r_10_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -5179,7 +5160,6 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>
@@ -5683,7 +5663,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
           </defs>
           <defs>
             <lineargradient
-              id="areaGradient"
+              id="_r_s_"
               x1="0"
               x2="0"
               y1="0"
@@ -5712,7 +5692,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
               >
                 <defs>
                   <clippath
-                    id="animationClipPath-recharts-area-_r_j_"
+                    id="animationClipPath-recharts-area-_r_t_"
                   >
                     <rect
                       height="66"
@@ -5724,7 +5704,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 </defs>
                 <g
                   class="recharts-layer"
-                  clip-path="url(#animationClipPath-recharts-area-_r_j_)"
+                  clip-path="url(#animationClipPath-recharts-area-_r_t_)"
                 >
                   <g
                     class="recharts-layer"
@@ -5732,13 +5712,12 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                     <path
                       class="recharts-curve recharts-area-area"
                       d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
-                      fill="url(#areaGradient)"
+                      fill="url(#_r_s_)"
                       fill-opacity="1"
                       height="60"
-                      id="recharts-area-_r_j_"
+                      id="recharts-area-_r_t_"
                       stroke="none"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                     <path
@@ -5749,7 +5728,6 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                       height="60"
                       stroke="#E65100"
                       stroke-width="1"
-                      style="transform: translateY(0);"
                       width="30"
                     />
                   </g>

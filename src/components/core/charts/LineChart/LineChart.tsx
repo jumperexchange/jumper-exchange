@@ -21,7 +21,14 @@ import {
   calculateEvenYAxisTicks,
   calculateVisibleYRange,
 } from './utils';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type { HTMLAttributes } from 'react';
 import Box from '@mui/material/Box';
 import { AREA_CONFIG } from './constants';
@@ -90,15 +97,14 @@ export const LineChart = <
   ...props
 }: LineChartProps<V, T>) => {
   const muiTheme = useTheme();
+  const gradientId = useId();
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const tooltipDataRef = useRef<{
-    x: number;
-    y: number;
-    transform: string;
+  const rafIdRef = useRef<number | null>(null);
+  const [activeDot, setActiveDot] = useState<{
+    cx: number;
+    cy: number;
     payload: T;
   } | null>(null);
-  const rafIdRef = useRef<number | null>(null);
-  const [, forceUpdate] = useState({});
 
   const {
     minValue,
@@ -143,19 +149,12 @@ export const LineChart = <
     return calculateEvenXAxisTicks(data, dateFormatter);
   }, [data, dateFormatter]);
 
-  const scheduleTooltipUpdate = useCallback(() => {
+  const handleMouseLeave = useCallback(() => {
     if (rafIdRef.current) {
       cancelAnimationFrame(rafIdRef.current);
     }
-    rafIdRef.current = requestAnimationFrame(() => {
-      forceUpdate({});
-    });
+    setActiveDot(null);
   }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    tooltipDataRef.current = null;
-    scheduleTooltipUpdate();
-  }, [scheduleTooltipUpdate]);
 
   useEffect(() => {
     return () => {
@@ -168,6 +167,15 @@ export const LineChart = <
   if (isLoading) {
     return <LineChartSkeleton />;
   }
+
+  const tooltipPosition = activeDot
+    ? calculateTooltipPosition(
+        activeDot.cx,
+        activeDot.cy,
+        chartContainerRef.current?.clientWidth ?? 0,
+        chartContainerRef.current?.clientHeight ?? 0,
+      )
+    : null;
 
   return (
     <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -184,7 +192,7 @@ export const LineChart = <
           onMouseLeave={handleMouseLeave}
         >
           <defs>
-            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
               <stop
                 offset="0%"
                 stopColor={theme.areaTopColor}
@@ -249,22 +257,26 @@ export const LineChart = <
               enableCrosshair
                 ? (props: ActiveDotProps) => {
                     const { cx, cy, payload } = props;
-                    const { x, y, transform } = calculateTooltipPosition(
-                      cx ?? 0,
-                      cy ?? 0,
-                      chartContainerRef.current?.clientWidth ?? 0,
-                      chartContainerRef.current?.clientHeight ?? 0,
-                    );
 
-                    const prev = tooltipDataRef.current;
-                    if (
-                      enableTooltip &&
-                      (!prev ||
-                        prev.payload.date !== payload.date ||
-                        prev.payload.value !== payload.value)
-                    ) {
-                      tooltipDataRef.current = { x, y, transform, payload };
-                      scheduleTooltipUpdate();
+                    if (enableTooltip) {
+                      if (rafIdRef.current) {
+                        cancelAnimationFrame(rafIdRef.current);
+                      }
+                      rafIdRef.current = requestAnimationFrame(() => {
+                        setActiveDot((prev) => {
+                          if (
+                            prev?.payload.date === payload.date &&
+                            prev?.payload.value === payload.value
+                          ) {
+                            return prev;
+                          }
+                          return {
+                            cx: cx ?? 0,
+                            cy: cy ?? 0,
+                            payload,
+                          };
+                        });
+                      });
                     }
 
                     return (
@@ -275,9 +287,6 @@ export const LineChart = <
                           r={4}
                           strokeWidth={0}
                           fill={theme.pointColor}
-                          style={{
-                            transform: AREA_CONFIG.TRANSFORM,
-                          }}
                         />
                       </g>
                     );
@@ -285,12 +294,9 @@ export const LineChart = <
                 : false
             }
             fillOpacity={1}
-            fill="url(#areaGradient)"
+            fill={`url(#${gradientId})`}
             isAnimationActive
             baseValue={isNegative ? 0 : 'dataMin'}
-            style={{
-              transform: AREA_CONFIG.TRANSFORM,
-            }}
           />
           {isSymmetricRange && (
             <ReferenceLine
@@ -302,19 +308,19 @@ export const LineChart = <
           )}
         </AreaChart>
       </StyledResponsiveContainer>
-      {enableTooltip && tooltipDataRef.current && (
+      {enableTooltip && activeDot && tooltipPosition && (
         <CustomTooltip
           active={true}
           payload={[
             {
-              payload: tooltipDataRef.current.payload,
-              value: tooltipDataRef.current.payload.value,
+              payload: activeDot.payload,
+              value: activeDot.payload.value,
             },
           ]}
-          label={tooltipDataRef.current.payload.date}
-          x={tooltipDataRef.current.x}
-          y={tooltipDataRef.current.y}
-          transform={tooltipDataRef.current.transform}
+          label={activeDot.payload.date}
+          x={tooltipPosition.x}
+          y={tooltipPosition.y}
+          transform={tooltipPosition.transform}
           dataSetId={dataSetId}
           valueFormatConfig={valueFormatConfig}
         />

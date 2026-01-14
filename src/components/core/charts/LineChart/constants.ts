@@ -10,5 +10,4 @@ export const Y_AXIS_CONFIG = {
 
 export const AREA_CONFIG = {
   OFFSET: 0.1,
-  TRANSFORM: 'translateY(0)',
 } as const;
