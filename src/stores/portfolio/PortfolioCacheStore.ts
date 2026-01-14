@@ -14,6 +14,14 @@ const getOrCreateMap = <T>(
 };
 
 /**
+ * Position key for identifying a specific position
+ */
+export interface PositionKey {
+  chainId: number;
+  lpTokenAddress: string;
+}
+
+/**
  * Cache state interface
  */
 export interface PortfolioCacheState {
@@ -23,6 +31,8 @@ export interface PortfolioCacheState {
   positions: Map<string, DefiPosition[]>;
   /** Force refresh flags by wallet address */
   forceRefresh: Map<string, boolean>;
+  /** Version counter to trigger re-renders when positions are patched */
+  positionPatchVersion: number;
 }
 
 /**
@@ -37,6 +47,12 @@ export interface PortfolioCacheActions {
   getPositions: (address: string) => DefiPosition[];
   /** Set cached positions for an address */
   setPositions: (address: string, positions: DefiPosition[]) => void;
+  /** Patch a specific position's LP token amount */
+  patchPositionAmount: (
+    walletAddress: string,
+    positionKey: PositionKey,
+    newAmount: string,
+  ) => void;
   /** Check if address needs refresh */
   needsRefresh: (address: string) => boolean;
   /** Set force refresh flag */
@@ -53,6 +69,7 @@ const DEFAULT_CACHE_STATE: PortfolioCacheState = {
   tokens: new Map<string, LiFiCommonToken[]>(),
   positions: new Map<string, DefiPosition[]>(),
   forceRefresh: new Map<string, boolean>(),
+  positionPatchVersion: 0,
 };
 
 /**
@@ -81,6 +98,47 @@ export const usePortfolioCacheStore = createWithEqualityFn(
         const currentPositions = getOrCreateMap(get().positions);
         currentPositions.set(address, positions);
         set({ positions: currentPositions });
+      },
+
+      patchPositionAmount: (
+        walletAddress: string,
+        positionKey: PositionKey,
+        newAmount: string,
+      ) => {
+        const currentPositions = getOrCreateMap(get().positions);
+        const walletPositions = currentPositions.get(walletAddress);
+
+        if (!walletPositions) {
+          return;
+        }
+
+        const updatedPositions = walletPositions.map((position) => {
+          const lpTokenAddress = position.lpToken?.address?.toLowerCase();
+          const lpTokenChainId = position.lpToken?.chain?.chainId;
+
+          if (
+            lpTokenAddress === positionKey.lpTokenAddress.toLowerCase() &&
+            lpTokenChainId === positionKey.chainId
+          ) {
+            return {
+              ...position,
+              lpToken: position.lpToken
+                ? {
+                    ...position.lpToken,
+                    amount: newAmount,
+                  }
+                : undefined,
+            };
+          }
+
+          return position;
+        });
+
+        currentPositions.set(walletAddress, updatedPositions);
+        set({
+          positions: currentPositions,
+          positionPatchVersion: get().positionPatchVersion + 1,
+        });
       },
 
       needsRefresh: (address: string) => {
