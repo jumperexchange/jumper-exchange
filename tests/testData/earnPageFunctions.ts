@@ -5,6 +5,10 @@ export async function selectAllMarketsTab(page: Page) {
   await allMarketsTab.click();
 }
 
+export async function selectYourPositionsTab(page: Page) {
+  const yourPositionsTab = page.getByTestId('earn-filter-tab-your-positions');
+  await yourPositionsTab.click();
+}
 export async function verifyAnalyticsButtonsAreVisible(page: Page) {
   const chartButtons = [
     'analytics-range-week',
@@ -173,6 +177,7 @@ export async function verifyFiltersAreVisible(page: Page) {
     'earn-filter-tag-select',
     'earn-filter-asset-select',
     'earn-filter-apy-select',
+    'earn-filter-tvl-select',
   ];
   for (const filterId of filterIds) {
     await expect(page.getByTestId(filterId)).toBeVisible();
