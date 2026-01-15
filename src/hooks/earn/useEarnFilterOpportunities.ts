@@ -25,7 +25,7 @@ export const useEarnFilterOpportunities = (
   options: Omit<
     UseQueryOptions<EarnOpportunities>,
     'queryKey' | 'queryFn' | 'select' | 'placeholderData'
-  > = {},
+  > = { enabled: true },
 ): Result => {
   return useQuery({
     queryKey: ['earn-filter-opportunities', filter],
@@ -44,7 +44,7 @@ export const useEarnFilterOpportunities = (
     },
     refetchInterval: ONE_HOUR_MS,
     placeholderData: (previousData) =>
-      options.enabled ? previousData : undefined,
+      !('enabled' in options) || options.enabled ? previousData : undefined,
     ...options,
   });
 };
