@@ -244,10 +244,10 @@ test.describe('Main Menu flows', () => {
   );
 
   test(
-    qase(54, 'Should be able to navigate to the Terms & Conditions page'),
+    qase(54, 'Should be able to navigate to the Terms Of Business page'),
     async ({ page, context }) => {
-      await itemInNavigation(page, 'Terms & Conditions');
-      await openNewTabAndVerifyUrl(context, values.termsConditionsURL);
+      await itemInNavigation(page, 'Terms Of Business');
+      await openNewTabAndVerifyUrl(context, values.termsOfBusinessURL);
     },
   );
 
