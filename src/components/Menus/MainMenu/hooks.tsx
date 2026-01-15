@@ -356,7 +356,6 @@ export const useFooterLinks = () => {
         label: t('navbar.navbarMenu.termsOfBusiness'),
         link: { url: AppPaths.TermsOfBusiness },
         onClick: handleTermsConditionsClick,
-        external: true,
       },
       {
         label: t('navbar.navbarMenu.privacyPolicy'),

@@ -1,5 +1,3 @@
-import { de } from 'date-fns/locale';
-import 'react';
 import { orderedListWithSmallRomanNumbers } from './utils';
 
 export const eligibilityList = [
@@ -44,7 +42,7 @@ export const functionalityList = [
           </>,
           <>
             No fiduciary, agency, partnership, or trust relationship exists
-            between us and any User;and
+            between us and any User; and
           </>,
           <>
             All transactions occur directly on a peer-to-peer basis between

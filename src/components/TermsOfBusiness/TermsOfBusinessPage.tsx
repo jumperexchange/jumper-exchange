@@ -2,7 +2,7 @@
 
 import { PageContainer } from '@/components/Containers/PageContainer';
 import { DynamicPagesContainer } from '@/components/DynamicPagesContainer';
-import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { orderedListWithSmallLetters } from './utils';
 import {
@@ -18,6 +18,8 @@ import {
   thirdPartyServicesList,
 } from './lists';
 import { de } from 'date-fns/locale';
+import Link from 'next/link';
+import { JUMPER_PRIVACY_POLICY_PATH } from '@/const/urls';
 
 export const TermsOfBusinessPage = () => {
   const currentDate = format(new Date(), 'MMMM dd, yyyy');
@@ -47,11 +49,12 @@ export const TermsOfBusinessPage = () => {
           . These Terms of Business (the “Terms”) constitute a legally binding
           agreement and explain the terms and conditions by which you may access
           and use the Functionality. The Terms also incorporate our Privacy
-          Policy by reference, available at:. By using or assessing the
-          Functionality in any manner, including but not limited to connecting
-          your wallet, you, (a) accept and agree to these Terms and (b) consent
-          to the collection, use, disclosure and other handling of information
-          as described in our Privacy Policy.
+          Policy by reference,{' '}
+          <Link href={JUMPER_PRIVACY_POLICY_PATH}>available here:</Link>. By
+          using or assessing the Functionality in any manner, including but not
+          limited to connecting your wallet, you, (a) accept and agree to these
+          Terms and (b) consent to the collection, use, disclosure and other
+          handling of information as described in our Privacy Policy.
         </>
       ),
     },
@@ -120,7 +123,7 @@ export const TermsOfBusinessPage = () => {
         'By accessing or using any of our Functionality, you agree that you are solely and entirely responsible for compliance with all laws and regulations that may apply to you. Specifically, your use of our Functionality may result in various tax consequences, such as income or capital gains tax, value-added tax, goods and services tax, or sales tax in certain jurisdictions. It is your responsibility to determine whether taxes apply to any transactions you initiate or receive and, if so, to report and/or remit the correct tax to the appropriate tax authority.',
     },
     {
-      key: 'complianceAndTaxObligations',
+      key: 'indemnity',
       title: '10. Indemnity',
       content:
         "You agree to hold harmless, release, defend, and indemnify Ultima Liquiditas JE BVI Ltd., our affiliates and our and our affiliates' respective officers, directors, employees, contractors, agents, service providers, licensors, and representatives (collectively, the “Jumper Parties”) from and against all claims, damages, obligations, losses, liabilities, costs, and expenses (including reasonable attorney's fees) arising from or relating to: (a) your access and use of any of our Functionality or any Third-Party Functionality; (b) your violation of any clause of these Terms, the right of any third party, or any other applicable law, rule, or regulation; (c) any other party's access and use of any of our Functionality or any Third-Party Functionality with your assistance or using any device or account that you own or control; and (d) any dispute between you and (i) any other user of any of the Functionality or any Third-Party Functionality or (ii) any of your own customers or users. We reserve the right to assume the exclusive defense and control of any matter which is subject to indemnification under this section, and you agree to cooperate with any reasonable requests assisting our defense of such matter. You may not settle or compromise any claim against any Jumper Party without our written consent. ",
