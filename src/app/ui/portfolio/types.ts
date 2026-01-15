@@ -1,4 +1,4 @@
-import type { CacheToken } from 'src/types/portfolio';
+import type { PortfolioToken } from 'src/types/tokens';
 import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
 import type { Account } from '@lifi/wallet-management';
 
@@ -29,7 +29,7 @@ export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
 export interface PortfolioTokensFilteringParams {
   allWallets: (Omit<Account, 'address'> & { address: string })[];
   allChains: Chain[];
-  allAssets: CacheToken[];
+  allAssets: PortfolioToken[];
   allValueRange: { min: number; max: number };
 }
 

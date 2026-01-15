@@ -1,19 +1,15 @@
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { AvatarStack } from 'src/components/core/AvatarStack/AvatarStack';
-import {
+import type {
   AvatarSize,
   AvatarStackDirection,
 } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { useTokens } from 'src/hooks/useTokens';
+import type { TokenStackToken } from './types';
 
 interface TokenStackProps {
-  tokens: {
-    address: string;
-    chain: {
-      chainId: number;
-      chainKey: string;
-    };
-  }[];
+  tokens: TokenStackToken[];
   size?: AvatarSize;
   spacing?: number;
   direction?: AvatarStackDirection;
@@ -34,10 +30,14 @@ export const TokenStack: FC<TokenStackProps> = ({
         token.address,
         token.chain.chainId,
       );
+
+      const id = token.address + token.chain.chainId;
+      const src = _token?.logoURI || token.logoURI;
+      const alt = token.name || token.symbol || token.address;
       return {
-        id: (_token?.address ?? token.address) + token.chain.chainId,
-        src: _token?.logoURI || '',
-        alt: _token?.name || '',
+        id,
+        src,
+        alt,
       };
     });
   }, [tokens, getTokenByAddressAndChain]);

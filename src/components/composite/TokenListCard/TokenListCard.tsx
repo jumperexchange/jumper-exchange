@@ -9,7 +9,7 @@ import {
 } from './TokenListCard.styles';
 import type { TokenListCardProps } from './TokenListCard.types';
 import { TokenListCardTokenSize } from './TokenListCard.types';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 import { TOKEN_LIST_CARD_CONFIG } from './constants';
 import { TokenStackItem } from './TokenStackItem';
 
@@ -32,7 +32,7 @@ export const TokenListCard: FC<TokenListCardProps> = ({
     setIsExpanded((prev) => !prev);
   };
 
-  const handleExpandedTokenClick = (token: MinimalToken) => {
+  const handleExpandedTokenClick = (token: PortfolioToken) => {
     onSelect?.(token);
   };
 

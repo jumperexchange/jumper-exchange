@@ -457,6 +457,11 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -521,6 +526,11 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -585,6 +595,11 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -649,6 +664,11 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    T
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -802,30 +822,38 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  T
+                </p>
               </div>
             </div>
           </div>
@@ -999,30 +1027,38 @@ exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no
             <div
               class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
-              />
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+              >
+                U
+              </p>
             </div>
             <div
               class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
-              />
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+              >
+                X
+              </p>
             </div>
             <div
               class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
-              />
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+              >
+                O
+              </p>
             </div>
             <div
               class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ki0o8y-MuiAvatar-root"
             >
-              <span
-                class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
-              />
+              <p
+                class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+              >
+                E
+              </p>
             </div>
           </div>
         </div>
@@ -1130,30 +1166,38 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  T
+                </p>
               </div>
             </div>
             <p
@@ -1280,6 +1324,11 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -1344,6 +1393,11 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -1408,6 +1462,11 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -1472,6 +1531,11 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    T
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -1536,6 +1600,11 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    D
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -1690,30 +1759,38 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  T
+                </p>
               </div>
             </div>
             <p
@@ -2740,6 +2817,11 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -2893,9 +2975,11 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
             </div>
           </div>
@@ -3471,6 +3555,11 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -3535,6 +3624,11 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -3599,6 +3693,11 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -3663,6 +3762,11 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    T
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -3727,6 +3831,11 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    D
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -3880,30 +3989,38 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  T
+                </p>
               </div>
             </div>
             <p
@@ -4383,6 +4500,11 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -4447,6 +4569,11 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -4511,6 +4638,11 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    T
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -4664,23 +4796,29 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  T
+                </p>
               </div>
             </div>
           </div>
@@ -5270,6 +5408,11 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -5335,6 +5478,11 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -5400,6 +5548,11 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -5465,6 +5618,11 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    T
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -5625,30 +5783,38 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  T
+                </p>
               </div>
             </div>
           </div>
@@ -6056,6 +6222,11 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    E
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -6120,6 +6291,11 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                 <div
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                 >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
                   <span
                     class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
                   />
@@ -6273,16 +6449,20 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  E
+                </p>
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
               >
-                <span
-                  class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ta5xuo-MuiSkeleton-root"
-                />
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  U
+                </p>
               </div>
             </div>
           </div>
