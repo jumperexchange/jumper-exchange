@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import { useQueryStates } from 'nuqs';
-import type { CacheToken } from 'src/types/portfolio';
+import type { PortfolioToken } from 'src/types/tokens';
 import { isEqual } from 'lodash';
 import {
   extractTokensFilteringParams,
@@ -36,7 +36,7 @@ export interface PortfolioTokensFilteringContextType extends PortfolioTokensFilt
   filter: PortfolioTokensFilterUI;
   updateFilter: (filter: NullableFields<PortfolioTokensFilterUI>) => void;
   clearFilters: () => void;
-  data: CacheToken[];
+  data: PortfolioToken[];
   isLoading: boolean;
   isEmpty: boolean;
 }

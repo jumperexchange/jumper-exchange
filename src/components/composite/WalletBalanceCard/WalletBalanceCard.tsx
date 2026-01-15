@@ -18,7 +18,7 @@ import Stack from '@mui/material/Stack';
 import generateKey from 'src/app/lib/generateKey';
 import { TokenListCardSkeleton } from '../TokenListCard/TokenListCardSkeleton';
 import { TokenListCard } from '../TokenListCard/TokenListCard';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
 import { WalletWithActions } from './components/WalletWithActions';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
@@ -68,7 +68,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
     setIsExpanded((prev) => !prev);
   };
 
-  const handleSelectToken = (token: MinimalToken) => {
+  const handleSelectToken = (token: PortfolioToken) => {
     setFrom(token.address, token.chain.chainId);
     setWalletMenuState(false);
 

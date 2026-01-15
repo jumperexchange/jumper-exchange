@@ -2,40 +2,30 @@ import { useMemo } from 'react';
 import { differenceWith } from 'lodash';
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import type { MinimalToken } from 'src/types/tokens';
-import type { CacheToken } from 'src/types/portfolio';
+import type { PortfolioToken } from 'src/types/tokens';
 
 const getTokenKey = (address: string, chainId: number) =>
   `${address.toLowerCase()}-${chainId}`;
 
-export const filterTokensWithoutLpPositions = <
-  T extends MinimalToken | CacheToken,
->(
-  tokens: T[],
+export const filterTokensWithoutLpPositions = (
+  tokens: PortfolioToken[],
   lpTokens: { address: string; chainId: number }[],
-) => {
+): PortfolioToken[] => {
   if (tokens.length === 0 || lpTokens.length === 0) {
     return tokens;
   }
 
   return differenceWith(tokens, lpTokens, (token, lpToken) => {
-    const chainId = 'chainId' in token ? token.chainId : token.chain.chainId;
-    const tokenKey = getTokenKey(token.address, chainId);
+    const tokenKey = getTokenKey(token.address, token.chain.chainId);
     const lpKey = getTokenKey(lpToken.address, lpToken.chainId);
 
     if (tokenKey === lpKey) {
       return true;
     }
 
-    if ('relatedTokens' in token && token.relatedTokens) {
+    if (token.relatedTokens) {
       return token.relatedTokens.some(
         (rt) => getTokenKey(rt.address, rt.chain.chainId) === lpKey,
-      );
-    }
-
-    if ('chains' in token && token.chains) {
-      return token.chains.some(
-        (ct) => getTokenKey(ct.address, ct.chainId) === lpKey,
       );
     }
 
@@ -65,11 +55,9 @@ export const useLpPositions = () => {
   return lpTokens;
 };
 
-export const useTokensWithoutLpPositions = <
-  T extends MinimalToken | CacheToken,
->(
-  tokens: T[],
-): T[] => {
+export const useTokensWithoutLpPositions = (
+  tokens: PortfolioToken[],
+): PortfolioToken[] => {
   const lpTokens = useLpPositions();
   return useMemo(
     () => filterTokensWithoutLpPositions(tokens, lpTokens),

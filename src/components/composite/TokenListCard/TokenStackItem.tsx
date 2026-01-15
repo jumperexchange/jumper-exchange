@@ -7,14 +7,14 @@ import {
 import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
 import { TitleWithHint } from '../TitleWithHint/TitleWithHint';
 import { StyledContent } from './TokenListCard.styles';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 import type { TokenStackConfig } from './constants';
 import type { ResponsiveValue } from '@/types/responsive';
 import { getResponsiveValue } from './utils';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface TokenStackItemProps {
-  token: MinimalToken;
+  token: PortfolioToken;
   config: TokenStackConfig;
   chainsLimit: ResponsiveValue<number>;
   chainsSpacing: number;
