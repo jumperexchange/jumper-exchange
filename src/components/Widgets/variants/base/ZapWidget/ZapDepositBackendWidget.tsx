@@ -80,6 +80,14 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return zapData?.market?.depositToken.chainId;
   }, [zapData?.market?.depositToken.chainId]);
 
+  const fromToken = useMemo(() => {
+    return zapData?.market?.depositToken.address;
+  }, [zapData?.market?.depositToken.address]);
+
+  const fromChain = useMemo(() => {
+    return zapData?.market?.depositToken.chainId;
+  }, [zapData?.market?.depositToken.chainId]);
+
   const minFromAmountUSD = useMemo(() => {
     return projectData?.minFromAmountUSD
       ? Number(projectData?.minFromAmountUSD)
@@ -169,6 +177,8 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       }
       contractComponent={
         <ZapDepositSettings
+          fromChain={fromChain}
+          fromToken={fromToken}
           toChain={toChain}
           toToken={toToken}
           contractCalls={[]}
